@@ -79,7 +79,7 @@ Public Class cMPARandomSearch
             m_EcoSpace.MPAOptimization = Me
 
             'the seed array can be needed before the model is run
-            ReDim m_data.MPASeed(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1)
+            ReDim m_data.MPASeed(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -145,7 +145,7 @@ Public Class cMPARandomSearch
     End Sub
 
     Public Sub clearMPAs() Implements IMPASearchModel.clearMPAs
-        For ir As Integer = 1 To m_SpaceData.Inrow
+        For ir As Integer = 1 To m_SpaceData.InRow
             For ic As Integer = 1 To m_SpaceData.InCol
                 m_SpaceData.MPA(ir, ic) = 0
             Next ic
@@ -153,7 +153,7 @@ Public Class cMPARandomSearch
     End Sub
 
     Public Sub clearSeedCells() Implements IMPASearchModel.clearSeedCells
-        For ir As Integer = 1 To m_SpaceData.Inrow
+        For ir As Integer = 1 To m_SpaceData.InRow
             For ic As Integer = 1 To m_SpaceData.InCol
                 m_data.MPASeed(ir, ic) = 0
             Next ic
@@ -165,7 +165,7 @@ Public Class cMPARandomSearch
 
         'make sure the MPA index supplied by the user is in bounds
         If iMPA > 0 And iMPA <= m_SpaceData.MPAno Then
-            For ir As Integer = 1 To m_SpaceData.Inrow
+            For ir As Integer = 1 To m_SpaceData.InRow
                 For ic As Integer = 1 To m_SpaceData.InCol
                     m_SpaceData.MPA(ir, ic) = iMPA
                 Next ic
@@ -182,7 +182,7 @@ Public Class cMPARandomSearch
 
         'make sure the MPA index supplied by the user is in bounds
         If iMPA > 0 And iMPA <= m_SpaceData.MPAno Then
-            For ir As Integer = 1 To m_SpaceData.Inrow
+            For ir As Integer = 1 To m_SpaceData.InRow
                 For ic As Integer = 1 To m_SpaceData.InCol
                     m_data.MPASeed(ir, ic) = iMPA
                 Next ic
@@ -304,7 +304,7 @@ Public Class cMPARandomSearch
 
             CalculateCellWeightings()
 
-            Dim iR As Integer = m_SpaceData.Inrow
+            Dim iR As Integer = m_SpaceData.InRow
             Dim iC As Integer = m_SpaceData.InCol
             'we don't want to clear all data cells, only the one with the currently selected MPA
             'Array.Clear(Me.m_SpaceData.MPA, 0, Me.m_SpaceData.MPA.Length)
@@ -420,7 +420,7 @@ Public Class cMPARandomSearch
             m_data.ClearCells()
 
             'VC presume its quicker to load to local value than stepping out many times to get these:
-            Dim inRow As Integer = Me.m_SpaceData.Inrow '+ 1
+            Dim inRow As Integer = Me.m_SpaceData.InRow '+ 1
             Dim inCol As Integer = Me.m_SpaceData.InCol '+ 1
 
             'we don't want to clear all data cells, only the one with the currently selected MPA
@@ -589,7 +589,7 @@ Public Class cMPARandomSearch
         Try
             If TimesCalled = 1 Then 'First time keep the original bcell values
 
-                For i = 1 To m_SpaceData.Inrow
+                For i = 1 To m_SpaceData.InRow
                     For j = 1 To m_SpaceData.InCol
                         For ip = 1 To m_SpaceData.NGroups
                             BOrig(i, j, ip) = m_SpaceData.Bcell(i, j, ip)
@@ -606,7 +606,7 @@ Public Class cMPARandomSearch
             End If
 
             If TimesCalled >= 2 Then 'second time recalls the original bcell values for each timestep
-                For i = 1 To m_SpaceData.Inrow
+                For i = 1 To m_SpaceData.InRow
                     For j = 1 To m_SpaceData.InCol
                         For ip = 1 To m_SpaceData.NGroups
                             '  Bseed(i, j, ip) = BOrig(i, j, ip)
@@ -654,7 +654,7 @@ Public Class cMPARandomSearch
 
     Private Function CellsNotMPA() As Boolean
 
-        For i As Integer = 1 To m_SpaceData.Inrow
+        For i As Integer = 1 To m_SpaceData.InRow
             For j As Integer = 1 To m_SpaceData.InCol
                 If m_SpaceData.MPA(i, j) = 0 And m_SpaceData.Depth(i, j) > 0 Then
                     Return True
@@ -673,7 +673,7 @@ Public Class cMPARandomSearch
         Dim Area As Single
         Dim Border As Integer
         CalculateAreaOverBondaryLength = 0
-        For ir = 1 To m_SpaceData.Inrow
+        For ir = 1 To m_SpaceData.InRow
             For ic = 1 To m_SpaceData.InCol
                 If m_SpaceData.MPA(ir, ic) > 0 Then
                     Area = Area + 1
@@ -741,7 +741,7 @@ Public Class cMPARandomSearch
 
         Try
 
-            Dim inRow As Integer = m_SpaceData.Inrow
+            Dim inRow As Integer = m_SpaceData.InRow
             Dim inCol As Integer = m_SpaceData.InCol
             CellCount = inRow * inCol
 
@@ -867,14 +867,14 @@ Public Class cMPARandomSearch
     End Sub
 
     Private Sub sortLayersByCellWeight(ByVal CellCount As Integer)
-        Dim NoCells As Integer = m_SpaceData.Inrow * m_SpaceData.InCol
+        Dim NoCells As Integer = m_SpaceData.InRow * m_SpaceData.InCol
         ReDim MaxLayerSumByLayerAndPctMPA(m_SpaceData.nImportanceLayers, 100)
 
         For iL As Integer = 0 To Me.m_SpaceData.nImportanceLayers - 1
             Dim Cnt As Integer = 0
             Dim ArrayVal(NoCells) As Single
 
-            For i As Integer = 1 To m_SpaceData.Inrow
+            For i As Integer = 1 To m_SpaceData.InRow
                 For j As Integer = 1 To m_SpaceData.InCol
                     Cnt = Cnt + 1
                     'Make a copy of the data
@@ -901,7 +901,7 @@ Public Class cMPARandomSearch
 
         For iL As Integer = 0 To Me.m_SpaceData.nImportanceLayers - 1
             Data = Me.m_SpaceData.ImportanceLayers(iL).Data
-            For iR As Integer = 1 To m_SpaceData.Inrow
+            For iR As Integer = 1 To m_SpaceData.InRow
                 For iC As Integer = 1 To m_SpaceData.InCol
                     If m_SpaceData.MPA(iR, iC) = m_data.iMPAtoUse Then 'this is a protected cell, so check what 
                         LayerSumInMPA(iL) += Data(iR, iC)
@@ -1036,10 +1036,10 @@ Public Class cMPARandomSearch
     Private Sub RedimSeedVariables()
         Dim nvartot As Integer = m_SpaceData.NGroups + 2
 
-        ReDim BOrig(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
-        ReDim FOrig(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
-        ReDim WOrig(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
-        ReDim Blastseed(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
+        ReDim BOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
+        ReDim FOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
+        ReDim WOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
+        ReDim Blastseed(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
         ReDim StoreBtimeForEcoSeed(m_SpaceData.NGroups)
 
     End Sub

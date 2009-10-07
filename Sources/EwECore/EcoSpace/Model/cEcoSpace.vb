@@ -554,14 +554,14 @@ Public Class cEcoSpace
             'it is used for stanza data that is stored after groups (any variable that is dimed by nvartot)
             nvar2 = m_Data.NGroups
 
-            iTotalCells = m_Data.InCol * m_Data.Inrow
+            iTotalCells = m_Data.InCol * m_Data.InRow
 
             ReDim ebb(m_Data.nvartot)
             ReDim BB(m_Data.nvartot)
 
             Dim tTimeLoop As Double
             Dim bdump(,) As Single
-            ReDim bdump(m_Data.Inrow, m_Data.InCol)
+            ReDim bdump(m_Data.InRow, m_Data.InCol)
 
             If m_Data.UseIBM Then InitPackets()
             m_Data.nIBMPacketsPerThread = (m_Stanza.Npackets + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
@@ -626,7 +626,7 @@ Public Class cEcoSpace
                 '********************Martell******************
                 'This is for monthy current vectors.
                 If m_Data.CurrentForce Then
-                    For i = 0 To m_Data.Inrow + 1
+                    For i = 0 To m_Data.InRow + 1
                         For j = 0 To m_Data.InCol + 1
                             'jb Xv() are dimmed when the current field are read in
                             'which is not happening yet so if this crashes that is probable the problem
@@ -704,7 +704,7 @@ Public Class cEcoSpace
 
                 'make sure none of the biomass cells are zero
                 For ip = 1 To m_Data.nvartot
-                    For i = 1 To m_Data.Inrow
+                    For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
                             If m_Data.Bcell(i, j, ip) < 1.0E-30 Then m_Data.Bcell(i, j, ip) = 1.0E-30
                         Next j
@@ -748,7 +748,7 @@ Public Class cEcoSpace
                             'SET
                             Tbiom = (ThabArea) * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
                             Tpred = (ThabArea) * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
-                            For i = 1 To m_Data.Inrow : For j = 1 To m_Data.InCol
+                            For i = 1 To m_Data.InRow : For j = 1 To m_Data.InCol
                                     If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True _
                                         Or m_Data.PrefHab(ieco, 0) = True) _
                                         And m_Data.DistributionEnvelope(i, j, ieco) = True _
@@ -775,7 +775,7 @@ Public Class cEcoSpace
 
                     ReDim m_tracerData.ConcMax(m_EPdata.NumGroups)
 
-                    For i = 1 To m_Data.Inrow
+                    For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
                             For ip = 0 To m_Data.NGroups
                                 'If SpaceTime = False Then Wtr = Exp(AMmTr(i, j, ip) * TimeStep) Else Wtr = 0
@@ -954,10 +954,10 @@ Public Class cEcoSpace
         Dim timerTemp As Single
 
         For Each solver In m_IBMSolvers
-            ReDim solver.BcellThread(m_Data.Inrow, m_Data.InCol, m_Data.nvartot)
-            ReDim solver.PredCellThread(m_Data.Inrow, m_Data.InCol, m_Data.nvartot)
+            ReDim solver.BcellThread(m_Data.InRow, m_Data.InCol, m_Data.nvartot)
+            ReDim solver.PredCellThread(m_Data.InRow, m_Data.InCol, m_Data.nvartot)
         Next
-        ReDim m_Stanza.EggCell(m_Data.Inrow, m_Data.InCol, m_Stanza.Nsplit)
+        ReDim m_Stanza.EggCell(m_Data.InRow, m_Data.InCol, m_Stanza.Nsplit)
 
         Try
 
@@ -1006,7 +1006,7 @@ Public Class cEcoSpace
                 For ist As Integer = 1 To m_Stanza.Nstanza(isp)
 
                     ieco = m_Stanza.EcopathCode(isp, ist)
-                    For i As Integer = 1 To m_Data.Inrow : For j As Integer = 1 To m_Data.InCol
+                    For i As Integer = 1 To m_Data.InRow : For j As Integer = 1 To m_Data.InCol
                             m_Data.Bcell(i, j, ieco) = 0
                             m_Data.PredCell(i, j, ieco) = 0
                         Next : Next
@@ -1058,7 +1058,7 @@ Public Class cEcoSpace
                 For isp As Integer = 1 To m_Stanza.Nsplit
                     For ist As Integer = 1 To m_Stanza.Nstanza(isp)
                         ieco = m_Stanza.EcopathCode(isp, ist)
-                        For i As Integer = 1 To m_Data.Inrow : For j As Integer = 1 To m_Data.InCol
+                        For i As Integer = 1 To m_Data.InRow : For j As Integer = 1 To m_Data.InCol
                                 m_Data.Bcell(i, j, ieco) = m_Data.Bcell(i, j, ieco) + solver.BcellThread(i, j, ieco)
                                 m_Data.PredCell(i, j, ieco) = m_Data.PredCell(i, j, ieco) + solver.PredCellThread(i, j, ieco)
                             Next : Next
@@ -1273,7 +1273,7 @@ Public Class cEcoSpace
 
             'redim MPred at the start of each run because we have no way of knowing when EcoSimDataStructures.inlinks has changed
             'inlinks is the number of prey/pred linkages
-            ReDim Me.m_Data.MPred(Me.m_Data.Inrow + 1, Me.m_Data.InCol + 1, Me.m_SimData.inlinks)
+            ReDim Me.m_Data.MPred(Me.m_Data.InRow + 1, Me.m_Data.InCol + 1, Me.m_SimData.inlinks)
 
             'm_Data.Depth(10, 10) = 0
             m_bsolverError = False
@@ -1300,7 +1300,7 @@ Public Class cEcoSpace
             Dim Wchange() As Single
             ReDim Wchange(m_Data.nvartot)
 
-            ReDim Cper(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.NGroups)
+            ReDim Cper(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
             ReDim Ecode(m_Data.Nvarsplit)
 
             If m_tracerData.EcoSpaceConSimOn Then
@@ -1355,7 +1355,7 @@ Public Class cEcoSpace
             SetBoundaryDepths()
 
             'check to see if user wants to have some groups advected/migratory
-            ReDim MigPowi(m_Data.NGroups, m_Data.Inrow + 1), MigPowj(m_Data.NGroups, m_Data.InCol + 1)
+            ReDim MigPowi(m_Data.NGroups, m_Data.InRow + 1), MigPowj(m_Data.NGroups, m_Data.InCol + 1)
             ReDim PrefRowP(m_Data.NGroups, 12), PrefColP(m_Data.NGroups, 12)
             For ip = 1 To m_Data.NGroups
 
@@ -1366,7 +1366,7 @@ Public Class cEcoSpace
                 'End If
 
                 If m_Data.IsMigratory(ip) Then
-                    For i = 1 To m_Data.Inrow : MigPowi(ip, i) = i ^ m_Data.MigConcRow(ip) : Next
+                    For i = 1 To m_Data.InRow : MigPowi(ip, i) = i ^ m_Data.MigConcRow(ip) : Next
                     For j = 1 To m_Data.InCol : MigPowj(ip, j) = j ^ m_Data.MigConcCol(ip) : Next
                     For i = 1 To 12
                         PrefRowP(ip, i) = m_Data.PrefRow(ip, i) ^ m_Data.MigConcRow(ip)
@@ -1377,15 +1377,15 @@ Public Class cEcoSpace
             Next
 
             'VC Hobart Sep 2008 
-            ReDim m_Data.SpatialField(m_Data.Inrow, m_Data.InCol, m_Data.nSpatialFields)
+            ReDim m_Data.SpatialField(m_Data.InRow, m_Data.InCol, m_Data.nSpatialFields)
             ReDim m_Data.SpatialFieldOptimum(m_Data.nLiving, m_Data.nSpatialFields)
             ReDim m_Data.SpatialFieldStdLeft(m_Data.nLiving, m_Data.nSpatialFields)
             ReDim m_Data.SpatialFieldStdRight(m_Data.nLiving, m_Data.nSpatialFields)
 
             'VC Hobart Sep 2008 next is for reading of distribution envelopes, 
-            ReDim m_Data.DistributionEnvelope(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.NGroups)  'dimensioning detritus as well
+            ReDim m_Data.DistributionEnvelope(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)  'dimensioning detritus as well
 
-            For iRo As Integer = 0 To m_Data.Inrow + 1
+            For iRo As Integer = 0 To m_Data.InRow + 1
                 For iCo As Integer = 0 To m_Data.InCol + 1
                     For iGr As Integer = 1 To m_Data.NGroups
                         m_Data.DistributionEnvelope(iRo, iCo, iGr) = True
@@ -1447,7 +1447,7 @@ Public Class cEcoSpace
 
             For ip = 0 To m_Data.NGroups
                 Btime(ip) = 0
-                For i = 0 To m_Data.Inrow + 1
+                For i = 0 To m_Data.InRow + 1
                     For j = 0 To m_Data.InCol + 1
                         If m_Data.IsAdvected(ip) Then
                             m_Data.Bcell(i, j, ip) = Basebiomass(ip)
@@ -1466,7 +1466,7 @@ Public Class cEcoSpace
 
 
                             If m_Data.IsMigratory(ip) Then
-                                If i = 0 Or i = m_Data.Inrow + 1 Or j = 0 Or j = m_Data.InCol + 1 Then m_Data.Bcell(i, j, ip) = 0
+                                If i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1 Then m_Data.Bcell(i, j, ip) = 0
                             End If
                         Else
                             AMm(i, j, ip) = -1.0 'E+30
@@ -1475,7 +1475,7 @@ Public Class cEcoSpace
                         If ip = 0 Then m_Data.Bcell(i, j, ip) = 1
 
                         m_Data.Blast(i, j, ip) = m_Data.Bcell(i, j, ip)
-                        If i > 0 And j > 0 And i <= m_Data.Inrow And j <= m_Data.InCol Then Btime(ip) = Btime(ip) + m_Data.Bcell(i, j, ip)
+                        If i > 0 And j > 0 And i <= m_Data.InRow And j <= m_Data.InCol Then Btime(ip) = Btime(ip) + m_Data.Bcell(i, j, ip)
 
                         If m_tracerData.EcoSpaceConSimOn And ip <= m_Data.NGroups Then
                             'Debug.Assert(False, "EcoSpace Contaminant Tracer not Initialized properly.")
@@ -1509,7 +1509,7 @@ Public Class cEcoSpace
                     End If
                     Ecode(isc) = ieco
                     If m_Data.IsMigratory(ieco) = True Then m_Data.IsMigratory(nvar2 + isc) = True
-                    For i = 0 To m_Data.Inrow + 1
+                    For i = 0 To m_Data.InRow + 1
                         For j = 0 To m_Data.InCol + 1
                             If m_Data.Depth(i, j) > 0 Then
                                 'VC Hobart Sep 2008: adding distribution envelope 
@@ -1569,25 +1569,25 @@ Public Class cEcoSpace
 
             Dim waterCtr As Integer = 0
             Dim foundRow As Boolean
-            ReDim m_Data.iWaterCellIndex(m_Data.InCol * m_Data.Inrow)
-            ReDim m_Data.jWaterCellIndex(m_Data.InCol * m_Data.Inrow)
+            ReDim m_Data.iWaterCellIndex(m_Data.InCol * m_Data.InRow)
+            ReDim m_Data.jWaterCellIndex(m_Data.InCol * m_Data.InRow)
             ReDim m_Data.iStartRow(m_Data.InCol)
             ReDim m_Data.iEndRow(m_Data.InCol)
-            ReDim m_Data.jStartCol(m_Data.Inrow)
-            ReDim m_Data.jEndCol(m_Data.Inrow)
+            ReDim m_Data.jStartCol(m_Data.InRow)
+            ReDim m_Data.jEndCol(m_Data.InRow)
 
 
             'this finds the start and end rows and columns so that solvegrid doesn't go through every one
             For j = 1 To m_Data.InCol
                 foundRow = False
-                m_Data.iStartRow(j) = m_Data.Inrow + 1
+                m_Data.iStartRow(j) = m_Data.InRow + 1
                 m_Data.iEndRow(j) = 0
-                For i = 1 To m_Data.Inrow
+                For i = 1 To m_Data.InRow
                     If m_Data.Depth(i, j) > 0 Then
                         waterCtr = waterCtr + 1
                         m_Data.iWaterCellIndex(waterCtr) = i
                         m_Data.jWaterCellIndex(waterCtr) = j
-                        If m_Data.iStartRow(j) = m_Data.Inrow + 1 Then
+                        If m_Data.iStartRow(j) = m_Data.InRow + 1 Then
                             m_Data.iStartRow(j) = i
                             foundRow = True
                         End If
@@ -1599,7 +1599,7 @@ Public Class cEcoSpace
             Next
             m_Data.iTotalWaterCells = waterCtr
 
-            For i = 1 To m_Data.Inrow
+            For i = 1 To m_Data.InRow
                 m_Data.jStartCol(i) = m_Data.InCol + 1
                 m_Data.jEndCol(i) = 0
                 For j = 1 To m_Data.InCol
@@ -1612,7 +1612,7 @@ Public Class cEcoSpace
                 Next
             Next
 
-            ReDim BEQlast(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            ReDim BEQlast(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
             '**** this functionality has been moved below **** 
             'this finds which groups are being integrated, so they can be adeq
@@ -1717,7 +1717,7 @@ Public Class cEcoSpace
                     End If
 
                     'init the grid solver object
-                    grdslvConSim.Init(m_Data.AMmTr, m_Data.Ftr, m_Data.Ccell, m_Data.Inrow, m_Data.InCol, m_Data.Tol, jord, m_Data.W, Bcw, C, d, e, _
+                    grdslvConSim.Init(m_Data.AMmTr, m_Data.Ftr, m_Data.Ccell, m_Data.InRow, m_Data.InCol, m_Data.Tol, jord, m_Data.W, Bcw, C, d, e, _
                                        m_Data.Depth, m_ConBypassIntegrated, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, _
                                        m_Data.jEndCol, m_Data.IsMigratory, threadGroupsConSim, m_Data.UseExact)
 
@@ -1813,13 +1813,13 @@ Public Class cEcoSpace
         'ReDim BB(NumGroups + 3 * npairs + Nvarsplit) As Single
 
         'redim new stanza stuff
-        ReDim m_Data.PredCell(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.NGroups)
-        ReDim m_Data.IFDweight(m_Data.Inrow, m_Data.InCol, m_Data.NGroups)
+        ReDim m_Data.PredCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+        ReDim m_Data.IFDweight(m_Data.InRow, m_Data.InCol, m_Data.NGroups)
         ReDim m_Data.ByPassIntegrate(m_Data.nvartot)
 
         ReDim m_Data.BBase(m_Data.NGroups)
 
-        ReDim RelFitness(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.NGroups)
+        ReDim RelFitness(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
         ReDim Basebiomass(m_Data.nvartot)
         ReDim der(m_Data.NGroups)
         ReDim loss(m_Data.NGroups)
@@ -1831,13 +1831,13 @@ Public Class cEcoSpace
         ReDim Flowin(m_Data.nvartot)
         ReDim FlowoutRate(m_Data.nvartot)
 
-        ReDim F(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim AMm(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ReDim F(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ReDim AMm(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
-        ReDim BcwNomig(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim CNomig(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim dNomig(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim Enomig(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ReDim BcwNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ReDim CNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ReDim dNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ReDim Enomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
         ' ReDim conSplit(m_Data.Nvarsplit)
         ReDim TotEffort(m_Data.nFleets)
@@ -1855,7 +1855,7 @@ Public Class cEcoSpace
     Sub SetKmove()
         Dim i As Integer
 
-        ReDim RelMoveFit(m_Data.Inrow + 1, m_Data.InCol + 1)
+        ReDim RelMoveFit(m_Data.InRow + 1, m_Data.InCol + 1)
         ReDim PzoTOmove(m_Data.NGroups)
         ReDim Kmovefit(m_Data.NGroups)
 
@@ -1864,9 +1864,9 @@ Public Class cEcoSpace
             If m_EPdata.PB(i) > 0 Then Kmovefit(i) = 2.197225 / (PzoTOmove(i) * m_EPdata.PB(i))
         Next
 
-        ReDim m_Data.Blast(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim FtimeCell(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.NGroups)
-        ReDim HdenCell(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.NGroups)
+        ReDim m_Data.Blast(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ReDim FtimeCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+        ReDim HdenCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
         'ReDim LastB(m_Data.nGroups)
         ReDim Btime(m_Data.NGroups)
 
@@ -1881,10 +1881,10 @@ Public Class cEcoSpace
 
         For j = 0 To m_Data.InCol + 1
             m_Data.Depth(0, j) = 1
-            m_Data.Depth(m_Data.Inrow + 1, j) = 1
+            m_Data.Depth(m_Data.InRow + 1, j) = 1
         Next
 
-        For i = 0 To m_Data.Inrow + 1
+        For i = 0 To m_Data.InRow + 1
             m_Data.Depth(i, 0) = 1
             m_Data.Depth(i, m_Data.InCol + 1) = 1
         Next
@@ -1897,19 +1897,19 @@ Public Class cEcoSpace
         Dim i As Integer, j As Integer, ii As Integer, jj As Integer, ihab As Integer, Thab As Single, Nobs As Single
         Dim i1 As Integer, i2 As Integer, j1 As Integer, j2 As Integer, Sweep As Integer, Habadd As Single
         Dim nsweep As Integer
-        ReDim HabGrad(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.NGroups)
+        ReDim HabGrad(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
 
-        If m_Data.Inrow > m_Data.InCol Then nsweep = m_Data.Inrow Else nsweep = m_Data.InCol
+        If m_Data.InRow > m_Data.InCol Then nsweep = m_Data.InRow Else nsweep = m_Data.InCol
         'nsweep = nsweep * 2
         iWindow = 1
         For ihab = 1 To m_Data.NGroups
             For Sweep = 1 To nsweep
                 'If NcellsHab(ihab) > 0 Then
-                For i = 1 To m_Data.Inrow : For j = 1 To m_Data.InCol
+                For i = 1 To m_Data.InRow : For j = 1 To m_Data.InCol
                         'If i = 1 And j = 11 And ihab = 4 Then Stop
                         Thab = 0 : Nobs = 0
                         i1 = i - iWindow : If i1 < 0 Then i1 = 0
-                        i2 = i + iWindow : If i2 > m_Data.Inrow + 1 Then i2 = m_Data.Inrow + 1
+                        i2 = i + iWindow : If i2 > m_Data.InRow + 1 Then i2 = m_Data.InRow + 1
                         j1 = j - iWindow : If j1 < 0 Then j1 = 0
                         j2 = j + iWindow : If j2 > m_Data.InCol + 1 Then j2 = m_Data.InCol + 1
                         For ii = i1 To i2 : For jj = j1 To j2
@@ -2168,7 +2168,7 @@ Public Class cEcoSpace
 
         If m_Data.NoHabitats = 0 Then Exit Sub
 
-        For i = 1 To m_Data.Inrow
+        For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
                 If m_Data.Depth(i, j) > 0 Then
                     ThabArea = ThabArea + 1
@@ -2412,7 +2412,7 @@ Public Class cEcoSpace
         'so that the total primary productivity is the same in Ecospace and Ecopath
 
         m_Data.nWaterCells = 0
-        For i = 1 To m_Data.Inrow
+        For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
                 If m_Data.Depth(i, j) > 0 Then 'Water
                     Factor = Factor + m_Data.RelPP(i, j)
@@ -2446,7 +2446,7 @@ Public Class cEcoSpace
         m_Data.SailScale(0) = 1
 
         For GearNo = 1 To m_Data.nFleets
-            For i = 1 To m_Data.Inrow
+            For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
                     If m_Data.Depth(i, j) > 0 Then 'Water
                         Factor = Factor + m_Data.Sail(GearNo, i, j)
@@ -2473,7 +2473,7 @@ Public Class cEcoSpace
 
         For ig = 1 To m_Data.nFleets
             TotEffort(ig) = 0
-            For i = 1 To m_Data.Inrow
+            For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
                     'below changed following CJW's email of 20 Jan 98:
                     'I found one bad error in ecospace: subroutine that calculates total
@@ -2502,14 +2502,14 @@ Public Class cEcoSpace
         Dim isp As Integer, ist As Integer, nvar2 As Integer, ir As Integer, ieco As Integer
         '   Erase Bcw, C, d, e
 
-        ReDim Bcw(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim C(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim d(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim e(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ReDim Bcw(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ReDim C(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ReDim d(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ReDim e(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
 
         AdScale = 1 / m_Data.CellLength '/ (2 * 3.14159 * CellLength)
-        For i = 0 To m_Data.Inrow
+        For i = 0 To m_Data.InRow
             For j = 0 To m_Data.InCol
                 'check depth on right face of this cell
                 If m_Data.Depth(i, j) > 0 Then
@@ -2576,7 +2576,7 @@ Public Class cEcoSpace
                     'then check depths on bottom face of this cell
                     If m_Data.Depth(i + 1, j) > 0 Then
                         For ip = 1 To m_Data.NGroups
-                            If i > 0 And i < m_Data.Inrow Then
+                            If i > 0 And i < m_Data.InRow Then
                                 C(i, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
                                 Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
                                 If m_Data.IsAdvected(ip) Then
@@ -2640,7 +2640,7 @@ Public Class cEcoSpace
         If m_tracerData.EcoSpaceConSimOn Then
             'set movement rates for physical contaminant concentration to
             'rates for first detritus pool
-            For i = 0 To m_Data.Inrow + 1
+            For i = 0 To m_Data.InRow + 1
                 For j = 0 To m_Data.InCol + 1
                     Bcw(i, j, 0) = Bcw(i, j, m_EPdata.NumLiving + 1)
                     C(i, j, 0) = C(i, j, m_EPdata.NumLiving + 1)
@@ -2706,7 +2706,7 @@ Public Class cEcoSpace
 
         'calculate relative emigration rate from each cell as function
         'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
-        For i = 0 To m_Data.Inrow + 1
+        For i = 0 To m_Data.InRow + 1
             For j = 0 To m_Data.InCol + 1
                 If m_Data.FitRespType > 0 Then
                     Ep = -Kmovefit(ip) * RelFitness(i, j, ip)
@@ -2721,7 +2721,7 @@ Public Class cEcoSpace
             Next
         Next
 
-        For i = 0 To m_Data.Inrow
+        For i = 0 To m_Data.InRow
             For j = 0 To m_Data.InCol
                 If m_Data.Depth(i, j) > 0 Then
 
@@ -2785,7 +2785,7 @@ Public Class cEcoSpace
                             Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) / FitRatio * (2 - Distort)
                         End If
 
-                        If i = 0 Or i = m_Data.Inrow Then
+                        If i = 0 Or i = m_Data.InRow Then
                             C(i, j, ip) = 0
                             Bcw(i + 1, j, ip) = 0
                         End If
@@ -3044,8 +3044,8 @@ exitline:
 
 
         ReDim Effort(m_Data.nFleets)
-        ReDim m_Data.Ftot(m_Data.NGroups, m_Data.Inrow, m_Data.InCol)
-        ReDim m_Data.EffortSpace(m_Data.nFleets, m_Data.Inrow, m_Data.InCol)
+        ReDim m_Data.Ftot(m_Data.NGroups, m_Data.InRow, m_Data.InCol)
+        ReDim m_Data.EffortSpace(m_Data.nFleets, m_Data.InRow, m_Data.InCol)
 
         'replaced by iMonth
         '   MM = (Month()) Mod 12 + 1 'used for mpaseason business
@@ -3053,7 +3053,7 @@ exitline:
             TotE = TotEffort(ig) * m_Data.SEmult(ig)
             Effort(ig) = 0
             'jb Attract() gets cleared out for each fleet
-            ReDim m_Data.Attract(m_Data.Inrow, m_Data.InCol)
+            ReDim m_Data.Attract(m_Data.InRow, m_Data.InCol)
             TotAttract = 0.0000000001
 
             'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
@@ -3070,7 +3070,7 @@ exitline:
                 SailCost = m_EPdata.cost(ig, 3) / (m_EPdata.cost(ig, 1) + m_EPdata.cost(ig, 2) + m_EPdata.cost(ig, 3))
             End If
 
-            For i = 1 To m_Data.Inrow
+            For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
                     If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
                     If m_Data.Depth(i, j) > 0 And _
@@ -3091,7 +3091,7 @@ exitline:
                 Next
             Next
 
-            For i = 1 To m_Data.Inrow
+            For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
                     'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
                     If m_Data.Depth(i, j) > 0 And _
@@ -3126,7 +3126,7 @@ exitline:
     ''' <remarks></remarks>
     Sub solvetime(ByVal ip As Integer, ByVal Aloc(,,) As Single, ByVal Floc(,,) As Single, ByVal X(,,) As Single, ByVal M As Integer, ByVal NomCols As Integer, ByVal Tol As Single, ByVal jord() As Integer, ByVal Dt As Single)
         Dim i As Integer, j As Integer, Xold(,) As Single
-        ReDim Xold(m_Data.Inrow + 1, m_Data.InCol + 1)
+        ReDim Xold(m_Data.InRow + 1, m_Data.InCol + 1)
         For i = 0 To M + 1
             For j = 0 To NomCols + 1
                 Xold(i, j) = X(i, j, ip)
@@ -3293,7 +3293,7 @@ exitline:
             End If
 
             Dim irgn As Integer
-            For ir As Integer = 1 To Me.m_Data.Inrow
+            For ir As Integer = 1 To Me.m_Data.InRow
                 For ic As Integer = 1 To Me.m_Data.InCol
                     irgn = Me.m_Data.Region(ir, ic)
                     For igrp = 1 To Me.m_Data.NGroups
@@ -3434,10 +3434,10 @@ exitline:
         'calculates flow depths at cell faces:depthX is bottom face, depthY is right face of each cell
         Dim i As Integer, j As Integer
 
-        ReDim m_Data.DepthX(m_Data.Inrow, m_Data.InCol)
-        ReDim m_Data.DepthY(m_Data.Inrow, m_Data.InCol)
+        ReDim m_Data.DepthX(m_Data.InRow, m_Data.InCol)
+        ReDim m_Data.DepthY(m_Data.InRow, m_Data.InCol)
 
-        For i = 0 To m_Data.Inrow
+        For i = 0 To m_Data.InRow
             For j = 0 To m_Data.InCol
                 If m_Data.Depth(i, j) > 0 Then
                     If m_Data.Depth(i + 1, j) > 0 Then
@@ -3460,9 +3460,9 @@ exitline:
             Next j
         Next i
 
-        ReDim m_Data.Xvel(m_Data.Inrow + 1, m_Data.InCol + 1)
-        ReDim m_Data.Yvel(m_Data.Inrow + 1, m_Data.InCol + 1)
-        For i = 0 To m_Data.Inrow + 1
+        ReDim m_Data.Xvel(m_Data.InRow + 1, m_Data.InCol + 1)
+        ReDim m_Data.Yvel(m_Data.InRow + 1, m_Data.InCol + 1)
+        For i = 0 To m_Data.InRow + 1
             For j = 0 To m_Data.InCol + 1
                 If m_Data.Depth(i, j) > 0 Then
                     m_Data.Xvel(i, j) = m_Data.Xvloc(i, j)
@@ -3478,10 +3478,10 @@ exitline:
         'sets apparent upwelling/downwelling rates based only on flow forcing field
         'sketched by model user
         Dim Fl As Single, i As Integer, j As Integer, UpMax As Single, UpLoc As Single, Cl2 As Single
-        ReDim m_Data.flow(m_Data.Inrow + 1, m_Data.InCol + 1)
+        ReDim m_Data.flow(m_Data.InRow + 1, m_Data.InCol + 1)
         Cl2 = 0.01 / m_Data.CellLength ' ^ 2
 
-        For i = 0 To m_Data.Inrow
+        For i = 0 To m_Data.InRow
             For j = 0 To m_Data.InCol
                 If m_Data.Depth(i, j) > 0 Then
                     If m_Data.Depth(i + 1, j) > 0 Then
@@ -3500,7 +3500,7 @@ exitline:
             Next
         Next
         UpMax = 0
-        For i = 1 To m_Data.Inrow
+        For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
                 If m_Data.Depth(i, j) > 0 Then
                     If Math.Abs(m_Data.flow(i, j)) > UpMax Then UpMax = Math.Abs(m_Data.flow(i, j))
@@ -3509,7 +3509,7 @@ exitline:
         Next
         UpMax = UpMax * Cl2
         '  Up.Cls()
-        For i = 1 To m_Data.Inrow
+        For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
                 If m_Data.Depth(i, j) > 0 Then
                     UpLoc = -m_Data.flow(i, j) * Cl2
@@ -3548,7 +3548,7 @@ exitline:
                 InrowRead = ReadNumber(sr)
                 IncolRead = ReadNumber(sr)
 
-                If InrowRead <> m_Data.Inrow Or IncolRead <> m_Data.InCol Then
+                If InrowRead <> m_Data.InRow Or IncolRead <> m_Data.InCol Then
                     If MsgBox("Number of rows and columns in this advection file are not the same as your current map; try to read anyway?", vbYesNo) = vbNo Then Exit Sub
                 End If
 
@@ -3563,7 +3563,7 @@ exitline:
                         Yvv = ReadNumber(sr)
                         Upv = ReadNumber(sr)
                         Dep = ReadNumber(sr)
-                        If i <= m_Data.Inrow + 1 And j <= m_Data.InCol + 1 Then
+                        If i <= m_Data.InRow + 1 And j <= m_Data.InCol + 1 Then
                             m_Data.Xvloc(i, j) = Xvl
                             m_Data.Yvloc(i, j) = Yvl
                             m_Data.Xvel(i, j) = Xvv
@@ -3625,7 +3625,7 @@ exitline:
 
             For i As Integer = 1 To m_Data.nGridSolverThreads
                 solver = New cGridSolver(i)
-                solver.Init(AMm, F, m_Data.Bcell, m_Data.Inrow, m_Data.InCol, m_Data.Tol, jord, m_Data.W, Bcw, C, d, e, m_Data.Depth, m_Data.ByPassIntegrate, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, m_Data.jEndCol, m_Data.IsMigratory, threadGroups, m_Data.UseExact)
+                solver.Init(AMm, F, m_Data.Bcell, m_Data.InRow, m_Data.InCol, m_Data.Tol, jord, m_Data.W, Bcw, C, d, e, m_Data.Depth, m_Data.ByPassIntegrate, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, m_Data.jEndCol, m_Data.IsMigratory, threadGroups, m_Data.UseExact)
                 m_gridSolvers.Add(solver)
             Next i
 
@@ -4289,13 +4289,13 @@ exitline:
         ReDim iList(ThabArea), Jlist(ThabArea), m_Stanza.iNursery(m_Stanza.Nsplit, ThabArea), m_Stanza.jNursery(m_Stanza.Nsplit, ThabArea)
         ReDim m_Stanza.IBMMovesPerMonth(m_Data.NGroups)
         ReDim m_Stanza.IBMdistmove(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit)
-        ReDim m_Data.PredCell(m_Data.Inrow, m_Data.InCol, m_Data.NGroups)
+        ReDim m_Data.PredCell(m_Data.InRow, m_Data.InCol, m_Data.NGroups)
         ReDim m_Stanza.Nnursery(m_Stanza.Nsplit), m_Stanza.StanzaNo(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit)
         ReDim m_Stanza.MaxAgeSpecies(m_Stanza.Nsplit), m_Stanza.AgeIndex1(m_Stanza.Nsplit)
         'ReDim Cper(m_Data.Inrow, m_Data.InCol, m_Data.NGroups)
 
         'set number of packets per age **** to interface?****
-        m_Stanza.Npackets = m_Data.Inrow * m_Data.InCol * m_Stanza.NPacketsMultiplier
+        m_Stanza.Npackets = m_Data.InRow * m_Data.InCol * m_Stanza.NPacketsMultiplier
 
         ReDim m_Stanza.Npacket(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit, m_Stanza.Npackets)
         ReDim m_Stanza.Wpacket(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit, m_Stanza.Npackets)
@@ -4327,7 +4327,7 @@ exitline:
                 isc = isc + 1
                 'make up temporary list of suitable cells for this stanza
                 Nused = 0
-                For i = 1 To m_Data.Inrow : For j = 1 To m_Data.InCol
+                For i = 1 To m_Data.InRow : For j = 1 To m_Data.InCol
                         m_Data.Bcell(i, j, ieco) = 0 ' NOTE call to initpackets must be after any other Bcell initialization for multistanza biomasses
                         m_Data.PredCell(i, j, ieco) = 0
                         If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
@@ -4364,7 +4364,7 @@ exitline:
             Next
             m_Stanza.MaxAgeSpecies(isp) = ia
         Next
-        ReDim m_Stanza.Zcell(m_Data.Inrow, m_Data.InCol, m_Data.NGroups)  'this variable used to store spatial field of total mortality rates for survival updates
+        ReDim m_Stanza.Zcell(m_Data.InRow, m_Data.InCol, m_Data.NGroups)  'this variable used to store spatial field of total mortality rates for survival updates
         ' For i = 1 To 6: Debug.Print Bcell(1, 1, i), StartBiomass(i): Next
         'For i = 1 To 6: Debug.Print PredCell(1, 1, i), pred(i): Next
         'Stop
@@ -4396,16 +4396,16 @@ exitline:
                     migIndex(nMig) = i
                 End If
             Next
-            ReDim MigGrad(m_Data.Inrow + 1, m_Data.InCol + 1, nMig, 12)
+            ReDim MigGrad(m_Data.InRow + 1, m_Data.InCol + 1, nMig, 12)
 
-            If m_Data.Inrow > m_Data.InCol Then nsweep = m_Data.Inrow Else nsweep = m_Data.InCol
+            If m_Data.InRow > m_Data.InCol Then nsweep = m_Data.InRow Else nsweep = m_Data.InCol
             nsweep = nsweep * 2
             iWindow = 1
             For ihab = 1 To nMig
                 For imonth = 1 To 12
                     For Sweep = 1 To nsweep
                         'If NcellsHab(ihab) > 0 Then
-                        For i = 0 To m_Data.Inrow + 1 : For j = 0 To m_Data.InCol + 1
+                        For i = 0 To m_Data.InRow + 1 : For j = 0 To m_Data.InCol + 1
                                 If Sweep = 1 Then
                                     MigGrad(i, j, ihab, imonth) = 1000
                                 ElseIf MigGrad(i, j, ihab, imonth) <> 0 Then
@@ -4415,7 +4415,7 @@ exitline:
                                     'smallestJ = -1
                                     pathFound = False
                                     i1 = i - iWindow : If i1 < 0 Then i1 = 0
-                                    i2 = i + iWindow : If i2 > m_Data.Inrow + 1 Then i2 = m_Data.Inrow + 1
+                                    i2 = i + iWindow : If i2 > m_Data.InRow + 1 Then i2 = m_Data.InRow + 1
                                     j1 = j - iWindow : If j1 < 0 Then j1 = 0
                                     j2 = j + iWindow : If j2 > m_Data.InCol + 1 Then j2 = m_Data.InCol + 1
                                     For ii = i1 To i2 : For jj = j1 To j2
@@ -4424,7 +4424,7 @@ exitline:
                                             Else
                                                 diagAdjust = 0.4142 'sqrt(2)-1
                                             End If
-                                            If MigGrad(ii, jj, ihab, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) <> 0 And m_Data.PrefHab(migIndex(ihab), m_Data.HabType(i, j)) Or i = 0 Or i = m_Data.Inrow + 1 Or j = 0 Or j = m_Data.InCol + 1)) Then
+                                            If MigGrad(ii, jj, ihab, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) <> 0 And m_Data.PrefHab(migIndex(ihab), m_Data.HabType(i, j)) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1)) Then
                                                 smallestDist = MigGrad(ii, jj, ihab, imonth) + diagAdjust
                                                 pathFound = True
                                             End If
@@ -4500,7 +4500,7 @@ exitline:
             Next
 
             AdScale = 1 / m_Data.CellLength '/ (2 * 3.14159 * CellLength)
-            For i = 0 To m_Data.Inrow
+            For i = 0 To m_Data.InRow
                 For j = 0 To m_Data.InCol
                     'check depth on right face of this cell
                     If m_Data.Depth(i, j) > 0 Then
@@ -4558,7 +4558,7 @@ exitline:
                         'then check depths on bottom face of this cell
                         If m_Data.Depth(i + 1, j) > 0 Then
                             For imig = 1 To nMig
-                                If i > 0 And i < m_Data.Inrow Then
+                                If i > 0 And i < m_Data.InRow Then
                                     ip = migIndex(imig)
                                     C(i, j, ip) = CNomig(i, j, ip) * RelMove(ip, i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip) * distort
                                     Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) * RelMove(ip, i, j) * RelMigMove(i, j, i + 1, j, MigGrad, m_Data.MoveScale, imig, imonth, ip) * (1 - distort)
@@ -4623,7 +4623,7 @@ exitline:
             If m_tracerData.EcoSpaceConSimOn Then
                 'set movement rates for physical contaminant concentration to
                 'rates for first detritus pool
-                For i = 0 To m_Data.Inrow + 1
+                For i = 0 To m_Data.InRow + 1
                     For j = 0 To m_Data.InCol + 1
                         Bcw(i, j, 0) = Bcw(i, j, m_EPdata.NumLiving + 1)
                         C(i, j, 0) = C(i, j, m_EPdata.NumLiving + 1)
@@ -4673,7 +4673,7 @@ exitline:
             ieco = IecoCode(ip)
             'calculate relative emigration rate from each cell as function
             'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
-            For i = 0 To m_Data.Inrow + 1
+            For i = 0 To m_Data.InRow + 1
                 For j = 0 To m_Data.InCol + 1
                     If m_Data.FitRespType > 0 Then
                         Ep = -Kmovefit(ip) * RelFitness(i, j, ip)
@@ -4688,7 +4688,7 @@ exitline:
                 Next
             Next
 
-            For i = 0 To m_Data.Inrow
+            For i = 0 To m_Data.InRow
                 For j = 0 To m_Data.InCol
                     If m_Data.Depth(i, j) > 0 Then
 
@@ -4759,7 +4759,7 @@ exitline:
                                 Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) / FitRatio * (2 - Distort) * RelMigMove(i, j, i + 1, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
                             End If
 
-                            If i = 0 Or i = m_Data.Inrow Then
+                            If i = 0 Or i = m_Data.InRow Then
                                 C(i, j, ip) = 0
                                 Bcw(i + 1, j, ip) = 0
                             End If
@@ -4799,7 +4799,7 @@ exitline:
             Dim numDir As Single
             Try
                 multDir = 1
-                If i1 > 0 And j1 > 0 And i1 <= m_Data.Inrow And j1 <= m_Data.InCol Then
+                If i1 > 0 And j1 > 0 And i1 <= m_Data.InRow And j1 <= m_Data.InCol Then
                     If (G(i1 + 1, j1, ihab, imonth) - G(i1, j1, ihab, imonth)) < 0 Then numDir += 1.0
                     If (G(i1 - 1, j1, ihab, imonth) - G(i1, j1, ihab, imonth)) < 0 Then numDir += 1.0
                     If (G(i1, j1 - 1, ihab, imonth) - G(i1, j1, ihab, imonth)) < 0 Then numDir += 1.0
@@ -4812,9 +4812,9 @@ exitline:
                     'Case 0
                     'RelMigMove = 1
                     Case Is < 0
-                        RelMigMove = 1 + m_Data.barrierAvoidanceWeight(ip) * multDir * G(i1, j1, ihab, imonth) / (0.5 * m_Data.Inrow + G(i1, j1, ihab, imonth)) '2 / (2 - Math.Exp(-G(i1, j1, ihab, imonth)))
+                        RelMigMove = 1 + m_Data.barrierAvoidanceWeight(ip) * multDir * G(i1, j1, ihab, imonth) / (0.5 * m_Data.InRow + G(i1, j1, ihab, imonth)) '2 / (2 - Math.Exp(-G(i1, j1, ihab, imonth)))
                     Case Is > 0
-                        RelMigMove = 1 - m_Data.barrierAvoidanceWeight(ip) * multDir * G(i1, j1, ihab, imonth) / (0.5 * m_Data.Inrow + G(i1, j1, ihab, imonth))
+                        RelMigMove = 1 - m_Data.barrierAvoidanceWeight(ip) * multDir * G(i1, j1, ihab, imonth) / (0.5 * m_Data.InRow + G(i1, j1, ihab, imonth))
                     Case Else
                         Stop
                 End Select
@@ -4849,7 +4849,7 @@ exitline:
         'VC Hobart Sep 2008; Adding distribution envelopes by functional group makes it necessary 
         'to change how Habareaused is calculated. 
         ThabArea = 0
-        For iRo As Integer = 1 To m_Data.Inrow
+        For iRo As Integer = 1 To m_Data.InRow
             For iCo As Integer = 1 To m_Data.InCol
                 If m_Data.Depth(iRo, iCo) > 0 Then
                     ThabArea = ThabArea + 1
@@ -4981,7 +4981,7 @@ exitline:
         'Erase PortX()
         'Erase PortY()
         Ports = 0
-        For i = 1 To m_Data.Inrow
+        For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
                 Me.m_Data.Port(0, i, j) = False
                 For K = 1 To Me.m_Data.nFleets
@@ -4996,7 +4996,7 @@ exitline:
         ReDim PortX(Ports)
         ReDim PortY(Ports)
         Ports = 0
-        For i = 1 To m_Data.Inrow
+        For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
                 If Me.m_Data.Port(0, i, j) = True Then
                     Ports += 1
@@ -5012,26 +5012,28 @@ exitline:
         Dist = 0
 
         'ReDim Vis(Inrow, Incol)
-        ReDim minD(m_Data.Inrow, m_Data.InCol)
-        For i = 1 To m_Data.Inrow
+        ReDim minD(m_Data.InRow, m_Data.InCol)
+        For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
                 minD(i, j) = Single.MaxValue
             Next j
         Next i
 
-        Const sCellStepSize As Single = 1.0! ' 2.0!
-
         For K = 1 To Ports      'go port by port
             ix = PortX(K)
             iy = PortY(K)
-            LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS) / sCellStepSize)
-            LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS) / sCellStepSize)
+            LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS))
+            LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS))
+            'LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS) / 2.0!)
+            'LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS) / 2.0!)
             'Sail(AF, ix, iy) = 0
-            For i = 1 To m_Data.Inrow
+            For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
                     If Me.EcoSpaceParameters.Depth(i, j) > 0 Then 'water cell
-                        Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS) / sCellStepSize)
-                        Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS) / sCellStepSize)
+                        Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS))
+                        Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS))
+                        'Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS) / 2.0!)
+                        'Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS) / 2.0!)
                         Dist = CalDistance(LonPort, LatPort, Longi, Lati, eDistanceType.NauticalMiles)
                         minD(i, j) = Math.Min(Dist, minD(i, j))
                     Else
@@ -5044,7 +5046,7 @@ exitline:
             'FindMinDistFor8Neighbors i, j
         Next
 
-        For i = 1 To m_Data.Inrow
+        For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
                 If minD(i, j) < Single.MaxValue Then Disti = minD(i, j) Else Disti = 0.0!
                 'If ActiveFleet = 0 Then    'Same for all fleets
@@ -5059,6 +5061,102 @@ exitline:
                 'End If
             Next j
         Next i
+
+    End Sub
+
+    Public Sub CalculateCostOfSailing2()
+
+        Dim i As Integer
+        Dim ix As Integer
+        Dim iy As Integer
+        Dim j As Integer
+        Dim K As Integer
+        Dim Ports(Me.m_Data.nFleets) As Integer
+        Dim MaxPorts As Integer = 0
+        Dim minD(Me.m_Data.nFleets, m_Data.InRow, m_Data.InCol) As Single
+        Dim Dist As Single
+        Dim Lati As Single
+        Dim Longi As Single
+        Dim LatPort As Single
+        Dim LonPort As Single
+        Dim PortX(,) As Integer
+        Dim PortY(,) As Integer
+        Dim Disti As Single
+
+        If m_Data.IDH_SS <= 0 Then m_Data.IDH_SS = 2
+
+        For i = 1 To m_Data.InRow
+            For j = 1 To m_Data.InCol
+                Me.m_Data.Port(0, i, j) = False
+                For K = 1 To Me.m_Data.nFleets
+                    If Me.m_Data.Port(K, i, j) = True Then
+                        Ports(K) += 1
+                        MaxPorts = Math.Max(MaxPorts, Ports(K))
+                        Me.m_Data.Port(0, i, j) = True
+                    End If
+                Next
+            Next
+        Next
+
+        ReDim PortX(Me.m_Data.nFleets, MaxPorts)
+        ReDim PortY(Me.m_Data.nFleets, MaxPorts)
+        For K = 1 To Me.m_Data.nFleets
+            Ports(K) = 0
+        Next
+
+        For i = 1 To m_Data.InRow
+            For j = 1 To m_Data.InCol
+                For K = 0 To Me.m_Data.nFleets
+                    If Me.m_Data.Port(K, i, j) = True Then
+                        Ports(K) += 1
+                        PortX(K, Ports(K)) = i
+                        PortY(K, Ports(K)) = j
+                    End If
+                    ' Init MinD
+                    minD(K, i, j) = Single.MaxValue
+                Next
+            Next
+        Next
+
+        'OK now, there are ports
+        Dist = 0
+
+        For F As Integer = 0 To Me.m_Data.nFleets
+            For K = 1 To Ports(F)      'go port by port
+                ix = PortX(F, K)
+                iy = PortY(F, K)
+                LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS))
+                LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS))
+                'LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS) / 2.0!)
+                'LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS) / 2.0!)
+                'Sail(AF, ix, iy) = 0
+                For i = 1 To m_Data.InRow
+                    For j = 1 To m_Data.InCol
+                        If Me.EcoSpaceParameters.Depth(i, j) > 0 Then 'water cell
+                            Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS))
+                            Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS))
+                            'Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS) / 2.0!)
+                            'Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS) / 2.0!)
+                            Dist = CalDistance(LonPort, LatPort, Longi, Lati, eDistanceType.NauticalMiles)
+                            minD(F, i, j) = Math.Min(Dist, minD(F, i, j))
+                        Else
+                            minD(F, i, j) = 0
+                        End If
+                    Next j
+                Next i
+                'test the neighboring cells
+                'Calc8Dist i, j
+                'FindMinDistFor8Neighbors i, j
+            Next
+
+            For i = 1 To m_Data.InRow
+                For j = 1 To m_Data.InCol
+                    If minD(F, i, j) < Single.MaxValue Then Disti = minD(F, i, j) Else Disti = 0.0!
+                    'If ActiveFleet = 0 Then    'Same for all fleets
+                    Me.m_Data.Sail(F, i, j) = Disti
+                Next j
+            Next i
+        Next F
 
     End Sub
 

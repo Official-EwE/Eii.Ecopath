@@ -351,15 +351,15 @@ Public Class cIBMSolver
 
             If m_Stanza.EggAtSpawn Then
                 'distribute juvenile packets in proportion to eggcell distribution
-                ReDim Te(m_Data.Inrow, m_Data.InCol)
+                ReDim Te(m_Data.InRow, m_Data.InCol)
                 XeT = 0
-                For i = 1 To m_Data.Inrow : For j = 1 To m_Data.InCol
+                For i = 1 To m_Data.InRow : For j = 1 To m_Data.InCol
                         XeT = XeT + m_Stanza.EggCell(i, j, isp)
                         Te(i, j) = XeT 'cumulative probability distribution
                     Next : Next
                 For ip = 1 To m_Stanza.Npackets
                     Xe = Rnd() * XeT 'Be
-                    For i = 1 To m_Data.Inrow
+                    For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
                             If Xe < Te(i, j) Then
                                 m_stanza.iPacket(isp, ia1, ip) = i + Rnd()

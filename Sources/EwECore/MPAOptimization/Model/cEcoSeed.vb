@@ -134,7 +134,7 @@ Namespace EcoSeed
                 m_data.SeedBlockSize2 = 1 'default is one cell per iteration
 
                 'the seed array can be needed before the model is run
-                ReDim m_data.MPASeed(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1)
+                ReDim m_data.MPASeed(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1)
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -201,7 +201,7 @@ Namespace EcoSeed
         End Sub
 
         Public Sub clearMPAs() Implements IMPASearchModel.clearMPAs
-            For ir As Integer = 1 To m_SpaceData.Inrow
+            For ir As Integer = 1 To m_SpaceData.InRow
                 For ic As Integer = 1 To m_SpaceData.InCol
                     m_SpaceData.MPA(ir, ic) = 0
                 Next ic
@@ -209,7 +209,7 @@ Namespace EcoSeed
         End Sub
 
         Public Sub clearSeedCells() Implements IMPASearchModel.clearSeedCells
-            For ir As Integer = 1 To m_SpaceData.Inrow
+            For ir As Integer = 1 To m_SpaceData.InRow
                 For ic As Integer = 1 To m_SpaceData.InCol
                     m_data.MPASeed(ir, ic) = 0
                 Next ic
@@ -220,7 +220,7 @@ Namespace EcoSeed
 
             'make sure the MPA index supplied by the user is in bounds
             If iMPA > 0 And iMPA <= m_SpaceData.MPAno Then
-                For ir As Integer = 1 To m_SpaceData.Inrow
+                For ir As Integer = 1 To m_SpaceData.InRow
                     For ic As Integer = 1 To m_SpaceData.InCol
                         If (m_SpaceData.Depth(ir, ic) > 0) Then
                             m_SpaceData.MPA(ir, ic) = iMPA
@@ -239,7 +239,7 @@ Namespace EcoSeed
 
             'make sure the MPA index supplied by the user is in bounds
             If iMPA > 0 And iMPA <= m_SpaceData.MPAno Then
-                For ir As Integer = 1 To m_SpaceData.Inrow
+                For ir As Integer = 1 To m_SpaceData.InRow
                     For ic As Integer = 1 To m_SpaceData.InCol
                         If (m_SpaceData.Depth(ir, ic) > 0) Then
                             m_data.MPASeed(ir, ic) = iMPA
@@ -280,7 +280,7 @@ Namespace EcoSeed
             Get
                 '
                 ' Check seeds
-                For ir As Integer = 1 To Me.m_SpaceData.Inrow
+                For ir As Integer = 1 To Me.m_SpaceData.InRow
                     For ic As Integer = 1 To Me.m_SpaceData.InCol
                         If m_data.MPASeed(ir, ic) > 0 Then
                             Return True
@@ -290,7 +290,7 @@ Namespace EcoSeed
 
                 ' Check MPAs
                 ' Check within MPAs
-                For ir As Integer = 1 To Me.m_SpaceData.Inrow
+                For ir As Integer = 1 To Me.m_SpaceData.InRow
                     For ic As Integer = 1 To Me.m_SpaceData.InCol
 
                         If m_SpaceData.MPA(ir, ic) > 0 Then
@@ -396,7 +396,7 @@ Namespace EcoSeed
                         EcoSeedOn = False
                     Else
                         EcoSeedOn = True
-                        ReDim TestedSeed(m_SpaceData.Inrow, m_SpaceData.InCol)
+                        ReDim TestedSeed(m_SpaceData.InRow, m_SpaceData.InCol)
                     End If
 
                     TimesCalled = TimesCalled + 1
@@ -565,7 +565,7 @@ Namespace EcoSeed
             Try
                 If TimesCalled = 1 Then 'First time keep the original bcell values
 
-                    For i = 1 To m_SpaceData.Inrow
+                    For i = 1 To m_SpaceData.InRow
                         For j = 1 To m_SpaceData.InCol
                             For ip = 1 To m_SpaceData.NGroups
                                 BOrig(i, j, ip) = m_SpaceData.Bcell(i, j, ip)
@@ -581,7 +581,7 @@ Namespace EcoSeed
                 End If
 
                 If TimesCalled >= 2 Then 'second time recalls the original bcell values for each timestep
-                    For i = 1 To m_SpaceData.Inrow
+                    For i = 1 To m_SpaceData.InRow
                         For j = 1 To m_SpaceData.InCol
                             For ip = 1 To m_SpaceData.NGroups
                                 m_SpaceData.Blast(i, j, ip) = Blastseed(i, j, ip)
@@ -625,7 +625,7 @@ Namespace EcoSeed
 
         Private Function CellsNotMPA() As Boolean
 
-            For i As Integer = 1 To m_SpaceData.Inrow
+            For i As Integer = 1 To m_SpaceData.InRow
                 For j As Integer = 1 To m_SpaceData.InCol
                     If m_SpaceData.MPA(i, j) = 0 And m_SpaceData.Depth(i, j) > 0 Then
                         Return True
@@ -644,7 +644,7 @@ Namespace EcoSeed
             Dim Area As Single
             Dim Border As Integer
             CalculateAreaOverBondaryLength = 0
-            For ir = 1 To m_SpaceData.Inrow
+            For ir = 1 To m_SpaceData.InRow
                 For ic = 1 To m_SpaceData.InCol
                     If m_SpaceData.MPA(ir, ic) > 0 Then
                         Area = Area + 1
@@ -677,7 +677,7 @@ Namespace EcoSeed
             'it tells the loop that we have found the next seed cell/block
             EcoSeedOn = False
 
-            For ir = 1 To m_SpaceData.Inrow
+            For ir = 1 To m_SpaceData.InRow
                 For ic = 1 To m_SpaceData.InCol
 
                     If m_data.MPASeed(ir, ic) > 0 And TestedSeed(ir, ic) = False Then 'Found one
@@ -690,7 +690,7 @@ Namespace EcoSeed
 
                         For i = m_data.CurRow To m_data.CurRow + SideStep - 1
                             For j = m_data.CurCol To m_data.CurCol + SideStep - 1
-                                If i >= 0 And i <= m_SpaceData.Inrow And j >= 0 And j <= m_SpaceData.InCol Then
+                                If i >= 0 And i <= m_SpaceData.InRow And j >= 0 And j <= m_SpaceData.InCol Then
                                     'has to split the next in two as i or j may exceed dimensioning
                                     If m_SpaceData.Depth(i, j) > 0 Then
                                         TestedSeed(i, j) = True
@@ -814,7 +814,7 @@ Namespace EcoSeed
             For ir = m_data.CurRow To m_data.CurRow + SideStep - 1
                 For ic = m_data.CurCol To m_data.CurCol + SideStep - 1
 
-                    If ir <= m_SpaceData.Inrow And ic <= m_SpaceData.InCol Then
+                    If ir <= m_SpaceData.InRow And ic <= m_SpaceData.InCol Then
 
                         If m_SpaceData.Depth(ir, ic) > 0 And m_data.MPASeed(ir, ic) > 0 Then
                             m_SpaceData.MPA(ir, ic) = 0
@@ -844,7 +844,7 @@ Namespace EcoSeed
                 Case 4, 9, 16, 25
                     For ir = m_data.CurRow To m_data.CurRow + SideStep - 1
                         For ic = m_data.CurCol To m_data.CurCol + SideStep - 1
-                            If ir <= m_SpaceData.Inrow And ic <= m_SpaceData.InCol Then
+                            If ir <= m_SpaceData.InRow And ic <= m_SpaceData.InCol Then
                                 If m_SpaceData.Depth(ir, ic) > 0 And m_data.MPASeed(ir, ic) > 0 Then
                                     m_SpaceData.MPA(ir, ic) = 0
                                 End If
@@ -860,7 +860,7 @@ Namespace EcoSeed
             MPAstep = MPAstep + 1
             'Count how many MPA cells we have now
             i = 0
-            For ir = 1 To m_SpaceData.Inrow
+            For ir = 1 To m_SpaceData.InRow
                 For ic = 1 To m_SpaceData.InCol
                     If m_SpaceData.MPA(ir, ic) > 0 Then i = i + 1
                 Next
@@ -869,7 +869,7 @@ Namespace EcoSeed
             ir = 0
 
             If ir = m_SpaceData.nFleets Then 'NO MORE FISHING GOING ON
-                MPAstep = m_SpaceData.Inrow * m_SpaceData.InCol + 1
+                MPAstep = m_SpaceData.InRow * m_SpaceData.InCol + 1
                 'Ecoseed.StartEvaluateSeedCell
             End If
             If SeedLeft = False Then
@@ -878,7 +878,7 @@ Namespace EcoSeed
                 '& vbNewLine + "the rent(s) for all fishery(ies) are =< 0." _
                 '& vbNewLine + "The Ecospace routine will now continue without Ecoseed.", vbInformation + vbOKOnly
                 EcoSeedOn = False
-                MPAstep = m_SpaceData.Inrow * m_SpaceData.InCol + 1
+                MPAstep = m_SpaceData.InRow * m_SpaceData.InCol + 1
             End If
 
             'villy: this next section only allows 'adjacent' cells to become seed cells _
@@ -886,7 +886,7 @@ Namespace EcoSeed
             SetSeedCellsAdjacentToMPAs() 's
 
             Erase TestedSeed
-            ReDim TestedSeed(m_SpaceData.Inrow, m_SpaceData.InCol)
+            ReDim TestedSeed(m_SpaceData.InRow, m_SpaceData.InCol)
 
         End Sub
 
@@ -898,7 +898,7 @@ Namespace EcoSeed
             Dim ico As Integer
             Dim iTemp As Integer
 
-            For iro = 1 To m_SpaceData.Inrow
+            For iro = 1 To m_SpaceData.InRow
                 For ico = 1 To m_SpaceData.InCol
                     If m_SpaceData.MPA(iro, ico) > 0 Then
                         'get the MPA index of the current row col
@@ -914,7 +914,7 @@ Namespace EcoSeed
                                 'Cells above:
                                 For ir = iro - SideStep To iro - 1
                                     For ic = ico To ico + SideStep - 1
-                                        If ir >= 0 And ir <= m_SpaceData.Inrow And ic >= 0 And ic <= m_SpaceData.InCol Then
+                                        If ir >= 0 And ir <= m_SpaceData.InRow And ic >= 0 And ic <= m_SpaceData.InCol Then
                                             If m_SpaceData.MPA(ir, ic) = 0 And m_SpaceData.Depth(ir, ic) > 0 Then
                                                 m_data.MPASeed(ir, ic) = iTemp '1 'cell above is m_esdata.m_data.MPASeed
                                             End If
@@ -924,7 +924,7 @@ Namespace EcoSeed
                                 'cells below:
                                 For ir = iro + SideStep To iro + 2 * SideStep - 1
                                     For ic = ico To ico + SideStep - 1
-                                        If ir >= 0 And ir <= m_SpaceData.Inrow And ic >= 0 And ic <= m_SpaceData.InCol Then
+                                        If ir >= 0 And ir <= m_SpaceData.InRow And ic >= 0 And ic <= m_SpaceData.InCol Then
                                             If m_SpaceData.MPA(ir, ic) = 0 And m_SpaceData.Depth(ir, ic) > 0 Then
                                                 m_data.MPASeed(ir, ic) = iTemp '1 'cell above is m_esdata.m_data.MPASeed
                                             End If
@@ -933,7 +933,7 @@ Namespace EcoSeed
                                 Next
                                 'cells to the left:
                                 For ir = iro To iro + SideStep - 1 : For ic = ico - SideStep To ico - 1
-                                        If ir >= 0 And ir <= m_SpaceData.Inrow And ic >= 0 And ic <= m_SpaceData.InCol Then
+                                        If ir >= 0 And ir <= m_SpaceData.InRow And ic >= 0 And ic <= m_SpaceData.InCol Then
                                             If m_SpaceData.MPA(ir, ic) = 0 And m_SpaceData.Depth(ir, ic) > 0 Then
                                                 m_data.MPASeed(ir, ic) = iTemp  '1 'cell above is m_esdata.m_data.MPASeed
                                             End If
@@ -942,7 +942,7 @@ Namespace EcoSeed
                                 'cells to the right:
                                 For ir = iro To iro + SideStep - 1
                                     For ic = ico + SideStep To ico + 2 * SideStep - 1
-                                        If ir >= 0 And ir <= m_SpaceData.Inrow And ic >= 0 And ic <= m_SpaceData.InCol Then
+                                        If ir >= 0 And ir <= m_SpaceData.InRow And ic >= 0 And ic <= m_SpaceData.InCol Then
                                             If m_SpaceData.MPA(ir, ic) = 0 And m_SpaceData.Depth(ir, ic) > 0 Then
                                                 m_data.MPASeed(ir, ic) = iTemp  '1 'cell above is m_esdata.m_data.MPASeed
                                             End If
@@ -1135,11 +1135,11 @@ Namespace EcoSeed
 
             'ReDim Blast(m_esdata.Inrow + 1, m_esdata.Incol + 1, NvarTot) As Single
             '  ReDim Port(NumGear, m_esdata.Inrow + 1, m_esdata.Incol + 1)
-            ReDim BOrig(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
-            ReDim FOrig(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
-            ReDim WOrig(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
+            ReDim BOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
+            ReDim FOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
+            ReDim WOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
             '     ReDim Bseed(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
-            ReDim Blastseed(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
+            ReDim Blastseed(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
             '   ReDim Fseed(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
             '    ReDim Wseed(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1, nvartot)
             'ReDim m_data.MPASeed(m_esData.Inrow + 1, m_esData.InCol + 1)
@@ -1154,9 +1154,9 @@ Namespace EcoSeed
             'ReDim MPABio(m_esData.Inrow + 1, m_esData.InCol + 1)
             'ReDim GearRent(NumGear, m_esData.Inrow + 1, m_esData.InCol + 1)
             'ReDim bbTOT(NumGroups)
-            ReDim MPAcount(m_SpaceData.Inrow * m_SpaceData.InCol + 1)
-            ReDim MPARow(m_SpaceData.Inrow * m_SpaceData.InCol + 1)
-            ReDim MPACol(m_SpaceData.Inrow * m_SpaceData.InCol + 1)
+            ReDim MPAcount(m_SpaceData.InRow * m_SpaceData.InCol + 1)
+            ReDim MPARow(m_SpaceData.InRow * m_SpaceData.InCol + 1)
+            ReDim MPACol(m_SpaceData.InRow * m_SpaceData.InCol + 1)
             'ReDim EffortMPA(m_SpaceData.nFleets, m_SpaceData.Inrow * m_SpaceData.InCol + 1)
             ReDim StoreBtimeForEcoSeed(m_SpaceData.NGroups)
             'ReDim MPAVal2a(m_esData.Inrow * m_esData.InCol + 1), MPAVal2b(m_esData.Inrow * m_esData.InCol + 1), MPABio2(m_esData.Inrow * m_esData.InCol + 1)

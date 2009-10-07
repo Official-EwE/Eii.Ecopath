@@ -5724,7 +5724,7 @@ Public Class cDBDataSource
             reader.Read()
             ' Remember link with Ecosim scenario, if any
             ecospaceDS.EcosimScenarioDBID = CInt(reader("EcosimScenarioID"))
-            ecospaceDS.Inrow = CInt(reader("Inrow"))
+            ecospaceDS.InRow = CInt(reader("Inrow"))
             ecospaceDS.InCol = CInt(reader("Incol"))
             ecospaceDS.CellLength = CSng(reader("CellLength"))
             ecospaceDS.IDH_UL = CSng(reader("IDH_UL"))
@@ -5939,7 +5939,7 @@ Public Class cDBDataSource
             drow = dt.Rows.Find(iScenarioID)
 
             drow.BeginEdit()
-            drow("Inrow") = ecospaceDS.Inrow
+            drow("Inrow") = ecospaceDS.InRow
             drow("Incol") = ecospaceDS.InCol
             drow("CellLength") = ecospaceDS.CellLength
             drow("IDH_UL") = ecospaceDS.IDH_UL
@@ -6167,7 +6167,7 @@ Public Class cDBDataSource
             writer = Me.m_db.GetWriter("EcospaceScenarioBasemap")
             For i As Integer = 1 To InRow
                 For j As Integer = 1 To InCol
-                    If ((i > ecospaceDS.Inrow) Or (j > ecospaceDS.InCol)) Then
+                    If ((i > ecospaceDS.InRow) Or (j > ecospaceDS.InCol)) Then
                         drow = writer.NewRow()
                         drow("ScenarioID") = iScenarioID
                         drow("InRow") = i
@@ -6209,7 +6209,7 @@ Public Class cDBDataSource
         Dim sScalePP As Single = 0
 
         ' Change all cells to land by default since the database will read only water cells
-        For i As Integer = 1 To ecospaceDS.Inrow
+        For i As Integer = 1 To ecospaceDS.InRow
             For j As Integer = 1 To ecospaceDS.InCol
                 ecospaceDS.Depth(i, j) = 0
             Next
@@ -6223,7 +6223,7 @@ Public Class cDBDataSource
                 iCol = CInt(reader("InCol"))
 
                 ' Valid cell?
-                If ((iRow <= ecospaceDS.Inrow) And (iCol <= ecospaceDS.InCol)) Then
+                If ((iRow <= ecospaceDS.InRow) And (iCol <= ecospaceDS.InCol)) Then
 
                     ' Read scalars
                     ecospaceDS.Depth(iRow, iCol) = CInt(reader("Depth"))
@@ -6285,7 +6285,7 @@ Public Class cDBDataSource
             ' Every cell will need a row in the database, because every cell is assigned to a habitat.
             ' JS070226: should profile to see whether it's faster to update existing rows rather than
             '           destroying and rebuilding the entire table content.
-            For iRow = 1 To ecospaceDS.Inrow
+            For iRow = 1 To ecospaceDS.InRow
                 For iCol = 1 To ecospaceDS.InCol
                     ' Create new row
                     drow = writer.NewRow()
@@ -7151,46 +7151,32 @@ Public Class cDBDataSource
         Dim iFleet As Integer = 0
         Dim iRow As Integer = 0
         Dim iCol As Integer = 0
+        Dim iPort As Integer = 0
         Dim iCell As Integer = 0
-        'Dim astrSail As String() = Nothing
-        'Dim sSail As Single = 0.0
-        Dim astrPort As String() = Nothing
-        Dim bPort As Boolean = False
         Dim bSucces As Boolean = True
-        Dim bDoneReading As Boolean = False
+
+        ' Clear
+        For iFleet = 1 To Me.m_core.nFleets
+            For iRow = 0 To ecospaceDS.InRow
+                For iCol = 0 To ecospaceDS.InCol
+                    ecospaceDS.Port(iFleet, iRow, iCol) = False
+                Next iCol
+            Next iRow
+        Next iFleet
 
         reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioFleetMap WHERE (ScenarioID={0})", iScenarioID))
         Try
             While reader.Read()
+
                 iFleet = Array.IndexOf(ecospaceDS.FleetDBID, CInt(reader("FleetID")))
-                'astrSail = Me.SplitNumberString(CStr(reader("Sail")))
-                astrPort = Me.SplitNumberString(CStr(reader("Port")))
+                iRow = CInt(reader("InRow"))
+                iCol = CInt(reader("InCol"))
+                iPort = CInt(reader("PortID"))
 
-                iCell = 0
-                iRow = 1
-                bDoneReading = (iCell >= astrPort.Length) ' and (iCell >= astrSail.Length)
+                ' Set Port 
+                ecospaceDS.Port(iFleet, iRow, iCol) = (iPort > 0)
 
-                While iRow <= ecospaceDS.Inrow And Not bDoneReading
-                    iCol = 1
-                    While iCol <= ecospaceDS.InCol And Not bDoneReading
-
-                        'sSail = StringUtils.ConvertToSingle(astrSail(iCell), 0)
-                        bPort = (StringUtils.ConvertToInteger(astrPort(iCell), 0) = 1)
-
-                        '' Set Sail (haha)
-                        'ecospaceDS.Sail(iFleet, iRow, iCol) = sSail
-                        ' Set Port 
-                        ecospaceDS.Port(iFleet, iRow, iCol) = bPort
-
-                        iCol += 1
-                        iCell += 1
-                        bDoneReading = (iCell >= astrPort.Length) ' and (iCell >= astrSail.Length )
-
-                    End While
-                    iRow += 1
-
-                End While ' iRow
-            End While ' Reader.read
+            End While
 
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while reading EcospaceScenarioFleetMap for iFleet {1}, scenario ID {2}", ex.Message, iFleet, iScenarioID))
@@ -7318,6 +7304,7 @@ Public Class cDBDataSource
     End Function
 
     Private Function SaveEcospaceFleetMap(ByVal idm As cIDMappings) As Boolean
+
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -7326,9 +7313,7 @@ Public Class cDBDataSource
         Dim iFleet As Integer = 0
         Dim iRow As Integer = 0
         Dim iCol As Integer = 0
-        Dim iCell As Integer = 0
-        'Dim sbSail As StringBuilder = Nothing
-        Dim sbPort As StringBuilder = Nothing
+        Dim iPortID As Integer = 1
         Dim bSucces As Boolean = True
 
         iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
@@ -7339,28 +7324,23 @@ Public Class cDBDataSource
             writer = Me.m_db.GetWriter("EcospaceScenarioFleetMap")
 
             For iFleet = 1 To ecospaceDS.nFleets
-
-                iCell = 0
-                'sbSail = New StringBuilder
-                sbPort = New StringBuilder()
-                For iRow = 1 To ecospaceDS.Inrow
+                For iRow = 1 To ecospaceDS.InRow
                     For iCol = 1 To ecospaceDS.InCol
+                        If ecospaceDS.Port(iFleet, iRow, iCol) Then
 
-                        If (iCell > 0) Then sbPort.Append(" ") ' : sbSail.Append(" ")
-                        'sbSail.Append(StringUtils.FormatSingle(ecospaceDS.Sail(iFleet, iRow, iCol)))
-                        sbPort.Append(IIf(ecospaceDS.Port(iFleet, iRow, iCol) = True, 1, 0))
-                        iCell += 1
+                            drow = writer.NewRow()
+                            drow("ScenarioID") = iScenarioID
+                            drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
+                            drow("InRow") = iRow
+                            drow("InCol") = iCol
+                            drow("PortID") = iPortID
+                            writer.AddRow(drow)
 
+                            iPortID += 1 ' Haha
+
+                        End If
                     Next iCol
                 Next iRow
-
-                drow = writer.NewRow()
-                drow("ScenarioID") = iScenarioID
-                drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
-                drow("Sail") = ""
-                drow("Port") = sbPort.ToString
-                writer.AddRow(drow)
-
             Next iFleet
 
             Me.m_db.ReleaseWriter(writer, True)
@@ -7788,7 +7768,7 @@ Public Class cDBDataSource
                         iRow = CInt(readerCells("InRow"))
                         iCol = CInt(readerCells("InCol"))
                         ' Valid cell?
-                        If ((iRow <= ecospaceDS.Inrow) And (iCol <= ecospaceDS.InCol)) Then
+                        If ((iRow <= ecospaceDS.InRow) And (iCol <= ecospaceDS.InCol)) Then
                             l.Data(iRow, iCol) = CSng(readerCells("Weight"))
                         End If
                     End While
@@ -7918,7 +7898,7 @@ Public Class cDBDataSource
                 l = ecospaceDS.ImportanceLayers(iLayer)
                 lID = idm.GetID(eDataTypes.EcospaceLayerImportance, l.DBID)
 
-                For iRow = 1 To ecospaceDS.Inrow
+                For iRow = 1 To ecospaceDS.InRow
                     For iCol = 1 To ecospaceDS.InCol
 
                         ' Need to save this?

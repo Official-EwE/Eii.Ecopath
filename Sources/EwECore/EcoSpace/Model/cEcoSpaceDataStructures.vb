@@ -122,7 +122,7 @@ Public Class cEcospaceDataStructures
     'Map Variables
 
     ''' <summary>Number of rows in the current base map</summary>
-    Public Inrow As Integer
+    Public InRow As Integer
     ''' <summary>Number of rows in the current base map</summary>
     Public InCol As Integer
     ''' <summary>Length in KM of a cell </summary>
@@ -453,7 +453,7 @@ Public Class cEcospaceDataStructures
         Get
             Try
                 Dim n As Integer = 0
-                For irow As Integer = 1 To Inrow
+                For irow As Integer = 1 To InRow
                     For icol As Integer = 1 To InCol
                         If Region(irow, icol) = iRegion Then
                             n += 1
@@ -512,7 +512,7 @@ Public Class cEcospaceDataStructures
             SpaceTime = True 'in EwE5 the check box that controls this is labled 'Integrate' on the run tab
             CurrentForce = False
 
-            Inrow = 0
+            InRow = 0
             InCol = 0
 
             AdvectSpeed = 0.1
@@ -545,7 +545,7 @@ Public Class cEcospaceDataStructures
                 PrefHab(i, 0) = True
             Next 'set preferred habitat to 1 (pelagic) by default
 
-            For i = 1 To Inrow
+            For i = 1 To InRow
                 For j As Integer = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
                     HabType(i, j) = 1
@@ -578,7 +578,7 @@ Public Class cEcospaceDataStructures
             Me.nSpaceSolverThreads = System.Environment.ProcessorCount
         End If
         Me.nGroupsPerThread = Me.nvartot \ Me.nGridSolverThreads + 1
-        Me.nCellsPerThread = Me.Inrow * Me.InCol \ Me.nGridSolverThreads + 1 '?????
+        Me.nCellsPerThread = Me.InRow * Me.InCol \ Me.nGridSolverThreads + 1 '?????
 
     End Sub
 
@@ -744,7 +744,7 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public Sub DefaultBasemapDimensions()
 
-        If Inrow = 0 Then Inrow = 20 'number of map cell rows
+        If InRow = 0 Then InRow = 20 'number of map cell rows
         If InCol = 0 Then InCol = 20 'number of map cell columns
 
         If CellLength = 0 Then CellLength = 5 'map cell side length (km)
@@ -861,44 +861,44 @@ Public Class cEcospaceDataStructures
             Next
             nvartot = NGroups + Nvarsplit
 
-            ReDim AMm(Inrow + 1, InCol + 1, nvartot)
-            ReDim Bcell(Inrow + 1, InCol + 1, nvartot)
-            ReDim Bcw(Inrow + 1, InCol + 1, nvartot)
-            ReDim Blast(Inrow + 1, InCol + 1, nvartot)
-            ReDim C(Inrow + 1, InCol + 1, nvartot)
-            ReDim d(Inrow + 1, InCol + 1, nvartot)
-            ReDim Depth(Inrow + 1, InCol + 1)
-            ReDim DepthA(Inrow + 1, InCol + 1)
-            ReDim Xvel(Inrow + 1, InCol + 1), Yvel(Inrow + 1, InCol + 1)
-            ReDim Xvloc(Inrow + 1, InCol + 1), Yvloc(Inrow + 1, InCol + 1)
-            ReDim UpVel(Inrow + 1, InCol + 1)
-            ReDim E(Inrow + 1, InCol + 1, nvartot)
-            ReDim BcwNomig(Inrow + 1, InCol + 1, nvartot)
-            ReDim CNomig(Inrow + 1, InCol + 1, nvartot)
-            ReDim dNomig(Inrow + 1, InCol + 1, nvartot)
-            ReDim Enomig(Inrow + 1, InCol + 1, nvartot)
-            ReDim F(Inrow + 1, InCol + 1, nvartot)
-            ReDim HabType(Inrow + 1, InCol + 1)
-            ReDim Region(Inrow + 1, InCol + 1)
-            ReDim MPA(Inrow + 1, InCol + 1)
-            ReDim RelPP(Inrow + 1, InCol + 1)
-            ReDim RelCin(Inrow + 1, InCol + 1)
-            ReDim DepthOrig(Inrow + 1, InCol + 1)   'for use with habitat change
-            ReDim HabTypeorig(Inrow + 1, InCol + 1)  'for use with habitat change
-            ReDim MPAorig(Inrow + 1, InCol + 1)      'for use with habitat change
-            ReDim RelPPorig(Inrow + 1, InCol + 1)      'for use with habitat change
-            ReDim RelCinorig(Inrow + 1, InCol + 1)     'for use with habitat change
-            ReDim Sail(nFleets, Inrow + 1, InCol + 1)
-            ReDim Port(nFleets, Inrow + 1, InCol + 1)
+            ReDim AMm(InRow + 1, InCol + 1, nvartot)
+            ReDim Bcell(InRow + 1, InCol + 1, nvartot)
+            ReDim Bcw(InRow + 1, InCol + 1, nvartot)
+            ReDim Blast(InRow + 1, InCol + 1, nvartot)
+            ReDim C(InRow + 1, InCol + 1, nvartot)
+            ReDim d(InRow + 1, InCol + 1, nvartot)
+            ReDim Depth(InRow + 1, InCol + 1)
+            ReDim DepthA(InRow + 1, InCol + 1)
+            ReDim Xvel(InRow + 1, InCol + 1), Yvel(InRow + 1, InCol + 1)
+            ReDim Xvloc(InRow + 1, InCol + 1), Yvloc(InRow + 1, InCol + 1)
+            ReDim UpVel(InRow + 1, InCol + 1)
+            ReDim E(InRow + 1, InCol + 1, nvartot)
+            ReDim BcwNomig(InRow + 1, InCol + 1, nvartot)
+            ReDim CNomig(InRow + 1, InCol + 1, nvartot)
+            ReDim dNomig(InRow + 1, InCol + 1, nvartot)
+            ReDim Enomig(InRow + 1, InCol + 1, nvartot)
+            ReDim F(InRow + 1, InCol + 1, nvartot)
+            ReDim HabType(InRow + 1, InCol + 1)
+            ReDim Region(InRow + 1, InCol + 1)
+            ReDim MPA(InRow + 1, InCol + 1)
+            ReDim RelPP(InRow + 1, InCol + 1)
+            ReDim RelCin(InRow + 1, InCol + 1)
+            ReDim DepthOrig(InRow + 1, InCol + 1)   'for use with habitat change
+            ReDim HabTypeorig(InRow + 1, InCol + 1)  'for use with habitat change
+            ReDim MPAorig(InRow + 1, InCol + 1)      'for use with habitat change
+            ReDim RelPPorig(InRow + 1, InCol + 1)      'for use with habitat change
+            ReDim RelCinorig(InRow + 1, InCol + 1)     'for use with habitat change
+            ReDim Sail(nFleets, InRow + 1, InCol + 1)
+            ReDim Port(nFleets, InRow + 1, InCol + 1)
 
-            ReDim GroupDetritus(Inrow + 1, InCol + 1, nvartot)
+            ReDim GroupDetritus(InRow + 1, InCol + 1, nvartot)
 
             'must redim the seed var here too abmpa
             ' ReDim MPASeed(Inrow + 1, InCol + 1)
 
             ImportanceLayers.Clear()
             For i = 0 To nImportanceLayers - 1
-                ImportanceLayers.Add(New cLayerImportanceData(Inrow, InCol))
+                ImportanceLayers.Add(New cLayerImportanceData(InRow, InCol))
             Next
 
             ReDim MPAfishery(nFleets, 1)
@@ -910,7 +910,7 @@ Public Class cEcospaceDataStructures
                 PrefHab(i, 0) = True
             Next 'set preferred habitat to 1 (pelagic) by default
 
-            For i = 1 To Inrow
+            For i = 1 To InRow
                 For j = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
                     HabType(i, j) = 1
@@ -932,10 +932,10 @@ Public Class cEcospaceDataStructures
 
     Public Sub RedimConSimVars()
 
-        ReDim Ccell(Inrow + 1, InCol + 1, NGroups)
-        ReDim Clast(Inrow + 1, InCol + 1, NGroups)
-        ReDim AMmTr(Inrow + 1, InCol + 1, NGroups)
-        ReDim Ftr(Inrow + 1, InCol + 1, NGroups)
+        ReDim Ccell(InRow + 1, InCol + 1, NGroups)
+        ReDim Clast(InRow + 1, InCol + 1, NGroups)
+        ReDim AMmTr(InRow + 1, InCol + 1, NGroups)
+        ReDim Ftr(InRow + 1, InCol + 1, NGroups)
 
     End Sub
 

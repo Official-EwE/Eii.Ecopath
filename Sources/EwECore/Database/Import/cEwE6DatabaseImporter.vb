@@ -3638,13 +3638,13 @@ Namespace Database
             Dim writerMPAFish As cEwEDatabase.cEwEDbWriter = Nothing
             Dim strFlags As String = ""
             Dim astrPort As String()
-            'Dim astrSail As String()
-            Dim iCell As Integer = 0
             Dim iFleetID As Integer = 1
             Dim iHabitatID As Integer = 1
             Dim iMPAID As Integer = 1
             Dim nRows As Integer = 0
             Dim nCols As Integer = 0
+
+            Dim lptPort As New List(Of Drawing.Point)
 
             ' Generate an Ecospace fleet entry for every Ecopath fleet
             Dim dtEcopathFleets As Dictionary(Of String, Integer) = Me.m_adtKeys(CInt(eDataTypes.FleetInput))
@@ -3691,96 +3691,65 @@ Namespace Database
                         writer.Commit()
 
                         If bHasFleet Then
-
-                            'astrSail = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Sail", "0")), CChar(" "), 5)
+                            ' JS 01Oct09: Sail computed, no longer read
+                            ' JS 05Oct09: Port data restructured, got rid of string of zeroes and ones. Now, ports can potentially
+                            '             be entities with properties
                             astrPort = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Port", "0")), CChar(" "), 1)
 
-                            ' Port data missing? Then Sail and Port data must be read from old table [EcoSpace GearxNxN]
-                            If (astrPort.Length = 1) Then
+                            ' Get # of cols and rows for this scenario, in case an old version of Port() import is required
+                            readerSub = m_dbEwE6.GetReader(String.Format("SELECT * FROM EcoSpaceScenario WHERE ScenarioID={0}", iScenarioID))
+                            readerSub.Read()
+                            nRows = CInt(readerSub("InRow"))
+                            nCols = CInt(readerSub("InCol"))
+                            Me.m_dbEwE6.ReleaseReader(readerSub)
+                            readerSub = Nothing
 
-                                Dim nPrevScenarioID As Integer = -1
-                                'Dim asSail(,) As Single
-                                Dim anPort(,) As Integer
+                            ' Port data found?
+                            If (astrPort.Length > 1) Then
+                                '#Yes: translate "0" and "1" into ports(row, col)
+                                Dim iCell As Integer = 0
+                                For iRow As Integer = 1 To nRows
+                                    For iCol As Integer = 1 To nCols
+                                        If (iCell < astrPort.Length) Then
+                                            If (astrPort(iCell) = "1") Then
+                                                lptPort.Add(New Drawing.Point(iCol, iRow))
+                                            End If
+                                            iCell += 1
+                                        End If
+                                    Next iCol
+                                Next iRow
 
+                            Else
+                                ' #No: Port data must be read from old table [EcoSpace GearxNxN]
                                 Try
-
-                                    ' Get # of cols and rows for this scenario, in case an old version Sail() and Port() import is required
-                                    readerSub = m_dbEwE6.GetReader(String.Format("SELECT * FROM EcoSpaceScenario WHERE ScenarioID={0}", iScenarioID))
-                                    readerSub.Read()
-                                    nRows = CInt(readerSub("InRow"))
-                                    nCols = CInt(readerSub("InCol"))
-                                    Me.m_dbEwE6.ReleaseReader(readerSub)
-                                    readerSub = Nothing
-
-                                    ' Allocate space to read cell data
-                                    'ReDim asSail(nRows, nCols)
-                                    ReDim anPort(nRows, nCols)
-
                                     readerSub = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace GearxNxN] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
                                             strModelName, strEcospaceScenario, strEcopathFleet))
 
                                     If readerSub IsNot Nothing Then
                                         While readerSub.Read()
-                                            'asSail(Math.Min(nRows, CInt(reader("InRow"))), _
-                                            '      Math.Min(nCols, CInt(reader("InCol")))) = CSng(Me.FixValue(readerSub, "Sail", "0"))
-                                            anPort(Math.Min(nRows, CInt(reader("InRow"))), _
-                                                  Math.Min(nCols, CInt(reader("InCol")))) = CInt(Me.FixValue(readerSub, "Port", "0"))
+                                            If CInt(Me.FixValue(readerSub, "Port", "0")) = 1 Then
+                                                lptPort.Add(New Drawing.Point(Math.Min(nRows, CInt(reader("InCol"))), Math.Min(nCols, CInt(reader("InRow")))))
+                                            End If
                                         End While
                                         Me.m_dbEwE5.ReleaseReader(readerSub)
                                         readerSub = Nothing
                                     End If
 
-                                    ' Convert Sail and Port arrays into string()
-                                    'ReDim astrSail(nRows * nCols)
-                                    ReDim astrPort(nRows * nCols)
-
-                                    ' Note that the core uses 1-based offsets for reading and writing Sail and Port
-                                    For iRow As Integer = 1 To nRows
-                                        For iCol As Integer = 1 To nCols
-                                            'astrSail(iCell) = CStr(asSail(iRow, iCol))
-                                            astrPort(iCell) = CStr(anPort(iRow, iCol))
-                                            iCell += 1
-                                        Next iCol
-                                    Next iRow
                                 Catch ex As Exception
 
                                 End Try
                             End If
 
-                            ' Now write astrSail and astrPort to new table 'EcospaceScenarioFleetSpatial'
-                            'Dim sbSail As New Text.StringBuilder()
-                            Dim sbPort As New Text.StringBuilder()
-
-                            readerSub = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace] WHERE modelName='{0}' AND Scenario='{1}'", strModelName, strEcospaceScenario))
-                            If (readerSub IsNot Nothing) Then
-                                readerSub.Read()
-                                nRows = CInt(readerSub("Inrow"))
-                                nCols = CInt(readerSub("Incol"))
-                                Me.m_dbEwE5.ReleaseReader(readerSub)
-
-                                iCell = 0
-                                For iRow As Integer = 1 To nRows
-                                    For iCol As Integer = 1 To nCols
-
-                                        If iCell > 0 Then sbPort.Append(" ") ' : sbSail.Append(" ")
-
-                                        'If (iCell < astrSail.Length) Then sbSail.Append(CSng(Val(astrSail(iCell)))) Else sbSail.Append(0)
-                                        If (iCell < astrPort.Length) Then sbPort.Append(CInt(Val(astrPort(iCell)))) Else sbPort.Append(0)
-
-                                        iCell += 1
-
-                                    Next iCol
-                                Next iRow
+                            For Each pt As Drawing.Point In lptPort
 
                                 drow = writerFishMap.NewRow()
                                 drow("ScenarioID") = iScenarioID
                                 drow("FleetID") = iFleetID
-                                'drow("Sail") = sbSail.ToString()
-                                drow("Port") = sbPort.ToString()
+                                drow("InRow") = pt.Y
+                                drow("InCol") = pt.X
+                                drow("PortID") = 1
                                 writerFishMap.AddRow(drow)
-
-                                iCell += 1
-                            End If
+                            Next
 
                             ' Write GearHab flag field to proper table combining (ScenarioID, FleetID, HabitatID)
                             strFlags = CStr(Me.FixValue(reader, "GearHab", ""))
@@ -3826,16 +3795,16 @@ Namespace Database
                                     eMessageType.DataImport, eMessageImportance.Information)
                         End If
 
-                        ' JS 061221: References do not need to be imported for now
-                        'ImportRefCode("RefCode", "quickRef")
+            ' JS 061221: References do not need to be imported for now
+            'ImportRefCode("RefCode", "quickRef")
 
-                        ' Remember fleet ID mapping
-                        Me.HashKey(eDataTypes.EcospaceFleet, strEcopathFleet, eDataTypes.EcoSpaceScenario, iScenarioID) = iFleetID
+            ' Remember fleet ID mapping
+            Me.HashKey(eDataTypes.EcospaceFleet, strEcopathFleet, eDataTypes.EcoSpaceScenario, iScenarioID) = iFleetID
 
-                        ' Next fleet
-                        iFleetID += 1
+            ' Next fleet
+            iFleetID += 1
 
-                        Me.m_dbEwE5.ReleaseReader(reader)
+            Me.m_dbEwE5.ReleaseReader(reader)
 
                     Next
                 Next

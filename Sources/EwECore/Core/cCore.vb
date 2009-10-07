@@ -7243,7 +7243,7 @@ Public Class cCore
             With m_EcospaceBasemap
                 .AllowValidation = False
                 .InCol = m_EcoSpaceData.InCol
-                .InRow = m_EcoSpaceData.Inrow
+                .InRow = m_EcoSpaceData.InRow
                 .CellLength = m_EcoSpaceData.CellLength
                 .Latitude = m_EcoSpaceData.Lat1 'UDH_UL
                 .Longitude = m_EcoSpaceData.Lon1

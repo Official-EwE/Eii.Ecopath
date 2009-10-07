@@ -107,7 +107,7 @@ Public Class cMPAOptOutput
 
         Dim nTotCells As Integer = SpaceData.nWaterCells
         Dim nMPACells As Integer
-        For ir As Integer = 1 To SpaceData.Inrow
+        For ir As Integer = 1 To SpaceData.InRow
             For ic As Integer = 1 To SpaceData.InCol
                 If SpaceData.MPA(ir, ic) = mpaData.iMPAtoUse Then
                     nMPACells += 1

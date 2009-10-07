@@ -342,7 +342,7 @@ Public Class cMPAOptManager
             Me.setWait()
 
             'keep a copy of the original MPA configuration
-            ReDim m_orgMPAConfig(Me.m_core.m_EcoSpaceData.Inrow + 1, Me.m_core.m_EcoSpaceData.InCol + 1)
+            ReDim m_orgMPAConfig(Me.m_core.m_EcoSpaceData.InRow + 1, Me.m_core.m_EcoSpaceData.InCol + 1)
             Array.Copy(Me.m_core.m_EcoSpaceData.MPA, m_orgMPAConfig, Me.m_core.m_EcoSpaceData.MPA.Length)
 
             Me.m_core.m_SearchData.SearchMode = eSearchModes.SpatialOpt
@@ -401,7 +401,7 @@ Public Class cMPAOptManager
 
         Try
 
-            Dim nR As Integer = Me.m_core.m_EcoSpaceData.Inrow
+            Dim nR As Integer = Me.m_core.m_EcoSpaceData.InRow
             Dim nC As Integer = Me.m_core.m_EcoSpaceData.InCol
             ReDim map(nR, nC)
 
@@ -779,7 +779,7 @@ Public Class cObjectiveResult
 
                     Debug.Assert(SpaceData IsNot Nothing, Me.ToString & ".Init() SpaceData must be passed in!")
                     Cells.Clear()
-                    For ir As Integer = 1 To SpaceData.Inrow
+                    For ir As Integer = 1 To SpaceData.InRow
                         For ic As Integer = 1 To SpaceData.InCol
                             If SpaceData.MPA(ir, ic) <> 0 Then
                                 Cells.Add(New cMPACell(ir, ic, SpaceData.MPA(ir, ic)))
@@ -806,7 +806,7 @@ Public Class cObjectiveResult
         'what percentage of the area is closed
         Dim nTotCells As Integer = SpaceData.nWaterCells
         Dim nMPACells As Integer
-        For ir As Integer = 1 To SpaceData.Inrow
+        For ir As Integer = 1 To SpaceData.InRow
             For ic As Integer = 1 To SpaceData.InCol
                 If SpaceData.MPA(ir, ic) = MPAData.iMPAtoUse Then
                     nMPACells += 1
