@@ -1,39 +1,13 @@
-'==============================================================================
-'
-' $Log: ucAppPluginDetails.vb,v $
-' Revision 1.7  2009/04/01 17:38:14  jeroens
-' Separated Enabled state and Incompatibility
-'
-' Revision 1.6  2009/03/31 16:13:47  jeroens
-' Conflicts now clearly shown
-' Conflicting assemblies cannot be loaded anymore
-'
-' Revision 1.5  2008/12/15 15:56:02  jeroens
-' no message
-'
-' Revision 1.4  2008/12/07 20:48:06  jeroens
-' Incompatible plug-ins can be activated
-'
-' Revision 1.3  2008/12/03 02:40:54  jeroens
-' Added levels of plugin compatibility
-'
-' Revision 1.2  2008/11/28 02:43:26  jeroens
-' Added plugin compatibility checks to prevent the system from dying
-'
-' Revision 1.1  2008/09/26 07:32:09  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
-Option Explicit On
 
 Imports System.IO
 Imports System.Text
 Imports EwECore
 Imports EwEPlugin
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -46,7 +20,8 @@ Public Class ucAppPluginDetails
         Me.InitializeComponent()
 
         Me.m_tbAuthor.Text = pi.Author
-        Me.m_tbContact.Text = pi.Contact
+        Me.m_llContact.Text = pi.Contact
+        Me.m_llContact.Links(0).LinkData = pi.Contact
         Me.m_tbDescription.Text = pi.Description
         Me.m_tbName.Text = pi.Name
 
@@ -58,7 +33,34 @@ Public Class ucAppPluginDetails
 
     Private Sub OnCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_cbEnabled.CheckedChanged
+
         Me.m_pa.Enabled = Me.m_cbEnabled.Checked
+
+    End Sub
+
+    Private Sub m_llContact_LinkClicked(ByVal sender As System.Object, ByVal e As LinkLabelLinkClickedEventArgs) _
+        Handles m_llContact.LinkClicked
+
+        Try
+            Dim strLink As String = e.Link.LinkData.ToString()
+
+            If StringUtils.IsValidEmail(strLink) Then
+                If Not StringUtils.BeginsWith(strLink, "mailto:") Then
+                    strLink = "mailto:" & strLink
+                End If
+            End If
+
+            System.Diagnostics.Process.Start(strLink)
+
+        Catch ex As Exception
+
+            Dim core As cCore = cCore.GetInstance()
+            Dim msg As New cMessage(ex.Message, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
+
+            core.Messages.SendMessage(msg)
+
+        End Try
+
     End Sub
 
 End Class

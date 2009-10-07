@@ -28,8 +28,8 @@ Partial Class ucAppPluginDetails
         Me.m_tbName = New System.Windows.Forms.TextBox
         Me.m_tbDescription = New System.Windows.Forms.TextBox
         Me.m_tbAuthor = New System.Windows.Forms.TextBox
-        Me.m_tbContact = New System.Windows.Forms.TextBox
         Me.m_cbEnabled = New System.Windows.Forms.CheckBox
+        Me.m_llContact = New System.Windows.Forms.LinkLabel
         Me.SuspendLayout()
         '
         'm_lblContact
@@ -46,9 +46,9 @@ Partial Class ucAppPluginDetails
         Me.m_lblAuthor.AutoSize = True
         Me.m_lblAuthor.Location = New System.Drawing.Point(3, 22)
         Me.m_lblAuthor.Name = "m_lblAuthor"
-        Me.m_lblAuthor.Size = New System.Drawing.Size(41, 13)
+        Me.m_lblAuthor.Size = New System.Drawing.Size(52, 13)
         Me.m_lblAuthor.TabIndex = 2
-        Me.m_lblAuthor.Text = "Author:"
+        Me.m_lblAuthor.Text = "Author(s):"
         '
         'm_lblName
         '
@@ -94,19 +94,6 @@ Partial Class ucAppPluginDetails
         Me.m_tbAuthor.Size = New System.Drawing.Size(222, 13)
         Me.m_tbAuthor.TabIndex = 3
         '
-        'm_tbContact
-        '
-        Me.m_tbContact.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbContact.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.m_tbContact.Location = New System.Drawing.Point(66, 41)
-        Me.m_tbContact.Multiline = True
-        Me.m_tbContact.Name = "m_tbContact"
-        Me.m_tbContact.ReadOnly = True
-        Me.m_tbContact.Size = New System.Drawing.Size(222, 31)
-        Me.m_tbContact.TabIndex = 5
-        Me.m_tbContact.Text = "l1" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "l2"
-        '
         'm_cbEnabled
         '
         Me.m_cbEnabled.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
@@ -118,12 +105,21 @@ Partial Class ucAppPluginDetails
         Me.m_cbEnabled.Text = "&Enable this plug-in module"
         Me.m_cbEnabled.UseVisualStyleBackColor = True
         '
+        'm_llContact
+        '
+        Me.m_llContact.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_llContact.Location = New System.Drawing.Point(63, 41)
+        Me.m_llContact.Name = "m_llContact"
+        Me.m_llContact.Size = New System.Drawing.Size(225, 34)
+        Me.m_llContact.TabIndex = 11
+        '
         'ucAppPluginDetails
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_llContact)
         Me.Controls.Add(Me.m_cbEnabled)
-        Me.Controls.Add(Me.m_tbContact)
         Me.Controls.Add(Me.m_tbAuthor)
         Me.Controls.Add(Me.m_tbName)
         Me.Controls.Add(Me.m_tbDescription)
@@ -142,7 +138,7 @@ Partial Class ucAppPluginDetails
     Friend WithEvents m_tbName As System.Windows.Forms.TextBox
     Friend WithEvents m_tbDescription As System.Windows.Forms.TextBox
     Friend WithEvents m_tbAuthor As System.Windows.Forms.TextBox
-    Friend WithEvents m_tbContact As System.Windows.Forms.TextBox
     Friend WithEvents m_cbEnabled As System.Windows.Forms.CheckBox
+    Private WithEvents m_llContact As System.Windows.Forms.LinkLabel
 
 End Class
