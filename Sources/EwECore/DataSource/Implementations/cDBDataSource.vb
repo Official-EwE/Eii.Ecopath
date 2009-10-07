@@ -624,6 +624,7 @@ Public Class cDBDataSource
             Me.m_core.m_EwEModelContact = CStr(Me.ReadSafe(reader, "Contact", ""))
             Me.m_core.m_EwEModelArea = CSng(Me.ReadSafe(reader, "Area", 1.0))
             Me.m_core.m_EwEModelNumDigits = CInt(reader("NumDigits"))
+            Me.m_core.m_EwEModelGroupDigits = CBool(Me.ReadSafe(reader, "GroupDigits", False))
             Me.m_core.m_EwEModelUnitCurrency = DirectCast(Me.ReadSafe(reader, "UnitCurrency", eUnitCurrencyType.WetWeight), eUnitCurrencyType)
             Me.m_core.m_EwEModelUnitCurrencyCustom = CStr(Me.ReadSafe(reader, "UnitCurrencyCustom", ""))
             Me.m_core.m_EwEModelUnitTime = DirectCast(Me.ReadSafe(reader, "UnitTime", eUnitTimeType.Year), eUnitTimeType)
@@ -678,6 +679,7 @@ Public Class cDBDataSource
             drow("Contact") = Me.m_core.m_EwEModelContact
             drow("Area") = Me.m_core.m_EwEModelArea
             drow("NumDigits") = Me.m_core.m_EwEModelNumDigits
+            drow("GroupDigits") = Me.m_core.m_EwEModelGroupDigits
             drow("UnitCurrency") = Me.m_core.m_EwEModelUnitCurrency
             drow("UnitCurrencyCustom") = Me.m_core.m_EwEModelUnitCurrencyCustom
             drow("UnitTime") = Me.m_core.m_EwEModelUnitTime

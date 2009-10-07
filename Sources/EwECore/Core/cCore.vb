@@ -2004,6 +2004,7 @@ Public Class cCore
     Friend m_EwEModelDescription As String = ""
     Friend m_EwEModelArea As Single = 0
     Friend m_EwEModelNumDigits As Integer = 0
+    Friend m_EwEModelGroupDigits As Boolean = False
     Friend m_EwEModelUnitTime As eUnitTimeType = 0
     Friend m_EwEModelUnitTimeCustom As String = ""
     Friend m_EwEModelUnitCurrency As eUnitCurrencyType = eUnitCurrencyType.NotSet
@@ -2030,6 +2031,7 @@ Public Class cCore
         Me.m_EwEModel.Author = Me.m_EwEModelAuthor
         Me.m_EwEModel.Contact = Me.m_EwEModelContact
         Me.m_EwEModel.NumDigits = Me.m_EwEModelNumDigits
+        Me.m_EwEModel.GroupDigits = Me.m_EwEModelGroupDigits
         Me.m_EwEModel.UnitCurrency = Me.m_EwEModelUnitCurrency
         Me.m_EwEModel.UnitCurrencyCustomText = Me.m_EwEModelUnitCurrencyCustom
         Me.m_EwEModel.UnitTime = Me.m_EwEModelUnitTime
@@ -2053,6 +2055,7 @@ Public Class cCore
         Me.m_EwEModelContact = Me.m_EwEModel.Contact
         Me.m_EwEModelArea = Me.m_EwEModel.Area
         Me.m_EwEModelNumDigits = Me.m_EwEModel.NumDigits
+        Me.m_EwEModelGroupDigits = Me.m_EwEModel.GroupDigits
         Me.m_EwEModelUnitCurrency = Me.m_EwEModel.UnitCurrency
         Me.m_EwEModelUnitCurrencyCustom = Me.m_EwEModel.UnitCurrencyCustomText
         Me.m_EwEModelUnitTime = Me.m_EwEModel.UnitTime
