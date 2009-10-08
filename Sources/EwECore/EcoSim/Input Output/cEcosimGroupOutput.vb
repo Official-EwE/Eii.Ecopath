@@ -114,6 +114,9 @@ Public Class cEcosimGroupOutput
         'cEcosimDataStrucures.Elect(group,group,time) First Group is fixed
         m_coreData.Add(eVarNameFlags.EcosimElectivityTime, New c3DResultsWrapper(m_simData.Elect, Me.Index))
 
+        m_coreData.Add(eVarNameFlags.EcosimCatchGroupGear, New c3DResultsWrapper(m_simData.ResultsSumCatchByGroupGear, Me.Index))
+
+
     End Sub
 
 #End Region
@@ -250,6 +253,14 @@ Public Class cEcosimGroupOutput
 
     End Property
 
+    Public ReadOnly Property CatchByFleet(ByVal iFleetIndex As Integer, ByVal iTime As Integer) As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimCatchGroupGear, iFleetIndex, iTime))
+        End Get
+
+    End Property
+
     Public ReadOnly Property ConsumpBiomass(ByVal iTime As Integer) As Single
 
         Get
@@ -355,6 +366,8 @@ Public Class cEcosimGroupOutput
         End Get
 
     End Property
+
+  
 
 
 

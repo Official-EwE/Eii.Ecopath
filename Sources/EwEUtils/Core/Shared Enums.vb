@@ -634,6 +634,8 @@ Namespace Core
         ''' <summary>[catch(t)]/[catch(0)]</summary>
         EcosimYieldRel
 
+        EcosimCatchGroupGear
+
         EcosimTotalMort
         EcosimConsumpBiomass
         EcosimFeedingTime
