@@ -67,13 +67,13 @@ Namespace Ecosim
             ' Add group names into listbox
             For i As Integer = 1 To Me.m_core.nGroups
                 group = Me.m_core.EcoSimGroupInputs(i)
-                lbGroups.Items.Add(New cGroupListBox.cGroupItem(group))
+                m_lbGroups.Items.Add(New cGroupListBox.cGroupItem(group))
             Next
-            Me.lbGroups.Refresh()
+            Me.m_lbGroups.Refresh()
 
-            Me.m_paneMaster = Me.zgcPlots.MasterPane
+            Me.m_paneMaster = Me.m_graph.MasterPane
             Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.m_core, Me.zgcPlots, [Enum].GetValues(GetType(ePaneTypes)).Length)
+            Me.m_zgh.Attach(Me.m_core, Me.m_graph, [Enum].GetValues(GetType(ePaneTypes)).Length)
             Me.m_zgh.ShowPointValue = True
 
             Me.ConfigurePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
@@ -88,7 +88,7 @@ Namespace Ecosim
             Me.ConfigurePane(ePaneTypes.AvgWeightOrProdCons, My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS)
 
             'Me.m_zgh = New ZedGraphHelper(Me.zgcPlots, 8)
-            lbGroups.SelectedIndex = 0
+            m_lbGroups.SelectedIndex = 0
 
             Me.UpdateControls()
             Me.UpdateColors()
@@ -122,13 +122,13 @@ Namespace Ecosim
         ''' Event hander to display results for another group
         ''' </summary>
         Private Sub lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles lbGroups.SelectedIndexChanged
+            Handles m_lbGroups.SelectedIndexChanged
 
             Me.AddCurves()
             Me.m_zgh.RescaleAndRedraw()
 
             'Display pred and prey ranks
-            Me.DisplayRanks()
+            Me.ShowGroup()
 
         End Sub
 
@@ -143,7 +143,7 @@ Namespace Ecosim
         ''' <summary>
         ''' Event handler for saving the value to .csv file
         ''' </summary>
-        Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSaveData.Click
 
             Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
@@ -164,7 +164,7 @@ Namespace Ecosim
                     Return
             End Select
 
-            writer.WriteResults(cmd.Directory, bSaveAnnual, Me.lbGroups.SelectedIndex + 1)
+            writer.WriteResults(cmd.Directory, bSaveAnnual, Me.m_lbGroups.SelectedIndex + 1)
 
         End Sub
 
@@ -174,7 +174,7 @@ Namespace Ecosim
             If (cmd IsNot Nothing) Then cmd.Invoke()
         End Sub
 
-        Private Sub btnShowAllFits_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnShowAllFits.Click
+        Private Sub btnShowAllFits_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnShowAllFits.Click
             Dim showAllFitsDlg As New frmShowAllFits
             showAllFitsDlg.ShowDialog()
         End Sub
@@ -235,7 +235,7 @@ Namespace Ecosim
 
             Dim iCount As Integer = 0
             Dim dXValue As Double = 0
-            Dim item As cGroupListBox.cGroupItem = DirectCast(lbGroups.SelectedItem, cGroupListBox.cGroupItem)
+            Dim item As cGroupListBox.cGroupItem = DirectCast(m_lbGroups.SelectedItem, cGroupListBox.cGroupItem)
             Dim iGroup As Integer = item.Group.Index
             Dim groupSimOut As cEcosimGroupOutput = Me.m_core.EcoSimGroupOutputs(iGroup)
 
@@ -263,6 +263,12 @@ Namespace Ecosim
             ' Do not render when sim has not ran
             If Not Me.m_core.StateMonitor.HasEcosimRan Then Return
 
+            Dim applYieldFleet(m_core.nFleets) As PointPairList
+
+            For i As Integer = 1 To Me.m_core.nFleets
+                applYieldFleet(i) = New PointPairList()
+            Next
+
             For i As Integer = 1 To m_core.nEcosimTimeSteps
                 ' Time
                 dXValue = Me.m_core.EcosimFirstYear + (i / cCore.N_MONTHS)
@@ -271,6 +277,9 @@ Namespace Ecosim
                 pplConsB.Add(dXValue, groupSimOut.ConsumpBiomass(i))
                 pplFeedTime.Add(dXValue, groupSimOut.FeedingTime(i))
                 pplYield.Add(dXValue, groupSimOut.Yield(i))
+                For iFleet As Integer = 1 To m_core.nFleets
+                    applYieldFleet(iFleet).Add(dXValue, CSng(groupSimOut.CatchByFleet(iFleet, i)))
+                Next
                 If groupSimOut.isMultiStanza() Then
                     pplAvgWorProdCons.Add(dXValue, groupSimOut.AvgWeight(i))
                 Else
@@ -283,22 +292,29 @@ Namespace Ecosim
 
             Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplB))
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassRel, iGroup, Color.Blue)
-                Me.AddCurveToGraphPane(ePaneTypes.Biomass, li, False)
+                Me.AddCurveToGraphPane(ePaneTypes.Biomass, li)
             Next li
             ' Fixes issue 604:
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassAbs, iGroup, Color.Green)
-                Me.AddCurveToGraphPane(ePaneTypes.Biomass, li, False)
+                Me.AddCurveToGraphPane(ePaneTypes.Biomass, li)
             Next li
 
             Me.AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplConsB))
             Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplFeedTime))
 
-            Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplYield))
+            'Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplYield))
+            For i As Integer = 1 To Me.m_core.nFleets
+                Dim fleet As cFleetInput = Me.m_core.FleetInputs(i)
+                If fleet.Landings(iGroup) > 0 Then
+                    Me.AddCurveToGraphPane(ePaneTypes.Yield, _
+                                           Me.m_zgh.CreateLineItem(fleet.Name, cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, applYieldFleet(i)))
+                End If
+            Next
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)
-                Me.AddCurveToGraphPane(ePaneTypes.Yield, li, False)
+                Me.AddCurveToGraphPane(ePaneTypes.Yield, li)
             Next li
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesForcing, iGroup, Color.Blue)
-                Me.AddCurveToGraphPane(ePaneTypes.Yield, li, False)
+                Me.AddCurveToGraphPane(ePaneTypes.Yield, li)
             Next li
 
             If groupSimOut.isMultiStanza() Then
@@ -307,7 +323,7 @@ Namespace Ecosim
 
                 Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
                 For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.AverageWeight, iGroup, Color.Blue)
-                    Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, li, False)
+                    Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, li)
                 Next li
 
             Else
@@ -317,11 +333,11 @@ Namespace Ecosim
 
             End If
 
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_TOTAL, cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplMortTotal), True)
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_PREDATION, cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Red, pplMortPredation), False)
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_FISHING, cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Blue, pplMortFishing), False)
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_TOTAL, cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplMortTotal))
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_PREDATION, cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Red, pplMortPredation))
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_FISHING, cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Blue, pplMortFishing))
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.TotalMortality, iGroup, Color.Green)
-                Me.AddCurveToGraphPane(ePaneTypes.Mortality, li, False)
+                Me.AddCurveToGraphPane(ePaneTypes.Mortality, li)
             Next li
 
             'VC 07apr09: F values (type = 4) should not be plotted as they are used to drive the model
@@ -338,7 +354,7 @@ Namespace Ecosim
                         dXValue = Me.m_core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.Predation(i, j))
                     Next
-                    Me.AddCurveToGraphPane(ePaneTypes.PredationMortality, Me.m_zgh.CreateLineItem(cZedGraphHelper.eCurveTypes.EcosimOutput, i, ppl), (iCount = 0))
+                    Me.AddCurveToGraphPane(ePaneTypes.PredationMortality, Me.m_zgh.CreateLineItem(cZedGraphHelper.eCurveTypes.EcosimOutput, i, ppl))
                     iCount += 1
                 End If
             Next
@@ -352,7 +368,7 @@ Namespace Ecosim
                         dXValue = Me.m_core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.PreyPercentage(i, j) * 100)
                     Next
-                    Me.AddCurveToGraphPane(ePaneTypes.Prey, Me.m_zgh.CreateLineItem(cZedGraphHelper.eCurveTypes.EcosimOutput, i, ppl), (iCount = 0))
+                    Me.AddCurveToGraphPane(ePaneTypes.Prey, Me.m_zgh.CreateLineItem(cZedGraphHelper.eCurveTypes.EcosimOutput, i, ppl))
                     iCount += 1
                 End If
             Next
@@ -409,38 +425,56 @@ Namespace Ecosim
 
 #End Region ' Time series
 
-        Private Sub DisplayRanks()
+        Private Sub ShowGroup()
 
-            Dim iGroup As Integer = lbGroups.SelectedIndex + 1
+            Dim iGroup As Integer = m_lbGroups.SelectedIndex + 1
             Dim grpOutput As cEcosimGroupOutput = m_core.EcoSimGroupOutputs(iGroup)
 
-            Dim avgPredConsumption As New List(Of Single)
-            Dim avgPredIndex As New List(Of Integer)
+            Dim lAvgPredConsumption As New List(Of Single)
+            Dim lAvgPredIndex As New List(Of Integer)
 
-            Dim avgPreyConsumption As New List(Of Single)
-            Dim avgpreyIndex As New List(Of Integer)
+            Dim lAvgPreyConsumption As New List(Of Single)
+            Dim lAvgPreyIndex As New List(Of Integer)
+
+            Dim lCatch As New List(Of Single)
+            Dim lFleetIndex As New List(Of Integer)
 
             For i As Integer = 1 To m_core.nLivingGroups
 
                 If grpOutput.isPred(i) Then
-                    avgPredConsumption.Add(grpOutput.AvgPredConsumption(i))
-                    avgPredIndex.Add(i)
+                    lAvgPredConsumption.Add(grpOutput.AvgPredConsumption(i))
+                    lAvgPredIndex.Add(i)
                 End If
 
                 If grpOutput.isPrey(i) Then
-                    avgPreyConsumption.Add(grpOutput.AvgPreyConsumption(i))
-                    avgpreyIndex.Add(i)
+                    lAvgPreyConsumption.Add(grpOutput.AvgPreyConsumption(i))
+                    lAvgPreyIndex.Add(i)
                 End If
 
             Next
 
-            Dim iAvgPred() As Integer = avgPredIndex.ToArray
-            Me.SortRanks(avgPredConsumption.ToArray, iAvgPred)
-            Me.PopulateGroupListBox(Me.lbPredRanks, iAvgPred)
+            For i As Integer = 1 To m_core.nFleets
+                If Me.m_core.FleetInputs(i).Landings(iGroup) > 0 Then
+                    Dim sCatch As Single = 0
+                    For j As Integer = 1 To m_core.nEcosimTimeSteps
+                        sCatch += grpOutput.CatchByFleet(i, j)
+                    Next
+                    lCatch.Add(sCatch)
+                    lFleetIndex.Add(i)
+                End If
+            Next
 
-            Dim aiAvgPrey() As Integer = avgpreyIndex.ToArray
-            Me.SortRanks(avgPreyConsumption.ToArray, aiAvgPrey)
-            Me.PopulateGroupListBox(Me.lbPreyRanks, aiAvgPrey)
+            Dim aiAvgPred() As Integer = lAvgPredIndex.ToArray
+            Me.SortRanks(lAvgPredConsumption.ToArray, aiAvgPred)
+            Me.PopulateGroupListBox(Me.m_lbPredators, aiAvgPred)
+
+            Dim aiAvgPrey() As Integer = lAvgPreyIndex.ToArray
+            Me.SortRanks(lAvgPreyConsumption.ToArray, aiAvgPrey)
+            Me.PopulateGroupListBox(Me.m_lbPrey, aiAvgPrey)
+
+            Dim aiFleet() As Integer = lFleetIndex.ToArray
+            Me.SortRanks(lCatch.ToArray, aiFleet)
+            Me.PopulateFleetListBox(Me.m_lbFleets, aiFleet)
 
         End Sub
 
@@ -482,12 +516,29 @@ Namespace Ecosim
             Dim group As cEcoPathGroupInput = Nothing
 
             l.Items.Clear()
-
             For i As Integer = 0 To aiGroupIndex.Length - 1
-
-                'Dim item As cColorItem = m_PoolColor(items(i))
                 group = Me.m_core.EcoPathGroupInputs(aiGroupIndex(i))
                 l.Items.Add(New cGroupListBox.cGroupItem(group))
+            Next
+            l.Refresh()
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Populate a fleet list box with Ecopath fleets.
+        ''' </summary>
+        ''' <param name="l">Listbox to add items to.</param>
+        ''' <param name="aiFleetIndex">Array of fleet index values.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub PopulateFleetListBox(ByVal l As ListBox, ByVal aiFleetIndex() As Integer)
+
+            Dim fleet As cFleetInput = Nothing
+
+            l.Items.Clear()
+            For i As Integer = 0 To aiFleetIndex.Length - 1
+                fleet = Me.m_core.FleetInputs(aiFleetIndex(i))
+                l.Items.Add(fleet.Name)
             Next
             l.Refresh()
 
@@ -505,12 +556,11 @@ Namespace Ecosim
         ''' <param name="paneType">Index of the graph pane</param>
         ''' <param name="li">The curve</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurveToGraphPane(ByVal paneType As ePaneTypes, ByVal li As LineItem, _
-                                        Optional ByVal bClearExistingCurves As Boolean = True)
+        Private Sub AddCurveToGraphPane(ByVal paneType As ePaneTypes, ByVal li As LineItem)
 
             Dim lli As New List(Of ZedGraph.LineItem)
             lli.Add(li)
-            Me.AddCurvesToGraphPane(paneType, lli, bClearExistingCurves)
+            Me.AddCurvesToGraphPane(paneType, lli)
 
         End Sub
 
@@ -522,10 +572,9 @@ Namespace Ecosim
         ''' <param name="lli">The lists of data points for the multiple curves</param>
         ''' <remarks>Overloaded method with different color options.</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurvesToGraphPane(ByVal paneType As ePaneTypes, ByVal lli As List(Of LineItem), _
-                                         Optional ByVal bClearExistingCurves As Boolean = True)
+        Private Sub AddCurvesToGraphPane(ByVal paneType As ePaneTypes, ByVal lli As List(Of LineItem))
 
-            Me.m_zgh.PlotLines(lli, CInt(paneType), True, bClearExistingCurves)
+            Me.m_zgh.PlotLines(lli, CInt(paneType), True, False)
 
         End Sub
 
@@ -537,7 +586,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub UpdateControls()
-            Me.btnShowAllFits.Enabled = Me.m_core.HasAppliedTimeSeries()
+            Me.m_btnShowAllFits.Enabled = Me.m_core.HasAppliedTimeSeries()
         End Sub
 
 #End Region ' Helper methods

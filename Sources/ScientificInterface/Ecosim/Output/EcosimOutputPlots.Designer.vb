@@ -25,200 +25,219 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimOutputPlots))
-            Me.zgcPlots = New ZedGraph.ZedGraphControl
-            Me.btnShowAllFits = New System.Windows.Forms.Button
-            Me.lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
-            Me.btnSave = New System.Windows.Forms.Button
-            Me.lbPredRanks = New ScientificInterfaceShared.Controls.cGroupListBox
-            Me.lbPreyRanks = New ScientificInterfaceShared.Controls.cGroupListBox
-            Me.scMain = New System.Windows.Forms.SplitContainer
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.Panel2 = New System.Windows.Forms.Panel
+            Me.m_graph = New ZedGraph.ZedGraphControl
+            Me.m_btnShowAllFits = New System.Windows.Forms.Button
+            Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
+            Me.m_btnSaveData = New System.Windows.Forms.Button
+            Me.m_lbPredators = New ScientificInterfaceShared.Controls.cGroupListBox
+            Me.m_lbPrey = New ScientificInterfaceShared.Controls.cGroupListBox
+            Me.m_scMain = New System.Windows.Forms.SplitContainer
+            Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
+            Me.m_plGroups = New System.Windows.Forms.Panel
             Me.m_lblGroup = New System.Windows.Forms.Label
-            Me.Panel1 = New System.Windows.Forms.Panel
-            Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel
-            Me.Panel3 = New System.Windows.Forms.Panel
-            Me.m_lblPredRank = New System.Windows.Forms.Label
-            Me.Panel4 = New System.Windows.Forms.Panel
-            Me.m_lblPreyRank = New System.Windows.Forms.Label
-            Me.scMain.Panel1.SuspendLayout()
-            Me.scMain.Panel2.SuspendLayout()
-            Me.scMain.SuspendLayout()
-            Me.TableLayoutPanel1.SuspendLayout()
-            Me.Panel2.SuspendLayout()
-            Me.Panel1.SuspendLayout()
-            Me.TableLayoutPanel2.SuspendLayout()
-            Me.Panel3.SuspendLayout()
-            Me.Panel4.SuspendLayout()
+            Me.m_plFleets = New System.Windows.Forms.Panel
+            Me.m_tlbControllers = New System.Windows.Forms.TableLayoutPanel
+            Me.m_plPredators = New System.Windows.Forms.Panel
+            Me.m_lblPredators = New System.Windows.Forms.Label
+            Me.m_plPrey = New System.Windows.Forms.Panel
+            Me.m_lblPrey = New System.Windows.Forms.Label
+            Me.m_lblFleets = New System.Windows.Forms.Label
+            Me.m_lbFleets = New System.Windows.Forms.ListBox
+            Me.m_scMain.Panel1.SuspendLayout()
+            Me.m_scMain.Panel2.SuspendLayout()
+            Me.m_scMain.SuspendLayout()
+            Me.m_tlpMain.SuspendLayout()
+            Me.m_plGroups.SuspendLayout()
+            Me.m_plFleets.SuspendLayout()
+            Me.m_tlbControllers.SuspendLayout()
+            Me.m_plPredators.SuspendLayout()
+            Me.m_plPrey.SuspendLayout()
             Me.SuspendLayout()
             '
-            'zgcPlots
+            'm_graph
             '
-            Me.zgcPlots.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            resources.ApplyResources(Me.zgcPlots, "zgcPlots")
-            Me.zgcPlots.Name = "zgcPlots"
-            Me.zgcPlots.ScrollGrace = 0
-            Me.zgcPlots.ScrollMaxX = 0
-            Me.zgcPlots.ScrollMaxY = 0
-            Me.zgcPlots.ScrollMaxY2 = 0
-            Me.zgcPlots.ScrollMinX = 0
-            Me.zgcPlots.ScrollMinY = 0
-            Me.zgcPlots.ScrollMinY2 = 0
+            Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            resources.ApplyResources(Me.m_graph, "m_graph")
+            Me.m_graph.Name = "m_graph"
+            Me.m_graph.ScrollGrace = 0
+            Me.m_graph.ScrollMaxX = 0
+            Me.m_graph.ScrollMaxY = 0
+            Me.m_graph.ScrollMaxY2 = 0
+            Me.m_graph.ScrollMinX = 0
+            Me.m_graph.ScrollMinY = 0
+            Me.m_graph.ScrollMinY2 = 0
             '
-            'btnShowAllFits
+            'm_btnShowAllFits
             '
-            resources.ApplyResources(Me.btnShowAllFits, "btnShowAllFits")
-            Me.btnShowAllFits.Name = "btnShowAllFits"
-            Me.btnShowAllFits.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnShowAllFits, "m_btnShowAllFits")
+            Me.m_btnShowAllFits.Name = "m_btnShowAllFits"
+            Me.m_btnShowAllFits.UseVisualStyleBackColor = True
             '
-            'lbGroups
+            'm_lbGroups
             '
-            resources.ApplyResources(Me.lbGroups, "lbGroups")
-            Me.lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.lbGroups.FormattingEnabled = True
-            Me.lbGroups.Name = "lbGroups"
-            Me.lbGroups.SortThreshold = -9999.0!
-            Me.lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.[Default]
+            resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
+            Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.m_lbGroups.FormattingEnabled = True
+            Me.m_lbGroups.Name = "m_lbGroups"
+            Me.m_lbGroups.SortThreshold = -9999.0!
+            Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.[Default]
             '
-            'btnSave
+            'm_btnSaveData
             '
-            resources.ApplyResources(Me.btnSave, "btnSave")
-            Me.btnSave.Name = "btnSave"
-            Me.btnSave.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnSaveData, "m_btnSaveData")
+            Me.m_btnSaveData.Name = "m_btnSaveData"
+            Me.m_btnSaveData.UseVisualStyleBackColor = True
             '
-            'lbPredRanks
+            'm_lbPredators
             '
-            resources.ApplyResources(Me.lbPredRanks, "lbPredRanks")
-            Me.lbPredRanks.BackColor = System.Drawing.SystemColors.Window
-            Me.lbPredRanks.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.lbPredRanks.FormattingEnabled = True
-            Me.lbPredRanks.Name = "lbPredRanks"
-            Me.lbPredRanks.SortThreshold = -9999.0!
-            Me.lbPredRanks.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.[Default]
+            resources.ApplyResources(Me.m_lbPredators, "m_lbPredators")
+            Me.m_lbPredators.BackColor = System.Drawing.SystemColors.Window
+            Me.m_lbPredators.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.m_lbPredators.FormattingEnabled = True
+            Me.m_lbPredators.Name = "m_lbPredators"
+            Me.m_lbPredators.SortThreshold = -9999.0!
+            Me.m_lbPredators.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.[Default]
             '
-            'lbPreyRanks
+            'm_lbPrey
             '
-            resources.ApplyResources(Me.lbPreyRanks, "lbPreyRanks")
-            Me.lbPreyRanks.BackColor = System.Drawing.SystemColors.Window
-            Me.lbPreyRanks.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.lbPreyRanks.FormattingEnabled = True
-            Me.lbPreyRanks.Name = "lbPreyRanks"
-            Me.lbPreyRanks.SortThreshold = -9999.0!
-            Me.lbPreyRanks.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.[Default]
+            resources.ApplyResources(Me.m_lbPrey, "m_lbPrey")
+            Me.m_lbPrey.BackColor = System.Drawing.SystemColors.Window
+            Me.m_lbPrey.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.m_lbPrey.FormattingEnabled = True
+            Me.m_lbPrey.Name = "m_lbPrey"
+            Me.m_lbPrey.SortThreshold = -9999.0!
+            Me.m_lbPrey.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.[Default]
             '
-            'scMain
+            'm_scMain
             '
-            resources.ApplyResources(Me.scMain, "scMain")
-            Me.scMain.MinimumSize = New System.Drawing.Size(400, 400)
-            Me.scMain.Name = "scMain"
+            resources.ApplyResources(Me.m_scMain, "m_scMain")
+            Me.m_scMain.MinimumSize = New System.Drawing.Size(400, 400)
+            Me.m_scMain.Name = "m_scMain"
             '
-            'scMain.Panel1
+            'm_scMain.Panel1
             '
-            Me.scMain.Panel1.Controls.Add(Me.zgcPlots)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_graph)
             '
-            'scMain.Panel2
+            'm_scMain.Panel2
             '
-            Me.scMain.Panel2.Controls.Add(Me.TableLayoutPanel1)
+            Me.m_scMain.Panel2.Controls.Add(Me.m_tlpMain)
             '
-            'TableLayoutPanel1
+            'm_tlpMain
             '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.Panel2, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.Panel1, 0, 3)
-            Me.TableLayoutPanel1.Controls.Add(Me.Panel3, 0, 1)
-            Me.TableLayoutPanel1.Controls.Add(Me.Panel4, 0, 2)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            resources.ApplyResources(Me.m_tlpMain, "m_tlpMain")
+            Me.m_tlpMain.Controls.Add(Me.m_tlbControllers, 0, 4)
+            Me.m_tlpMain.Controls.Add(Me.m_plGroups, 0, 0)
+            Me.m_tlpMain.Controls.Add(Me.m_plFleets, 0, 3)
+            Me.m_tlpMain.Controls.Add(Me.m_plPredators, 0, 1)
+            Me.m_tlpMain.Controls.Add(Me.m_plPrey, 0, 2)
+            Me.m_tlpMain.Name = "m_tlpMain"
             '
-            'Panel2
+            'm_plGroups
             '
-            Me.Panel2.Controls.Add(Me.m_lblGroup)
-            Me.Panel2.Controls.Add(Me.lbGroups)
-            resources.ApplyResources(Me.Panel2, "Panel2")
-            Me.Panel2.Name = "Panel2"
+            Me.m_plGroups.Controls.Add(Me.m_lblGroup)
+            Me.m_plGroups.Controls.Add(Me.m_lbGroups)
+            resources.ApplyResources(Me.m_plGroups, "m_plGroups")
+            Me.m_plGroups.Name = "m_plGroups"
             '
             'm_lblGroup
             '
-            Me.m_lblGroup.BackColor = System.Drawing.SystemColors.ButtonShadow
             resources.ApplyResources(Me.m_lblGroup, "m_lblGroup")
+            Me.m_lblGroup.BackColor = System.Drawing.SystemColors.ButtonShadow
             Me.m_lblGroup.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.m_lblGroup.Name = "m_lblGroup"
             '
-            'Panel1
+            'm_plFleets
             '
-            Me.Panel1.Controls.Add(Me.TableLayoutPanel2)
-            resources.ApplyResources(Me.Panel1, "Panel1")
-            Me.Panel1.Name = "Panel1"
+            Me.m_plFleets.Controls.Add(Me.m_lbFleets)
+            Me.m_plFleets.Controls.Add(Me.m_lblFleets)
+            resources.ApplyResources(Me.m_plFleets, "m_plFleets")
+            Me.m_plFleets.Name = "m_plFleets"
             '
-            'TableLayoutPanel2
+            'm_tlbControllers
             '
-            resources.ApplyResources(Me.TableLayoutPanel2, "TableLayoutPanel2")
-            Me.TableLayoutPanel2.Controls.Add(Me.btnSave, 0, 0)
-            Me.TableLayoutPanel2.Controls.Add(Me.btnShowAllFits, 1, 0)
-            Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+            resources.ApplyResources(Me.m_tlbControllers, "m_tlbControllers")
+            Me.m_tlbControllers.Controls.Add(Me.m_btnSaveData, 0, 0)
+            Me.m_tlbControllers.Controls.Add(Me.m_btnShowAllFits, 1, 0)
+            Me.m_tlbControllers.Name = "m_tlbControllers"
             '
-            'Panel3
+            'm_plPredators
             '
-            Me.Panel3.Controls.Add(Me.m_lblPredRank)
-            Me.Panel3.Controls.Add(Me.lbPredRanks)
-            resources.ApplyResources(Me.Panel3, "Panel3")
-            Me.Panel3.Name = "Panel3"
+            Me.m_plPredators.Controls.Add(Me.m_lblPredators)
+            Me.m_plPredators.Controls.Add(Me.m_lbPredators)
+            resources.ApplyResources(Me.m_plPredators, "m_plPredators")
+            Me.m_plPredators.Name = "m_plPredators"
             '
-            'm_lblPredRank
+            'm_lblPredators
             '
-            resources.ApplyResources(Me.m_lblPredRank, "m_lblPredRank")
-            Me.m_lblPredRank.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblPredRank.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblPredRank.Name = "m_lblPredRank"
+            resources.ApplyResources(Me.m_lblPredators, "m_lblPredators")
+            Me.m_lblPredators.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblPredators.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblPredators.Name = "m_lblPredators"
             '
-            'Panel4
+            'm_plPrey
             '
-            Me.Panel4.Controls.Add(Me.m_lblPreyRank)
-            Me.Panel4.Controls.Add(Me.lbPreyRanks)
-            resources.ApplyResources(Me.Panel4, "Panel4")
-            Me.Panel4.Name = "Panel4"
+            Me.m_plPrey.Controls.Add(Me.m_lblPrey)
+            Me.m_plPrey.Controls.Add(Me.m_lbPrey)
+            resources.ApplyResources(Me.m_plPrey, "m_plPrey")
+            Me.m_plPrey.Name = "m_plPrey"
             '
-            'm_lblPreyRank
+            'm_lblPrey
             '
-            resources.ApplyResources(Me.m_lblPreyRank, "m_lblPreyRank")
-            Me.m_lblPreyRank.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblPreyRank.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblPreyRank.Name = "m_lblPreyRank"
+            resources.ApplyResources(Me.m_lblPrey, "m_lblPrey")
+            Me.m_lblPrey.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblPrey.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblPrey.Name = "m_lblPrey"
+            '
+            'm_lblFleets
+            '
+            resources.ApplyResources(Me.m_lblFleets, "m_lblFleets")
+            Me.m_lblFleets.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblFleets.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblFleets.Name = "m_lblFleets"
+            '
+            'm_lbFleets
+            '
+            resources.ApplyResources(Me.m_lbFleets, "m_lbFleets")
+            Me.m_lbFleets.FormattingEnabled = True
+            Me.m_lbFleets.Name = "m_lbFleets"
             '
             'EcosimOutputPlots
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.scMain)
+            Me.Controls.Add(Me.m_scMain)
             Me.Name = "EcosimOutputPlots"
             Me.ShowIcon = False
-            Me.scMain.Panel1.ResumeLayout(False)
-            Me.scMain.Panel2.ResumeLayout(False)
-            Me.scMain.ResumeLayout(False)
-            Me.TableLayoutPanel1.ResumeLayout(False)
-            Me.Panel2.ResumeLayout(False)
-            Me.Panel1.ResumeLayout(False)
-            Me.TableLayoutPanel2.ResumeLayout(False)
-            Me.Panel3.ResumeLayout(False)
-            Me.Panel4.ResumeLayout(False)
+            Me.m_scMain.Panel1.ResumeLayout(False)
+            Me.m_scMain.Panel2.ResumeLayout(False)
+            Me.m_scMain.ResumeLayout(False)
+            Me.m_tlpMain.ResumeLayout(False)
+            Me.m_plGroups.ResumeLayout(False)
+            Me.m_plFleets.ResumeLayout(False)
+            Me.m_tlbControllers.ResumeLayout(False)
+            Me.m_plPredators.ResumeLayout(False)
+            Me.m_plPrey.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents zgcPlots As ZedGraph.ZedGraphControl
-        Private WithEvents btnShowAllFits As System.Windows.Forms.Button
-        Private WithEvents lbGroups As cGroupListBox
-        Private WithEvents btnSave As System.Windows.Forms.Button
-        Private WithEvents lbPredRanks As cGroupListBox
-        Private WithEvents lbPreyRanks As cGroupListBox
-        Private WithEvents scMain As System.Windows.Forms.SplitContainer
-        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents Panel2 As System.Windows.Forms.Panel
-        Private WithEvents Panel1 As System.Windows.Forms.Panel
-        Private WithEvents Panel3 As System.Windows.Forms.Panel
-        Private WithEvents Panel4 As System.Windows.Forms.Panel
-        Private WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_graph As ZedGraph.ZedGraphControl
+        Private WithEvents m_btnShowAllFits As System.Windows.Forms.Button
+        Private WithEvents m_lbGroups As cGroupListBox
+        Private WithEvents m_btnSaveData As System.Windows.Forms.Button
+        Private WithEvents m_lbPredators As cGroupListBox
+        Private WithEvents m_lbPrey As cGroupListBox
+        Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
+        Private WithEvents m_tlpMain As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_plGroups As System.Windows.Forms.Panel
+        Private WithEvents m_plFleets As System.Windows.Forms.Panel
+        Private WithEvents m_plPredators As System.Windows.Forms.Panel
+        Private WithEvents m_plPrey As System.Windows.Forms.Panel
+        Private WithEvents m_tlbControllers As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblGroup As System.Windows.Forms.Label
-        Private WithEvents m_lblPredRank As System.Windows.Forms.Label
-        Private WithEvents m_lblPreyRank As System.Windows.Forms.Label
+        Private WithEvents m_lblPredators As System.Windows.Forms.Label
+        Private WithEvents m_lblPrey As System.Windows.Forms.Label
+        Private WithEvents m_lbFleets As System.Windows.Forms.ListBox
+        Private WithEvents m_lblFleets As System.Windows.Forms.Label
     End Class
 
 End Namespace

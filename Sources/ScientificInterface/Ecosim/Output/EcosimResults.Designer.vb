@@ -70,6 +70,7 @@ Namespace Ecosim
             '
             'cbGears
             '
+            Me.cbGears.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cbGears.FormattingEnabled = True
             resources.ApplyResources(Me.cbGears, "cbGears")
             Me.cbGears.Name = "cbGears"
@@ -141,7 +142,6 @@ Namespace Ecosim
         End Sub
         Friend WithEvents Label1 As System.Windows.Forms.Label
         Friend WithEvents Label2 As System.Windows.Forms.Label
-        Friend WithEvents cbGears As System.Windows.Forms.ComboBox
         Friend WithEvents rbGroup As System.Windows.Forms.RadioButton
         Friend WithEvents rbIndices As System.Windows.Forms.RadioButton
         Friend WithEvents rbGear As System.Windows.Forms.RadioButton
@@ -152,6 +152,7 @@ Namespace Ecosim
         Friend WithEvents udNumTimeSteps As System.Windows.Forms.NumericUpDown
         Friend WithEvents m_lblYear As System.Windows.Forms.Label
         Friend WithEvents m_lblShow As System.Windows.Forms.Label
+        Private WithEvents cbGears As System.Windows.Forms.ComboBox
     End Class
 
 End Namespace
