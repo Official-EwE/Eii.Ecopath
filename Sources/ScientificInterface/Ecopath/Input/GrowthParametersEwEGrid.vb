@@ -1,30 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: GrowthParametersEwEGrid.vb,v $
-' Revision 1.9  2009/05/22 22:31:08  joeh
-' Tcatch reverted to have input and output pair because of new user requirement
-'
-' Revision 1.8  2009/05/21 19:27:17  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.7  2009/04/28 00:21:15  joeh
-' Add handling if PSDEnabled is false
-'
-' Revision 1.6  2009/03/03 01:42:56  joeh
-' Tcatch no longer has input and output pair
-'
-' Revision 1.5  2009/03/02 20:09:36  joeh
-' VBK no longer has input and output pair
-'
-' Revision 1.4  2009/02/28 00:57:11  joeh
-' Remove syntax error
-'
-' Revision 1.3  2009/02/28 00:28:12  joeh
-' It works! It works!
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -45,9 +19,7 @@ Namespace Ecopath.Input
 
         Public Sub New()
             MyBase.new()
-
             m_core = cCore.GetInstance
-
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -67,9 +39,6 @@ Namespace Ecopath.Input
             Me(0, 9) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXAGE_UNIT) ', StyleGuide.eUnitType.Currency)
 
             Me.FixedColumns = 2
-
-            m_frm = CType(Me.Parent, Form)
-            AddHandler m_frm.Shown, AddressOf OnFormShown
 
         End Sub
 
@@ -168,13 +137,6 @@ Namespace Ecopath.Input
                 Return eCoreComponentType.EcoPath
             End Get
         End Property
-
-        Private Sub OnFormShown(ByVal sender As Object, ByVal e As System.EventArgs)
-            Dim parms As cPSDParameters = Nothing
-
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            If parms.PSDEnabled = False Then m_frm.Close()
-        End Sub
 
     End Class
 
