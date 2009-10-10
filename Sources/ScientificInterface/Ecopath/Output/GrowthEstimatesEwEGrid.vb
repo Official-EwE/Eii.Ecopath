@@ -1,37 +1,3 @@
-'==============================================================================
-'
-' $Log: GrowthEstimatesEwEGrid.vb,v $
-' Revision 1.11  2009/05/28 12:36:55  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.10  2009/05/22 22:31:08  joeh
-' Tcatch reverted to have input and output pair because of new user requirement
-'
-' Revision 1.9  2009/05/21 19:27:12  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.8  2009/04/28 00:19:25  joeh
-' Add handling if PSDEnabled is false
-'
-' Revision 1.7  2009/04/02 16:24:53  jeroens
-' PSD run integrated w Ecopath
-'
-' Revision 1.6  2009/04/02 01:47:43  joeh
-' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
-'
-' Revision 1.5  2009/03/31 21:36:15  joeh
-' Move all PSD computation routines to a new class cPSDModel
-'
-' Revision 1.4  2009/03/03 01:42:56  joeh
-' Tcatch no longer has input and output pair
-'
-' Revision 1.3  2009/03/02 20:09:36  joeh
-' VBK no longer has input and output pair
-'
-' Revision 1.2  2009/03/02 18:47:20  joeh
-' Initial version
-'
-
 #Region " Imports "
 
 Option Strict On
@@ -78,9 +44,6 @@ Namespace Ecopath.Output
 
             Me.FixedColumns = 2
 
-            m_frm = CType(Me.Parent, Form)
-            AddHandler m_frm.Shown, AddressOf OnFormShown
-
         End Sub
 
         Protected Overrides Sub FillData()
@@ -92,9 +55,6 @@ Namespace Ecopath.Output
             Dim intStanzaGroupIndexPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
-            Dim parms As cPSDParameters = Nothing
-            Dim str As String = ""
-            Dim msg As cMessage = Nothing
 
             For i As Integer = 1 To m_core.nLivingGroups : intStanzaGroupIndex(i) = -1 : Next
 
@@ -139,13 +99,7 @@ Namespace Ecopath.Output
                 End If
             Next groupIndex
 
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            If parms.PSDEnabled = False Then
-                str = My.Resources.PSD_MSG_PSDDISABLED
-                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-                Me.m_core.Messages.SendMessage(msg)
-            End If
-        End Sub
+          End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
 
@@ -206,13 +160,6 @@ Namespace Ecopath.Output
                 Return eCoreComponentType.EcoPath
             End Get
         End Property
-
-        Private Sub OnFormShown(ByVal sender As Object, ByVal e As System.EventArgs)
-            Dim parms As cPSDParameters = Nothing
-
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            If parms.PSDEnabled = False Then m_frm.Close()
-        End Sub
 
     End Class
 

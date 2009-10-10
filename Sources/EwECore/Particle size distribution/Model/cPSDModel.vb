@@ -1,57 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cPSDModel.vb,v $
-' Revision 1.19  2009/06/24 22:50:45  joeh
-' Add checking mechanism for successful PSD estimation
-'
-' Revision 1.18  2009/06/23 17:37:14  jeroens
-' Fixed PSD parameter change behaviour
-'
-' Revision 1.17  2009/06/12 18:16:52  joeh
-' After moving averaging, the system PSD is assigned to the first selected group
-'
-' Revision 1.16  2009/05/28 23:10:25  joeh
-' Use Landing+Discard rather than fCatch to determine a group is fished
-'
-' Revision 1.15  2009/05/26 22:38:24  joeh
-' Modify the routine to set default value of Tcatch
-'
-' Revision 1.14  2009/05/22 22:31:08  joeh
-' Tcatch reverted to have input and output pair because of new user requirement
-'
-' Revision 1.13  2009/05/14 18:11:40  joeh
-' Use cCore.N_MONTHS instead of 12 to convert month to year
-'
-' Revision 1.12  2009/05/12 21:31:12  joeh
-' Divide Age1 by 12
-'
-' Revision 1.11  2009/04/06 22:17:27  joeh
-' Change Me.m_psd.t0(i) < 0 to Me.m_psd.t0(i) < -9998
-'
-' Revision 1.10  2009/04/02 22:08:01  joeh
-' Age1 is no longer divided by 12 for the internal PSD build. Might fall back after Daniel and Villy testing
-'
-' Revision 1.9  2009/04/02 16:21:55  jeroens
-' Group included flags obtained from PSD parameters
-'
-' Revision 1.8  2009/04/02 14:42:24  jeroens
-' Missing params message includes VariableStatuses
-'
-' Revision 1.7  2009/04/02 01:47:43  joeh
-' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
-'
-' Revision 1.6  2009/04/01 19:17:21  joeh
-' Exposes the MessagePublisher instance in cPSDModel so that the core can add message handlers
-'
-' Revision 1.5  2009/04/01 17:28:24  joeh
-' Initialize PSD in core and cPSDModel is no longer a Singleton
-'
-' Revision 1.4  2009/04/01 16:17:10  joeh
-' Initial version
-'
-'==============================================================================
-
-#Region "Imports"
+﻿#Region "Imports"
 
 Option Strict On
 Option Explicit On
@@ -79,8 +26,6 @@ Public Class cPSDModel
         ' Sanity check
         If Not Me.m_psd.Enabled Then Return False
 
-        Me.m_psd.Computed = False
-
         'Is there any missing input
         If CheckMissingInputParameters() Then
             'Yes: return failure
@@ -93,7 +38,6 @@ Public Class cPSDModel
                 'Yes: more estimation and return success
                 EstimateSizeWeight()
                 If m_psd.NPtsMovAvg > 0 Then EstimatePSDMovAvg()
-                Me.m_psd.Computed = True
                 Return True
             Else
                 'No: return failure

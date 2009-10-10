@@ -1,43 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cPSDDatastructures.vb,v $
-' Revision 1.11  2009/06/23 17:37:14  jeroens
-' Fixed PSD parameter change behaviour
-'
-' Revision 1.10  2009/05/22 22:31:07  joeh
-' Tcatch reverted to have input and output pair because of new user requirement
-'
-' Revision 1.9  2009/04/02 21:50:35  sherman
-' Changed PSD back to False
-'
-' Revision 1.8  2009/04/02 19:52:03  joeh
-' Change the Enabled boolean to True
-'
-' Revision 1.7  2009/04/02 16:21:05  jeroens
-' Added Enabled flag
-'
-' Revision 1.6  2009/03/31 21:36:14  joeh
-' Move all PSD computation routines to a new class cPSDModel
-'
-' Revision 1.5  2009/03/19 22:23:18  jeroens
-' no message
-'
-' Revision 1.4  2009/03/19 21:45:11  joeh
-' Add two biomass variables for the Size/Weight plot
-'
-' Revision 1.3  2009/03/18 15:28:01  jeroens
-' SelectedGroup -> Include
-'
-' Revision 1.2  2009/03/18 13:25:58  jeroens
-' Moved PSD data from EcopathDS to PSDDS
-'
-' Revision 1.1  2009/03/16 16:55:57  jeroens
-' Initial version
-'
-'==============================================================================
-
-Option Strict On
-
+﻿Option Strict On
 Imports EwEUtils.Core
 
 ''' <summary>
@@ -47,8 +8,6 @@ Public Class cPSDDatastructures
 
     ''' <summary>States whether PSD model is enabled.</summary>
     Public Enabled As Boolean = False
-    ''' <summary>States whether PSD model has run.</summary>
-    Public Computed As Boolean = False
 
     ''' <summary>Total number of groups (living and detritus)</summary>
     Public NumGroups As Integer

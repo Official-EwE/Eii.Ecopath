@@ -1,85 +1,4 @@
-﻿' =============================================================================
-'
-' $Log: PSDPlotByGroup.vb,v $
-' Revision 1.26  2009/06/11 22:48:20  joeh
-' SystemPSD values are now multiplied by a billion instead of 100 thousands to shift the Log(PSD Values) to the positive region
-' Selected group number instead of selected index of group box is used to identify the selected group
-'
-' Revision 1.25  2009/05/28 12:36:57  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.24  2009/05/12 21:34:32  joeh
-' Add titles to graph axis
-'
-' Revision 1.23  2009/04/28 00:25:27  joeh
-' Add handling if PSDEnabled is false
-'
-' Revision 1.22  2009/04/08 15:09:11  jeroens
-' GroupListBox -> cGroupListBox
-'
-' Revision 1.21  2009/04/07 20:02:09  jeroens
-' Updated to use ZedGraphHelper Attach
-'
-' Revision 1.20  2009/04/03 18:21:55  jeroens
-' Deliberately detached zedgraphhelper
-'
-' Revision 1.19  2009/04/02 16:24:54  jeroens
-' PSD run integrated w Ecopath
-'
-' Revision 1.18  2009/04/02 01:47:44  joeh
-' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
-'
-' Revision 1.17  2009/04/01 15:21:30  joeh
-' Call core.RunPSD() in the Constructor
-'
-' Revision 1.16  2009/03/20 18:01:25  joeh
-' Remove some redundant Imports statements
-'
-' Revision 1.15  2009/03/19 16:55:56  jeroens
-' Renamed LegendListBox to GroupListBox
-'
-' Revision 1.14  2009/03/18 13:32:05  jeroens
-' Uses implemented PSD classes
-'
-' Revision 1.13  2009/03/17 23:37:34  joeh
-' Add codes for the Selected Group feature
-'
-' Revision 1.12  2009/03/17 02:25:49  joeh
-' Add Lorenzen mortality type
-'
-' Revision 1.11  2009/03/16 21:37:19  joeh
-' Incorporate StartTime into the computation of EcopathWeight, EcopathNumber and EcopathBiomass
-'
-' Revision 1.10  2009/03/14 20:10:24  joeh
-' Add Contribution To PSD plot to master pane
-'
-' Revision 1.9  2009/03/14 18:33:12  joeh
-' Change dXValue of double type to sXValue of single type
-'
-' Revision 1.8  2009/03/13 21:37:42  joeh
-' Rename nEcopathTimeSteps to nAgeSteps
-'
-' Revision 1.7  2009/03/12 23:51:06  joeh
-' Add codes for tabulation of PSD contribution data
-'
-' Revision 1.6  2009/03/12 01:50:29  joeh
-' Add codes for PSD histogram (PSDContributionPlot)
-'
-' Revision 1.5  2009/03/11 00:14:28  joeh
-' Add PSD calculation
-'
-' Revision 1.4  2009/03/06 17:54:01  joeh
-' Minor changes in the computation of Weight, Number and Biomass
-'
-' Revision 1.3  2009/03/06 00:47:57  joeh
-' Add Ecopath output data (Weight, Number, Biomass) over time
-'
-' Revision 1.2  2009/02/21 00:23:07  jeroens
-' Added headers
-'
-' =============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -132,15 +51,13 @@ Namespace Ecopath.Output
 
 #Region "Event handlers"
 
-        Private Sub PSDPlotByGroup_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Dim parms As cPSDParameters = Nothing
-            Dim str As String = ""
-            Dim msg As cMessage = Nothing
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
             PopulateGroupBoxes()
             InitMasterPane()
 
-            parms = Me.m_core.ParticleSizeDistributionParameters
             CreatePane(ePaneTypes.Weight, My.Resources.HEADER_WEIGHT, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_G)
             CreatePane(ePaneTypes.Number, My.Resources.HEADER_SURVIVAL, My.Resources.PSD_XAXISLABEL_AGE, "")
             CreatePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_G)
@@ -150,18 +67,6 @@ Namespace Ecopath.Output
             End If
             llbGroups.SelectedIndex = 0
 
-            If parms.PSDEnabled = False Then
-                str = My.Resources.PSD_MSG_PSDDISABLED
-                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-                Me.m_core.Messages.SendMessage(msg)
-            End If
-        End Sub
-
-        Private Sub PSDPlotByGroup_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-            Dim parms As cPSDParameters = Nothing
-
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            If parms.PSDEnabled = False Then Me.Close()
         End Sub
 
         Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles llbGroups.SelectedIndexChanged
@@ -169,7 +74,7 @@ Namespace Ecopath.Output
             UpdatePlots()
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
             MyBase.OnFormClosed(e)

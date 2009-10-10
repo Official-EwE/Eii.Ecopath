@@ -1,38 +1,3 @@
-'==============================================================================
-'
-' $Log: cCoreStateMonitor.vb,v $
-' Revision 1.10  2009/04/13 14:13:26  jeroens
-' Event broadcast protected by try/catch to handle unstable GUI actions
-'
-' Revision 1.9  2009/03/22 14:01:37  jeroens
-' Core state monitor exec event parameters simplified
-'
-' Revision 1.8  2009/03/16 16:57:19  jeroens
-' Added support for running searches
-'
-' Revision 1.7  2009/03/01 19:32:40  jeroens
-' Added plugin modified support
-'
-' Revision 1.6  2009/01/19 18:07:24  jeroens
-' MessageHandlers, CoreStateMonitor have sync objects
-'
-' Revision 1.5  2009/01/17 03:25:51  jeroens
-' Core State Monitor data and execute states separated
-'
-' Revision 1.4  2009/01/16 18:30:11  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.3  2008/11/20 17:32:56  jeroens
-' Fixed Has**Initialized diagnostics
-'
-' Revision 1.2  2008/11/20 17:30:54  jeroens
-' Uses initialized core exec states
-'
-' Revision 1.1  2008/09/26 07:30:12  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -498,6 +463,21 @@ Public Class cCoreStateMonitor
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' State change entry point; to be called when an Ecopath model is started.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Friend Sub SetPSDCompleted()
+        ' Check for invalid state transitions
+        If (Me.m_iEcopathState = eCoreExecutionState.Idle) Then Return
+        ' Update execution state
+        Me.CalcExecutionState(eCoreExecutionState.PSDCompleted, _
+                DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState), _
+                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
+                DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
+    End Sub
+
 #End Region ' Ecopath
 
 #Region " Ecosim "
@@ -768,6 +748,15 @@ Public Class cCoreStateMonitor
     ''' -----------------------------------------------------------------------
     Public Function HasEcopathRan() As Boolean
         Return Me.m_iEcopathState = eCoreExecutionState.EcopathCompleted
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether the Ecopath PSD model has completed succesfully.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function HasPSDRan() As Boolean
+        Return Me.m_iEcopathState = eCoreExecutionState.PSDCompleted
     End Function
 
     ''' -----------------------------------------------------------------------

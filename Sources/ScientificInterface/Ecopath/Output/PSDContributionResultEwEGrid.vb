@@ -1,48 +1,4 @@
-﻿' =============================================================================
-'
-' $Log: PSDContributionResultEwEGrid.vb,v $
-' Revision 1.14  2009/06/26 18:06:02  joeh
-' Re-program FillData( ) without using PropertyCell
-'
-' Revision 1.13  2009/05/28 12:36:57  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.12  2009/05/21 18:53:46  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.11  2009/04/28 00:24:17  joeh
-' Add handling if PSDEnabled is false
-'
-' Revision 1.10  2009/04/02 16:24:54  jeroens
-' PSD run integrated w Ecopath
-'
-' Revision 1.9  2009/04/02 01:47:44  joeh
-' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
-'
-' Revision 1.8  2009/04/01 15:21:17  joeh
-' Call core.RunPSD() in the Constructor
-'
-' Revision 1.7  2009/03/18 13:32:05  jeroens
-' Uses implemented PSD classes
-'
-' Revision 1.6  2009/03/17 23:37:34  joeh
-' Add codes for the Selected Group feature
-'
-' Revision 1.5  2009/03/13 22:52:37  joeh
-' Add code to sum the PSD values of a row and to sum the PSD values in a column
-'
-' Revision 1.4  2009/03/12 23:51:06  joeh
-' Add codes for tabulation of PSD contribution data
-'
-' Revision 1.3  2009/03/11 00:14:28  joeh
-' Add PSD calculation
-'
-' Revision 1.2  2009/02/21 00:23:07  jeroens
-' Added headers
-'
-' =============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -93,18 +49,12 @@ Namespace Ecopath.Output
 
             Me.FixedColumns = 2
 
-            m_frm = CType(Me.Parent, Form)
-            AddHandler m_frm.Shown, AddressOf OnFormShown
-
         End Sub
 
         Protected Overrides Sub FillData()
 
             Dim groupOutput As cEcoPathGroupOutput = Nothing
             Dim iRow As Integer = -1
-            Dim parms As cPSDParameters = Nothing
-            Dim str As String = ""
-            Dim msg As cMessage = Nothing
 
             ' Remove existing rows
             Me.RowsCount = 1
@@ -124,13 +74,7 @@ Namespace Ecopath.Output
             'Create "Sum" row (sum values in each column)
             FillTotalValueRow()
 
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            If parms.PSDEnabled = False Then
-                str = My.Resources.PSD_MSG_PSDDISABLED
-                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-                Me.m_core.Messages.SendMessage(msg)
-            End If
-        End Sub
+           End Sub
 
         Private Sub FillRows(ByVal iRow As Integer, ByVal source As cCoreGroupBase)
 
@@ -221,12 +165,12 @@ Namespace Ecopath.Output
             End Get
         End Property
 
-        Private Sub OnFormShown(ByVal sender As Object, ByVal e As System.EventArgs)
-            Dim parms As cPSDParameters = Nothing
+        'Private Sub OnFormShown(ByVal sender As Object, ByVal e As System.EventArgs)
+        '    Dim parms As cPSDParameters = Nothing
 
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            If parms.PSDEnabled = False Then m_frm.Close()
-        End Sub
+        '    parms = Me.m_core.ParticleSizeDistributionParameters
+        '    If parms.PSDEnabled = False Then m_frm.Close()
+        'End Sub
 
     End Class
 

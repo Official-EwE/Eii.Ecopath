@@ -3147,7 +3147,6 @@ Public Class cCore
         Me.m_PSDParameters.FirstWeightClass = Me.m_PSDData.FirstWeightClass
         Me.m_PSDParameters.ClimateType = Me.m_PSDData.ClimateType
         Me.m_PSDParameters.NumPtsMovAvg = Me.m_PSDData.NPtsMovAvg
-        Me.m_PSDParameters.PSDComputed = Me.m_PSDData.Computed
 
         For iGroup As Integer = 1 To m_EcoPathData.NumGroups
             Me.m_PSDParameters.GroupIncluded(iGroup) = Me.m_PSDData.Include(iGroup)
@@ -3168,7 +3167,6 @@ Public Class cCore
         Me.m_PSDData.FirstWeightClass = Me.m_PSDParameters.FirstWeightClass
         Me.m_PSDData.ClimateType = Me.m_PSDParameters.ClimateType
         Me.m_PSDData.NPtsMovAvg = Me.m_PSDParameters.NumPtsMovAvg
-        Me.m_PSDData.Computed = Me.m_PSDParameters.PSDComputed
 
         For iGroup As Integer = 1 To m_EcoPathData.NumGroups
             Me.m_PSDData.Include(iGroup) = Me.m_PSDParameters.GroupIncluded(iGroup)
@@ -3388,7 +3386,6 @@ Public Class cCore
 
     End Function
 
-    'Joeh
     Private Function RunPSD() As Boolean
 
         ' PSD not enabled?
@@ -3400,18 +3397,9 @@ Public Class cCore
         'copy all PSD data into the modeling arrays 
         m_PSDData.CopyInputToModelArrays()
 
-        Return m_psdModel.Run()
-
-        ''Is Run successful?
-        'If m_psdModel.Run() Then
-        '    'Yes: reload the output list with the new outputs from PSD model
-        '    LoadEcopathOutputs()
-        'Else
-        '    'No: send error messages
-        '    msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-        '    m_publisher.AddMessage(msg)
-        '    m_publisher.sendAllMessages()
-        'End If
+        If m_psdModel.Run() Then
+            Me.StateMonitor.SetPSDCompleted()
+        End If
 
     End Function
 

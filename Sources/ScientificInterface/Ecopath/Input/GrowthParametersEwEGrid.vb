@@ -83,9 +83,6 @@ Namespace Ecopath.Input
             Dim intStanzaGroupIndexPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
-            Dim parms As cPSDParameters = Nothing
-            Dim str As String = ""
-            Dim msg As cMessage = Nothing
 
             For i As Integer = 1 To core.nLivingGroups : intStanzaGroupIndex(i) = -1 : Next
 
@@ -132,13 +129,7 @@ Namespace Ecopath.Input
                 End If
             Next
 
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            If parms.PSDEnabled = False Then
-                str = My.Resources.PSD_MSG_PSDDISABLED
-                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-                Me.m_core.Messages.SendMessage(msg)
-            End If
-        End Sub
+         End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal group As cEcoPathGroupInput, Optional ByVal isIndented As Boolean = False)
 

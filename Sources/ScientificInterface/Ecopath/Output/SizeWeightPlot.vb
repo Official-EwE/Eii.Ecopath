@@ -1,39 +1,4 @@
-﻿' =============================================================================
-'
-' $Log: SizeWeightPlot.vb,v $
-' Revision 1.11  2009/05/28 12:36:58  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.10  2009/05/21 18:53:47  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.9  2009/04/28 00:29:58  joeh
-' Add handling if PSDEnabled is false
-'
-' Revision 1.8  2009/04/07 20:02:10  jeroens
-' Updated to use ZedGraphHelper Attach
-'
-' Revision 1.7  2009/04/03 18:21:56  jeroens
-' Deliberately detached zedgraphhelper
-'
-' Revision 1.6  2009/04/02 16:24:54  jeroens
-' PSD run integrated w Ecopath
-'
-' Revision 1.5  2009/04/02 01:47:44  joeh
-' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
-'
-' Revision 1.4  2009/04/01 15:21:49  joeh
-' Call core.RunPSD() in the Constructor
-'
-' Revision 1.3  2009/03/20 18:06:18  joeh
-' Add codes to plot Size/Weight plot
-'
-' Revision 1.2  2009/02/21 00:23:07  jeroens
-' Added headers
-'
-' =============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -70,32 +35,34 @@ Namespace Ecopath.Output
         End Sub
 #End Region 'Constructor
 
-#Region "Event handlers"
-        Private Sub SizeWeightPlot_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Dim parms As cPSDParameters = Nothing
-            Dim str As String = ""
-            Dim msg As cMessage = Nothing
+#Region " Event handlers "
+
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            'Dim parms As cPSDParameters = Nothing
+            'Dim str As String = ""
+            'Dim msg As cMessage = Nothing
 
             AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_SIZEWT, My.Resources.PSD_XAXISLABEL_SIZECLASS, ""))
 
             UpdatePlot()
 
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            If parms.PSDEnabled = False Then
-                str = My.Resources.PSD_MSG_PSDDISABLED
-                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-                Me.m_core.Messages.SendMessage(msg)
-            End If
+            'parms = Me.m_core.ParticleSizeDistributionParameters
+            'If parms.PSDEnabled = False Then
+            '    str = My.Resources.PSD_MSG_PSDDISABLED
+            '    msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+            '    Me.m_core.Messages.SendMessage(msg)
+            'End If
         End Sub
 
-        Private Sub SizeWeightPlot_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-            Dim parms As cPSDParameters = Nothing
+        'Private Sub SizeWeightPlot_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        '    Dim parms As cPSDParameters = Nothing
 
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            If parms.PSDEnabled = False Then Me.Close()
-        End Sub
+        '    parms = Me.m_core.ParticleSizeDistributionParameters
+        '    If parms.PSDEnabled = False Then Me.Close()
+        'End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
             MyBase.OnFormClosed(e)

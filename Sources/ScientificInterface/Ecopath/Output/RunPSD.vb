@@ -166,8 +166,6 @@ Namespace Ecopath.Output
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
             Dim parms As cPSDParameters = Nothing
-            Dim str As String = ""
-            Dim msg As cMessage = Nothing
             Dim cmdh As cCommandHandler = Nothing
 
             Me.m_core = cCore.GetInstance()
@@ -204,11 +202,6 @@ Namespace Ecopath.Output
             ' Synchronize plot with Ecopath results
             Me.SynchronizePlot()
 
-            If parms.PSDEnabled = False Then
-                str = My.Resources.PSD_MSG_PSDDISABLED
-                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-                Me.m_core.Messages.SendMessage(msg)
-            End If
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -236,13 +229,6 @@ Namespace Ecopath.Output
             Me.m_propComputed = Nothing
 
             MyBase.OnFormClosed(e)
-        End Sub
-
-        Private Sub RunPSD_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-            Dim parms As cPSDParameters = Nothing
-
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            If parms.PSDEnabled = False Then Me.Close()
         End Sub
 
         Private Sub MenuItmGroupPB_Click(ByVal sender As Object, ByVal e As System.EventArgs) _

@@ -20,6 +20,8 @@ Namespace Core
         EcopathRunning
         ''' <summary>Ecopath model run is completed.</summary>
         EcopathCompleted
+        ''' <summary>Ecopath PSD model run is completed.</summary>
+        PSDCompleted
         ''' <summary>Ecosim scenario data has been loaded.</summary>
         EcosimLoaded
         ''' <summary>Ecosim scenario has been initialized.</summary>
