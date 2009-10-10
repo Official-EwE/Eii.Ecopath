@@ -1,88 +1,3 @@
-'==============================================================================
-'
-' $Log: NavigationPanel.vb,v $
-' Revision 1.26  2009/06/05 19:01:49  joeb
-' Added MSE node to navigation tree
-'
-' Revision 1.25  2009/05/11 01:50:59  jeroens
-' Renamed command classes
-'
-' Revision 1.24  2009/04/20 14:10:48  jeroens
-' Moved F form to Sim outputs
-'
-' Revision 1.23  2009/04/06 15:31:31  jeroens
-' Uses attach, detach on node controller
-'
-' Revision 1.22  2009/03/31 02:30:24  jeroens
-' Fixed bug that prevented selection of already open nodes
-'
-' Revision 1.21  2009/03/27 22:03:56  jeroens
-' SelectedNodeName properly responds to invalid nodes
-' SelectedNodeName no longer loops
-'
-' Revision 1.20  2009/03/26 17:52:33  jeroens
-' Fixed confusion between rate and effort shape names - part III
-'
-' Revision 1.19  2009/03/22 14:01:38  jeroens
-' Core state monitor exec event parameters simplified
-'
-' Revision 1.18  2009/03/21 00:32:09  jeroens
-' RunPSD form changed to EcopathLoaded state
-'
-' Revision 1.17  2009/03/16 17:02:39  jeroens
-' Fixed fishing rate/effort confusion
-'
-' Revision 1.16  2009/02/28 00:15:11  joeh
-' Added PSD forms
-'
-' Revision 1.15  2009/02/19 21:18:26  joeh
-' Particel size distribution - initial version
-'
-' Revision 1.14  2009/01/29 23:36:50  jeroens
-' Added Ecopath stats
-'
-' Revision 1.13  2009/01/19 18:07:25  jeroens
-' MessageHandlers, CoreStateMonitor have sync objects
-'
-' Revision 1.12  2008/12/15 15:55:38  jeroens
-' no message
-'
-' Revision 1.11  2008/12/10 20:56:20  joeh
-' Finalize the Suitability Plot
-'
-' Revision 1.10  2008/12/09 00:30:01  joeh
-' Add node for the three Suitability curves (Electivity, Functional response and Suitability)
-'
-' Revision 1.9  2008/11/21 21:33:57  jeroens
-' Removed functional response, will move to Network Analysis
-'
-' Revision 1.8  2008/11/20 15:21:04  jeroens
-' Ecospace outputs properly respond to core state
-'
-' Revision 1.7  2008/11/19 14:42:55  jeroens
-' Moved and renamed sim tools
-'
-' Revision 1.6  2008/11/04 05:40:39  jeroens
-' Renamed Ecospace grids
-'
-' Revision 1.5  2008/10/10 18:06:49  jeroens
-' Updated to renamed layers classes
-'
-' Revision 1.4  2008/10/09 17:18:26  jeroens
-' Moved discard mort grid to Ecopath
-'
-' Revision 1.3  2008/10/08 17:56:16  jeroens
-' Added target fishing mortality policy nodes
-' Discard Mortality about to be moved to Ecopath
-'
-' Revision 1.2  2008/10/02 18:49:10  jeroens
-' Added Fiseries regulation nodes
-'
-' Revision 1.1  2008/09/26 07:32:11  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -154,7 +69,6 @@ Public Class NavigationPanel
         m_nodeController.Add("ndDiscardMortRate", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputDiscardMortGrid), "") ' ToDo: connect to help
         m_nodeController.Add("ndOffVesselPrice", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputOffVesselPriceEwEGrid), "Market price.htm")
         m_nodeController.Add("ndNonMarketPrice", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputNonMarketPriceEwEGrid), "Non market price.htm")
-        m_nodeController.Add("ndGrowthParameters", eCoreExecutionState.EcopathLoaded, GetType(GrowthParametersEwEGrid), "") ' ToDo: connect to help
 
         ' Ecopath Output
         m_nodeController.Add("ndBasicEstimates", eCoreExecutionState.EcopathCompleted, GetType(BasicEstimatesEwEGrid), "Basic estimates.htm")
@@ -169,15 +83,20 @@ Public Class NavigationPanel
         m_nodeController.Add("ndSearchRates", eCoreExecutionState.EcopathCompleted, GetType(SearchRatesEwEGrid), "Search rates.htm")
         m_nodeController.Add("ndQuantity", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputQuantityEwEGrid), "Fishery (Ecopath parameterization).htm")
         m_nodeController.Add("ndValue", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputValueEwEGrid), "Fishery (Ecopath parameterization).htm")
-        m_nodeController.Add("ndGrowthEstimates", eCoreExecutionState.EcopathCompleted, GetType(GrowthEstimatesEwEGrid), "") ' ToDo: connect to help
-        m_nodeController.Add("ndRunPSD", eCoreExecutionState.EcopathLoaded, GetType(RunPSD), "") ' ToDo: connect to help
-        m_nodeController.Add("ndPSDContributionPlot", eCoreExecutionState.EcopathCompleted, GetType(PSDContributionPlot), "") ' ToDo: connect to help
-        m_nodeController.Add("ndPSDContributionResult", eCoreExecutionState.EcopathCompleted, GetType(PSDContributionResult), "") ' ToDo: connect to help
-        m_nodeController.Add("ndPSDPlotByGroup", eCoreExecutionState.EcopathCompleted, GetType(PSDPlotByGroup), "") ' ToDo: connect to help
-        m_nodeController.Add("ndSizeWeightPlot", eCoreExecutionState.EcopathCompleted, GetType(SizeWeightPlot), "") ' ToDo: connect to help
         m_nodeController.Add("ndFlowDiagram", eCoreExecutionState.EcopathCompleted, GetType(FlowDiagram.FlowDiagram), "Flow diagram.htm")
         m_nodeController.Add("ndEcopathStats", eCoreExecutionState.EcopathCompleted, GetType(EcopathStatisticsEwEGrid), "")
         ' Network Analysis PlugIn: "Network%20analysis%20indices%20in.htm"
+
+        ' PSD Input
+        m_nodeController.Add("ndGrowthParameters", eCoreExecutionState.EcopathLoaded, GetType(GrowthParametersEwEGrid), "") ' ToDo: connect to help
+        m_nodeController.Add("ndRunPSD", eCoreExecutionState.EcopathLoaded, GetType(RunPSD), "") ' ToDo: connect to help
+
+        ' PSD Output
+        m_nodeController.Add("ndGrowthEstimates", eCoreExecutionState.PSDCompleted, GetType(GrowthEstimatesEwEGrid), "") ' ToDo: connect to help
+        m_nodeController.Add("ndPSDContributionPlot", eCoreExecutionState.PSDCompleted, GetType(PSDContributionPlot), "") ' ToDo: connect to help
+        m_nodeController.Add("ndPSDContributionResult", eCoreExecutionState.PSDCompleted, GetType(PSDContributionResult), "") ' ToDo: connect to help
+        m_nodeController.Add("ndPSDPlotByGroup", eCoreExecutionState.PSDCompleted, GetType(PSDPlotByGroup), "") ' ToDo: connect to help
+        m_nodeController.Add("ndSizeWeightPlot", eCoreExecutionState.PSDCompleted, GetType(SizeWeightPlot), "") ' ToDo: connect to help
 
         ' Ecosim Input
         m_nodeController.Add("ndEcosimParameters", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.EcosimParameters), "Ecosim parameters.htm")
