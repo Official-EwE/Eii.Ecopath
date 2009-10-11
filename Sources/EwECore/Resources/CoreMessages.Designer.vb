@@ -1383,6 +1383,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The PSD estimation routine can work only when groups fall into at least two weight classes. Please redefine the weight range by adjusting the number of weight classes and/or the lowest weight class..
+        '''</summary>
+        Friend Shared ReadOnly Property PSD_ERROR_WEIGHTCLASSES() As String
+            Get
+                Return ResourceManager.GetString("PSD_ERROR_WEIGHTCLASSES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to The PSD estimation routine can work only with either &apos;L at infinity&apos; or &apos;W at infinity&apos; as unknown per group. &apos;K in VBGF&apos; must be known for each group.  Here, one or more of these are unknown:.
         '''</summary>
         Friend Shared ReadOnly Property PSD_MISSING_INPUT() As String
@@ -1410,11 +1419,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The PSD estimation routine can work only when groups fall into at least two weight classes. Please, redefine the weight range by adjusting No. of wt. classes and/or Lowest wt. class.
+        '''  Looks up a localized string similar to Particle Size Distribution failed to run..
         '''</summary>
         Friend Shared ReadOnly Property PSD_RUN_ERROR() As String
             Get
                 Return ResourceManager.GetString("PSD_RUN_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Particle Size Distribution run completed..
+        '''</summary>
+        Friend Shared ReadOnly Property PSD_RUN_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("PSD_RUN_SUCCESS", resourceCulture)
             End Get
         End Property
         
