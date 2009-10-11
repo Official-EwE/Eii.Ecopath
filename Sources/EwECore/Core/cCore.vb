@@ -3307,8 +3307,7 @@ Public Class cCore
     ''' </remarks>
     Public Function RunEcoPath() As Boolean
 
-        Dim bEcopathRun As Boolean = False
-        Dim bPSDRun As Boolean = False
+        Dim bSucces As Boolean = False
         Dim msg As cMessage
 
         Try
@@ -3334,22 +3333,18 @@ Public Class cCore
             Me.ResetEcopathGroupOutputs()
 
             'call EcoPath to estimate the missing parameters
-            bEcopathRun = m_EcoPath.Run()
-            'call PSD run
-            bPSDRun = Me.RunPSD()
-
-            If (bEcopathRun And bPSDRun) Then
+            If (m_EcoPath.Run()) Then
 
                 're-populate the output list with the new outputs from Ecopath
                 LoadEcopathOutputs()
                 're-populate the Ecopath statistics
                 LoadEcopathStats()
-                're-populate PSD parameters
-                LoadPSDParameters()
 
                 If Me.PluginManager IsNot Nothing Then
                     Me.PluginManager.EcopathRunCompleted(m_EcoPathData)
                 End If
+
+                bSucces = True
 
             Else 'If mEcoPath.EstimateParameters() Then
 
@@ -3357,7 +3352,9 @@ Public Class cCore
                 'so I don't need to send another message
 
                 cLog.Write(Me.ToString & ".RunEcoPath() Failed to Estimate Parameters.")
-                bEcopathRun = False
+
+                bSucces = False
+
             End If
 
         Catch ex As Exception
@@ -3368,44 +3365,53 @@ Public Class cCore
 
             cLog.Write(Me.ToString & ".RunEcoPath() Error. " & ex.Message)
             Debug.Assert(False)
-            bEcopathRun = False
+            bSucces = False
         End Try
 
-        If bEcopathRun Then
-            ' This message serves to allow a user interface to update to new data.
+        ' Did Ecopath run succesful?
+        If bSucces Then
+
             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_SUCCESS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
+            m_publisher.AddMessage(msg)
+
             ' Update core state monitor
-            If bPSDRun Then
-                Me.m_StateMonitor.SetPSDCompleted()
-            Else
-                Me.m_StateMonitor.SetEcopathCompleted()
+            Me.m_StateMonitor.SetEcopathCompleted()
+
+            ' Now deal with PSD
+
+            ' PSD not enabled?
+            If (Me.m_PSDData.Enabled) Then
+
+                'copy all PSD data into the modeling arrays 
+                m_PSDData.CopyInputToModelArrays()
+
+                ' Run PSD
+                If m_psdModel.Run() Then
+
+                    're-populate PSD parameters
+                    LoadPSDParameters()
+
+                    msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_SUCCESS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
+                    m_publisher.AddMessage(msg)
+
+                    Me.m_StateMonitor.SetPSDCompleted()
+                Else
+                    msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_ERROR, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
+                    m_publisher.AddMessage(msg)
+                End If
             End If
         Else
             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+            m_publisher.AddMessage(msg)
+
             ' Update core state monitor
             Me.m_StateMonitor.SetEcopathLoaded(True)
         End If
 
         ' Unleash all messages after core state monitor is up to date
-        m_publisher.AddMessage(msg)
         m_publisher.sendAllMessages()
 
-        Return bEcopathRun
-
-    End Function
-
-    Private Function RunPSD() As Boolean
-
-        ' PSD not enabled?
-        If (Me.m_PSDData.Enabled = False) Then
-            ' #Yes: good
-            Return True
-        End If
-
-        'copy all PSD data into the modeling arrays 
-        m_PSDData.CopyInputToModelArrays()
-        ' Run
-        Return m_psdModel.Run()
+        Return bSucces
 
     End Function
 
@@ -9733,17 +9739,23 @@ Public Class cCore
                     ' Block non-stored variables from dirtying the datasource
                     If value.Stored = False Then
                         bBlock = True
-                        msAffected = eCoreComponentType.NotSet
+                        ' JS 10oct09: non-stored values may still affect the core run state.
+                        '             I am not sure if commenting out the line below will screw
+                        '             up application dynamics...
+                        'msAffected = eCoreComponentType.NotSet
                     End If
 
-                    If Not bBlock Then DataSource.SetChanged(msAffected)
-                    ' Notify state monitor of data modification
-                    Me.m_StateMonitor.RegisterModification(msAffected)
+                    ' Dat anot blocked?
+                    If Not bBlock Then
+                        ' #Yes: dirty the data source
+                        DataSource.SetChanged(msAffected)
+                        ' Notify state monitor of data modification
+                        Me.m_StateMonitor.RegisterModification(msAffected)
+                    End If
 
                     ' Update state monitor execution state
                     Me.m_StateMonitor.UpdateExecutionState(msAffected, _
                         DirectCast(IIf(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
-
                 End If
             End If
         Next
