@@ -489,6 +489,7 @@ Public MustInherit Class cCoreInputOutputBase
 
             ' Optimization: abort when the set operation will not change the variable value, and when
             '               a value does not need re-validating.
+            ' JS 10oct09: if the valueobject holds an ENUMERATED value the Equals logic fails.
             If Object.Equals(newValue, valueobject.Value(iSecondaryIndex)) Then
                 If (valueobject.Status(iSecondaryIndex) = eStatusFlags.OK) Then
                     ' Report that variable has NOT been set.
