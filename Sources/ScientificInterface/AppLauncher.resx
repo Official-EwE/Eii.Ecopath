@@ -220,6 +220,75 @@
   <data name="m_tssEcotracer1.Size" type="System.Drawing.Size, System.Drawing">
     <value>168, 6</value>
   </data>
+  <metadata name="MenuEcospace.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <data name="m_tsmiEcospaceNew.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="m_tsmiEcospaceNew.Text" xml:space="preserve">
+    <value>&amp;New Scenario...</value>
+  </data>
+  <data name="m_tsmiEcospaceLoad.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="m_tsmiEcospaceLoad.Text" xml:space="preserve">
+    <value>&amp;Load Scenario...</value>
+  </data>
+  <data name="m_tsmiEcospaceSave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="m_tsmiEcospaceSave.Text" xml:space="preserve">
+    <value>&amp;Save Scenario</value>
+  </data>
+  <data name="m_tsmiEcospaceSaveAs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="m_tsmiEcospaceSaveAs.Text" xml:space="preserve">
+    <value>Save Scenario &amp;As...</value>
+  </data>
+  <data name="m_tsmiEcospaceEditMap.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="m_tsmiEcospaceEditMap.Text" xml:space="preserve">
+    <value>Edit &amp;Basemap...</value>
+  </data>
+  <data name="m_tsmiEcospaceEditHabitats.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="m_tsmiEcospaceEditHabitats.Text" xml:space="preserve">
+    <value>Edit &amp;Habitats...</value>
+  </data>
+  <data name="m_tsmiEcospaceEditMPAs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="m_tsmiEcospaceEditMPAs.Text" xml:space="preserve">
+    <value>Edit &amp;MPAs...</value>
+  </data>
+  <data name="m_tsmiEcospaceEditRegions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="m_tsmiEcospaceEditRegions.Text" xml:space="preserve">
+    <value>Edit &amp;Regions...</value>
+  </data>
+  <data name="m_tsmiEcospaceEditImportanceLayers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="m_tsmiEcospaceEditImportanceLayers.Text" xml:space="preserve">
+    <value>Edit &amp;Importance layers...</value>
+  </data>
+  <data name="m_tsmiEcospaceImportLayers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="m_tsmiEcospaceImportLayers.Text" xml:space="preserve">
+    <value>&amp;Import layer data...</value>
+  </data>
+  <data name="MenuEcospace.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 20</value>
+  </data>
+  <data name="MenuEcospace.Text" xml:space="preserve">
+    <value>Ecos&amp;pace</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tsmiHelpContents.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
     <value>Ctrl+F1</value>
@@ -533,72 +602,6 @@
   <data name="MenuEcosim.Text" xml:space="preserve">
     <value>Eco&amp;sim</value>
   </data>
-  <data name="m_tsmiEcospaceNew.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
-  </data>
-  <data name="m_tsmiEcospaceNew.Text" xml:space="preserve">
-    <value>&amp;New Scenario...</value>
-  </data>
-  <data name="m_tsmiEcospaceLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
-  </data>
-  <data name="m_tsmiEcospaceLoad.Text" xml:space="preserve">
-    <value>&amp;Load Scenario...</value>
-  </data>
-  <data name="m_tsmiEcospaceSave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
-  </data>
-  <data name="m_tsmiEcospaceSave.Text" xml:space="preserve">
-    <value>&amp;Save Scenario</value>
-  </data>
-  <data name="m_tsmiEcospaceSaveAs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
-  </data>
-  <data name="m_tsmiEcospaceSaveAs.Text" xml:space="preserve">
-    <value>Save Scenario &amp;As...</value>
-  </data>
-  <data name="m_tsmiEcospaceEditMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
-  </data>
-  <data name="m_tsmiEcospaceEditMap.Text" xml:space="preserve">
-    <value>Edit &amp;Basemap...</value>
-  </data>
-  <data name="m_tsmiEcospaceEditHabitats.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
-  </data>
-  <data name="m_tsmiEcospaceEditHabitats.Text" xml:space="preserve">
-    <value>Edit &amp;Habitats...</value>
-  </data>
-  <data name="m_tsmiEcospaceEditMPAs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
-  </data>
-  <data name="m_tsmiEcospaceEditMPAs.Text" xml:space="preserve">
-    <value>Edit &amp;MPAs...</value>
-  </data>
-  <data name="m_tsmiEcospaceEditRegions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
-  </data>
-  <data name="m_tsmiEcospaceEditRegions.Text" xml:space="preserve">
-    <value>Edit &amp;Regions...</value>
-  </data>
-  <data name="m_tsmiEcospaceEditImportanceLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
-  </data>
-  <data name="m_tsmiEcospaceEditImportanceLayers.Text" xml:space="preserve">
-    <value>Edit &amp;Importance layers...</value>
-  </data>
-  <data name="m_tsmiEcospaceImportLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 22</value>
-  </data>
-  <data name="m_tsmiEcospaceImportLayers.Text" xml:space="preserve">
-    <value>&amp;Import layer data...</value>
-  </data>
-  <data name="MenuEcospace.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 20</value>
-  </data>
-  <data name="MenuEcospace.Text" xml:space="preserve">
-    <value>Ecos&amp;pace</value>
-  </data>
   <data name="m_tsmiEcotracerNew.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 22</value>
   </data>
@@ -623,10 +626,10 @@
   <data name="m_tsmiEcotracerSaveAs.Text" xml:space="preserve">
     <value>Save Scenario &amp;As...</value>
   </data>
-  <data name="m_tsmiEcotracer.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="MenuEcotracer.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 22</value>
   </data>
-  <data name="m_tsmiEcotracer.Text" xml:space="preserve">
+  <data name="MenuEcotracer.Text" xml:space="preserve">
     <value>Eco&amp;tracer</value>
   </data>
   <data name="MenuTools.Size" type="System.Drawing.Size, System.Drawing">
@@ -765,7 +768,7 @@
     <value>m_ssMain</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
-    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.6.1002, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.6.1007, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -5846,6 +5849,72 @@
   <data name="&gt;&gt;m_tssEcotracer1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;MenuEcospace.Name" xml:space="preserve">
+    <value>MenuEcospace</value>
+  </data>
+  <data name="&gt;&gt;MenuEcospace.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceNew.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceNew</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceNew.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceLoad.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceLoad</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceLoad.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceSave.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceSave</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceSave.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceSaveAs.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceSaveAs</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceSaveAs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceEditMap.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceEditMap</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceEditMap.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceEditHabitats.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceEditHabitats</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceEditHabitats.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceEditMPAs.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceEditMPAs</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceEditMPAs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceEditRegions.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceEditRegions</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceEditRegions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceEditImportanceLayers.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceEditImportanceLayers</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceEditImportanceLayers.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceImportLayers.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceImportLayers</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceImportLayers.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsmiHelpContents.Name" xml:space="preserve">
     <value>m_tsmiHelpContents</value>
   </data>
@@ -6092,82 +6161,16 @@
   <data name="&gt;&gt;m_tsmiExportBiomassToCSV.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;MenuEcospace.Name" xml:space="preserve">
-    <value>MenuEcospace</value>
-  </data>
-  <data name="&gt;&gt;MenuEcospace.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceNew.Name" xml:space="preserve">
-    <value>m_tsmiEcospaceNew</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceNew.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceLoad.Name" xml:space="preserve">
-    <value>m_tsmiEcospaceLoad</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceSave.Name" xml:space="preserve">
-    <value>m_tsmiEcospaceSave</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceSaveAs.Name" xml:space="preserve">
-    <value>m_tsmiEcospaceSaveAs</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceEditMap.Name" xml:space="preserve">
-    <value>m_tsmiEcospaceEditMap</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceEditMap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceEditHabitats.Name" xml:space="preserve">
-    <value>m_tsmiEcospaceEditHabitats</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceEditHabitats.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceEditMPAs.Name" xml:space="preserve">
-    <value>m_tsmiEcospaceEditMPAs</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceEditMPAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceEditRegions.Name" xml:space="preserve">
-    <value>m_tsmiEcospaceEditRegions</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceEditRegions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceEditImportanceLayers.Name" xml:space="preserve">
-    <value>m_tsmiEcospaceEditImportanceLayers</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceEditImportanceLayers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceImportLayers.Name" xml:space="preserve">
-    <value>m_tsmiEcospaceImportLayers</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceImportLayers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;MenuTools.Name" xml:space="preserve">
     <value>MenuTools</value>
   </data>
   <data name="&gt;&gt;MenuTools.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsmiEcotracer.Name" xml:space="preserve">
-    <value>m_tsmiEcotracer</value>
+  <data name="&gt;&gt;MenuEcotracer.Name" xml:space="preserve">
+    <value>MenuEcotracer</value>
   </data>
-  <data name="&gt;&gt;m_tsmiEcotracer.Type" xml:space="preserve">
+  <data name="&gt;&gt;MenuEcotracer.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiEcotracerNew.Name" xml:space="preserve">
