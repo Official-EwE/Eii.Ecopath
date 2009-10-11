@@ -380,7 +380,7 @@ Public Class cPSDModel
             bSuccess = True
         Else
             If (msg Is Nothing) Then
-                msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_ERROR, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                msg = New cMessage(My.Resources.CoreMessages.PSD_ERROR_WEIGHTCLASSES, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = False
             End If
         End If
