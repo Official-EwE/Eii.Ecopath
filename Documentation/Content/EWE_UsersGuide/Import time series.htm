@@ -10,21 +10,23 @@
         <h4>The time series data file</h4>
         <p>For historical comparison data, you can leave cells blank for which you have no data.&#160; Ecosim will assume that the first calendar year for which you enter a data row (e.g., 1976) is to be the simulation start year. Forcing time series must have an entry for every year of the simulation. Note that relative fishing rate by gear type must be scaled so relative value is 1.0 for the Ecopath base year (year for which catches are provided to Ecopath). </p>
         <p>The spreadsheet must be identical in format as shown in Figure 8.8 (i.e., cells 1-3 in the first column must read “Name”, “Pool code” and “Type” respectively and the years of the simulation must be listed below these in the first column).&#160; For each data series (column) you must enter the Ecopath group or fleet number (Pool code) and specify the data type (see list of data types below). You can use the first row (Name) to describe the group and the data. This information will be displayed on output graphs.</p>
-		<p>Optionally, a row labelled “Weight” can be inserted between the name and pool code rows, in which users can specify time series weights. If this row is omitted, time series will be imported with a default weight of 1.</p>
+        <p>Optionally, a row labelled “Weight” can be inserted between the name and pool code rows, in which users can specify time series weights. If this row is omitted, time series will be imported with a default weight of 1.</p>
         <p><b>Overview of data types:</b>
         </p>
         <p>-1 Force biomass (forcing) </p>
-        <p>0 Relative biomass </p>
+        <p>0 Relative biomass *</p>
         <p>1 Absolute biomass </p>
-        <p>2 Time forcing data (forcing) * </p>
+        <p>2 Time forcing data (forcing) **</p>
         <p>3 Effort data by gear type (forcing) </p>
         <p>4 Fishing mortality, (F) by pool (forcing) </p>
         <p>5 Total mortality, (Z) by pool </p>
-		<p>-5 Forced total mortality (Z) (forcing) </p>
+        <p>-5 Forced total mortality (Z) (forcing) </p>
         <p>6 Catches </p>
-		<p>-6 Forced catches (forcing) † </p>
+        <p>-6 Forced catches (forcing) † </p>
         <p>7 Average weight (stanzas only) </p>
-        <p>* Using data type 2, you can force nutrient concentrations (see <a href="Ecosim parameters.htm">Ecosim parameters</a> and links therein); parameters that affect trophic interactions through abiotic factors (see <a href="Forcing function.htm">Forcing function</a> and <a href="Apply forcing function consumer.htm">Apply FF (consumer)</a>) or primary production (see <a href="Apply forcing function primary.htm">Apply FF (primary producer)</a>).</p>
+        <p>* The software takes the ratio of ‘observed’ to estimated value for the years where there are observations, log it, ln(Oi/Ei). Then we estimate a scaling factor, S, as, S = exp[sum(ln(Oi/Ei))/count(i)]. Each of the observations is then plotted on top of the estimated value as Oi / S. (Oi Observed parameter no i,
+Ei  Estimated parameter no i )</p>
+        <p>** Using data type 2, you can force nutrient concentrations (see <a href="Ecosim parameters.htm">Ecosim parameters</a> and links therein); parameters that affect trophic interactions through abiotic factors (see <a href="Forcing function.htm">Forcing function</a> and <a href="Apply forcing function consumer.htm">Apply FF (consumer)</a>) or primary production (see <a href="Apply forcing function primary.htm">Apply FF (primary producer)</a>).</p>
         <p>† Forcing catches enables<a href="Using Ecosim for Stock Reduction.htm"> Use of Ecosim for Stock Reduction Analysis</a>.</p>
         <p>How to import a time series data file</p>
         <p>Important note. After importing a time series file, you must weight the time series using the <a href="Time series.htm">Time series</a> form.</p>
