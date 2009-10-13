@@ -7,6 +7,7 @@ Imports EwEUtils.Core
 
 Public Class cEcospaceLayerPort
     Inherits cEcospaceLayerIntegerNxM
+    Implements IEcospaceLayerFleet
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
         MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerPort)
@@ -15,14 +16,15 @@ Public Class cEcospaceLayerPort
 
 #Region " Cell interaction "
 
-    Private m_iFleet As Integer = 1
+    Private m_iFleet As Integer = 0
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the fleet that this layer represents.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Fleet() As Integer
+    Public Property Fleet() As Integer _
+        Implements IEcospaceLayerFleet.Fleet
         Get
             Return Me.m_iFleet
         End Get

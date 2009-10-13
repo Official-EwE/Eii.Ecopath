@@ -37,11 +37,11 @@ Namespace Ecospace.Basemap.Layers
         ''' -------------------------------------------------------------------
         Public Property Fleet() As Integer
             Get
-                Dim layerCore As cEcospaceLayerPort = DirectCast(Me.Layer.Data, cEcospaceLayerPort)
+                Dim layerCore As IEcospaceLayerFleet = DirectCast(Me.Layer.Data, IEcospaceLayerFleet)
                 Return layerCore.Fleet
             End Get
             Set(ByVal value As Integer)
-                Dim layer As cEcospaceLayerPort = DirectCast(Me.Layer.Data, cEcospaceLayerPort)
+                Dim layer As IEcospaceLayerFleet = DirectCast(Me.Layer.Data, IEcospaceLayerFleet)
                 ' Will fleet index change?
                 If value <> layer.Fleet Then
                     ' #Yes: update fleet index in the underlying Ecospace layer
