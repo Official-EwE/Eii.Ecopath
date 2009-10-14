@@ -183,6 +183,8 @@ Public Class cEcosimMonteCarlo
         m_stanza = m_ecosim.m_stanza
         m_tracerData = m_ecosim.TracerData
 
+        Ntrials = 20 'default number of trials
+
     End Sub
 
 
@@ -206,7 +208,6 @@ Public Class cEcosimMonteCarlo
             Next
             CalculateUpperLowerLimits(False)
 
-            Ntrials = 20 'default number of trials
             Return True
         Catch ex As Exception
             cLog.Write(ex)
