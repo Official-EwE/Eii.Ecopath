@@ -232,6 +232,8 @@ Namespace Ecospace
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
 
+            Me.m_lblProgress.Text = ""
+
             'Start tracking ConcTracing setting
             Me.m_bpConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
             AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
@@ -710,6 +712,8 @@ Namespace Ecospace
         ''' <remarks></remarks>
         Private Sub onEcospaceTimeStep(ByRef TimeStepData As cEcospaceTimestep)
 
+            Dim parms As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
+
             ' Biomass plotting
             ' For each time step, we get the Biomass from the core and store it into our array
             ' The following algorithm was extracted from EwE5. Biomass Log plotting, the value between 0.1 to 10. 
@@ -735,6 +739,11 @@ Namespace Ecospace
 
             'Update the running simulation years progress label.
             AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.UseDefault, CSng(Me.m_iTimeStepCur / Me.m_core.nEcospaceTimeSteps))
+
+            ' Update local time
+            Me.m_lblProgress.Text = String.Format(My.Resources.STATUS_ECOSPACE_PROGRESS, _
+                                                  Me.m_sg.FormatNumber(Me.m_iTimeStepCur / parms.NumberOfTimeStepsPerYear), _
+                                                  Me.m_core.nEcospaceYears)
 
             ' Store time step data
             Me.m_dataTimeStep = TimeStepData
@@ -788,6 +797,7 @@ Namespace Ecospace
                     'this message will be sent before RunEcospace has returned!!!!
                     Me.UpdateControls()
                     AppLauncher.GetInstance().SetStatusText("", TriState.False)
+                    Me.m_lblProgress.Text = ""
 
                 Case eMessageType.EcosimNYearsChanged
                     Me.InitUIParams()

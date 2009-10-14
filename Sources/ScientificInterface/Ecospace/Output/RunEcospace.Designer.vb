@@ -54,6 +54,7 @@ Namespace Ecospace
             Me.m_tabSmallMultiples = New System.Windows.Forms.TabPage
             Me.m_tabPlot = New System.Windows.Forms.TabPage
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl
+            Me.m_lblProgress = New System.Windows.Forms.Label
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -148,6 +149,7 @@ Namespace Ecospace
             '
             'm_scMain.Panel1
             '
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblProgress)
             Me.m_scMain.Panel1.Controls.Add(Me.m_plDistribution)
             Me.m_scMain.Panel1.Controls.Add(Me.m_plDisplayOptions)
             Me.m_scMain.Panel1.Controls.Add(Me.m_tlpRun)
@@ -276,6 +278,11 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinY = 0
             Me.m_zgPlotLarge.ScrollMinY2 = 0
             '
+            'm_lblProgress
+            '
+            resources.ApplyResources(Me.m_lblProgress, "m_lblProgress")
+            Me.m_lblProgress.Name = "m_lblProgress"
+            '
             'RunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -286,6 +293,7 @@ Namespace Ecospace
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.Panel1.ResumeLayout(False)
+            Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
             Me.m_plDistribution.ResumeLayout(False)
@@ -326,6 +334,7 @@ Namespace Ecospace
         Private WithEvents m_rbDisplayContaminantC As System.Windows.Forms.RadioButton
         Private WithEvents m_rbDisplayCoverB As System.Windows.Forms.RadioButton
         Private WithEvents m_cbMPA As System.Windows.Forms.CheckBox
+        Private WithEvents m_lblProgress As System.Windows.Forms.Label
 
  
     End Class
