@@ -20,18 +20,40 @@ Partial Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Private Class cEwEFormStateHelper
 
-        Private WithEvents m_csm As cCoreStateMonitor
-        Private m_dp As DockPanel
+#Region " Privates "
+
+        ''' <summary>Core state monitor that is being observed.</summary>
+        Private WithEvents m_csm As cCoreStateMonitor = Nothing
+        ''' <summary>Dock panel containing the forms to maintain.</summary>
+        Private m_dp As DockPanel = Nothing
+
+#End Region ' Privates
+
+#Region " Construction "
 
         Public Sub New(ByVal csm As cCoreStateMonitor, ByVal dp As DockPanel)
             Me.m_dp = dp
             Me.m_csm = csm
         End Sub
 
+#End Region ' Construction
+
+#Region " Events "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler; responds to core execution state changes.
+        ''' </summary>
+        ''' <param name="csm">Core state monitor that threw the event.</param>
+        ''' -------------------------------------------------------------------
         Private Sub m_csm_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
             Handles m_csm.CoreExecutionStateEvent
             Me.UpdateFormStates()
         End Sub
+
+#End Region ' Events
+
+#Region " Internals "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -73,6 +95,11 @@ Partial Public Class AppLauncher
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Manage form states in response to the core execution state.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Sub UpdateFormStates()
 
             Dim stateForm As eCoreExecutionState = eCoreExecutionState.Idle
@@ -100,7 +127,8 @@ Partial Public Class AppLauncher
                     bMustCloseForm = Me.m_csm.IsExecutionStateSuperceded(stateForm) = False
 
                     ' Check if form should be disabled
-                    ' A form should be disabled if it provides inputs while path, sim or space are running
+                    ' A form should be disabled if it is an input form; path, sim or space are running,
+                    ' and the form is not used to start the runs.
                     bMustDisableForm = (Me.m_csm.IsEcopathRunning Or _
                                         Me.m_csm.IsEcosimRunning Or _
                                         Me.m_csm.IsEcospaceRunning) And _
@@ -112,19 +140,14 @@ Partial Public Class AppLauncher
                     f.Close()
                 Else
                     ' #No: update enabled state
-                    Dim bIsEnabled As Boolean = f.Enabled
-                    If bIsEnabled = bMustDisableForm Then
-                        ' JS 14oct09: not activated this yet; the run forms themselves should be excluded
-                        '             from this activity and there is no way (yet) to distinguish
-                        '             generic input forms from Run forms.
-                        f.Enabled = (bMustDisableForm = False)
-                    End If
+                    f.Enabled = (bMustDisableForm = False)
                 End If
-            Next
 
-            'Me.m_dp.Refresh()
+            Next f
 
         End Sub
+
+#End Region ' Internals
 
     End Class
 
