@@ -72,7 +72,7 @@ Public Class StatusPanel
         If (src = eCoreComponentType.NotSet) Then Return
 
         If bSet Then
-            mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, Me)
+            mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, AppLauncher.GetInstance().SyncObject)
             Me.m_dtMessageHanders(src) = mh
             core.Messages.AddMessageHandler(mh)
         Else

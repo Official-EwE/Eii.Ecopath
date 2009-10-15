@@ -548,6 +548,12 @@ Public Class cEcosimDatastructures
     Public PredictSimEffort As Boolean
 
 
+    ''' <summary>
+    ''' Is Ecosim running on a seperate thread from the interface
+    ''' </summary>
+    ''' <remarks>True if Ecosim is running on a seperate thread. False otherwise</remarks>
+    Public bMultiThreaded As Boolean
+
 
     Public Sub RedimVars()
 

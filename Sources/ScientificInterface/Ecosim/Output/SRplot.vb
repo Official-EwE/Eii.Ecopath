@@ -128,8 +128,12 @@ Namespace Ecosim
             Me.LoadGroups()
             Me.InitGraphPane(Me.m_graphpane)
 
+            Dim m_SyncObj As System.Threading.SynchronizationContext = System.Threading.SynchronizationContext.Current
+            'if there is no current context then create a new one on this thread. 
+            If (m_SyncObj Is Nothing) Then m_SyncObj = New System.Threading.SynchronizationContext()
+
             ' Start listening for core messages
-            Me.m_mhEcosim = New cMessageHandler(AddressOf EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me)
+            Me.m_mhEcosim = New cMessageHandler(AddressOf EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, m_SyncObj)
             Me.m_core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged

@@ -78,7 +78,7 @@ Public Class frmEwE
 
         ''' <summary>Administration of registered forms per message source type.</summary>
         Private m_dictSourceToForm As New Dictionary(Of eCoreComponentType, List(Of frmEwE))
-        Private m_so As ISynchronizeInvoke = Nothing
+        Private m_so As System.Threading.SynchronizationContext = Nothing
         Private m_core As cCore = Nothing
 
 #End Region ' Internal admin
@@ -94,7 +94,7 @@ Public Class frmEwE
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub New()
-            Me.m_so = AppLauncher.GetInstance()
+            Me.m_so = AppLauncher.GetInstance().SyncObject
             Me.m_core = cCore.GetInstance()
 
             Me.Initialize()

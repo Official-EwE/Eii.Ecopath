@@ -44,7 +44,7 @@ Namespace Properties
     Public Class cPropertyManager
 
         ''' <summary>Message handler synchronizer.</summary>
-        Private m_sync As ISynchronizeInvoke = Nothing
+        Private m_SyncObj As System.Threading.SynchronizationContext = Nothing
 
         ''' <summary>Error property</summary>
         Private m_propNoData As cStringProperty = Nothing
@@ -66,6 +66,12 @@ Namespace Properties
             Me.m_propNoData = New cStringProperty("")
             Me.m_propNoData.SetStyle(cStyleGuide.eStyleFlags.ErrorEncountered Or cStyleGuide.eStyleFlags.NotEditable)
             Me.m_propNoData.SetValue(My.Resources.GENERIC_TEXT_NODATA)
+
+            Me.m_SyncObj = System.Threading.SynchronizationContext.Current
+            'if there is no current context then create a new one on this thread. 
+            If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
+
+
             ' Start listening to core messages
             Me.InitializeMessageHandlers()
         End Sub
@@ -122,14 +128,14 @@ Namespace Properties
 
 #Region " Config "
 
-        Public Property SyncObject() As ISynchronizeInvoke
-            Get
-                Return Me.m_sync
-            End Get
-            Set(ByVal value As ISynchronizeInvoke)
-                Me.m_sync = value
-            End Set
-        End Property
+        'Public Property SyncObject() As System.Threading.SynchronizationContext
+        '    Get
+        '        Return Me.m_SyncObj
+        '    End Get
+        '    Set(ByVal value As System.Threading.SynchronizationContext)
+        '        Me.m_SyncObj = value
+        '    End Set
+        'End Property
 
 #End Region ' Config
 
@@ -398,13 +404,13 @@ Namespace Properties
 
             Dim core As cCore = cCore.GetInstance()
 
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_sync))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_sync))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_sync))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecotracer, eMessageType.Any, Me.m_sync))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.MSE, eMessageType.Any, Me.m_sync))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.FishingPolicySearch, eMessageType.Any, Me.m_sync))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimFitToTimeSeries, eMessageType.Any, Me.m_sync))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_SyncObj))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_SyncObj))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecotracer, eMessageType.Any, Me.m_SyncObj))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.MSE, eMessageType.Any, Me.m_SyncObj))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.FishingPolicySearch, eMessageType.Any, Me.m_SyncObj))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimFitToTimeSeries, eMessageType.Any, Me.m_SyncObj))
 
         End Sub
 

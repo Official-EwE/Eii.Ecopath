@@ -4,6 +4,8 @@ Option Explicit On
 Imports EwEPlugin
 Imports EwEUtils.Core
 
+Imports System.Threading
+
 
 Namespace Ecosim
 
@@ -31,6 +33,8 @@ Namespace Ecosim
     ''' <param name="data">cEcoSimResults object containing results from this time step (iTime)</param>
     ''' <remarks>This delegate will get called at the end of each time step to pass data out of the model</remarks>
     Public Delegate Sub EcoSimTimeStepDelegate(ByVal iTime As Long, ByVal data As cEcoSimResults)
+
+    Public Delegate Sub EcoSimRunCompletedDelegate(ByVal obj As Object)
 
  
     ''' <summary>
@@ -215,8 +219,8 @@ Namespace Ecosim
         Private m_Results As cEcoSimResults
 
         Private m_bInit As Boolean
-        Private m_ProgressDelegate As EcoSimTimeStepDelegate = Nothing
-        Private m_SynEcoSim As System.ComponentModel.ISynchronizeInvoke
+        Private m_OnTimeStepDelegate As EcoSimTimeStepDelegate = Nothing
+        Private m_OnRunCompletedDelegate As EcoSimRunCompletedDelegate
 
 
         'Management Strategy Evaluator 
@@ -228,11 +232,19 @@ Namespace Ecosim
         ''' <remarks></remarks>
         Public bStopRunning As Boolean
 
+        Private m_SyncObj As System.Threading.SynchronizationContext
+
 #End Region
 
         Sub New()
             m_bInit = False
             bStopRunning = False
+
+            Me.m_SyncObj = System.Threading.SynchronizationContext.Current
+            'if there is no current context then create a new one on this thread. 
+            'this happens if no interface has been created yet(I think...)
+            If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
+
 
         End Sub
 
@@ -334,10 +346,19 @@ Namespace Ecosim
         ''' <remarks></remarks>
         Friend Property TimeStepDelegate() As EcoSimTimeStepDelegate
             Get
-                Return m_ProgressDelegate
+                Return m_OnTimeStepDelegate
             End Get
             Set(ByVal value As EcoSimTimeStepDelegate)
-                m_ProgressDelegate = value
+                m_OnTimeStepDelegate = value
+            End Set
+        End Property
+
+        Friend Property RunCompletedDelegate() As EcoSimRunCompletedDelegate
+            Get
+                Return Me.m_OnRunCompletedDelegate
+            End Get
+            Set(ByVal value As EcoSimRunCompletedDelegate)
+                m_OnRunCompletedDelegate = value
             End Set
         End Property
 
@@ -535,6 +556,31 @@ Public Property PluginManager() As cPluginManager
         End Sub
 
 #End Region
+
+
+        Private Sub RunModelThreaded(ByVal obj As Object)
+
+            Me.RunModelValue(m_Data.NumYears, m_search.Frates, m_search.nBlocks)
+
+            Try
+                If Me.m_Data.bMultiThreaded Then
+                    If Me.m_OnRunCompletedDelegate <> Nothing Then
+                        m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.onRunCompleted), Nothing)
+                    End If
+                End If
+            Catch ex As Exception
+                Debug.Assert(False, "Exception calling Ecosim.OnRunCompleted() Exception: " & ex.Message)
+            End Try
+
+            'xxxxxxxxxxxxxxxxx
+            'At this time the multithreading can only be turned On by a plugin
+            'If multithreading is on for other modules(i.e. ValueChain or Fishing Policy Search...) it must be turned Off for them to function properly
+            'So turn if Off by default
+            'It will only be valid for one run of Ecosim
+            'xxxxxxxxxxxxxxxxxx
+            Me.m_Data.bMultiThreaded = False
+
+        End Sub
 
         ''' <summary>
         ''' Overloaded RunModelValue() provided so that older search code will run without a major over haul
@@ -1502,7 +1548,11 @@ Public Property PluginManager() As cPluginManager
                     End If
                 End If
 
-                RunModelValue(m_Data.NumYears, m_search.Frates, m_search.nBlocks)
+                If Me.m_Data.bMultiThreaded Then
+                    ThreadPool.QueueUserWorkItem(AddressOf Me.RunModelThreaded)
+                Else
+                    RunModelValue(m_Data.NumYears, m_search.Frates, m_search.nBlocks)
+                End If
 
                 bsuccess = True
 
@@ -1519,6 +1569,13 @@ Public Property PluginManager() As cPluginManager
 
         End Function
 
+
+        Private Sub onRunCompleted(ByVal Obj As Object)
+            If Me.m_OnRunCompletedDelegate <> Nothing Then
+                Me.m_OnRunCompletedDelegate.Invoke(Obj)
+            End If
+        End Sub
+
         ''' <summary>
         ''' Turn off all searches
         ''' </summary>
@@ -1530,18 +1587,46 @@ Public Property PluginManager() As cPluginManager
             '  m_search.clearBaseYear() 'sets baseyear to zero
         End Sub
 
-
+        ''' <summary>
+        ''' Wraps all the calls to the TimeStep delegate into on method
+        ''' </summary>
+        ''' <param name="iTime"></param>
+        ''' <remarks></remarks>
         Private Sub FireOnTimeStep(ByVal iTime As Integer)
 
-            If m_ProgressDelegate IsNot Nothing Then
+            If m_OnTimeStepDelegate IsNot Nothing Then
                 Try
-                    m_ProgressDelegate(iTime, Me.m_Results)
+                    If Me.m_Data.bMultiThreaded Then
+                        'Marshall the call to an interface onto the thread that created Ecosim via the 
+                        Me.MarshallTimeStep(iTime)
+                    Else
+                        'Call the TimeStepDelegate directly
+                        Me.callTimeStep(iTime)
+                    End If
+
                 Catch ex As Exception
                     'swallow any errors so ecosim can keep running
                     cLog.Write(ex)
                     Debug.Assert(False, "Ecosim Error: the interface Ecosim Time Step handler through an error that was not handled.")
                 End Try
             End If
+        End Sub
+
+        Private Sub callTimeStep(ByVal Args As Object)
+            Dim itime As Integer = Args
+            Me.m_OnTimeStepDelegate(itime, Me.m_Results)
+        End Sub
+
+        ''' <summary>
+        ''' Marshall the TimeStep delegate call onto the thread that created Ecosim
+        ''' </summary>
+        ''' <param name="Args"></param>
+        ''' <remarks></remarks>
+        Private Sub MarshallTimeStep(ByVal Args As Object)
+
+            Debug.Assert(TypeOf Args Is Integer)
+            m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf callTimeStep), Args)
+
         End Sub
 
         ''' <summary>
@@ -1811,7 +1896,7 @@ Public Property PluginManager() As cPluginManager
 
             'ToDo_jb AccumulateDataInfo MakeTestData is only set to True from EwE5 Ecoranger EwE6 does not contain Ecoranger so MakeTestData is never True
             Dim i As Integer, j As Integer, iDyear As Integer, Zstat As Single ', bplot As Single
-            Dim Zest As Single, SDtest As Single 
+            Dim Zest As Single, SDtest As Single
             SDtest = 0.05
 
             Try
@@ -2783,7 +2868,7 @@ Public Property PluginManager() As cPluginManager
 
             ReDim m_RefData.DatSS(m_RefData.NdatType)
             ReDim m_RefData.DatQ(m_RefData.NdatType)
-            ReDim m_RefData.eDatq(m_RefData.NdatType)
+            ReDim m_RefData.eDatQ(m_RefData.NdatType)
 
             For j = 1 To m_RefData.NdatType
                 If DatNobs(j) > 0 Then
@@ -2803,7 +2888,7 @@ Public Property PluginManager() As cPluginManager
 
                         m_RefData.DatSS(j) = DatSumZ2(j) - DatSumZ(j) ^ 2 / DatNobs(j)
                         m_RefData.DatQ(j) = DatSumZ(j) / DatNobs(j)
-                        m_RefData.eDatq(j) = Math.Exp(m_RefData.DatQ(j))
+                        m_RefData.eDatQ(j) = Math.Exp(m_RefData.DatQ(j))
 
                         'If m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then
                         '    Start_Wt = mean_BdyWt(m_RefData.DatPool(j), 6)

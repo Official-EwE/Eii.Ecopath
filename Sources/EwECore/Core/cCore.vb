@@ -120,6 +120,8 @@ Public Class cCore
     ''' <summary>Class to wrap stand alone functions for internal and external access.</summary>
     Private m_Functions As cEcoFunctions
 
+    Private m_SyncObj As System.Threading.SynchronizationContext
+
 #Region "Private Initialization Flags"
 
     ''' <summary>Has the Core been initialized.</summary>
@@ -540,8 +542,9 @@ Public Class cCore
         Me.m_StateMonitor = New cCoreStateMonitor(Me)
         Me.m_StateManager = New cCoreStateManager(Me)
 
-        ' Create a semaphore object to protect EcoSim from running in multiple instances at the same time
-        Me.m_EcoSimSemaphor = New System.Threading.Semaphore(1, 1, "EcoSim")
+        Me.m_SyncObj = System.Threading.SynchronizationContext.Current
+        'if there is no current context then create a new one on this thread. 
+        If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
 
     End Sub
 
@@ -1019,7 +1022,7 @@ Public Class cCore
         Try
             'build a new EcoPath Model object
             m_EcoPath = New Ecopath.cEcoPathModel(Me.m_Functions)
-            m_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Nothing))
+            m_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
 
             'Joeh
             m_EcoPath.m_stanza = m_Stanza
@@ -1060,7 +1063,7 @@ Public Class cCore
     Private Function InitPSDModel() As Boolean
         Try
             m_psdModel = New cPSDModel
-            m_psdModel.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.PSDMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Nothing))
+            m_psdModel.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.PSDMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
 
             m_psdModel.m_Data = m_EcoPathData
             m_psdModel.m_stanza = m_Stanza
@@ -4393,15 +4396,12 @@ Public Class cCore
     'Delegate for Time-Step notification from the interface 
     Private m_InterfaceDelegate As Ecosim.EcoSimTimeStepDelegate
 
-    'Synchronization object from the user interface that handles the passing of data from
-    Private m_SynEcoSim As System.ComponentModel.ISynchronizeInvoke
+    ''thread that the EcoSim model is running on
+    'Private m_EcoSimThread As System.Threading.Thread
 
-    'thread that the EcoSim model is running on
-    Private m_EcoSimThread As System.Threading.Thread
-
-    'Semaphore object that is used to stop multiple instanse of EcoSim from running at one time
-    'the EcoSim model itself is not thread safe 
-    Private m_EcoSimSemaphor As System.Threading.Semaphore
+    ''Semaphore object that is used to stop multiple instanse of EcoSim from running at one time
+    ''the EcoSim model itself is not thread safe 
+    'Private m_EcoSimSemaphor As System.Threading.Semaphore
 
 #End Region ' Variables
 
@@ -4510,7 +4510,7 @@ Public Class cCore
 
             m_EcoSim = New Ecosim.cEcoSimModel
 
-            m_EcoSim.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Nothing))
+            m_EcoSim.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_SyncObj))
 
             'set the output variables from EcoPath as the Input for EcoSim
             'this sets the baseline state for EcoSim as the last run EcoPath model
@@ -5775,50 +5775,73 @@ Public Class cCore
         ' Update core state monitor
         Me.m_StateMonitor.SetEcosimRun()
 
-        m_EcoSim.TimeStepDelegate = TimeStepDelegate
+        Me.m_EcoSim.TimeStepDelegate = TimeStepDelegate
+
+        'if Ecosim is being run on a thread then setup the RunCompletedDelegate
+        'this will call  Me.EcoSimRunCompleted(Nothing) once Ecosim has completed the run
+        Me.m_EcoSim.RunCompletedDelegate = Nothing
+        If Me.m_EcoSimData.bMultiThreaded Then
+            Me.m_EcoSim.RunCompletedDelegate = AddressOf Me.EcoSimRunCompleted
+        End If
 
         'make sure all the searches are turned off
         m_EcoSim.setSearchOff()
-
         Me.ResetEcosimGroupOutputs()
-
         m_EcoSim.bStopRunning = False
+
         m_EcoSim.Run()
 
-        Me.m_TSData.Update()
-
-        LoadEcosimGroupOutputs()
-        LoadEcosimFleetOutputs()
-        LoadEcosimTimeSeries()
-
-        LoadEcosimStats()
-        loadEcoTracerResults()
-
-        If m_EcoSimData.PredictSimEffort Or Me.m_StateMonitor.RequiresEcosimFullInit Then
-            'if effort was predicted then reload the shapes
-            m_ShapeManagers.Item(eDataTypes.FishMort).Load()
-            m_ShapeManagers.Item(eDataTypes.FishingEffort).Load()
-
-            'tell the interface that the shapes have changed
-            Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
-            Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
-
+        'if not mulithreaded then the Ecosim run has completed 
+        'do any processing to complete the run (populate objects, send any messages...)
+        'if running in on a thread then Me.EcoSimRunCompleted(Nothing) will be called via the delegate set before the run
+        If Not Me.m_EcoSimData.bMultiThreaded Then
+            Me.EcoSimRunCompleted(Nothing)
         End If
-
-        'make sure ecosim can start again
-        m_EcoSim.bStopRunning = False
-
-        m_publisher.AddMessage(New cMessage("Ecosim run completed.", eMessageType.EcosimRunCompleted, _
-                                        eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.NotSet))
-
-        ' Update core state monitor
-        Me.m_StateMonitor.SetEcosimCompleted()
-        ' Send messages after
-        m_publisher.sendAllMessages()
 
         Return True
 
     End Function
+
+    Private Sub EcoSimRunCompleted(ByVal obj As Object)
+        Try
+
+            Me.m_TSData.Update()
+
+            LoadEcosimGroupOutputs()
+            LoadEcosimFleetOutputs()
+            LoadEcosimTimeSeries()
+
+            LoadEcosimStats()
+            loadEcoTracerResults()
+
+            If m_EcoSimData.PredictSimEffort Or Me.m_StateMonitor.RequiresEcosimFullInit Then
+                'if effort was predicted then reload the shapes
+                m_ShapeManagers.Item(eDataTypes.FishMort).Load()
+                m_ShapeManagers.Item(eDataTypes.FishingEffort).Load()
+
+                'tell the interface that the shapes have changed
+                Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
+                Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
+
+            End If
+
+            'make sure ecosim can start again
+            m_EcoSim.bStopRunning = False
+
+            m_publisher.AddMessage(New cMessage("Ecosim run completed.", eMessageType.EcosimRunCompleted, _
+                                            eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.NotSet))
+
+            ' Update core state monitor
+            Me.m_StateMonitor.SetEcosimCompleted()
+            ' Send messages after
+            m_publisher.sendAllMessages()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".EcoSimRunCompleted() Exception: " & ex.Message)
+        End Try
+
+
+    End Sub
 
     ''' <summary>
     ''' Creates a new cEcoSimScenario object for this nScenario from the uderlying parameters in EcoSim
@@ -6168,7 +6191,7 @@ Public Class cCore
 
         m_Ecospace = New cEcoSpace
 
-        m_Ecospace.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Nothing))
+        m_Ecospace.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_SyncObj))
 
         m_EcoSpaceData = New cEcospaceDataStructures
         m_SpaceTSData = New cEcospaceTimeSeriesDataStructures

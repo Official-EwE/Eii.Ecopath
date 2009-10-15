@@ -116,6 +116,8 @@ Public Class AppLauncher
     Private m_applictionStatusNotifier As cApplicationStatusNotifier = Nothing
     Private m_applicationComponents As ApplicationComponents = Nothing
 
+    Private m_SyncObj As System.Threading.SynchronizationContext
+
 #End Region ' Variables
 
 #Region " Singleton "
@@ -139,6 +141,15 @@ Public Class AppLauncher
         AppLauncher.__inst__ = Me
 
         Me.m_applictionStatusNotifier = New cApplicationStatusNotifier(Me)
+
+
+        If Me.m_SyncObj Is Nothing Then
+            'create the sync object on the same thread that created the AppLauncher
+            Me.m_SyncObj = System.Threading.SynchronizationContext.Current
+            'if there is no current context then create a new one on this thread. 
+            If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
+        End If
+
 
     End Sub
 
@@ -166,6 +177,13 @@ Public Class AppLauncher
             Return Me.m_applicationComponents
         End Get
     End Property
+
+    Public ReadOnly Property SyncObject() As System.Threading.SynchronizationContext
+        Get
+            Return Me.m_SyncObj
+        End Get
+    End Property
+
 
 #End Region ' Properties
 
@@ -837,12 +855,12 @@ Public Class AppLauncher
 
         ' Get one and only core
         Me.m_core = cCore.GetInstance()
+
         ' Config state monitor
         Me.m_core.StateMonitor.SyncObject = Me
 
         ' Get one and only property manager AFTER the core has been created.
         Me.m_propertyManager = cPropertyManager.GetInstance()
-        Me.m_propertyManager.SyncObject = Me
 
         ' Create plugin manager for this GUI
         Me.m_pluginManager = New cPluginManager()

@@ -228,7 +228,7 @@ Namespace Ecospace.Basemap.Layers
                 Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name)
 
             Me.m_core = cCore.GetInstance()
-            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Nothing)
+            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, AppLauncher.GetInstance().SyncObject)
             Me.m_core.Messages.AddMessageHandler(Me.m_mh)
 
             ' Sanity checks

@@ -44,7 +44,7 @@ Imports EwEUtils.Core
 Public Class cMessageHandler
 
     Private m_DelegateNotifier As EwECore.cCore.CoreMessageDelegate
-    Private m_syncobj As ISynchronizeInvoke = Nothing
+    Private m_syncobj As System.Threading.SynchronizationContext = Nothing
     Private m_corecomponent As eCoreComponentType
     Private m_msgtype As eMessageType
 
@@ -58,12 +58,15 @@ Public Class cMessageHandler
     ''' <para>For a default handler set the MessageTypeToHandle flag to eMessageType.Any this will send any unhandled message to this delegate.</para>
     ''' <para>To have s single delegate handle multiple messages create a new cMessageHandler with this same 'DelegateToCall' argument and a different MessageTypeToHandle flag.</para>
     ''' </remarks>
-    Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate, ByVal SourceToHandle As eCoreComponentType, ByVal MessageTypeToHandle As eMessageType, ByVal syncobj As ISynchronizeInvoke)
-
+    Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate, ByVal SourceToHandle As eCoreComponentType, ByVal MessageTypeToHandle As eMessageType, ByVal syncobj As System.Threading.SynchronizationContext)
+        'Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate, ByVal SourceToHandle As eCoreComponentType, ByVal MessageTypeToHandle As eMessageType, ByVal syncobj As ISynchronizeInvoke)
+        'System.Threading.SynchronizationContext
         Me.m_DelegateNotifier = DelegateToCall
         Me.m_corecomponent = SourceToHandle
         Me.m_msgtype = MessageTypeToHandle
         Me.m_syncobj = syncobj
+
+        Debug.Assert(Me.m_syncobj IsNot Nothing, Me.ToString & ".New() SynchronizationContext must not be Nothing!")
 
     End Sub
 
@@ -96,7 +99,9 @@ Public Class cMessageHandler
                         If Object.ReferenceEquals(Me.m_syncobj, Nothing) Then
                             m_DelegateNotifier(message)
                         Else
-                            Me.m_syncobj.Invoke(Me.m_DelegateNotifier, New Object() {message})
+                            'marshall the call to the delegate onto the thread that created this handler
+                            Me.m_syncobj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.marshallSendMessage), message)
+                            ' Me.m_syncobj.Invoke(Me.m_DelegateNotifier, New Object() {message})
                         End If
                     Catch ex As Exception
                         'Error thrown in the handler by an interface that was not handled 
@@ -130,6 +135,10 @@ Public Class cMessageHandler
 
     End Function
 
+    Private Sub marshallSendMessage(ByVal Message As Object)
+        Me.m_DelegateNotifier.Invoke(Message)
+    End Sub
+
     ''' <summary>
     ''' Test for equality of Delegates.
     ''' </summary>
@@ -151,7 +160,7 @@ Public Class cMessageHandler
     ''' </summary>
     ''' <returns>CoreMessageDelegate delagate object.</returns>
     ''' <remarks>This is used by  Equals() to test for equality of two cMessageHandler objects.</remarks>
-    Public Function getDelegate() As cCore.CoreMessageDelegate
+    Friend Function getDelegate() As cCore.CoreMessageDelegate
         Return m_DelegateNotifier
     End Function
 

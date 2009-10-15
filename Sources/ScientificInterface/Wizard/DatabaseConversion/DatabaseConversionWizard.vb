@@ -182,7 +182,7 @@ Namespace Wizard
 
                     ' Import the model to EwE6 format
                     Dim bSuccess As Boolean = False
-                    Dim mh As cMessageHandler = New cMessageHandler(AddressOf Me.ProgressMessageHandler, eCoreComponentType.DataSource, eMessageType.Any, appl)
+                    Dim mh As cMessageHandler = New cMessageHandler(AddressOf Me.ProgressMessageHandler, eCoreComponentType.DataSource, eMessageType.Any, AppLauncher.GetInstance().SyncObject)
                     Dim mlbi As ModelListboxItem = Nothing
 
                     m_core.Messages.AddMessageHandler(mh)
