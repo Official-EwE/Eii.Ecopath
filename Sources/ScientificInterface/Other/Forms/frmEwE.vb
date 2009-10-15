@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: frmEwE.vb,v $
-' Revision 1.7  2009/03/27 19:23:58  jeroens
-' Cleanup done in overrides
-'
-' Revision 1.6  2009/02/05 21:01:32  jeroens
-' Fixed XML comment confusion
-'
-' Revision 1.5  2009/02/05 17:48:41  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.4  2009/01/19 18:07:25  jeroens
-' MessageHandlers, CoreStateMonitor have sync objects
-'
-' Revision 1.3  2009/01/16 18:30:40  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:55:32  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:32:08  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -276,12 +250,22 @@ Public Class frmEwE
 
 #Region " Form overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Form load event override, retrieves and applies the original form position.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Sub OnLoad(ByVal e As EventArgs)
         MyBase.OnLoad(e)
         cFormPositionSettings.GetInstance().Apply(Me)
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Form close event override, stores the final form position.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
         cFormPositionSettings.GetInstance().Store(Me)
         Me.CoreComponents = Nothing
         MyBase.OnFormClosed(e)
