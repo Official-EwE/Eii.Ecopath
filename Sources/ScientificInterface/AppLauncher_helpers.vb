@@ -373,13 +373,40 @@ Partial Public Class AppLauncher
 
         Private Shared Function ModuleKey(ByVal moduleType As eModuleType) As String
             Select Case moduleType
-                Case eModuleType.Ecosim : Return ",Ecosim_scenario:"
-                Case eModuleType.Ecospace : Return ",Ecospace_scenario:"
-                Case eModuleType.Ecotracer : Return ",Ecotracer_scenario:"
-                Case eModuleType.Dataset : Return ",Ecosim_dataset:"
+                Case eModuleType.Ecosim : Return ";Ecosim_scenario:"
+                Case eModuleType.Ecospace : Return ";Ecospace_scenario:"
+                Case eModuleType.Ecotracer : Return ";Ecotracer_scenario:"
+                Case eModuleType.Dataset : Return ";Ecosim_dataset:"
             End Select
             Return ""
         End Function
+
+        Public Shared Sub BugFix(ByVal alstrMRU As ArrayList)
+
+            Dim strMRU As String = ""
+            Dim strKey As String = ""
+            Dim iKeyPos As Integer = -1
+
+            ' For almost each MRU entry (..wtf..)
+            For i As Integer = 0 To alstrMRU.Count - 2
+                ' Get key
+                strMRU = CStr(alstrMRU.Item(i))
+                ' Has comma?
+                If strMRU.IndexOf(","c) > -1 Then
+                    ' #Yes: check if part of a module key
+                    For Each mt As eModuleType In [Enum].GetValues(GetType(eModuleType))
+                        strKey = ModuleKey(mt).Replace(";"c, ","c)
+                        iKeyPos = strMRU.IndexOf(strKey)
+                        If iKeyPos > -1 Then
+                            strMRU = strMRU.Substring(0, iKeyPos - 1) & ";"c & strMRU.Substring(iKeyPos + 1)
+                        End If
+                    Next
+                    ' Set
+                    alstrMRU.Item(i) = strMRU
+                End If
+            Next
+
+        End Sub
 
         Public Shared Function GetMRUString(ByVal alstrMRU As ArrayList, ByVal strModelName As String, ByVal moduleType As eModuleType) As String
 
@@ -402,7 +429,7 @@ Partial Public Class AppLauncher
                         ' Find first pos of scenario name
                         iNameStartPos = iKeyPos + strModuleKey.Length
                         ' Find next terminator, if any
-                        iNextTerminatorPos = strMRU.IndexOf(CChar(","), iKeyPos + 1)
+                        iNextTerminatorPos = strMRU.IndexOf(CChar(";"), iKeyPos + 1)
                         ' Terminator not found?
                         If iNextTerminatorPos = -1 Then
                             ' #No terminator: name must be the rest of the string
@@ -429,7 +456,7 @@ Partial Public Class AppLauncher
             Dim strMRU As String = CStr(alstrMRU.Item(0))
             Dim strModuleKey As String = MRUHelper.ModuleKey(mt)
             Dim iKeyPos As Integer = strMRU.IndexOf(strModuleKey)
-            Dim iTerminatorPos As Integer = strMRU.IndexOf(CChar(","), iKeyPos + 1)
+            Dim iTerminatorPos As Integer = strMRU.IndexOf(CChar(";"), iKeyPos + 1)
             Dim strLeft As String = String.Empty
             Dim strRight As String = String.Empty
 

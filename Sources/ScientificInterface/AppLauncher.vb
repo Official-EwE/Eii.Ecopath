@@ -490,6 +490,10 @@ Public Class AppLauncher
         Me.ResumeLayout()
         My.Settings.Reload()
 
+        Dim al As ArrayList = My.Settings.MdbRecentlyUsedList
+        MRUHelper.BugFix(al)
+        My.Settings.MdbRecentlyUsedList = al
+
         ' Initialize app components
         Me.m_applicationComponents = New ApplicationComponents()
 
@@ -1452,7 +1456,7 @@ Public Class AppLauncher
 
         For i As Integer = 0 To showCnt - 1
             Dim mnuItem As New ToolStripMenuItem
-            Dim str As String() = CStr(fileList.Item(i)).Split(New Char() {","c})
+            Dim str As String() = CStr(fileList.Item(i)).Split(New Char() {";"c})
             mnuItem.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i + 1, str(0))
             'Add event handler to invoke the model
             AddHandler mnuItem.Click, AddressOf RecentFileClickEventHandler
