@@ -9588,6 +9588,7 @@ Public Class cCore
         Dim idAffected As Integer = 0
         Dim msAffected As eCoreComponentType = eCoreComponentType.NotSet
         Dim rsAffected As eCoreExecutionState = eCoreExecutionState.Idle
+        Dim bBlock As Boolean = False
 
         'Dim objAffected As cCoreInputOutputBase = Nothing
         Dim msg As cMessage = Nothing
@@ -9716,47 +9717,50 @@ Public Class cCore
 
             End Select
 
+            ' Data processed ok?
             If bValidatedOk Then
+
                 ' Notify plug-ins
                 Try
                     Me.PluginManager.DataValidated(vs.VarName, dtAffected)
                 Catch ex As Exception
-
+                    ' NOP
                 End Try
 
-                ' Notify datasource
+                ' Dirty datasource
                 If Not Object.ReferenceEquals(DataSource, Nothing) Then
-                    ' !!!! BAND AID ALERT !!!!
-                    Dim bBlock As Boolean = False
+
+                    ' Block non-stored variables from dirtying the datasource
+                    bBlock = (value.Stored = False)
+
                     ' Block cascaded name changes for groups and fleets
-                    If value.varName = eVarNameFlags.Name Then
-                        bBlock = dtAffected = eDataTypes.EcoPathGroupOutput Or _
+                    If (value.varName = eVarNameFlags.Name) Then
+                        bBlock = bBlock Or _
+                                 dtAffected = eDataTypes.EcoPathGroupOutput Or _
                                  dtAffected = eDataTypes.EcoSimGroupInput Or _
                                  dtAffected = eDataTypes.EcospaceGroup Or _
                                  dtAffected = eDataTypes.EcospaceFleet
                     End If
 
-                    ' Block non-stored variables from dirtying the datasource
-                    If value.Stored = False Then
-                        bBlock = True
-                        ' JS 10oct09: non-stored values may still affect the core run state.
-                        '             I am not sure if commenting out the line below will screw
-                        '             up application dynamics...
-                        'msAffected = eCoreComponentType.NotSet
-                    End If
-
-                    ' Dat anot blocked?
+                    ' Data not blocked?
                     If Not bBlock Then
                         ' #Yes: dirty the data source
                         DataSource.SetChanged(msAffected)
                         ' Notify state monitor of data modification
                         Me.m_StateMonitor.RegisterModification(msAffected)
                     End If
+                End If
 
+                ' Update core run state:
+                ' Block selected variables from affecting the core run state
+                bBlock = (value.AffectsRunState = False)
+
+                If (Not bBlock) Then
                     ' Update state monitor execution state
                     Me.m_StateMonitor.UpdateExecutionState(msAffected, _
                         DirectCast(IIf(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
                 End If
+
             End If
         Next
 
@@ -9764,7 +9768,7 @@ Public Class cCore
             PostVariableUpdated(value, objValidated)
         End If
 
-        ' Update core datastate but send only notifications when NO lock active
+        ' Send only notifications when NO lock active
         Me.m_StateMonitor.UpdateDataState(DataSource, _
             DirectCast(IIf(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
 
