@@ -53,7 +53,7 @@ Public Class WebBrowserDC
         Dim appl As AppLauncher = AppLauncher.GetInstance()
 
         If Path.GetExtension(e.Url.AbsolutePath) = ".eii" Then
-            appl.LoadEcopathModel(e.Url.AbsolutePath)
+            appl.LoadEcopathModel(e.Url.AbsolutePath, AppLauncher.eLoadSourceType.User)
             ' Navigate to default URL
             Me.URL = ""
         End If

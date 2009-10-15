@@ -189,29 +189,58 @@ Public Class AppLauncher
 
 #Region " Public interfaces "
 
+    Public Enum eLoadSourceType As Integer
+        NoIdeaDontLookAtMe = 0
+        CommandLine
+        MRU
+        User
+    End Enum
+
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Open Ecopath model from given location.
     ''' </summary>
     ''' <param name="strFileName">Location of the model to open.</param>
-    ''' <param name="bQuiet">Flag to suppress error feedback.</param>
+    ''' <param name="loadsource">Flag indicating where the load request came from.</param>
     ''' <remarks>This code is designed for strFileName to indicate a path. It should 
     ''' be possible to indicate a database as well. One day...</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Function LoadEcopathModel(ByVal strFileName As String, Optional ByVal bQuiet As Boolean = False) As Boolean
+    Public Function LoadEcopathModel(ByVal strFileName As String, _
+                                     ByVal loadsource As eLoadSourceType) As Boolean
 
         Dim ds As IEwEDataSource = Nothing
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
 
         ' Check if target file exists at all before affecting anything
         If Not File.Exists(strFileName) Then
-            If Not bQuiet Then
-                Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
-                                                            eMessageType.Any, _
-                                                            eCoreComponentType.DataSource, _
-                                                            eMessageImportance.Information))
-            End If
-            Me.RemoveRecentFilesSetting(strFileName)
+
+            ' Handle failure
+            Select Case loadsource
+
+                ' Who asked for this?
+                Case eLoadSourceType.MRU
+                    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
+                                                     eCoreComponentType.DataSource, _
+                                                     eMessageImportance.Warning, _
+                                                     cFeedbackMessage.eReplyStyle.YES_NO)
+
+                    If Me.m_core.Messages.SendMessage(fmsg) Then
+                        If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
+                            Me.RemoveRecentFilesSetting(strFileName)
+                        End If
+                    End If
+
+                Case eLoadSourceType.User, eLoadSourceType.CommandLine
+                    Dim msg As New cMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
+                                            eMessageType.Any, _
+                                            eCoreComponentType.DataSource, _
+                                            eMessageImportance.Warning)
+                    Me.m_core.Messages.SendMessage(msg)
+
+                Case eLoadSourceType.NoIdeaDontLookAtMe
+                    ' Ok, ok, don't get upset
+
+            End Select
             Return False
         End If
 
@@ -234,11 +263,30 @@ Public Class AppLauncher
         ds = cDataSourceFactory.Create(strFileName)
 
         If (ds Is Nothing) Then
-            If Not bQuiet Then
-                Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.PROMPT_INVALIDMODEL, strFileName), _
-                        eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Information))
-            End If
-            Me.RemoveRecentFilesSetting(strFileName)
+            Select Case loadsource
+
+                Case eLoadSourceType.MRU
+                    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_INVALIDMODEL_REMOVEMRU, strFileName), _
+                                                     eCoreComponentType.DataSource, _
+                                                     eMessageImportance.Critical, _
+                                                     cFeedbackMessage.eReplyStyle.YES_NO)
+                    If Me.m_core.Messages.SendMessage(fmsg) Then
+                        If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
+                            Me.RemoveRecentFilesSetting(strFileName)
+                        End If
+                    End If
+
+                Case eLoadSourceType.User, eLoadSourceType.CommandLine
+                    Dim msg As New cMessage(String.Format(My.Resources.PROMPT_INVALIDMODEL, strFileName), _
+                                            eMessageType.Any, _
+                                            eCoreComponentType.DataSource, _
+                                            eMessageImportance.Critical)
+                    Me.m_core.Messages.SendMessage(msg)
+
+                Case eLoadSourceType.NoIdeaDontLookAtMe
+                    ' Ok then
+
+            End Select
             Return False
         End If
 
@@ -1158,7 +1206,7 @@ Public Class AppLauncher
         Me.SetStatusText("", TriState.False)
 
         If bSucces = True Then
-            bSucces = bSucces And Me.LoadEcopathModel(strFileName)
+            bSucces = bSucces And Me.LoadEcopathModel(strFileName, eLoadSourceType.NoIdeaDontLookAtMe)
         End If
 
         Return bSucces
@@ -1423,8 +1471,8 @@ Public Class AppLauncher
 
         If (alMDBmru Is Nothing) Then Return
 
-        ' Remove first occurrence from further down the list
-        For iEntry As Integer = 1 To alMDBmru.Count - 2
+        ' Remove first occurrence from down the list
+        For iEntry As Integer = 0 To alMDBmru.Count - 2
             ' Valid entry?
             If (TypeOf alMDBmru(iEntry) Is String) Then
                 ' Get entry
@@ -1491,7 +1539,7 @@ Public Class AppLauncher
         If (astrCmd.Length > 0) Then
             If Not String.IsNullOrEmpty(astrCmd(0)) Then
                 ' Open the model
-                Me.LoadEcopathModel(astrCmd(0).Replace("""", ""), False)
+                Me.LoadEcopathModel(astrCmd(0).Replace("""", ""), eLoadSourceType.CommandLine)
             End If
         End If
 
@@ -1983,7 +2031,7 @@ Public Class AppLauncher
             db = Me.CreateEcopathModel(cmdFS.FileName, Path.GetFileNameWithoutExtension(cmdFS.FileName))
             If db IsNot Nothing Then
                 ' #Yes: Able to load model?
-                Me.LoadEcopathModel(cmdFS.FileName, False)
+                Me.LoadEcopathModel(cmdFS.FileName, eLoadSourceType.User)
             End If
         End If
 
@@ -2014,7 +2062,7 @@ Public Class AppLauncher
 
             ' Open the model
             Me.SetStatusText(My.Resources.STATUS_ECOPATH_LOADING, TriState.True)
-            Me.LoadEcopathModel(cmdFO.FileName)
+            Me.LoadEcopathModel(cmdFO.FileName, eLoadSourceType.User)
             Me.SetStatusText("", TriState.False)
 
         End If
@@ -3186,8 +3234,10 @@ Public Class AppLauncher
 
     Private Sub RecentFileClickEventHandler(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        Dim fn As String = mnuItem.Text.Substring(3) ' Get rid of file index
-        LoadEcopathModel(fn)
+
+        ' Get rid of file index - presuming that there are less than 99 MRU entries!
+        Dim fn As String = mnuItem.Text.Substring(3)
+        LoadEcopathModel(fn, eLoadSourceType.MRU)
     End Sub
 
     Private Sub EcosimScenarioClickEventHandler(ByVal sender As Object, ByVal e As System.EventArgs)

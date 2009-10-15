@@ -2331,7 +2331,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>This type of file is not supported by EwE6</value>
   </data>
   <data name="PROMPT_INVALIDMODEL" xml:space="preserve">
-    <value>'{0}' does not seem to be a valid Ecopath model</value>
+    <value>'{0}' does not seem to be a valid Ecopath model.</value>
     <comment>{0}: model path</comment>
   </data>
   <data name="PROMPT_INVALIDTARGETPATH" xml:space="preserve">
@@ -2342,8 +2342,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>New EwE6 model  '{0}' successfully created</value>
     <comment>{0}: model path</comment>
   </data>
-  <data name="PROMPT_MODELNOTFOUND" xml:space="preserve">
-    <value>Model '{0}' cannot be found</value>
+  <data name="PROMPT_MODELNOTFOUND_REMOVEMRU" xml:space="preserve">
+    <value>Model '{0}' cannot be found. Do you wish to remove it from the recent file list?</value>
     <comment>{0}: model path</comment>
   </data>
   <data name="PSD_XAXISLABEL_AGE" xml:space="preserve">
@@ -2426,5 +2426,11 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_SEEDCURRENT" xml:space="preserve">
     <value>Current cells</value>
+  </data>
+  <data name="PROMPT_MODELNOTFOUND" xml:space="preserve">
+    <value>Model '{0}' cannot be found.</value>
+  </data>
+  <data name="PROMPT_INVALIDMODEL_REMOVEMRU" xml:space="preserve">
+    <value>'{0}' does not seem to be a valid Ecopath model. Do you wish to remove this from the recent file list?</value>
   </data>
 </root>

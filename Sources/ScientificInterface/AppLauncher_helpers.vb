@@ -398,7 +398,7 @@ Partial Public Class AppLauncher
                         strKey = ModuleKey(mt).Replace(";"c, ","c)
                         iKeyPos = strMRU.IndexOf(strKey)
                         If iKeyPos > -1 Then
-                            strMRU = strMRU.Substring(0, iKeyPos - 1) & ";"c & strMRU.Substring(iKeyPos + 1)
+                            strMRU = strMRU.Substring(0, iKeyPos) & ";"c & strMRU.Substring(iKeyPos + 1)
                         End If
                     Next
                     ' Set
