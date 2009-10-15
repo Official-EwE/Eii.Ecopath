@@ -154,6 +154,12 @@ Namespace Ecosim
 
         End Sub
 
+        Public Overrides ReadOnly Property IsRunForm() As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
 #End Region ' Framework overrides
 
 #Region " Events "

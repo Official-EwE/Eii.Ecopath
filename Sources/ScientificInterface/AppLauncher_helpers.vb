@@ -77,6 +77,7 @@ Partial Public Class AppLauncher
 
             Dim stateForm As eCoreExecutionState = eCoreExecutionState.Idle
             Dim bMustCloseForm As Boolean = False
+            Dim bMustDisableForm As Boolean = False
 
             For Each f As frmEwE In Me.GetEwEForms()
 
@@ -97,13 +98,32 @@ Partial Public Class AppLauncher
                     End Select
                 Else
                     bMustCloseForm = Me.m_csm.IsExecutionStateSuperceded(stateForm) = False
+
+                    ' Check if form should be disabled
+                    ' A form should be disabled if it provides inputs while path, sim or space are running
+                    bMustDisableForm = (Me.m_csm.IsEcopathRunning Or _
+                                        Me.m_csm.IsEcosimRunning Or _
+                                        Me.m_csm.IsEcospaceRunning) And _
+                                       (Not f.IsRunForm())
                 End If
 
                 If bMustCloseForm Then
                     ' #Yes: Close the form
                     f.Close()
+                Else
+                    ' #No: update enabled state
+                    Dim bIsEnabled As Boolean = f.Enabled
+                    If bIsEnabled = bMustDisableForm Then
+                        ' JS 14oct09: not activated this yet; the run forms themselves should be excluded
+                        '             from this activity and there is no way (yet) to distinguish
+                        '             generic input forms from Run forms.
+                        f.Enabled = (bMustDisableForm = False)
+                    End If
                 End If
             Next
+
+            'Me.m_dp.Refresh()
+
         End Sub
 
     End Class

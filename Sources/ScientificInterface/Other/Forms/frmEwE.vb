@@ -302,8 +302,12 @@ Public Class frmEwE
     Public Overridable Sub OnCoreMessage(ByVal msg As cMessage)
     End Sub
 
-    <CLSCompliant(False)> _
- Public Overridable Property CoreExecutionState() As eCoreExecutionState
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the core execution state that a form needs for its content.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Property CoreExecutionState() As eCoreExecutionState
         Get
             Return Me.m_coreExecutionState
         End Get
@@ -371,7 +375,6 @@ Public Class frmEwE
                (state = eCoreExecutionState.EcotracerLoaded)
     End Function
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set whether this form is an input form (true) or output form (false).
@@ -382,6 +385,17 @@ Public Class frmEwE
                (state = eCoreExecutionState.EcosimCompleted) Or _
                (state = eCoreExecutionState.EcospaceCompleted)
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Flag stating whether a form is used to trigger model runs from.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overridable ReadOnly Property IsRunForm() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
 
 #End Region ' Share and enjoy
 

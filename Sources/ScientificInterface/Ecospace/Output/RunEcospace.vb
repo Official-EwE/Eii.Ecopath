@@ -276,9 +276,15 @@ Namespace Ecospace
             MyBase.OnFormClosed(e)
         End Sub
 
-        Private Sub RunEcospace_ResizeEnd(ByVal sender As Object, ByVal e As EventArgs) Handles Me.ResizeEnd
+        Protected Overrides Sub OnResizeEnd(ByVal e As EventArgs)
             Me.InitOutputBitmaps()
         End Sub
+
+        Public Overrides ReadOnly Property IsRunForm() As Boolean
+            Get
+                Return True
+            End Get
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
