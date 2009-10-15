@@ -262,10 +262,16 @@ Namespace Ecosim
 
             Try
                 Me.btApply.Enabled = True
-                ' Select outputs
-                Me.m_tcOutput.SelectedTab = m_tbpBestTrial
+                Me.cbRetainEstimates.Enabled = True
+                Me.cbShowBioTraj.Enabled = True
+                Me.nudNumTrials.Enabled = True
+                Me.btnTS.Enabled = True
+
                 'populate the grid with new values (biomass....)
                 Me.m_gridBestFit.RefreshData()
+
+                ' Select outputs
+                Me.m_tcOutput.SelectedTab = m_tbpBestTrial
 
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
@@ -310,8 +316,15 @@ Namespace Ecosim
             Handles m_cmdRunMonteCarlo.OnInvoke
 
             Me.btApply.Enabled = False
-            ' Select biomass plot page.
-            Me.m_tcOutput.SelectedTab = Me.m_tbpBPlot
+            Me.cbRetainEstimates.Enabled = False
+            Me.cbShowBioTraj.Enabled = False
+            Me.nudNumTrials.Enabled = False
+            Me.btnTS.Enabled = False
+
+            If Me.m_mcmanager.bShowPlot Then
+                ' Select biomass plot page.
+                Me.m_tcOutput.SelectedTab = Me.m_tbpBPlot
+            End If
 
             Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
             Me.m_fpTrial.Value = 0
@@ -396,17 +409,22 @@ Namespace Ecosim
 
         Private Sub UpdateGraphHighlights()
 
-            Dim gi As cGroupListBox.cGroupItem = Nothing
+            'Only Highlight if the graphs are drawing
+            If Me.m_mcmanager.bShowPlot Then
 
-            ' Start setting highlights
-            Me.m_plothelper.ClearHighlights()
-            For Each item As Object In Me.m_lbGroups.SelectedItems
-                If TypeOf (item) Is cGroupListBox.cGroupItem Then
-                    gi = DirectCast(item, cGroupListBox.cGroupItem)
-                    Me.m_plothelper.Highlight(gi.Group.Index, -1)
-                End If
-            Next item
-            Me.m_graph.Invalidate()
+                Dim gi As cGroupListBox.cGroupItem = Nothing
+
+                ' Start setting highlights
+                Me.m_plothelper.ClearHighlights()
+                For Each item As Object In Me.m_lbGroups.SelectedItems
+                    If TypeOf (item) Is cGroupListBox.cGroupItem Then
+                        gi = DirectCast(item, cGroupListBox.cGroupItem)
+                        Me.m_plothelper.Highlight(gi.Group.Index, -1)
+                    End If
+                Next item
+                Me.m_graph.Invalidate()
+
+            End If
 
         End Sub
 
