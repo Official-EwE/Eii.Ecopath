@@ -377,7 +377,7 @@ Public Class cMonteCarloManager
             'tell the interface
             If m_SyncObject IsNot Nothing And m_dlgMCTrialStepHandler IsNot Nothing Then
                 'use the SyncObject provided by the interface to call the completed handler in the interface
-                m_SyncObject.BeginInvoke(m_dlgMCTrialStepHandler, Nothing)
+                m_SyncObject.Invoke(m_dlgMCTrialStepHandler, Nothing)
             End If
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".MCTrialProgressHandler() " & ex.Message)
