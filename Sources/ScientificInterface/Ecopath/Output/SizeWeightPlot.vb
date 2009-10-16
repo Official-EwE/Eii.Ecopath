@@ -62,12 +62,11 @@ Namespace Ecopath.Output
         '    If parms.PSDEnabled = False Then Me.Close()
         'End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
             MyBase.OnFormClosed(e)
         End Sub
-
 #End Region 'Event handlers
 
 #Region "Helper methods"

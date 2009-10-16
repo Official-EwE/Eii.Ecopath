@@ -55,7 +55,6 @@ Namespace Ecopath.Output
             Me.m_zgh = Nothing
             MyBase.OnFormClosed(e)
         End Sub
-
 #End Region 'Event handlers
 
 #Region "Helper methods"

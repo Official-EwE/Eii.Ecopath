@@ -122,7 +122,7 @@ Namespace Ecopath.Output
 
             Debug.Assert(m_MasterPane.PaneList.Count = PaneNo)
 
-            InitGraphPane(strPaneTitle, strXaxisTitle, strYAxisTitle, PaneNo, pane)
+            InitGraphPane(strPaneTitle, strXaxisTitle, stryaxistitle, PaneNo, pane)
 
             'Add the graphPane to the masterPane
             m_MasterPane.Add(pane)
