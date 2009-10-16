@@ -1,117 +1,4 @@
-﻿' =============================================================================
-'
-' $Log: RunPSD.vb,v $
-' Revision 1.35  2009/06/25 19:50:24  joeh
-' Move the Y axis to pass thru the origin
-'
-' Revision 1.34  2009/06/24 23:17:05  joeh
-' Do not display regression std err when sample size is 2
-'
-' Revision 1.33  2009/06/23 17:37:15  jeroens
-' Fixed PSD parameter change behaviour
-'
-' Revision 1.32  2009/06/23 00:50:13  joeh
-' Just add a comment
-'
-' Revision 1.31  2009/06/22 22:15:59  joeh
-' Add more statistics parameters for the PSD regression
-'
-' Revision 1.30  2009/06/20 21:08:50  jeroens
-' Updated to modified DisplayGroups command
-' Graph invalidated when values change
-'
-' Revision 1.29  2009/06/18 23:04:02  joeh
-' Comment out OnStyleGuideChanged so that a change in Select Groups won't trigger the core to run EcoPath again
-'
-' Revision 1.28  2009/06/16 19:30:24  joeh
-' Add Correlation to PSD regression calculation
-'
-' Revision 1.27  2009/06/11 22:45:55  joeh
-' SystemPSD values are now multiplied by a billion instead of 100 thousands to shift the Log(PSD Values) to the positive region
-'
-' Revision 1.26  2009/05/28 12:36:58  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.25  2009/05/12 21:35:11  joeh
-' Add titles to graph axis
-'
-' Revision 1.24  2009/05/11 01:51:01  jeroens
-' Renamed command classes
-'
-' Revision 1.23  2009/04/30 22:33:52  joeh
-' V.5 regression analysis is comment in for future comparison
-'
-' Revision 1.22  2009/04/28 00:28:53  joeh
-' Add handling if PSDEnabled is false
-'
-' Revision 1.21  2009/04/07 20:02:09  jeroens
-' Updated to use ZedGraphHelper Attach
-'
-' Revision 1.20  2009/04/03 18:21:55  jeroens
-' Deliberately detached zedgraphhelper
-'
-' Revision 1.19  2009/04/02 16:32:28  jeroens
-' PSD run integrated w Ecopath
-' Reinstated use of params variables
-'
-' Revision 1.18  2009/04/02 01:47:44  joeh
-' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
-'
-' Revision 1.17  2009/03/31 21:36:15  joeh
-' Move all PSD computation routines to a new class cPSDModel
-'
-' Revision 1.16  2009/03/25 00:03:14  joeh
-' Add tool strip combo box for the latitude input
-'
-' Revision 1.15  2009/03/24 14:11:52  jeroens
-' Correctly cleans up
-' Uses PropertyFormatProviders instead of FormatProviders
-' Fixed ecopath <-> graph sync logic
-' ZedGraphHelper in charge of formatting graph
-'
-' Revision 1.14  2009/03/24 01:05:45  joeh
-' Add OnCoreExecutionStateChanged event handler
-'
-' Revision 1.13  2009/03/23 20:45:49  joeh
-' Add functionality to the Run button
-'
-' Revision 1.12  2009/03/21 00:31:19  jeroens
-' PSD params exposes nWeightClasses
-'
-' Revision 1.11  2009/03/20 18:01:02  joeh
-' Remove some redundant Imports statements
-'
-' Revision 1.10  2009/03/19 01:14:04  joeh
-' no message
-'
-' Revision 1.9  2009/03/18 13:32:05  jeroens
-' Uses implemented PSD classes
-'
-' Revision 1.8  2009/03/17 23:37:34  joeh
-' Add codes for the Selected Group feature
-'
-' Revision 1.7  2009/03/17 19:38:08  joeh
-' Add latitudes of NW and SE corners of model
-'
-' Revision 1.6  2009/03/14 18:34:07  joeh
-' Change dXValue of double type to sXValue of single type
-' Add linear regression of the system PSD
-'
-' Revision 1.5  2009/03/12 23:51:06  joeh
-' Add codes for tabulation of PSD contribution data
-'
-' Revision 1.4  2009/03/12 01:50:29  joeh
-' Add codes for PSD histogram (PSDContributionPlot)
-'
-' Revision 1.3  2009/03/11 00:14:29  joeh
-' Add PSD calculation
-'
-' Revision 1.2  2009/02/21 00:24:14  jeroens
-' Added headers
-'
-' =============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -133,7 +20,6 @@ Namespace Ecopath.Output
         ' -- Core connection
         Private m_coreStateMonitor As cCoreStateMonitor = Nothing
         Private m_core As cCore = Nothing
-        Private m_propComputed As cBooleanProperty = Nothing
 
         ' -- To make life easier and a more fun place to be
         Private m_zgh As cZedGraphHelper = Nothing
@@ -190,10 +76,6 @@ Namespace Ecopath.Output
             ' Connect to core state monitor events
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
-            Me.m_propComputed = DirectCast(cPropertyManager.GetInstance().GetProperty(parms, eVarNameFlags.PSDComputed),  _
-                                           cBooleanProperty)
-            AddHandler Me.m_propComputed.PropertyChanged, AddressOf OnPSDComputedChanged
-
             ' Sync controls
             Me.UpdateToolstrip()
             ' Neatify
@@ -225,16 +107,12 @@ Namespace Ecopath.Output
 
             ' Detach from core state monitor events
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-            RemoveHandler Me.m_propComputed.PropertyChanged, AddressOf OnPSDComputedChanged
-            Me.m_propComputed = Nothing
 
             MyBase.OnFormClosed(e)
         End Sub
 
         Private Sub MenuItmGroupPB_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_tsmiGroupPB.Click
-
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
             ' Make sure one checkbox is checked exclusively
             Me.m_tsmiGroupPB.Checked = True
@@ -243,7 +121,10 @@ Namespace Ecopath.Output
             m_tsmiMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
             m_tscbxMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
 
-            Me.m_propComputed.SetValue(False)
+            ' JS to JH: on this event, please update the core PSD params immediately to 
+            '           let the core know that PSD needs to re-run
+            Me.UpdateVariables()
+
         End Sub
 
         Private Sub MenuItmLorenzen_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
@@ -258,7 +139,10 @@ Namespace Ecopath.Output
             m_tsmiMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
             m_tscbxMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
 
-            Me.m_propComputed.SetValue(False)
+            ' JS to JH: on this event, please update the core PSD params immediately to 
+            '           let the core know that PSD needs to re-run
+            Me.UpdateVariables()
+
         End Sub
 
         Private Sub BtnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -268,23 +152,24 @@ Namespace Ecopath.Output
             Me.UpdateVariables()
             ' Run Ecopath
             Me.m_core.RunEcoPath()
+
         End Sub
 
         Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
-            Me.m_propComputed.Refresh()
+            Me.SynchronizePlot()
         End Sub
 
         Private Sub OnAfterShowGroups(ByVal cmd As cCommand)
-            Me.m_propComputed.SetValue(False)
+            ' JS to JH: on this event, please update the core PSD params immediately to 
+            '           let the core know that PSD needs to re-run
+            Me.UpdateVariables()
         End Sub
 
         Private Sub m_tscbxMeanLat_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_tscbxMeanLat.SelectedIndexChanged
-            Me.m_propComputed.SetValue(False)
-        End Sub
-
-        Private Sub OnPSDComputedChanged(ByVal prop As cProperty, ByVal changeflags As cProperty.eChangeFlags)
-            Me.SynchronizePlot()
+            ' JS to JH: on this event, please update the core PSD params immediately to 
+            '           let the core know that PSD needs to re-run
+            Me.UpdateVariables()
         End Sub
 
 #End Region ' Event handlers
@@ -298,11 +183,9 @@ Namespace Ecopath.Output
         ''' -------------------------------------------------------------------
         Private Sub SynchronizePlot()
 
-            'Me.m_propComputed.Refresh()
-
             ' This code is optimized to only plot when new results are available
             ' Are Ecopath results available?
-            If Me.m_coreStateMonitor.HasEcopathRan And (CBool(Me.m_propComputed.GetValue()) = True) Then
+            If Me.m_coreStateMonitor.HasPSDRan Then
                 ' #Yes: are these results not plotted yet?
                 If Me.m_bEcopathResultsPlotted = False Then
                     ' #Yes: Plot the curves
@@ -344,10 +227,11 @@ Namespace Ecopath.Output
                                    My.Resources.PSD_YAXISLABEL_BIOMASS, _
                                    True)
 
-            pane.Title.FontSpec.Size = 16
-            pane.Legend.FontSpec.Size = 14
-            pane.XAxis.Title.FontSpec.Size = 14
-            pane.YAxis.Title.FontSpec.Size = 14
+            'JS 15Oct09: Fonts are set via StyleGuide
+            'pane.Title.FontSpec.Size = 16
+            'pane.Legend.FontSpec.Size = 14
+            'pane.XAxis.Title.FontSpec.Size = 14
+            'pane.YAxis.Title.FontSpec.Size = 14
 
             pane.XAxis.Scale.Min = Int(Math.Log10(parms.FirstWeightClass))
             pane.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (Me.m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
@@ -449,6 +333,13 @@ Namespace Ecopath.Output
         ''' -------------------------------------------------------------------
         Private Sub UpdateVariables()
 
+            ' JS to JH: This method is now abused to update core PSD params with
+            '           UI changed vars in order to let the core know that PSD 
+            '           needs to re-run. UpdateVariables may not be the best way
+            '           to do this, I'm not sure. It seems that two calls to
+            '           UpdateVariables are necessary to make new values reach
+            '           the actual core PSD computations.
+
             Dim grpInput As cEcoPathGroupInput = Nothing
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
@@ -471,9 +362,6 @@ Namespace Ecopath.Output
                 parms.GroupIncluded(iGroup) = sg.GroupVisible(iGroup)
             Next
 
-            ' JS: the variable values are automatically updated by the property format providers
-            'parms.NumWeightClasses = CInt(m_fpNoOfPointsPSD.Value)
-            'parms.FirstWeightClass = CSng(m_fpMinWeight.Value)
         End Sub
 
         Private Sub UpdatePlot()
