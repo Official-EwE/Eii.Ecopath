@@ -1,48 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cPSDParameters.vb,v $
-' Revision 1.13  2009/06/23 17:37:15  jeroens
-' Fixed PSD parameter change behaviour
-'
-' Revision 1.12  2009/06/23 00:49:06  joeh
-' Set min value for NumPtsMovAvg back from 1 to 0
-'
-' Revision 1.11  2009/06/20 21:00:13  jeroens
-' Set min + default values for NumPtsMovAvg
-'
-' Revision 1.10  2009/06/18 23:06:27  joeh
-' Change the minimum value of No. of Weight Class from 1 to 2
-'
-' Revision 1.9  2009/04/28 19:15:01  joeh
-' Remove val.Stored = False for PSDEnable
-'
-' Revision 1.8  2009/04/02 19:51:18  joeh
-' Change the minimum value of PSDNumWeightClasses to 1
-'
-' Revision 1.7  2009/04/02 15:53:36  jeroens
-' Added PSD enabled, group included
-'
-' Revision 1.6  2009/03/31 21:36:14  joeh
-' Move all PSD computation routines to a new class cPSDModel
-'
-' Revision 1.5  2009/03/24 18:58:08  joeh
-' Change PSDFirstWeightClass from integer to single
-'
-' Revision 1.4  2009/03/21 00:31:19  jeroens
-' PSD params exposes nWeightClasses
-'
-' Revision 1.3  2009/03/19 22:23:39  jeroens
-' Added Lohrenzen vars
-'
-' Revision 1.2  2009/03/18 13:25:22  jeroens
-' Implemented v1.0
-'
-' Revision 1.1  2009/03/16 16:55:57  jeroens
-' Initial version
-'
-'==============================================================================
-
-Option Strict On
+﻿Option Strict On
 
 Imports EwEUtils.Core
 Imports EwECore.ValueWrapper

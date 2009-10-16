@@ -171,12 +171,12 @@ Public Class cEwEModel
         End Set
     End Property
 
-    Public Property UnitTime() As eUnitTimeType
+    Public Property UnitTime() As Integer
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.UnitTime), eUnitTimeType)
+            Return CInt(GetVariable(eVarNameFlags.UnitTime))
         End Get
 
-        Set(ByVal i As eUnitTimeType)
+        Set(ByVal i As Integer)
             SetVariable(eVarNameFlags.UnitTime, i)
         End Set
     End Property
@@ -191,12 +191,12 @@ Public Class cEwEModel
         End Set
     End Property
 
-    Public Property UnitCurrency() As eUnitCurrencyType
+    Public Property UnitCurrency() As Integer
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.UnitCurrency), eUnitCurrencyType)
+            Return CInt(GetVariable(eVarNameFlags.UnitCurrency))
         End Get
 
-        Set(ByVal i As eUnitCurrencyType)
+        Set(ByVal i As Integer)
             SetVariable(eVarNameFlags.UnitCurrency, i)
         End Set
     End Property
@@ -211,12 +211,12 @@ Public Class cEwEModel
         End Set
     End Property
 
-    Public Property UnitMonetary() As eUnitMonetaryType
+    Public Property UnitMonetary() As Integer
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.UnitMonetary), eUnitMonetaryType)
+            Return CInt(GetVariable(eVarNameFlags.UnitMonetary))
         End Get
 
-        Set(ByVal i As eUnitMonetaryType)
+        Set(ByVal i As Integer)
             SetVariable(eVarNameFlags.UnitMonetary, i)
         End Set
     End Property

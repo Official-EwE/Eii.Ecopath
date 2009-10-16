@@ -169,7 +169,7 @@ Public Class cEcopathDataStructures
     Public NumDetrit As Integer
     ''' <summary>Total number of fleets.</summary>
     Public NumFleet As Integer
-    Public currUnitIndex As eUnitCurrencyType = eUnitCurrencyType.WetWeight
+    Public currUnitIndex As Integer = eUnitCurrencyType.WetWeight
     Public TimeUnitName As String
     Public TimeUnitIndex As Integer
     Public DietsModified As Boolean

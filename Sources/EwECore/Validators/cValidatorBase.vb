@@ -1,21 +1,3 @@
-'==============================================================================
-'
-' $Log: cValidatorBase.vb,v $
-' Revision 1.4  2009/06/23 00:37:48  joeh
-' Change cValidatorOddEven.Validate so that it does not test if null value is odd or even
-'
-' Revision 1.3  2009/06/20 20:52:32  jeroens
-' Pruned log
-' Added odd/even validator
-'
-' Revision 1.2  2009/06/01 17:07:38  joeb
-' MSE debugging
-'
-' Revision 1.1  2008/09/26 07:30:35  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwECore.ValueWrapper
@@ -173,7 +155,7 @@ Public Class cValidatorNumericSetToNull
             Return True
         End If
 
-        ' JS 09Jan08: If validation failed set status to Failed Validation at any time.
+        ' JS 09Jan08: If validation failed, set status to Failed Validation at any time.
         ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
         ValueObject.ValidationStatus = eStatusFlags.FailedValidation
         Return True
@@ -259,7 +241,7 @@ Public Class cValidatorCounter
                 Return True
             End If
 
-            ' JS 09Jan08: If validation failed set status to Failed Validation at any time.
+            ' JS 09Jan08: If validation failed, set status to Failed Validation at any time.
             ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
             ValueObject.ValidationStatus = eStatusFlags.FailedValidation
             Return True

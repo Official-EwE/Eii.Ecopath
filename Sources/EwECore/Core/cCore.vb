@@ -2008,11 +2008,11 @@ Public Class cCore
     Friend m_EwEModelArea As Single = 0
     Friend m_EwEModelNumDigits As Integer = 0
     Friend m_EwEModelGroupDigits As Boolean = False
-    Friend m_EwEModelUnitTime As eUnitTimeType = 0
+    Friend m_EwEModelUnitTime As Integer = 0
     Friend m_EwEModelUnitTimeCustom As String = ""
-    Friend m_EwEModelUnitCurrency As eUnitCurrencyType = eUnitCurrencyType.NotSet
+    Friend m_EwEModelUnitCurrency As Integer = eUnitCurrencyType.NotSet
     Friend m_EwEModelUnitCurrencyCustom As String = ""
-    Friend m_EwEModelUnitMonetary As eUnitMonetaryType = 0
+    Friend m_EwEModelUnitMonetary As Integer = 0
     Friend m_EwEModelUnitMonetaryCustom As String = ""
     Friend m_EwEModelAuthor As String = ""
     Friend m_EwEModelContact As String = ""
