@@ -40,6 +40,15 @@ Namespace Ecosim
 
         Private m_lpplIteration As New List(Of PointPairList)
 
+        ''' <summary>
+        '''  Local counter for the number of trials run
+        ''' </summary>
+        ''' <remarks>Zeroed when the MC completes its run MonteCarloCompletedHandler(), incremented in newRun(). 
+        ''' We can not use the MC counter because it is not zeroed until the run is started by the MC. 
+        ''' We need to know what run it about to happen before the run so we can store the local data.
+        ''' </remarks>
+        Private m_nTrials As Integer
+
 #End Region ' Private vars
 
 #Region " Constructor "
@@ -208,7 +217,7 @@ Namespace Ecosim
         Private Sub MonteCarloStepHandler()
 
             Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
-            Dim group As cEcoPathGroupInput = Nothing
+
 
             Try
                 asn.SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, _
@@ -218,24 +227,11 @@ Namespace Ecosim
                 Me.m_fpSS.Value = Me.m_mcmanager.SS
                 Me.m_fpSSBest.Value = Me.m_mcmanager.SSBestFit
 
-                Me.m_plothelper.CreateRun(String.Format("Iteration {0}", CInt(Me.m_mcmanager.nTrialIterations)))
-                Me.m_lpplIteration.Clear()
+                'this will draw the currently loaded data
+                Me.UpdateGraphHighlights()
 
-                For iGroup As Integer = 1 To Me.m_core.nLivingGroups
-                    Me.m_lpplIteration.Add(New PointPairList())
-                Next
-
-                If (Me.m_mcmanager.bShowPlot = True) Then
-                    For iGroup As Integer = 1 To Me.m_core.nLivingGroups
-                        ' Get the ecopath group
-                        group = Me.m_core.EcoPathGroupInputs(iGroup)
-
-                        Me.m_plothelper.AddLine(group.Name, iGroup, _
-                                                cEcosimOutputPlotHelper.eLineType.RelativeBiomass, _
-                                                Me.m_lpplIteration(iGroup - 1))
-
-                    Next iGroup
-                End If
+                'get ready for the next run if there isn't one then on big deal the data will not be used
+                Me.newRun()
 
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
@@ -247,8 +243,6 @@ Namespace Ecosim
 
             Try
                 Me.m_fpERun.Value = Me.m_mcmanager.nEcopathIterations
-                Me.UpdateGraphHighlights()
-
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
             End Try
@@ -259,6 +253,8 @@ Namespace Ecosim
 
             Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
             asn.SetStatusText("", TriState.False)
+
+            Me.m_nTrials = 0
 
             Try
                 Me.btApply.Enabled = True
@@ -332,9 +328,12 @@ Namespace Ecosim
             Me.m_fpSS.Value = 0.0!
             Me.m_fpSSBest.Value = 0.0!
 
-            cApplicationStatusNotifier.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_INITIALIZING, _
-                                                                   TriState.True)
+            cApplicationStatusNotifier.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_INITIALIZING, TriState.True)
+
+            'clear out the old data
             Me.m_plothelper.Clear()
+
+            Me.newRun()
             Me.m_mcmanager.Run()
 
         End Sub
@@ -422,6 +421,7 @@ Namespace Ecosim
                         Me.m_plothelper.Highlight(gi.Group.Index, -1)
                     End If
                 Next item
+
                 Me.m_graph.Invalidate()
 
             End If
@@ -453,6 +453,34 @@ Namespace Ecosim
 #End Region ' Run Trials
 
 #Region " Internals "
+
+        Private Sub newRun()
+
+            Me.m_nTrials += 1
+            Me.m_plothelper.CreateRun(String.Format("Iteration {0}", Me.m_nTrials))
+            Me.m_lpplIteration.Clear()
+
+            If (Me.m_mcmanager.bShowPlot = True) Then
+
+                For iGroup As Integer = 1 To Me.m_core.nLivingGroups
+                    Me.m_lpplIteration.Add(New PointPairList())
+                Next
+
+
+                Dim group As cEcoPathGroupInput = Nothing
+                For iGroup As Integer = 1 To Me.m_core.nLivingGroups
+                    ' Get the ecopath group
+                    group = Me.m_core.EcoPathGroupInputs(iGroup)
+
+                    Me.m_plothelper.AddLine(group.Name, iGroup, _
+                                            cEcosimOutputPlotHelper.eLineType.RelativeBiomass, _
+                                            Me.m_lpplIteration(iGroup - 1))
+
+                Next iGroup
+
+            End If
+
+        End Sub
 
 #End Region ' Internals
 

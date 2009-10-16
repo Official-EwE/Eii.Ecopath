@@ -231,7 +231,7 @@ Public Class cEcosimMonteCarlo
             m_ecosim.Init(True)
 
             m_core.m_EcoSimData.bTimestepOutput = True
-            m_ecosim.TimeStepDelegate = EcosimTimeStep
+            m_ecosim.TimeStepDelegate = Nothing
             'run ecosim to get the fit (SS) of the ref data to the current ecopath parameters
 
             For iPred As Integer = 1 To m_core.nGroups
@@ -244,11 +244,6 @@ Public Class cEcosimMonteCarlo
 
             m_ecosim.Run()
 
-
-            ' ReDim Pmean(5, m_core.nGroups)
-            ' ReDim startValues(5, m_core.nGroups)
-            ' ReDim BestFit(5, m_core.nGroups)
- 
             For iGrp As Integer = 1 To m_core.nGroups
                 Pmean(eMCParams.Biomass, iGrp) = m_epdata.B(iGrp)
                 Pmean(eMCParams.PB, iGrp) = m_epdata.PB(iGrp)
@@ -263,7 +258,6 @@ Public Class cEcosimMonteCarlo
             'make a copy of the original values so the user can restore the values
             Array.Copy(Pmean, startValues, Pmean.Length)
 
-            ' CheckWhoIsCrashed()
             CalculateUpperLowerLimits(True)
 
 #If 0 Then
@@ -321,13 +315,6 @@ Public Class cEcosimMonteCarlo
         Try
             initForRun()
 
-            'Using sw As StreamWriter = New StreamWriter("c:\LME\Vulnerabilities.csv", True)  'true makes it append
-            '    sw.WriteLine("Group,vulnerability")
-            '    sw.Close()
-            'End Using
-
-            'Using sw As StreamWriter = New StreamWriter("c:\LME\MonteCarloSS.csv", True)  'true makes it append
-            '    sw.WriteLine(m_core.m_EwEModelName)
             'nThreads = System.Environment.ProcessorCount
             'nThreads = 1
             'NtrialsPerThread = (Ntrials + nThreads - 1) \ nThreads
@@ -337,12 +324,11 @@ Public Class cEcosimMonteCarlo
             'this does not turn off the core's messages just ecopath
             m_ecopath.suppressMessages = True
 
+            'm_ecosim.Run()
+            'Dim OrigSS As Single = m_core.EcosimStats.SS
+
             'Ecosim was run in initForRun()
-            'ss is the fit of the currently loaded reference data
-            m_ecosim.Run()
-
-            Dim OrigSS As Single = m_core.EcosimStats.SS
-
+            'm_esdata.SS is the fit of the currently loaded reference data
             If m_esdata.SS > 0 Then
                 SSBestFit = m_esdata.SS
             Else
@@ -422,11 +408,6 @@ Public Class cEcosimMonteCarlo
                             BestFit(eMCParams.BA, igrp) = m_epdata.BA(igrp)
                             'vc sep 2008: adding vulnerability to MC
                             BestFit(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
-                            'BestFit(eMCParams.Biomass, igrp) = MCthread.EPdata.B(igrp)
-                            'BestFit(eMCParams.PB, igrp) = MCthread.EPdata.PB(igrp)
-                            'BestFit(eMCParams.EE, igrp) = MCthread.EPdata.EE(igrp)
-                            'BestFit(eMCParams.BA, igrp) = MCthread.EPdata.BA(igrp)
-                            ' BestFit(eMCParams.QB, igrp) = mcthread.epdata.QB(igrp)
                         Next
 
                         If bRetainBiomass Then
@@ -445,9 +426,10 @@ Public Class cEcosimMonteCarlo
                 End If
                 'TrialProgress(itrial * nThreads, iter)
                 TrialProgress(iTrial, iter)
+                EcopathIterationsProgress(iter)
                 'Console.WriteLine(itrial & ", " & " best: " & SSBestFit.ToString & ", " & m_esdata.SS.ToString)
                 'If RunsSinceLastWithLowerSS > 100 And iTrial Mod 100 = 0 Then Console.WriteLine("Total trials: " & iTrial.ToString & " since last: " & RunsSinceLastWithLowerSS.ToString)
-                EcopathIterationsProgress(iTrial)
+
                 If RunsSinceLastWithLowerSS > 2000 Then Exit For
             Next iTrial
             'sw.WriteLine(iTrial.ToString)
@@ -750,22 +732,6 @@ Public Class cEcosimMonteCarlo
                 ParLimit(1, 5, i) = m_epdata.BA(i) + m_epdata.B(i) * (factor * CVpar(5, i))
                 ParLimit(1, 6, i) = 1000 ' m_esdata.VulnerabilityPredator(i) * (1 + factor * CVpar(6, i)) 'no upper limit for vulmult : If ParLimit(1, 6, i) > 1 Then ParLimit(1, 6, i) = 1
 
-                'In EwE5 this was only done if no limit was in place
-                'here we always do it!!!!
-                ''Lower
-                'If ParLimit(0, 1, i) = 0 Then ParLimit(0, 1, i) = m_epdata.B(i) * (1 - factor * CVpar(1, i)) : If ParLimit(0, 1, i) < 0 Then ParLimit(0, 1, i) = 0
-                'If ParLimit(0, 2, i) = 0 Then ParLimit(0, 2, i) = m_epdata.PB(i) * (1 - factor * CVpar(2, i)) : If ParLimit(0, 2, i) < 0 Then ParLimit(0, 2, i) = 0
-                'If ParLimit(0, 4, i) = 0 Then ParLimit(0, 4, i) = m_epdata.EE(i) * (1 - factor * CVpar(4, i)) : If ParLimit(0, 4, i) < 0 Then ParLimit(0, 4, i) = 0
-                ''BA is +- relative to B not to BA (which is usually zero)
-                'If ParLimit(0, 5, i) = 0 Then ParLimit(0, 5, i) = m_epdata.BA(i) + m_epdata.B(i) * (-factor * CVpar(5, i))
-
-                ''upper
-                'If ParLimit(1, 1, i) = 0 Then ParLimit(1, 1, i) = m_epdata.B(i) * (1 + factor * CVpar(1, i))
-                'If ParLimit(1, 2, i) = 0 Then ParLimit(1, 2, i) = m_epdata.PB(i) * (1 + factor * CVpar(2, i))
-                'If ParLimit(1, 4, i) = 0 Then ParLimit(1, 4, i) = m_epdata.EE(i) * (1 + factor * CVpar(4, i)) : If ParLimit(1, 4, i) > 1 Then ParLimit(1, 4, i) = 1
-                ''BA is +- relative to B not to BA (which is usually zero)
-                'If ParLimit(1, 5, i) = 0 Then ParLimit(1, 5, i) = m_epdata.BA(i) + m_epdata.B(i) * (factor * CVpar(5, i))
-                'If ParLimit(1, 4, i) = 0 And ParLimit(0, 4, i) = 0 Then Stop
             Next
 
 
@@ -847,8 +813,6 @@ Public Class cEcosimMonteCarlo
                                                                      False)
             For iPrey As Integer = 1 To m_core.nGroups
                 m_esdata.VulMult(iPrey, iPred) = m_esdata.VulnerabilityPredator(iPred)
-                'jb this is done by the manager in ApplyBestFits core.onChanged() 
-                ' m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
             Next
             '    sw.WriteLine(iPred.ToString & ", " & m_esdata.VulnerabilityPredator(iPred).ToString)
         Next
