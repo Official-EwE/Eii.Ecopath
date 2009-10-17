@@ -15,7 +15,7 @@
 '
 '==============================================================================
 
-Option Strict Off
+Option Strict On
 Imports System.ComponentModel
 Imports EwEUtils.Core
 
@@ -136,7 +136,8 @@ Public Class cMessageHandler
     End Function
 
     Private Sub marshallSendMessage(ByVal Message As Object)
-        Me.m_DelegateNotifier.Invoke(Message)
+        Debug.Assert(TypeOf Message Is cMessage, "Invalid type passed to cMessageHandler.SendMessage()!")
+        Me.m_DelegateNotifier.Invoke(DirectCast(Message, cMessage))
     End Sub
 
     ''' <summary>
