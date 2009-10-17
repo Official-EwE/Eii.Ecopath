@@ -147,11 +147,17 @@ Public Class cMessageHandler
     ''' <remarks>This tests the underlying delegates for equality NOT the cMessageHandlers them selves.</remarks>
     Public Overrides Function Equals(ByVal Handler As Object) As Boolean
 
-        If m_DelegateNotifier.Equals(Handler.getDelegate) Then
-            Return True
-        Else
-            Return False
-        End If
+        Try
+            Debug.Assert(TypeOf Handler Is cMessageHandler, "Invalid type passed to cMessageHandler.Equals()")
+            If m_DelegateNotifier.Equals(DirectCast(Handler, cMessageHandler).getDelegate) Then
+                Return True
+            Else
+                Return False
+            End If
+        Catch ex As Exception
+            System.Console.WriteLine("MessageHandler.Equals() Exception: " & ex.Message)
+            Debug.Assert(False, "MessageHandler.Equals() Exception: " & ex.Message)
+        End Try
 
     End Function
 
