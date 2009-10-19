@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: cMessageHandler.vb,v $
-' Revision 1.4  2009/05/21 18:53:37  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/19 18:07:24  jeroens
-' MessageHandlers, CoreStateMonitor have sync objects
-'
-' Revision 1.2  2009/01/16 18:30:29  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:29  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 Imports System.ComponentModel
 Imports EwEUtils.Core

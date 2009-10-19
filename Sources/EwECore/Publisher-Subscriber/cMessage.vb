@@ -1,35 +1,4 @@
-'==============================================================================
-'
-' $Log: cMessage.vb,v $
-' Revision 1.2  2009/01/16 18:30:29  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:29  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.8  2008/07/21 17:25:34  jeroens
-' Message suppressable
-'
-' Revision 1.7  2008/06/06 15:56:06  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.6  2007/06/20 11:07:00  jeroens
-' - Checked for duplicate variable statuses
-'
-' Revision 1.5  2006/10/14 03:33:28  jeroens
-' + Added Equals to compare two messages
-'
-' Revision 1.4  2006/08/15 22:29:07  jeroens
-' + Neatified
-'
-' Revision 1.3  2006/07/04 04:43:57  jeroens
-' + Strict On
-' + Fixed comments
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwEUtils.Core
 
 ''' <summary>

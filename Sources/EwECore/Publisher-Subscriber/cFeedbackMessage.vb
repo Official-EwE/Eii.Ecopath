@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: cFeedbackMessage.vb,v $
-' Revision 1.2  2009/01/16 18:30:28  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:29  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2008/06/06 15:56:06  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.3  2008/01/29 16:23:40  jeroens
-' Added optional default reply
-'
-' Revision 1.2  2006/10/08 03:13:40  jeroens
-' + Commented, overhauled and fixed up
-'
-'==============================================================================
-
 Option Strict On
 Imports EwEUtils.Core
 

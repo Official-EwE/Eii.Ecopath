@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: cProgressMessage.vb,v $
-' Revision 1.2  2009/01/16 18:30:29  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:30  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/06/06 15:56:06  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.2  2007/04/23 18:37:18  joeb
-' Added State and Max to Progress messages
-'
-' Revision 1.1  2006/08/15 22:25:02  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 Imports EwEUtils.Core
 

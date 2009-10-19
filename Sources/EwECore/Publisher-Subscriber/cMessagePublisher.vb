@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: cMessagePublisher.vb,v $
-' Revision 1.4  2009/05/21 18:53:37  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:29  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/09 15:00:44  jeroens
-' Fixed possible message handling exception
-'
-' Revision 1.1  2008/09/26 07:30:30  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 Imports EwEUtils.Core
 
