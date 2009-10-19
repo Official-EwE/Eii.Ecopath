@@ -6,6 +6,7 @@ Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEPlugin.Data
+Imports System.ComponentModel
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -15,32 +16,75 @@ Imports EwEPlugin.Data
 Public Class cPluginManager
     Implements IDataBroadcaster
 
-#Region " Helper class "
+#Region " Helper classes "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper class, used to report the link between a plug-in and its assambly.
+    ''' </summary>
+    ''' <remarks>
+    ''' Yes, you don't have to say it. You are totally right. This class is 
+    ''' utterly obsolete if the reflection library is properly used, but hey.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Friend Class cPluginContext
 
-        Private g_plugin As IPlugin = Nothing
-        Private g_assembly As cPluginAssembly = Nothing
+        ''' <summary>Plug-in point.</summary>
+        Private m_plugin As IPlugin = Nothing
+        ''' <summary>Plug-in assembly this point was found in.</summary>
+        Private m_assembly As cPluginAssembly = Nothing
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Hatch me one, me harties!
+        ''' </summary>
+        ''' <param name="plugin"></param>
+        ''' <param name="assembly"></param>
+        ''' -------------------------------------------------------------------
         Public Sub New(ByVal plugin As IPlugin, ByVal assembly As cPluginAssembly)
-            Me.g_plugin = plugin
-            Me.g_assembly = assembly
+            Me.m_plugin = plugin
+            Me.m_assembly = assembly
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the plug-in point.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property Plugin() As IPlugin
             Get
-                Return Me.g_plugin
+                Return Me.m_plugin
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the plug-in assembly that contains the <see cref="Plugin">plug-in</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property Assembly() As cPluginAssembly
             Get
-                Return Me.g_assembly
+                Return Me.m_assembly
             End Get
         End Property
     End Class
 
-#End Region ' Helper class
+    ''' -----------------------------------------------------------------------
+    ''' <summary>Helper class to sort database update plug-ins by 
+    ''' <see cref="IDatabaseUpdatePlugin.UpdateVersion">Version</see>, in
+    ''' ascending order.</summary>
+    ''' -----------------------------------------------------------------------
+    Private Class IDatabaseUpdatePluginContextSort
+        Implements IComparer(Of cPluginContext)
+
+        Public Function Compare(ByVal x As cPluginContext, ByVal y As cPluginContext) As Integer _
+                Implements System.Collections.Generic.IComparer(Of cPluginContext).Compare
+            Return CInt(IIf(DirectCast(x.Plugin, IDatabaseUpdatePlugin).UpdateVersion < DirectCast(y.Plugin, IDatabaseUpdatePlugin).UpdateVersion, -1, 1))
+        End Function
+
+    End Class
+
+#End Region ' Helper classes
 
 #Region " Private variables "
 
@@ -49,6 +93,8 @@ Public Class cPluginManager
     ''' <summary>Delegate that this class can use to check whether the current core
     ''' execution state allows a plug-in to run.</summary>
     Private m_dlgtCoreState As CanExecutePlugin = Nothing
+    ''' <summary>Sync object to marshall plug-in calls across threads.</summary>
+    Private m_sync As ISynchronizeInvoke = Nothing
 
 #End Region ' Private variables
 
@@ -85,6 +131,15 @@ Public Class cPluginManager
             Me.m_dlgtCoreState = dlgtCoreState
             ' Update all current plugins
             Me.UpdatePluginEnabledStates()
+        End Set
+    End Property
+
+    Public Property SyncObject() As ISynchronizeInvoke
+        Get
+            Return Me.m_sync
+        End Get
+        Set(ByVal value As ISynchronizeInvoke)
+            Me.m_sync = value
         End Set
     End Property
 
@@ -365,164 +420,6 @@ Public Class cPluginManager
 
 #Region " Plugin invocation "
 
-#Region " Generic invocation "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Invoke a generic method on all plugins of a specific type.
-    ''' </summary>
-    ''' <param name="typePlugin">The <see cref="Type">Type</see> of the plugin.</param>
-    ''' <param name="strMethod">The name of the method to invoke.</param>
-    ''' <param name="aArgs">The arguments to pass to the method to invoke.</param>
-    ''' <returns>True if the method could be found for the given type.</returns>
-    ''' <remarks>
-    ''' <para>Note that this method tries to match argument types to the values
-    ''' provided in <paramref name="aArgs">aArgs</paramref>. If this array of values 
-    ''' happens to contain Null (or Nothing), call <see cref="InvokeMethod">InvokeMethod</see>
-    ''' instead.</para>
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Public Function TryInvokeMethod(ByVal typePlugin As Type, ByVal strMethod As String, ByVal aArgs() As Object) As Boolean
-
-        Dim aArgTypes As Type() = Nothing
-
-        ' Get the types of the method parameters
-        If aArgs IsNot Nothing Then
-            ReDim aArgTypes(aArgs.Length - 1)
-            For i As Integer = 0 To aArgs.Length - 1
-                aArgTypes(i) = aArgs(i).GetType()
-            Next
-        End If
-
-        Return Me.InvokeMethod(typePlugin, strMethod, aArgTypes, aArgs)
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Invoke a generic method on all plugins of a specific type.
-    ''' </summary>
-    ''' <param name="typePlugin">The <see cref="Type">Type</see> of the plugin.</param>
-    ''' <param name="strMethod">The name of the method to invoke.</param>
-    ''' <param name="aArgTypes">The <see cref="Type">Type</see> of the individual
-    ''' method parameters.</param>
-    ''' <param name="aArgs">The arguments to pass to the method to invoke.</param>
-    ''' <returns>True if the method could be found for the given type.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function InvokeMethod(ByVal typePlugin As Type, ByVal strMethod As String, _
-            ByVal aArgTypes() As Type, ByVal aArgs() As Object) As Boolean
-
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(typePlugin)
-        Dim mi As MethodInfo = Nothing
-
-        ' Try to get the method
-        mi = typePlugin.GetMethod(strMethod, _
-                BindingFlags.IgnoreCase Or BindingFlags.IgnoreReturn Or BindingFlags.Instance Or BindingFlags.Public, _
-                Nothing, aArgTypes, Nothing)
-
-        ' Any luck?
-        If (mi Is Nothing) Then Return False
-
-        ' Invoke method on each plugin
-        For Each ipc As cPluginContext In collPlugins
-            mi.Invoke(ipc.Plugin, aArgs)
-        Next ipc
-
-    End Function
-
-#End Region ' Generic invocation
-
-#Region " Database Plugin "
-
-    Private Class IDatabaseUpdatePluginContextSort
-        Implements IComparer(Of cPluginContext)
-
-        Public Function Compare(ByVal x As cPluginContext, ByVal y As cPluginContext) As Integer _
-                Implements System.Collections.Generic.IComparer(Of cPluginContext).Compare
-            Return CInt(IIf(DirectCast(x.Plugin, IDatabaseUpdatePlugin).UpdateVersion < DirectCast(y.Plugin, IDatabaseUpdatePlugin).UpdateVersion, -1, 1))
-        End Function
-
-    End Class
-
-    Public Sub UpdateDatabase(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single)
-
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabaseUpdatePlugin))
-        Dim lPlugins As New List(Of cPluginContext)
-        Dim ip As IDatabaseUpdatePlugin = Nothing
-        Dim strDescription As String = ""
-
-        ' Sanity checks
-        If db Is Nothing Then Return
-        If db.GetVersion() < sBaselineVersion Then Return
-
-        ' Transform collection into list (there must be a better way?)
-        For Each ipc As cPluginContext In collPlugins
-            lPlugins.Add(ipc)
-        Next
-
-        lPlugins.Sort(New IDatabaseUpdatePluginContextSort())
-
-        For Each ipc As cPluginContext In lPlugins
-            ' Get plugin
-            ip = DirectCast(ipc.Plugin, IDatabaseUpdatePlugin)
-            ' Check
-            If (ip.UpdateVersion > db.GetVersion() Or ip.UpdateVersion = -9999) Then
-                Try
-                    If ip.ApplyUpdate(db) Then
-
-                        Dim sbDescription As New System.Text.StringBuilder()
-                        Dim iBit As Integer = 0
-                        For Each strBit As String In ip.UpdateDescription.Split(New String() {"." & vbNewLine, vbNewLine}, StringSplitOptions.RemoveEmptyEntries)
-                            strBit = strBit.Trim
-                            If Not String.IsNullOrEmpty(strBit) Then
-                                If iBit > 0 Then sbDescription.Append("; ")
-                                sbDescription.Append(strBit)
-                                iBit += 1
-                            End If
-                        Next
-                        db.SetVersion(ip.UpdateVersion, sbDescription.ToString())
-                    Else
-                        Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", New Exception("(generic failure)"))
-                    End If
-
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", ex)
-                End Try
-
-            End If
-        Next
-    End Sub
-
-    Public Function HasDatabaseUpdates(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
-
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabaseUpdatePlugin))
-        Dim lPlugins As New List(Of cPluginContext)
-        Dim ip As IDatabaseUpdatePlugin = Nothing
-        Dim sVerDB As Single = db.GetVersion()
-
-        ' Sanity checks
-        If db Is Nothing Then Return False
-        If sVerDB < sBaselineVersion Then Return False
-
-        ' Transform collection into list (there must be a better way?)
-        For Each ipc As cPluginContext In collPlugins
-            lPlugins.Add(ipc)
-        Next
-
-        lPlugins.Sort(New IDatabaseUpdatePluginContextSort())
-
-        For Each ipc As cPluginContext In lPlugins
-            ip = DirectCast(ipc.Plugin, IDatabaseUpdatePlugin)
-            If (ip.UpdateVersion > sVerDB) Or (ip.UpdateVersion = -9999) Then
-                Return True
-            End If
-        Next
-        Return False
-
-    End Function
-
-#End Region ' Database Plugin
-
 #Region " Core Plugin "
 
     ''' ---------------------------------------------------------------------------
@@ -537,22 +434,10 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function CoreInitialized(ByVal objEcoPath As Object, ByVal objEcoSim As Object, ByVal objEcoSpace As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(ICorePlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, ICorePlugin).CoreInitialized(objEcoPath, objEcoSim, objEcoSpace)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "CoreInitialized", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        ' Invokes ICorePlugin.CoreInitialized(objEcoPath, objEcoSim, objEcoSpace)
+        Return Me.TryInvokeMethod(GetType(ICorePlugin), _
+                                  "CoreInitialized", _
+                                  New Object() {objEcoPath, objEcoSim, objEcoSpace})
 
     End Function
 
@@ -568,22 +453,10 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function DataValidated(ByVal varname As eVarNameFlags, ByVal datatype As eDataTypes) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataValidatedPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IDataValidatedPlugin).DataValidated(varname, datatype)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "DataValidated", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        ' Invokes IDataValidatedPlugin.DataValidated(varname, datatype)
+        Return Me.TryInvokeMethod(GetType(IDataValidatedPlugin), _
+                                  "DataValidated", _
+                                  New Object() {varname, datatype})
 
     End Function
 
@@ -600,18 +473,10 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function LoadModel(ByVal dataSource As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcopathPlugin))
-        Dim bSucces As Boolean = True
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                bSucces = bSucces And DirectCast(ipc.Plugin, IEcopathPlugin).LoadModel(dataSource)
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "LoadModel", ex)
-            End Try
-        Next
-
-        Return bSucces
+        ' Invokes IEcopathPlugin.LoadModel(dataSource)
+        Return Me.TryInvokeMethod(GetType(IEcopathPlugin), _
+                                  "LoadModel", _
+                                  New Object() {dataSource})
 
     End Function
 
@@ -628,18 +493,10 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function SaveModel(ByVal dataSource As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcopathPlugin))
-        Dim bSucces As Boolean = True
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                bSucces = bSucces And DirectCast(ipc.Plugin, IEcopathPlugin).SaveModel(dataSource)
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SaveModel", ex)
-            End Try
-        Next
-
-        Return bSucces
+        ' Invokes IEcopathPlugin.SaveModel(dataSource)
+        Return Me.TryInvokeMethod(GetType(IEcopathPlugin), _
+                                  "SaveModel", _
+                                  New Object() {dataSource})
 
     End Function
 
@@ -655,18 +512,8 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function CloseModel() As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcopathClosedPlugin))
-        Dim bSucces As Boolean = True
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                bSucces = bSucces And DirectCast(ipc.Plugin, IEcopathClosedPlugin).CloseModel()
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "CloseModel", ex)
-            End Try
-        Next
-
-        Return bSucces
+        ' Invokes IEcopathClosedPlugin.CloseModel()
+        Return Me.TryInvokeMethod(GetType(IEcopathClosedPlugin), "CloseModel")
 
     End Function
 
@@ -679,18 +526,8 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function IsDatabaseModified(Optional ByVal pa As cPluginAssembly = Nothing) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabasePlugin), pa)
-        Dim bIsChanged As Boolean = False
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                bIsChanged = bIsChanged Or DirectCast(ipc.Plugin, IDatabasePlugin).IsModified()
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IsModified", ex)
-            End Try
-        Next
-
-        Return bIsChanged
+        ' Invokes IDatabasePlugin.IsModified()
+        Return Me.TryInvokeMethod(GetType(IDatabasePlugin), "IsModified", Nothing, eInvocationType.Any)
 
     End Function
 
@@ -701,15 +538,8 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub CloseDatabase()
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabasePlugin))
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                DirectCast(ipc.Plugin, IDatabasePlugin).Close()
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "CloseDatabase", ex)
-            End Try
-        Next
+        ' Invokes IDatabasePlugin.CloseDatabase()
+        Me.TryInvokeMethod(GetType(IDatabasePlugin), "Close")
 
     End Sub
 
@@ -735,52 +565,28 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function MassBalance(ByVal EcoPathDataStructures As Object, ByVal EstimateFor As Integer, ByRef iResult As Integer) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcopathMassBalancePlugin))
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                If DirectCast(ipc.Plugin, IEcopathMassBalancePlugin).EcopathMassBalance(EcoPathDataStructures, EstimateFor, iResult) = True Then
-                    Return True
-                End If
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcopathMassBalance", ex)
-            End Try
-        Next
-        Return False
+        ' Invoke IEcopathMassBalancePlugin.EcopathMassBalance(EcoPathDataStructures, EstimateFor, iResult)
+        Return Me.TryInvokeMethod(GetType(IEcopathMassBalancePlugin), _
+                          "EcopathMassBalance", _
+                          New Object() {EcoPathDataStructures, EstimateFor, iResult}, _
+                          eInvocationType.Exclusive)
 
     End Function
 
     Public Function EcopathRunCompleted(ByVal EcoPathDataStructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcopathRunCompletedPlugin))
-        Try
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcopathRunCompletedPlugin).EcopathRunCompleted(EcoPathDataStructures)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcopathRunCompleted", ex)
-                End Try
-            Next
+        ' Invoke IEcopathRunCompletedPlugin.EcopathRunCompleted(EcoPathDataStructures)
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcopathRunCompletedPlugin), _
+                                                    "EcopathRunCompleted", _
+                                                    New Object() {EcoPathDataStructures})
 
-        Catch ex As Exception
-            Return False
-        End Try
 
-        collPlugins = Me.GetPlugins(GetType(IEcopathRunCompletedPostPlugin))
-        Try
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcopathRunCompletedPostPlugin).EcopathRunCompletedPost(EcoPathDataStructures)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcopathRunCompletedPost", ex)
-                End Try
-            Next
+        ' Invoke IEcopathRunCompletedPostPlugin.EcopathRunCompletedPost(EcoPathDataStructures)
+        bSucces = bSucces And Me.TryInvokeMethod(GetType(IEcopathRunCompletedPostPlugin), _
+                                                 "EcopathRunCompletedPost", _
+                                                 New Object() {EcoPathDataStructures})
 
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        Return bSucces
 
     End Function
 
@@ -801,15 +607,8 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub LoadEcosimScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimPlugin))
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                DirectCast(ipc.Plugin, IEcosimPlugin).LoadEcosimScenario(dataSource)
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "LoadEcosimScenario", ex)
-            End Try
-        Next
+        ' Invoke IEcosimPlugin.LoadEcosimScenario(datasource)
+        Me.TryInvokeMethod(GetType(IEcosimPlugin), "LoadEcosimScenario", New Object() {dataSource})
 
     End Sub
 
@@ -826,78 +625,35 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub SaveEcosimScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimPlugin))
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                DirectCast(ipc.Plugin, IEcosimPlugin).SaveEcosimScenario(dataSource)
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SaveEcosimScenario", ex)
-            End Try
-        Next
+        ' Invoke IEcosimPlugin.SaveEcosimScenario(datasource)
+        Me.TryInvokeMethod(GetType(IEcosimPlugin), "SaveEcosimScenario", New Object() {dataSource})
 
     End Sub
 
     Public Function EcosimInitialized(ByVal EcosimDatastructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimInitializedPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcosimInitializedPlugin).EcosimInitialized(EcosimDatastructures)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimInitialized", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        ' Invoke IEcosimInitializedPlugin.EcosimInitialized(datasource)
+        Return Me.TryInvokeMethod(GetType(IEcosimInitializedPlugin), _
+                                  "EcosimInitialized", _
+                                  New Object() {EcosimDatastructures})
 
     End Function
 
     Public Function EcosimModifyTimeseries(ByVal TimeSeriesDataStructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimModifyTimeseriesPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcosimModifyTimeseriesPlugin).EcosimModifyTimeseries(TimeSeriesDataStructures)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimModifyTimeseries", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        ' Invoke IEcosimModifyTimeseriesPlugin.EcosimModifyTimeseries(TimeSeriesDataStructures)
+        Return Me.TryInvokeMethod(GetType(IEcosimModifyTimeseriesPlugin), _
+                                  "EcosimModifyTimeseries", _
+                                  New Object() {TimeSeriesDataStructures})
 
     End Function
 
     Public Function EcosimModifyFGear(ByVal FGear As Object, ByVal BB As Object, ByVal EcosimDataStructures As Object, ByVal CurrentTime As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimModifyFGearPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcosimModifyFGearPlugin).EcosimModifyFGear(FGear, BB, EcosimDataStructures, CurrentTime)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimModifyTimeseries", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        ' Invoke IEcosimModifyFGearPlugin.EcosimModifyFGear(FGear, BB, EcosimDataStructures, CurrentTime)
+        Return Me.TryInvokeMethod(GetType(IEcosimModifyFGearPlugin), _
+                                  "EcosimModifyFGear", _
+                                  New Object() {FGear, BB, EcosimDataStructures, CurrentTime})
 
     End Function
 
@@ -905,37 +661,17 @@ Public Class cPluginManager
                                         ByVal EcosimDataStructures As Object, _
                                         ByVal iTimeStep As Integer) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimBeginTimestepPlugin))
-        Try
+        ' Invoke IEcosimBeginTimestepPlugin.EcosimBeginTimeStep(iTimeStep)
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimBeginTimestepPlugin), _
+                                                    "EcosimBeginTimeStep", _
+                                                    New Object() {BiomassAtTimestep, EcosimDataStructures, iTimeStep})
 
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcosimBeginTimestepPlugin).EcosimBeginTimeStep(BiomassAtTimestep, EcosimDataStructures, iTimeStep)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimBeginTimeStep", ex)
-                End Try
-            Next
+        ' Invoke IEcosimBeginTimestepPlugin.EcosimBeginTimeStepPost(iTimeStep)
+        bSucces = bSucces And Me.TryInvokeMethod(GetType(IEcosimBeginTimestepPostPlugin), _
+                                                 "EcosimBeginTimeStepPost", _
+                                                 New Object() {BiomassAtTimestep, EcosimDataStructures, iTimeStep})
 
-        Catch ex As Exception
-            Return False
-        End Try
-
-        collPlugins = Me.GetPlugins(GetType(IEcosimBeginTimestepPostPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcosimBeginTimestepPostPlugin).EcosimBeginTimeStepPost(BiomassAtTimestep, EcosimDataStructures, iTimeStep)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimBeginTimeStepPost", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        Return bSucces
 
     End Function
 
@@ -965,93 +701,40 @@ Public Class cPluginManager
                                       ByVal iTimeStep As Integer, _
                                       ByVal Ecosimresults As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimEndTimestepPlugin))
-        Try
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcosimEndTimestepPlugin).EcosimEndTimeStep(BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimEndTimeStep", ex)
-                End Try
-            Next
+        ' Invoke IEcosimEndTimestepPlugin.EcosimEndTimeStep(BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults)
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimEndTimestepPlugin), _
+                                                    "EcosimEndTimeStep", _
+                                                    New Object() {BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults})
 
-        Catch ex As Exception
-            Return False
-        End Try
-
-        collPlugins = Me.GetPlugins(GetType(IEcosimEndTimestepPostPlugin))
-        Try
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcosimEndTimestepPostPlugin).EcosimEndTimeStepPost(BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimEndTimeStepPost", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        ' Invoke IEcosimEndTimestepPlugin.EcosimEndTimeStepPost(BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults)
+        Return bSucces And Me.TryInvokeMethod(GetType(IEcosimEndTimestepPostPlugin), _
+                                         "EcosimEndTimeStepPost", _
+                                         New Object() {BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults})
 
     End Function
 
     Public Function EcosimRunInitialized(ByVal EcosimDatastructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimRunInitializedPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcosimRunInitializedPlugin).EcosimRunInitialized(EcosimDatastructures)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimRunInitialized", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        ' Invoke IEcosimRunInitializedPlugin.EcosimRunInitialized(EcosimDatastructures)
+        Return Me.TryInvokeMethod(GetType(IEcosimRunInitializedPlugin), _
+                                  "EcosimRunInitialized", _
+                                  New Object() {EcosimDatastructures})
 
     End Function
 
 
     Public Function EcosimRunCompleted(ByVal EcosimDatastructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimRunCompletedPlugin))
-        Try
+        ' Invoke IEcosimRunCompletedPlugin.EcosimRunCompleted(EcosimDatastructures)
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimRunCompletedPlugin), _
+                          "EcosimRunCompleted", _
+                          New Object() {EcosimDatastructures})
 
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcosimRunCompletedPlugin).EcosimRunCompleted(EcosimDatastructures)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimRunCompleted", ex)
-                End Try
-            Next
 
-        Catch ex As Exception
-            Return False
-        End Try
-
-        collPlugins = Me.GetPlugins(GetType(IEcosimRunCompletedPostPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcosimRunCompletedPostPlugin).EcosimRunCompletedPost(EcosimDatastructures)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimRunCompletedPost", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        ' Invoke IEcosimRunInitializedPlugin.EcosimRunInitialized(EcosimDatastructures)
+        Return bSucces And Me.TryInvokeMethod(GetType(IEcosimRunCompletedPostPlugin), _
+                          "EcosimRunCompletedPost", _
+                          New Object() {EcosimDatastructures})
 
     End Function
 
@@ -1072,15 +755,8 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub LoadEcospaceScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospacePlugin))
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                DirectCast(ipc.Plugin, IEcospacePlugin).LoadEcospaceScenario(dataSource)
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "LoadEcospaceScenario", ex)
-            End Try
-        Next
+        ' Invoke IEcospacePlugin.LoadEcospaceScenario(dataSource)
+        Me.TryInvokeMethod(GetType(IEcospacePlugin), "LoadEcospaceScenario", New Object() {dataSource})
 
     End Sub
 
@@ -1089,25 +765,16 @@ Public Class cPluginManager
     ''' Invokes right after LoadEcospaceScenario
     ''' </summary>
     ''' <param name="EcospaceDatastructures"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <returns>True if succesful.</returns>
+    ''' <remarks>Due to avoid circular references, this project is unable to reference
+    ''' the assembly EwECore. As such, links in this help text cannot be resolved.
+    ''' Refer to the EwE Datasource documentation for calling conventions and 
+    ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
     Public Function EcospaceInitialized(ByVal EcospaceDatastructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospaceInitializedPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcospaceInitializedPlugin).EcospaceInitialized(EcospaceDatastructures)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospaceInitialized", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
+        ' Invoke IEcospaceInitializedPlugin.EcospaceInitialized(EcospaceDatastructures)
+        Me.TryInvokeMethod(GetType(IEcospaceInitializedPlugin), "EcospaceInitialized", New Object() {EcospaceDatastructures})
 
     End Function
 
@@ -1124,110 +791,47 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub SaveEcospaceScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospacePlugin))
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                DirectCast(ipc.Plugin, IEcospacePlugin).SaveEcospaceScenario(dataSource)
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SaveEcospaceScenario", ex)
-            End Try
-        Next
+        ' Invoke IEcospacePlugin.SaveEcospaceScenario(dataSource)
+        Me.TryInvokeMethod(GetType(IEcospacePlugin), "SaveEcospaceScenario", New Object() {dataSource})
 
     End Sub
 
     Public Function EcospaceBeginTimeStep(ByVal EcospaceDataStructures As Object, ByVal iTimeStep As Integer) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospaceBeginTimestepPlugin))
-        Try
+        ' Invoke IEcospaceBeginTimestepPlugin.EcospaceBeginTimeStep(EcospaceDataStructures, iTimeStep)
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcospaceBeginTimestepPlugin), _
+                                                    "EcospaceBeginTimeStep", _
+                                                    New Object() {EcospaceDataStructures, iTimeStep})
 
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcospaceBeginTimestepPlugin).EcospaceBeginTimeStep(EcospaceDataStructures, iTimeStep)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospaceBeginTimeStep", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        collPlugins = Me.GetPlugins(GetType(IEcospaceBeginTimestepPostPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcospaceBeginTimestepPostPlugin).EcospaceBeginTimeStepPost(EcospaceDataStructures, iTimeStep)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospaceBeginTimeStepPost", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        ' Invoke IEcospaceBeginTimestepPostPlugin.EcospaceBeginTimeStepPost(dataSource)
+        Return bSucces And Me.TryInvokeMethod(GetType(IEcospaceBeginTimestepPostPlugin), _
+                                              "EcospaceBeginTimeStepPost", _
+                                              New Object() {EcospaceDataStructures, iTimeStep})
 
     End Function
 
     Public Function EcospacePostFishingEffortModTimestep(ByVal EcospaceDatastructures As Object, ByVal iTimeStep As Integer) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospacePostFishingEffortModTimestepPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcospacePostFishingEffortModTimestepPlugin).EcospacePostFishingEffortModTimestep(EcospaceDatastructures, iTimeStep)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospacePostFishingEffortModTimestep", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
+        ' Invoke IEcospacePostFishingEffortModTimestepPlugin.EcospacePostFishingEffortModTimestep(EcospaceDataStructures, iTimeStep)
+        Return Me.TryInvokeMethod(GetType(IEcospacePostFishingEffortModTimestepPlugin), _
+                                  "EcospacePostFishingEffortModTimestep", _
+                                  New Object() {EcospaceDatastructures, iTimeStep})
 
     End Function
 
     Public Function EcospaceEndTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTimeStep As Integer) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospaceEndTimestepPlugin))
-        Try
+        ' Invoke IEcospaceEndTimestepPlugin.EcospaceEndTimeStep(EcospaceDataStructures, iTimeStep)
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcospaceEndTimestepPlugin), _
+                                                    "EcospaceEndTimeStep", _
+                                                    New Object() {EcospaceDatastructures, iTimeStep})
 
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcospaceEndTimestepPlugin).EcospaceEndTimeStep(EcospaceDatastructures, iTimeStep)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospaceEndTimeStep", ex)
-                End Try
-            Next
+        ' Invoke IEcospaceEndTimestepPostPlugin.EcospaceEndTimeStepPost(EcospaceDataStructures, iTimeStep)
+        Return bSucces And Me.TryInvokeMethod(GetType(IEcospaceEndTimestepPostPlugin), _
+                                                    "EcospaceEndTimeStepPost", _
+                                                    New Object() {EcospaceDatastructures, iTimeStep})
 
-        Catch ex As Exception
-            Return False
-        End Try
-
-        collPlugins = Me.GetPlugins(GetType(IEcospaceEndTimestepPostPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcospaceEndTimestepPostPlugin).EcospaceEndTimeStepPost(EcospaceDatastructures, iTimeStep)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospaceEndTimeStepPost", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
-
-    End Function
+     End Function
 
 #End Region ' Ecospace Plugins
 
@@ -1246,15 +850,8 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub LoadEcotracerScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcotracerPlugin))
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                DirectCast(ipc.Plugin, IEcotracerPlugin).LoadEcotracerScenario(dataSource)
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "LoadEcotracerScenario", ex)
-            End Try
-        Next
+        ' Invoke IEcotracerPlugin.LoadEcotracerScenario(dataSource)
+        Me.TryInvokeMethod(GetType(IEcotracerPlugin), "LoadEcotracerScenario", New Object() {dataSource})
 
     End Sub
 
@@ -1268,20 +865,10 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function EcotracerInitialized(ByVal EcotracerDatastructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcotracerInitializedPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, IEcotracerInitializedPlugin).EcotracerInitialized(EcotracerDatastructures)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcotracerInitialized", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
+        ' Invoke IEcotracerInitializedPlugin.EcotracerInitialized(EcotracerDatastructures)
+        Return Me.TryInvokeMethod(GetType(IEcotracerInitializedPlugin), _
+                                  "EcotracerInitialized", _
+                                  New Object() {EcotracerDatastructures})
 
     End Function
 
@@ -1298,15 +885,8 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub SaveEcotracerScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcotracerPlugin))
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                DirectCast(ipc.Plugin, IEcotracerPlugin).SaveEcotracerScenario(dataSource)
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SaveEcotracerScenario", ex)
-            End Try
-        Next
+        ' Invoke IEcotracerPlugin.SaveEcotracerScenario(dataSource)
+        Me.TryInvokeMethod(GetType(IEcotracerPlugin), "SaveEcotracerScenario", New Object() {dataSource})
 
     End Sub
 
@@ -1325,24 +905,11 @@ Public Class cPluginManager
     Public Function BroadcastData(ByVal strDataName As String, ByVal data As IPluginData) As Boolean _
             Implements IDataBroadcaster.BroadcastData
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataConsumerPlugin))
-        Dim bHandled As Boolean = False
-
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    bHandled = bHandled Or DirectCast(ipc.Plugin, IDataConsumerPlugin).ReceiveData(strDataName, data)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "ReceiveData", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return bHandled
+        ' Invoke IDataConsumerPlugin.ReceiveData(strDataName, data)
+        Return Me.TryInvokeMethod(GetType(IDataConsumerPlugin), _
+                                  "ReceiveData", _
+                                  New Object() {strDataName, data}, _
+                                  eInvocationType.Any)
 
     End Function
 
@@ -1358,22 +925,11 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     Public Function IsDataAvailable(ByVal strDataName As String, Optional ByVal runType As IRunType = Nothing) As Boolean
 
-        Dim coll As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataProducerPlugin))
-        Dim bIsDataAvailable As Boolean = False
-
-        Try
-            For Each ipc As cPluginContext In coll
-                Try
-                    bIsDataAvailable = bIsDataAvailable Or DirectCast(ipc.Plugin, IDataProducerPlugin).IsDataAvailable(strDataName, runType)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "HasData", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-        End Try
-
-        Return bIsDataAvailable
+        ' Invoke IDataProducerPlugin.IsDataAvailable(strDataName, runType)
+        Return Me.TryInvokeMethod(GetType(IDataProducerPlugin), _
+                                  "IsDataAvailable", _
+                                  New Object() {strDataName, runType}, _
+                                  eInvocationType.Any)
 
     End Function
 
@@ -1389,22 +945,12 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     Public Function IsDataAvailable(ByVal dataType As Type, Optional ByVal runType As IRunType = Nothing) As Boolean
 
-        Dim coll As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataProducerPlugin))
-        Dim bIsDataAvailable As Boolean = False
+        ' Invoke IDataProducerPlugin.IsDataAvailable(dataType, runType)
+        Return Me.TryInvokeMethod(GetType(IDataProducerPlugin), _
+                                  "IsDataAvailable", _
+                                  New Object() {dataType, runType}, _
+                                  eInvocationType.Any)
 
-        Try
-            For Each ipc As cPluginContext In coll
-                Try
-                    bIsDataAvailable = bIsDataAvailable Or DirectCast(ipc.Plugin, IDataProducerPlugin).IsDataAvailable(dataType, runType)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "HasData", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-        End Try
-
-        Return bIsDataAvailable
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -1415,6 +961,7 @@ Public Class cPluginManager
     ''' </summary>
     ''' <param name="strDataName">The name of the data to match.</param>
     ''' <returns>An array of data, or an empty array if an error occurred.</returns>
+    ''' <remarks>This method is not thread-safe.</remarks>
     ''' -----------------------------------------------------------------------
     Public Function GetData(ByVal strDataName As String) As IPluginData()
 
@@ -1449,6 +996,7 @@ Public Class cPluginManager
     ''' </summary>
     ''' <param name="dataType">The type of the data to match.</param>
     ''' <returns>An array of data, or an empty array if an error occurred.</returns>
+    ''' <remarks>This method is not thread-safe.</remarks>
     ''' -----------------------------------------------------------------------
     Public Function GetData(ByVal dataType As Type) As IPluginData()
 
@@ -1485,20 +1033,8 @@ Public Class cPluginManager
 
     Public Function SearchInitialized(ByVal SearchDS As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(ISearchPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, ISearchPlugin).SearchInitialized(SearchDS)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SearchInitialized", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
+        ' Invoke ISearchPlugin.SearchInitialized(SearchDS)
+        Return Me.TryInvokeMethod(GetType(ISearchPlugin), "SearchInitialized", New Object() {SearchDS})
 
     End Function
 
@@ -1513,39 +1049,15 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     Public Function PostRunSearchResults(ByVal SearchDS As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(ISearchPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, ISearchPlugin).PostRunSearchResults(SearchDS)
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "PostRunSearchResults", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
+        ' Invoke ISearchPlugin.PostRunSearchResults(SearchDS)
+        Return Me.TryInvokeMethod(GetType(ISearchPlugin), "PostRunSearchResults", New Object() {SearchDS})
 
     End Function
 
     Public Function SearchIterationsStarting() As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(ISearchPlugin))
-        Try
-
-            For Each ipc As cPluginContext In collPlugins
-                Try
-                    DirectCast(ipc.Plugin, ISearchPlugin).SearchIterationsStarting()
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SearchIterationsStarting", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
+        ' Invoke ISearchPlugin.SearchIterationsStarting()
+        Return Me.TryInvokeMethod(GetType(ISearchPlugin), "SearchIterationsStarting", New Object() {})
 
     End Function
 
@@ -1763,6 +1275,309 @@ Public Class cPluginManager
     End Sub
 
 #End Region ' Plugin exception
+
+#Region " Database updates "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Run available database update plug-ins.
+    ''' </summary>
+    ''' <param name="db">The database to update.</param>
+    ''' <param name="sBaselineVersion">Database version to start updating from.</param>
+    ''' <remarks>
+    ''' This method does not attempt to cross thread boundaries.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Sub UpdateDatabase(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single)
+
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabaseUpdatePlugin))
+        Dim lPlugins As New List(Of cPluginContext)
+        Dim ip As IDatabaseUpdatePlugin = Nothing
+        Dim strDescription As String = ""
+
+        ' Sanity checks
+        If db Is Nothing Then Return
+        If db.GetVersion() < sBaselineVersion Then Return
+
+        ' Transform collection into list (there must be a better way?)
+        For Each ipc As cPluginContext In collPlugins
+            lPlugins.Add(ipc)
+        Next
+
+        lPlugins.Sort(New IDatabaseUpdatePluginContextSort())
+
+        For Each ipc As cPluginContext In lPlugins
+            ' Get plugin
+            ip = DirectCast(ipc.Plugin, IDatabaseUpdatePlugin)
+            ' Check
+            If (ip.UpdateVersion > db.GetVersion() Or ip.UpdateVersion = -9999) Then
+                Try
+                    If ip.ApplyUpdate(db) Then
+
+                        Dim sbDescription As New System.Text.StringBuilder()
+                        Dim iBit As Integer = 0
+                        For Each strBit As String In ip.UpdateDescription.Split(New String() {"." & vbNewLine, vbNewLine}, StringSplitOptions.RemoveEmptyEntries)
+                            strBit = strBit.Trim
+                            If Not String.IsNullOrEmpty(strBit) Then
+                                If iBit > 0 Then sbDescription.Append("; ")
+                                sbDescription.Append(strBit)
+                                iBit += 1
+                            End If
+                        Next
+                        db.SetVersion(ip.UpdateVersion, sbDescription.ToString())
+                    Else
+                        Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", New Exception("(generic failure)"))
+                    End If
+
+                Catch ex As Exception
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", ex)
+                End Try
+
+            End If
+        Next
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether plug-ins have been found that can upgrade an
+    ''' <see cref="cEwEDatabase">EwE database</see> to a newer version that
+    ''' exceeds a requested <paramref name="sBaselineVersion">baseline version</paramref>.
+    ''' </summary>
+    ''' <param name="db">The EwE database to test for upgrades.</param>
+    ''' <param name="sBaselineVersion">The baseline database version required 
+    ''' by the EwE software.</param>
+    ''' <returns>True if updates are available.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function HasDatabaseUpdates(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
+
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabaseUpdatePlugin))
+        Dim lPlugins As New List(Of cPluginContext)
+        Dim ip As IDatabaseUpdatePlugin = Nothing
+        Dim sVerDB As Single = db.GetVersion()
+
+        ' Sanity checks
+        If db Is Nothing Then Return False
+        If sVerDB < sBaselineVersion Then Return False
+
+        ' Transform collection into list (there must be a better way?)
+        For Each ipc As cPluginContext In collPlugins
+            lPlugins.Add(ipc)
+        Next
+
+        lPlugins.Sort(New IDatabaseUpdatePluginContextSort())
+
+        For Each ipc As cPluginContext In lPlugins
+            ip = DirectCast(ipc.Plugin, IDatabaseUpdatePlugin)
+            If (ip.UpdateVersion > sVerDB) Or (ip.UpdateVersion = -9999) Then
+                Return True
+            End If
+        Next
+        Return False
+
+    End Function
+
+#End Region ' Database updates
+
+#Region " Internal generic invocation "
+
+    ''' <summary>
+    ''' Enumerated type, stating how a plug-in calls are handled, and how the plug-in
+    ''' manager gathers invocation results.
+    ''' </summary>
+    ''' <remarks>
+    ''' Why is 'invoke' spelled with a 'k', and 'invocation' with a 'c'? Granted,
+    ''' 'invoce' and 'invokation' look pretty silly, but... why? Shall we propose
+    ''' to consistently use a 'q' instead? Or 'ck'? Wow, I think I need a life...
+    ''' </remarks>
+    Private Enum eInvocationType As Integer
+        ''' <summary>
+        ''' All plug-ins implementing a method will be invoked, and invocation
+        ''' results will be combined via the logical AND operator. Effectively,
+        ''' this means that all implementations will have to succeed for the 
+        ''' plug-in point to succeed.
+        ''' </summary>
+        All
+        ''' <summary>
+        ''' All plug-ins implementing a method will be invoked, and invocation
+        ''' results will be combined via the logical OR operator. Effectively,
+        ''' this means that any implementation will have to succeed for the 
+        ''' plug-in point to succeed.
+        ''' </summary>
+        Any
+        ''' Only the first encountered plug-in that implements a method will be
+        ''' invoked, and the plug-in result will depend on the result of that
+        ''' single invocation. Effectively, this means that this type of plug-in
+        ''' point is invoked exclusively.
+        Exclusive
+    End Enum
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Invoke a generic method on all plugins of a specific type.
+    ''' </summary>
+    ''' <param name="typePlugin">The <see cref="Type">Type</see> of the plugin.</param>
+    ''' <param name="strMethod">The name of the method to invoke.</param>
+    ''' <param name="aArgs">The arguments to pass to the method to invoke.</param>
+    ''' <param name="invocation">Flag stating whether the plug-in point is exclusive.
+    ''' Exclusive plug-in points are meant to replace core functionality. The first
+    ''' plug-in point encountered is invoked in which case True is returned. If no
+    ''' suitable plug-in point is found, a return value of False is expected.
+    ''' </param>
+    ''' <returns>True if the method could be found for the given type.</returns>
+    ''' <remarks>
+    ''' <para>Note that this method tries to match argument types to the values
+    ''' provided in <paramref name="aArgs">aArgs</paramref>. If this array of values 
+    ''' happens to contain Null (or Nothing), call <see cref="InvokeMethod">InvokeMethod</see>
+    ''' instead.</para>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function TryInvokeMethod(ByVal typePlugin As Type, _
+                                    ByVal strMethod As String, _
+                                    Optional ByVal aArgs() As Object = Nothing, _
+                                    Optional ByVal invocation As eInvocationType = eInvocationType.All) As Boolean
+
+
+        ' Fix arguments
+        If (aArgs Is Nothing) Then aArgs = New Object() {}
+
+        ' ---
+        ' Validate called prototype and number of parameters
+        ' ---
+
+        Try
+
+            Dim mi As MethodInfo = typePlugin.GetMethod(strMethod)
+            If (mi Is Nothing) Then
+                Debug.Assert(False, String.Format("Method {0}::{1} does not exist", typePlugin, strMethod))
+                Return False
+            End If
+
+            Dim api() As ParameterInfo = mi.GetParameters
+            If (api.Length <> aArgs.Length) Then
+                Debug.Assert(False, String.Format("Method {0}::{1} called with wrong number of parameters", typePlugin, strMethod))
+                Return False
+            End If
+
+        Catch ex As AmbiguousMatchException
+            ' Ok, more than one method found with this name. No need to validate
+            ' further, let invocaton do the rest
+        Catch ex As Exception
+            ' What?!
+            Debug.Assert(False, ex.Message)
+        End Try
+
+        ' JS17oct09: skip parameter type validation for now, let invocation throw exceptions
+        'For i As Integer = 0 To api.Length - 1
+        '    Dim tPrm As Type = aArgs(i).GetType()
+        '    Dim tDef As Type = api(i).ParameterType
+        '    If Not tPrm.IsAssignableFrom(tDef) Then
+        '        Debug.Assert(False, String.Format("Method {0}::{1} parameter {2} type mismatch, check usage", typePlugin, strMethod, i))
+        '        Return False
+        '    End If
+        'Next
+
+        ' Has sync object?
+        If (Me.m_sync IsNot Nothing) Then
+            ' #Yes: Need to cross thread boundaries?
+            If Me.m_sync.InvokeRequired() Then
+                ' #Yes: build params list to pass to other thread
+                Dim lArgs As New List(Of Object)
+                lArgs.Add(typePlugin)
+                lArgs.Add(strMethod)
+                lArgs.Add(aArgs)
+                lArgs.Add(invocation)
+                ' Marshall this call
+                Return CBool(Me.m_sync.Invoke(New InvokeMethodDelegate(AddressOf InvokeMethod), lArgs.ToArray()))
+            End If
+        End If
+
+        Return Me.InvokeMethod(typePlugin, strMethod, aArgs, invocation)
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Delegate for invoking methods through a sync object.
+    ''' </summary>
+    ''' <param name="typePlugin"></param>
+    ''' <param name="strMethod"></param>
+    ''' <param name="aArgs"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
+    Private Delegate Function InvokeMethodDelegate(ByVal typePlugin As Type, _
+                                                   ByVal strMethod As String, _
+                                                   ByVal aArgs() As Object, _
+                                                   ByVal invocation As eInvocationType) As Boolean
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Invoke a generic method on all plugins of a specific type.
+    ''' </summary>
+    ''' <param name="typePlugin">The <see cref="Type">Type</see> of the plugin.</param>
+    ''' <param name="strMethod">The name of the method to invoke.</param>
+    ''' <param name="aArgs">The arguments to pass to the method to invoke.</param>
+    ''' <returns>True if the method could be found for the given type.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function InvokeMethod(ByVal typePlugin As Type, _
+                                  ByVal strMethod As String, _
+                                  ByVal aArgs() As Object, _
+                                  ByVal invocation As eInvocationType) As Boolean
+
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(typePlugin)
+        Dim bSucces As Boolean = True
+
+        Select Case invocation
+            Case eInvocationType.All
+                bSucces = True
+            Case eInvocationType.Any
+                bSucces = False
+            Case eInvocationType.Exclusive
+                bSucces = False
+            Case Else
+                Debug.Assert(False)
+        End Select
+
+        ' Invoke method on each plugin
+        For Each ipc As cPluginContext In collPlugins
+            Try
+                ' Try to invoke the member method
+                Dim bHandled As Boolean = CBool(typePlugin.InvokeMember(strMethod, BindingFlags.InvokeMethod, _
+                                                                    Type.DefaultBinder, ipc.Plugin, aArgs))
+
+                Select Case invocation
+                    Case eInvocationType.All
+                        ' All implementing plug-ins need to succeed
+                        bSucces = bSucces And bHandled
+                    Case eInvocationType.Any
+                        ' Any of the implementing plug-ins need to succeed
+                        bSucces = bSucces Or bHandled
+                    Case eInvocationType.Exclusive
+                        ' Exclusive plug-in succeeded: run away!
+                        If bSucces Then Return True
+                End Select
+
+            Catch ex As MissingMethodException
+
+                ' Thrown whenever method[name + parameters] was not found.
+                ' This could indicate a plug-in assembly incompatibility?
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, strMethod, ex)
+                bSucces = False
+
+            Catch ex As Exception
+
+                ' Error thrown within plug-in
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, strMethod, ex)
+                bSucces = False
+
+            End Try
+        Next ipc
+
+        Return bSucces
+
+    End Function
+
+#End Region ' Internal generic invocation
 
 #Region " Private helper methods "
 
