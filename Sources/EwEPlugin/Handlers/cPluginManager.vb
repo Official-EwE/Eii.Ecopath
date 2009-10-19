@@ -1,12 +1,14 @@
 Option Strict On
 
-Imports System.Reflection
-Imports System.IO
-Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEPlugin.Data
+
+Imports System.IO
+Imports System.Threading
+Imports System.Reflection
 Imports System.ComponentModel
+Imports System.Windows.Forms
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -84,6 +86,67 @@ Public Class cPluginManager
 
     End Class
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Yet another helper class. This one serves to pass function parameter
+    ''' info to InvokeMethod on a different thread.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Class cInvokeMethodInfo
+
+        Private m_typePlugin As Type = Nothing
+        Private m_strMethod As String = ""
+        Private m_aArgs() As Object = Nothing
+        Private m_invocation As eInvocationType = eInvocationType.All
+        Private m_bResult As Boolean = False
+
+        Public Sub New(ByVal typePlugin As Type, _
+                       ByVal strMethod As String, _
+                       ByVal aArgs() As Object, _
+                       ByVal invocation As eInvocationType)
+
+            Me.m_typePlugin = typePlugin
+            Me.m_strMethod = strMethod
+            Me.m_aArgs = aArgs
+            Me.m_invocation = invocation
+
+        End Sub
+
+        Public ReadOnly Property PluginType() As Type
+            Get
+                Return Me.m_typePlugin
+            End Get
+        End Property
+
+        Public ReadOnly Property MethodName() As String
+            Get
+                Return Me.m_strMethod
+            End Get
+        End Property
+
+        Public ReadOnly Property Arguments() As Object()
+            Get
+                Return Me.m_aArgs
+            End Get
+        End Property
+
+        Public ReadOnly Property Invocation() As eInvocationType
+            Get
+                Return Me.m_invocation
+            End Get
+        End Property
+
+        Public Property Result() As Boolean
+            Get
+                Return Me.m_bResult
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bResult = value
+            End Set
+        End Property
+
+    End Class
+
 #End Region ' Helper classes
 
 #Region " Private variables "
@@ -94,7 +157,7 @@ Public Class cPluginManager
     ''' execution state allows a plug-in to run.</summary>
     Private m_dlgtCoreState As CanExecutePlugin = Nothing
     ''' <summary>Sync object to marshall plug-in calls across threads.</summary>
-    Private m_sync As ISynchronizeInvoke = Nothing
+    Private m_sync As System.Threading.SynchronizationContext = Nothing
 
 #End Region ' Private variables
 
@@ -122,6 +185,12 @@ Public Class cPluginManager
         End Set
     End Property
 
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the delegate that the plug-in can invoke to test whether a plug-in
+    ''' is allowed to execute.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
     Public Property CoreExecutionStateDelegate() As CanExecutePlugin
         Get
             Return Me.m_dlgtCoreState
@@ -134,11 +203,16 @@ Public Class cPluginManager
         End Set
     End Property
 
-    Public Property SyncObject() As ISynchronizeInvoke
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the cross-threading synchronization context.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Property SyncObject() As System.Threading.SynchronizationContext
         Get
             Return Me.m_sync
         End Get
-        Set(ByVal value As ISynchronizeInvoke)
+        Set(ByVal value As System.Threading.SynchronizationContext)
             Me.m_sync = value
         End Set
     End Property
@@ -1440,9 +1514,10 @@ Public Class cPluginManager
         ' Fix arguments
         If (aArgs Is Nothing) Then aArgs = New Object() {}
 
-        ' ---
-        ' Validate called prototype and number of parameters
-        ' ---
+        ' ---                                                               --- '
+        ' Validate called prototype and number of parameters in DEBUG mode only '
+        ' ---                                                               --- '
+#If DEBUG Then
 
         Try
 
@@ -1476,19 +1551,16 @@ Public Class cPluginManager
         '    End If
         'Next
 
+#End If
+
         ' Has sync object?
         If (Me.m_sync IsNot Nothing) Then
-            ' #Yes: Need to cross thread boundaries?
-            If Me.m_sync.InvokeRequired() Then
-                ' #Yes: build params list to pass to other thread
-                Dim lArgs As New List(Of Object)
-                lArgs.Add(typePlugin)
-                lArgs.Add(strMethod)
-                lArgs.Add(aArgs)
-                lArgs.Add(invocation)
-                ' Marshall this call
-                Return CBool(Me.m_sync.Invoke(New InvokeMethodDelegate(AddressOf InvokeMethod), lArgs.ToArray()))
-            End If
+            ' #Yes: build info to cross over
+            Dim inf As New cInvokeMethodInfo(typePlugin, strMethod, aArgs, invocation)
+            ' Yo Maurice
+            Me.m_sync.Send(New SendOrPostCallback(AddressOf Me.MarshallInvokeMethod), inf)
+            ' Return result
+            Return inf.Result
         End If
 
         Return Me.InvokeMethod(typePlugin, strMethod, aArgs, invocation)
@@ -1497,18 +1569,20 @@ Public Class cPluginManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Delegate for invoking methods through a sync object.
+    ''' Marshall bridge for <see cref="InvokeMethod">InvokeMethod</see>.
     ''' </summary>
-    ''' <param name="typePlugin"></param>
-    ''' <param name="strMethod"></param>
-    ''' <param name="aArgs"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     ''' -----------------------------------------------------------------------
-    Private Delegate Function InvokeMethodDelegate(ByVal typePlugin As Type, _
-                                                   ByVal strMethod As String, _
-                                                   ByVal aArgs() As Object, _
-                                                   ByVal invocation As eInvocationType) As Boolean
+    Private Sub MarshallInvokeMethod(ByVal state As Object)
+
+        ' Sanity check
+        Debug.Assert(TypeOf (state) Is cInvokeMethodInfo)
+
+        If Not (TypeOf (state) Is cInvokeMethodInfo) Then Return
+
+        Dim info As cInvokeMethodInfo = DirectCast(state, cInvokeMethodInfo)
+        info.Result = Me.InvokeMethod(info.PluginType, info.MethodName, info.Arguments, info.Invocation)
+
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
