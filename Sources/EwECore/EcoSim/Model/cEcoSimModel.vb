@@ -852,8 +852,11 @@ Public Property PluginManager() As cPluginManager
 
                     For igrp As Integer = 1 To Me.nGroups
                         sumBio += BB(igrp)
-                        'zero fleet index hold sum of catch for all fleets
-                        sumCatch += m_Data.ResultsSumCatchByGroupGear(igrp, 0, itime)
+
+                        If m_Data.bTimestepOutput Then
+                            'zero fleet index hold sum of catch for all fleets
+                            sumCatch += m_Data.ResultsSumCatchByGroupGear(igrp, 0, itime)
+                        End If
                     Next
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimEndTimeStep(BB, m_Data, itime, m_Results)
@@ -906,7 +909,7 @@ Public Property PluginManager() As cPluginManager
 
             If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimRunCompleted(m_Data)
 
-            System.Console.WriteLine("Sum Bio = " & sumBio.ToString & ", Sum Catch = " & sumCatch.ToString)
+            ' System.Console.WriteLine("Sum Bio = " & sumBio.ToString & ", Sum Catch = " & sumCatch.ToString)
 
         End Sub
 
