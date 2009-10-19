@@ -1400,8 +1400,8 @@ Public Class cPluginManager
         ''' <summary>
         ''' All plug-ins implementing a method will be invoked, and invocation
         ''' results will be combined via the logical OR operator. Effectively,
-        ''' this means that any implementation will have to succeed for the 
-        ''' plug-in point to succeed.
+        ''' this means that any implementation can succeed for the plug-in 
+        ''' point to succeed.
         ''' </summary>
         Any
         ''' Only the first encountered plug-in that implements a method will be
