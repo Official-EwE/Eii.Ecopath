@@ -43,8 +43,6 @@ Namespace Ecospace
         ''' <summary>Contaminants over Biomass.</summary>
         Private m_as2ConcOverB(,,) As Single
 
-        'The ref to hold the ecospace basemap
-        ' ToDo: change this to a snapshot layer obtained from time step results
         Private m_layerDepth As cEcospaceLayer
 
         ''' <summary>The speed of the plotting. 1 is the slowest, 10 is the fastest.</summary>
@@ -241,6 +239,9 @@ Namespace Ecospace
             ' Start tracking styleguide changes for colour feedback
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
+            ' Start tracking core state monitor for Ecospace run states
+            AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
             Me.m_zgh = New cZedGraphHelper()
@@ -265,6 +266,9 @@ Namespace Ecospace
             Me.m_core.StopEcospace()
 
             Me.m_zgh.Detach()
+
+            ' Stop tracking core state monitor for Ecospace run states
+            RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
 
             RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
             Me.m_sg = Nothing
@@ -615,9 +619,7 @@ Namespace Ecospace
 
         Private Sub btnRun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles m_btnRun.Click
 
-            'Redim relative biomass results array
             ReDim m_as2RelBiomassResults(m_core.nGroups, Me.m_core.nEcospaceTimeSteps)
-            'Redim base biomass base result array
             ReDim m_asBaseBiomassResults(m_core.nGroups)
 
             ' Reset plot drawer if overlay is not needed
@@ -628,25 +630,19 @@ Namespace Ecospace
             End If
 
             Me.m_iTimeStepCur = 0
-
-            AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.True, 0)
-
             Me.m_core.RunEcoSpace(AddressOf onEcospaceTimeStep)
-
             Me.m_cbOverlay.Enabled = True
 
         End Sub
 
         Private Sub m_btnStop_Click(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_btnStop.Click
-            Me.m_core.StopEcospace()
-            Me.UpdateControls()
-        End Sub
 
-        'Private Sub btnResults_Click(ByVal sender As Object, ByVal e As EventArgs)
-        '    Dim results As New cFormEcospaceResults
-        '    results.ShowDialog()
-        'End Sub
+            Me.m_core.StopEcospace()
+
+            ' Controls wil be updated via Core state monitor events
+            'Me.UpdateControls()
+        End Sub
 
         Private Sub OnOverlay(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_cbOverlay.Click
@@ -794,16 +790,32 @@ Namespace Ecospace
 
 #Region " Overrides "
 
+        Private m_bIsEcospaceRunning As Boolean = False
+
+        Private Sub OnCoreStateChanged(ByVal cms As cCoreStateMonitor)
+
+            If cms.IsEcospaceRunning <> Me.m_bIsEcospaceRunning Then
+
+                ' Update state flag
+                Me.m_bIsEcospaceRunning = cms.IsEcospaceRunning
+
+                ' Update status feedback
+                If Me.m_bIsEcospaceRunning Then
+                    AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.True)
+                Else
+                    AppLauncher.GetInstance().SetStatusText("", TriState.False)
+                End If
+
+                ' Update controls
+                Me.m_lblProgress.Text = ""
+                Me.UpdateControls()
+
+            End If
+        End Sub
+
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
 
             Select Case msg.Type
-
-                Case eMessageType.EcospaceRunCompleted
-                    'the Ecospace run has completed
-                    'this message will be sent before RunEcospace has returned!!!!
-                    Me.UpdateControls()
-                    AppLauncher.GetInstance().SetStatusText("", TriState.False)
-                    Me.m_lblProgress.Text = ""
 
                 Case eMessageType.EcosimNYearsChanged
                     Me.InitUIParams()
@@ -850,6 +862,8 @@ Namespace Ecospace
             End Select
 
             Me.m_cbOverlay.Checked = Me.m_bOverlay
+            Me.m_cbOverlay.Enabled = Me.m_core.StateMonitor.IsEcospaceRunning
+
             Me.m_cbMPA.Checked = Me.m_bShowMPA
 
             Me.m_bInUpdate = False
@@ -859,7 +873,6 @@ Namespace Ecospace
         Private Sub RefreshMap()
             Me.m_pbMap.Refresh()
         End Sub
-
 
         ''' <summary>
         ''' Prints a map of the IMB movements to the console 
@@ -906,8 +919,6 @@ Namespace Ecospace
             End Try
 
         End Sub
-
-
 
 #End Region ' Internal implementation
 
