@@ -59,7 +59,7 @@ Public Class cDBUpdate6_00_06_004
 
         Private m_nRows As Integer
         Private m_nCols As Integer
-        Private m_dtFleetPorts As New Dictionary(Of Integer, String())
+        Private m_dtFleetPorts As New Dictionary(Of Integer, Boolean())
 
         Public Sub New(ByVal nRows As Integer, ByVal nCols As Integer)
             Me.m_nRows = nRows
@@ -79,13 +79,22 @@ Public Class cDBUpdate6_00_06_004
         End Property
 
         Public Sub SetPort(ByVal iFleetID As Integer, ByVal strPort As String)
-            Me.m_dtFleetPorts(iFleetID) = strPort.Split(" "c)
+
+            Dim astrPorts As String() = strPort.Split(" "c)
+            Dim abPorts(astrPorts.Length) As Boolean
+            For i As Integer = 0 To astrPorts.Length - 1
+                abPorts(i) = (astrPorts(i) = "1"c)
+            Next
+            Me.m_dtFleetPorts(iFleetID) = abPorts
         End Sub
 
         Public ReadOnly Property HasPort(ByVal iFleetID As Integer, ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
             Get
                 Dim iCell As Integer = (iCol - 1) + ((iRow - 1) * Me.m_nCols)
-                Return Me.m_dtFleetPorts(iFleetID)(iCell) = "1"c
+                Dim abPorts As Boolean() = Me.m_dtFleetPorts(iFleetID)
+
+                If iCell < 0 Or iCell >= abPorts.Length Then Return False
+                Return abPorts(iCell)
             End Get
         End Property
 
