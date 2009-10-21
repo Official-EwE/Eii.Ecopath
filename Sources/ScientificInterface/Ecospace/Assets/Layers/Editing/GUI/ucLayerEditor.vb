@@ -1,21 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: ucLayerEditor.vb,v $
-' Revision 1.2  2008/11/05 01:13:57  jeroens
-' Update! Update!
-'
-' Revision 1.1  2008/11/04 04:40:33  jeroens
-' Split into separate files, moved
-'
-' Revision 1.2  2008/10/15 23:57:19  jeroens
-' Added GUI sync options
-'
-' Revision 1.1  2008/10/15 17:03:47  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 

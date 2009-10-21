@@ -1,15 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cLayerEditor.vb,v $
-' Revision 1.2  2008/11/08 23:53:56  jeroens
-' Made cell interface more intuitive
-'
-' Revision 1.1  2008/11/04 04:40:16  jeroens
-' Split into separate files, moved
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -70,6 +59,17 @@ Namespace Ecospace.Basemap.Layers
             MyBase.Finalize()
             Me.Layer = Nothing
         End Sub
+
+        Public Overridable Function Clone() As cLayerEditor
+            Dim minime As cLayerEditor = Nothing
+
+            ' Clone without GUI type
+            minime = DirectCast(Activator.CreateInstance(Me.GetType(), New Object() {}), cLayerEditor)
+            minime.IsEditable = Me.IsEditable
+            minime.IsReadOnly = Me.IsReadOnly
+
+            Return minime
+        End Function
 
 #End Region ' Construction
 

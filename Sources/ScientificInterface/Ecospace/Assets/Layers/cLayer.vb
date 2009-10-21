@@ -268,8 +268,11 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="layer">The layer to copy.</param>
         ''' -----------------------------------------------------------------------
         Public Sub New(ByVal layer As cLayer)
-            Me.New(layer.Data, layer.Renderer.Clone(), Nothing, layer.ValueSet, layer.ValueClear, layer.Source, layer.VarName)
-            Me.Name = "Copy of " & layer.Name
+
+            Me.New(layer.Data, layer.Renderer.Clone(), layer.Editor.Clone(), _
+                   layer.ValueSet, layer.ValueClear, layer.Source, layer.VarName)
+
+            Me.Name = layer.Name
             Me.IsSelected = layer.IsSelected
         End Sub
 
