@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: gridLayerData.vb,v $
-' Revision 1.5  2009/05/28 12:37:45  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/05/06 13:11:39  jeroens
-' Renamed classes for consistency reasons
-'
-' Revision 1.3  2009/05/05 15:09:30  jeroens
-' Removed cEcospaceBasemapLayer variables
-'
-' Revision 1.2  2008/11/20 15:18:29  jeroens
-' Layer ReadOnly state properly handled
-'
-' Revision 1.1  2008/11/04 04:58:44  jeroens
-' Renamed
-'
-' Revision 1.2  2008/10/10 18:04:02  jeroens
-' Updated to renamed layers classes
-'
-' Revision 1.1  2008/09/26 07:31:59  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -250,6 +224,7 @@ Public Class gridLayerData
         MyBase.New()
         Me.m_core = cCore.GetInstance()
         Me.m_basemap = Me.m_core.EcospaceBasemap
+        Me.TrackPropertySelection = False
     End Sub
 
     Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
@@ -286,14 +261,14 @@ Public Class gridLayerData
         Me.FixedColumns = 1
 
         If Me.m_layer.Editor IsNot Nothing Then
-            Me.Enabled = (Me.Layer.Editor.IsReadOnly() = False)
+            Me.Enabled = Me.Layer.Editor.IsEditable()
         End If
 
     End Sub
 
     Protected Overrides Sub FillData()
 
-        Dim cell As EwECell = Nothing
+        Dim cell As Cells.ICell = Nothing
         Dim tCell As Type = Nothing
         Dim data As cEcospaceLayer = Nothing
         'Dim dataDepth As cEcospaceLayer = Me.m_core.EcospaceBasemap.LayerDepth
@@ -324,17 +299,17 @@ Public Class gridLayerData
             For iCol As Integer = 1 To Me.m_basemap.InCol
                 ' Properly prepare cell
                 If tCell Is GetType(Integer) Then
-                    cell = New EwECell(CInt(data.Cell(iRow, iCol)), tCell)
+                    cell = New Cells.Real.Cell(CInt(data.Cell(iRow, iCol)), tCell)
                 Else
                     cell = New EwECell(CSng(data.Cell(iRow, iCol)), tCell)
                 End If
                 cell.Behaviors.Add(Me.m_bm)
-                cell.SuppressZero(cCore.NULL_VALUE) = True
+                'cell.SuppressZero(cCore.NULL_VALUE) = True
                 '' Highlight land cells
                 'If dataDepth.Cell(iRow, iCol) = 0 Then
                 '    cell.Style = StyleGuide.eStyleFlags.Checked
                 'Else
-                cell.Style = cStyleGuide.eStyleFlags.OK
+                'cell.Style = cStyleGuide.eStyleFlags.OK
                 'End If
                 Me(iRow, iCol) = cell
             Next iCol
