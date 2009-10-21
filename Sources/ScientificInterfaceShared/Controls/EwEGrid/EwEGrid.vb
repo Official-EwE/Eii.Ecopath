@@ -258,6 +258,7 @@ Namespace Controls.EwEGrid
         Private m_ceRowSelect As New BehaviorModels.CustomEvents
         Private m_ceColSelect As New BehaviorModels.CustomEvents
         Private m_bFixedColumnWidths As Boolean = True
+        Private m_bTrackPropertySelection As Boolean = False
         Private m_lpropertySelected As New List(Of cProperty)
         Private m_peh1 As SourceGrid2.PositionEventHandler = Nothing
         Private m_peh2 As SourceGrid2.PositionEventHandler = Nothing
@@ -281,8 +282,8 @@ Namespace Controls.EwEGrid
             AddHandler Me.Selection.ClipboardCut, AddressOf OnClipboardCut
             AddHandler Me.Selection.ClipboardPaste, AddressOf OnClipboardPaste
             AddHandler Me.Selection.ClearCells, AddressOf OnClearCells
-            AddHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
 
+            Me.TrackPropertySelection = True
         End Sub
 
         Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
@@ -302,6 +303,8 @@ Namespace Controls.EwEGrid
                 RemoveHandler Me.Selection.ClipboardPaste, AddressOf OnClipboardPaste
                 RemoveHandler Me.Selection.ClearCells, AddressOf OnClearCells
                 RemoveHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
+
+                Me.TrackPropertySelection = False
 
             End If
 
@@ -454,6 +457,30 @@ Namespace Controls.EwEGrid
             End Set
         End Property
 
+        ''' <summary>
+        ''' Flag, states whether the grid will maintain a list of 
+        ''' <see cref="SelectedProperties">selected properties</see>.
+        ''' </summary>
+        ''' <remarks>
+        ''' It is advised to set this setting to False for larger grids.
+        ''' </remarks>
+        <Browsable(True), Description("States whether the grid maintains a list of selected cProperty instances.")> _
+      Public Property TrackPropertySelection() As Boolean
+            Get
+                Return Me.m_bTrackPropertySelection
+            End Get
+            Set(ByVal value As Boolean)
+                If Me.m_bTrackPropertySelection <> value Then
+                    If Me.m_bTrackPropertySelection Then
+                        RemoveHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
+                    End If
+                    Me.m_bTrackPropertySelection = value
+                    If Me.m_bTrackPropertySelection Then
+                        AddHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
+                    End If
+                End If
+            End Set
+        End Property
 #End Region ' Appearance
 
 #Region " Data "
@@ -697,11 +724,11 @@ Namespace Controls.EwEGrid
 
             ' JS 29aug09: paste behaviour changed to imitate Excel. Do not only paste in selected cells,
             '             but paste 'all the way through'
-            For iRow As Integer = r.Start.Row To Math.Min(r.Start.Row + astrLines.Length - 1, Me.RowsCount)
+            For iRow As Integer = r.Start.Row To Math.Min(r.Start.Row + astrLines.Length - 1, Me.RowsCount - 1)
                 If Not String.IsNullOrEmpty(astrLines(iRow - r.Start.Row)) Then
                     Dim astrCols() As String = astrLines(iRow - r.Start.Row).Split(CChar(vbTab))
 
-                    For iCol As Integer = r.Start.Column To Math.Min(r.Start.Column + astrCols.Length - 1, Me.ColumnsCount)
+                    For iCol As Integer = r.Start.Column To Math.Min(r.Start.Column + astrCols.Length - 1, Me.ColumnsCount - 1)
                         pos = New Position(iRow, iCol)
                         cell = Me(iRow, iCol)
 
