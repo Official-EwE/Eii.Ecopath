@@ -1,41 +1,3 @@
-'==============================================================================
-'
-' $Log: cEwEAccessDatabase.vb,v $
-' Revision 1.11  2009/03/26 15:50:48  jeroens
-' Added CanCompact
-'
-' Revision 1.10  2009/02/26 00:57:29  jeroens
-' Added DB compact
-'
-' Revision 1.9  2009/02/08 17:35:04  jeroens
-' Can now force datasource type when opening a new source
-'
-' Revision 1.8  2009/02/07 20:22:43  jeroens
-' Moved cCoreResources to EwEUtils
-'
-' Revision 1.7  2009/01/29 16:22:31  jeroens
-' Fixed XML error
-'
-' Revision 1.6  2009/01/29 16:10:49  jeroens
-' Moved cEwEDatabase.eAccessTypes to shared enums
-'
-' Revision 1.5  2008/12/10 02:12:10  jeroens
-' Open, Create can force database type
-'
-' Revision 1.4  2008/11/26 20:39:41  jeroens
-' Eitje
-'
-' Revision 1.3  2008/10/25 16:11:06  jeroens
-' Added Compact
-'
-' Revision 1.2  2008/10/20 23:35:58  jeroens
-' CW egg
-'
-' Revision 1.1  2008/09/26 07:30:17  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -43,11 +5,13 @@ Option Strict On
 Imports System.IO
 Imports System.Data.OleDb
 Imports System.Reflection
+Imports Microsoft.Win32 ' Goodbye Mono
 Imports EwECore.DataSources
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports EwEUtils.Win32Api
+Imports System.Text
 
 #End Region ' Imports
 
@@ -366,24 +330,69 @@ Namespace Database
         End Function
 
         Private Function FindJRO() As Boolean
-            If Not Me.m_bJROSearched Then
-                Dim strDir As String = ""
-                Dim strFile As String = ""
 
-                strDir = Environment.GetFolderPath(Environment.SpecialFolder.System)
-                strFile = FileUtilities.FindFile("msjro.dll", strDir, False)
-                Me.m_bJROFound = Me.IsCorrectJRO(strFile)
+            Dim key As RegistryKey = Nothing
+            Dim keyValue As Object = Nothing
+            Dim keyValueKind As RegistryValueKind = Nothing
+            Dim strFile As String = ""
 
-                If Not Me.m_bJROFound Then
-                    strDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles)
-                    strFile = FileUtilities.FindFile("msjro.dll", strDir, True)
-                    Me.m_bJROFound = Me.IsCorrectJRO(strFile)
-                End If
+            ' The JRO 2.6 registry key checked below is identical on XP, Vista and Windows 7
+            ' Note that this method only checks for version 2.6, not any possible newer version(s)
+            ' This may have to change by iterating over all subkeys under
+            '    "TypeLib\{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}"
+            ' I'm actually not sure if the OS would allow different versions to be installed?
+            key = Registry.ClassesRoot.OpenSubKey("TypeLib\{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}\2.6\0\win32", False)
+            If (key IsNot Nothing) Then
 
-                Me.m_bJROSearched = True
+                keyValue = key.GetValue("")
+                keyValueKind = key.GetValueKind("")
+
+                ' Get default key
+                Select Case keyValueKind
+
+                    Case RegistryValueKind.String, _
+                         RegistryValueKind.ExpandString, _
+                         RegistryValueKind.MultiString
+
+                        strFile = CStr(keyValue)
+
+                    Case RegistryValueKind.Binary
+                        Dim abData As Byte() = DirectCast(keyValue, Byte())
+                        Dim sb As New StringBuilder()
+
+                        For i As Integer = 0 To abData.Length - 1
+                            sb.Append(Chr(i))
+                        Next
+                        strFile = sb.ToString()
+
+                End Select
             End If
-            Return Me.m_bJROFound
+
+            Return Me.IsCorrectJRO(strFile)
+
         End Function
+
+        ' JS 20oct09: disabled slow file search, replaced by registry search version
+        'Private Function FindJRO() As Boolean
+
+        '    If Not Me.m_bJROSearched Then
+        '        Dim strDir As String = ""
+        '        Dim strFile As String = ""
+
+        '        strDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles)
+        '        strFile = FileUtilities.FindFile("msjro.dll", strDir, True)
+        '        Me.m_bJROFound = Me.IsCorrectJRO(strFile)
+
+        '        If Not Me.m_bJROFound Then
+        '            strDir = Environment.GetFolderPath(Environment.SpecialFolder.System)
+        '            strFile = FileUtilities.FindFile("msjro.dll", strDir, False)
+        '            Me.m_bJROFound = Me.IsCorrectJRO(strFile)
+        '        End If
+
+        '        Me.m_bJROSearched = True
+        '    End If
+        '    Return Me.m_bJROFound
+        'End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
