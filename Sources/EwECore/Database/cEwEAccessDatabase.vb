@@ -329,50 +329,75 @@ Namespace Database
 
         End Function
 
-        Private Function FindJRO() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Recursively find JRO registry entry to a valid registered copy of
+        ''' msjro.dll, ye good ole' Jet engine database headaches that we
+        ''' unfortunately need for compacting an MS Aaargcess Database.
+        ''' </summary>
+        ''' <param name="key">Registry to start searching.</param>
+        ''' <returns>
+        ''' True if a <see cref="IsCorrectJRO">correct</see> JRO version is 
+        ''' reffered to by one <paramref name="key">key</paramref> or one of
+        ''' its subkeys.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Function FindJRORecursive(ByVal key As RegistryKey) As Boolean
 
-            Dim key As RegistryKey = Nothing
+            Dim aKeys As String() = Nothing
             Dim keyValue As Object = Nothing
             Dim keyValueKind As RegistryValueKind = Nothing
             Dim strFile As String = ""
 
-            ' The JRO 2.6 registry key checked below is identical on XP, Vista and Windows 7
-            ' Note that this method only checks for version 2.6, not any possible newer version(s)
-            ' This may have to change by iterating over all subkeys under
-            '    "TypeLib\{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}"
-            ' I'm actually not sure if the OS would allow different versions to be installed?
-            key = Registry.ClassesRoot.OpenSubKey("TypeLib\{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}\2.6\0\win32", False)
             If (key IsNot Nothing) Then
-
                 keyValue = key.GetValue("")
-                keyValueKind = key.GetValueKind("")
 
-                ' Get default key
-                Select Case keyValueKind
+                If keyValue IsNot Nothing Then
 
-                    Case RegistryValueKind.String, _
-                         RegistryValueKind.ExpandString, _
-                         RegistryValueKind.MultiString
+                    strFile = ""
+                    keyValueKind = key.GetValueKind("")
 
-                        strFile = CStr(keyValue)
+                    ' Get default key
+                    Select Case keyValueKind
 
-                    Case RegistryValueKind.Binary
-                        Dim abData As Byte() = DirectCast(keyValue, Byte())
-                        Dim sb As New StringBuilder()
+                        Case RegistryValueKind.String, _
+                             RegistryValueKind.ExpandString, _
+                             RegistryValueKind.MultiString
 
-                        For i As Integer = 0 To abData.Length - 1
-                            sb.Append(Chr(i))
-                        Next
-                        strFile = sb.ToString()
+                            strFile = CStr(keyValue).ToLower
 
-                End Select
+                        Case RegistryValueKind.Binary
+                            Dim abData As Byte() = DirectCast(keyValue, Byte())
+                            Dim sb As New StringBuilder()
+
+                            For i As Integer = 0 To abData.Length - 1
+                                sb.Append(Chr(i))
+                            Next
+                            strFile = sb.ToString().ToLower
+
+                    End Select
+
+                    If Not String.IsNullOrEmpty(strFile) Then
+                        If strFile.EndsWith("msjro.dll") Then
+                            If (IsCorrectJRO(strFile)) Then Return True
+                        End If
+                    End If
+                End If
+
+                For Each strSubkeyName As String In key.GetSubKeyNames
+                    If FindJRORecursive(key.OpenSubKey(strSubkeyName, False)) Then Return True
+                Next
             End If
-
-            Return Me.IsCorrectJRO(strFile)
+            Return False
 
         End Function
 
-        ' JS 20oct09: disabled slow file search, replaced by registry search version
+        Function FindJRO() As Boolean
+            ' "Universal" JRO key (same root on XP, Vista and Windows 7)
+            Return FindJRORecursive(Registry.ClassesRoot.OpenSubKey("TypeLib\{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}", False))
+        End Function
+
+        ' JS 20oct09: disabled slow file search, replaced by more speedy registry search version
         'Private Function FindJRO() As Boolean
 
         '    If Not Me.m_bJROSearched Then
