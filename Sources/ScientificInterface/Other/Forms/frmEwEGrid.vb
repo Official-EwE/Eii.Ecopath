@@ -51,7 +51,8 @@ Public Class frmEwEGrid
         Private m_btnSet As ToolStripButton = Nothing
         ''' <summary>Flag stating whether handler is attached.</summary>
         Private m_bAttached As Boolean = False
-
+        ''' <summary>Set box original value.</summary>
+        Private m_strValueOrg As String = ""
         ' Import Export
         Private m_sep As ToolStripSeparator = Nothing
         Private m_btnImport As ToolStripButton = Nothing
@@ -115,7 +116,9 @@ Public Class frmEwEGrid
             ' Create quick edit text box
             Me.m_ttbValue = New ToolStripTextBox("tsQuickEdit")
             Me.m_ttbValue.AcceptsReturn = True
-            AddHandler Me.m_ttbValue.KeyDown, AddressOf OnTextBoxKeyDown
+            AddHandler Me.m_ttbValue.Enter, AddressOf OnSetBoxEnter
+            AddHandler Me.m_ttbValue.Leave, AddressOf OnSetBoxLeave
+            AddHandler Me.m_ttbValue.KeyDown, AddressOf OnSetBoxKeyDown
 
             ' Create quick edit set button
             Me.m_btnSet = New ToolStripButton(My.Resources.NavForward)
@@ -201,7 +204,9 @@ Public Class frmEwEGrid
             Me.m_btnExport.Dispose()
             Me.m_btnExport = Nothing
 
-            RemoveHandler Me.m_ttbValue.KeyDown, AddressOf OnTextBoxKeyDown
+            RemoveHandler Me.m_ttbValue.KeyDown, AddressOf OnSetBoxKeyDown
+            RemoveHandler Me.m_ttbValue.Enter, AddressOf OnSetBoxEnter
+            RemoveHandler Me.m_ttbValue.Leave, AddressOf OnSetBoxLeave
             Me.m_ttbValue.Dispose()
             Me.m_ttbValue = Nothing
 
@@ -231,9 +236,33 @@ Public Class frmEwEGrid
         ''' to the grid selection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnTextBoxKeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+        Private Sub OnSetBoxKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
             ' Is [ENTER]?
             If e.KeyCode = Keys.Enter Then Me.ApplyValueToSelection(Me.m_ttbValue.Text)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler; called when the caret enters the 'Set' text box.
+        ''' Overriden to remember the value of the text box, for testing whether
+        ''' a change has occurred that needs applying later.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub OnSetBoxEnter(ByVal sender As Object, ByVal e As EventArgs)
+            Me.m_strValueOrg = Me.m_ttbValue.Text
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler; called when the caret leaves the 'Set' text box.
+        ''' Applies the content of the box to underlying fields when the
+        ''' entered value has been modified.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub OnSetBoxLeave(ByVal sender As Object, ByVal e As EventArgs)
+            If String.Compare(Me.m_strValueOrg, Me.m_ttbValue.Text) <> 0 Then
+                Me.ApplyValueToSelection(Me.m_ttbValue.Text)
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -242,7 +271,7 @@ Public Class frmEwEGrid
         ''' to the grid selection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnBtnSetClick(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnBtnSetClick(ByVal sender As Object, ByVal e As EventArgs)
             Me.ApplyValueToSelection(Me.m_ttbValue.Text)
         End Sub
 
@@ -252,7 +281,7 @@ Public Class frmEwEGrid
         ''' from a CSV file.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnBtnImportClick(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnBtnImportClick(ByVal sender As Object, ByVal e As EventArgs)
             Me.ImportFromCSV()
         End Sub
 
@@ -262,7 +291,7 @@ Public Class frmEwEGrid
         ''' to a CSV file.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnBtnExportClick(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnBtnExportClick(ByVal sender As Object, ByVal e As EventArgs)
             Me.ExportToCSV()
         End Sub
 
@@ -388,6 +417,8 @@ Public Class frmEwEGrid
             Dim core As cCore = cCore.GetInstance()
             Dim appl As AppLauncher = AppLauncher.GetInstance()
 
+            ' To stop a flood of updates, and to halt any conflicting operations 
+            ' while we're at it.
             If Not core.SetBatchLock(cCore.eBatchLockType.Update) Then Return
 
             appl.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
@@ -403,6 +434,10 @@ Public Class frmEwEGrid
                     End If
                 End If
             Next
+
+            ' Remember last applied value
+            Me.m_strValueOrg = strValue
+
             appl.SetStatusText("", TriState.False)
 
             core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
