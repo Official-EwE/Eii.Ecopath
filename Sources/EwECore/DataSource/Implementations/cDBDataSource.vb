@@ -2582,14 +2582,15 @@ Public Class cDBDataSource
         Dim iGroupID As Integer = 0
         Dim bSucces As Boolean = True
 
-        For iGroup As Integer = 1 To ecopathDS.NumGroups
+        For iGroup As Integer = 1 To ecopathDS.NumLiving
             iGroupID = ecopathDS.GroupDBID(iGroup)
             bSucces = bSucces And Me.AddCatch(iGroupID, iFleetID)
-
-            If iGroup > ecopathDS.NumLiving Then
-                bSucces = bSucces And Me.AddDiscardFate(iGroupID, iFleetID)
-            End If
         Next
+
+        ' JS 21oct09: Send all detritus to only the LAST detritus group (bug 460)
+        '             This code assumes that detritus groups are at the end of the group list
+        bSucces = bSucces And Me.AddDiscardFate(ecopathDS.GroupDBID(ecopathDS.NumGroups), iFleetID)
+
         Return bSucces
 
     End Function
