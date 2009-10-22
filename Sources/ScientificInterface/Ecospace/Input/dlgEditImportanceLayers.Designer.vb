@@ -30,7 +30,7 @@ Namespace Ecospace
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.m_btnPreserve = New System.Windows.Forms.Button
+            Me.m_btnKeep = New System.Windows.Forms.Button
             CType(Me.epNumHabitats, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
@@ -59,6 +59,7 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TrackPropertySelection = True
             '
             'epNumHabitats
             '
@@ -94,11 +95,11 @@ Namespace Ecospace
             Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Cancel_Button.Name = "Cancel_Button"
             '
-            'm_btnPreserve
+            'm_btnKeep
             '
-            resources.ApplyResources(Me.m_btnPreserve, "m_btnPreserve")
-            Me.m_btnPreserve.Name = "m_btnPreserve"
-            Me.m_btnPreserve.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnKeep, "m_btnKeep")
+            Me.m_btnKeep.Name = "m_btnKeep"
+            Me.m_btnKeep.UseVisualStyleBackColor = True
             '
             'dlgEditImportanceLayers
             '
@@ -106,7 +107,7 @@ Namespace Ecospace
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
-            Me.Controls.Add(Me.m_btnPreserve)
+            Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnRemoveHabitat)
             Me.Controls.Add(Me.m_btnAddHabitat)
@@ -128,7 +129,7 @@ Namespace Ecospace
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
-        Private WithEvents m_btnPreserve As System.Windows.Forms.Button
+        Private WithEvents m_btnKeep As System.Windows.Forms.Button
 
     End Class
 

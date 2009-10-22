@@ -1,50 +1,3 @@
-'==============================================================================
-'
-' $Log: dlgEditRegions.vb,v $
-' Revision 1.2  2008/12/15 15:54:30  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:58  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.7  2008/08/09 02:54:22  jeroens
-' Cleaned up
-'
-' Revision 1.6  2008/08/02 03:04:09  jeroens
-' Renamed resources
-'
-' Revision 1.5  2008/06/02 00:01:23  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.4  2008/01/06 09:16:04  jeroens
-' * Connected cell to region logic
-'
-' Revision 1.3  2007/12/19 18:30:27  jeroens
-' * Implementing hab -> region, cell -> region
-'
-' Revision 1.2  2007/09/18 15:30:24  jeroens
-' * Regioned-in ye olde code
-'
-' Revision 1.1  2007/09/18 14:38:15  jeroens
-' * Renamed
-'
-' Revision 1.8  2007/07/08 07:35:46  jeroens
-' * Localized
-'
-' Revision 1.7  2007/06/02 16:27:27  jeroens
-' * Fixed region iteration bug
-'
-' Revision 1.6  2007/04/02 23:26:42  fgao
-' Fixed a textbox update bug and GridRowChanged message behavior..
-'
-' Revision 1.5  2007/03/29 22:12:20  fgao
-' Finished prototype for defining regions UI
-'
-' Revision 1.4  2007/03/05 02:45:54  jeroens
-' + Grid updated after Regions have been added or removed
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -117,7 +70,7 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnPreserveRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnPreserve.Click
+        Private Sub OnPreserveRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
@@ -147,7 +100,7 @@ Namespace Ecospace
         Private Sub UpdateControls()
             Me.m_btnAddRegion.Enabled = Me.m_grid.CanAddRow()
             Me.m_btnRemoveRegion.Enabled = Me.m_grid.IsRegionRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
-            Me.m_btnPreserve.Enabled = Me.m_grid.IsRegionRow() And Me.m_grid.IsFlaggedForDeletionRow()
+            Me.m_btnKeep.Enabled = Me.m_grid.IsRegionRow() And Me.m_grid.IsFlaggedForDeletionRow()
         End Sub
 
 #End Region ' Updating

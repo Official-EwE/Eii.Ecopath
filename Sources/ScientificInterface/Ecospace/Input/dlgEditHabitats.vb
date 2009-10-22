@@ -86,7 +86,7 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnPreserve.Click
+        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
@@ -102,7 +102,7 @@ Namespace Ecospace
         Private Sub UpdateControls()
             Me.m_btnAddHabitat.Enabled = Me.m_grid.CanAddRow()
             Me.m_btnRemoveHabitat.Enabled = Me.m_grid.IsHabitatRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
-            Me.m_btnPreserve.Enabled = Me.m_grid.IsHabitatRow() And Me.m_grid.IsFlaggedForDeletionRow()
+            Me.m_btnKeep.Enabled = Me.m_grid.IsHabitatRow() And Me.m_grid.IsFlaggedForDeletionRow()
         End Sub
 
 #End Region ' Updating

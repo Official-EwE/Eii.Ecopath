@@ -28,11 +28,11 @@ Namespace Ecospace
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.m_btnPreserve = New System.Windows.Forms.Button
-            Me.spHorz = New ScientificInterfaceShared.Controls.ucFormSeparator
+            Me.m_btnKeep = New System.Windows.Forms.Button
             Me.btnHabToRegion = New System.Windows.Forms.Button
             Me.btnFromCells = New System.Windows.Forms.Button
-            Me.Label1 = New System.Windows.Forms.Label
+            Me.m_lbEdit = New System.Windows.Forms.Label
+            Me.m_lblGenerate = New System.Windows.Forms.Label
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -60,6 +60,7 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TrackPropertySelection = True
             '
             'm_btnAddRegion
             '
@@ -91,17 +92,11 @@ Namespace Ecospace
             Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Cancel_Button.Name = "Cancel_Button"
             '
-            'm_btnPreserve
+            'm_btnKeep
             '
-            resources.ApplyResources(Me.m_btnPreserve, "m_btnPreserve")
-            Me.m_btnPreserve.Name = "m_btnPreserve"
-            Me.m_btnPreserve.UseVisualStyleBackColor = True
-            '
-            'spHorz
-            '
-            resources.ApplyResources(Me.spHorz, "spHorz")
-            Me.spHorz.Name = "spHorz"
-            Me.spHorz.TabStop = False
+            resources.ApplyResources(Me.m_btnKeep, "m_btnKeep")
+            Me.m_btnKeep.Name = "m_btnKeep"
+            Me.m_btnKeep.UseVisualStyleBackColor = True
             '
             'btnHabToRegion
             '
@@ -115,10 +110,19 @@ Namespace Ecospace
             Me.btnFromCells.Name = "btnFromCells"
             Me.btnFromCells.UseVisualStyleBackColor = True
             '
-            'Label1
+            'm_lbEdit
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_lbEdit, "m_lbEdit")
+            Me.m_lbEdit.BackColor = System.Drawing.SystemColors.ControlDark
+            Me.m_lbEdit.ForeColor = System.Drawing.SystemColors.ControlLightLight
+            Me.m_lbEdit.Name = "m_lbEdit"
+            '
+            'm_lblGenerate
+            '
+            resources.ApplyResources(Me.m_lblGenerate, "m_lblGenerate")
+            Me.m_lblGenerate.BackColor = System.Drawing.SystemColors.ControlDark
+            Me.m_lblGenerate.ForeColor = System.Drawing.SystemColors.ControlLightLight
+            Me.m_lblGenerate.Name = "m_lblGenerate"
             '
             'dlgEditRegions
             '
@@ -126,11 +130,11 @@ Namespace Ecospace
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.Controls.Add(Me.m_lblGenerate)
+            Me.Controls.Add(Me.m_lbEdit)
             Me.Controls.Add(Me.btnFromCells)
             Me.Controls.Add(Me.btnHabToRegion)
-            Me.Controls.Add(Me.Label1)
-            Me.Controls.Add(Me.spHorz)
-            Me.Controls.Add(Me.m_btnPreserve)
+            Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnRemoveRegion)
             Me.Controls.Add(Me.m_btnAddRegion)
@@ -142,7 +146,6 @@ Namespace Ecospace
             Me.ShowInTaskbar = False
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_btnRemoveRegion As System.Windows.Forms.Button
@@ -150,12 +153,12 @@ Namespace Ecospace
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
-        Private WithEvents m_btnPreserve As System.Windows.Forms.Button
-        Private WithEvents spHorz As ucFormSeparator
+        Private WithEvents m_btnKeep As System.Windows.Forms.Button
         Private WithEvents btnFromCells As System.Windows.Forms.Button
         Private WithEvents btnHabToRegion As System.Windows.Forms.Button
-        Private WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_grid As gridEditRegions
+        Private WithEvents m_lbEdit As System.Windows.Forms.Label
+        Private WithEvents m_lblGenerate As System.Windows.Forms.Label
 
     End Class
 
