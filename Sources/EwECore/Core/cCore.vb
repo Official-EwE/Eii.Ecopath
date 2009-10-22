@@ -1802,7 +1802,13 @@ Public Class cCore
 
         Dim fm As cFeedbackMessage = Nothing
         Dim strPrompt As String = ""
-        Dim bIsModelChanged As Boolean = False
+
+        ' For later use
+        ' Save level is the MINIMUM level of data to save. For instance, when
+        '    loading a new Ecospace scenario, any pending Ecospace changes have to
+        '    be stored but there is no need to save Sim or Path. A savelevel value 
+        '    of Ecospace would achieve this.
+        Dim savelevel As eBatchChangeLevelFlags = eBatchChangeLevelFlags.Ecopath
 
         ' Hang on, can we do this at all?
         If (Me.m_DataSource Is Nothing) Then Return True
@@ -1811,142 +1817,89 @@ Public Class cCore
         If (Me.m_iBatchLock > 0) Then Return True
 
         ' Check if core data is dirty
-        bIsModelChanged = Me.m_StateMonitor.IsModified
-
-        If (bIsModelChanged = False) Then
+        If (Me.m_StateMonitor.IsModified = False) Then
             Return True
         End If
 
-        If Me.m_StateMonitor.IsPluginModified Then
-            ' Prepare feedback message
-            strPrompt = My.Resources.CoreMessages.PLUGIN_SAVE_PROMPT
-            fm = New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
-            If (bQuiet) Then
-                fm.Reply = cFeedbackMessage.eReply.YES
-            Else
-                ' Send and see what happens
-                Me.m_publisher.SendMessage(fm)
-            End If
-            ' Hmm...
-            Select Case fm.Reply
-                Case cFeedbackMessage.eReply.CANCEL
-                    Return False
+        ' Prepare feedback message
+        strPrompt = My.Resources.CoreMessages.PROMPT_SAVE_CHANGES
+        fm = New cFeedbackMessage(strPrompt, eCoreComponentType.Core, _
+                                  eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
 
-                Case cFeedbackMessage.eReply.YES
+        If (bQuiet) Then
+            ' Auto-affirm
+            fm.Reply = cFeedbackMessage.eReply.YES
+        Else
+            ' Send and see what happens
+            Me.m_publisher.SendMessage(fm)
+        End If
+
+        ' Hmm...
+        Select Case fm.Reply
+
+            Case cFeedbackMessage.eReply.CANCEL
+                ' Do not save
+                Return False
+
+            Case cFeedbackMessage.eReply.YES
+
+                ' Plug-ins
+                If Me.m_StateMonitor.IsPluginModified Then
                     If Not Me.PluginManager.SaveModel(Me.m_DataSource) Then
                         Return False
+                    Else
+                        Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
                     End If
-                    ' Update core data state
-                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                End If
 
-                Case cFeedbackMessage.eReply.NO
-                    ' Do nothing
-            End Select
-
-        End If
-
-        'default reply Yes save the changes!!!!On my that could be dangerous
-        If Me.m_StateMonitor.IsEcotracerModified Then
-            ' Prepare feedback message
-            strPrompt = String.Format(My.Resources.CoreMessages.ECOTRACER_SAVE_PROMPT, Me.m_EcoPathData.EcotracerScenarioName(Me.ActiveEcotracerScenarioIndex))
-            fm = New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
-            If (bQuiet) Then
-                fm.Reply = cFeedbackMessage.eReply.YES
-            Else
-                ' Send and see what happens
-                Me.m_publisher.SendMessage(fm)
-            End If
-            ' Hmm...
-            Select Case fm.Reply
-                Case cFeedbackMessage.eReply.CANCEL
-                    Return False
-                Case cFeedbackMessage.eReply.YES
-                    If Not Me.SaveEcotracerScenario() Then
-                        Return False
+                ' Ecotracer
+                If (savelevel <= eBatchChangeLevelFlags.Ecotracer) Then
+                    If Me.m_StateMonitor.IsEcotracerModified Then
+                        If Not Me.SaveEcotracerScenario() Then
+                            Return False
+                        Else
+                            Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                        End If
                     End If
-                    ' Update core data state
-                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                End If
 
-                Case cFeedbackMessage.eReply.NO
-                    ' Do nothing
-            End Select
-        End If
-
-        If Me.m_StateMonitor.IsEcospaceModified Then
-            ' Prepare feedback message
-            strPrompt = String.Format(My.Resources.CoreMessages.ECOSPACE_SAVE_PROMPT, Me.m_EcoPathData.EcospaceScenarioName(Me.ActiveEcospaceScenarioIndex))
-            fm = New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, , cFeedbackMessage.eReply.YES)
-            If (bQuiet) Then
-                fm.Reply = cFeedbackMessage.eReply.YES
-            Else
-                ' Send and see what happens
-                Me.m_publisher.SendMessage(fm)
-            End If
-            ' Hmm...
-            Select Case fm.Reply
-                Case cFeedbackMessage.eReply.CANCEL
-                    Return False
-                Case cFeedbackMessage.eReply.YES
-                    If Not Me.SaveEcospaceScenario() Then
-                        Return False
+                ' Ecospace
+                If (savelevel <= eBatchChangeLevelFlags.Ecospace) Then
+                    If Me.m_StateMonitor.IsEcospaceModified Then
+                        If Not Me.SaveEcospaceScenario() Then
+                            Return False
+                        Else
+                            Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                        End If
                     End If
-                    ' Update core data state
-                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                End If
 
-                Case cFeedbackMessage.eReply.NO
-                    ' Do nothing
-            End Select
-        End If
-
-        If Me.m_StateMonitor.IsEcosimModified Then
-            ' Prepare feedback message
-            strPrompt = String.Format(My.Resources.CoreMessages.ECOSIM_SAVE_PROMPT, Me.m_EcoPathData.EcosimScenarioName(Me.ActiveEcosimScenarioIndex))
-            fm = New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, , cFeedbackMessage.eReply.YES)
-            If (bQuiet) Then
-                fm.Reply = cFeedbackMessage.eReply.YES
-            Else
-                ' Send and see what happens
-                Me.m_publisher.SendMessage(fm)
-            End If
-            ' Aha!
-            Select Case fm.Reply
-                Case cFeedbackMessage.eReply.CANCEL
-                    Return False
-                Case cFeedbackMessage.eReply.YES
-                    If Not Me.SaveEcosimScenario() Then
-                        Return False
+                ' Ecosim
+                If (savelevel <= eBatchChangeLevelFlags.Ecosim) Then
+                    If Me.m_StateMonitor.IsEcosimModified Then
+                        If Not Me.SaveEcosimScenario() Then
+                            Return False
+                        Else
+                            Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                        End If
                     End If
-                    ' Update core data state
-                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                End If
 
-                Case cFeedbackMessage.eReply.NO
-                    ' Do nothing
-            End Select
-        End If
-
-        If Me.m_StateMonitor.IsEcopathModified Or Me.m_StateMonitor.IsDatasourceModified Then
-            fm = New cFeedbackMessage(My.Resources.CoreMessages.ECOPATH_SAVE_PROMPT, eCoreComponentType.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, , cFeedbackMessage.eReply.YES)
-            If (bQuiet) Then
-                fm.Reply = cFeedbackMessage.eReply.YES
-            Else
-                ' Send and see what happens
-                Me.m_publisher.SendMessage(fm)
-            End If
-            Select Case fm.Reply
-                Case cFeedbackMessage.eReply.CANCEL
-                    Return False
-                Case cFeedbackMessage.eReply.YES
-                    If Not Me.SaveModel() Then
-                        ' VERIFY_JS: Discuss what to do here. Prompt user how to proceed?
-                        Return False
+                ' The bottom of it all
+                If (savelevel <= eBatchChangeLevelFlags.Ecopath) Then
+                    If Me.m_StateMonitor.IsEcopathModified Or Me.m_StateMonitor.IsDatasourceModified Then
+                        If Not Me.SaveModel() Then
+                            ' VERIFY_JS: Discuss what to do here. Prompt user how to proceed?
+                            Return False
+                        Else
+                            Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                        End If
                     End If
-                    ' Update core data state
-                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                End If
 
-                Case cFeedbackMessage.eReply.NO
-                    ' Do nothing
-            End Select
-        End If
+            Case cFeedbackMessage.eReply.NO
+                ' Do nothing
+        End Select
 
         ' All well, proceed.
         Return True

@@ -274,9 +274,6 @@ System Error: {0}</value>
     <value>Ecopath model '{0}' failed to save</value>
     <comment>{0} = model name</comment>
   </data>
-  <data name="ECOPATH_SAVE_PROMPT" xml:space="preserve">
-    <value>Your Ecopath model has changed since the last time you saved. If you proceed these changes will be lost.\n\nYes - save changes\nNo - revert to last saved model\nCancel - abort this operation.</value>
-  </data>
   <data name="ECOPATH_SAVETO_FAILED" xml:space="preserve">
     <value>Ecopath model failed to save to '{0}'</value>
     <comment>{0}=model destination</comment>
@@ -297,10 +294,6 @@ System Error: {0}</value>
     <value>Ecosim scenario '{0}' failed to save. {1}</value>
     <comment>{0}= scenario name, {1} is optional error</comment>
   </data>
-  <data name="ECOSIM_SAVE_PROMPT" xml:space="preserve">
-    <value>Ecosim scenario '{0}' has changed since the last time you saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - revert to last saved scenario\nCancel - abort this operation.</value>
-    <comment>{0} = scenario name</comment>
-  </data>
   <data name="ECOSIM_SAVE_SUCCESS" xml:space="preserve">
     <value>Ecosim scenario '{0}' has been saved.</value>
     <comment>{0} = scenario name</comment>
@@ -316,10 +309,6 @@ System Error: {0}</value>
   <data name="ECOSPACE_SAVE_FAILED" xml:space="preserve">
     <value>Ecospace scenario '{0}' failed to save. {1}</value>
     <comment>{0} = scneario name, {1} = optional reason</comment>
-  </data>
-  <data name="ECOSPACE_SAVE_PROMPT" xml:space="preserve">
-    <value>Ecospace scenario '{0}' has changed since the last time you saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - revert to last saved scenario\nCancel - abort this operation.</value>
-    <comment>{0} = scenario name</comment>
   </data>
   <data name="ECOSPACE_SAVE_SUCCES" xml:space="preserve">
     <value>Ecospace scenario '{0}' has been saved.</value>
@@ -785,5 +774,8 @@ System Error: {0}</value>
   </data>
   <data name="PSD_RUN_SUCCESS" xml:space="preserve">
     <value>Particle Size Distribution run completed.</value>
+  </data>
+  <data name="PROMPT_SAVE_CHANGES" xml:space="preserve">
+    <value>Model data has changed since the last time you saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - revert to last saved data\nCancel - abort this operation.</value>
   </data>
 </root>
