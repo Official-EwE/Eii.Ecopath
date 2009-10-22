@@ -231,6 +231,10 @@ Imports ScientificInterface.Other
 
 #Region " Grid interaction "
 
+    Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
+        Return DockStyle.None
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Initialize the grid.
@@ -559,7 +563,8 @@ Imports ScientificInterface.Other
     ''' Insert a row by creating a new fleet.
     ''' </summary>
     Public Sub InsertRow(Optional ByVal iRow As Integer = -1)
-        If iRow = -1 Then iRow = Math.Max(iFIRSTFLEETROW, Me.SelectedRow())
+        If iRow = -1 Then iRow = Me.SelectedRow()
+        If iRow = -1 Then iRow = Math.Max(iFIRSTFLEETROW, Me.RowsCount)
         If Not Me.CanInsertRow(iRow) Then Return
         Me.CreateFleet(iRow)
     End Sub

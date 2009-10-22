@@ -83,7 +83,7 @@ Namespace Ecopath
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnPreserve.Click
+        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
@@ -113,7 +113,7 @@ Namespace Ecopath
             Me.m_btnMoveDown.Enabled = Me.m_grid.CanMoveRowDown()
             Me.m_btnInsert.Enabled = Me.m_grid.CanInsertRow()
             Me.m_btnDelete.Enabled = Me.m_grid.IsGroupRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
-            Me.m_btnPreserve.Enabled = Me.m_grid.IsGroupRow() And Me.m_grid.IsFlaggedForDeletionRow()
+            Me.m_btnKeep.Enabled = Me.m_grid.IsGroupRow() And Me.m_grid.IsFlaggedForDeletionRow()
             Me.m_btnCustomColour.Enabled = Me.m_grid.IsGroupRow()
         End Sub
 

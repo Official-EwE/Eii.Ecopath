@@ -27,7 +27,7 @@ Namespace Ecopath
             Me.m_btnMoveUp = New System.Windows.Forms.Button
             Me.m_btnMoveDown = New System.Windows.Forms.Button
             Me.m_btnDelete = New System.Windows.Forms.Button
-            Me.m_btnPreserve = New System.Windows.Forms.Button
+            Me.m_btnKeep = New System.Windows.Forms.Button
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
@@ -64,6 +64,7 @@ Namespace Ecopath
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TrackPropertySelection = True
             '
             'm_btnInsert
             '
@@ -89,11 +90,11 @@ Namespace Ecopath
             Me.m_btnDelete.Name = "m_btnDelete"
             Me.m_btnDelete.UseVisualStyleBackColor = True
             '
-            'm_btnPreserve
+            'm_btnKeep
             '
-            resources.ApplyResources(Me.m_btnPreserve, "m_btnPreserve")
-            Me.m_btnPreserve.Name = "m_btnPreserve"
-            Me.m_btnPreserve.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnKeep, "m_btnKeep")
+            Me.m_btnKeep.Name = "m_btnKeep"
+            Me.m_btnKeep.UseVisualStyleBackColor = True
             '
             'TableLayoutPanel1
             '
@@ -165,7 +166,7 @@ Namespace Ecopath
             Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.m_lbColours)
             Me.Controls.Add(Me.TableLayoutPanel1)
-            Me.Controls.Add(Me.m_btnPreserve)
+            Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.m_btnDelete)
             Me.Controls.Add(Me.m_btnMoveDown)
             Me.Controls.Add(Me.m_btnMoveUp)
@@ -185,7 +186,7 @@ Namespace Ecopath
         Private WithEvents m_btnMoveUp As System.Windows.Forms.Button
         Private WithEvents m_btnMoveDown As System.Windows.Forms.Button
         Private WithEvents m_btnDelete As System.Windows.Forms.Button
-        Private WithEvents m_btnPreserve As System.Windows.Forms.Button
+        Private WithEvents m_btnKeep As System.Windows.Forms.Button
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button

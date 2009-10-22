@@ -14,8 +14,9 @@ Namespace Ecopath
     Public Class EditFleets
 
 #Region "Private variables"
-        Private WithEvents m_FleetGrid As New EditFleetsEwEGrid
-        Private m_Core As cCore
+
+        Private m_Core As cCore = Nothing
+
 #End Region
 
 #Region "Constructors"
@@ -31,15 +32,14 @@ Namespace Ecopath
 
 #Region "Event handlers "
 
-        Private Sub EditGroups_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.m_plFleetGrid.Controls.Add(m_FleetGrid)
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             Me.UpdateControls()
         End Sub
 
         Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
             ' Try to apply grid changes
-            If Me.m_FleetGrid.Apply() = False Then
+            If Me.m_grid.Apply() = False Then
                 ' Abort! Abort!
                 Return
             End If
@@ -56,31 +56,31 @@ Namespace Ecopath
         End Sub
 
         Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnInsert.Click
-            Me.m_FleetGrid.InsertRow()
+            Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
         Private Sub m_btnMoveUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnMoveUp.Click
-            Me.m_FleetGrid.MoveRowUp()
+            Me.m_grid.MoveRowUp()
             Me.UpdateControls()
         End Sub
 
         Private Sub m_btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnMoveDown.Click
-            Me.m_FleetGrid.MoveRowDown()
+            Me.m_grid.MoveRowDown()
             Me.UpdateControls()
         End Sub
 
         Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnDelete.Click
-            Me.m_FleetGrid.ToggleDeleteRow()
+            Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnPreserve.Click
-            Me.m_FleetGrid.ToggleDeleteRow()
+        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
+            Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_FleetGrid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_FleetGrid.OnSelectionChanged
+        Private Sub m_grid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
             Me.UpdateControls()
         End Sub
 
@@ -89,11 +89,11 @@ Namespace Ecopath
 #Region " Updating "
 
         Private Sub UpdateControls()
-            Me.m_btnMoveUp.Enabled = Me.m_FleetGrid.CanMoveRowUp()
-            Me.m_btnMoveDown.Enabled = Me.m_FleetGrid.CanMoveRowDown()
-            Me.m_btnInsert.Enabled = Me.m_FleetGrid.CanInsertRow()
-            Me.m_btnDelete.Enabled = Me.m_FleetGrid.IsFleetRow() And (Not Me.m_FleetGrid.IsFlaggedForDeletionRow())
-            Me.m_btnPreserve.Enabled = Me.m_FleetGrid.IsFleetRow() And Me.m_FleetGrid.IsFlaggedForDeletionRow()
+            Me.m_btnMoveUp.Enabled = Me.m_grid.CanMoveRowUp()
+            Me.m_btnMoveDown.Enabled = Me.m_grid.CanMoveRowDown()
+            Me.m_btnInsert.Enabled = Me.m_grid.CanInsertRow()
+            Me.m_btnDelete.Enabled = Me.m_grid.IsFleetRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
+            Me.m_btnKeep.Enabled = Me.m_grid.IsFleetRow() And Me.m_grid.IsFlaggedForDeletionRow()
         End Sub
 
 #End Region ' Updating
