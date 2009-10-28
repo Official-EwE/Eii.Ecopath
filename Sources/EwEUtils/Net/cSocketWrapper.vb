@@ -309,8 +309,8 @@ Namespace NetUtilities
         ''' <returns>True if connected succesfully.</returns>
         ''' -------------------------------------------------------------------
         Public Function Connect(ByVal strURI As String, ByVal iPort As Integer) As Boolean
-            Dim aIP As IPAddress() = Nothing
 
+            Dim aIP As IPAddress() = Nothing
             Try
                 Dim ipEntry As IPHostEntry = Dns.GetHostEntry(strURI)
                 aIP = ipEntry.AddressList
@@ -324,10 +324,9 @@ Namespace NetUtilities
             If (aIP Is Nothing) Then Return False
             If (aIP.Length = 0) Then Return False
 
+            ' Attempt to any host entry
             For Each ip As IPAddress In aIP
-                If ip.AddressFamily = AddressFamily.InterNetwork Then
-                    Return Me.Connect(ip, iPort)
-                End If
+                If Me.Connect(ip, iPort) Then Return True
             Next
             Return False
 
