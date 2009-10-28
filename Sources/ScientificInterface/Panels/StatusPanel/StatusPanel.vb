@@ -362,8 +362,8 @@ Public Class StatusPanel
 
                     Case 10
                         sb.AppendLine()
-                        sb.Append("...")
-                        sb.Append("(for further details refer to the status panel)")
+                        sb.AppendLine("...")
+                        sb.AppendLine(My.Resources.PROMPT_STATUS_FURTHERDETAILS)
                         bError = True
                         Exit For
 
