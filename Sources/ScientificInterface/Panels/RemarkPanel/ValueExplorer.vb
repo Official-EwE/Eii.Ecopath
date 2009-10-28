@@ -1,57 +1,60 @@
-'==============================================================================
-'
-' $Log: ValueExplorer.vb,v $
-' Revision 1.1  2008/09/26 07:32:12  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2008/06/02 00:01:44  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.3  2008/05/29 22:23:03  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.2  2008/01/25 03:01:23  jeroens
-' Removed units
-'
-' Revision 1.1  2007/07/03 15:15:57  jeroens
-' wtf
-'
-' Revision 1.4  2007/07/03 15:07:10  jeroens
-' Renamed, once again
-'
-' Revision 1.2  2007/02/14 05:46:49  jeroens
-' * Replaced annoying exceptions by smarter logic
-'
-' Revision 1.1  2006/10/02 16:14:54  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' 
+''' Helper class, extracts descriptive details from the project resources about
+''' <see cref="eVarNameFlags">core variables</see>.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class ValueExplorer
 
+    ''' <summary>Resource identifier for locating variable descriptive entries</summary>
     Private Const cRESOURCE_ID As String = "CORE_VARIABLE_{0}"
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type, indicating which entries are expected 
+    ''' in descriptive entries.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Enum eResourceSegment
+        ''' <summary>Legible name for a variable.</summary>
         Name = 0
+        ''' <summary>Description for a variable.</summary>
         Description
+        ''' <summary>Detailed description for a variable.</summary>
         Detailed
     End Enum
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, locates a descriptive entry for a variable in the resources
+    ''' </summary>
+    ''' <param name="varName">The variable to find the descriptive entry for.</param>
+    ''' <returns>
+    ''' A descriptive entry, or an empty string if no description was found in the resources.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
     Private Shared Function GetResource(ByVal varName As eVarNameFlags) As String
         Dim cI As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim strKey As String = String.Format(cRESOURCE_ID, cI.GetVarName(varName)).ToUpper()
         Return My.Resources.ResourceManager.GetString(strKey, My.Resources.Culture)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, splits a descriptive entry into its 
+    ''' <see cref="eResourceSegment">components</see>, and returns the requested
+    ''' segment.
+    ''' </summary>
+    ''' <param name="varName">The varname to obtain the segment for.</param>
+    ''' <param name="segment">The segment to obtain.</param>
+    ''' <returns>
+    ''' A descriptive entry segment, or an empty string if no segment was found.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
     Private Shared Function GetResourceSegment(ByVal varName As eVarNameFlags, ByVal segment As eResourceSegment) As String
         Dim strResource As String = GetResource(varName)
         Dim astrSplit As String() = Nothing
@@ -82,14 +85,35 @@ Public Class ValueExplorer
         Return strSegment
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a human-readble name for a core variable.
+    ''' </summary>
+    ''' <param name="varName">The variable to return a name for.</param>
+    ''' <returns>A name, or an empty string if no name was found.</returns>
+    ''' -----------------------------------------------------------------------
     Shared Function GetName(ByVal varName As eVarNameFlags) As String
         Return GetResourceSegment(varName, eResourceSegment.Name)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a human-readble description for a core variable.
+    ''' </summary>
+    ''' <param name="varName">The variable to return a description for.</param>
+    ''' <returns>A description, or an empty string if no description was found.</returns>
+    ''' -----------------------------------------------------------------------
     Shared Function GetDescription(ByVal varName As eVarNameFlags) As String
         Return GetResourceSegment(varName, eResourceSegment.Description)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns detailed desciptions for a core variable.
+    ''' </summary>
+    ''' <param name="varName">The variable to return a detailed desciptions for.</param>
+    ''' <returns>Detailed desciptions, or an empty string if no detailed desciptions were found.</returns>
+    ''' -----------------------------------------------------------------------
     Shared Function GetDetailedDescription(ByVal varName As eVarNameFlags, ByVal source As cCoreInputOutputBase, _
             Optional ByVal sourceSec As cCoreInputOutputBase = Nothing) As String
         Dim strField As String = GetResourceSegment(varName, eResourceSegment.Detailed)
