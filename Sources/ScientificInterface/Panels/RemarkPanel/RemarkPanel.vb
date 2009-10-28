@@ -1,101 +1,4 @@
-'==============================================================================
-'
-' $Log: RemarkPanel.vb,v $
-' Revision 1.4  2009/05/11 01:51:00  jeroens
-' Renamed command classes
-'
-' Revision 1.3  2009/04/06 14:47:26  jeroens
-' Reworked WithEvents to prevent crashes on improper clean-up
-'
-' Revision 1.2  2009/03/22 14:01:38  jeroens
-' Core state monitor exec event parameters simplified
-'
-' Revision 1.1  2008/09/26 07:32:11  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.16  2008/06/02 00:01:44  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.15  2008/05/07 21:30:22  jeroens
-' Mixed remarks will clear the remark panel
-'
-' Revision 1.14  2008/05/06 00:43:28  jeroens
-' Only enabled when selection has properties that allow remarks
-'
-' Revision 1.13  2008/05/04 12:50:37  jeroens
-' Added Set button
-' Fixed multiple property update bug
-'
-' Revision 1.12  2008/05/04 01:48:27  jeroens
-' Simplified cProperty remark interface
-'
-' Revision 1.11  2008/04/01 18:19:44  jeroens
-' Freed-up screen estate for remark text
-'
-' Revision 1.10  2008/01/24 01:32:06  jeroens
-' Explicitly handles selected indexed vars
-' Selection label no longer bold
-'
-' Revision 1.9  2007/12/09 16:40:24  jeroens
-' * argh
-'
-' Revision 1.8  2007/12/09 15:33:43  jeroens
-' * Localized
-'
-' Revision 1.7  2007/12/09 03:31:21  jeroens
-' * Fixed loss of remark changes when new data was selected without switch of focus
-'
-' Revision 1.6  2007/10/14 16:30:43  jeroens
-' - Released StateMonitor instance
-'
-' Revision 1.5  2007/10/03 02:21:40  jeroens
-' * VarName field no longer selectable
-'
-' Revision 1.4  2007/09/07 15:06:20  jeroens
-' + Made core state aware (fixed bug 199)
-'
-' Revision 1.3  2007/07/26 18:03:44  jeroens
-' - Removed variable description
-'
-' Revision 1.2  2007/07/03 18:34:04  jeroens
-' * Uses shared prop selection command
-'
-' Revision 1.1  2007/07/03 15:15:57  jeroens
-' wtf
-'
-' Revision 1.4  2007/07/03 15:11:03  jeroens
-' *** empty log message ***
-'
-' Revision 1.3  2007/07/03 15:07:10  jeroens
-' Renamed, once again
-'
-' Revision 1.1  2007/07/03 14:54:12  jeroens
-' * Renamed
-'
-' Revision 1.6  2007/07/01 06:11:58  jeroens
-' + Handles multiple selection
-'
-' Revision 1.5  2007/07/01 05:26:03  jeroens
-' + Prepared for receiving extended selection
-'
-' Revision 1.4  2007/02/09 15:58:42  jeroens
-' Redesigned
-'
-' Revision 1.3  2006/10/03 03:21:48  jeroens
-' * Reorganized and restructured
-' + Added capabilites to use sourceless Properties (such as cFormulaProperty)
-'
-' Revision 1.2  2006/10/02 16:15:22  jeroens
-' + Uses ValueExplorer
-' + Added detailed description
-'
-' Revision 1.1  2006/10/02 02:59:45  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwECore
 Imports EwEUtils.Commands
 Imports System.Text
@@ -115,7 +18,7 @@ Public Class RemarkPanel
     ''' <summary>State monitor to observe.</summary>
     Private m_sm As cCoreStateMonitor = Nothing
     ''' <summary>Flag stating whether the user has made any textual changes.</summary>
-    Private m_bTextChanged As Boolean = False
+    Private m_bHasPendingChanges As Boolean = False
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -155,10 +58,6 @@ Public Class RemarkPanel
 
     End Sub
 
-    Private Sub m_btnSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSet.Click
-        Me.ApplyChanges()
-    End Sub
 
 #Region " Command handling "
 
@@ -181,7 +80,7 @@ Public Class RemarkPanel
         ' Update panel content
         Me.UpdateContents()
         ' Clear any changes
-        Me.PendingChanges = False
+        Me.HasPendingChanges = False
 
     End Sub
 
@@ -189,30 +88,53 @@ Public Class RemarkPanel
 
 #Region " GUI handling "
 
-    Private Sub m_tbRemark_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tbRemark.TextChanged
-        Me.PendingChanges = True
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler, called when remark text has been edited by the user.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub m_tbRemark_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_tbRemark.TextChanged
+        Me.HasPendingChanges = True
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event hander, called when the user applies changes.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub m_btnSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSet.Click
+        Me.Apply()
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Event handler, called when the remarks text box looses focus, to
-    ''' apply any text changes to the selected Property.
+    ''' apply any text changes to selected <see cref="cProperty">properties</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnLeavePanel(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tbRemark.Leave
+    Private Sub OnLeavePanel(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_tbRemark.Leave
         ' Could be called in response to closing app!
         If (Not Me.m_sm.HasEcopathLoaded()) Then Return
         ' Apply any pending changes
-        If (Me.PendingChanges = True) Then Me.ApplyChanges()
+        If (Me.HasPendingChanges = True) Then Me.Apply()
     End Sub
 
+    ''' <summary>Update feedback loop prevention flag.</summary>
     Private m_bInUpdate As Boolean = False
 
-    Private Sub ApplyChanges()
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Apply the content of the remark panel to all selected properties.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub Apply()
 
         Dim strRemark As String = Me.m_tbRemark.Text
 
-        Me.PendingChanges = False
+        Me.HasPendingChanges = False
 
         Me.m_bInUpdate = True
         For Each p As cProperty In Me.m_aprop
@@ -224,12 +146,17 @@ Public Class RemarkPanel
 
     End Sub
 
-    Private Property PendingChanges() As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether the panel has any pending remark text changes.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Property HasPendingChanges() As Boolean
         Get
-            Return Me.m_bTextChanged
+            Return Me.m_bHasPendingChanges
         End Get
         Set(ByVal value As Boolean)
-            Me.m_bTextChanged = value
+            Me.m_bHasPendingChanges = value
         End Set
     End Property
 
@@ -239,7 +166,7 @@ Public Class RemarkPanel
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Event handler, responds to core state change events to assess whether this panel should be available.
+    ''' Event handler, responds to core state change events to update its state.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub OnCoreExecutionStateEvent(ByVal csm As cCoreStateMonitor)
@@ -250,6 +177,11 @@ Public Class RemarkPanel
 
 #Region " Internal implementation "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Update the state of this panel and its controls
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub UpdateControls()
 
         Dim bHasEcopath As Boolean = Me.m_sm.HasEcopathLoaded()
