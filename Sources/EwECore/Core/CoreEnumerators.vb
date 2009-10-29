@@ -450,7 +450,7 @@ End Enum
 ''' </summary>
 ''' <remarks>The enumerated values follow the original EwE5 scheme.</remarks>
 ''' ---------------------------------------------------------------------------
-Public Enum eTimeSeriesType
+Public Enum eTimeSeriesType As Integer
     BiomassRel = 0
     BiomassAbs = 1
     BiomassForcing = -1
@@ -464,6 +464,7 @@ Public Enum eTimeSeriesType
     AverageWeight = 7
     EcotracerConcRel = 8
     EcotracerConcAbs = 9
+    FishingMortalityRef = 104
     NotSet = cCore.NULL_VALUE
 End Enum
 
