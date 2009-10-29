@@ -456,6 +456,8 @@ Public MustInherit Class cTimeSeriesTextReader
 
             For i As Integer = 1 To iNumSeries
 
+                ' ToDo_JS: 28oct09 allow strings as time series types too
+
                 ' Extract time series type
                 aiType(i - 1) = DirectCast(StringUtils.ConvertToInteger(astrCols(i)), eTimeSeriesType)
 
