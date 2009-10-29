@@ -37,6 +37,27 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <summary>Decimal separator to use when interpreting floating point values in the text.</summary>
     Private m_strDecimalSeparator As String = ""
 
+#Region " Private Enums "
+
+    Private Enum eTimeSeriesAliases As Integer
+        BRel = 0
+        BAbs = 1
+        BForced = -1
+        Forcing = 2
+        Effort = 3
+        Z = 4
+        F = 5
+        FConst = -5
+        C = 6
+        [Catch] = 6
+        CForced = -6
+        WAvg = 7
+        ConcRel = 8
+        ConcAbs = 9
+    End Enum
+
+#End Region ' Private Enums
+
 #Region " Preview class "
 
     ''' -----------------------------------------------------------------------
@@ -343,6 +364,7 @@ Public MustInherit Class cTimeSeriesTextReader
             End If
 
             ' ToDo: validate types, etc
+            ' ToDo: convert numeric type to string representation
 
             ' Next
             strLine = Me.ReadLine(reader, iLineNumber)
@@ -456,10 +478,12 @@ Public MustInherit Class cTimeSeriesTextReader
 
             For i As Integer = 1 To iNumSeries
 
-                ' ToDo_JS: 28oct09 allow strings as time series types too
-
                 ' Extract time series type
-                aiType(i - 1) = DirectCast(StringUtils.ConvertToInteger(astrCols(i)), eTimeSeriesType)
+                ' JS28oct09 allow strings as time series types too
+                aiType(i - 1) = Me.ToTimeSeriesType(astrCols(i))
+                If (aiType(i - 1) = eTimeSeriesType.NotSet) Then
+                    aiType(i - 1) = DirectCast(StringUtils.ConvertToInteger(astrCols(i)), eTimeSeriesType)
+                End If
 
                 ' Validate if encountered pool code fits the corresponding core counter
                 Select Case cTimeSeriesFactory.TimeSeriesCategory(aiType(i - 1))
@@ -643,13 +667,35 @@ Public MustInherit Class cTimeSeriesTextReader
 
     End Sub
 
-    'Private Function FixKnownInvalidValue(ByVal strValue As String) As String
-    '    Select Case strValue.Trim
-    '        Case "-", "_", ""
-    '            strValue = "0"
-    '    End Select
-    '    Return strValue
-    'End Function
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Convert a time series type string to a time series enumerated type.
+    ''' </summary>
+    ''' <param name="strTimeSeries"></param>
+    ''' <returns>
+    ''' A time series type value, or <see cref="eTimeSeriesType.NotSet">NotSet</see>
+    ''' if the conversion failed.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
+    Private Function ToTimeSeriesType(ByVal strTimeSeries As String) As eTimeSeriesType
+
+        strTimeSeries = strTimeSeries.Trim
+
+        For Each [alias] As eTimeSeriesAliases In [Enum].GetValues(GetType(eTimeSeriesAliases))
+            If String.Compare([alias].ToString, strTimeSeries, True) = 0 Then
+                Return DirectCast([alias], eTimeSeriesType)
+            End If
+        Next [alias]
+
+        For Each [type] As eTimeSeriesType In [Enum].GetValues(GetType(eTimeSeriesType))
+            If String.Compare([type].ToString, strTimeSeries, True) = 0 Then
+                Return [type]
+            End If
+        Next [type]
+
+        Return eTimeSeriesType.NotSet
+
+    End Function
 
 #End Region ' Helper methods
 
