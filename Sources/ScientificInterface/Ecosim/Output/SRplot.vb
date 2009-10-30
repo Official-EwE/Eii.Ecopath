@@ -1,32 +1,3 @@
-'==============================================================================
-'
-' $Log: SRplot.vb,v $
-' Revision 1.8  2009/05/28 12:37:23  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.7  2009/04/16 04:16:09  jeroens
-' Fixed crash, cleaned up
-'
-' Revision 1.6  2009/03/22 14:01:39  jeroens
-' Core state monitor exec event parameters simplified
-'
-' Revision 1.5  2009/02/24 03:46:58  jeroens
-' Reorganized
-'
-' Revision 1.4  2009/01/19 18:07:26  jeroens
-' MessageHandlers, CoreStateMonitor have sync objects
-'
-' Revision 1.3  2009/01/16 18:30:38  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:56:20  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:48  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -71,11 +42,6 @@ Namespace Ecosim
             Public IsVisible As Boolean
             Public IsDefault As Boolean
 
-            'Public GroupStartName As String
-            'Public GroupEndName As String
-            'Public StanzaIndex As Integer
-            'Public GrpStart As Integer
-            'Public NumLifeStages As Integer
         End Class
 
 #End Region ' Helper classes
@@ -105,6 +71,7 @@ Namespace Ecosim
             Me.m_coreStateMonitor = Me.m_core.StateMonitor
             Me.m_graphpane = Me.m_plot.GraphPane
             Me.m_SRResults = New List(Of SRLine)
+            Me.m_zgh = New cZedGraphHelper()
 
         End Sub
 
@@ -126,7 +93,11 @@ Namespace Ecosim
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
             Me.LoadGroups()
-            Me.InitGraphPane(Me.m_graphpane)
+            Me.m_zgh.Attach(Me.m_core, Me.m_plot)
+            Me.m_zgh.ConfigurePane(My.Resources.SR_PLOT_TITLE, _
+                                   String.Format(My.Resources.SR_PLOT_X_AXIS, String.Empty), _
+                                   String.Format(My.Resources.HEADER_RECRUITMENT_UNIT, String.Empty), _
+                                   False)
 
             Dim m_SyncObj As System.Threading.SynchronizationContext = System.Threading.SynchronizationContext.Current
             'if there is no current context then create a new one on this thread. 
@@ -141,11 +112,11 @@ Namespace Ecosim
 
         End Sub
 
-
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Me.m_core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
             Me.m_mhEcosim = Nothing
+            Me.m_zgh.Detach()
 
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
             RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -153,6 +124,15 @@ Namespace Ecosim
             MyBase.OnFormClosed(e)
 
         End Sub
+
+        ''' <summary>
+        ''' Keep me open, please!
+        ''' </summary>
+        Public Overrides ReadOnly Property IsRunForm() As Boolean
+            Get
+                Return True
+            End Get
+        End Property
 
         Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRun.Click
             If Not m_bEcosimRunning Then
@@ -383,25 +363,6 @@ Namespace Ecosim
 
             m_tvGroups.EndUpdate()
             m_tvGroups.ExpandAll()
-
-        End Sub
-
-        Private Sub InitGraphPane(ByRef pane As GraphPane)
-
-            ' ToDo: use zedgraph helper here
-            pane.Title.Text = My.Resources.SR_PLOT_TITLE
-            pane.Title.FontSpec.Size = 16
-
-            pane.XAxis.Title.Text = String.Format(My.Resources.SR_PLOT_X_AXIS, String.Empty)
-            pane.XAxis.Title.FontSpec.Size = 12
-            pane.XAxis.Scale.FontSpec.Size = 12
-
-            pane.YAxis.Title.Text = String.Format(My.Resources.HEADER_RECRUITMENT_UNIT, String.Empty)
-            pane.YAxis.Title.FontSpec.Size = 12
-            pane.YAxis.Scale.FontSpec.Size = 12
-
-            pane.Legend.IsVisible = False
-            pane.IsFontsScaled = False
 
         End Sub
 
