@@ -1031,6 +1031,8 @@ Namespace Core
         GameFleetFishingRates
         ''' <summary> User entered mortality/fishing rate modifiers/shapes for groups</summary>
         GameGroupFishingMortRates
+        ''' <summary>Traffic lights the client can request from the server.</summary>
+        GameViewTrafficLights
 
         ''' <summary>Type of data available during a simulation (TimeStep or Progress)</summary>
         GameAvailableRunData
