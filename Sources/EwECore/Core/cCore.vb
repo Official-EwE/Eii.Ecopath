@@ -6832,9 +6832,10 @@ Public Class cCore
             m_EcoSpaceData.IsFishRateSet = True
 
             m_EcoSpaceData.SetDefaultThreads()
-
             m_Ecospace.redimForRun()
-            m_Ecospace.initSpatialEquilibrium()
+
+            ' JS30oct09: Spatial Equilibrium is ONLY required when starting an Ecospace run
+            'm_Ecospace.initSpatialEquilibrium()
 
             'Init MPA Optimization
             Dim MPAOptManager As ISearchObjective = Me.m_SearchManagers.Item(eDataTypes.MPAOptManager)
