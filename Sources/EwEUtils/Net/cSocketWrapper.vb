@@ -861,6 +861,9 @@ Namespace NetUtilities
                 If sw.IsHandshake(handshake.HandshakeID) Then
                     ' #Yes: Authorized
                     sw.Authorized = True
+                    ' Remember client ID
+                    sw.m_iID = handshake.HandshakeID
+
                     If (handshake.Relayed = True) Then
                         sw.RemoteMachineName = handshake.ClientMachineName
                     End If
