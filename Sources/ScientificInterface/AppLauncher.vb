@@ -458,6 +458,10 @@ Public Class AppLauncher
 
     End Function
 
+    Private Delegate Sub SetStatusTextDelegate(ByVal strText As String, _
+        ByVal tsUseWaitCursor As TriState, _
+        ByVal sProgress As Single)
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Set the application status strip text and wait cursor.
@@ -485,10 +489,16 @@ Public Class AppLauncher
         Optional ByVal sProgress As Single = 0.0) _
         Implements IApplicationStatusDispatcher.SetStatusText
 
+        If Me.InvokeRequired() Then
+            Me.Invoke(New SetStatusTextDelegate(AddressOf Me.SetStatusText), _
+                      New Object() {strText, tsUseWaitCursor, sProgress})
+            Return
+        End If
+
         ' EVEN MORE TODO: PERFORM THIS VIA cStatusNotifier!
         ' ToDo_JS: Consider using a timer to clear any status text after a certain interval
 
-        ' Give app a chance to rener
+        ' Give app a chance to render
         Application.DoEvents()
 
         ' Update wait cursor
