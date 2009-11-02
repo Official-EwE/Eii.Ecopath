@@ -3359,6 +3359,7 @@ Public Class cDBDataSource
                 ' Define a new shape for this fleet
                 Me.AppendShapeImpl(ecopathDS.FleetName(iFleet), eDataTypes.FishingEffort, iShapeID, asDummy, 0, 0, 0, 0, eShapeFunctionType.NotSet)
                 dtNewFleetShapes.Add(iFleetID, iShapeID)
+                iShapeID += 1
             End If
 
             If iShapeID > -1 Then
@@ -4806,8 +4807,6 @@ Public Class cDBDataSource
         Dim drow As DataRow = Nothing
         Dim bSucces As Boolean = True
 
-        Me.BeginTransaction()
-
         Try
 
             Try
@@ -4887,8 +4886,6 @@ Public Class cDBDataSource
             Me.LogMessage(String.Format("Error {0} occurred while appending shape {1}, {2}", ex.Message, strShapeName, shapeType.ToString()))
             bSucces = False
         End Try
-
-        Me.EndTransaction(bSucces)
 
         Return bSucces
 
