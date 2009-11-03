@@ -213,9 +213,9 @@ Public Class cTimeSeriesDataset
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub Update()
-        For Each ts As cTimeSeries In Me.m_lTimeSeries
-            ts.Enabled = True
-        Next
+        'For Each ts As cTimeSeries In Me.m_lTimeSeries
+        '    ts.Enabled = True
+        'Next
         Me.m_core.UpdateTimeSeries()
     End Sub
 
