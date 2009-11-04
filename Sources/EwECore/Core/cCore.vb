@@ -1474,6 +1474,20 @@ Public Class cCore
     ''' <summary>
     ''' Load (and optionally apply) a single time series dataset
     ''' </summary>
+    ''' <param name="tsd">The dataset to load. Provide 'nothing' to unload any dataset.</param>
+    ''' <param name="bApply">Flag stating whether loaded time series should be applied immediately.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function LoadTimeSeries(ByVal tsd As cTimeSeriesDataset, Optional ByVal bApply As Boolean = False) As Boolean
+        Dim iIndex As Integer = 0
+        If tsd IsNot Nothing Then iIndex = tsd.Index
+        Return Me.LoadTimeSeries(iIndex, bApply)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load (and optionally apply) a single time series dataset
+    ''' </summary>
     ''' <param name="iDataset">Index of the dataset to load. Provide 0 to unload any dataset.</param>
     ''' <param name="bApply">Flag stating whether loaded time series should be applied immediately.</param>
     ''' <returns>True if succesful.</returns>
