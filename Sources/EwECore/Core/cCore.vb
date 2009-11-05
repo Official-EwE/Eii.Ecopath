@@ -959,23 +959,6 @@ Public Class cCore
 
 #End Region
 
-    '#Region " Villy's own "
-
-    '    ' ToDo: hide by compiler directive?
-
-    '    Private m_bVilly As Boolean = False
-
-    'Public Property Villy() As Boolean
-    '    Get
-    '        Return m_bVilly
-    '    End Get
-    '    Set(ByVal value As Boolean)
-    '        m_bVilly = value
-    '    End Set
-    'End Property
-
-    '#End Region ' Villy's own
-
 #End Region 'Public Core Interfaces
 
 #Region "Private and Friend Core Functions" 'private functionality used by the core
@@ -1187,8 +1170,8 @@ Public Class cCore
 
             For iDS As Integer = 1 To Me.m_TSData.nDatasets
                 tsd = New cTimeSeriesDataset(Me, Me.m_TSData.nDatasetNumTimeSeries(iDS))
-
                 tsd.AllowValidation = False
+                tsd.DBID = Me.m_TSData.iDatasetDBID(iDS)
                 tsd.Index = iDS
                 tsd.Name = Me.m_TSData.strDatasetNames(iDS)
                 tsd.FirstYear = Me.m_TSData.nDatasetFirstYear(iDS)
@@ -1203,9 +1186,6 @@ Public Class cCore
             Me.m_TSData.ClearTimeSeries()
             ' Set number of groups
             Me.m_TSData.nGroups = Me.nGroups
-
-            ' Update enabled TS
-            Me.m_TSData.loadEnabled()
 
         Catch ex As Exception
             Debug.Assert(False)
@@ -1752,10 +1732,13 @@ Public Class cCore
             If ds.AppendTimeSeriesDataset(strName, strDescription, strAuthor, strContact, iFirstYear, iNumYears, iDatasetID) Then
 
                 Me.InitAndLoadEcosimTimeSeriesDatasets()
-                Me.DataAddedOrRemovedMessage("Ecosim number of datasets has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
+                Me.DataAddedOrRemovedMessage("Number of time series datasets has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
                 iDataset = Array.IndexOf(Me.m_TSData.iDatasetDBID, iDatasetID)
-                Return Me.LoadTimeSeries(iDataset, False)
-
+                If Me.LoadTimeSeries(iDataset, False) Then
+                    ' Update enabled TS
+                    Me.m_TSData.loadEnabled()
+                    Return True
+                End If
             End If
 
         Catch ex As Exception
@@ -2123,6 +2106,8 @@ Public Class cCore
 
             ' Clear remarks
             m_dtAuxiliaryData.Clear()
+            ' Clear time series datasets
+            Me.m_TSData.ClearTimeSeriesDatasets()
 
             'Init the parameters from the datasource
             dsEcopath = DirectCast(DataSource, IEcopathDataSource)
@@ -2171,6 +2156,7 @@ Public Class cCore
                 bsuccess = bsuccess And InitEcosimScenarios()
                 bsuccess = bsuccess And InitEcospaceScenarios()
                 bsuccess = bsuccess And InitEcotracerScenarios()
+                bsuccess = bsuccess And InitAndLoadEcosimTimeSeriesDatasets()
 
                 bsuccess = bsuccess And InitPedigreeManagers()
                 bsuccess = bsuccess And InitPSDParameters()
@@ -4677,7 +4663,6 @@ Public Class cCore
             m_EcoSim.SetCounters()
             m_EcoSim.InitStanza()
             m_EcoSim.SetDefaultParameters()
-            Me.m_TSData.ClearTimeSeriesDatasets()
 
             'jb I still need to deal with how to handle these problems
             ds = DirectCast(DataSource, IEcosimDatasource)
@@ -4709,7 +4694,6 @@ Public Class cCore
             InitEcosimFleetOutput()
             InitEcosimFisheriesRegulations()
 
-            InitAndLoadEcosimTimeSeriesDatasets()
             InitEcosimTimeSeries()
             LoadEcosimTimeSeries()
 

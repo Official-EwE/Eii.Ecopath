@@ -549,6 +549,7 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.LoadEcosimScenarioDefinitions()
         bSucces = bSucces And Me.LoadEcospaceScenarioDefinitions()
         bSucces = bSucces And Me.LoadEcotracerScenarioDefinitions()
+        bSucces = bSucces And Me.LoadTimeSeriesDatasets()
 
         ' Clear changed admin
         Me.ClearChanged()
@@ -2642,6 +2643,158 @@ Public Class cDBDataSource
 
 #End Region ' Fleets
 
+#Region " Datasets "
+
+    Private Function LoadTimeSeriesDatasets() As Boolean
+
+        Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
+        Dim reader As IDataReader = Nothing
+        Dim iDataset As Integer = 1
+        Dim bSucces As Boolean = True
+
+        Try
+            tsDS.nDatasets = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcosimTimeSeriesDataset"))
+        Catch ex As Exception
+            tsDS.nDatasets = 0
+        End Try
+
+        tsDS.RedimTimeSeriesDatasets()
+
+        reader = Me.m_db.GetReader("SELECT * FROM EcosimTimeSeriesDataset")
+        If reader IsNot Nothing Then
+            Try
+                While reader.Read()
+                    tsDS.iDatasetDBID(iDataset) = CInt(reader("DatasetID"))
+                    tsDS.strDatasetNames(iDataset) = CStr(reader("DatasetName"))
+                    tsDS.strDatasetDescription(iDataset) = CStr(Me.ReadSafe(reader, "Description", ""))
+                    tsDS.strDatasetAuthor(iDataset) = CStr(Me.ReadSafe(reader, "Author", ""))
+                    tsDS.strDatasetContact(iDataset) = CStr(Me.ReadSafe(reader, "Contact", ""))
+                    tsDS.nDatasetFirstYear(iDataset) = CInt(reader("FirstYear"))
+                    tsDS.nDatasetNumYears(iDataset) = CInt(reader("NumYears"))
+                    tsDS.nDatasetNumTimeSeries(iDataset) = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(reader("DatasetID")))))
+                    iDataset += 1
+                End While
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            Me.m_db.ReleaseReader(reader)
+        End If
+
+        Return bSucces
+
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Adds an time series dataset to the datasource.
+    ''' </summary>
+    ''' <param name="strDatasetName">Name to assign to new dataset.</param>
+    ''' <param name="strDescription">Description to assign to new dataset.</param>
+    ''' <param name="strAuthor">Author to assign to the new dataset.</param>
+    ''' <param name="strContact">Contact info to assign to the new dataset.</param>
+    ''' <param name="iFirstYear">First year of the dataset.</param>
+    ''' <param name="iNumYears">Number of years in the dataset.</param>
+    ''' <param name="iDatasetID">Database ID assigned to the new dataset.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function AppendTimeSeriesDataset(ByVal strDatasetName As String, ByVal strDescription As String, _
+            ByVal strAuthor As String, ByVal strContact As String, _
+            ByVal iFirstYear As Integer, ByVal iNumYears As Integer, _
+            ByRef iDatasetID As Integer) As Boolean Implements DataSources.IEcosimDatasource.AppendTimeSeriesDataset
+
+        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim drow As DataRow = Nothing
+        Dim idm As New cIDMappings()
+        Dim bSucces As Boolean = True
+
+        Try
+            ' Delete existing dataset with same name, if any
+            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT DatasetID FROM EcosimTimeSeriesDataset WHERE DatasetName='{0}'", strDatasetName))
+            Dim lDatasetID As New List(Of Integer)
+            While reader.Read
+                lDatasetID.Add(CInt(reader("DatasetID")))
+            End While
+            Me.m_db.ReleaseReader(reader)
+
+            ' Delete dataset(s)
+            For Each iDatasetIDTemp As Integer In lDatasetID
+                bSucces = bSucces And Me.RemoveTimeSeriesDatasetID(iDatasetIDTemp)
+            Next
+
+            ' Still looking good?
+            If bSucces Then
+
+                Try
+                    iDatasetID = CInt(Me.m_db.GetValue("SELECT MAX(DatasetID) FROM EcosimTimeSeriesDataset")) + 1
+                Catch ex As InvalidCastException
+                    iDatasetID = 1
+                End Try
+
+                writer = Me.m_db.GetWriter("EcosimTimeSeriesDataset")
+
+                drow = writer.NewRow()
+                drow("DatasetID") = iDatasetID
+                drow("DatasetName") = strDatasetName
+                drow("Description") = strDescription
+                drow("Author") = strAuthor
+                drow("Contact") = strContact
+                drow("FirstYear") = iFirstYear
+                drow("NumYears") = iNumYears
+                'drow("LastSaved") = cDBDataSource.GetJulianDate()
+                writer.AddRow(drow)
+
+                Me.m_db.ReleaseWriter(writer)
+
+                ' Reload time series dataset
+                If bSucces Then Me.LoadTimeSeriesDatasets()
+
+            End If
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while appending dataset {1}", ex.Message, strDatasetName))
+            bSucces = False
+        End Try
+
+        Return bSucces
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Removes all time series belonging to a specific dataset from the datasource.
+    ''' </summary>
+    ''' <param name="iDataset">Index of the dataset to remove.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function RemoveTimeSeriesDataset(ByVal iDataset As Integer) As Boolean _
+            Implements DataSources.IEcosimDatasource.RemoveTimeSeriesDataset
+        Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
+        Return Me.RemoveTimeSeriesDatasetID(tsDS.iDatasetDBID(iDataset))
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Removes all time series belonging to a specific dataset from the datasource.
+    ''' </summary>
+    ''' <param name="iDatasetID">Database ID of the dataset to remove.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -------------------------------------------------------------------
+    Private Function RemoveTimeSeriesDatasetID(ByVal iDatasetID As Integer) As Boolean
+
+        Dim bSucces As Boolean = True
+        Try
+            ' Cascading delete may fail due to 'weak' relations set by updates. Aargh, how I dislike Access!!!
+            ' Solution: manually delete all dataset links
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeries WHERE (DatasetID={0})", iDatasetID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesDataset WHERE (DatasetID={0})", iDatasetID))
+        Catch ex As Exception
+            bSucces = False
+        End Try
+        Return bSucces
+
+    End Function
+
+#End Region ' Datasets
+
 #End Region ' Ecopath
 
 #Region " EcoSim "
@@ -2741,7 +2894,6 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.LoadEcosimFleets(iDBID)
         bSucces = bSucces And Me.LoadEcosimQuota(iDBID)
         bSucces = bSucces And Me.LoadShapes()
-        bSucces = bSucces And Me.LoadTimeSeriesDatasets()
 
         Me.ClearChanged(eCoreComponentType.EcoSim)
 
@@ -4935,49 +5087,6 @@ Public Class cDBDataSource
 
 #Region " Time series "
 
-#Region " Datasets "
-
-    Private Function LoadTimeSeriesDatasets() As Boolean
-
-        Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
-        Dim reader As IDataReader = Nothing
-        Dim iDataset As Integer = 1
-        Dim bSucces As Boolean = True
-
-        Try
-            tsDS.nDatasets = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcosimTimeSeriesDataset"))
-        Catch ex As Exception
-            tsDS.nDatasets = 0
-        End Try
-
-        tsDS.RedimTimeSeriesDatasets()
-
-        reader = Me.m_db.GetReader("SELECT * FROM EcosimTimeSeriesDataset")
-        If reader IsNot Nothing Then
-            Try
-                While reader.Read()
-                    tsDS.iDatasetDBID(iDataset) = CInt(reader("DatasetID"))
-                    tsDS.strDatasetNames(iDataset) = CStr(reader("DatasetName"))
-                    tsDS.strDatasetDescription(iDataset) = CStr(Me.ReadSafe(reader, "Description", ""))
-                    tsDS.strDatasetAuthor(iDataset) = CStr(Me.ReadSafe(reader, "Author", ""))
-                    tsDS.strDatasetContact(iDataset) = CStr(Me.ReadSafe(reader, "Contact", ""))
-                    tsDS.nDatasetFirstYear(iDataset) = CInt(reader("FirstYear"))
-                    tsDS.nDatasetNumYears(iDataset) = CInt(reader("NumYears"))
-                    tsDS.nDatasetNumTimeSeries(iDataset) = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(reader("DatasetID")))))
-                    iDataset += 1
-                End While
-            Catch ex As Exception
-                bSucces = False
-            End Try
-            Me.m_db.ReleaseReader(reader)
-        End If
-
-        Return bSucces
-
-    End Function
-
-#End Region ' Datasets
-
 #Region " Import "
 
     ''' -------------------------------------------------------------------
@@ -5214,119 +5323,6 @@ Public Class cDBDataSource
 #End Region ' Import helpers
 
 #End Region ' Import
-
-#Region " Datasets "
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Adds an time series dataset to the datasource.
-    ''' </summary>
-    ''' <param name="strDatasetName">Name to assign to new dataset.</param>
-    ''' <param name="strDescription">Description to assign to new dataset.</param>
-    ''' <param name="strAuthor">Author to assign to the new dataset.</param>
-    ''' <param name="strContact">Contact info to assign to the new dataset.</param>
-    ''' <param name="iFirstYear">First year of the dataset.</param>
-    ''' <param name="iNumYears">Number of years in the dataset.</param>
-    ''' <param name="iDatasetID">Database ID assigned to the new dataset.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function AppendTimeSeriesDataset(ByVal strDatasetName As String, ByVal strDescription As String, _
-            ByVal strAuthor As String, ByVal strContact As String, _
-            ByVal iFirstYear As Integer, ByVal iNumYears As Integer, _
-            ByRef iDatasetID As Integer) As Boolean Implements DataSources.IEcosimDatasource.AppendTimeSeriesDataset
-
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim drow As DataRow = Nothing
-        Dim idm As New cIDMappings()
-        Dim bSucces As Boolean = True
-
-        Try
-            ' Delete existing dataset with same name, if any
-            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT DatasetID FROM EcosimTimeSeriesDataset WHERE DatasetName='{0}'", strDatasetName))
-            Dim lDatasetID As New List(Of Integer)
-            While reader.Read
-                lDatasetID.Add(CInt(reader("DatasetID")))
-            End While
-            Me.m_db.ReleaseReader(reader)
-
-            ' Delete dataset(s)
-            For Each iDatasetIDTemp As Integer In lDatasetID
-                bSucces = bSucces And Me.RemoveTimeSeriesDatasetID(iDatasetIDTemp)
-            Next
-
-            ' Still looking good?
-            If bSucces Then
-
-                Try
-                    iDatasetID = CInt(Me.m_db.GetValue("SELECT MAX(DatasetID) FROM EcosimTimeSeriesDataset")) + 1
-                Catch ex As InvalidCastException
-                    iDatasetID = 1
-                End Try
-
-                writer = Me.m_db.GetWriter("EcosimTimeSeriesDataset")
-
-                drow = writer.NewRow()
-                drow("DatasetID") = iDatasetID
-                drow("DatasetName") = strDatasetName
-                drow("Description") = strDescription
-                drow("Author") = strAuthor
-                drow("Contact") = strContact
-                drow("FirstYear") = iFirstYear
-                drow("NumYears") = iNumYears
-                'drow("LastSaved") = cDBDataSource.GetJulianDate()
-                writer.AddRow(drow)
-
-                Me.m_db.ReleaseWriter(writer)
-
-                ' Reload time series dataset
-                If bSucces Then Me.LoadTimeSeriesDatasets()
-
-            End If
-
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while appending dataset {1}", ex.Message, strDatasetName))
-            bSucces = False
-        End Try
-
-        Return bSucces
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Removes all time series belonging to a specific dataset from the datasource.
-    ''' </summary>
-    ''' <param name="iDataset">Index of the dataset to remove.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function RemoveTimeSeriesDataset(ByVal iDataset As Integer) As Boolean _
-            Implements DataSources.IEcosimDatasource.RemoveTimeSeriesDataset
-        Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
-        Return Me.RemoveTimeSeriesDatasetID(tsDS.iDatasetDBID(iDataset))
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Removes all time series belonging to a specific dataset from the datasource.
-    ''' </summary>
-    ''' <param name="iDatasetID">Database ID of the dataset to remove.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function RemoveTimeSeriesDatasetID(ByVal iDatasetID As Integer) As Boolean
-
-        Dim bSucces As Boolean = True
-        Try
-            ' Cascading delete may fail due to 'weak' relations set by updates. Aargh, how I dislike Access!!!
-            ' Solution: manually delete all dataset links
-            Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeries WHERE (DatasetID={0})", iDatasetID))
-            Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesDataset WHERE (DatasetID={0})", iDatasetID))
-        Catch ex As Exception
-            bSucces = False
-        End Try
-        Return bSucces
-
-    End Function
-
-#End Region ' Datasets
 
 #Region " Load "
 
