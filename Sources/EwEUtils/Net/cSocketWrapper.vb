@@ -948,6 +948,12 @@ Namespace NetUtilities
                 Me.m_socket.BeginSend(byData, 0, byData.Length, SocketFlags.None, AddressOf Me.SendCallback, Me.m_socket)
                 'End If
 
+            Catch ex As SocketException
+                ' Socket has been closed, just fail this attempt and hope the failure is handled well elsewhere
+#If VERBOSE_LEVEL >= 1 Then
+                Console.WriteLine("sw BeginSend() {0} failed: {1}", Me.ToString(), ex.Message)
+#End If
+                Return False
             Catch ex As Exception
                 ' TODO: Likely need better feedback, maybe send an event.
                 Debug.Assert(False, "Cannot send message.  Failed at sending Binary" + ex.ToString())
