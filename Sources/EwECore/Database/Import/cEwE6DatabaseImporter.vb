@@ -1505,10 +1505,6 @@ Namespace Database
                 drow("FixedCost") = Me.FixValue(reader, "fixedCost")
                 drow("VariableCost") = Me.FixValue(reader, "variableCost")
                 drow("SailingCost") = Me.FixValue(reader, "SailingCost")
-                drow("EPower") = Me.FixValue(reader, "EPower")
-                drow("PCapBase") = Me.FixValue(reader, "PCapBase")
-                drow("CapDepreciate") = Me.FixValue(reader, "CapDepreciate")
-                drow("CapBaseGrowth") = Me.FixValue(reader, "CapBaseGrowth")
                 ' JS070412: Poolcolor (was GearColor) converted to 8-digit hexadecimal string
                 'iTemp = CInt(Me.FixValue(reader, "PoolColor", Me.FixValue(reader, "CapBaseGrowth", nSequence Mod 14)))
                 'drow("PoolColor") = String.Format("{0:x8}", iTemp)
@@ -2029,6 +2025,7 @@ Namespace Database
         Private Sub ImportEcoSimFishGear(ByVal strModelName As String)
 
             Dim reader As IDataReader = Nothing
+            Dim readerEcopath As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 0
@@ -2071,6 +2068,18 @@ Namespace Database
                     drow("ScenarioID") = iScenarioID
                     drow("EcopathFleetID") = iEcopathFleetID
                     drow("FishRateShapeID") = iShapeID
+
+                    readerEcopath = m_dbEwE5.GetReader(String.Format("SELECT * FROM [Gear] WHERE (gearName='{0}')", strFleetName))
+                    readerEcopath.Read()
+
+                    drow("EPower") = Me.FixValue(readerEcopath, "EPower")
+                    drow("PCapBase") = Me.FixValue(readerEcopath, "PCapBase")
+                    drow("CapDepreciate") = Me.FixValue(readerEcopath, "CapDepreciate")
+                    drow("CapBaseGrowth") = Me.FixValue(readerEcopath, "CapBaseGrowth")
+
+                    m_dbEwE5.ReleaseReader(readerEcopath)
+                    readerEcopath = Nothing
+
                     writer.AddRow(drow)
                     writer.Commit()
 

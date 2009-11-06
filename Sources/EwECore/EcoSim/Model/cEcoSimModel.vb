@@ -4124,7 +4124,7 @@ Public Property PluginManager() As cPluginManager
             'and current effort capacity Captime(ig)
             Dim ig As Integer, Ipower As Single
             For ig = 1 To m_Data.nGear
-                Ipower = CurrentIncome(ig) ^ m_EPData.Epower(ig)
+                Ipower = CurrentIncome(ig) ^ m_Data.Epower(ig)
                 m_Data.FishRateGear(ig, t) = CapTime(ig) * Ipower / (EscalePar(ig) + Ipower)
                 'jb m_Data.FishRateGear(gear,time) is bounded by MaxEffort() in SetFtimeFromGear()
                 'If m_Data.FishRateGear(ig, t) <> m_Data.FishRateGear(ig, t) Or m_Data.FishRateGear(ig, t) > 1000 Then Stop
@@ -4159,7 +4159,7 @@ Public Property PluginManager() As cPluginManager
             Dim ig As Integer, Cg As Single
             For ig = 1 To m_Data.nGear
                 Cg = CapGrowthFactor(ig) * CurrentProfit(ig) : If Cg < 0 Then Cg = 0
-                CapTime(ig) = CapTime(ig) * (1 - m_EPData.CapDepreciate(ig) / 12) + Cg / 12
+                CapTime(ig) = CapTime(ig) * (1 - m_Data.CapDepreciate(ig) / 12) + Cg / 12
                 If CapTime(ig) <> CapTime(ig) Or CapTime(ig) > 1000 Then Stop
             Next
         End Sub
@@ -4188,7 +4188,7 @@ Public Property PluginManager() As cPluginManager
                 '    CapBaseGrowth(ig) = 0.2
                 '*****end of temporary parameter set block************
                 'VC: the above is done when opening a model, Aug 2002
-                CapBase(ig) = 1 / m_EPData.PcapBase(ig)
+                CapBase(ig) = 1 / m_Data.PcapBase(ig)
                 CapTime(ig) = CapBase(ig)
                 For t = 0 To m_Data.NTimes
                     m_Data.FishRateGear(ig, t) = 1
@@ -4196,8 +4196,8 @@ Public Property PluginManager() As cPluginManager
             Next
             FindCurrentProfit(m_Data.StartBiomass, 0)
             For ig = 1 To m_Data.nGear
-                EscalePar(ig) = (CapBase(ig) - 1) * CurrentIncome(ig) ^ m_EPData.Epower(ig)
-                CapGrowthFactor(ig) = CapBase(ig) * (m_EPData.CapBaseGrowth(ig) + m_EPData.CapDepreciate(ig)) / (CurrentProfit(ig) + 1.0E-20)
+                EscalePar(ig) = (CapBase(ig) - 1) * CurrentIncome(ig) ^ m_Data.Epower(ig)
+                CapGrowthFactor(ig) = CapBase(ig) * (m_Data.CapBaseGrowth(ig) + m_Data.CapDepreciate(ig)) / (CurrentProfit(ig) + 1.0E-20)
             Next
 
         End Sub

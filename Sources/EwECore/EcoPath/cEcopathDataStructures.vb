@@ -256,12 +256,6 @@ Public Class cEcopathDataStructures
     ''' <summary>Proportion of regulated discards that die (by gear group)</summary>
     Public PropDiscardMort(,) As Single ' gear group 0-1
 
-    Public Epower() As Single
-    Public PcapBase() As Single
-    Public CapDepreciate() As Single
-    Public CapBaseGrowth() As Single
-
-
     'summary stats
     'populated after parameters have been estimated in EcoPath
     'by the routines
@@ -490,10 +484,6 @@ Public Class cEcopathDataStructures
         ReDim PropDiscardMort(NumFleet, NumGroups)
         ReDim Market(NumFleet, NumGroups)
 
-        ReDim Epower(NumFleet)
-        ReDim PcapBase(NumFleet)
-        ReDim CapDepreciate(NumFleet)
-        ReDim CapBaseGrowth(NumFleet)
         'ReDim FleetColor(NumFleet)
 
         If (bNeedDefaultFleet) Then
@@ -1157,12 +1147,6 @@ Public Class cEcopathDataStructures
             dest.Landing = Landing.Clone
             dest.Market = Market.Clone
             dest.PropDiscard = PropDiscard.Clone
-
-            Epower.CopyTo(dest.Epower, 0)
-            PcapBase.CopyTo(dest.PcapBase, 0)
-            CapDepreciate.CopyTo(dest.CapDepreciate, 0)
-            CapBaseGrowth.CopyTo(dest.CapBaseGrowth, 0)
-
 
             dest.RTZ = RTZ
             dest.Consum = Consum

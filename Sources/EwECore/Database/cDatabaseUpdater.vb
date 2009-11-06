@@ -69,12 +69,20 @@ Namespace Database
 
             ' Invoke database update plugin point prior to loading
             If (pm IsNot Nothing) Then
-                Try
-                    pm.UpdateDatabase(db, m_sBaselineVersion)
-                Catch ex As Exception
-                    ' Throw new exception?
-                    bSucces = False
-                End Try
+                If db.BeginTransaction() Then
+                    Try
+                        bSucces = pm.UpdateDatabase(db, m_sBaselineVersion)
+                    Catch ex As Exception
+                        ' Throw new exception?
+                        bSucces = False
+                    End Try
+
+                    If bSucces Then
+                        bSucces = db.CommitTransaction(True)
+                    Else
+                        db.RollbackTransaction()
+                    End If
+                End If
             End If
 
             Return bSucces

@@ -21,7 +21,7 @@ Public Class cGameServerInterface
         m_dctCoreListData.Add(eDataTypes.EcoPathGroupInput, m_core.m_EcoPathInputs)
         m_dctCoreListData.Add(eDataTypes.EcoPathGroupOutput, m_core.m_EcoPathOutputs)
 
-        m_dctCoreListData.Add(eDataTypes.FleetInput, m_core.m_FleetsInput)
+        m_dctCoreListData.Add(eDataTypes.FleetInput, m_core.m_EcopathFleetsInput)
 
         'ecosim
         m_dctCoreListData.Add(eDataTypes.EcoSimGroupOutput, m_core.m_EcoSimGroupOutputs)

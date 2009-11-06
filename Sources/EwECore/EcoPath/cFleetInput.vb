@@ -1,22 +1,4 @@
-'==============================================================================
-'
-' $Log: cFleetInput.vb,v $
-' Revision 1.4  2009/01/16 18:30:16  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.3  2008/10/09 17:21:04  jeroens
-' Moved discard mort data from Ecosim to Ecopath
-'
-' Revision 1.2  2008/10/08 17:55:06  jeroens
-' DiscardMortality about to be removed from Ecosim
-'
-' Revision 1.1  2008/09/26 07:30:18  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
@@ -66,27 +48,6 @@ Public Class cFleetInput
         'SailCost
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.SailCost, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-        m_values.Add(val.varName, val)
-
-
-        'EPower
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.EPower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-        m_values.Add(val.varName, val)
-
-        'PcapBase
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.PcapBase, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-        m_values.Add(val.varName, val)
-
-        'CapDepreciate
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.CapDepreciate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-        m_values.Add(val.varName, val)
-
-        'CapBaseGrowth
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.CapBaseGrowth, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
         ''PoolColor
@@ -195,21 +156,6 @@ Public Class cFleetInput
 
     End Property
 
-    ''' <summary>
-    ''' Effort response pow.fi
-    ''' </summary>
-    Public Property EPower() As Single
-
-        Get
-            Return CSng(getVariable(eVarNameFlags.EPower))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EPower, value)
-        End Set
-
-    End Property
-
     Public Property Landings(ByVal iGroup As Integer) As Single
 
         Get
@@ -230,51 +176,6 @@ Public Class cFleetInput
 
         Set(ByVal value() As Single)
             SetVariable(eVarNameFlags.Landings, value)
-        End Set
-
-    End Property
-
-    ''' <summary>
-    ''' capital depreciation rate
-    ''' </summary>
-    Public Property CapDepreciateRate() As Single
-
-        Get
-            Return CSng(getVariable(eVarNameFlags.CapDepreciate))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CapDepreciate, value)
-        End Set
-
-    End Property
-
-    ''' <summary>
-    ''' Initial effort / capital capacity
-    ''' </summary>
-    Public Property PcapBase() As Single
-
-        Get
-            Return CSng(getVariable(eVarNameFlags.PcapBase))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.PcapBase, value)
-        End Set
-
-    End Property
-
-    ''' <summary>
-    ''' initial capitial growth
-    ''' </summary>
-    Public Property CapBaseGrowth() As Single
-
-        Get
-            Return CSng(getVariable(eVarNameFlags.CapBaseGrowth))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CapBaseGrowth, value)
         End Set
 
     End Property
@@ -370,30 +271,6 @@ Public Class cFleetInput
 
 #End Region
 
-    Public Property CapBaseGrowthStatus() As eStatusFlags
-
-        Get
-            Return GetStatus(eVarNameFlags.CapBaseGrowth)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CapBaseGrowth, value)
-        End Set
-
-    End Property
-
-    Public Property CapDepreciateRateStatus() As eStatusFlags
-
-        Get
-            Return getStatus(eVarNameFlags.CapDepreciate)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CapDepreciate, value)
-        End Set
-
-    End Property
-
     Public Property CPUECostStatus() As eStatusFlags
 
         Get
@@ -428,16 +305,6 @@ Public Class cFleetInput
             SetStatus(eVarNameFlags.Discards, value)
         End Set
 
-    End Property
-
-    Public Property EPowerStatus() As eStatusFlags
-        Get
-            Return getStatus(eVarNameFlags.EPower)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EPower, value)
-        End Set
     End Property
 
     Public Property FixedCostStatus() As eStatusFlags
@@ -483,18 +350,6 @@ Public Class cFleetInput
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.OffVesselPrice, value)
-        End Set
-
-    End Property
-
-    Public Property PcapBaseStatus() As eStatusFlags
-
-        Get
-            Return getStatus(eVarNameFlags.PcapBase)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.PcapBase, value)
         End Set
 
     End Property

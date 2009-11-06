@@ -123,6 +123,11 @@ Public Class cEcosimDatastructures
     Public VulMult(,) As Single
     Public vulrate(,) As Single
 
+    Public Epower() As Single
+    Public PcapBase() As Single
+    Public CapDepreciate() As Single
+    Public CapBaseGrowth() As Single
+
     ''' <summary> Max vulnerability across all prey for this predator VulnerabilityPredator(pred) = max(VulMult(prey,pred))</summary>
     Public VulnerabilityPredator() As Single
 
@@ -650,6 +655,11 @@ Public Class cEcosimDatastructures
             Next
         Next
 
+        ReDim Epower(nGear)
+        ReDim PcapBase(nGear)
+        ReDim CapDepreciate(nGear)
+        ReDim CapBaseGrowth(nGear)
+
     End Sub
 
     ''' <summary>
@@ -1061,7 +1071,6 @@ Public Class cEcosimDatastructures
         ReDim FishRateNo(nGroups, NTimes)  'was 1200
         ReDim FishRateGear(nGear + 1, NTimes)  'was 1200
 
-
         'reset some default values before the data is populated by an interface or a datasource
         'this worked differently in EwE5
         Me.DefaultFishMortalityRates()
@@ -1359,6 +1368,10 @@ Public Class cEcosimDatastructures
             d.FisForced = FisForced.Clone
             d.SS = SS
 
+            d.Epower = Epower
+            d.PcapBase = PcapBase
+            d.CapDepreciate = CapDepreciate
+            d.CapBaseGrowth = CapBaseGrowth
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)

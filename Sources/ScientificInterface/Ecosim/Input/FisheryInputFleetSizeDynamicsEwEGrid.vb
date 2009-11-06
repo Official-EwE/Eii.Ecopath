@@ -1,47 +1,3 @@
-'==============================================================================
-'
-' $Log: FisheryInputFleetSizeDynamicsEwEGrid.vb,v $
-' Revision 1.4  2009/05/21 18:53:42  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:38  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:53:40  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:35  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.7  2008/08/02 03:04:15  jeroens
-' Renamed resources
-'
-' Revision 1.6  2008/06/02 00:01:34  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.5  2008/05/29 22:22:54  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.4  2008/04/07 02:31:14  jeroens
-' Cleaning up resources
-'
-' Revision 1.3  2008/02/13 16:44:29  jeroens
-' Renamed resources
-'
-' Revision 1.2  2007/10/10 02:59:14  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.1  2007/07/13 16:34:43  jeroens
-' * Moved
-'
-' Revision 1.9  2007/06/21 22:23:36  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.8  2007/04/29 03:45:12  jeroens
-' * Connected to EwEGridRefresh
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -84,7 +40,7 @@ Namespace Ecosim
             Dim source As cCoreInputOutputBase = Nothing
 
             For rowIndex As Integer = 1 To core.nFleets
-                source = core.FleetInputs(rowIndex)
+                source = core.EcosimFleetInputs(rowIndex)
                 Me.Rows.Insert(rowIndex)
                 ' Name is fleet name
                 Me(rowIndex, 0) = New EwERowHeaderCell(rowIndex)
@@ -99,7 +55,7 @@ Namespace Ecosim
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
-                Return eCoreComponentType.EcoPath
+                Return eCoreComponentType.EcoSim
             End Get
         End Property
 

@@ -2255,10 +2255,6 @@ Public Class cDBDataSource
                 ecopathDS.CostPct(iFleet, eCostIndex.Fixed) = CSng(reader("FixedCost"))
                 ecopathDS.CostPct(iFleet, eCostIndex.Sail) = CSng(reader("SailingCost"))
                 ecopathDS.CostPct(iFleet, eCostIndex.CUPE) = CSng(reader("variableCost"))
-                ecopathDS.Epower(iFleet) = CSng(reader("Epower"))
-                ecopathDS.PcapBase(iFleet) = CSng(reader("PCapBase"))
-                ecopathDS.CapDepreciate(iFleet) = CSng(reader("CapDepreciate"))
-                ecopathDS.CapBaseGrowth(iFleet) = CSng(reader("CapBaseGrowth"))
                 'ecopathDS.FleetColor(iFleet) = StringUtils.ConvertToInteger(CStr(reader("PoolColor"), Me.m_ni), Globalization.NumberStyles.HexNumber)
                 iFleet += 1
 
@@ -2419,10 +2415,6 @@ Public Class cDBDataSource
                 drow("FixedCost") = ecopathDS.CostPct(iFleet, eCostIndex.Fixed)
                 drow("SailingCost") = ecopathDS.CostPct(iFleet, eCostIndex.Sail)
                 drow("variableCost") = ecopathDS.CostPct(iFleet, eCostIndex.CUPE)
-                drow("Epower") = ecopathDS.Epower(iFleet)
-                drow("PCapBase") = ecopathDS.PcapBase(iFleet)
-                drow("CapDepreciate") = ecopathDS.CapDepreciate(iFleet)
-                drow("CapBaseGrowth") = ecopathDS.CapBaseGrowth(iFleet)
                 'drow("PoolColor") = String.Format("{0:x8}", ecopathDS.FleetColor(iFleet))
 
                 If bAddNewRow Then writer.AddRow(drow)
@@ -3525,6 +3517,11 @@ Public Class cDBDataSource
             Try
                 ecosimDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
                 ecosimDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
+                ecosimDS.Epower(iFleet) = CSng(Me.ReadSafe(reader, "Epower", 3))
+                ecosimDS.PcapBase(iFleet) = CSng(Me.ReadSafe(reader, "PCapBase", 0.5))
+                ecosimDS.CapDepreciate(iFleet) = CSng(Me.ReadSafe(reader, "CapDepreciate", 0.06))
+                ecosimDS.CapBaseGrowth(iFleet) = CSng(Me.ReadSafe(reader, "CapBaseGrowth", 0.2))
+
             Catch ex As Exception
                 bSucces = False
             End Try
@@ -3694,9 +3691,9 @@ Public Class cDBDataSource
         Try
             writer = Me.m_db.GetWriter("EcosimScenarioFleet")
             dt = writer.GetDataTable()
-            For i As Integer = 1 To ecopathDS.NumFleet
+            For iFleet As Integer = 1 To ecopathDS.NumFleet
 
-                objKeys(1) = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(i))
+                objKeys(1) = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
                 drow = dt.Rows.Find(objKeys)
                 ' Check wheter a new row or an existing row
                 bNewRow = Object.ReferenceEquals(drow, Nothing)
@@ -3713,9 +3710,13 @@ Public Class cDBDataSource
                 End If
 
                 ' Write dynamic bit
-                drow("FishRateShapeID") = idm.GetID(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(i))
-                drow("MaxEffort") = ecosimDS.MaxEffort(i)
-                drow("QuotaType") = CInt(ecosimDS.QuotaType(i))
+                drow("FishRateShapeID") = idm.GetID(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(iFleet))
+                drow("MaxEffort") = ecosimDS.MaxEffort(iFleet)
+                drow("QuotaType") = CInt(ecosimDS.QuotaType(iFleet))
+                drow("Epower") = ecosimDS.Epower(iFleet)
+                drow("PCapBase") = ecosimDS.PcapBase(iFleet)
+                drow("CapDepreciate") = ecosimDS.CapDepreciate(iFleet)
+                drow("CapBaseGrowth") = ecosimDS.CapBaseGrowth(iFleet)
 
                 ' Wrap up: was this a new row?
                 If bNewRow Then
@@ -3725,7 +3726,7 @@ Public Class cDBDataSource
                     ' #No: done editing
                     drow.EndEdit()
                 End If
-            Next i
+            Next iFleet
             ' Done
             Me.m_db.ReleaseWriter(writer)
 

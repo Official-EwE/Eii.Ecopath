@@ -2038,8 +2038,7 @@ Public Class cCore
     Friend m_EcoPathInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoPathGroupInput, 1)
     Friend m_EcoPathOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoPathGroupOutput, 1)
 
-    Friend m_FleetsInput As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.FleetInput, 1)
-    'Private m_FleetsOutput As New cCoreInputOutputList(Of cFleetOutput)(eDataTypes.FleetOutput, 1)
+    Friend m_EcopathFleetsInput As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.FleetInput, 1)
     Private m_postEcoPathMessage As CoreMessageDelegate
     'Private bEcoPathInitializing As Boolean
     Friend m_PSDData As cPSDDatastructures
@@ -2844,13 +2843,13 @@ Public Class cCore
             Dim iFleet As Integer
 
             'clear out the old data
-            m_FleetsInput.Clear()
+            m_EcopathFleetsInput.Clear()
             'm_FleetsOutput.Clear()
 
             'loop over the number of fleets 
             'adding a new fleet to the Fleets collection for each iFleet
             For iFleet = 1 To m_EcoPathData.NumFleet
-                m_FleetsInput.Add(New cFleetInput(Me, m_EcoPathData.FleetDBID(iFleet)))
+                m_EcopathFleetsInput.Add(New cFleetInput(Me, m_EcoPathData.FleetDBID(iFleet)))
                 'm_FleetsOutput.Add(New cFleetOutput(Me, m_EcoPathData.FleetDBID(iFleet)))
             Next iFleet
 
@@ -2874,8 +2873,6 @@ Public Class cCore
             Debug.Assert(iFleet > 0 And iFleet <= m_EcoPathData.NumFleet, "Failed to find Fleet index for database ID " & fleet.DBID)
 
             Me.m_EcoPathData.FleetName(iFleet) = fleet.Name
-            Me.m_EcoPathData.Epower(iFleet) = fleet.EPower
-
             Me.m_EcoPathData.CostPct(iFleet, eCostIndex.Fixed) = fleet.FixedCost
             Me.m_EcoPathData.CostPct(iFleet, eCostIndex.CUPE) = fleet.CPUECost
             Me.m_EcoPathData.CostPct(iFleet, eCostIndex.Sail) = fleet.SailCost
@@ -2906,7 +2903,7 @@ Public Class cCore
 
         Try
 
-            For Each fleet As cFleetInput In m_FleetsInput
+            For Each fleet As cFleetInput In m_EcopathFleetsInput
 
                 fleet.AllowValidation = False
 
@@ -2924,10 +2921,6 @@ Public Class cCore
                 fleet.CPUECost = m_EcoPathData.CostPct(iFleet, eCostIndex.CUPE)
                 fleet.SailCost = m_EcoPathData.CostPct(iFleet, eCostIndex.Sail)
 
-                fleet.EPower = m_EcoPathData.Epower(iFleet)
-                fleet.PcapBase = m_EcoPathData.PcapBase(iFleet)
-                fleet.CapDepreciateRate = m_EcoPathData.CapDepreciate(iFleet)
-                fleet.CapBaseGrowth = m_EcoPathData.CapBaseGrowth(iFleet)
                 'fleet.PoolColor = m_EcoPathData.FleetColor(iFleet)
 
                 For iGroup = 1 To m_EcoPathData.NumGroups
@@ -2962,14 +2955,13 @@ Public Class cCore
         Get
             Try
                 ' List handles item index offset
-                Return DirectCast(m_FleetsInput(iFleet), cFleetInput)
+                Return DirectCast(m_EcopathFleetsInput(iFleet), cFleetInput)
             Catch ex As Exception
                 Return Nothing
             End Try
         End Get
 
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -3425,7 +3417,7 @@ Public Class cCore
 
                     Case eDataTypes.FleetInput
 
-                        Dim inputFleet As cFleetInput = DirectCast(Me.m_FleetsInput(var.Index), cFleetInput)
+                        Dim inputFleet As cFleetInput = DirectCast(Me.m_EcopathFleetsInput(var.Index), cFleetInput)
                         Dim tmpstatus As eStatusFlags = inputFleet.GetStatus(var.VarName)
                         tmpstatus = tmpstatus Or var.Status
 
@@ -4166,7 +4158,10 @@ Public Class cCore
                     End If
                 End If
 
-            Case eDataTypes.FleetInput, eDataTypes.EcospaceFleet ', eDataTypes.FleetOutput
+            Case eDataTypes.FleetInput, _
+                 eDataTypes.EcosimFleetInput, _
+                 eDataTypes.EcosimFleetOutput, _
+                 eDataTypes.EcospaceFleet ', eDataTypes.FleetOutput
 
                 ' Cascase fleet name to all relevant core IO objects
                 objCascade = Me.FleetInputs(obj.Index)
@@ -4177,12 +4172,22 @@ Public Class cCore
 
                 msg.AddVariable(GetAffectedVariableStatus(objCascade, eVarNameFlags.Name))
 
-                'objCascade = Me.FleetOutput(obj.Index)
-                'bAllowValidationOrg = objCascade.AllowValidation
-                'objCascade.AllowValidation = False
-                'objCascade.Name = strName
-                'objCascade.AllowValidation = bAllowValidationOrg
-                'changes.Add(objCascade)
+                If Me.m_StateMonitor.HasEcosimLoaded() Then
+                    objCascade = Me.EcosimFleetInputs(obj.Index)
+                    If Not Object.ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
+                        bAllowValidationOrg = objCascade.AllowValidation
+                        objCascade.AllowValidation = False
+                        objCascade.Name = strName
+                        objCascade.AllowValidation = bAllowValidationOrg
+                    End If
+                    objCascade = Me.EcosimFleetOutput(obj.Index)
+                    If Not Object.ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
+                        bAllowValidationOrg = objCascade.AllowValidation
+                        objCascade.AllowValidation = False
+                        objCascade.Name = strName
+                        objCascade.AllowValidation = bAllowValidationOrg
+                    End If
+                End If
 
                 If Me.m_StateMonitor.HasEcospaceLoaded() Then
                     objCascade = Me.EcospaceFleets(obj.Index)
@@ -4335,6 +4340,7 @@ Public Class cCore
     Friend m_EcoSimGroupOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupOutput, 1)
     Friend m_EcoSimScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimScenario, 1)
     'Friend m_EcoSimGroupSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
+    Friend m_EcosimFleetInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFleetInput, 1)
     Friend m_EcosimFleetOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcosimFisheriesRegulations As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFisheriesRegulation, 1)
     Private m_PPIManager As cPPIManager
@@ -4680,6 +4686,7 @@ Public Class cCore
             m_EcoSim.Init(True)
 
             InitEcosimGroups()
+            InitEcosimFleetInput()
             initEcoSimModelParameters()
 
             'rebuild all the shapes in the shape managers
@@ -5030,6 +5037,23 @@ Public Class cCore
         End Get
     End Property
 
+    Private Sub InitEcosimFleetInput()
+        Try
+
+            Me.m_EcosimFleetInputs.Clear()
+
+            For iflt As Integer = 1 To nFleets
+                Me.m_EcosimFleetInputs.Add(New cEcosimFleetInput(Me, iflt))
+            Next
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".InitEcosimFleetInput() Error: " & ex.Message)
+        End Try
+
+        LoadEcosimFleetInputs()
+
+    End Sub
+
     Private Sub InitEcosimFleetOutput()
         Try
 
@@ -5041,7 +5065,7 @@ Public Class cCore
             Next
 
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".InitEcosimSummaries() Error: " & ex.Message)
+            Debug.Assert(False, Me.ToString & ".InitEcosimFleetOutput() Error: " & ex.Message)
         End Try
     End Sub
 
@@ -5413,6 +5437,63 @@ Public Class cCore
             Return False
         End Try
 
+        Return True
+
+    End Function
+
+    ''' <summary>
+    ''' Update all the underlying data structures that contain fleet input info for EcoSim
+    ''' </summary>
+    Private Function UpdateEcoSimFleetInput(ByVal iDBID As Integer) As Boolean
+
+        Dim iFleet As Integer = Array.IndexOf(m_EcoPathData.FleetDBID, iDBID)
+        Dim fleet As cEcosimFleetInput = Me.EcosimFleetInputs(iFleet)
+
+        Try
+            Me.m_EcoSimData.Epower(iFleet) = fleet.EPower
+            Me.m_EcoSimData.PcapBase(iFleet) = fleet.PcapBase
+            Me.m_EcoSimData.CapBaseGrowth(iFleet) = fleet.CapBaseGrowth
+            Me.m_EcoSimData.CapDepreciate(iFleet) = fleet.CapDepreciateRate
+
+        Catch ex As Exception
+            cLog.Write(Me.ToString & ".updateEcoSimGroupInfo() Error: " & ex.Message)
+            Return False
+        End Try
+
+        Return True
+
+    End Function
+
+    Private Function LoadEcosimFleetInputs() As Boolean
+
+        Dim iFleet As Integer
+
+        Try
+
+            For Each fleet As cEcosimFleetInput In m_EcosimFleetInputs
+
+                fleet.AllowValidation = False
+
+                iFleet = Array.IndexOf(m_EcoPathData.FleetDBID, fleet.DBID)
+                Debug.Assert(iFleet > 0 And iFleet <= m_EcoPathData.NumFleet, "Failed to find Fleet index for database ID " & fleet.DBID.ToString)
+
+                fleet.Name = Me.m_EcoPathData.FleetName(iFleet)
+                fleet.EPower = m_EcoSimData.Epower(iFleet)
+                fleet.PcapBase = m_EcoSimData.PcapBase(iFleet)
+                fleet.CapDepreciateRate = m_EcoSimData.CapDepreciate(iFleet)
+                fleet.CapBaseGrowth = m_EcoSimData.CapBaseGrowth(iFleet)
+
+                fleet.ResetStatusFlags()
+                fleet.AllowValidation = True
+            Next
+
+        Catch ex As Exception
+
+            cLog.Write(Me.ToString() & ".LoadFleets() Error: " & ex.Message)
+            Debug.Assert(False, Me.ToString & ".LoadFleets() Error: " & ex.Message)
+            Return False
+
+        End Try
         Return True
 
     End Function
@@ -6537,6 +6618,18 @@ Public Class cCore
         Get
             ' JS 06Jul07: list will handle MPA index / item index offsets
             Return DirectCast(Me.m_EcospaceMPAs(iMPA), cEcospaceMPA)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ecosim Fleet inputs.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property EcosimFleetInputs(ByVal iFleet As Integer) As cEcosimFleetInput
+        Get
+            ' JS 05Nov09: list will handle fleet index / item index offsets
+            Return DirectCast(Me.m_EcosimFleetInputs(iFleet), cEcosimFleetInput)
         End Get
     End Property
 
@@ -9619,6 +9712,9 @@ Public Class cCore
 
                 Case eDataTypes.EcoSimGroupInput
                     If bValidatedOk Then Me.UpdateEcoSimGroup(idAffected)
+
+                Case eDataTypes.EcosimFleetInput
+                    If bValidatedOk Then Me.UpdateEcoSimFleetInput(idAffected)
 
                 Case eDataTypes.EcoSimModelParameter
                     If bValidatedOk Then Me.UpdateEcoSimModelParameters()
