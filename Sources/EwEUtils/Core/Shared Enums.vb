@@ -1394,6 +1394,7 @@ Namespace Core
         EcospaceLayerSail = 74
 
         MSEGroupOutputs = 71
+        EcosimFleetInput = 75
 
         ''' <summary>
         ''' Data belongs to an external source.
