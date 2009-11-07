@@ -1362,16 +1362,17 @@ Public Class cPluginManager
     ''' This method does not attempt to cross thread boundaries.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub UpdateDatabase(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single)
+    Public Function UpdateDatabase(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
 
         Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabaseUpdatePlugin))
         Dim lPlugins As New List(Of cPluginContext)
         Dim ip As IDatabaseUpdatePlugin = Nothing
         Dim strDescription As String = ""
+        Dim bSucces As Boolean = True
 
         ' Sanity checks
-        If db Is Nothing Then Return
-        If db.GetVersion() < sBaselineVersion Then Return
+        If db Is Nothing Then Return False
+        If db.GetVersion() < sBaselineVersion Then Return True
 
         ' Transform collection into list (there must be a better way?)
         For Each ipc As cPluginContext In collPlugins
@@ -1401,15 +1402,19 @@ Public Class cPluginManager
                         db.SetVersion(ip.UpdateVersion, sbDescription.ToString())
                     Else
                         Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", New Exception("(generic failure)"))
+                        bSucces = False
                     End If
 
                 Catch ex As Exception
                     Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", ex)
+                    bSucces = False
                 End Try
 
             End If
         Next
-    End Sub
+        Return bSucces
+
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
