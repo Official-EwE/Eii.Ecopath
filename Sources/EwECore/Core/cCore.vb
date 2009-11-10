@@ -4942,7 +4942,10 @@ Public Class cCore
             group.SalinityOpt = m_EcoSimData.SalOpt(iGroup)
             group.SalinitySpreadLeft = m_EcoSimData.SdSalLeft(iGroup)
             group.SalinitySpreadRight = m_EcoSimData.SdSalRight(iGroup)
-            'group.Quota = m_EcoSimData.???(iGroup)
+
+            group.TemperatureOpt = m_EcoSimData.TempOpt(iGroup)
+            group.TemperatureSpreadLeft = m_EcoSimData.TempLeft(iGroup)
+            group.TemperatureSpreadRight = m_EcoSimData.TempRight(iGroup)
 
             group.BBase = m_EcoSimData.Bbase(iGroup)
             group.BLim = m_EcoSimData.Blim(iGroup)
@@ -5418,7 +5421,10 @@ Public Class cCore
             m_EcoSimData.SdSalLeft(iGroup) = group.SalinitySpreadLeft
             m_EcoSimData.SdSalRight(iGroup) = group.SalinitySpreadRight
             m_EcoSimData.SalOpt(iGroup) = group.SalinityOpt
-            'm_EcoSimData.???(iGroup) = grp.Quota
+
+            m_EcoSimData.TempLeft(iGroup) = group.TemperatureSpreadLeft
+            m_EcoSimData.TempRight(iGroup) = group.TemperatureSpreadRight
+            m_EcoSimData.TempOpt(iGroup) = group.TemperatureOpt
 
             'regulatory values
             m_EcoSimData.Bbase(iGroup) = group.BBase
@@ -5999,6 +6005,7 @@ Public Class cCore
             m_EcoSimRun.UseVarPQ = m_EcoSim.m_Data.UseVarPQ
 
             m_EcoSimRun.SalinityForceFunctionNumber = m_EcoSim.m_Data.SalinityForceNo
+            m_EcoSimRun.TemperatureForceFunctionNumber = m_EcoSim.m_Data.TemperatureForceNo
 
             m_EcoSimRun.ContaminantTracing = Me.m_tracerData.EcoSimConSimOn
             m_EcoSimRun.PredictEffort = m_EcoSim.m_Data.PredictSimEffort
@@ -6041,6 +6048,7 @@ Public Class cCore
             Me.m_tracerData.EcoSimConSimOn = m_EcoSimRun.ContaminantTracing
 
             m_EcoSim.m_Data.SalinityForceNo = m_EcoSimRun.SalinityForceFunctionNumber
+            m_EcoSim.m_Data.TemperatureForceNo = m_EcoSimRun.TemperatureForceFunctionNumber
 
             m_EcoSim.m_Data.PredictSimEffort = m_EcoSimRun.PredictEffort
             m_EcoSim.m_Data.DoClosedLoop = m_EcoSimRun.RegFeedBack

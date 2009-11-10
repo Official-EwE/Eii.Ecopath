@@ -48,6 +48,8 @@ Namespace Ecosim
             Me.lblDescription = New System.Windows.Forms.Label
             Me.lbScenarioName = New System.Windows.Forms.Label
             Me.m_chkUseVarPQ = New System.Windows.Forms.CheckBox
+            Me.cmbTempLoading = New System.Windows.Forms.ComboBox
+            Me.Label3 = New System.Windows.Forms.Label
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudRelaxation, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -185,10 +187,23 @@ Namespace Ecosim
             Me.m_chkUseVarPQ.Name = "m_chkUseVarPQ"
             Me.m_chkUseVarPQ.UseVisualStyleBackColor = True
             '
+            'cmbTempLoading
+            '
+            Me.cmbTempLoading.FormattingEnabled = True
+            resources.ApplyResources(Me.cmbTempLoading, "cmbTempLoading")
+            Me.cmbTempLoading.Name = "cmbTempLoading"
+            '
+            'Label3
+            '
+            resources.ApplyResources(Me.Label3, "Label3")
+            Me.Label3.Name = "Label3"
+            '
             'EcosimParameters
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.Label3)
+            Me.Controls.Add(Me.cmbTempLoading)
             Me.Controls.Add(Me.m_nudNutBaseFreeProp)
             Me.Controls.Add(Me.m_tbContact)
             Me.Controls.Add(Me.m_nudNumberYears)
@@ -245,6 +260,8 @@ Namespace Ecosim
         Private WithEvents chkRegulatoryFeedbackLoop As System.Windows.Forms.CheckBox
         Private WithEvents m_chkUseVarPQ As System.Windows.Forms.CheckBox
         Private WithEvents lbScenarioName As System.Windows.Forms.Label
+        Friend WithEvents cmbTempLoading As System.Windows.Forms.ComboBox
+        Friend WithEvents Label3 As System.Windows.Forms.Label
 
     End Class
 End Namespace

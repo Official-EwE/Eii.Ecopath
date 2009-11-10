@@ -307,6 +307,13 @@ Namespace Core
         SalinitySpreadLeft
         SalinitySpreadRight
 
+        'jb Temerature values added Nov-10
+        TemperatureForceFunctionNumber
+        TemperatureOpt
+        ' SalinitySpread
+        TemperatureSpreadLeft
+        TemperatureSpreadRight
+
         ''' <summary>Contaminant tracing on/off</summary>
         ConSimOnEcoSim
         ConSimOnEcoSpace
@@ -1083,7 +1090,6 @@ Namespace Core
         GameEconomicSubsidies
         GameEconomicSubsidiesPM
 
-
         ''' <summary>Eco system structure 1/pb * b(t)</summary>    
         GameEcoSystemStruct
         GameEcoSystemStructPM
@@ -1092,6 +1098,10 @@ Namespace Core
         GameFleetName
         GameMPAName
         GameHabitatName
+
+        GameForceSalinity
+        GameForceNutrient
+        GameForceTemperature
 
         PSDEnabled
         PSDComputed

@@ -117,6 +117,12 @@ Public Class cEcoSimModelParameters
             val = New cValue(New Integer, eVarNameFlags.SalinityForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.SalinityForceFunctionNumber))
             m_values.Add(val.varName, val)
 
+            'TempForceFunctionNumber
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Integer, eVarNameFlags.TemperatureForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.TemperatureForceFunctionNumber))
+            m_values.Add(val.varName, val)
+
+
             'EcoSimNYears max 1000 year?!
             meta = New cVariableMetaData(0, cCore.MAX_RUN_LENGTH, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.EcoSimNYears, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.EcoSimNYears))
@@ -375,6 +381,19 @@ Public Class cEcoSimModelParameters
         End Set
 
     End Property
+
+    Public Property TemperatureForceFunctionNumber() As Integer
+
+        Get
+            Return CType(GetVariable(eVarNameFlags.TemperatureForceFunctionNumber), Integer)
+        End Get
+
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.TemperatureForceFunctionNumber, value)
+        End Set
+
+    End Property
+
 
     Public Property NutPBMax() As Single
 
@@ -673,6 +692,18 @@ Public Class cEcoSimModelParameters
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.SalinityForceFunctionNumber, value)
+        End Set
+
+    End Property
+
+    Public Property TemperatureForceFunctionNumberStatus() As eStatusFlags
+
+        Get
+            Return GetStatus(eVarNameFlags.TemperatureForceFunctionNumber)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.TemperatureForceFunctionNumber, value)
         End Set
 
     End Property

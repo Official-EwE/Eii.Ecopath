@@ -150,6 +150,24 @@ Public Class cEcoSimGroupInput
             val = New cValue(New Single, eVarNameFlags.SalinitySpreadRight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SalinitySpreadRight))
             m_values.Add(val.varName, val)
 
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Temperature Forcing functions 
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(New Single, eVarNameFlags.TemperatureOpt, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TemperatureOpt))
+            m_values.Add(val.varName, val)
+
+            'Temperature Spread Left 
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(New Single, eVarNameFlags.TemperatureSpreadLeft, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TemperatureSpreadLeft))
+            m_values.Add(val.varName, val)
+
+            'Temperature Spread Right
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(New Single, eVarNameFlags.TemperatureSpreadRight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TemperatureSpreadRight))
+            m_values.Add(val.varName, val)
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
             'Quota per species
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.QuotaSpecies, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaSpecies))
@@ -315,6 +333,37 @@ Public Class cEcoSimGroupInput
         End Set
     End Property
 
+    Public Property TemperatureOpt() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.TemperatureOpt))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.TemperatureOpt, value)
+        End Set
+    End Property
+
+    Public Property TemperatureSpreadLeft() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.TemperatureSpreadLeft))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.TemperatureSpreadLeft, value)
+        End Set
+    End Property
+
+
+    Public Property TemperatureSpreadRight() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.TemperatureSpreadRight))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.TemperatureSpreadRight, value)
+        End Set
+    End Property
+
     Public Property Quota() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.QuotaSpecies))
@@ -400,60 +449,6 @@ Public Class cEcoSimGroupInput
         End Set
 
     End Property
-
-
-
-
-    'jb remove Vulrate until it is needed
-    'Public Property VulRate(ByVal iGroup As Integer) As Single
-
-    '    Get
-    '        Return CType(getVariable(eVarNameFlags.VulRate, iGroup), Single)
-    '    End Get
-
-    '    Set(ByVal value As Single)
-    '        setVariable(eVarNameFlags.VulRate, value, iGroup)
-    '    End Set
-
-    'End Property
-
-
-    'Public Property MedFunctionNumber(ByVal iGroup As Integer) As Integer
-
-    '    Get
-    '        Return CType(getVariable(eVarNameFlags.MedFunctNumber, iGroup), Integer)
-    '    End Get
-
-    '    Set(ByVal value As Integer)
-    '        setVariable(eVarNameFlags.MedFunctNumber, value, iGroup)
-    '    End Set
-
-    'End Property
-
-
-    'Public Property ForcingFunctionNumber(ByVal iGroup As Integer) As Integer
-
-    '    Get
-    '        Return CType(getVariable(eVarNameFlags.ForcingFunctNumber, iGroup), Integer)
-    '    End Get
-
-    '    Set(ByVal value As Integer)
-    '        setVariable(eVarNameFlags.ForcingFunctNumber, value, iGroup)
-    '    End Set
-
-    'End Property
-
-    'Public Property IsPredPrey(ByVal iGroup As Integer) As Boolean
-
-    '    Get
-    '        Return CBool(getVariable(eVarNameFlags.IsPredPrey, iGroup))
-    '    End Get
-
-    '    Friend Set(ByVal value As Boolean)
-    '        setVariable(eVarNameFlags.IsPredPrey, value, iGroup)
-    '    End Set
-
-    'End Property
 
 #End Region
 
@@ -568,6 +563,36 @@ Public Class cEcoSimGroupInput
 
         Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.SalinitySpreadRight, value)
+        End Set
+    End Property
+
+    Public Property TemperatureOptStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.TemperatureOpt)
+        End Get
+
+        Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.TemperatureOpt, value)
+        End Set
+    End Property
+
+    Public Property TemperatureSpreadLeftStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.TemperatureSpreadLeft)
+        End Get
+
+        Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.TemperatureSpreadLeft, value)
+        End Set
+    End Property
+
+    Public Property TemperatureSpreadRightStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.TemperatureSpreadRight)
+        End Get
+
+        Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.TemperatureSpreadRight, value)
         End Set
     End Property
 

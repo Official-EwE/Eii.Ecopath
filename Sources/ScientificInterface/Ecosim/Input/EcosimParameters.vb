@@ -54,6 +54,7 @@ Namespace Ecosim
         Private m_fpNutBaseFreeProp As cEwEFormatProvider = Nothing
         Private m_fpNutrientForceNumber As cEwEFormatProvider = Nothing
         Private m_fpSalinityForceNumber As cEwEFormatProvider = Nothing
+        Private m_fpTempForceNumber As cEwEFormatProvider = Nothing
         Private m_fpPredictEffort As cEwEFormatProvider = Nothing
         Private m_fpRegulatoryFeedback As cEwEFormatProvider = Nothing
         Private m_fpRelaxation As cEwEFormatProvider = Nothing
@@ -93,6 +94,7 @@ Namespace Ecosim
 
             Me.m_fpNutrientForceNumber = New cPropertyFormatProvider(Me.cmbNutForcing, ecosimModelParams, eVarNameFlags.NutForceFunctionNumber)
             Me.m_fpSalinityForceNumber = New cPropertyFormatProvider(Me.cmbSalinityForcing, ecosimModelParams, eVarNameFlags.SalinityForceFunctionNumber)
+            Me.m_fpTempForceNumber = New cPropertyFormatProvider(Me.cmbTempLoading, ecosimModelParams, eVarNameFlags.TemperatureForceFunctionNumber)
             Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.chkPredictEffort, ecosimModelParams, eVarNameFlags.PredictEffort)
             Me.m_fpRegulatoryFeedback = New cPropertyFormatProvider(Me.chkRegulatoryFeedbackLoop, ecosimModelParams, eVarNameFlags.RegFeedback)
             Me.m_fpRelaxation = New cPropertyFormatProvider(Me.m_nudRelaxation, ecosimModelParams, eVarNameFlags.Relaxation)
@@ -127,6 +129,7 @@ Namespace Ecosim
             Me.m_fpRegulatoryFeedback.Release()
             Me.m_fpRelaxation.Release()
             Me.m_fpUseVarPQ.Release()
+            Me.m_fpTempForceNumber.Release()
 
             ' Clean up
             Me.CoreComponents = Nothing
@@ -230,6 +233,7 @@ Namespace Ecosim
             Next
             Me.m_fpNutrientForceNumber.Items = aItems
             Me.m_fpSalinityForceNumber.Items = aItems
+            Me.m_fpTempForceNumber.Items = aItems
         End Sub
 
         Private Sub UpdateControls()

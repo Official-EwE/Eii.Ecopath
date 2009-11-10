@@ -2436,4 +2436,13 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="PROMPT_STATUS_FURTHERDETAILS" xml:space="preserve">
     <value>(for further details refer to the status panel)</value>
   </data>
+  <data name="ECOSIM_GROUPINFO_OPTTEMP" xml:space="preserve">
+    <value>Optimum temperature(&gt;0)</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_TEMPSPREADLEFT" xml:space="preserve">
+    <value>Temperature tolerance below optimum(&gt;0)</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_TEMPSPREADRIGHT" xml:space="preserve">
+    <value>Temperature tolerance above optimum(&gt;0)</value>
+  </data>
 </root>

@@ -53,6 +53,9 @@ Namespace Ecosim
             SalinityOpt
             SalinitySpreadLeft
             SalinitySpreadRight
+            TempOpt
+            TempSpreadLeft
+            TempSpreadRight
         End Enum
 
         Public Sub New()
@@ -79,6 +82,10 @@ Namespace Ecosim
             Me(0, eColumnTypes.SalinityOpt) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OPTSALINITY)
             Me(0, eColumnTypes.SalinitySpreadLeft) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_SALSPREADLEFT)
             Me(0, eColumnTypes.SalinitySpreadRight) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_SALSPREADRIGHT)
+
+            Me(0, eColumnTypes.TempOpt) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OPTTEMP)
+            Me(0, eColumnTypes.TempSpreadLeft) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_TEMPSPREADLEFT)
+            Me(0, eColumnTypes.TempSpreadRight) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_TEMPSPREADRIGHT)
 
             Me.FixedColumns = 2
 
@@ -139,6 +146,11 @@ Namespace Ecosim
                         Me(iRow, eColumnTypes.SalinitySpreadLeft) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.SalinitySpreadRight) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.SwitchPower) = New EwERowHeaderCell()
+
+                        Me(iRow, eColumnTypes.TempOpt) = New EwERowHeaderCell()
+                        Me(iRow, eColumnTypes.TempSpreadLeft) = New EwERowHeaderCell()
+                        Me(iRow, eColumnTypes.TempSpreadRight) = New EwERowHeaderCell()
+
                         iStanzaGroupIndexPrev = iStanzaGroup(source.Index)
                     Else
                         hgcStanza = dtStanzaCells(sg)
@@ -175,6 +187,11 @@ Namespace Ecosim
             Me(iRow, eColumnTypes.SalinityOpt) = New PropertyCell(source, eVarNameFlags.SalinityOpt)
             Me(iRow, eColumnTypes.SalinitySpreadLeft) = New PropertyCell(source, eVarNameFlags.SalinitySpreadLeft)
             Me(iRow, eColumnTypes.SalinitySpreadRight) = New PropertyCell(source, eVarNameFlags.SalinitySpreadRight)
+
+            Me(iRow, eColumnTypes.TempOpt) = New PropertyCell(source, eVarNameFlags.TemperatureOpt)
+            Me(iRow, eColumnTypes.TempSpreadLeft) = New PropertyCell(source, eVarNameFlags.TemperatureSpreadLeft)
+            Me(iRow, eColumnTypes.TempSpreadRight) = New PropertyCell(source, eVarNameFlags.TemperatureSpreadRight)
+
         End Sub
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
@@ -202,6 +219,10 @@ Namespace Ecosim
             Me.Columns(eColumnTypes.SalinityOpt).Width = 78
             Me.Columns(eColumnTypes.SalinitySpreadLeft).Width = 78
             Me.Columns(eColumnTypes.SalinitySpreadRight).Width = 78
+
+            Me.Columns(eColumnTypes.TempOpt).Width = 78
+            Me.Columns(eColumnTypes.TempSpreadLeft).Width = 78
+            Me.Columns(eColumnTypes.TempSpreadRight).Width = 78
 
             For i As Integer = 2 To Me.ColumnsCount - 1
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
