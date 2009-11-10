@@ -372,14 +372,11 @@ Public Class cForcingFunctionManager
 
     End Sub
 
-
     ''' <summary>
-    ''' Retrieve the Shape at index
+    ''' Retrieve a <see cref="cForcingFunction">shape</see> at a given index.
     ''' </summary>
-    ''' <param name="ItemIndex"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <param name="ItemIndex">The zero-based index of the shape.</param>
+    ''' <returns>A shape, or nothing if an error occurred.</returns>
     Default Public Overrides ReadOnly Property Item(ByVal ItemIndex As Integer) As cForcingFunction
 
         Get
