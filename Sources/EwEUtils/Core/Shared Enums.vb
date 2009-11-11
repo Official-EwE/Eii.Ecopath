@@ -1498,6 +1498,16 @@ Namespace Core
         ''' <summary> Number of steps to complete a process </summary>
         ''' <remarks>At this time this is only used by the Decision Support Tool(game) and is dynamic depending on the current process!!!</remarks>
         nProgressSteps
+
+        ''' <summary> Number of forcing function that are for Salinity </summary>
+        '''  <remarks>At this time this is only used by the Decision Support Tool(game) </remarks>
+        nSalinityForcingFunctions
+        ''' <summary> Number of forcing function that are for Salinity </summary>
+        '''  <remarks>At this time this is only used by the Decision Support Tool(game) </remarks>
+        nNutrientForcingFunctions
+        ''' <summary> Number of forcing function that are for Salinity </summary>
+        '''  <remarks>At this time this is only used by the Decision Support Tool(game) </remarks>
+        nTempForcingFunctions
     End Enum
 
 #End Region ' Core counters
