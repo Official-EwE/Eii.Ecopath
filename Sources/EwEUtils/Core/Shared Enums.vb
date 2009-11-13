@@ -1107,6 +1107,10 @@ Namespace Core
         GameForceNutrientName
         GameForceTemperatureName
 
+        GameForceSalinityCurrent
+        GameForceNutrientCurrent
+        GameForceTemperatureCurrent
+
         PSDEnabled
         PSDComputed
         VBK
