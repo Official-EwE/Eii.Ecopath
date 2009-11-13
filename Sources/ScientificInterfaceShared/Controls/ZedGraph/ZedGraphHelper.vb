@@ -1183,6 +1183,18 @@ Namespace Controls
             AddHandler item.Click, AddressOf OnExtractToCSV
             ' Add the menu item to the menu
             menuStrip.Items.Add(item)
+
+            ' create a new menu item
+            item = New ToolStripMenuItem()
+            ' This is the user-defined Tag so you can find this menu item later if necessary
+            item.Name = "Show_legend"
+            ' This is the text that will show up in the menu
+            item.Text = "&Show legend"
+            ' Add a handler that will respond when that menu item is selected
+            AddHandler item.Click, AddressOf OnShowLegends
+            ' Add the menu item to the menu
+            menuStrip.Items.Add(item)
+
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -1192,6 +1204,19 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Protected Sub OnExtractToCSV(ByVal sender As Object, ByVal e As System.EventArgs)
             Me.ExtractDataToCSV()
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Sub OnShowLegends(ByVal sender As Object, ByVal e As System.EventArgs)
+            For Each gp As GraphPane In Me.m_zgc.MasterPane.PaneList
+                gp.Legend.IsVisible = Not gp.Legend.IsVisible
+            Next
+            Me.m_zgc.AxisChange()
+            Me.m_zgc.Refresh()
         End Sub
 
 #End Region ' Context menu
