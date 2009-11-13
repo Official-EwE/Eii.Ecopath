@@ -1715,7 +1715,7 @@ Public Class cDBDataSource
                 ecopathDS.Binput(iGroup) = CSng(reader("Biomass"))
                 ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
 
-                ecopathDS.GroupColor(iGroup) = StringUtils.ConvertToInteger(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
+                ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
