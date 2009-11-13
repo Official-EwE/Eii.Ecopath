@@ -1171,14 +1171,14 @@ Namespace Controls
                                          ByVal mousePt As Point, _
                                          ByVal objState As ZedGraphControl.ContextMenuObjectState)
 
-            'ToDo_JS: globalize this
+            Dim bLegendsVisible As Boolean = False
 
             ' create a new menu item
             Dim item As ToolStripMenuItem = New ToolStripMenuItem()
             ' This is the user-defined Tag so you can find this menu item later if necessary
             item.Name = "Extract_CSV_Data"
             ' This is the text that will show up in the menu
-            item.Text = "E&xtract to CSV..."
+            item.Text = My.Resources.MENU_EXTRACT_TO_CSV
             ' Add a handler that will respond when that menu item is selected
             AddHandler item.Click, AddressOf OnExtractToCSV
             ' Add the menu item to the menu
@@ -1189,7 +1189,12 @@ Namespace Controls
             ' This is the user-defined Tag so you can find this menu item later if necessary
             item.Name = "Show_legend"
             ' This is the text that will show up in the menu
-            item.Text = "&Show legend"
+            item.Text = My.Resources.MENU_SHOW_LEGEND
+            ' Set checked state
+            For Each gp As GraphPane In Me.m_zgc.MasterPane.PaneList
+                bLegendsVisible = bLegendsVisible Or gp.Legend.IsVisible
+            Next
+            item.Checked = bLegendsVisible
             ' Add a handler that will respond when that menu item is selected
             AddHandler item.Click, AddressOf OnShowLegends
             ' Add the menu item to the menu
@@ -1212,8 +1217,9 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Protected Sub OnShowLegends(ByVal sender As Object, ByVal e As System.EventArgs)
+            Dim mi As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
             For Each gp As GraphPane In Me.m_zgc.MasterPane.PaneList
-                gp.Legend.IsVisible = Not gp.Legend.IsVisible
+                gp.Legend.IsVisible = Not mi.Checked
             Next
             Me.m_zgc.AxisChange()
             Me.m_zgc.Refresh()

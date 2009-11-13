@@ -332,4 +332,10 @@
   <data name="FILEFILTER_CSV" xml:space="preserve">
     <value>Comma-separated text files (*.csv)|*.csv</value>
   </data>
+  <data name="MENU_EXTRACT_TO_CSV" xml:space="preserve">
+    <value>E&amp;xtract to CSV...</value>
+  </data>
+  <data name="MENU_SHOW_LEGEND" xml:space="preserve">
+    <value>&amp;Show legend</value>
+  </data>
 </root>
