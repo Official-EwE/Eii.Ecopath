@@ -68,6 +68,8 @@ Namespace Style
         Private m_dtFontSize As New Dictionary(Of eApplicationFontType, Single)
         ''' <summary></summary>
         Private m_dtFontStye As New Dictionary(Of eApplicationFontType, FontStyle)
+        ''' <summary>Positioning of legends.</summary>
+        Private m_legendpos As eLegendPosition = eLegendPosition.Hidden
 
         ' -- group visibility --
         ''' <summary>List of indexes of groups to hide.</summary>
@@ -110,6 +112,21 @@ Namespace Style
 
 #End Region ' Private bits
 
+#Region " Singleton "
+
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Singleton: Retrieves the one and only instance of the StyleGuide
+        ''' </summary>
+        ''' <remarks>Use this method to obtain a reference to the StyleGuide</remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function GetInstance() As cStyleGuide
+            Return cStyleGuide._inst_
+        End Function
+
+#End Region ' Singleton
+
 #Region " Public Methods "
 
         ''' -------------------------------------------------------------------
@@ -135,91 +152,9 @@ Namespace Style
 
 #End Region ' Public interfaces
 
-#Region " Internal implementation "
-
-        Private Function DefaultColor(ByVal colorType As eApplicationColorType) As Color
-            Select Case colorType
-                Case eApplicationColorType.DEFAULT_TEXT : Return Color.Black
-                Case eApplicationColorType.DEFAULT_BACKGROUND : Return Color.White
-                Case eApplicationColorType.NAMES_TEXT : Return Color.Black
-                Case eApplicationColorType.NAMES_BACKGROUND : Return Color.FromArgb(255, 232, 232, 232)
-                Case eApplicationColorType.HIGHLIGHT : Return Color.Orange
-                Case eApplicationColorType.INVALIDMODELRESULT_TEXT : Return Color.DarkViolet
-                Case eApplicationColorType.FAILEDVALIDATION_TEXT : Return Color.DarkGoldenrod
-                Case eApplicationColorType.GENERICERROR_TEXT : Return Color.Firebrick
-                Case eApplicationColorType.COMPUTED_TEXT : Return Color.FromArgb(255, 0, 0, 244)
-                Case eApplicationColorType.FISHINGPRESSURE_TEXT : Return Color.Red
-                Case eApplicationColorType.PROFIT_TEXT : Return Color.Blue
-                Case eApplicationColorType.TOTALCATCH_TEXT : Return Color.LightCoral
-                Case eApplicationColorType.TROPHICLINK_TEXT : Return Color.LavenderBlush
-                Case eApplicationColorType.CHECKED_BACKGROUND : Return Color.FromArgb(255, 176, 233, 173)
-                Case eApplicationColorType.REMARKS_BACKGROUND : Return Color.White
-                Case eApplicationColorType.SUM_BACKGROUND : Return Color.FromArgb(255, 255, 254, 225)
-                Case eApplicationColorType.READONLY_BACKGROUND : Return Color.FromArgb(255, 231, 235, 250)
-                Case eApplicationColorType.MISSINGPARAMETER_BACKGROUND : Return Color.MediumPurple
-                Case eApplicationColorType.IMAGE_BACKGROUND : Return Color.White
-                Case eApplicationColorType.PLOT_BACKGROUND : Return Color.White
-                Case eApplicationColorType.MAP_BACKGROUND : Return SystemColors.ControlDark
-                Case eApplicationColorType.NotSet
-                    Return Color.Transparent
-            End Select
-            ' This should not happen, a default should always be available
-            Debug.Assert(False)
-            Return Color.Black
-        End Function
-
-        Private Sub LoadMonetaryUnitNames()
-
-            Dim dtNames As New Dictionary(Of String, String)
-            Dim astrBits As String() = My.Resources.GENERIC_CURRENCIES.Split("|"c)
-
-            ' Sanity check
-            For i As Integer = 0 To astrBits.Length - 1 Step 2
-                If astrBits(i).Length <> 3 Then
-                    Debug.Assert(False, String.Format("Error near currency {0}, expected three-letter currency abbreviation", astrBits(i)))
-                    Return
-                End If
-                dtNames(astrBits(i)) = astrBits(i + 1)
-            Next
-
-            For Each unit As eUnitMonetaryType In [Enum].GetValues(GetType(eUnitMonetaryType))
-                If unit <> eUnitMonetaryType.Custom Then
-                    Me.m_dtMonetaryUnitNames(unit) = dtNames(unit.ToString())
-                End If
-            Next
-
-            dtNames.Clear()
-
-        End Sub
-
-        Private Function DefaultFontFamilyName(ByVal ft As eApplicationFontType) As String
-            Return "Microsoft Sans Serif"
-        End Function
-
-        Private Function DefaultFontStyle(ByVal ft As eApplicationFontType) As FontStyle
-            Return Drawing.FontStyle.Regular
-        End Function
-
-        Private Function DefaultFontSize(ByVal ft As eApplicationFontType) As Single
-            Select Case ft
-                Case eApplicationFontType.Title
-                    Return 12
-                Case eApplicationFontType.Legend, eApplicationFontType.SubTitle
-                    Return 10
-                Case eApplicationFontType.Scale, _
-                     eApplicationFontType.Value
-                    Return 8.25
-                Case Else
-                    Debug.Assert(False)
-            End Select
-            Return -1
-        End Function
-
-#End Region ' Internal implementation
-
 #Region " Public access "
 
-#Region " Styles "
+#Region " Enums and events "
 
         ''' <summary>
         ''' Public enumerator stating the visual feedback required for rendering a value
@@ -307,19 +242,88 @@ Namespace Style
 
         End Enum
 
-        ''' -----------------------------------------------------------------------
+        Public Enum eLegendPosition As Integer
+
+            ''' <summary>Do not show legends.</summary>
+            Hidden = cCore.NULL_VALUE
+            ''' <summary>Show legend to the left of graphs.</summary>
+            Left = ZedGraph.LegendPos.Left
+            ''' <summary>Show legend to the right of graphs.</summary>
+            Right = ZedGraph.LegendPos.Right
+            ''' <summary>Show legend above graphs.</summary>
+            Above = ZedGraph.LegendPos.TopCenter
+            ''' <summary>Show legend below graphs.</summary>
+            Below = ZedGraph.LegendPos.BottomCenter
+
+        End Enum
+
         ''' <summary>
-        ''' Singleton: Retrieves the one and only instance of the StyleGuide
+        ''' Types of changes that can occur in the StyleGuide.
         ''' </summary>
-        ''' <remarks>Use this method to obtain a reference to the StyleGuide</remarks>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function GetInstance() As cStyleGuide
-            Return cStyleGuide._inst_
-        End Function
+        Public Enum eChangeType As Integer
+            None = 0
+            Colours = &H1
+            NumberFormatting = &H2
+            Units = &H4
+            Fonts = &H8
+            GroupVisibility = &H10
+            FleetVisibility = &H20
+            Thumbnails = &H40
+            Legends = &H80
+            All = &HFFFFFFFF
+        End Enum
 
-#End Region ' Styles
+        ''' <summary>Good old-fashioned (but slightly blunt) way</summary>
+        Public Event StyleGuideChanged(ByVal changeType As eChangeType)
 
-#Region " NumDigits "
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Notify listeners of StyleGuide changes
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub FireChangeEvent(ByVal changeType As eChangeType)
+            ' Are events locked?
+            If (Me.m_nEventLock > 0) Then
+                ' #Yes: remember that an event is pending
+                Me.m_pendingChangeEventTypes = Me.m_pendingChangeEventTypes Or changeType
+                ' Abort, leave the event for later
+                Return
+            End If
+
+            ' Broadcast change event to listeners
+            RaiseEvent StyleGuideChanged(changeType)
+            ' No more change events pending
+            Me.m_pendingChangeEventTypes = eChangeType.None
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Lock down the broadcasting of StyleGuide events.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub SuspendEvents()
+            Me.m_nEventLock += 1
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Unlocks broadcasting of StyleGuide change events.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub ResumeEvents()
+            Me.m_nEventLock -= 1
+            ' Did this clear the event lock?
+            If (Me.m_nEventLock <= 0) And (m_pendingChangeEventTypes <> eChangeType.None) Then
+                ' Fire remaining event(s)
+                FireChangeEvent(Me.m_pendingChangeEventTypes)
+                ' Clear cache
+                Me.m_pendingChangeEventTypes = eChangeType.None
+            End If
+        End Sub
+
+#End Region ' Enums and events
+
+#Region " Number formatting "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -474,7 +478,7 @@ Namespace Style
 
         End Function
 
-#End Region ' NumDigits
+#End Region ' Number formatting
 
 #Region " Units "
 
@@ -687,72 +691,33 @@ Namespace Style
 
 #End Region ' Units
 
-#Region " ChangeEvent "
-
-        ''' <summary>
-        ''' Types of changes that can occur in the StyleGuide.
-        ''' </summary>
-        Public Enum eChangeType As Integer
-            None = 0
-            Colours = &H1
-            NumberFormatting = &H2
-            Units = &H4
-            Fonts = &H8
-            GroupVisibility = &H10
-            FleetVisibility = &H20
-            Thumbnails = &H40
-            All = &HFFFFFFFF
-        End Enum
-
-        ''' <summary>Good old-fashioned (but slightly blunt) way</summary>
-        Public Event StyleGuideChanged(ByVal changeType As eChangeType)
+#Region " Maps and charts "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Notify listeners of StyleGuide changes
+        ''' Get/set the position of legends.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub FireChangeEvent(ByVal changeType As eChangeType)
-            ' Are events locked?
-            If (Me.m_nEventLock > 0) Then
-                ' #Yes: remember that an event is pending
-                Me.m_pendingChangeEventTypes = Me.m_pendingChangeEventTypes Or changeType
-                ' Abort, leave the event for later
-                Return
-            End If
+        Public Property LegendPosition() As eLegendPosition
+            Get
+                Return Me.m_legendpos
+            End Get
+            Set(ByVal value As eLegendPosition)
+                Me.m_legendpos = value
+                Me.LegendsChanged()
+            End Set
+        End Property
 
-            ' Broadcast change event to listeners
-            RaiseEvent StyleGuideChanged(changeType)
-            ' No more change events pending
-            Me.m_pendingChangeEventTypes = eChangeType.None
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Broadcast a <see cref="eChangeType.Legends">legends changed event</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub LegendsChanged()
+            Me.FireChangeEvent(eChangeType.Legends)
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Lock down the broadcasting of StyleGuide events.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Sub SuspendEvents()
-            Me.m_nEventLock += 1
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Unlocks broadcasting of StyleGuide change events.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Sub ResumeEvents()
-            Me.m_nEventLock -= 1
-            ' Did this clear the event lock?
-            If (Me.m_nEventLock <= 0) And (m_pendingChangeEventTypes <> eChangeType.None) Then
-                ' Fire remaining event(s)
-                FireChangeEvent(Me.m_pendingChangeEventTypes)
-                ' Clear cache
-                Me.m_pendingChangeEventTypes = eChangeType.None
-            End If
-        End Sub
-
-#End Region ' ChangeEvent
+#End Region ' Maps and charts
 
 #Region " Color access "
 
@@ -1240,6 +1205,88 @@ Namespace Style
 #End Region ' Item visibility
 
 #End Region ' Public access
+
+#Region " Internal implementation "
+
+        Private Function DefaultColor(ByVal colorType As eApplicationColorType) As Color
+            Select Case colorType
+                Case eApplicationColorType.DEFAULT_TEXT : Return Color.Black
+                Case eApplicationColorType.DEFAULT_BACKGROUND : Return Color.White
+                Case eApplicationColorType.NAMES_TEXT : Return Color.Black
+                Case eApplicationColorType.NAMES_BACKGROUND : Return Color.FromArgb(255, 232, 232, 232)
+                Case eApplicationColorType.HIGHLIGHT : Return Color.Orange
+                Case eApplicationColorType.INVALIDMODELRESULT_TEXT : Return Color.DarkViolet
+                Case eApplicationColorType.FAILEDVALIDATION_TEXT : Return Color.DarkGoldenrod
+                Case eApplicationColorType.GENERICERROR_TEXT : Return Color.Firebrick
+                Case eApplicationColorType.COMPUTED_TEXT : Return Color.FromArgb(255, 0, 0, 244)
+                Case eApplicationColorType.FISHINGPRESSURE_TEXT : Return Color.Red
+                Case eApplicationColorType.PROFIT_TEXT : Return Color.Blue
+                Case eApplicationColorType.TOTALCATCH_TEXT : Return Color.LightCoral
+                Case eApplicationColorType.TROPHICLINK_TEXT : Return Color.LavenderBlush
+                Case eApplicationColorType.CHECKED_BACKGROUND : Return Color.FromArgb(255, 176, 233, 173)
+                Case eApplicationColorType.REMARKS_BACKGROUND : Return Color.White
+                Case eApplicationColorType.SUM_BACKGROUND : Return Color.FromArgb(255, 255, 254, 225)
+                Case eApplicationColorType.READONLY_BACKGROUND : Return Color.FromArgb(255, 231, 235, 250)
+                Case eApplicationColorType.MISSINGPARAMETER_BACKGROUND : Return Color.MediumPurple
+                Case eApplicationColorType.IMAGE_BACKGROUND : Return Color.White
+                Case eApplicationColorType.PLOT_BACKGROUND : Return Color.White
+                Case eApplicationColorType.MAP_BACKGROUND : Return SystemColors.ControlDark
+                Case eApplicationColorType.NotSet
+                    Return Color.Transparent
+            End Select
+            ' This should not happen, a default should always be available
+            Debug.Assert(False)
+            Return Color.Black
+        End Function
+
+        Private Sub LoadMonetaryUnitNames()
+
+            Dim dtNames As New Dictionary(Of String, String)
+            Dim astrBits As String() = My.Resources.GENERIC_CURRENCIES.Split("|"c)
+
+            ' Sanity check
+            For i As Integer = 0 To astrBits.Length - 1 Step 2
+                If astrBits(i).Length <> 3 Then
+                    Debug.Assert(False, String.Format("Error near currency {0}, expected three-letter currency abbreviation", astrBits(i)))
+                    Return
+                End If
+                dtNames(astrBits(i)) = astrBits(i + 1)
+            Next
+
+            For Each unit As eUnitMonetaryType In [Enum].GetValues(GetType(eUnitMonetaryType))
+                If unit <> eUnitMonetaryType.Custom Then
+                    Me.m_dtMonetaryUnitNames(unit) = dtNames(unit.ToString())
+                End If
+            Next
+
+            dtNames.Clear()
+
+        End Sub
+
+        Private Function DefaultFontFamilyName(ByVal ft As eApplicationFontType) As String
+            Return "Microsoft Sans Serif"
+        End Function
+
+        Private Function DefaultFontStyle(ByVal ft As eApplicationFontType) As FontStyle
+            Return Drawing.FontStyle.Regular
+        End Function
+
+        Private Function DefaultFontSize(ByVal ft As eApplicationFontType) As Single
+            Select Case ft
+                Case eApplicationFontType.Title
+                    Return 12
+                Case eApplicationFontType.Legend, eApplicationFontType.SubTitle
+                    Return 10
+                Case eApplicationFontType.Scale, _
+                     eApplicationFontType.Value
+                    Return 8.25
+                Case Else
+                    Debug.Assert(False)
+            End Select
+            Return -1
+        End Function
+
+#End Region ' Internal implementation
 
     End Class
 
