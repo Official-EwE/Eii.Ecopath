@@ -59,8 +59,6 @@ Namespace Ecospace
         Private m_drawers As List(Of cMapDrawer)
         Private m_nMapsPerThread As Integer
 
-        Private m_pdBiomass As cEcospaceZedGraphPlotDrawer = Nothing
-
         Private m_bmpBiomassMap As Bitmap
 
         'jb added
@@ -75,7 +73,7 @@ Namespace Ecospace
         Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
         Private m_showGroupMode As eShowGroupType = eShowGroupType.ShowAll
         Private m_iGroupToShow As Integer = 0
-        Private m_zgh As cZedGraphHelper = Nothing
+        Private m_zgh As cEcospaceZedGraphHelper = Nothing
 
         'Legend colors for the Effort map
         Private m_nEffortBins As Single = 100 'number of legend bins is arbitrary
@@ -244,10 +242,9 @@ Namespace Ecospace
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
-            Me.m_zgh = New cZedGraphHelper()
+            Me.m_zgh = New cEcospaceZedGraphHelper()
             Me.m_zgh.Attach(Me.m_core, Me.m_zgPlotLarge)
             Me.m_zgh.ShowPointValue = True
-            Me.m_pdBiomass = New cEcospaceZedGraphPlotDrawer(Me.m_core, Me.m_zgh)
 
             cmdDisplayGroups = cmdh.GetCommand("DisplayGroups")
             If (cmdDisplayGroups IsNot Nothing) Then cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups)
@@ -326,7 +323,7 @@ Namespace Ecospace
         Private Sub UpdateBiomassPlot()
             For iGroup As Integer = 1 To m_core.nGroups
                 For iTimeStep As Integer = Me.m_iTimeStepPrev To Me.m_iTimeStepCur - 1
-                    Me.m_pdBiomass.AddValue(iGroup, Me.m_iTimeStepCur, Me.m_as2RelBiomassResults(iGroup, iTimeStep + 1))
+                    Me.m_zgh.AddValue(iGroup, Me.m_iTimeStepCur, Me.m_as2RelBiomassResults(iGroup, iTimeStep + 1))
                 Next
             Next
             Me.m_zgh.RescaleAndRedraw()
@@ -624,9 +621,9 @@ Namespace Ecospace
 
             ' Reset plot drawer if overlay is not needed
             If Me.m_bOverlay = False Then
-                Me.m_pdBiomass.Reset(Me.m_core.nGroups, Me.m_core.nEcospaceTimeSteps)
+                Me.m_zgh.Reset(Me.m_core.nGroups, Me.m_core.nEcospaceTimeSteps)
             Else
-                Me.m_pdBiomass.Overlay(Me.m_core.nGroups)
+                Me.m_zgh.Overlay(Me.m_core.nGroups)
             End If
 
             Me.m_iTimeStepCur = 0
@@ -694,11 +691,11 @@ Namespace Ecospace
 
         Private Sub RefreshPlot()
 
-            If (Me.m_pdBiomass IsNot Nothing) Then
+            If (Me.m_zgh IsNot Nothing) Then
 
-                Me.m_pdBiomass.GroupShowMode = Me.m_showGroupMode
-                Me.m_pdBiomass.GroupToShow = Me.m_iGroupToShow
-                Me.m_pdBiomass.UpdateCurveVisibility()
+                Me.m_zgh.GroupShowMode = Me.m_showGroupMode
+                Me.m_zgh.GroupToShow = Me.m_iGroupToShow
+                Me.m_zgh.UpdateCurveVisibility()
                 Me.m_zgh.Redraw()
 
             End If

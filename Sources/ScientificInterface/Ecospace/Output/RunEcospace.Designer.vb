@@ -39,6 +39,7 @@ Namespace Ecospace
             Me.m_lblHigh = New System.Windows.Forms.Label
             Me.m_lblLow = New System.Windows.Forms.Label
             Me.m_scMain = New System.Windows.Forms.SplitContainer
+            Me.m_lblProgress = New System.Windows.Forms.Label
             Me.m_plDistribution = New System.Windows.Forms.Panel
             Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton
             Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton
@@ -54,7 +55,6 @@ Namespace Ecospace
             Me.m_tabSmallMultiples = New System.Windows.Forms.TabPage
             Me.m_tabPlot = New System.Windows.Forms.TabPage
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl
-            Me.m_lblProgress = New System.Windows.Forms.Label
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -157,6 +157,11 @@ Namespace Ecospace
             'm_scMain.Panel2
             '
             Me.m_scMain.Panel2.Controls.Add(Me.m_tcOutputs)
+            '
+            'm_lblProgress
+            '
+            resources.ApplyResources(Me.m_lblProgress, "m_lblProgress")
+            Me.m_lblProgress.Name = "m_lblProgress"
             '
             'm_plDistribution
             '
@@ -277,11 +282,6 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinX = 0
             Me.m_zgPlotLarge.ScrollMinY = 0
             Me.m_zgPlotLarge.ScrollMinY2 = 0
-            '
-            'm_lblProgress
-            '
-            resources.ApplyResources(Me.m_lblProgress, "m_lblProgress")
-            Me.m_lblProgress.Name = "m_lblProgress"
             '
             'RunEcospace
             '
