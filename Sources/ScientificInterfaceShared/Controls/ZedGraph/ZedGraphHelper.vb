@@ -171,12 +171,35 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the number of panels in the <see cref="ZedGraph">graph</see>.
+        ''' Get the number of panels in the <see cref="ZedGraph">graph</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumPanes() As Integer
             Get
                 Return Me.m_nPanels
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cStyleGuide">style guide</see> attached to this
+        ''' instance.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property StyleGuide() As cStyleGuide
+            Get
+                Return Me.m_sg
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cCore">core</see> attached to this instance.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Core() As cCore
+            Get
+                Return Me.m_core
             End Get
         End Property
 
