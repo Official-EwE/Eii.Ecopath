@@ -43,6 +43,11 @@ Namespace Controls
         ''' <summary>Registered axis that need to display units.</summary>
         Private m_dtAxisLabels As New Dictionary(Of Axis, cAxisLabelFormatter)
 
+        ' == Legend ==
+        ''' <summary>States whether this instance should show a legend if left to 'default'</summary>
+        Private m_bShowLegend As Boolean = True
+
+        ' == Cursor ==
         Private m_bShowCursor() As Boolean
         Private m_sCursorPos() As Single
         Private m_liCursor() As LineItem
@@ -328,6 +333,8 @@ Namespace Controls
              ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
              Optional ByVal iPane As Integer = 1) As GraphPane
 
+            Me.m_bShowLegend = bShowLegend
+
             Dim gp As GraphPane = Me.GetPane(iPane)
             With gp
 
@@ -348,11 +355,13 @@ Namespace Controls
                 .YAxis.MinorTic.IsOpposite = False
                 .YAxis.MajorTic.IsOpposite = False
 
-                .Legend.IsVisible = bShowLegend
                 .Legend.Position = legendPos
 
                 .Border.IsVisible = False
                 .Chart.Border.IsVisible = True
+
+                Me.InitLegend(gp)
+
             End With
 
             Me.RescaleAndRedraw()
@@ -949,6 +958,9 @@ Namespace Controls
                 Me.RefreshAxisLabels()
             End If
 
+            If ((changeType And cStyleGuide.eChangeType.Legends) > 0) Then
+                Me.InitLegend()
+            End If
         End Sub
 
         Private Function OnMouseDownEvent(ByVal zg As ZedGraphControl, ByVal args As MouseEventArgs) As Boolean
@@ -1097,6 +1109,26 @@ Namespace Controls
 
         End Sub
 
+        Private Sub InitLegend(Optional ByVal gp As GraphPane = Nothing)
+
+            Dim bShow As Boolean = (Me.m_sg.ShowLegends = TriState.True) Or _
+                                   (Me.m_sg.ShowLegends = TriState.UseDefault And Me.m_bShowLegend = True)
+
+            If gp Is Nothing Then
+                For Each gp In Me.m_zgc.MasterPane.PaneList
+                    gp.Legend.IsVisible = bShow
+                Next
+            Else
+                gp.Legend.IsVisible = bShow
+            End If
+
+            'Using g As Graphics = Me.m_zgc.CreateGraphics()
+            '    Me.m_zgc.MasterPane.SetLayout(g, PaneLayout.SquareColPreferred)
+            'End Using
+            Me.m_zgc.Invalidate()
+
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the graph pane located at a given point.
@@ -1184,22 +1216,6 @@ Namespace Controls
             ' Add the menu item to the menu
             menuStrip.Items.Add(item)
 
-            ' create a new menu item
-            item = New ToolStripMenuItem()
-            ' This is the user-defined Tag so you can find this menu item later if necessary
-            item.Name = "Show_legend"
-            ' This is the text that will show up in the menu
-            item.Text = My.Resources.MENU_SHOW_LEGEND
-            ' Set checked state
-            For Each gp As GraphPane In Me.m_zgc.MasterPane.PaneList
-                bLegendsVisible = bLegendsVisible Or gp.Legend.IsVisible
-            Next
-            item.Checked = bLegendsVisible
-            ' Add a handler that will respond when that menu item is selected
-            AddHandler item.Click, AddressOf OnShowLegends
-            ' Add the menu item to the menu
-            menuStrip.Items.Add(item)
-
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -1209,20 +1225,6 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Protected Sub OnExtractToCSV(ByVal sender As Object, ByVal e As System.EventArgs)
             Me.ExtractDataToCSV()
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Protected Sub OnShowLegends(ByVal sender As Object, ByVal e As System.EventArgs)
-            Dim mi As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
-            For Each gp As GraphPane In Me.m_zgc.MasterPane.PaneList
-                gp.Legend.IsVisible = Not mi.Checked
-            Next
-            Me.m_zgc.AxisChange()
-            Me.m_zgc.Refresh()
         End Sub
 
 #End Region ' Context menu
