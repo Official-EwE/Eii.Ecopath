@@ -68,8 +68,9 @@ Namespace Style
         Private m_dtFontSize As New Dictionary(Of eApplicationFontType, Single)
         ''' <summary></summary>
         Private m_dtFontStye As New Dictionary(Of eApplicationFontType, FontStyle)
-        ''' <summary>Positioning of legends.</summary>
-        Private m_legendpos As eLegendPosition = eLegendPosition.Hidden
+        ''' <summary>Usage of legends.</summary>
+        ''' <remarks>UseDefault = selective, True or False</remarks>
+        Private m_tsShowLegends As TriState = TriState.UseDefault
 
         ' -- group visibility --
         ''' <summary>List of indexes of groups to hide.</summary>
@@ -695,15 +696,15 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the position of legends.
+        ''' Get/set how graphs should show legends.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property LegendPosition() As eLegendPosition
+        Public Property ShowLegends() As TriState
             Get
-                Return Me.m_legendpos
+                Return Me.m_tsShowLegends
             End Get
-            Set(ByVal value As eLegendPosition)
-                Me.m_legendpos = value
+            Set(ByVal value As TriState)
+                Me.m_tsShowLegends = value
                 Me.LegendsChanged()
             End Set
         End Property
