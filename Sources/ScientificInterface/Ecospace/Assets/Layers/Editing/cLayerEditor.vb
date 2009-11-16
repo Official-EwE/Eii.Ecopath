@@ -306,7 +306,7 @@ Namespace Ecospace.Basemap.Layers
         ''' -----------------------------------------------------------------------
         Protected Function GUI() As ucLayerEditor
             ' Create editor GUI if not done
-            If (Me.m_gui Is Nothing) And (Me.IsReadOnly = False) Then
+            If (Me.m_gui Is Nothing) Then
                 Try
                     Dim obj As Object = Activator.CreateInstance(Me.m_typeGUI, New Object() {})
                     ' Sanity check

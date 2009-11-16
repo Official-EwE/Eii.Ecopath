@@ -26,11 +26,9 @@ Namespace Other
             Me.m_btnCancel = New System.Windows.Forms.Button
             Me.m_tvOptions = New System.Windows.Forms.TreeView
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-            Me.m_plContent = New System.Windows.Forms.Panel
             Me.m_btnApply = New System.Windows.Forms.Button
             Me.m_scContent = New System.Windows.Forms.SplitContainer
             Me.m_scContent.Panel1.SuspendLayout()
-            Me.m_scContent.Panel2.SuspendLayout()
             Me.m_scContent.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -61,11 +59,6 @@ Namespace Other
             Me.ImageList1.Images.SetKeyName(0, "application.png")
             Me.ImageList1.Images.SetKeyName(1, "color_wheel.png")
             '
-            'm_plContent
-            '
-            resources.ApplyResources(Me.m_plContent, "m_plContent")
-            Me.m_plContent.Name = "m_plContent"
-            '
             'm_btnApply
             '
             resources.ApplyResources(Me.m_btnApply, "m_btnApply")
@@ -80,10 +73,6 @@ Namespace Other
             '
             Me.m_scContent.Panel1.Controls.Add(Me.m_tvOptions)
             '
-            'm_scContent.Panel2
-            '
-            Me.m_scContent.Panel2.Controls.Add(Me.m_plContent)
-            '
             'dlgOptions
             '
             Me.AcceptButton = Me.m_btnOk
@@ -95,6 +84,7 @@ Namespace Other
             Me.Controls.Add(Me.m_btnApply)
             Me.Controls.Add(Me.m_btnOk)
             Me.DoubleBuffered = True
+            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "dlgOptions"
@@ -102,7 +92,6 @@ Namespace Other
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
             Me.m_scContent.Panel1.ResumeLayout(False)
-            Me.m_scContent.Panel2.ResumeLayout(False)
             Me.m_scContent.ResumeLayout(False)
             Me.ResumeLayout(False)
 
@@ -114,7 +103,6 @@ Namespace Other
         Private WithEvents m_btnApply As System.Windows.Forms.Button
         Private WithEvents m_tvOptions As System.Windows.Forms.TreeView
         Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
-        Private WithEvents m_plContent As System.Windows.Forms.Panel
     End Class
 
 End Namespace

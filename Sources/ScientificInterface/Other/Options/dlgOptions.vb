@@ -23,8 +23,6 @@ Namespace Other
         ''' <summary></summary>
         Private m_ucAppColors As ucAppColors
         ''' <summary></summary>
-        Private m_ucAppFonts As ucAppFonts
-        ''' <summary></summary>
         Private m_ucAppGeneral As ucAppGeneral
         ''' <summary></summary>
         Private m_ucAppPlugins As ucAppPlugins
@@ -47,9 +45,6 @@ Namespace Other
 
             Me.m_ucAppColors = New ucAppColors()
             Me.m_ucAppColors.Dock = DockStyle.Fill
-
-            Me.m_ucAppFonts = New ucAppFonts()
-            Me.m_ucAppFonts.Dock = DockStyle.Fill
 
             Me.m_ucAppGeneral = New ucAppGeneral()
             Me.m_ucAppGeneral.Dock = DockStyle.Fill
@@ -74,7 +69,6 @@ Namespace Other
 
             Me.m_ucAppPlugins.Save()
             Me.m_ucAppColors.Save()
-            Me.m_ucAppFonts.Save()
             Me.m_ucAppGraphsCharts.Save()
             Me.m_ucAppGeneral.Save()
             My.Settings.Save()
@@ -91,8 +85,6 @@ Namespace Other
                     ucPage = Me.m_ucAppGeneral
                 Case "ndDisplay", "ndColors"
                     ucPage = Me.m_ucAppColors
-                Case "ndFonts"
-                    ucPage = Me.m_ucAppFonts
                 Case "ndGraphCharts"
                     ucPage = Me.m_ucAppGraphsCharts
                 Case "ndPlugins"
@@ -107,8 +99,8 @@ Namespace Other
             ' Set new page
             Me.m_ucCurrent = ucPage
             ' Yo
-            Me.m_plContent.Controls.Clear()
-            Me.m_plContent.Controls.Add(ucPage)
+            Me.m_scContent.Panel2.Controls.Clear()
+            Me.m_scContent.Panel2.Controls.Add(ucPage)
 
             Me.ResumeLayout()
         End Sub
@@ -152,11 +144,10 @@ Namespace Other
                 Handles Me.FormClosing
 
             ' Bye
-            Me.m_plContent.Controls.Clear()
+            Me.m_scContent.Panel2.Controls.Clear()
             ' Manually dispose
             Me.m_ucCurrent = Nothing
             Me.m_ucAppColors.Dispose()
-            Me.m_ucAppFonts.Dispose()
             Me.m_ucAppGeneral.Dispose()
             Me.m_ucAppPlugins.Dispose()
             Me.m_ucAppGraphsCharts.Dispose()

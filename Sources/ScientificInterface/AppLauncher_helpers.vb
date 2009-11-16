@@ -311,6 +311,8 @@ Partial Public Class AppLauncher
             Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND) = My.Settings.ColorMapBackground
 
             Me.m_sg.ThumbnailSize = My.Settings.ThumbnailSize
+            ' Fix: do not allow disabling of legend viz
+            If (My.Settings.ShowLegends = TriState.False) Then My.Settings.ShowLegends = TriState.UseDefault
             Me.m_sg.ShowLegends = My.Settings.ShowLegends
 
             Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)

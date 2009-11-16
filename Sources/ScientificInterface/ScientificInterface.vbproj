@@ -984,10 +984,6 @@
       <DependentUpon>dlgImportLayerData.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\Application\ucAppFonts.resx">
-      <DependentUpon>ucAppFonts.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\Application\ucAppGraphs.resx">
       <DependentUpon>ucAppGraphs.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1236,12 +1232,6 @@
     <Compile Include="Ecospace\Output\cPlotDrawer.vb" />
     <Compile Include="Ecospace\Tools\gridMPAOptimizations.vb">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Other\Options\Application\ucAppFonts.Designer.vb">
-      <DependentUpon>ucAppFonts.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Other\Options\Application\ucAppFonts.vb">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\Options\Application\ucAppPluginAssemblyDetails.Designer.vb">
       <DependentUpon>ucAppPluginAssemblyDetails.vb</DependentUpon>

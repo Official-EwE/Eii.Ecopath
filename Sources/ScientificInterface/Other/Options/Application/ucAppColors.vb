@@ -515,14 +515,14 @@ Namespace Other
                 Me.m_lblExample.ForeColor = Me.m_sg.ApplicationColor(item.ForeColorType)
             Else
                 ' Hiding text w Color.Transparent does not work; show text in background colour instead
-                Me.m_lblExample.ForeColor = Me.m_sg.ApplicationColor(item.BackColorType)
+                Me.m_lblExample.ForeColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
             End If
 
             If (item.BackColorType <> cStyleGuide.eApplicationColorType.NotSet) Then
                 UpdateColorComboboxItem(Me.cbItemBackground, Me.m_sg.ApplicationColor(item.BackColorType))
                 Me.m_lblExample.BackColor = Me.m_sg.ApplicationColor(item.BackColorType)
             Else
-                Me.m_lblExample.BackColor = Color.Transparent
+                Me.m_lblExample.BackColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND)
             End If
 
             ' Update name and description
