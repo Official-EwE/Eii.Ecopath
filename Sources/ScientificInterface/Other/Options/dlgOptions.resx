@@ -130,7 +130,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnOk.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_btnOk.Text" xml:space="preserve">
     <value>OK</value>
@@ -145,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -157,7 +157,7 @@
     <value>75, 23</value>
   </data>
   <data name="m_btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -172,15 +172,18 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
-  <data name="tvOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left</value>
+  <data name="m_tvOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="tvOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
+  <data name="m_tvOptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="tvOptions.Nodes" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvOptions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tvOptions.Nodes" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -190,37 +193,29 @@
         AAAAAAs=
 </value>
   </data>
-  <data name="tvOptions.Nodes1" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvOptions.Nodes1" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
-        CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQAA
-        AQABAAEICAgCAAAABgMAAAAGQ29sb3JzBgQAAAAIbmRDb2xvcnMA/////wYFAAAAAP////8JBQAAAAAA
-        AAAL
+        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQsAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
+        CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQJY2hp
+        bGRyZW4wCWNoaWxkcmVuMQljaGlsZHJlbjIBAQAAAQABAAQEBAEICAgdU3lzdGVtLldpbmRvd3MuRm9y
+        bXMuVHJlZU5vZGUCAAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlAgAAAB1TeXN0ZW0uV2lu
+        ZG93cy5Gb3Jtcy5UcmVlTm9kZQIAAAACAAAABgMAAAAHRGlzcGxheQYEAAAACW5kRGlzcGxheQD/////
+        BgUAAAAA/////wkFAAAAAwAAAAkGAAAACQcAAAAJCAAAAAUGAAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1z
+        LlRyZWVOb2RlCAAAAARUZXh0BE5hbWUJSXNDaGVja2VkCkltYWdlSW5kZXgISW1hZ2VLZXkSU2VsZWN0
+        ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRDb3VudAEBAAABAAEAAQgICAIAAAAGCQAA
+        AAZDb2xvcnMGCgAAAAhuZENvbG9ycwD/////CQUAAAD/////CQUAAAAAAAAABQcAAAAdU3lzdGVtLldp
+        bmRvd3MuRm9ybXMuVHJlZU5vZGUIAAAABFRleHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJbmRleAhJbWFn
+        ZUtleRJTZWxlY3RlZEltYWdlSW5kZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50AQEAAAEAAQAB
+        CAgIAgAAAAYMAAAABUZvbnRzBg0AAAAHbmRGb250cwD/////CQUAAAD/////CQUAAAAAAAAABQgAAAAd
+        U3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5vZGUIAAAABFRleHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJ
+        bmRleAhJbWFnZUtleRJTZWxlY3RlZEltYWdlSW5kZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50
+        AQEAAAEAAQABCAgIAgAAAAYPAAAAEUdyYXBocyBhbmQgY2hhcnRzBhAAAAANbmRHcmFwaENoYXJ0cwD/
+        ////CQUAAAD/////CQUAAAAAAAAACw==
 </value>
   </data>
-  <data name="tvOptions.Nodes2" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
-        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
-        CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQAA
-        AQABAAEICAgCAAAABgMAAAAFRm9udHMGBAAAAAduZEZvbnRzAP////8GBQAAAAD/////CQUAAAAAAAAA
-        Cw==
-</value>
-  </data>
-  <data name="tvOptions.Nodes3" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
-        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
-        CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQAA
-        AQABAAEICAgCAAAABgMAAAAKVGh1bWJuYWlscwYEAAAADG5kVGh1bWJuYWlscwD/////BgUAAAAA////
-        /wkFAAAAAAAAAAs=
-</value>
-  </data>
-  <data name="tvOptions.Nodes4" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvOptions.Nodes2" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -230,23 +225,23 @@
         AAAAAAAL
 </value>
   </data>
-  <data name="tvOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 340</value>
+  <data name="m_tvOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 340</value>
   </data>
-  <data name="tvOptions.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tvOptions.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;tvOptions.Name" xml:space="preserve">
-    <value>tvOptions</value>
+  <data name="&gt;&gt;m_tvOptions.Name" xml:space="preserve">
+    <value>m_tvOptions</value>
   </data>
-  <data name="&gt;&gt;tvOptions.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tvOptions.Type" xml:space="preserve">
     <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tvOptions.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;m_tvOptions.Parent" xml:space="preserve">
+    <value>m_scContent.Panel1</value>
   </data>
-  <data name="&gt;&gt;tvOptions.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;m_tvOptions.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="ImageList1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>27, 20</value>
@@ -298,29 +293,32 @@
         AQEBwAEDBAAC/wHgAQ8EAAs=
 </value>
   </data>
-  <data name="plOption.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="m_plContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="plOption.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 12</value>
+  <data name="m_plContent.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="plOption.Size" type="System.Drawing.Size, System.Drawing">
-    <value>459, 340</value>
+  <data name="m_plContent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
-  <data name="plOption.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+  <data name="m_plContent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>437, 340</value>
   </data>
-  <data name="&gt;&gt;plOption.Name" xml:space="preserve">
-    <value>plOption</value>
+  <data name="m_plContent.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;plOption.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_plContent.Name" xml:space="preserve">
+    <value>m_plContent</value>
+  </data>
+  <data name="&gt;&gt;m_plContent.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;plOption.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;m_plContent.Parent" xml:space="preserve">
+    <value>m_scContent.Panel2</value>
   </data>
-  <data name="&gt;&gt;plOption.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;m_plContent.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_btnApply.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -335,7 +333,7 @@
     <value>75, 23</value>
   </data>
   <data name="m_btnApply.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_btnApply.Text" xml:space="preserve">
     <value>Apply</value>
@@ -350,7 +348,61 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnApply.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_scContent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_scContent.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.Panel1.Name" xml:space="preserve">
+    <value>m_scContent.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.Panel1.Parent" xml:space="preserve">
+    <value>m_scContent</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_scContent.Panel1MinSize" type="System.Int32, mscorlib">
+    <value>145</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.Panel2.Name" xml:space="preserve">
+    <value>m_scContent.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.Panel2.Parent" xml:space="preserve">
+    <value>m_scContent</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="m_scContent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>586, 340</value>
+  </data>
+  <data name="m_scContent.SplitterDistance" type="System.Int32, mscorlib">
+    <value>145</value>
+  </data>
+  <data name="m_scContent.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.Name" xml:space="preserve">
+    <value>m_scContent</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_scContent.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

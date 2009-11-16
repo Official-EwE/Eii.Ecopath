@@ -29,7 +29,7 @@ Namespace Other
         ''' <summary></summary>
         Private m_ucAppPlugins As ucAppPlugins
         ''' <summary></summary>
-        Private m_ucAppThumbnails As ucAppThumbnails
+        Private m_ucAppGraphsCharts As ucAppGraphs
         ''' <summary>Current page.</summary>
         Private m_ucCurrent As UserControl = Nothing
 
@@ -43,6 +43,8 @@ Namespace Other
 
             Me.InitializeComponent()
 
+            Me.m_tvOptions.ExpandAll()
+
             Me.m_ucAppColors = New ucAppColors()
             Me.m_ucAppColors.Dock = DockStyle.Fill
 
@@ -55,8 +57,8 @@ Namespace Other
             Me.m_ucAppPlugins = New ucAppPlugins()
             Me.m_ucAppPlugins.Dock = DockStyle.Fill
 
-            Me.m_ucAppThumbnails = New ucAppThumbnails()
-            Me.m_ucAppThumbnails.Dock = DockStyle.Fill
+            Me.m_ucAppGraphsCharts = New ucAppGraphs()
+            Me.m_ucAppGraphsCharts.Dock = DockStyle.Fill
 
             Me.SelectPage("")
 
@@ -73,7 +75,7 @@ Namespace Other
             Me.m_ucAppPlugins.Save()
             Me.m_ucAppColors.Save()
             Me.m_ucAppFonts.Save()
-            Me.m_ucAppThumbnails.Save()
+            Me.m_ucAppGraphsCharts.Save()
             Me.m_ucAppGeneral.Save()
             My.Settings.Save()
 
@@ -87,12 +89,12 @@ Namespace Other
             Select Case strPage
                 Case "", "ndGeneral"
                     ucPage = Me.m_ucAppGeneral
-                Case "ndColors"
+                Case "ndDisplay", "ndColors"
                     ucPage = Me.m_ucAppColors
                 Case "ndFonts"
                     ucPage = Me.m_ucAppFonts
-                Case "ndThumbnails"
-                    ucPage = Me.m_ucAppThumbnails
+                Case "ndGraphCharts"
+                    ucPage = Me.m_ucAppGraphsCharts
                 Case "ndPlugins"
                     ucPage = Me.m_ucAppPlugins
 
@@ -105,8 +107,8 @@ Namespace Other
             ' Set new page
             Me.m_ucCurrent = ucPage
             ' Yo
-            Me.plOption.Controls.Clear()
-            Me.plOption.Controls.Add(ucPage)
+            Me.m_plContent.Controls.Clear()
+            Me.m_plContent.Controls.Add(ucPage)
 
             Me.ResumeLayout()
         End Sub
@@ -139,8 +141,8 @@ Namespace Other
 
         End Sub
 
-        Private Sub tvOptions_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
-            Handles tvOptions.AfterSelect
+        Private Sub OnSelectedNode(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+            Handles m_tvOptions.AfterSelect
 
             Me.SelectPage(e.Node.Name)
 
@@ -150,14 +152,14 @@ Namespace Other
                 Handles Me.FormClosing
 
             ' Bye
-            Me.plOption.Controls.Clear()
+            Me.m_plContent.Controls.Clear()
             ' Manually dispose
             Me.m_ucCurrent = Nothing
             Me.m_ucAppColors.Dispose()
             Me.m_ucAppFonts.Dispose()
             Me.m_ucAppGeneral.Dispose()
             Me.m_ucAppPlugins.Dispose()
-            Me.m_ucAppThumbnails.Dispose()
+            Me.m_ucAppGraphsCharts.Dispose()
 
         End Sub
 

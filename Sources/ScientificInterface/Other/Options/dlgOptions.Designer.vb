@@ -24,10 +24,14 @@ Namespace Other
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgOptions))
             Me.m_btnOk = New System.Windows.Forms.Button
             Me.m_btnCancel = New System.Windows.Forms.Button
-            Me.tvOptions = New System.Windows.Forms.TreeView
+            Me.m_tvOptions = New System.Windows.Forms.TreeView
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-            Me.plOption = New System.Windows.Forms.Panel
+            Me.m_plContent = New System.Windows.Forms.Panel
             Me.m_btnApply = New System.Windows.Forms.Button
+            Me.m_scContent = New System.Windows.Forms.SplitContainer
+            Me.m_scContent.Panel1.SuspendLayout()
+            Me.m_scContent.Panel2.SuspendLayout()
+            Me.m_scContent.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnOk
@@ -41,12 +45,14 @@ Namespace Other
             Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.m_btnCancel.Name = "m_btnCancel"
             '
-            'tvOptions
+            'm_tvOptions
             '
-            resources.ApplyResources(Me.tvOptions, "tvOptions")
-            Me.tvOptions.HideSelection = False
-            Me.tvOptions.Name = "tvOptions"
-            Me.tvOptions.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("tvOptions.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvOptions.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvOptions.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvOptions.Nodes3"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvOptions.Nodes4"), System.Windows.Forms.TreeNode)})
+            resources.ApplyResources(Me.m_tvOptions, "m_tvOptions")
+            Me.m_tvOptions.FullRowSelect = True
+            Me.m_tvOptions.HideSelection = False
+            Me.m_tvOptions.LineColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+            Me.m_tvOptions.Name = "m_tvOptions"
+            Me.m_tvOptions.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvOptions.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes2"), System.Windows.Forms.TreeNode)})
             '
             'ImageList1
             '
@@ -55,15 +61,28 @@ Namespace Other
             Me.ImageList1.Images.SetKeyName(0, "application.png")
             Me.ImageList1.Images.SetKeyName(1, "color_wheel.png")
             '
-            'plOption
+            'm_plContent
             '
-            resources.ApplyResources(Me.plOption, "plOption")
-            Me.plOption.Name = "plOption"
+            resources.ApplyResources(Me.m_plContent, "m_plContent")
+            Me.m_plContent.Name = "m_plContent"
             '
             'm_btnApply
             '
             resources.ApplyResources(Me.m_btnApply, "m_btnApply")
             Me.m_btnApply.Name = "m_btnApply"
+            '
+            'm_scContent
+            '
+            resources.ApplyResources(Me.m_scContent, "m_scContent")
+            Me.m_scContent.Name = "m_scContent"
+            '
+            'm_scContent.Panel1
+            '
+            Me.m_scContent.Panel1.Controls.Add(Me.m_tvOptions)
+            '
+            'm_scContent.Panel2
+            '
+            Me.m_scContent.Panel2.Controls.Add(Me.m_plContent)
             '
             'dlgOptions
             '
@@ -71,11 +90,10 @@ Namespace Other
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.m_btnCancel
+            Me.Controls.Add(Me.m_scContent)
             Me.Controls.Add(Me.m_btnCancel)
             Me.Controls.Add(Me.m_btnApply)
             Me.Controls.Add(Me.m_btnOk)
-            Me.Controls.Add(Me.plOption)
-            Me.Controls.Add(Me.tvOptions)
             Me.DoubleBuffered = True
             Me.MaximizeBox = False
             Me.MinimizeBox = False
@@ -83,16 +101,20 @@ Namespace Other
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
+            Me.m_scContent.Panel1.ResumeLayout(False)
+            Me.m_scContent.Panel2.ResumeLayout(False)
+            Me.m_scContent.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
         Friend WithEvents m_btnCancel As System.Windows.Forms.Button
-        Friend WithEvents tvOptions As System.Windows.Forms.TreeView
         Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
-        Friend WithEvents plOption As System.Windows.Forms.Panel
         Friend WithEvents tnModel As System.Windows.Forms.TreeNode
         Private WithEvents m_btnOk As System.Windows.Forms.Button
         Private WithEvents m_btnApply As System.Windows.Forms.Button
+        Private WithEvents m_tvOptions As System.Windows.Forms.TreeView
+        Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
+        Private WithEvents m_plContent As System.Windows.Forms.Panel
     End Class
 
 End Namespace

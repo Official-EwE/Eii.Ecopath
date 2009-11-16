@@ -137,5 +137,8 @@
     <Setting Name="ThumbnailSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">48</Value>
     </Setting>
+    <Setting Name="ShowLegends" Type="Microsoft.VisualBasic.TriState" Scope="User">
+      <Value Profile="(Default)">UseDefault</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
