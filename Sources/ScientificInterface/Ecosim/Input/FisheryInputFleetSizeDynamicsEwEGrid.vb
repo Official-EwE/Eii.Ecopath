@@ -42,7 +42,6 @@ Namespace Ecosim
             For rowIndex As Integer = 1 To core.nFleets
                 source = core.EcosimFleetInputs(rowIndex)
                 Me.Rows.Insert(rowIndex)
-                ' Name is fleet name
                 Me(rowIndex, 0) = New EwERowHeaderCell(rowIndex)
                 Me(rowIndex, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
                 Me(rowIndex, 2) = New PropertyCell(source, eVarNameFlags.EPower)

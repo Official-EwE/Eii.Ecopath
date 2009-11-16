@@ -2072,10 +2072,10 @@ Namespace Database
                     readerEcopath = m_dbEwE5.GetReader(String.Format("SELECT * FROM [Gear] WHERE (gearName='{0}')", strFleetName))
                     readerEcopath.Read()
 
-                    drow("EPower") = Me.FixValue(readerEcopath, "EPower")
-                    drow("PCapBase") = Me.FixValue(readerEcopath, "PCapBase")
-                    drow("CapDepreciate") = Me.FixValue(readerEcopath, "CapDepreciate")
-                    drow("CapBaseGrowth") = Me.FixValue(readerEcopath, "CapBaseGrowth")
+                    drow("EPower") = Me.FixValue(readerEcopath, "EPower", 3.0!)
+                    drow("PCapBase") = Me.FixValue(readerEcopath, "PCapBase", 0.5!)
+                    drow("CapDepreciate") = Me.FixValue(readerEcopath, "CapDepreciate", 0.06!)
+                    drow("CapBaseGrowth") = Me.FixValue(readerEcopath, "CapBaseGrowth", 0.2!)
 
                     m_dbEwE5.ReleaseReader(readerEcopath)
                     readerEcopath = Nothing

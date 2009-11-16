@@ -112,23 +112,30 @@ Public Class cDBUpdate6_00_06_005
                 Try
                     sEpower = CInt(reader("Epower"))
                 Catch ex As Exception
-                    sEpower = 3
+                    sEpower = 0.0!
                 End Try
+                If sEpower <= 0.0! Then sEpower = 3
+
                 Try
                     sPCapBase = CInt(reader("PCapBase"))
                 Catch ex As Exception
-                    sPCapBase = 0.5
+                    sPCapBase = 0.0!
                 End Try
+                If sPCapBase <= 0.0! Then sPCapBase = 0.5!
+
                 Try
                     sCapDepreciate = CInt(reader("CapDepreciate"))
                 Catch ex As Exception
-                    sCapDepreciate = 0.06
+                    sCapDepreciate = 0.0!
                 End Try
+                If sCapDepreciate <= 0.0! Then sCapDepreciate = 0.06!
+
                 Try
                     sCapBaseGrowth = CInt(reader("CapBaseGrowth"))
                 Catch ex As Exception
-                    sCapBaseGrowth = 0.2
+                    sCapBaseGrowth = 0.0!
                 End Try
+                If sCapBaseGrowth <= 0.0! Then sCapBaseGrowth = 0.2!
 
                 For Each iScenarioID In lScenarioID
 
