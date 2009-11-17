@@ -812,7 +812,6 @@ Namespace Core
         ''' <summary>Sum of squares fit of Ecosim predicted values to reference data by group.</summary>
         EcosimSSGroup
 
-
         ''' <summary>Monte Carlo variables</summary>
         ''' <remarks>variables used by ecosim monte carlo</remarks>
         mcB
@@ -822,14 +821,12 @@ Namespace Core
         mcEE
         mcVU
 
-
         mcBbf
         mcPBbf
         mcQBbf
         mcBAbf
         mcEEbf
         mcVUbf
-
 
         mcBLower
         mcPBLower
@@ -851,7 +848,6 @@ Namespace Core
         mcBAcv
         mcEEcv
         mcVUcv
-
 
         'end monte carlo variables
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1102,6 +1098,8 @@ Namespace Core
         GameForceSalinity
         GameForceNutrient
         GameForceTemperature
+
+        GameFleetFishingRatesPM
 
         GameForceSalinityName
         GameForceNutrientName
