@@ -189,6 +189,7 @@ Namespace Ecosim
             '
             'cmbTempLoading
             '
+            Me.cmbTempLoading.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cmbTempLoading.FormattingEnabled = True
             resources.ApplyResources(Me.cmbTempLoading, "cmbTempLoading")
             Me.cmbTempLoading.Name = "cmbTempLoading"

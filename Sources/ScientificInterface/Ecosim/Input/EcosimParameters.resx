@@ -126,7 +126,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_nudNutBaseFreeProp.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;m_nudNutBaseFreeProp.Name" xml:space="preserve">
     <value>m_nudNutBaseFreeProp</value>
@@ -147,7 +147,7 @@
     <value>86, 20</value>
   </data>
   <data name="m_nudNumberYears.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_nudNumberYears.Name" xml:space="preserve">
     <value>m_nudNumberYears</value>
@@ -210,7 +210,7 @@
     <value>163, 21</value>
   </data>
   <data name="cmbNutForcing.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;cmbNutForcing.Name" xml:space="preserve">
     <value>cmbNutForcing</value>
@@ -538,7 +538,7 @@
     <value>678, 58</value>
   </data>
   <data name="m_tbContact.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;m_tbContact.Name" xml:space="preserve">
     <value>m_tbContact</value>
@@ -565,7 +565,7 @@
     <value>678, 20</value>
   </data>
   <data name="m_tbAuthor.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_tbAuthor.Name" xml:space="preserve">
     <value>m_tbAuthor</value>
@@ -649,7 +649,7 @@
     <value>678, 20</value>
   </data>
   <data name="m_tbName.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_tbName.Name" xml:space="preserve">
     <value>m_tbName</value>
@@ -676,7 +676,7 @@
     <value>678, 102</value>
   </data>
   <data name="m_tbDescription.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_tbDescription.Name" xml:space="preserve">
     <value>m_tbDescription</value>
@@ -760,7 +760,7 @@
     <value>108, 17</value>
   </data>
   <data name="m_chkUseVarPQ.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="m_chkUseVarPQ.Text" xml:space="preserve">
     <value>&amp;Use variable P/Q</value>
@@ -784,7 +784,7 @@
     <value>163, 21</value>
   </data>
   <data name="cmbTempLoading.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;cmbTempLoading.Name" xml:space="preserve">
     <value>cmbTempLoading</value>
@@ -844,6 +844,6 @@
     <value>EcosimParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.1106, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.1112, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>
