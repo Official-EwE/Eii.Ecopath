@@ -1099,6 +1099,10 @@ Namespace Core
         GameForceNutrient
         GameForceTemperature
 
+        GameForceSalinityPM
+        GameForceNutrientPM
+        GameForceTemperaturePM
+
         GameFleetFishingRatesPM
 
         GameForceSalinityName
