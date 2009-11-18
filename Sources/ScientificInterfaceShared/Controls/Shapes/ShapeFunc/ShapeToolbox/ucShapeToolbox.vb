@@ -351,7 +351,9 @@ Namespace Controls
 
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
+            Me.m_bInUpdate = True
             Me.UpdateThumbnails()
+            Me.m_bInUpdate = False
 
         End Sub
 
