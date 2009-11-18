@@ -446,7 +446,7 @@ Public MustInherit Class cTimeSeriesTextReader
         If (tr Is Nothing) Then Return False
 
         ' Init all weights to 1 by default
-        For i As Integer = 1 To iNumSeries : asWtType(i) = 1.0! : Next i
+        For i As Integer = 0 To iNumSeries : asWtType(i) = 1.0! : Next i
 
         ' Read names from columns
         astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
@@ -885,76 +885,5 @@ Public MustInherit Class cTimeSeriesTextReader
     Public MustOverride ReadOnly Property Dataset() As String
 
 #End Region ' Properties
-
-#Region " Ye olde EwE5 code "
-
-    ' Hmm, why do we always manage to blow the number of lines of code when translating to .NET?!
-
-#If 0 Then
-    Public Sub ReadRefData(F$)
-Dim i As Integer, j As Integer, K As Integer, Tim As Integer, ig As Integer, ip As Integer, Head$
-Dim fileErr As Boolean
-Dim FilePath As String
-fileErr = False
-'reads historical abundance comparison data from excel csv (comma delimited text) file
-'first determine number of rows and columns in data file
-On Local Error GoTo ReadErrorCase
-IsDatWtSet = False
-
-Open F$ For Input As 1      'READ CSV FILE:
-    Line Input #1, Head$
-    Line Input #1, Head$: NdatType = CountCols(Head$)
-    '060613VC: There may be a Weight for each time series from now on
-    If LCase(Mid(Head, 1, 6)) = "weight" Then
-        Line Input #1, Head$: If CountCols(Head$) <> NdatType Then fileErr = True
-    End If
-    Line Input #1, Head$: If CountCols(Head$) <> NdatType Then fileErr = True
-    NdatYear = 0
-    Do Until EOF(1)
-        Line Input #1, Head$
-        If CountCols(Head$) <> NdatType Then fileErr = True ': Stop
-        NdatYear = NdatYear + 1
-    Loop
-    Close 1
-
-    If fileErr Then
-        NdatType = 0
-        NdatYear = 0
-        MsgBox ("CSV file does not have the same number of fields for every data year, so cannot read data from it; you may need to append a dummy data column to the spreadsheet before saving as CSV, with a non-blank value entered for every year (CSV data row")
-        Exit Sub
-    End If
-    TotalTime = NdatYear
-    SetCellValue frmSim1.vaSim, 2, 1, TotalTime
-    RedimTotalTimeVariables
-    RedimCSVvariables
-
-    'now read the data
-    TimeSeriesFile = getFilename(F$, FilePath)  'f$
-    Open F$ For Input As 1
-        Input #1, Head$
-        For j = 1 To NdatType: Input #1, DatName(j): Next
-        '060613VC: The weights may be read in as a separate line from now on:
-        Input #1, Head$
-        If LCase(Head) = "weight" Then
-            For j = 1 To NdatType: Input #1, WtType(j): Next
-            Input #1, Head$
-        End If
-        For j = 1 To NdatType: Input #1, DatPool(j): Next
-        Input #1, Head$
-        For j = 1 To NdatType: Input #1, DatType(j): Next
-        For i = 1 To NdatYear
-            Input #1, DatYear(i)
-            For j = 1 To NdatType: Input #1, DatVal(i, j): Next
-        Next
-        ReDim IsDatShown(NdatType) As Boolean: For i = 1 To NdatType: IsDatShown(i) = True: Next
-        DoDatValCalculations NdatYear, NdatType, DatVal(), True
-    Close 1
-    frmSim1.lblTimeS.Caption = "Timeseries file  " + TimeSeriesFile
-    frmMdiEcopath4.mnuSimulationItem(8).Enabled = True 'enableIt    'Ecosim
-
-Exit Sub
-#End If
-
-#End Region ' Ye olde EwE5 code
 
 End Class
