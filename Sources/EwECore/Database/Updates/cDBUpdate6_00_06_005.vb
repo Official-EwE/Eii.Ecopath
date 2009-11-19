@@ -91,20 +91,19 @@ Public Class cDBUpdate6_00_06_005
 
         If bSucces = False Then Return False
 
+        ' Read Ecosim scenario IDs
+        reader = db.GetReader("SELECT ScenarioID FROM EcosimScenario")
         Try
-
-            ' Read Ecosim scenario IDs
-            reader = db.GetReader("SELECT ScenarioID FROM EcosimScenario")
             While reader.Read : lScenarioID.Add(CInt(reader("ScenarioID"))) : End While
         Catch ex As Exception
-            Return False
         End Try
+        db.ReleaseReader(reader)
+        reader = Nothing
 
+        reader = db.GetReader("SELECT * FROM EcopathFleet ORDER BY Sequence ASC")
+        writer = db.GetWriter("EcosimScenarioFleet")
         Try
-            reader = db.GetReader("SELECT * FROM EcopathFleet ORDER BY Sequence ASC")
-            writer = db.GetWriter("EcosimScenarioFleet")
             dt = writer.GetDataTable()
-
             While reader.Read
 
                 ' Read current fleet dynamics values
@@ -156,13 +155,12 @@ Public Class cDBUpdate6_00_06_005
 
                 Next
             End While
-
-            db.ReleaseWriter(writer, bSucces)
-            db.ReleaseReader(reader)
-
         Catch ex As Exception
             bSucces = False
         End Try
+
+        db.ReleaseWriter(writer, bSucces)
+        db.ReleaseReader(reader)
 
         If bSucces Then
             ' Clean up Ecopath fleet table
