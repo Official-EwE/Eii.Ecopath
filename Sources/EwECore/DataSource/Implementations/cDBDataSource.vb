@@ -2989,6 +2989,7 @@ Public Class cDBDataSource
             drow("NutBaseFreeProp") = ecosimDS.NutBaseFreeProp
             drow("NutForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.NutForceNumber)
             drow("SalinityForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.SalinityForceNo)
+            drow("TemperatureForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.TemperatureForceNo)
             drow("NutPBmax") = ecosimDS.NutPBmax
             'drow("UseVarPQ") = ecosimDS.UseVarPQ
             drow("LastSaved") = cDBDataSource.GetJulianDate()
@@ -3454,9 +3455,12 @@ Public Class cDBDataSource
                 ecosimDS.CmCo(i) = CSng(reader("CmCo"))
                 ecosimDS.SwitchPower(i) = CSng(reader("SwitchPower"))
                 ecosimDS.GroupFishRateNoDBID(i) = CInt(reader("FishMortShapeID"))
-                ecosimDS.SalOpt(i) = CSng(Me.ReadSafe(reader, "SalOpt", 35))
+                ecosimDS.SalOpt(i) = CSng(Me.ReadSafe(reader, "SalOpt", 35.0!))
                 ecosimDS.SdSalLeft(i) = CSng(Me.ReadSafe(reader, "SdSalLeft", 1000.0!))
                 ecosimDS.SdSalRight(i) = CSng(Me.ReadSafe(reader, "SdSalRight", 1000.0!))
+                ecosimDS.TempOpt(i) = CSng(Me.ReadSafe(reader, "TempOpt", 10.0!))
+                ecosimDS.TempLeft(i) = CSng(Me.ReadSafe(reader, "TempLeft", 1000.0!))
+                ecosimDS.TempRight(i) = CSng(Me.ReadSafe(reader, "TempRight", 1000.0!))
 
                 bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), i)
 
@@ -3657,6 +3661,9 @@ Public Class cDBDataSource
                 drow("SalOpt") = ecosimDS.SalOpt(i)
                 drow("SdSalLeft") = ecosimDS.SdSalLeft(i)
                 drow("SdSalRight") = ecosimDS.SdSalRight(i)
+                drow("TempOpt") = ecosimDS.TempOpt(i)
+                drow("TempLeft") = ecosimDS.TempLeft(i)
+                drow("TempRight") = ecosimDS.TempRight(i)
 
                 drow.EndEdit()
 
@@ -3863,12 +3870,14 @@ Public Class cDBDataSource
 
         Try
             ' Read and assign scenario forcing shape number(s)
-            reader = Me.m_db.GetReader(String.Format("SELECT NutForcingShapeID, SalinityForcingShapeID FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.Format("SELECT NutForcingShapeID, SalinityForcingShapeID, TemperatureForcingShapeID FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
             reader.Read()
             iForcingShape = CInt(Me.ReadSafe(reader, "NutForcingShapeID", 0))
             ecosimDS.NutForceNumber = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
             iForcingShape = CInt(Me.ReadSafe(reader, "SalinityForcingShapeID", 0))
             ecosimDS.SalinityForceNo = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
+            iForcingShape = CInt(Me.ReadSafe(reader, "TemperatureForcingShapeID", 0))
+            ecosimDS.TemperatureForceNo = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
             Me.m_db.ReleaseReader(reader)
             reader = Nothing
         Catch ex As Exception
