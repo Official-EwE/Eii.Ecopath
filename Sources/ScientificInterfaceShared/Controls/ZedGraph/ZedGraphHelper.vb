@@ -205,6 +205,17 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get the <see cref="ZedGraphControl">graph</see> attached to this instance.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Graph() As ZedGraphControl
+            Get
+                Return Me.m_zgc
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Returns a graph pane.
         ''' </summary>
         ''' <param name="iPane">The one-based index of the pane to return. This 
@@ -967,7 +978,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="changeType"></param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
 
             If ((changeType And cStyleGuide.eChangeType.Fonts) > 0) Then
                 Me.InitStyle()
