@@ -10,6 +10,7 @@ Imports EwEUtils.Core
 ''' <para>
 ''' <list type="bullet">
 ''' <item><description>Added Ecosim temperature response fields.</description></item>
+''' <item><description>Added Ecosim forcing function application type fields.</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
@@ -42,12 +43,13 @@ Public Class cDBUpdate6_00_06_006
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added Ecosim temperature fields."
+            Return "Added Ecosim temperature fields." & vbNewLine & "Add forcing function application types."
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
-        Return Me.AddEcosimTempFields(db)
+        Return Me.AddEcosimTempFields(db) And _
+               Me.AddEcosimForcingApplicationTypes(db)
     End Function
 
     Private Function AddEcosimTempFields(ByVal db As cEwEDatabase) As Boolean
@@ -62,4 +64,11 @@ Public Class cDBUpdate6_00_06_006
         Return bSucces
 
     End Function
+
+    Private Function AddEcosimForcingApplicationTypes(ByVal db As cEwEDatabase) As Boolean
+
+        Return db.Execute("ALTER TABLE EcosimShape ADD COLUMN ApplicationType LONG")
+
+    End Function
+
 End Class

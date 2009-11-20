@@ -1834,4 +1834,19 @@ Namespace Core
 
 #End Region ' CoreComponentType
 
+#Region " Forcing application types "
+
+    Public Enum eForcingApplicationTypes As Integer
+        ''' <summary>No application specified.</summary>
+        NotSet = 0
+        ''' <summary>Forcing FF applied to nutrient forcing.</summary>
+        Nutrient = 1
+        ''' <summary>Forcing FF applied to salinity forcing.</summary>
+        Salinity = 2
+        ''' <summary>Forcing FF applied to temperature forcing.</summary>
+        Temperature = 3
+    End Enum
+
+#End Region ' Forcing application types
+
 End Namespace ' Core
