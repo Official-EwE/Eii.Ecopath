@@ -136,7 +136,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridEditRegions, EwE6, Version=6.0.6.1022, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.Ecospace.gridEditRegions, EwE6, Version=6.0.6.1112, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -392,6 +392,9 @@
   </data>
   <data name="btnFromCells.Text" xml:space="preserve">
     <value>From cells</value>
+  </data>
+  <data name="btnFromCells.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;btnFromCells.Name" xml:space="preserve">
     <value>btnFromCells</value>
