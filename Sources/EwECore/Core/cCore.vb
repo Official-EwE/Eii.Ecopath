@@ -6209,7 +6209,7 @@ Public Class cCore
     Private m_EcoSpaceFleets As New cCoreInputOutputList(Of cEcospaceFleet)(eDataTypes.EcospaceFleet, 1)
     Private m_EcoSpaceScenarios As New cCoreInputOutputList(Of cEcospaceScenario)(eDataTypes.EcoSpaceScenario, 1)
     Friend m_EcospaceHabitats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceHabitat, 0)
-    Friend m_EcospaceRegions As New cCoreInputOutputList(Of cEcospaceRegion)(eDataTypes.EcospaceLayerRegion, 0)
+    Friend m_EcospaceRegions As New cCoreInputOutputList(Of cEcospaceRegion)(eDataTypes.EcospaceLayerRegion, 1)
     Friend m_EcospaceMPAs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceMPA, 1)
     Private m_EcospaceModelParams As cEcospaceModelParameters
     Private m_EcospaceBasemap As cEcospaceBasemap
