@@ -3802,7 +3802,6 @@ Public Class cDBDataSource
         Dim reader As IDataReader = Nothing
         Dim iShapeID As Integer = 0
         Dim shapeDataType As eDataTypes = eDataTypes.NotSet
-        Dim shapeApplicationType As eForcingApplicationTypes = eForcingApplicationTypes.NotSet
         Dim iForcingShape As Integer = 0
         Dim iMediationShape As Integer = 0
         Dim iFishingMortShape As Integer = 0
@@ -3828,7 +3827,6 @@ Public Class cDBDataSource
 
                 iShapeID = CInt(reader("ShapeID"))
                 shapeDataType = DirectCast(reader("ShapeType"), eDataTypes)
-                shapeApplicationType = DirectCast(Me.ReadSafe(reader, "ApplicationType", eForcingApplicationTypes.NotSet), eForcingApplicationTypes)
 
                 Select Case shapeDataType
 
@@ -3838,7 +3836,7 @@ Public Class cDBDataSource
 
                     Case eDataTypes.Forcing
                         iForcingShape += 1
-                        bSucces = bSucces And Me.LoadTimeShape(iShapeID, iForcingShape, shapeApplicationType, CBool(reader("IsSeasonal")))
+                        bSucces = bSucces And Me.LoadTimeShape(iShapeID, iForcingShape, CBool(reader("IsSeasonal")))
 
                     Case eDataTypes.Mediation
                         iMediationShape += 1
@@ -3946,7 +3944,6 @@ Public Class cDBDataSource
 
     Private Function LoadTimeShape(ByVal iShapeID As Integer, _
                                    ByVal iForcingShape As Integer, _
-                                   ByVal applicationType As eForcingApplicationTypes, _
                                    Optional ByVal bIsSeasonal As Boolean = False) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -3964,7 +3961,6 @@ Public Class cDBDataSource
             shapeParms.YBase = CSng(readerShape("Ybase"))
             shapeParms.YEnd = CSng(readerShape("Yend"))
             shapeParms.Steep = CSng(readerShape("Steep"))
-            ' sp.ZScale = CInt(readerShape("ZScale"))
             shapeParms.ShapeFunctionType = CType(readerShape("FunctionType"), eShapeFunctionType)
 
             ' Read z-scale
@@ -3980,7 +3976,7 @@ Public Class cDBDataSource
             ecosimDS.ForcingDBIDs(iForcingShape) = iShapeID
             ecosimDS.ForcingTitles(iForcingShape) = CStr(readerShape("Title"))
             ecosimDS.ForcingShapeType(iForcingShape) = eDataTypes.Forcing
-            ecosimDS.ForcingApplicationType(iForcingShape) = applicationType
+            ecosimDS.ForcingApplicationType(iForcingShape) = DirectCast(Me.ReadSafe(readerShape, "ApplicationType", eForcingApplicationTypes.NotSet), eForcingApplicationTypes)
             ecosimDS.isSeasonal(iForcingShape) = bIsSeasonal
 
             Me.m_db.ReleaseReader(readerShape)
@@ -4345,7 +4341,6 @@ Public Class cDBDataSource
                     End If
                     drow("ShapeType") = ecosimDS.ForcingShapeType(iShape)
                     drow("IsSeasonal") = ecosimDS.isSeasonal(iShape)
-                    drow("ApplicationType") = ecosimDS.ForcingApplicationType(iShape)
                     If bNewRow Then
                         writer.AddRow(drow)
                     Else
@@ -4549,6 +4544,8 @@ Public Class cDBDataSource
             drow("YEnd") = shapeParms.YEnd
             drow("Steep") = shapeParms.Steep
             drow("FunctionType") = CInt(shapeParms.ShapeFunctionType)
+            drow("ApplicationType") = ecosimDS.ForcingApplicationType(iShape)
+
             ' Assemble Zscale
             For ipt As Integer = 1 To ecosimDS.ForcePoints
                 If (ipt > 1) Then sbZScale.Append(" ")

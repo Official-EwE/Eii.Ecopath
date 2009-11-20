@@ -67,7 +67,7 @@ Public Class cDBUpdate6_00_06_006
 
     Private Function AddEcosimForcingApplicationTypes(ByVal db As cEwEDatabase) As Boolean
 
-        Return db.Execute("ALTER TABLE EcosimShape ADD COLUMN ApplicationType LONG")
+        Return db.Execute("ALTER TABLE EcosimShapeTime ADD COLUMN ApplicationType LONG")
 
     End Function
 

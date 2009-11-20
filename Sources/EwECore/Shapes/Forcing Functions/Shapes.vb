@@ -502,7 +502,7 @@ Public Class cMediationFunction
 
         m_nYears = m_data.NumYears
         Me.Name = m_data.MediationTitles(m_iEcoSimIndex)
-        Me.m_ForcingApplicationType = m_data.ForcingApplicationType(m_iEcoSimIndex)
+        Me.m_ForcingApplicationType = eForcingApplicationTypes.NotSet
 
         'shape parameters
         m_ShapeFunctionType = m_data.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType
