@@ -382,12 +382,13 @@ Public Class cForcingFunctionManager
         Get
             Try
 
-                Debug.Assert((ItemIndex < m_shapes.Count) And (ItemIndex > -1), Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
+                'Debug.Assert((ItemIndex < m_shapes.Count) And (ItemIndex > -1), Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
 
                 If ItemIndex < m_shapes.Count And ItemIndex > -1 Then
                     Return m_shapes.Item(ItemIndex)
                 Else
                     cLog.Write(Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
+                    System.Console.WriteLine(Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
                     Return Nothing
                 End If
             Catch ex As Exception
