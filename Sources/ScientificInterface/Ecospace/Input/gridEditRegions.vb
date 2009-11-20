@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: gridEditRegions.vb,v $
-' Revision 1.3  2009/05/28 12:37:44  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.2  2008/12/15 15:55:34  jeroens
-' no message
-'
-' Revision 1.1  2008/11/04 04:58:44  jeroens
-' Renamed
-'
-' Revision 1.2  2008/10/29 15:45:49  jeroens
-' Fixed issue 562
-'
-' Revision 1.1  2008/09/26 07:31:56  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -1054,6 +1034,9 @@ Namespace Ecospace
                             End If
                         End If
                     End If
+
+                    ' Sanity check
+                    Debug.Assert((iHab <> 0) = (iReg <> 0))
 
                     ' Assign or clear region, depending on what has been found
                     bmlRegions.Cell(iRow, iCol) = iReg
