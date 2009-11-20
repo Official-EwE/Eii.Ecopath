@@ -487,7 +487,7 @@ Public Class frmEcotracerOutput
             'only populate the region list if space is enabled
             Me.cmbRegions.Items.Add("Undefined area")
             For irgn As Integer = 1 To m_core.nRegions
-                Me.cmbRegions.Items.Add(m_core.EcospaceRegions(irgn).Name)
+                Me.cmbRegions.Items.Add("region " & irgn) ' m_core.EcospaceRegions(irgn).Name)
             Next
             Me.cmbRegions.Items.Add("All Regions")
 
@@ -1162,7 +1162,7 @@ Public Class frmEcotracerOutput
             Dim linesize As Single
             Dim yVal As Single
             Dim name As String = My.Resources.HEADER_ENVIRONMENT
-            Dim rgName As String = "Undefined area."
+            Dim rgName As String = "Region " & iregion
             Dim dx As Double
             Dim ntsYear As Single
 
@@ -1174,9 +1174,9 @@ Public Class frmEcotracerOutput
                 clrLine = cStyleGuide.GetInstance().GroupColor(Me.m_core, iGroup)
             End If
 
-            If iregion > 0 Then
-                rgName = m_core.EcospaceRegions(iregion).Name
-            End If
+            'If iregion > 0 Then
+            '    rgName = m_core.EcospaceRegions(iregion).Name
+            'End If
 
             strLabel = name & ", " & rgName
 

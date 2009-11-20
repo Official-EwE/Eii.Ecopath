@@ -88,57 +88,24 @@ Namespace Ecospace.Basemap.Layers
 
                 Case eVarNameFlags.LayerRegion
 
-                    Dim reg As cEcospaceRegion = Nothing
-
-                    ' Test no. of regions. > 20: show as num layer
-                    If (core.nRegions > 20) Then
-
-                        ' Get or create Visual Style
-                        strID = cValueID.GenerateAbstract(eDataTypes.EcospaceRegion, 1, "Regions")
-                        vs = core.VisualStyle(strID)
-                        If vs Is Nothing Then
-                            vs = New cVisualStyle()
-                            vs.ForeColour = Color.Black
-                            vs.BackColour = Color.Transparent
-                            core.VisualStyle(strID) = vs
-                        End If
-
-                        ' Represent regions as a gradient
-                        reg = core.EcospaceRegions(1)
-                        renderer = New cLayerRendererValue(vs)
-                        editor = New cLayerEditorRange()
-                        If layerData Is Nothing Then layerData = bmd.LayerRegion
-                        layer = New cLayer(layerData, renderer, editor, reg, eVarNameFlags.Name)
-                        layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_REGIONS
-
-                        lLayers.Add(layer)
-
-                    Else
-                        avs = brushProvider.GetVisualStyles(core.nRegions, cEwEBrushProvider.eBrushType.Color)
-
-                        ' Create ONE layer for regions, even if no regions are present
-                        For iRegion As Integer = 1 To core.nRegions
-
-                            reg = core.EcospaceRegions(iRegion)
-
-                            ' Get or create Visual Style
-                            strID = reg.getID()
-                            vs = core.VisualStyle(strID)
-                            If vs Is Nothing Then
-                                vs = New cVisualStyle()
-                                vs = avs(iRegion)
-                                core.VisualStyle(strID, False) = vs
-                            End If
-
-                            ' Create layer
-                            renderer = New cLayerRendererGradient(vs)
-                            editor = New cLayerEditorTwoState()
-                            If layerData Is Nothing Then layerData = bmd.LayerRegion
-                            layer = New cLayer(layerData, renderer, editor, iRegion, 0, reg, eVarNameFlags.Name)
-                            lLayers.Add(layer)
-
-                        Next iRegion
+                    ' Get or create Visual Style
+                    strID = cValueID.GenerateAbstract(eDataTypes.EcospaceRegion, 1, "Regions")
+                    vs = core.VisualStyle(strID)
+                    If vs Is Nothing Then
+                        vs = New cVisualStyle()
+                        vs.ForeColour = Color.Black
+                        vs.BackColour = Color.Transparent
+                        core.VisualStyle(strID) = vs
                     End If
+
+                    ' Represent regions as a gradient
+                    renderer = New cLayerRendererValue(vs)
+                    editor = New cLayerEditorRange()
+                    If layerData Is Nothing Then layerData = bmd.LayerRegion
+                    layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.Name)
+                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_REGIONS
+
+                    lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerMPA
 

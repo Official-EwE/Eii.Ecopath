@@ -273,8 +273,8 @@ Namespace Properties
                             sourceSec = core.FleetInputs(vs.iArrayIndex)
                         Case eCoreCounterTypes.nHabitats
                             sourceSec = core.EcospaceHabitats(vs.iArrayIndex)
-                        Case eCoreCounterTypes.nRegions
-                            sourceSec = core.EcospaceRegions(vs.iArrayIndex)
+                            'Case eCoreCounterTypes.nRegions
+                            '    sourceSec = core.EcospaceRegions(vs.iArrayIndex)
                         Case eCoreCounterTypes.nMPAs
                             sourceSec = core.EcospaceMPAs(vs.iArrayIndex)
                         Case eCoreCounterTypes.nMonths, _
