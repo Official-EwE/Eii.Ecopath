@@ -13,7 +13,7 @@ Namespace Ecopath.Output
 
     Public Class PSDPlotByGroup
 
-#Region "Variables"
+#Region " Variables "
         Private m_core As cCore = Nothing
         Private m_MasterPane As MasterPane
         Private m_zgh As cZedGraphHelper = Nothing
@@ -30,9 +30,10 @@ Namespace Ecopath.Output
             LorenzenMortality
         End Enum
 
-#End Region 'Variables
+#End Region ' Variables
 
-#Region "Constructor"
+#Region " Constructor "
+
         Public Sub New()
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
@@ -44,10 +45,9 @@ Namespace Ecopath.Output
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.m_core, Me.zgcZedGraphCntl)
 
-            'Don't manually run! The core execution states take care of this!
-            'm_core.RunPSD(IsGroupSelected)
         End Sub
-#End Region 'Constructor
+
+#End Region ' Constructor
 
 #Region "Event handlers"
 
@@ -55,8 +55,8 @@ Namespace Ecopath.Output
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
-            PopulateGroupBoxes()
-            InitMasterPane()
+            Me.m_lbGroups.Populate()
+            Me.m_zgh.Configure("")
 
             CreatePane(ePaneTypes.Weight, My.Resources.HEADER_WEIGHT, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_G)
             CreatePane(ePaneTypes.Number, My.Resources.HEADER_SURVIVAL, My.Resources.PSD_XAXISLABEL_AGE, "")
@@ -65,11 +65,12 @@ Namespace Ecopath.Output
             If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
                 CreatePane(ePaneTypes.LorenzenMortality, My.Resources.HEADER_MORTALITY, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_PERYEAR)
             End If
-            llbGroups.SelectedIndex = 0
+            m_lbGroups.SelectedIndex = 0
 
         End Sub
 
-        Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles llbGroups.SelectedIndexChanged
+        Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_lbGroups.SelectedIndexChanged
             AddCurves()
             UpdatePlots()
         End Sub
@@ -83,37 +84,6 @@ Namespace Ecopath.Output
 #End Region 'Event handlers
 
 #Region "Helper methods"
-        Private Sub PopulateGroupBoxes()
-
-            'Dim group As cEcoPathGroupInput = Nothing
-
-            llbGroups.SuspendLayout()
-            llbGroups.Items.Clear()
-            'llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
-
-            For i As Integer = 1 To m_core.nLivingGroups
-                If IsGroupSelected(i) Then
-                    llbGroups.Items.Add(New cGroupListBox.cGroupItem(m_core.EcoPathGroupInputs(i)))
-                End If
-            Next
-
-            llbGroups.ResumeLayout()
-        End Sub
-
-        Private Sub InitMasterPane()
-            'Get the master pane
-            m_MasterPane = Me.zgcZedGraphCntl.MasterPane
-
-            m_MasterPane.PaneList.Clear()
-            'Disable the master pane legend
-            m_MasterPane.Legend.IsVisible = False
-            'Make the border invisible
-            m_MasterPane.Border.IsVisible = False
-
-            m_MasterPane.Title.IsVisible = True
-            m_MasterPane.Title.FontSpec.Size = 12
-            m_MasterPane.IsFontsScaled = False
-        End Sub
 
         Private Sub CreatePane(ByVal PaneNo As ePaneTypes, ByVal strPaneTitle As String, _
                                ByVal strXaxisTitle As String, ByVal stryaxistitle As String)
@@ -122,55 +92,31 @@ Namespace Ecopath.Output
 
             Debug.Assert(m_MasterPane.PaneList.Count = PaneNo)
 
-            InitGraphPane(strPaneTitle, strXaxisTitle, stryaxistitle, PaneNo, pane)
-
             'Add the graphPane to the masterPane
             m_MasterPane.Add(pane)
+
+            Me.InitGraphPane(strPaneTitle, strXaxisTitle, stryaxistitle, PaneNo, CInt(PaneNo) + 1)
+
         End Sub
 
         Private Sub InitGraphPane(ByVal strPaneTitle As String, ByVal strXAxisTitle As String, ByVal strYAxisTitle As String, _
-                                  ByVal paneType As ePaneTypes, ByRef pane As GraphPane)
+                                  ByVal paneType As ePaneTypes, ByVal iPane As Integer)
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
-
-            pane.Title.Text = strPaneTitle
-            pane.Title.FontSpec.IsBold = True
-            pane.Title.FontSpec.Size = 12
-
-            pane.XAxis.Scale.FontSpec.Size = 12
-            pane.XAxis.Title.FontSpec.Size = 10
-            pane.XAxis.Title.Text = strXAxisTitle
-
-            pane.YAxis.Scale.FontSpec.Size = 12
-            pane.YAxis.Title.FontSpec.Size = 10
-            pane.YAxis.Title.Text = strYAxisTitle
+            Dim gp As GraphPane = Me.m_zgh.ConfigurePane(strPaneTitle, strYAxisTitle, strXAxisTitle, False, LegendPos.TopCenter, iPane)
 
             Select Case paneType
                 Case ePaneTypes.PSD
-                    pane.XAxis.Scale.Min = Int(Math.Log10(parms.FirstWeightClass))
-                    pane.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
-                    pane.YAxis.Scale.Min = 0
-                    'pane.YAxis.Scale.Max = 8 if PSDPlotByGroup has the same scale as that of PSDContributionPlot
+                    gp.XAxis.Scale.Min = Int(Math.Log10(parms.FirstWeightClass))
+                    gp.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
+                    gp.YAxis.Scale.Min = 0
+                    'gp.YAxis.Scale.Max = 8 if PSDPlotByGroup has the same scale as that of PSDContributionPlot
                 Case Else
-                    pane.XAxis.Scale.Min = 0
-                    'pane.XAxis.Scale.Max = CDbl(Me.m_core.EcosimFirstYear + (m_core.nEcosimTimeSteps / cCore.N_MONTHS))
-                    pane.YAxis.Scale.Min = 0
+                    gp.XAxis.Scale.Min = 0
+                    'gp.XAxis.Scale.Max = CDbl(Me.m_core.EcosimFirstYear + (m_core.nEcosimTimeSteps / cCore.N_MONTHS))
+                    gp.YAxis.Scale.Min = 0
             End Select
 
-            pane.Border.IsVisible = False
-            pane.Legend.IsVisible = False
-
-            pane.Chart.Border.IsVisible = False
-            pane.YAxis.MajorTic.IsOpposite = False
-            pane.XAxis.MajorTic.IsOpposite = False
-            pane.YAxis.MinorTic.IsOpposite = False
-            pane.XAxis.MinorTic.IsOpposite = False
-            pane.YAxis.MinorTic.IsAllTics = False
-            pane.XAxis.MinorTic.IsAllTics = False
-
-            pane.IsFontsScaled = False
-
-            'Me.UpdateColors()
         End Sub
 
         Private Sub AddCurves()
@@ -188,7 +134,7 @@ Namespace Ecopath.Output
 
             'Find the selected group number based on the selected index
             For iGroup As Integer = 1 To m_core.nLivingGroups
-                If m_core.EcoPathGroupOutputs(iGroup).Name = llbGroups.Items(llbGroups.SelectedIndex).ToString() Then
+                If m_core.EcoPathGroupOutputs(iGroup).Name = m_lbGroups.Items(m_lbGroups.SelectedIndex).ToString() Then
                     iSelectedGrpNum = iGroup
                     Exit For
                 End If
@@ -241,7 +187,7 @@ Namespace Ecopath.Output
             Next
 
             'Set the master pane title
-            m_MasterPane.Title.Text = CStr(llbGroups.SelectedItem.ToString)
+            m_MasterPane.Title.Text = CStr(m_lbGroups.SelectedItem.ToString)
 
             ' Clear all panes
             For Each gp As GraphPane In m_MasterPane.PaneList
@@ -304,15 +250,6 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Function IsGroupSelected() As Boolean()
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim bGroupSelected(m_core.nLivingGroups) As Boolean
-
-            For i As Integer = 1 To m_core.nLivingGroups
-                bGroupSelected(i) = sg.GroupVisible(i)
-            Next
-            Return bGroupSelected
-        End Function
 #End Region 'Helper methods
 
     End Class

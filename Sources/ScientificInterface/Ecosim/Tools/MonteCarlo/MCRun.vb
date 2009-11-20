@@ -411,16 +411,20 @@ Namespace Ecosim
             'Only Highlight if the graphs are drawing
             If Me.m_mcmanager.bShowPlot Then
 
-                Dim gi As cGroupListBox.cGroupItem = Nothing
 
                 ' Start setting highlights
                 Me.m_plothelper.ClearHighlights()
-                For Each item As Object In Me.m_lbGroups.SelectedItems
-                    If TypeOf (item) Is cGroupListBox.cGroupItem Then
-                        gi = DirectCast(item, cGroupListBox.cGroupItem)
-                        Me.m_plothelper.Highlight(gi.Group.Index, -1)
-                    End If
-                Next item
+
+                'Dim gi As cGroupListBox.cGroupItem = Nothing
+                'For Each item As Object In Me.m_lbGroups.SelectedItems
+                '    If TypeOf (item) Is cGroupListBox.cGroupItem Then
+                '        gi = DirectCast(item, cGroupListBox.cGroupItem)
+                '        Me.m_plothelper.Highlight(gi.Group.Index, -1)
+                '    End If
+                'Next item
+                For Each i As Integer In Me.m_lbGroups.SelectedIndices
+                    Me.m_plothelper.Highlight(Me.m_lbGroups.GroupIndex(i), -1)
+                Next
 
                 Me.m_graph.Invalidate()
 
@@ -430,23 +434,26 @@ Namespace Ecosim
 
         Private Sub PopulateGroupBox()
 
-            Dim group As cCoreGroupBase = Nothing
-            Dim gi As cGroupListBox.cGroupItem = Nothing
+            Me.m_lbGroups.GroupListTracking = cGroupListBox.eGroupTrackingType.AllGroups
+            Me.m_lbGroups.Populate()
 
-            Me.m_lbGroups.SuspendLayout()
-            Me.m_lbGroups.Items.Clear()
+            'Dim group As cCoreGroupBase = Nothing
+            'Dim gi As cGroupListBox.cGroupItem = Nothing
 
-            For iGroup As Integer = 1 To m_core.nLivingGroups
+            'Me.m_lbGroups.SuspendLayout()
+            'Me.m_lbGroups.Items.Clear()
 
-                ' #Yes: add group to the list of options
-                group = Me.m_core.EcoPathGroupInputs(iGroup)
-                gi = New cGroupListBox.cGroupItem(group)
-                Me.m_lbGroups.Items.Add(gi)
+            'For iGroup As Integer = 1 To m_core.nLivingGroups
 
-            Next
+            '    ' #Yes: add group to the list of options
+            '    group = Me.m_core.EcoPathGroupInputs(iGroup)
+            '    gi = New cGroupListBox.cGroupItem(group)
+            '    Me.m_lbGroups.Items.Add(gi)
+
+            'Next
 
             Me.m_lbGroups.SelectedIndex = 0
-            Me.m_lbGroups.ResumeLayout()
+            'Me.m_lbGroups.ResumeLayout()
 
         End Sub
 

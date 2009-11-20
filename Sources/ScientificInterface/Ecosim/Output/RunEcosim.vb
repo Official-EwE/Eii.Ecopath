@@ -269,7 +269,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub m_tsmiSortMostChanged_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiSortMostChanged.Click ', m_tsbExplore.Click
+            Handles m_tsmiSortMostChanged.Click, m_tssbExplore.Click
 
             ' Show or hide cursor
             Me.m_zgp.ShowCursor = Not Me.m_zgp.ShowCursor
@@ -533,51 +533,54 @@ Namespace Ecosim
 
             Dim sSumDiscardsLandings As Double = 0.0
             Dim group As cCoreGroupBase = Nothing
-            Dim gi As cGroupListBox.cGroupItem = Nothing
+            'Dim gi As cGroupListBox.cGroupItem = Nothing
+            'Dim bIncludeGroup As Boolean = False
             Dim groupSelected As cCoreGroupBase = Nothing
-            Dim bIncludeGroup As Boolean = False
 
             If (Me.m_lbGroups.SelectedIndex > 0) Then
-                groupSelected = DirectCast(Me.m_lbGroups.SelectedItem, cGroupListBox.cGroupItem).Group
+                groupSelected = Me.m_lbGroups.SelectedGroup
             End If
 
             Me.m_lbGroups.SuspendLayout()
 
             Me.m_lbGroups.Sorted = False
-            Me.m_lbGroups.Items.Clear()
-            Me.m_lbGroups.Items.Add(New cGroupListBox.cGroupItem(Nothing))
+            Me.m_lbGroups.ShowAllGroupsItem = True
+            Me.m_lbGroups.Populate()
 
-            For iGroup As Integer = 1 To m_core.nGroups
+            'Me.m_lbGroups.Items.Clear()
+            'Me.m_lbGroups.Items.Add(New cGroupListBox.cGroupItem(Nothing))
 
-                ' Include visible groups only
-                bIncludeGroup = Me.m_sg.GroupVisible(iGroup)
+            'For iGroup As Integer = 1 To m_core.nGroups
 
-                ' Displaying catch and discards?
-                If m_tsmiCatch.Checked Then
+            '    ' Include visible groups only
+            '    bIncludeGroup = Me.m_sg.GroupVisible(iGroup)
 
-                    ' Get sum of landings and discards for this group
-                    sSumDiscardsLandings = 0
-                    For f As Integer = 1 To m_core.nFleets
-                        sSumDiscardsLandings += (Me.m_core.FleetInputs(f).Discards(iGroup) + Me.m_core.FleetInputs(f).Landings(iGroup))
-                    Next f
+            '    ' Displaying catch and discards?
+            '    If m_tsmiCatch.Checked Then
 
-                    ' Include when group has landings and/or discards
-                    bIncludeGroup = bIncludeGroup And (sSumDiscardsLandings > 0)
-                End If
+            '        ' Get sum of landings and discards for this group
+            '        sSumDiscardsLandings = 0
+            '        For f As Integer = 1 To m_core.nFleets
+            '            sSumDiscardsLandings += (Me.m_core.FleetInputs(f).Discards(iGroup) + Me.m_core.FleetInputs(f).Landings(iGroup))
+            '        Next f
 
-                ' Include group?
-                If bIncludeGroup Then
-                    ' #Yes: add group to the list of options
-                    group = Me.m_core.EcoPathGroupInputs(iGroup)
-                    gi = New cGroupListBox.cGroupItem(group)
-                    Me.m_lbGroups.Items.Add(gi)
+            '        ' Include when group has landings and/or discards
+            '        bIncludeGroup = bIncludeGroup And (sSumDiscardsLandings > 0)
+            '    End If
 
-                    If Object.ReferenceEquals(group, groupSelected) Then
-                        Me.m_lbGroups.SelectedItem = gi
-                    End If
-                End If
+            '    ' Include group?
+            '    If bIncludeGroup Then
+            '        ' #Yes: add group to the list of options
+            '        group = Me.m_core.EcoPathGroupInputs(iGroup)
+            '        gi = New cGroupListBox.cGroupItem(group)
+            '        Me.m_lbGroups.Items.Add(gi)
 
-            Next
+            '        If Object.ReferenceEquals(group, groupSelected) Then
+            '            Me.m_lbGroups.SelectedItem = gi
+            '        End If
+            '    End If
+
+            'Next
 
             If Me.m_lbGroups.SelectedItem Is Nothing Then
                 Me.m_lbGroups.SelectedIndex = 0
@@ -637,7 +640,8 @@ Namespace Ecosim
 
                 For iLBItem As Integer = 1 To Me.m_lbGroups.Items.Count - 1
 
-                    Dim i As Integer = DirectCast(Me.m_lbGroups.Items(iLBItem), cGroupListBox.cGroupItem).Group.Index
+                    'Dim i As Integer = DirectCast(Me.m_lbGroups.Items(iLBItem), cGroupListBox.cGroupItem).Group.Index
+                    Dim i As Integer = Me.m_lbGroups.GetGroupIndexAt(iLBItem)
 
                     'Catch
                     If m_tsmiCatch.Checked Then
@@ -740,70 +744,75 @@ Namespace Ecosim
                 ' todo: change to groups that listed in group box
                 For j As Integer = 1 To Me.m_lbGroups.Items.Count - 1
 
-                    Dim i As Integer = DirectCast(Me.m_lbGroups.Items(j), cGroupListBox.cGroupItem).Group.Index
+                    'Dim i As Integer = DirectCast(Me.m_lbGroups.Items(j), cGroupListBox.cGroupItem).Group.Index
+                    Dim i As Integer = Me.m_lbGroups.GetGroupIndexAt(j)
 
-                    ' No need to check; group would not be available otherwise
+                    If (i > -1) Then
 
-                    ''Catch
-                    'If CatchToolStripMenuItem.Checked Then
-                    '    'Find the sum of discard and landing of the group
-                    '    Dim dblSumDiscardsLandings As Double = 0.0
-                    '    For f As Integer = 1 To m_core.nFleets
-                    '        dblSumDiscardsLandings = dblSumDiscardsLandings + m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i)
-                    '    Next f
-                    '    'If sum=0 then skip this group
-                    '    If Not dblSumDiscardsLandings > 0 Then Continue For
-                    'End If
+                        ' No need to check; group would not be available otherwise
 
-                    pplData = New PointPairList
-                    pplData.Add(0, 1) ' Brute force to make 0 TS 1
-                    For t As Integer = 1 To m_core.nEcosimTimeSteps
-                        If m_tsmiShowAnnualOutput.Checked Then
-                            If t Mod cCore.N_MONTHS = 0 Then
+                        ''Catch
+                        'If CatchToolStripMenuItem.Checked Then
+                        '    'Find the sum of discard and landing of the group
+                        '    Dim dblSumDiscardsLandings As Double = 0.0
+                        '    For f As Integer = 1 To m_core.nFleets
+                        '        dblSumDiscardsLandings = dblSumDiscardsLandings + m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i)
+                        '    Next f
+                        '    'If sum=0 then skip this group
+                        '    If Not dblSumDiscardsLandings > 0 Then Continue For
+                        'End If
+
+                        pplData = New PointPairList
+                        pplData.Add(0, 1) ' Brute force to make 0 TS 1
+                        For t As Integer = 1 To m_core.nEcosimTimeSteps
+                            If m_tsmiShowAnnualOutput.Checked Then
+                                If t Mod cCore.N_MONTHS = 0 Then
 
 
 
+                                    If m_tsmiBiomass.Checked Then
+                                        'Biomass
+                                        pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).BiomassRel(t)))
+                                    ElseIf m_tsmiCatch.Checked Then
+                                        'Catch
+                                        pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).YieldRel(t)))
+                                    Else
+                                        Debug.Assert(False)
+                                    End If
+
+                                End If
+                            Else
+
+                                ' 2) Add a single point to temp list
                                 If m_tsmiBiomass.Checked Then
                                     'Biomass
                                     pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).BiomassRel(t)))
                                 ElseIf m_tsmiCatch.Checked Then
                                     'Catch
+                                    'jb changed to use relative values computed by Ecosim original code left for reference until this has been vetted
+                                    'pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
+                                    '    (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / (m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())))
                                     pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).YieldRel(t)))
                                 Else
                                     Debug.Assert(False)
                                 End If
 
                             End If
+                        Next t
+
+                        ' 3) Store the line
+                        If m_tsmiBiomass.Checked Then
+                            'Biomass
+                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
+                                          i, cEcosimOutputPlotHelper.eLineType.RelativeBiomass, pplData)
+                        ElseIf m_tsmiCatch.Checked Then
+                            'Catch
+                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
+                                          i, cEcosimOutputPlotHelper.eLineType.RelativeCatch, pplData)
                         Else
-
-                            ' 2) Add a single point to temp list
-                            If m_tsmiBiomass.Checked Then
-                                'Biomass
-                                pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).BiomassRel(t)))
-                            ElseIf m_tsmiCatch.Checked Then
-                                'Catch
-                                'jb changed to use relative values computed by Ecosim original code left for reference until this has been vetted
-                                'pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
-                                '    (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / (m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())))
-                                pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).YieldRel(t)))
-                            Else
-                                Debug.Assert(False)
-                            End If
-
+                            Debug.Assert(False)
                         End If
-                    Next t
 
-                    ' 3) Store the line
-                    If m_tsmiBiomass.Checked Then
-                        'Biomass
-                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
-                                      i, cEcosimOutputPlotHelper.eLineType.RelativeBiomass, pplData)
-                    ElseIf m_tsmiCatch.Checked Then
-                        'Catch
-                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
-                                      i, cEcosimOutputPlotHelper.eLineType.RelativeCatch, pplData)
-                    Else
-                        Debug.Assert(False)
                     End If
 
                 Next j
@@ -877,19 +886,19 @@ Namespace Ecosim
 
         Private Sub SortGroupsAtTimestep(ByVal iTimeStep As Integer)
 
+            Dim iGroup As Integer = 0
             Dim sValue As Single = 0.0
 
             If Me.m_zgp.NumRuns < 1 Then Return
 
             Me.m_lbGroups.SortThreshold = Me.m_sChangeTrackSize
 
-            For Each gi As cGroupListBox.cGroupItem In Me.m_lbGroups.Items
-                If gi.Group IsNot Nothing Then
-                    sValue = CSng(Me.m_zgp.GetValueAt(gi.Group.Index, Me.m_zgp.NumRuns - 1, iTimeStep))
-
+            For i As Integer = 0 To Me.m_lbGroups.Items.Count
+                iGroup = Me.m_lbGroups.GetGroupIndexAt(i)
+                If (i > 0) Then
+                    sValue = CSng(Me.m_zgp.GetValueAt(iGroup, Me.m_zgp.NumRuns - 1, iTimeStep))
                     ' ToDo: Handle value depending on what is being displayed
-                    gi.SortValue = CSng(Math.Abs(sValue - 1.0))
-
+                    Me.m_lbGroups.SortValue(iGroup) = CSng(Math.Abs(sValue - 1.0))
                 End If
             Next
 
@@ -984,25 +993,32 @@ Namespace Ecosim
             Me.PopulateGroupBox()
         End Sub
 
+        ''' <summary>
+        ''' Highlight selected groups
+        ''' </summary>
         Private Sub UpdateGraphHighlights()
 
-            Dim gi As cGroupListBox.cGroupItem = Nothing
+            Dim iItem As Integer = 0
             Dim iGroup As Integer = 0
             Dim iRun As Integer = 0
 
             Me.m_zgp.ClearHighlights()
             For Each iRun In Me.m_lbRuns.SelectedIndices
-                For Each groupitem As Object In Me.m_lbGroups.SelectedItems
-                    If TypeOf (groupitem) Is cGroupListBox.cGroupItem Then
-                        gi = DirectCast(groupitem, cGroupListBox.cGroupItem)
-                        If (gi.Group IsNot Nothing) Then
-                            iGroup = gi.Group.Index
-                        Else
-                            iGroup = 0
-                        End If
-                        Me.m_zgp.Highlight(iGroup, iRun - 1)
-                    End If
-                Next groupitem
+                For Each iItem In Me.m_lbGroups.SelectedIndices
+                    iGroup = Math.Max(0, Me.m_lbGroups.GetGroupIndexAt(iItem))
+                    Me.m_zgp.Highlight(iGroup, iRun - 1)
+                Next
+                'For Each groupitem As Object In Me.m_lbGroups.SelectedItems
+                '    If TypeOf (groupitem) Is cGroupListBox.cGroupItem Then
+                '        gi = DirectCast(groupitem, cGroupListBox.cGroupItem)
+                '        If (gi.Group IsNot Nothing) Then
+                '            iGroup = gi.Group.Index
+                '        Else
+                '            iGroup = 0
+                '        End If
+                '        Me.m_zgp.Highlight(iGroup, iRun - 1)
+                '    End If
+                'Next groupitem
             Next iRun
 
             Me.m_graph.Invalidate()

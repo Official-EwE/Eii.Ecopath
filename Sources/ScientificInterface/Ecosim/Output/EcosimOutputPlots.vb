@@ -62,14 +62,9 @@ Namespace Ecosim
 
             MyBase.OnLoad(e)
 
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = Nothing
             Dim group As cCoreGroupBase = Nothing
-
-            ' Add group names into listbox
-            For i As Integer = 1 To Me.m_core.nGroups
-                group = Me.m_core.EcoSimGroupInputs(i)
-                m_lbGroups.Items.Add(New cGroupListBox.cGroupItem(group))
-            Next
-            Me.m_lbGroups.Refresh()
 
             Me.m_paneMaster = Me.m_graph.MasterPane
             Me.m_zgh = New cZedGraphHelper()
@@ -93,12 +88,25 @@ Namespace Ecosim
             Me.UpdateControls()
             Me.UpdateColors()
 
+            ' Display Groups
+            cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.AddControl(Me.m_tsbnShowGroups)
+            End If
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = Nothing
+            cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.RemoveControl(Me.m_tsbnShowGroups)
+            End If
 
             Me.CoreComponents = Nothing
 
@@ -235,8 +243,7 @@ Namespace Ecosim
 
             Dim iCount As Integer = 0
             Dim dXValue As Double = 0
-            Dim item As cGroupListBox.cGroupItem = DirectCast(m_lbGroups.SelectedItem, cGroupListBox.cGroupItem)
-            Dim iGroup As Integer = item.Group.Index
+            Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
             Dim groupSimOut As cEcosimGroupOutput = Me.m_core.EcoSimGroupOutputs(iGroup)
 
             Dim pplB As New PointPairList()
@@ -250,7 +257,7 @@ Namespace Ecosim
             Dim pplMortFishing As New PointPairList()
 
             'Set the master pane title
-            Me.m_zgh.Configure(item.Group.Name)
+            Me.m_zgh.Configure(groupSimOut.Name)
 
             ' Clear all panes
             For Each pt As ePaneTypes In [Enum].GetValues(GetType(ePaneTypes))
@@ -465,44 +472,44 @@ Namespace Ecosim
             Next
 
             Dim aiAvgPred() As Integer = lAvgPredIndex.ToArray
-            Me.SortRanks(lAvgPredConsumption.ToArray, aiAvgPred)
-            Me.PopulateGroupListBox(Me.m_lbPredators, aiAvgPred)
+            'Me.SortRanks(lAvgPredConsumption.ToArray, aiAvgPred)
+            Me.PopulateGroupListBox(Me.m_lbPredators, aiAvgPred, lAvgPredConsumption.ToArray)
 
             Dim aiAvgPrey() As Integer = lAvgPreyIndex.ToArray
-            Me.SortRanks(lAvgPreyConsumption.ToArray, aiAvgPrey)
-            Me.PopulateGroupListBox(Me.m_lbPrey, aiAvgPrey)
+            'Me.SortRanks(lAvgPreyConsumption.ToArray, aiAvgPrey)
+            Me.PopulateGroupListBox(Me.m_lbPrey, aiAvgPrey, lAvgPreyConsumption.ToArray)
 
             Dim aiFleet() As Integer = lFleetIndex.ToArray
-            Me.SortRanks(lCatch.ToArray, aiFleet)
+            'Me.SortRanks(lCatch.ToArray, aiFleet)
             Me.PopulateFleetListBox(Me.m_lbFleets, aiFleet)
 
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="asPredConsumption"></param>
-        ''' <param name="aiGroups"></param>
-        ''' -------------------------------------------------------------------
-        Private Sub SortRanks(ByVal asPredConsumption() As Single, ByVal aiGroups() As Integer)
+        '''' -------------------------------------------------------------------
+        '''' <summary>
+        '''' 
+        '''' </summary>
+        '''' <param name="asPredConsumption"></param>
+        '''' <param name="aiGroups"></param>
+        '''' -------------------------------------------------------------------
+        'Private Sub SortRanks(ByVal asPredConsumption() As Single, ByVal aiGroups() As Integer)
 
-            'Use a simple bubblesort algorithm here
-            For i As Integer = 0 To asPredConsumption.Length - 2
-                For j As Integer = asPredConsumption.Length - 1 To i + 1 Step -1
-                    If asPredConsumption(j) > asPredConsumption(j - 1) Then
-                        ' swap 
-                        Dim sTmp As Single = asPredConsumption(j)
-                        asPredConsumption(j) = asPredConsumption(j - 1)
-                        asPredConsumption(j - 1) = sTmp
-                        Dim iTmp As Integer = aiGroups(j)
-                        aiGroups(j) = aiGroups(j - 1)
-                        aiGroups(j - 1) = iTmp
-                    End If
-                Next
-            Next
+        '    'Use a simple bubblesort algorithm here
+        '    For i As Integer = 0 To asPredConsumption.Length - 2
+        '        For j As Integer = asPredConsumption.Length - 1 To i + 1 Step -1
+        '            If asPredConsumption(j) > asPredConsumption(j - 1) Then
+        '                ' swap 
+        '                Dim sTmp As Single = asPredConsumption(j)
+        '                asPredConsumption(j) = asPredConsumption(j - 1)
+        '                asPredConsumption(j - 1) = sTmp
+        '                Dim iTmp As Integer = aiGroups(j)
+        '                aiGroups(j) = aiGroups(j - 1)
+        '                aiGroups(j - 1) = iTmp
+        '            End If
+        '        Next
+        '    Next
 
-        End Sub
+        'End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -511,16 +518,24 @@ Namespace Ecosim
         ''' <param name="l">Listbox to add items to.</param>
         ''' <param name="aiGroupIndex">Array of group index values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub PopulateGroupListBox(ByVal l As cGroupListBox, ByVal aiGroupIndex() As Integer)
+        Private Sub PopulateGroupListBox(ByVal l As cGroupListBox, ByVal aiGroupIndex() As Integer, ByVal asValues() As Single)
 
-            Dim group As cEcoPathGroupInput = Nothing
-
-            l.Items.Clear()
-            For i As Integer = 0 To aiGroupIndex.Length - 1
-                group = Me.m_core.EcoPathGroupInputs(aiGroupIndex(i))
-                l.Items.Add(New cGroupListBox.cGroupItem(group))
+            l.Populate(aiGroupIndex)
+            l.Sorted = False
+            For i As Integer = 0 To aiGroupIndex.Count - 1
+                l.SortValue(aiGroupIndex(i)) = asValues(i)
             Next
-            l.Refresh()
+            l.SortType = cGroupListBox.eSortType.ValueAsc
+            l.Sorted = True
+
+            'Dim group As cEcoPathGroupInput = Nothing
+
+            'l.Items.Clear()
+            'For i As Integer = 0 To aiGroupIndex.Length - 1
+            '    group = Me.m_core.EcoPathGroupInputs(aiGroupIndex(i))
+            '    l.Items.Add(New cGroupListBox.cGroupItem(group))
+            'Next
+            'l.Refresh()
 
         End Sub
 

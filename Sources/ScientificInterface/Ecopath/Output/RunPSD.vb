@@ -15,7 +15,7 @@ Namespace Ecopath.Output
 
     Public Class RunPSD
 
-#Region "Variables"
+#Region " Variables "
 
         ' -- Core connection
         Private m_coreStateMonitor As cCoreStateMonitor = Nothing
@@ -35,7 +35,7 @@ Namespace Ecopath.Output
 
         Private m_cmdShowGroups As cDisplayGroupsCommand = Nothing
 
-#End Region 'Variables
+#End Region ' Variables
 
 #Region " Constructor/Destructor "
 
@@ -174,7 +174,7 @@ Namespace Ecopath.Output
 
 #End Region ' Event handlers
 
-#Region "Helper methods"
+#Region " Helper methods "
 
         ''' -------------------------------------------------------------------
         ''' <summary>

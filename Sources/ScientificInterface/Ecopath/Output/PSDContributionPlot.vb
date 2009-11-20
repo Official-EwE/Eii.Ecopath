@@ -12,12 +12,14 @@ Namespace Ecopath.Output
 
     Public Class PSDContributionPlot
 
-#Region "Variables"
+#Region " Variables "
+
         Private m_core As cCore = Nothing
         Private m_zgh As cZedGraphHelper = Nothing
-#End Region 'Variables
 
-#Region "Constructor"
+#End Region ' Variables
+
+#Region " Constructor "
         Public Sub New()
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
@@ -31,18 +33,18 @@ Namespace Ecopath.Output
             'm_core.RunPSD(IsGroupSelected)
         End Sub
 
-#End Region 'Constructor
+#End Region ' Constructor
 
-#Region "Event handlers"
+#Region " Event handlers "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            PopulateGroupBoxes()
-            llbGroups.SelectedIndex = 0
+            Me.m_lbGroups.Populate()
+            m_lbGroups.SelectedIndex = 0
 
         End Sub
 
-        Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles llbGroups.SelectedIndexChanged
+        Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_lbGroups.SelectedIndexChanged
             AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSDCONTRIB, My.Resources.PSD_XAXISLABEL_BODYWEIGHT, _
                      My.Resources.PSD_YAXISLABEL_BIOMASS))
 
@@ -55,59 +57,28 @@ Namespace Ecopath.Output
             Me.m_zgh = Nothing
             MyBase.OnFormClosed(e)
         End Sub
-#End Region 'Event handlers
 
-#Region "Helper methods"
-        Private Sub PopulateGroupBoxes()
+#End Region ' Event handlers
 
-            'Dim group As cEcoPathGroupInput = Nothing
-
-            llbGroups.SuspendLayout()
-            llbGroups.Items.Clear()
-
-            'llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
-            For i As Integer = 1 To m_core.nLivingGroups
-                If IsGroupSelected(i) Then
-                    llbGroups.Items.Add(New cGroupListBox.cGroupItem(m_core.EcoPathGroupInputs(i)))
-                End If
-            Next
-
-            llbGroups.ResumeLayout()
-        End Sub
+#Region " Helper methods "
 
         Private Function CreatePane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
                                     ByVal strYAxisTitle As String) As GraphPane
             Dim pane As GraphPane = Me.zgcZedGraphCntl.GraphPane
 
-            InitGraphPane(strTitle, strXAxisTitle, strYAxisTitle, pane)
+            InitGraphPane(strTitle, strXAxisTitle, strYAxisTitle)
             Return pane
         End Function
 
-        Private Sub InitGraphPane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
-                                    ByVal strYAxisTitle As String, ByVal pane As GraphPane)
+        Private Sub InitGraphPane(ByVal strTitle As String, ByVal strXAxisTitle As String, ByVal strYAxisTitle As String)
 
             Dim psd As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim gp As GraphPane = Me.m_zgh.ConfigurePane(strTitle, strXAxisTitle, strYAxisTitle, False)
 
-            pane.Title.Text = strTitle
-            pane.Title.FontSpec.IsBold = False
-            pane.Title.FontSpec.Size = 16
+            gp.XAxis.Scale.Min = Int(Math.Log10(psd.FirstWeightClass))
+            gp.XAxis.Scale.Max = Math.Round(Math.Log10(psd.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
+            gp.YAxis.Scale.Min = 0
 
-            pane.XAxis.Scale.IsVisible = True 'False
-            pane.XAxis.Title.Text = strXAxisTitle
-            pane.XAxis.Title.FontSpec.Size = 14
-
-            pane.YAxis.Scale.IsVisible = True 'False
-            pane.YAxis.Title.Text = strYAxisTitle
-            pane.YAxis.Title.FontSpec.Size = 14
-
-            pane.XAxis.Scale.Min = Int(Math.Log10(psd.FirstWeightClass))
-            pane.XAxis.Scale.Max = Math.Round(Math.Log10(psd.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
-            pane.YAxis.Scale.Min = 0
-
-            pane.YAxis.MinorTic.IsAllTics = False
-            pane.XAxis.MinorTic.IsAllTics = False
-
-            'Me.UpdateColors()
         End Sub
 
         Private Sub AddCurves(ByVal pane As GraphPane)
@@ -148,7 +119,7 @@ Namespace Ecopath.Output
 
             'Find the selected group number based on the selected index
             For iGroup As Integer = 1 To m_core.nLivingGroups
-                If m_core.EcoPathGroupOutputs(iGroup).Name = llbGroups.Items(llbGroups.SelectedIndex).ToString() Then
+                If m_core.EcoPathGroupOutputs(iGroup).Name = m_lbGroups.Items(m_lbGroups.SelectedIndex).ToString() Then
                     iSelectedGrpNum = iGroup
                     Exit For
                 End If
@@ -195,7 +166,7 @@ Namespace Ecopath.Output
 
             'Find the system PSD by summing the group PSD
             For iGroup As Integer = 1 To m_core.nLivingGroups
-                If IsGroupSelected(iGroup) Then
+                If Me.m_lbGroups.GroupIndex(iGroup) > -1 Then
                     grpOutput = m_core.EcoPathGroupOutputs(iGroup)
                     For iWtClass As Integer = 1 To m_core.nWeightClasses
                         sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
@@ -204,17 +175,7 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Function IsGroupSelected() As Boolean()
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim bGroupSelected(m_core.nLivingGroups) As Boolean
-
-            For i As Integer = 1 To m_core.nLivingGroups
-                bGroupSelected(i) = sg.GroupVisible(i)
-            Next
-            Return bGroupSelected
-        End Function
-
-#End Region 'Helper method
+#End Region ' Helper methods
 
     End Class
 
