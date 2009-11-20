@@ -6944,7 +6944,7 @@ Public Class cCore
             bSuccess = InitEcospaceBasemap()
             bSuccess = bSuccess And InitEcospaceModelParameters()
             bSuccess = bSuccess And InitEcospaceHabitats()
-            'bSuccess = bSuccess And InitEcospaceRegions()
+            bSuccess = bSuccess And InitEcospaceRegions()
             bSuccess = bSuccess And InitEcospaceMPAs()
             bSuccess = bSuccess And InitEcospaceGroups()
             bSuccess = bSuccess And InitEcospaceFleets()
@@ -9757,8 +9757,8 @@ Public Class cCore
                 Case eDataTypes.EcospaceHabitat
                     If bValidatedOk Then Me.UpdateEcospaceHabitat(idAffected)
 
-                    'Case eDataTypes.EcospaceRegion
-                    '    If bValidatedOk Then Me.UpdateEcospaceRegion(idAffected)
+                Case eDataTypes.EcospaceRegion
+                    If bValidatedOk Then Me.UpdateEcospaceRegion(idAffected)
 
                 Case eDataTypes.EcospaceMPA
                     If bValidatedOk Then Me.UpdateEcospaceMPA(idAffected)

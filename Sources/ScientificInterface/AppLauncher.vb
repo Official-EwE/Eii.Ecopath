@@ -2984,8 +2984,8 @@ Public Class AppLauncher
     ''' Command handler; invokes the Ecospace edit regions dialog.
     ''' </summary>
     Private Sub OnEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnInvoke
-        'Dim dlg As New dlgEditRegions()
-        'dlg.ShowDialog(Me)
+        Dim dlg As New dlgEditRegions()
+        dlg.ShowDialog(Me)
     End Sub
 
     ''' <summary>
