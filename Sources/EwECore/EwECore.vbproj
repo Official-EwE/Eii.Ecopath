@@ -121,9 +121,6 @@
     <Compile Include="EcoSpace\Input Output\cEcospaceHabitat.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceModelParameters.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceMPA.vb" />
-    <Compile Include="EcoSpace\Input Output\cEcospaceRegion.vb">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="EcoSpace\Input Output\cEcospaceRegionOutput.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceTimestep.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceScenario.vb" />
@@ -271,6 +268,7 @@
     <Compile Include="EcoSim\Input Output\cEcosimFleetOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimResultWriter.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFleetInput.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceRegion.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerAdvection.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerImportance.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceBasemap.vb" />
