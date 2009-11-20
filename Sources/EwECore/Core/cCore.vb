@@ -7999,6 +7999,9 @@ Public Class cCore
         If Me.m_EcoPathData.ActiveEcospaceScenario <= 0 Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
+        ' Not allowed to delete 0 region (if any)
+        If objRegion.Index = 0 Then Return False
+
         ' Increase batch count
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
