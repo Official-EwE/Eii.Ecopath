@@ -23,7 +23,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Supported sort styles for a cGroupListBox.
+        ''' Enumerated type, indicates sort styles for a cGroupListBox.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Enum eSortType As Byte
@@ -33,6 +33,38 @@ Namespace Controls
             GroupNameDesc
             ValueAsc
             ValueDesc
+        End Enum
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Enumerated type, indicates which groups are automatically added
+        ''' to a cGroupListBox.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Enum eGroupTrackingType As Integer
+            ''' <summary>Groups are added manually, not automatically by tracking the style guide.</summary>
+            Manual = 0
+            ''' <summary>Only living groups are added, and tracked by the style guide visibility settings.</summary>
+            LivingGroups
+            ''' <summary>Only detritus groups are added, and tracked by the style guide visibility settings.</summary>
+            DetritusGroups
+            ''' <summary>All groups are added, and tracked by the style guide visibility settings.</summary>
+            AllGroups
+        End Enum
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Enumerated type, indicates how groups are displayed according to
+        ''' StyleGuide visibility settings.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Enum eGroupDisplayStyleTypes As Integer
+            ''' <summary>Always show groups.</summary>
+            DisplayAlways = 0
+            ''' <summary>Show styleguide hidden groups as 'hidden'.</summary>
+            DisplayAsHidden
+            ''' <summary>Do not show styleguide hidden groups.</summary>
+            DisplayVisibleOnly
         End Enum
 
 #End Region ' Public enums
@@ -235,37 +267,6 @@ Namespace Controls
 #End Region ' Sorting
 
 #Region " Behaviour "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Enumerated type, indicates which groups are added to the control.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Enum eGroupTrackingType As Integer
-            ''' <summary>Groups are added manually, not automatically by tracking the style guide.</summary>
-            Manual = 0
-            ''' <summary>Only living groups are added, and tracked by the style guide visibility settings.</summary>
-            LivingGroups
-            ''' <summary>Only detritus groups are added, and tracked by the style guide visibility settings.</summary>
-            DetritusGroups
-            ''' <summary>All groups are added, and tracked by the style guide visibility settings.</summary>
-            AllGroups
-        End Enum
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Enumerated type, indicates how groups are displayed according to
-        ''' StyleGuide visibility settings.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Enum eGroupDisplayStyleTypes As Integer
-            ''' <summary>Always show groups.</summary>
-            DisplayAlways = 0
-            ''' <summary>Show styleguide hidden groups as 'hidden'.</summary>
-            DisplayAsHidden
-            ''' <summary>Do not show styleguide hidden groups.</summary>
-            DisplayVisibleOnly
-        End Enum
 
         ''' -------------------------------------------------------------------
         ''' <summary>

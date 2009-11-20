@@ -287,6 +287,8 @@ Public Class cEcosimDatastructures
     'Added or Changed Varaibles
     'jb April-06-2006 added to keep track of the type of a forcing shape (time or Egg)this does not include mediation shapes as they are stored seperately
     Public ForcingShapeType() As eDataTypes
+    'js nov-20-2009 new!
+    Public ForcingApplicationType() As eForcingApplicationTypes
 
     Public Elect(,,) As Single
     ''' <summary>
@@ -797,6 +799,7 @@ Public Class cEcosimDatastructures
             'variable added for EwE6
             ReDim ForcingShapeType(ForcingShapes) 'Time or Egg Prod
             ReDim ForcingShapeParams(ForcingShapes)
+            ReDim ForcingApplicationType(ForcingShapes)
             ReDim ForcingDBIDs(ForcingShapes)
 
             ReDim isSeasonal(ForcingShapes)
@@ -1302,6 +1305,7 @@ Public Class cEcosimDatastructures
             d.relQ = relQ.Clone
 
             d.ForcingShapeType = ForcingShapeType.Clone
+            d.ForcingApplicationType = ForcingApplicationType.Clone
             'ShapeParameters = ShapeParameters.clone
 
             d.MediationShapeParams = MediationShapeParams.Clone

@@ -97,7 +97,7 @@ Namespace Controls
             Me.m_fpSteep = New cEwEFormatProvider(Me.m_txbSteep, GetType(Single))
             Me.m_fpSteep.Value = CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
 
-            Me.m_lbShape.SelectedIndex = Me.m_shape.eShapeFunctionType
+            Me.m_lbShape.SelectedIndex = Me.m_shape.ShapeFunctionType
 
             Me.UpdatePreview()
 
@@ -134,7 +134,7 @@ Namespace Controls
             Me.m_shape.YBase = CSng(Me.m_fpYBase.Value)
             Me.m_shape.YEnd = CSng(Me.m_fpYEnd.Value)
             Me.m_shape.Steep = CSng(Me.m_fpSteep.Value)
-            Me.m_shape.eShapeFunctionType = Me.SelectedShapeType()
+            Me.m_shape.ShapeFunctionType = Me.SelectedShapeType()
 
             ' Go johnny go
             Me.m_shape.UnlockUpdates(True)

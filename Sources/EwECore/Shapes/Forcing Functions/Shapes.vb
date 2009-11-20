@@ -35,6 +35,7 @@ Public Class cForcingFunction
     Protected m_ZScale As Single
 
     Protected m_ShapeFunctionType As eShapeFunctionType
+    Protected m_ForcingApplicationType As eForcingApplicationTypes
 
     'this flag is used to stop updating during initialization
     'it is more of a safe guard 
@@ -98,13 +99,23 @@ Public Class cForcingFunction
         End Set
     End Property
 
-    Public Property eShapeFunctionType() As eShapeFunctionType
+    Public Property ShapeFunctionType() As eShapeFunctionType
         Get
             Return m_ShapeFunctionType
         End Get
         Set(ByVal value As eShapeFunctionType)
             m_ShapeFunctionType = value
             Update()
+        End Set
+    End Property
+
+    Public Property ForcingApplicationType() As eForcingApplicationTypes
+        Get
+            Return Me.m_ForcingApplicationType
+        End Get
+        Set(ByVal value As eForcingApplicationTypes)
+            Me.m_ForcingApplicationType = value
+            Me.Update()
         End Set
     End Property
 
@@ -205,6 +216,7 @@ Public Class cForcingFunction
         Next ipt
 
         Me.Name = m_data.ForcingTitles(m_iEcoSimIndex)
+        Me.m_ForcingApplicationType = m_data.ForcingApplicationType(m_iEcoSimIndex)
 
         m_nYears = m_data.NumYears
 
@@ -268,6 +280,7 @@ Public Class cForcingFunction
             m_data.ForcingTitles(m_iEcoSimIndex) = Me.Name
 
             m_data.ForcingShapeType(m_iEcoSimIndex) = m_datatype
+            m_data.ForcingApplicationType(m_iEcoSimIndex) = Me.m_ForcingApplicationType
 
             'shape parameters
             m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionType = m_ShapeFunctionType
@@ -489,6 +502,7 @@ Public Class cMediationFunction
 
         m_nYears = m_data.NumYears
         Me.Name = m_data.MediationTitles(m_iEcoSimIndex)
+        Me.m_ForcingApplicationType = m_data.ForcingApplicationType(m_iEcoSimIndex)
 
         'shape parameters
         m_ShapeFunctionType = m_data.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType
@@ -588,6 +602,7 @@ Public Class cMediationFunction
         Next ipt
 
         m_data.MediationTitles(m_iEcoSimIndex) = Me.Name
+        m_data.ForcingApplicationType(m_iEcoSimIndex) = Me.m_ForcingApplicationType
 
         'shape parameters
         m_data.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType = m_ShapeFunctionType

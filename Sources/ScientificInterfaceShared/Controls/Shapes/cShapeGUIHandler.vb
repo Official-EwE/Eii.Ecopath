@@ -1374,7 +1374,7 @@ Namespace Controls
             For Each shape As cShapeData In ashapes
                 Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
                 If ff IsNot Nothing Then
-                    ff = fsm.CreateNewShape(Me.GetNewShapeName(), ff.ShapeData, ff.YZero, ff.YBase, ff.YEnd, ff.Steep, ff.eShapeFunctionType)
+                    ff = fsm.CreateNewShape(Me.GetNewShapeName(), ff.ShapeData, ff.YZero, ff.YBase, ff.YEnd, ff.Steep, ff.ShapeFunctionType)
                     If ff IsNot Nothing Then
                         lffNew.Add(ff)
                     End If
