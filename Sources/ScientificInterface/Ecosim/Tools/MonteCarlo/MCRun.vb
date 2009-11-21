@@ -130,6 +130,8 @@ Namespace Ecosim
 
             Debug.Assert(Me.m_cmdLoadTS IsNot Nothing, "Command failed to load.")
 
+            Me.m_lbGroups.Attach(Me.m_core, cStyleGuide.GetInstance())
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
             Me.PopulateGroupBox()
 
@@ -143,6 +145,8 @@ Namespace Ecosim
             ' Disconnect from ApplyTS command
             Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand("WeightTimeSeries")
             If cmd IsNot Nothing Then cmd.RemoveControl(Me.btnTS)
+
+            Me.m_lbGroups.Detach()
 
             ' Disconnect from property
             RemoveHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged

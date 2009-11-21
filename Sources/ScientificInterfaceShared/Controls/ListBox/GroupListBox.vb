@@ -152,16 +152,8 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Public Sub New()
             MyBase.New()
-
-            ' Connect
-            Me.m_core = cCore.GetInstance()
-            Me.m_sg = cStyleGuide.GetInstance()
-            AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
             ' This box draws its own items
             Me.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-
-            Me.Populate()
         End Sub
 
         ''' ---------------------------------------------------------------
@@ -172,13 +164,32 @@ Namespace Controls
         ''' ---------------------------------------------------------------
         Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
             MyBase.Dispose(bDisposing)
+            Me.Detach()
+        End Sub
 
+#Region " Attach / detach "
+
+        Public Sub Attach(ByVal core As cCore, ByVal sg As cStyleGuide)
+
+            ' Connect
+            Me.m_core = core
+            Me.m_sg = sg
+
+            AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            Me.Populate()
+
+        End Sub
+
+        Public Sub Detach()
             If (Me.IsInitialized()) Then
                 RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 Me.m_sg = Nothing
                 Me.m_core = Nothing
             End If
+
         End Sub
+
+#End Region ' Attach / detach
 
 #Region " Sorting "
 

@@ -39,8 +39,8 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            Me.m_lbGroups.Populate()
-            m_lbGroups.SelectedIndex = 0
+            Me.m_lbGroups.Attach(Me.m_core, cStyleGuide.GetInstance())
+            Me.m_lbGroups.SelectedIndex = 0
 
         End Sub
 
@@ -55,6 +55,7 @@ Namespace Ecopath.Output
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
+            Me.m_lbGroups.Detach()
             MyBase.OnFormClosed(e)
         End Sub
 

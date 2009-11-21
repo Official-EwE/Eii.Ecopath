@@ -55,7 +55,7 @@ Namespace Ecopath.Output
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
-            Me.m_lbGroups.Populate()
+            Me.m_lbGroups.Attach(Me.m_core, cStyleGuide.GetInstance())
             Me.m_zgh.Configure("")
 
             CreatePane(ePaneTypes.Weight, My.Resources.HEADER_WEIGHT, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_G)
@@ -78,6 +78,7 @@ Namespace Ecopath.Output
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
+            Me.m_lbGroups.Detach()
             MyBase.OnFormClosed(e)
         End Sub
 

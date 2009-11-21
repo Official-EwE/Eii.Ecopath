@@ -82,7 +82,10 @@ Namespace Ecosim
             ' update it in the actual rendering.
             Me.ConfigurePane(ePaneTypes.AvgWeightOrProdCons, My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS)
 
-            'Me.m_zgh = New ZedGraphHelper(Me.zgcPlots, 8)
+            Me.m_lbGroups.Attach(Me.m_core, Me.m_sg)
+            Me.m_lbPredators.Attach(Me.m_core, Me.m_sg)
+            Me.m_lbPrey.Attach(Me.m_core, Me.m_sg)
+
             m_lbGroups.SelectedIndex = 0
 
             Me.UpdateControls()
@@ -109,6 +112,9 @@ Namespace Ecosim
             End If
 
             Me.CoreComponents = Nothing
+            Me.m_lbGroups.Detach()
+            Me.m_lbPredators.Detach()
+            Me.m_lbPrey.Detach()
 
             RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
             Me.m_sg = Nothing

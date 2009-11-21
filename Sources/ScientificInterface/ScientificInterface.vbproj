@@ -471,9 +471,6 @@
     <Compile Include="Ecospace\Input\gridEditMPAs.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridEditRegions.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Ecospace\Input\gridDispersal.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -487,12 +484,6 @@
       <DependentUpon>dlgEditMPAs.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecospace\Input\dlgEditMPAs.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecospace\Input\dlgEditRegions.Designer.vb">
-      <DependentUpon>dlgEditRegions.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Input\dlgEditRegions.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridFishery.vb">
@@ -807,10 +798,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>dlgEditMPAs.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgEditRegions.resx">
-      <DependentUpon>dlgEditRegions.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Output\EcospaceResults.resx">
       <SubType>Designer</SubType>
       <DependentUpon>EcospaceResults.vb</DependentUpon>
@@ -982,6 +969,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgImportLayerData.resx">
       <DependentUpon>dlgImportLayerData.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgEditRegions.resx">
+      <DependentUpon>dlgEditRegions.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\Application\ucAppGraphs.resx">
@@ -1196,6 +1187,15 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererDepth.vb" />
+    <Compile Include="Ecospace\Input\dlgEditRegions.Designer.vb">
+      <DependentUpon>dlgEditRegions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgEditRegions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\gridEditRegions.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\gridLayerData.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1336,6 +1336,7 @@
     <None Include="Resources\glyph_squares_large.png" />
     <None Include="Resources\CommentHS.png" />
     <None Include="Resources\Editable.png" />
+    <None Include="Resources\DisplayGroups.PNG" />
     <Content Include="Resources\Ecopath_doc.ico" />
     <Content Include="Resources\EU_50px.jpg" />
     <None Include="Resources\Eye_intermediate.png" />
@@ -1569,9 +1570,6 @@
       <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
       <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>
