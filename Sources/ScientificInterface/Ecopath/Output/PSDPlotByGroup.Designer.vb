@@ -82,8 +82,6 @@ Namespace Ecopath.Output
             Me.m_lbGroups.Location = New System.Drawing.Point(0, 18)
             Me.m_lbGroups.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lbGroups.Name = "m_lbGroups"
-            Me.m_lbGroups.SelectedGroup = Nothing
-            Me.m_lbGroups.SelectedGroupIndex = -1
             Me.m_lbGroups.ShowAllGroupsItem = False
             Me.m_lbGroups.Size = New System.Drawing.Size(133, 445)
             Me.m_lbGroups.SortThreshold = -9999.0!
