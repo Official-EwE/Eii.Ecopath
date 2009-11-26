@@ -43,8 +43,6 @@ Namespace Ecosim
             Me.m_lblPredators = New System.Windows.Forms.Label
             Me.m_plPrey = New System.Windows.Forms.Panel
             Me.m_lblPrey = New System.Windows.Forms.Label
-            Me.m_ts = New System.Windows.Forms.ToolStrip
-            Me.m_tsbnShowGroups = New System.Windows.Forms.ToolStripButton
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -54,7 +52,6 @@ Namespace Ecosim
             Me.m_plFleets.SuspendLayout()
             Me.m_plPredators.SuspendLayout()
             Me.m_plPrey.SuspendLayout()
-            Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_graph
@@ -81,12 +78,14 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
             Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbGroups.FormattingEnabled = True
+            Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
+            Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.LivingGroups
             Me.m_lbGroups.Name = "m_lbGroups"
-            Me.m_lbGroups.GroupListTracking = cGroupListBox.eGroupTrackingType.LivingGroups
+            Me.m_lbGroups.SelectedGroup = Nothing
+            Me.m_lbGroups.SelectedGroupIndex = -1
+            Me.m_lbGroups.ShowAllGroupsItem = False
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
-            Me.m_lbGroups.ShowAllGroupsItem = False
-            Me.m_lbGroups.GroupDisplayStyle = cGroupListBox.eGroupDisplayStyleTypes.DisplayVisibleOnly
             '
             'm_btnSaveData
             '
@@ -100,12 +99,14 @@ Namespace Ecosim
             Me.m_lbPredators.BackColor = System.Drawing.SystemColors.Window
             Me.m_lbPredators.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbPredators.FormattingEnabled = True
+            Me.m_lbPredators.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
+            Me.m_lbPredators.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.AllGroups
             Me.m_lbPredators.Name = "m_lbPredators"
-            Me.m_lbPredators.GroupListTracking = cGroupListBox.eGroupTrackingType.AllGroups
+            Me.m_lbPredators.SelectedGroup = Nothing
+            Me.m_lbPredators.SelectedGroupIndex = -1
+            Me.m_lbPredators.ShowAllGroupsItem = False
             Me.m_lbPredators.SortThreshold = -9999.0!
             Me.m_lbPredators.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.ValueAsc
-            Me.m_lbPredators.ShowAllGroupsItem = False
-            Me.m_lbPredators.GroupDisplayStyle = cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
             '
             'm_lbPrey
             '
@@ -113,12 +114,14 @@ Namespace Ecosim
             Me.m_lbPrey.BackColor = System.Drawing.SystemColors.Window
             Me.m_lbPrey.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbPrey.FormattingEnabled = True
+            Me.m_lbPrey.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
+            Me.m_lbPrey.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.AllGroups
             Me.m_lbPrey.Name = "m_lbPrey"
-            Me.m_lbPrey.GroupListTracking = cGroupListBox.eGroupTrackingType.AllGroups
+            Me.m_lbPrey.SelectedGroup = Nothing
+            Me.m_lbPrey.SelectedGroupIndex = -1
+            Me.m_lbPrey.ShowAllGroupsItem = False
             Me.m_lbPrey.SortThreshold = -9999.0!
             Me.m_lbPrey.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.ValueAsc
-            Me.m_lbPrey.ShowAllGroupsItem = False
-            Me.m_lbPrey.GroupDisplayStyle = cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
             '
             'm_scMain
             '
@@ -137,12 +140,11 @@ Namespace Ecosim
             'm_tlpMain
             '
             resources.ApplyResources(Me.m_tlpMain, "m_tlpMain")
-            Me.m_tlpMain.Controls.Add(Me.m_tlbControllers, 0, 5)
-            Me.m_tlpMain.Controls.Add(Me.m_plGroups, 0, 1)
-            Me.m_tlpMain.Controls.Add(Me.m_plFleets, 0, 4)
-            Me.m_tlpMain.Controls.Add(Me.m_plPredators, 0, 2)
-            Me.m_tlpMain.Controls.Add(Me.m_plPrey, 0, 3)
-            Me.m_tlpMain.Controls.Add(Me.m_ts, 0, 0)
+            Me.m_tlpMain.Controls.Add(Me.m_tlbControllers, 0, 4)
+            Me.m_tlpMain.Controls.Add(Me.m_plGroups, 0, 0)
+            Me.m_tlpMain.Controls.Add(Me.m_plFleets, 0, 3)
+            Me.m_tlpMain.Controls.Add(Me.m_plPredators, 0, 1)
+            Me.m_tlpMain.Controls.Add(Me.m_plPrey, 0, 2)
             Me.m_tlpMain.Name = "m_tlpMain"
             '
             'm_tlbControllers
@@ -214,18 +216,6 @@ Namespace Ecosim
             Me.m_lblPrey.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.m_lblPrey.Name = "m_lblPrey"
             '
-            'm_ts
-            '
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnShowGroups})
-            resources.ApplyResources(Me.m_ts, "m_ts")
-            Me.m_ts.Name = "m_ts"
-            '
-            'm_tsbnShowGroups
-            '
-            Me.m_tsbnShowGroups.Image = Global.ScientificInterface.My.Resources.Resources.DisplayGroups
-            resources.ApplyResources(Me.m_tsbnShowGroups, "m_tsbnShowGroups")
-            Me.m_tsbnShowGroups.Name = "m_tsbnShowGroups"
-            '
             'EcosimOutputPlots
             '
             resources.ApplyResources(Me, "$this")
@@ -237,14 +227,11 @@ Namespace Ecosim
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
             Me.m_tlpMain.ResumeLayout(False)
-            Me.m_tlpMain.PerformLayout()
             Me.m_tlbControllers.ResumeLayout(False)
             Me.m_plGroups.ResumeLayout(False)
             Me.m_plFleets.ResumeLayout(False)
             Me.m_plPredators.ResumeLayout(False)
             Me.m_plPrey.ResumeLayout(False)
-            Me.m_ts.ResumeLayout(False)
-            Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -266,8 +253,6 @@ Namespace Ecosim
         Private WithEvents m_lblPrey As System.Windows.Forms.Label
         Private WithEvents m_lbFleets As System.Windows.Forms.ListBox
         Private WithEvents m_lblFleets As System.Windows.Forms.Label
-        Private WithEvents m_ts As System.Windows.Forms.ToolStrip
-        Private WithEvents m_tsbnShowGroups As System.Windows.Forms.ToolStripButton
     End Class
 
 End Namespace

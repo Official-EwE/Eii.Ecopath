@@ -190,7 +190,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 215</value>
+    <value>193, 225</value>
   </data>
   <data name="m_lbGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -250,7 +250,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbPredators.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 101</value>
+    <value>193, 106</value>
   </data>
   <data name="m_lbPredators.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -280,7 +280,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbPrey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 98</value>
+    <value>193, 103</value>
   </data>
   <data name="m_lbPrey.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -400,13 +400,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 24</value>
+    <value>0, 0</value>
   </data>
   <data name="m_plGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 232</value>
+    <value>193, 242</value>
   </data>
   <data name="m_plGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -436,7 +436,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 72</value>
+    <value>193, 76</value>
   </data>
   <data name="m_lbFleets.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -496,13 +496,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 488</value>
+    <value>0, 484</value>
   </data>
   <data name="m_plFleets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 93</value>
+    <value>193, 97</value>
   </data>
   <data name="m_plFleets.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -562,13 +562,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plPredators.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 256</value>
+    <value>0, 242</value>
   </data>
   <data name="m_plPredators.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plPredators.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 116</value>
+    <value>193, 121</value>
   </data>
   <data name="m_plPredators.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -628,13 +628,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plPrey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 372</value>
+    <value>0, 363</value>
   </data>
   <data name="m_plPrey.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plPrey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 116</value>
+    <value>193, 121</value>
   </data>
   <data name="m_plPrey.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -651,42 +651,6 @@
   <data name="&gt;&gt;m_plPrey.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <metadata name="m_ts.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 0</value>
-  </metadata>
-  <data name="m_tsbnShowGroups.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnShowGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 21</value>
-  </data>
-  <data name="m_tsbnShowGroups.Text" xml:space="preserve">
-    <value>Show groups...</value>
-  </data>
-  <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_ts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 24</value>
-  </data>
-  <data name="m_ts.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_ts.Text" xml:space="preserve">
-    <value>ToolStrip1</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Name" xml:space="preserve">
-    <value>m_ts</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
-    <value>m_tlpMain</value>
-  </data>
-  <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -697,7 +661,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_tlpMain.RowCount" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="m_tlpMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>193, 607</value>
@@ -718,7 +682,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tlbControllers" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plGroups" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plFleets" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPredators" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPrey" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_ts" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,24,Percent,41.66667,Percent,20.83333,Percent,20.83333,Percent,16.66667,Absolute,25" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tlbControllers" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plGroups" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plFleets" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPredators" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPrey" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,41.66667,Percent,20.83333,Percent,20.83333,Percent,16.66667,Absolute,25,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -773,12 +737,6 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Plots</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnShowGroups.Name" xml:space="preserve">
-    <value>m_tsbnShowGroups</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnShowGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>EcosimOutputPlots</value>

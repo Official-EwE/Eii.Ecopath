@@ -86,16 +86,10 @@ Namespace Ecosim
             Me.m_lbPredators.Attach(Me.m_core, Me.m_sg)
             Me.m_lbPrey.Attach(Me.m_core, Me.m_sg)
 
-            m_lbGroups.SelectedIndex = 0
+            Me.m_lbGroups.SelectedIndex = 0
 
             Me.UpdateControls()
             Me.UpdateColors()
-
-            ' Display Groups
-            cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
-                cmd.AddControl(Me.m_tsbnShowGroups)
-            End If
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -103,13 +97,6 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
-            Dim cmd As cCommand = Nothing
-            cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
-                cmd.RemoveControl(Me.m_tsbnShowGroups)
-            End If
 
             Me.CoreComponents = Nothing
             Me.m_lbGroups.Detach()
@@ -124,6 +111,7 @@ Namespace Ecosim
             Me.m_zgh = Nothing
 
             MyBase.OnFormClosed(e)
+
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
@@ -478,44 +466,15 @@ Namespace Ecosim
             Next
 
             Dim aiAvgPred() As Integer = lAvgPredIndex.ToArray
-            'Me.SortRanks(lAvgPredConsumption.ToArray, aiAvgPred)
             Me.PopulateGroupListBox(Me.m_lbPredators, aiAvgPred, lAvgPredConsumption.ToArray)
 
             Dim aiAvgPrey() As Integer = lAvgPreyIndex.ToArray
-            'Me.SortRanks(lAvgPreyConsumption.ToArray, aiAvgPrey)
             Me.PopulateGroupListBox(Me.m_lbPrey, aiAvgPrey, lAvgPreyConsumption.ToArray)
 
             Dim aiFleet() As Integer = lFleetIndex.ToArray
-            'Me.SortRanks(lCatch.ToArray, aiFleet)
             Me.PopulateFleetListBox(Me.m_lbFleets, aiFleet)
 
         End Sub
-
-        '''' -------------------------------------------------------------------
-        '''' <summary>
-        '''' 
-        '''' </summary>
-        '''' <param name="asPredConsumption"></param>
-        '''' <param name="aiGroups"></param>
-        '''' -------------------------------------------------------------------
-        'Private Sub SortRanks(ByVal asPredConsumption() As Single, ByVal aiGroups() As Integer)
-
-        '    'Use a simple bubblesort algorithm here
-        '    For i As Integer = 0 To asPredConsumption.Length - 2
-        '        For j As Integer = asPredConsumption.Length - 1 To i + 1 Step -1
-        '            If asPredConsumption(j) > asPredConsumption(j - 1) Then
-        '                ' swap 
-        '                Dim sTmp As Single = asPredConsumption(j)
-        '                asPredConsumption(j) = asPredConsumption(j - 1)
-        '                asPredConsumption(j - 1) = sTmp
-        '                Dim iTmp As Integer = aiGroups(j)
-        '                aiGroups(j) = aiGroups(j - 1)
-        '                aiGroups(j - 1) = iTmp
-        '            End If
-        '        Next
-        '    Next
-
-        'End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -533,15 +492,6 @@ Namespace Ecosim
             Next
             l.SortType = cGroupListBox.eSortType.ValueAsc
             l.Sorted = True
-
-            'Dim group As cEcoPathGroupInput = Nothing
-
-            'l.Items.Clear()
-            'For i As Integer = 0 To aiGroupIndex.Length - 1
-            '    group = Me.m_core.EcoPathGroupInputs(aiGroupIndex(i))
-            '    l.Items.Add(New cGroupListBox.cGroupItem(group))
-            'Next
-            'l.Refresh()
 
         End Sub
 
