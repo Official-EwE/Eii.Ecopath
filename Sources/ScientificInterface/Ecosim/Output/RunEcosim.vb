@@ -83,6 +83,8 @@ Namespace Ecosim
             Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.m_core, Me.tscbTarget)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
 
+            Me.m_lbGroups.Attach(Me.m_core, Me.m_sg)
+
             Me.m_zgp = New cEcosimOutputPlotHelper()
             Me.m_zgp.Attach(Me.m_core, Me.m_graph)
 
@@ -124,6 +126,8 @@ Namespace Ecosim
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
             End If
+
+            Me.m_lbGroups.Detach()
 
             Me.m_coreStateMonitor = Nothing
             Me.CoreComponents = Nothing
