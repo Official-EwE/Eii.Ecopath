@@ -1,4 +1,7 @@
 Option Strict On
+Imports System
+Imports System.Collections
+Imports System.Collections.Generic
 
 ''' ===========================================================================
 ''' <summary>

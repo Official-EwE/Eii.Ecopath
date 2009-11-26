@@ -1,14 +1,16 @@
 Option Strict On
-
-Imports EwEUtils.Core
-Imports EwEUtils.Database
-Imports EwEPlugin.Data
-
+Imports System
 Imports System.IO
+Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports System.Threading
 Imports System.Reflection
 Imports System.ComponentModel
 Imports System.Windows.Forms
+Imports Microsoft.VisualBasic
+Imports EwEUtils.Core
+Imports EwEUtils.Database
+Imports EwEPlugin.Data
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -80,7 +82,7 @@ Public Class cPluginManager
         Implements IComparer(Of cPluginContext)
 
         Public Function Compare(ByVal x As cPluginContext, ByVal y As cPluginContext) As Integer _
-                Implements System.Collections.Generic.IComparer(Of cPluginContext).Compare
+                Implements IComparer(Of cPluginContext).Compare
             Return CInt(IIf(DirectCast(x.Plugin, IDatabaseUpdatePlugin).UpdateVersion < DirectCast(y.Plugin, IDatabaseUpdatePlugin).UpdateVersion, -1, 1))
         End Function
 

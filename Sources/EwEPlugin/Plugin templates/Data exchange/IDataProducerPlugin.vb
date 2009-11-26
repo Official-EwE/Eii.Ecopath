@@ -1,17 +1,7 @@
-﻿'==============================================================================
-'
-' $Log: IDataProducerPlugin.vb,v $
-' Revision 1.2  2009/04/16 19:29:35  jeroens
-' Added IsDataAvailable
-'
-' Revision 1.1  2009/01/21 19:08:12  jeroens
-' Moved and split into separate files
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
+Imports System
 Imports EwEUtils.Core
 
 #End Region ' Imports

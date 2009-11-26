@@ -1,5 +1,7 @@
 Option Strict On
 
+Imports System
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Plugin exception

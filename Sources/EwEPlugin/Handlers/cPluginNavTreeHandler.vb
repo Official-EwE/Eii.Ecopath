@@ -1,5 +1,7 @@
 Option Strict On
+Imports System
 Imports System.Windows.Forms
+Imports Microsoft.VisualBasic
 
 ''' -----------------------------------------------------------------------
 ''' <summary>

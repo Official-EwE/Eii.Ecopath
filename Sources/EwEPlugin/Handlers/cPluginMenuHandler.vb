@@ -1,6 +1,8 @@
 Option Strict On
-
+Imports System
+Imports System.Diagnostics
 Imports System.Windows.Forms
+Imports Microsoft.VisualBasic
 Imports EwEUtils.Commands
 
 ''' -----------------------------------------------------------------------
