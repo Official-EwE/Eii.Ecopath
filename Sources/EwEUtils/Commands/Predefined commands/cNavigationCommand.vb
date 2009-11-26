@@ -10,7 +10,7 @@ Namespace Commands
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' The NavigationCommand class implements a <see cref="Command">Command</see>
+    ''' The NavigationCommand class implements a <see cref="cCommand">Command</see>
     ''' that is used in EwE6 to navigate to embedded and plugin-provided 
     ''' <see cref="System.Windows.Forms.Form">Forms</see>.
     ''' </summary>

@@ -56,12 +56,12 @@ Namespace Commands
 
 #Region " Command administration "
 
-        ''' <summary>Dictionary of <see cref="Command">Commands</see>.</summary>
+        ''' <summary>Dictionary of <see cref="cCommand">Commands</see>.</summary>
         Private m_dictCommands As Dictionary(Of String, cCommand) = Nothing
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Add a <see cref="Command">Command</see> to the handler.
+        ''' Add a <see cref="cCommand">Command</see> to the handler.
         ''' </summary>
         ''' <param name="c">The command to add.</param>
         ''' -----------------------------------------------------------------------
@@ -75,7 +75,7 @@ Namespace Commands
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Remove a <see cref="Command">Command</see> from the handler.
+        ''' Remove a <see cref="cCommand">Command</see> from the handler.
         ''' </summary>
         ''' <param name="c">The command to remove.</param>
         ''' -----------------------------------------------------------------------
@@ -89,11 +89,11 @@ Namespace Commands
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Retrieve a <see cref="Command">Command</see> by its name.
+        ''' Retrieve a <see cref="cCommand">Command</see> by its name.
         ''' </summary>
         ''' <param name="strName">The name of the Command to find.</param>
         ''' <returns>
-        ''' A <see cref="Command">Command</see>, or Nothing if the command could not 
+        ''' A <see cref="cCommand">Command</see>, or Nothing if the command could not 
         ''' be found.
         ''' </returns>
         ''' -----------------------------------------------------------------------
