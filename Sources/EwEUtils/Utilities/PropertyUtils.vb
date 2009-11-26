@@ -1,21 +1,10 @@
-'==============================================================================
-'
-' $Log: PropertyUtils.vb,v $
-' Revision 1.3  2009/01/06 12:42:08  jeroens
-' Cleaned up
-' Property order sorting takes Category, DisplayName into account
-'
-' Revision 1.2  2008/12/15 16:06:33  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:12  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
+Imports System
+Imports System.Diagnostics
+Imports System.Collections
+Imports System.Collections.Generic
 Imports System.Reflection
 Imports System.ComponentModel
 

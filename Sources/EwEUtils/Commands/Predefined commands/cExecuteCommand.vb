@@ -1,14 +1,9 @@
-﻿'==============================================================================
-'
-' $Log: cExecuteCommand.vb,v $
-' Revision 1.1  2009/05/19 13:14:39  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
+Imports System
+Imports System.Diagnostics
+Imports System.Collections.Generic
 Imports EwEUtils.Core
 
 #End Region ' Imports

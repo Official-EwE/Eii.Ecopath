@@ -2,6 +2,8 @@
 
 Option Strict On
 
+Imports System
+Imports System.Diagnostics
 Imports System.Data
 Imports System.Data.OleDb
 Imports System.Data.SqlClient
@@ -574,7 +576,6 @@ Namespace Database
         ''' <param name="bRollbackOnError">Flag stating whether the transaction needs
         ''' to automatically rollback when the commit process fails.</param>
         ''' <returns>True if the commit operation succeeded.</returns>
-        ''' <remarks>19may07: status experimental</remarks>
         ''' -------------------------------------------------------------------
         Public Function CommitTransaction(Optional ByVal bRollbackOnError As Boolean = True) As Boolean
             If (Me.m_transaction Is Nothing) Then Return False
@@ -594,7 +595,6 @@ Namespace Database
         ''' Commits a transaction to the current <see cref="GetConnection">Connection</see>.
         ''' </summary>
         ''' <returns></returns>
-        ''' <remarks>19may07: status experimental</remarks>
         ''' -------------------------------------------------------------------
         Public Function RollbackTransaction() As Boolean
             Try

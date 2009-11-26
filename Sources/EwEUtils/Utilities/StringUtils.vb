@@ -1,10 +1,16 @@
-Option Strict On
+#Region " Imports "
 
+Option Strict On
+Imports System
+Imports System.Diagnostics
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Globalization
+Imports Microsoft.VisualBasic
+
+#End Region ' Imports
 
 Namespace Utilities
 

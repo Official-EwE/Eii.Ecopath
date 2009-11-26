@@ -1,21 +1,12 @@
-'==============================================================================
-'
-' $Log: UriBuilder.vb,v $
-' Revision 1.2  2008/12/15 16:06:33  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:13  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
 
 Imports System
 Imports System.Web
+Imports System.Collections.Generic
 Imports System.Collections.Specialized
+Imports Microsoft.VisualBasic
 
 #End Region ' Imports
 

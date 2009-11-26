@@ -1,14 +1,8 @@
-'==============================================================================
-'
-' $Log: cINIFile.vb,v $
-' Revision 1.1  2009/02/09 02:00:27  jeroens
-' Yo!
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
+Imports System
+Imports Microsoft.VisualBasic
 Imports EwEUtils.Win32Api
 
 #End Region ' Imports

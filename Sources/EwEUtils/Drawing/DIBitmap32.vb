@@ -1,16 +1,8 @@
-'==============================================================================
-'
-' $Log: DIBitmap32.vb,v $
-' Revision 1.1  2008/09/26 07:31:10  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/05/09 17:08:02  jeroens
-' Implemented var naming conventions
-'
-'==============================================================================
-
 Option Strict On
+Imports System
+Imports System.Data
 Imports System.Drawing
+Imports Microsoft.VisualBasic
 
 Namespace Drawing
 

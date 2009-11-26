@@ -1,20 +1,7 @@
-'==============================================================================
-'
-' $Log: cNavigationCommand.vb,v $
-' Revision 1.1  2009/05/11 01:46:28  jeroens
-' Renamed
-'
-' Revision 1.1  2008/09/26 07:31:10  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2008/09/09 14:41:45  jeroens
-' Moved
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
+Imports System
 Imports EwEUtils.Core
 
 #End Region ' Imports

@@ -1,35 +1,11 @@
-'==============================================================================
-'
-' $Log: Win32.vb,v $
-' Revision 1.1  2008/09/26 07:31:13  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2008/07/22 18:18:03  jeroens
-' I like it when things grow
-'
-' Revision 1.3  2008/07/21 18:26:30  jeroens
-' Structured Win32 info
-'
-' Revision 1.2  2008/01/29 15:55:32  jeroens
-' Fixed CLS compliancy issues
-'
-' Revision 1.1  2007/10/14 01:45:13  jeroens
-' * Renamed (was Windows.h)
-'
-' Revision 1.3  2007/09/17 16:03:33  jeroens
-' + Added extended style
-'
-' Revision 1.2  2007/09/17 02:44:17  jeroens
-' + Extended
-'
-' Revision 1.1  2007/09/17 01:09:55  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
+Imports System
 Imports System.text
 Imports System.Runtime.InteropServices
+
+#End Region ' Imports
 
 Namespace Win32Api
 

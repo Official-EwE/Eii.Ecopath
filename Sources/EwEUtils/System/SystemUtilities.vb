@@ -1,56 +1,10 @@
-'==============================================================================
-'
-' $Log: SystemUtilities.vb,v $
-' Revision 1.6  2009/06/16 20:12:56  jeroens
-' MakeTempPath includes user-provided name, if any
-'
-' Revision 1.5  2009/05/02 01:49:04  jeroens
-' Fixed temp file logic
-'
-' Revision 1.4  2009/04/19 13:52:59  jeroens
-' Don't throw execptions on errors
-'
-' Revision 1.3  2009/04/17 03:15:58  jeroens
-' Removed global message box
-'
-' Revision 1.2  2008/10/07 21:58:05  jeroens
-' Added Is64Bit
-'
-' Revision 1.1  2008/09/26 07:31:12  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.8  2008/08/20 23:07:40  sherman
-' error handing for missing 16bit applications
-'
-' Revision 1.7  2008/08/20 00:08:47  sherman
-' Allowed Flow diagram to execute programs from different locations
-'
-' Revision 1.6  2008/08/11 23:08:49  sherman
-' Launched 16bit exe from CommonFiles folder
-'
-' Revision 1.5  2008/08/01 21:25:59  antonior
-' *** empty log message ***
-'
-' Revision 1.4  2008/07/30 00:33:19  antonior
-' -AppExec
-'
-' Revision 1.3  2008/07/29 19:32:30  antonior
-' *** empty log message ***
-'
-' Revision 1.2  2008/07/23 19:46:42  antonior
-' - Flow Diagram
-' - App execution function
-'
-' Revision 1.1  2008/02/13 03:50:19  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
+Imports System
 Imports System.Security.Principal
 Imports System.IO
+Imports Microsoft.VisualBasic
 Imports EwEUtils.Win32Api
 
 #End Region ' Imports

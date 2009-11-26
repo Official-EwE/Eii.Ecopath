@@ -1,17 +1,7 @@
-'==============================================================================
-'
-' $Log: HSV.vb,v $
-' Revision 1.2  2008/12/15 16:06:33  jeroens
-' no message
-'
-' Revision 1.1  2008/05/05 02:40:51  jeroens
-' Separated HSV logic from StyleGuide
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
+Imports System
 Imports System.Drawing
 
 #End Region ' Imports

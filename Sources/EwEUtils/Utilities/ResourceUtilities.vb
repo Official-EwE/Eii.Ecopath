@@ -1,21 +1,8 @@
-﻿'==============================================================================
-'
-' $Log: ResourceUtilities.vb,v $
-' Revision 1.3  2009/02/08 14:01:12  jeroens
-' Added lookup cheat
-'
-' Revision 1.2  2009/02/07 20:24:18  jeroens
-' Made namespace and assembly independent
-'
-' Revision 1.1  2009/02/07 20:10:25  jeroens
-' Extracted from EwECore
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
-
+Imports System
+Imports System.Diagnostics
 Imports System.Reflection
 Imports System.Globalization
 Imports System.Resources

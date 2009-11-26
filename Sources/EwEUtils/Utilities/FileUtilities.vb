@@ -1,27 +1,12 @@
-'==============================================================================
-'
-' $Log: FileUtilities.vb,v $
-' Revision 1.3  2009/05/02 01:48:07  jeroens
-' Added comments
-'
-' Revision 1.2  2009/03/26 15:51:01  jeroens
-' Added FindFile
-'
-' Revision 1.1  2008/09/26 07:31:12  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/07/24 18:06:46  jeroens
-' ToValidFileName can be told to preserve path chars
-'
-' Revision 1.1  2008/05/07 19:52:14  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
-
+Imports System
+Imports System.Collections.Generic
 Imports System.IO
 Imports System.Security.AccessControl
+
+#End Region ' Imports
 
 Namespace Utilities
 

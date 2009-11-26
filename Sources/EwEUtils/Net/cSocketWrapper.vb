@@ -2,6 +2,8 @@
 
 Option Strict On
 
+Imports System
+Imports System.Diagnostics
 Imports System.IO
 Imports System.Net
 Imports System.Net.Sockets
@@ -9,6 +11,7 @@ Imports System.Threading
 Imports System.Runtime.Serialization.Formatters.Binary
 Imports System.Runtime.Serialization
 Imports System.Reflection
+Imports System.Collections.Generic
 
 #End Region ' Imports
 
@@ -309,7 +312,6 @@ Namespace NetUtilities
         ''' <returns>True if connected succesfully.</returns>
         ''' -------------------------------------------------------------------
         Public Function Connect(ByVal strURI As String, ByVal iPort As Integer) As Boolean
-
             Dim aIP As IPAddress() = Nothing
             Try
                 Dim ipEntry As IPHostEntry = Dns.GetHostEntry(strURI)

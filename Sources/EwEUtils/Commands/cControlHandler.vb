@@ -1,26 +1,7 @@
-'==============================================================================
-'
-' $Log: cControlHandler.vb,v $
-' Revision 1.1  2009/05/11 01:43:25  jeroens
-' Renamed
-'
-' Revision 1.1  2008/09/26 07:31:09  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2007/08/30 16:24:41  jeroens
-' + Added support for toolstrip split button
-'
-' Revision 1.2  2007/01/20 03:18:32  jeroens
-' + Added handler for ToolStripButtonDropDown controls
-'
-' Revision 1.1  2006/09/18 15:41:00  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
-
+Imports System
 Imports System.Windows.Forms
+Imports System.Diagnostics
 
 Namespace Commands
 

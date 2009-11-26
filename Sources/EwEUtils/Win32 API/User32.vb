@@ -1,36 +1,11 @@
-'==============================================================================
-'
-' $Log: User32.vb,v $
-' Revision 1.1  2008/09/26 07:31:13  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.7  2008/07/22 18:18:03  jeroens
-' I like it when things grow
-'
-' Revision 1.6  2008/01/29 15:55:32  jeroens
-' Fixed CLS compliancy issues
-'
-' Revision 1.5  2007/10/22 01:31:02  jeroens
-' * Fixed failing Windows calls
-'
-' Revision 1.4  2007/10/14 01:44:44  jeroens
-' * Added more code. MORE CODE!
-'
-' Revision 1.3  2007/09/17 01:10:24  jeroens
-' - Moved constants to Windows.h
-'
-' Revision 1.2  2007/09/16 22:58:55  jeroens
-' + Mapped more methods
-'
-' Revision 1.1  2007/09/07 16:14:54  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
-
+Imports System
 Imports EwEUtils.Win32Api.Win32
 Imports System.Runtime.InteropServices
+
+#End Region ' Imports
 
 Namespace Win32Api
 

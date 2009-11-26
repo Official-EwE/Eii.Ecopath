@@ -1,25 +1,10 @@
-'==============================================================================
-'
-' $Log: ComDlg32.vb,v $
-' Revision 1.1  2008/09/26 07:31:13  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2007/10/22 01:31:02  jeroens
-' * Fixed failing Windows calls
-'
-' Revision 1.3  2007/09/17 16:04:56  jeroens
-' + [In()], Out()
-'
-' Revision 1.2  2007/09/17 02:43:52  jeroens
-' * Marshalling headache replaced by intptr; makes struct harder to use but it works significantly better
-'
-' Revision 1.1  2007/09/16 22:58:07  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict Off
+Imports System
 Imports System.Runtime.InteropServices
+
+#End Region ' Imports
 
 Namespace Win32Api
 

@@ -1,18 +1,9 @@
-'==============================================================================
-'
-' $Log: GDIplus.vb,v $
-' Revision 1.1  2008/09/26 07:31:13  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2007/07/20 03:22:20  jeroens
-' * Moved XML example to proper spot
-'
-' Revision 1.1  2007/06/18 15:44:39  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
+Imports System
+
+#End Region ' Imports
 
 Namespace Win32Api
 

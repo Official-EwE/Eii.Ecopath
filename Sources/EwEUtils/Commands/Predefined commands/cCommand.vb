@@ -1,27 +1,9 @@
-'==============================================================================
-'
-' $Log: cCommand.vb,v $
-' Revision 1.2  2009/05/19 13:15:31  jeroens
-' Reorganized
-' Command execution try/caught
-'
-' Revision 1.1  2009/05/11 01:46:27  jeroens
-' Renamed
-'
-' Revision 1.1  2008/09/26 07:31:09  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/09/23 16:17:05  jeroens
-' Command updated prior to invoking
-'
-' Revision 1.1  2008/09/09 14:41:45  jeroens
-' Moved
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
+Imports System
+Imports System.Collections
+Imports System.Collections.Generic
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -260,7 +242,7 @@ Namespace Commands
             End Set
         End Property
 
-         ''' -----------------------------------------------------------------------
+        ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get the command name.
         ''' </summary>
