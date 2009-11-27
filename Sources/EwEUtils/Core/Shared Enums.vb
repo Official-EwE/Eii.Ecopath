@@ -53,7 +53,7 @@ Namespace Core
     ''' the Core models.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Enum eVarNameFlags
+    Public Enum eVarNameFlags As Integer
 
         ''' <summary>Variable name is not specified.</summary>
         NotSet
@@ -281,15 +281,24 @@ Namespace Core
         ''' <summary>Proportion of discards that dies</summary>
         DiscardMortality
 
-        '' Target fishing mortality policy vars
-        '''' <summary>Quota for a species.</summary>
-        'QuotaSpecies
+        ''' <summary>Flag stating whether to use regulatory feedback.</summary>
+        RegFeedback
+
+        ' Target fishing mortality policy vars
+        ''' <summary>Quota for a species.</summary>
+        QuotaSpecies
         ''' <summary>BBase for target fishing mortality policy.</summary>
         BBase
         ''' <summary>BLimit for target fishing mortality policy.</summary>
         BLim
         ''' <summary>Mortality/Fmsy for target fishing mortality policy.</summary>
         Fopt
+
+        ''' <summary>Coefficient of variation in estimated biomass for regulated fisheries .</summary>
+        RegCVBest
+
+        ''' <summary>Kalman weight for regulated fisheries ????</summary>
+        RegKalWt
 
         'jb Salinity values added Dec-07
         SalinityForceFunctionNumber
@@ -1001,30 +1010,6 @@ Namespace Core
         MSENTrials
         MSEBiomass
         MSEUseEconomicPlugin
-        ''' <summary>True = Use predicted Effort False = user input Effort </summary>
-        MSEPredictEffort
-        ''' <summary>Biomass by group </summary>
-        MSEFixedEscapement
-
-        ''' <summary>Stop the current MSE run</summary>
-        MSEStop
-
-        ''' <summary>Save the output</summary>
-        MSESave
-
-        ''' <summary>Effort type the MSE is to use.</summary>
-        MSEEffortMode
-
-        MSERefBioLower
-        MSERefBioUpper
-
-        MSERefGroupCatchLower
-        MSERefGroupCatchUpper
-
-        MSERefFleetCatchLower
-        MSERefFleetCatchUpper
-
-        MSEHistogram
 
         ' Pedigree
         VariableName
@@ -1123,12 +1108,6 @@ Namespace Core
         GameForceSalinityName
         GameForceNutrientName
         GameForceTemperatureName
-        ''' <summary>Game biomass for an interation</summary>
-        GameBiomassIteration
-        ''' <summary>Game catch by group for an interation</summary>
-        GameCatchByGroupIteration
-        ''' <summary>Game effort by fleet for an interation</summary>
-        GameEffortByFleetIteration
 
         PSDEnabled
         PSDComputed
@@ -1502,6 +1481,7 @@ Namespace Core
         ''' <summary>Number of importance layers.</summary>
         nImportanceLayers
 
+
         ''' <summary>Number of years the game simulation can run for.</summary>
         nGameSimYears
         ''' <summary>Number of timesteps the game simulation can run for.</summary>
@@ -1514,10 +1494,16 @@ Namespace Core
         ''' <summary>Number of columns in the Ecospace basemap.</summary>
         nCols
 
+        'Joe
         ''' <summary>Number of timesteps in the Ecopath Weight, Number and Biomass</summary>
         nEcopathAgeSteps
         ''' <summary>Number of weight classes in the particle size distribution</summary>
         nWeightClasses
+        'End Joeh
+
+        ''' <summary> Number of steps to complete a process </summary>
+        ''' <remarks>At this time this is only used by the Decision Support Tool(game) and is dynamic depending on the current process!!!</remarks>
+        nProgressSteps
 
         ''' <summary> Number of forcing function that are for Salinity </summary>
         '''  <remarks>At this time this is only used by the Decision Support Tool(game) </remarks>
@@ -1528,10 +1514,6 @@ Namespace Core
         ''' <summary> Number of forcing function that are for Salinity </summary>
         '''  <remarks>At this time this is only used by the Decision Support Tool(game) </remarks>
         nTempForcingFunctions
-
-        ''' <summary>The number of iterations running in the game.</summary>
-        nGameIterations
-
     End Enum
 
 #End Region ' Core counters
@@ -1731,11 +1713,10 @@ Namespace Core
 
     'enum values are hard coded so that they can be stored in the database 
     Public Enum eQuotaTypes
-        NotUsed
-        Effort
-        Weakest
-        Strongest
-        Selective
+        NotUsed = 0
+        Weakest = 1
+        Strongest = 2
+        Selective = 3
     End Enum
 
 #End Region ' Quota types
