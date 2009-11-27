@@ -443,6 +443,7 @@ Namespace ValueWrapper
 
         Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes, _
                 ByRef CounterDelegate As CoreCounterDelegate, ByRef MetaData As cVariableMetaData, ByRef Validator As cValidatorDefault)
+            MyBase.New(Nothing, VarName, Status, theValueType)
 
             varType = theValueType
             m_varName = VarName
