@@ -131,7 +131,8 @@ Public Class cTimeSeriesDataset
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property NumTimeSeries() As Integer
         Get
-            Return Me.m_iNumTimeSeries
+            If Me.Count = 0 Then Return Me.m_iNumTimeSeries
+            Return Me.Count
         End Get
     End Property
 
