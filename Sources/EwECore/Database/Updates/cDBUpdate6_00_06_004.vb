@@ -114,8 +114,7 @@ Public Class cDBUpdate6_00_06_004
         Dim sfm As cScenarioFleetMap = Nothing
         Dim iPortID As Integer = 1
         Dim dtSFM As New Dictionary(Of Integer, cScenarioFleetMap)
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcosimScenarioFleet")
-        Dim dt As DataTable = writer.GetDataTable()
+        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim bSucces As Boolean = True
 
