@@ -1,20 +1,4 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_05_001.vb,v $
-' Revision 1.3  2009/06/28 01:33:29  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.2  2009/02/26 21:51:04  jeroens
-' Cleaned up GroupInfo
-'
-' Revision 1.1  2009/02/26 21:43:11  jeroens
-' Initial version
-'
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
@@ -22,7 +6,7 @@ Imports EwEUtils.Core
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.0.4.022:</para>
+''' <para>Database update 6.0.5.001:</para>
 ''' <para>
 ''' <list type="bullet">
 ''' <item><description>Added Ecopath discard mortality.</description></item>
@@ -86,7 +70,7 @@ Public Class cDBUpdate6_00_05_001
 
                 bSucces = bSucces And db.Execute("ALTER TABLE Pedigree ADD CONSTRAINT PK_INDEX PRIMARY KEY (LevelID)")
 
-                reader = db.GetReader("PedigreeLevel")
+                reader = db.GetReader("SELECT * FROM PedigreeLevel")
                 writer = db.GetWriter("Pedigree")
 
                 If reader IsNot Nothing Then
@@ -134,7 +118,6 @@ Public Class cDBUpdate6_00_05_001
             End Try
 
             ' Move vbK back to groups for Particle Size Distribution purposes
-            reader = db.GetReader("StanzaLifeStage")
             writer = db.GetWriter("EcopathGroup")
 
             ' *DEEP sigh*
