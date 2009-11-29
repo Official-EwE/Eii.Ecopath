@@ -1,17 +1,9 @@
-﻿'==============================================================================
-'
-' $Log: cDBUpdate.vb,v $
-' Revision 1.1  2009/06/28 01:28:06  jeroens
-' Initial version
-'
-'==============================================================================
-
-Option Strict On
-
+﻿Option Strict On
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
 Imports EwEUtils.Core
+Imports System.Xml
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -43,7 +35,6 @@ Public MustInherit Class cDBUpdate
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property UpdateDescription() As String _
         Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Apply the actual update
@@ -111,4 +102,20 @@ Public MustInherit Class cDBUpdate
 
 #End Region ' Standard bits
 
+#Region " GUI specific "
+
+    Public Overridable ReadOnly Property UpdateDescriptionXML() As XmlDocument
+        Get
+            Dim doc As New XmlDocument()
+            Dim nd As XmlNode = doc.CreateElement("Description")
+
+            doc.PreserveWhitespace = False
+            nd.InnerText = Me.UpdateDescription()
+            doc.AppendChild(nd)
+
+            Return doc
+        End Get
+    End Property
+
+#End Region
 End Class

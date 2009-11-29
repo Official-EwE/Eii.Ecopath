@@ -1,7 +1,8 @@
 Option Strict On
+Imports System.Data
+Imports System.Xml
 Imports EwEPlugin
 Imports EwEUtils.Database
-Imports System.Data
 Imports EwEUtils.Core
 
 ''' --------------------------------------------------------------------------
@@ -9,7 +10,7 @@ Imports EwEUtils.Core
 ''' <para>Database update 6.0.6.003:</para>
 ''' <para>
 ''' <list type="bullet">
-''' <item><description>Fixed mediation issue.</description></item>
+''' <item><description>Fixed .</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
@@ -42,20 +43,70 @@ Public Class cDBUpdate6_00_06_003
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Complemented missing fleets for Ecosim on import of old EwE5 models."
+            Return "Added missing Ecosim fleet definitions; Fixed Ecosim effort duplication issue"
         End Get
     End Property
 
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
-        Return Me.FixEcosimFleets(db) And Me.FixDoubleLinkedEffortShapes(db)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Pretty description for display purposes.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property UpdateDescriptionXML() As XmlDocument
+        Get
+            Dim doc As New XmlDocument()
+            Dim ndRoot As XmlNode = Nothing
+            Dim nd As XmlNode = Nothing
+
+            doc.PreserveWhitespace = False
+
+            ndRoot = doc.CreateElement("Description")
+            ndRoot.InnerText = "This update addresses Ecosim fleet related incompatibilities with older EwE5 models"
+
+            nd = doc.CreateElement("Update")
+            nd.InnerText = "Older EwE5 models did not require a unique fleet to be defined for every Ecosim scenario. " & _
+                           "Such fleets would be defined when Ecosim was loaded. " & _
+                           "Ecosim fleets in EwE6 however have a larger set of mandatory attributes, and thus requires a matching definition to be in place for every fleet defined in Ecopath." & _
+                           "This update fixes that problem"
+            ndRoot.AppendChild(nd)
+
+            nd = doc.CreateElement("Update")
+            nd.InnerText = "A bug in the EwE5 to EwE6 import process would assign the same fishing effort forcing data to any missing fleet definition in Ecosim." & _
+                           "This had the result that effort was mistakenly carried over for a fleet between scenarios." & _
+                           "This update fixes that problem"
+            ndRoot.AppendChild(nd)
+
+            doc.AppendChild(ndRoot)
+            Return doc
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Do yer thang.
+    ''' </summary>
+    ''' <param name="db"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
+        Return Me.FixEcosimFleets(db) And _
+               Me.FixMultipleLinkedEffortShapes(db)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Update: create missing fleet entries for Ecosim.
+    ''' </summary>
+    ''' <param name="db"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Private Function FixEcosimFleets(ByVal db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
         Dim reader As IDataReader = Nothing
         Dim liFleets As New List(Of Integer)
         Dim liScenarios As New List(Of Integer)
+        Dim aiNumFleets(,) As Integer
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
 
@@ -73,51 +124,119 @@ Public Class cDBUpdate6_00_06_003
         End While
         db.ReleaseReader(reader)
 
-        ' 3) if not exists fleet (sim, path) then create it. Leave effort shape empty, loader will fix this
-        For Each iFleetID As Integer In liFleets
-            For Each iScenarioID As Integer In liScenarios
-                Dim iNumFleets As Integer = CInt(db.GetValue(String.Format("SELECT * FROM EcoSimScenarioFleet WHERE (ScenarioID={0}) AND (EcopathFleetID={1})", iScenarioID, iFleetID)))
-                If iNumFleets = 0 Then
-                    writer = db.GetWriter("EcosimScenarioFleet")
-                    drow = writer.NewRow()
-                    drow("ScenarioID") = iScenarioID
-                    drow("EcopathFleetID") = iFleetID
-                    drow("FishRateShapeID") = 0 ' To be fixed when the app reloads
-                    drow("MaxEffort") = cCore.NULL_VALUE
-                    drow("QuotaType") = eQuotaTypes.NotUsed
-                    writer.AddRow(drow)
-                    db.ReleaseWriter(writer)
-                End If
-            Next iScenarioID
-        Next iFleetID
+        ' 3) get fleet/scenario inventory
+        ReDim aiNumFleets(liFleets.Count - 1, liScenarios.Count - 1)
+        reader = db.GetReader("SELECT * FROM EcosimScenarioFleet")
+        While reader.Read
+            Dim iScenario As Integer = liScenarios.IndexOf(CInt(reader("ScenarioID")))
+            Dim iFleet As Integer = liFleets.IndexOf(CInt(reader("EcopathFleetID")))
+            aiNumFleets(iFleet, iScenario) += 1
+        End While
+        db.ReleaseReader(reader)
+
+        ' 4) if not exists fleet (sim, path) then create it. 
+        '    Leave effort shape empty, DB loader will fix this
+        writer = db.GetWriter("EcosimScenarioFleet")
+        Try
+
+            For iFleet As Integer = 0 To liFleets.Count - 1
+                For iScenario As Integer = 0 To liScenarios.Count - 1
+                    If aiNumFleets(iFleet, iScenario) = 0 Then
+                        drow = writer.NewRow()
+                        drow("ScenarioID") = liScenarios(iScenario)
+                        drow("EcopathFleetID") = liFleets(iFleet)
+                        drow("FishRateShapeID") = 0 ' To be fixed when the app reloads
+                        drow("MaxEffort") = cCore.NULL_VALUE
+                        drow("QuotaType") = eQuotaTypes.NotUsed
+                        writer.AddRow(drow)
+                    End If
+                Next iScenario
+            Next iFleet
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        db.ReleaseWriter(writer, bSucces)
+
+        ' Dear debugger,
+        '
+        ' Do you understand the need for the statement below? If you do, please
+        ' let us know because we are clueless. For an unknown reason, subsequent 
+        ' database updates using the table 'EcosimScenarioFleet' would fail, reporting
+        ' that the table was locked. The culprit appeared to be this very function. 
+        ' Yes, this method both reads and writes 'EcosimScenarioFleet', but all 
+        ' readers and writers are properly and timely released, and no readers are
+        ' assigned while writers are in use, or vice-versa. So in brief all database
+        ' interactions seem legitimate and terminated properly.
+        '
+        ' Despite all this, the 'table in use' issue kept appearing on Windows 7
+        ' machines. When the table tickle was inserted below, supposedly as a stress
+        ' test, the table lock no longer appeared in consecutive database updates.
+        '
+        ' There seems to be no logical explanation, other than some hidden caching
+        ' and release behaviour that somehow gets invoked by the tickle. For now, the
+        ' statement is left in place.
+        '
+        ' However, by nesting each database update in an individual transaction, the
+        ' need for tickling seems to have gone away. Sheesh, this is bizarre...
+        'Me.TickleTable(db, "EcosimScenarioFleet")
+
         Return bSucces
 
     End Function
 
-    Private Function FixDoubleLinkedEffortShapes(ByVal db As cEwEDatabase) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Update: clear references to effort shapes that are used MORE than once.
+    ''' Every fleet in every scenario must have its own effort shape which was
+    ''' not always the case due to a bug in the database import logic.
+    ''' </summary>
+    ''' <param name="db"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Private Function FixMultipleLinkedEffortShapes(ByVal db As cEwEDatabase) As Boolean
 
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcosimScenarioFleet")
-        Dim dt As DataTable = writer.GetDataTable()
+        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
         Dim liShapes As New List(Of Integer)
         Dim iShape As Integer
         Dim bSucces As Boolean = True
 
-        For Each drow In dt.Rows
-            iShape = CInt(drow("FishRateShapeID"))
-            If liShapes.Contains(iShape) Then
-                drow.BeginEdit()
-                drow("FishRateShapeID") = 0
-                drow.EndEdit()
-            Else
-                liShapes.Add(iShape)
-            End If
-        Next
+        writer = db.GetWriter("EcosimScenarioFleet")
+        Try
+            dt = writer.GetDataTable()
+            For Each drow In dt.Rows
+                iShape = CInt(drow("FishRateShapeID"))
+                If liShapes.Contains(iShape) Then
+                    drow.BeginEdit()
+                    drow("FishRateShapeID") = 0
+                    drow.EndEdit()
+                Else
+                    liShapes.Add(iShape)
+                End If
+            Next
+        Catch ex As Exception
+            bSucces = False
+        End Try
 
-        writer.Commit()
-        db.ReleaseWriter(writer)
+        db.ReleaseWriter(writer, bSucces)
         Return bSucces
 
     End Function
+
+    '''' -----------------------------------------------------------------------
+    '''' <summary>
+    '''' Tickle a table...
+    '''' </summary>
+    '''' <param name="db"></param>
+    '''' <param name="strTable"></param>
+    '''' -----------------------------------------------------------------------
+    'Private Sub TickleTable(ByRef db As cEwEDatabase, ByVal strTable As String)
+    '    ' Sanity test
+    '    Debug.Assert(db.Execute("ALTER TABLE " & strTable & " ADD COLUMN Ping SINGLE"))
+    '    Debug.Assert(db.Execute("ALTER TABLE " & strTable & " DROP COLUMN Ping"))
+    'End Sub
 
 End Class
