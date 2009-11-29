@@ -189,6 +189,42 @@ Public Class AppLauncher
 
 #Region " Public interfaces "
 
+    ''' <summary>
+    ''' Send a message via the core.
+    ''' </summary>
+    ''' <param name="strMsg">Message text to send.</param>
+    ''' <param name="importance">Message importance.</param>
+    ''' <param name="component">Core component to represent as message origin.</param>
+    Public Sub SendMessage(ByVal strMsg As String, _
+                           Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
+                           Optional ByVal component As eCoreComponentType = eCoreComponentType.Core)
+
+        Dim msg As New cMessage(strMsg, eMessageType.Any, component, importance)
+        Me.m_core.Messages.SendMessage(msg)
+
+    End Sub
+
+    ''' <summary>
+    ''' Ask for user feedback via the core.
+    ''' </summary>
+    ''' <param name="strMsg">Message prompt to send.</param>
+    ''' <param name="replystyle">Allowed feedback replies.</param>
+    ''' <param name="defaultreply">Default reply if the core decided to auto-answer the message.</param>
+    ''' <param name="importance">Message importance.</param>
+    ''' <param name="component">Core component to represent as message origin.</param>
+    ''' <returns>A message reply.</returns>
+    Public Function AskFeedback(ByVal strMsg As String, _
+                            Optional ByVal replystyle As cFeedbackMessage.eReplyStyle = cFeedbackMessage.eReplyStyle.YES_NO, _
+                            Optional ByVal defaultreply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.YES, _
+                            Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
+                            Optional ByVal component As eCoreComponentType = eCoreComponentType.Core) As cFeedbackMessage.eReply
+
+        Dim fmsg As New cFeedbackMessage(strMsg, component, importance, replystyle, eDataTypes.NotSet, defaultreply)
+        Me.m_core.Messages.SendMessage(fmsg)
+        Return fmsg.Reply
+
+    End Function
+
     Public Enum eLoadSourceType As Integer
         NoIdeaDontLookAtMe = 0
         CommandLine
@@ -1204,8 +1240,8 @@ Public Class AppLauncher
         Dim strFileName As String = Me.SelectedFileName()
 
         ' ToDo: localize this method
-        If MsgBox("To compact your database your model will need to be closed. Are you sure you want to compact your database?", _
-             MsgBoxStyle.YesNo Or MsgBoxStyle.Question) <> MsgBoxResult.Yes Then
+        If Me.AskFeedback("To compact your database your model will need to be closed. Are you sure you want to compact your database?", _
+             cFeedbackMessage.eReplyStyle.YES_NO, cFeedbackMessage.eReply.YES) <> cFeedbackMessage.eReply.YES Then
             Return False
         End If
 
@@ -1298,7 +1334,7 @@ Public Class AppLauncher
             Select Case cEwE6DatabaseImporter.EstimateVersion(db.GetVersion())
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE5TooOld
-                    MsgBox(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+                    Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD)
                     bSucces = False
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE5Supported
@@ -1314,7 +1350,7 @@ Public Class AppLauncher
                     End If
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE5TooNew
-                    MsgBox(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+                    Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW)
                     bSucces = False
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE6
@@ -1324,8 +1360,8 @@ Public Class AppLauncher
                         ' Check if updates available
                         If Me.m_core.PluginManager.HasDatabaseUpdates(db, 6.0) Then
 
-                            Select Case MsgBox(My.Resources.PROMPT_IMPORT_UPDATEBACKUP, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
-                                Case MsgBoxResult.Yes
+                            Select Case Me.AskFeedback(My.Resources.PROMPT_IMPORT_UPDATEBACKUP, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                                Case cFeedbackMessage.eReply.YES
                                     Try
                                         Dim strDir As String = Path.GetDirectoryName(strFileName)
                                         Dim strFile As String = Path.GetFileNameWithoutExtension(strFileName)
@@ -1336,20 +1372,16 @@ Public Class AppLauncher
                                         ' Create backup copy
                                         File.Copy(strFileName, Path.Combine(strDir, strFile + strExt), True)
                                     Catch ex As Exception
-                                        Me.m_core.Messages.SendMessage( _
-                                            New cMessage(String.Format(My.Resources.PROMPT_BACKUPFAILED, strFileName, ex.Message), _
-                                                         eMessageType.DataImport, _
-                                                         eCoreComponentType.Core, _
-                                                         eMessageImportance.Warning))
+                                        Me.SendMessage(String.Format(My.Resources.PROMPT_BACKUPFAILED, strFileName, ex.Message))
                                         Return False
                                     End Try
                                     ' Fall through
 
-                                Case MsgBoxResult.No
+                                Case cFeedbackMessage.eReply.NO
                                     ' Update existing copy
                                     ' Fall through 
 
-                                Case MsgBoxResult.Cancel
+                                Case cFeedbackMessage.eReply.CANCEL
                                     ' Leave DB alone, don't open
                                     Return False
 
@@ -1357,19 +1389,21 @@ Public Class AppLauncher
 
                             ' Run all available updates on the new EwE6 database
                             Dim dbUpd As New cDatabaseUpdater(6.0)
-                            dbUpd.UpdateDatabase(db, Me.m_core.PluginManager)
+                            bSucces = dbUpd.UpdateDatabase(db, Me.m_core.PluginManager)
                             dbUpd = Nothing
 
+                            If bSucces = False Then
+                                Me.SendMessage(String.Format("Failed to update database '{0}'. This database cannot be loaded safely", strFileName))
+                            End If
                         End If
                     End If
-                    bSucces = True
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.UnknownFuture
-                    MsgBox(My.Resources.PROMPT_ERROR_IMPORT_EWE7_OR_NEWER, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+                    Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE7_OR_NEWER)
                     bSucces = False
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.Unknown
-                    MsgBox(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+                    Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB)
                     bSucces = False
 
                 Case Else
