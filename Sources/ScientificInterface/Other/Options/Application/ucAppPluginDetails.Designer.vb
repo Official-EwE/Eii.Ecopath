@@ -75,10 +75,12 @@ Partial Class ucAppPluginDetails
         Me.m_tbDescription.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_tbDescription.Cursor = System.Windows.Forms.Cursors.Default
         Me.m_tbDescription.Location = New System.Drawing.Point(6, 78)
         Me.m_tbDescription.Multiline = True
         Me.m_tbDescription.Name = "m_tbDescription"
         Me.m_tbDescription.ReadOnly = True
+        Me.m_tbDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.m_tbDescription.Size = New System.Drawing.Size(282, 156)
         Me.m_tbDescription.TabIndex = 6
         Me.m_tbDescription.Text = "Description"
