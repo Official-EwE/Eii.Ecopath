@@ -189,6 +189,10 @@ Public Class AppLauncher
 
 #Region " Public interfaces "
 
+    Private Delegate Sub SendMessageDelegate(ByVal strMsg As String, _
+                                             ByVal importance As eMessageImportance, _
+                                             ByVal component As eCoreComponentType)
+
     ''' <summary>
     ''' Send a message via the core.
     ''' </summary>
@@ -199,10 +203,23 @@ Public Class AppLauncher
                            Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
                            Optional ByVal component As eCoreComponentType = eCoreComponentType.Core)
 
+        If Me.InvokeRequired() Then
+            Me.Invoke(New SendMessageDelegate(AddressOf Me.SendMessage), _
+                                              New Object() {strMsg, importance, component})
+            Return
+        End If
+
         Dim msg As New cMessage(strMsg, eMessageType.Any, component, importance)
         Me.m_core.Messages.SendMessage(msg)
 
     End Sub
+
+
+    Private Delegate Function AskFeedbackDelegate(ByVal strMsg As String, _
+                             ByVal replystyle As cFeedbackMessage.eReplyStyle, _
+                             ByVal defaultreply As cFeedbackMessage.eReply, _
+                             ByVal importance As eMessageImportance, _
+                             ByVal component As eCoreComponentType) As cFeedbackMessage.eReply
 
     ''' <summary>
     ''' Ask for user feedback via the core.
@@ -218,6 +235,12 @@ Public Class AppLauncher
                             Optional ByVal defaultreply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.YES, _
                             Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
                             Optional ByVal component As eCoreComponentType = eCoreComponentType.Core) As cFeedbackMessage.eReply
+
+        If Me.InvokeRequired() Then
+            Dim objReply As Object = Me.Invoke(New AskFeedbackDelegate(AddressOf Me.AskFeedback), _
+                                               New Object() {strMsg, replystyle, defaultreply, importance, component})
+            Return CType(objReply, cFeedbackMessage.eReply)
+        End If
 
         Dim fmsg As New cFeedbackMessage(strMsg, component, importance, replystyle, eDataTypes.NotSet, defaultreply)
         Me.m_core.Messages.SendMessage(fmsg)
@@ -531,7 +554,6 @@ Public Class AppLauncher
             Return
         End If
 
-        ' EVEN MORE TODO: PERFORM THIS VIA cStatusNotifier!
         ' ToDo_JS: Consider using a timer to clear any status text after a certain interval
 
         ' Give app a chance to render
