@@ -1389,22 +1389,33 @@ Public Class cPluginManager
             ' Check
             If (ip.UpdateVersion > db.GetVersion() Or ip.UpdateVersion = -9999) Then
                 Try
-                    If ip.ApplyUpdate(db) Then
+                    If db.BeginTransaction() Then
+                        If ip.ApplyUpdate(db) Then
 
-                        Dim sbDescription As New System.Text.StringBuilder()
-                        Dim iBit As Integer = 0
-                        For Each strBit As String In ip.UpdateDescription.Split(New String() {"." & vbNewLine, vbNewLine}, StringSplitOptions.RemoveEmptyEntries)
-                            strBit = strBit.Trim
-                            If Not String.IsNullOrEmpty(strBit) Then
-                                If iBit > 0 Then sbDescription.Append("; ")
-                                sbDescription.Append(strBit)
-                                iBit += 1
-                            End If
-                        Next
-                        db.SetVersion(ip.UpdateVersion, sbDescription.ToString())
-                    Else
-                        Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", New Exception("(generic failure)"))
-                        bSucces = False
+                            Dim sbDescription As New System.Text.StringBuilder()
+                            Dim iBit As Integer = 0
+                            For Each strBit As String In ip.UpdateDescription.Split(New String() {"." & vbNewLine, vbNewLine}, StringSplitOptions.RemoveEmptyEntries)
+                                strBit = strBit.Trim
+                                If Not String.IsNullOrEmpty(strBit) Then
+                                    If iBit > 0 Then sbDescription.Append("; ")
+                                    sbDescription.Append(strBit)
+                                    iBit += 1
+                                End If
+                            Next
+                            db.SetVersion(ip.UpdateVersion, sbDescription.ToString())
+                            'Console.WriteLine("Applied update {0}", ip.UpdateVersion)
+                        Else
+                            Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", New Exception("(generic failure)"))
+                            'Console.WriteLine("Failed update {0}", ip.UpdateVersion)
+                            bSucces = False
+                        End If
+
+                        ' Terminate transaction
+                        If bSucces Then
+                            bSucces = db.CommitTransaction(True)
+                        Else
+                            db.RollbackTransaction()
+                        End If
                     End If
 
                 Catch ex As Exception
