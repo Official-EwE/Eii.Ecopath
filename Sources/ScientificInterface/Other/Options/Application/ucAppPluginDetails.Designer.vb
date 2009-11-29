@@ -132,13 +132,13 @@ Partial Class ucAppPluginDetails
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents m_lblContact As System.Windows.Forms.Label
-    Friend WithEvents m_lblAuthor As System.Windows.Forms.Label
-    Friend WithEvents m_lblName As System.Windows.Forms.Label
-    Friend WithEvents m_tbName As System.Windows.Forms.TextBox
-    Friend WithEvents m_tbDescription As System.Windows.Forms.TextBox
-    Friend WithEvents m_tbAuthor As System.Windows.Forms.TextBox
-    Friend WithEvents m_cbEnabled As System.Windows.Forms.CheckBox
+    Private WithEvents m_lblContact As System.Windows.Forms.Label
+    Private WithEvents m_lblAuthor As System.Windows.Forms.Label
+    Private WithEvents m_lblName As System.Windows.Forms.Label
+    Private WithEvents m_tbName As System.Windows.Forms.TextBox
+    Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
+    Private WithEvents m_tbAuthor As System.Windows.Forms.TextBox
+    Private WithEvents m_cbEnabled As System.Windows.Forms.CheckBox
     Private WithEvents m_llContact As System.Windows.Forms.LinkLabel
 
 End Class

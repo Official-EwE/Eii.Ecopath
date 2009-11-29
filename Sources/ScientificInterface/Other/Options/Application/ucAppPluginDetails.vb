@@ -1,9 +1,9 @@
 #Region " Imports "
 
 Option Strict On
-
 Imports System.IO
 Imports System.Text
+Imports System.Xml
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
@@ -19,11 +19,21 @@ Public Class ucAppPluginDetails
 
         Me.InitializeComponent()
 
+        Me.m_tbName.Text = pi.Name
         Me.m_tbAuthor.Text = pi.Author
         Me.m_llContact.Text = pi.Contact
         Me.m_llContact.Links(0).LinkData = pi.Contact
-        Me.m_tbDescription.Text = pi.Description
-        Me.m_tbName.Text = pi.Name
+
+        Dim strDescription As String = pi.Description
+        If (TypeOf pi Is cDBUpdate) Then
+            ' ToDo: use XSLT formatting here
+            strDescription = DirectCast(pi, cDBUpdate).UpdateDescriptionXML.InnerText
+        ElseIf (TypeOf pi Is IDatabaseUpdatePlugin) Then
+            strDescription = DirectCast(pi, IDatabaseUpdatePlugin).Description
+        Else
+            strDescription = pi.Description
+        End If
+        Me.m_tbDescription.Text = strDescription
 
         Me.m_pa = pa
         Me.m_cbEnabled.Checked = pa.Enabled
