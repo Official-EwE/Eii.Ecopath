@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: EcosimResults.vb,v $
-' Revision 1.6  2009/03/19 16:02:26  jeroens
-' Added FormatProvider.Release
-'
-' Revision 1.5  2009/02/05 17:48:37  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.4  2009/01/16 18:30:38  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.3  2009/01/13 18:00:47  joeb
-' Replace Ecosim summary objects with Ecosim Ouput objects all output data now in Fleet or Group objects
-'
-' Revision 1.2  2008/12/15 15:53:26  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:46  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
