@@ -726,7 +726,8 @@ Public Class dlgManageTimeSeries
             bSucces = False
         End Try
 
-        Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSucces)
+        ' TS dataset delete will reload Ecopath. It's a bit too brutal but hey, it will properly re-initialize TS
+        Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSucces)
         appl.SetStatusText("", TriState.False)
 
         Return bSucces
