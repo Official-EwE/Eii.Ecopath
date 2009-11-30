@@ -882,7 +882,7 @@ Namespace Controls
             Catch ex As Exception
                 ' Whoah!
             End Try
-            Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSucces)
+            Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.TimeSeries, bSucces)
 
             ' Refresh
             Me.UpdateShapeList()
