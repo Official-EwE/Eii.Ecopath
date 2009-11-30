@@ -1,25 +1,4 @@
-'==============================================================================
-'
-' $Log: cDatabaseUpdater.vb,v $
-' Revision 1.1  2008/09/26 07:30:17  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2007/07/26 12:21:50  jeroens
-' - Simplified; updates now performed by PluginManager and IDatabaseUpdatePlugins
-'
-' Revision 1.4  2007/07/25 03:08:37  jeroens
-' * Moved cEwEDatabase to EwEUtils
-'
-' Revision 1.3  2006/07/10 01:40:40  jeroens
-' + Added versioning diagnostics
-'
-' Revision 1.2  2006/05/03 04:31:54  cvsuser
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
-
 Imports System.IO
 Imports System.Data
 Imports System.Data.OleDb

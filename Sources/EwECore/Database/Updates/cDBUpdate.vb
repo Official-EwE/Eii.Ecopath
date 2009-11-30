@@ -52,7 +52,7 @@ Public MustInherit Class cDBUpdate
     ''' Generic <see cref="IPlugin.Description">IPlugin.Description</see> implementation.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public Overridable ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
             Return Me.UpdateDescription
         End Get
@@ -102,20 +102,4 @@ Public MustInherit Class cDBUpdate
 
 #End Region ' Standard bits
 
-#Region " GUI specific "
-
-    Public Overridable ReadOnly Property UpdateDescriptionXML() As XmlDocument
-        Get
-            Dim doc As New XmlDocument()
-            Dim nd As XmlNode = doc.CreateElement("Description")
-
-            doc.PreserveWhitespace = False
-            nd.InnerText = Me.UpdateDescription()
-            doc.AppendChild(nd)
-
-            Return doc
-        End Get
-    End Property
-
-#End Region
 End Class

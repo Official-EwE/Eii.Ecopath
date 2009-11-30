@@ -94,7 +94,6 @@
     <Compile Include="Auxiliary\cReference.vb" />
     <Compile Include="Auxiliary\cVisualStyle.vb" />
     <Compile Include="Contaminant Tracer\cContaminantTracer.vb" />
-    <Compile Include="Database\cDatabaseUpdate.vb" />
     <Compile Include="Database\cDatabaseUpdater.vb" />
     <Compile Include="Database\cEwEAccessDatabase.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimGroupOutput.vb" />

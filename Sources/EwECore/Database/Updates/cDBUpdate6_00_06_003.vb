@@ -1,6 +1,7 @@
 Option Strict On
+Imports System
 Imports System.Data
-Imports System.Xml
+Imports System.Text
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports EwEUtils.Core
@@ -49,35 +50,23 @@ Public Class cDBUpdate6_00_06_003
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Pretty description for display purposes.
+    ''' Decided to elaborate in the description.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Overrides ReadOnly Property UpdateDescriptionXML() As XmlDocument
+    Public Overrides ReadOnly Property Description() As String
         Get
-            Dim doc As New XmlDocument()
-            Dim ndRoot As XmlNode = Nothing
-            Dim nd As XmlNode = Nothing
-
-            doc.PreserveWhitespace = False
-
-            ndRoot = doc.CreateElement("Description")
-            ndRoot.InnerText = "This update addresses Ecosim fleet related incompatibilities with older EwE5 models"
-
-            nd = doc.CreateElement("Update")
-            nd.InnerText = "Older EwE5 models did not require a unique fleet to be defined for every Ecosim scenario. " & _
+            Dim sb As New StringBuilder()
+            sb.AppendLine("This update addresses Ecosim fleet related incompatibilities with older EwE5 models")
+            sb.AppendLine()
+            sb.AppendLine("1. Older EwE5 models did not require a unique fleet to be defined for every Ecosim scenario. " & _
                            "Such fleets would be defined when Ecosim was loaded. " & _
                            "Ecosim fleets in EwE6 however have a larger set of mandatory attributes, and thus requires a matching definition to be in place for every fleet defined in Ecopath." & _
-                           "This update fixes that problem"
-            ndRoot.AppendChild(nd)
-
-            nd = doc.CreateElement("Update")
-            nd.InnerText = "A bug in the EwE5 to EwE6 import process would assign the same fishing effort forcing data to any missing fleet definition in Ecosim." & _
+                           "This update fixes that problem")
+            sb.AppendLine()
+            sb.AppendLine("2. A bug in the EwE5 to EwE6 import process would assign the same fishing effort forcing data to any missing fleet definition in Ecosim." & _
                            "This had the result that effort was mistakenly carried over for a fleet between scenarios." & _
-                           "This update fixes that problem"
-            ndRoot.AppendChild(nd)
-
-            doc.AppendChild(ndRoot)
-            Return doc
+                           "This update fixes that problem")
+            Return sb.ToString()
         End Get
     End Property
 
