@@ -140,6 +140,29 @@ Namespace Ecosim
             Next
         End Sub
 
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            LoadAvailableShapes()
+            LoadMultiplierOption()
+            LoadAppliedShapes()
+
+            ' Load Prey and predator pair name
+            Select Case m_editMode
+                Case eEditMode.PredPrey
+                    txbPreyName.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, m_iSelPrey, m_strSelPreyName)
+                    txbPredName.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, m_iSelPredIndex, m_strSelPredName)
+                Case eEditMode.Prey
+                    lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_PREY, m_iSelPrey, m_strSelPreyName)
+                Case eEditMode.Predator
+                    lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_PRED, m_iSelPredIndex, m_strSelPredName)
+                Case eEditMode.All
+                    lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_ALL)
+            End Select
+
+            UpdateControls()
+
+        End Sub
+
         Private Sub Init(ByVal editMode As eEditMode, ByVal shapeType As eApplyShapeTypes, ByVal targetType As eApplyTargetTypes)
 
             Me.InitializeComponent()
@@ -233,70 +256,14 @@ Namespace Ecosim
             Me.Close()
         End Sub
 
-        Private Sub dlgApplyShape_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-            LoadAvailableShapes()
-            LoadMultiplierOption()
-            LoadAppliedShapes()
-
-            ' Load Prey and predator pair name
-            Select Case m_editMode
-                Case eEditMode.PredPrey
-                    txbPreyName.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, m_iSelPrey, m_strSelPreyName)
-                    txbPredName.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, m_iSelPredIndex, m_strSelPredName)
-                Case eEditMode.Prey
-                    lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_PREY, m_iSelPrey, m_strSelPreyName)
-                Case eEditMode.Predator
-                    lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_PRED, m_iSelPredIndex, m_strSelPredName)
-                Case eEditMode.All
-                    lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_ALL)
-            End Select
-
-            UpdateControls()
-
+        Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles btnAdd.Click
+            Me.AddShape()
         End Sub
 
-        Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
-
-            Dim colSelected As ListView.SelectedIndexCollection = lvAllShapes.SelectedIndices
-            Dim shapeSelected As cForcingFunction = Nothing
-            Dim item As ListViewItem = Nothing
-
-            If colSelected.Count > 0 Then
-
-                'Get the shape data
-                item = Me.lvAllShapes.Items(colSelected(0))
-                shapeSelected = DirectCast(item.Tag, cForcingFunction)
-
-                ' Sanity check
-                Debug.Assert(shapeSelected IsNot Nothing, "Unable to locate applied forcing function")
-
-                item = New ListViewItem(shapeSelected.Name)
-                item.ImageIndex = FindImageIndex(shapeSelected)
-                item.SubItems.Add(GetMultiplier())
-                item.SubItems.Add(CStr(shapeSelected.Index))
-                item.Tag = shapeSelected
-
-                lvAppliedShapes.Items.Add(item)
-            End If
-
-            UpdateControls()
-
-        End Sub
-
-        Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
-
-            Dim colSelected As ListView.SelectedIndexCollection = lvAppliedShapes.SelectedIndices
-            If colSelected.Count > 0 Then
-                lvAppliedShapes.Items.RemoveAt(colSelected(0))
-            End If
-
-            If lvAppliedShapes.Items.Count > 0 Then
-                lvAppliedShapes.Items(lvAppliedShapes.Items.Count - 1).Selected = True
-            End If
-
-            UpdateControls()
-
+        Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles btnRemove.Click
+            Me.RemoveShape()
         End Sub
 
         Private Sub SetMultiplier(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -311,11 +278,78 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub lvAppliedShapes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvAppliedShapes.SelectedIndexChanged
+        Private Sub lvAppliedShapes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles lvAppliedShapes.SelectedIndexChanged
             Me.UpdateControls()
         End Sub
 
+        Private Sub lvAllShapes_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles lvAllShapes.DoubleClick
+            Me.AddShape()
+        End Sub
+
+        Private Sub lvAppliedShapes_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles lvAppliedShapes.DoubleClick
+            Me.RemoveShape()
+        End Sub
+
 #Region "Private methods"
+
+        Private Property Shape(ByVal lvi As ListViewItem) As cForcingFunction
+            Get
+                Return DirectCast(lvi.Tag, cForcingFunction)
+            End Get
+            Set(ByVal value As cForcingFunction)
+                lvi.Tag = value
+            End Set
+        End Property
+
+        Private Sub AddShape()
+
+            Dim colSelected As ListView.SelectedIndexCollection = lvAllShapes.SelectedIndices
+            Dim shapeSelected As cForcingFunction = Nothing
+            Dim shapeTest As cForcingFunction = Nothing
+            Dim item As ListViewItem = Nothing
+
+            If colSelected.Count > 0 Then
+
+                'Get the shape data
+                item = Me.lvAllShapes.Items(colSelected(0))
+                shapeSelected = Shape(item)
+
+                ' Sanity check
+                Debug.Assert(shapeSelected IsNot Nothing, "Unable to locate applied forcing function")
+
+                ' Find duplicate
+                For Each itemTest As ListViewItem In lvAppliedShapes.Items
+                    shapeTest = Shape(itemTest)
+                    If Object.ReferenceEquals(shapeSelected, shapeTest) Then Return
+                Next
+
+                item = New ListViewItem(shapeSelected.Name)
+                item.ImageIndex = FindImageIndex(shapeSelected)
+                item.SubItems.Add(GetMultiplier())
+                item.SubItems.Add(CStr(shapeSelected.Index))
+                item.Tag = shapeSelected
+
+                lvAppliedShapes.Items.Add(item)
+            End If
+
+            UpdateControls()
+        End Sub
+
+        Public Sub RemoveShape()
+            Dim colSelected As ListView.SelectedIndexCollection = lvAppliedShapes.SelectedIndices
+            If colSelected.Count > 0 Then
+                lvAppliedShapes.Items.RemoveAt(colSelected(0))
+            End If
+
+            If lvAppliedShapes.Items.Count > 0 Then
+                lvAppliedShapes.Items(lvAppliedShapes.Items.Count - 1).Selected = True
+            End If
+
+            UpdateControls()
+        End Sub
 
         Private Sub UpdateControls()
 
@@ -459,7 +493,8 @@ Namespace Ecosim
                 For Each ff As cForcingFunction In m_lFFs
 
                     If Me.IsAllowedShape(ff) Then
-                        item = New ListViewItem(ff.Name)
+                        ' JS 30nov09: add ff index to label
+                        item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, ff.Index, ff.Name))
                         item.ImageIndex = FindImageIndex(ff)
                         item.Tag = ff
                         lvAllShapes.Items.Add(item)
@@ -492,8 +527,8 @@ Namespace Ecosim
                 For i As Integer = 1 To ppi.NAppliedShapes
 
                     ppi.getShape(i, shape, ffappl)
-
-                    item = New ListViewItem(shape.Name)
+                    ' JS 30nov09: add index to label
+                    item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, shape.Index, shape.Name))
                     item.ImageIndex = FindImageIndex(shape)
                     item.SubItems.Add(GetMultiplierFromType(ffappl))
                     item.SubItems.Add(FindAppliedShapeIndex(shape).ToString)
