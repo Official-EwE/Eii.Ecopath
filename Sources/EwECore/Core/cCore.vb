@@ -9805,7 +9805,9 @@ Public Class cCore
 
                 ' Notify plug-ins
                 Try
-                    Me.PluginManager.DataValidated(vs.VarName, dtAffected)
+                    If Not Object.ReferenceEquals(Me.PluginManager, Nothing) Then
+                        Me.PluginManager.DataValidated(vs.VarName, dtAffected)
+                    End If
                 Catch ex As Exception
                     ' NOP
                 End Try
@@ -10677,9 +10679,11 @@ Public Class cCore
             Me.m_StateMonitor.UpdateExecutionState(obj.CoreComponent)
 
             Try
-                Me.PluginManager.DataValidated(eVarNameFlags.NotSet, obj.DataType)
+                If Not Object.ReferenceEquals(Me.PluginManager, Nothing) Then
+                    Me.PluginManager.DataValidated(eVarNameFlags.NotSet, obj.DataType)
+                End If
             Catch ex As Exception
-                System.Console.WriteLine("PluginManager.DataValidated() Error: " & ex.Message)
+                ' NOP
             End Try
 
             Me.m_publisher.sendAllMessages()
