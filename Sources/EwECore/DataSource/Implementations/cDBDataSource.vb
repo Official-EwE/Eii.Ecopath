@@ -212,6 +212,54 @@ Public Class cDBDataSource
 
 #Region " Helper methods "
 
+    'Private Function RunUpdates() As Boolean
+
+    '    If Me.m_core.PluginManager IsNot Nothing Then
+
+    '        ' Check if updates available
+    '        If Me.m_core.PluginManager.HasDatabaseUpdates(db, 6.0) Then
+
+    '            Select Case MsgBox(My.Resources.PROMPT_IMPORT_UPDATEBACKUP, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
+    '                Case MsgBoxResult.Yes
+    '                    Try
+    '                        Dim strDir As String = Path.GetDirectoryName(strFileName)
+    '                        Dim strFile As String = Path.GetFileNameWithoutExtension(strFileName)
+    '                        Dim strExt As String = Path.GetExtension(strFileName)
+
+    '                        strFile = FileUtilities.ToValidFileName(String.Format("{0}_backup_{1}", strFile, Date.Now), False)
+
+    '                        ' Create backup copy
+    '                        File.Copy(strFileName, Path.Combine(strDir, strFile + strExt), True)
+    '                    Catch ex As Exception
+    '                        Me.m_core.Messages.SendMessage( _
+    '                            New cMessage(String.Format(My.Resources.PROMPT_BACKUPFAILED, strFileName, ex.Message), _
+    '                                         eMessageType.DataImport, _
+    '                                         eCoreComponentType.Core, _
+    '                                         eMessageImportance.Warning))
+    '                        Return False
+    '                    End Try
+    '                    ' Fall through
+
+    '                Case MsgBoxResult.No
+    '                    ' Update existing copy
+    '                    ' Fall through 
+
+    '                Case MsgBoxResult.Cancel
+    '                    ' Leave DB alone, don't open
+    '                    Return False
+
+    '            End Select
+
+    '            ' Run all available updates on the new EwE6 database
+    '            Dim dbUpd As New cDatabaseUpdater(6.0)
+    '            dbUpd.UpdateDatabase(db, Me.m_core.PluginManager)
+    '            dbUpd = Nothing
+
+    '        End If
+    '    End If
+
+    'End Function
+
     Private Overloads Function CopyEcopathTo(ByVal ds As DataSources.IEcopathDataSource) As Boolean Implements DataSources.IEcopathDataSource.CopyTo
         Return False
     End Function

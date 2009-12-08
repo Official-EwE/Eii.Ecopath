@@ -260,6 +260,7 @@
     </Compile>
     <Compile Include="Database\Updates\cDBUpdate6_00_06_005.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_06_006.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_06_007.vb" />
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
     <Compile Include="EcoPath\cEcoPathStats.vb" />
