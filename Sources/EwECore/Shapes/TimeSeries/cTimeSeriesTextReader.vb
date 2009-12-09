@@ -467,6 +467,9 @@ Public MustInherit Class cTimeSeriesTextReader
         Try
             For i As Integer = 1 To iNumSeries
                 aiDatPool(i - 1) = StringUtils.ConvertToInteger(astrCols(i))
+                If (aiDatPool(i - 1) < 1) Then
+                    Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLFORMAT, iLineNumber)
+                End If
             Next i
         Catch ex As Exception
             Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLFORMAT, iLineNumber)
@@ -483,6 +486,9 @@ Public MustInherit Class cTimeSeriesTextReader
                 aiType(i - 1) = Me.ToTimeSeriesType(astrCols(i))
                 If (aiType(i - 1) = eTimeSeriesType.NotSet) Then
                     aiType(i - 1) = DirectCast(StringUtils.ConvertToInteger(astrCols(i)), eTimeSeriesType)
+                    If (aiType(i - 1) < 1) Then
+                        Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPEFORMAT, iLineNumber)
+                    End If
                 End If
 
                 ' Validate if encountered pool code fits the corresponding core counter
