@@ -616,6 +616,12 @@ Namespace Ecosim
             ' Clear curves out of current run, if applicable
             Me.m_zgp.ResetRun()
 
+            If Not Me.m_zgp.isReady Then
+                'The graph has not been initialized don't try to draw the data
+                'this can happen is some other process ran Ecosim and PopulateGraph() gets called in response
+                Return
+            End If
+
             ' === Cumulative plot ===
 
             If m_tsmiCumulative.Checked Then

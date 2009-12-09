@@ -160,6 +160,18 @@ Namespace Controls
             Me.m_graphPane.CurveList.Clear()
         End Sub
 
+        ''' <summary>
+        ''' Is the graph ready to plot? Has it been initialized?
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns>True if the graph is ready to plot.</returns>
+        ''' <remarks></remarks>
+        Public ReadOnly Property isReady() As Boolean
+            Get
+                Return (Me.m_runCurrent IsNot Nothing)
+            End Get
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Add a single line to the current run.
