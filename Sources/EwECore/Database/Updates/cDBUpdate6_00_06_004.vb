@@ -59,7 +59,7 @@ Public Class cDBUpdate6_00_06_004
 
         Private m_nRows As Integer
         Private m_nCols As Integer
-        Private m_dtFleetPorts As New Dictionary(Of Integer, Boolean())
+        Private m_dtFleetPorts As New Dictionary(Of Integer, List(Of Integer))
 
         Public Sub New(ByVal nRows As Integer, ByVal nCols As Integer)
             Me.m_nRows = nRows
@@ -81,20 +81,20 @@ Public Class cDBUpdate6_00_06_004
         Public Sub SetPort(ByVal iFleetID As Integer, ByVal strPort As String)
 
             Dim astrPorts As String() = strPort.Split(" "c)
-            Dim abPorts(astrPorts.Length) As Boolean
+            Dim lPorts As New List(Of Integer)
             For i As Integer = 0 To astrPorts.Length - 1
-                abPorts(i) = (astrPorts(i) = "1"c)
+                If (astrPorts(i) = "1"c) Then
+                    lPorts.Add(i)
+                End If
             Next
-            Me.m_dtFleetPorts(iFleetID) = abPorts
+            m_dtFleetPorts(iFleetID) = lPorts
         End Sub
 
         Public ReadOnly Property HasPort(ByVal iFleetID As Integer, ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
             Get
                 Dim iCell As Integer = (iCol - 1) + ((iRow - 1) * Me.m_nCols)
-                Dim abPorts As Boolean() = Me.m_dtFleetPorts(iFleetID)
-
-                If iCell < 0 Or iCell >= abPorts.Length Then Return False
-                Return abPorts(iCell)
+                Dim lPorts As List(Of Integer) = Me.m_dtFleetPorts(iFleetID)
+                Return (lPorts.IndexOf(iCell) > -1)
             End Get
         End Property
 
@@ -141,48 +141,39 @@ Public Class cDBUpdate6_00_06_004
         End Try
         reader = Nothing
 
-        If db.BeginTransaction() Then
+        bSucces = db.Execute("DROP TABLE EcospaceScenarioFleetMap")
 
-            bSucces = db.Execute("DROP TABLE EcospaceScenarioFleetMap")
+        bSucces = bSucces And db.Execute("CREATE TABLE EcospaceScenarioFleetMap (ScenarioID LONG, FleetID LONG, PortID LONG, InRow INTEGER, InCol INTEGER)")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioFleetMap ADD PRIMARY KEY (ScenarioID, FleetID, PortID)")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioFleetMap ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioFleetMap ADD FOREIGN KEY (FleetID) REFERENCES EcospaceScenarioFleet(FleetID)")
 
-            bSucces = bSucces And db.Execute("CREATE TABLE EcospaceScenarioFleetMap (ScenarioID LONG, FleetID LONG, PortID LONG, InRow INTEGER, InCol INTEGER)")
-            bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioFleetMap ADD PRIMARY KEY (ScenarioID, FleetID, PortID)")
-            bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioFleetMap ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
-            bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioFleetMap ADD FOREIGN KEY (FleetID) REFERENCES EcospaceScenarioFleet(FleetID)")
+        writer = db.GetWriter("EcospaceScenarioFleetMap")
+        For Each iScenarioID As Integer In dtSFM.Keys
+            sfm = dtSFM(iScenarioID)
+            For Each iFleetID As Integer In sfm.FleetIDs
+                For iRow As Integer = 1 To sfm.InRow
+                    For iCol As Integer = 1 To sfm.InCol
+                        If sfm.HasPort(iFleetID, iRow, iCol) Then
+                            Try
+                                drow = writer.NewRow()
+                                drow("ScenarioID") = iScenarioID
+                                drow("FleetID") = iFleetID
+                                drow("InRow") = iRow
+                                drow("InCol") = iCol
+                                drow("PortID") = iPortID
+                                writer.AddRow(drow)
+                                iPortID += 1 ' Haha
+                            Catch ex As Exception
+                                bSucces = False
+                            End Try
+                        End If
+                    Next iCol
+                Next iRow
+            Next iFleetID
 
-            writer = db.GetWriter("EcospaceScenarioFleetMap")
-            For Each iScenarioID As Integer In dtSFM.Keys
-                sfm = dtSFM(iScenarioID)
-                For Each iFleetID As Integer In sfm.FleetIDs
-                    For iRow As Integer = 1 To sfm.InRow
-                        For iCol As Integer = 1 To sfm.InCol
-                            If sfm.HasPort(iFleetID, iRow, iCol) Then
-                                Try
-                                    drow = writer.NewRow()
-                                    drow("ScenarioID") = iScenarioID
-                                    drow("FleetID") = iFleetID
-                                    drow("InRow") = iRow
-                                    drow("InCol") = iCol
-                                    drow("PortID") = iPortID
-                                    writer.AddRow(drow)
-                                    iPortID += 1 ' Haha
-                                Catch ex As Exception
-                                    bSucces = False
-                                End Try
-                            End If
-                        Next iCol
-                    Next iRow
-                Next iFleetID
-
-            Next iScenarioID
-            db.ReleaseWriter(writer, bSucces)
-
-            If bSucces Then
-                bSucces = db.CommitTransaction(True)
-            Else
-                bSucces = db.RollbackTransaction()
-            End If
-        End If
+        Next iScenarioID
+        db.ReleaseWriter(writer, bSucces)
 
         Return bSucces
 
