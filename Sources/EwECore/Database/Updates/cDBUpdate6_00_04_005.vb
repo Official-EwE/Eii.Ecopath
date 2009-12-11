@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_04_005.vb,v $
-' Revision 1.2  2009/06/28 01:33:28  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.1  2008/09/26 07:30:16  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwEPlugin
@@ -76,8 +65,6 @@ Public Class cDBUpdate6_00_04_0005
 
         Dim bSucces As Boolean = True
 
-        db.BeginTransaction()
-
         ' + Add EcospaceScenarioWeightLayer
         bSucces = bSucces And db.Execute("CREATE TABLE EcospaceScenarioWeightLayer (ScenarioID LONG, LayerID LONG, Sequence INTEGER, Name TEXT(50), Description MEMO, Weight SINGLE)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioWeightLayer ADD PRIMARY KEY (LayerID)")
@@ -87,12 +74,6 @@ Public Class cDBUpdate6_00_04_0005
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioWeightLayerCell ADD PRIMARY KEY (ScenarioID, LayerID, InRow, InCol)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioWeightLayerCell ADD FOREIGN KEY (LayerID) REFERENCES EcospaceScenarioWeightLayer(LayerID)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioWeightLayerCell ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
-
-        If bSucces Then
-            bSucces = bSucces And db.CommitTransaction(True)
-        Else
-            db.RollbackTransaction()
-        End If
 
         Return bSucces
 

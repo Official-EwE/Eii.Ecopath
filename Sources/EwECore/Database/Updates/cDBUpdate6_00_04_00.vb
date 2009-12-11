@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_04_00.vb,v $
-' Revision 1.3  2009/06/28 01:54:38  jeroens
-' Woops
-'
-' Revision 1.2  2009/06/28 01:33:27  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.1  2008/09/26 07:30:15  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/05/20 13:40:58  jeroens
-' Increased robustness
-'
-' Revision 1.2  2008/04/07 17:00:51  jeroens
-' Transactions committed properly
-'
-' Revision 1.1  2008/02/11 03:21:04  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwEPlugin
@@ -57,8 +34,6 @@ Public Class cDBUpdate6_00_04_00
         Dim strDatasetLast As String = ""
         Dim iDatasetID As Integer = 0
         Dim bSucces As Boolean = True
-
-        db.BeginTransaction()
 
         ' + Add EcosimTimeSeriesDataset
         bSucces = bSucces And db.Execute("CREATE TABLE EcosimTimeseriesDataset (DatasetID INTEGER, DatasetName TEXT(50), Description MEMO, Author TEXT(64), Contact TEXT(255), FirstYear INTEGER, NumYears INTEGER)")
@@ -105,11 +80,6 @@ Public Class cDBUpdate6_00_04_00
         db.Execute("ALTER TABLE EcosimTimeseries DROP COLUMN FirstYear")
         db.Execute("ALTER TABLE EcosimTimeseries DROP COLUMN NumYears")
 
-        If bSucces Then
-            bSucces = db.CommitTransaction(True)
-        Else
-            db.RollbackTransaction()
-        End If
         Return bSucces
 
     End Function

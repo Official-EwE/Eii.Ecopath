@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_04_02.vb,v $
-' Revision 1.3  2009/06/28 01:33:28  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.2  2008/10/03 18:12:55  jeroens
-' Reorganized
-'
-' Revision 1.1  2008/09/26 07:30:16  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/09/24 15:52:35  jeroens
-' Made fail-safe when Currency units are missing
-'
-' Revision 1.1  2008/09/17 01:22:48  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwEPlugin
@@ -87,8 +67,6 @@ Public Class cDBUpdate6_00_04_02
         Dim iCurrentValue As Integer = -1
         Dim unit As eUnitCurrencyType = eUnitCurrencyType.NotSet
 
-        db.BeginTransaction()
-
         Try
             ' Try to get value, could be DBNull (which is OK)
             iCurrentValue = CInt(db.GetValue("SELECT UnitCurrency FROM EcopathModel WHERE ModelID=1"))
@@ -112,12 +90,6 @@ Public Class cDBUpdate6_00_04_02
         Catch ex As Exception
             bSucces = False
         End Try
-
-        If bSucces Then
-            bSucces = bSucces And db.CommitTransaction(True)
-        Else
-            db.RollbackTransaction()
-        End If
 
         Return bSucces
 

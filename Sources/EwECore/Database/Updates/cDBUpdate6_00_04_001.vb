@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_04_001.vb,v $
-' Revision 1.2  2009/06/28 01:33:27  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.1  2008/09/26 07:30:16  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/04/07 22:33:43  jeroens
-' Removed area to next update
-'
-' Revision 1.4  2008/04/07 17:00:51  jeroens
-' Transactions committed properly
-'
-' Revision 1.3  2008/03/17 22:33:00  jeroens
-' Hmm
-'
-' Revision 1.2  2008/03/07 18:20:00  jeroens
-' Added Ecopath Area
-'
-' Revision 1.1  2008/02/22 21:42:19  jeroens
-' Fixes vbK issue
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwEPlugin
@@ -56,8 +30,6 @@ Public Class cDBUpdate6_00_04_0001
         Dim reader As IDataReader = Nothing
         Dim bSucces As Boolean = True
 
-        db.BeginTransaction()
-
         ' Move vbK from EcopathGroup to StanzaLifeStage
         bSucces = bSucces And db.Execute("ALTER TABLE StanzaLifeStage ADD COLUMN vbK SINGLE")
         ' Access AARGH moment:
@@ -78,12 +50,6 @@ Public Class cDBUpdate6_00_04_0001
         db.ReleaseReader(reader)
         ' Now drop the vbK column from GroupInfo
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroup DROP COLUMN vbK")
-
-        If bSucces Then
-            bSucces = db.CommitTransaction(True)
-        Else
-            db.RollbackTransaction()
-        End If
 
         Return bSucces
 
