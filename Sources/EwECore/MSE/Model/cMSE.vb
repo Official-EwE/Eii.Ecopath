@@ -588,9 +588,9 @@ Namespace MSE
                     'Plugin economic data from the ValueChain pluging is sent out every timestep
                     'Store the data in cMSESummaryStats objects
 
-                    Me.m_data.ProfitSum.AddValue(1, EconomicData.Profit)
-                    Me.m_data.JobsSum.AddValue(1, EconomicData.NumberOfJobsTotal)
-                    Me.m_data.CostSum.AddValue(1, EconomicData.Cost)
+                    Me.m_data.ProfitSum.AddValue(1, EconomicData.Total.Profit)
+                    Me.m_data.JobsSum.AddValue(1, EconomicData.Total.NumberOfJobsTotal)
+                    Me.m_data.CostSum.AddValue(1, EconomicData.Total.Cost)
 
                 End If
 
