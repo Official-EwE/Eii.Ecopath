@@ -145,6 +145,7 @@ Namespace Ecosim
             Dim core As cCore = cCore.GetInstance()
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim source As cEcosimGroupOutput = Nothing
+            Dim irow As Integer
 
             Dim asTotal(0 To 10) As Single
             Me.InitTotalArray(asTotal)
@@ -153,40 +154,40 @@ Namespace Ecosim
 
                 'Only display selected groups
                 If sg.GroupVisible(iGroup) Then
-
+                    irow += 1
                     source = core.EcoSimGroupOutputs(iGroup)
 
                     'clear all fleet cells
                     For icell As Integer = 5 To 10
-                        SetCellValue(iGroup, icell, "")
+                        SetCellValue(irow, icell, "")
                     Next
 
-                    If source.BiomassStart > 0 Then SetCellValue(iGroup, 2, source.BiomassStart, asTotal)
-                    If source.BiomassEnd > 0 Then SetCellValue(iGroup, 3, source.BiomassEnd, asTotal)
+                    If source.BiomassStart > 0 Then SetCellValue(irow, 2, source.BiomassStart, asTotal)
+                    If source.BiomassEnd > 0 Then SetCellValue(irow, 3, source.BiomassEnd, asTotal)
 
                     'The logic was pulled out from EwE5
                     If source.BiomassStart > 0 And source.BiomassEnd > 0 Then
-                        SetCellValue(iGroup, 4, CSng(source.BiomassEnd / source.BiomassStart), asTotal)
+                        SetCellValue(irow, 4, CSng(source.BiomassEnd / source.BiomassStart), asTotal)
                     End If
 
                     Dim fCS As Single = source.CatchStart(Me.SelFleetIndex)
-                    If fCS > 0 Then SetCellValue(iGroup, 5, fCS, asTotal)
+                    If fCS > 0 Then SetCellValue(irow, 5, fCS, asTotal)
 
                     Dim fCE As Single = source.CatchEnd(Me.SelFleetIndex)
-                    If fCE > 0 Then SetCellValue(iGroup, 6, fCE, asTotal)
+                    If fCE > 0 Then SetCellValue(irow, 6, fCE, asTotal)
 
                     If fCS > 0 And fCE > 0 Then
-                        SetCellValue(iGroup, 7, CSng(fCE / fCS), asTotal)
+                        SetCellValue(irow, 7, CSng(fCE / fCS), asTotal)
                     End If
 
                     Dim fVS As Single = source.ValueStart(Me.SelFleetIndex)
-                    If fVS > 0 Then SetCellValue(iGroup, 8, fVS, asTotal)
+                    If fVS > 0 Then SetCellValue(irow, 8, fVS, asTotal)
 
                     Dim fVE As Single = source.ValueEnd(Me.SelFleetIndex)
-                    If fVE > 0 Then SetCellValue(iGroup, 9, fVE, asTotal)
+                    If fVE > 0 Then SetCellValue(irow, 9, fVE, asTotal)
 
                     If fVS > 0 And fVE > 0 Then
-                        SetCellValue(iGroup, 10, CSng(fVE / fVS), asTotal)
+                        SetCellValue(irow, 10, CSng(fVE / fVS), asTotal)
                     End If
 
                 End If
