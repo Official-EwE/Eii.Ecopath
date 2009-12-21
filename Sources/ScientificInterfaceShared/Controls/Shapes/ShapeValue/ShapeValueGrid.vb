@@ -166,6 +166,8 @@ Public Class ShapeValueGrid
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
+        ' No need for fixed columns
+        Me.FixedColumns = 0
     End Sub
 
     'Protected Overrides Sub bm_colSelectClick(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
