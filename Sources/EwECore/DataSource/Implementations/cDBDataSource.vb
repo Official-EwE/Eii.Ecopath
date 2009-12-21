@@ -5130,6 +5130,13 @@ Public Class cDBDataSource
             Me.m_db.Execute(String.Format("UPDATE EcoSimScenario Set SalinityForcingShapeID=NULL WHERE (SalinityForcingShapeID={0})", iDBID))
             Me.m_db.Execute(String.Format("UPDATE EcoSimScenario Set NutForcingShapeID=NULL WHERE (NutForcingShapeID={0})", iDBID))
 
+            ' Delete mediation weights
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ShapeID={0})", iDBID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioShapeMedWeightsFleet WHERE (ShapeID={0})", iDBID))
+
+            ' Delete pred/prey interactions
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioPredPreyShape WHERE (ShapeID={0})", iDBID))
+
             ' Destroy the given shape
             Me.m_db.Execute(String.Format("DELETE FROM EcoSimShape WHERE (ShapeID={0})", iDBID))
             ' Reload shapes data
