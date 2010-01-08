@@ -33,7 +33,8 @@ Public Class FisheryInputDiscardMortGrid
 
         For iFleet As Integer = 1 To core.nFleets
             src = core.FleetInputs(iFleet)
-            Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(src, eVarNameFlags.Name)
+            Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(src, eVarNameFlags.Name, Nothing, _
+                                                             My.Resources.HEADERMASK_UNIT_ZEROTOONE)
         Next
 
         Me.FixedColumns = 2

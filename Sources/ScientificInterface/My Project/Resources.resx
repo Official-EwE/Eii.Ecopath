@@ -2448,4 +2448,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="DisplayGroups" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DisplayGroups.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HEADERMASK_UNIT_ZEROTOONE" xml:space="preserve">
+    <value>{0} [0, 1]</value>
+    <comment>{0}: value mask</comment>
+  </data>
 </root>
