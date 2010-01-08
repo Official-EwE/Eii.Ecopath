@@ -30,9 +30,9 @@ Namespace Ecopath
         Private m_msgPub As New cMessagePublisher
 
         'status flag for the estimation results
-        Dim m_EstimStatus As eStatusFlags
+        Private m_EstimStatus As eStatusFlags
 
-        Dim m_Ecofunctions As cEcoFunctions
+        Private m_Ecofunctions As cEcoFunctions
 
         Private InParameterEstimation As Integer 'currently in the parameter estimation loop 0 = false 1 = true
         Private Exit_Sub_Missing_Par As Integer 'exit parameter estimation sub (ParamEstimate(...)) because number of missing parameter > 2 
@@ -1520,7 +1520,6 @@ LoopCalc:
             Dim i As Integer
             Dim Level As Integer
 
-            'jb this is in the Network Analysis plugin
             EstimateTrophicLevels(m_Data.DC, m_Data.TTLX)
 
             'AbortRun = False
