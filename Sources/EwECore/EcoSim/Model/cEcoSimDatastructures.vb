@@ -128,6 +128,19 @@ Public Class cEcosimDatastructures
     Public CapDepreciate() As Single
     Public CapBaseGrowth() As Single
 
+    ' JS 08Jan10: Moved here from Network Analysis plug-in
+    ''' <summary>TL of catch</summary>
+    Public TLC() As Single
+    ''' <summary>FIB index</summary>
+    Public FIB() As Single
+    ''' <summary>TL based on Ecosim diets</summary>
+    Public TLSim() As Single
+    ''' <summary>Total catch per timestep</summary>
+    ''' <remarks>JS: moved 08Jan10 from Network Analysis. Ecosim may already have this value, but I could not find it</remarks>
+    Public CatchSim() As Single
+    ''' <summary>Kemptons's Q</summary>
+    Public Kemptons() As Single
+
     ''' <summary> Max vulnerability across all prey for this predator VulnerabilityPredator(pred) = max(VulMult(prey,pred))</summary>
     Public VulnerabilityPredator() As Single
 
@@ -636,6 +649,7 @@ Public Class cEcosimDatastructures
         ReDim Blim(nGroups)
         ReDim Bbase(nGroups)
         ReDim Fopt(nGroups)
+        ReDim TLSim(nGroups)
 
         ReDim GroupDetritus(nGroups)
 
@@ -1073,6 +1087,10 @@ Public Class cEcosimDatastructures
         Debug.Assert(NumYears <> 0, Me.ToString & ".RedimTotalTimeVariables() TotalTime = 0 Something is very wrong......")
         ReDim FishRateNo(nGroups, NTimes)  'was 1200
         ReDim FishRateGear(nGear + 1, NTimes)  'was 1200
+        ReDim FIB(NTimes)
+        ReDim TLC(NTimes)     'TL of catch in Ecosim
+        ReDim Kemptons(NTimes)
+        ReDim CatchSim(NTimes)
 
         'reset some default values before the data is populated by an interface or a datasource
         'this worked differently in EwE5

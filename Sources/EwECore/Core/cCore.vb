@@ -4467,7 +4467,7 @@ Public Class cCore
             '    Return False
             'End If
 
-            m_EcoSim = New Ecosim.cEcoSimModel
+            m_EcoSim = New Ecosim.cEcoSimModel(Me.EcoFunction)
 
             m_EcoSim.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_SyncObj))
 

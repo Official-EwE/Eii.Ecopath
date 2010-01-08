@@ -59,6 +59,7 @@ Namespace Ecosim
         Private m_RefData As cTimeSeriesDataStructures
 
         Private m_publisher As New cMessagePublisher
+        Private m_Ecofunctions As cEcoFunctions
 
         ' Private Ntimes As Integer
         Private StepsPerYear As Integer
@@ -236,8 +237,9 @@ Namespace Ecosim
 
 #End Region
 
-        Sub New()
+        Sub New(ByVal functions As cEcoFunctions)
             m_bInit = False
+            m_Ecofunctions = functions
             bStopRunning = False
 
             Me.m_SyncObj = System.Threading.SynchronizationContext.Current
@@ -364,7 +366,7 @@ Namespace Ecosim
 
 
         <CLSCompliant(False)> _
-Public Property PluginManager() As cPluginManager
+        Public Property PluginManager() As cPluginManager
             Get
                 Return Me.m_pluginManager
             End Get
@@ -494,6 +496,7 @@ Public Property PluginManager() As cPluginManager
                 Debug.Assert(False, ex.Message)
             End Try
         End Function
+
         Public Sub CalculateAssimilationEfficiencies()
             '041012 VC calculating assimilation efficiency for variable p/q
             'following Kerims African paper
@@ -709,6 +712,9 @@ Public Property PluginManager() As cPluginManager
 
             'cLog.WriteMatrixToFile("FishRateNo.csv", m_Data.FishRateNo, "FishRateNo")
 
+            ' JS 08Jan10: moved NA calculations to Ecosim
+            Me.EstimateTLofCatch(0)
+
             If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimRunInitialized(m_Data)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -761,6 +767,7 @@ Public Property PluginManager() As cPluginManager
                 For ipct = 1 To 12
 
                     itime = itime + 1
+
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimBeginTimeStep(BB, m_Data, itime)
 
                     If ipct = 6 Then AccumulateDataInfo(Int(itime / 12), BB, m_Data.loss)
@@ -858,6 +865,14 @@ Public Property PluginManager() As cPluginManager
                             sumCatch += m_Data.ResultsSumCatchByGroupGear(igrp, 0, itime)
                         End If
                     Next
+
+                    ' JS 08Jan10: for now this code does run with searches. This could change if
+                    '             TL capabilities were to become useful for a search
+                    If Me.m_search.SearchMode = eSearchModes.NotInSearch Then
+                        ' JS 08Jan10: moved NA calculations to Ecosim
+                        EstimateTLs(itime)
+                        EstimateTLofCatch(itime)
+                    End If
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimEndTimeStep(BB, m_Data, itime, m_Results)
 
@@ -4398,6 +4413,147 @@ Public Property PluginManager() As cPluginManager
             End Try
         End Sub
 
+        Private Sub EstimateTLofCatch(ByVal TimeStep As Integer)
+
+            Dim i As Integer
+            Dim fCatch As Single
+            Dim totalTL As Single
+            'Static StartFIB As Single
+            'Static StartTL As Single
+            'Static StartCatch As Single
+            'Static MaxFactor As Single
+            'Static DecreaseMaxFactor As Boolean
+
+            Try
+                ' js this was never used
+                '       BiomassFish = 0
+                '       BiomassInvert = 0
+                m_Data.CatchSim(TimeStep) = 0
+                If TimeStep = 0 Then
+                    For i = 1 To m_EPData.NumGroups
+                        m_Data.TLSim(i) = m_EPData.TTLX(i)
+                    Next
+                End If
+
+                For i = 1 To m_EPData.NumGroups
+                    'jb all groups here
+                    '        If GrpsToShow(i) Then 'only visible groups
+                    fCatch = m_Data.FishTime(i) * BB(i)
+                    ' js this was never used
+                    '        If m_epdata.GroupIsFish(i) Then BiomassFish = BiomassFish + BB(i)
+                    '        If m_epdata.GroupIsInvert(i) Then BiomassInvert = BiomassInvert + BB(i)
+                    m_Data.CatchSim(TimeStep) = m_Data.CatchSim(TimeStep) + fCatch
+                    totalTL = totalTL + m_Data.TLSim(i) * fCatch
+                    '      End If
+                Next
+                If m_Data.CatchSim(0) > 0 Then
+                    m_Data.TLC(TimeStep) = totalTL / m_Data.CatchSim(TimeStep)
+                    'Calculate FIB-index:
+                    If TimeStep = 0 Then
+                        'StartTL = TL
+                        'StartCatch = CatchSim
+                        'If DecreaseMaxFactor Then MaxFactor = MaxFactor / 2
+                        'If MaxFactor < 1 Then MaxFactor = 10
+                        m_Data.FIB(0) = 1
+                        'jb what the fuck is this
+                        ' TL = TLC(0) - IIf(frmSim1.optTL, 0, 2) '=1
+                        m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(m_Data.StartBiomass, 0.25)
+                        'DecreaseMaxFactor = False
+                        'TLC(0) = 2
+                        'CatchSim(0) = 1
+                    Else
+                        'TL = MaxFactor * (TLC(TimeStep) - TLC(1)) + 1
+                        'TL = m_Data.TLC(TimeStep)
+                        'If Abs(TL) > 2 Then DecreaseMaxFactor = True
+                        'If TL < 0.1 Then Stop
+                        If TimeStep = 1 Then
+                            m_Data.FIB(1) = 1 'CatchSim(1) * 10 ^ (TLC(1) - 1)
+                        Else
+                            m_Data.FIB(TimeStep) = CSng((m_Data.CatchSim(TimeStep) * 10 ^ (m_Data.TLC(TimeStep) - 1)) / (m_Data.CatchSim(1) * 10 ^ (m_Data.TLC(1) - 1)))
+                        End If
+                        m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(BB, 0.25)
+                        'Debug.Print TimeStep, CatchSim(TimeStep), FIB(TimeStep), TLC(TimeStep)
+                        'FIB = log[(Catch(y) · 10TL(y)-1) / (Catch(0) · 10TL(0)-1)]
+                    End If
+                Else
+                    ' JS 08Jan10: this looks like a bug; should this not set TLC?
+                    m_EPData.TLcatch = totalTL / m_Data.CatchSim(TimeStep)
+                    ' JS 08Jan10: should TLC, FIB, Kemptons receive defaults here?
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, ex.ToString)
+                Throw New ApplicationException(Me.ToString & ".EstimateTLofCatch() Error: " & ex.Message, ex)
+            End Try
+
+        End Sub
+
+        Private Sub EstimateTLs(ByVal time As Integer)
+
+            Dim i As Integer
+            Dim j As Integer
+            Dim Diet(m_EPData.NumGroups, m_EPData.NumGroups) As Single
+            Dim SumDiet As Single
+            Dim SumR() As Single
+            Dim Alpha(,) As Single
+            Dim SumBio() As Single
+
+            Try
+
+                'Windows.Forms.Application.DoEvents()
+
+                For i = 1 To m_EPData.NumLiving  'consumer
+                    If m_Data.Eatenby(i) > 0 Then
+                        SumDiet = 0
+                        For j = 1 To m_EPData.NumGroups  'food
+                            Diet(i, j) = m_Data.Consumpt(j, i) / m_Data.Eatenby(i)
+                            SumDiet = SumDiet + Diet(i, j)
+                        Next
+                        If SumDiet > 0 Then
+                            For j = 1 To m_EPData.NumGroups  'food
+                                Diet(i, j) = Diet(i, j) / SumDiet
+                            Next
+                        End If
+                    End If
+                Next
+
+                m_Ecofunctions.EstimateTrophicLevels(Diet, m_Data.TLSim)
+
+                ReDim SumBio(m_EPData.NumLiving)
+                ReDim SumR(m_EPData.NumLiving)
+                ReDim Alpha(m_EPData.NumLiving, m_EPData.NumGroups)
+                For i = 1 To m_EPData.NumLiving
+                    If m_EPData.QB(i) > 0 Then    'Estimate Chesson from Sim
+                        SumBio(i) = 0
+                        For j = 1 To m_EPData.NumGroups
+                            SumBio(i) = SumBio(i) + m_EPData.B(j)
+                        Next
+                        SumR(i) = 0
+                        For j = 1 To m_EPData.NumGroups              'FOLLOWING CHESSON (1983)
+                            If m_EPData.B(j) > 0 Then Alpha(i, j) = Diet(i, j) / (BB(j) / SumBio(i))
+                            SumR(i) = SumR(i) + Alpha(i, j)
+                        Next
+
+                        If SumR(i) > 0 Then
+                            For j = 1 To m_EPData.NumGroups
+                                Alpha(i, j) = Alpha(i, j) / SumR(i)
+                            Next                'THIS ALPHA IS THE SAME AS CHESSONS ALPHA
+                        End If
+
+                        For j = 1 To m_EPData.NumGroups
+                            m_Data.Elect(i, j, time) = Alpha(i, j) '(NumGroups * Alpha(j) - 1) / ((NumGroups - 2) * Alpha(j) + 1)
+                        Next
+                    End If
+                Next
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message)
+                Throw New ApplicationException(Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message, ex)
+            End Try
+
+        End Sub
 
         Public Sub calcFunctionalResponse(ByVal time As Integer)
             Dim i As Integer

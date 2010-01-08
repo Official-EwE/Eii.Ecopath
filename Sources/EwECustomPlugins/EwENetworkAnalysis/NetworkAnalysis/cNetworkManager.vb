@@ -1544,7 +1544,7 @@ Public Class cNetworkManager
 
     Public ReadOnly Property Electivity(ByVal iSel As Integer, ByVal iPrey As Integer, ByVal iTime As Integer) As Single
         Get
-            Return Me.m_econetwork.Elect(iSel, iPrey, iTime)
+            Return Me.EcosimData.Elect(iSel, iPrey, iTime)
         End Get
     End Property
 
@@ -1824,7 +1824,7 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public ReadOnly Property FIB() As Single()
         Get
-            Return Me.m_econetwork.FIB
+            Return Me.EcosimData.FIB
         End Get
     End Property
 

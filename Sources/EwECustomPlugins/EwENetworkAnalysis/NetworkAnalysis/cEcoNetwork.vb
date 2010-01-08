@@ -266,20 +266,20 @@ Public Class cEcoNetwork
 
 #Region "Public Ecosim Variables"
 
-    Private Kemptons() As Single
-    Private TLSim() As Single
+    'Private Kemptons() As Single
+    'Private TLSim() As Single
 
-    Private TLC() As Single 'TL of catch in Ecosim
+    'Public TLC() As Single 'TL of catch in Ecosim
+    'Public FIB() As Single  'FIB-index in ecosim
     '  Public CostSim() As Single
     ' Public ValueSim() As Single
-    Private CatchSim() As Single
-    Public Elect(,,) As Single
+    'Private CatchSim() As Single
+    'Public Elect(,,) As Single
     Private ByTL(,,) As Single
 
-    Private BiomassFish As Single
-    Private BiomassInvert As Single
+    'Private BiomassFish As Single
+    'Private BiomassInvert As Single
 
-    Public FIB() As Single  'FIB-index in ecosim
 
     Public RelativeSumOfCatchPlot() As Single
     Public RelativeKemptonsPlot() As Single
@@ -3560,12 +3560,10 @@ NextPivot:
         '  PPRon = IIf(RetVal = vbYes, True, False)
         Try
 
-            ReDim FIB(m_esdata.NTimes)   'FIB-index in ecosim
-            ReDim TLC(m_esdata.NTimes)  'TL of catch in Ecosim
             ' ReDim ValueSim(m_esdata.NTimes)  'value of catch in Ecosim
             ' ReDim CostSim(m_esdata.NTimes)  'cost of catch in Ecosim
-            ReDim CatchSim(m_esdata.NTimes)
-            ReDim Kemptons(m_esdata.NTimes)
+            'ReDim CatchSim(m_esdata.NTimes)
+            'ReDim Kemptons(m_esdata.NTimes)
 
             ReDim RelativeSumOfCatchPlot(m_esdata.NTimes)
             ReDim RelativeKemptonsPlot(m_esdata.NTimes)
@@ -3573,8 +3571,8 @@ NextPivot:
             ReDim TLCatchPlot(m_esdata.NTimes)
 
 
-            ReDim Elect(m_epdata.NumLiving, m_epdata.NumGroups, m_esdata.NTimes)
-            ReDim TLSim(m_epdata.NumGroups)
+            'ReDim Elect(m_epdata.NumLiving, m_epdata.NumGroups, m_esdata.NTimes)
+            'ReDim TLSim(m_epdata.NumGroups)
             'ReDim SumDC(m_epdata.NumGroups)
 
             ReDim BB(m_epdata.NumGroups)
@@ -3596,15 +3594,15 @@ NextPivot:
             '    ReDim SAUP_C_Space(NumCatchCodes, HalfDegreeRow, HalfDegreeCol)
             'End If
 
-            Dim OldCatch As Single
-            Dim OldTL As Single
+            'Dim OldCatch As Single
+            'Dim OldTL As Single
 
             'Get the inital starting biomass for EstimateTLofCatch() in Ecosim this is done in SetBBtoStartBiomass()
             'BB() is the biomass at the current time step and not exposed by ecosim so cEcoNetwork uses a local BB
             Array.Copy(m_esdata.StartBiomass, BB, m_esdata.StartBiomass.Length)
-            EstimateTLofCatch(0, OldTL, OldCatch, True)
+            'EstimateTLofCatch(0, BB, CatchSim, OldTL, OldCatch, True)
 
-            OrigKempton = Kemptons(0)
+            OrigKempton = m_esdata.Kemptons(0)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -3620,8 +3618,8 @@ NextPivot:
 
         'TLCatch gets computed for each time step
         'it will need to be stored
-        Dim TLCatch As Single
-        Dim relCatch As Single 'relative catch computed in EstimateTLofCatch()
+        Dim relCatch As Single 'relative catch 
+        Dim esData As cEcosimDatastructures = DirectCast(EcosimDatastructures, cEcosimDatastructures)
 
         Try
 
@@ -3629,23 +3627,32 @@ NextPivot:
             Array.Copy(BiomassAtTimestep, BB, BiomassAtTimestep.Length)
 
             ' If ipct = 6 Then Estimate_Taxon_indices(CInt((iTime - ipct) / 12))
-            EstimateTLsInEcosim(iTime, True)
-            EstimateTLofCatch(iTime, TLCatch, relCatch, True)         'Orig total catch =catchsum
-            Kemptons(iTime) = FunctionKemptonsQ(BB, 0.25)
+            'EstimateTLsInEcosim(iTime, True)
+            'EstimateTLofCatch(iTime, BB, CatchSim, TLCatch, relCatch, True)         'Orig total catch =catchsum
+
+            ' JS 08Jan10: this used to be in EstimateTLofCatch
+            If iTime = 0 Then
+                relCatch = 0
+            ElseIf iTime = 1 Then
+                relCatch = 1
+            Else
+                relCatch = esData.CatchSim(iTime) / esData.CatchSim(1)
+            End If
+            'Kemptons(iTime) = FunctionKemptonsQ(BB, 0.25)
 
             PrepareUlanowForCallFromEcosim(iTime)
 
             'Summary data
             'see EwE5 RunModel() "If IndicesOn Then"
             RelativeSumOfCatchPlot(iTime) = relCatch
-            RelativeKemptonsPlot(iTime) = Kemptons(iTime) / OrigKempton
+            RelativeKemptonsPlot(iTime) = esData.Kemptons(iTime) / OrigKempton
             'EwE5 code for plotting trophic level of catch it Indicies plot
             'If Solving = False Then
             '    frmSim1.PlotTime.Line (told, OldTL)-(t, TLcatch - IIf(frmSim1.optTL, 0, 2)), QBColor(0)
-            TLCatchPlot(iTime) = TLCatch - 2 'subtract two from TLCatch for plotting I have no idea why
+            TLCatchPlot(iTime) = esData.TLC(iTime) - 2 'subtract two from TLCatch for plotting I have no idea why
 
             For igrp As Integer = 1 To m_epdata.NumGroups
-                TLSimPlot(igrp, iTime) = TLSim(igrp)
+                TLSimPlot(igrp, iTime) = esData.TLSim(igrp)
             Next igrp
 
             If PPRon Then
@@ -3663,290 +3670,158 @@ NextPivot:
 
     End Function
 
-    'Called during the intialization of Ecosim NA
-    Private Sub EstimateTLofCatch(ByVal TimeStep As Integer, ByRef TL As Single, ByRef Cat As Single, ByVal DoAll As Boolean)
+    ''Called during the intialization of Ecosim NA
+    'Private Sub EstimateTLofCatch(ByVal TimeStep As Integer, _
+    '                              ByVal bb() As Single, _
+    '                              ByRef CatchSim() As Single, _
+    '                              ByRef TL As Single, _
+    '                              ByRef Cat As Single, _
+    '                              ByVal DoAll As Boolean)
 
-        Dim i As Integer
-        Dim fCatch As Single
-        Dim totalTL As Single
-        'Static StartFIB As Single
-        'Static StartTL As Single
-        'Static StartCatch As Single
-        'Static MaxFactor As Single
-        'Static DecreaseMaxFactor As Boolean
+    '    Dim i As Integer
+    '    Dim fCatch As Single
+    '    Dim totalTL As Single
+    '    'Static StartFIB As Single
+    '    'Static StartTL As Single
+    '    'Static StartCatch As Single
+    '    'Static MaxFactor As Single
+    '    'Static DecreaseMaxFactor As Boolean
 
-        Try
-            BiomassFish = 0
-            BiomassInvert = 0
-            CatchSim(TimeStep) = 0
-            If TimeStep = 0 Then
-                For i = 1 To m_epdata.NumGroups
-                    TLSim(i) = m_epdata.TTLX(i)
-                Next
-            End If
-            For i = 1 To m_epdata.NumGroups
-                'jb all groups here
-                '        If GrpsToShow(i) Then 'only visible groups
-                fCatch = m_esdata.FishTime(i) * BB(i)
-                If m_epdata.GroupIsFish(i) Then BiomassFish = BiomassFish + BB(i)
-                If m_epdata.GroupIsInvert(i) Then BiomassInvert = BiomassInvert + BB(i)
-                CatchSim(TimeStep) = CatchSim(TimeStep) + fCatch
-                totalTL = totalTL + TLSim(i) * fCatch
-                '      End If
-            Next
-            If CatchSim(0) > 0 Then
-                If DoAll Then
-                    TLC(TimeStep) = totalTL / CatchSim(TimeStep)
-                    'Calculate FIB-index:
-                    If TimeStep = 0 Then
-                        'StartTL = TL
-                        'StartCatch = CatchSim
-                        'If DecreaseMaxFactor Then MaxFactor = MaxFactor / 2
-                        'If MaxFactor < 1 Then MaxFactor = 10
-                        FIB(0) = 1
-                        Cat = 0
-                        'jb what the fuck is this
-                        ' TL = TLC(0) - IIf(frmSim1.optTL, 0, 2) '=1
-                        Kemptons(0) = FunctionKemptonsQ(m_esdata.StartBiomass, 0.25)
-                        'DecreaseMaxFactor = False
-                        'TLC(0) = 2
-                        'CatchSim(0) = 1
-                    Else
-                        'TL = MaxFactor * (TLC(TimeStep) - TLC(1)) + 1
-                        TL = TLC(TimeStep)
-                        'If Abs(TL) > 2 Then DecreaseMaxFactor = True
-                        'If TL < 0.1 Then Stop
-                        If TimeStep = 1 Then
-                            FIB(1) = 1 'CatchSim(1) * 10 ^ (TLC(1) - 1)
-                            Cat = 1
-                        Else
-                            FIB(TimeStep) = CSng((CatchSim(TimeStep) * 10 ^ (TLC(TimeStep) - 1)) / (CatchSim(1) * 10 ^ (TLC(1) - 1)))
-                            Cat = CatchSim(TimeStep) / CatchSim(1)
-                        End If
-                        'Debug.Print TimeStep, CatchSim(TimeStep), FIB(TimeStep), TLC(TimeStep)
-                        'FIB = log[(Catch(y) � 10TL(y)-1) / (Catch(0) � 10TL(0)-1)]
-                    End If
-                Else
-                    m_epdata.TLcatch = totalTL / CatchSim(TimeStep)
-                End If
-            End If
+    '    Try
+    '        'BiomassFish = 0
+    '        'BiomassInvert = 0
+    '        CatchSim(TimeStep) = 0
 
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False, ex.ToString)
-            Throw New ApplicationException(Me.ToString & ".EstimateTLofCatch() Error: " & ex.Message, ex)
-        End Try
+    '        For i = 1 To m_epdata.NumGroups
+    '            'jb all groups here
+    '            '        If GrpsToShow(i) Then 'only visible groups
+    '            fCatch = m_esdata.FishTime(i) * bb(i)
+    '            'If m_epdata.GroupIsFish(i) Then BiomassFish = BiomassFish + BB(i)
+    '            'If m_epdata.GroupIsInvert(i) Then BiomassInvert = BiomassInvert + BB(i)
+    '            CatchSim(TimeStep) = CatchSim(TimeStep) + fCatch
+    '            totalTL = totalTL + Me.m_epdata.TTLX(i) * fCatch
+    '            '      End If
+    '        Next
+    '        If CatchSim(0) > 0 Then
+    '            If DoAll Then
+    '                TLC(TimeStep) = totalTL / CatchSim(TimeStep)
+    '                'Calculate FIB-index:
+    '                If TimeStep = 0 Then
+    '                    'StartTL = TL
+    '                    'StartCatch = CatchSim
+    '                    'If DecreaseMaxFactor Then MaxFactor = MaxFactor / 2
+    '                    'If MaxFactor < 1 Then MaxFactor = 10
+    '                    FIB(0) = 1
+    '                    Cat = 0
+    '                    'jb what the fuck is this
+    '                    ' TL = TLC(0) - IIf(frmSim1.optTL, 0, 2) '=1
+    '                    Kemptons(0) = FunctionKemptonsQ(m_esdata.StartBiomass, 0.25)
+    '                    'DecreaseMaxFactor = False
+    '                    'TLC(0) = 2
+    '                    'CatchSim(0) = 1
+    '                Else
+    '                    'TL = MaxFactor * (TLC(TimeStep) - TLC(1)) + 1
+    '                    TL = TLC(TimeStep)
+    '                    'If Abs(TL) > 2 Then DecreaseMaxFactor = True
+    '                    'If TL < 0.1 Then Stop
+    '                    If TimeStep = 1 Then
+    '                        FIB(1) = 1 'CatchSim(1) * 10 ^ (TLC(1) - 1)
+    '                        Cat = 1
+    '                    Else
+    '                        FIB(TimeStep) = CSng((CatchSim(TimeStep) * 10 ^ (TLC(TimeStep) - 1)) / (CatchSim(1) * 10 ^ (TLC(1) - 1)))
+    '                        Cat = CatchSim(TimeStep) / CatchSim(1)
+    '                    End If
+    '                    'Debug.Print TimeStep, CatchSim(TimeStep), FIB(TimeStep), TLC(TimeStep)
+    '                    'FIB = log[(Catch(y) � 10TL(y)-1) / (Catch(0) � 10TL(0)-1)]
+    '                End If
+    '            Else
+    '                m_epdata.TLcatch = totalTL / CatchSim(TimeStep)
+    '            End If
+    '        End If
 
-    End Sub
+    '    Catch ex As Exception
+    '        cLog.Write(ex)
+    '        Debug.Assert(False, ex.ToString)
+    '        Throw New ApplicationException(Me.ToString & ".EstimateTLofCatch() Error: " & ex.Message, ex)
+    '    End Try
 
-    Private Sub EstimateTLsInEcosim(ByVal time As Integer, ByVal DoAll As Boolean)
-        Dim i As Integer
-        Dim j As Integer
-        Dim Diet(,) As Single
-        Dim SumDiet As Single
-        Dim SumR() As Single
-        Dim Alpha(,) As Single
-        'On Local Error Resume Next
-        Dim SumBio() As Single
+    'End Sub
 
-        Try
+    'Private Sub EstimateTLsInEcosim(ByVal time As Integer, ByVal DoAll As Boolean)
 
-            ReDim Diet(m_epdata.NumGroups, m_epdata.NumGroups)
+    '    Dim i As Integer
+    '    Dim j As Integer
+    '    Dim Diet(m_epdata.NumGroups, m_epdata.NumGroups) As Single
+    '    Dim SumDiet As Single
+    '    Dim SumR() As Single
+    '    Dim Alpha(,) As Single
+    '    Dim SumBio() As Single
 
-            Windows.Forms.Application.DoEvents()
+    '    Try
 
-            For i = 1 To m_epdata.NumLiving  'consumer
-                If m_esdata.Eatenby(i) > 0 Then
-                    SumDiet = 0
-                    For j = 1 To m_epdata.NumGroups  'food
-                        Diet(i, j) = m_esdata.Consumpt(j, i) / m_esdata.Eatenby(i)
-                        SumDiet = SumDiet + Diet(i, j)
-                    Next
-                    If SumDiet > 0 Then
-                        For j = 1 To m_epdata.NumGroups  'food
-                            Diet(i, j) = Diet(i, j) / SumDiet
-                        Next
-                    End If
-                End If
-            Next
+    '        'Windows.Forms.Application.DoEvents()
 
-            EstimateTrophicLevels(Diet, TLSim)
+    '        For i = 1 To m_epdata.NumLiving  'consumer
+    '            If m_esdata.Eatenby(i) > 0 Then
+    '                SumDiet = 0
+    '                For j = 1 To m_epdata.NumGroups  'food
+    '                    Diet(i, j) = m_esdata.Consumpt(j, i) / m_esdata.Eatenby(i)
+    '                    SumDiet = SumDiet + Diet(i, j)
+    '                Next
+    '                If SumDiet > 0 Then
+    '                    For j = 1 To m_epdata.NumGroups  'food
+    '                        Diet(i, j) = Diet(i, j) / SumDiet
+    '                    Next
+    '                End If
+    '            End If
+    '        Next
 
-            If DoAll Then
-                ReDim SumBio(m_epdata.NumLiving)
-                ReDim SumR(m_epdata.NumLiving)
-                ReDim Alpha(m_epdata.NumLiving, m_epdata.NumGroups)
-                For i = 1 To m_epdata.NumLiving
-                    If m_epdata.QB(i) > 0 Then    'Estimate Chesson from Sim
-                        SumBio(i) = 0
-                        For j = 1 To m_epdata.NumGroups
-                            SumBio(i) = SumBio(i) + m_epdata.B(j)
-                        Next
-                        SumR(i) = 0
-                        For j = 1 To m_epdata.NumGroups              'FOLLOWING CHESSON (1983)
-                            If m_epdata.B(j) > 0 Then Alpha(i, j) = Diet(i, j) / (BB(j) / SumBio(i))
-                            SumR(i) = SumR(i) + Alpha(i, j)
-                        Next
+    '        EstimateTrophicLevels(Diet, Me.m_epdata.TTLX)
 
-                        If SumR(i) > 0 Then
-                            For j = 1 To m_epdata.NumGroups
-                                Alpha(i, j) = Alpha(i, j) / SumR(i)
-                            Next                'THIS ALPHA IS THE SAME AS CHESSONS ALPHA
-                        End If
+    '        If DoAll Then
+    '            ReDim SumBio(m_epdata.NumLiving)
+    '            ReDim SumR(m_epdata.NumLiving)
+    '            ReDim Alpha(m_epdata.NumLiving, m_epdata.NumGroups)
+    '            For i = 1 To m_epdata.NumLiving
+    '                If m_epdata.QB(i) > 0 Then    'Estimate Chesson from Sim
+    '                    SumBio(i) = 0
+    '                    For j = 1 To m_epdata.NumGroups
+    '                        SumBio(i) = SumBio(i) + m_epdata.B(j)
+    '                    Next
+    '                    SumR(i) = 0
+    '                    For j = 1 To m_epdata.NumGroups              'FOLLOWING CHESSON (1983)
+    '                        If m_epdata.B(j) > 0 Then Alpha(i, j) = Diet(i, j) / (BB(j) / SumBio(i))
+    '                        SumR(i) = SumR(i) + Alpha(i, j)
+    '                    Next
 
-                        For j = 1 To m_epdata.NumGroups
-                            Elect(i, j, time) = Alpha(i, j) '(NumGroups * Alpha(j) - 1) / ((NumGroups - 2) * Alpha(j) + 1)
-                        Next
-                    End If
-                Next
-            End If
+    '                    If SumR(i) > 0 Then
+    '                        For j = 1 To m_epdata.NumGroups
+    '                            Alpha(i, j) = Alpha(i, j) / SumR(i)
+    '                        Next                'THIS ALPHA IS THE SAME AS CHESSONS ALPHA
+    '                    End If
 
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False, Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message)
-            Throw New ApplicationException(Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message, ex)
-        End Try
+    '                    For j = 1 To m_epdata.NumGroups
+    '                        Elect(i, j, time) = Alpha(i, j) '(NumGroups * Alpha(j) - 1) / ((NumGroups - 2) * Alpha(j) + 1)
+    '                    Next
+    '                End If
+    '            Next
+    '        End If
 
-    End Sub
+    '    Catch ex As Exception
+    '        cLog.Write(ex)
+    '        Debug.Assert(False, Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message)
+    '        Throw New ApplicationException(Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message, ex)
+    '    End Try
 
-    Private Sub EstimateTrophicLevels(ByVal Diet(,) As Single, ByVal TLreturn() As Single)
+    'End Sub
 
-        Me.m_core.EcoFunction.EstimateTrophicLevels(Diet, TLreturn)
+    'Private Sub EstimateTrophicLevels(ByVal Diet(,) As Single, ByVal TLreturn() As Single)
+    '    Me.m_core.EcoFunction.EstimateTrophicLevels(Diet, TLreturn)
+    'End Sub
 
-        'Dim i As Integer, j As Integer
-        'Dim ErrCode As Integer
-        'Dim TL(m_epdata.NumGroups) As Single
-        'Dim SumDC(Me.m_epdata.NumGroups) As Single
-        'Dim LHS(Me.m_epdata.NumGroups, Me.m_epdata.NumGroups) As Single
-
-        'Try
-        '    For i = 1 To m_epdata.NumGroups
-        '        'TTLX(i) = 1
-        '        TL(i) = 1
-        '        For j = 1 To m_epdata.NumGroups
-        '            LHS(i, j) = 0
-        '        Next j
-        '    Next i
-
-        '    For i = 1 To m_epdata.NumGroups
-        '        SumDC(i) = 0
-        '        For j = 1 To m_epdata.NumGroups
-        '            SumDC(i) += Diet(i, j)
-        '        Next j
-        '    Next i
-
-        '    'Estimation of trophic levels: TTLX
-        '    'The DC is made to sum to one, this means that it is assumed
-        '    'that import to strict consumers has the same trophic level as
-        '    'other prey for the group
-        '    For i = 1 To m_epdata.NumGroups
-        '        For j = 1 To m_epdata.NumGroups
-        '            If m_epdata.PP(i) = 1 Then            'Strict Primary producer, so no diet composition (even if it may have in carbon model)
-        '                LHS(i, j) = 0
-        '            ElseIf m_epdata.PP(i) > 0 Then            'partly a primary producer
-        '                LHS(i, j) = -Diet(i, j)
-        '                'ElseIf SumDC(i) > 0 And SumDC(i) < 1 Then 'Consumer with import
-        '            ElseIf SumDC(i) > 0 And Math.Abs(SumDC(i) - 1) > 0.0001 Then 'Consumer with import
-        '                LHS(i, j) = -Diet(i, j) / SumDC(i)
-        '            Else                          'Consumer
-        '                LHS(i, j) = -Diet(i, j)
-        '            End If
-        '            If m_epdata.PP(i) > 0 And m_epdata.PP(i) < 1 Then
-        '                'Mixed producer / consumer: TTLX should reflect both roles
-        '                LHS(i, j) = -Diet(i, j) * (1 - m_epdata.PP(i))
-        '            End If
-        '        Next j
-        '        LHS(i, i) = 1 - Diet(i, i)
-        '    Next i
-
-        '    For i = m_epdata.NumLiving + 1 To m_epdata.NumGroups          'multidet version for
-        '        For j = 1 To m_epdata.NumGroups
-        '            LHS(i, j) = 0
-        '        Next j
-        '        LHS(i, i) = 1
-        '    Next i
-
-        '    ErrCode = m_core.EcoFunction.MatrixCalc.MatSEqnS(LHS, TL)   'Inverses matrix to find
-        '    If ErrCode = 0 Then 'no error
-        '        For i = 1 To m_epdata.NumGroups : TLreturn(i) = TL(i) : Next
-        '    End If
-
-        'Catch ex As Exception
-        '    cLog.Write(ex)
-        '    Debug.Assert(False, Me.ToString & ".EstimateTrophicLevels() Error: " & ex.Message)
-        '    Throw New ApplicationException(Me.ToString & ".EstimateTrophicLevels() Error: " & ex.Message, ex)
-        'End Try
-
-    End Sub
-
-
-    Private Function FunctionKemptonsQ(ByVal Bio() As Single, ByVal Quan As Single) As Single
-
-        Return Me.m_core.EcoFunction.KemptonsQ(Bio, Quan)
-
-        ''VC programmed this function 23 October 2002 from Tony Pitcher's description
-        'Dim BLower As Single
-        'Dim BUpper As Single
-        'Dim i As Integer
-        'Dim j As Integer
-        'Dim minB As Single
-        'Dim Smallest As Integer
-        'Dim Rank() As Integer
-        'Dim Used() As Boolean
-        'Dim Lower As Single
-        'Dim upper As Single
-        'Dim NumGr As Integer
-
-        'Try
-
-        '    'We now know the current biomasses for each group = bb(i) the biomass for each group at the end of the simulation
-        '    'Find the min and max biomass, only look at theliving groups
-        '    FunctionKemptonsQ = 0
-        '    ReDim Rank(m_epdata.NumLiving)
-        '    ReDim Used(m_epdata.NumLiving)
-        '    NumGr = 0
-        '    For i = 1 To m_epdata.NumLiving
-        '        If m_epdata.TTLX(i) < 3 Then
-        '            Used(i) = True 'don't include low trophic level species in diversity index
-        '        Else
-        '            NumGr = NumGr + 1
-        '        End If
-        '    Next
-        '    For i = 1 To NumGr
-        '        minB = 1000000
-        '        Smallest = 0
-        '        For j = 1 To m_epdata.NumLiving
-        '            If Used(j) = False And Bio(j) < minB Then
-        '                minB = Bio(j)
-        '                Smallest = j
-        '            End If
-        '        Next
-        '        'After each round we have the smallest remaining biomass
-        '        If Smallest > 0 Then    'there will be some where it won't
-        '            Used(Smallest) = True
-        '            Rank(i) = Smallest
-        '        End If
-        '    Next
-        '    'after i rounds we have sorted all groups after biomasses in Rank()
-        '    'Now we can find the percentiles:
-        '    Lower = Quan * NumGr    'm_epdata.NumLiving           'e.g., 0.25* m_epdata.NumLiving
-        '    upper = (1 - Quan) * NumGr  'm_epdata.NumLiving
-        '    BLower = (Lower - CInt(Lower - 0.5)) * Bio(Rank(CInt(Lower - 0.5))) + (1 - (Lower - CInt(Lower - 0.5))) * Bio(Rank(CInt(Lower - 0.5) + 1))
-        '    BUpper = (1 - (upper - CInt(upper - 0.5))) * Bio(Rank(CInt(upper - 0.5))) + (upper - CInt(upper - 0.5)) * Bio(Rank(CInt(upper - 0.5) + 1))
-        '    'We can now calculate Kemptons Q-index:
-        '    FunctionKemptonsQ = CSng(NumGr / Math.Log(BUpper / BLower) / 2)
-        '    'Using the equation from Kemptons Species diversity index:
-        '    'Q= St / [ 2 log(Pi0.25ST/Pi0.75St)] wher Piq is the proportional abundance of the qth most abundant species
-        '    'exitFunction:
-
-        'Catch ex As Exception
-        '    cLog.Write(ex)
-        '    Debug.Assert(False, Me.ToString & ".FunctionKemptonsQ() Error: " & ex.Message)
-        '    Throw New ApplicationException(Me.ToString & ".FunctionKemptonsQ() Error: " & ex.Message, ex)
-        'End Try
-
-
-    End Function
+    'Private Function FunctionKemptonsQ(ByVal Bio() As Single, ByVal Quan As Single) As Single
+    '    Return Me.m_core.EcoFunction.KemptonsQ(Bio, Quan)
+    'End Function
 
     'Public Sub EstimateTL_Indices(ByVal Year As Integer)
     '    Dim i As Integer
