@@ -2191,8 +2191,7 @@ exitSub:
             'added 053196 eli.
             ReDim AUL(m_Data.NumGroups + 10, m_Data.NumGroups + 10)
             ReDim Q(m_Data.NumGroups + 10)
-            ReDim m_Data.LHS(m_Data.NumGroups, m_Data.NumGroups)
-
+            Dim LHS(m_Data.NumGroups, m_Data.NumGroups) As Single
 
             '             Count number of unknown B's and QB's
             '             ------------------------------------
@@ -2294,7 +2293,7 @@ exitSub:
                     For j = 1 To m_Data.NumGroups
                         If AUL(i, j) <> -9999 Then    'GoTo 7610         'EXCL PRIMARY PROD. & DETRITUS
                             kountj = kountj + 1
-                            m_Data.LHS(Kount, kountj) = AUL(i, j)
+                            LHS(Kount, kountj) = AUL(i, j)
                         End If
                     Next j
                 End If
@@ -2306,7 +2305,7 @@ exitSub:
                 'If g_in_Ranger = 0 And g_in_senseloop = 0 Then
                 'frmGIM.Show
                 'End If
-                Geninv(NN, MM)
+                Geninv(NN, MM, LHS)
                 'If g_in_Ranger = 0 And g_in_senseloop = 0 Then
                 '        Unload frmGIM
                 'End If
@@ -2437,7 +2436,7 @@ exitSub:
 
         End Sub
 
-        Private Sub Geninv(ByVal NN As Integer, ByVal MM As Integer)
+        Private Sub Geninv(ByVal NN As Integer, ByVal MM As Integer, ByVal LHS(,) As Single)
             Dim t As Single, i As Integer, j As Integer, L As Integer, lhsi As Integer, K As Single, d As Single
             'jb are these local?????????
             'I hope so because they are now
@@ -2457,7 +2456,7 @@ exitSub:
             ' MM is the number of unknowns
             For lhsi = 1 To NN
                 For j = 1 To MM
-                    W(j, lhsi) = m_Data.LHS(lhsi, j)                'W is transpose of LHS
+                    W(j, lhsi) = LHS(lhsi, j)                'W is transpose of LHS
                     '    LPRINT USING " ####.####"; lhs(lhsi, j);
                 Next j                            'RightHandSide of equation
                 ' LPRINT H(lhsi)
@@ -2468,7 +2467,7 @@ exitSub:
                 For j = 1 To NN
                     Z(i, j) = 0
                     For L = 1 To MM
-                        Z(i, j) = Z(i, j) + m_Data.LHS(i, L) * W(L, j)
+                        Z(i, j) = Z(i, j) + LHS(i, L) * W(L, j)
                     Next L
                     K = K + Math.Abs(Z(i, j))
                 Next j
@@ -2488,7 +2487,7 @@ ONE:
                 For j = 1 To NN
                     Z(i, j) = 0
                     For L = 1 To MM
-                        Z(i, j) = Z(i, j) + m_Data.LHS(i, L) * Y(L, j)
+                        Z(i, j) = Z(i, j) + LHS(i, L) * Y(L, j)
                     Next L
                 Next j
             Next i
@@ -2632,65 +2631,9 @@ ONE:
         End Sub
 
 
-
         Private Sub EstimateTrophicLevels(ByVal Diet(,) As Single, ByVal TLreturn() As Single)
-            Dim i As Integer, j As Integer
-            Dim ErrCode As Integer
 
-            Dim TL() As Single
-            ReDim TL(m_Data.NumGroups)
-
-            For i = 1 To m_Data.NumGroups
-                'TTLX(i) = 1
-                TL(i) = 1
-                For j = 1 To m_Data.NumGroups
-                    m_Data.LHS(i, j) = 0
-                Next j
-            Next i
-
-            For i = 1 To m_Data.NumGroups
-                m_Data.SumDC(i) = 0
-                For j = 1 To m_Data.NumGroups
-                    m_Data.SumDC(i) = m_Data.SumDC(i) + Diet(i, j)
-                Next j
-            Next i
-
-            'Estimation of trophic levels: TTLX
-            'The DC is made to sum to one, this means that it is assumed
-            'that import to strict consumers has the same trophic level as
-            'other prey for the group
-            For i = 1 To m_Data.NumGroups
-                For j = 1 To m_Data.NumGroups
-                    If m_Data.PP(i) = 1 Then            'Strict Primary producer, so no diet composition (even if it may have in carbon model)
-                        m_Data.LHS(i, j) = 0
-                    ElseIf m_Data.PP(i) > 0 Then            'partly a primary producer
-                        m_Data.LHS(i, j) = -Diet(i, j)
-                        'ElseIf SumDC(i) > 0 And SumDC(i) < 1 Then 'Consumer with import
-                    ElseIf m_Data.SumDC(i) > 0 And Math.Abs(m_Data.SumDC(i) - 1) > 0.0001 Then 'Consumer with import
-                        m_Data.LHS(i, j) = -Diet(i, j) / m_Data.SumDC(i)
-                    Else                          'Consumer
-                        m_Data.LHS(i, j) = -Diet(i, j)
-                    End If
-                    If m_Data.PP(i) > 0 And m_Data.PP(i) < 1 Then
-                        'Mixed producer / consumer: TTLX should reflect both roles
-                        m_Data.LHS(i, j) = -Diet(i, j) * (1 - m_Data.PP(i))
-                    End If
-                Next j
-                m_Data.LHS(i, i) = 1 - Diet(i, i)
-            Next i
-
-            For i = m_Data.NumLiving + 1 To m_Data.NumGroups          'multidet version for
-                For j = 1 To m_Data.NumGroups
-                    m_Data.LHS(i, j) = 0
-                Next j
-                m_Data.LHS(i, i) = 1
-            Next i
-
-            ErrCode = m_Ecofunctions.MatrixCalc.MatSEqnS(m_Data.LHS, TL)   'Inverses matrix to find
-
-            If ErrCode = 0 Then 'no error
-                For i = 1 To m_Data.NumGroups : TLreturn(i) = TL(i) : Next
-            End If
+            Me.m_Ecofunctions.EstimateTrophicLevels(Diet, TLreturn)
 
         End Sub
 

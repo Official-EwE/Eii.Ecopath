@@ -1,54 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cEcopathDataStructures.vb,v $
-' Revision 1.15  2009/03/18 13:26:17  jeroens
-' Moved PSD data from EcopathDS to PSDDS
-'
-' Revision 1.14  2009/03/17 23:37:34  joeh
-' Add codes for the Selected Group feature
-'
-' Revision 1.13  2009/03/17 19:38:07  joeh
-' Add latitudes of NW and SE corners of model
-'
-' Revision 1.12  2009/03/17 02:25:49  joeh
-' Add Lorenzen mortality type
-'
-' Revision 1.11  2009/03/13 21:37:02  joeh
-' Rename NTimes to NAgeSteps
-'
-' Revision 1.10  2009/03/11 00:14:28  joeh
-' Add PSD calculation
-'
-' Revision 1.9  2009/03/06 00:47:56  joeh
-' Add Ecopath output data (Weight, Number, Biomass) over time
-'
-' Revision 1.8  2009/03/03 01:42:55  joeh
-' Tcatch no longer has input and output pair
-'
-' Revision 1.7  2009/03/02 20:09:36  joeh
-' VBK no longer has input and output pair
-'
-' Revision 1.6  2009/02/28 00:16:28  joeh
-' Added PSD foundation
-'
-' Revision 1.5  2009/01/29 23:39:34  jeroens
-' Added ComputeProfit, vars
-'
-' Revision 1.4  2009/01/16 18:30:14  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.3  2008/11/14 00:21:09  joeb
-' Added comment to cost(,)
-'
-' Revision 1.2  2008/10/09 17:21:03  jeroens
-' Moved discard mort data from Ecosim to Ecopath
-'
-' Revision 1.1  2008/09/26 07:30:18  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
-Option Strict Off ' OUCH
+﻿Option Strict Off ' OUCH
 Imports EwEUtils.Core
 
 ''' <summary>
@@ -209,7 +159,8 @@ Public Class cEcopathDataStructures
     Public DetPassedProp() As Single              ' For multiple detritus
     Public FlowToDet() As Single
     Public InputToDet() As Single
-    Public SumDC() As Single
+    'JS 08Jan09: SumDC was a global scratch variable, changed to local scope
+    'Public SumDC() As Single
 
     Public Unit As String
     ''' <summary>Migration into the area covered by the model (t/km²/year)</summary>
@@ -228,7 +179,8 @@ Public Class cEcopathDataStructures
     Public PropLanded(,) As Single
     Public TTLX() As Single    'Trophic levels in Ecopath
     'Public TLSim() As Single    'These TL's are recalculated for each time step in Ecosim
-    Public LHS(,) As Single
+    'JS 08Jan09: LHS was a global scratch variable, changed to local scope
+    'Public LHS(,) As Single
     Public NumCatchCodes As Integer = 30
     Public CatchCode(,) As Integer
     Public CVpar(,) As Single
@@ -376,8 +328,9 @@ Public Class cEcopathDataStructures
         ReDim GroupDBID(NumGroups)
         ReDim GS(NumGroups)
         ReDim TTLX(NumGroups)     'Trophic levels in Ecopath
-        ReDim LHS(NumGroups, NumGroups)
-        ReDim SumDC(NumGroups)
+        'JS 08Jan09: SumDC and LHS were a global scratch variable, changed to local scope
+        'ReDim LHS(NumGroups, NumGroups)
+        'ReDim SumDC(NumGroups)
         ReDim BQB(NumGroups)
 
         ReDim Resp(NumGroups)
@@ -1113,7 +1066,8 @@ Public Class cEcopathDataStructures
             DetPassedProp.CopyTo(dest.DetPassedProp, 0)              ' For multiple detritus
             FlowToDet.CopyTo(dest.FlowToDet, 0)
             InputToDet.CopyTo(dest.InputToDet, 0)
-            SumDC.CopyTo(dest.SumDC, 0)
+            'JS 08Jan09: SumDC was a global scratch variable, changed to local scope
+            'SumDC.CopyTo(dest.SumDC, 0)
 
             dest.Unit = Unit
             Immig.CopyTo(dest.Immig, 0)
@@ -1126,7 +1080,8 @@ Public Class cEcopathDataStructures
             dest.NumCatchCodes = NumCatchCodes
             dest.PropLanded = PropLanded.Clone
             TTLX.CopyTo(dest.TTLX, 0)
-            dest.LHS = LHS.Clone
+            'JS 08Jan09: LHS was a global scratch variable, changed to local scope
+            'dest.LHS = LHS.Clone
             StanzaGroup.CopyTo(dest.StanzaGroup, 0)
             dest.CatchCode = CatchCode.Clone
             dest.CVpar = CVpar.Clone
