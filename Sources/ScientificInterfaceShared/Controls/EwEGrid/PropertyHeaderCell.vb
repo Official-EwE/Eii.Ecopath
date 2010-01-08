@@ -158,16 +158,22 @@ Namespace Controls.EwEGrid
                 If (m_aUnitTypes Is Nothing) Or (String.IsNullOrEmpty(Me.m_strUnitMask)) Then
                     strDisplayText = MyBase.DisplayText
                 Else
-                    Select Case m_aUnitTypes.Length
-                        Case 0
-                            strDisplayText = String.Format(MyBase.DisplayText, Me.Value)
-                        Case 1
-                            strDisplayText = String.Format(Me.m_strUnitMask, Me.Value, GetUnitString(m_aUnitTypes(0)))
-                        Case 2
-                            strDisplayText = String.Format(Me.m_strUnitMask, Me.Value, GetUnitString(m_aUnitTypes(0)), GetUnitString(m_aUnitTypes(1)))
-                        Case Else
-                            Debug.Assert(False)
-                    End Select
+                    Try
+
+                        Select Case m_aUnitTypes.Length
+                            Case 0
+                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Value)
+                            Case 1
+                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Value, GetUnitString(m_aUnitTypes(0)))
+                            Case 2
+                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Value, GetUnitString(m_aUnitTypes(0)), GetUnitString(m_aUnitTypes(1)))
+                            Case Else
+                                Debug.Assert(False)
+                        End Select
+                    Catch ex As Exception
+                        Debug.Assert(False, "Failed to apply format mask, please check")
+                        strDisplayText = MyBase.DisplayText
+                    End Try
                 End If
                 Return strDisplayText
             End Get
