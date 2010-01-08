@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: PropertyColumnHeaderCell.vb,v $
-' Revision 1.2  2009/05/28 12:37:31  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/03/30 16:59:25  jeroens
-' Split
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -27,92 +16,285 @@ Namespace Controls.EwEGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' PropertyColumnHeaderCell implements a PropertyCellBase rendered as clickable,
-    ''' sortable column header.
+    ''' Cell class to implement a colunm header in an <see cref="EwEGrid">EWE grid</see>, 
+    ''' that dynamically derives its <see cref="Cell.DisplayText">display text</see>
+    ''' from the core.
     ''' </summary>
+    ''' <remarks>
+    ''' <para>This class inherits from <see cref="PropertyHeaderCell">PropertyHeaderCell</see> 
+    ''' to implement basic, standardized formatting for column header cells, and
+    ''' provides standardized grid column selection and sorting interaction. The
+    ''' display text of the cell is tracked 'live' using <see cref="cProperty">properties</see>.</para>
+    ''' <para>Additionally, the cell offers capabilities to incorporate units
+    ''' that are updated whenever the system display units change.</para>
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Class PropertyColumnHeaderCell
         : Inherits PropertyHeaderCell
 
         ''' <summary>One visualizer for all cells</summary>
         Private Shared g_visualizer As New EwEColumnHeaderVisualizer()
+        ''' <summary>Secundary property for monitoring tooltip.</summary>
+        Private m_propTooltip As cProperty = Nothing
 
 #Region " Construction "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor
+        ''' Constructor to create a column header cell that derives its 
+        ''' <see cref="DisplayText">display text</see> from a 
+        ''' <see cref="cProperty">cProperty</see>.
         ''' </summary>
-        ''' <param name="prop">cProperty to attach to the cell</param>
+        ''' <param name="prop">cProperty to deliver the cell value.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal prop As cProperty)
             MyBase.New(prop)
-            ' Set shared visualizer
             Me.VisualModel = g_visualizer
-            If prop.VarName <> eVarNameFlags.Name Then Me.ToolTipText = prop.Source().Name
+
+            If (prop.VarName <> eVarNameFlags.Name) Then
+                Me.m_propTooltip = cPropertyManager.GetInstance().GetProperty(prop.Source, eVarNameFlags.Name, prop.SourceSec)
+                AddHandler Me.m_propTooltip.PropertyChanged, AddressOf OnPropertyChanged
+                Me.UpdateTooltip()
+            End If
         End Sub
 
-        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor to create a column header cell that derives its 
+        ''' <see cref="DisplayText">display text</see> from a 
+        ''' <see cref="cProperty">cProperty</see>. The property value is 
+        ''' inserted in the cell display text via a 
+        ''' <see cref="Strings.Format">format mask</see>.
+        ''' </summary>
+        ''' <param name="prop">cProperty to deliver the cell value.</param>
+        ''' <param name="strUnitMask">The format mask to apply. This mask must
+        ''' contain a '{0}' field where the property value is to be inserted.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal prop As cProperty, _
+                       ByVal strUnitMask As String)
+            Me.New(prop)
+            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {})
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor to create a column header cell that derives its 
+        ''' <see cref="DisplayText">display text</see> from a 
+        ''' <see cref="cProperty">cProperty</see> and a 
+        ''' <see cref="cStyleGuide.eUnitType">system unit</see>. 
+        ''' Both the property value and the unit mask text are inserted in the 
+        ''' cell display text via a <see cref="Strings.Format">format mask</see>.
+        ''' </summary>
+        ''' <param name="prop">cProperty to deliver the cell value.</param>
+        ''' <param name="strUnitMask">The format mask to apply. This mask must
+        ''' contain a '{0}' field to place the property value, and a '{1}' field
+        ''' to place the unit value.</param>
+        ''' <param name="unitType">Definition of the unit to place in the cell
+        ''' display text.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal prop As cProperty, _
+                       ByVal strUnitMask As String, _
+                       ByVal unitType As cStyleGuide.eUnitType)
             Me.New(prop)
             Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
         End Sub
 
-        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor to create a column header cell that derives its 
+        ''' <see cref="DisplayText">display text</see> from a 
+        ''' <see cref="cProperty">cProperty</see> and a series of
+        ''' <see cref="cStyleGuide.eUnitType">system units</see>. 
+        ''' Both the property value and the unit texts are inserted in the 
+        ''' cell display text via a <see cref="Strings.Format">format mask</see>.
+        ''' </summary>
+        ''' <param name="prop">cProperty to deliver the cell value.</param>
+        ''' <param name="strUnitMask">The format mask to apply. This mask must
+        ''' contain a '{0}' field to place the property value, and placeholder
+        ''' fields for the units. The unit fields must be numbered '{1}', '{2}'
+        ''' etc. Units will be placed in the placeholder fields in the order that
+        ''' they are defined in <paramref name="aUnitTypes">aUnitTypes</paramref>.</param>
+        ''' <param name="aUnitTypes">Definitions of units to place in the cell
+        ''' display text.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal prop As cProperty, _
+                       ByVal strUnitMask As String, _
+                       ByVal aUnitTypes() As cStyleGuide.eUnitType)
             Me.New(prop)
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor
+        ''' Constructor to create a column header cell that synchronizes 
+        ''' its <see cref="DisplayText">display text</see> live with core data.
         ''' </summary>
-        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
-        ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
-        ''' <param name="SourceSec">An optional secundary index in the VarName, or Nothing when irrelevant</param>
+        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
+        ''' object to deliver the core data.</param>
+        ''' <param name="VarName">The <see cref="eVarNameFlags">variable</see> 
+        ''' of the <paramref name="Source">Source</paramref> to display in the cell.</param>
+        ''' <param name="SourceSec">An optional secundary index in the 
+        ''' <paramref name="VarName">variable</paramref>, or 
+        ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when this variable
+        ''' does not require an index.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-                Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
+        Public Sub New(ByVal Source As cCoreInputOutputBase, _
+                       ByVal VarName As eVarNameFlags, _
+                       Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
             Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec))
         End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor
+        ''' Constructor to create a column header cell that synchronizes 
+        ''' its <see cref="DisplayText">display text</see> live with core data.
+        ''' The core value is inserted in the cell display text via a 
+        ''' <see cref="Strings.Format">format mask</see>.
         ''' </summary>
-        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
-        ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
-        ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
-        ''' <param name="strUnitMask">Mask that specifies how to substitute a
-        ''' <see cref="cStyleGuide.eUnitType">unit of measurement</see> into
-        ''' the cell value.</param>
-        ''' <param name="unitType">The <see cref="cStyleGuide.eUnitType">unit of measurement</see>
-        ''' to substitute into the header cell text.</param>
+        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
+        ''' object to deliver the core data.</param>
+        ''' <param name="VarName">The <see cref="eVarNameFlags">variable</see> 
+        ''' of the <paramref name="Source">Source</paramref> to display in the cell.</param>
+        ''' <param name="SourceSec">An optional secundary index in the 
+        ''' <paramref name="VarName">variable</paramref>, or 
+        ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when this variable
+        ''' does not require an index.</param>
+        ''' <param name="strUnitMask">The format mask to apply. This mask must
+        ''' contain a '{0}' field where the property value is to be inserted.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-                ByVal SourceSec As cCoreInputOutputBase, _
-                ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+        Public Sub New(ByVal Source As cCoreInputOutputBase, _
+                       ByVal VarName As eVarNameFlags, _
+                       ByVal SourceSec As cCoreInputOutputBase, _
+                       ByVal strUnitMask As String)
+            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor to create a row header cell that synchronizes 
+        ''' its <see cref="DisplayText">display text</see> live with core data
+        ''' and a <see cref="cStyleGuide.eUnitType">system unit</see>.
+        ''' Both the core value and the unit text are inserted in the cell 
+        ''' display text via a <see cref="Strings.Format">format mask</see>.
+        ''' </summary>
+        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
+        ''' object to deliver the core data.</param>
+        ''' <param name="VarName">The <see cref="eVarNameFlags">variable</see> 
+        ''' of the <paramref name="Source">Source</paramref> to display in the cell.</param>
+        ''' <param name="SourceSec">An optional secundary index in the 
+        ''' <paramref name="VarName">variable</paramref>, or 
+        ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when this variable
+        ''' does not require an index.</param>
+        ''' <param name="strUnitMask">The format mask to apply. This mask must
+        ''' contain a '{0}' field to place the property value, and placeholder
+        ''' fields for the units. The unit fields must be numbered '{1}', '{2}'
+        ''' etc. Units will be placed in the placeholder fields in the order that
+        ''' they are defined in <paramref name="aUnitTypes">aUnitTypes</paramref>.</param>
+        ''' <param name="unitType">Definition of the unit to place in the cell
+        ''' display text.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal Source As cCoreInputOutputBase, _
+                       ByVal VarName As eVarNameFlags, _
+                       ByVal SourceSec As cCoreInputOutputBase, _
+                       ByVal strUnitMask As String, _
+                       ByVal unitType As cStyleGuide.eUnitType)
             Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, New cStyleGuide.eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor
+        ''' Constructor to create a column header cell that synchronizes 
+        ''' its <see cref="DisplayText">display text</see> live with core data
+        ''' and a series of<see cref="cStyleGuide.eUnitType">system units</see>.
+        ''' Both the core value and the unit texts are inserted in the cell 
+        ''' display text via a <see cref="Strings.Format">format mask</see>.
         ''' </summary>
-        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
-        ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
-        ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
-        ''' <param name="strUnitMask">Mask that specifies how to substitute a series
-        ''' of <see cref="cStyleGuide.eUnitType">unit of measurements</see> into
-        ''' the cell value.</param>
-        ''' <param name="aUnitTypes">The <see cref="cStyleGuide.eUnitType">unit of measurements</see>
-        ''' to substitute into the header cell text.</param>
+        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
+        ''' object to deliver the core data.</param>
+        ''' <param name="VarName">The <see cref="eVarNameFlags">variable</see> 
+        ''' of the <paramref name="Source">Source</paramref> to display in the cell.</param>
+        ''' <param name="SourceSec">An optional secundary index in the 
+        ''' <paramref name="VarName">variable</paramref>, or 
+        ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when this variable
+        ''' does not require an index.</param>
+        ''' <param name="strUnitMask">The format mask to apply. This mask must
+        ''' contain a '{0}' field to place the property value, and placeholder
+        ''' fields for the units. The unit fields must be numbered '{1}', '{2}'
+        ''' etc. Units will be placed in the placeholder fields in the order that
+        ''' they are defined in <paramref name="aUnitTypes">aUnitTypes</paramref>.</param>
+        ''' <param name="aUnitTypes">Definitions of units to place in the cell
+        ''' display text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-                ByVal SourceSec As cCoreInputOutputBase, _
-                ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        Public Sub New(ByVal Source As cCoreInputOutputBase, _
+                       ByVal VarName As eVarNameFlags, _
+                       ByVal SourceSec As cCoreInputOutputBase, _
+                       ByVal strUnitMask As String, _
+                       ByVal aUnitTypes() As cStyleGuide.eUnitType)
             Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Clean up!
+        ''' </summary>
+        ''' <param name="bDisposing">.NET likes this flag a lot.</param>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+
+            ' Unregister property
+            If (Me.m_propTooltip IsNot Nothing) Then
+                RemoveHandler Me.m_propTooltip.PropertyChanged, AddressOf Me.OnPropertyChanged
+                Me.m_propTooltip = Nothing
+            End If
+
+            MyBase.Dispose(bDisposing)
+
+        End Sub
+
 #End Region ' Construction 
+
+#Region " Overrides "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Override to track property changes, may be needed to update
+        ''' the text of the tooltip.
+        ''' </summary>
+        ''' <param name="prop">The property that changed.</param>
+        ''' <param name="changeFlags">Bitwise flag that states what 
+        ''' <see cref="cProperty.eChangeFlags">aspect</see>
+        ''' of the property has changed.</param>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Sub OnPropertyChanged(ByVal prop As Properties.cProperty, ByVal changeFlags As Properties.cProperty.eChangeFlags)
+            MyBase.OnPropertyChanged(prop, changeFlags)
+            If (Object.ReferenceEquals(prop, Me.m_propTooltip) And _
+                (changeFlags And cProperty.eChangeFlags.Value) = cProperty.eChangeFlags.Value) Then
+                Me.UpdateTooltip()
+            End If
+        End Sub
+
+#End Region ' Overrides
+
+#Region " Internals "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Synchronize cell tooltip text with the internal tooltip property.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub UpdateTooltip()
+
+            Dim strText As String = ""
+            If (Me.m_propTooltip IsNot Nothing) Then
+                If (Me.m_propTooltip.Source IsNot Nothing) Then
+                    strText = Me.m_propTooltip.Source().Name
+                End If
+            End If
+            Me.ToolTipText = strText
+
+        End Sub
+
+#End Region ' Internals
 
     End Class
 

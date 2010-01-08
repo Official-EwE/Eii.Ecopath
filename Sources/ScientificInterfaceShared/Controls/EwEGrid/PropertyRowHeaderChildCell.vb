@@ -1,10 +1,4 @@
-'==============================================================================
-'
-' $Log: PropertyRowHeaderChildCell.vb,v $
-' Revision 1.1  2009/03/30 16:59:26  jeroens
-' Split
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
@@ -13,6 +7,8 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
+
+#End Region ' Imports 
 
 Namespace Controls.EwEGrid
 

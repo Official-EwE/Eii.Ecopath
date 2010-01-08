@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: PropertyCell.vb,v $
-' Revision 1.3  2009/05/28 12:37:31  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.2  2009/04/23 13:11:17  jeroens
-' OnPropertyChanged overridable
-'
-' Revision 1.1  2009/03/30 16:59:25  jeroens
-' Split
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -77,7 +63,13 @@ Namespace Controls.EwEGrid
             End If
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Clean up!
+        ''' </summary>
+        ''' <param name="bDisposing">Yeah, we're really doing this.</param>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
 
             ' Unregister property
             If (Me.m_property IsNot Nothing) Then
@@ -85,7 +77,7 @@ Namespace Controls.EwEGrid
                 Me.m_property = Nothing
             End If
 
-            MyBase.Dispose(disposing)
+            MyBase.Dispose(bDisposing)
 
         End Sub
 
@@ -192,7 +184,9 @@ Namespace Controls.EwEGrid
 
             ' Sanity checks
             Debug.Assert(prop IsNot Nothing, "Invalid event received")
-            Debug.Assert(Object.Equals(prop, Me.m_property), "Event received for invalid property")
+
+            ' Ignore events for other properties (could be that a derived class is frolicking with strangers, eek)
+            If Not Object.Equals(prop, Me.m_property) Then Return
 
             ' Check style flag changes
             If (changeFlags And cProperty.eChangeFlags.CoreStatus) = cProperty.eChangeFlags.CoreStatus Then
@@ -212,6 +206,9 @@ Namespace Controls.EwEGrid
 
 #End Region ' Updates (property)
 
+        Protected Overrides Sub Finalize()
+            MyBase.Finalize()
+        End Sub
     End Class
 
 End Namespace

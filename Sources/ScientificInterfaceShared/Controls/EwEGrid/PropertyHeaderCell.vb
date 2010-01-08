@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: PropertyHeaderCell.vb,v $
-' Revision 1.2  2009/05/28 12:37:31  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/03/30 16:59:25  jeroens
-' Split
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -28,7 +17,7 @@ Namespace Controls.EwEGrid
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' PropertyHeaderCell implements a PropertyCell based class for creating 
-    ''' header cells.
+    ''' header cells in <see cref="EwEGrid">EwE grids</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public MustInherit Class PropertyHeaderCell
@@ -157,10 +146,7 @@ Namespace Controls.EwEGrid
         Protected m_aUnitTypes() As cStyleGuide.eUnitType
         Protected m_strUnitMask As String = ""
 
-        Public Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
-            ' Sanity checks
-            Debug.Assert(aUnitTypes.Length = 1 Or aUnitTypes.Length = 2)
-
+        Protected Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
             Me.m_strUnitMask = strUnitMask
             Me.m_aUnitTypes = aUnitTypes
         End Sub

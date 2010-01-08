@@ -14,12 +14,11 @@ Imports EwEUtils.Core
 
 Namespace Controls.EwEGrid
 
-#Region " Dynamic cells "
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' PropertyRowHeaderCell to implement a row header in an EwEGrid, that 
-    ''' dynamically derives its value from the core.
+    ''' Cell class to implement a row header in an <see cref="EwEGrid">EWE grid</see>, 
+    ''' that dynamically derives its <see cref="Cell.DisplayText">display text</see>
+    ''' from the core.
     ''' </summary>
     ''' <remarks>
     ''' <para>This class inherits from <see cref="PropertyHeaderCell">PropertyHeaderCell</see> 
@@ -163,7 +162,11 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor
+        ''' Constructor to create a row header cell that synchronizes 
+        ''' its <see cref="DisplayText">display text</see> live with core data
+        ''' and a <see cref="cStyleGuide.eUnitType">system unit</see>.
+        ''' Both the core value and the unit text are inserted in the cell 
+        ''' display text via a <see cref="Strings.Format">format mask</see>.
         ''' </summary>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
         ''' object to deliver the core data.</param>
@@ -191,7 +194,11 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor
+        ''' Constructor to create a row header cell that synchronizes 
+        ''' its <see cref="DisplayText">display text</see> live with core data
+        ''' and a series of<see cref="cStyleGuide.eUnitType">system units</see>.
+        ''' Both the core value and the unit texts are inserted in the cell 
+        ''' display text via a <see cref="Strings.Format">format mask</see>.
         ''' </summary>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
         ''' object to deliver the core data.</param>
@@ -220,7 +227,5 @@ Namespace Controls.EwEGrid
 #End Region ' Construction 
 
     End Class
-
-#End Region ' Class PropertyRowHeaderCell 
 
 End Namespace
