@@ -109,6 +109,80 @@ Public Class cEcoFunctions
 
     End Function
 
+    ''' <summary>
+    ''' Utility method, estimate trophic levels from diets.
+    ''' </summary>
+    ''' <param name="Diet"></param>
+    ''' <param name="TLreturn"></param>
+    Public Sub EstimateTrophicLevels(ByVal Diet(,) As Single, ByVal TLreturn() As Single)
+
+        Dim m_epdata As cEcopathDataStructures = m_core.m_EcoPathData
+        Dim SumDC(m_epdata.NumGroups) As Single
+        Dim LHS(m_epdata.NumGroups, m_epdata.NumGroups) As Single
+        Dim TL(m_epdata.NumGroups) As Single
+        Dim i As Integer, j As Integer
+        Dim ErrCode As Integer
+
+        Try
+            For i = 1 To m_epdata.NumGroups
+                'TTLX(i) = 1
+                TL(i) = 1
+                For j = 1 To m_epdata.NumGroups
+                    LHS(i, j) = 0
+                Next j
+            Next i
+
+            For i = 1 To m_epdata.NumGroups
+                SumDC(i) = 0
+                For j = 1 To m_epdata.NumGroups
+                    SumDC(i) += Diet(i, j)
+                Next j
+            Next i
+
+            'Estimation of trophic levels: TTLX
+            'The DC is made to sum to one, this means that it is assumed
+            'that import to strict consumers has the same trophic level as
+            'other prey for the group
+            For i = 1 To m_epdata.NumGroups
+                For j = 1 To m_epdata.NumGroups
+                    If m_epdata.PP(i) = 1 Then            'Strict Primary producer, so no diet composition (even if it may have in carbon model)
+                        LHS(i, j) = 0
+                    ElseIf m_epdata.PP(i) > 0 Then            'partly a primary producer
+                        LHS(i, j) = -Diet(i, j)
+                        'ElseIf SumDC(i) > 0 And SumDC(i) < 1 Then 'Consumer with import
+                    ElseIf SumDC(i) > 0 And Math.Abs(SumDC(i) - 1) > 0.0001 Then 'Consumer with import
+                        LHS(i, j) = -Diet(i, j) / SumDC(i)
+                    Else                          'Consumer
+                        LHS(i, j) = -Diet(i, j)
+                    End If
+                    If m_epdata.PP(i) > 0 And m_epdata.PP(i) < 1 Then
+                        'Mixed producer / consumer: TTLX should reflect both roles
+                        LHS(i, j) = -Diet(i, j) * (1 - m_epdata.PP(i))
+                    End If
+                Next j
+                LHS(i, i) = 1 - Diet(i, i)
+            Next i
+
+            For i = m_epdata.NumLiving + 1 To m_epdata.NumGroups          'multidet version for
+                For j = 1 To m_epdata.NumGroups
+                    LHS(i, j) = 0
+                Next j
+                LHS(i, i) = 1
+            Next i
+
+            ErrCode = m_core.EcoFunction.MatrixCalc.MatSEqnS(LHS, TL)   'Inverses matrix to find
+            If ErrCode = 0 Then 'no error
+                For i = 1 To m_epdata.NumGroups : TLreturn(i) = TL(i) : Next
+            End If
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, Me.ToString & ".EstimateTrophicLevels() Error: " & ex.Message)
+            Throw New ApplicationException(Me.ToString & ".EstimateTrophicLevels() Error: " & ex.Message, ex)
+        End Try
+
+    End Sub
+
 End Class
 
 
