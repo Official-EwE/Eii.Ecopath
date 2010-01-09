@@ -46,9 +46,12 @@ Public Class cEcosimGroupOutput
 
         'isPrey
         val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.isPrey, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, _
-                                AddressOf m_core.GetCoreCounter)
+                              AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
 
+        ' TL
+        val = New cValue(0, eVarNameFlags.TL, eStatusFlags.OK, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
 
         'no validators
         val = New cValue(0, eVarNameFlags.EcosimGroupBiomassStart, eStatusFlags.OK, eValueTypes.Sng)
@@ -184,16 +187,13 @@ Public Class cEcosimGroupOutput
     ''' Is this igroup a predator of this group
     ''' </summary>
     ''' <param name="iGroup"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Property isPred(ByVal iGroup As Integer) As Boolean
 
         Get
             Return CBool(GetVariable(eVarNameFlags.isPred, iGroup))
         End Get
 
-        Set(ByVal value As Boolean)
+        Friend Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.isPred, value, iGroup)
         End Set
 
@@ -203,16 +203,13 @@ Public Class cEcosimGroupOutput
     ''' Does this group prey on this iGroup
     ''' </summary>
     ''' <param name="iGroup"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Property isPrey(ByVal iGroup As Integer) As Boolean
 
         Get
             Return CBool(GetVariable(eVarNameFlags.isPrey, iGroup))
         End Get
 
-        Set(ByVal value As Boolean)
+        Friend Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.isPrey, value, iGroup)
         End Set
 
@@ -223,6 +220,21 @@ Public Class cEcosimGroupOutput
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimBiomass, iTime))
         End Get
+
+    End Property
+
+    ''' <summary>
+    ''' Get/set the Trophic Level of a group in Ecosim.
+    ''' </summary>
+    Public Property TL() As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.TL))
+        End Get
+
+        Friend Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.TL, value)
+        End Set
 
     End Property
 

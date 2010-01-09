@@ -5250,6 +5250,9 @@ Public Class cCore
             group.iStanza = getStanzaIndexForGroup(iGroup)
             group.PP = m_EcoPathData.PP(iGroup)
 
+            ' JS 11Jan09: Exposed former Network Analysis var
+            group.TL = m_EcoSimData.TLSim(iGroup)
+
             'Biomass
             m_EcoSimData.getSummaryBioForGroup(iGroup, sBio, EndBio)
             group.BiomassStart = sBio
@@ -5279,6 +5282,7 @@ Public Class cCore
                 If m_EcoPathData.DC(i, iGroup) > 0 Then
                     group.isPred(i) = True
                 End If
+
             Next
 
             group.ResetStatusFlags()

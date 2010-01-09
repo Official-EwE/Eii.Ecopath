@@ -1137,6 +1137,14 @@ Namespace Core
 
         LayerIBMPackets
 
+        ' JS 11Jan10: added for NA variables that migrated to Ecosim
+        ''' <summary>Trophic level of catch.</summary>
+        TLCatch
+        ''' <summary>Trophic level of groups.</summary>
+        TL
+        ''' <summary>Fishing in-balance (FIB) index.</summary>
+        FIB
+
     End Enum
 
 #End Region ' Variable names

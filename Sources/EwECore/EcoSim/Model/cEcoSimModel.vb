@@ -1836,6 +1836,12 @@ Namespace Ecosim
                     Array.Clear(BrecYear, 0, m_Data.nGroups)
                 End If
 
+                ' JS 11Jan09: Exposed former Network Analysis vars
+                '             these arrays are zero-based, as in Network Analysis, but that could cause problems
+                '             now these data have been moved to Ecosim. Should discuss best option with Joe B
+                m_Results.TLCatch = Me.m_Data.TLC(iTime - 1)
+                m_Results.FIB = Me.m_Data.FIB(iTime - 1)
+
             Catch ex As Exception
                 cLog.Write(ex)
                 Debug.Assert(False)

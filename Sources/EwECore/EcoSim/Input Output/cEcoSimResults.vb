@@ -7,6 +7,8 @@ Public Class cEcoSimResults
     Public nGroups As Integer
     Public CurrentT As Long
     Public Biomass() As Single
+    Public TLCatch As Single
+    Public FIB As Single
 
     ''' <summary> Computed number of Fish by group </summary>
     Public FishCount() As Single
