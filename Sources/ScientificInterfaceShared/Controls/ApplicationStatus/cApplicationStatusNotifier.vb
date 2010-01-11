@@ -1,12 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cApplicationStatusNotifier.vb,v $
-' Revision 1.2  2009/03/24 15:56:12  jeroens
-' Documented
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 #End Region ' Imports
 
@@ -20,7 +12,6 @@ Namespace Controls
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cApplicationStatusNotifier
-        Implements IApplicationStatusDispatcher
 
         ''' <summary>The dispatcher that will receives and visualizes status feedback.</summary>
         Private m_dispatcher As IApplicationStatusDispatcher = Nothing
@@ -84,7 +75,6 @@ Namespace Controls
         Public Sub SetStatusText(Optional ByVal strText As String = "", _
                                  Optional ByVal tsUseWaitCursor As Microsoft.VisualBasic.TriState = Microsoft.VisualBasic.TriState.UseDefault, _
                                  Optional ByVal sProgress As Single = 0.0) _
-            Implements IApplicationStatusDispatcher.SetStatusText
             ' Pass the word
             Me.m_dispatcher.SetStatusText(strText, tsUseWaitCursor, sProgress)
         End Sub
