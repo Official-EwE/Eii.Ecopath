@@ -851,6 +851,13 @@ Namespace Ecosim
                         m_MSE.AccessBioRisk(BB)
                     End If 'If m_search.PlotOn = True Then
 
+                    ' JS 08Jan10: for now this code does run with searches. This could change if
+                    '             TL capabilities were to become useful for a search
+                    If Me.m_search.SearchMode = eSearchModes.NotInSearch Then
+                        Me.EstimateTLs(itime)
+                        Me.EstimateTLofCatch(itime)
+                    End If
+
                     'Compute time step results if the calling routine set bTimestepOutput to True
                     If m_Data.bTimestepOutput Then
                         Me.PopulateResults(itime, ipct)
@@ -865,14 +872,6 @@ Namespace Ecosim
                             sumCatch += m_Data.ResultsSumCatchByGroupGear(igrp, 0, itime)
                         End If
                     Next
-
-                    ' JS 08Jan10: for now this code does run with searches. This could change if
-                    '             TL capabilities were to become useful for a search
-                    If Me.m_search.SearchMode = eSearchModes.NotInSearch Then
-                        ' JS 08Jan10: moved NA calculations to Ecosim
-                        EstimateTLs(itime)
-                        EstimateTLofCatch(itime)
-                    End If
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimEndTimeStep(BB, m_Data, itime, m_Results)
 
@@ -1837,10 +1836,8 @@ Namespace Ecosim
                 End If
 
                 ' JS 11Jan09: Exposed former Network Analysis vars
-                '             these arrays are zero-based, as in Network Analysis, but that could cause problems
-                '             now these data have been moved to Ecosim. Should discuss best option with Joe B
-                m_Results.TLCatch = Me.m_Data.TLC(iTime - 1)
-                m_Results.FIB = Me.m_Data.FIB(iTime - 1)
+                m_Results.TLCatch = Me.m_Data.TLC(iTime)
+                m_Results.FIB = Me.m_Data.FIB(iTime)
 
             Catch ex As Exception
                 cLog.Write(ex)
