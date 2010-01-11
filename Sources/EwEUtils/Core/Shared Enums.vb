@@ -1419,6 +1419,7 @@ Namespace Core
 
         MSEGroupOutputs = 71
         EcosimFleetInput = 75
+        EcosimOutput = 76
 
         ''' <summary>
         ''' Data belongs to an external source.
