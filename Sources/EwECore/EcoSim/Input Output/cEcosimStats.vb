@@ -1,21 +1,3 @@
-'==============================================================================
-'
-' $Log: cEcosimStats.vb,v $
-' Revision 1.4  2009/01/29 17:41:45  jeroens
-' Fixed another copy/paste bug
-'
-' Revision 1.3  2009/01/29 16:11:43  jeroens
-' Fixed copy/paste bugs
-' Uses new datatype
-'
-' Revision 1.2  2009/01/16 18:30:17  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:20  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
@@ -23,12 +5,12 @@ Imports EwEUtils.Core
 Public Class cEcosimStats
     Inherits cCoreInputOutputBase
 
-    Sub New(ByRef theCore As cCore, ByVal iDBID As Integer)
+    Sub New(ByRef theCore As cCore)
         MyBase.New(theCore)
 
         Dim val As cValue = Nothing
 
-        Me.DBID = iDBID
+        Me.DBID = cCore.NULL_VALUE
         Me.m_dataType = eDataTypes.EcoSimStatistics
         Me.m_coreComponent = eCoreComponentType.EcoSim
 
@@ -90,7 +72,7 @@ Public Class cEcosimStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimSS))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcosimSS, value)
         End Set
     End Property
@@ -100,7 +82,7 @@ Public Class cEcosimStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimSSGroup, iGroup))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcosimSSGroup, value, iGroup)
         End Set
     End Property
@@ -109,18 +91,18 @@ Public Class cEcosimStats
         Get
             Return GetStatus(eVarNameFlags.EcosimSS)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcosimSS, value)
         End Set
     End Property
-
 
     Public Property SSGroupStatus(ByVal iGroup As Integer) As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcosimSS, iGroup)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcosimSS, value, iGroup)
         End Set
     End Property
+
 End Class

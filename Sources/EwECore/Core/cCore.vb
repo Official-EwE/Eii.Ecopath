@@ -4426,6 +4426,7 @@ Public Class cCore
 
     Private m_EcopathStats As cEcoPathStats
     Private m_EcosimStats As cEcosimStats
+    Private m_EcosimOutputs As cEcosimOutput
     Private m_EcospaceStats As cEcospaceStats
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -4513,10 +4514,6 @@ Public Class cCore
     ''' <summary>
     ''' Statistics from the last Ecosim model run
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-
     Public ReadOnly Property EcosimStats() As cEcosimStats
         Get
             Try
@@ -4525,6 +4522,15 @@ Public Class cCore
                 Debug.Assert(False, "EcosimStats")
                 Return Nothing
             End Try
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Get outputs of the last Ecosim run
+    ''' </summary>
+    Public ReadOnly Property EcosimOutputs() As cEcosimOutput
+        Get
+            Return Me.m_EcosimOutputs
         End Get
     End Property
 
@@ -4786,10 +4792,11 @@ Public Class cCore
             ' Reload stanzas
             Me.LoadStanzas()
 
-            m_EcosimStats = New cEcosimStats(Me, cCore.NULL_VALUE)
+            Me.m_EcosimStats = New cEcosimStats(Me)
+            Me.m_EcosimOutputs = New cEcosimOutput(Me)
 
             'init the monte carlo model with the newly loaded data
-            m_MonteCarlo.init(Me)
+            Me.m_MonteCarlo.init(Me)
 
             'search manager Init and Load
             'SearchObjective base, Fishing policy, MSE and Ecoseed
@@ -5230,6 +5237,14 @@ Public Class cCore
         End Try
     End Sub
 
+    Friend Sub LoadEcosimOutputs()
+        Try
+            ' Hah, nothing to do here
+        Catch ex As Exception
+            cLog.Write(ex)
+            Throw New ArgumentException(Me.ToString & ".LoadEcosimOutputs() Error: " & ex.Message, ex)
+        End Try
+    End Sub
 
     ''' <summary>
     ''' Update the list of available ecosim input groups
@@ -5932,6 +5947,7 @@ Public Class cCore
             LoadEcosimFleetOutputs()
             LoadEcosimTimeSeries()
 
+            LoadEcosimOutputs()
             LoadEcosimStats()
             loadEcoTracerResults()
 

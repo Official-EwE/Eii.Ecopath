@@ -678,6 +678,13 @@ Public Class cEcosimDatastructures
 
     End Sub
 
+    Public Sub RedimOutputsByTime(ByVal nTimesteps As Integer)
+        ReDim FIB(nTimesteps)
+        ReDim TLC(nTimesteps)     'TL of catch in Ecosim
+        ReDim Kemptons(nTimesteps)
+        ReDim CatchSim(nTimesteps)
+    End Sub
+
     ''' <summary>
     ''' Set the FisForced() array to False of all groups
     ''' </summary>
@@ -854,6 +861,8 @@ Public Class cEcosimDatastructures
 
         'set the summary periods to the first and last year
         DefaultSummaryPeriods()
+
+        RedimOutputsByTime(ntimesteps)
 
         'Only resize the forcing data if the new run length is greater then the existing run length
         'on the database load ForcePoints was set to a min of DEFAULT_N_FORCINGPOINTS (100 years, 1200 points) or the number of years in database * 12 see DimForcingShapes
@@ -1087,10 +1096,8 @@ Public Class cEcosimDatastructures
         Debug.Assert(NumYears <> 0, Me.ToString & ".RedimTotalTimeVariables() TotalTime = 0 Something is very wrong......")
         ReDim FishRateNo(nGroups, NTimes)  'was 1200
         ReDim FishRateGear(nGear + 1, NTimes)  'was 1200
-        ReDim FIB(NTimes)
-        ReDim TLC(NTimes)     'TL of catch in Ecosim
-        ReDim Kemptons(NTimes)
-        ReDim CatchSim(NTimes)
+
+        RedimOutputsByTime(NTimes)
 
         'reset some default values before the data is populated by an interface or a datasource
         'this worked differently in EwE5
