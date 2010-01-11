@@ -44,11 +44,6 @@ Namespace Database
     ''' -----------------------------------------------------------------------
     Public Class cEwE6DatabaseImporter
 
-        Private Const cDBVERSION_EWE5_MIN As Single = 1.67
-        Private Const cDBVERSION_EWE5_MAX As Single = 1.73
-        Private Const cDBVERSION_EWE6 As Single = 6.0
-        Private Const cDBVERSION_FUTURE As Single = 7.0
-
 #Region " Private bits "
 
         ''' -------------------------------------------------------------------
@@ -274,33 +269,6 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Function IsAttached() As Boolean
             Return (Me.m_openType = eOpenType.Database)
-        End Function
-
-        Public Enum eSourceDatabaseVersionTypes As Integer
-            Unknown = 0
-            EwE5TooOld
-            EwE5Supported
-            EwE5TooNew
-            EwE6
-            UnknownFuture
-        End Enum
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' States whether this class is able to import data from a given
-        ''' EwE database version number.
-        ''' </summary>
-        ''' <param name="sVersion">The version number to validate.</param>
-        ''' <returns>True if the importer can import from a database
-        ''' with the given version number.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function EstimateVersion(ByVal sVersion As Single) As eSourceDatabaseVersionTypes
-            If (sVersion = 0.0!) Then Return eSourceDatabaseVersionTypes.Unknown
-            If (sVersion < cDBVERSION_EWE5_MIN) Then Return eSourceDatabaseVersionTypes.EwE5TooOld
-            If (sVersion <= cDBVERSION_EWE5_MAX) Then Return eSourceDatabaseVersionTypes.EwE5Supported
-            If (sVersion < cDBVERSION_EWE6) Then Return eSourceDatabaseVersionTypes.EwE5TooNew
-            If (sVersion < cDBVERSION_FUTURE) Then Return eSourceDatabaseVersionTypes.EwE6
-            Return eSourceDatabaseVersionTypes.UnknownFuture
         End Function
 
 #End Region ' Initialization
@@ -624,8 +592,8 @@ Namespace Database
             'Me.m_dbEwE6.ReleaseWriter(Me.m_writerReferences, True)
 
             ' Now run all available updates on the new EwE6 database
-            dbUpd = New cDatabaseUpdater(6.0)
-            dbUpd.UpdateDatabase(Me.m_dbEwE6, Me.m_core.PluginManager)
+            dbUpd = New cDatabaseUpdater(6.0, Me.m_core.PluginManager)
+            dbUpd.UpdateDatabase(Me.m_dbEwE6)
             dbUpd = Nothing
 
             ' Release DB

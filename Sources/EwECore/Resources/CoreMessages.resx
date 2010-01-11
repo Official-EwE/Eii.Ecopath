@@ -778,4 +778,18 @@ System Error: {0}</value>
   <data name="PROMPT_SAVE_CHANGES" xml:space="preserve">
     <value>Model data has changed since the last time you saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - revert to last saved data\nCancel - abort this operation.</value>
   </data>
+  <data name="DATABASE_BACKUP_FAILED" xml:space="preserve">
+    <value>Failed to make a backup copy of your database to '{0}'</value>
+    <comment>{0}=backup file name</comment>
+  </data>
+  <data name="DATABASE_BACKUP_SUCCESS" xml:space="preserve">
+    <value>A backup copy of your database was made to '{0}'</value>
+    <comment>{0}=backup file name</comment>
+  </data>
+  <data name="ECOPATH_MODEL_UPDATE_FAILED" xml:space="preserve">
+    <value>Model failed to update to the latest version!</value>
+  </data>
+  <data name="ECOPATH_MODEL_UPDATE_SUCCESS" xml:space="preserve">
+    <value>Model was updated to the lastest version.</value>
+  </data>
 </root>

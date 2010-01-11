@@ -248,10 +248,17 @@ Public Class AppLauncher
 
     End Function
 
+    ''' <summary>
+    ''' Enumerated type, states how a database was loaded.
+    ''' </summary>
     Public Enum eLoadSourceType As Integer
-        NoIdeaDontLookAtMe = 0
+        ''' <summary>Database open attempt originated from the internal API.</summary>
+        API = 0
+        ''' <summary>Database open attempt originated from the command line.</summary>
         CommandLine
+        ''' <summary>Database open attempt originated from the MRU list.</summary>
         MRU
+        ''' <summary>Database open attempt originated from the user interface.</summary>
         User
     End Enum
 
@@ -276,8 +283,8 @@ Public Class AppLauncher
             ' Handle failure
             Select Case loadsource
 
-                ' Who asked for this?
                 Case eLoadSourceType.MRU
+                    ' Unable to locate a file from the MRU list: prompt to remove the entry 
                     Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
                                                      eCoreComponentType.DataSource, _
                                                      eMessageImportance.Warning, _
@@ -289,15 +296,17 @@ Public Class AppLauncher
                         End If
                     End If
 
-                Case eLoadSourceType.User, eLoadSourceType.CommandLine
-                    Dim msg As New cMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
+                Case eLoadSourceType.User, _
+                     eLoadSourceType.CommandLine
+                    ' Unable to load model, show generic error
+                    Dim msg As New cMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
                                             eMessageType.Any, _
                                             eCoreComponentType.DataSource, _
                                             eMessageImportance.Warning)
                     Me.m_core.Messages.SendMessage(msg)
 
-                Case eLoadSourceType.NoIdeaDontLookAtMe
-                    ' Ok, ok, don't get upset
+                Case eLoadSourceType.API
+                    ' Do not provide user feedback in response to an API call
 
             End Select
             Return False
@@ -312,7 +321,7 @@ Public Class AppLauncher
         Select Case cDataSourceFactory.GetSupportedType(strFileName)
             Case eDataSourceTypes.ACCDB, _
                  eDataSourceTypes.MDB
-                If Not ConvertToLatestVersion(strFileName) Then
+                If Not CovertToEwE6(strFileName) Then
                     ' #No: EwE6 database? abort
                     Return False
                 End If
@@ -342,7 +351,7 @@ Public Class AppLauncher
                                             eMessageImportance.Critical)
                     Me.m_core.Messages.SendMessage(msg)
 
-                Case eLoadSourceType.NoIdeaDontLookAtMe
+                Case eLoadSourceType.API
                     ' Ok then
 
             End Select
@@ -354,7 +363,6 @@ Public Class AppLauncher
 
         ' Open the datasource
         atResult = ds.Open(strFileName, m_core)
-
 
         ' Ok, now let's see if the core can work with this
         If m_core.LoadModel(ds) Then
@@ -1274,7 +1282,7 @@ Public Class AppLauncher
         Me.SetStatusText("", TriState.False)
 
         If bSucces = True Then
-            bSucces = bSucces And Me.LoadEcopathModel(strFileName, eLoadSourceType.NoIdeaDontLookAtMe)
+            bSucces = bSucces And Me.LoadEcopathModel(strFileName, eLoadSourceType.API)
         End If
 
         Return bSucces
@@ -1344,7 +1352,7 @@ Public Class AppLauncher
     ''' is already an EwE6 database, or if the conversion was succesful.</returns>
     ''' <remarks>Note that this method only works for Access databases.</remarks>
     ''' ---------------------------------------------------------------------------
-    Private Function ConvertToLatestVersion(ByRef strFileName As String) As Boolean
+    Private Function CovertToEwE6(ByRef strFileName As String) As Boolean
 
         Dim sVersion As Single = 0.0!
         Dim db As cEwEDatabase = Nothing
@@ -1353,13 +1361,13 @@ Public Class AppLauncher
         db = New cEwEAccessDatabase()
         If db.Open(strFileName) = eDatasourceAccessType.Opened Then
 
-            Select Case cEwE6DatabaseImporter.EstimateVersion(db.GetVersion())
+            Select Case db.Compatibility()
 
-                Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE5TooOld
+                Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
                     Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD)
                     bSucces = False
 
-                Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE5Supported
+                Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
                     AddRecentFilesSetting(strFileName)
                     Dim dcw As New DatabaseConversionWizard(strFileName, db, Me.m_core)
                     If (dcw.ShowDialog(Me) = Windows.Forms.DialogResult.OK) Then
@@ -1371,60 +1379,63 @@ Public Class AppLauncher
                         bSucces = False
                     End If
 
-                Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE5TooNew
+                Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
                     Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW)
                     bSucces = False
 
-                Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE6
+                Case cEwEDatabase.eCompatibilityTypes.EwE6
 
-                    If Me.m_core.PluginManager IsNot Nothing Then
+                    ' EwE6 database upgrade logic moved to the core
+                    ' Backup logic moved to message handler
 
-                        ' Check if updates available
-                        If Me.m_core.PluginManager.HasDatabaseUpdates(db, 6.0) Then
+                    'If Me.m_core.PluginManager IsNot Nothing Then
 
-                            Select Case Me.AskFeedback(My.Resources.PROMPT_IMPORT_UPDATEBACKUP, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
-                                Case cFeedbackMessage.eReply.YES
-                                    Try
-                                        Dim strDir As String = Path.GetDirectoryName(strFileName)
-                                        Dim strFile As String = Path.GetFileNameWithoutExtension(strFileName)
-                                        Dim strExt As String = Path.GetExtension(strFileName)
+                    '    ' Check if updates available
+                    '    If Me.m_core.PluginManager.HasDatabaseUpdates(db, 6.0) Then
 
-                                        strFile = FileUtilities.ToValidFileName(String.Format("{0}_backup_{1}", strFile, Date.Now), False)
+                    '        Select Case Me.AskFeedback(My.Resources.PROMPT_IMPORT_UPDATEBACKUP, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                    '            Case cFeedbackMessage.eReply.YES
+                    '                Try
+                    '                    Dim strDir As String = Path.GetDirectoryName(strFileName)
+                    '                    Dim strFile As String = Path.GetFileNameWithoutExtension(strFileName)
+                    '                    Dim strExt As String = Path.GetExtension(strFileName)
 
-                                        ' Create backup copy
-                                        File.Copy(strFileName, Path.Combine(strDir, strFile + strExt), True)
-                                    Catch ex As Exception
-                                        Me.SendMessage(String.Format(My.Resources.PROMPT_BACKUPFAILED, strFileName, ex.Message))
-                                        Return False
-                                    End Try
-                                    ' Fall through
+                    '                    strFile = FileUtilities.ToValidFileName(String.Format("{0}_backup_{1}", strFile, Date.Now), False)
 
-                                Case cFeedbackMessage.eReply.NO
-                                    ' Update existing copy
-                                    ' Fall through 
+                    '                    ' Create backup copy
+                    '                    File.Copy(strFileName, Path.Combine(strDir, strFile + strExt), True)
+                    '                Catch ex As Exception
+                    '                    Me.SendMessage(String.Format(My.Resources.PROMPT_BACKUPFAILED, strFileName, ex.Message))
+                    '                    Return False
+                    '                End Try
+                    '                ' Fall through
 
-                                Case cFeedbackMessage.eReply.CANCEL
-                                    ' Leave DB alone, don't open
-                                    Return False
+                    '            Case cFeedbackMessage.eReply.NO
+                    '                ' Update existing copy
+                    '                ' Fall through 
 
-                            End Select
+                    '            Case cFeedbackMessage.eReply.CANCEL
+                    '                ' Leave DB alone, don't open
+                    '                Return False
 
-                            ' Run all available updates on the new EwE6 database
-                            Dim dbUpd As New cDatabaseUpdater(6.0)
-                            bSucces = dbUpd.UpdateDatabase(db, Me.m_core.PluginManager)
-                            dbUpd = Nothing
+                    '        End Select
 
-                            If bSucces = False Then
-                                Me.SendMessage(String.Format("Failed to update database '{0}'. This database cannot be loaded safely", strFileName))
-                            End If
-                        End If
-                    End If
+                    '        ' Run all available updates on the new EwE6 database
+                    '        Dim dbUpd As New cDatabaseUpdater(6.0)
+                    '        bSucces = dbUpd.UpdateDatabase(db, Me.m_core.PluginManager)
+                    '        dbUpd = Nothing
 
-                Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.UnknownFuture
+                    '        If bSucces = False Then
+                    '            Me.SendMessage(String.Format("Failed to update database '{0}'. This database cannot be loaded safely", strFileName))
+                    '        End If
+                    '    End If
+                    'End If
+
+                Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
                     Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE7_OR_NEWER)
                     bSucces = False
 
-                Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.Unknown
+                Case cEwEDatabase.eCompatibilityTypes.Unknown
                     Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB)
                     bSucces = False
 

@@ -13,6 +13,9 @@ Imports EwECore.FishingPolicy
 Imports EwECore.EcoSeed
 Imports EwECore.MSE
 Imports EwECore.SearchObjectives
+Imports EwECore.Database
+Imports System.IO
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -92,7 +95,7 @@ Public Class cCore
     Private m_strOutputPath As String = ""
     Friend m_validators As cValidatorManager
 
-     Friend m_Stanza As cStanzaDatastructures
+    Friend m_Stanza As cStanzaDatastructures
 
     ''' <summary>Core state monitor</summary>
     Private WithEvents m_StateMonitor As cCoreStateMonitor
@@ -1927,7 +1930,7 @@ Public Class cCore
 
 #End Region 'Generic helper methods
 
-#Region "EwEModel"
+#Region " Datasource "
 
     ''' <summary>
     ''' The <see cref="IEwEDataSource">data source</see> that the core will use
@@ -1942,6 +1945,77 @@ Public Class cCore
             Me.m_DataSource = value
         End Set
     End Property
+
+    Private Function UpdateDatasource(ByVal ds As IEwEDataSource) As Boolean
+
+        ' Run database updates
+        If (TypeOf ds.Connection Is cEwEDatabase) Then
+            Dim db As cEwEDatabase = DirectCast(ds.Connection, cEwEDatabase)
+            Dim dbUpd As New cDatabaseUpdater(6.0, Me.PluginManager)
+
+            If dbUpd.HasUpdates(db) Then
+                ' Create a copy of the database for select types
+                Dim src As String = db.Name
+                Try
+                    If File.Exists(src) Then
+
+                        Dim strSrc As String = CStr(src)
+                        Dim strDir As String = Path.GetDirectoryName(strSrc)
+                        Dim strFile As String = Path.GetFileNameWithoutExtension(strSrc)
+                        Dim strExt As String = Path.GetExtension(strSrc)
+                        Dim strFileNameNew As String = FileUtilities.ToValidFileName(String.Format("{0}_{1}", strFile, Date.Now.ToShortDateString), False)
+                        Dim strDest As String = Path.Combine(strDir, strFileNameNew + strExt)
+                        Dim msg As cMessage = Nothing
+
+                        Try
+                            ' Create backup copy
+                            File.Copy(strSrc, strDest, True)
+
+                            msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_SUCCESS, strDest), _
+                                                    eMessageType.DataImport, _
+                                                    eCoreComponentType.DataSource, _
+                                                    eMessageImportance.Information)
+                        Catch ex As Exception
+                            msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
+                                                    eMessageType.DataImport, _
+                                                    eCoreComponentType.DataSource, _
+                                                    eMessageImportance.Information)
+                        End Try
+                        Me.m_publisher.SendMessage(msg)
+                    End If
+
+                Catch ex As Exception
+                End Try
+                ' Run updates
+                If Not dbUpd.UpdateDatabase(db) Then
+                    ' Database update failed
+                    Dim msg As cMessage = Nothing
+                    msg = New cMessage(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_FAILED, _
+                                            eMessageType.DataImport, _
+                                            eCoreComponentType.DataSource, _
+                                            eMessageImportance.Critical)
+
+                    Me.m_publisher.SendMessage(msg)
+                    Return False
+                Else
+                    ' Database update failed
+                    Dim msg As cMessage = Nothing
+                    msg = New cMessage(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_SUCCESS, _
+                                            eMessageType.DataImport, _
+                                            eCoreComponentType.DataSource, _
+                                            eMessageImportance.Information)
+                    Me.m_publisher.SendMessage(msg)
+                End If
+            End If
+
+        End If
+        Return True
+
+    End Function
+
+#End Region ' Datasource
+
+#Region "EwEModel"
 
     ''' <summary>
     ''' Returns the <see cref="cEwEModel">EwE model</see> for the current loaded datasource.
@@ -2095,6 +2169,11 @@ Public Class cCore
             ' Flag data as gone
             Me.m_StateMonitor.SetEcopathLoaded(False)
             SendEcopathLoadMessage(ds, "Core not initialized")
+            Return False
+        End If
+
+        ' Run any available updates on the datasource
+        If Not Me.UpdateDatasource(ds) Then
             Return False
         End If
 

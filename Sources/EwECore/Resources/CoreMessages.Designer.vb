@@ -146,6 +146,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to make a backup copy of your database to &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property DATABASE_BACKUP_FAILED() As String
+            Get
+                Return ResourceManager.GetString("DATABASE_BACKUP_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to A backup copy of your database was made to &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property DATABASE_BACKUP_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("DATABASE_BACKUP_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Imported Detritus must be greater than or equal to zero..
         '''</summary>
         Friend Shared ReadOnly Property DETIMP_RANGE() As String
@@ -451,6 +469,24 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ECOPATH_MISSINGPARAM_LANDING() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_MISSINGPARAM_LANDING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Model failed to update to the latest version!.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_MODEL_UPDATE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_MODEL_UPDATE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Model was updated to the lastest version..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_MODEL_UPDATE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_MODEL_UPDATE_SUCCESS", resourceCulture)
             End Get
         End Property
         
