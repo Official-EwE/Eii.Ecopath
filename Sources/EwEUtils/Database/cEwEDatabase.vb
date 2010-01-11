@@ -2741,7 +2741,58 @@ Namespace Database
 
 #Region " EwE versioning "
 
+#Region " Internals "
+
+        ''' <summary>Current database version.</summary>
         Private m_sVersion As Single = 0.0
+
+        ''' <summary>Oldest EwE5 version number supported</summary>
+        Private Const cDBVERSION_EWE5_MIN As Single = 1.67
+        ''' <summary>Newest EwE5 version number supported</summary>
+        Private Const cDBVERSION_EWE5_MAX As Single = 1.73
+        ''' <summary>Current EwE6 version number supported</summary>
+        Private Const cDBVERSION_EWE6 As Single = 6.0
+        ''' <summary>Next unsupported EwE version number.</summary>
+        Private Const cDBVERSION_FUTURE As Single = 7.0
+
+#End Region ' Internals
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Enumberated type, used to indicate database compatibility modes
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Enum eCompatibilityTypes As Integer
+            ''' <summary>Combatibility unknown. Most likely the accessed file is not an EwE database.</summary>
+            Unknown = 0
+            ''' <summary>EwE5 database that is too old, and is not supported.</summary>
+            EwE5TooOld
+            ''' <summary>EwE5 database that is supported.</summary>
+            EwE5Supported
+            ''' <summary>EwE5 database that is too new, and is not supported.</summary>
+            EwE5TooNew
+            ''' <summary>EwE6 database that is supported.</summary>
+            EwE6
+            ''' <summary>EwEX database that is of a newer format and is not supported.</summary>
+            UnknownFuture
+        End Enum
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States the level of compatibility with the EwE code.
+        ''' </summary>
+        ''' <returns>A <see cref="eCompatibilityTypes">database compatibility</see>
+        ''' indicator.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Compatibility() As eCompatibilityTypes
+            Dim sVersion As Single = Me.GetVersion()
+            If (sVersion = 0.0!) Then Return eCompatibilityTypes.Unknown
+            If (sVersion < cDBVERSION_EWE5_MIN) Then Return eCompatibilityTypes.EwE5TooOld
+            If (sVersion <= cDBVERSION_EWE5_MAX) Then Return eCompatibilityTypes.EwE5Supported
+            If (sVersion < cDBVERSION_EWE6) Then Return eCompatibilityTypes.EwE5TooNew
+            If (sVersion < cDBVERSION_FUTURE) Then Return eCompatibilityTypes.EwE6
+            Return eCompatibilityTypes.UnknownFuture
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
