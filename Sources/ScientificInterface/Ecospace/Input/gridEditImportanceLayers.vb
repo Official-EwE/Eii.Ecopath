@@ -808,7 +808,6 @@ Namespace Ecospace
             Dim Layer As cEcospaceLayerImportance = Nothing
             Dim iLayer As Integer = 0
             Dim bSuccess As Boolean = True
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
 
             ' Validate content of the grid
             If Not Me.ValidateContent() Then Return False
@@ -875,7 +874,7 @@ Namespace Ecospace
 
                 If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
-                appl.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+                cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
                 ' Add new Layers
                 For iLayer = 0 To Me.m_alLayers.Count - 1
@@ -906,7 +905,7 @@ Namespace Ecospace
 
                 ' The core will reload now
                 Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
-                appl.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
                 ' Test whether new Layers were loaded correctly 
                 Debug.Assert(Me.m_alLayers.Count = Me.m_core.nImportanceLayers, ">> Internal panic: Dialog and core out of sync on Layers")

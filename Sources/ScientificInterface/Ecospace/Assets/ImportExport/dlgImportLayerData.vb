@@ -580,7 +580,7 @@ Public Class gridMapLayerToAttribute
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0
 
-            AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
 
             ' For each mapped attribute
             For Each layer In dtMappings.Keys
@@ -614,7 +614,7 @@ Public Class gridMapLayerToAttribute
                 End If
             Next layer
 
-            AppLauncher.GetInstance().SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
             Return True
 

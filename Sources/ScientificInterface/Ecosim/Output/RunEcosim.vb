@@ -330,8 +330,7 @@ Namespace Ecosim
 
         Private Sub TimeStepFromEcoSim_handler(ByVal iTime As Long, ByVal results As cEcoSimResults)
 
-            Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
-            asn.SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.UseDefault, CSng(iTime / m_iTimeSteps))
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.UseDefault, CSng(iTime / m_iTimeSteps))
 
         End Sub
 
@@ -356,9 +355,9 @@ Namespace Ecosim
                 ' #Yes: update to new state
                 Me.m_bEcosimRunning = bEcosimRunning
                 If Me.m_bEcosimRunning Then
-                    AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.True, 0)
+                    cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.True, 0)
                 Else
-                    AppLauncher.GetInstance().SetStatusText("", TriState.False, 0)
+                    cApplicationStatusNotifier.SetStatusText("", TriState.False, 0)
                     Me.m_zgp.CreateRun(strRunLabel)
                     Me.PopulateRunsBox()
                     Me.PopulateGroupBox()

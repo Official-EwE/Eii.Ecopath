@@ -70,8 +70,6 @@ Public Class frmNetworkAnalysis
     Private Sub tvNetworkAnalysis_AfterSelect(ByVal sender As System.Object, ByVal e As TreeViewEventArgs) _
         Handles tvNetworkAnalysis.AfterSelect
 
-        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
-
         Me.SuspendLayout()
 
         If (Me.m_contentmanager IsNot Nothing) Then
@@ -203,7 +201,7 @@ Public Class frmNetworkAnalysis
             Case Else
         End Select
 
-        asn.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
+        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
 
         ' Put content manager to work
         If (Me.m_contentmanager IsNot Nothing) Then
@@ -264,7 +262,7 @@ Public Class frmNetworkAnalysis
             Me.m_plot.Top = 0
         End If
 
-        asn.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.SetStatusText("", TriState.False)
         Me.ResumeLayout()
 
     End Sub
@@ -349,20 +347,18 @@ Public Class frmNetworkAnalysis
     Private Sub tscmbSelection1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tscmbSelection1.SelectedIndexChanged
 
-        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
-
         Me.m_iSelectedGroup1 = tscmbSelection1.SelectedIndex + 1
 
         If Me.m_bInUpdate Then Return
 
         If Me.m_contentmanager IsNot Nothing Then
-            asn.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
             Try
                 Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
             Catch ex As Exception
                 ' Woops
             End Try
-            asn.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
         End If
 
     End Sub
@@ -370,20 +366,18 @@ Public Class frmNetworkAnalysis
     Private Sub tscmbSelection2_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tscmbSelection2.SelectedIndexChanged
 
-        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
-
         Me.m_iSelectedGroup2 = tscmbSelection2.SelectedIndex + 1
 
         If Me.m_bInUpdate Then Return
 
         If Me.m_contentmanager IsNot Nothing Then
-            asn.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
             Try
                 Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
             Catch ex As Exception
                 ' Woops
             End Try
-            asn.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
         End If
 
     End Sub

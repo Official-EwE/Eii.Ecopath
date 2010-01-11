@@ -310,12 +310,11 @@ Namespace Ecosim
 
         Public Sub ClearAllPairs()
 
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
             Dim PPI As cPredPreyInteraction = Nothing
             Dim ff As cForcingFunction = Nothing
             Dim application As eForcingFunctionApplication
 
-            appl.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
             Me.m_Core.SetBatchLock(cCore.eBatchLockType.Update)
 
             ' For each column  (groupIndex - Predator)
@@ -351,7 +350,7 @@ Namespace Ecosim
             Next
 
             Me.m_Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, True)
-            appl.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         End Sub
 

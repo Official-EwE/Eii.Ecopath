@@ -372,7 +372,7 @@ Namespace Ecosim
             Me.m_plRunParams.Enabled = False
             Me.m_plBlocks.Enabled = False
 
-            AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, -1.0!)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, -1.0!)
 
         End Sub
 
@@ -390,7 +390,7 @@ Namespace Ecosim
                 Me.m_plRunParams.Enabled = True
                 Me.m_plBlocks.Enabled = True
 
-                AppLauncher.GetInstance().SetStatusText("", TriState.UseDefault)
+                cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault)
 
                 Me.m_core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_COMPLETED, _
                         eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))

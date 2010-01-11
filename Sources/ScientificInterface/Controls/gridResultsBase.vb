@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: gridResultsBase.vb,v $
-' Revision 1.4  2009/05/28 12:37:46  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.3  2009/01/12 23:01:45  joeb
-' Added SetCellValue(Integer, Integer,  Single)
-'
-' Revision 1.2  2008/12/15 15:55:36  jeroens
-' no message
-'
-' Revision 1.1  2008/06/02 00:01:20  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.9  2008/05/11 03:16:02  jeroens
-' Standardized series of resource strings
-'
-' Revision 1.8  2008/04/03 16:01:11  jeroens
-' EwEGrid no longer auto-docks; needs to be done here
-'
-' Revision 1.7  2008/02/13 19:32:28  jeroens
-' Aargh! Reintroduced EwECells
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On

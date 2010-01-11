@@ -415,13 +415,12 @@ Public Class frmEwEGrid
             ' Get grid selection
             Dim sel As SourceGrid2.Selection = Me.m_grid.Selection
             Dim core As cCore = cCore.GetInstance()
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
 
             ' To stop a flood of updates, and to halt any conflicting operations 
             ' while we're at it.
             If Not core.SetBatchLock(cCore.eBatchLockType.Update) Then Return
 
-            appl.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
             For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
                 If TypeOf cell Is PropertyCell Then
                     Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
@@ -438,7 +437,7 @@ Public Class frmEwEGrid
             ' Remember last applied value
             Me.m_strValueOrg = strValue
 
-            appl.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
             core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
 

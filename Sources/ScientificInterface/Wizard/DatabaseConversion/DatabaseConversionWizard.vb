@@ -189,7 +189,7 @@ Namespace Wizard
 
                     Try
                         ' Set status text
-                        appl.SetStatusText("Importing...", TriState.True)
+                        cApplicationStatusNotifier.SetStatusText("Importing...", TriState.True)
 
                         mlbi = DirectCast(lbModels.SelectedItem, ModelListboxItem)
                         ' Request a database to import into
@@ -205,7 +205,7 @@ Namespace Wizard
                             db.Close()
                         End If
                     Finally
-                        appl.SetStatusText("", TriState.False)
+                        cApplicationStatusNotifier.SetStatusText("", TriState.False)
                     End Try
 
                     If Not bSuccess Then

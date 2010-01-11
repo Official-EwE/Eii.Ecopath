@@ -1915,14 +1915,13 @@ Imports EwEUtils.Drawing
         ' Application
         ' =================
 
-        Dim appl As AppLauncher = AppLauncher.GetInstance()
-        appl.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
 
         ' Handle added and removed items
         If (bConfigurationChanged) Then
 
             If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then
-                appl.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.SetStatusText("", TriState.False)
                 Return False
             End If
 
@@ -2096,7 +2095,7 @@ Imports EwEUtils.Drawing
             If bColorsChanged Then cStyleGuide.GetInstance().ColorsChanged()
         End If
 
-        appl.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         Return bSuccess
 

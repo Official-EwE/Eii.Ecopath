@@ -695,17 +695,17 @@ Namespace Ecospace
 
                 Case eFormModeTypes.Initializing
                     ' Set running status text
-                    AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_INITIALIZING, TriState.UseDefault, -1)
+                    cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_INITIALIZING, TriState.UseDefault, -1)
                     ' Switch to 'Results' page
                     Me.m_tcResults.SelectedIndex = 0
 
                 Case eFormModeTypes.Searching
                     ' Set running status text
-                    AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, -1)
+                    cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, -1)
 
                 Case eFormModeTypes.Stopping
                     ' Set running status text
-                    AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_STOPPING, TriState.UseDefault, -1)
+                    cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_STOPPING, TriState.UseDefault, -1)
 
                 Case eFormModeTypes.Results
                     ' Switch to 'Results' page
@@ -726,15 +726,15 @@ Namespace Ecospace
 
                 Case eFormModeTypes.Searching
                     ' Cancel running status text
-                    AppLauncher.GetInstance().SetStatusText("", TriState.UseDefault, 0)
+                    cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault, 0)
 
                 Case eFormModeTypes.Initializing
                     ' Cancel running status text
-                    AppLauncher.GetInstance().SetStatusText("", TriState.UseDefault, 0)
+                    cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault, 0)
 
                 Case eFormModeTypes.Stopping
                     ' Cancel running status text
-                    AppLauncher.GetInstance().SetStatusText("", TriState.UseDefault, 0)
+                    cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault, 0)
 
                 Case eFormModeTypes.Results ' Show results
                     ' Clear results

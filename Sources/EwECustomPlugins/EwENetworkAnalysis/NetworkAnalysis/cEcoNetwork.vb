@@ -375,7 +375,6 @@ Public Class cEcoNetwork
         Dim i As Integer ', chk As Integer
         Dim strErr As String = ""
         Dim bSucces As Boolean = True
-        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
         'ReadF:
 
         Debug.Assert(m_epdata IsNot Nothing, Me.ToString & ".RunNetworkAnalysis() Ecopath data has not been initialized.")
@@ -385,7 +384,7 @@ Public Class cEcoNetwork
                 Return False
             End If
 
-            asn.SetStatusText(My.Resources.STATUS_RUNNING_NA, TriState.True, 0.1)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_NA, TriState.True, 0.1)
 
             FoundCycles = False
             NetworkDimensioning()
@@ -393,14 +392,14 @@ Public Class cEcoNetwork
             ' EconetMain_g% = 1
             'jb this is weird I can’t put a Try Catch statement into either Ulanow or Lindeman           
             Try
-                asn.SetStatusText(My.Resources.STATUS_RUNNING_ULANOW, TriState.UseDefault, 0.2)
+                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_ULANOW, TriState.UseDefault, 0.2)
                 strErr = "Ulanow()"
                 Ulanow(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp)
 
-                asn.SetStatusText(My.Resources.STATUS_RUNNING_LINDEMAN, TriState.UseDefault, 0.3)
+                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_LINDEMAN, TriState.UseDefault, 0.3)
                 strErr = "Lindeman()"
                 Lindeman(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp) '
-                asn.SetStatusText(My.Resources.STATUS_RUNNING_NA, TriState.UseDefault, 0.4)
+                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_NA, TriState.UseDefault, 0.4)
             Catch ex As Exception
                 cLog.Write(ex)
                 bSucces = False
@@ -428,7 +427,7 @@ Public Class cEcoNetwork
                 'VC090527 Adding calculation of keystoneness based on Libralato et al 2006:
                 Keystoneness()
 
-                asn.SetStatusText(My.Resources.STATUS_RUNNING_EQPP, TriState.UseDefault, 0.6)
+                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_EQPP, TriState.UseDefault, 0.6)
                 InitReqPP()
 
                 'asn.SetStatusText("Finalizing Network Analysis run...", TriState.UseDefault, 0.8)
@@ -445,7 +444,7 @@ Public Class cEcoNetwork
             bSucces = False
         End Try
 
-        asn.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         'Count = 2
     End Function

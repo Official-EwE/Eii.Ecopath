@@ -841,7 +841,7 @@ Imports ScientificInterface.Other
 
             If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
-            cApplicationStatusNotifier.GetInstance().SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
             Dim htFleetID As New Dictionary(Of FleetInfo, Integer)
             Dim iDBID As Integer = Nothing
@@ -879,7 +879,7 @@ Imports ScientificInterface.Other
 
             ' The core will reload now
             Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
-            cApplicationStatusNotifier.GetInstance().SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
             ' Test whether new Fleets were loaded correctly
             Debug.Assert(Me.m_lfiFleets.Count = Me.m_core.nFleets, "Dialog and core out of sync on Fleets")

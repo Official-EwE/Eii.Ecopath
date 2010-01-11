@@ -543,7 +543,7 @@ Public Class AppLauncher
     ''' and is cleared when this counter reaches zero.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub SetStatusText(Optional ByVal strText As String = "", _
+    Private Sub SetStatusText(Optional ByVal strText As String = "", _
         Optional ByVal tsUseWaitCursor As TriState = TriState.UseDefault, _
         Optional ByVal sProgress As Single = 0.0) _
         Implements IApplicationStatusDispatcher.SetStatusText

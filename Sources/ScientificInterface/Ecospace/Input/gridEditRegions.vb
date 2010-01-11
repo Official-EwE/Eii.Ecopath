@@ -830,7 +830,6 @@ Namespace Ecospace
             Dim Region As cEcospaceRegion = Nothing
             Dim iRegion As Integer = 0
             Dim bSuccess As Boolean = True
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
 
             ' Habitat to region mapping
             Dim dtHabitatIDToRegionID As New Dictionary(Of Integer, Integer)
@@ -898,7 +897,7 @@ Namespace Ecospace
 
                 If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
-                appl.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+                cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
                 ' Add new Regions
                 For iRegion = 0 To Me.m_alRegions.Count - 1
@@ -940,7 +939,7 @@ Namespace Ecospace
                 Next iRegion
 
                 Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
-                appl.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
                 ' Test whether new Regions were loaded correctly
                 Debug.Assert(Me.m_alRegions.Count = Me.m_core.nRegions, "Dialog and core out of sync on Regions")

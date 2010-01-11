@@ -56,8 +56,8 @@ Namespace Ecosim
         Public Sub New(ByVal iPrey As Integer, ByVal iPred As Integer, _
                 ByVal shapeType As eApplyShapeTypes, ByVal targetType As eApplyTargetTypes)
 
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
             Try
-                AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
 
                 Init(eEditMode.PredPrey, shapeType, targetType)
 
@@ -73,9 +73,8 @@ Namespace Ecosim
 
             Catch ex As Exception
                 ' NOP
-            Finally
-                AppLauncher.GetInstance().SetStatusText("", TriState.False)
             End Try
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         End Sub
 
@@ -200,7 +199,6 @@ Namespace Ecosim
 
         Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
             Dim iNumApplied As Integer = lvAppliedShapes.Items.Count
             Dim lvItem As ListViewItem = Nothing
             Dim shape As cForcingFunction = Nothing
@@ -208,7 +206,7 @@ Namespace Ecosim
             Dim ppi As cPredPreyInteraction = Nothing
             Dim ffappl As eForcingFunctionApplication = Nothing
 
-            appl.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
 
             Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
 
@@ -244,7 +242,7 @@ Namespace Ecosim
             End Try
 
             Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, True)
-            appl.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()

@@ -444,7 +444,7 @@ Public Class gridExportMappings
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0
 
-            AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
 
             ' Populate local data
             For Each layer In dtMappings.Keys
@@ -489,7 +489,7 @@ Public Class gridExportMappings
                     Me.WriteShapeFile(strFile)
             End Select
 
-            AppLauncher.GetInstance().SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
             Return True
 

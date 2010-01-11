@@ -220,11 +220,8 @@ Namespace Ecosim
 
         Private Sub MonteCarloStepHandler()
 
-            Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
-
-
             Try
-                asn.SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, _
+                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, _
                                   Me.m_mcmanager.nTrialIterations / Me.m_mcmanager.nTrials)
 
                 Me.m_fpTrial.Value = Me.m_mcmanager.nTrialIterations
@@ -255,8 +252,7 @@ Namespace Ecosim
 
         Private Sub MonteCarloCompletedHandler()
 
-            Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
-            asn.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
             Me.m_nTrials = 0
 
@@ -332,7 +328,7 @@ Namespace Ecosim
             Me.m_fpSS.Value = 0.0!
             Me.m_fpSSBest.Value = 0.0!
 
-            cApplicationStatusNotifier.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_INITIALIZING, TriState.True)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_INITIALIZING, TriState.True)
 
             'clear out the old data
             Me.m_plothelper.Clear()

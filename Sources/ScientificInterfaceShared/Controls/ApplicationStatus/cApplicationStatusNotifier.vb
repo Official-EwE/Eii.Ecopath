@@ -35,15 +35,6 @@ Namespace Controls
 
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the single instance of the status notifier.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Shared Function GetInstance() As cApplicationStatusNotifier
-            Return cApplicationStatusNotifier.__inst__
-        End Function
-
 #End Region ' Singleton
 
         ''' -------------------------------------------------------------------
@@ -72,11 +63,15 @@ Namespace Controls
         ''' </para>
         ''' </param>
         ''' -------------------------------------------------------------------
-        Public Sub SetStatusText(Optional ByVal strText As String = "", _
-                                 Optional ByVal tsUseWaitCursor As Microsoft.VisualBasic.TriState = Microsoft.VisualBasic.TriState.UseDefault, _
-                                 Optional ByVal sProgress As Single = 0.0) _
+        Public Shared Sub SetStatusText(Optional ByVal strText As String = "", _
+                                        Optional ByVal tsUseWaitCursor As Microsoft.VisualBasic.TriState = Microsoft.VisualBasic.TriState.UseDefault, _
+                                        Optional ByVal sProgress As Single = 0.0)
+
+            ' Sanity check
+            Debug.Assert(__inst__ IsNot Nothing)
+
             ' Pass the word
-            Me.m_dispatcher.SetStatusText(strText, tsUseWaitCursor, sProgress)
+            __inst__.m_dispatcher.SetStatusText(strText, tsUseWaitCursor, sProgress)
         End Sub
 
     End Class

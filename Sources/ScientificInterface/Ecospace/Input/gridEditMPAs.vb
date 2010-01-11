@@ -827,7 +827,6 @@ Namespace Ecospace
             Dim iMPA As Integer = 0
             Dim iDeleteCount As Integer = 0
             Dim bSuccess As Boolean = True
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
 
             ' Validate content of the grid
             If Not Me.ValidateContent() Then Return False
@@ -874,7 +873,7 @@ Namespace Ecospace
 
                 If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
-                appl.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+                cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
                 ' Add new MPAs
                 For iMPA = 0 To Me.m_alMPAs.Count - 1
@@ -907,7 +906,7 @@ Namespace Ecospace
                 Else
                     Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
                 End If
-                appl.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.SetStatusText("", TriState.False)
             End If
 
                 ' Update core objects

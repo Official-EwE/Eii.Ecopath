@@ -618,12 +618,11 @@ Namespace Ecosim
             Dim strPath As String = SelectDestFolder()
             Dim strTargetPath As String = ""
             Dim ts As cTimeSeries = Nothing
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
 
             If String.IsNullOrEmpty(strPath) Then Return
 
             ' ToDo_JS: Globalize this
-            appl.SetStatusText("Saving fitting data...", TriState.True)
+            cApplicationStatusNotifier.SetStatusText("Saving fitting data...", TriState.True)
 
             For i As Integer = 1 To 3
                 Select Case i
@@ -730,7 +729,7 @@ Namespace Ecosim
             Next
 
             ' Clear status text
-            appl.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
             ' Notify user
             ' ToDo_JS: globalize this

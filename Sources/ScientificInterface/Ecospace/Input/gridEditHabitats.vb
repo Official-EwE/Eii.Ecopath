@@ -743,7 +743,6 @@ Namespace Ecospace
             Dim Habitat As cEcospaceHabitat = Nothing
             Dim iHabitat As Integer = 0
             Dim bSuccess As Boolean = True
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
 
             ' Validate content of the grid
             If Not Me.ValidateContent() Then Return False
@@ -809,7 +808,7 @@ Namespace Ecospace
 
                 If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
-                appl.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+                cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
                 ' Add new Habitats
                 For iHabitat = 0 To Me.m_alHabitats.Count - 1
@@ -840,7 +839,7 @@ Namespace Ecospace
 
                 ' The core will reload now
                 Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
-                appl.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
                 ' Test whether new Habitats were loaded correctly 
                 ' !! taking into account that this dialog does NOT contain the All habitat, hence the '-1'

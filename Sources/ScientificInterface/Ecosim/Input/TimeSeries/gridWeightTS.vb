@@ -102,11 +102,9 @@ Public Class gridWeightTS
     Protected Overrides Sub FillData()
         Dim ds As cTimeSeriesDataset = Nothing
         Dim ts As cTimeSeries = Nothing
-        'Dim tsItem As TimeSeriesItem = Nothing
         Dim strTarget As String = ""
-        Dim appl As AppLauncher = AppLauncher.GetInstance()
 
-        appl.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
+        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
 
         For iDS As Integer = 1 To Me.m_core.nTimeSeriesDatasets
 
@@ -142,7 +140,7 @@ Public Class gridWeightTS
             End If
         Next
 
-        appl.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
     End Sub
 

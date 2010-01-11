@@ -37,7 +37,7 @@ Namespace Other
 
         Public Sub New()
 
-            cApplicationStatusNotifier.GetInstance().SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
 
             Me.InitializeComponent()
 
@@ -57,7 +57,7 @@ Namespace Other
 
             Me.SelectPage("")
 
-            cApplicationStatusNotifier.GetInstance().SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         End Sub
 

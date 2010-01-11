@@ -737,7 +737,7 @@ Namespace Ecospace
             m_iTimeStepCur = TimeStepData.iTimeStep
 
             'Update the running simulation years progress label.
-            AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.UseDefault, CSng(Me.m_iTimeStepCur / Me.m_core.nEcospaceTimeSteps))
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.UseDefault, CSng(Me.m_iTimeStepCur / Me.m_core.nEcospaceTimeSteps))
 
             ' Update local time
             Me.m_lblProgress.Text = String.Format(My.Resources.STATUS_ECOSPACE_PROGRESS, _
@@ -798,9 +798,9 @@ Namespace Ecospace
 
                 ' Update status feedback
                 If Me.m_bIsEcospaceRunning Then
-                    AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.True)
+                    cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.True)
                 Else
-                    AppLauncher.GetInstance().SetStatusText("", TriState.False)
+                    cApplicationStatusNotifier.SetStatusText("", TriState.False)
                 End If
 
                 ' Update controls

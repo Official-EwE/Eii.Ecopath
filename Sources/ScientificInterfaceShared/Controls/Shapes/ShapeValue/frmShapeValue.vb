@@ -423,7 +423,6 @@ Public Class frmShapeValue
 
         Debug.Assert(Me.m_editMode = eDialogEditModeType.EditTimeSeries)
 
-        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
         Dim core As cCore = cCore.GetInstance
         Dim ts As cTimeSeries = Nothing
         Dim intTimeSeriesPoolCode As Integer
@@ -431,7 +430,7 @@ Public Class frmShapeValue
         Dim gts As cGroupTimeSeries = Nothing
         Dim bSucces As Boolean = True
 
-        asn.SetStatusText(My.Resources.STATUS_TIMESERIES_UPDATING, TriState.True)
+        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_TIMESERIES_UPDATING, TriState.True)
 
         'Get the time series
         ts = DirectCast(Me.m_shape, cTimeSeries)
@@ -459,7 +458,7 @@ Public Class frmShapeValue
 
         ts.Update()
         bSucces = core.UpdateTimeSeries()
-        asn.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         Return bSucces
     End Function
@@ -493,7 +492,6 @@ Public Class frmShapeValue
 
     Private Function OnAddTimeSeries() As Boolean
 
-        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
         Dim core As cCore = cCore.GetInstance
         Dim iFirstYear As Integer = 1
         Dim strName As String
@@ -503,7 +501,7 @@ Public Class frmShapeValue
         Dim iDBID As Integer = -1
         Dim bSucces As Boolean = True
 
-        asn.SetStatusText(String.Format(My.Resources.STATUS_TIMESERIES_ADDING, txtName.Text), TriState.True)
+        cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_TIMESERIES_ADDING, txtName.Text), TriState.True)
 
         strName = txtName.Text
         sWeight = CSng(txtWeight.Text)
@@ -528,7 +526,8 @@ Public Class frmShapeValue
 
         bSucces = core.AddTimeSeries(strName, iPoolCode, tsType, _
                 sWeight, asValues, iDBID)
-        asn.SetStatusText("", TriState.False)
+
+        cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         Return bSucces
 
