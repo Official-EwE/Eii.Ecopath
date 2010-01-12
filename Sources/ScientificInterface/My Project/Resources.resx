@@ -946,9 +946,6 @@
     <value>Creating Ecosim scenario '{0}'...</value>
     <comment>{0}: scenario name</comment>
   </data>
-  <data name="PROMPT_IMPORT_UPDATEBACKUP" xml:space="preserve">
-    <value>This database was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?</value>
-  </data>
   <data name="GENERIC_VALUE_DATASET_INFORMATION" xml:space="preserve">
     <value>{0} ({1} time series)</value>
     <comment>{0}: dataset name. {1}: time series count</comment>

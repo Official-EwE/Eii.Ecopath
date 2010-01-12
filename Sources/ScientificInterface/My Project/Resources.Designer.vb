@@ -4934,15 +4934,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to This database was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?.
-        '''</summary>
-        Friend ReadOnly Property PROMPT_IMPORT_UPDATEBACKUP() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_IMPORT_UPDATEBACKUP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to This type of file is not supported by EwE6.
         '''</summary>
         Friend ReadOnly Property PROMPT_INVALIDFILE() As String
