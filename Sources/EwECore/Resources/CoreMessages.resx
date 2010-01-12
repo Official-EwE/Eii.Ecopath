@@ -792,4 +792,7 @@ System Error: {0}</value>
   <data name="ECOPATH_MODEL_UPDATE_SUCCESS" xml:space="preserve">
     <value>Model was updated to the lastest version.</value>
   </data>
+  <data name="DATABASE_BACKUP_PROMPT" xml:space="preserve">
+    <value>This database was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?</value>
+  </data>
 </root>

@@ -1959,33 +1959,45 @@ Public Class cCore
                 Try
                     If File.Exists(src) Then
 
-                        Dim strSrc As String = CStr(src)
-                        Dim strDir As String = Path.GetDirectoryName(strSrc)
-                        Dim strFile As String = Path.GetFileNameWithoutExtension(strSrc)
-                        Dim strExt As String = Path.GetExtension(strSrc)
-                        Dim strFileNameNew As String = FileUtilities.ToValidFileName(String.Format("{0}_{1}", strFile, Date.Now.ToShortDateString), False)
-                        Dim strDest As String = Path.Combine(strDir, strFileNameNew + strExt)
-                        Dim msg As cMessage = Nothing
+                        ' User wants to make a backup?
+                        Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.DATABASE_BACKUP_PROMPT, _
+                                                         eCoreComponentType.DataSource, _
+                                                         eMessageImportance.Information, _
+                                                         cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                        ' By default (if message is not handled) assume positive confirmation
+                        fmsg.Reply = cFeedbackMessage.eReply.OK
+                        ' Send message
+                        Me.m_publisher.SendMessage(fmsg)
+                        ' Cancel if requested
+                        If (fmsg.Reply = cFeedbackMessage.eReply.CANCEL) Then Return False
 
-                        Try
-                            ' Create backup copy
-                            File.Copy(strSrc, strDest, True)
+                        If (fmsg.Reply = cFeedbackMessage.eReply.OK) Then
 
-                            msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_SUCCESS, strDest), _
-                                                    eMessageType.DataImport, _
-                                                    eCoreComponentType.DataSource, _
-                                                    eMessageImportance.Information)
-                        Catch ex As Exception
-                            msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
-                                                    eMessageType.DataImport, _
-                                                    eCoreComponentType.DataSource, _
-                                                    eMessageImportance.Information)
-                        End Try
-                        Me.m_publisher.SendMessage(msg)
+                            Dim strSrc As String = CStr(src)
+                            Dim strDest As String = ""
+                            Dim msg As cMessage = Nothing
+
+                            ' Create backup
+                            If FileUtilities.CreateBackup(strSrc, strDest) Then
+                                msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_SUCCESS, strDest), _
+                                                        eMessageType.DataImport, _
+                                                        eCoreComponentType.DataSource, _
+                                                        eMessageImportance.Information)
+                            Else
+                                msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
+                                                        eMessageType.DataImport, _
+                                                        eCoreComponentType.DataSource, _
+                                                        eMessageImportance.Information)
+                            End If
+                            ' Send backup result message
+                            Me.m_publisher.SendMessage(msg)
+                        End If
                     End If
 
                 Catch ex As Exception
+                    ' Whoah
                 End Try
+
                 ' Run updates
                 If Not dbUpd.UpdateDatabase(db) Then
                     ' Database update failed

@@ -155,6 +155,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to This database was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?.
+        '''</summary>
+        Friend Shared ReadOnly Property DATABASE_BACKUP_PROMPT() As String
+            Get
+                Return ResourceManager.GetString("DATABASE_BACKUP_PROMPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to A backup copy of your database was made to &apos;{0}&apos;.
         '''</summary>
         Friend Shared ReadOnly Property DATABASE_BACKUP_SUCCESS() As String
