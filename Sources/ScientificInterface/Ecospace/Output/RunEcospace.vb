@@ -614,10 +614,13 @@ Namespace Ecospace
 
 #Region " Events "
 
-        Private Sub btnRun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles m_btnRun.Click
-
-            ReDim m_as2RelBiomassResults(m_core.nGroups, Me.m_core.nEcospaceTimeSteps)
-            ReDim m_asBaseBiomassResults(m_core.nGroups)
+        Private Sub ClearResults()
+            For i As Integer = 1 To Me.m_core.nGroups - 1
+                For j As Integer = 1 To Me.m_core.nEcospaceTimeSteps - 1
+                    Me.m_as2RelBiomassResults(i, j) = 0
+                Next j
+                Me.m_asBaseBiomassResults(i) = 0
+            Next i
 
             ' Reset plot drawer if overlay is not needed
             If Me.m_bOverlay = False Then
@@ -625,6 +628,13 @@ Namespace Ecospace
             Else
                 Me.m_zgh.Overlay(Me.m_core.nGroups)
             End If
+            Me.RefreshPlot()
+            Me.RefreshMap()
+        End Sub
+
+        Private Sub btnRun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles m_btnRun.Click
+
+            Me.ClearResults()
 
             Me.m_iTimeStepCur = 0
             Me.m_core.RunEcoSpace(AddressOf onEcospaceTimeStep)
@@ -816,6 +826,11 @@ Namespace Ecospace
 
                 Case eMessageType.EcosimNYearsChanged
                     Me.InitUIParams()
+
+                Case eMessageType.DataModified
+                    If Not Me.m_core.StateMonitor.HasEcospaceRan Then
+                        Me.ClearResults()
+                    End If
 
                 Case eMessageType.ErrorEncountered
                     'Console.WriteLine("Ecospace Error: " & msg.Message)
