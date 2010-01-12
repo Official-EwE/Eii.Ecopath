@@ -88,6 +88,39 @@ Namespace Utilities
 
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a backup copy of a file.
+        ''' </summary>
+        ''' <param name="strSrc">Source file to copy.</param>
+        ''' <param name="strDest">Destination to copy file to. Leave this destination empty 
+        ''' to backup to a default location. This parameter will return the backup 
+        ''' destination file name.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function CreateBackup(ByVal strSrc As String, ByRef strDest As String) As Boolean
+
+            If String.IsNullOrEmpty(strDest) Then
+
+                Dim strDir As String = Path.GetDirectoryName(strSrc)
+                Dim strFile As String = Path.GetFileNameWithoutExtension(strSrc)
+                Dim strExt As String = Path.GetExtension(strSrc)
+                Dim strDate As String = Date.Now.ToShortDateString
+                Dim strFileNameNew As String = FileUtilities.ToValidFileName(String.Format("{0}_{1}", strFile, strDate), False)
+
+                strDest = Path.Combine(strDir, strFileNameNew + strExt)
+            End If
+
+            Try
+                ' Create backup copy
+                File.Copy(strSrc, strDest, True)
+                Return True
+            Catch ex As Exception
+            End Try
+            Return False
+
+        End Function
+
     End Class
 
 End Namespace
