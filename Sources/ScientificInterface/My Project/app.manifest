@@ -4,8 +4,8 @@
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
     <security>
       <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
-        <!-- JS 12Jan10: enforce requireAdministrator in order to load plug-ins on Vista -->
-        <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
+        <!-- JS 12Jan10: may need to use asInvoker or requireAdministrator in order to load plug-ins on Vista -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
       </requestedPrivileges>
     </security>
   </trustInfo>
