@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Network Analysis plug-in for Ecopath with Ecosim")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwENetworkAnalysis plugin")> 
-<Assembly: AssemblyCopyright("Copyright © 2007-2009")> 
+<Assembly: AssemblyCopyright("Copyright © 2007-2010")> 
 
 <Assembly: ComVisible(False)>
 
@@ -30,5 +30,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("2.0.1.5")> 
-<Assembly: AssemblyFileVersion("2.0.1.1")> 
+<Assembly: AssemblyVersion("6.0.7.1")> 
+<Assembly: AssemblyFileVersion("6.0.7.1")> 
