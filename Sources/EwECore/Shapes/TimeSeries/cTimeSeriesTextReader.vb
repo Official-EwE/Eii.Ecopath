@@ -486,7 +486,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 aiType(i - 1) = Me.ToTimeSeriesType(astrCols(i))
                 If (aiType(i - 1) = eTimeSeriesType.NotSet) Then
                     aiType(i - 1) = DirectCast(StringUtils.ConvertToInteger(astrCols(i)), eTimeSeriesType)
-                    If (aiType(i - 1) < 1) Then
+                    If (aiType(i - 1) = cCore.NULL_VALUE) Then
                         Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPEFORMAT, iLineNumber)
                     End If
                 End If
@@ -557,7 +557,8 @@ Public MustInherit Class cTimeSeriesTextReader
                             ' Is value negative?
                             If (sValue < 0.0!) Then
                                 ' #Yes: throw an error
-                                Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_VALUENEGATIVE)
+                                ' ToDo_JS: report column!
+                                Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_VALUENEGATIVE, iLineNumber)
                             End If
                         End If
                     Catch ex As Exception
@@ -653,7 +654,8 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> if the line number
     ''' is irrelevant.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub ReportError(ByVal strError As String, Optional ByVal iLineNumber As Integer = cCore.NULL_VALUE)
+    Private Sub ReportError(ByVal strError As String, _
+                            Optional ByVal iLineNumber As Integer = cCore.NULL_VALUE)
 
         ' Flag line error if possible
         If iLineNumber = cCore.NULL_VALUE Then
