@@ -22,53 +22,40 @@ Partial Class ucAppGeneral
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucAppGeneral))
-            Me.GroupBox1 = New System.Windows.Forms.GroupBox
-            Me.btnClear = New System.Windows.Forms.Button
-            Me.txbMdbNum = New System.Windows.Forms.TextBox
+            Me.m_gpMRU = New System.Windows.Forms.GroupBox
+            Me.m_btnClear = New System.Windows.Forms.Button
             Me.lblMDB = New System.Windows.Forms.Label
             Me.lblTitle = New System.Windows.Forms.Label
-            Me.cbSaveLayout = New System.Windows.Forms.CheckBox
-            Me.Label1 = New System.Windows.Forms.Label
-            Me.txbSaveDirectory = New System.Windows.Forms.TextBox
-            Me.btnSaveLocation = New System.Windows.Forms.Button
-            Me.GroupBox2 = New System.Windows.Forms.GroupBox
-            Me.btnRemoveAll = New System.Windows.Forms.Button
-            Me.gpbMsg = New System.Windows.Forms.GroupBox
+            Me.m_cbSaveLayout = New System.Windows.Forms.CheckBox
+            Me.m_lblPathPrompt = New System.Windows.Forms.Label
+            Me.m_txbSaveDirectory = New System.Windows.Forms.TextBox
+            Me.m_btnSaveLocation = New System.Windows.Forms.Button
+            Me.m_gbLayout = New System.Windows.Forms.GroupBox
+            Me.m_btnRemoveAll = New System.Windows.Forms.Button
+            Me.m_gpMsg = New System.Windows.Forms.GroupBox
             Me.m_nudMaxNumMessages = New System.Windows.Forms.NumericUpDown
             Me.m_lblMaxNumMessages = New System.Windows.Forms.Label
-            Me.cbInformation = New System.Windows.Forms.ComboBox
-            Me.cbWarning = New System.Windows.Forms.ComboBox
-            Me.cbCritical = New System.Windows.Forms.ComboBox
-            Me.lbInformation = New System.Windows.Forms.Label
-            Me.lbWarning = New System.Windows.Forms.Label
-            Me.lbCritical = New System.Windows.Forms.Label
-            Me.GroupBox1.SuspendLayout()
-            Me.GroupBox2.SuspendLayout()
-            Me.gpbMsg.SuspendLayout()
+            Me.m_txbMdbNum = New System.Windows.Forms.TextBox
+            Me.m_gpMRU.SuspendLayout()
+            Me.m_gbLayout.SuspendLayout()
+            Me.m_gpMsg.SuspendLayout()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
-            'GroupBox1
+            'm_gpMRU
             '
-            resources.ApplyResources(Me.GroupBox1, "GroupBox1")
-            Me.GroupBox1.Controls.Add(Me.btnClear)
-            Me.GroupBox1.Controls.Add(Me.txbMdbNum)
-            Me.GroupBox1.Controls.Add(Me.lblMDB)
-            Me.GroupBox1.Name = "GroupBox1"
-            Me.GroupBox1.TabStop = False
+            resources.ApplyResources(Me.m_gpMRU, "m_gpMRU")
+            Me.m_gpMRU.Controls.Add(Me.m_btnClear)
+            Me.m_gpMRU.Controls.Add(Me.m_txbMdbNum)
+            Me.m_gpMRU.Controls.Add(Me.lblMDB)
+            Me.m_gpMRU.Name = "m_gpMRU"
+            Me.m_gpMRU.TabStop = False
             '
-            'btnClear
+            'm_btnClear
             '
-            resources.ApplyResources(Me.btnClear, "btnClear")
-            Me.btnClear.Name = "btnClear"
-            Me.btnClear.UseVisualStyleBackColor = True
-            '
-            'txbMdbNum
-            '
-            Me.txbMdbNum.DataBindings.Add(New System.Windows.Forms.Binding("Text", Global.ScientificInterface.Settings.Default, "MdbRecentlyUsedCount", True, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged))
-            resources.ApplyResources(Me.txbMdbNum, "txbMdbNum")
-            Me.txbMdbNum.Name = "txbMdbNum"
-            Me.txbMdbNum.Text = Global.ScientificInterface.Settings.Default.MdbRecentlyUsedCount
+            resources.ApplyResources(Me.m_btnClear, "m_btnClear")
+            Me.m_btnClear.Name = "m_btnClear"
+            Me.m_btnClear.UseVisualStyleBackColor = True
             '
             'lblMDB
             '
@@ -82,60 +69,54 @@ Partial Class ucAppGeneral
             Me.lblTitle.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.lblTitle.Name = "lblTitle"
             '
-            'cbSaveLayout
+            'm_cbSaveLayout
             '
-            resources.ApplyResources(Me.cbSaveLayout, "cbSaveLayout")
-            Me.cbSaveLayout.Checked = True
-            Me.cbSaveLayout.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.cbSaveLayout.Name = "cbSaveLayout"
-            Me.cbSaveLayout.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbSaveLayout, "m_cbSaveLayout")
+            Me.m_cbSaveLayout.Checked = True
+            Me.m_cbSaveLayout.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbSaveLayout.Name = "m_cbSaveLayout"
+            Me.m_cbSaveLayout.UseVisualStyleBackColor = True
             '
-            'Label1
+            'm_lblPathPrompt
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_lblPathPrompt, "m_lblPathPrompt")
+            Me.m_lblPathPrompt.Name = "m_lblPathPrompt"
             '
-            'txbSaveDirectory
+            'm_txbSaveDirectory
             '
-            resources.ApplyResources(Me.txbSaveDirectory, "txbSaveDirectory")
-            Me.txbSaveDirectory.Name = "txbSaveDirectory"
+            resources.ApplyResources(Me.m_txbSaveDirectory, "m_txbSaveDirectory")
+            Me.m_txbSaveDirectory.Name = "m_txbSaveDirectory"
             '
-            'btnSaveLocation
+            'm_btnSaveLocation
             '
-            resources.ApplyResources(Me.btnSaveLocation, "btnSaveLocation")
-            Me.btnSaveLocation.Name = "btnSaveLocation"
-            Me.btnSaveLocation.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnSaveLocation, "m_btnSaveLocation")
+            Me.m_btnSaveLocation.Name = "m_btnSaveLocation"
+            Me.m_btnSaveLocation.UseVisualStyleBackColor = True
             '
-            'GroupBox2
+            'm_gbLayout
             '
-            resources.ApplyResources(Me.GroupBox2, "GroupBox2")
-            Me.GroupBox2.Controls.Add(Me.btnRemoveAll)
-            Me.GroupBox2.Controls.Add(Me.cbSaveLayout)
-            Me.GroupBox2.Controls.Add(Me.btnSaveLocation)
-            Me.GroupBox2.Controls.Add(Me.Label1)
-            Me.GroupBox2.Controls.Add(Me.txbSaveDirectory)
-            Me.GroupBox2.Name = "GroupBox2"
-            Me.GroupBox2.TabStop = False
+            resources.ApplyResources(Me.m_gbLayout, "m_gbLayout")
+            Me.m_gbLayout.Controls.Add(Me.m_btnRemoveAll)
+            Me.m_gbLayout.Controls.Add(Me.m_cbSaveLayout)
+            Me.m_gbLayout.Controls.Add(Me.m_btnSaveLocation)
+            Me.m_gbLayout.Controls.Add(Me.m_lblPathPrompt)
+            Me.m_gbLayout.Controls.Add(Me.m_txbSaveDirectory)
+            Me.m_gbLayout.Name = "m_gbLayout"
+            Me.m_gbLayout.TabStop = False
             '
-            'btnRemoveAll
+            'm_btnRemoveAll
             '
-            resources.ApplyResources(Me.btnRemoveAll, "btnRemoveAll")
-            Me.btnRemoveAll.Name = "btnRemoveAll"
-            Me.btnRemoveAll.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnRemoveAll, "m_btnRemoveAll")
+            Me.m_btnRemoveAll.Name = "m_btnRemoveAll"
+            Me.m_btnRemoveAll.UseVisualStyleBackColor = True
             '
-            'gpbMsg
+            'm_gpMsg
             '
-            resources.ApplyResources(Me.gpbMsg, "gpbMsg")
-            Me.gpbMsg.Controls.Add(Me.m_nudMaxNumMessages)
-            Me.gpbMsg.Controls.Add(Me.m_lblMaxNumMessages)
-            Me.gpbMsg.Controls.Add(Me.cbInformation)
-            Me.gpbMsg.Controls.Add(Me.cbWarning)
-            Me.gpbMsg.Controls.Add(Me.cbCritical)
-            Me.gpbMsg.Controls.Add(Me.lbInformation)
-            Me.gpbMsg.Controls.Add(Me.lbWarning)
-            Me.gpbMsg.Controls.Add(Me.lbCritical)
-            Me.gpbMsg.Name = "gpbMsg"
-            Me.gpbMsg.TabStop = False
+            resources.ApplyResources(Me.m_gpMsg, "m_gpMsg")
+            Me.m_gpMsg.Controls.Add(Me.m_nudMaxNumMessages)
+            Me.m_gpMsg.Controls.Add(Me.m_lblMaxNumMessages)
+            Me.m_gpMsg.Name = "m_gpMsg"
+            Me.m_gpMsg.TabStop = False
             '
             'm_nudMaxNumMessages
             '
@@ -150,81 +131,46 @@ Partial Class ucAppGeneral
             resources.ApplyResources(Me.m_lblMaxNumMessages, "m_lblMaxNumMessages")
             Me.m_lblMaxNumMessages.Name = "m_lblMaxNumMessages"
             '
-            'cbInformation
+            'm_txbMdbNum
             '
-            resources.ApplyResources(Me.cbInformation, "cbInformation")
-            Me.cbInformation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cbInformation.FormattingEnabled = True
-            Me.cbInformation.Name = "cbInformation"
-            '
-            'cbWarning
-            '
-            resources.ApplyResources(Me.cbWarning, "cbWarning")
-            Me.cbWarning.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cbWarning.FormattingEnabled = True
-            Me.cbWarning.Name = "cbWarning"
-            '
-            'cbCritical
-            '
-            resources.ApplyResources(Me.cbCritical, "cbCritical")
-            Me.cbCritical.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cbCritical.FormattingEnabled = True
-            Me.cbCritical.Name = "cbCritical"
-            '
-            'lbInformation
-            '
-            resources.ApplyResources(Me.lbInformation, "lbInformation")
-            Me.lbInformation.Name = "lbInformation"
-            '
-            'lbWarning
-            '
-            resources.ApplyResources(Me.lbWarning, "lbWarning")
-            Me.lbWarning.Name = "lbWarning"
-            '
-            'lbCritical
-            '
-            resources.ApplyResources(Me.lbCritical, "lbCritical")
-            Me.lbCritical.Name = "lbCritical"
+            Me.m_txbMdbNum.DataBindings.Add(New System.Windows.Forms.Binding("Text", Global.ScientificInterface.Settings.Default, "MdbRecentlyUsedCount", True, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged))
+            resources.ApplyResources(Me.m_txbMdbNum, "m_txbMdbNum")
+            Me.m_txbMdbNum.Name = "m_txbMdbNum"
+            Me.m_txbMdbNum.Text = Global.ScientificInterface.Settings.Default.MdbRecentlyUsedCount
             '
             'ucAppGeneral
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.gpbMsg)
-            Me.Controls.Add(Me.GroupBox2)
+            Me.Controls.Add(Me.m_gpMsg)
+            Me.Controls.Add(Me.m_gbLayout)
             Me.Controls.Add(Me.lblTitle)
-            Me.Controls.Add(Me.GroupBox1)
+            Me.Controls.Add(Me.m_gpMRU)
             Me.Name = "ucAppGeneral"
-            Me.GroupBox1.ResumeLayout(False)
-            Me.GroupBox1.PerformLayout()
-            Me.GroupBox2.ResumeLayout(False)
-            Me.GroupBox2.PerformLayout()
-            Me.gpbMsg.ResumeLayout(False)
-            Me.gpbMsg.PerformLayout()
+            Me.m_gpMRU.ResumeLayout(False)
+            Me.m_gpMRU.PerformLayout()
+            Me.m_gbLayout.ResumeLayout(False)
+            Me.m_gbLayout.PerformLayout()
+            Me.m_gpMsg.ResumeLayout(False)
+            Me.m_gpMsg.PerformLayout()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-        Friend WithEvents txbMdbNum As System.Windows.Forms.TextBox
         Friend WithEvents lblMDB As System.Windows.Forms.Label
-        Friend WithEvents btnClear As System.Windows.Forms.Button
         Friend WithEvents lblTitle As System.Windows.Forms.Label
-        Friend WithEvents txbSaveDirectory As System.Windows.Forms.TextBox
-        Friend WithEvents Label1 As System.Windows.Forms.Label
-        Friend WithEvents cbSaveLayout As System.Windows.Forms.CheckBox
-        Friend WithEvents btnSaveLocation As System.Windows.Forms.Button
-        Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-        Friend WithEvents btnRemoveAll As System.Windows.Forms.Button
-        Friend WithEvents gpbMsg As System.Windows.Forms.GroupBox
-        Friend WithEvents cbInformation As System.Windows.Forms.ComboBox
-        Friend WithEvents cbWarning As System.Windows.Forms.ComboBox
-        Friend WithEvents cbCritical As System.Windows.Forms.ComboBox
-        Friend WithEvents lbInformation As System.Windows.Forms.Label
-        Friend WithEvents lbWarning As System.Windows.Forms.Label
-        Friend WithEvents lbCritical As System.Windows.Forms.Label
         Private WithEvents m_nudMaxNumMessages As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblMaxNumMessages As System.Windows.Forms.Label
+        Private WithEvents m_btnClear As System.Windows.Forms.Button
+        Private WithEvents m_gpMRU As System.Windows.Forms.GroupBox
+        Private WithEvents m_txbMdbNum As System.Windows.Forms.TextBox
+        Private WithEvents m_gbLayout As System.Windows.Forms.GroupBox
+        Private WithEvents m_cbSaveLayout As System.Windows.Forms.CheckBox
+        Private WithEvents m_btnRemoveAll As System.Windows.Forms.Button
+        Private WithEvents m_lblPathPrompt As System.Windows.Forms.Label
+        Private WithEvents m_txbSaveDirectory As System.Windows.Forms.TextBox
+        Private WithEvents m_btnSaveLocation As System.Windows.Forms.Button
+        Private WithEvents m_gpMsg As System.Windows.Forms.GroupBox
 
     End Class
 

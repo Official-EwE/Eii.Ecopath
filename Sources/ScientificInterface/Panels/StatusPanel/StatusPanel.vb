@@ -107,7 +107,6 @@ Public Class StatusPanel
     ''' -------------------------------------------------------------------
     Public Sub AllMessagesHandler(ByRef msg As cMessage)
 
-        Dim bStatus As Boolean = False
         Dim bPopup As Boolean = False
 
         '' Give message state handler a shot to refresh
@@ -118,24 +117,16 @@ Public Class StatusPanel
         ' Check settings
         Select Case msg.Importance
             Case eMessageImportance.Critical
-                bStatus = My.Settings.FeedbackCriticalStatusMessage
-                bPopup = My.Settings.FeedbackCriticalPopup
+                bPopup = True
             Case eMessageImportance.Warning
-                bStatus = My.Settings.FeedbackWarningStatusMessage
-                bPopup = My.Settings.FeedbackWarningPopup
+                bPopup = True
             Case eMessageImportance.Information
-                bStatus = My.Settings.FeedbackInformationStatusMessage
-                bPopup = My.Settings.FeedbackInformationPopup
+                bPopup = False
             Case eMessageImportance.Maintenance
-                bStatus = False
                 bPopup = False
             Case eMessageImportance.Progress
-                ' Progress messages are meant for dedicated GUIs
-                bStatus = False
                 bPopup = False
             Case Else
-                ' Default behaviour: log it but do not pop up
-                bStatus = True
                 bPopup = False
         End Select
 
@@ -151,120 +142,116 @@ Public Class StatusPanel
         If bPopup Then
             ' #Yes: go ahead, Jimmy
             ' JS 26feb09: If an error occurred the status panel will have to show this message
-            bStatus = bStatus Or Me.ShowMessageBox(msg)
+            Me.ShowMessageBox(msg)
         End If
 
-        ' Must show message?
-        If bStatus Then
-            ' #Yes: add message
-            Dim strMessage As String = msg.Message
-            Dim bSuppressVarMessage As Boolean = False
+        ' Show message in status panel
+        Dim strMessage As String = msg.Message
+        Dim bSuppressVarMessage As Boolean = False
 
-            ' Prepare treenode
-            Dim tnMessage As TreeNode = New TreeNode(Me.ToTreeNodeText(strMessage))
-            ' Set image index
-            tnMessage.ImageIndex = CInt(msg.Importance) - 1
-            ' Set selected image to equal image index
-            tnMessage.SelectedImageIndex = tnMessage.ImageIndex
-            ' Add original message text to tooltip
-            tnMessage.ToolTipText = msg.Message
+        ' Prepare treenode
+        Dim tnMessage As TreeNode = New TreeNode(Me.ToTreeNodeText(strMessage))
+        ' Set image index
+        tnMessage.ImageIndex = CInt(msg.Importance) - 1
+        ' Set selected image to equal image index
+        tnMessage.SelectedImageIndex = tnMessage.ImageIndex
+        ' Add original message text to tooltip
+        tnMessage.ToolTipText = msg.Message
 
-            ' JS 07may07: Whoah, a hack... if a message comes in with only one variable AND the 
-            '             message for the variable equals the text of the main message THEN suppress 
-            '             the variable message...
-            If msg.Variables.Count = 1 Then
-                bSuppressVarMessage = String.Compare(msg.Variables(0).Message, msg.Message, True) = 0
-            End If
-
-            ' ***********************************************************************
-            ' ***                                                                 ***
-            ' *** If your code crashes below for an unexplained reason a message  ***
-            ' *** has probably been sent from a thread other than the GUI thread. ***
-            ' ***                                                                 ***
-            ' ***********************************************************************
-
-            If bSuppressVarMessage Then
-                tnMessage.Tag = msg.Variables(0)
-            Else
-
-                ' Add original message to the master node
-                tnMessage.Tag = msg
-
-                ' Create subnodes for each variable status entry in the message
-                For Each vs As cVariableStatus In msg.Variables
-                    ' Prepare child node
-                    Dim tnVariable As New TreeNode(Me.ToTreeNodeText(vs.Message))
-                    ' Set same image as parent node
-                    tnVariable.ImageIndex = tnMessage.ImageIndex
-                    tnVariable.SelectedImageIndex = tnMessage.ImageIndex
-                    tnVariable.ToolTipText = vs.Message
-
-                    '' Set selected image to equal image index
-                    'tnVariable.SelectedImageIndex = tnVariable.ImageIndex
-
-                    ' Add variable status to the tag of the node. This will be used to
-                    ' highlight cProperties at runtime whenever a user presses the mouse
-                    ' button on the treenode. The properties are not resolved here because
-                    ' this message came from the Core. The GUI might not have created the
-                    ' properties yet.
-                    tnVariable.Tag = vs
-                    ' Now add the variable child node to the message parent node
-                    tnMessage.Nodes.Add(tnVariable)
-                Next
-
-                ' Add feedback reply
-                If (TypeOf (msg) Is cFeedbackMessage) Then
-
-                    Dim fmsg As cFeedbackMessage = DirectCast(msg, cFeedbackMessage)
-                    Dim tnReply As New TreeNode()
-
-                    Select Case fmsg.ReplyStyle
-
-                        Case cFeedbackMessage.eReplyStyle.OK_CANCEL
-                            Select Case fmsg.Reply
-                                Case cFeedbackMessage.eReply.OK
-                                    tnReply.Text = My.Resources.GENERIC_REPLY_OK
-                                Case cFeedbackMessage.eReply.CANCEL
-                                    tnReply.Text = My.Resources.GENERIC_REPLY_CANCEL
-                            End Select
-
-                        Case cFeedbackMessage.eReplyStyle.YES_NO, _
-                             cFeedbackMessage.eReplyStyle.YES_NO_CANCEL
-
-                            Select Case fmsg.Reply
-                                Case cFeedbackMessage.eReply.YES
-                                    tnReply.Text = My.Resources.GENERIC_REPLY_YES
-                                Case cFeedbackMessage.eReply.NO
-                                    tnReply.Text = My.Resources.GENERIC_REPLY_NO
-                                Case cFeedbackMessage.eReply.CANCEL
-                                    tnReply.Text = My.Resources.GENERIC_REPLY_CANCEL
-
-                            End Select
-
-                    End Select
-
-                    tnReply.ImageIndex = tnMessage.ImageIndex
-                    tnReply.SelectedImageIndex = tnMessage.ImageIndex
-                    tnReply.ToolTipText = tnReply.Text
-
-                    tnMessage.Nodes.Add(tnReply)
-
-                End If
-            End If
-
-            Try
-                ' Add node(s) to the end of the list
-                Me.tvStatus.Nodes.Add(tnMessage)
-                ' Truncate log size
-                While (Me.tvStatus.Nodes.Count > My.Settings.FeedbackMessageLogSize)
-                    Me.tvStatus.Nodes.RemoveAt(0)
-                End While
-                tnMessage.EnsureVisible()
-            Catch ex As Exception
-                ' Hmm
-            End Try
-
+        ' JS 07may07: Whoah, a hack... if a message comes in with only one variable AND the 
+        '             message for the variable equals the text of the main message THEN suppress 
+        '             the variable message...
+        If msg.Variables.Count = 1 Then
+            bSuppressVarMessage = String.Compare(msg.Variables(0).Message, msg.Message, True) = 0
         End If
+
+        ' ***********************************************************************
+        ' ***                                                                 ***
+        ' *** If your code crashes below for an unexplained reason a message  ***
+        ' *** has probably been sent from a thread other than the GUI thread. ***
+        ' ***                                                                 ***
+        ' ***********************************************************************
+
+        If bSuppressVarMessage Then
+            tnMessage.Tag = msg.Variables(0)
+        Else
+
+            ' Add original message to the master node
+            tnMessage.Tag = msg
+
+            ' Create subnodes for each variable status entry in the message
+            For Each vs As cVariableStatus In msg.Variables
+                ' Prepare child node
+                Dim tnVariable As New TreeNode(Me.ToTreeNodeText(vs.Message))
+                ' Set same image as parent node
+                tnVariable.ImageIndex = tnMessage.ImageIndex
+                tnVariable.SelectedImageIndex = tnMessage.ImageIndex
+                tnVariable.ToolTipText = vs.Message
+
+                '' Set selected image to equal image index
+                'tnVariable.SelectedImageIndex = tnVariable.ImageIndex
+
+                ' Add variable status to the tag of the node. This will be used to
+                ' highlight cProperties at runtime whenever a user presses the mouse
+                ' button on the treenode. The properties are not resolved here because
+                ' this message came from the Core. The GUI might not have created the
+                ' properties yet.
+                tnVariable.Tag = vs
+                ' Now add the variable child node to the message parent node
+                tnMessage.Nodes.Add(tnVariable)
+            Next
+
+            ' Add feedback reply
+            If (TypeOf (msg) Is cFeedbackMessage) Then
+
+                Dim fmsg As cFeedbackMessage = DirectCast(msg, cFeedbackMessage)
+                Dim tnReply As New TreeNode()
+
+                Select Case fmsg.ReplyStyle
+
+                    Case cFeedbackMessage.eReplyStyle.OK_CANCEL
+                        Select Case fmsg.Reply
+                            Case cFeedbackMessage.eReply.OK
+                                tnReply.Text = My.Resources.GENERIC_REPLY_OK
+                            Case cFeedbackMessage.eReply.CANCEL
+                                tnReply.Text = My.Resources.GENERIC_REPLY_CANCEL
+                        End Select
+
+                    Case cFeedbackMessage.eReplyStyle.YES_NO, _
+                         cFeedbackMessage.eReplyStyle.YES_NO_CANCEL
+
+                        Select Case fmsg.Reply
+                            Case cFeedbackMessage.eReply.YES
+                                tnReply.Text = My.Resources.GENERIC_REPLY_YES
+                            Case cFeedbackMessage.eReply.NO
+                                tnReply.Text = My.Resources.GENERIC_REPLY_NO
+                            Case cFeedbackMessage.eReply.CANCEL
+                                tnReply.Text = My.Resources.GENERIC_REPLY_CANCEL
+
+                        End Select
+
+                End Select
+
+                tnReply.ImageIndex = tnMessage.ImageIndex
+                tnReply.SelectedImageIndex = tnMessage.ImageIndex
+                tnReply.ToolTipText = tnReply.Text
+
+                tnMessage.Nodes.Add(tnReply)
+
+            End If
+        End If
+
+        Try
+            ' Add node(s) to the TOP of the list
+            Me.tvStatus.Nodes.Insert(0, tnMessage)
+            ' Truncate log size
+            While (Me.tvStatus.Nodes.Count > My.Settings.FeedbackMessageLogSize)
+                Me.tvStatus.Nodes.RemoveAt(0)
+            End While
+            tnMessage.EnsureVisible()
+        Catch ex As Exception
+            ' Hmm
+        End Try
 
         ' When the core sends out critical or warning message, status panel will slide open temporarily
         If (msg.Importance = eMessageImportance.Critical) Or (msg.Importance = eMessageImportance.Warning) Then
