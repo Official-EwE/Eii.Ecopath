@@ -2383,10 +2383,11 @@ Public Class cDBDataSource
 
                     If (iGroup > ecopathDS.NumLiving) Then
                         ecopathDS.DiscardFate(iFleet, iGroup - ecopathDS.NumLiving) = CSng(reader("DiscardFate"))
-                    Else
-                        Me.LogMessage(String.Format("DiscardFate value read for invalid iGroup {0}, should be at least {1}", iGroup, ecopathDS.NumLiving), eMessageType.Any, eMessageImportance.Warning)
-                        ' Keep on chugging, do not make assignment
-                        bSucces = True
+                        'Else
+                        '    '' ToDo_JS: localize this
+                        '    'Me.LogMessage(String.Format("DiscardFate value ignored for living group {0}, fleet ", iGroup), eMessageType.Any, eMessageImportance.Information)
+                        '    ' Keep on chugging, do not make assignment
+                        '    bSucces = True
                     End If
 
                 End While
