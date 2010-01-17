@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -232,6 +232,9 @@
     </Compile>
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Wizard\ucWizardTabControl.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\ZedGraph\ZedGraphHelper.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphKiteDiagram.vb" />
