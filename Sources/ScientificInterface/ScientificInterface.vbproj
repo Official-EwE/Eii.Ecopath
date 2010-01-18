@@ -719,12 +719,6 @@
     <Compile Include="Wizard\EwEScenarioDlg.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Wizard\WizardFormBase.Designer.vb">
-      <DependentUpon>WizardFormBase.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Wizard\WizardFormBase.vb">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AppLauncher.resx">
@@ -849,10 +843,6 @@
     <EmbeddedResource Include="Wizard\DatabaseConversion\DatabaseConversionWizard.resx">
       <SubType>Designer</SubType>
       <DependentUpon>DatabaseConversionWizard.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Wizard\WizardFormBase.resx">
-      <DependentUpon>WizardFormBase.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -987,6 +977,26 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgEditRegions.resx">
       <DependentUpon>dlgEditRegions.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Import\dlgImportDatabase.resx">
+      <DependentUpon>dlgImportDatabase.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Import\Pages\ucImportPageWelcome.resx">
+      <DependentUpon>ucImportPageWelcome.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Import\Pages\ucImportPageModels.resx">
+      <DependentUpon>ucImportPageModels.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Import\Pages\ucImportPageProgress.resx">
+      <DependentUpon>ucImportPageProgress.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Import\ucImportHeader.resx">
+      <DependentUpon>ucImportHeader.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\Application\ucAppGraphs.resx">
@@ -1247,6 +1257,40 @@
     <Compile Include="Ecospace\Tools\gridMPAOptimizations.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Other\Import\cImportGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Other\Import\cImportWizard.vb" />
+    <Compile Include="Other\Import\dlgImportDatabase.Designer.vb">
+      <DependentUpon>dlgImportDatabase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Import\dlgImportDatabase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Other\Import\Pages\ucImportPageWelcome.Designer.vb">
+      <DependentUpon>ucImportPageWelcome.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Import\Pages\ucImportPageWelcome.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Other\Import\Pages\ucImportPageModels.Designer.vb">
+      <DependentUpon>ucImportPageModels.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Import\Pages\ucImportPageModels.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Other\Import\Pages\ucImportPageProgress.Designer.vb">
+      <DependentUpon>ucImportPageProgress.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Import\Pages\ucImportPageProgress.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Other\Import\ucImportHeader.Designer.vb">
+      <DependentUpon>ucImportHeader.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Import\ucImportHeader.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Other\Options\Application\ucAppPluginAssemblyDetails.Designer.vb">
       <DependentUpon>ucAppPluginAssemblyDetails.vb</DependentUpon>
     </Compile>
@@ -1296,6 +1340,12 @@
     </Compile>
     <Compile Include="Tools\MSE\gridRiskBounds.vb">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Wizard\WizardFormBase.Designer.vb">
+      <DependentUpon>WizardFormBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\WizardFormBase.vb">
+      <SubType>Form</SubType>
     </Compile>
     <None Include="My Project\app.manifest" />
     <None Include="Resources\BreakpointHS.png" />
@@ -1561,6 +1611,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard\EwEScenarioDlg.resx">
       <DependentUpon>EwEScenarioDlg.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Wizard\WizardFormBase.resx">
+      <DependentUpon>WizardFormBase.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

@@ -1378,7 +1378,15 @@ Public Class AppLauncher
                     Else
                         bSucces = False
                     End If
-
+                    'Dim dlg As New Import.dlgImportDatabase(Me.m_core, db)
+                    'If dlg.ShowDialog(Me) = DialogResult.OK Then
+                    '    ' Update file name
+                    '    strFileName = dlg.ImportedFileName
+                    '    ' Report succes
+                    '    bSucces = True
+                    'Else
+                    '    bSucces = False
+                    'End If
                 Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
                     Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW)
                     bSucces = False
