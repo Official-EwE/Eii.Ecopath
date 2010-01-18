@@ -221,7 +221,7 @@ Namespace Import
 
             If (db IsNot Nothing) Then
                 db.Open(strModel)
-                If Me.m_dbImp.Import(setting.ModelInfo.Name, db, strLogFileName) Then
+                If Me.m_dbImp.Import(setting.ModelInfo.ID, db, strLogFileName) Then
                     Me.m_strFileName = strModel
                     bSucces = True
                 End If

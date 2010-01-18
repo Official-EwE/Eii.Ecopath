@@ -327,6 +327,9 @@ Public Class AppLauncher
                 End If
         End Select
 
+        ' Abort if no new file name given
+        If String.IsNullOrEmpty(strFileName) Then Return True
+
         ' Create datasource on the selected file
         ds = cDataSourceFactory.Create(strFileName)
 
@@ -1369,75 +1372,23 @@ Public Class AppLauncher
 
                 Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
                     AddRecentFilesSetting(strFileName)
-                    Dim dcw As New DatabaseConversionWizard(strFileName, db, Me.m_core)
-                    If (dcw.ShowDialog(Me) = Windows.Forms.DialogResult.OK) Then
+
+                    Dim dlg As New Import.dlgImportDatabase(Me.m_core, db)
+                    If dlg.ShowDialog(Me) = DialogResult.OK Then
                         ' Update file name
-                        strFileName = dcw.ImportedFileName
+                        strFileName = dlg.ImportedFileName
                         ' Report succes
                         bSucces = True
                     Else
                         bSucces = False
                     End If
-                    'Dim dlg As New Import.dlgImportDatabase(Me.m_core, db)
-                    'If dlg.ShowDialog(Me) = DialogResult.OK Then
-                    '    ' Update file name
-                    '    strFileName = dlg.ImportedFileName
-                    '    ' Report succes
-                    '    bSucces = True
-                    'Else
-                    '    bSucces = False
-                    'End If
+
                 Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
                     Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW)
                     bSucces = False
 
                 Case cEwEDatabase.eCompatibilityTypes.EwE6
-
-                    ' EwE6 database upgrade logic moved to the core
-                    ' Backup logic moved to message handler
-
-                    'If Me.m_core.PluginManager IsNot Nothing Then
-
-                    '    ' Check if updates available
-                    '    If Me.m_core.PluginManager.HasDatabaseUpdates(db, 6.0) Then
-
-                    '        Select Case Me.AskFeedback(My.Resources.PROMPT_IMPORT_UPDATEBACKUP, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
-                    '            Case cFeedbackMessage.eReply.YES
-                    '                Try
-                    '                    Dim strDir As String = Path.GetDirectoryName(strFileName)
-                    '                    Dim strFile As String = Path.GetFileNameWithoutExtension(strFileName)
-                    '                    Dim strExt As String = Path.GetExtension(strFileName)
-
-                    '                    strFile = FileUtilities.ToValidFileName(String.Format("{0}_backup_{1}", strFile, Date.Now), False)
-
-                    '                    ' Create backup copy
-                    '                    File.Copy(strFileName, Path.Combine(strDir, strFile + strExt), True)
-                    '                Catch ex As Exception
-                    '                    Me.SendMessage(String.Format(My.Resources.PROMPT_BACKUPFAILED, strFileName, ex.Message))
-                    '                    Return False
-                    '                End Try
-                    '                ' Fall through
-
-                    '            Case cFeedbackMessage.eReply.NO
-                    '                ' Update existing copy
-                    '                ' Fall through 
-
-                    '            Case cFeedbackMessage.eReply.CANCEL
-                    '                ' Leave DB alone, don't open
-                    '                Return False
-
-                    '        End Select
-
-                    '        ' Run all available updates on the new EwE6 database
-                    '        Dim dbUpd As New cDatabaseUpdater(6.0)
-                    '        bSucces = dbUpd.UpdateDatabase(db, Me.m_core.PluginManager)
-                    '        dbUpd = Nothing
-
-                    '        If bSucces = False Then
-                    '            Me.SendMessage(String.Format("Failed to update database '{0}'. This database cannot be loaded safely", strFileName))
-                    '        End If
-                    '    End If
-                    'End If
+                    ' Moved to core
 
                 Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
                     Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE7_OR_NEWER)
