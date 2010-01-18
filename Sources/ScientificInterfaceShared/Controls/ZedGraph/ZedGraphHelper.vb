@@ -26,6 +26,7 @@ Namespace Controls
     ''' export.
     ''' </summary>
     ''' =======================================================================
+    <CLSCompliant(False)> _
     Public Class cZedGraphHelper
 
 #Region " Private vars "

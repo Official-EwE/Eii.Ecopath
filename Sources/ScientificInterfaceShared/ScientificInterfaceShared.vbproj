@@ -233,8 +233,14 @@
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Wizard\ucWizardTabControl.vb">
-      <SubType>Component</SubType>
+    <Compile Include="Controls\Wizard\cWizard.vb" />
+    <Compile Include="Controls\Wizard\Interfaces\IWizardNavigation.vb" />
+    <Compile Include="Controls\Wizard\Interfaces\IWizardPage.vb" />
+    <Compile Include="Controls\Wizard\ucWizardNavigation.Designer.vb">
+      <DependentUpon>ucWizardNavigation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Wizard\ucWizardNavigation.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ZedGraph\ZedGraphHelper.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphKiteDiagram.vb" />
@@ -329,6 +335,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.resx">
       <DependentUpon>ucTimeSeriesSketchPad.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Wizard\ucWizardNavigation.resx">
+      <DependentUpon>ucWizardNavigation.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

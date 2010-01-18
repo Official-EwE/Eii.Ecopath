@@ -19,6 +19,7 @@ Namespace Controls.EwEGrid
     ''' EwERowHeaderCell implements a EwERowHeaderCell to implement row headers. 
     ''' </summary>
     ''' -----------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public Class EwERowHeaderCell
         : Inherits EwEHeaderCell
 

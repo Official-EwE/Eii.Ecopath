@@ -338,4 +338,10 @@
   <data name="MENU_SHOW_LEGEND" xml:space="preserve">
     <value>&amp;Show legend</value>
   </data>
+  <data name="BUTTON_CANCEL" xml:space="preserve">
+    <value>&amp;Cancel</value>
+  </data>
+  <data name="BUTTON_CLOSE" xml:space="preserve">
+    <value>&amp;Close</value>
+  </data>
 </root>

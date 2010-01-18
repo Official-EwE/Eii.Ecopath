@@ -20,6 +20,7 @@ Namespace Controls.EwEGrid
     ''' header cells in <see cref="EwEGrid">EwE grids</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public MustInherit Class PropertyHeaderCell
         : Inherits PropertyCell
 

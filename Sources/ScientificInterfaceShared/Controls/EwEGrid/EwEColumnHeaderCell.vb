@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: EwEColumnHeaderCell.vb,v $
-' Revision 1.2  2009/05/28 12:37:30  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/03/30 16:59:25  jeroens
-' Split
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -30,6 +19,7 @@ Namespace Controls.EwEGrid
     ''' EwEColumnHeader implements a column header with EwE style
     ''' </summary>
     ''' -----------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public Class EwEColumnHeaderCell
         : Inherits EwEHeaderCell
 

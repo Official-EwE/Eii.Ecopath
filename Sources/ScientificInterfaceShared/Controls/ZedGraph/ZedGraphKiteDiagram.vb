@@ -1,13 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: ZedGraphKiteDiagram.vb,v $
-' Revision 1.2  2009/04/04 22:49:03  jeroens
-' Assessed state of code, identified ToDo's
-' Cleaned-up code
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 
@@ -31,6 +22,7 @@ Namespace Controls
     ''' </list>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public Class ZedGraphKiteDiagram
 
         Private m_iNumScaleCircles As Integer = 3

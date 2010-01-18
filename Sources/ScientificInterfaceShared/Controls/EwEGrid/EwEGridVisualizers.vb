@@ -1,16 +1,4 @@
-'==============================================================================
-'
-' $Log: EwEGridVisualizers.vb,v $
-' Revision 1.3  2009/05/28 12:37:30  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.2  2008/10/08 23:57:25  jeroens
-' Fixed borderstyle on column header cells
-'
-' Revision 1.1  2008/09/26 07:31:15  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports System.Windows.Forms
@@ -20,6 +8,8 @@ Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells.Real
 Imports SourceGrid2.VisualModels
+
+#End Region ' Imports
 
 Namespace Controls.EwEGrid
 
@@ -31,6 +21,7 @@ Namespace Controls.EwEGrid
     ''' colour feedback
     ''' </summary>
     ''' -------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public MustInherit Class EwECellVisualizerBase
         Inherits SourceGrid2.VisualModels.Common
 
@@ -242,6 +233,7 @@ Namespace Controls.EwEGrid
     ''' for rendering EwE property cells
     ''' </summary>
     ''' -------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public Class EwECellVisualizer
         : Inherits EwECellVisualizerBase
 
@@ -262,6 +254,7 @@ Namespace Controls.EwEGrid
     ''' for rendering EwE row header cells
     ''' </summary>
     ''' -------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public Class cVisualizerEwERowHeader
         : Inherits EwECellVisualizerBase
 
@@ -273,6 +266,7 @@ Namespace Controls.EwEGrid
 
     End Class
 
+    <CLSCompliant(False)> _
     Public Class EwERowIndexVisualizer
         : Inherits EwECellVisualizerBase
 
@@ -290,6 +284,7 @@ Namespace Controls.EwEGrid
     ''' for rendering EwE column header cells
     ''' </summary>
     ''' -------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public Class EwEColumnHeaderVisualizer
         : Inherits SourceGrid2.VisualModels.Header
 

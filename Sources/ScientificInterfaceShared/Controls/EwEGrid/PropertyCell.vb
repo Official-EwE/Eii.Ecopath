@@ -19,6 +19,7 @@ Namespace Controls.EwEGrid
     ''' A standard EwE grid cell for <see cref="cProperty">cProperty</see>-driven values.
     ''' </summary>
     ''' -------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public Class PropertyCell
         : Inherits EwECellBase
 

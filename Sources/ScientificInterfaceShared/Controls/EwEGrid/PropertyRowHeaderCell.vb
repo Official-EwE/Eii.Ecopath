@@ -28,6 +28,7 @@ Namespace Controls.EwEGrid
     ''' that are updated whenever the system display units change.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public Class PropertyRowHeaderCell
         : Inherits PropertyHeaderCell
 

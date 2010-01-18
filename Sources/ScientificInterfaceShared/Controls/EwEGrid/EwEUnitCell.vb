@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: EwEUnitCell.vb,v $
-' Revision 1.2  2009/05/28 12:37:31  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/03/30 16:59:25  jeroens
-' Split
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -30,6 +19,7 @@ Namespace Controls.EwEGrid
     ''' UnitCell implements a cell that shows a dynamic unit string.
     ''' </summary>
     ''' -----------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public Class EwEUnitCell
         : Inherits EwECell
 

@@ -1,11 +1,3 @@
-'==============================================================================
-'
-' $Log: EwEGridCell.vb,v $
-' Revision 1.11  2009/03/30 17:09:25  jeroens
-' Split cells
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -27,6 +19,7 @@ Namespace Controls.EwEGrid
     ''' A standard EwE grid cell for static values.
     ''' </summary>
     ''' -------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public Class EwECell
         : Inherits EwECellBase
 

@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: EwECellBase.vb,v $
-' Revision 1.2  2009/05/28 12:37:29  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/03/30 16:59:24  jeroens
-' Split
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -31,6 +20,7 @@ Namespace Controls.EwEGrid
     ''' feedback.
     ''' </summary>
     ''' -------------------------------------------------------------------
+    <CLSCompliant(False)> _
     Public MustInherit Class EwECellBase
         Inherits Cell
         Implements IDisposable
