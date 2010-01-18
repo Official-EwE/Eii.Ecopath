@@ -1018,7 +1018,11 @@ Namespace Database
             drow("LastSaved") = Me.ExtractLastSavedJulianDate(CStr(Me.FixValue(reader, "remarks", "")))
 
             ' ToDo_JS: ImportModels - check if bWithSeason is relevant in EwE6
-            bWithSeason = CBool(reader("WithSeason"))
+            Try
+                bWithSeason = CBool(reader("WithSeason"))
+            Catch ex As Exception
+                bWithSeason = False
+            End Try
             drow("WithSeason") = bWithSeason
 
             If (bWithSeason) Then
@@ -1049,7 +1053,13 @@ Namespace Database
             writer.AddRow(drow)
             writer.Commit()
 
-            Me.AddRemark(reader("remarksCyclePath"), eDataTypes.EwEModel, CInt(drow("ModelID")), eVarNameFlags.CyclePath)
+            Try
+                Me.AddRemark(reader("remarksCyclePath"), eDataTypes.EwEModel, CInt(drow("ModelID")), eVarNameFlags.CyclePath)
+            Catch ex As InvalidOperationException
+                ' NOP
+            Catch ex As Exception
+
+            End Try
 
             ' JS 061221: References do not need to be imported for now
             ' ImportRefCode("RefCode", "quickRef")
