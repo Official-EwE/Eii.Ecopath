@@ -3,7 +3,6 @@
 Option Strict On
 Imports System.IO
 Imports System.Text
-Imports System.Xml
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
