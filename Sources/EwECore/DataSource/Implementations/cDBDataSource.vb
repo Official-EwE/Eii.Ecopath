@@ -2890,6 +2890,8 @@ Public Class cDBDataSource
         ecosimDS.RedimVars()
         ecosimDS.SetDefaultParameters()
 
+        Me.m_core.m_QuotaData.RedimVars()
+
         reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenario WHERE (ScenarioID={0})", iDBID))
         Try
             ' Read the one record
@@ -3472,6 +3474,7 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim quoataDS As cQuotaDataStructures = Me.m_core.m_QuotaData
         Dim reader As IDataReader = Nothing
         Dim bSucces As Boolean = True
         Dim i As Integer = 0
@@ -3510,6 +3513,9 @@ Public Class cDBDataSource
                 ecosimDS.TempOpt(i) = CSng(Me.ReadSafe(reader, "TempOpt", 10.0!))
                 ecosimDS.TempLeft(i) = CSng(Me.ReadSafe(reader, "TempLeft", 1000.0!))
                 ecosimDS.TempRight(i) = CSng(Me.ReadSafe(reader, "TempRight", 1000.0!))
+                quoataDS.Blim(i) = CSng(Me.ReadSafe(reader, "Blim", -9999))
+                quoataDS.Bbase(i) = CSng(Me.ReadSafe(reader, "Bbase", -9999))
+                quoataDS.Fopt(i) = CSng(Me.ReadSafe(reader, "Fopt", -9999))
 
                 bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), i)
 
@@ -3529,6 +3535,7 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
         Dim reader As IDataReader = Nothing
         Dim iFleetID As Integer = -1
         Dim iShapeID As Integer = -1
@@ -3568,8 +3575,8 @@ Public Class cDBDataSource
             End If
 
             Try
-                ecosimDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
-                ecosimDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
+                quotaDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
+                quotaDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
                 ecosimDS.Epower(iFleet) = CSng(Me.ReadSafe(reader, "Epower", 3))
                 ecosimDS.PcapBase(iFleet) = CSng(Me.ReadSafe(reader, "PCapBase", 0.5))
                 ecosimDS.CapDepreciate(iFleet) = CSng(Me.ReadSafe(reader, "CapDepreciate", 0.06))
@@ -3613,6 +3620,7 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
         Dim reader As IDataReader = Nothing
         Dim iFleetID As Integer = -1
         Dim iFleet As Integer = -1
@@ -3631,7 +3639,7 @@ Public Class cDBDataSource
                 iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
 
                 If (iFleet > 0) And (iGroup > 0) Then
-                    ecosimDS.Quota(iFleet, iGroup) = CSng(reader("Quota"))
+                    quotaDS.Quota(iFleet, iGroup) = CSng(reader("Quota"))
                 End If
             End While
 
@@ -3652,6 +3660,7 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
@@ -3660,8 +3669,20 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
         Dim objKeys() As Object = {Nothing, Nothing}
 
+        Dim iActiveEcosimScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim bDuplicating As Boolean = (idm.GetID(eDataTypes.EcoSimScenario, iActiveEcosimScenarioID) <> iActiveEcosimScenarioID)
+        Dim iNextShapeID As Integer = 0
+        Dim iShapeID As Integer = 0
+
         ' Obtain mapped scenario ID
         iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+
+        ' Get next available shape ID
+        Try
+            iNextShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
+        Catch ex As Exception
+            iNextShapeID = 1
+        End Try
 
         ' JS 10aug07: First try to repair Ecosim groups
         For i As Integer = 1 To ecosimDS.nGroups
@@ -3706,13 +3727,24 @@ Public Class cDBDataSource
                 drow("QmQo") = ecosimDS.QmQo(i)
                 drow("CmCo") = ecosimDS.CmCo(i)
                 drow("SwitchPower") = ecosimDS.SwitchPower(i)
-                drow("FishMortShapeID") = ecosimDS.GroupFishRateNoDBID(i)
+
+                ' JS 01Jan09: mort shapes unique per scenario
+                If bDuplicating Then
+                    idm.Add(eDataTypes.FishMort, ecosimDS.GroupFishRateNoDBID(i), iNextShapeID)
+                    iNextShapeID += 1
+                End If
+                drow("FishMortShapeID") = idm.GetID(eDataTypes.FishMort, ecosimDS.GroupFishRateNoDBID(i))
+
                 drow("SalOpt") = ecosimDS.SalOpt(i)
                 drow("SdSalLeft") = ecosimDS.SdSalLeft(i)
                 drow("SdSalRight") = ecosimDS.SdSalRight(i)
                 drow("TempOpt") = ecosimDS.TempOpt(i)
                 drow("TempLeft") = ecosimDS.TempLeft(i)
                 drow("TempRight") = ecosimDS.TempRight(i)
+                drow("Blim") = quotaDS.Blim(i)
+                drow("Bbase") = quotaDS.Bbase(i)
+                drow("Fopt") = quotaDS.Fopt(i)
+                'drow("Kalwt") = ... MSE
 
                 drow.EndEdit()
 
@@ -3731,6 +3763,7 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
@@ -3739,8 +3772,20 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
         Dim objKeys() As Object = {Nothing, Nothing}
 
+        Dim iActiveEcosimScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim bDuplicating As Boolean = (idm.GetID(eDataTypes.EcoSimScenario, iActiveEcosimScenarioID) <> iActiveEcosimScenarioID)
+        Dim iNextShapeID As Integer = 0
+        Dim iShapeID As Integer = 0
+
         ' Obtain mapped scenario ID
         iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+
+        ' Get next available shape ID
+        Try
+            iNextShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
+        Catch ex As Exception
+            iNextShapeID = 1
+        End Try
 
         objKeys(0) = iScenarioID
 
@@ -3765,10 +3810,15 @@ Public Class cDBDataSource
                     drow.BeginEdit()
                 End If
 
+                If bDuplicating Then
+                    idm.Add(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(iFleet), iNextShapeID)
+                    iNextShapeID += 1
+                End If
+
                 ' Write dynamic bit
                 drow("FishRateShapeID") = idm.GetID(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(iFleet))
-                drow("MaxEffort") = ecosimDS.MaxEffort(iFleet)
-                drow("QuotaType") = CInt(ecosimDS.QuotaType(iFleet))
+                drow("MaxEffort") = quotaDS.MaxEffort(iFleet)
+                drow("QuotaType") = CInt(quotaDS.QuotaType(iFleet))
                 drow("Epower") = ecosimDS.Epower(iFleet)
                 drow("PCapBase") = ecosimDS.PcapBase(iFleet)
                 drow("CapDepreciate") = ecosimDS.CapDepreciate(iFleet)
@@ -3798,6 +3848,7 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim strSQL As String = ""
@@ -3821,7 +3872,7 @@ Public Class cDBDataSource
                     drow("FleetID") = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
                     drow("EcosimGroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
                     ' Write dynamic bit
-                    drow("Quota") = ecosimDS.Quota(iFleet, iGroup)
+                    drow("Quota") = quotaDS.Quota(iFleet, iGroup)
                     ' Add new row to the writer
                     writer.AddRow(drow)
                 Next iGroup
@@ -4367,6 +4418,7 @@ Public Class cDBDataSource
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim iShape As Integer = 0
+        Dim iShapeID As Integer = 0
         Dim drow As DataRow = Nothing
         Dim bNewRow As Boolean = False
         Dim bSucces As Boolean = True
@@ -4433,15 +4485,17 @@ Public Class cDBDataSource
                 End If
             Next iShape
 
+            ' JS 01Jan10: duplicate effort shapes if duplicating a scenario
             For iShape = 1 To ecosimDS.FishRateGearDBID.Length - 1
-                If (ecosimDS.FishRateGearDBID(iShape) > 0) Then
+                iShapeID = idm.GetID(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(iShape))
+                If (iShapeID > 0) Then
 
-                    drow = dt.Rows.Find(ecosimDS.FishRateGearDBID(iShape))
+                    drow = dt.Rows.Find(iShapeID)
                     bNewRow = (drow Is Nothing)
 
                     If bNewRow Then
                         drow = writer.NewRow()
-                        drow("ShapeID") = ecosimDS.FishRateGearDBID(iShape)
+                        drow("ShapeID") = iShapeID
                     Else
                         drow.BeginEdit()
                     End If
@@ -4454,19 +4508,21 @@ Public Class cDBDataSource
                     Else
                         drow.EndEdit()
                     End If
-                    bSucces = bSucces And Me.SaveFishingRateShape(iShape)
+                    bSucces = bSucces And Me.SaveFishingRateShape(iShape, idm)
                 End If
             Next iShape
 
+            ' JS 01Jan10: duplicate mortality shapes if duplicating a scenario
             For iShape = 1 To ecosimDS.FishRateNoDBID.Length - 1
-                If (ecosimDS.FishRateNoDBID(iShape) > 0) Then
+                iShapeID = idm.GetID(eDataTypes.FishMort, ecosimDS.FishRateNoDBID(iShape))
+                If (iShapeID > 0) Then
 
-                    drow = dt.Rows.Find(ecosimDS.FishRateNoDBID(iShape))
+                    drow = dt.Rows.Find(iShapeID)
                     bNewRow = (drow Is Nothing)
 
                     If bNewRow Then
                         drow = writer.NewRow()
-                        drow("ShapeID") = ecosimDS.FishRateNoDBID(iShape)
+                        drow("ShapeID") = iShapeID
                     Else
                         drow.BeginEdit()
                     End If
@@ -4479,7 +4535,7 @@ Public Class cDBDataSource
                     Else
                         drow.EndEdit()
                     End If
-                    bSucces = bSucces And Me.SaveFishMortShape(iShape)
+                    bSucces = bSucces And Me.SaveFishMortShape(iShape, idm)
                 End If
             Next iShape
 
@@ -4869,10 +4925,10 @@ Public Class cDBDataSource
         Return bSucces
     End Function
 
-    Private Function SaveFishingRateShape(ByVal iShape As Integer) As Boolean
+    Private Function SaveFishingRateShape(ByVal iShape As Integer, ByVal idm As cIDMappings) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim iDBID As Integer = ecosimDS.FishRateGearDBID(iShape)
+        Dim iDBID As Integer = idm.GetID(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(iShape))
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim sbZScale As New Text.StringBuilder()
@@ -4917,10 +4973,10 @@ Public Class cDBDataSource
 
     End Function
 
-    Private Function SaveFishMortShape(ByVal iShape As Integer) As Boolean
+    Private Function SaveFishMortShape(ByVal iShape As Integer, ByVal idm As cIDMappings) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim iDBID As Integer = ecosimDS.FishRateNoDBID(iShape)
+        Dim iDBID As Integer = idm.GetID(eDataTypes.FishMort, ecosimDS.FishRateNoDBID(iShape))
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim sbZScale As New Text.StringBuilder()
@@ -5993,7 +6049,6 @@ Public Class cDBDataSource
         Dim iScenario As Integer = ecopathDS.ActiveEcospaceScenario
         Dim iScenarioID As Integer = 0
         Dim bSucces As Boolean = True
-        Dim bDuplicating As Boolean = False
 
         iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(iScenario))
 

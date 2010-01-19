@@ -30,16 +30,15 @@ Imports EwECore.SearchObjectives
 Imports ScientificInterface.Controls
 Imports EwEUtils.Core
 Imports ScientificInterface.Ecosim
-
+Imports EwEUtils.Commands
 Imports ZedGraph
 
 #End Region
 
+
 Public Class frmMSE
 
-    'ToDo_jb frmMSE Add group selecting to the graphs to hide and display graphs
-    'ToDo_jb frmMSE Improve the MSE state change code to Enable and Disable controlls based on the MSE state
-    'ToDo_jb frmMSE output performance grid needs debugging the values look wrong
+    'ToDo_jb 15-Jan-2010 MSE looks like the min and max are wrong
 
 #Region "Private Enum definitions"
 
@@ -62,20 +61,23 @@ Public Class frmMSE
 
     Private m_fpNTrials As cPropertyFormatProvider
     Private m_fpUsePlugin As cPropertyFormatProvider
+    Private m_fpSave As cPropertyFormatProvider
 
     Private m_fpKalman As cPropertyFormatProvider
     Private m_fpForecast As cPropertyFormatProvider
     Private m_fpSBPower As cPropertyFormatProvider
 
+    Private m_fpUseQuotaRegs As cPropertyFormatProvider
 
     Private m_paneMaster As MasterPane = Nothing
     Private m_sg As cStyleGuide = Nothing
     Private m_zgh As cZedGraphHelper = Nothing
+    Private m_curState As eMSEStates
 
-    Private m_gridObjectiveWeights As gridSearchObjectivesWeight
-    Private m_gridGroupObjectives As gridSearchObjectivesGroup
+    Private m_dctEffortControls As Dictionary(Of eMSEEffortMode, RadioButton)
 
-
+    Private m_plotter As cMSEPlotter
+    Private m_coreMessage As cMSEEventSource
 
 #End Region
 
@@ -92,19 +94,28 @@ Public Class frmMSE
 
         Me.m_fpNTrials = New cPropertyFormatProvider(Me.txNTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
         Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.ckPlugin, Me.m_MSE.ModelParameters, eVarNameFlags.MSEUseEconomicPlugin)
+        Me.m_fpSave = New cPropertyFormatProvider(Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
 
-        Me.m_fpKalman = New cPropertyFormatProvider(Me.txKalman, Me.m_MSE.ModelParameters, eVarNameFlags.MSEKalmanGain)
         Me.m_fpForecast = New cPropertyFormatProvider(Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
         Me.m_fpSBPower = New cPropertyFormatProvider(Me.txSBPower, Me.m_MSE.ModelParameters, eVarNameFlags.MSEAssessPower)
-
-        Me.m_gridObjectiveWeights = New gridSearchObjectivesWeight(Me.m_core.FishingPolicyManager)
-        Me.m_gridGroupObjectives = New gridSearchObjectivesGroup(Me.m_core.FishingPolicyManager)
+        Me.m_fpKalman = New cPropertyFormatProvider(Me.txKalmanGain, Me.m_MSE.ModelParameters, eVarNameFlags.MSEKalmanGain)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
 
+        m_coreMessage = New cMSEEventSource
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        ' Show/Hide Groups
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        If Not Object.ReferenceEquals(cmd, Nothing) Then
+            cmd.RemoveControl(Me.btShowHide)
+        End If
+
+        RemoveHandler cmd.OnInvoke, AddressOf Me.OnShowHideGroups
+        RemoveHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
 
         Me.CoreComponents = Nothing
         Me.m_MSE.Disconnect()
@@ -114,25 +125,71 @@ Public Class frmMSE
 
     Private Sub OnfrmMSELoad(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+        m_sg = cStyleGuide.GetInstance()
+
         'Assessment methods Catch Estimated Biomass and Direct Exploitation are stored in the tag property of the radio buttons
         'see the Changed event of the radio buttons for setting the parameters
         Me.rbCatchEstBio.Tag = eAssessmentMethods.CatchEstmBio
         Me.rbDirectExp.Tag = eAssessmentMethods.DirectExploitation
+        Me.rbExact.Tag = eAssessmentMethods.Exact
+
+        Me.rbFTracking.Tag = eMSEEffortMode.Tracking
+        Me.rbPredictEffort.Tag = eMSEEffortMode.PredictUseQuota
+        Me.rbTrackUseQuota.Tag = eMSEEffortMode.TrackUseQuota
+
+        m_dctEffortControls = New Dictionary(Of eMSEEffortMode, RadioButton)
+        m_dctEffortControls.Add(eMSEEffortMode.Tracking, Me.rbFTracking)
+        m_dctEffortControls.Add(eMSEEffortMode.PredictUseQuota, Me.rbPredictEffort)
+        m_dctEffortControls.Add(eMSEEffortMode.TrackUseQuota, Me.rbTrackUseQuota)
+
+        ' Display Groups
+        Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        If Not Object.ReferenceEquals(cmd, Nothing) Then
+            cmd.AddControl(Me.btShowHide)
+        End If
+
+        AddHandler cmd.OnInvoke, AddressOf Me.OnShowHideGroups
+        AddHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
 
         Me.m_paneMaster = Me.zdGraph.MasterPane
         Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.m_core, Me.zdGraph, Me.m_core.nLivingGroups)
 
-        Me.tbObjectives.TabPages("pgObjective").Controls.Add(Me.m_gridObjectiveWeights)
-        Me.m_gridObjectiveWeights.Dock = DockStyle.Fill
+        Me.m_plotter = New cMSEPlotter
 
-        Me.tbObjectives.TabPages("pgEcoObjectives").Controls.Add(Me.m_gridGroupObjectives)
-        Me.m_gridGroupObjectives.Dock = DockStyle.Fill
+        Me.m_plotter.Init(Me.m_core, Me.m_MSE, Me.m_zgh, Me.zdGraph, Me.m_sg)
+        Me.m_plotter.PlotType = ePlotTypes.Line
+        Me.m_plotter.DataType = ePlotData.Biomass
 
-        Me.LoadGraphPanes()
+        Me.UpdateSelectedEffortMode()
 
         Me.UpdateControls(eMSEStates.InActive)
 
+        Me.initGraphs()
+
+    End Sub
+
+    Private Sub OnShowHideGroups(ByVal cmd As cCommand)
+
+        'Just clear the graphs and add the reference lines
+        'there is no interation data available for the graph
+        'that has to be added via AddLineToGraph()
+        Me.m_plotter.Clear()
+        '  Me.AddRefToGraph()
+        'Me.m_plotter.Draw()
+
+    End Sub
+
+    ''' <summary>
+    ''' Reference levels have changed! For now just redraw the graphs
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub onRefLevelsChanged()
+        Try
+            'this still needs sorting out
+            Me.m_plotter.AddReference()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 #End Region
@@ -141,6 +198,7 @@ Public Class frmMSE
 
     Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
 
+        Me.m_coreMessage.HandleCoreMessage(msg)
 
     End Sub
 
@@ -152,18 +210,20 @@ Public Class frmMSE
 
         Try
 
-            Me.m_MSE.Connect(AddressOf Me.onMSECallBack)
+            Me.m_MSE.Connect(AddressOf Me.onMSECallBack, Nothing)
+
+            Me.m_MSE.ValidateRun()
 
             Me.prgProgress.Maximum = Me.m_MSE.ModelParameters.NTrials
             Me.prgProgress.Value = 0
-            Me.ClearGraphs()
+            'init the graphs for a new run
+            Me.m_plotter.Clear()
 
             Me.m_MSE.Run()
 
         Catch ex As Exception
 
         End Try
-
 
     End Sub
 
@@ -186,13 +246,13 @@ Public Class frmMSE
             Case eCallBackTypes.IterationStarted
                 state = eMSEStates.Running
 
-
             Case eCallBackTypes.IterationCompleted
                 Me.onMSEProgress()
                 Me.AddLineToGraph()
                 state = eMSEStates.Running
 
             Case eCallBackTypes.RunCompleted
+                Me.AddMeanLineToGraph()
                 Me.onMSECompleted()
                 state = eMSEStates.Completed
 
@@ -203,8 +263,6 @@ Public Class frmMSE
     End Sub
 
     Private Sub onMSEProgress()
-
-
         Try
             Me.prgProgress.Value = Me.m_MSE.Output.TrialNumber
         Catch ex As Exception
@@ -212,10 +270,30 @@ Public Class frmMSE
         End Try
     End Sub
 
-
 #End Region
 
 #Region "Interface events"
+
+    Private Sub rbFTracking_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFTracking.CheckedChanged, rbPredictEffort.CheckedChanged, rbTrackUseQuota.CheckedChanged
+
+        If Me.m_MSE Is Nothing Then Exit Sub
+
+        Try
+            Dim rb As RadioButton = DirectCast(sender, RadioButton)
+            If rb.Checked = True Then
+                Dim EffortMode As eMSEEffortMode = DirectCast(rb.Tag, eMSEEffortMode)
+                Me.m_MSE.ModelParameters.EffortMode = EffortMode
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, "Exception setting MSE Effort Mode. " & ex.Message)
+        End Try
+
+        Me.UpdateControls(Me.m_curState)
+        Me.Refresh()
+
+    End Sub
+
 
     Private Sub onRunClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles btRun.Click
 
@@ -234,8 +312,11 @@ Public Class frmMSE
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub onAssessmentMethodChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbCatchEstBio.CheckedChanged, rbDirectExp.CheckedChanged
+    Private Sub onAssessmentMethodChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbCatchEstBio.CheckedChanged, rbDirectExp.CheckedChanged, rbExact.CheckedChanged
         Try
+
+            If Me.m_MSE Is Nothing Then Exit Sub
+
             Debug.Assert(TypeOf sender Is RadioButton)
             Dim rb As RadioButton = DirectCast(sender, RadioButton)
             'This event handler is call for both radio buttons Changed events Checked and UnChecked
@@ -249,107 +330,122 @@ Public Class frmMSE
 
     End Sub
 
+
+    Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btStop.Click
+        Me.m_MSE.ModelParameters.StopRun = True
+    End Sub
+
 #End Region
 
-#Region "Interface"
+#Region "Interface objects"
 
 #Region "Graphs"
 
-    'xxxxxxxxxxxxxxxxxxxxxxxx
-    'Graph plotting code was copied from EcosimPlots
-    'xxxxxxxxxxxxxxxxxxxxxx
-
-    Private Sub LoadGraphPanes()
-
-        For igrp As Integer = 1 To Me.m_core.nLivingGroups
-            Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(igrp)
-            Me.ConfigurePane(igrp, grp.Name)
-        Next
-
-    End Sub
-
-
-    Private Sub ClearGraphs()
-        For Each Pane As GraphPane In zdGraph.MasterPane.PaneList
-            Pane.CurveList.Clear()
-        Next
-    End Sub
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Configure a plot on the main graph
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Private Sub ConfigurePane(ByVal iPane As Integer, ByVal strTitle As String)
-
-        Me.m_zgh.ConfigurePane(strTitle, "", CDbl(Me.m_core.EcosimFirstYear), CDbl(Me.m_core.EcosimFirstYear + (m_core.nEcosimTimeSteps / cCore.N_MONTHS)), _
-                   "", 0, 0, False, LegendPos.Top, iPane)
-
-    End Sub
-
-
     Private Sub AddLineToGraph()
-
         Try
-
-            Dim dx As Double
-            Dim igrp As Integer
+            Dim lstData As New List(Of cCoreGroupBase)
             For Each grp As cMSEGroupOutput In Me.m_MSE.GroupOutputs
-                igrp += 1
-                If igrp > Me.m_core.nLivingGroups Then Exit For
-
-                Dim ppl As New PointPairList
-                For iTime As Integer = 1 To m_core.nEcosimTimeSteps
-                    dx = Me.m_core.EcosimFirstYear + (iTime / cCore.N_MONTHS)
-                    ppl.Add(dx, grp.Biomass(iTime))
-                Next
-
-                Me.AddCurveToGraphPane(igrp, Me.m_zgh.CreateLineItem(cZedGraphHelper.eCurveTypes.EcosimOutput, igrp, ppl), False)
-
+                If Me.m_sg.GroupVisible(grp.Index) Then
+                    lstData.Add(grp)
+                End If
             Next
 
+            Me.m_plotter.AddData(lstData)
+            Me.m_plotter.Draw()
+
         Catch ex As Exception
-            System.Console.WriteLine(Me.ToString & ".PopulateGraphs() Error: " & ex.Message)
+            System.Console.WriteLine(Me.ToString & ".AddLineToGraph() Error: " & ex.Message)
         End Try
+    End Sub
 
+    Private Sub AddMeanLineToGraph()
+        Try
+
+            Me.m_plotter.AddMean()
+            Me.m_plotter.Draw()
+
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString & ".AddMeanLineToGraph() Error: " & ex.Message)
+        End Try
     End Sub
 
 
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Add one curve into the graph pane
-    ''' </summary>
-    Private Sub AddCurveToGraphPane(ByVal PaneIndex As Integer, ByVal li As LineItem, _
-                                    Optional ByVal bClearExistingCurves As Boolean = True)
+    Private Function nVisGroups() As Integer
+        Dim n As Integer
+        For igrp As Integer = 1 To Me.m_core.nGroups
+            If Me.m_sg.GroupVisible(igrp) Then
+                n += 1
+            End If
+        Next
+        Return n
+    End Function
 
-        Dim lli As New List(Of ZedGraph.LineItem)
-        lli.Add(li)
-
-        Me.m_zgh.PlotLines(lli, PaneIndex, True, bClearExistingCurves)
-
+    Private Sub initGraphs()
+        Me.m_plotter.Clear()
+        Me.m_plotter.Draw()
     End Sub
-
-
 
 #End Region
 
 #Region "Controls"
 
+
+    Private Sub UpdateSelectedEffortMode()
+
+        Try
+            m_dctEffortControls.Item(Me.m_MSE.ModelParameters.EffortMode).Checked = True
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
     Private Sub UpdateControls(ByVal State As eMSEStates)
 
-        Select Case State
+        Try
 
-            Case eMSEStates.InActive
-                Me.btRun.Enabled = True
+            Select Case State
 
-            Case eMSEStates.Running
-                Me.btRun.Enabled = False
+                Case eMSEStates.InActive
+                    Me.btRun.Enabled = True
+                    Me.btStop.Enabled = False
+                    Me.btShowHide.Enabled = True
+                    Me.pnlFTracking.Enabled = True
+                    Me.pnlRunOpt.Enabled = True
+                    Me.pnlRegOpt.Enabled = True
 
-            Case eMSEStates.Completed
-                Me.btRun.Enabled = True
+                Case eMSEStates.Running
+                    Me.btRun.Enabled = False
+                    Me.btStop.Enabled = True
+                    Me.btShowHide.Enabled = False
+                    Me.pnlFTracking.Enabled = False
+                    Me.pnlRunOpt.Enabled = False
+                    Me.pnlFTracking.Enabled = False
+                    Me.pnlRegOpt.Enabled = False
 
-        End Select
+                Case eMSEStates.Completed
+                    Me.btRun.Enabled = True
+                    Me.btStop.Enabled = False
+                    Me.btShowHide.Enabled = True
+                    Me.pnlRunOpt.Enabled = True
+                    Me.pnlRegOpt.Enabled = True
+
+            End Select
+
+            If State <> eMSEStates.Running Then
+                If Me.m_MSE.ModelParameters.EffortMode = eMSEEffortMode.Tracking Then
+                    Me.pnlFTracking.Enabled = True
+                Else
+                    Me.pnlFTracking.Enabled = False
+                End If
+            End If
+
+            m_curState = State
+
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString & ".UpdateControls(): " & ex.Message)
+        End Try
 
     End Sub
 
@@ -358,3 +454,4 @@ Public Class frmMSE
 #End Region
 
 End Class
+

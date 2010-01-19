@@ -56,7 +56,6 @@ Namespace Ecosim
         Private m_fpSalinityForceNumber As cEwEFormatProvider = Nothing
         Private m_fpTempForceNumber As cEwEFormatProvider = Nothing
         Private m_fpPredictEffort As cEwEFormatProvider = Nothing
-        Private m_fpRegulatoryFeedback As cEwEFormatProvider = Nothing
         Private m_fpRelaxation As cEwEFormatProvider = Nothing
         Private m_fpUseVarPQ As cEwEFormatProvider = Nothing
 
@@ -96,7 +95,6 @@ Namespace Ecosim
             Me.m_fpSalinityForceNumber = New cPropertyFormatProvider(Me.cmbSalinityForcing, ecosimModelParams, eVarNameFlags.SalinityForceFunctionNumber)
             Me.m_fpTempForceNumber = New cPropertyFormatProvider(Me.cmbTempLoading, ecosimModelParams, eVarNameFlags.TemperatureForceFunctionNumber)
             Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.chkPredictEffort, ecosimModelParams, eVarNameFlags.PredictEffort)
-            Me.m_fpRegulatoryFeedback = New cPropertyFormatProvider(Me.chkRegulatoryFeedbackLoop, ecosimModelParams, eVarNameFlags.RegFeedback)
             Me.m_fpRelaxation = New cPropertyFormatProvider(Me.m_nudRelaxation, ecosimModelParams, eVarNameFlags.Relaxation)
             Me.m_fpUseVarPQ = New cPropertyFormatProvider(Me.m_chkUseVarPQ, ecosimModelParams, eVarNameFlags.UseVarPQ)
 
@@ -126,7 +124,7 @@ Namespace Ecosim
             Me.m_fpNutrientForceNumber.Release()
             Me.m_fpSalinityForceNumber.Release()
             Me.m_fpPredictEffort.Release()
-            Me.m_fpRegulatoryFeedback.Release()
+            '       Me.m_fpRegulatoryFeedback.Release()
             Me.m_fpRelaxation.Release()
             Me.m_fpUseVarPQ.Release()
             Me.m_fpTempForceNumber.Release()
@@ -146,7 +144,7 @@ Namespace Ecosim
 
         Dim m_bInUpdate As Boolean = False
 
-        Private Sub chkConTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkConTracing.Click, chkRegulatoryFeedbackLoop.Click, m_chkUseVarPQ.Click
+        Private Sub chkConTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkConTracing.Click, m_chkUseVarPQ.Click
 
             If m_bInUpdate = True Then Return
 
@@ -178,7 +176,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnPredictEffortChanged(ByVal p As cProperty, ByVal cf As cProperty.eChangeFlags)
-            Me.m_fpRegulatoryFeedback.Value = Me.m_fpPredictEffort.Value
+            '   Me.m_fpRegulatoryFeedback.Value = Me.m_fpPredictEffort.Value
             Me.UpdateControls()
         End Sub
 
@@ -240,9 +238,6 @@ Namespace Ecosim
 
             If (Me.m_propConTracing Is Nothing) Then Return
             Me.chkConTracing.Checked = CBool(Me.m_propConTracing.GetValue())
-
-            If (Me.m_fpPredictEffort Is Nothing) Or (Me.m_fpRegulatoryFeedback Is Nothing) Then Return
-            Me.m_fpRegulatoryFeedback.Enabled = CBool(Me.m_fpPredictEffort.Value)
 
         End Sub
 

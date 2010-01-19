@@ -46,6 +46,26 @@ Public Class cEcoSimGroupInput
                     End Select
                 End If
 
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Set Status Flags for vars that are only used if there is a catch
+                Dim tcatch As Single
+
+                For iflt As Integer = 1 To Me.m_core.nFleets
+                    Dim fleet As cFleetInput = Me.m_core.FleetInputs(iflt)
+                    tcatch += fleet.Landings(Me.Index) + fleet.Discards(Me.Index)
+                Next
+
+                If tcatch = 0.0! Then
+                    Me.SetStatusFlags(eVarNameFlags.MSEBBase, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                    Me.SetStatusFlags(eVarNameFlags.MSEBLim, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                    Me.SetStatusFlags(eVarNameFlags.MSEFmax, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Else
+                    Me.ClearStatusFlags(eVarNameFlags.MSEBBase, eStatusFlags.NotEditable)
+                    Me.ClearStatusFlags(eVarNameFlags.MSEBLim, eStatusFlags.NotEditable)
+                    Me.ClearStatusFlags(eVarNameFlags.MSEFmax, eStatusFlags.NotEditable)
+                End If
+
+
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return False
@@ -168,33 +188,22 @@ Public Class cEcoSimGroupInput
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
-            'Quota per species
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.QuotaSpecies, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaSpecies))
-            m_values.Add(val.varName, val)
+            ''Quota per species
+            'meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            'val = New cValue(New Single, eVarNameFlags.QuotaSpecies, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaSpecies))
+            'm_values.Add(val.varName, val)
             'bBase
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.BBase, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.BBase))
+            val = New cValue(New Single, eVarNameFlags.MSEBBase, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBBase))
             m_values.Add(val.varName, val)
             'bLim
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.BLim, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.BLim))
+            val = New cValue(New Single, eVarNameFlags.MSEBLim, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBLim))
             m_values.Add(val.varName, val)
             'FOpt
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.Fopt, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.Fopt))
+            val = New cValue(New Single, eVarNameFlags.MSEFmax, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFmax))
             m_values.Add(val.varName, val)
-
-            'CVBest
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.RegCVBest, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.RegCVBest))
-            m_values.Add(val.varName, val)
-
-            'Kalman Weight
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.RegKalWt, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.RegKalWt))
-            m_values.Add(val.varName, val)
-
 
             ''arrayed values
             'VulRate
@@ -333,101 +342,45 @@ Public Class cEcoSimGroupInput
         End Set
     End Property
 
-    Public Property TemperatureOpt() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.TemperatureOpt))
-        End Get
+    'Public Property Quota() As Single
+    '    Get
+    '        Return CSng(GetVariable(eVarNameFlags.QuotaSpecies))
+    '    End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.TemperatureOpt, value)
-        End Set
-    End Property
-
-    Public Property TemperatureSpreadLeft() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.TemperatureSpreadLeft))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.TemperatureSpreadLeft, value)
-        End Set
-    End Property
-
-
-    Public Property TemperatureSpreadRight() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.TemperatureSpreadRight))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.TemperatureSpreadRight, value)
-        End Set
-    End Property
-
-    Public Property Quota() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.QuotaSpecies))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.QuotaSpecies, value)
-        End Set
-    End Property
+    '    Set(ByVal value As Single)
+    '        SetVariable(eVarNameFlags.QuotaSpecies, value)
+    '    End Set
+    'End Property
 
     Public Property BLim() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.BLim))
+            Return CSng(GetVariable(eVarNameFlags.MSEBLim))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.BLim, value)
+            SetVariable(eVarNameFlags.MSEBLim, value)
         End Set
     End Property
 
     Public Property BBase() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.BBase))
+            Return CSng(GetVariable(eVarNameFlags.MSEBBase))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.BBase, value)
+            SetVariable(eVarNameFlags.MSEBBase, value)
         End Set
     End Property
 
     Public Property FOpt() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.Fopt))
+            Return CSng(GetVariable(eVarNameFlags.MSEFmax))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Fopt, value)
+            SetVariable(eVarNameFlags.MSEFmax, value)
         End Set
     End Property
-
-    Public Property RegCVBest() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.RegCVBest))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.RegCVBest, value)
-        End Set
-
-    End Property
-
-
-    Public Property RegKalWt() As Single
-
-        Get
-            Return CSng(GetVariable(eVarNameFlags.RegKalWt))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.RegKalWt, value)
-        End Set
-
-    End Property
-
 
 #Region "Indexed variables"
 
@@ -565,6 +518,39 @@ Public Class cEcoSimGroupInput
             SetStatus(eVarNameFlags.SalinitySpreadRight, value)
         End Set
     End Property
+
+
+    Public Property TemperatureOpt() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.TemperatureOpt))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.TemperatureOpt, value)
+        End Set
+    End Property
+
+    Public Property TemperatureSpreadLeft() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.TemperatureSpreadLeft))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.TemperatureSpreadLeft, value)
+        End Set
+    End Property
+
+
+    Public Property TemperatureSpreadRight() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.TemperatureSpreadRight))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.TemperatureSpreadRight, value)
+        End Set
+    End Property
+
 
     Public Property TemperatureOptStatus() As eStatusFlags
         Get

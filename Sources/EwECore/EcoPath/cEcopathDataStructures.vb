@@ -198,10 +198,14 @@ Public Class cEcopathDataStructures
     ''' <summary> cost(nFleets,3) '1 is fixed cost, 2 is cost per unit effort, 3 sailing cost </summary>
     Public cost(,) As Single
     Public CostPct(,) As Single
+
+    ''' <summary> discarded biomass by fleet group </summary>
     Public Discard(,) As Single
     Public DiscardFate(,) As Single
     Public FleetName() As String
     Friend FleetDBID() As Integer
+
+    ''' <summary> landings biomass by fleet group </summary>
     Public Landing(,) As Single
     Public Market(,) As Single
     Public PropDiscard(,) As Single

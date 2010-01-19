@@ -491,36 +491,26 @@ Public MustInherit Class cCoreInputOutputBase
             '               a value does not need re-validating.
             ' JS 10oct09: if the valueobject holds an ENUMERATED value the Equals logic fails.
             If Object.Equals(newValue, valueobject.Value(iSecondaryIndex)) Then
-                If (valueobject.Status(iSecondaryIndex) = eStatusFlags.OK) Then
-                    ' Report that variable has NOT been set.
-                    Return False
-                End If
+                ' Report that variable has NOT been set.
+                Return False
             End If
 
             'validate the variable by setting its value
             valueobject.Value(iSecondaryIndex) = newValue
             If valueobject.ValidationStatus = eStatusFlags.FailedValidation Then bSucces = False
 
-            If m_bValidate Then
+            If AllowValidation Then
 
                 ' Prepare status
                 m_ValidationStatus.Copy(valueobject)
                 m_ValidationStatus.iArrayIndex = iSecondaryIndex
 
-                '' Notify core, if provided
-                'If (Me.m_core IsNot Nothing) Then
-                '    Me.m_core.OnValidated(valueobject, Me)
-                'End If
-
-            End If
-
-            If AllowValidation Then
                 ' Notify core, if provided
                 If (Me.m_core IsNot Nothing) Then
                     Me.m_core.OnValidated(valueobject, Me)
                 End If
-            End If
 
+            End If
 
         Catch ex As KeyNotFoundException
             'this is most likely a programing error so assert and try to figure out why

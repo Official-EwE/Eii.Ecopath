@@ -1506,7 +1506,12 @@ endline:    ' '
             Dim epdata As cEcopathDataStructures = m_core.m_EcoPathData
 
             'exit if search is not over gear types
-            If n <> m_searchData.NumFleets Then Exit Sub
+            If n <> m_searchData.NumFleets Then
+                Me.m_core.Messages.SendMessage(New cMessage("This search method only allows you to search over all fleets. You must set the search blocks to one block per fleet.", _
+                                                    eMessageType.ErrorEncountered, eCoreComponentType.FishingPolicySearch, eMessageImportance.Warning))
+                Exit Sub
+            End If
+
             RelaxWt = 0.5
             GroMax = 0.3
             PropToPlaintiff = 0.0

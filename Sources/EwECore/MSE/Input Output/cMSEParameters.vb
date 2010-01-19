@@ -25,7 +25,7 @@ End Enum
 Public Class cMSEParameters
     Inherits cCoreInputOutputBase
 
-    'ToDo_jb cMSEParameters get the parameters from EwE5
+#Region "Construction"
 
     Public Sub New(ByRef theCore As cCore)
         MyBase.New(theCore)
@@ -78,7 +78,7 @@ Public Class cMSEParameters
         m_values.Add(val.varName, val)
 
         'nTrials
-        meta = New cVariableMetaData(1, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Integer, eVarNameFlags.MSENTrials, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSENTrials))
         val.Stored = False
         m_values.Add(val.varName, val)
@@ -88,10 +88,35 @@ Public Class cMSEParameters
         val.Stored = False
         m_values.Add(val.varName, val)
 
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.MSEPredictEffort, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEPredictEffort))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
+        'Effort Mode
+        meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eMSEEffortMode)).Length, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Integer, eVarNameFlags.MSEEffortMode, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEEffortMode))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.MSEStop, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEStop))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.MSESave, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSESave))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
         ResetStatusFlags()
         AllowValidation = True
 
     End Sub
+
+#End Region
+
+#Region "Public Properties"
 
     Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
         If Not MyBase.ResetStatusFlags(bForceReset) Then Return False
@@ -110,16 +135,6 @@ Public Class cMSEParameters
     End Property
 
 
-    Public Property KalmanGain() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.MSEKalmanGain))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.MSEKalmanGain, value)
-        End Set
-    End Property
-
     Public Property ForcastGain() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.MSEForcastGain))
@@ -127,6 +142,17 @@ Public Class cMSEParameters
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.MSEForcastGain, value)
+        End Set
+    End Property
+
+
+    Public Property KalmanGain() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.MSEKalmanGain))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.MSEKalmanGain, value)
         End Set
     End Property
 
@@ -151,24 +177,70 @@ Public Class cMSEParameters
         End Set
     End Property
 
-    Public Property AssessmentMethodStatus() As eStatusFlags
+
+
+    Public Property UseEconomicPlugin() As Boolean
         Get
-            Return GetStatus(eVarNameFlags.MSEAssessMethod)
+            Return CBool(GetVariable(eVarNameFlags.MSEUseEconomicPlugin))
         End Get
 
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MSEAssessMethod, value)
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.MSEUseEconomicPlugin, value)
+        End Set
+    End Property
+
+    Public Property StopRun() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.MSEStop))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.MSEStop, value)
         End Set
     End Property
 
 
-    Public Property KalmanGainStatus() As eStatusFlags
+    Public Property Save() As Boolean
         Get
-            Return GetStatus(eVarNameFlags.MSEKalmanGain)
+            Return CBool(GetVariable(eVarNameFlags.MSESave))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.MSESave, value)
+        End Set
+    End Property
+
+#End Region
+
+#Region "Status Properties"
+
+    Public Property EffortMode() As eMSEEffortMode
+        Get
+            Return DirectCast(GetVariable(eVarNameFlags.MSEEffortMode), eMSEEffortMode)
+        End Get
+
+        Set(ByVal value As eMSEEffortMode)
+            SetVariable(eVarNameFlags.MSEEffortMode, value)
+        End Set
+    End Property
+
+    Public Property StopRunStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.MSEUseEconomicPlugin)
         End Get
 
         Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MSEKalmanGain, value)
+            SetStatus(eVarNameFlags.MSEUseEconomicPlugin, value)
+        End Set
+    End Property
+
+    Public Property UseEconomicPluginStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.MSEUseEconomicPlugin)
+        End Get
+
+        Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.MSEUseEconomicPlugin, value)
         End Set
     End Property
 
@@ -202,28 +274,16 @@ Public Class cMSEParameters
         End Set
     End Property
 
-    Public Property UseEconomicPlugin() As Boolean
+    Public Property AssessmentMethodStatus() As eStatusFlags
         Get
-            Return CBool(GetVariable(eVarNameFlags.MSEUseEconomicPlugin))
-        End Get
-
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.MSEUseEconomicPlugin, value)
-        End Set
-    End Property
-
-
-
-    Public Property UseEconomicPluginStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.MSEUseEconomicPlugin)
+            Return GetStatus(eVarNameFlags.MSEAssessMethod)
         End Get
 
         Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MSEUseEconomicPlugin, value)
+            SetStatus(eVarNameFlags.MSEAssessMethod, value)
         End Set
     End Property
 
-
+#End Region
 
 End Class

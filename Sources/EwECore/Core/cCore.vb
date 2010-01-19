@@ -540,6 +540,7 @@ Public Class cCore
         Me.m_TSData = New cTimeSeriesDataStructures
         Me.m_MPAOptData = New cMPAOptDataStructures
         Me.m_PSDData = New cPSDDatastructures
+        Me.m_QuotaData = New cQuotaDataStructures(AddressOf Me.GetCoreCounter)
 
         ' Create core state monitor and manager
         Me.m_StateMonitor = New cCoreStateMonitor(Me)
@@ -2044,11 +2045,11 @@ Public Class cCore
     Friend m_EwEModelArea As Single = 0
     Friend m_EwEModelNumDigits As Integer = 0
     Friend m_EwEModelGroupDigits As Boolean = False
-    Friend m_EwEModelUnitTime As Integer = 0
+    Friend m_EwEModelUnitTime As eUnitTimeType = 0
     Friend m_EwEModelUnitTimeCustom As String = ""
     Friend m_EwEModelUnitCurrency As Integer = eUnitCurrencyType.NotSet
     Friend m_EwEModelUnitCurrencyCustom As String = ""
-    Friend m_EwEModelUnitMonetary As Integer = 0
+    Friend m_EwEModelUnitMonetary As eUnitMonetaryType = 0
     Friend m_EwEModelUnitMonetaryCustom As String = ""
     Friend m_EwEModelAuthor As String = ""
     Friend m_EwEModelContact As String = ""
@@ -4023,7 +4024,9 @@ Public Class cCore
         fleet.AllowValidation = False
 
         For iGroup As Integer = 1 To Me.nGroups
-            If (fleet.Discards(iGroup)) <= 0.0! Then
+            'jb 7-Jan-2010 changed to allow setting of discard mort on groups with landing as well
+            'MSE can discard excess catches so we need to be able to set DiscardMortality on landings
+            If (fleet.Discards(iGroup) + fleet.Landings(iGroup)) <= 0.0! Then
                 fleet.SetStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             Else
                 fleet.ClearStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
@@ -4447,6 +4450,8 @@ Public Class cCore
     'Delegate for Time-Step notification from the interface 
     Private m_InterfaceDelegate As Ecosim.EcoSimTimeStepDelegate
 
+    Friend m_QuotaData As cQuotaDataStructures
+
     ''thread that the EcoSim model is running on
     'Private m_EcoSimThread As System.Threading.Thread
 
@@ -4570,13 +4575,14 @@ Public Class cCore
 
             'set the output variables from EcoPath as the Input for EcoSim
             'this sets the baseline state for EcoSim as the last run EcoPath model
-            m_EcoSim.EcopathParameters = m_EcoPathData
-            m_EcoSim.m_Data = m_EcoSimData
-            m_EcoSim.m_stanza = m_Stanza
+            m_EcoSim.EcopathParameters = Me.m_EcoPathData
+            m_EcoSim.m_Data = Me.m_EcoSimData
+            m_EcoSim.m_stanza = Me.m_Stanza
+            m_EcoSim.TracerData = Me.m_tracerData
+            m_EcoSim.TimeSeriesData = Me.m_TSData
+            m_EcoSim.QuotaData = Me.m_QuotaData
 
-            m_EcoSim.TracerData = m_tracerData
-
-            m_EcoSim.TimeSeriesData = m_TSData
+            Me.m_EcosimOutputs = New cEcosimOutput(Me)
 
             'Build all the shape managers
             m_ShapeManagers = New Dictionary(Of eDataTypes, cBaseShapeManager)
@@ -4780,7 +4786,12 @@ Public Class cCore
             'set the default summary time periods
             m_EcoSimData.DefaultSummaryPeriods()
 
+            'Init PropLandedTime() and Propdiscardtime() to Ecopath values so they can be used during the initialization of Ecosim
+            m_QuotaData.InitToEcoPath(Me.m_EcoPathData)
+
             m_EcoSim.Init(True)
+
+            m_QuotaData.setDefaultRegValues(Me.m_EcoSimData, Me.m_EcoPathData)
 
             InitEcosimGroups()
             InitEcosimFleetInput()
@@ -4805,7 +4816,7 @@ Public Class cCore
             Me.LoadStanzas()
 
             Me.m_EcosimStats = New cEcosimStats(Me)
-            Me.m_EcosimOutputs = New cEcosimOutput(Me)
+
 
             'init the monte carlo model with the newly loaded data
             Me.m_MonteCarlo.init(Me)
@@ -4816,6 +4827,8 @@ Public Class cCore
                 search.Init(Me) 'init will rebuild all the interface objects
                 search.Load() 'populate the interface objects
             Next
+
+            ' Me.m_EcoSim.InitAssessment()
 
             ' Update economic data state for Ecosim objects
             Me.OnEconomicDataPluginEnabled()
@@ -5008,7 +5021,7 @@ Public Class cCore
 
     End Function
 
-    Private Function LoadEcosimGroups() As Boolean
+    Friend Function LoadEcosimGroups() As Boolean
         Dim iGroup As Integer
         Dim iPred As Integer
 
@@ -5041,15 +5054,11 @@ Public Class cCore
             group.SalinitySpreadLeft = m_EcoSimData.SdSalLeft(iGroup)
             group.SalinitySpreadRight = m_EcoSimData.SdSalRight(iGroup)
 
-            group.TemperatureOpt = m_EcoSimData.TempOpt(iGroup)
-            group.TemperatureSpreadLeft = m_EcoSimData.TempLeft(iGroup)
-            group.TemperatureSpreadRight = m_EcoSimData.TempRight(iGroup)
+            Dim mse As cMSEManager = Me.MSEManager
 
-            group.BBase = m_EcoSimData.Bbase(iGroup)
-            group.BLim = m_EcoSimData.Blim(iGroup)
-            group.FOpt = m_EcoSimData.Fopt(iGroup)
-            group.RegCVBest = m_EcoSimData.CVest(iGroup)
-            group.RegKalWt = m_EcoSimData.KalWt(iGroup)
+            group.BBase = m_QuotaData.Bbase(iGroup)
+            group.BLim = m_QuotaData.Blim(iGroup)
+            group.FOpt = m_QuotaData.Fopt(iGroup)
 
             Try
                 For iPred = 1 To nGroups
@@ -5288,12 +5297,12 @@ Public Class cCore
 
             'get the group name from EcoPath not EcoSim
             reg.Name = m_EcoPathData.FleetName(iFleet)
-            reg.MaxEffort = Me.m_EcoSimData.MaxEffort(iFleet)
-            reg.QuotaType = Me.m_EcoSimData.QuotaType(iFleet)
+            reg.MaxEffort = m_QuotaData.MaxEffort(iFleet)
+            reg.QuotaType = m_QuotaData.QuotaType(iFleet)
 
             Try
                 For iGroup As Integer = 1 To nGroups
-                    reg.Quota(iGroup) = m_EcoSimData.Quota(iFleet, iGroup)
+                    reg.Quota(iGroup) = m_QuotaData.Quota(iFleet, iGroup)
                 Next
 
             Catch ex As Exception
@@ -5514,7 +5523,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function UpdateEcoSimGroup(ByVal iDBID As Integer) As Boolean
+    Friend Function UpdateEcoSimGroup(ByVal iDBID As Integer) As Boolean
 
         Dim iGroup As Integer = Array.IndexOf(m_EcoSimData.GroupDBID, iDBID)
         Dim group As cEcoSimGroupInput = Me.EcoSimGroupInputs(iGroup)
@@ -5532,16 +5541,12 @@ Public Class cCore
             m_EcoSimData.SdSalRight(iGroup) = group.SalinitySpreadRight
             m_EcoSimData.SalOpt(iGroup) = group.SalinityOpt
 
-            m_EcoSimData.TempLeft(iGroup) = group.TemperatureSpreadLeft
-            m_EcoSimData.TempRight(iGroup) = group.TemperatureSpreadRight
-            m_EcoSimData.TempOpt(iGroup) = group.TemperatureOpt
+            Dim mse As cMSEManager = Me.MSEManager
 
             'regulatory values
-            m_EcoSimData.Bbase(iGroup) = group.BBase
-            m_EcoSimData.Blim(iGroup) = group.BLim
-            m_EcoSimData.Fopt(iGroup) = group.FOpt
-            m_EcoSimData.KalWt(iGroup) = group.RegKalWt
-            m_EcoSimData.CVest(iGroup) = group.RegCVBest
+            m_QuotaData.Bbase(iGroup) = group.BBase
+            m_QuotaData.Blim(iGroup) = group.BLim
+            m_QuotaData.Fopt(iGroup) = group.FOpt
 
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
@@ -5623,10 +5628,10 @@ Public Class cCore
         Dim reg As cEcosimFisheriesRegulation = Me.EcosimFisheriesRegulations(iFleet)
 
         Try
-            Me.m_EcoSimData.MaxEffort(iFleet) = reg.MaxEffort
-            Me.m_EcoSimData.QuotaType(iFleet) = reg.QuotaType
+            m_QuotaData.MaxEffort(iFleet) = reg.MaxEffort
+            m_QuotaData.QuotaType(iFleet) = reg.QuotaType
             For iGroup As Integer = 1 To nGroups
-                Me.m_EcoSimData.Quota(iFleet, iGroup) = reg.Quota(iGroup)
+                m_QuotaData.Quota(iFleet, iGroup) = reg.Quota(iGroup)
             Next
 
         Catch ex As Exception
@@ -6120,7 +6125,6 @@ Public Class cCore
 
             m_EcoSimRun.ContaminantTracing = Me.m_tracerData.EcoSimConSimOn
             m_EcoSimRun.PredictEffort = m_EcoSim.m_Data.PredictSimEffort
-            m_EcoSimRun.RegFeedBack = m_EcoSim.m_Data.DoClosedLoop
             m_EcoSimRun.NumberSummaryTimeSteps = m_EcoSim.m_Data.NumStep
             m_EcoSimRun.StartSummaryTime = m_EcoSim.m_Data.SumStart(0)
             m_EcoSimRun.EndSummaryTime = m_EcoSim.m_Data.SumStart(1)
@@ -6162,7 +6166,6 @@ Public Class cCore
             m_EcoSim.m_Data.TemperatureForceNo = m_EcoSimRun.TemperatureForceFunctionNumber
 
             m_EcoSim.m_Data.PredictSimEffort = m_EcoSimRun.PredictEffort
-            m_EcoSim.m_Data.DoClosedLoop = m_EcoSimRun.RegFeedBack
 
             m_EcoSim.m_Data.NumStep = m_EcoSimRun.NumberSummaryTimeSteps
             m_EcoSim.m_Data.SumStart(0) = m_EcoSimRun.StartSummaryTime
@@ -10619,6 +10622,10 @@ Public Class cCore
                 End Select
 
             Case eDataTypes.EcosimFisheriesRegulation
+
+                'Something in the fisheries regulation data has changed 
+                'update all the variables
+                Me.MSEManager.UpdateAssesmentVars()
 
                 'jb if the game client has edited the fisheries quotas make sure the status flags are reset 
                 'the client may have edited values that are not editable

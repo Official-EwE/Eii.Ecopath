@@ -75,7 +75,7 @@ Namespace Ecosim
             Dim core As cCore = cCore.GetInstance()
             Dim reg As cEcosimFisheriesRegulation = Nothing
             Dim group As cCoreInputOutputBase = Nothing
-            Dim cell As ICell = Nothing
+            '  Dim cell As ICell = Nothing
 
             ' For each group
             For iGroup As Integer = 1 To core.nGroups

@@ -175,7 +175,7 @@ Namespace Ecosim
             If m_bShowYear Then
 
                 Dim stepYear As Integer = m_NTimes \ (cCore.N_MONTHS * 4)
-                Dim fs As Single
+                'Dim fs As Single
 
                 Dim iEnd As Integer = m_iCol - 1
                 If iPlot < m_iCol Then

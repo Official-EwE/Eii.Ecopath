@@ -199,6 +199,20 @@ Public MustInherit Class cShapeData
         End Set
     End Property
 
+    Public ReadOnly Property Mean() As Single
+        Get
+
+            If Me.m_Xmax = 0 Then Return 0
+
+            Dim sum As Single
+            For i As Integer = 1 To Me.m_Xmax
+                sum += Me.m_xdata(i)
+            Next
+            Return sum / Me.m_Xmax
+        End Get
+    End Property
+
+
 #End Region ' Properties
 
 #Region " Friend methods "

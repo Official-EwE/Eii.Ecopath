@@ -7,6 +7,7 @@ Imports EwEUtils.Core
 Imports System.Threading
 
 
+
 Namespace Ecosim
 
     ''' <summary>
@@ -36,7 +37,7 @@ Namespace Ecosim
 
     Public Delegate Sub EcoSimRunCompletedDelegate(ByVal obj As Object)
 
- 
+
     ''' <summary>
     ''' Class to encapsulate EcoSim Model
     ''' </summary>
@@ -57,6 +58,8 @@ Namespace Ecosim
         Private m_pluginManager As cPluginManager
 
         Private m_RefData As cTimeSeriesDataStructures
+
+        Private m_Quota As cQuotaDataStructures
 
         Private m_publisher As New cMessagePublisher
         Private m_Ecofunctions As cEcoFunctions
@@ -247,44 +250,35 @@ Namespace Ecosim
             'this happens if no interface has been created yet(I think...)
             If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
 
-
         End Sub
 
 
 #Region "Multi threading code"
 
+        Private Sub RunModelThreaded(ByVal obj As Object)
 
-#If 0 Then
-
-
-        ''' <summary>
-        ''' Initalize multithreading
-        ''' </summary>
-        ''' <param name="SynchronizingObject">SynchronizingObject object from the user interface</param>
-        ''' <param name="ProgressDelegate"> EcoSimTimeStepDelegate to get called at the end of each time step</param>
-        ''' <param name="CompletedDelegate">EcoSimCompletedDelegate to get called on exit from the model</param>
-        ''' <returns>True if successful. False if there is a problem</returns>
-        ''' <remarks>This is used be cModelInterface.InitEcoSim(...) to initialize EcoSim for multithreading</remarks>
-        Public Function InitMultiThreading(ByVal SynchronizingObject As System.ComponentModel.ISynchronizeInvoke, _
-                                        ByVal ProgressDelegate As EcoSimTimeStepDelegate, _
-                                        ByVal CompletedDelegate As EcoSimCompletedDelegate) As Boolean
+            Me.RunModelValue(m_Data.NumYears, m_search.Frates, m_search.nBlocks)
 
             Try
-
-                m_ProgressDelegate = ProgressDelegate
-                m_CompletedDelegate = CompletedDelegate
-                m_SynEcoSim = SynchronizingObject
-
-                Return True
-
+                If Me.m_Data.bMultiThreaded Then
+                    If Me.m_OnRunCompletedDelegate <> Nothing Then
+                        m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.onRunCompleted), Nothing)
+                    End If
+                End If
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".InitMultiThreading(...) Error: " & ex.Message)
-                Return False
+                Debug.Assert(False, "Exception calling Ecosim.OnRunCompleted() Exception: " & ex.Message)
             End Try
 
-        End Function
+            'xxxxxxxxxxxxxxxxx
+            'At this time the multithreading can only be turned On by a plugin
+            'If multithreading is on when other modules or plugins are used(i.e. ValueChain or Fishing Policy Search...) it must be turned Off for them to function properly
+            'So turn if Off by default
+            'It will only be valid for one run of Ecosim
+            'xxxxxxxxxxxxxxxxxx
+            Me.m_Data.bMultiThreaded = False
 
-#End If
+        End Sub
+
 
 #End Region
 
@@ -336,6 +330,15 @@ Namespace Ecosim
             End Get
             Set(ByVal newValue As cTimeSeriesDataStructures)
                 m_RefData = newValue
+            End Set
+        End Property
+
+        Public Property QuotaData() As cQuotaDataStructures
+            Get
+                Return Me.m_Quota
+            End Get
+            Set(ByVal value As cQuotaDataStructures)
+                Me.m_Quota = value
             End Set
         End Property
 
@@ -473,11 +476,11 @@ Namespace Ecosim
 
                 SetRelativeCatchabilities()
 
-                'default values for regulated fisheries before calling SetFFromGear() 
-                'SetFFromGear() uses default regulatory fisheries values
-                setDefaultRegValues()
+                ''default values for regulated fisheries before calling SetFFromGear() 
+                ''SetFFromGear() uses default regulatory fisheries values
+                'setDefaultRegValues()
 
-                InitAssessment()
+                'InitAssessment()
 
                 If bFullInitialization Then
                     SetFFromGear()
@@ -528,62 +531,10 @@ Namespace Ecosim
         End Sub
 
 
-        ''' <summary>
-        ''' Set default values for regulated fisheries
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub setDefaultRegValues()
-
-            'If regulatory values have not been set (by the database) then set them to defaults
-            For iflt As Integer = 1 To Me.m_Data.nGear
-                If Me.m_Data.MaxEffort(iflt) = cCore.NULL_VALUE Then Me.m_Data.MaxEffort(iflt) = 10 '10 times the ecopath base effort
-                For igrp As Integer = 1 To nGroups
-                    If Me.m_Data.Quota(iflt, igrp) = cCore.NULL_VALUE Then Me.m_Data.Quota(iflt, igrp) = m_Data.StartBiomass(igrp) * 10 '10 time the ecopath biomass
-
-                    'Needs default value????
-                    If m_Data.CVest(igrp) = cCore.NULL_VALUE Then m_Data.CVest(igrp) = 0.2
-                    If m_Data.Blim(igrp) = cCore.NULL_VALUE Then m_Data.Blim(igrp) = m_Data.StartBiomass(igrp) * 0.1
-                    If m_Data.Bbase(igrp) = cCore.NULL_VALUE Then m_Data.Bbase(igrp) = m_Data.StartBiomass(igrp)
-                    If m_Data.KalWt(igrp) = cCore.NULL_VALUE Then m_Data.KalWt(igrp) = 0.65
-                    If m_Data.Fopt(igrp) = cCore.NULL_VALUE Then m_Data.Fopt(igrp) = 0.9 * (m_EPData.PB(igrp) - m_Data.Fish1(igrp))
-
-                    m_Data.Bestimate(igrp) = m_Data.StartBiomass(igrp)
-
-                    'set the time variable proportion variables to initial ecopath values
-                    Me.m_Data.PropLandedTime(iflt, igrp) = Me.m_EPData.PropLanded(iflt, igrp)
-                    Me.m_Data.Propdiscardtime(iflt, igrp) = Me.m_EPData.PropDiscard(iflt, igrp)
-
-                Next
-            Next
-
-        End Sub
 
 #End Region
 
 
-        Private Sub RunModelThreaded(ByVal obj As Object)
-
-            Me.RunModelValue(m_Data.NumYears, m_search.Frates, m_search.nBlocks)
-
-            Try
-                If Me.m_Data.bMultiThreaded Then
-                    If Me.m_OnRunCompletedDelegate <> Nothing Then
-                        m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.onRunCompleted), Nothing)
-                    End If
-                End If
-            Catch ex As Exception
-                Debug.Assert(False, "Exception calling Ecosim.OnRunCompleted() Exception: " & ex.Message)
-            End Try
-
-            'xxxxxxxxxxxxxxxxx
-            'At this time the multithreading can only be turned On by a plugin
-            'If multithreading is on for other modules(i.e. ValueChain or Fishing Policy Search...) it must be turned Off for them to function properly
-            'So turn if Off by default
-            'It will only be valid for one run of Ecosim
-            'xxxxxxxxxxxxxxxxxx
-            Me.m_Data.bMultiThreaded = False
-
-        End Sub
 
         ''' <summary>
         ''' Overloaded RunModelValue() provided so that older search code will run without a major over haul
@@ -659,7 +610,6 @@ Namespace Ecosim
             ReDim m_search.LastYearIncomeSpecies(m_EPData.NumFleet, m_EPData.NumGroups)
             ReDim BestTime(m_EPData.NumLiving)
             ReDim BrecYear(nGroups)
-            ReDim m_Data.RegDiscard(m_EPData.NumFleet, m_EPData.NumGroups)
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
             '*
             If m_search.bInSearch Then
@@ -670,7 +620,7 @@ Namespace Ecosim
                 ReDim Preserve m_Data.FishRateNo(m_EPData.NumGroups, 12 * (NumberOfYears + ExtraTime))
                 ReDim Preserve m_Data.FishRateGear(m_EPData.NumFleet + 1, 12 * (NumberOfYears + ExtraTime))
 
-                If m_search.MaxEffort < 60 Then m_search.MaxEffort = 60
+                'If m_search.MaxEffort < 60 Then m_search.MaxEffort = 60
                 For i = 1 To nopt
                     If frateopt(i) < Math.Log(m_search.MaxEffort) Then
                         RelFopt(i) = Math.Exp(frateopt(i))
@@ -776,22 +726,31 @@ Namespace Ecosim
                     'search routines vary FishYear() which is then used to set FishTime()
                     Me.setFishTime(itime, iyr)
 
-                    If m_Data.PredictSimEffort Then
+                    If Me.m_search.SearchMode = eSearchModes.MSE And Me.m_MSE.Data.UseQuotaRegs Then
+                        'Effort is being regulated by the Quota's
+                        'Effort can be either predicted or tracked from the existing Ecosim value
+                        Debug.Assert(Me.m_MSE.Data.EffortMode <> eMSEEffortMode.Tracking)
 
-                        If ipct = 1 And m_Data.DoClosedLoop Then
-                            'set Bestimate() used in UpDateQuotas() only do this at the start of the year
-                            DoAssessment(BB)
-                            UpdateQuotas()
+                        If ipct = 1 Then
+                            'only do the assessment and update the quotas once at the start of each year
+                            'set Bestimate() 
+                            Me.m_MSE.DoAssessment(BB)
+                            'update the Quota for this timestep
+                            Me.m_MSE.UpdateQuotas(BB)
                         End If
 
-                        'Can only predict effort if Not in search mode
-                        '  Debug.Assert(Me.m_search.bInSearch = False, Me.ToString & ".RunModelValue() Can not Predict Sim Effort while in Search!")
+                        'regulate the effort base on the Quota for this year on each timestep
+                        Me.SetFtimeFromGear(BB, itime, m_Data.FishTime, True)
 
+                    End If
+
+                    If m_Data.PredictSimEffort Then
+
+                        'Predict Effort
                         PredictCurrentEffort(itime)
                         SetFtimeFromGear(BB, itime, m_Data.FishTime, True)
                         FindCurrentProfit(BB, itime)
                         PredictCapacityChange()
-                        ''Debug.Print "cap", CapTime(1), CapTime(2), CapTime(3)
                     End If
 
                     If Me.m_search.SearchMode = eSearchModes.FishingPolicy Then
@@ -927,25 +886,25 @@ Namespace Ecosim
 
         End Sub
 
-        ''' <summary>
-        ''' Set FishTime() for the Fishing Policy or MSE searches
-        ''' </summary>
-        ''' <param name="iTime"></param>
-        ''' <remarks></remarks>
-        Private Sub setFishTimeForFPSMSE(ByVal iTime As Integer)
+        '''' <summary>
+        '''' Set FishTime() for the Fishing Policy or MSE searches
+        '''' </summary>
+        '''' <param name="iTime"></param>
+        '''' <remarks></remarks>
+        'Private Sub setFishTimeForFPSMSE(ByVal iTime As Integer)
 
-            Debug.Assert(Me.m_search.SearchMode = eSearchModes.FishingPolicy Or Me.m_search.SearchMode = eSearchModes.MSE, Me.ToString & ".setFishTimeForFPSMSE incorrect search mode.")
+        '    Debug.Assert(Me.m_search.SearchMode = eSearchModes.FishingPolicy Or Me.m_search.SearchMode = eSearchModes.MSE, Me.ToString & ".setFishTimeForFPSMSE incorrect search mode.")
 
-            'in Fishing Policy or MSE search
-            For igrp As Integer = 1 To nvar
-                'overwrite FishRateNo() with computed catch rates if in Fishing Policy or MSE 
-                'see EwE5 RunModelValue()
-                m_Data.FishRateNo(igrp, iTime) = m_search.FishYear(igrp) 'fish year was computed or set to FishRateNo(j, 12 * iyr - 11) if FisForced() = True (forcing data loaded)
-                m_Data.FishTime(igrp) = m_Data.QmQo(igrp) * m_Data.FishRateNo(igrp, iTime) / (1 + (m_Data.QmQo(igrp) - 1) * BB(igrp) / m_Data.StartBiomass(igrp))
+        '    'in Fishing Policy or MSE search
+        '    For igrp As Integer = 1 To nvar
+        '        'overwrite FishRateNo() with computed catch rates if in Fishing Policy or MSE 
+        '        'see EwE5 RunModelValue()
+        '        m_Data.FishRateNo(igrp, iTime) = m_search.FishYear(igrp) 'fish year was computed or set to FishRateNo(j, 12 * iyr - 11) if FisForced() = True (forcing data loaded)
+        '        m_Data.FishTime(igrp) = m_Data.QmQo(igrp) * m_Data.FishRateNo(igrp, iTime) / (1 + (m_Data.QmQo(igrp) - 1) * BB(igrp) / m_Data.StartBiomass(igrp))
 
-            Next igrp
+        '    Next igrp
 
-        End Sub
+        'End Sub
 
 
         Private Sub setBiomassForcing(ByVal iYear As Integer)
@@ -968,20 +927,16 @@ Namespace Ecosim
 
 
         ''' <summary>
-        ''' Set FishTime(Group)density dependant catchability
+        ''' Set FishTime(Group) Density dependant fishing mortality used by Ecosim. 
         ''' </summary>
         ''' <param name="iTime"></param>
-        ''' <remarks>If runnning in a regular mode (no search) then use fishing mortality rates set by the user to compute density dependant catchability. 
-        '''  Otherwise (in a search) use FishYear() to set the user inputed fishing mortality then use this to computed catchability. </remarks>
+        ''' <remarks>If runnning in a regular mode (no search) then use fishing mortality rates set by the user to compute density dependant mortality. 
+        '''  Otherwise (in a search) use FishYear() to set the user inputed fishing mortality then use this to computed density dependant mortality. </remarks>
         Private Sub setFishTime(ByVal iTime As Integer, ByVal iYear As Integer)
 
             If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
                 'in Fishing Polcy or MSE search
                 'sets FishRateNo to FishYear() computed before this is called then computes FishTime() with FishRateNo
-
-                Debug.Assert(Me.m_search.SearchMode = eSearchModes.FishingPolicy Or Me.m_search.SearchMode = eSearchModes.MSE, Me.ToString & ".setFishTimeForFPSMSE incorrect search mode.")
-
-                'in Fishing Policy or MSE search
                 For igrp As Integer = 1 To nvar
                     'overwrite FishRateNo() with computed catch rates (FishYear(group)) if in Fishing Policy or MSE 
                     'see EwE5 RunModelValue()
@@ -1758,6 +1713,7 @@ Namespace Ecosim
 
                         For iflt = 1 To m_Data.nGear
                             m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = 0
+                            m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) = 0
                         Next
 
                     End If ' If SumEf Then
@@ -1897,7 +1853,7 @@ Namespace Ecosim
             Next
         End Sub
 
-        Private Function RandomNormal() As Single
+        Friend Function RandomNormal() As Single
             Dim i As Integer, X As Single
             X = -6
             For i = 1 To 12
@@ -2338,7 +2294,10 @@ Namespace Ecosim
                             If m_Data.FirstTime = True Then
                                 DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishMGear(K, i)
                             Else
-                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishRateGear(K, 0) * m_Data.FishMGear(K, i) + m_Data.RegDiscard(K, i)
+                                'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
+                                'discard mort is included in Propdiscardtime() by initialization and MSE 
+                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * Biomass(i) * m_Data.FishRateGear(K, 0) * m_Data.FishMGear(K, i) * Me.m_Quota.Propdiscardtime(K, i)
+                                'DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishRateGear(K, 0) * m_Data.FishMGear(K, i) + Me.m_Quota.RegDiscard(K, i)
                             End If
                             ToDet = ToDet + DetFlowN
 
@@ -2793,25 +2752,31 @@ Namespace Ecosim
             'current Y value of each active trophic mediation function
             Dim i As Integer, j As Integer, MedX As Single, ip As Long
 
-            For i = 1 To m_Data.MediationShapes
-                If m_Data.MedIsUsed(i) Then
-                    MedX = 0.0000000001
-                    For j = 1 To m_Data.NMedXused(i)
-                        If m_Data.IMedUsed(j, i) <= nGroups Then
-                            MedX = MedX + Biom(m_Data.IMedUsed(j, i)) * m_Data.MedWeights(m_Data.IMedUsed(j, i), i)
-                        Else    'a fleet
-                            MedX = MedX + m_Data.FishRateGear(m_Data.IMedUsed(j, i) - nGroups, TimeNow) * m_Data.MedWeights(m_Data.IMedUsed(j, i), i)
-                        End If
-                    Next
-                    '060328 CJW found that without the +0.01 below it could be unstable when slope
-                    'was large around Ecopath base point in mediation function, causing instability.
-                    'This solves it. VC.
-                    ip = Int(m_Data.IMedBase(i) * MedX / m_Data.MedXbase(i) + 0.01)
-                    If ip < 1 Then ip = 1
-                    If ip > m_Data.NMedPoints Then ip = m_Data.NMedPoints
-                    m_Data.MedVal(i) = m_Data.Medpoints(ip, i) / m_Data.MedYbase(i)
-                End If
-            Next
+            Try
+
+                For i = 1 To m_Data.MediationShapes
+                    If m_Data.MedIsUsed(i) Then
+                        MedX = 0.0000000001
+                        For j = 1 To m_Data.NMedXused(i)
+                            If m_Data.IMedUsed(j, i) <= nGroups Then
+                                MedX = MedX + Biom(m_Data.IMedUsed(j, i)) * m_Data.MedWeights(m_Data.IMedUsed(j, i), i)
+                            Else    'a fleet
+                                MedX = MedX + m_Data.FishRateGear(m_Data.IMedUsed(j, i) - nGroups, TimeNow) * m_Data.MedWeights(m_Data.IMedUsed(j, i), i)
+                            End If
+                        Next
+                        '060328 CJW found that without the +0.01 below it could be unstable when slope
+                        'was large around Ecopath base point in mediation function, causing instability.
+                        'This solves it. VC.
+                        ip = Int(m_Data.IMedBase(i) * MedX / m_Data.MedXbase(i) + 0.01)
+                        If ip < 1 Then ip = 1
+                        If ip > m_Data.NMedPoints Then ip = m_Data.NMedPoints
+                        m_Data.MedVal(i) = m_Data.Medpoints(ip, i) / m_Data.MedYbase(i)
+                    End If
+                Next
+
+            Catch ex As Exception
+                '  Debug.Assert(False)
+            End Try
 
         End Sub
 
@@ -3101,7 +3066,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub BaseValueOfFishMGear()
-            'both Fish1(nGroups) (catch rate by group) and fCatch(nGroups) (total biomass of catch) must be populated before this is called
+            'both Fish1(nGroups) (fishing mortality by group) and fCatch(nGroups) (total biomass of catch) must be populated before this is called
             Dim i As Integer, j As Integer
             For i = 1 To m_EPData.NumFleet
                 For j = 1 To m_EPData.NumGroups
@@ -3632,80 +3597,36 @@ Namespace Ecosim
 
         End Sub
 
-        ''' <summary>
-        ''' Populates Bestimate() for regulated fisheries
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub DoAssessment(ByVal Biomass() As Single)
 
-            Dim Bobs() As Single
-            ReDim Bobs(nGroups)
-            For i As Integer = 1 To nGroups
-                m_Data.BestimateLast(i) = m_Data.Bestimate(i)
-                Bobs(i) = Biomass(i) * Math.Exp(m_Data.CVest(i) * RandomNormal() - 0.5 * m_Data.CVest(i) ^ 2)
-                m_Data.Bestimate(i) = m_Data.KalWt(i) * Bobs(i) + (1 - m_Data.KalWt(i)) * m_Data.BestimateLast(i)
-            Next i
+        Friend Sub InitAssessment()
+            'Dim totalQuota() As Single
+            'Dim iFlt As Integer, iGrp As Integer
+            'Dim ngear As Integer = m_Data.nGear
 
-        End Sub
+            'Dim mseData As cMSEDataStructures = Me.m_MSE.Data
 
-        ''' <summary>
-        ''' Update fishing quotas for regulated fisheries
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub UpdateQuotas()
-            Dim iflt As Integer, igrp As Integer
-            Dim tQuota() As Single
-            Dim fTarget() As Single
+            'For iGrp = 1 To nGroups
+            '    mseData.Bestimate(iGrp) = m_Data.StartBiomass(iGrp) * Math.Exp(Me.m_Quota.CVest(iGrp) * RandomNormal())
+            '    mseData.BestimateLast(iGrp) = mseData.Bestimate(iGrp)
+            'Next iGrp
 
-            Debug.Assert(m_Data.DoClosedLoop, "UpdateQuotas() call when flag set to false.")
+            'ReDim totalQuota(nGroups)
+            'For iFlt = 1 To ngear
+            '    For iGrp = 1 To nGroups
+            '        If (m_EPData.Landing(iFlt, iGrp) + m_EPData.Discard(iFlt, iGrp)) > 0 Then
+            '            totalQuota(iGrp) = totalQuota(iGrp) + Me.m_Quota.Quota(iFlt, iGrp)
+            '        End If
+            '    Next
+            'Next
 
-            ReDim tQuota(nGroups)
-            ReDim fTarget(nGroups)
-
-            For igrp = 1 To nGroups
-                'note here that Bbase has to be set larger than Blim
-                fTarget(igrp) = m_Data.Fopt(igrp) * (BB(igrp) - m_Data.Blim(igrp)) / (m_Data.Bbase(igrp) - m_Data.Blim(igrp))
-                If fTarget(igrp) < 0 Then fTarget(igrp) = 0
-                If fTarget(igrp) > m_Data.Fopt(igrp) Then fTarget(igrp) = m_Data.Fopt(igrp)
-                tQuota(igrp) = fTarget(igrp) * m_Data.Bestimate(igrp)
-            Next
-
-            For iflt = 1 To m_Data.nGear
-                For igrp = 1 To nGroups
-                    m_Data.QuotaTime(iflt, igrp) = tQuota(igrp) * m_Data.Quotashare(iflt, igrp)
-                Next
-            Next
-
-        End Sub
-
-
-        Private Sub InitAssessment()
-            Dim totalQuota() As Single
-            Dim iFlt As Integer, iGrp As Integer
-            Dim ngear As Integer = m_Data.nGear
-
-            For iGrp = 1 To nGroups
-                m_Data.Bestimate(iGrp) = m_Data.StartBiomass(iGrp) * Math.Exp(m_Data.CVest(iGrp) * RandomNormal())
-                m_Data.BestimateLast(iGrp) = m_Data.Bestimate(iGrp)
-            Next iGrp
-
-            ReDim totalQuota(nGroups)
-            For iFlt = 1 To ngear
-                For iGrp = 1 To nGroups
-                    If (m_EPData.Landing(iFlt, iGrp) + m_EPData.Discard(iFlt, iGrp)) > 0 Then
-                        totalQuota(iGrp) = totalQuota(iGrp) + m_Data.Quota(iFlt, iGrp)
-                    End If
-                Next
-            Next
-
-            For iFlt = 1 To ngear
-                For iGrp = 1 To nGroups
-                    If (m_EPData.Landing(iFlt, iGrp) + m_EPData.Discard(iFlt, iGrp)) > 0 Then
-                        m_Data.QuotaTime(iFlt, iGrp) = m_Data.Quota(iFlt, iGrp)
-                        m_Data.Quotashare(iFlt, iGrp) = m_Data.Quota(iFlt, iGrp) / (totalQuota(iGrp) + 0.0000000001)
-                    End If
-                Next
-            Next
+            'For iFlt = 1 To ngear
+            '    For iGrp = 1 To nGroups
+            '        If (m_EPData.Landing(iFlt, iGrp) + m_EPData.Discard(iFlt, iGrp)) > 0 Then
+            '            Me.m_Quota.QuotaTime(iFlt, iGrp) = Me.m_Quota.Quota(iFlt, iGrp)
+            '            Me.m_Quota.Quotashare(iFlt, iGrp) = Me.m_Quota.Quota(iFlt, iGrp) / (totalQuota(iGrp) + 0.0000000001)
+            '        End If
+            '    Next
+            'Next
 
         End Sub
 
@@ -3725,10 +3646,15 @@ Namespace Ecosim
 
         End Sub
 
-
+        ''' <summary>
+        ''' Init Biomass to Ecopath values during initialization
+        ''' </summary>
+        ''' <remarks>Warning: <see cref="cQuotaDataStructures.setDefaultRegValues"> </see>QuotaDataStructures.setDefaultRegValues() uses Ecopath.B() instead of Ecosim.StartBiomass() because of initialization order. </remarks>
         Public Sub SetStartBiomass()
             Dim i As Integer ', TotalBiomass As Single
 
+            ' Warning: if you make any changes to StartBiomass() you must make the same changes to QuotaDataStructures.setDefaultRegValues()
+            'where it uses Ecopath.B() instead of Ecosim.StartBiomass()
             For i = 1 To nGroups
                 m_Data.StartBiomass(i) = m_EPData.B(i)
                 BB(i) = m_EPData.B(i)
@@ -3882,82 +3808,32 @@ Namespace Ecosim
         End Sub
 
         Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByRef fishtime() As Single, ByVal PredEffort As Boolean)
-            Dim i As Integer, ig As Integer, Ft As Single, Elim As Single, Emax As Single
-            Dim ci As Single
+            Dim i As Integer, ig As Integer, Ft As Single
+
             ReDim Qmult(m_Data.nGroups)
 
+            'Density dependent catchability recalculation
             For i = 1 To m_Data.nGroups
                 Qmult(i) = m_Data.QmQo(i) / (1 + (m_Data.QmQo(i) - 1) * BB(i) / m_Data.StartBiomass(i))
-                'Qmult(i) = 1
             Next
 
-            If PredEffort Then
+            If Me.m_search.SearchMode = eSearchModes.MSE Then
+                'do the regulatory reduction in FishRateGear(ig,t) for each ig (gear) 
+                'based on the target fishing mortalty set by the user
+                Me.m_MSE.RegulateEffort(BB, Qmult, t)
+            End If
 
-                'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
-                For ig = 1 To m_Data.nGear
-                    If m_Data.FishRateGear(ig, t) > m_Data.MaxEffort(ig) Then m_Data.FishRateGear(ig, t) = m_Data.MaxEffort(ig)
-                    Select Case m_Data.QuotaType(ig)
-
-                        Case eQuotaTypes.Weakest 'limit effort to weakest stock
-                            For i = 1 To m_Data.nGroups
-                                If (m_EPData.Landing(ig, i) + m_EPData.Discard(ig, i)) > 0 Then
-                                    Elim = m_Data.QuotaTime(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, i) * BB(i))
-                                    If m_Data.FishRateGear(ig, t) > Elim Then
-                                        m_Data.FishRateGear(ig, t) = Elim
-                                    End If
-                                End If
-                            Next i
-
-                        Case eQuotaTypes.Strongest, eQuotaTypes.Selective 'limit effort to strongest stock but discard overages on weaker stocks
-
-                            Emax = 0
-                            For i = 1 To m_Data.nGroups
-                                If (m_EPData.Landing(ig, i)) > 0 Then
-                                    Elim = m_Data.QuotaTime(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, i) * BB(i))
-                                    If Elim > Emax Then Emax = Elim
-                                End If
-                            Next i
-
-                            If Emax < m_Data.FishRateGear(ig, t) Then m_Data.FishRateGear(ig, t) = Emax
-                            '  If Emax < 1 Then Stop
-                            For i = 1 To m_Data.nGroups
-                                If (m_EPData.Landing(ig, i)) > 0 Then
-                                    ci = m_Data.FishRateGear(ig, t) * Qmult(i) * m_Data.FishMGear(ig, i) * BB(i)
-
-                                    If ci > m_Data.QuotaTime(ig, i) Then
-                                        'fishing mortality exceeds quota
-                                        m_Data.PropLandedTime(ig, i) = m_Data.QuotaTime(ig, i) / (ci + 1.0E-20)
-                                        If m_Data.QuotaType(ig) = eQuotaTypes.Strongest Then
-                                            'QuotaType = Strongest
-                                            m_Data.Propdiscardtime(ig, i) = (1 - m_Data.PropLandedTime(ig, i)) * m_EPData.PropDiscardMort(ig, i)
-                                        Else
-                                            'QuotaType = Selective
-                                            m_Data.Propdiscardtime(ig, i) = 0
-                                        End If
-
-                                    Else
-                                        'ci < QuotaTime
-                                        m_Data.PropLandedTime(ig, i) = m_EPData.PropLanded(ig, i)
-                                        m_Data.Propdiscardtime(ig, i) = m_EPData.PropDiscard(ig, i)
-                                    End If
-
-                                End If
-                            Next i
-                    End Select
-                Next ig
-            End If 'If PredEffort Then
-
+            'Apply this to get the actual fishing mortality
             For i = 1 To m_Data.nGroups
-                'jb change this to compute FishRateNo() when it is -9999(NULL_VALUE) even if it is forced
-                'this allow the user to load partial timeseries datasets and sketch in the remaining years
-                If (m_Data.FisForced(i) = False Or PredEffort Or m_Data.FishRateNo(i, t) = cCore.NULL_VALUE) Then
+                If (m_Data.FisForced(i) = False Or PredEffort) Then
 
                     Ft = 0
                     For ig = 1 To m_Data.nGear
-                        Ft = Ft + m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (m_Data.PropLandedTime(ig, i) + m_Data.Propdiscardtime(ig, i))
+                        Debug.Assert(Me.m_Quota.PropLandedTime(ig, i) + Me.m_Quota.Propdiscardtime(ig, i) <= 1.0, Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
+                        Ft = Ft + m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Quota.PropLandedTime(ig, i) + Me.m_Quota.Propdiscardtime(ig, i))
                     Next
-                    Qmult(i) = m_Data.QmQo(i) / (1 + (m_Data.QmQo(i) - 1) * BB(i) / m_Data.StartBiomass(i))
 
+                    'multiply the catchability multiplyer (density-dependent)
                     m_Data.FishRateNo(i, t) = Qmult(i) * Ft
                     m_Data.FishTime(i) = m_Data.FishRateNo(i, t)
                 End If
@@ -4160,11 +4036,11 @@ Namespace Ecosim
                     Fg = Qmult(i) * m_Data.FishMGear(ig, i) * (m_Data.FishRateGear(ig, t) + 1.0E-20)
                     'jb use time varing proportion of landings
                     ' TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * m_EPData.PropLanded(ig, i)
-                    TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * m_Data.PropLandedTime(ig, i)
+                    TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * Me.m_Quota.PropLandedTime(ig, i)
                 Next
                 TotCost = m_Data.FishRateGear(ig, t) * (m_EPData.cost(ig, 2) + m_EPData.cost(ig, 3))
                 CurrentProfit(ig) = TotIncome - TotCost
-                If CurrentProfit(ig) <> CurrentProfit(ig) Then Stop
+                'If CurrentProfit(ig) <> CurrentProfit(ig) Then Stop
                 If CurrentProfit(ig) < 0 Then CurrentProfit(ig) = 0
                 CurrentIncome(ig) = TotIncome / (m_Data.FishRateGear(ig, t) + 1.0E-20)
             Next
@@ -4178,7 +4054,7 @@ Namespace Ecosim
             For ig = 1 To m_Data.nGear
                 Cg = CapGrowthFactor(ig) * CurrentProfit(ig) : If Cg < 0 Then Cg = 0
                 CapTime(ig) = CapTime(ig) * (1 - m_Data.CapDepreciate(ig) / 12) + Cg / 12
-                If CapTime(ig) <> CapTime(ig) Or CapTime(ig) > 1000 Then Stop
+                '   If CapTime(ig) <> CapTime(ig) Or CapTime(ig) > 1000 Then Stop
             Next
         End Sub
 
@@ -4194,6 +4070,7 @@ Namespace Ecosim
 
             ReDim CapTime(m_Data.nGear), CapBase(m_Data.nGear), EscalePar(m_Data.nGear)
             ReDim Qmult(m_Data.nGroups)
+
             Dim ig As Integer, i As Integer, t As Integer
             For i = 1 To m_Data.nGroups : Qmult(i) = 1 : Next
             For ig = 1 To m_Data.nGear

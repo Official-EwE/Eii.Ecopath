@@ -30,7 +30,6 @@ Namespace Ecosim
             Me.cmbSalinityForcing = New System.Windows.Forms.ComboBox
             Me.cmbNutForcing = New System.Windows.Forms.ComboBox
             Me.chkPredictEffort = New System.Windows.Forms.CheckBox
-            Me.chkRegulatoryFeedbackLoop = New System.Windows.Forms.CheckBox
             Me.chkConTracing = New System.Windows.Forms.CheckBox
             Me.m_lblRelaxation = New System.Windows.Forms.Label
             Me.Label2 = New System.Windows.Forms.Label
@@ -89,12 +88,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.chkPredictEffort, "chkPredictEffort")
             Me.chkPredictEffort.Name = "chkPredictEffort"
             Me.chkPredictEffort.UseVisualStyleBackColor = True
-            '
-            'chkRegulatoryFeedbackLoop
-            '
-            resources.ApplyResources(Me.chkRegulatoryFeedbackLoop, "chkRegulatoryFeedbackLoop")
-            Me.chkRegulatoryFeedbackLoop.Name = "chkRegulatoryFeedbackLoop"
-            Me.chkRegulatoryFeedbackLoop.UseVisualStyleBackColor = True
             '
             'chkConTracing
             '
@@ -217,7 +210,6 @@ Namespace Ecosim
             Me.Controls.Add(Me.lblInitializationHeader)
             Me.Controls.Add(Me.chkPredictEffort)
             Me.Controls.Add(Me.m_lbAuthor)
-            Me.Controls.Add(Me.chkRegulatoryFeedbackLoop)
             Me.Controls.Add(Me.m_chkUseVarPQ)
             Me.Controls.Add(Me.chkConTracing)
             Me.Controls.Add(Me.m_tbName)
@@ -258,7 +250,6 @@ Namespace Ecosim
         Friend WithEvents m_lblRelaxation As System.Windows.Forms.Label
         Friend WithEvents m_nudNumberYears As System.Windows.Forms.NumericUpDown
         Friend WithEvents m_nudNutBaseFreeProp As System.Windows.Forms.NumericUpDown
-        Private WithEvents chkRegulatoryFeedbackLoop As System.Windows.Forms.CheckBox
         Private WithEvents m_chkUseVarPQ As System.Windows.Forms.CheckBox
         Private WithEvents lbScenarioName As System.Windows.Forms.Label
         Friend WithEvents cmbTempLoading As System.Windows.Forms.ComboBox

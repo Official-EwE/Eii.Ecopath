@@ -31,6 +31,8 @@ Namespace ValueWrapper
         BoolArray 'array of boolean 
         IntArray 'array of integers
         LayerArray 'array of basemap layers
+
+        Histogram
     End Enum
 
 #End Region
@@ -57,9 +59,9 @@ Namespace ValueWrapper
         Protected m_varName As eVarNameFlags
         Protected m_message As String 'message associated with data validation
 
-        Protected m_iIndex As Integer
-        Protected m_bStored As Boolean
-        Protected m_bAffectsRunState As Boolean
+        Protected m_iIndex As Integer = 0
+        Protected m_bStored As Boolean = False
+        Protected m_bAffectsRunState As Boolean = True
 
         ''' <summary>
         ''' Validator supplied in the constructor of the object.
@@ -71,77 +73,92 @@ Namespace ValueWrapper
 
         Protected m_bValidate As Boolean
 
-        Sub New(ByVal Value As Object, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal VarType As eValueTypes)
-            m_value = Value
-            m_varType = VarType
-            m_varName = VarName
-            m_status = Status
-            m_metadata = Nothing
-
-            m_bValidate = False
-            m_validator = Nothing
-            m_bStored = True
-            m_bAffectsRunState = True
+        ''' <summary>
+        ''' Default constructor.
+        ''' </summary>
+        ''' <remarks>
+        ''' A default value will not be stored, will affect the core run state.
+        ''' A default value has no metadata and no validation.
+        ''' </remarks>
+        Sub New()
+            Me.New(Nothing, eVarNameFlags.NotSet, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_bStored = False
         End Sub
 
-        Sub New(ByVal Value As Object, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal VarType As eValueTypes, ByRef MetaData As cVariableMetaData)
+        ''' <summary>
+        ''' Constructs a new value instance, without metadata and validation
+        ''' </summary>
+        ''' <param name="Value">The object to hold the value.</param>
+        ''' <param name="VarName">The variable name representing the value.</param>
+        ''' <param name="Status">Value status.</param>
+        ''' <param name="VarType"><see cref="eValueTypes">Value type</see>.</param>
+        Sub New(ByVal Value As Object, _
+                ByVal VarName As eVarNameFlags, _
+                ByVal Status As eStatusFlags, _
+                ByVal VarType As eValueTypes)
+            Me.New(Value, VarName, Status, VarType, Nothing)
+        End Sub
+
+        ''' <summary>
+        ''' Constructs a new value instance without validation.
+        ''' </summary>
+        ''' <param name="Value">The object to hold the value.</param>
+        ''' <param name="VarName">The variable name representing the value.</param>
+        ''' <param name="Status">Value status.</param>
+        ''' <param name="VarType"><see cref="eValueTypes">Value type</see>.</param>
+        ''' <param name="MetaData"><see cref="cVariableMetaData">Value metadata</see>.</param>
+        Sub New(ByVal Value As Object, _
+                ByVal VarName As eVarNameFlags, _
+                ByVal Status As eStatusFlags, _
+                ByVal VarType As eValueTypes, _
+                ByVal MetaData As cVariableMetaData)
+            Me.New(Value, VarName, Status, VarType, Nothing, Nothing)
+        End Sub
+
+        ''' <summary>
+        ''' Constructs a new value instance without validation.
+        ''' </summary>
+        ''' <param name="Value">The object to hold the value.</param>
+        ''' <param name="VarName">The variable name representing the value.</param>
+        ''' <param name="Status">Value status.</param>
+        ''' <param name="VarType"><see cref="eValueTypes">Value type</see>.</param>
+        ''' <param name="MetaData"><see cref="cVariableMetaData">Value metadata</see> to use.</param>
+        ''' <param name="Validator"><see cref="cValidatorDefault">Validator</see> to use.</param>
+        Sub New(ByVal Value As Object, _
+                ByVal VarName As eVarNameFlags, _
+                ByVal Status As eStatusFlags, _
+                ByVal VarType As eValueTypes, _
+                ByRef MetaData As cVariableMetaData, _
+                ByRef Validator As cValidatorDefault)
+
             m_value = Value
             m_varType = VarType
             m_varName = VarName
             m_status = Status
             m_metadata = MetaData
 
-            m_bValidate = False
-            m_validator = Nothing
+            ' Set the validator and its properties
+            m_bValidate = (Validator IsNot Nothing)
+            m_validator = Validator
+
             m_bStored = True
             m_bAffectsRunState = True
         End Sub
 
         ''' <summary>
-        ''' 
+        ''' Get/set the Index of a Value
         ''' </summary>
-        ''' <param name="Value"></param>
-        ''' <param name="VarName"></param>
-        ''' <param name="Status"></param>
-        ''' <param name="VarType"></param>
-        ''' <param name="MetaData"></param>
-        ''' <param name="Validator"></param>
-        ''' <remarks></remarks>
-        Sub New(ByVal Value As Object, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, _
-            ByVal VarType As eValueTypes, ByRef MetaData As cVariableMetaData, ByRef Validator As cValidatorDefault)
-
-            m_value = Value
-            m_varType = VarType
-            m_varName = VarName
-            m_status = Status
-            m_metadata = MetaData
-
-            'set the validator and its properties
-            m_bValidate = True
-            m_validator = Validator
-            m_bStored = True
-            m_bAffectsRunState = True
-        End Sub
-
-        Sub New()
-            m_varName = eVarNameFlags.NotSet
-            m_status = eStatusFlags.Null
-            m_bStored = False
-            m_bAffectsRunState = False
-        End Sub
-
         Public Property Index() As Integer
             Get
                 Return m_iIndex
             End Get
-            Set(ByVal value As Integer)
+            Friend Set(ByVal value As Integer)
                 m_iIndex = value
             End Set
         End Property
 
-
         ''' <summary>
-        ''' Set the size of the array to the new value based on the CoreCounterDelegate passed in via the consturctor
+        ''' Set the size of the array to the new Value based on the CoreCounterDelegate passed in via the consturctor
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks>This is for array value objects only.</remarks>
@@ -149,17 +166,24 @@ Namespace ValueWrapper
             Return False
         End Function
 
-
-        Public Overridable Property Status(Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As eStatusFlags
+        ''' <summary>
+        ''' Get/set the status flag for a Value.
+        ''' </summary>
+        ''' <param name="iIndex">Optional value index.</param>
+        Public Overridable Property Status(Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
             Get
                 Return m_status
             End Get
-            Set(ByVal value As eStatusFlags)
+            Friend Set(ByVal value As eStatusFlags)
                 m_status = value
             End Set
         End Property
 
-        Public Overridable Property ValidationStatus(Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As eStatusFlags
+        ''' <summary>
+        ''' Get/set the last valation result for a Value.
+        ''' </summary>
+        ''' <param name="iIndex">Optional value index.</param>
+        Public Overridable Property ValidationStatus(Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
             Get
                 Return m_validationstatus
             End Get
@@ -168,7 +192,11 @@ Namespace ValueWrapper
             End Set
         End Property
 
-        Public Overridable Property Value(Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As Object
+        ''' <summary>
+        ''' Get/set the actual value of a Value.
+        ''' </summary>
+        ''' <param name="iIndex">Optional value index.</param>
+        Public Overridable Property Value(Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As Object
             Get
                 Return m_value
             End Get
@@ -181,7 +209,7 @@ Namespace ValueWrapper
             Get
                 Return m_varName
             End Get
-            Set(ByVal value As eVarNameFlags)
+            Friend Set(ByVal value As eVarNameFlags)
                 m_varName = value
             End Set
         End Property
@@ -190,7 +218,7 @@ Namespace ValueWrapper
             Get
                 Return m_varType
             End Get
-            Set(ByVal value As eValueTypes)
+            Friend Set(ByVal value As eValueTypes)
                 m_varType = value
             End Set
         End Property
@@ -199,7 +227,7 @@ Namespace ValueWrapper
             Get
                 Return m_message
             End Get
-            Set(ByVal value As String)
+            Friend Set(ByVal value As String)
                 m_message = value
             End Set
         End Property
@@ -535,7 +563,7 @@ Namespace ValueWrapper
                     Return eStatusFlags.Null
                 End If
             End Get
-            Set(ByVal value As eStatusFlags)
+            Friend Set(ByVal value As eStatusFlags)
                 If iSecondaryIndex <> cCore.NULL_VALUE Then
                     m_statusarray(iSecondaryIndex) = value
                 Else

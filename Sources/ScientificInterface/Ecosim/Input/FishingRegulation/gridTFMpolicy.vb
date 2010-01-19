@@ -53,8 +53,6 @@ Namespace Ecosim
             BLim
             BBase
             FOpt
-            CVBest
-            Kalwt
         End Enum
 
 #End Region ' Internal defs
@@ -103,8 +101,6 @@ Namespace Ecosim
             Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_BASE)
             Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_LIMIT)
             Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell(My.Resources.HEADER_FOPT)
-            Me(0, eColumnTypes.CVBest) = New EwEColumnHeaderCell(My.Resources.HEADER_CVBEST)
-            Me(0, eColumnTypes.Kalwt) = New EwEColumnHeaderCell(My.Resources.HEADER_KALWT)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False
@@ -126,12 +122,9 @@ Namespace Ecosim
                 Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(iGroup)
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
 
-                Me(iGroup, eColumnTypes.BBase) = New PropertyCell(group, eVarNameFlags.BBase)
-                Me(iGroup, eColumnTypes.BLim) = New PropertyCell(group, eVarNameFlags.BLim)
-                Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(group, eVarNameFlags.Fopt)
-
-                Me(iGroup, eColumnTypes.CVBest) = New PropertyCell(group, eVarNameFlags.RegCVBest)
-                Me(iGroup, eColumnTypes.Kalwt) = New PropertyCell(group, eVarNameFlags.RegKalWt)
+                Me(iGroup, eColumnTypes.BBase) = New PropertyCell(group, eVarNameFlags.MSEBBase)
+                Me(iGroup, eColumnTypes.BLim) = New PropertyCell(group, eVarNameFlags.MSEBLim)
+                Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(group, eVarNameFlags.MSEFmax)
 
                 Me.Rows(iGroup).Tag = group
 

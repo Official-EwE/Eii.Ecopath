@@ -314,6 +314,7 @@ Partial Public Class AppLauncher
             ' Fix: do not allow disabling of legend viz
             If (My.Settings.ShowLegends = TriState.False) Then My.Settings.ShowLegends = TriState.UseDefault
             Me.m_sg.ShowLegends = My.Settings.ShowLegends
+            Me.m_sg.UseTransparentBackgrounds = My.Settings.UseTransparentBackgrounds
 
             Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
             Me.StringToFontSetting(My.Settings.FontSubtitle, cStyleGuide.eApplicationFontType.SubTitle)
@@ -350,6 +351,7 @@ Partial Public Class AppLauncher
 
             My.Settings.ThumbnailSize = Me.m_sg.ThumbnailSize
             My.Settings.ShowLegends = Me.m_sg.ShowLegends
+            My.Settings.UseTransparentBackgrounds = Me.m_sg.UseTransparentBackgrounds
 
             My.Settings.FontTitle = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Title)
             My.Settings.FontSubtitle = Me.FontSettingToString(cStyleGuide.eApplicationFontType.SubTitle)

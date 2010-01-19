@@ -539,6 +539,18 @@ Partial Friend NotInheritable Class Settings
             Me("ShowLegends") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+    Public Property UseTransparentBackgrounds() As Boolean
+        Get
+            Return CType(Me("UseTransparentBackgrounds"),Boolean)
+        End Get
+        Set
+            Me("UseTransparentBackgrounds") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

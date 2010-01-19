@@ -422,7 +422,9 @@ Public Class cSearchDatastructures
             'Extra Years are only for Fishing policy and MSE search
             'See EwE5 RunModelValue()
             m_ExtraYears = 0
-            If Me.SearchMode = eSearchModes.FishingPolicy Or Me.SearchMode = eSearchModes.MSE Or Me.SearchMode = eSearchModes.InitializingSearch Then
+            'If Me.SearchMode = eSearchModes.FishingPolicy Or Me.SearchMode = eSearchModes.MSE Or Me.SearchMode = eSearchModes.InitializingSearch Then
+            'jb 30-Dec-09 removed the extra years from the MSE search
+            If Me.SearchMode = eSearchModes.FishingPolicy Then
                 m_ExtraYears = 20
             End If
 
@@ -715,7 +717,7 @@ Public Class cSearchDatastructures
 
 
     Public Sub setMaxEffort(ByVal nSearchBlocks As Integer)
-        MaxEffort = 60
+        MaxEffort = 10000
         For i As Integer = 1 To nSearchBlocks
             If Frates(i) * 3 > Math.Log(MaxEffort) Then
                 MaxEffort = CSng(Math.Exp(Frates(i) * 3))

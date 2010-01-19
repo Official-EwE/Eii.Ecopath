@@ -46,8 +46,31 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.MSEQIncrease, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEQIncrease))
             m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSEFleetCV, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFleetCV))
+            m_values.Add(val.varName, val)
+
+
             meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSEFleetWeight, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFleetWeight))
+            m_values.Add(val.varName, val)
+
+
+            'Bounds
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSERefFleetCatchLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERefFleetCatchLower))
+            m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSERefFleetCatchUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERefFleetCatchUpper))
+            m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSERefFleetEffortLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERefFleetEffortLower))
+            m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSERefFleetEffortUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERefFleetEffortUpper))
             m_values.Add(val.varName, val)
 
             Me.AllowValidation = True
@@ -69,19 +92,71 @@ Namespace MSE
         End Property
 
 
-        'Public Property FleetCV(ByVal iGroup As Integer) As Single
+        Public Property FleetCV() As Single
 
-        '    Get
-        '        Return CType(GetVariable(eVarNameFlags.MSEFleetCV, iGroup), Single)
-        '    End Get
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSEFleetCV), Single)
+            End Get
 
-        '    Set(ByVal value As Single)
+            Set(ByVal value As Single)
 
-        '        SetVariable(eVarNameFlags.MSEFleetCV, value, iGroup)
+                SetVariable(eVarNameFlags.MSEFleetCV, value)
 
-        '    End Set
+            End Set
 
-        'End Property
+        End Property
+
+
+        Public Property CatchRefLower() As Single
+
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSERefFleetCatchLower), Single)
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSERefFleetCatchLower, value)
+            End Set
+
+        End Property
+
+        Public Property CatchRefUpper() As Single
+
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSERefFleetCatchUpper), Single)
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSERefFleetCatchUpper, value)
+            End Set
+
+        End Property
+
+
+        Public Property EffortRefLower() As Single
+
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSERefFleetEffortLower), Single)
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSERefFleetEffortLower, value)
+            End Set
+
+        End Property
+
+        Public Property EffortRefUpper() As Single
+
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSERefFleetEffortUpper), Single)
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSERefFleetEffortUpper, value)
+            End Set
+
+        End Property
+
+
 
         ''' <summary>
         ''' Importance weight of fleet on a group
@@ -110,6 +185,40 @@ Namespace MSE
                 SetStatus(eVarNameFlags.MSEQIncrease, value)
             End Set
         End Property
+
+
+        Public Property CatchRefUpperStatus() As eStatusFlags
+            Get
+                Return CType(GetStatus(eVarNameFlags.MSERefFleetCatchUpper), eStatusFlags)
+            End Get
+
+            Set(ByVal value As eStatusFlags)
+                SetStatus(eVarNameFlags.MSERefFleetCatchUpper, value)
+            End Set
+        End Property
+
+        Public Property CatchRefLowerStatus() As eStatusFlags
+            Get
+                Return CType(GetStatus(eVarNameFlags.MSERefGroupCatchLower), eStatusFlags)
+            End Get
+
+            Set(ByVal value As eStatusFlags)
+                SetStatus(eVarNameFlags.MSERefGroupCatchLower, value)
+            End Set
+        End Property
+
+
+        Public Property FleetCVStatus() As eStatusFlags
+            Get
+                Return CType(GetStatus(eVarNameFlags.MSEFleetCV), eStatusFlags)
+            End Get
+
+            Set(ByVal value As eStatusFlags)
+                SetStatus(eVarNameFlags.MSEFleetCV, value)
+            End Set
+        End Property
+
+
 
 
 

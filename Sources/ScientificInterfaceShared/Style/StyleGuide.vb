@@ -71,6 +71,8 @@ Namespace Style
         ''' <summary>Usage of legends.</summary>
         ''' <remarks>UseDefault = selective, True or False</remarks>
         Private m_tsShowLegends As TriState = TriState.UseDefault
+        ''' <summary>Show transparent backgrounds where applicable</summary>
+        Private m_bTransparentBackgrounds As Boolean = False
 
         ' -- group visibility --
         ''' <summary>List of indexes of groups to hide.</summary>
@@ -717,6 +719,27 @@ Namespace Style
         Public Sub LegendsChanged()
             Me.FireChangeEvent(eChangeType.Legends)
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set how graphs should display backgrounds.
+        ''' </summary>
+        ''' <remarks>
+        ''' Whenever this setting changes a <see cref="eChangeType.Colours">Colours</see>
+        ''' change is broadcasted.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Property UseTransparentBackgrounds() As Boolean
+            Get
+                Return Me.m_bTransparentBackgrounds
+            End Get
+            Set(ByVal value As Boolean)
+                If value <> Me.m_bTransparentBackgrounds Then
+                    Me.m_bTransparentBackgrounds = value
+                    Me.ColorsChanged()
+                End If
+            End Set
+        End Property
 
 #End Region ' Maps and charts
 

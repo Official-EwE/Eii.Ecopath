@@ -792,7 +792,20 @@ System Error: {0}</value>
   <data name="ECOPATH_MODEL_UPDATE_SUCCESS" xml:space="preserve">
     <value>Model was updated to the lastest version.</value>
   </data>
+  <data name="MSE_VALIDATION_EFFORT" xml:space="preserve">
+    <value>Effort for fleet(s) '{0}' may need to increased for the quota regulations to have an effect.</value>
+    <comment>{0}=fleet names</comment>
+  </data>
+  <data name="MSE_VALIDATION_FIXEDESCAPEMENT" xml:space="preserve">
+    <value>Both Fixed Escapement and Quota Options have been set for group(s) '{0}' only the Fixed Escapement regulations will be used.</value>
+    <comment>{0}=group names</comment>
+  </data>
+  <data name="MSE_VALIDATION_QUOTAS" xml:space="preserve">
+    <value>No regulatory options have been set. Please set a Quota regulation in the Regulatory options form for at least one fleet.</value>
+    <comment>No Quota options have been selected</comment>
+  </data>
   <data name="DATABASE_BACKUP_PROMPT" xml:space="preserve">
     <value>This database was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?</value>
   </data>
+
 </root>

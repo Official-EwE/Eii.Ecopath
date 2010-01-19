@@ -56,24 +56,24 @@ Public Class cGraphOfMixedTrophicImpact
 
         NoDisplay = 0
         For i As Integer = 1 To Me.NetworkManager.nGroups
-            ' JS: group hiding has not yet been enabled
-            'bShowItem = sg.GroupVisible(i)
+            ' Only show visible groups
+            bShowItem = sg.GroupVisible(i)
             If bShowItem Then NoDisplay += 1
         Next
         For i As Integer = 1 To Me.NetworkManager.nFleets
-            ' JS: fleet hiding has not yet been enabled
-            'bShowItem = sg.FleetVisible(i)
+            ' Only show visible fleets
+            bShowItem = sg.FleetVisible(i)
             If bShowItem Then NoDisplay += 1
         Next
         PrintLine(FileNumber, Format(NoDisplay, "00"))
 
         For i As Integer = 1 To Me.NetworkManager.nGroups + Me.NetworkManager.nFleets
             If i <= Me.NetworkManager.nGroups Then
-                ' JS: group hiding has not yet been enabled
-                'bShowItem = sg.GroupVisible(i)
+                ' Only show visible groups
+                bShowItem = sg.GroupVisible(i)
             Else
-                ' JS: group hiding has not yet been enabled
-                'bShowItem = sg.FleetVisible(i - Me.NetworkManager.nGroups)
+                ' Only show visible fleets
+                bShowItem = sg.FleetVisible(i - Me.NetworkManager.nGroups)
             End If
             If bShowItem Then
                 ZeroString = "                    "
@@ -86,11 +86,11 @@ Public Class cGraphOfMixedTrophicImpact
 
                 For j As Integer = 1 To Me.NetworkManager.nGroups + Me.NetworkManager.nFleets
                     If i <= Me.NetworkManager.nGroups Then
-                        ' JS: group hiding has not yet been enabled
-                        'bShowItem = sg.GroupVisible(i)
+                        ' Only show visible groups
+                        bShowItem = sg.GroupVisible(i)
                     Else
-                        ' JS: fleet hiding has not yet been enabled
-                        'bShowItem = sg.FleetVisible(i - Me.NetworkManager.nGroups)
+                        ' Only show visible fleets
+                        bShowItem = sg.FleetVisible(i - Me.NetworkManager.nGroups)
                     End If
                     If bShowItem Then
                         If Me.NetworkManager.MixedTrophicImpacts(i, j) >= 0.0 Then

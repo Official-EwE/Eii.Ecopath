@@ -39,6 +39,7 @@ Public Class cGameServerInterface
 
         'MSE 
         m_dctCoreListData.Add(eDataTypes.MSEGroupOutputs, Me.m_core.MSEManager.GroupOutputs)
+        m_dctCoreListData.Add(eDataTypes.MSEBiomassStats, Me.m_core.MSEManager.BiomassStats)
 
         ''Wow check this out HACK HACK HACK
         'Dim list As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEOutput, 0)
@@ -46,6 +47,7 @@ Public Class cGameServerInterface
         'm_dctCoreListData.Add(eDataTypes.MSEOutput, list)
 
         m_dctCoreData.Add(eDataTypes.MSEOutput, Me.m_core.MSEManager.Output)
+        m_dctCoreData.Add(eDataTypes.EcosimOutput, Me.m_core.EcosimOutputs)
 
     End Sub
 

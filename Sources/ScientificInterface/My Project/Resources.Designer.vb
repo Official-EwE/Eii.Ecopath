@@ -2847,6 +2847,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to CV.
+        '''</summary>
+        Friend ReadOnly Property HEADER_CV() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CV", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass CV.
         '''</summary>
         Friend ReadOnly Property HEADER_CVBEST() As String
@@ -3090,6 +3099,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fixed escapement (t/km2).
+        '''</summary>
+        Friend ReadOnly Property HEADER_FIXEDESCAPE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FIXEDESCAPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fleet/gear.
         '''</summary>
         Friend ReadOnly Property HEADER_FLEET_GEAR() As String
@@ -3126,7 +3144,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F optimum.
+        '''  Looks up a localized string similar to F max..
         '''</summary>
         Friend ReadOnly Property HEADER_FOPT() As String
             Get
@@ -3239,6 +3257,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_INCOME() As String
             Get
                 Return ResourceManager.GetString("HEADER_INCOME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Annual increase in catchability.
+        '''</summary>
+        Friend ReadOnly Property HEADER_INCREASEQ() As String
+            Get
+                Return ResourceManager.GetString("HEADER_INCREASEQ", resourceCulture)
             End Get
         End Property
         
@@ -3716,6 +3743,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_QUOTA_EFFORT() As String
             Get
                 Return ResourceManager.GetString("HEADER_QUOTA_EFFORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Not used.
+        '''</summary>
+        Friend ReadOnly Property HEADER_QUOTA_NOTUSED() As String
+            Get
+                Return ResourceManager.GetString("HEADER_QUOTA_NOTUSED", resourceCulture)
             End Get
         End Property
         

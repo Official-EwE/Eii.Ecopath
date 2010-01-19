@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Font Name="Tahoma" Size="8.25" />
   <Comment CommentText="Core message handling.&#xD;&#xA;&#xD;&#xA;The Core holds a single instance of cMessagePublisher in the public property Messages. To handle a message of an eMessageType create an instance of cMessageHandler that can handle the type of message you are interested in see cMessageHandler.New(...). Add this instance of cMessageHandler to the Core Message Publisher via the cCore.Messages.AddMessageHandler(...) method. When the core has a message of this type it will call the Delegate instance in the message handler that you created.&#xD;&#xA;&#xD;&#xA;A new message type can be created by adding a flag to the eMessageType enumerator. Then the message can be created and handled like an other message.">
     <Position X="0.777" Y="0.5" Height="2.437" Width="3.171" />
   </Comment>
@@ -19,86 +18,56 @@
   <Class Name="EwECore.cMessage">
     <Position X="6" Y="5" Width="1.5" />
     <TypeIdentifier>
+      <HashCode>AABAIAABAgIAAEAAgAAgABAIABAAACAAAQQAIAAAAAA=</HashCode>
       <FileName>Publisher-Subscriber\cMessage.vb</FileName>
-      <HashCode>AAAAAAAAAgIAAEAAAAAgAAAIAAAAAAAAAQQAIAAAAAA=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="Type" />
-      <Field Name="Source" />
+      <Property Name="Type" />
     </ShowAsAssociation>
   </Class>
   <Class Name="EwECore.cMessageHandler">
     <Position X="10.25" Y="2.75" Width="2.5" />
     <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgCAQCEAAAAAAAAIAAAAAAAAAACA=</HashCode>
       <FileName>Publisher-Subscriber\cMessageHandler.vb</FileName>
-      <HashCode>AABAIAAAAAAAAAAAgCAACEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="m_source" />
-      <Field Name="m_Type" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="EwECore.cMessagePublisher">
     <Position X="5.5" Y="3" Width="1.75" />
     <TypeIdentifier>
+      <HashCode>AAkAAAAQACgAAAAAgCAACSAAAAAAAgAAEAAAAAAAAAA=</HashCode>
       <FileName>Publisher-Subscriber\cMessagePublisher.vb</FileName>
-      <HashCode>AAkAAAAQAAgAAAAAACAAAQAACAAAAAAAEAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="EwECore.cVariableStatus">
     <Position X="8.75" Y="5" Width="1.5" />
     <TypeIdentifier>
+      <HashCode>AAAAAAAEAgIAAAAAgAACBAAAIgAAAAIAAAEAIAAAAAA=</HashCode>
       <FileName>Publisher-Subscriber\cVariableStatus.vb</FileName>
-      <HashCode>AAAAAAAEAgIAAAAAACAABAAEIgAAAAIAAAAAIAAAAAA=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="VarType" />
       <Field Name="Status" />
     </ShowAsAssociation>
   </Class>
   <Class Name="EwECore.cCore">
     <Position X="0.75" Y="3.25" Width="2.25" />
-    <TypeIdentifier>
-      <FileName>Core\cCore.vb</FileName>
-      <HashCode>iEA2KK5AwhCYqJCgSIREBCCMBCJwQBFIDIEEAQHCzkA=</HashCode>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Messages" />
-    </ShowAsAssociation>
     <Members>
       <Method Name="AddGroup" Hidden="true" />
-      <Field Name="bEcoPathInit" Hidden="true" />
-      <Field Name="bEcoPathInitializing" Hidden="true" />
-      <Field Name="bEcoSimInit" Hidden="true" />
-      <Method Name="clearInputOutputFlags" Hidden="true" />
-      <Method Name="createErrorMessage" Hidden="true" />
       <Property Name="EcoPathGroupInputs" Hidden="true" />
       <Property Name="EcoPathGroupOutputs" Hidden="true" />
       <Method Name="EcoPathMessage_Handler" Hidden="true" />
-      <Method Name="EcoSimProgress_handler" Hidden="true" />
-      <Property Name="Fleets" Hidden="true" />
-      <Method Name="getEcoSimGroupInfo" Hidden="true" />
-      <Method Name="getEcoSimModelParamters" Hidden="true" />
-      <Method Name="InitEcoPath" Hidden="true" />
       <Method Name="InitEcoSim" Hidden="true" />
       <Field Name="m_postEcoPathMessage" Hidden="true" />
       <Field Name="m_publisher" Hidden="true" />
-      <Field Name="mInterfaceDelegate" Hidden="true" />
-      <Field Name="mParameterEstimator" Hidden="true" />
-      <Field Name="mSynEcoSim" Hidden="true" />
-      <Field Name="nDetritusGroups" Hidden="true" />
+      <Property Name="nDetritusGroups" Hidden="true" />
       <Method Name="New" Hidden="true" />
-      <Field Name="nFleets" Hidden="true" />
-      <Field Name="nGroups" Hidden="true" />
-      <Field Name="nLivingGroups" Hidden="true" />
+      <Property Name="nFleets" Hidden="true" />
+      <Property Name="nGroups" Hidden="true" />
+      <Property Name="nLivingGroups" Hidden="true" />
       <Method Name="processMessageFromEcopath" Hidden="true" />
       <Method Name="RunEcoPath" Hidden="true" />
       <Method Name="RunEcoSim" Hidden="true" />
-      <Method Name="RunEcoSimOnThread" Hidden="true" />
-      <Method Name="setDataSource" Hidden="true" />
       <Method Name="StopEcoSim" Hidden="true" />
-      <Method Name="updateEcoSimGroupInfo" Hidden="true" />
-      <Method Name="UpdateTimeVariables" Hidden="true" />
     </Members>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
@@ -107,24 +76,24 @@
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
     <NestedTypes>
-      <Delegate Name="EwECore.cCore.EcoPathMessageDelegate" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Core\Core\cCore.vb</NewMemberFileName>
-        </TypeIdentifier>
-      </Delegate>
       <Delegate Name="EwECore.cCore.CoreMessageDelegate">
         <TypeIdentifier>
           <NewMemberFileName>Core\Core\cCore.vb</NewMemberFileName>
         </TypeIdentifier>
       </Delegate>
-      <Delegate Name="EwECore.cCore.CoreForcingFunctionUpdaterDelegate" Collapsed="true">
+      <Delegate Name="EwECore.cCore.EcoSpaceInterfaceDelegate" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>Core\cCore.vb</NewMemberFileName>
         </TypeIdentifier>
       </Delegate>
-      <Enum Name="EwECore.cCore.eCostIndex" Collapsed="true">
+      <Enum Name="EwECore.cCore.eBatchChangeLevelFlags" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>Core\Core\cCore.vb</NewMemberFileName>
+          <NewMemberFileName>Core\cCore.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="EwECore.cCore.eBatchLockType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Core\cCore.vb</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
@@ -136,33 +105,41 @@
         <Point X="5.5" Y="3.584" />
       </Path>
     </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>j9s3/t5769XPq5+7N//+zrr+9/9/77/v3//n/W/73+0=</HashCode>
+      <FileName>Core\cCore.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Messages" />
+    </ShowAsAssociation>
   </Class>
   <Enum Name="EwECore.eVarNameFlags" Collapsed="true">
     <Position X="7.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <FileName>Core\CoreEnumerators.vb</FileName>
       <HashCode>ICkRUxgXMZCNAQiEAEFBAAUGAkENAAAQCrEYI0oDAQk=</HashCode>
+      <FileName>Core\CoreEnumerators.vb</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="EwECore.eStatusFlags" Collapsed="true">
     <Position X="9.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAQAABAAAAAAEAAAAAAAsBAAAAAAI=</HashCode>
       <FileName>Core\CoreEnumerators.vb</FileName>
-      <HashCode>AAAAAAAAAAAAAgAAAAABAAAAAAEAAAAAAAsBAAAAAAI=</HashCode>
     </TypeIdentifier>
   </Enum>
   <Enum Name="EwECore.eMessageType">
     <Position X="11.5" Y="7" Width="2" />
     <TypeIdentifier>
+      <HashCode>MAgAAAAAAADBAgAAAEAAEUABAAICEBAAACAAAAjACAA=</HashCode>
       <FileName>Core\CoreEnumerators.vb</FileName>
-      <HashCode>IAAAECAAAAABAgAAAAAAEAAAAAYAAAAAACAAAAgAAAA=</HashCode>
     </TypeIdentifier>
   </Enum>
   <Enum Name="EwECore.eCoreComponentType">
     <Position X="14.25" Y="7" Width="1.5" />
     <TypeIdentifier>
-      <FileName>Core\CoreEnumerators.vb</FileName>
       <HashCode>JAAAAAAAAAAAAgAAAAAAAAAAAAAAgAAAAAAAQAgAAAA=</HashCode>
+      <FileName>Core\CoreEnumerators.vb</FileName>
     </TypeIdentifier>
   </Enum>
+  <Font Name="Tahoma" Size="8.25" />
 </ClassDiagram>

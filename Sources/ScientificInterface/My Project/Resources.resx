@@ -2086,7 +2086,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Biomass CV</value>
   </data>
   <data name="HEADER_FOPT" xml:space="preserve">
-    <value>F optimum</value>
+    <value>F max.</value>
   </data>
   <data name="HEADER_KALWT" xml:space="preserve">
     <value>Kalman weight</value>
@@ -2429,6 +2429,18 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="PROMPT_INVALIDMODEL_REMOVEMRU" xml:space="preserve">
     <value>'{0}' does not seem to be a valid Ecopath model. Do you wish to remove this from the recent file list?</value>
+  </data>
+  <data name="HEADER_QUOTA_NOTUSED" xml:space="preserve">
+    <value>Not used</value>
+  </data>
+  <data name="HEADER_CV" xml:space="preserve">
+    <value>CV</value>
+  </data>
+  <data name="HEADER_FIXEDESCAPE" xml:space="preserve">
+    <value>Fixed escapement (t/km2)</value>
+  </data>
+  <data name="HEADER_INCREASEQ" xml:space="preserve">
+    <value>Annual increase in catchability</value>
   </data>
   <data name="PROMPT_STATUS_FURTHERDETAILS" xml:space="preserve">
     <value>(for further details refer to the status panel)</value>

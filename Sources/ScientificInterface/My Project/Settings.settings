@@ -122,5 +122,8 @@
     <Setting Name="ShowLegends" Type="Microsoft.VisualBasic.TriState" Scope="User">
       <Value Profile="(Default)">UseDefault</Value>
     </Setting>
+    <Setting Name="UseTransparentBackgrounds" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

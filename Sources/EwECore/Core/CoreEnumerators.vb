@@ -177,6 +177,9 @@ Public Enum eMessageType
     InvalidModel_QB0_Generic
     InvalidModel_B_Detritus
 
+    ''' <summary>MSE has completed a model run of some sort </summary>
+    MSERunCompleted
+
 End Enum
 
 #End Region

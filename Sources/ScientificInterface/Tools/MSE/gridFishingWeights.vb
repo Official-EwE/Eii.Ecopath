@@ -86,4 +86,13 @@ Public Class gridFishingWeights
 
     End Sub
 
+
+    Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
+        Get
+            Return eCoreComponentType.MSE
+        End Get
+    End Property
+
+
+
 End Class

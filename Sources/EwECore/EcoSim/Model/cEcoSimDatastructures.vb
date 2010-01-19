@@ -224,12 +224,12 @@ Public Class cEcosimDatastructures
     ''' </remarks>
     Public NoIntegrate() As Integer
 
-    ''' <summary>Catch rate FCatch / EcopathBiomass by group </summary>
+    ''' <summary>Mortality due to fishing FCatch(group) / EcopathBiomass(group) by group </summary>
     ''' <remarks>Initialized in SetupSimVariables() </remarks>
     Public Fish1() As Single
 
     ''' <summary>
-    ''' Catch Rate Catch per unit of biomass at the current time step
+    ''' Mortality due to fishing at the current time step
     ''' </summary>
     Public FishTime() As Single
 
@@ -238,14 +238,13 @@ Public Class cEcosimDatastructures
     Public FishRateMax() As Single
 
     ''' <summary>
-    ''' Catch Rate by Fleet, Group
+    ''' Fishing mortality by Fleet, Group
     ''' </summary>
-    ''' <remarks>This is the catch rate of a Fleet for each group.
-    '''  Array element nFleets + 1 will contain the sum across all groups and should be the same as Fish1()</remarks>
+    ''' <remarks> Array element nFleets + 1 will contain the sum across all groups and should be the same as Fish1()</remarks>
     Public FishMGear(,) As Single
 
     ''' <summary>
-    ''' Catch Rate over time for each group.
+    ''' Fishing mortality over time for each group.
     ''' </summary>
     ''' <remarks>This is the user entered catch rates for each group. It's default value is Fish1() Catch/Biomass set in DefaultFishMortalityRates(). 
     ''' It is used as a forcing/driving value over time. It is used to compute FishTime() </remarks>
@@ -256,7 +255,7 @@ Public Class cEcosimDatastructures
     Friend GroupFishRateNoDBID() As Integer
 
     ''' <summary>
-    ''' Fishing rate multiplier. Zero removes all fishing, one has no Effect, two would double the catch rate FishRateNo() for all groups fished by this fleet.
+    ''' Fishing rate multiplier. Zero removes all fishing, one sets fishing effort to Ecopath value, two would double the fishing mortality FishRateNo() for all groups fished by this fleet.
     ''' </summary>
     ''' <remarks> used to scale the FishRateNo() for all the groups fished by a fleet</remarks>
     Public FishRateGear(,) As Single
@@ -313,40 +312,6 @@ Public Class cEcosimDatastructures
     '''  Detritus from all sources by group
     ''' </summary>
     Public GroupDetritus() As Single
-
-#Region "Regulated Fisheries arrays"
-
-    Public DoClosedLoop As Boolean
-
-    ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort  (by gear)</summary>
-    Public MaxEffort() As Single 'gear
-
-    ''' <summary>Type of quota system in effect (by gear) </summary>
-    Public QuotaType() As eQuotaTypes 'gear
-
-    ''' <summary>Fishing Quota for regulated fisheries  (by gear group)</summary>
-    Public Quota(,) As Single 'gear group
-
-    ''' <summary>Biomass discarded because of regulation  (by gear group)</summary>
-    Public RegDiscard(,) As Single ' gear group
-
-    ''' <summary>Proportion of regulated landings (by gear group) for the current time step</summary>
-    Public PropLandedTime(,) As Single
-
-    ''' <summary>Proportion of regulated discards (by gear group) for the current time step</summary>
-    Public Propdiscardtime(,) As Single
-
-    Public Bestimate() As Single
-    Public BestimateLast() As Single
-    Public Quotashare(,) As Single
-    Public QuotaTime(,) As Single
-    Public CVest() As Single
-    Public KalWt() As Single
-    Public Blim() As Single
-    Public Bbase() As Single
-    Public Fopt() As Single
-
-#End Region
 
     'jb April-07-2006 replaced Shapes() with ShapeParameters
     'Public Shapes() As Single
@@ -632,44 +597,29 @@ Public Class cEcosimDatastructures
         ReDim IsMedFunction(nGroups, nGroups, MaxFunctions)
         ReDim FunctionType(nGroups, nGroups, MaxFunctions)
 
-        'for regulated fisheries
-        ReDim QuotaType(nGear)
-        ReDim RegDiscard(nGear, nGroups)
-        ReDim MaxEffort(nGear)
-        ReDim Quota(nGear, nGroups)
-        ReDim PropLandedTime(nGear, nGroups)
-        ReDim Propdiscardtime(nGear, nGroups)
+        '<<<<<<< .working
+        '=======
+        ''for regulated fisheries
+        'ReDim QuotaType(nGear)
+        'ReDim RegDiscard(nGear, nGroups)
+        'ReDim MaxEffort(nGear)
+        'ReDim Quota(nGear, nGroups)
+        'ReDim PropLandedTime(nGear, nGroups)
+        'ReDim Propdiscardtime(nGear, nGroups)
 
-        ReDim Bestimate(nGroups)
-        ReDim BestimateLast(nGroups)
-        ReDim Quotashare(nGear, nGroups)
-        ReDim QuotaTime(nGear, nGroups)
-        ReDim CVest(nGroups)
-        ReDim KalWt(nGroups)
-        ReDim Blim(nGroups)
-        ReDim Bbase(nGroups)
-        ReDim Fopt(nGroups)
+        'ReDim Bestimate(nGroups)
+        'ReDim BestimateLast(nGroups)
+        'ReDim Quotashare(nGear, nGroups)
+        'ReDim QuotaTime(nGear, nGroups)
+        'ReDim CVest(nGroups)
+        'ReDim KalWt(nGroups)
+        'ReDim Blim(nGroups)
+        'ReDim Bbase(nGroups)
+        'ReDim Fopt(nGroups)
         ReDim TLSim(nGroups)
 
+        '>>>>>>> .merge-right.r2561
         ReDim GroupDetritus(nGroups)
-
-        For i = 1 To nGroups
-            CVest(i) = cCore.NULL_VALUE
-            Blim(i) = cCore.NULL_VALUE
-            Bbase(i) = cCore.NULL_VALUE
-            KalWt(i) = cCore.NULL_VALUE
-            Fopt(i) = cCore.NULL_VALUE
-        Next
-
-        'Setting regulatory values to NULL will cause them to be set to a default value if the database does not contain contain values
-        'see cEcosimModel.setDefaultValues
-        For iflt As Integer = 1 To nGear
-            MaxEffort(iflt) = cCore.NULL_VALUE
-
-            For igrp As Integer = 1 To nGroups
-                Quota(iflt, igrp) = cCore.NULL_VALUE
-            Next
-        Next
 
         ReDim Epower(nGear)
         ReDim PcapBase(nGear)
@@ -677,6 +627,8 @@ Public Class cEcosimDatastructures
         ReDim CapBaseGrowth(nGear)
 
     End Sub
+
+    ' End Sub
 
     Public Sub RedimOutputsByTime(ByVal nTimesteps As Integer)
         ReDim FIB(nTimesteps)
@@ -1184,7 +1136,7 @@ Public Class cEcosimDatastructures
     Public ReadOnly Property NTimes() As Integer
         Get
             Return Me.NumYears * Me.NumStepsPerYear
-            If NumYears > 55 Then Stop
+            'VC091102: THIS can't be right, SO I REMARKED IT OUT : If NumYears > 55 Then Stop
         End Get
     End Property
 

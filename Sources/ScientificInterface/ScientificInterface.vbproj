@@ -12,6 +12,18 @@
     <AssemblyName>EwE6</AssemblyName>
     <MyType>WindowsForms</MyType>
     <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>http://localhost/ScientificInterface/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationVersion>1.0.0.*</ApplicationVersion>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -31,22 +43,6 @@
     <GenerateManifests>false</GenerateManifests>
     <SignManifests>false</SignManifests>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
-    <SignAssembly>false</SignAssembly>
-    <PublishUrl>http://localhost/ScientificInterface/</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -115,6 +111,7 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.3373.24277, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
@@ -837,19 +834,9 @@
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <InProject>False</InProject>
+      <ProductName>.NET Framework 2.0 Beta</ProductName>
       <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
@@ -971,23 +958,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Import\dlgImportDatabase.resx">
       <DependentUpon>dlgImportDatabase.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Other\Import\Pages\ucImportPageWelcome.resx">
-      <DependentUpon>ucImportPageWelcome.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Import\Pages\ucImportPageModels.resx">
       <DependentUpon>ucImportPageModels.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Import\Pages\ucImportPageProgress.resx">
       <DependentUpon>ucImportPageProgress.vb</DependentUpon>
-      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Import\Pages\ucImportPageWelcome.resx">
+      <DependentUpon>ucImportPageWelcome.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Import\ucImportHeader.resx">
       <DependentUpon>ucImportHeader.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\Application\ucAppGraphs.resx">
       <DependentUpon>ucAppGraphs.vb</DependentUpon>
@@ -1257,12 +1239,6 @@
     <Compile Include="Other\Import\dlgImportDatabase.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Other\Import\Pages\ucImportPageWelcome.Designer.vb">
-      <DependentUpon>ucImportPageWelcome.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Other\Import\Pages\ucImportPageWelcome.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Other\Import\Pages\ucImportPageModels.Designer.vb">
       <DependentUpon>ucImportPageModels.vb</DependentUpon>
     </Compile>
@@ -1273,6 +1249,12 @@
       <DependentUpon>ucImportPageProgress.vb</DependentUpon>
     </Compile>
     <Compile Include="Other\Import\Pages\ucImportPageProgress.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Other\Import\Pages\ucImportPageWelcome.Designer.vb">
+      <DependentUpon>ucImportPageWelcome.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Import\Pages\ucImportPageWelcome.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\Import\ucImportHeader.Designer.vb">
@@ -1307,22 +1289,56 @@
     </Compile>
     <Compile Include="Panels\StatusPanel\cMessageStateHandler.vb" />
     <Compile Include="Settings.vb" />
-    <Compile Include="Tools\MSE\gridPerformanceResults.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Tools\MSE\gridRiskResults.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Tools\MSE\cMSEEventSource.vb" />
     <Compile Include="Tools\MSE\frmMSE.Designer.vb">
       <DependentUpon>frmMSE.vb</DependentUpon>
     </Compile>
     <Compile Include="Tools\MSE\frmMSE.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridBioCV.vb">
+    <Compile Include="Tools\MSE\frmMSEPlots.Designer.vb">
+      <DependentUpon>frmMSEPlots.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\MSE\frmMSEPlots.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\MSE\frmMSEResults.Designer.vb">
+      <DependentUpon>frmMSEResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\MSE\frmMSEResults.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\MSE\frmMSY.Designer.vb">
+      <DependentUpon>frmMSY.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\MSE\frmMSY.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\MSE\gridFleetRefLevels.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridCatchabilityIncrease.vb">
+    <Compile Include="Tools\MSE\gridGroupRefLevels.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\MSE\gridFishingCV.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\MSE\gridFixedEscapement.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\MSE\gridMSEGroupObjectives.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\MSE\gridMSEOjectiveWeights.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\MSE\gridPerformanceResults.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\MSE\gridRiskResults.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\MSE\gridBioCV.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridFishingWeights.vb">
@@ -1331,7 +1347,7 @@
     <Compile Include="Tools\MSE\gridRiskBounds.vb">
       <SubType>Component</SubType>
     </Compile>
-    <None Include="My Project\app.manifest" />
+    <Compile Include="Tools\MSE\MSEPlotting.vb" />
     <None Include="Resources\BreakpointHS.png" />
     <None Include="Resources\compareversionsHS.png" />
     <None Include="Resources\credits.rtf" />
@@ -1593,6 +1609,15 @@
       <DependentUpon>frmMSE.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\MSE\frmMSEPlots.resx">
+      <DependentUpon>frmMSEPlots.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\MSE\frmMSEResults.resx">
+      <DependentUpon>frmMSEResults.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\MSE\frmMSY.resx">
+      <DependentUpon>frmMSY.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Wizard\EwEScenarioDlg.resx">
       <DependentUpon>EwEScenarioDlg.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1601,7 +1626,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
-      <Name>EwECore %28EwECore\EwECore%29</Name>
+      <Name>EwECore</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj">
       <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
@@ -1613,15 +1638,15 @@
     </ProjectReference>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
-      <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
+      <Name>EwEPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
+      <Name>EwEUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
       <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
-      <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
+      <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

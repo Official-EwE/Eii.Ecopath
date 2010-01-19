@@ -50,6 +50,12 @@ Namespace Ecopath.Controls.FlowDiagram
             End Get
         End Property
 
+        Public ReadOnly Property GroupVisible(ByVal iGroup As Integer) As Boolean
+            Get
+                Return Me.m_sg.GroupVisible(iGroup)
+            End Get
+        End Property
+
         Public ReadOnly Property Diet(ByVal iPred As Integer, ByVal iPrey As Integer) As Single
             Get
                 Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iPred)

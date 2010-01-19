@@ -407,8 +407,9 @@ Namespace Ecosim
             Dim dScale As Single = 1.0F
 
             If gts.TimeSeriesType = eTimeSeriesType.BiomassRel Or _
-                 gts.TimeSeriesType = eTimeSeriesType.TotalMortality Or _
                     gts.TimeSeriesType = eTimeSeriesType.AverageWeight Then
+                'VC091209; the totalmortality is absolute, not relative, so removed it from here
+                ' gts.TimeSeriesType = eTimeSeriesType.TotalMortality Or _
                 If gts.eDataQ > 0 Then
                     dScale = 1.0F / gts.eDataQ
                 End If

@@ -149,7 +149,23 @@ Public Class NavigationPanel
         m_nodeController.Add("ndEcoTracer_Output", eCoreExecutionState.EcotracerLoaded, GetType(frmEcotracerOutput), "") ' ToDo: connect to help
 
         'MSE
-        ' m_nodeController.Add("ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), "") ' ToDo: connect to help
+        m_nodeController.Add("ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), "") ' ToDo: connect to help
+        m_nodeController.Add("ndRefFixedEscape", eCoreExecutionState.EcosimLoaded, GetType(gridFixedEscapement), "") ' ToDo: connect to help
+        m_nodeController.Add("ndRegulatoryOptions", eCoreExecutionState.EcosimLoaded, GetType(gridRegulatoryOptions), "") ' ToDo: connect to help
+        m_nodeController.Add("ndRegQuotas", eCoreExecutionState.EcosimLoaded, GetType(gridFishingQuotas), "") ' ToDo: connect to help
+        m_nodeController.Add("ndRegFishingMort", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy), "") ' ToDo: connect to help
+
+        m_nodeController.Add("ndEfTrackObjectives", eCoreExecutionState.EcosimLoaded, GetType(gridMSEOjectiveWeights), "") ' ToDo: connect to help
+        m_nodeController.Add("ndEfTrackEcoObjectives", eCoreExecutionState.EcosimLoaded, GetType(gridMSEGroupObjectives), "") ' ToDo: connect to help
+        m_nodeController.Add("ndEfTrackFleetWeights", eCoreExecutionState.EcosimLoaded, GetType(gridFishingWeights), "") ' ToDo: connect to help
+
+        m_nodeController.Add("ndUncertGroup", eCoreExecutionState.EcosimLoaded, GetType(gridBioCV), "") ' ToDo: connect to help
+        m_nodeController.Add("ndUncertFleet", eCoreExecutionState.EcosimLoaded, GetType(gridFishingCV), "") ' ToDo: connect to help
+        m_nodeController.Add("ndRefMSY", eCoreExecutionState.EcosimLoaded, GetType(frmMSY), "") ' ToDo: connect to help
+        m_nodeController.Add("ndRefBiomass", eCoreExecutionState.EcosimLoaded, GetType(gridGroupRefLevels), "") ' ToDo: connect to help
+        m_nodeController.Add("ndRefCatch", eCoreExecutionState.EcosimLoaded, GetType(gridFleetRefLevels), "") ' ToDo: connect to help
+        m_nodeController.Add("ndMSEPlots", eCoreExecutionState.EcosimLoaded, GetType(frmMSEPlots), "") ' ToDo: connect to help
+        m_nodeController.Add("ndMSEResults", eCoreExecutionState.EcosimLoaded, GetType(frmMSEResults), "") ' ToDo: connect to help
 
     End Sub
 

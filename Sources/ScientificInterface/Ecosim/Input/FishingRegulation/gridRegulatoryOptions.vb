@@ -64,7 +64,8 @@ Namespace Ecosim
             Index = 0
             Name
             MaxEffort
-            OptionNotSet
+            OptionNotUsed
+            OptionEffort
             OptionWeakest
             OptionStrongest
             OptionSelective
@@ -95,7 +96,8 @@ Namespace Ecosim
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
             Me(0, eColumnTypes.MaxEffort) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXEFFORT, cStyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.OptionNotSet) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_EFFORT)
+            Me(0, eColumnTypes.OptionNotUsed) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_NOTUSED)
+            Me(0, eColumnTypes.OptionEffort) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_EFFORT)
             Me(0, eColumnTypes.OptionWeakest) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_WEAKESTSTOCK)
             Me(0, eColumnTypes.OptionStrongest) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_STRONGESTSTOCK)
             Me(0, eColumnTypes.OptionSelective) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_SELECTIVEFISHING)
@@ -123,8 +125,12 @@ Namespace Ecosim
                 Me(iFleet, eColumnTypes.Name) = New PropertyRowHeaderCell(fleet, eVarNameFlags.Name)
                 Me(iFleet, eColumnTypes.MaxEffort) = New PropertyCell(reg, eVarNameFlags.MaxEffort)
 
-                Me(iFleet, eColumnTypes.OptionNotSet) = New SourceGrid2.Cells.Real.CheckBox(True)
-                Me(iFleet, eColumnTypes.OptionNotSet).Behaviors.Add(m_bm)
+                Me(iFleet, eColumnTypes.OptionNotUsed) = New SourceGrid2.Cells.Real.CheckBox(True)
+                Me(iFleet, eColumnTypes.OptionNotUsed).Behaviors.Add(m_bm)
+
+
+                Me(iFleet, eColumnTypes.OptionEffort) = New SourceGrid2.Cells.Real.CheckBox(False)
+                Me(iFleet, eColumnTypes.OptionEffort).Behaviors.Add(m_bm)
 
                 Me(iFleet, eColumnTypes.OptionWeakest) = New SourceGrid2.Cells.Real.CheckBox(False)
                 Me(iFleet, eColumnTypes.OptionWeakest).Behaviors.Add(m_bm)
@@ -166,7 +172,8 @@ Namespace Ecosim
             Me.AllowUpdates = False
 
             ' Set option checks
-            Me(iRow, eColumnTypes.OptionNotSet).Value = (reg.QuotaType = eQuotaTypes.NotUsed)
+            Me(iRow, eColumnTypes.OptionNotUsed).Value = (reg.QuotaType = eQuotaTypes.NotUsed)
+            Me(iRow, eColumnTypes.OptionEffort).Value = (reg.QuotaType = eQuotaTypes.Effort)
             Me(iRow, eColumnTypes.OptionWeakest).Value = (reg.QuotaType = eQuotaTypes.Weakest)
             Me(iRow, eColumnTypes.OptionStrongest).Value = (reg.QuotaType = eQuotaTypes.Strongest)
             Me(iRow, eColumnTypes.OptionSelective).Value = (reg.QuotaType = eQuotaTypes.Selective)
@@ -202,8 +209,12 @@ Namespace Ecosim
 
             Select Case DirectCast(p.Column, eColumnTypes)
 
-                Case eColumnTypes.OptionNotSet
+                Case eColumnTypes.OptionNotUsed
                     reg.QuotaType = eQuotaTypes.NotUsed
+                    Me.UpdateRow(p.Row)
+
+                Case eColumnTypes.OptionEffort
+                    reg.QuotaType = eQuotaTypes.Effort
                     Me.UpdateRow(p.Row)
 
                 Case eColumnTypes.OptionSelective

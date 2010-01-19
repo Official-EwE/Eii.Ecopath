@@ -119,9 +119,9 @@ Namespace Ecosim
 
                 ' Unregister
                 If (Me.m_group IsNot Nothing) Then
-                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.BLim).PropertyChanged, AddressOf HandlePropertyChanged
-                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.BBase).PropertyChanged, AddressOf HandlePropertyChanged
-                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.Fopt).PropertyChanged, AddressOf HandlePropertyChanged
+                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf HandlePropertyChanged
+                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf HandlePropertyChanged
+                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf HandlePropertyChanged
                 End If
 
                 ' Update
@@ -129,9 +129,9 @@ Namespace Ecosim
 
                 ' Register
                 If (Me.m_group IsNot Nothing) Then
-                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.BLim).PropertyChanged, AddressOf HandlePropertyChanged
-                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.BBase).PropertyChanged, AddressOf HandlePropertyChanged
-                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.Fopt).PropertyChanged, AddressOf HandlePropertyChanged
+                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf HandlePropertyChanged
+                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf HandlePropertyChanged
+                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf HandlePropertyChanged
                 End If
 
                 ' Ledlaw the glaph

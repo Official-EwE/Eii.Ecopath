@@ -55,7 +55,7 @@ Public Class cEcosimFisheriesRegulation
 
             'QuotaType
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.QuotaType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaType))
+            val = New cValue(New Integer, eVarNameFlags.QuotaType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaType))
             m_values.Add(val.varName, val)
 
             ' === arrays ===

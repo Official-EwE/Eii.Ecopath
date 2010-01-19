@@ -1,33 +1,3 @@
-'==============================================================================
-'
-' $Log: cFlowDiagramRenderer.vb,v $
-' Revision 1.2  2009/06/29 16:06:00  jeroens
-' Fixed layout save/load index bug
-'
-' Revision 1.1  2009/06/22 02:25:37  jeroens
-' Revamped, rewarped and lobotomized
-'
-' Revision 1.6  2009/02/07 17:48:39  jeroens
-' cINIFile moved
-'
-' Revision 1.5  2009/02/05 21:11:04  jeroens
-' Labels can be dragged
-'
-' Revision 1.4  2008/11/22 16:41:54  sherman
-' Added ColorRamp logic
-'
-' Revision 1.3  2008/11/21 23:06:14  sherman
-' Fixed bugs: 550
-' - Added listeners to properties, changed text names, made scaling more rhobust.
-'
-' Revision 1.2  2008/11/12 21:34:34  jeroens
-' Resources!
-'
-' Revision 1.1  2008/09/26 07:31:27  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -86,7 +56,9 @@ Namespace Ecopath.Controls.FlowDiagram
             ' Draw the connections
             For i As Integer = 1 To Me.m_data.NumGroups()
                 For j As Integer = 1 To Me.m_data.NumGroups()
-                    Me.m_tree.DrawConnection(g, rc, i, j, (Me.HighlightNode = j) Or (Me.HighlightNode = i))
+                    If Me.m_data.GroupVisible(i) And Me.m_data.GroupVisible(j) Then
+                        Me.m_tree.DrawConnection(g, rc, i, j, (Me.HighlightNode = j) Or (Me.HighlightNode = i))
+                    End If
                 Next
             Next
 
@@ -94,7 +66,9 @@ Namespace Ecopath.Controls.FlowDiagram
             For j As Integer = 1 To Me.m_data.NumGroups()
                 ' Draw each node
                 'clr = colorramp.GetColor(Me.m_data.Biomass(j), sBiomassMax)
-                Me.m_tree.DrawNode(g, rc, j)
+                If Me.m_data.GroupVisible(j) Then
+                    Me.m_tree.DrawNode(g, rc, j)
+                End If
             Next j
 
         End Sub

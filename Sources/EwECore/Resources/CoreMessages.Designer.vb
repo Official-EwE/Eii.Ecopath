@@ -1356,6 +1356,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Effort for fleet(s) &apos;{0}&apos; may need to increased for the quota regulations to have an effect..
+        '''</summary>
+        Friend Shared ReadOnly Property MSE_VALIDATION_EFFORT() As String
+            Get
+                Return ResourceManager.GetString("MSE_VALIDATION_EFFORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Both Fixed Escapement and Quota Options have been set for group(s) &apos;{0}&apos; only the Fixed Escapement regulations will be used..
+        '''</summary>
+        Friend Shared ReadOnly Property MSE_VALIDATION_FIXEDESCAPEMENT() As String
+            Get
+                Return ResourceManager.GetString("MSE_VALIDATION_FIXEDESCAPEMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No regulatory options have been set. Please set a Quota regulation in the Regulatory options form for at least one fleet..
+        '''</summary>
+        Friend Shared ReadOnly Property MSE_VALIDATION_QUOTAS() As String
+            Get
+                Return ResourceManager.GetString("MSE_VALIDATION_QUOTAS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Sorry output variables are not editable..
         '''</summary>
         Friend Shared ReadOnly Property OUTPUT_NOT_EDITABLE() As String
