@@ -1,42 +1,6 @@
-﻿'==============================================================================
-'
-' $Log: cEIIDataSource.vb,v $
-' Revision 1.11  2009/05/25 13:22:49  jeroens
-' Added DiscardChanges
-'
-' Revision 1.10  2009/03/26 15:49:48  jeroens
-' Added CanCompact
-'
-' Revision 1.9  2009/03/18 13:27:09  jeroens
-' Moved PSD data from EcopathDS to PSDDS
-'
-' Revision 1.8  2009/02/27 07:55:15  jeroens
-' Changed vbK placement
-'
-' Revision 1.7  2009/02/26 00:57:29  jeroens
-' Added DB compact
-'
-' Revision 1.6  2009/02/08 17:35:04  jeroens
-' Can now force datasource type when opening a new source
-'
-' Revision 1.5  2009/01/29 16:10:48  jeroens
-' Moved cEwEDatabase.eAccessTypes to shared enums
-'
-' Revision 1.4  2009/01/16 23:51:20  jeroens
-' Datasource no longer maitains data state by datatype, but by eCoreComponentType
-'
-' Revision 1.3  2008/11/28 16:54:03  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.2  2008/10/07 00:38:45  jeroens
-' Ecosim prey/pred ff table flipped
-'
-' Revision 1.1  2008/09/26 07:30:14  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
+﻿#Region " Imports "
 
-Option Strict Off ' Aargh! Let's not attempt to purify the old code!
+Option Strict On
 
 Imports System.IO
 Imports EwECore.DataSources
@@ -44,6 +8,7 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 
+#End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>
@@ -76,21 +41,21 @@ Public Class cEIIDataSource
         Dim fnum As Integer = FreeFile()
 
         ' Still open?
-        If (Not String.IsNullOrEmpty(Me.m_strFilename)) Then Return False
+        If (Not String.IsNullOrEmpty(Me.m_strFilename)) Then Return eDatasourceAccessType.Failed_UnknownType
         m_strFilename = strName
 
         ' Test if file can be read
         Try
             FileOpen(fnum, strName, OpenMode.Input)
         Catch ex As Exception
-            Return False
+            Return eDatasourceAccessType.Failed_FileNotFound
         End Try
 
         FileClose(fnum)
 
         Me.m_strFilename = strName
         Me.m_core = core
-        Return True
+        Return eDatasourceAccessType.Opened
 
     End Function
 
