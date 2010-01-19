@@ -1607,10 +1607,6 @@
       <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
       <Name>EwENetworkAnalysisPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
-      <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>
-      <Name>EwEValueChain %28Standard plugins\EwEValueChain\EwEValueChain%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
       <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
