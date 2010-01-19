@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E87E552B-C82F-4984-9249-631DAC727633}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>EwEValueChainPlugin</RootNamespace>
+    <AssemblyName>EwEValueChainPlugin</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Ecopath6\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
+    </Reference>
+    <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Ecopath6\Sources\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.3373.24277, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Ecopath6\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph, Version=5.1.4.32468, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Ecopath6\Sources\ScientificInterfaceShared\Includes\ZedGraph.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Database\cDatabase.vb" />
+    <Compile Include="Data\cData.vb" />
+    <Compile Include="Data\Flow elements\Diagrams\cFlowDiagram.vb" />
+    <Compile Include="Data\Flow elements\Diagrams\cFlowPosition.vb" />
+    <Compile Include="Data\Flow elements\Factories\cLinkFactory.vb" />
+    <Compile Include="Data\Flow elements\Factories\cUnitFactory.vb" />
+    <Compile Include="Data\Flow elements\Inputs\cInput.vb" />
+    <Compile Include="Data\Flow elements\Links\cLink.vb" />
+    <Compile Include="Data\Flow elements\Links\cLinkDefault.vb" />
+    <Compile Include="Data\Flow elements\Units\cConsumerUnit.vb" />
+    <Compile Include="Data\Flow elements\Units\cConsumerUnitDefault.vb" />
+    <Compile Include="Data\Flow elements\Units\cDistributionUnit.vb" />
+    <Compile Include="Data\Flow elements\Units\cDistributionUnitDefault.vb" />
+    <Compile Include="Data\Flow elements\Units\cEconomicUnit.vb" />
+    <Compile Include="Data\Flow elements\Units\cMarketUnit.vb" />
+    <Compile Include="Data\Flow elements\Units\cMarketUnitDefault.vb" />
+    <Compile Include="Data\Flow elements\Units\cProcessingUnit.vb" />
+    <Compile Include="Data\Flow elements\Units\cProcessingUnitDefault.vb" />
+    <Compile Include="Data\Flow elements\Units\cProducerUnit.vb" />
+    <Compile Include="Data\Flow elements\Units\cProducerUnitDefault.vb" />
+    <Compile Include="Data\Flow elements\Units\cUnit.vb" />
+    <Compile Include="Data\Parameters\cParameters.vb" />
+    <Compile Include="Data\Results\cResults.vb" />
+    <Compile Include="Interface\Controls\PropertyInfoCell.vb" />
+    <Compile Include="Interface\Controls\ucDefault.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\Controls\ucDefaults.Designer.vb">
+      <DependentUpon>ucDefaults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Controls\ucDefaults.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\Controls\ucLinkDefault.Designer.vb">
+      <DependentUpon>ucLinkDefault.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Controls\ucLinkDefault.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\Controls\ucLinkGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Interface\Controls\ucUnitDefault.Designer.vb">
+      <DependentUpon>ucUnitDefault.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Controls\ucUnitDefault.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\Controls\ucUnitGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Interface\Flow\dlgAddUnits.Designer.vb">
+      <DependentUpon>dlgAddUnits.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Flow\dlgAddUnits.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\Flow\plFlow.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Interface\Flow\plUnitControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Interface\Flow\ucEditFlow.Designer.vb">
+      <DependentUpon>ucEditFlow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Flow\ucEditFlow.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\Flow\UnitConnector.vb" />
+    <Compile Include="Interface\frmMain.Designer.vb">
+      <DependentUpon>frmMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\frmMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\Parameters\ucParameters.Designer.vb">
+      <DependentUpon>ucParameters.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Parameters\ucParameters.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\Results\ucResults.Designer.vb">
+      <DependentUpon>ucResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Results\ucResults.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\Results\Views\IGraphView.vb" />
+    <Compile Include="Interface\Results\Views\IResultView.vb" />
+    <Compile Include="Interface\Results\Views\ucEquilibriumGraph.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\Results\Views\ucEcosimGraph.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\Results\Views\ucEcopathTable.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Model\cComputeLandingsProportions.vb" />
+    <Compile Include="Model\cModel.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Plugin\cPluginData.vb" />
+    <Compile Include="Plugin\cPluginPoint.vb" />
+    <Compile Include="Utils\cPropertyInfoHelper.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Database\template.ewevcmdb" />
+    <EmbeddedResource Include="Interface\Controls\ucDefaults.resx">
+      <DependentUpon>ucDefaults.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Controls\ucLinkDefault.resx">
+      <DependentUpon>ucLinkDefault.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Flow\dlgAddUnits.resx">
+      <DependentUpon>dlgAddUnits.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Flow\plUnitControl.resx">
+      <DependentUpon>plUnitControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Flow\ucEditFlow.resx">
+      <DependentUpon>ucEditFlow.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\frmMain.resx">
+      <DependentUpon>frmMain.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Parameters\ucParameters.resx">
+      <DependentUpon>ucParameters.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Results\ucResults.resx">
+      <DependentUpon>ucResults.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Results\Views\ucEcopathTable.resx">
+      <DependentUpon>ucEcopathTable.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Data\Flow elements\Flow elements overview.cd" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ecopath_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ecosim_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ecospace_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ValueChain.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ValueChain_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EU_50px.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Lenfest Logo_50px.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sautxt_50px.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\consumer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\producer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\distribution.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\factory.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\market.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FormulaEvaluatorHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eqgraphhs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\factory_gray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\distribution_mono.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\processing_mono.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\producer_mono.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\consumer_mono.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\market_mono.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwECore\EwECore.vbproj">
+      <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
+      <Name>EwECore %28EwECore\EwECore%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwEPlugin\EwEPlugin.vbproj">
+      <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
+      <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwEUtils\EwEUtils.vbproj">
+      <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
+      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
+      <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
+      <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\saveHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RelationshipsHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ThumbnailLoadingHS.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
