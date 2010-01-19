@@ -1,82 +1,17 @@
-'==============================================================================
-'
-' $Log: IEcospaceDatasource.vb,v $
-' Revision 1.1  2008/09/26 07:30:13  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.22  2008/08/09 01:29:16  jeroens
-' Weight layers -> Importance layers
-'
-' Revision 1.21  2008/08/08 23:14:38  jeroens
-' Added proper 'SaveAs' interfaces
-'
-' Revision 1.20  2007/12/17 14:08:38  jeroens
-' * Basemap created with basic parameters
-'
-' Revision 1.19  2007/10/30 19:22:41  jeroens
-' + Added author, description to model and scenarios
-'
-' Revision 1.18  2007/09/19 18:49:00  jeroens
-' + Added ResizeEcospaceBasemap
-'
-' Revision 1.17  2007/09/15 00:22:54  jeroens
-' * MPAs added with full data
-'
-' Revision 1.16  2007/09/10 20:58:38  jeroens
-' * Changed the way habitats are maintained
-'
-' Revision 1.15  2007/07/17 16:24:25  jeroens
-' + Added basis for copying across datasources
-' * Changed TS support
-'
-' Revision 1.14  2007/06/15 15:00:19  jeroens
-' + AppendEcospaceScenario requires description
-'
-' Revision 1.13  2007/03/07 18:15:31  jeroens
-' + Added interfaces to query data changed state
-'
-' Revision 1.12  2007/02/27 14:58:15  jeroens
-' * Habitats added with an index
-'
-' Revision 1.11  2007/02/26 18:55:51  jeroens
-' * Simplified SaveEcospaceScenario interface
-'
-' Revision 1.10  2007/02/23 01:10:16  jeroens
-' Simplifying Ecospace modification interfaces
-'
-' Revision 1.9  2007/02/22 16:07:35  jeroens
-' - Simplifying interfaces - Scenario ID will be implied
-'
-' Revision 1.8  2007/01/25 12:56:21  jeroens
-' + Maint. routines need scenario IDs
-'
-' Revision 1.7  2007/01/19 21:56:57  jeroens
-' - Ecospace fleets do not require append/remove since they are synchronized with ecopath fleets
-'
-' Revision 1.6  2007/01/17 16:45:34  jeroens
-' + Added fleet interfaces
-'
-' Revision 1.5  2007/01/16 17:18:30  jeroens
-' * Adding more Ecospace interfaces
-'
-' Revision 1.4  2007/01/14 21:03:14  jeroens
-' Discontinued iDatasourcePlugin
-'
-' Revision 1.3  2006/12/08 18:42:00  jeroens
-' * Updated ecospace region interfaces
-'
-' Revision 1.2  2006/12/04 15:24:45  jeroens
-' + Added Habitat and Region methods
-'
-' Revision 1.1  2006/12/04 14:36:59  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
+#End Region ' Imports
+
 Namespace DataSources
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Base interface for implementing a datasource that reads and writes 
+    ''' Ecospace data.
+    ''' </summary>
+    ''' =======================================================================
     Public Interface IEcospaceDatasource
         Inherits IEcopathDataSource
 

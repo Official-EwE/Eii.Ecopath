@@ -1,54 +1,17 @@
-'==============================================================================
-'
-' $Log: IEcopathDataSource.vb,v $
-' Revision 1.2  2009/02/27 07:55:14  jeroens
-' Changed vbK placement
-'
-' Revision 1.1  2008/09/26 07:30:13  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.11  2008/07/21 14:04:43  jeroens
-' Added pedigree interfaces
-'
-' Revision 1.10  2008/02/22 21:44:04  jeroens
-' vbK tied to StanzaLifeStage
-'
-' Revision 1.9  2007/10/18 15:16:10  jeroens
-' * PP now created as Single
-'
-' Revision 1.8  2007/07/17 16:24:24  jeroens
-' + Added basis for copying across datasources
-' * Changed TS support
-'
-' Revision 1.7  2007/04/27 16:39:40  jeroens
-' + Mortality included when adding a stanza life stage to the database
-'
-' Revision 1.6  2007/04/22 16:23:10  jeroens
-' + Defined methods to modify stanza configurations
-'
-' Revision 1.5  2007/04/20 05:18:52  jeroens
-' * New stanza config initiated with a series of groups
-'
-' Revision 1.4  2007/03/08 11:48:20  jeroens
-' + Fleets can be added at a specific position
-' * Fleets can be moved in the fleet sequence
-'
-' Revision 1.3  2007/03/07 18:15:31  jeroens
-' + Added interfaces to query data changed state
-'
-' Revision 1.2  2006/12/18 05:35:14  jeroens
-' * New stanza configurations need a stanza group
-'
-' Revision 1.1  2006/12/03 18:55:21  jeroens
-' Initial version, separated from IEwEDataSource
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
+
+#End Region ' Imports
 
 Namespace DataSources
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Base interface for implementing a datasource that reads and writes 
+    ''' Ecospace data.
+    ''' </summary>
+    ''' =======================================================================
     Public Interface IEcopathDataSource
         Inherits IEwEDataSource
 

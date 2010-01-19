@@ -1,93 +1,19 @@
-'==============================================================================
-'
-' $Log: IEcosimDatasource.vb,v $
-' Revision 1.1  2008/09/26 07:30:13  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.25  2008/08/08 23:14:37  jeroens
-' Added proper 'SaveAs' interfaces
-'
-' Revision 1.24  2008/06/06 15:55:57  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.23  2008/02/11 03:24:37  jeroens
-' Datasets are separate entities now, no longer just defined by name in Time Series
-'
-' Revision 1.22  2008/01/31 17:06:07  jeroens
-' Added interface to load one single dataset
-'
-' Revision 1.21  2008/01/18 01:35:46  jeroens
-' Added dataset manipulation method to sim datasource interface
-'
-' Revision 1.20  2007/11/26 14:49:14  jeroens
-' * Fixed bug 351
-'
-' Revision 1.19  2007/11/20 00:51:53  jeroens
-' * Shapedata to copy can now be passed to AppendShape logic
-'
-' Revision 1.18  2007/10/30 19:22:41  jeroens
-' + Added author, description to model and scenarios
-'
-' Revision 1.17  2007/10/29 14:35:01  jeroens
-' * TS sequence properly calculated
-'
-' Revision 1.16  2007/10/14 17:21:39  jeroens
-' * Solved compiler warnings
-'
-' Revision 1.15  2007/10/12 20:20:01  jeroens
-' + Added LoadTS(datasets) interface
-'
-' Revision 1.14  2007/09/27 21:20:12  jeroens
-' + Dataset name added when creating new Time Series
-'
-' Revision 1.13  2007/08/09 00:32:00  jeroens
-' + Added Weight to AddTimeSeries
-'
-' Revision 1.12  2007/07/20 23:57:48  jeroens
-' * New time series require firstyear, values
-'
-' Revision 1.11  2007/07/20 04:14:27  jeroens
-' + Add Time series requires position parameter
-'
-' Revision 1.10  2007/07/17 16:24:24  jeroens
-' + Added basis for copying across datasources
-' * Changed TS support
-'
-' Revision 1.9  2007/07/11 07:02:03  jeroens
-' * Implemented ecospace scenario load., create, delete, rename
-'
-' Revision 1.8  2007/06/11 02:19:53  jeroens
-' * Changed ImportTimeSeries prototype
-'
-' Revision 1.7  2007/06/08 15:55:33  jeroens
-' + Added TS modification interfaces
-'
-' Revision 1.6  2007/05/25 18:41:36  jeroens
-' * Changed AppendEcosimScenario definition
-'
-' Revision 1.5  2007/05/16 17:10:52  jeroens
-' + Added import time series functionality
-'
-' Revision 1.4  2007/03/07 18:15:31  jeroens
-' + Added interfaces to query data changed state
-'
-' Revision 1.3  2007/01/14 21:03:14  jeroens
-' Discontinued iDatasourcePlugin
-'
-' Revision 1.2  2006/12/08 18:41:32  jeroens
-' * Fixed comment error
-'
-' Revision 1.1  2006/12/03 18:55:21  jeroens
-' Initial version, separated from IEwEDataSource
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
 Imports EwEUtils.Core
 
+#End Region ' Imports
+
 Namespace DataSources
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Base interface for implementing a datasource that reads and writes 
+    ''' Ecosim data.
+    ''' </summary>
+    ''' =======================================================================
     Public Interface IEcosimDatasource
         Inherits IEcopathDataSource
 
@@ -192,8 +118,15 @@ Namespace DataSources
         ''' <param name="functionType">Primitive function type shape was created from.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendShape(ByVal strShapeName As String, ByVal shapeDataType As eDataTypes, ByRef iDBID As Integer, _
-            ByVal asData As Single(), ByVal sYZero As Single, ByVal sYBase As Single, ByVal sYend As Single, ByVal sSteep As Single, ByVal functionType As eShapeFunctionType) As Boolean
+        Function AppendShape(ByVal strShapeName As String, _
+                             ByVal shapeDataType As eDataTypes, _
+                             ByRef iDBID As Integer, _
+                             ByVal asData As Single(), _
+                             ByVal sYZero As Single, _
+                             ByVal sYBase As Single, _
+                             ByVal sYend As Single, _
+                             ByVal sSteep As Single, _
+                             ByVal functionType As eShapeFunctionType) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

@@ -1,18 +1,17 @@
-'==============================================================================
-'
-' $Log: IEcotracerDatasource.vb,v $
-' Revision 1.1  2008/09/26 07:30:13  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2007/11/24 23:25:33  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
+#End Region ' Imports
+
 Namespace DataSources
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Base interface for implementing a datasource that reads and writes 
+    ''' contaminant tracing data.
+    ''' </summary>
+    ''' =======================================================================
     Public Interface IEcotracerDatasource
         Inherits IEcopathDataSource
 
