@@ -149,7 +149,7 @@ Public Class NavigationPanel
         m_nodeController.Add("ndEcoTracer_Output", eCoreExecutionState.EcotracerLoaded, GetType(frmEcotracerOutput), "") ' ToDo: connect to help
 
         'MSE
-        m_nodeController.Add("ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), "") ' ToDo: connect to help
+        ' m_nodeController.Add("ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), "") ' ToDo: connect to help
 
     End Sub
 
