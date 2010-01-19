@@ -158,7 +158,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils</Name>
+      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

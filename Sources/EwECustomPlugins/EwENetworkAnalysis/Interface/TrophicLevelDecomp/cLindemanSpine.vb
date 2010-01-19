@@ -17,6 +17,7 @@ Imports ScientificInterfaceShared.Style
 ''' 
 ''' </summary>
 ''' ---------------------------------------------------------------------------
+<CLSCompliant(False)> _
 Public Class cLindemanSpine
     Inherits cContentManager
 

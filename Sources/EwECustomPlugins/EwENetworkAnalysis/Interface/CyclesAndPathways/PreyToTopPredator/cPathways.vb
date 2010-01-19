@@ -1,55 +1,16 @@
-'==============================================================================
-'
-' $Log: cPathways.vb,v $
-' Revision 1.13  2009/06/06 01:59:13  jeroens
-' Renamed toolstrip access methods
-'
-' Revision 1.12  2009/05/30 00:00:56  jeroens
-' Toolstrip usage centralized
-'
-' Revision 1.11  2009/05/19 13:41:09  jeroens
-' Content manager derived pages will take care of updating NA run state
-'
-' Revision 1.10  2009/05/02 01:51:24  jeroens
-' Updated to cControlManager FN name change
-'
-' Revision 1.9  2009/05/01 17:43:03  jeroens
-' Inherited from cContentManager
-'
-' Revision 1.8  2009/04/17 01:07:07  joeh
-' Make MixedTrophicImpactUC not visible when needed
-'
-' Revision 1.7  2009/04/16 00:11:57  joeh
-' Add "Imports System.Windows.Forms" statement
-'
-' Revision 1.6  2009/04/15 18:14:57  joeh
-' Set m_Panel.AutoScroll = False
-'
-' Revision 1.5  2009/04/14 18:21:11  joeh
-' Add separator to tool strip
-'
-' Revision 1.4  2009/04/09 20:04:48  joeh
-' Add "Bar graph" button to plot bar graph for MTI
-'
-' Revision 1.3  2008/11/28 01:58:33  joeh
-' Implement new MTI plot and save MTI plot as emf file
-'
-' Revision 1.2  2008/11/25 23:14:03  joeh
-' Copy and paste in cells of data grid view
-'
-' Revision 1.1  2008/09/26 07:30:49  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
+#Region " Imports "
+
 Option Strict On
 Option Explicit On
 
 Imports System.Windows.Forms
-Imports EwECore
 Imports ZedGraph
+
+#End Region ' Imports 
 
 Namespace PreyToPredator
 
+    <CLSCompliant(False)> _
     Public Class cPathways
         Inherits cContentManager
 
@@ -61,7 +22,7 @@ Namespace PreyToPredator
                                         ByVal graph As ZedGraphControl, _
                                         ByVal plot As ucPlot, _
                                         ByVal toolstrip As ToolStrip) As Boolean
-            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, ToolStrip)
+            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
 
             Me.Grid.Visible = bSucces
 

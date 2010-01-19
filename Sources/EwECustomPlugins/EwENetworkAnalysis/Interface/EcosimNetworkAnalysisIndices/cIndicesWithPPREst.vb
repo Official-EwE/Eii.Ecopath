@@ -1,65 +1,3 @@
-'==============================================================================
-'
-' $Log: cIndicesWithPPREst.vb,v $
-' Revision 1.18  2009/05/30 00:00:54  jeroens
-' Toolstrip usage centralized
-'
-' Revision 1.17  2009/05/28 13:59:57  jeroens
-' Fixed annual averages option in CSV export
-'
-' Revision 1.16  2009/05/28 12:37:14  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.15  2009/05/19 13:41:11  jeroens
-' Content manager derived pages will take care of updating NA run state
-'
-' Revision 1.14  2009/05/11 20:34:36  jeroens
-' Added monthly / annual averages CVS export
-'
-' Revision 1.13  2009/05/11 02:12:39  jeroens
-' Simplified default file name use for CSV files
-' Uses new cDirectoryOpenCommand
-'
-' Revision 1.12  2009/05/02 03:00:11  jeroens
-' Scenario name included in default file name
-' ExtractData uses string builder
-'
-' Revision 1.11  2009/05/01 17:43:00  jeroens
-' Inherited from cContentManager
-'
-' Revision 1.10  2009/04/28 16:24:25  jeroens
-' Fixed graph max axis
-' Graph styling done with ZedGraphHelper
-'
-' Revision 1.9  2009/04/17 01:07:05  joeh
-' Make MixedTrophicImpactUC not visible when needed
-'
-' Revision 1.8  2009/04/16 00:11:56  joeh
-' Add "Imports System.Windows.Forms" statement
-'
-' Revision 1.7  2009/04/15 18:14:55  joeh
-' Set m_Panel.AutoScroll = False
-'
-' Revision 1.6  2009/04/14 18:21:11  joeh
-' Add separator to tool strip
-'
-' Revision 1.5  2009/04/09 20:04:48  joeh
-' Add "Bar graph" button to plot bar graph for MTI
-'
-' Revision 1.4  2008/12/02 23:31:55  joeh
-' Remove Zed graph control from the parameters of CreatePlot( )
-'
-' Revision 1.3  2008/11/28 01:58:33  joeh
-' Implement new MTI plot and save MTI plot as emf file
-'
-' Revision 1.2  2008/11/10 05:34:54  jeroens
-' Renamed file command
-'
-' Revision 1.1  2008/09/26 07:30:51  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -76,6 +14,7 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
+<CLSCompliant(False)> _
 Public Class cIndicesWithPPREst
     Inherits cContentManager
 

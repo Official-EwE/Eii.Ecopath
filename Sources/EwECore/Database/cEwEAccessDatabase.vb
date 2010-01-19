@@ -12,6 +12,7 @@ Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports EwEUtils.Win32Api
 Imports System.Text
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -77,7 +78,7 @@ Namespace Database
                         Dim db As New cEwEAccessDatabase()
                         datResult = db.Open(strDatabase, databaseType)
                         If (datResult = eDatasourceAccessType.Opened) Then
-                            db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, EwEUtils.SystemUtilities.GetUserName()))
+                            db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, SystemUtilities.GetUserName()))
                             ' Egg - over-easy but slightly obfuscated ;)
                             If strModelName.ToLower().Contains(StringUtils.Shift("Dbsm!Xbmufst").ToLower()) Then
                                 db.Execute(String.Format("UPDATE EcopathGroup SET GroupName='{0}' WHERE GroupID=1", StringUtils.Shift("Dijdlfo!tiju")))

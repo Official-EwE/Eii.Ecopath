@@ -15,6 +15,7 @@ Imports ZedGraph
 ''' Class for populating NA view controls.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
+<CLSCompliant(False)> _
 Public MustInherit Class cContentManager
 
 #Region " Private variables "

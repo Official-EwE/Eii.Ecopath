@@ -362,11 +362,11 @@
   <ItemGroup>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
-      <Name>EwECore</Name>
+      <Name>EwECore %28EwECore\EwECore%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils</Name>
+      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

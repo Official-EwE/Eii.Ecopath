@@ -1,45 +1,13 @@
-﻿'==============================================================================
-'
-' $Log: cKeystonenessGraph.vb,v $
-' Revision 1.7  2009/06/03 02:22:42  jeroens
-' Implemented VC changes 2jun09
-'
-' Revision 1.6  2009/06/02 15:58:53  jeroens
-' Added TotalImpact (needs validation)
-'
-' Revision 1.5  2009/06/02 02:44:52  jeroens
-' Fixed label placement bug when displaying numbers
-' Renamed keystoneness indicators
-' Scaled circles to relative biomass to control max circle size
-'
-' Revision 1.4  2009/06/01 00:58:16  jeroens
-' Hmm
-'
-' Revision 1.3  2009/05/30 00:08:44  jeroens
-' Toolstrip usage centralized
-' Added custom menu commands to style the graph
-'
-' Revision 1.2  2009/05/28 14:58:45  jeroens
-' Styled graph
-'
-' Revision 1.1  2009/05/28 13:40:11  jeroens
-' Added keystoneness graph, renamed table content manager to prevent confusion
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
 
-Imports ZedGraph
-Imports System.Drawing
 Imports System.Windows.Forms
-Imports System.IO
-Imports System.Text
-Imports EwECore
-Imports EwEUtils
+Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
+Imports EwECore
+Imports System.Drawing
 
 #End Region ' Imports
 
@@ -48,6 +16,7 @@ Imports ScientificInterfaceShared.Controls
 ''' Content manager-derived class, able to plot keystoneness-related values.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
+<CLSCompliant(False)> _
 Public Class cKeystonenessGraph
     Inherits cContentManager
 

@@ -1,49 +1,5 @@
-'==============================================================================
-'
-' $Log: cCatchPyramid.vb,v $
-' Revision 1.1  2009/06/15 14:15:27  jeroens
-' Flattened directory structure
-'
-' Revision 1.13  2009/05/30 00:00:48  jeroens
-' Toolstrip usage centralized
-'
-' Revision 1.12  2009/05/21 18:53:33  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.11  2009/05/19 13:41:06  jeroens
-' Content manager derived pages will take care of updating NA run state
-'
-' Revision 1.10  2009/05/01 17:42:52  jeroens
-' Inherited from cContentManager
-'
-' Revision 1.9  2009/04/19 13:29:17  jeroens
-' Formatted app launch error
-'
-' Revision 1.8  2009/04/17 03:17:06  jeroens
-' Removed global message box
-'
-' Revision 1.7  2009/04/17 01:07:00  joeh
-' Make MixedTrophicImpactUC not visible when needed
-'
-' Revision 1.6  2009/04/15 23:22:26  joeh
-' Add "Imports System.Windows.Forms" statement
-'
-' Revision 1.5  2009/04/15 18:14:48  joeh
-' Set m_Panel.AutoScroll = False
-'
-' Revision 1.4  2008/12/10 20:56:18  joeh
-' Finalize the Suitability Plot
-'
-' Revision 1.3  2008/12/04 01:14:47  joeh
-' Add ucPlotOfMixedTrophicImpact
-'
-' Revision 1.2  2008/12/03 20:49:18  joeh
-' Incorportate Functional Response into Network Analysis - Take three
-'
-' Revision 1.1  2008/09/26 07:30:55  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
+#Region " Imports "
+
 Option Strict On
 Option Explicit On
 
@@ -54,7 +10,11 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports System.Windows.Forms
 Imports System.Text
+Imports EwEUtils.SystemUtilities
 
+#End Region ' Imports
+
+<CLSCompliant(False)> _
 Public Class cCatchPyramid
     Inherits cContentManager
 
@@ -66,7 +26,7 @@ Public Class cCatchPyramid
         Return MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
     End Function
 
-    Public Overrides Sub DisplayData() 
+    Public Overrides Sub DisplayData()
 
         Dim sw As StreamWriter = Nothing
         Dim strOutputFile As String = ""
@@ -77,7 +37,7 @@ Public Class cCatchPyramid
         Dim bSucces As Boolean = True
 
         ' Prepare directories
-        strOutputFile = EwEUtils.SystemUtilities.MakeTempFile("NA-puramid-catch.txt")
+        strOutputFile = SystemUtilities.MakeTempFile("NA-puramid-catch.txt")
         sw = New StreamWriter(strOutputFile, False, New System.Text.UTF8Encoding())
         Try
 
@@ -130,14 +90,14 @@ Public Class cCatchPyramid
 
         Try
             'Execute the external application through the general function on EwEUtils
-            bSucces = EwEUtils.SystemUtilities.AppExec("pyramid.exe", strOutputFile, "", "EwENetworkAnalysis")
+            bSucces = SystemUtilities.AppExec("pyramid.exe", strOutputFile, "", "EwENetworkAnalysis")
         Catch ex As Exception
             bSucces = False
         End Try
 
         If Not bSucces Then
             Dim sb As New StringBuilder
-            For Each str As String In EwEUtils.SystemUtilities.ApplicationLaunchLocations
+            For Each str As String In SystemUtilities.ApplicationLaunchLocations
                 If sb.Length > 0 Then sb.Append(", ")
                 sb.Append(str)
             Next

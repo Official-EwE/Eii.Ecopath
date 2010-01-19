@@ -1,53 +1,3 @@
-'==============================================================================
-'
-' $Log: cGraphOfMixedTrophicImpact.vb,v $
-' Revision 1.15  2009/05/30 00:00:52  jeroens
-' Toolstrip usage centralized
-'
-' Revision 1.14  2009/05/28 12:37:14  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.13  2009/05/21 18:53:36  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.12  2009/05/19 13:41:11  jeroens
-' Content manager derived pages will take care of updating NA run state
-'
-' Revision 1.11  2009/05/01 17:42:58  jeroens
-' Inherited from cContentManager
-'
-' Revision 1.10  2009/04/28 19:00:31  jeroens
-' Revamped to be able to use styleguide hide groups, rather than an isolated hidegroups interface
-'
-' Revision 1.9  2009/04/19 13:30:07  jeroens
-' Formatted app launch error
-'
-' Revision 1.8  2009/04/17 03:17:06  jeroens
-' Removed global message box
-'
-' Revision 1.7  2009/04/17 01:07:04  joeh
-' Make MixedTrophicImpactUC not visible when needed
-'
-' Revision 1.6  2009/04/15 23:37:38  joeh
-' Add "Imports System.Windows.Forms" statement
-'
-' Revision 1.5  2009/04/15 18:14:53  joeh
-' Set m_Panel.AutoScroll = False
-'
-' Revision 1.4  2009/04/09 20:04:47  joeh
-' Add "Bar graph" button to plot bar graph for MTI
-'
-' Revision 1.3  2008/12/10 20:56:19  joeh
-' Finalize the Suitability Plot
-'
-' Revision 1.2  2008/12/03 20:49:19  joeh
-' Incorportate Functional Response into Network Analysis - Take three
-'
-' Revision 1.1  2008/09/26 07:30:53  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -61,15 +11,21 @@ Imports System.Text
 Imports EwECore
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
-'MTI graph with bars
+''' ===========================================================================
+''' <summary>
+''' MTI graph with bars.
+''' </summary>
+''' ===========================================================================
+<CLSCompliant(False)> _
 Public Class cGraphOfMixedTrophicImpact
     Inherits cContentManager
 
     Public Sub New()
-        '
+        ' NOP
     End Sub
 
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
@@ -161,9 +117,9 @@ Public Class cGraphOfMixedTrophicImpact
         'End If
 
         'Execute the external application through the general function on EwEUtils
-        If Not EwEUtils.SystemUtilities.AppExec("impacts.exe", Path.Combine(strOutputFileDir, strOutputFileName), "", "EwENetworkAnalysis") Then
+        If Not SystemUtilities.AppExec("impacts.exe", Path.Combine(strOutputFileDir, strOutputFileName), "", "EwENetworkAnalysis") Then
             Dim sb As New StringBuilder
-            For Each str As String In EwEUtils.SystemUtilities.ApplicationLaunchLocations
+            For Each str As String In SystemUtilities.ApplicationLaunchLocations
                 If sb.Length > 0 Then sb.Append(", ")
                 sb.Append(str)
             Next

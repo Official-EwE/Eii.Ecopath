@@ -1,34 +1,5 @@
-'==============================================================================
-'
-' $Log: cForHarvestOfAllGp.vb,v $
-' Revision 1.9  2009/05/30 00:00:51  jeroens
-' Toolstrip usage centralized
-'
-' Revision 1.8  2009/05/19 13:41:13  jeroens
-' Content manager derived pages will take care of updating NA run state
-'
-' Revision 1.7  2009/05/02 01:51:29  jeroens
-' Updated to cControlManager FN name change
-'
-' Revision 1.6  2009/05/01 17:42:56  jeroens
-' Inherited from cContentManager
-'
-' Revision 1.5  2009/04/17 01:07:03  joeh
-' Make MixedTrophicImpactUC not visible when needed
-'
-' Revision 1.4  2009/04/15 23:37:37  joeh
-' Add "Imports System.Windows.Forms" statement
-'
-' Revision 1.3  2009/04/15 18:14:52  joeh
-' Set m_Panel.AutoScroll = False
-'
-' Revision 1.2  2008/11/25 20:55:41  joeh
-' Copy and paste in cells of data grid view
-'
-' Revision 1.1  2008/09/26 07:30:54  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
+#Region " Imports "
+
 Option Strict On
 Option Explicit On
 
@@ -36,6 +7,9 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports ZedGraph
 
+#End Region ' Imports
+
+<CLSCompliant(False)> _
 Public Class cForHarvestOfAllGp
     Inherits cContentManager
 

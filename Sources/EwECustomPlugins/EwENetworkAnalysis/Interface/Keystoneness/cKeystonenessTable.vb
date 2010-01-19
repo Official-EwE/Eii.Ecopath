@@ -1,28 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cKeystonenessTable.vb,v $
-' Revision 1.5  2009/06/03 02:22:42  jeroens
-' Implemented VC changes 2jun09
-'
-' Revision 1.4  2009/06/02 02:46:58  jeroens
-' Renamed exposed keystoneness indicators
-'
-' Revision 1.3  2009/06/01 01:00:26  jeroens
-' Added Keyst over B column
-'
-' Revision 1.2  2009/05/30 00:00:54  jeroens
-' Toolstrip usage centralized
-'
-' Revision 1.1  2009/05/28 13:40:11  jeroens
-' Added keystoneness graph, renamed table content manager to prevent confusion
-'
-' Revision 1.2  2009/05/28 02:28:32  jeroens
-' Added scaled impact column
-'
-' Revision 1.1  2009/05/28 02:12:02  jeroens
-' Initial version
-'
-'==============================================================================
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -30,6 +6,9 @@ Option Explicit On
 Imports System.Windows.Forms
 Imports ZedGraph
 
+#End Region ' Imports
+
+<CLSCompliant(False)> _
 Public Class cKeystonenessTable
     Inherits cContentManager
 

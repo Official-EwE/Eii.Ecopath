@@ -1,63 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cPlotOfMixedTrophicImpact.vb,v $
-' Revision 1.20  2009/05/30 00:00:53  jeroens
-' Toolstrip usage centralized
-'
-' Revision 1.19  2009/05/19 13:41:11  jeroens
-' Content manager derived pages will take care of updating NA run state
-'
-' Revision 1.18  2009/05/01 17:42:59  jeroens
-' Inherited from cContentManager
-'
-' Revision 1.17  2009/04/22 22:27:28  joeh
-' Move MTI data assignment from New to CreatePlot
-'
-' Revision 1.16  2009/04/17 18:53:00  joeh
-' Make MixedTrophicImpactUC not visible when needed
-'
-' Revision 1.15  2009/04/17 01:07:04  joeh
-' Make MixedTrophicImpactUC not visible when needed
-'
-' Revision 1.14  2009/04/16 21:52:37  joeh
-' Add Legends to the MTI plot
-'
-' Revision 1.13  2009/04/15 23:22:27  joeh
-' Add "Imports System.Windows.Forms" statement
-'
-' Revision 1.12  2009/04/15 18:13:53  joeh
-' Make plot re-sizable
-'
-' Revision 1.11  2009/04/14 18:21:13  joeh
-' Add separator to tool strip
-'
-' Revision 1.10  2009/04/09 20:04:47  joeh
-' Add "Bar graph" button to plot bar graph for MTI
-'
-' Revision 1.9  2008/12/10 20:56:19  joeh
-' Finalize the Suitability Plot
-'
-' Revision 1.8  2008/12/05 19:45:33  joeh
-' Add "Impacting group" and "Impacted group"
-'
-' Revision 1.7  2008/12/04 21:41:53  joeh
-' Change the location and size of ucPlotOfMixedTrophicImpact so that the upper end of the vertical labels will not be hidden
-'
-' Revision 1.6  2008/12/04 01:14:16  joeh
-' Add ucPlotOfMixedTrophicImpact
-'
-' Revision 1.5  2008/12/03 20:49:19  joeh
-' Incorportate Functional Response into Network Analysis - Take three
-'
-' Revision 1.4  2008/12/03 18:43:48  joeh
-' Incorportate Functional Response into Network Analysis - Take two
-'
-' Revision 1.3  2008/12/02 03:05:37  joeh
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -72,7 +13,12 @@ Imports System.Drawing.Imaging
 
 #End Region ' Imports
 
-'MTI graph with circles
+''' ===========================================================================
+''' <summary>
+''' MTI graph with circles
+''' </summary>
+''' ===========================================================================
+<CLSCompliant(False)> _
 Public Class cPlotOfMixedTrophicImpact
     Inherits cContentManager
 
