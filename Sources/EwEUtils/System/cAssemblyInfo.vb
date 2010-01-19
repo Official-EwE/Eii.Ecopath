@@ -5,8 +5,7 @@ Imports System.Reflection
 
 #End Region ' Imports
 
-Public Class SystemUtilities
-
+Namespace SystemUtilities
 
     ''' ===========================================================================
     ''' <summary>
@@ -186,4 +185,4 @@ Public Class SystemUtilities
 
     End Class
 
-End Class ' SystemUtilities
+End Namespace ' SystemUtilities
