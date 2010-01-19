@@ -13,6 +13,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwENetworkAnalysis plugin")> 
 <Assembly: AssemblyCopyright("Copyright © 2007-2010")> 
+<Assembly: CLSCompliant(True)> 
 
 <Assembly: ComVisible(False)>
 

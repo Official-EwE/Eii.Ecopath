@@ -154,7 +154,7 @@ Public Class cEwENetworkAnalysisPlugin
 
     Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "Network analysis plug-in"
+            Return "Network Analysis"
         End Get
     End Property
 
