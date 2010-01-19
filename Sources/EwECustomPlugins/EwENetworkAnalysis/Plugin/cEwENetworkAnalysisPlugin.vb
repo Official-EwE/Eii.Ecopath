@@ -8,6 +8,8 @@ Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
+Imports EwEUtils.SystemUtilities
+Imports System.Reflection
 
 #End Region ' Imports
 
@@ -154,7 +156,8 @@ Public Class cEwENetworkAnalysisPlugin
 
     Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "Network Analysis"
+            Dim ai As New cAssemblyInfo(Assembly.GetAssembly(GetType(cEwENetworkAnalysisPlugin)))
+            Return ai.Description
         End Get
     End Property
 
@@ -192,7 +195,7 @@ Public Class cEwENetworkAnalysisPlugin
 
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Network analysis plug-in"
+            Return "Network analysis"
         End Get
     End Property
 
