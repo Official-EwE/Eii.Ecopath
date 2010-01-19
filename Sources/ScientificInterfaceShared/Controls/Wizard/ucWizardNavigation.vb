@@ -112,7 +112,15 @@ Namespace Controls.Wizard
 
         Private Sub OnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnClose.Click
-            Me.m_wizard.Close()
+
+            Dim bCanFinish As Boolean = False
+
+            If Me.m_wizard.CanFinish() Then
+                Me.m_wizard.Close(DialogResult.OK)
+            Else
+                Me.m_wizard.Close(DialogResult.Cancel)
+            End If
+
         End Sub
 
 #End Region ' Control events

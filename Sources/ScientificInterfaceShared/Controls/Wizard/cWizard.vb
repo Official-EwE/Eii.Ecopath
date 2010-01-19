@@ -1,6 +1,7 @@
 ﻿#Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports System.Collections
 Imports System.Windows.Forms
 
@@ -22,6 +23,9 @@ Namespace Controls.Wizard
     Public Class cWizard
 
 #Region " Private vars "
+
+        ''' <summary>Core that this wizard operates on.</summary>
+        Private m_core As cCore = Nothing
 
         ''' <summary>List of wizard pages.</summary>
         Private m_lPages As New List(Of Type)
@@ -49,10 +53,15 @@ Namespace Controls.Wizard
         ''' <param name="content">Panel where wizard can display its content.</param>
         ''' <param name="nav">Navigator attached to this wizard.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal parent As Form, ByVal content As Panel, ByVal nav As IWizardNavigation)
+        Public Sub New(ByVal core As cCore, _
+                       ByVal parent As Form, _
+                       ByVal content As Panel, _
+                       ByVal nav As IWizardNavigation)
 
             ' Sanity checks
             Debug.Assert(nav IsNot Nothing)
+
+            Me.m_core = core
 
             Me.m_parent = parent
             Me.m_content = content
@@ -79,7 +88,7 @@ Namespace Controls.Wizard
 
             ' Sanity checks
             Debug.Assert(GetType(IWizardPage).IsAssignableFrom(tpage), "Page must implement IWizardPage")
-            Debug.Assert(GetType(Control).IsAssignableFrom(tpage), "Page must be a valid Windows Forms Control")
+            Debug.Assert(GetType(IWizardPage).IsAssignableFrom(tpage), "Page must be a valid Windows Forms Control")
 
             ' Add page type to the list of candidate pages
             Me.m_lPages.Add(tpage)
@@ -93,9 +102,34 @@ Namespace Controls.Wizard
             End If
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Callback for wizard pages to inform the wizard that a pages content
+        ''' has changed.
+        ''' </summary>
+        ''' <param name="page">The page whose content changed.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub PageChanged(ByVal page As IWizardPage)
+            ' Is this the current active page?
+            If (Object.ReferenceEquals(page, Me.m_page)) Then
+                ' #Yes: refresh navigation
+                Me.m_nav.UpdateNavigation()
+            End If
+        End Sub
 #End Region ' Public access
 
 #Region " Context "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the core that this wizard operates on.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Core() As cCore
+            Get
+                Return Me.m_core
+            End Get
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -133,21 +167,6 @@ Namespace Controls.Wizard
 #End Region ' Context
 
 #Region " Navigation "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Callback for wizard pages to inform the wizard that a pages content
-        ''' has changed.
-        ''' </summary>
-        ''' <param name="page">The page whose content changed.</param>
-        ''' -------------------------------------------------------------------
-        Friend Sub PageChanged(ByVal page As IWizardPage)
-            ' Is this the current active page?
-            If (Object.ReferenceEquals(page, Me.m_page)) Then
-                ' #Yes: refresh navigation
-                Me.m_nav.UpdateNavigation()
-            End If
-        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -204,7 +223,7 @@ Namespace Controls.Wizard
 
             If (page Is Nothing) Then Return False
             If (page.IsBusy) Then Return False
-            If (Me.m_iPageActive > 0) Then Return False
+            If (Me.m_iPageActive = 0) Then Return False
 
             Return page.AllowNavBack
 
@@ -298,7 +317,8 @@ Namespace Controls.Wizard
         ''' Callback for the navigation system to close the wizard.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Overridable Sub Close()
+        Friend Overridable Sub Close(ByVal result As DialogResult)
+            Me.m_parent.DialogResult = result
             Me.m_parent.Close()
         End Sub
 
