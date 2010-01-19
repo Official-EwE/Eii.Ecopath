@@ -2,6 +2,8 @@
 
 Option Strict On
 
+Imports EwEUtils.Core
+
 #End Region ' Imports
 
 Namespace DataSources
@@ -208,8 +210,12 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID assigned to the new pedigree level.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddPedigreeLevel(ByVal iPosition As Integer, ByVal varName As eVarNameFlags, _
-                ByVal sIndexValue As Single, ByVal sConfidence As Single, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean
+        Function AddPedigreeLevel(ByVal iPosition As Integer, _
+                                  ByVal varName As eVarNameFlags, _
+                                  ByVal sIndexValue As Single, _
+                                  ByVal sConfidence As Single, _
+                                  ByVal strDescription As String, _
+                                  ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
