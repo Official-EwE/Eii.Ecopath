@@ -96,6 +96,7 @@
     </Compile>
     <Compile Include="Net\cSocketWrapper.vb" />
     <Compile Include="Net\cSerializableObject.vb" />
+    <Compile Include="System\cAssemblyInfo.vb" />
     <Compile Include="System\SystemUtilities.vb" />
     <Compile Include="Utilities\FileUtilities.vb" />
     <Compile Include="Utilities\ResourceUtilities.vb" />
