@@ -107,10 +107,10 @@ Public Class StatusPanel
     ''' -------------------------------------------------------------------
     Public Sub AllMessagesHandler(ByRef msg As cMessage)
 
+        Dim iMaxMessages As Integer = Math.Max(10, Math.Min(200, My.Settings.FeedbackMessageLogSize))
         Dim bPopup As Boolean = False
-
-        '' Give message state handler a shot to refresh
-        'Me.m_msh.CheckState(msg)
+        Dim strMessage As String = msg.Message
+        Dim bSuppressVarMessage As Boolean = False
 
         If String.IsNullOrEmpty(msg.Message) Then Return
 
@@ -146,8 +146,6 @@ Public Class StatusPanel
         End If
 
         ' Show message in status panel
-        Dim strMessage As String = msg.Message
-        Dim bSuppressVarMessage As Boolean = False
 
         ' Prepare treenode
         Dim tnMessage As TreeNode = New TreeNode(Me.ToTreeNodeText(strMessage))
@@ -245,8 +243,9 @@ Public Class StatusPanel
             ' Add node(s) to the TOP of the list
             Me.tvStatus.Nodes.Insert(0, tnMessage)
             ' Truncate log size
-            While (Me.tvStatus.Nodes.Count > My.Settings.FeedbackMessageLogSize)
-                Me.tvStatus.Nodes.RemoveAt(0)
+            While (Me.tvStatus.Nodes.Count = iMaxMessages)
+                ' Remove old messages from the bottom of the list
+                Me.tvStatus.Nodes.RemoveAt(iMaxMessages - 1)
             End While
             tnMessage.EnsureVisible()
         Catch ex As Exception
