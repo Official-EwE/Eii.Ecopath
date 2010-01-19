@@ -1,32 +1,3 @@
-'==============================================================================
-'
-' $Log: IEwEDataSource.vb,v $
-' Revision 1.8  2009/05/25 13:22:47  jeroens
-' Added DiscardChanges
-'
-' Revision 1.7  2009/03/26 15:49:47  jeroens
-' Added CanCompact
-'
-' Revision 1.6  2009/02/26 00:57:29  jeroens
-' Added DB compact
-'
-' Revision 1.5  2009/02/08 17:35:04  jeroens
-' Can now force datasource type when opening a new source
-'
-' Revision 1.4  2009/01/29 16:10:50  jeroens
-' Moved cEwEDatabase.eAccessTypes to shared enums
-'
-' Revision 1.3  2009/01/16 23:51:20  jeroens
-' Datasource no longer maitains data state by datatype, but by eCoreComponentType
-'
-' Revision 1.2  2008/12/10 02:00:32  jeroens
-' Moved datasource types to EwEUtils
-'
-' Revision 1.1  2008/09/26 07:30:13  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -252,10 +223,54 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Function Version() As Single
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Start a database transaction.
+        ''' </summary>
+        ''' <returns>
+        ''' True if succesful.
+        ''' </returns>
+        ''' <remarks>
+        ''' Transactions cannot be nested.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Function BeginTransaction() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' End a database transaction.
+        ''' </summary>
+        ''' <param name="bCommit">States whether the transaction should be 
+        ''' committed (True) or reverted (False).</param>
+        ''' <returns>
+        ''' True if succesful.
+        ''' </returns>
+        ''' <remarks>
+        ''' Transactions cannot be nested.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Function EndTransaction(ByVal bCommit As Boolean) As Boolean
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Compact a database.
+        ''' </summary>
+        ''' <param name="strTarget">The target identifying the a new database
+        ''' to compact into. If left blank, the current database is compacted 
+        ''' and no new database is generated.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
         Function Compact(ByVal strTarget As String) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the datasource is able to compact.
+        ''' </summary>
+        ''' <param name="strTarget">The target identifying the a new database
+        ''' to compact into. If left blank, the current database is compacted 
+        ''' and no new database is generated.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
         Function CanCompact(ByVal strTarget As String) As Boolean
 
 #End Region ' Generic
