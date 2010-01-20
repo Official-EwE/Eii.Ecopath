@@ -469,6 +469,10 @@ Namespace MSE
 
             Me.m_search.SearchMode = orgSearchMode
 
+            If Me.m_core.PluginManager IsNot Nothing Then
+                Me.m_core.PluginManager.MSYRunCompleted()
+            End If
+
         End Sub
 
         Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
@@ -520,6 +524,11 @@ Namespace MSE
                 Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
                 Me.m_lstGroupCatchStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchGroupStats, eDataTypes.MSECatchByGroupStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
             Next
+
+            If Me.m_core.PluginManager IsNot Nothing Then
+                Me.m_core.PluginManager.MSEInitialized(Me.m_MSE, Me.m_MSEdata, Me.m_core.m_QuotaData, Me.m_core.m_EcoSim)
+                Me.m_core.PluginManager.MSYInitialized(Me.m_MSEdata, Me.m_core.m_QuotaData, Me.m_core.m_EcoSim)
+            End If
 
         End Function
 

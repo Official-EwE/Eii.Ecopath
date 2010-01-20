@@ -1177,6 +1177,10 @@ Namespace MSE
             m_core.EcoSimModelParameters.NumberYears = NumberOfYears + 25
             SetBaseValues()
 
+            If Me.m_core.PluginManager IsNot Nothing Then
+                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_quota, Me.m_esData)
+            End If
+
             Try
 
                 For iflt As Integer = 1 To Me.m_esData.nGear
@@ -1330,6 +1334,10 @@ Namespace MSE
                 'reset the number of years that Ecosim will run
                 m_core.EcoSimModelParameters.NumberYears = NumberOfYears
 
+                If Me.m_core.PluginManager IsNot Nothing Then
+                    Me.m_pluginManager.MSYEffortCompleted(MSYeffort)
+                End If
+
                 'MsgBox("MSY reference levels calculated")
 
             Catch ex As Exception
@@ -1349,6 +1357,7 @@ Namespace MSE
 
             'VC wants to change this so that it can calc Value or Biomass
             Dim FleetCatchValue As Single = 0
+            Dim marketPrice As Single
             '
             'System.Console.WriteLine()
 
@@ -1362,8 +1371,11 @@ Namespace MSE
                         Dim bio As Single = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
                         'sumbio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
                         'FleetCatchValue += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it) * Me.m_epdata.Market(curFleet, igrp) ' * PropCaughtByThisGear
-
-                        FleetCatchValue += m_esData.ResultsSumCatchByGroupGear(igrp, curFleet, it) * Me.m_epdata.Market(curFleet, igrp)
+                        marketPrice = 1
+                        If Me.m_data.MSYEvaluateValue Then
+                            marketPrice = Me.m_epdata.Market(curFleet, igrp)
+                        End If
+                        FleetCatchValue += m_esData.ResultsSumCatchByGroupGear(igrp, curFleet, it) * marketPrice
                         'System.Console.Write("Group " & igrp.ToString & " = " & FleetCatchValue.ToString & ", ")
                     Next
                 End If
@@ -1392,7 +1404,7 @@ Namespace MSE
                     Shape = Manager.Item(iFl)
                     Shape.LockUpdates()
                     Shape.ShapeData(1) = 1
-                    For iTimeStep As Integer = 2 To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
+                    For iTimeStep As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
                         Shape.ShapeData(iTimeStep) = Val
                         'set effort to unity 
                     Next
@@ -1466,6 +1478,8 @@ Namespace MSE
         End Sub
 
         Private Sub fireMSYProgress(ByVal MYSProgress As cMSYProgressArgs)
+
+            If Me.m_data.MSYRunSilent Then Exit Sub
 
             Try
                 If Me.m_MSYCallBack IsNot Nothing Then

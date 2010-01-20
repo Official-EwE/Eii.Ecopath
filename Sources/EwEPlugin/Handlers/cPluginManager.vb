@@ -1138,6 +1138,61 @@ Public Class cPluginManager
 
 #End Region ' Search plugins
 
+#Region "MSE and MSY"
+
+    Public Function MSEInitialized(ByVal MSEModel As Object, _
+                                   ByVal MSEDataStructure As Object, _
+                                   ByVal QuotaDataStructures As Object, _
+                                   ByVal EcosimDatastructures As Object) As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSEInitialized), "MSEInitialized", _
+                                                    New Object() {MSEModel, MSEDataStructure, QuotaDataStructures, EcosimDatastructures})
+
+
+    End Function
+
+    Public Function MSYInitialized(ByVal MSEDataStructure As Object, _
+                               ByVal QuotaDataStructures As Object, _
+                               ByVal EcosimDatastructures As Object) As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSYPlugin), "MSYInitialized", _
+                                                    New Object() {MSEDataStructure, QuotaDataStructures, EcosimDatastructures})
+
+
+    End Function
+
+
+    Public Function MSYRunStarted(ByVal MSEDataStructure As Object, _
+                               ByVal QuotaDataStructures As Object, _
+                               ByVal EcosimDatastructures As Object) As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSYPlugin), "MSYRunStarted", _
+                                                    New Object() {MSEDataStructure, QuotaDataStructures, EcosimDatastructures})
+
+
+    End Function
+
+
+    Public Function MSYEffortCompleted(ByVal MSYEffortByFleet() As Single) As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSYPlugin), "MSYEffortCompleted", _
+                                                    New Object() {MSYEffortByFleet})
+
+
+    End Function
+
+    Public Function MSYRunCompleted() As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSYPlugin), "MSYRunCompleted", _
+                                                    New Object() {})
+
+
+    End Function
+
+
+
+#End Region
+
 #End Region ' Plugin invocation
 
 #Region " Plugin access "

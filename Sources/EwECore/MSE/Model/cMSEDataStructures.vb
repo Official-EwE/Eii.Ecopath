@@ -254,6 +254,12 @@ Public Class cMSEDataStructures
             Me.JobsSum = New cMSESummaryStats(Me, Nothing, 1)
             Me.CostSum = New cMSESummaryStats(Me, Nothing, 1)
 
+            'default values for MSY 
+            'these values can be overridden by an MSE of MSY plugin
+            Me.MSYRunSilent = False
+            Me.MSYEvaluateValue = True
+            Me.MSYStartTimeIndex = 2
+
         Catch ex As Exception
             cLog.Write(ex)
             Throw New ApplicationException("Init() " & ex.Message, ex)
