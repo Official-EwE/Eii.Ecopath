@@ -526,8 +526,8 @@ Namespace MSE
             Next
 
             If Me.m_core.PluginManager IsNot Nothing Then
-                Me.m_core.PluginManager.MSEInitialized(Me.m_MSE, Me.m_MSEdata, Me.m_core.m_QuotaData, Me.m_core.m_EcoSim)
-                Me.m_core.PluginManager.MSYInitialized(Me.m_MSEdata, Me.m_core.m_QuotaData, Me.m_core.m_EcoSim)
+                Me.m_core.PluginManager.MSEInitialized(Me.m_MSE, Me.m_MSEdata, Me.m_core.m_QuotaData, Me.m_core.m_EcoSimData)
+                Me.m_core.PluginManager.MSYInitialized(Me.m_MSEdata, Me.m_core.m_QuotaData, Me.m_core.m_EcoSimData)
             End If
 
         End Function
