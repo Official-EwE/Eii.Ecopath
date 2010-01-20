@@ -31,15 +31,27 @@ Namespace Controls.Wizard
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether a page allows to navigate backward.
+        ''' States whether a page allows its parent wizard to navigate away to 
+        ''' a previous page in the page chain.
         ''' </summary>
+        ''' <remarks>
+        ''' Note that pages should not try to make assumptions about their 
+        ''' placement in the page chain. The parent wizard is responsible for 
+        ''' handling beginning and end of page chains. This flag merely states
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         Function AllowNavBack() As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether a page allows to navigate forward.
+        ''' States whether a page allows its parent wizard to navigate forward
+        ''' to a next page in the page chain.
         ''' </summary>
+        ''' <remarks>
+        ''' Note that pages should not try to make assumptions about their 
+        ''' placement in the page chain. The parent wizard is responsible for 
+        ''' handling beginning and end of page chains. This flag merely states
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         Function AllowNavForward() As Boolean
 
