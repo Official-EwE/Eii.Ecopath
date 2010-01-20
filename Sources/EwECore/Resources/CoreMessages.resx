@@ -807,5 +807,15 @@ System Error: {0}</value>
   <data name="DATABASE_BACKUP_PROMPT" xml:space="preserve">
     <value>This database was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?</value>
   </data>
-
+  <data name="IMPORT_PROGRESS_ECOSIMFLEETS" xml:space="preserve">
+    <value>Importing Ecosim fleets</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMFLEETS_AT" xml:space="preserve">
+    <value>Importing Ecosim fleet {0} - {1}</value>
+    <comment>{0} = scenario name, {1}=fleet name</comment>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMGROUPS_AT" xml:space="preserve">
+    <value>Importing Ecosim group {0} - {1}</value>
+    <comment>{0} = scenario name, {1}=group name</comment>
+  </data>
 </root>

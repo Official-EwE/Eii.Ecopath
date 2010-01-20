@@ -1041,11 +1041,38 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Importing Ecosim fleets.
+        '''</summary>
+        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMFLEETS() As String
+            Get
+                Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSIMFLEETS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Importing Ecosim fleet {0} - {1}.
+        '''</summary>
+        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMFLEETS_AT() As String
+            Get
+                Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSIMFLEETS_AT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Importing Ecosim groups.
         '''</summary>
         Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMGROUPS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSIMGROUPS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Importing Ecosim group {0} - {1}.
+        '''</summary>
+        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMGROUPS_AT() As String
+            Get
+                Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSIMGROUPS_AT", resourceCulture)
             End Get
         End Property
         

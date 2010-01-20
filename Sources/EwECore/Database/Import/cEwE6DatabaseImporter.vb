@@ -1825,9 +1825,9 @@ Namespace Database
             Dim iGroupID As Integer = 1
 
             Dim dtEcosimScenarios As Dictionary(Of String, Integer) = Me.m_adtKeys(CInt(eDataTypes.EcoSimScenario))
-            Dim strEcosimScenario As String = ""
+            Dim strScenario As String = ""
             Dim dtEcopathGroups As Dictionary(Of String, Integer) = Me.m_adtKeys(CInt(eDataTypes.EcoPathGroupInput))
-            Dim strEcopathGroup As String = ""
+            Dim strGroup As String = ""
             ' Flag stating whether an ecosim group was found for a given ecopath group
             Dim bHasGroup As Boolean = False
 
@@ -1837,20 +1837,23 @@ Namespace Database
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenarioGroup")
 
-            ' For every ecopath group...
-            For Each strEcopathGroup In dtEcopathGroups.Keys
+            ' For every ecosim scenario
+            For Each strScenario In dtEcosimScenarios.Keys
 
-                ' and for every ecosim scenario
-                For Each strEcosimScenario In dtEcosimScenarios.Keys
+                ' Get scenario link
+                iScenarioID = Me.HashKey(eDataTypes.EcoSimScenario, strScenario)
+
+                ' For every ecopath group...
+                For Each strGroup In dtEcopathGroups.Keys
+
+                    ' Report sub-status
+                    Me.LogProgress(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSIMGROUPS_AT, strScenario, strGroup), Me.m_iStep)
 
                     ' .. create a new ecosim group
 
-                    ' Get scenario link
-                    iScenarioID = Me.HashKey(eDataTypes.EcoSimScenario, strEcosimScenario)
-
                     ' Check if an ecosim group exists for this ecopath group, ecosim scenario combination
                     reader = m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSim N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'", _
-                            strModelName, strEcosimScenario, strEcopathGroup))
+                            strModelName, strScenario, strGroup))
 
                     bHasGroup = reader.Read()
 
@@ -1858,7 +1861,7 @@ Namespace Database
                     drow = writer.NewRow()
 
                     ' Link to ecopath group
-                    drow("EcopathGroupID") = Me.HashKey(eDataTypes.EcoPathGroupInput, strEcopathGroup)
+                    drow("EcopathGroupID") = Me.HashKey(eDataTypes.EcoPathGroupInput, strGroup)
                     ' Link to scenario
                     drow("ScenarioID") = iScenarioID
                     ' Set group ID
@@ -1884,36 +1887,36 @@ Namespace Database
                         End If
 
                         ' No shape imported for this group yet?
-                        If Me.HashKey(eDataTypes.FishMort, strEcopathGroup, eDataTypes.EcoSimScenario, iScenarioID) = 0 Then
+                        If Me.HashKey(eDataTypes.FishMort, strGroup, eDataTypes.EcoSimScenario, iScenarioID) = 0 Then
                             ' Succesfully imported the shape?
                             If Me.ImportShape(Me.m_iNextShapeID, eDataTypes.FishMort, reader) = Me.m_iNextShapeID Then
                                 ' Remember key for consecutive group instances in other scenarios
-                                Me.HashKey(eDataTypes.FishMort, strEcopathGroup, eDataTypes.EcoSimScenario, iScenarioID) = Me.m_iNextShapeID
+                                Me.HashKey(eDataTypes.FishMort, strGroup, eDataTypes.EcoSimScenario, iScenarioID) = Me.m_iNextShapeID
                                 ' Assign shape
                                 drow("FishMortShapeID") = Me.m_iNextShapeID
                                 ' Next shape
                                 Me.m_iNextShapeID += 1
                             End If
                         Else
-                            drow("FishMortShapeID") = Me.HashKey(eDataTypes.FishMort, strEcopathGroup, eDataTypes.EcoSimScenario, iScenarioID)
+                            drow("FishMortShapeID") = Me.HashKey(eDataTypes.FishMort, strGroup, eDataTypes.EcoSimScenario, iScenarioID)
                         End If
                     Else
                         ' #No: the new group will get all default values
                         Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSIMGROUP, _
                                 iGroupID, _
-                                strEcopathGroup, _
-                                strEcosimScenario), _
+                                strGroup, _
+                                strScenario), _
                                 eMessageType.DataImport, eMessageImportance.Information)
 
                         ' No shape imported for this group yet?
-                        If Me.HashKey(eDataTypes.FishMort, strEcopathGroup, eDataTypes.EcoSimScenario, iScenarioID) <> 0 Then
-                            drow("FishMortShapeID") = Me.HashKey(eDataTypes.FishMort, strEcopathGroup, eDataTypes.EcoSimScenario, iScenarioID)
+                        If Me.HashKey(eDataTypes.FishMort, strGroup, eDataTypes.EcoSimScenario, iScenarioID) <> 0 Then
+                            drow("FishMortShapeID") = Me.HashKey(eDataTypes.FishMort, strGroup, eDataTypes.EcoSimScenario, iScenarioID)
                         Else
                             ' Notify world
                             Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_FIX_CREATEFISHMORTSHAPE, _
                                     Me.m_iNextShapeID, _
-                                    strEcopathGroup, _
-                                    strEcosimScenario), _
+                                    strGroup, _
+                                    strScenario), _
                                     eMessageType.DataImport, eMessageImportance.Information)
 
                             ' Create dummy shape
@@ -1942,14 +1945,14 @@ Namespace Database
                     End If
 
                     ' Remember Ecosim group input ID mapping
-                    Me.HashKey(eDataTypes.EcoSimGroupInput, strEcopathGroup, eDataTypes.EcoSimScenario, iScenarioID) = iGroupID
+                    Me.HashKey(eDataTypes.EcoSimGroupInput, strGroup, eDataTypes.EcoSimScenario, iScenarioID) = iGroupID
 
                     ' Next group
                     iGroupID += 1
                     Me.m_dbEwE5.ReleaseReader(reader)
 
-                Next strEcosimScenario
-            Next strEcopathGroup
+                Next strGroup
+            Next strScenario
 
             Me.m_dbEwE6.ReleaseWriter(writer)
 
@@ -2017,15 +2020,20 @@ Namespace Database
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenarioFleet")
 
-            For Each strFleetName As String In dtFleets.Keys
-                For Each strScenarioName As String In dtScenarios.Keys
+            For Each strScenario As String In dtScenarios.Keys
+
+                iScenarioID = Me.HashKey(eDataTypes.EcoSimScenario, strScenario)
+
+                For Each strFleet As String In dtFleets.Keys
+
+                    ' Report sub-status
+                    Me.LogProgress(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSIMFLEETS_AT, strScenario, strFleet), Me.m_iStep)
 
                     ' Grab foreign keys
-                    iScenarioID = Me.HashKey(eDataTypes.EcoSimScenario, strScenarioName)
-                    iEcopathFleetID = Me.HashKey(eDataTypes.FleetInput, strFleetName)
+                    iEcopathFleetID = Me.HashKey(eDataTypes.FleetInput, strFleet)
 
                     reader = m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSim FishGear] where modelName='{0}' and gearName='{1}' and Scenario='{2}'", _
-                                                              strModelName, strFleetName, strScenarioName))
+                                                              strModelName, strFleet, strScenario))
                     ' Assume no shape is read
                     iShapeID = 0
                     ' Try to read effort linkage
@@ -2047,7 +2055,7 @@ Namespace Database
                     drow("EcopathFleetID") = iEcopathFleetID
                     drow("FishRateShapeID") = iShapeID
 
-                    readerEcopath = m_dbEwE5.GetReader(String.Format("SELECT * FROM [Gear] WHERE (gearName='{0}')", strFleetName))
+                    readerEcopath = m_dbEwE5.GetReader(String.Format("SELECT * FROM [Gear] WHERE (gearName='{0}')", strFleet))
                     readerEcopath.Read()
 
                     drow("EPower") = Me.FixValue(readerEcopath, "EPower", 3.0!)
@@ -2063,12 +2071,12 @@ Namespace Database
 
                     If iShapeID = Me.m_iNextShapeID Then
                         iShapeID = Me.ImportShape(iShapeID, eDataTypes.FishingEffort, reader)
-                        Me.HashKey(eDataTypes.FishingEffort, strFleetName, eDataTypes.EcoSimScenario, iScenarioID) = iShapeID
+                        Me.HashKey(eDataTypes.FishingEffort, strFleet, eDataTypes.EcoSimScenario, iScenarioID) = iShapeID
                         Me.m_iNextShapeID += 1
                     End If
 
-                Next strScenarioName
-            Next strFleetName
+                Next strFleet
+            Next strScenario
 
             Me.m_dbEwE6.ReleaseWriter(writer)
 
