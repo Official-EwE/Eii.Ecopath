@@ -84,7 +84,7 @@ Namespace Controls.Wizard
         ''' and must implement the <see cref="IWizardPage">IWizardPage</see>
         ''' interface.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddPage(ByVal tpage As Type)
+        Public Overridable Sub AddPage(ByVal tpage As Type)
 
             ' Sanity checks
             Debug.Assert(GetType(IWizardPage).IsAssignableFrom(tpage), "Page must implement IWizardPage")
@@ -109,13 +109,21 @@ Namespace Controls.Wizard
         ''' </summary>
         ''' <param name="page">The page whose content changed.</param>
         ''' -------------------------------------------------------------------
-        Public Sub PageChanged(ByVal page As IWizardPage)
+        Public Overridable Sub PageChanged(ByVal page As IWizardPage)
             ' Is this the current active page?
             If (Object.ReferenceEquals(page, Me.m_page)) Then
                 ' #Yes: refresh navigation
                 Me.m_nav.UpdateNavigation()
+                ' Set parent wait cursor
+                If page.IsBusy Then
+                    Me.m_parent.Cursor = Cursors.WaitCursor
+                Else
+                    Me.m_parent.Cursor = Cursors.Default
+                End If
+
             End If
         End Sub
+
 #End Region ' Public access
 
 #Region " Context "
