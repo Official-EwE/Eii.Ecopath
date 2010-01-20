@@ -9,36 +9,61 @@ Namespace Import
 
     ''' =======================================================================
     ''' <summary>
-    ''' Import wizard page 1 - welcome.
+    ''' Import wizard welcome page.
     ''' </summary>
     ''' =======================================================================
     Public Class ucImportPageWelcome
         Implements IWizardPage
 
-        Public Sub Init(ByVal wizard As ScientificInterfaceShared.Controls.Wizard.cWizard) _
-            Implements ScientificInterfaceShared.Controls.Wizard.IWizardPage.Init
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Initialize the welcome page.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Init(ByVal wizard As cWizard) _
+            Implements IWizardPage.Init
             ' NOP
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Close the welcome page.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub Close() _
-            Implements ScientificInterfaceShared.Controls.Wizard.IWizardPage.Close
+             Implements IWizardPage.Close
             ' NOP
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the welcome page is busy.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Function IsBusy() As Boolean _
-            Implements ScientificInterfaceShared.Controls.Wizard.IWizardPage.IsBusy
-            ' Page is never too busy to be dismissed
+              Implements IWizardPage.IsBusy
+            ' Page does not have a busy state
             Return False
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the welcom page allows the wizard to navigate backward.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Function AllowNavBack() As Boolean _
-            Implements ScientificInterfaceShared.Controls.Wizard.IWizardPage.AllowNavBack
+            Implements IWizardPage.AllowNavBack
             ' Page does not restrict backward navigation
             Return True
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the welcom page allows the wizard to navigate backward.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Function AllowNavForward() As Boolean _
-            Implements ScientificInterfaceShared.Controls.Wizard.IWizardPage.AllowNavForward
+            Implements IWizardPage.AllowNavForward
             ' Page does not restrict forward navigation
             Return True
         End Function

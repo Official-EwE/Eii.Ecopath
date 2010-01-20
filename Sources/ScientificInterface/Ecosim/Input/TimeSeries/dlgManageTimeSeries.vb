@@ -586,7 +586,7 @@ Public Class dlgManageTimeSeries
         ' Dataset succesfully removed?
         If (bSucces = True) Then
             ' #Yes: start importing
-            cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_IMPORTINGDATASET, Me.DatasetName), TriState.True)
+            cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_IMPORTING_DATASET, Me.DatasetName), TriState.True)
             Try
                 For Each ts As cTimeSeriesImport In Me.m_tr
 

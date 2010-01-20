@@ -10,27 +10,69 @@ Imports SourceGrid2.Cells
 
 Namespace Import
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' EwE-derived grid to allow selection of models to import.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class cImportGrid
         Inherits EwEGrid
 
+#Region " Private bits "
+
+        ''' <summary>Grid columns.</summary>
         Private Enum eColumnTypes As Integer
+            ''' <summary>EwE5 model name column.</summary>
             EwE5Model = 0
+            ''' <summary>Import selection toggle column.</summary>
             Import
+            ''' <summary>EwE6 target model name column.</summary>
             EwE6Model
         End Enum
 
         ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
         ''' to trap cell edit events locally in this grid.</summary>
         Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
+        ''' <summary>The attached import wizard that holds the import settings 
+        ''' to display and edit in this grid.</summary>
         Private m_wizard As cImportWizard = Nothing
 
+#End Region ' Private bits
+
+#Region " Public bits "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Initialize the grid with wizardy stuff.
+        ''' </summary>
+        ''' <param name="wizard">The <see cref="cImportWizard">import wizard</see>
+        ''' to initialize the grid with</param>
+        ''' -----------------------------------------------------------------------
+        Public Sub Init(ByVal wizard As cImportWizard)
+
+            ' Sanity check
+            Debug.Assert(wizard IsNot Nothing)
+
+            ' Remember wizard
+            Me.m_wizard = wizard
+            ' Re-populate grid
+            Me.RefreshContent()
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event that notifies the world at large that the user has made a change
+        ''' to a value inside the grid.
+        ''' </summary>
+        ''' <param name="grid">The grid instance that fired the event.</param>
+        ''' -----------------------------------------------------------------------
         Public Event OnEdited(ByVal grid As cImportGrid)
 
-        Public Sub Init(ByVal wizard As cImportWizard)
-            Me.m_wizard = wizard
-            Me.RefreshContent()
-        End Sub
+#End Region ' Public bits
+
+#Region " Internal overrides "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -41,26 +83,38 @@ Namespace Import
 
             MyBase.InitStyle()
 
+            ' Set selection mode
             Me.Selection.SelectionMode = GridSelectionMode.Cell
             Me.Selection.EnableMultiSelection = False
 
-            ' Redim columns
+            ' Resize grid
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
+            ' Create columns
             Me(0, eColumnTypes.EwE5Model) = New EwEColumnHeaderCell("Old model")
             Me(0, eColumnTypes.Import) = New EwEColumnHeaderCell("Import")
             Me(0, eColumnTypes.EwE6Model) = New EwEColumnHeaderCell("New model name")
 
             ' Configure columns
             Me.FixedColumns = 1
-            Me.Columns(eColumnTypes.EwE6Model).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
 
         End Sub
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Make sure grid does not dock by default.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -----------------------------------------------------------------------
         Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
             Return DockStyle.None
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Populate grid with current import settings.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
         Protected Overrides Sub FillData()
 
             If (Me.m_wizard Is Nothing) Then Return
@@ -95,6 +149,19 @@ Namespace Import
 
         End Sub
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Cell has been edited: update underlying import settings.
+        ''' </summary>
+        ''' <param name="p"></param>
+        ''' <param name="cell"></param>
+        ''' <returns>True to accept data.</returns>
+        ''' <remarks>
+        ''' This method differs by legacy reasons from 
+        ''' <see cref="OnCellValueChanged">OnCellValueChanged</see>. Let's just
+        ''' work with it.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
         Protected Overrides Function OnCellEdited(ByVal p As Position, _
                                                   ByVal cell As ICellVirtual) As Boolean
 
@@ -108,6 +175,7 @@ Namespace Import
                     ' Refresh the cell since the model name may have been 
                     ' altered in the assignment
                     Me.UpdateEwE6ModelCell(p.Row)
+                    ' Notify the world that data has been edited.
                     RaiseEvent OnEdited(Me)
 
             End Select
@@ -116,6 +184,19 @@ Namespace Import
 
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Cell value has been changed: update underlying import settings.
+        ''' </summary>
+        ''' <param name="p"></param>
+        ''' <param name="cell"></param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' This method differs by legacy reasons from 
+        ''' <see cref="OnCellEdited">OnCellEdited</see>. Let's just
+        ''' work with it.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
         Protected Overrides Function OnCellValueChanged(ByVal p As Position, _
                                                         ByVal cell As ICellVirtual) As Boolean
 
@@ -124,7 +205,7 @@ Namespace Import
             Select Case DirectCast(p.Column, eColumnTypes)
 
                 Case eColumnTypes.Import
-                    settings.Import = CBool(cell.GetValue(p))
+                    settings.SelectedForImport = CBool(cell.GetValue(p))
                     Me.UpdateEwE6ModelCell(p.Row)
                     RaiseEvent OnEdited(Me)
 
@@ -132,6 +213,10 @@ Namespace Import
             Return True
 
         End Function
+
+#End Region ' Internal overrides
+
+#Region " Internal helpers "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -150,25 +235,39 @@ Namespace Import
             End Set
         End Property
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Update the read-only style and content of EwE6 model cells
+        ''' </summary>
+        ''' <param name="iRow"></param>
+        ''' -----------------------------------------------------------------------
         Private Sub UpdateEwE6ModelCell(ByVal iRow As Integer)
 
             Dim settings As cImportWizard.cImportSettings = Me.ImportSettings(iRow)
             Dim cellEwE As EwECell = DirectCast(Me(iRow, eColumnTypes.EwE6Model), EwECell)
 
-            If settings.Import Then
+            ' If a model is selected for import the EwE6 name cell is editable and displays data.
+            ' If a model is NOT selected for import the EwE6 name cell is read-only and displays no data.
+
+            ' Is model selected for import?
+            If settings.SelectedForImport Then
+                ' #Yes: show model name
                 cellEwE.Value = settings.EwE6ModelName
+                ' Make cell editable
                 cellEwE.Style = cStyleGuide.eStyleFlags.OK
             Else
+                ' #No: clear cell value
                 cellEwE.Value = ""
+                ' Clear cell value
                 cellEwE.Style = cStyleGuide.eStyleFlags.NotEditable
             End If
+
+            ' Re-render cell
             cellEwE.Invalidate()
 
         End Sub
 
-        Private Sub cImportGrid_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.SizeChanged
-        End Sub
+#End Region ' Internal helpers
 
     End Class
 

@@ -1228,7 +1228,7 @@
     <value>{0}{1}</value>
     <comment>{0}: FF type, {1}:FF index</comment>
   </data>
-  <data name="STATUS_IMPORTINGDATASET" xml:space="preserve">
+  <data name="STATUS_IMPORTING_DATASET" xml:space="preserve">
     <value>Importing Time Series dataset {0}...</value>
     <comment>{0} dataset name</comment>
   </data>
@@ -2460,5 +2460,17 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADERMASK_UNIT_ZEROTOONE" xml:space="preserve">
     <value>{0} [0, 1]</value>
     <comment>{0}: value mask</comment>
+  </data>
+  <data name="STATUS_IMPORTING_MODEL" xml:space="preserve">
+    <value>Converting model '{0}' </value>
+    <comment>{0} = EwE5 model name</comment>
+  </data>
+  <data name="STATUS_IMPORTING_MODEL_FAILED" xml:space="preserve">
+    <value>Model '{0}' failed to convert, see import log '{1}' for details</value>
+    <comment>{0} = EwE5 model name, {1}=log file name</comment>
+  </data>
+  <data name="STATUS_IMPORTING_MODEL_SUCCESS" xml:space="preserve">
+    <value>Model '{0}' converted succesfully to '{1}'</value>
+    <comment>{0} = EwE5 model name, {1}=EwE6 model name</comment>
   </data>
 </root>

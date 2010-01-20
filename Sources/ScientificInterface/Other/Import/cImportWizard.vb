@@ -50,25 +50,48 @@ Namespace Import
 
 #Region " Privates vars "
 
+            ''' <summary>EwE5 model info.</summary>
             Private m_mi As cEwE6DatabaseImporter.cEwE5ModelInfo = Nothing
+            ''' <summary>Flag stating whether this EwE5 model should be imported.</summary>
             Private m_bImport As Boolean = False
+            ''' <summary>EwE6 name of the model to import into.</summary>
             Private m_strEwE6Name As String = ""
+            ''' <summary>Path to the import log file once an import is completed.</summary>
+            Private m_strLogFile As String = ""
 
 #End Region ' Privates vars
 
+            ''' -----------------------------------------------------------------------
+            ''' <summary>
+            ''' Create a new import setting for an EwE5 model.
+            ''' </summary>
+            ''' <param name="mi">The <see cref="cEwE6DatabaseImporter.cEwE5ModelInfo">
+            ''' to create import settings for.</param>
+            ''' -----------------------------------------------------------------------
             Public Sub New(ByVal mi As cEwE6DatabaseImporter.cEwE5ModelInfo)
                 Me.m_mi = mi
                 Me.m_bImport = False
                 Me.m_strEwE6Name = mi.Name
             End Sub
 
+            ''' -----------------------------------------------------------------------
+            ''' <summary>
+            ''' Get the <see cref="cEwE6DatabaseImporter.cEwE5ModelInfo">EwE5 model 
+            ''' information</see> associated with this import setting.
+            ''' </summary>
+            ''' -----------------------------------------------------------------------
             Public ReadOnly Property ModelInfo() As cEwE6DatabaseImporter.cEwE5ModelInfo
                 Get
                     Return Me.m_mi
                 End Get
             End Property
 
-            Public Property Import() As Boolean
+            ''' -----------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set whether this EwE5 model should be imported.
+            ''' </summary>
+            ''' -----------------------------------------------------------------------
+            Public Property SelectedForImport() As Boolean
                 Get
                     Return Me.m_bImport
                 End Get
@@ -77,12 +100,31 @@ Namespace Import
                 End Set
             End Property
 
+            ''' -----------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the name of the EwE6 model to import into.
+            ''' </summary>
+            ''' -----------------------------------------------------------------------
             Public Property EwE6ModelName() As String
                 Get
                     Return Me.m_strEwE6Name
                 End Get
                 Set(ByVal value As String)
                     Me.m_strEwE6Name = Me.ToEwE6ModelName(value)
+                End Set
+            End Property
+
+            ''' -----------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the import log file.
+            ''' </summary>
+            ''' -----------------------------------------------------------------------
+            Public Property LogFile() As String
+                Get
+                    Return Me.m_strLogFile
+                End Get
+                Set(ByVal value As String)
+                    Me.m_strLogFile = value
                 End Set
             End Property
 
@@ -100,6 +142,8 @@ Namespace Import
         End Class
 
 #End Region ' Helper classes
+
+#Region " Constructor "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -137,6 +181,10 @@ Namespace Import
             Me.AddPage(GetType(ucImportPageProgress))
 
         End Sub
+
+#End Region ' Constructor
+
+#Region " Public access "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -187,66 +235,104 @@ Namespace Import
             End Set
         End Property
 
-
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether the wizard is able to import with its current
-        ''' import settings.
+        ''' States whether the wizard has a valid output path.
         ''' </summary>
-        ''' <returns>True if able to import.</returns>
+        ''' <returns>
+        ''' True if the wizard has a valid output path.
+        ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function CanImport() As Boolean
+        Public Function HasValidOutputPath() As Boolean
 
             Dim di As DirectoryInfo = Nothing
-
             Try
                 di = New DirectoryInfo(Me.m_strOutputFolder)
             Catch ex As Exception
                 Return False
             End Try
+            ' ToDo: include checking of directory write access?
+            Return di.Exists
 
-            If (Not di.Exists) Then Return False
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the wizard has at least ONE model selected for import.
+        ''' </summary>
+        ''' <returns>
+        ''' True if the wizard has at least ONE model selected for import.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function HasModelSelectedForImport() As Boolean
 
             For Each setting As cImportWizard.cImportSettings In Me.ImportSettings
-                If setting.Import Then Return True
+                If setting.SelectedForImport Then Return True
             Next
 
             Return False
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Perform a model import.
+        ''' </summary>
+        ''' <param name="setting">The <see cref="cImportSettings">model</see>
+        ''' to import.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Import(ByVal setting As cImportSettings) As Boolean
+
+            Dim appl As AppLauncher = AppLauncher.GetInstance()
+            Dim db As cEwEDatabase = Nothing
+            Dim strModel As String = Me.EwE6ModelName(setting)
+            Dim bSucces As Boolean = False
+
+            ' Only import models selected for import
+            If (Not setting.SelectedForImport) Then Return bSucces
+
+            ' Request a database to import into
+            db = appl.CreateEcopathModel(strModel, setting.ModelInfo.ID)
+
+            ' Able to create target model?
+            If (db IsNot Nothing) Then
+                ' #Yes: Open target model
+                db.Open(strModel)
+                ' Able to import?
+                If Me.m_dbImp.Import(setting.ModelInfo.ID, db, setting.LogFile) Then
+                    ' #Yes: remember last imported model file
+                    Me.m_strFileName = strModel
+                    ' Succes
+                    bSucces = True
+                End If
+                ' Clean up
+                db.Close()
+            End If
+
+            ' Report succes
+            Return bSucces
+
+        End Function
+
+#End Region ' Public access
+
+#Region " Internals "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a valid EwE6 model path for an import setting.
+        ''' </summary>
+        ''' <param name="setting">The setting to create an EwE6 model path for.</param>
+        ''' <returns>A valid EwE6 model path for an import setting.</returns>
+        ''' -------------------------------------------------------------------
         Private Function EwE6ModelName(ByVal setting As cImportSettings) As String
             Dim strModel As String = Path.Combine(Me.m_strOutputFolder, setting.EwE6ModelName)
             strModel += cDataSourceFactory.GetDefaultExtension(EwEUtils.Core.eDataSourceTypes.ACCDB)
             Return strModel
         End Function
 
-        Public Function Import(ByVal setting As cImportSettings) As Boolean
-
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
-            Dim db As cEwEDatabase = Nothing
-            Dim strModel As String = Me.EwE6ModelName(setting)
-            Dim strLogFileName As String = ""
-            Dim bSucces As Boolean = False
-
-            If Not setting.Import Then Return bSucces
-
-            ' Request a database to import into
-            db = appl.CreateEcopathModel(strModel, setting.ModelInfo.ID)
-
-            If (db IsNot Nothing) Then
-                db.Open(strModel)
-                If Me.m_dbImp.Import(setting.ModelInfo.ID, db, strLogFileName) Then
-                    Me.m_strFileName = strModel
-                    bSucces = True
-                End If
-                db.Close()
-            End If
-
-            Return bSucces
-
-        End Function
-
+#End Region ' Internals
     End Class
 
 End Namespace

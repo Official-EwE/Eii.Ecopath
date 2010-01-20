@@ -5674,9 +5674,36 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Time Series dataset {0}....
         '''</summary>
-        Friend ReadOnly Property STATUS_IMPORTINGDATASET() As String
+        Friend ReadOnly Property STATUS_IMPORTING_DATASET() As String
             Get
-                Return ResourceManager.GetString("STATUS_IMPORTINGDATASET", resourceCulture)
+                Return ResourceManager.GetString("STATUS_IMPORTING_DATASET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Converting model &apos;{0}&apos; .
+        '''</summary>
+        Friend ReadOnly Property STATUS_IMPORTING_MODEL() As String
+            Get
+                Return ResourceManager.GetString("STATUS_IMPORTING_MODEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Model &apos;{0}&apos; failed to convert, see import log &apos;{1}&apos; for details.
+        '''</summary>
+        Friend ReadOnly Property STATUS_IMPORTING_MODEL_FAILED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_IMPORTING_MODEL_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Model &apos;{0}&apos; converted succesfully to &apos;{1}&apos;.
+        '''</summary>
+        Friend ReadOnly Property STATUS_IMPORTING_MODEL_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_IMPORTING_MODEL_SUCCESS", resourceCulture)
             End Get
         End Property
         
