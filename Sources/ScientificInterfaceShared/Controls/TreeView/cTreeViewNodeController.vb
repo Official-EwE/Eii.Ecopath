@@ -167,6 +167,9 @@ Namespace Controls
         ''' -------------------------------------------------------------------------------------------
         Private Sub OnAfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs)
 
+            ' Sanity check
+            Debug.Assert(Me.m_tv IsNot Nothing, "Node detached?!")
+
             Dim ni As cNodeInfo = Me.SearchNodeByName(e.Node.Name)
             Dim cmdH As cCommandHandler = Nothing
             Dim cmd As cCommand = Nothing
