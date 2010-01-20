@@ -169,6 +169,10 @@ Namespace MSE
 
 #Region "Initialization and Connection"
 
+        Public Sub New(ByVal theCore As cCore)
+            Me.m_core = theCore
+        End Sub
+
         Public Sub Init(ByVal MSEData As cMSEDataStructures, ByVal QuotaData As cQuotaDataStructures, ByVal Ecosim As Ecosim.cEcoSimModel, ByVal SearchData As cSearchDatastructures, ByVal EcopathData As cEcopathDataStructures, ByVal PluginManager As cPluginManager)
 
             Me.m_data = MSEData
@@ -1138,6 +1142,11 @@ Namespace MSE
 
         Public Sub RunMSYSearch()
 
+
+            'ToDo_jb for Villy EvaluateMSY return value or biomass
+            'run silent don't update the interface
+            'start time for all time loops set effort
+
             'WE'll run Ecosim for an additional 25 years to avoid the effort not being sustainable
 
             Me.m_data.StopRun = False
@@ -1293,6 +1302,8 @@ Namespace MSE
 
                 Next iflt
 
+                'done plugin
+
                 'VC091103: What MSY biomass to use? a group may be caught by several fleets
                 'as a first approach I will use the MSY biomass for the fleet that catches most of the species
                 For igrp As Integer = 1 To Me.m_esData.nGroups
@@ -1334,6 +1345,9 @@ Namespace MSE
             'MSY Search has just completed a run 
             'evaluate the value of the catch for this fleet with this effort level
             'Dim sumbio As Single
+
+
+            'VC wants to change this so that it can calc Value or Biomass
             Dim FleetCatchValue As Single = 0
             '
             'System.Console.WriteLine()
@@ -1742,9 +1756,6 @@ Namespace MSE
 
 #End Region
 
-        Public Sub New(ByVal theCore As cCore)
-            Me.m_core = theCore
-        End Sub
     End Class
 
 #End Region

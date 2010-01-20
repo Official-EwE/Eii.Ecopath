@@ -148,6 +148,24 @@ Public Class cMSEDataStructures
 
     Public SaveOutput As Boolean
 
+    ''' <summary>
+    ''' Time index to start the MSY search at
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public MSYStartTimeIndex As Integer
+
+    ''' <summary>
+    ''' run the MSY search without calling the interface
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public MSYRunSilent As Boolean
+
+    ''' <summary>
+    ''' If True the MSE will evalute the run using Value. If false it will use Catch Biomass.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public MSYEvaluateValue As Boolean
+
 #End Region
 
 #Region "Private data"

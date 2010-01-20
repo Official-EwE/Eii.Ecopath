@@ -467,7 +467,6 @@ Namespace MSE
             Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEGroupInput))
             Me.m_core.Messages.sendAllMessages()
 
-
             Me.m_search.SearchMode = orgSearchMode
 
         End Sub
