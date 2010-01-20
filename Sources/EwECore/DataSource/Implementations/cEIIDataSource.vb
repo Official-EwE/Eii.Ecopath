@@ -233,7 +233,9 @@ Public Class cEIIDataSource
 
         'read the file
         Try
-            Input(fnum, ecopathDS.NumGroups) : Input(fnum, ecopathDS.NumLiving) : Input(fnum, Me.m_core.m_EwEModelUnitCurrency) : Input(fnum, ecopathDS.currUnitIndex)
+            Dim currencyBuff As Integer
+            Input(fnum, ecopathDS.NumGroups) : Input(fnum, ecopathDS.NumLiving) : Input(fnum, currencyBuff) : Input(fnum, ecopathDS.currUnitIndex)
+            Me.m_core.m_EwEModelUnitCurrency = DirectCast(currencyBuff, EwEUtils.Core.eUnitCurrencyType)
 
             If Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables() Then
                 LoadModel = False

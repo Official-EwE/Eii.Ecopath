@@ -191,12 +191,12 @@ Public Class cEwEModel
         End Set
     End Property
 
-    Public Property UnitCurrency() As Integer
+    Public Property UnitCurrency() As eUnitCurrencyType
         Get
             Return DirectCast(GetVariable(eVarNameFlags.UnitCurrency), eUnitCurrencyType)
         End Get
 
-        Set(ByVal i As Integer)
+        Set(ByVal i As eUnitCurrencyType)
             SetVariable(eVarNameFlags.UnitCurrency, CInt(i))
         End Set
     End Property
