@@ -15,6 +15,12 @@ Imports ScientificInterfaceShared.Controls.Wizard
 
 Namespace Import
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Wizard that guides users through the process of importing models of
+    ''' previous EwE versions.
+    ''' </summary>
+    ''' =======================================================================
     Public Class cImportWizard
         Inherits cWizard
 
@@ -35,11 +41,20 @@ Namespace Import
 
 #Region " Helper classes "
 
+        ''' ===================================================================
+        ''' <summary>
+        ''' Helper class, maintains import settings for a single model.
+        ''' </summary>
+        ''' ===================================================================
         Public Class cImportSettings
+
+#Region " Privates vars "
 
             Private m_mi As cEwE6DatabaseImporter.cEwE5ModelInfo = Nothing
             Private m_bImport As Boolean = False
             Private m_strEwE6Name As String = ""
+
+#End Region ' Privates vars
 
             Public Sub New(ByVal mi As cEwE6DatabaseImporter.cEwE5ModelInfo)
                 Me.m_mi = mi
