@@ -95,18 +95,12 @@ Namespace Import
         Private Sub ProgressMessageHandler(ByRef msg As cMessage)
             If Not TypeOf msg Is cProgressMessage Then Return
 
-            Try
-                Dim pmsg As cProgressMessage = DirectCast(msg, cProgressMessage)
-                Me.m_pb.Maximum = 0
-                Me.m_pb.Maximum = 100
-                Me.m_pb.Value = Math.Max(0, Math.Min(100, CInt(100 * pmsg.Progress)))
+            Dim pmsg As cProgressMessage = DirectCast(msg, cProgressMessage)
+            Me.m_pb.Maximum = 0
+            Me.m_pb.Maximum = 100
+            Me.m_pb.Value = Math.Max(0, Math.Min(100, CInt(100 * pmsg.Progress)))
 
-                Me.m_lbProgress.Text = pmsg.Message
-            Catch ex As Exception
-
-            End Try
-
-            Me.Refresh()
+            Me.m_lbProgress.Text = pmsg.Message
 
         End Sub
 
@@ -177,7 +171,7 @@ Namespace Import
                 Me.IsImporting = bImporting
 
                 If Not String.IsNullOrEmpty(strStatus) Then
-                    Me.m_tbxSummary.Text = Me.m_tbxSummary.Text + strStatus + vbNewLine
+                    Me.m_lbSummary.Items.Add(strStatus)
                 End If
             End If
         End Sub
