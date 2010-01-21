@@ -23,13 +23,12 @@
     <WorkingPath>Temp\</WorkingPath>
     <HtmlHelp1xCompilerPath>..\..\..\..\..\Program Files\HTML Help Workshop\</HtmlHelp1xCompilerPath>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwECore.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwECore.xml" xmlns="" />
-      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwEPlugin.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwEPlugin.xml" xmlns="" />
-      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwEUtils.dll" xmlns="" />
-      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwEUtils.xml" xmlns="" />
-    </DocumentationSources>
+      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwECore.dll" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwECore.xml" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEPlugin.dll" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEPlugin.xml" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEUtils.dll" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEUtils.xml" /></DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
       <NamespaceSummaryItem name="EwECore" isDocumented="False">Namespace containing all elements essential to the functioning of the EwE computing engine.</NamespaceSummaryItem>
