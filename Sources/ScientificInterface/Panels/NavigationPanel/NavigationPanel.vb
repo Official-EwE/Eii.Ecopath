@@ -159,8 +159,8 @@ Public Class NavigationPanel
         m_nodeController.Add("ndEfTrackEcoObjectives", eCoreExecutionState.EcosimLoaded, GetType(gridMSEGroupObjectives), "") ' ToDo: connect to help
         m_nodeController.Add("ndEfTrackFleetWeights", eCoreExecutionState.EcosimLoaded, GetType(gridFishingWeights), "") ' ToDo: connect to help
 
-        m_nodeController.Add("ndUncertGroup", eCoreExecutionState.EcosimLoaded, GetType(gridBioCV), "") ' ToDo: connect to help
-        m_nodeController.Add("ndUncertFleet", eCoreExecutionState.EcosimLoaded, GetType(gridFishingCV), "") ' ToDo: connect to help
+        m_nodeController.Add("ndAssessGroup", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessGroups), "") ' ToDo: connect to help
+        m_nodeController.Add("ndAssessFleet", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessFleets), "") ' ToDo: connect to help
         m_nodeController.Add("ndRefMSY", eCoreExecutionState.EcosimLoaded, GetType(frmMSY), "") ' ToDo: connect to help
         m_nodeController.Add("ndRefBiomass", eCoreExecutionState.EcosimLoaded, GetType(gridGroupRefLevels), "") ' ToDo: connect to help
         m_nodeController.Add("ndRefCatch", eCoreExecutionState.EcosimLoaded, GetType(gridFleetRefLevels), "") ' ToDo: connect to help

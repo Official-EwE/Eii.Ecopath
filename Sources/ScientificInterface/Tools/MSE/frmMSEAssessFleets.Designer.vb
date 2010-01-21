@@ -1,0 +1,92 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class frmMSEAssessFleets
+    Inherits frmEwE
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
+        Me.GridFishingCV1 = New ScientificInterface.gridFishingCV
+        Me.SplitContainer1.Panel2.SuspendLayout()
+        Me.SplitContainer1.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'SplitContainer1
+        '
+        Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer1.Location = New System.Drawing.Point(0, 0)
+        Me.SplitContainer1.Name = "SplitContainer1"
+        Me.SplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal
+        '
+        'SplitContainer1.Panel2
+        '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.GridFishingCV1)
+        Me.SplitContainer1.Size = New System.Drawing.Size(652, 483)
+        Me.SplitContainer1.SplitterDistance = 217
+        Me.SplitContainer1.TabIndex = 0
+        '
+        'GridFishingCV1
+        '
+        Me.GridFishingCV1.AutoSizeMinHeight = 10
+        Me.GridFishingCV1.AutoSizeMinWidth = 10
+        Me.GridFishingCV1.AutoStretchColumnsToFitWidth = False
+        Me.GridFishingCV1.AutoStretchRowsToFitHeight = False
+        Me.GridFishingCV1.BackColor = System.Drawing.Color.White
+        Me.GridFishingCV1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.GridFishingCV1.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.GridFishingCV1.CustomSort = False
+        Me.GridFishingCV1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GridFishingCV1.FixedColumnWidths = True
+        Me.GridFishingCV1.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.GridFishingCV1.GridToolTipActive = True
+        Me.GridFishingCV1.Location = New System.Drawing.Point(0, 0)
+        Me.GridFishingCV1.Name = "GridFishingCV1"
+        Me.GridFishingCV1.Size = New System.Drawing.Size(652, 262)
+        Me.GridFishingCV1.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                    Or SourceGrid2.GridSpecialKeys.Delete) _
+                    Or SourceGrid2.GridSpecialKeys.Arrows) _
+                    Or SourceGrid2.GridSpecialKeys.Tab) _
+                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                    Or SourceGrid2.GridSpecialKeys.Enter) _
+                    Or SourceGrid2.GridSpecialKeys.Escape) _
+                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.GridFishingCV1.TabIndex = 0
+        Me.GridFishingCV1.TrackPropertySelection = True
+        '
+        'frmMSEAssessFleets
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(652, 483)
+        Me.Controls.Add(Me.SplitContainer1)
+        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Name = "frmMSEAssessFleets"
+        Me.Text = "frmMSEAssessFleets"
+        Me.SplitContainer1.Panel2.ResumeLayout(False)
+        Me.SplitContainer1.ResumeLayout(False)
+        Me.ResumeLayout(False)
+
+    End Sub
+    Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
+    Friend WithEvents GridFishingCV1 As ScientificInterface.gridFishingCV
+End Class
