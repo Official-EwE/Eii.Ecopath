@@ -1366,7 +1366,7 @@ Namespace MSE
 
                 If Me.m_epdata.Landing(curFleet, igrp) > 0 Then
 
-                    For it As Integer = 1 To Me.m_esData.NTimes
+                    For it As Integer = Me.m_data.MSYStartTimeIndex To Me.m_esData.NTimes
                         'get data storted by ecosim over time  
                         Dim bio As Single = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
                         'sumbio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
