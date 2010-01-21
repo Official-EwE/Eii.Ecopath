@@ -186,6 +186,12 @@ Namespace MSE
             Me.EconomicData = cEconomicDataSource.getInstance()
             Me.m_data.InitForRun()
 
+            'VC added a boolean to ex/include fleets from MSY runs
+            ReDim Data.MSYEvaluateFleet(m_epdata.NumFleet)
+            For i As Integer = 1 To m_epdata.NumFleet
+                Data.MSYEvaluateFleet(i) = True 'that's the default value
+            Next
+
         End Sub
 
         Public Sub Connect(ByRef MSECallBack As MSEProgressDelegate, ByRef MSYCallBack As MSYProgressDelegate)
@@ -1184,126 +1190,127 @@ Namespace MSE
             Try
 
                 For iflt As Integer = 1 To Me.m_esData.nGear
-                    Dim Done As Boolean = False
-                    Dim CurValue As Single = 0
-                    Dim lastValue As Single = 0
-                    Dim maxValue As Single = 0
+                    If Data.MSYEvaluateFleet(iflt) And iflt = 4 Then
+                        Dim Done As Boolean = False
+                        Dim CurValue As Single = 0
+                        Dim lastValue As Single = 0
+                        Dim maxValue As Single = 0
 
-                    Dim lastEffort As Single = 0
-                    Dim TooBigEffort As Single = -99
-                    Dim TooLowEffort As Single = -0.5
-                    Dim tryEffort As Single = 0.5
+                        Dim lastEffort As Single = 0
+                        Dim TooBigEffort As Single = -99
+                        Dim TooLowEffort As Single = -0.5
+                        Dim tryEffort As Single = 0.5
 
-                    Dim TSdisabled As cTimeSeries = Nothing
-                    Dim NumberOfSteps As Integer = 0
-                    MSYeffort(iflt) = 0
-                    If iDataset > -1 Then
-                        For Each ts As cTimeSeries In DS
-                            If ts.TimeSeriesType = eTimeSeriesType.FishingEffort Then
-                                If DirectCast(ts, cFleetTimeSeries).FleetIndex = iflt And ts.Enabled = True Then
-                                    'there is an effort in time series, so turn it off. 
-                                    ts.Enabled = False
-                                    TSdisabled = ts
-                                    m_core.UpdateTimeSeries()
-                                    'DS.Update()
+                        Dim TSdisabled As cTimeSeries = Nothing
+                        Dim NumberOfSteps As Integer = 0
+                        MSYeffort(iflt) = 0
+                        If iDataset > -1 Then
+                            For Each ts As cTimeSeries In DS
+                                If ts.TimeSeriesType = eTimeSeriesType.FishingEffort Then
+                                    If DirectCast(ts, cFleetTimeSeries).FleetIndex = iflt And ts.Enabled = True Then
+                                        'there is an effort in time series, so turn it off. 
+                                        ts.Enabled = False
+                                        TSdisabled = ts
+                                        m_core.UpdateTimeSeries()
+                                        'DS.Update()
+                                    End If
+                                End If
+                            Next
+
+                        End If
+
+
+
+                        'when projecting the time series, the forcing functions shuld be set to the average over the ecosim run, not to 1
+
+
+                        System.Console.WriteLine()
+
+                        Do While Done = False
+                            'For Effort As Single = EffMin To EffMax Step EffStep
+                            NumberOfSteps += 1
+                            Me.SetFishingEffort(iflt, tryEffort)
+
+                            'let ecosim init to the new values
+                            Me.m_Ecosim.Init(True)
+
+                            'run ecosim with the current effort
+                            Me.m_Ecosim.Run()
+
+                            'evaluate the ecosim output for this fleet/effort combination
+                            CurValue = Me.EvaluateMSY(iflt)
+                            System.Console.WriteLine(NumberOfSteps.ToString & ", Fleet = " & iflt.ToString & ":  MSY effort " & MSYeffort(iflt).ToString & ":  cur effort " & tryEffort.ToString & ", toolow = " & TooLowEffort.ToString & ", toobig = " & TooBigEffort.ToString & ", maxvalue = " & maxValue.ToString & ", curvalue = " & CurValue.ToString)
+
+                            'tell the interface an iteration has been completed
+                            Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iflt, MSYeffort(iflt)))
+
+                            If CurValue > maxValue Then
+                                TooLowEffort = lastEffort
+                                maxValue = CurValue
+                                MSYeffort(iflt) = tryEffort
+                            Else
+                                If TooBigEffort < 0 Then
+                                    TooBigEffort = tryEffort
+                                Else
+                                    'we are now somewhere below the msy effort, but at what side?
+                                    If tryEffort > MSYeffort(iflt) Then  'on the right side
+                                        'reduce the toobigeffor to the current
+                                        TooBigEffort = tryEffort
+                                    Else   'below MSY
+                                        TooLowEffort = tryEffort
+                                    End If
                                 End If
                             End If
-                        Next
 
-                    End If
+                            If TooBigEffort < 0 Then 'NOT YET FOUND THE TOP, SO DOUBLE UP
+                                tryEffort = tryEffort * 2
+                            Else  'have previously found a bigger effort that gave lower value, so now we have bounds
+                                tryEffort = (TooBigEffort - TooLowEffort) / 2 + TooLowEffort
+                            End If
 
+                            lastValue = CurValue
+                            If tryEffort > 0 Then
+                                If Math.Abs(1 - lastEffort / tryEffort) < 0.01 Then Done = True
+                            End If
+                            lastEffort = tryEffort
 
+                            If Me.m_data.StopRun Then Exit Do
+                        Loop
 
-                    'when projecting the time series, the forcing functions shuld be set to the average over the ecosim run, not to 1
+                        If TSdisabled IsNot Nothing Then
+                            TSdisabled.Enabled = True
+                            DS.Update()
+                        End If
 
-
-                    System.Console.WriteLine()
-
-                    Do While Done = False
-                        'For Effort As Single = EffMin To EffMax Step EffStep
-                        NumberOfSteps += 1
-                        Me.SetFishingEffort(iflt, tryEffort)
-
+                        'We now know the MSY effort, so can estimate, oeh, something
+                        Me.SetFishingEffort(iflt, MSYeffort(iflt))
                         'let ecosim init to the new values
                         Me.m_Ecosim.Init(True)
-
                         'run ecosim with the current effort
                         Me.m_Ecosim.Run()
 
-                        'evaluate the ecosim output for this fleet/effort combination
-                        CurValue = Me.EvaluateMSY(iflt)
-                        System.Console.WriteLine(NumberOfSteps.ToString & ", Fleet = " & iflt.ToString & ":  MSY effort " & MSYeffort(iflt).ToString & ":  cur effort " & tryEffort.ToString & ", toolow = " & TooLowEffort.ToString & ", toobig = " & TooBigEffort.ToString & ", maxvalue = " & maxValue.ToString & ", curvalue = " & CurValue.ToString)
-
-                        'tell the interface an iteration has been completed
-                        Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iflt, MSYeffort(iflt)))
-
-                        If CurValue > maxValue Then
-                            TooLowEffort = lastEffort
-                            maxValue = CurValue
-                            MSYeffort(iflt) = tryEffort
-                        Else
-                            If TooBigEffort < 0 Then
-                                TooBigEffort = tryEffort
-                            Else
-                                'we are now somewhere below the msy effort, but at what side?
-                                If tryEffort > MSYeffort(iflt) Then  'on the right side
-                                    'reduce the toobigeffor to the current
-                                    TooBigEffort = tryEffort
-                                Else   'below MSY
-                                    TooLowEffort = tryEffort
-                                End If
+                        'now store the average biomasses from this run as the "MSY-biomass" for this fleet run
+                        Dim SumBio As Single
+                        Dim SumCatch As Single
+                        For igrp As Integer = 1 To Me.m_esData.nGroups
+                            SumBio = 0
+                            SumCatch = 0
+                            If Me.m_epdata.Landing(iflt, igrp) > 0 Then
+                                For it As Integer = 1 To Me.m_esData.NTimes
+                                    'get data storted by ecosim over time  
+                                    SumBio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
+                                    SumCatch += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it)
+                                Next
                             End If
-                        End If
+                            bMSY(iflt, igrp) = SumBio / m_esData.NTimes
+                            If SumBio > 0 Then fMSY(iflt, igrp) = SumCatch / SumBio
+                        Next igrp
 
-                        If TooBigEffort < 0 Then 'NOT YET FOUND THE TOP, SO DOUBLE UP
-                            tryEffort = tryEffort * 2
-                        Else  'have previously found a bigger effort that gave lower value, so now we have bounds
-                            tryEffort = (TooBigEffort - TooLowEffort) / 2 + TooLowEffort
-                        End If
+                        If Me.m_data.StopRun Then Exit For
 
-                        lastValue = CurValue
-                        If tryEffort > 0 Then
-                            If Math.Abs(1 - lastEffort / tryEffort) < 0.01 Then Done = True
-                        End If
-                        lastEffort = tryEffort
-
-                        If Me.m_data.StopRun Then Exit Do
-                    Loop
-
-                    If TSdisabled IsNot Nothing Then
-                        TSdisabled.Enabled = True
-                        DS.Update()
+                        'Finally reset the effort to the original effort (for all fleets)
+                        SetEffortToBaseValue(True)
                     End If
-
-                    'We now know the MSY effort, so can estimate, oeh, something
-                    Me.SetFishingEffort(iflt, MSYeffort(iflt))
-                    'let ecosim init to the new values
-                    Me.m_Ecosim.Init(True)
-                    'run ecosim with the current effort
-                    Me.m_Ecosim.Run()
-
-                    'now store the average biomasses from this run as the "MSY-biomass" for this fleet run
-                    Dim SumBio As Single
-                    Dim SumCatch As Single
-                    For igrp As Integer = 1 To Me.m_esData.nGroups
-                        SumBio = 0
-                        SumCatch = 0
-                        If Me.m_epdata.Landing(iflt, igrp) > 0 Then
-                            For it As Integer = 1 To Me.m_esData.NTimes
-                                'get data storted by ecosim over time  
-                                SumBio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
-                                SumCatch += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it)
-                            Next
-                        End If
-                        bMSY(iflt, igrp) = SumBio / m_esData.NTimes
-                        If SumBio > 0 Then fMSY(iflt, igrp) = SumCatch / SumBio
-                    Next igrp
-
-                    If Me.m_data.StopRun Then Exit For
-
-                    'Finally reset the effort to the original effort (for all fleets)
-                    SetEffortToBaseValue(True)
-
                 Next iflt
 
                 'done plugin
@@ -1358,6 +1365,13 @@ Namespace MSE
             'VC wants to change this so that it can calc Value or Biomass
             Dim FleetCatchValue As Single = 0
             Dim marketPrice As Single
+
+            Me.Data.MSYRunSilent = False
+            Me.Data.MSYStartTimeIndex = 2
+            Me.Data.MSYEvaluateValue = True
+
+
+
             '
             'System.Console.WriteLine()
 
@@ -1365,16 +1379,21 @@ Namespace MSE
                 'sumbio = 0
 
                 If Me.m_epdata.Landing(curFleet, igrp) > 0 Then
+                    If Me.m_data.MSYEvaluateValue Then
+                        marketPrice = Me.m_epdata.Market(curFleet, igrp)
+                    Else
+                        marketPrice = 1
+                    End If
+
+                    'VC temp fix for debugging:
+                    'marketPrice = 1
+
 
                     For it As Integer = Me.m_data.MSYStartTimeIndex To Me.m_esData.NTimes
                         'get data storted by ecosim over time  
-                        Dim bio As Single = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
+                        'Dim bio As Single = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
                         'sumbio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
                         'FleetCatchValue += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it) * Me.m_epdata.Market(curFleet, igrp) ' * PropCaughtByThisGear
-                        marketPrice = 1
-                        If Me.m_data.MSYEvaluateValue Then
-                            marketPrice = Me.m_epdata.Market(curFleet, igrp)
-                        End If
                         FleetCatchValue += m_esData.ResultsSumCatchByGroupGear(igrp, curFleet, it) * marketPrice
                         'System.Console.Write("Group " & igrp.ToString & " = " & FleetCatchValue.ToString & ", ")
                     Next
