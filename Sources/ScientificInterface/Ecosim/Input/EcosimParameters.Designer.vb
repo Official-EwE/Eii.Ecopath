@@ -27,28 +27,28 @@ Namespace Ecosim
             Me.m_nudNutBaseFreeProp = New System.Windows.Forms.NumericUpDown
             Me.m_nudNumberYears = New System.Windows.Forms.NumericUpDown
             Me.m_nudRelaxation = New System.Windows.Forms.NumericUpDown
-            Me.cmbSalinityForcing = New System.Windows.Forms.ComboBox
-            Me.cmbNutForcing = New System.Windows.Forms.ComboBox
-            Me.chkPredictEffort = New System.Windows.Forms.CheckBox
-            Me.chkConTracing = New System.Windows.Forms.CheckBox
+            Me.m_cmbSalinityForcing = New System.Windows.Forms.ComboBox
+            Me.m_cmbNutForcing = New System.Windows.Forms.ComboBox
+            Me.m_chkPredictEffort = New System.Windows.Forms.CheckBox
+            Me.m_chkConTracing = New System.Windows.Forms.CheckBox
             Me.m_lblRelaxation = New System.Windows.Forms.Label
-            Me.Label2 = New System.Windows.Forms.Label
-            Me.Label7 = New System.Windows.Forms.Label
-            Me.Label6 = New System.Windows.Forms.Label
-            Me.Label1 = New System.Windows.Forms.Label
-            Me.lblInitializationHeader = New System.Windows.Forms.Label
-            Me.lblScenario = New System.Windows.Forms.Label
+            Me.m_lblSalinityForcing = New System.Windows.Forms.Label
+            Me.m_lblNutForcing = New System.Windows.Forms.Label
+            Me.m_lblNutBaseFreeProp = New System.Windows.Forms.Label
+            Me.m_lblNumberYears = New System.Windows.Forms.Label
+            Me.m_lblInitializationHeader = New System.Windows.Forms.Label
+            Me.m_lblScenario = New System.Windows.Forms.Label
             Me.m_tbContact = New System.Windows.Forms.TextBox
             Me.m_tbAuthor = New System.Windows.Forms.TextBox
             Me.m_lbContact = New System.Windows.Forms.Label
             Me.m_lbAuthor = New System.Windows.Forms.Label
             Me.m_tbName = New System.Windows.Forms.TextBox
             Me.m_tbDescription = New System.Windows.Forms.TextBox
-            Me.lblDescription = New System.Windows.Forms.Label
-            Me.lbScenarioName = New System.Windows.Forms.Label
+            Me.m_lblDescription = New System.Windows.Forms.Label
+            Me.m_lbScenarioName = New System.Windows.Forms.Label
             Me.m_chkUseVarPQ = New System.Windows.Forms.CheckBox
             Me.cmbTempLoading = New System.Windows.Forms.ComboBox
-            Me.Label3 = New System.Windows.Forms.Label
+            Me.m_lblTempLoading = New System.Windows.Forms.Label
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudRelaxation, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -69,70 +69,70 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_nudRelaxation, "m_nudRelaxation")
             Me.m_nudRelaxation.Name = "m_nudRelaxation"
             '
-            'cmbSalinityForcing
+            'm_cmbSalinityForcing
             '
-            Me.cmbSalinityForcing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cmbSalinityForcing.FormattingEnabled = True
-            resources.ApplyResources(Me.cmbSalinityForcing, "cmbSalinityForcing")
-            Me.cmbSalinityForcing.Name = "cmbSalinityForcing"
+            Me.m_cmbSalinityForcing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbSalinityForcing.FormattingEnabled = True
+            resources.ApplyResources(Me.m_cmbSalinityForcing, "m_cmbSalinityForcing")
+            Me.m_cmbSalinityForcing.Name = "m_cmbSalinityForcing"
             '
-            'cmbNutForcing
+            'm_cmbNutForcing
             '
-            Me.cmbNutForcing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cmbNutForcing.FormattingEnabled = True
-            resources.ApplyResources(Me.cmbNutForcing, "cmbNutForcing")
-            Me.cmbNutForcing.Name = "cmbNutForcing"
+            Me.m_cmbNutForcing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbNutForcing.FormattingEnabled = True
+            resources.ApplyResources(Me.m_cmbNutForcing, "m_cmbNutForcing")
+            Me.m_cmbNutForcing.Name = "m_cmbNutForcing"
             '
-            'chkPredictEffort
+            'm_chkPredictEffort
             '
-            resources.ApplyResources(Me.chkPredictEffort, "chkPredictEffort")
-            Me.chkPredictEffort.Name = "chkPredictEffort"
-            Me.chkPredictEffort.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_chkPredictEffort, "m_chkPredictEffort")
+            Me.m_chkPredictEffort.Name = "m_chkPredictEffort"
+            Me.m_chkPredictEffort.UseVisualStyleBackColor = True
             '
-            'chkConTracing
+            'm_chkConTracing
             '
-            resources.ApplyResources(Me.chkConTracing, "chkConTracing")
-            Me.chkConTracing.Name = "chkConTracing"
-            Me.chkConTracing.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_chkConTracing, "m_chkConTracing")
+            Me.m_chkConTracing.Name = "m_chkConTracing"
+            Me.m_chkConTracing.UseVisualStyleBackColor = True
             '
             'm_lblRelaxation
             '
             resources.ApplyResources(Me.m_lblRelaxation, "m_lblRelaxation")
             Me.m_lblRelaxation.Name = "m_lblRelaxation"
             '
-            'Label2
+            'm_lblSalinityForcing
             '
-            resources.ApplyResources(Me.Label2, "Label2")
-            Me.Label2.Name = "Label2"
+            resources.ApplyResources(Me.m_lblSalinityForcing, "m_lblSalinityForcing")
+            Me.m_lblSalinityForcing.Name = "m_lblSalinityForcing"
             '
-            'Label7
+            'm_lblNutForcing
             '
-            resources.ApplyResources(Me.Label7, "Label7")
-            Me.Label7.Name = "Label7"
+            resources.ApplyResources(Me.m_lblNutForcing, "m_lblNutForcing")
+            Me.m_lblNutForcing.Name = "m_lblNutForcing"
             '
-            'Label6
+            'm_lblNutBaseFreeProp
             '
-            resources.ApplyResources(Me.Label6, "Label6")
-            Me.Label6.Name = "Label6"
+            resources.ApplyResources(Me.m_lblNutBaseFreeProp, "m_lblNutBaseFreeProp")
+            Me.m_lblNutBaseFreeProp.Name = "m_lblNutBaseFreeProp"
             '
-            'Label1
+            'm_lblNumberYears
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_lblNumberYears, "m_lblNumberYears")
+            Me.m_lblNumberYears.Name = "m_lblNumberYears"
             '
-            'lblInitializationHeader
+            'm_lblInitializationHeader
             '
-            resources.ApplyResources(Me.lblInitializationHeader, "lblInitializationHeader")
-            Me.lblInitializationHeader.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblInitializationHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblInitializationHeader.Name = "lblInitializationHeader"
+            resources.ApplyResources(Me.m_lblInitializationHeader, "m_lblInitializationHeader")
+            Me.m_lblInitializationHeader.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblInitializationHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblInitializationHeader.Name = "m_lblInitializationHeader"
             '
-            'lblScenario
+            'm_lblScenario
             '
-            resources.ApplyResources(Me.lblScenario, "lblScenario")
-            Me.lblScenario.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblScenario.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblScenario.Name = "lblScenario"
+            resources.ApplyResources(Me.m_lblScenario, "m_lblScenario")
+            Me.m_lblScenario.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblScenario.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblScenario.Name = "m_lblScenario"
             '
             'm_tbContact
             '
@@ -164,15 +164,15 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
             Me.m_tbDescription.Name = "m_tbDescription"
             '
-            'lblDescription
+            'm_lblDescription
             '
-            resources.ApplyResources(Me.lblDescription, "lblDescription")
-            Me.lblDescription.Name = "lblDescription"
+            resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
+            Me.m_lblDescription.Name = "m_lblDescription"
             '
-            'lbScenarioName
+            'm_lbScenarioName
             '
-            resources.ApplyResources(Me.lbScenarioName, "lbScenarioName")
-            Me.lbScenarioName.Name = "lbScenarioName"
+            resources.ApplyResources(Me.m_lbScenarioName, "m_lbScenarioName")
+            Me.m_lbScenarioName.Name = "m_lbScenarioName"
             '
             'm_chkUseVarPQ
             '
@@ -187,40 +187,40 @@ Namespace Ecosim
             resources.ApplyResources(Me.cmbTempLoading, "cmbTempLoading")
             Me.cmbTempLoading.Name = "cmbTempLoading"
             '
-            'Label3
+            'm_lblTempLoading
             '
-            resources.ApplyResources(Me.Label3, "Label3")
-            Me.Label3.Name = "Label3"
+            resources.ApplyResources(Me.m_lblTempLoading, "m_lblTempLoading")
+            Me.m_lblTempLoading.Name = "m_lblTempLoading"
             '
             'EcosimParameters
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.Label3)
+            Me.Controls.Add(Me.m_lblTempLoading)
             Me.Controls.Add(Me.cmbTempLoading)
             Me.Controls.Add(Me.m_nudNutBaseFreeProp)
             Me.Controls.Add(Me.m_tbContact)
             Me.Controls.Add(Me.m_nudNumberYears)
             Me.Controls.Add(Me.m_tbAuthor)
             Me.Controls.Add(Me.m_nudRelaxation)
-            Me.Controls.Add(Me.lblScenario)
-            Me.Controls.Add(Me.cmbSalinityForcing)
+            Me.Controls.Add(Me.m_lblScenario)
+            Me.Controls.Add(Me.m_cmbSalinityForcing)
             Me.Controls.Add(Me.m_lbContact)
-            Me.Controls.Add(Me.cmbNutForcing)
-            Me.Controls.Add(Me.lblInitializationHeader)
-            Me.Controls.Add(Me.chkPredictEffort)
+            Me.Controls.Add(Me.m_cmbNutForcing)
+            Me.Controls.Add(Me.m_lblInitializationHeader)
+            Me.Controls.Add(Me.m_chkPredictEffort)
             Me.Controls.Add(Me.m_lbAuthor)
             Me.Controls.Add(Me.m_chkUseVarPQ)
-            Me.Controls.Add(Me.chkConTracing)
+            Me.Controls.Add(Me.m_chkConTracing)
             Me.Controls.Add(Me.m_tbName)
             Me.Controls.Add(Me.m_lblRelaxation)
-            Me.Controls.Add(Me.lbScenarioName)
-            Me.Controls.Add(Me.Label2)
+            Me.Controls.Add(Me.m_lbScenarioName)
+            Me.Controls.Add(Me.m_lblSalinityForcing)
             Me.Controls.Add(Me.m_tbDescription)
-            Me.Controls.Add(Me.Label7)
-            Me.Controls.Add(Me.lblDescription)
-            Me.Controls.Add(Me.Label6)
-            Me.Controls.Add(Me.Label1)
+            Me.Controls.Add(Me.m_lblNutForcing)
+            Me.Controls.Add(Me.m_lblDescription)
+            Me.Controls.Add(Me.m_lblNutBaseFreeProp)
+            Me.Controls.Add(Me.m_lblNumberYears)
             Me.Name = "EcosimParameters"
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).EndInit()
@@ -229,31 +229,31 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents Label1 As System.Windows.Forms.Label
-        Friend WithEvents Label7 As System.Windows.Forms.Label
-        Friend WithEvents Label6 As System.Windows.Forms.Label
-        Friend WithEvents chkConTracing As System.Windows.Forms.CheckBox
-        Friend WithEvents lblInitializationHeader As System.Windows.Forms.Label
-        Friend WithEvents lblScenario As System.Windows.Forms.Label
         Friend WithEvents m_tbDescription As System.Windows.Forms.TextBox
-        Friend WithEvents lblDescription As System.Windows.Forms.Label
-        Friend WithEvents chkPredictEffort As System.Windows.Forms.CheckBox
-        Friend WithEvents cmbNutForcing As System.Windows.Forms.ComboBox
         Friend WithEvents m_tbName As System.Windows.Forms.TextBox
         Friend WithEvents m_tbContact As System.Windows.Forms.TextBox
         Friend WithEvents m_tbAuthor As System.Windows.Forms.TextBox
-        Friend WithEvents m_lbContact As System.Windows.Forms.Label
-        Friend WithEvents m_lbAuthor As System.Windows.Forms.Label
-        Friend WithEvents cmbSalinityForcing As System.Windows.Forms.ComboBox
-        Friend WithEvents Label2 As System.Windows.Forms.Label
-        Friend WithEvents m_nudRelaxation As System.Windows.Forms.NumericUpDown
-        Friend WithEvents m_lblRelaxation As System.Windows.Forms.Label
-        Friend WithEvents m_nudNumberYears As System.Windows.Forms.NumericUpDown
         Friend WithEvents m_nudNutBaseFreeProp As System.Windows.Forms.NumericUpDown
         Private WithEvents m_chkUseVarPQ As System.Windows.Forms.CheckBox
-        Private WithEvents lbScenarioName As System.Windows.Forms.Label
-        Friend WithEvents cmbTempLoading As System.Windows.Forms.ComboBox
-        Friend WithEvents Label3 As System.Windows.Forms.Label
+        Private WithEvents m_lbScenarioName As System.Windows.Forms.Label
+        Private WithEvents m_lbContact As System.Windows.Forms.Label
+        Private WithEvents m_lbAuthor As System.Windows.Forms.Label
+        Private WithEvents m_lblDescription As System.Windows.Forms.Label
+        Private WithEvents m_lblNumberYears As System.Windows.Forms.Label
+        Private WithEvents m_nudNumberYears As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblNutBaseFreeProp As System.Windows.Forms.Label
+        Private WithEvents m_cmbNutForcing As System.Windows.Forms.ComboBox
+        Private WithEvents m_lblNutForcing As System.Windows.Forms.Label
+        Private WithEvents m_cmbSalinityForcing As System.Windows.Forms.ComboBox
+        Private WithEvents m_lblSalinityForcing As System.Windows.Forms.Label
+        Private WithEvents cmbTempLoading As System.Windows.Forms.ComboBox
+        Private WithEvents m_nudRelaxation As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblRelaxation As System.Windows.Forms.Label
+        Private WithEvents m_lblTempLoading As System.Windows.Forms.Label
+        Private WithEvents m_chkPredictEffort As System.Windows.Forms.CheckBox
+        Private WithEvents m_chkConTracing As System.Windows.Forms.CheckBox
+        Private WithEvents m_lblScenario As System.Windows.Forms.Label
+        Private WithEvents m_lblInitializationHeader As System.Windows.Forms.Label
 
     End Class
 End Namespace

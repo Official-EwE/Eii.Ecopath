@@ -91,10 +91,10 @@ Namespace Ecosim
             Me.m_fpNumYears = New cPropertyFormatProvider(Me.m_nudNumberYears, ecosimModelParams, eVarNameFlags.EcoSimNYears)
             Me.m_fpNutBaseFreeProp = New cPropertyFormatProvider(Me.m_nudNutBaseFreeProp, ecosimModelParams, eVarNameFlags.NutBaseFreeProp)
 
-            Me.m_fpNutrientForceNumber = New cPropertyFormatProvider(Me.cmbNutForcing, ecosimModelParams, eVarNameFlags.NutForceFunctionNumber)
-            Me.m_fpSalinityForceNumber = New cPropertyFormatProvider(Me.cmbSalinityForcing, ecosimModelParams, eVarNameFlags.SalinityForceFunctionNumber)
+            Me.m_fpNutrientForceNumber = New cPropertyFormatProvider(Me.m_cmbNutForcing, ecosimModelParams, eVarNameFlags.NutForceFunctionNumber)
+            Me.m_fpSalinityForceNumber = New cPropertyFormatProvider(Me.m_cmbSalinityForcing, ecosimModelParams, eVarNameFlags.SalinityForceFunctionNumber)
             Me.m_fpTempForceNumber = New cPropertyFormatProvider(Me.cmbTempLoading, ecosimModelParams, eVarNameFlags.TemperatureForceFunctionNumber)
-            Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.chkPredictEffort, ecosimModelParams, eVarNameFlags.PredictEffort)
+            Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.m_chkPredictEffort, ecosimModelParams, eVarNameFlags.PredictEffort)
             Me.m_fpRelaxation = New cPropertyFormatProvider(Me.m_nudRelaxation, ecosimModelParams, eVarNameFlags.Relaxation)
             Me.m_fpUseVarPQ = New cPropertyFormatProvider(Me.m_chkUseVarPQ, ecosimModelParams, eVarNameFlags.UseVarPQ)
 
@@ -144,7 +144,7 @@ Namespace Ecosim
 
         Dim m_bInUpdate As Boolean = False
 
-        Private Sub chkConTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkConTracing.Click, m_chkUseVarPQ.Click
+        Private Sub chkConTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_chkConTracing.Click, m_chkUseVarPQ.Click
 
             If m_bInUpdate = True Then Return
 
@@ -153,19 +153,19 @@ Namespace Ecosim
             Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmd As cCommand = cmdh.GetCommand("EnableEcotracer")
             If (cmd IsNot Nothing) Then
-                If (Me.chkConTracing.Checked) Then
+                If (Me.m_chkConTracing.Checked) Then
                     cmd.Tag = eTracerRunModeTypes.RunSim
                 Else
                     cmd.Tag = eTracerRunModeTypes.Disabled
                 End If
                 cmd.Invoke()
                 If (Me.m_core.ActiveEcotracerScenarioIndex <= 0) Then
-                    Me.chkConTracing.Checked = False
+                    Me.m_chkConTracing.Checked = False
                 End If
             End If
 
             ' If tracer scenario loaded turn this on
-            Me.m_propConTracing.SetValue(Me.chkConTracing.Checked)
+            Me.m_propConTracing.SetValue(Me.m_chkConTracing.Checked)
 
             m_bInUpdate = False
 
@@ -237,7 +237,7 @@ Namespace Ecosim
         Private Sub UpdateControls()
 
             If (Me.m_propConTracing Is Nothing) Then Return
-            Me.chkConTracing.Checked = CBool(Me.m_propConTracing.GetValue())
+            Me.m_chkConTracing.Checked = CBool(Me.m_propConTracing.GetValue())
 
         End Sub
 

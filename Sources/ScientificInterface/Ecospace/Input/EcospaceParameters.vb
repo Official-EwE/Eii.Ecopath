@@ -143,18 +143,18 @@ Namespace Ecospace
             Me.UpdateControls()
 
             ' Hmm, connecting one control to two live properties - this could be dangerous
-            Me.m_fpNumThreads = New cPropertyFormatProvider(Me.udNumThreads, ecospaceModelParams, eVarNameFlags.nSolverThreads)
-            Me.m_fpNumThreads2 = New cPropertyFormatProvider(Me.udNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)
-            Me.m_fpNumPackets = New cPropertyFormatProvider(Me.tbNumPackets, ecospaceModelParams, eVarNameFlags.PacketsMultiplier)
+            Me.m_fpNumThreads = New cPropertyFormatProvider(Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSolverThreads)
+            Me.m_fpNumThreads2 = New cPropertyFormatProvider(Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)
+            Me.m_fpNumPackets = New cPropertyFormatProvider(Me.m_tbNumPackets, ecospaceModelParams, eVarNameFlags.PacketsMultiplier)
 
             ' Model
-            Me.m_fpTotalTime = New cPropertyFormatProvider(Me.tbTotalTime, ecospaceModelParams, eVarNameFlags.TotalTime)
-            Me.m_fpNumTSpYear = New cPropertyFormatProvider(Me.tbTimeStepsPerYear, ecospaceModelParams, eVarNameFlags.NumTimeStepsPerYear)
-            Me.m_fpTolerance = New cPropertyFormatProvider(Me.tbTolerance, ecospaceModelParams, eVarNameFlags.Tolerance)
-            Me.m_fpSOR = New cPropertyFormatProvider(Me.tbSOR, ecospaceModelParams, eVarNameFlags.SOR)
-            Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.udMaxIterations, ecospaceModelParams, eVarNameFlags.MaxIterations)
-            Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.cbPredictEffort, ecospaceModelParams, eVarNameFlags.PredictEffort)
-            Me.m_fpUseExact = New cPropertyFormatProvider(Me.cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
+            Me.m_fpTotalTime = New cPropertyFormatProvider(Me.m_tbTotalTime, ecospaceModelParams, eVarNameFlags.TotalTime)
+            Me.m_fpNumTSpYear = New cPropertyFormatProvider(Me.m_tbTimeStepsPerYear, ecospaceModelParams, eVarNameFlags.NumTimeStepsPerYear)
+            Me.m_fpTolerance = New cPropertyFormatProvider(Me.m_tbTolerance, ecospaceModelParams, eVarNameFlags.Tolerance)
+            Me.m_fpSOR = New cPropertyFormatProvider(Me.m_tbSOR, ecospaceModelParams, eVarNameFlags.SOR)
+            Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.m_nudMaxIterations, ecospaceModelParams, eVarNameFlags.MaxIterations)
+            Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.m_cbPredictEffort, ecospaceModelParams, eVarNameFlags.PredictEffort)
+            Me.m_fpUseExact = New cPropertyFormatProvider(Me.m_cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
             Me.UpdateScenarioFormatProviders()
 
         End Sub
@@ -193,17 +193,17 @@ Namespace Ecospace
 
             Select Case threadingModel
                 Case eThreadingModelType.OldSchool
-                    Me.rbOldSchool.Checked = True
+                    Me.m_rbOldSchool.Checked = True
                 Case eThreadingModelType.UseIBM
-                    Me.rbIBM.Checked = True
+                    Me.m_rbIBM.Checked = True
                 Case eThreadingModelType.UseNewStanza
-                    Me.rbNewStanzaModel.Checked = True
+                    Me.m_rbNewStanzaModel.Checked = True
             End Select
 
-            rbBaseBiomass.Checked = Not CBool(Me.m_bpAdjustSpace.GetValue())
-            rbAdjustedBiomass.Checked = CBool(Me.m_bpAdjustSpace.GetValue())
+            m_rbBaseBiomass.Checked = Not CBool(Me.m_bpAdjustSpace.GetValue())
+            m_rbAdjustedBiomass.Checked = CBool(Me.m_bpAdjustSpace.GetValue())
 
-            Me.cbContaminantTracing.Checked = CBool(Me.m_bpConTracing.GetValue())
+            Me.m_cbContaminantTracing.Checked = CBool(Me.m_bpConTracing.GetValue())
 
         End Sub
 
@@ -232,7 +232,7 @@ Namespace Ecospace
         ''' Event handler; called when the IBM mode radio button is checked.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub rbIBM_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbIBM.Validated
+        Private Sub rbIBM_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbIBM.Validated
             ' Set the value, let property value cascades do the rest
             Me.m_bpUseNewStanza.SetValue(False)
             Me.m_bpUseIBM.SetValue(True)
@@ -243,7 +243,7 @@ Namespace Ecospace
         ''' Event handler; called when the New Stanza mode radio button is checked.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub rbNewStanzaModel_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbNewStanzaModel.Validated
+        Private Sub rbNewStanzaModel_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbNewStanzaModel.Validated
             ' Set the value, let property value cascades do the rest
             Me.m_bpUseIBM.SetValue(False)
             Me.m_bpUseNewStanza.SetValue(True)
@@ -254,7 +254,7 @@ Namespace Ecospace
         ''' Event handler; called when the 'Old School' radio button is checked.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub rbOldSchool_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbOldSchool.Validated
+        Private Sub rbOldSchool_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbOldSchool.Validated
             ' Set the value, let property value cascades do the rest
             Me.m_bpUseNewStanza.SetValue(False)
             Me.m_bpUseIBM.SetValue(False)
@@ -265,7 +265,7 @@ Namespace Ecospace
         ''' Event handler; called when the Ecopath habitat radio button is checked.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub rbBaseBiomass_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbBaseBiomass.Validated
+        Private Sub rbBaseBiomass_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbBaseBiomass.Validated
             ' Set the value, let property value cascades do the rest
             Me.m_bpAdjustSpace.SetValue(False)
         End Sub
@@ -275,14 +275,14 @@ Namespace Ecospace
         ''' Event handler; called when the Ecopath habitat radio button is checked.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub rbAdjustedBiomass_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbAdjustedBiomass.Validated
+        Private Sub rbAdjustedBiomass_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbAdjustedBiomass.Validated
             ' Set the value, let property value cascades do the rest
             Me.m_bpAdjustSpace.SetValue(True)
         End Sub
 
-        Private Sub cbContaminantTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbContaminantTracing.Click
+        Private Sub cbContaminantTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_cbContaminantTracing.Click
 
-            If cbContaminantTracing.Checked Then
+            If m_cbContaminantTracing.Checked Then
                 Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
                 Dim cmd As cCommand = cmdh.GetCommand("EnableEcotracer")
 
@@ -290,13 +290,13 @@ Namespace Ecospace
                     cmd.Tag = eTracerRunModeTypes.RunSpace
                     cmd.Invoke()
                     If (Me.m_core.ActiveEcotracerScenarioIndex <= 0) Then
-                        Me.cbContaminantTracing.Checked = False
+                        Me.m_cbContaminantTracing.Checked = False
                     End If
                 End If
             End If
 
             ' If tracer scenario loaded turn this on
-            Me.m_bpConTracing.SetValue(Me.cbContaminantTracing.Checked)
+            Me.m_bpConTracing.SetValue(Me.m_cbContaminantTracing.Checked)
 
             Me.UpdateControls()
 
