@@ -112,7 +112,7 @@ Public Class frmFlowDiagramPlugin
             End If
 
             'Execute the external application through the general function on EwEUtils
-            If Not EwEUtils.SystemUtilities.AppExec("fd.exe", flowfile, "", "EwEFlowDiagramPlugin") Then
+            If Not EwEUtils.SystemUtilities.SystemUtilities.AppExec("fd.exe", flowfile, "", "EwEFlowDiagramPlugin") Then
                 Dim msg As New cMessage("Unable to run application 'fd.exe'", _
                                         eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
                 core.Messages.SendMessage(msg)
@@ -166,7 +166,7 @@ Public Class frmFlowDiagramPlugin
 
     Private Sub SDF_btn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SDF_btn.Click
         Try
-            Dim OutputFile As String = EwEUtils.SystemUtilities.MakeTempFile(cCore.GetInstance().EwEModel.Name & ".flw")
+            Dim OutputFile As String = EwEUtils.SystemUtilities.SystemUtilities.MakeTempFile(cCore.GetInstance().EwEModel.Name & ".flw")
 
             If System.IO.File.Exists(OutputFile) Then
                 ' File exist, prompt user
