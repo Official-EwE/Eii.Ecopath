@@ -149,7 +149,7 @@ Namespace Ecospace
 
             ' Model
             Me.m_fpTotalTime = New cPropertyFormatProvider(Me.m_tbTotalTime, ecospaceModelParams, eVarNameFlags.TotalTime)
-            Me.m_fpNumTSpYear = New cPropertyFormatProvider(Me.m_tbTimeStepsPerYear, ecospaceModelParams, eVarNameFlags.NumTimeStepsPerYear)
+            Me.m_fpNumTSpYear = New cPropertyFormatProvider(Me.m_tbNumTimeStepsPerYear, ecospaceModelParams, eVarNameFlags.NumTimeStepsPerYear)
             Me.m_fpTolerance = New cPropertyFormatProvider(Me.m_tbTolerance, ecospaceModelParams, eVarNameFlags.Tolerance)
             Me.m_fpSOR = New cPropertyFormatProvider(Me.m_tbSOR, ecospaceModelParams, eVarNameFlags.SOR)
             Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.m_nudMaxIterations, ecospaceModelParams, eVarNameFlags.MaxIterations)
