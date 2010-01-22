@@ -545,7 +545,7 @@ Namespace Controls
                 Case eShapeCommandTypes.SaveAsImage
                     Return True
                 Case eShapeCommandTypes.ResetAll
-                    Return True
+                    Return False
                 Case Else
                     ' Debug.Assert(False, String.Format("Command {0} not supported", cmd))
             End Select
@@ -573,8 +573,7 @@ Namespace Controls
                     Return True
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Add, _
-                     eShapeCommandTypes.Weight, _
-                     eShapeCommandTypes.ResetAll
+                     eShapeCommandTypes.Weight
                     Return Me.m_core.HasTimeSeries
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Duplicate, _
@@ -633,9 +632,6 @@ Namespace Controls
 
                 Case eShapeCommandTypes.Weight
                     Me.WeightTimeSeries()
-
-                Case eShapeCommandTypes.ResetAll
-                    Me.ResetAll(False)
 
             End Select
         End Sub
@@ -752,21 +748,6 @@ Namespace Controls
             If cmd IsNot Nothing Then
                 cmd.Invoke()
             End If
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Enable or disable all time series.
-        ''' </summary>
-        ''' <param name="bEnable">
-        ''' Flag indicating the enabled state of all time series.
-        ''' </param>
-        ''' -----------------------------------------------------------------------
-        Private Sub ResetAll(ByVal bEnable As Boolean)
-            For Each s As cShapeData In Me.m_lShapes
-                DirectCast(s, cTimeSeries).Enabled = bEnable
-            Next
-            Me.m_core.UpdateTimeSeries()
         End Sub
 
         ''' -----------------------------------------------------------------------
