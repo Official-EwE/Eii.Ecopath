@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: frmShapeValue.vb,v $
-' Revision 1.4  2009/04/23 14:11:16  jeroens
-' nudYears now simple label; we'll need a new GUI to manage time series dataset #years
-'
-' Revision 1.3  2009/03/11 18:25:47  jeroens
-' Added mediation x-baseline
-'
-' Revision 1.2  2009/03/02 01:52:34  jeroens
-' Properly named handlers
-'
-' Revision 1.1  2008/12/15 15:36:39  jeroens
-' Moved from ScInt
-'
-' Revision 1.1  2008/09/26 07:31:43  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -33,6 +13,8 @@ Imports ScientificInterfaceShared.Controls
 ''' </summary>
 Public Class frmShapeValue
 
+#Region " Private vars "
+
     Private m_shape As cShapeData = Nothing
     Private m_iNumPoints As Integer = 0
     Private m_SketchPad As ucSketchPad = Nothing
@@ -41,23 +23,16 @@ Public Class frmShapeValue
     Private m_displayMode As eDisplayMode = eDisplayMode.Monthly
     Private m_editMode As eDialogEditModeType = eDialogEditModeType.EditTimeSeries
 
-    Private Const cNUMROWS_EMTPY As Integer = 100
-
-    Public Enum eDisplayMode As Integer
-        ''' <summary>Display values per year</summary>
-        Yearly
-        ''' <summary>Display values per year, month</summary>
-        Monthly
-        ''' <summary>Display values per index</summary>
-        Index
-    End Enum
-
     Private Enum eDialogEditModeType
         AddTimeSeries
         AddForcing
         EditTimeSeries
         EditForcing
     End Enum
+
+#End Region ' Private vars
+
+    Private Const cNUMROWS_EMTPY As Integer = 100
 
     Public Sub New(Optional ByVal shape As cShapeData = Nothing)
 
@@ -87,6 +62,15 @@ Public Class frmShapeValue
         End If
 
     End Sub
+
+    Public Enum eDisplayMode As Integer
+        ''' <summary>Display values per year</summary>
+        Yearly
+        ''' <summary>Display values per year, month</summary>
+        Monthly
+        ''' <summary>Display values per index</summary>
+        Index
+    End Enum
 
     Public Property NumPoints() As Integer
         Get
@@ -250,7 +234,7 @@ Public Class frmShapeValue
 
         Me.FillPoolCodeComboBox()
 
-        cmbPoolCode.SelectedIndex = 0
+        'cmbPoolCode.SelectedIndex = 0
         Me.UpdateControls()
     End Sub
 
@@ -425,7 +409,7 @@ Public Class frmShapeValue
 
         Dim core As cCore = cCore.GetInstance
         Dim ts As cTimeSeries = Nothing
-        Dim intTimeSeriesPoolCode As Integer
+        Dim iPoolCode As Integer
         Dim fts As cFleetTimeSeries = Nothing
         Dim gts As cGroupTimeSeries = Nothing
         Dim bSucces As Boolean = True
@@ -441,16 +425,16 @@ Public Class frmShapeValue
         ts.TimeSeriesType = Me.SelectedTimeSeriesType()
 
         ' Set the pool code
-        intTimeSeriesPoolCode = cmbPoolCode.SelectedIndex + 1
+        iPoolCode = cmbPoolCode.SelectedIndex + 1
 
         'Assign the time series pool code to fleet index or group index
         Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
             Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
                 fts = CType(ts, cFleetTimeSeries)
-                fts.FleetIndex = intTimeSeriesPoolCode
+                fts.FleetIndex = iPoolCode
             Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
                 gts = CType(ts, cGroupTimeSeries)
-                gts.GroupIndex = intTimeSeriesPoolCode
+                gts.GroupIndex = iPoolCode
         End Select
 
         ' Update the shape
