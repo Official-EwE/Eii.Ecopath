@@ -113,23 +113,6 @@ Namespace SystemUtilities
             Return bSuccess
         End Function
 
-        Public Shared Function MakeTempFile(ByVal strFileName As String) As String
-
-            If String.IsNullOrEmpty(strFileName) Then
-                strFileName = System.IO.Path.GetTempFileName()
-            End If
-
-            ' TODO: Check if file is writeable!!!
-
-            Return Path.Combine(System.IO.Path.GetTempPath(), strFileName)
-
-            'Dim strOutputDir As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-            ''Dim strOutputDir As String = System.IO.Path.GetTempPath
-
-            'Return Path.Combine(strOutputDir, strFileName)
-
-        End Function
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Returns whether this application is executing in 64 bit mode.

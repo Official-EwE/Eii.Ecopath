@@ -121,6 +121,18 @@ Namespace Utilities
 
         End Function
 
+        Public Shared Function MakeTempFile(ByVal strFileName As String) As String
+
+            If String.IsNullOrEmpty(strFileName) Then
+                strFileName = System.IO.Path.GetTempFileName()
+            End If
+
+            ' TODO: Check if file is writeable!!!
+
+            Return Path.Combine(System.IO.Path.GetTempPath(), strFileName)
+
+        End Function
+
     End Class
 
 End Namespace
