@@ -1180,7 +1180,7 @@ Namespace MSE
             Try
 
                 For iflt As Integer = 1 To Me.m_esData.nGear
-                    If Data.MSYEvaluateFleet(iflt) And iflt = 4 Then
+                    If Data.MSYEvaluateFleet(iflt) Then
                         Dim Done As Boolean = False
                         Dim CurValue As Single = 0
                         Dim lastValue As Single = 0
@@ -1356,14 +1356,6 @@ Namespace MSE
             Dim FleetCatchValue As Single = 0
             Dim marketPrice As Single
 
-            Dim NumYears As Integer = 1
-            If m_data.MSYStartTimeIndex > 0 Then
-                'jb to VC I'm not sure what you want here number of years that are being evaluated???
-                NumYears = CInt((m_esData.NTimes - m_data.MSYStartTimeIndex) / 12)
-                'jb was
-                'NumYears = CInt(m_esData.NTimes / m_data.MSYStartTimeIndex / 12)
-            End If
-            '
             'System.Console.WriteLine()
 
             For igrp As Integer = 1 To Me.m_esData.nGroups
@@ -1379,7 +1371,9 @@ Namespace MSE
                     'marketPrice = 1
 
                     Dim GroupCatch As Single = 0
-                    For it As Integer = Me.m_data.MSYStartTimeIndex To Me.m_esData.NTimes
+                    'For it As Integer = Me.m_data.MSYStartTimeIndex To Me.m_esData.NTimes
+                    'only evaluate for the last 25 years:
+                    For it As Integer = Me.m_esData.NTimes - 25 To Me.m_esData.NTimes
                         'get data storted by ecosim over time  
                         'Dim bio As Single = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
                         'sumbio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
@@ -1387,7 +1381,8 @@ Namespace MSE
                         GroupCatch += m_esData.ResultsSumCatchByGroupGear(igrp, curFleet, it) * marketPrice
                         'System.Console.Write("Group " & igrp.ToString & " = " & FleetCatchValue.ToString & ", ")
                     Next
-                    FleetCatchValue += (GroupCatch * marketPrice / NumYears)
+                    'average over the 25 years:
+                    FleetCatchValue += (GroupCatch * marketPrice / 25)
                 End If
             Next igrp
             Return FleetCatchValue
