@@ -10711,6 +10711,11 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
                 Case eDataTypes.FishingEffort, eDataTypes.FishingPolicyManager
+
+                    'reset the mortaility due to fishing to the new values
+                    Me.m_EcoSim.SetFFromGear()
+
+                    'now load the interface data
                     'if the FishRate shape manager has changed the data then fishmort was also changed
                     're-load the fishMort shapes
                     manager = m_ShapeManagers.Item(eDataTypes.FishMort)
