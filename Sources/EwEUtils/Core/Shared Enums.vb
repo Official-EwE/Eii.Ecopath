@@ -1090,6 +1090,9 @@ Namespace Core
         MSEEffortAboveLimit
         MSEEffortBelowLimit
 
+        MSYRunSilent
+        MSYEvalValue
+        MSYStartTime
 
         ' Pedigree
         VariableName

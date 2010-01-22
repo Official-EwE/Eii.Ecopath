@@ -17,6 +17,12 @@ Public Class frmMSY
     Private Sub btRunMSY_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btRunMSY.Click
 
         Try
+
+            'Hardwire run state parameters...for now
+            Me.m_mse.ModelParameters.MSYMSYEvaluateValue = True
+            Me.m_mse.ModelParameters.MSYRunSilent = True
+            Me.m_mse.ModelParameters.MSYStartTimeIndex = 2
+
             'get the number of fleets for the progress updates
             m_nFleets = Me.m_core.nFleets
             ReDim MSY(m_core.nFleets)

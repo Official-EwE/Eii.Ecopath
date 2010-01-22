@@ -1147,21 +1147,11 @@ Namespace MSE
 
 
         Public Sub RunMSYSearch()
-
-
-            'ToDo_jb for Villy EvaluateMSY return value or biomass
-            'run silent don't update the interface
-            'start time for all time loops set effort
-
             'WE'll run Ecosim for an additional 25 years to avoid the effort not being sustainable
 
             Me.m_data.StopRun = False
 
             Dim NumberOfYears As Integer = Me.m_esData.NumYears
-            'Me.m_esData.NumYears = NumberOfYears + 25
-
-
-
 
             'Setup Ecosim 
             'timestep handler that ecosim will call where we can grab data during the run
@@ -1219,10 +1209,7 @@ Namespace MSE
 
                         End If
 
-
-
                         'when projecting the time series, the forcing functions shuld be set to the average over the ecosim run, not to 1
-
 
                         System.Console.WriteLine()
 
@@ -1240,7 +1227,10 @@ Namespace MSE
 
                             'evaluate the ecosim output for this fleet/effort combination
                             CurValue = Me.EvaluateMSY(iflt)
-                            System.Console.WriteLine(NumberOfSteps.ToString & ", Fleet = " & iflt.ToString & ":  MSY effort " & MSYeffort(iflt).ToString & ":  cur effort " & tryEffort.ToString & ", toolow = " & TooLowEffort.ToString & ", toobig = " & TooBigEffort.ToString & ", maxvalue = " & maxValue.ToString & ", curvalue = " & CurValue.ToString)
+                            System.Console.WriteLine(NumberOfSteps.ToString & ", Fleet = " & iflt.ToString & ":  MSY effort " _
+                                                     & MSYeffort(iflt).ToString & ":  cur effort " & tryEffort.ToString & ", toolow = " _
+                                                     & TooLowEffort.ToString & ", toobig = " & TooBigEffort.ToString & ", maxvalue = " _
+                                                     & maxValue.ToString & ", curvalue = " & CurValue.ToString)
 
                             'tell the interface an iteration has been completed
                             Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iflt, MSYeffort(iflt)))
@@ -1362,14 +1352,9 @@ Namespace MSE
             'evaluate the value of the catch for this fleet with this effort level
             'Dim sumbio As Single
 
-
             'VC wants to change this so that it can calc Value or Biomass
             Dim FleetCatchValue As Single = 0
             Dim marketPrice As Single
-
-            Me.Data.MSYRunSilent = False
-            Me.Data.MSYStartTimeIndex = 2
-            Me.Data.MSYEvaluateValue = True
 
             Dim NumYears As Integer = 1
             If m_data.MSYStartTimeIndex > 0 Then
@@ -1379,7 +1364,6 @@ Namespace MSE
             'System.Console.WriteLine()
 
             For igrp As Integer = 1 To Me.m_esData.nGroups
-                'sumbio = 0
 
                 If Me.m_epdata.Landing(curFleet, igrp) > 0 Then
                     If Me.m_data.MSYEvaluateValue Then

@@ -642,6 +642,10 @@ Namespace MSE
                 m_parameters.StopRun = Me.m_MSEdata.StopRun
                 m_parameters.Save = Me.m_MSEdata.SaveOutput
 
+                m_parameters.MSYStartTimeIndex = Me.m_MSEdata.MSYStartTimeIndex
+                m_parameters.MSYRunSilent = Me.m_MSEdata.MSYRunSilent
+                m_parameters.MSYMSYEvaluateValue = Me.m_MSEdata.MSYEvaluateValue
+
                 m_parameters.ResetStatusFlags()
 
                 m_parameters.AllowValidation = True
@@ -712,6 +716,10 @@ Namespace MSE
                         Me.m_MSEdata.EffortMode = Me.m_parameters.EffortMode
                         Me.m_MSEdata.StopRun = Me.m_parameters.StopRun
                         Me.m_MSEdata.SaveOutput = Me.m_parameters.Save
+
+                        Me.m_MSEdata.MSYEvaluateValue = Me.m_parameters.MSYMSYEvaluateValue
+                        Me.m_MSEdata.MSYRunSilent = Me.m_parameters.MSYRunSilent
+                        Me.m_MSEdata.MSYStartTimeIndex = Me.m_parameters.MSYStartTimeIndex
 
                         Me.m_search.MSEUseEconomicPlugin = Me.m_parameters.UseEconomicPlugin
 

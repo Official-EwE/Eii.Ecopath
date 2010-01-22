@@ -109,6 +109,23 @@ Public Class cMSEParameters
         val.Stored = False
         m_values.Add(val.varName, val)
 
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.MSYRunSilent, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYRunSilent))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.MSYEvalValue, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYEvalValue))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.MSYStartTime, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYStartTime))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
+
+
         ResetStatusFlags()
         AllowValidation = True
 
@@ -209,6 +226,37 @@ Public Class cMSEParameters
             SetVariable(eVarNameFlags.MSESave, value)
         End Set
     End Property
+
+    Public Property MSYStartTimeIndex() As Integer
+        Get
+            Return CInt(GetVariable(eVarNameFlags.MSYStartTime))
+        End Get
+
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.MSYStartTime, value)
+        End Set
+    End Property
+
+    Public Property MSYRunSilent() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.MSYRunSilent))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.MSYRunSilent, value)
+        End Set
+    End Property
+
+    Public Property MSYMSYEvaluateValue() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.MSYEvalValue))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.MSYEvalValue, value)
+        End Set
+    End Property
+
 
 #End Region
 
