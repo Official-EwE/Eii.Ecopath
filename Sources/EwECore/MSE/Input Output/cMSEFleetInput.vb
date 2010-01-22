@@ -73,6 +73,11 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.MSERefFleetEffortUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERefFleetEffortUpper))
             m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData()
+            val = New cValue(New Boolean, eVarNameFlags.MSYEvaluateFleet, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYEvaluateFleet))
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
             Me.AllowValidation = True
 
         End Sub
@@ -176,6 +181,19 @@ Namespace MSE
 
         End Property
 
+
+        Public Property MSYEvaluateFleet() As Boolean
+
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSYEvaluateFleet), Single)
+            End Get
+
+            Set(ByVal value As Boolean)
+                SetVariable(eVarNameFlags.MSYEvaluateFleet, value)
+            End Set
+
+        End Property
+
         Public Property QIncreaseStatus() As eStatusFlags
             Get
                 Return CType(GetStatus(eVarNameFlags.MSEQIncrease), eStatusFlags)
@@ -217,10 +235,6 @@ Namespace MSE
                 SetStatus(eVarNameFlags.MSEFleetCV, value)
             End Set
         End Property
-
-
-
-
 
         Public Property FleetWeightStatus(ByVal iGroup As Integer) As eStatusFlags
 

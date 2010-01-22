@@ -1093,6 +1093,7 @@ Namespace Core
         MSYRunSilent
         MSYEvalValue
         MSYStartTime
+        MSYEvaluateFleet
 
         ' Pedigree
         VariableName

@@ -606,12 +606,14 @@ Namespace MSE
                     mseFlt.Name = Me.m_core.m_EcoPathData.FleetName(iFleet)
                     mseFlt.QIncrease = Me.m_MSEdata.Qgrow(mseFlt.Index)
                     mseFlt.FleetCV = Me.m_MSEdata.CVFest(mseFlt.Index)
+                    mseFlt.MSYEvaluateFleet = Me.m_MSEdata.MSYEvaluateFleet(mseFlt.Index)
 
                     mseFlt.CatchRefLower = Me.m_MSEdata.CatchFleetBounds(mseFlt.Index).Lower
                     mseFlt.CatchRefUpper = Me.m_MSEdata.CatchFleetBounds(mseFlt.Index).Upper
 
                     mseFlt.EffortRefLower = Me.m_MSEdata.EffortFleetBounds(mseFlt.Index).Lower
                     mseFlt.EffortRefUpper = Me.m_MSEdata.EffortFleetBounds(mseFlt.Index).Upper
+
 
                     For igrp As Integer = 1 To m_core.nLivingGroups
                         mseFlt.FleetWeight(igrp) = Me.m_MSEdata.Fweight(mseFlt.Index, igrp)
@@ -694,6 +696,7 @@ Namespace MSE
 
                             Me.m_MSEdata.EffortFleetBounds(mseFlt.Index).Lower = mseFlt.EffortRefLower
                             Me.m_MSEdata.EffortFleetBounds(mseFlt.Index).Upper = mseFlt.EffortRefUpper
+                            Me.m_MSEdata.MSYEvaluateFleet(mseFlt.Index) = mseFlt.MSYEvaluateFleet
 
                             For igrp As Integer = 1 To m_core.nLivingGroups
                                 Me.m_MSEdata.Fweight(mseFlt.Index, igrp) = mseFlt.FleetWeight(igrp)

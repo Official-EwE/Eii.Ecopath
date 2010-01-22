@@ -1358,7 +1358,10 @@ Namespace MSE
 
             Dim NumYears As Integer = 1
             If m_data.MSYStartTimeIndex > 0 Then
-                NumYears = CInt(m_esData.NTimes / m_data.MSYStartTimeIndex / 12)
+                'jb to VC I'm not sure what you want here number of years that are being evaluated???
+                NumYears = CInt((m_esData.NTimes - m_data.MSYStartTimeIndex) / 12)
+                'jb was
+                'NumYears = CInt(m_esData.NTimes / m_data.MSYStartTimeIndex / 12)
             End If
             '
             'System.Console.WriteLine()
