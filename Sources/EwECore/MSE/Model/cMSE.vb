@@ -1229,6 +1229,7 @@ Namespace MSE
                         Do While Done = False
                             'For Effort As Single = EffMin To EffMax Step EffStep
                             NumberOfSteps += 1
+                            'tryEffort = 2
                             Me.SetFishingEffort(iflt, tryEffort)
 
                             'let ecosim init to the new values
@@ -1370,8 +1371,10 @@ Namespace MSE
             Me.Data.MSYStartTimeIndex = 2
             Me.Data.MSYEvaluateValue = True
 
-
-
+            Dim NumYears As Integer = 1
+            If m_data.MSYStartTimeIndex > 0 Then
+                NumYears = CInt(m_esData.NTimes / m_data.MSYStartTimeIndex / 12)
+            End If
             '
             'System.Console.WriteLine()
 
@@ -1388,15 +1391,16 @@ Namespace MSE
                     'VC temp fix for debugging:
                     'marketPrice = 1
 
-
+                    Dim GroupCatch As Single = 0
                     For it As Integer = Me.m_data.MSYStartTimeIndex To Me.m_esData.NTimes
                         'get data storted by ecosim over time  
                         'Dim bio As Single = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
                         'sumbio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
                         'FleetCatchValue += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it) * Me.m_epdata.Market(curFleet, igrp) ' * PropCaughtByThisGear
-                        FleetCatchValue += m_esData.ResultsSumCatchByGroupGear(igrp, curFleet, it) * marketPrice
+                        GroupCatch += m_esData.ResultsSumCatchByGroupGear(igrp, curFleet, it) * marketPrice
                         'System.Console.Write("Group " & igrp.ToString & " = " & FleetCatchValue.ToString & ", ")
                     Next
+                    FleetCatchValue += (GroupCatch * marketPrice / NumYears)
                 End If
             Next igrp
             Return FleetCatchValue
