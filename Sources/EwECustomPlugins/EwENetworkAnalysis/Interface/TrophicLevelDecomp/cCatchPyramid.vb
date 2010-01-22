@@ -3,14 +3,15 @@
 Option Strict On
 Option Explicit On
 
+Imports System.Text
 Imports System.IO
-Imports ZedGraph
+Imports System.Windows.Forms
 Imports System.Globalization
 Imports EwECore
 Imports EwEUtils.Core
-Imports System.Windows.Forms
-Imports System.Text
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
+Imports ZedGraph
 
 #End Region ' Imports
 
@@ -28,6 +29,7 @@ Public Class cCatchPyramid
 
     Public Overrides Sub DisplayData()
 
+        Dim model As cEwEModel = Me.NetworkManager.Core.EwEModel
         Dim sw As StreamWriter = Nothing
         Dim strOutputFile As String = ""
         Dim iMaxTL As Integer
@@ -37,7 +39,7 @@ Public Class cCatchPyramid
         Dim bSucces As Boolean = True
 
         ' Prepare directories
-        strOutputFile = SystemUtilities.MakeTempFile("NA-puramid-catch.txt")
+        strOutputFile = modUtility.PyramidTempFile(model.Name, ePyramidTypes.Catch, ".txt")
         sw = New StreamWriter(strOutputFile, False, New System.Text.UTF8Encoding())
         Try
 
@@ -90,7 +92,7 @@ Public Class cCatchPyramid
 
         Try
             'Execute the external application through the general function on EwEUtils
-            bSucces = SystemUtilities.AppExec("pyramid.exe", strOutputFile, "", "EwENetworkAnalysis")
+            bSucces = SystemUtilities.AppExec("pyramid.exe", """" & strOutputFile & """", "", "EwENetworkAnalysis")
         Catch ex As Exception
             bSucces = False
         End Try
@@ -106,7 +108,7 @@ Public Class cCatchPyramid
             Me.NetworkManager.Core.Messages.SendMessage(msg)
         End If
 
-        File.Delete(strOutputFile)
+        'File.Delete(strOutputFile)
 
     End Sub
 

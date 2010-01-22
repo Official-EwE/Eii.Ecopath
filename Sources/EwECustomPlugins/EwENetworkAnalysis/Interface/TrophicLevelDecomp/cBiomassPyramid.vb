@@ -11,6 +11,7 @@ Imports System.Globalization
 Imports System.Windows.Forms
 Imports System.Text
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -32,6 +33,7 @@ Public Class cBiomassPyramid
 
     Public Overrides Sub DisplayData()
 
+        Dim model As cEwEModel = Me.NetworkManager.Core.EwEModel
         Dim sw As StreamWriter = Nothing
         Dim strOutputFile As String = ""
         Dim iMaxTL As Integer
@@ -46,7 +48,7 @@ Public Class cBiomassPyramid
         Dim asBRel() As Single
 
         ' Prepare directories
-        strOutputFile = SystemUtilities.MakeTempFile("NA-pyramid-biomass.txt")
+        strOutputFile = modUtility.PyramidTempFile(model.Name, ePyramidTypes.Biomass, ".txt")
         sw = New StreamWriter(strOutputFile, False, New System.Text.UTF8Encoding())
         Try
             iFlag = 2
@@ -92,10 +94,10 @@ Public Class cBiomassPyramid
 
             Next i
 
-            modUtility.WritePyramidFile(Me.NetworkManager.Core.EwEModel.Name, _
-                            ePyramidTypes.Biomass, "t/km²", _
-                            iMaxTL, sTotalBiomass, _
-                            asB, asBRel)
+            'modUtility.WritePyramidFile(Me.NetworkManager.Core.EwEModel.Name, _
+            '                ePyramidTypes.Biomass, "t/km²", _
+            '                iMaxTL, sTotalBiomass, _
+            '                asB, asBRel)
 
             bSucces = True
         Catch ex As Exception
@@ -112,7 +114,7 @@ Public Class cBiomassPyramid
         'End If
 
         'Execute the external application through the general function on EwEUtils
-        If Not SystemUtilities.AppExec("pyramid.exe", strOutputFile, "", "EwENetworkAnalysis") Then
+        If Not SystemUtilities.AppExec("pyramid.exe", """" & strOutputFile & """", "", "EwENetworkAnalysis") Then
             Dim sb As New StringBuilder
             For Each str As String In SystemUtilities.ApplicationLaunchLocations
                 If sb.Length > 0 Then sb.Append(", ")
@@ -123,7 +125,7 @@ Public Class cBiomassPyramid
             Me.NetworkManager.Core.Messages.SendMessage(msg)
         End If
 
-        File.Delete(strOutputFile)
+        'File.Delete(strOutputFile)
 
     End Sub
 

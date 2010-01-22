@@ -1,35 +1,30 @@
-'==============================================================================
-'
-' $Log: frmFlowDiagramPlugin.vb,v $
-' Revision 1.3  2009/05/28 14:44:33  jeroens
-' Updated to build
-'
-' Revision 1.2  2009/04/21 20:41:49  jeroens
-' Thou shalst compile!
-'
-' Revision 1.1  2008/09/26 07:30:45  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
 Option Explicit On
 
-Imports EwECore
 Imports System
 Imports System.IO
 Imports System.Text
+Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+''' ===========================================================================
+''' <summary>
+''' Form for the EwE flow diagram plug-in.
+''' </summary>
+''' ===========================================================================
 Public Class frmFlowDiagramPlugin
-    'Public Overridable Property NewLine() As String
+
+#Region " Privates "
 
     Private m_EcopathDs As cEcopathDataStructures
     Private m_Parent As cEwEFlowDiagramPlugin
+
+#End Region ' Privates
 
     ''' <summary>
     '''  Create Ascci Flw put together all the necessary information from EcoPathGroupOutputs and EcoPathDataStructures
@@ -166,7 +161,7 @@ Public Class frmFlowDiagramPlugin
 
     Private Sub SDF_btn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SDF_btn.Click
         Try
-            Dim OutputFile As String = EwEUtils.SystemUtilities.SystemUtilities.MakeTempFile(cCore.GetInstance().EwEModel.Name & ".flw")
+            Dim OutputFile As String = FileUtilities.MakeTempFile(cCore.GetInstance().EwEModel.Name & ".flw")
 
             If System.IO.File.Exists(OutputFile) Then
                 ' File exist, prompt user

@@ -11,10 +11,12 @@ Imports System.Text
 Imports System.Xml
 Imports System.Globalization
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
 Module modUtility
+
     Public Const DEFAULT_COL_WIDTH As Integer = 70
     Public Const ID_COL_WIDTH As Integer = 25
     Public Const GRP_NAME_COL_WIDTH As Integer = 110
@@ -52,16 +54,59 @@ Module modUtility
         Biomass = 2
     End Enum
 
-    Public Function WritePyramidFile(ByVal strModel As String, ByVal pyramidtype As ePyramidTypes, _
-                                     ByVal strUnits As String, ByVal iNumTL As Integer, _
-                                     ByVal sTotalB As Single, ByVal asBiomass() As Single, ByVal asValue() As Single) As String
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Create a temporary file for storing a pyramid file.
+    ''' </summary>
+    ''' <param name="strModel">The EwE model to generate the file for.</param>
+    ''' <param name="pyramidtype">The type of pyramid to store in the file.</param>
+    ''' <param name="strExtension">The file extension to use.</param>
+    ''' <returns>A valid file name in the local temp directory.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function PyramidTempFile(ByVal strModel As String, _
+                                    ByVal pyramidtype As ePyramidTypes, _
+                                    ByVal strExtension As String) As String
+
+        Dim sbFileName As New StringBuilder()
+
+        sbFileName.Append("NA_pyramid_")
+        sbFileName.Append(pyramidtype.ToString().ToLower())
+        sbFileName.Append("_")
+        sbFileName.Append(strModel.ToLower())
+        If Not strExtension.StartsWith(".") Then sbFileName.Append(".")
+        sbFileName.Append(strExtension)
+
+        Return FileUtilities.MakeTempFile(FileUtilities.ToValidFileName(sbFileName.ToString(), False))
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strModel"></param>
+    ''' <param name="pyramidtype"></param>
+    ''' <param name="strUnits"></param>
+    ''' <param name="iNumTL"></param>
+    ''' <param name="sTotalB"></param>
+    ''' <param name="asBiomass"></param>
+    ''' <param name="asValue"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function WritePyramidFile(ByVal strModel As String, _
+                                     ByVal pyramidtype As ePyramidTypes, _
+                                     ByVal strUnits As String, _
+                                     ByVal iNumTL As Integer, _
+                                     ByVal sTotalB As Single, _
+                                     ByVal asBiomass() As Single, _
+                                     ByVal asValue() As Single) As String
 
         Dim doc As XmlDocument = New XmlDocument()
         Dim nodePyramid As XmlNode = Nothing
         Dim attrib As XmlAttribute = Nothing
         Dim nodeTL As XmlNode = Nothing
         Dim ciEnUSLocale As New CultureInfo("en-US")
-        Dim strOutputFile As String = SystemUtilities.MakeTempFile("NA-pyramid-biomass.xml")
+        Dim strOutputFile As String = PyramidTempFile(strModel, pyramidtype, ".xml")
 
         doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", ""))
         nodePyramid = doc.CreateElement("pyramid")
@@ -108,6 +153,7 @@ Module modUtility
         doc.Save(strOutputFile)
 
         Return strOutputFile
+
     End Function
 
 End Module

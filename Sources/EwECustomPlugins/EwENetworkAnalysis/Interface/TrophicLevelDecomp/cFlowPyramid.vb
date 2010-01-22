@@ -4,13 +4,15 @@ Option Strict On
 Option Explicit On
 
 Imports System.IO
-Imports ZedGraph
+Imports System.Text
+Imports System.Windows.Forms
 Imports System.Globalization
 Imports EwECore
 Imports EwEUtils.Core
-Imports System.Windows.Forms
-Imports System.Text
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
+Imports ZedGraph
+Imports EwEUtils.Win32Api
 
 #End Region ' Imports
 
@@ -32,8 +34,10 @@ Public Class cFlowPyramid
 
     Public Overrides Sub DisplayData()
 
+        Dim model As cEwEModel = Me.NetworkManager.Core.EwEModel
         Dim sw As StreamWriter = Nothing
         Dim strOutputFile As String = ""
+        Dim strOutputFile83 As String = Space(255)
         Dim strAnswer As String = ""
         Dim iMaxTL As Integer
         Dim iFlag As Integer
@@ -42,7 +46,7 @@ Public Class cFlowPyramid
         Dim bSucces As Boolean = True
 
         ' Prepare directories
-        strOutputFile = SystemUtilities.MakeTempFile("NA-pyramid-flow.txt")
+        strOutputFile = modUtility.PyramidTempFile(model.Name, ePyramidTypes.Flow, ".txt")
         sw = New StreamWriter(strOutputFile, False, New System.Text.UTF8Encoding())
         Try
 
@@ -148,7 +152,8 @@ Public Class cFlowPyramid
 
         Try
             'Execute the external application through the general function on EwEUtils
-            bSucces = SystemUtilities.AppExec("pyramid.exe", strOutputFile, "", "EwENetworkAnalysis")
+            Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
+            bSucces = SystemUtilities.AppExec("pyramid.exe", strOutputFile83, "", "EwENetworkAnalysis")
         Catch ex As Exception
             bSucces = False
         End Try
@@ -164,7 +169,7 @@ Public Class cFlowPyramid
             Me.NetworkManager.Core.Messages.SendMessage(msg)
         End If
 
-        File.Delete(strOutputFile)
+        'File.Delete(strOutputFile)
 
     End Sub
 
