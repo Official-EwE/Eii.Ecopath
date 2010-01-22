@@ -12,6 +12,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ZedGraph
+Imports EwEUtils.Win32Api
 
 #End Region ' Imports
 
@@ -32,6 +33,7 @@ Public Class cCatchPyramid
         Dim model As cEwEModel = Me.NetworkManager.Core.EwEModel
         Dim sw As StreamWriter = Nothing
         Dim strOutputFile As String = ""
+        Dim strOutputFile83 As String = Space(255)
         Dim iMaxTL As Integer
         Dim iFlag As Integer
         Dim core As cCore = Me.NetworkManager.Core
@@ -92,7 +94,8 @@ Public Class cCatchPyramid
 
         Try
             'Execute the external application through the general function on EwEUtils
-            bSucces = SystemUtilities.AppExec("pyramid.exe", """" & strOutputFile & """", "", "EwENetworkAnalysis")
+            Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
+            bSucces = SystemUtilities.AppExec("pyramid.exe", strOutputFile, "", "EwENetworkAnalysis")
         Catch ex As Exception
             bSucces = False
         End Try

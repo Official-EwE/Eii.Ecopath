@@ -12,6 +12,7 @@ Imports System.Windows.Forms
 Imports System.Text
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports EwEUtils.Win32Api
 
 #End Region ' Imports
 
@@ -36,6 +37,7 @@ Public Class cBiomassPyramid
         Dim model As cEwEModel = Me.NetworkManager.Core.EwEModel
         Dim sw As StreamWriter = Nothing
         Dim strOutputFile As String = ""
+        Dim strOutputFile83 As String = Space(255)
         Dim iMaxTL As Integer
         Dim sTotalBiomass As Single
         Dim iFlag As Integer
@@ -114,7 +116,8 @@ Public Class cBiomassPyramid
         'End If
 
         'Execute the external application through the general function on EwEUtils
-        If Not SystemUtilities.AppExec("pyramid.exe", """" & strOutputFile & """", "", "EwENetworkAnalysis") Then
+        Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
+        If Not SystemUtilities.AppExec("pyramid.exe", strOutputFile, "", "EwENetworkAnalysis") Then
             Dim sb As New StringBuilder
             For Each str As String In SystemUtilities.ApplicationLaunchLocations
                 If sb.Length > 0 Then sb.Append(", ")

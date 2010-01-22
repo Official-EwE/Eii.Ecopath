@@ -11,8 +11,8 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports ZedGraph
 Imports EwEUtils.Win32Api
+Imports ZedGraph
 
 #End Region ' Imports
 
