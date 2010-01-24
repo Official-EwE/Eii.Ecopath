@@ -17,6 +17,7 @@ Imports System.IO
 Imports SourceGrid2.Cells
 Imports System.Globalization
 Imports System.Threading
+Imports ScientificInterfaceShared.Style
 
 #End Region
 
@@ -317,6 +318,11 @@ Namespace Controls.EwEGrid
 
 #Region " IUIElement implementation "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="cUIContext">UI Context</see> for this grid.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -325,6 +331,29 @@ Namespace Controls.EwEGrid
             Set(ByVal value As cUIContext)
                 Me.m_uic = value
             End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cCore">core</see> that this grid connects to.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Core() As cCore
+            Get
+                Return Me.m_uic.Core
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cStyleGuide">style guide</see> that this grid 
+        ''' connects to.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property StyleGuide() As cStyleGuide
+            Get
+                Return Me.m_uic.StyleGuide
+            End Get
         End Property
 
 #End Region ' IUIElement implementation
