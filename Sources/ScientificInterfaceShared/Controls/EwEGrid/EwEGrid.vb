@@ -76,6 +76,7 @@ Namespace Controls.EwEGrid
     <CLSCompliant(False)> _
     Public MustInherit Class EwEGrid
         Inherits SourceGrid2.Grid
+        Implements IUIElement
 
 #Region " Public helper classes "
 
@@ -254,6 +255,7 @@ Namespace Controls.EwEGrid
 
 #Region " Variables "
 
+        Private m_uic As cUIContext = Nothing
         Private m_ceCellClick As New BehaviorModels.CustomEvents
         Private m_ceRowSelect As New BehaviorModels.CustomEvents
         Private m_ceColSelect As New BehaviorModels.CustomEvents
@@ -312,6 +314,20 @@ Namespace Controls.EwEGrid
         End Sub
 
 #End Region ' Constructor
+
+#Region " IUIElement implementation "
+
+        Public Overridable Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
+
+#End Region ' IUIElement implementation
 
 #Region " EwE events "
 
@@ -481,6 +497,7 @@ Namespace Controls.EwEGrid
                 End If
             End Set
         End Property
+
 #End Region ' Appearance
 
 #Region " Data "

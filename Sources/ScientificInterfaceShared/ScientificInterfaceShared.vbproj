@@ -135,6 +135,7 @@
     <Compile Include="Controls\GlyphSelect\ucGlyphSelect.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\IUIElement.vb" />
     <Compile Include="Controls\ListBox\GroupListBox.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -244,6 +245,7 @@
     </Compile>
     <Compile Include="Controls\ZedGraph\ZedGraphHelper.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphKiteDiagram.vb" />
+    <Compile Include="cUIContext.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

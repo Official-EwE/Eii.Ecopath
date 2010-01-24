@@ -66,8 +66,8 @@ Namespace Controls
 
 #Region " Private variables "
 
-        ''' <summary>The single instance of the core.</summary>
-        Protected m_core As cCore
+        Private m_uic As cUIContext = Nothing
+
         ''' <summary><see cref="ucShapeToolbox">Shape toolbox control </see> to handle.</summary>
         Private m_shapeToolBox As ucShapeToolbox = Nothing
         ''' <summary><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle.</summary>
@@ -89,17 +89,19 @@ Namespace Controls
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
         ''' </summary>
-        ''' <param name="core">Core to connect to.</param>
+        ''' <param name="uic"><see cref="cUIContext">UI contextual</see> information.</param>
         ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
         ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, _
-                ByVal stb As ucShapeToolbox, ByVal stbtb As ucShapeToolboxToolbar, _
-                ByVal sp As ucSketchPad, ByVal sptb As ucSketchPadToolbar)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal stb As ucShapeToolbox, _
+                       ByVal stbtb As ucShapeToolboxToolbar, _
+                       ByVal sp As ucSketchPad, _
+                       ByVal sptb As ucSketchPadToolbar)
 
-            Me.m_core = core
+            Me.m_uic = uic
             Me.ShapeToolBox = stb
             Me.ShapeToolBoxToolbar = stbtb
             Me.SketchPad = sp
@@ -297,7 +299,7 @@ Namespace Controls
                             eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
                 End If
                 ' Provide feedback on result
-                Me.m_core.Messages.SendMessage(msg)
+                Me.Core.Messages.SendMessage(msg)
 
             End If
         End Sub
@@ -329,7 +331,7 @@ Namespace Controls
                                                eMessageImportance.Information, _
                                                cFeedbackMessage.eReplyStyle.YES_NO, _
                                                eDataTypes.Forcing, cFeedbackMessage.eReply.YES)
-                    Me.m_core.Messages.SendMessage(fms, True)
+                    Me.Core.Messages.SendMessage(fms, True)
                     If fms.Reply = cFeedbackMessage.eReply.YES Then
                         Me.SelectedShape.IsSeasonal = True
                     End If
@@ -351,7 +353,13 @@ Namespace Controls
 
 #End Region ' Tools
 
-#Region " Internal implementation "
+#Region " Public access "
+
+        Public ReadOnly Property Core() As cCore
+            Get
+                Return Me.m_uic.Core
+            End Get
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -459,7 +467,7 @@ Namespace Controls
             End Set
         End Property
 
-#End Region
+#End Region ' Public access
 
     End Class
 
@@ -486,17 +494,19 @@ Namespace Controls
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
         ''' </summary>
-        ''' <param name="core">Core to connect to.</param>
+        ''' <param name="uic"><see cref="cUIContext">UI contextual</see> information.</param>
         ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
         ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, _
-                ByVal stb As ucShapeToolbox, ByVal stbtb As ucShapeToolboxToolbar, _
-                ByVal sp As ucSketchPad, ByVal sptb As ucSketchPadToolbar)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal stb As ucShapeToolbox, _
+                       ByVal stbtb As ucShapeToolboxToolbar, _
+                       ByVal sp As ucSketchPad, _
+                       ByVal sptb As ucSketchPadToolbar)
 
-            MyBase.New(core, stb, stbtb, sp, sptb)
+            MyBase.New(uic, stb, stbtb, sp, sptb)
 
             If Me.SketchPad IsNot Nothing Then
                 ' Cannot draw onto time series shapes
@@ -574,7 +584,7 @@ Namespace Controls
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Add, _
                      eShapeCommandTypes.Weight
-                    Return Me.m_core.HasTimeSeries
+                    Return Me.Core.HasTimeSeries
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Duplicate, _
                      cShapeGUIHandler.eShapeCommandTypes.Remove
@@ -733,7 +743,7 @@ Namespace Controls
             If (frm.ShowDialog() = DialogResult.OK) Then
                 ' Ecosim will reload, which means a reload of datasets and time series
                 ' As a result, this control will be told to update
-                Me.m_core.LoadTimeSeries(Me.m_core.ActiveTimeSeriesDatasetIndex)
+                Me.Core.LoadTimeSeries(Me.Core.ActiveTimeSeriesDatasetIndex)
             End If
         End Sub
 
@@ -793,13 +803,13 @@ Namespace Controls
 
             ' Generate TS data
             For Each shape As cShapeData In ashapes
-                ts = Me.m_core.EcosimTimeSeries(shape.Index)
+                ts = Me.Core.EcosimTimeSeries(shape.Index)
                 ReDim asValues(ts.ShapeData.Length - 2)
                 For i As Integer = 1 To ts.ShapeData.Length - 1
                     asValues(i - 1) = ts.DatVal(i)
                 Next
 
-                bSucces = bSucces And (Me.m_core.AddTimeSeries(strNewTSName, _
+                bSucces = bSucces And (Me.Core.AddTimeSeries(strNewTSName, _
                         ts.DataType, DirectCast(ts.TimeSeriesType, eTimeSeriesType), _
                         ts.WtType, asValues, intDBID))
             Next
@@ -850,20 +860,20 @@ Namespace Controls
                                        cFeedbackMessage.eReplyStyle.YES_NO, _
                                        eDataTypes.TimeSeriesDataset, _
                                        cFeedbackMessage.eReply.OK)
-            Me.m_core.Messages.SendMessage(fms, True)
+            Me.Core.Messages.SendMessage(fms, True)
             If (fms.Reply = cFeedbackMessage.eReply.NO) Then Return
 
             ' Delete
-            Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
+            Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
             Try
                 For Each shape As cShapeData In ashapes
                     Debug.Assert(TypeOf shape Is cTimeSeries, "Need valid TS")
-                    bSucces = bSucces And Me.m_core.RemoveTimeSeries(shape.DBID)
+                    bSucces = bSucces And Me.Core.RemoveTimeSeries(shape.DBID)
                 Next
             Catch ex As Exception
                 ' Whoah!
             End Try
-            Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.TimeSeries, bSucces)
+            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.TimeSeries, bSucces)
 
             ' Refresh
             Me.UpdateShapeList()
@@ -929,8 +939,8 @@ Namespace Controls
 
             Me.m_lShapes.Clear()
 
-            For i As Integer = 1 To Me.m_core.nTimeSeries
-                Me.m_lShapes.Add(Me.m_core.EcosimTimeSeries(i))
+            For i As Integer = 1 To Me.Core.nTimeSeries
+                Me.m_lShapes.Add(Me.Core.EcosimTimeSeries(i))
             Next
 
             ' Select a shape
@@ -1012,17 +1022,19 @@ Namespace Controls
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
         ''' </summary>
-        ''' <param name="core">Core to connect to.</param>
+        ''' <param name="uic"><see cref="cUIContext">UI contextual</see> information.</param>
         ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
         ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, _
-               ByVal stb As ucShapeToolbox, ByVal stbtb As ucShapeToolboxToolbar, _
-               ByVal sp As ucSketchPad, ByVal sptb As ucSketchPadToolbar)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal stb As ucShapeToolbox, _
+                       ByVal stbtb As ucShapeToolboxToolbar, _
+                       ByVal sp As ucSketchPad, _
+                       ByVal sptb As ucSketchPadToolbar)
 
-            MyBase.New(core, stb, stbtb, sp, sptb)
+            MyBase.New(uic, stb, stbtb, sp, sptb)
             Me.UpdateShapeList()
 
         End Sub
@@ -1036,7 +1048,7 @@ Namespace Controls
         ''' <returns>The shapes manager that delivers the data for this handler.</returns>
         ''' -------------------------------------------------------------------
         Protected Overridable Function ShapeManager() As cBaseShapeManager
-            Return Me.m_core.ForcingShapeManager()
+            Return Me.Core.ForcingShapeManager()
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1407,15 +1419,15 @@ Namespace Controls
                                        eMessageImportance.Warning, _
                                        cFeedbackMessage.eReplyStyle.YES_NO, _
                                        eDataTypes.Forcing, cFeedbackMessage.eReply.YES)
-            Me.m_core.Messages.SendMessage(fms, True)
+            Me.Core.Messages.SendMessage(fms, True)
             If fms.Reply = cFeedbackMessage.eReply.NO Then Return
 
-            Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
+            Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
             For Each shape As cShapeData In ashapes
                 Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
                 bSucces = bSucces And ShapeManager.Remove(DirectCast(shape, cForcingFunction))
             Next
-            Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSucces)
+            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSucces)
 
             ' Refresh
             Me.UpdateShapeList()
@@ -1564,17 +1576,19 @@ Namespace Controls
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
         ''' </summary>
-        ''' <param name="core">Core to connect to.</param>
+        ''' <param name="uic"><see cref="cUIContext">UI contextual</see> information.</param>
         ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
         ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, _
-                 ByVal stb As ucShapeToolbox, ByVal stbtb As ucShapeToolboxToolbar, _
-                 ByVal sp As ucSketchPad, ByVal sptb As ucSketchPadToolbar)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal stb As ucShapeToolbox, _
+                       ByVal stbtb As ucShapeToolboxToolbar, _
+                       ByVal sp As ucSketchPad, _
+                       ByVal sptb As ucSketchPadToolbar)
 
-            MyBase.New(core, stb, stbtb, sp, sptb)
+            MyBase.New(uic, stb, stbtb, sp, sptb)
 
         End Sub
 
@@ -1585,7 +1599,7 @@ Namespace Controls
         ''' <returns>The shapes manager that delivers the data for this handler.</returns>
         ''' -------------------------------------------------------------------
         Protected Overrides Function ShapeManager() As cBaseShapeManager
-            Return Me.m_core.EggProdShapeManager
+            Return Me.Core.EggProdShapeManager
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -1624,13 +1638,17 @@ Namespace Controls
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
         ''' </summary>
-        ''' <param name="core">Core to connect to.</param>
+        ''' <param name="uic"><see cref="cUIContext">UI contextual</see> information.</param>
         ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, ByVal stb As ucShapeToolbox, ByVal stbtb As ucShapeToolboxToolbar, _
-                ByVal sp As ucSketchPad, ByVal sptb As ucSketchPadToolbar)
-            MyBase.New(core, stb, stbtb, sp, sptb)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal stb As ucShapeToolbox, _
+                       ByVal stbtb As ucShapeToolboxToolbar, _
+                       ByVal sp As ucSketchPad, _
+                       ByVal sptb As ucSketchPadToolbar)
+
+            MyBase.New(uic, stb, stbtb, sp, sptb)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -1745,8 +1763,8 @@ Namespace Controls
         End Sub
 
         Protected Overrides Sub ResetAllShapes()
-            Me.m_core.FishingEffortShapeManager.ResetToDefaults()
-            Me.m_core.FishMortShapeManager.ResetToDefaults()
+            Me.Core.FishingEffortShapeManager.ResetToDefaults()
+            Me.Core.FishMortShapeManager.ResetToDefaults()
         End Sub
 
         Protected MustOverride Function ScaleMode() As eAxisTickmarkDisplayModeTypes
@@ -1797,7 +1815,7 @@ Namespace Controls
                     Try
                         Me.ResetShapes(ashapes, CSng(Val(astrEntered(0))))
                     Catch ex As Exception
-                        Me.m_core.Messages.SendMessage(New cMessage(String.Format("Failed to set value {0}", astrEntered(0)), _
+                        Me.Core.Messages.SendMessage(New cMessage(String.Format("Failed to set value {0}", astrEntered(0)), _
                                 eMessageType.NotSet, eCoreComponentType.ShapesManager, eMessageImportance.Warning))
                     End Try
 
@@ -1852,13 +1870,16 @@ Namespace Controls
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
         ''' </summary>
-        ''' <param name="core">Core to connect to.</param>
+        ''' <param name="uic"><see cref="cUIContext">UI contextual</see> information.</param>
         ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, ByVal stb As ucShapeToolbox, ByVal sp As ucSketchPad, _
-                Optional ByVal stbtb As ucShapeToolboxToolbar = Nothing, Optional ByVal sptb As ucSketchPadToolbar = Nothing)
-            MyBase.New(core, stb, stbtb, sp, sptb)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal stb As ucShapeToolbox, _
+                       ByVal sp As ucSketchPad, _
+                       Optional ByVal stbtb As ucShapeToolboxToolbar = Nothing, _
+                       Optional ByVal sptb As ucSketchPadToolbar = Nothing)
+            MyBase.New(uic, stb, stbtb, sp, sptb)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -1889,7 +1910,7 @@ Namespace Controls
         ''' <returns>The shapes manager that delivers the data for this handler.</returns>
         ''' -------------------------------------------------------------------
         Protected Overrides Function ShapeManager() As EwECore.cBaseShapeManager
-            Return Me.m_core.FishingEffortShapeManager
+            Return Me.Core.FishingEffortShapeManager
         End Function
 
         Protected Overrides Function ScaleMode() As eAxisTickmarkDisplayModeTypes
@@ -1926,13 +1947,18 @@ Namespace Controls
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
         ''' </summary>
-        ''' <param name="core">Core to connect to.</param>
+        ''' <param name="uic"><see cref="cUIContext">UI contextual</see> information.</param>
         ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
+        ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
+        ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, ByVal stb As ucShapeToolbox, ByVal sp As ucSketchPad, _
-                Optional ByVal stbtb As ucShapeToolboxToolbar = Nothing, Optional ByVal sptb As ucSketchPadToolbar = Nothing)
-            MyBase.New(core, stb, stbtb, sp, sptb)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal stb As ucShapeToolbox, _
+                       ByVal sp As ucSketchPad, _
+                       Optional ByVal stbtb As ucShapeToolboxToolbar = Nothing, _
+                       Optional ByVal sptb As ucSketchPadToolbar = Nothing)
+            MyBase.New(uic, stb, stbtb, sp, sptb)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -1952,7 +1978,7 @@ Namespace Controls
         ''' <returns>The shapes manager that delivers the data for this handler.</returns>
         ''' -------------------------------------------------------------------
         Protected Overrides Function ShapeManager() As EwECore.cBaseShapeManager
-            Return Me.m_core.FishMortShapeManager
+            Return Me.Core.FishMortShapeManager
         End Function
 
         Protected Overrides Function ScaleMode() As eAxisTickmarkDisplayModeTypes
