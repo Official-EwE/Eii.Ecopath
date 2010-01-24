@@ -36,7 +36,8 @@ Imports System.Windows.Forms
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class frmEwE
-    : Inherits DockContent
+    Inherits DockContent
+    Implements IUIElement
 
 #Region " Private helper classes "
 
@@ -213,6 +214,8 @@ Public Class frmEwE
 
 #Region " Private variables "
 
+    Private m_uic As cUIContext = Nothing
+
     ''' <summary>Core state that determines the enabled state of a form.</summary>
     Private m_coreExecutionState As eCoreExecutionState = eCoreExecutionState.Idle
     ''' <summary>Array of message sources that invalidate the information displayed in a form.</summary>
@@ -230,20 +233,6 @@ Public Class frmEwE
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub New()
-        ' Call the fancy constructor
-        Me.New(My.Resources.HEADER_EMPTY_PANEL)
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Fancy-schmanzy constructor.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal strText As String)
-        ' Text gets displayed at the tab window
-        Me.TabText = strText
-        ' Text gets displayed at the window's MDI list
-        Me.Text = strText
     End Sub
 
 #End Region ' Constructors
@@ -270,6 +259,25 @@ Public Class frmEwE
         Me.CoreComponents = Nothing
         MyBase.OnFormClosed(e)
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="cUIContext">UI context</see> that 
+    ''' </summary>
+    ''' <remarks>
+    ''' Override this method to connect to the EwE Core and other UI-context
+    ''' settings.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Property UIContext() As cUIContext _
+        Implements IUIElement.UIContext
+        Get
+            Return Me.m_uic
+        End Get
+        Set(ByVal value As cUIContext)
+            Me.m_uic = value
+        End Set
+    End Property
 
 #End Region ' Form overrides
 

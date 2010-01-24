@@ -1,35 +1,3 @@
-'==============================================================================
-'
-' $Log: frmForcingFunction.vb,v $
-' Revision 1.5  2009/03/02 01:52:35  jeroens
-' Properly named handlers
-'
-' Revision 1.4  2009/02/05 17:48:37  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.3  2009/01/16 18:30:42  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 16:03:02  jeroens
-' Shape controls moved to ScIntShared
-'
-' Revision 1.1  2008/09/26 07:31:37  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2008/07/04 15:27:18  jeroens
-' Fixed update issue
-'
-' Revision 1.3  2008/06/06 16:01:38  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.2  2007/11/22 18:15:26  jeroens
-' * Made proper EwEForm
-'
-' Revision 1.1  2007/10/29 13:28:30  jeroens
-' Renamed, being reworked
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -69,25 +37,7 @@ Namespace Ecosim
         Public Sub New()
 
             ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            ' Get the only core reference
-            Me.m_core = cCore.GetInstance()
-
-            Me.m_shapeguihandler = New cForcingShapeGUIHandler(Me.m_core, _
-                    Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
-                    Me.m_sketchPad, Me.m_sketchPadToolbar)
-
-        End Sub
-
-        Public Sub New(ByVal strText As String)
-
-            Me.New()
-
-            'Set the tab title
-            Me.TabText = strText
-            ' Set the windows text
-            Me.Text = strText
+            Me.InitializeComponent()
 
         End Sub
 
@@ -120,6 +70,18 @@ Namespace Ecosim
 #End Region ' Events 
 
 #Region " Overrides "
+
+        Public Overrides Property UIContext() As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As cUIContext)
+                MyBase.UIContext = value
+                Me.m_shapeguihandler = New cForcingShapeGUIHandler(Me.UIContext, _
+                    Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
+                    Me.m_sketchPad, Me.m_sketchPadToolbar)
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>

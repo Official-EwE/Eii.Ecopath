@@ -31,22 +31,18 @@ Namespace Ecosim
 
     Public Class Vulnerabilities
 
-        Private m_Core As cCore = cCore.GetInstance()
-
         Public Sub New()
-            Me.New("")
-        End Sub
-
-        Public Sub New(ByVal strText As String)
-            MyBase.New(strText, New VulnerabilitiesEwEGrid)
+            MyBase.New(New VulnerabilitiesEwEGrid)
             InitializeComponent()
         End Sub
 
-        Private Sub Vulnerabilities_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             plVulGrid.Controls.Add(Me.Grid)
         End Sub
 
-        Private Sub tsbEstimateVs_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tsbEstimateVs.Click
+        Private Sub tsbEstimateVs_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles tsbEstimateVs.Click
+            ' ToDo: fix bug 229 (http://sources.ecopath.org/trac/Ecopath/ticket/229)
             MsgBox("To be implemented...", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly)
         End Sub
 

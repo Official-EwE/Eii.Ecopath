@@ -928,7 +928,7 @@ Namespace Ecosim
         Private Sub LoadFishingRateShape()
             Dim item As ICoreInterface = Me.GetSelectedGroupOrFleet()
 
-            Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler(Me.m_core, Nothing, Me.m_sketchPad)
+            Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler(Me.UIContext, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.SelectedShape = DirectCast(item, cFishingRateShape)
             Me.m_sketchPad.Style = cStyleGuide.eStyleFlags.OK
             Me.UpdateControls()
@@ -942,7 +942,7 @@ Namespace Ecosim
             ' Mortality shapes are 0-base indexed, groups are 1-base indexed
             shape = m_core.FishMortShapeManager.Item(item.Index - 1)
 
-            Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.m_core, Nothing, Me.m_sketchPad)
+            Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.UIContext, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.SelectedShape = shape
             ' Cannot edit Fs anymore
             Me.m_sketchPad.Style = cStyleGuide.eStyleFlags.NotEditable

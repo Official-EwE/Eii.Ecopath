@@ -1,34 +1,3 @@
-'==============================================================================
-'
-' $Log: ucVulnerabiltyBlocks.vb,v $
-' Revision 1.1  2008/11/19 14:40:55  jeroens
-' Moved and renamed
-'
-' Revision 1.1  2008/09/26 07:31:54  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.12  2008/07/22 22:04:17  joeh
-' Fix bug 441 - Fit to time series number of blocks from sensitivity search not the same as set by user
-'
-' Revision 1.11  2008/05/30 19:03:22  jeroens
-' Fixed comment
-'
-' Revision 1.10  2008/03/22 16:34:52  jeroens
-' Temporarily fixed crash
-'
-' Revision 1.9  2008/02/02 02:21:37  jeroens
-' Fixed rendering inaccuracy: control now renders to clientrectangle size, no longer to window rectangle size to correctly take borders into consideration
-'
-' Revision 1.8  2008/02/01 17:01:45  joeb
-' Added Error handleing to Paint because it was pissing me off
-'
-' Revision 1.7  2007/11/11 22:59:12  jeroens
-' * Fixed potential crash in negative indices
-'
-' Revision 1.6  2007/11/11 16:54:35  jeroens
-' * Commented
-'
-'==============================================================================
 
 Option Strict On
 Imports EwECore
@@ -45,9 +14,10 @@ Namespace Ecosim
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class ucVulnerabiltyBlocks
+        Implements IUIElement
 
-        ''' <summary>The one ref to the core.</summary>
-        Private m_core As cCore = Nothing
+        Private m_uic As cUIContext = Nothing
+
         ''' <summary>Two-dim arr of integer representing vulnerability blocks layout.</summary>
         Private m_a2iVulBlocks(,) As Integer
         ''' <summary>Block colours to show.</summary>
@@ -80,12 +50,17 @@ Namespace Ecosim
         ''' <summary>
         ''' Initialize the control to a given instance of the EwE core.
         ''' </summary>
-        ''' <param name="core">The instance of the core to connect to.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Init(ByVal core As cCore)
-            Me.m_core = core
-            Me.RefreshContent()
-        End Sub
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
+                Me.RefreshContent()
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -98,7 +73,7 @@ Namespace Ecosim
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Sub RefreshContent()
-            ReDim Me.m_a2iVulBlocks(Me.m_core.nGroups, Me.m_core.nGroups)
+            ReDim Me.m_a2iVulBlocks(Me.m_uic.Core.nGroups, Me.m_uic.Core.nGroups)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -158,7 +133,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub pbxVulnerabilityBlockMatrix_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
 
-            If (Me.m_core Is Nothing) Then Return
+            If (Me.m_uic Is Nothing) Then Return
 
             Me.Capture = True
 
@@ -211,10 +186,10 @@ Namespace Ecosim
 
             Try
 
-                If (Me.m_core Is Nothing) Then Return
+                If (Me.m_uic Is Nothing) Then Return
 
                 Dim szCell As SizeF = Me.CellSize()
-                Dim ppi As cPPIManager = Me.m_core.PPInteractionManager
+                Dim ppi As cPPIManager = Me.m_uic.Core.PPInteractionManager
                 Dim iBlock As Integer = 0
 
                 ' Clear the picture box
@@ -223,8 +198,8 @@ Namespace Ecosim
                 End Using
 
                 ' Draw vulnerability blocks
-                For i As Integer = 0 To Me.m_core.nGroups
-                    For j As Integer = 0 To Me.m_core.nGroups
+                For i As Integer = 0 To Me.m_uic.Core.nGroups
+                    For j As Integer = 0 To Me.m_uic.Core.nGroups
                         If (i = 0 Or j = 0) Then
                             ' Draw row and/or column header cell
                             e.Graphics.FillRectangle(SystemBrushes.Control, i * szCell.Width, j * szCell.Height, szCell.Width, szCell.Height)
@@ -254,18 +229,18 @@ Namespace Ecosim
                 Next i
 
                 ' Draw grid lines
-                For i As Integer = 1 To m_core.nGroups
+                For i As Integer = 1 To Me.m_uic.Core.nGroups
                     e.Graphics.DrawLine(Pens.LightGray, 0, i * szCell.Height, Me.ClientRectangle.Width, i * szCell.Height) '(0, i)-(NumLiving + 1, i)
                 Next
-                For i As Integer = 1 To m_core.nLivingGroups
+                For i As Integer = 1 To Me.m_uic.Core.nLivingGroups
                     e.Graphics.DrawLine(Pens.LightGray, i * szCell.Width, 0, i * szCell.Width, Me.ClientRectangle.Height) '(i, 0)-(i, NumGroups + 1)
                 Next
 
                 ' Draw row and column labels
-                For i As Integer = 1 To m_core.nGroups
+                For i As Integer = 1 To Me.m_uic.Core.nGroups
                     e.Graphics.DrawString(CStr(i), Me.Font, SystemBrushes.ControlText, 0, i * szCell.Height)
                 Next
-                For i As Integer = 1 To m_core.nLivingGroups
+                For i As Integer = 1 To Me.m_uic.Core.nLivingGroups
                     e.Graphics.DrawString(CStr(i), Me.Font, SystemBrushes.ControlText, i * szCell.Width, 0)
                 Next
 
@@ -363,13 +338,13 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub FillBlocks(ByVal iPred As Integer, ByVal iPrey As Integer, ByVal iBlockCode As Integer)
 
-            Dim ppi As cPPIManager = Me.m_core.PPInteractionManager
+            Dim ppi As cPPIManager = Me.m_uic.Core.PPInteractionManager
 
             ' Sanity check
             If iPrey < 0 Then Return
             If iPred < 0 Then Return
-            If iPrey > Me.m_core.nGroups Then Return
-            If iPred > Me.m_core.nLivingGroups Then Return
+            If iPrey > Me.m_uic.Core.nGroups Then Return
+            If iPred > Me.m_uic.Core.nLivingGroups Then Return
 
             ' Row or col header clicked?
             If iPrey = 0 Or iPred = 0 Then
@@ -378,20 +353,20 @@ Namespace Ecosim
                     ' #Yes: Also row header clicked?
                     If iPrey = 0 Then
                         ' #Yes: fill entire grid
-                        For iPred = 1 To Me.m_core.nLivingGroups
-                            For iPrey = 1 To Me.m_core.nGroups
+                        For iPred = 1 To Me.m_uic.Core.nLivingGroups
+                            For iPrey = 1 To Me.m_uic.Core.nGroups
                                 If ppi.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
                             Next iPrey
                         Next iPred
                     Else
                         ' #No: Fill entire prey column
-                        For iPred = 1 To Me.m_core.nLivingGroups
+                        For iPred = 1 To Me.m_uic.Core.nLivingGroups
                             If ppi.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
                         Next iPred
                     End If
                 Else
                     ' #No: Fill entire predator row
-                    For iPrey = 1 To Me.m_core.nGroups
+                    For iPrey = 1 To Me.m_uic.Core.nGroups
                         If ppi.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
                     Next iPrey
                 End If
@@ -429,13 +404,13 @@ Namespace Ecosim
             ' Format tooltip
             If (ptPredPrey.X <> 0) Or (ptPredPrey.Y <> 0) Then
                 If (ptPredPrey.X = 0) Then
-                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREY, Me.m_core.EcoPathGroupInputs(ptPredPrey.Y).Name)
+                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREY, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.Y).Name)
                 ElseIf (ptPredPrey.Y = 0) Then
-                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREDATOR, Me.m_core.EcoPathGroupInputs(ptPredPrey.X).Name)
+                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREDATOR, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.X).Name)
                 Else
                     strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREDPREY, _
-                        Me.m_core.EcoPathGroupInputs(ptPredPrey.X).Name, _
-                        Me.m_core.EcoPathGroupInputs(ptPredPrey.Y).Name)
+                        Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.X).Name, _
+                        Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.Y).Name)
                 End If
             End If
 
@@ -459,7 +434,7 @@ Namespace Ecosim
         End Function
 
         Private Function CellSize() As SizeF
-            Return New SizeF(CSng(Me.ClientRectangle.Width / (m_core.nLivingGroups + 1)), CSng(Me.ClientRectangle.Height / (m_core.nGroups + 1)))
+            Return New SizeF(CSng(Me.ClientRectangle.Width / (Me.m_uic.Core.nLivingGroups + 1)), CSng(Me.ClientRectangle.Height / (Me.m_uic.Core.nGroups + 1)))
         End Function
 
 #End Region ' Internals

@@ -518,22 +518,12 @@ Public Class frmEwEGrid
     ''' <summary>
     ''' Default constructor.
     ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Sub New()
-        MyBase.New(My.Resources.HEADER_EMPTY_PANEL)
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Fancy constructor.
-    ''' </summary>
-    ''' <param name="strText">Caption and tab text for this form.</param>
-    ''' <param name="grid">The grid that this form contains.</param>
+    ''' <param name="grid">Grid to attach to this form.</param>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
-    Public Sub New(ByVal strText As String, ByVal grid As EwEGrid)
+    Public Sub New(ByVal grid As EwEGrid)
 
-        MyBase.New(strText)
+        MyBase.New()
 
         Debug.Assert(grid IsNot Nothing)
 
@@ -542,6 +532,16 @@ Public Class frmEwEGrid
         Me.Controls.Add(m_grid)
 
     End Sub
+
+    Public Overrides Property UIContext() As cUIContext
+        Get
+            Return MyBase.UIContext
+        End Get
+        Set(ByVal value As cUIContext)
+            MyBase.UIContext = value
+            Me.m_grid.UIContext = value
+        End Set
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

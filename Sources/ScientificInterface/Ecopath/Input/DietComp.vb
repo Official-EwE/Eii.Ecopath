@@ -29,19 +29,16 @@ Namespace Ecopath.Input
     Public Class DietComp
 
         Public Sub New()
-            Me.New("")
+            MyBase.New(New DietCompositionEwEGrid)
+            Me.InitializeComponent()
         End Sub
 
-        Public Sub New(ByVal strText As String)
-            MyBase.New(strText, New DietCompositionEwEGrid)
-            InitializeComponent()
-        End Sub
-
-        Private Sub DietComp_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             plDietCompGrid.Controls.Add(Me.Grid)
         End Sub
 
-        Private Sub tsSumtoOneBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsSumtoOneBtn.Click
+        Private Sub tsSumtoOneBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles tsSumtoOneBtn.Click
             cCore.GetInstance().NormalizeDietInput()
         End Sub
     End Class

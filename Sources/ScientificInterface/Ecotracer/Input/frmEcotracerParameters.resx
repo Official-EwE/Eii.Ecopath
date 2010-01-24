@@ -433,7 +433,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblSponsors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 403</value>
+    <value>12, 417</value>
   </data>
   <data name="lblSponsors.Size" type="System.Drawing.Size, System.Drawing">
     <value>791, 18</value>
@@ -457,130 +457,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblSponsors.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="GroupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="PictureBox1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox3" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox4" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 428</value>
-  </data>
-  <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>791, 81</value>
-  </data>
-  <data name="GroupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="GroupBox1.Text" xml:space="preserve">
-    <value>Brought to you by</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Name" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="TableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;PictureBox1.Name" xml:space="preserve">
-    <value>PictureBox1</value>
-  </data>
-  <data name="&gt;&gt;PictureBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;PictureBox1.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;PictureBox1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;PictureBox2.Name" xml:space="preserve">
-    <value>PictureBox2</value>
-  </data>
-  <data name="&gt;&gt;PictureBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;PictureBox2.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;PictureBox2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;PictureBox3.Name" xml:space="preserve">
-    <value>PictureBox3</value>
-  </data>
-  <data name="&gt;&gt;PictureBox3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;PictureBox3.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;PictureBox3.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;PictureBox4.Name" xml:space="preserve">
-    <value>PictureBox4</value>
-  </data>
-  <data name="&gt;&gt;PictureBox4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;PictureBox4.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;PictureBox4.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="TableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
-  </data>
-  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>785, 62</value>
-  </data>
-  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="PictureBox1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox3" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox4" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="PictureBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -589,7 +472,7 @@
     <value>3, 3</value>
   </data>
   <data name="PictureBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 56</value>
+    <value>191, 56</value>
   </data>
   <data name="PictureBox1.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
@@ -613,10 +496,10 @@
     <value>Fill</value>
   </data>
   <data name="PictureBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 3</value>
+    <value>200, 3</value>
   </data>
   <data name="PictureBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 56</value>
+    <value>191, 56</value>
   </data>
   <data name="PictureBox2.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
@@ -640,10 +523,10 @@
     <value>Fill</value>
   </data>
   <data name="PictureBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>395, 3</value>
+    <value>397, 3</value>
   </data>
   <data name="PictureBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 56</value>
+    <value>191, 56</value>
   </data>
   <data name="PictureBox3.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
@@ -667,10 +550,10 @@
     <value>Fill</value>
   </data>
   <data name="PictureBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>591, 3</value>
+    <value>594, 3</value>
   </data>
   <data name="PictureBox4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 56</value>
+    <value>194, 56</value>
   </data>
   <data name="PictureBox4.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
@@ -689,6 +572,33 @@
   </data>
   <data name="&gt;&gt;PictureBox4.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 442</value>
+  </data>
+  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>791, 62</value>
+  </data>
+  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="PictureBox1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox3" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox4" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="lblInitialization.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -724,13 +634,73 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblInitialization.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_gbInit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;rbSpace.Name" xml:space="preserve">
+    <value>rbSpace</value>
+  </data>
+  <data name="&gt;&gt;rbSpace.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbSpace.Parent" xml:space="preserve">
+    <value>m_gbInit</value>
+  </data>
+  <data name="&gt;&gt;rbSpace.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;rbSim.Name" xml:space="preserve">
+    <value>rbSim</value>
+  </data>
+  <data name="&gt;&gt;rbSim.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbSim.Parent" xml:space="preserve">
+    <value>m_gbInit</value>
+  </data>
+  <data name="&gt;&gt;rbSim.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;rbDisabled.Name" xml:space="preserve">
+    <value>rbDisabled</value>
+  </data>
+  <data name="&gt;&gt;rbDisabled.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbDisabled.Parent" xml:space="preserve">
+    <value>m_gbInit</value>
+  </data>
+  <data name="&gt;&gt;rbDisabled.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_gbInit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 311</value>
+  </data>
+  <data name="m_gbInit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>791, 93</value>
+  </data>
+  <data name="m_gbInit.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_gbInit.Name" xml:space="preserve">
+    <value>m_gbInit</value>
+  </data>
+  <data name="&gt;&gt;m_gbInit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gbInit.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gbInit.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="rbSpace.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="rbSpace.Location" type="System.Drawing.Point, System.Drawing">
-    <value>433, 32</value>
+    <value>26, 65</value>
   </data>
   <data name="rbSpace.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 17</value>
@@ -748,7 +718,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbSpace.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
+    <value>m_gbInit</value>
   </data>
   <data name="&gt;&gt;rbSpace.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -757,7 +727,7 @@
     <value>True</value>
   </data>
   <data name="rbSim.Location" type="System.Drawing.Point, System.Drawing">
-    <value>202, 32</value>
+    <value>26, 42</value>
   </data>
   <data name="rbSim.Size" type="System.Drawing.Size, System.Drawing">
     <value>206, 17</value>
@@ -775,7 +745,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbSim.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
+    <value>m_gbInit</value>
   </data>
   <data name="&gt;&gt;rbSim.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -784,7 +754,7 @@
     <value>True</value>
   </data>
   <data name="rbDisabled.Location" type="System.Drawing.Point, System.Drawing">
-    <value>26, 32</value>
+    <value>26, 19</value>
   </data>
   <data name="rbDisabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>156, 17</value>
@@ -802,31 +772,10 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbDisabled.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
+    <value>m_gbInit</value>
   </data>
   <data name="&gt;&gt;rbDisabled.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="GroupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 311</value>
-  </data>
-  <data name="GroupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>791, 77</value>
-  </data>
-  <data name="GroupBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;GroupBox2.Name" xml:space="preserve">
-    <value>GroupBox2</value>
-  </data>
-  <data name="&gt;&gt;GroupBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;GroupBox2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;GroupBox2.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -835,7 +784,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>813, 585</value>
+    <value>813, 519</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>frmEcotracerParameters</value>
@@ -844,6 +796,6 @@
     <value>frmEcotracerParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.EwEForm, EwE6, Version=6.0.3.11, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.123, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

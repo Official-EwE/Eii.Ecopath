@@ -1,50 +1,3 @@
-'==============================================================================
-'
-' $Log: frmFitToTimeSeries.vb,v $
-' Revision 1.13  2009/05/11 01:50:56  jeroens
-' Renamed command classes
-'
-' Revision 1.12  2009/04/24 16:04:19  jeroens
-' Anomaly search added year check
-'
-' Revision 1.11  2009/04/24 15:47:36  jeroens
-' Anomaly search will not run if no FF selected
-'
-' Revision 1.10  2009/04/23 23:06:16  joeb
-' Fix bug when updating from AnomalySearch() shape was null
-'
-' Revision 1.9  2009/03/23 20:19:58  jeroens
-' Fixed InitializeComponent crash, ugh
-'
-' Revision 1.8  2009/03/20 17:55:40  jeroens
-' Shape controls are multiple selection
-'
-' Revision 1.7  2009/03/02 01:52:35  jeroens
-' Properly named handlers
-'
-' Revision 1.6  2009/02/05 17:48:38  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.5  2009/01/16 18:30:41  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.4  2008/12/15 16:01:38  jeroens
-' no message
-'
-' Revision 1.3  2008/11/27 20:56:11  sherman
-' Switched MaxFishing Mortality to Search routines.
-'
-' Revision 1.2  2008/11/26 23:19:52  jeroens
-' Weight! Weight, dude
-'
-' Revision 1.1  2008/11/19 14:40:55  jeroens
-' Moved and renamed
-'
-' Revision 1.1  2008/09/26 07:31:51  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 Option Explicit On
 Option Strict On
@@ -63,8 +16,6 @@ Namespace Ecosim
     Public Class frmFitToTimeSeries
 
 #Region " Private variables "
-
-        Private m_core As EwECore.cCore = EwECore.cCore.GetInstance
 
         Private m_F2TSManager As cF2TSManager = Nothing
         Private m_shapeHandler As AppliedFFGUIHandler = Nothing
@@ -89,12 +40,15 @@ Namespace Ecosim
             ''' <summary>
             ''' 
             ''' </summary>
-            ''' <param name="core"></param>
+            ''' <param name="uic"></param>
             ''' <param name="stb"></param>
             ''' <param name="sp"></param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal core As cCore, ByVal stb As ucShapeToolbox, ByVal sp As ucSketchPad)
-                MyBase.New(core, stb, Nothing, sp, Nothing)
+            Public Sub New(ByVal uic As cUIContext, _
+                           ByVal stb As ucShapeToolbox, _
+                           ByVal sp As ucSketchPad)
+
+                MyBase.New(uic, stb, Nothing, sp, Nothing)
             End Sub
 
             ''' ---------------------------------------------------------------
@@ -124,7 +78,7 @@ Namespace Ecosim
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
             Protected Overrides Function IncludeShape(ByVal shape As EwECore.cShapeData) As Boolean
-                Dim ppi As cPPIManager = Me.m_core.PPInteractionManager
+                Dim ppi As cPPIManager = Me.Core.PPInteractionManager
                 If Not (TypeOf shape Is cForcingFunction) Then Return False
                 If (ppi Is Nothing) Then Return False
                 Return ppi.IsApplied(DirectCast(shape, cForcingFunction))
@@ -148,7 +102,7 @@ Namespace Ecosim
 
             MyBase.OnLoad(e)
 
-            Me.m_F2TSManager = Me.m_core.EcosimFitToTimeSeries
+            Me.m_F2TSManager = Me.Core.EcosimFitToTimeSeries
             Me.m_cbAnomalySearch.Checked = Me.m_F2TSManager.AnomalySearch
             Me.m_cbVulnerabilitySearch.Checked = Me.m_F2TSManager.VulnerabilitySearch
             Me.m_cbFishingMortalityPenalty.Checked = Me.m_F2TSManager.ObjectiveParameters.FishingMortalityPenalty
@@ -161,17 +115,17 @@ Namespace Ecosim
             Me.m_tbxVariance.Text = CStr(Me.m_F2TSManager.VulnerabilityVariance)
             Me.m_tbVariancePrimaryProd.Text = CStr(Me.m_F2TSManager.PPVariance)
             Me.m_vulnerabilityBlockCodeSelector.SelectedBlockNum = 1
-            Me.m_vulnerabilityBlockMatrix.Init(m_core)
+            Me.m_vulnerabilityBlockMatrix.UIContext = Me.UIContext
             Me.m_vulnerabilityBlockMatrix.BlockColors = Me.m_vulnerabilityBlockCodeSelector.BlockColors
             Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = Me.m_vulnerabilityBlockCodeSelector.SelectedBlockNum
 
-            Me.m_gridGroupMaxFishingMortality = New gridFitToTimeSeriesGroup(Me.m_core.FishingPolicyManager)
+            Me.m_gridGroupMaxFishingMortality = New gridFitToTimeSeriesGroup(Me.Core.FishingPolicyManager)
 
             Me.m_plGrid.Controls.Clear()
             Me.m_plGrid.Controls.Add(m_gridGroupMaxFishingMortality)
             Me.m_gridGroupMaxFishingMortality.Dock = DockStyle.Fill
 
-            Me.m_shapeHandler = New AppliedFFGUIHandler(Me.m_core, Me.m_shapeToolBox, Me.m_sketchPad)
+            Me.m_shapeHandler = New AppliedFFGUIHandler(Me.UIContext, Me.m_shapeToolBox, Me.m_sketchPad)
 
             Me.m_cmdTSWeights = cCommandHandler.GetInstance().GetCommand("WeightTimeSeries")
             If (Me.m_cmdTSWeights IsNot Nothing) Then
@@ -235,7 +189,7 @@ Namespace Ecosim
                     End If
 
                 Case eCoreComponentType.TimeSeries
-                    Me.m_sketchPad.NumTSYears = Me.m_core.nTimeSeriesYears
+                    Me.m_sketchPad.NumTSYears = Me.Core.nTimeSeriesYears
 
                 Case eCoreComponentType.ShapesManager
                     ' Refresh the Anomaly search content
@@ -268,14 +222,14 @@ Namespace Ecosim
             Dim shapeSelected As cShapeData = Nothing
 
             ' Try to make sure TS are loaded
-            If (Me.m_core.nTimeSeriesEnabled = 0) And (Me.m_cmdTSWeights IsNot Nothing) Then
+            If (Me.Core.nTimeSeriesEnabled = 0) And (Me.m_cmdTSWeights IsNot Nothing) Then
                 Me.m_cmdTSWeights.Invoke()
             End If
 
-            If (Me.m_core.nTimeSeriesEnabled = 0) Then Return
+            If (Me.Core.nTimeSeriesEnabled = 0) Then Return
 
             ' Update TS
-            Me.m_core.UpdateTimeSeries()
+            Me.Core.UpdateTimeSeries()
 
             shapeSelected = Me.m_shapeHandler.SelectedShape
             If shapeSelected Is Nothing Then
@@ -330,7 +284,7 @@ Namespace Ecosim
 
             If (m_dlgSensOfSS IsNot Nothing) Then Return
 
-            Me.m_dlgSensOfSS = New dlgSensitivityOfSStoV(Me.m_core, Me.m_F2TSManager)
+            Me.m_dlgSensOfSS = New dlgSensitivityOfSStoV(Me.UIContext, Me.m_F2TSManager)
             Me.m_dlgSensOfSS.NumBlocks = Me.m_vulnerabilityBlockCodeSelector.nBlockCodes
 
             m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
@@ -344,8 +298,8 @@ Namespace Ecosim
                 Me.m_vulnerabilityBlockCodeSelector.nBlockCodes = Me.m_dlgSensOfSS.NumBlocks
 
                 ' Transfer vulnerabiltiy blocks
-                For iPred As Integer = 1 To Me.m_core.nGroups
-                    For iPrey As Integer = 1 To Me.m_core.nGroups
+                For iPred As Integer = 1 To Me.Core.nGroups
+                    For iPrey As Integer = 1 To Me.Core.nGroups
                         Me.m_vulnerabilityBlockMatrix.Vulblocks(iPred, iPrey) = Me.m_dlgSensOfSS.VulnerabilityBlocks(iPred, iPrey)
                     Next iPrey
                 Next iPred
@@ -394,7 +348,7 @@ Namespace Ecosim
         Private Sub m_shapeToolBox_OnSelectionChanged(ByVal ashapes As EwECore.cShapeData()) _
             Handles m_shapeToolBox.OnSelectionChanged
 
-            Dim iMax As Integer = Me.m_core.nEcosimYears
+            Dim iMax As Integer = Me.Core.nEcosimYears
 
             ' Initialize Component will cause this event to be triggered when the form is
             ' not up and running yet. Here's a sanity check:
@@ -492,7 +446,7 @@ Namespace Ecosim
 
                     ' Reload shape
                     If Me.m_F2TSManager.AnomalySearch Then
-                        Me.m_core.ForcingShapeManager.Load()
+                        Me.Core.ForcingShapeManager.Load()
                         ' Ugh, there must be a better way to do this
                         For Each shape As cShapeData In Me.m_shapeHandler.SelectedShapes
                             shape.Update()
@@ -558,6 +512,12 @@ Namespace Ecosim
 
 #Region " Internal implementation "
 
+        Private ReadOnly Property Core() As cCore
+            Get
+                Return Me.UIContext.Core
+            End Get
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Update state of main controls based on user selections.
@@ -568,7 +528,7 @@ Namespace Ecosim
             If (Me.m_F2TSManager Is Nothing) Then Return
             If (Me.m_sketchPad Is Nothing) Then Return
 
-            Dim bInputsValid As Boolean = Me.m_core.HasAppliedTimeSeries()
+            Dim bInputsValid As Boolean = Me.Core.HasAppliedTimeSeries()
             Dim bIsRunning As Boolean = Me.m_F2TSManager.IsRunning()
 
             If Me.m_cbAnomalySearch.Checked Then

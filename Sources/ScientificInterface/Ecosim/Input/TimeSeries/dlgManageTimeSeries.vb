@@ -43,7 +43,7 @@ Public Class dlgManageTimeSeries
         Delete
     End Enum
 
-    Private m_core As cCore = cCore.GetInstance()
+    Private m_uic As cUIContext = Nothing
     Private m_mode As eModeType = eModeType.Load
     Private m_strDataset As String = ""
     Private m_bInitialized As Boolean = False
@@ -54,9 +54,11 @@ Public Class dlgManageTimeSeries
     Private m_strImportFileName As String = String.Empty
     Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
 
-    Public Sub New(ByVal mode As eModeType)
+    Public Sub New(ByVal uic As cUIContext, ByVal mode As eModeType)
 
         Me.InitializeComponent()
+
+        Me.m_uic = uic
 
         ' -- Enable --
         ' Prepare grid
@@ -68,15 +70,15 @@ Public Class dlgManageTimeSeries
 
         ' -- IMPORT --
         'Me.m_strImportDecimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator
-        Me.m_tbImportAuthor.Text = Me.m_core.EwEModel.Author
-        Me.m_tbImportContact.Text = Me.m_core.EwEModel.Contact
-        Me.m_tsh = New cTimeSeriesShapeGUIHandler(Me.m_core, Nothing, Nothing, Me.m_spTimeSeriesPreview, Nothing)
+        Me.m_tbImportAuthor.Text = Me.m_uic.Core.EwEModel.Author
+        Me.m_tbImportContact.Text = Me.m_uic.Core.EwEModel.Contact
+        Me.m_tsh = New cTimeSeriesShapeGUIHandler(Me.m_uic, Nothing, Nothing, Me.m_spTimeSeriesPreview, Nothing)
 
         Me.FillImportDatasetCombo()
         Me.ReloadTimeSeries()
 
         ' Validate mode
-        If mode = eModeType.Weight And Not Me.m_core.HasTimeSeries Then
+        If (mode = eModeType.Weight) And (Not Me.m_uic.Core.HasTimeSeries) Then
             mode = eModeType.Load
         End If
 
@@ -348,15 +350,15 @@ Public Class dlgManageTimeSeries
         Dim ds As cTimeSeriesDataset = Nothing
         Dim item As ListViewItem = Nothing
         Dim strLoaded As String = ""
-        Dim aitems(Me.m_core.nTimeSeriesDatasets - 1) As ListViewItem
+        Dim aitems(Me.m_uic.Core.nTimeSeriesDatasets - 1) As ListViewItem
         Me.m_lvLoadDatasets.Items.Clear()
 
         cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
 
         Me.m_lvLoadDatasets.Items.Add(My.Resources.GENERIC_VALUE_NONE)
-        For iDS As Integer = 1 To Me.m_core.nTimeSeriesDatasets
+        For iDS As Integer = 1 To Me.m_uic.Core.nTimeSeriesDatasets
             ' Get dataset
-            ds = Me.m_core.TimeSeriesDataset(iDS)
+            ds = Me.m_uic.Core.TimeSeriesDataset(iDS)
             If ds.IsLoaded Then
                 strLoaded = My.Resources.HEADER_YES
             Else
@@ -402,9 +404,9 @@ Public Class dlgManageTimeSeries
         cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_LOADING, TriState.True)
         ds = Me.GetLoadSelectedDataset()
         If (ds IsNot Nothing) Then
-            Me.m_core.LoadTimeSeries(ds.Index)
+            Me.m_uic.Core.LoadTimeSeries(ds.Index)
         Else
-            Me.m_core.LoadTimeSeries(0)
+            Me.m_uic.Core.LoadTimeSeries(0)
         End If
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
@@ -637,13 +639,13 @@ Public Class dlgManageTimeSeries
             cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
             Try
                 ' For each dataset
-                For iDS As Integer = 1 To Me.m_core.nTimeSeriesDatasets
+                For iDS As Integer = 1 To Me.m_uic.Core.nTimeSeriesDatasets
                     ' Get dataset #
-                    Dim tsDS As cTimeSeriesDataset = Me.m_core.TimeSeriesDataset(iDS)
+                    Dim tsDS As cTimeSeriesDataset = Me.m_uic.Core.TimeSeriesDataset(iDS)
                     ' Is this the dataset that we just imported?
                     If (String.Compare(tsDS.Name, Me.DatasetName, True) = 0) Then
                         ' #Yes: Load and apply the dataset
-                        Me.m_core.LoadTimeSeries(iDS, True)
+                        Me.m_uic.Core.LoadTimeSeries(iDS, True)
                         ' Done!
                         Exit For
                     End If
@@ -668,14 +670,14 @@ Public Class dlgManageTimeSeries
         Dim ds As cTimeSeriesDataset = Nothing
         Dim item As ListViewItem = Nothing
         Dim strLoaded As String = ""
-        Dim aitems(Me.m_core.nTimeSeriesDatasets - 1) As ListViewItem
+        Dim aitems(Me.m_uic.Core.nTimeSeriesDatasets - 1) As ListViewItem
         Me.m_lvDeleteDatasets.Items.Clear()
 
         cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
 
-        For iDS As Integer = 1 To Me.m_core.nTimeSeriesDatasets
+        For iDS As Integer = 1 To Me.m_uic.Core.nTimeSeriesDatasets
             ' Get dataset
-            ds = Me.m_core.TimeSeriesDataset(iDS)
+            ds = Me.m_uic.Core.TimeSeriesDataset(iDS)
             If ds.IsLoaded Then
                 strLoaded = My.Resources.HEADER_YES
             Else
@@ -706,13 +708,13 @@ Public Class dlgManageTimeSeries
         If MsgBox(My.Resources.ECOSIM_PROMPT_DELETE_TSDATASETS, MsgBoxStyle.Question Or MsgBoxStyle.YesNo) <> MsgBoxResult.Yes Then Return False
 
         ' Save any changes
-        If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
+        If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
         cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_LOADING, TriState.True)
 
         Try
             For Each ds As cTimeSeriesDataset In Me.GetDeleteSelectedDatasets
                 If ds IsNot Nothing Then
-                    bSucces = bSucces And Me.m_core.RemoveTimeSeriesDataset(ds)
+                    bSucces = bSucces And Me.m_uic.Core.RemoveTimeSeriesDataset(ds)
                 End If
             Next
         Catch ex As Exception
@@ -720,7 +722,7 @@ Public Class dlgManageTimeSeries
         End Try
 
         ' TS dataset delete will reload Ecopath. It's a bit too brutal but hey, it will properly re-initialize TS
-        Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSucces)
+        Me.m_uic.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSucces)
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         Return bSucces

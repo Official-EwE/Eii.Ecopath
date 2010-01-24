@@ -36,25 +36,23 @@ Namespace Ecotracer
             Me.lbScenarioName = New System.Windows.Forms.Label
             Me.lblScenario = New System.Windows.Forms.Label
             Me.lblSponsors = New System.Windows.Forms.Label
-            Me.GroupBox1 = New System.Windows.Forms.GroupBox
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.PictureBox1 = New System.Windows.Forms.PictureBox
             Me.PictureBox2 = New System.Windows.Forms.PictureBox
             Me.PictureBox3 = New System.Windows.Forms.PictureBox
             Me.PictureBox4 = New System.Windows.Forms.PictureBox
             Me.lblInitialization = New System.Windows.Forms.Label
-            Me.GroupBox2 = New System.Windows.Forms.GroupBox
+            Me.m_gbInit = New System.Windows.Forms.GroupBox
             Me.rbSpace = New System.Windows.Forms.RadioButton
             Me.rbSim = New System.Windows.Forms.RadioButton
             Me.rbDisabled = New System.Windows.Forms.RadioButton
             Me.gbDetails.SuspendLayout()
-            Me.GroupBox1.SuspendLayout()
             Me.TableLayoutPanel1.SuspendLayout()
             CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.GroupBox2.SuspendLayout()
+            Me.m_gbInit.SuspendLayout()
             Me.SuspendLayout()
             '
             'gbDetails
@@ -125,17 +123,10 @@ Namespace Ecotracer
             Me.lblSponsors.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.lblSponsors.Name = "lblSponsors"
             '
-            'GroupBox1
-            '
-            resources.ApplyResources(Me.GroupBox1, "GroupBox1")
-            Me.GroupBox1.Controls.Add(Me.TableLayoutPanel1)
-            Me.GroupBox1.Name = "GroupBox1"
-            Me.GroupBox1.TabStop = False
-            '
             'TableLayoutPanel1
             '
-            Me.TableLayoutPanel1.BackColor = System.Drawing.Color.White
             resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+            Me.TableLayoutPanel1.BackColor = System.Drawing.Color.White
             Me.TableLayoutPanel1.Controls.Add(Me.PictureBox1, 0, 0)
             Me.TableLayoutPanel1.Controls.Add(Me.PictureBox2, 1, 0)
             Me.TableLayoutPanel1.Controls.Add(Me.PictureBox3, 2, 0)
@@ -177,14 +168,14 @@ Namespace Ecotracer
             Me.lblInitialization.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.lblInitialization.Name = "lblInitialization"
             '
-            'GroupBox2
+            'm_gbInit
             '
-            Me.GroupBox2.Controls.Add(Me.rbSpace)
-            Me.GroupBox2.Controls.Add(Me.rbSim)
-            Me.GroupBox2.Controls.Add(Me.rbDisabled)
-            resources.ApplyResources(Me.GroupBox2, "GroupBox2")
-            Me.GroupBox2.Name = "GroupBox2"
-            Me.GroupBox2.TabStop = False
+            resources.ApplyResources(Me.m_gbInit, "m_gbInit")
+            Me.m_gbInit.Controls.Add(Me.rbSpace)
+            Me.m_gbInit.Controls.Add(Me.rbSim)
+            Me.m_gbInit.Controls.Add(Me.rbDisabled)
+            Me.m_gbInit.Name = "m_gbInit"
+            Me.m_gbInit.TabStop = False
             '
             'rbSpace
             '
@@ -213,10 +204,10 @@ Namespace Ecotracer
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ControlBox = False
-            Me.Controls.Add(Me.GroupBox2)
+            Me.Controls.Add(Me.TableLayoutPanel1)
+            Me.Controls.Add(Me.m_gbInit)
             Me.Controls.Add(Me.lblInitialization)
             Me.Controls.Add(Me.lblSponsors)
-            Me.Controls.Add(Me.GroupBox1)
             Me.Controls.Add(Me.gbDetails)
             Me.Controls.Add(Me.lblScenario)
             Me.MaximizeBox = False
@@ -226,14 +217,13 @@ Namespace Ecotracer
             Me.ShowInTaskbar = False
             Me.gbDetails.ResumeLayout(False)
             Me.gbDetails.PerformLayout()
-            Me.GroupBox1.ResumeLayout(False)
             Me.TableLayoutPanel1.ResumeLayout(False)
             CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.GroupBox2.ResumeLayout(False)
-            Me.GroupBox2.PerformLayout()
+            Me.m_gbInit.ResumeLayout(False)
+            Me.m_gbInit.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -248,17 +238,16 @@ Namespace Ecotracer
         Friend WithEvents lbScenarioName As System.Windows.Forms.Label
         Friend WithEvents lblScenario As System.Windows.Forms.Label
         Friend WithEvents lblSponsors As System.Windows.Forms.Label
-        Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
         Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
         Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
         Friend WithEvents PictureBox4 As System.Windows.Forms.PictureBox
         Friend WithEvents lblInitialization As System.Windows.Forms.Label
-        Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
         Friend WithEvents rbDisabled As System.Windows.Forms.RadioButton
         Friend WithEvents rbSpace As System.Windows.Forms.RadioButton
         Friend WithEvents rbSim As System.Windows.Forms.RadioButton
+        Private WithEvents m_gbInit As System.Windows.Forms.GroupBox
     End Class
 
 End Namespace

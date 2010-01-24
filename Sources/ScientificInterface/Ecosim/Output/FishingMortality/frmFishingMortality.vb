@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: frmFishingMortality.vb,v $
-' Revision 1.1  2009/04/20 14:04:45  jeroens
-' Moved
-'
-' Revision 1.6  2009/04/19 13:40:40  jeroens
-' Removed sketchpad toolbar
-'
-' Revision 1.5  2009/03/02 01:52:36  jeroens
-' Properly named handlers
-'
-' Revision 1.4  2009/02/05 17:48:36  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.3  2009/01/16 18:30:41  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 16:03:01  jeroens
-' Shape controls moved to ScIntShared
-'
-' Revision 1.1  2008/09/26 07:31:36  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -72,7 +46,6 @@ Namespace Ecosim
 
 #Region " Private variables "
 
-        Private m_Core As cCore = Nothing
         Private m_handler As cFishingMortalityShapeGUIHandler = Nothing
 
 #End Region ' Private variables
@@ -80,27 +53,7 @@ Namespace Ecosim
 #Region " Constructors "
 
         Public Sub New()
-
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            ' Get the only core reference
-            m_Core = cCore.GetInstance()
-
-            Me.m_handler = New cFishingMortalityShapeGUIHandler(Me.m_Core, _
-                    Me.m_shapeToolBox, Me.m_sketchPad, _
-                    Nothing, Me.m_sketchPadToolbar)
-
-        End Sub
-
-        Public Sub New(ByVal text As String)
-
-            Me.New()
-            'Set the tab title
-            Me.TabText = text
-            ' Set the windows text
-            Me.Text = text
-
+            Me.InitializeComponent()
         End Sub
 
 #End Region ' Constructors
@@ -118,6 +71,18 @@ Namespace Ecosim
 #End Region ' Private event handlers
 
 #Region " Internal implementation "
+
+        Public Overrides Property UIContext() As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As cUIContext)
+                MyBase.UIContext = value
+                Me.m_handler = New cFishingMortalityShapeGUIHandler(Me.UIContext, _
+                    Me.m_shapeToolBox, Me.m_sketchPad, _
+                    Nothing, Me.m_sketchPadToolbar)
+            End Set
+        End Property
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             Select Case msg.Source

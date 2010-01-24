@@ -35,14 +35,16 @@ Imports Microsoft.VisualBasic
 ''' </summary>
 Public Class AppLauncher
     Implements IApplicationStatusDispatcher
+    Implements IUIElement
 
 #Region " Variables "
 
-    Private m_core As cCore = Nothing
+    Private m_uic As cUIContext = Nothing
+
     Private m_propertyManager As cPropertyManager = Nothing
     Private m_pluginManager As cPluginManager = Nothing
     Private m_pluginMenuHandler As cPluginMenuHandler = Nothing
-    Private m_coreController As EwECoreController = Nothing
+    Private m_coreController As cCoreController = Nothing
     Private m_FormStateHelper As cEwEFormStateHelper = Nothing
 
     Private m_strLastSelectedPath As String = ""
@@ -155,11 +157,43 @@ Public Class AppLauncher
 
 #End Region ' Constructors
 
+#Region " IUIElement implementation "
+
+    Public Property UIContext() As cUIContext _
+        Implements IUIElement.UIContext
+        Get
+            Return Me.m_uic
+        End Get
+        Private Set(ByVal value As cUIContext)
+            Me.m_uic = value
+        End Set
+    End Property
+
+    Public ReadOnly Property Core() As cCore
+        Get
+            Return Me.m_uic.Core
+        End Get
+    End Property
+
+    Public ReadOnly Property CoreController() As cCoreController
+        Get
+            Return Me.m_coreController
+        End Get
+    End Property
+
+    Public ReadOnly Property StyleGuide() As cStyleGuide
+        Get
+            Return Me.m_uic.StyleGuide
+        End Get
+    End Property
+
+#End Region ' IUIElement implementation
+
 #Region " Properties "
 
     Public ReadOnly Property SelectedFileName(Optional ByVal bFullPath As Boolean = True) As String
         Get
-            Dim ds As IEwEDataSource = Me.m_core.DataSource
+            Dim ds As IEwEDataSource = Me.Core.DataSource
             If Object.ReferenceEquals(ds, Nothing) Then
                 Return ""
             Else
@@ -183,7 +217,6 @@ Public Class AppLauncher
             Return Me.m_SyncObj
         End Get
     End Property
-
 
 #End Region ' Properties
 
@@ -210,7 +243,7 @@ Public Class AppLauncher
         End If
 
         Dim msg As New cMessage(strMsg, eMessageType.Any, component, importance)
-        Me.m_core.Messages.SendMessage(msg)
+        Me.Core.Messages.SendMessage(msg)
 
     End Sub
 
@@ -243,7 +276,7 @@ Public Class AppLauncher
         End If
 
         Dim fmsg As New cFeedbackMessage(strMsg, component, importance, replystyle, eDataTypes.NotSet, defaultreply)
-        Me.m_core.Messages.SendMessage(fmsg)
+        Me.Core.Messages.SendMessage(fmsg)
         Return fmsg.Reply
 
     End Function
@@ -290,7 +323,7 @@ Public Class AppLauncher
                                                      eMessageImportance.Warning, _
                                                      cFeedbackMessage.eReplyStyle.YES_NO)
 
-                    If Me.m_core.Messages.SendMessage(fmsg) Then
+                    If Me.Core.Messages.SendMessage(fmsg) Then
                         If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
                             Me.RemoveRecentFilesSetting(strFileName)
                         End If
@@ -303,7 +336,7 @@ Public Class AppLauncher
                                             eMessageType.Any, _
                                             eCoreComponentType.DataSource, _
                                             eMessageImportance.Warning)
-                    Me.m_core.Messages.SendMessage(msg)
+                    Me.Core.Messages.SendMessage(msg)
 
                 Case eLoadSourceType.API
                     ' Do not provide user feedback in response to an API call
@@ -341,7 +374,7 @@ Public Class AppLauncher
                                                      eCoreComponentType.DataSource, _
                                                      eMessageImportance.Critical, _
                                                      cFeedbackMessage.eReplyStyle.YES_NO)
-                    If Me.m_core.Messages.SendMessage(fmsg) Then
+                    If Me.Core.Messages.SendMessage(fmsg) Then
                         If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
                             Me.RemoveRecentFilesSetting(strFileName)
                         End If
@@ -352,7 +385,7 @@ Public Class AppLauncher
                                             eMessageType.Any, _
                                             eCoreComponentType.DataSource, _
                                             eMessageImportance.Critical)
-                    Me.m_core.Messages.SendMessage(msg)
+                    Me.Core.Messages.SendMessage(msg)
 
                 Case eLoadSourceType.API
                     ' Ok then
@@ -365,13 +398,13 @@ Public Class AppLauncher
         Me.AddRecentFilesSetting(strFileName)
 
         ' Open the datasource
-        atResult = ds.Open(strFileName, m_core)
+        atResult = ds.Open(strFileName, Me.Core)
 
         ' Ok, now let's see if the core can work with this
-        If m_core.LoadModel(ds) Then
+        If Me.Core.LoadModel(ds) Then
 
             ' Set core output path
-            Me.m_core.OutputPath = Path.GetDirectoryName(strFileName)
+            Me.Core.OutputPath = Path.GetDirectoryName(strFileName)
             Dim strContentLayout As String = My.Settings.ContentLayoutSaveDirectory
 
             ' Is the directory a valid path? 
@@ -430,7 +463,7 @@ Public Class AppLauncher
     ''' ---------------------------------------------------------------------------
     Public Function SaveEcopathModelAs(ByVal strFileName As String) As Boolean
 
-        If (Me.m_core.Save(strFileName)) Then
+        If (Me.Core.Save(strFileName)) Then
             Me.AddRecentFilesSetting(strFileName)
             Me.UpdateModelControls()
             Return True
@@ -522,7 +555,7 @@ Public Class AppLauncher
 
         End Select
 
-        If (msg IsNot Nothing) Then Me.m_core.Messages.SendMessage(msg)
+        If (msg IsNot Nothing) Then Me.Core.Messages.SendMessage(msg)
 
         Return db
 
@@ -651,7 +684,7 @@ Public Class AppLauncher
         Me.InitEventHandlers()
         Me.InitHelp()
 
-        AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
         Me.InitDockPanelPositions()
         'Show start page
@@ -660,9 +693,9 @@ Public Class AppLauncher
         ' Set app caption
         Me.Text = Me.GetApplicationCaption()
         ' Start controlling the status strip
-        Me.m_ssMain.Connect(Me.m_core)
+        Me.m_ssMain.Connect(Me.Core)
         ' Start controlling forms
-        Me.m_FormStateHelper = New cEwEFormStateHelper(Me.m_core.StateMonitor, Me.m_DockPanel)
+        Me.m_FormStateHelper = New cEwEFormStateHelper(Me.Core.StateMonitor, Me.m_DockPanel)
 
         ' Load plugins once GUI has been created.
         Me.LoadPlugins()
@@ -682,7 +715,7 @@ Public Class AppLauncher
     Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
 
         ' Cancel application shut down if the core does not terminate succesfully.
-        e.Cancel = Not Me.m_core.CloseModel()
+        e.Cancel = Not Me.Core.CloseModel()
 
         ' The core does not terminate sucessfully
         If e.Cancel = True Then Return
@@ -694,7 +727,7 @@ Public Class AppLauncher
         Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
 
-        RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
         MyBase.OnFormClosing(e)
 
@@ -957,7 +990,7 @@ Public Class AppLauncher
 
         m_DeserializeDockContent = New DeserializeDockContent(AddressOf GetContentFromPersistentString)
         ' Init panels
-        m_NavPanel = New NavigationPanel(m_core, Me.m_pluginManager)
+        m_NavPanel = New NavigationPanel(Me.Core, Me.m_pluginManager)
         m_StatusPanel = New StatusPanel()
         m_RemarkPanel = New RemarkPanel()
         m_StartPage = New WebBrowserDC()
@@ -980,11 +1013,10 @@ Public Class AppLauncher
 
     Private Sub InitCoreParams()
 
-        ' Get one and only core
-        Me.m_core = cCore.GetInstance()
+        Me.UIContext = New cUIContext(cCore.GetInstance(), cStyleGuide.GetInstance())
 
         ' Config state monitor
-        Me.m_core.StateMonitor.SyncObject = Me
+        Me.Core.StateMonitor.SyncObject = Me
 
         ' Get one and only property manager AFTER the core has been created.
         Me.m_propertyManager = cPropertyManager.GetInstance()
@@ -992,16 +1024,16 @@ Public Class AppLauncher
         ' Create plugin manager for this GUI
         Me.m_pluginManager = New cPluginManager()
         ' Distribute plugin manager
-        Me.m_core.PluginManager = Me.m_pluginManager
-        Me.m_pluginManager.Core = Me.m_core
+        Me.Core.PluginManager = Me.m_pluginManager
+        Me.m_pluginManager.Core = Me.Core
         ' Create plugin menu handler to position plugin menu items in the main menu from this form
         Me.m_pluginMenuHandler = New cPluginMenuHandler(Me.MainMenuStrip, Me.m_pluginManager)
 
         ' Initialize core controller
-        Me.m_coreController = New EwECoreController(Me.m_core.StateMonitor, Me.m_core.StateManager)
+        Me.m_coreController = New cCoreController(Me.Core.StateMonitor, Me.Core.StateManager)
 
         ' Initialize style guide updater
-        Me.m_styleguideupdater = New StyleGuideUpdater(Me.m_core, cStyleGuide.GetInstance())
+        Me.m_styleguideupdater = New StyleGuideUpdater(Me.Core, cStyleGuide.GetInstance())
         Me.m_styleguideupdater.Load()
 
     End Sub
@@ -1058,7 +1090,7 @@ Public Class AppLauncher
                 ' Has a message to send?
                 If msg IsNot Nothing Then
                     ' #Yes: Send message
-                    Me.m_core.Messages.SendMessage(msg)
+                    Me.Core.Messages.SendMessage(msg)
                     ' Feedback required?
                     If TypeOf (msg) Is cFeedbackMessage Then
                         ' #Yes: if replied with 'yes'
@@ -1184,6 +1216,11 @@ Public Class AppLauncher
         Try
             classObject = Activator.CreateInstance(t)
 
+            If (TypeOf (classObject) Is IUIElement) Then
+                ' Configure new object with UI context
+                DirectCast(classObject, IUIElement).UIContext = Me.UIContext
+            End If
+
             If TypeOf classObject Is DockContent Then
                 ' Is dock content
                 Dim cnt As DockContent = DirectCast(classObject, DockContent)
@@ -1192,7 +1229,7 @@ Public Class AppLauncher
                 frmNew = cnt
             ElseIf TypeOf classObject Is EwEGrid Then
                 ' Is a grid
-                Dim cnt As DockContent = New frmEwEGrid(strText, DirectCast(classObject, EwEGrid))
+                Dim cnt As DockContent = New frmEwEGrid(DirectCast(classObject, EwEGrid))
                 cnt.Text = strText
                 cnt.TabText = strText
                 frmNew = cnt
@@ -1237,7 +1274,7 @@ Public Class AppLauncher
         If Not String.IsNullOrEmpty(Me.SelectedFileName) Then
 
             ' Not allowed to terminate core?
-            If (Not Me.m_core.CloseModel()) Then
+            If (Not Me.Core.CloseModel()) Then
                 ' #Not allowed: abort
                 Return False
             End If
@@ -1268,7 +1305,7 @@ Public Class AppLauncher
 
     Private Function CompactModel() As Boolean
 
-        Dim ds As IEwEDataSource = Me.m_core.DataSource
+        Dim ds As IEwEDataSource = Me.Core.DataSource
         Dim bSucces As Boolean = False
         Dim strFileName As String = Me.SelectedFileName()
 
@@ -1302,11 +1339,11 @@ Public Class AppLauncher
         Me.m_tsbEcospace.DropDownItems.Clear()
 
         'Load Ecosim scenarios.
-        If Me.m_core.StateMonitor.HasEcopathLoaded() Then
-            If Me.m_core.EcosimScenarioCount > 0 Then
-                For i As Integer = 1 To Me.m_core.EcosimScenarioCount
+        If Me.Core.StateMonitor.HasEcopathLoaded() Then
+            If Me.Core.EcosimScenarioCount > 0 Then
+                For i As Integer = 1 To Me.Core.EcosimScenarioCount
                     mnuItem = New ToolStripMenuItem()
-                    mnuItem.Text = m_core.EcosimScenarios(i).Name
+                    mnuItem.Text = Me.Core.EcosimScenarios(i).Name
                     mnuItem.Tag = i
                     AddHandler mnuItem.Click, AddressOf EcosimScenarioClickEventHandler
                     Me.m_tsbEcosim.DropDownItems.Add(mnuItem)
@@ -1314,10 +1351,10 @@ Public Class AppLauncher
             End If
 
             'Load Ecospace scenarios
-            If Me.m_core.EcospaceScenarioCount > 0 Then
-                For i As Integer = 1 To Me.m_core.EcospaceScenarioCount
+            If Me.Core.EcospaceScenarioCount > 0 Then
+                For i As Integer = 1 To Me.Core.EcospaceScenarioCount
                     mnuItem = New ToolStripMenuItem()
-                    mnuItem.Text = m_core.EcospaceScenarios(i).Name
+                    mnuItem.Text = Me.Core.EcospaceScenarios(i).Name
                     mnuItem.Tag = i
                     AddHandler mnuItem.Click, AddressOf EcospaceScenarioClickEventHandler
                     Me.m_tsbEcospace.DropDownItems.Add(mnuItem)
@@ -1373,7 +1410,7 @@ Public Class AppLauncher
                 Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
                     AddRecentFilesSetting(strFileName)
 
-                    Dim dlg As New Import.dlgImportDatabase(Me.m_core, db)
+                    Dim dlg As New Import.dlgImportDatabase(Me.Core, db)
                     If dlg.ShowDialog(Me) = DialogResult.OK Then
                         ' Update file name
                         strFileName = dlg.ImportedFileName
@@ -1625,7 +1662,7 @@ Public Class AppLauncher
         Dim frm As Form = Nothing
 
         ' Check if core can be brought up to par
-        If Me.m_coreController.LoadPersistState(DirectCast(nc.CoreExecutionState, eCoreExecutionState)) Then
+        If Me.CoreController.LoadPersistState(DirectCast(nc.CoreExecutionState, eCoreExecutionState)) Then
             ' Is form already loaded?
             If Not ActivateForm(nc.PageName) Then
                 ' Load instance of form for selected node
@@ -1665,7 +1702,7 @@ Public Class AppLauncher
         Dim bSucces As Boolean = False
 
         Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_CREATING, strName), TriState.True)
-        bSucces = Me.m_core.NewEcosimScenario(strName, strDescription, strAuthor, strContact)
+        bSucces = Me.Core.NewEcosimScenario(strName, strDescription, strAuthor, strContact)
         Me.SetStatusText("", TriState.False)
         Return bSucces
 
@@ -1685,7 +1722,7 @@ Public Class AppLauncher
         If (es IsNot Nothing) Then
             ' #Yes: Load it
             Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_LOADING, es.Name), TriState.True)
-            bSucces = Me.m_core.LoadEcosimScenario(es)
+            bSucces = Me.Core.LoadEcosimScenario(es)
             Me.SetStatusText("", TriState.False)
 
             ' Update MRU list
@@ -1710,7 +1747,7 @@ Public Class AppLauncher
         Dim bSucces As Boolean = False
 
         Me.SetStatusText(String.Format(My.Resources.STATUS_ECOTRACER_CREATING, strName), TriState.True)
-        bSucces = Me.m_core.NewEcotracerScenario(strName, strDescription, strAuthor, strContact)
+        bSucces = Me.Core.NewEcotracerScenario(strName, strDescription, strAuthor, strContact)
         Me.SetStatusText("", TriState.False)
         Return bSucces
 
@@ -1730,7 +1767,7 @@ Public Class AppLauncher
         If (es IsNot Nothing) Then
             ' #Yes: Load it
             Me.SetStatusText(String.Format(My.Resources.STATUS_ECOTRACER_LOADING, es.Name), TriState.True)
-            bSucces = Me.m_core.LoadEcotracerScenario(es)
+            bSucces = Me.Core.LoadEcotracerScenario(es)
             Me.SetStatusText("", TriState.False)
 
             ' Update MRU list
@@ -1752,10 +1789,10 @@ Public Class AppLauncher
         ' Got a scenario name?
         If Not String.IsNullOrEmpty(strName) Then
             ' #Yes: try to find a scenario with this same name
-            For i As Integer = 1 To m_core.EcosimScenarioCount
-                If m_core.EcosimScenarios(i).Name = strName Then
+            For i As Integer = 1 To Me.Core.EcosimScenarioCount
+                If Me.Core.EcosimScenarios(i).Name = strName Then
                     ' Got it!
-                    Return m_core.EcosimScenarios(i)
+                    Return Me.Core.EcosimScenarios(i)
                 End If
             Next
         End If
@@ -1766,10 +1803,10 @@ Public Class AppLauncher
         ' Got a scenario name?
         If Not String.IsNullOrEmpty(strName) Then
             ' #Yes: try to find a scenario with this same name
-            For i As Integer = 1 To m_core.EcospaceScenarioCount
-                If m_core.EcospaceScenarios(i).Name = strName Then
+            For i As Integer = 1 To Me.Core.EcospaceScenarioCount
+                If Me.Core.EcospaceScenarios(i).Name = strName Then
                     ' Got it!
-                    Return m_core.EcospaceScenarios(i)
+                    Return Me.Core.EcospaceScenarios(i)
                 End If
             Next
         End If
@@ -1780,10 +1817,10 @@ Public Class AppLauncher
         ' Got a scenario name?
         If Not String.IsNullOrEmpty(strName) Then
             ' #Yes: try to find a scenario with this same name
-            For i As Integer = 1 To m_core.EcotracerScenarioCount
-                If m_core.EcotracerScenarios(i).Name = strName Then
+            For i As Integer = 1 To Me.Core.EcotracerScenarioCount
+                If Me.Core.EcotracerScenarios(i).Name = strName Then
                     ' Got it!
-                    Return m_core.EcotracerScenarios(i)
+                    Return Me.Core.EcotracerScenarios(i)
                 End If
             Next
         End If
@@ -1815,9 +1852,9 @@ Public Class AppLauncher
             ' #Yes: try to obtain scenario from command
             es = CType(Me.m_cmdLoadEcosimScenario.Tag, cEcoSimScenario)
             ' #No: Are we reloading and an active scenario is present?
-        ElseIf (bTryReuse = True) And (Me.m_core.ActiveEcosimScenarioIndex >= 0) Then
+        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcosimScenarioIndex >= 0) Then
             '' '' '' Try to reload current scenario
-            ' '' ''es = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
+            ' '' ''es = Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex)
             ' '' '' Reuse existing scenario (maybe tell core to reload Ecosim GUI objects?)
             Return True
         End If
@@ -1876,9 +1913,9 @@ Public Class AppLauncher
             ' #Yes: try to obtain scenario from command
             es = CType(Me.m_cmdLoadEcospaceScenario.Tag, cEcospaceScenario)
             ' #No: Are we reloading and an active scenario is present?
-        ElseIf (bTryReuse = True) And (Me.m_core.ActiveEcospaceScenarioIndex >= 0) Then
+        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcospaceScenarioIndex >= 0) Then
             '' Try to reload current scenario
-            'es = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
+            'es = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex)
 
             ' Reuse existing scenario (maybe tell core to reload Ecosim GUI objects?)
             Return True
@@ -1935,9 +1972,9 @@ Public Class AppLauncher
         Dim es As cEcotracerScenario = Nothing
 
         ' Prerequesite: Ecosim needs to be loaded
-        Me.m_coreController.LoadState(eCoreExecutionState.EcosimLoaded)
+        Me.CoreController.LoadState(eCoreExecutionState.EcosimLoaded)
         ' Not succesful? abort
-        If Not Me.m_core.StateMonitor.HasEcosimLoaded Then Return False
+        If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return False
 
         ' Try to obtain ecotracer scenario to load
 
@@ -1946,9 +1983,9 @@ Public Class AppLauncher
             ' #Yes: try to obtain scenario from command
             es = CType(Me.m_cmdLoadEcotracerScenario.Tag, cEcotracerScenario)
             ' #No: Are we reloading and an active scenario is present?
-        ElseIf (bTryReuse = True) And (Me.m_core.ActiveEcotracerScenarioIndex >= 0) Then
+        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcotracerScenarioIndex >= 0) Then
             '' Try to reload current scenario
-            'es = Me.m_core.EcotracerScenarios(Me.m_core.ActiveEcotracerScenarioIndex)
+            'es = Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex)
             ' Reuse existing scenario (maybe tell core to reload Ecotracer GUI objects?)
             Return True
         End If
@@ -2126,11 +2163,11 @@ Public Class AppLauncher
         End If
 
         If nc.PageID = "ndEcotracerScenario" Then
-            Me.m_coreController.LoadEcotracerScenario()
+            Me.CoreController.LoadEcotracerScenario()
         End If
 
         ' Check if core can be brought up to par
-        If Me.m_coreController.LoadState(CType(nc.CoreExecutionState, eCoreExecutionState)) Then
+        If Me.CoreController.LoadState(CType(nc.CoreExecutionState, eCoreExecutionState)) Then
             ' Is form already loaded?
             If Not ActivateForm(nc.PageName) Then
                 ' Load instance of form for selected node
@@ -2172,7 +2209,7 @@ Public Class AppLauncher
         ' Phew
         Dim pgcmd As PluginGUICommand = DirectCast(cmd, PluginGUICommand)
         ' Check if core can be brought up to par
-        If Me.m_coreController.LoadState(pgcmd.CoreExecutionState) Then
+        If Me.CoreController.LoadState(pgcmd.CoreExecutionState) Then
             ' Invoke plugin. This code does not - and cannot - verify whether the plugin has already ran,
             ' and whether any plug-in UI elements are still active. The plug-in is responsible for dealing
             ' with consecutive run requests.
@@ -2278,7 +2315,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateSaveModelAs(ByVal cmd As cCommand) Handles m_cmdSaveModelAs.OnUpdate
 
-        Dim bEnable As Boolean = Me.m_core.StateMonitor.HasEcopathLoaded
+        Dim bEnable As Boolean = Me.Core.StateMonitor.HasEcopathLoaded
 
         Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
             Case eDataSourceTypes.MDB, eDataSourceTypes.ACCDB
@@ -2298,7 +2335,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnSave(ByVal cmd As cCommand) Handles m_cmdSave.OnInvoke
         Me.SetStatusText(My.Resources.STATUS_MODEL_SAVING, TriState.True)
-        Me.m_core.Save()
+        Me.Core.Save()
         Me.SetStatusText("", TriState.False)
     End Sub
 
@@ -2306,7 +2343,7 @@ Public Class AppLauncher
     ''' Update save model command state
     ''' </summary>
     Private Sub OnUpdateSave(ByVal cmd As cCommand) Handles m_cmdSave.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.IsModified
+        cmd.Enabled = Me.Core.StateMonitor.IsModified
     End Sub
 
     ''' <summary>
@@ -2320,7 +2357,7 @@ Public Class AppLauncher
     ''' Update close model command state
     ''' </summary>
     Private Sub OnUpdateCloseModel(ByVal cmd As cCommand) Handles m_cmdCloseModel.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
     ''' <summary>
@@ -2334,11 +2371,11 @@ Public Class AppLauncher
     ''' Update compact model command state
     ''' </summary>
     Private Sub OnUpdateCompactModel(ByVal cmd As cCommand) Handles m_cmdCompactModel.OnUpdate
-        Dim ds As IEwEDataSource = Me.m_core.DataSource
+        Dim ds As IEwEDataSource = Me.Core.DataSource
         If (ds Is Nothing) Then
             cmd.Enabled = False
         Else
-            cmd.Enabled = (Me.m_core.StateMonitor.HasEcopathLoaded) And ds.CanCompact("")
+            cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded) And ds.CanCompact("")
         End If
     End Sub
 
@@ -2400,7 +2437,7 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the <see cref="m_cmdEditGroups">Edit Groups command</see>.
     ''' </summary>
     Private Sub OnUpdateEditGroups(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditGroups.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded()
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
     End Sub
 
     ''' <summary>
@@ -2417,7 +2454,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateMultiStanza(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditMultiStanza.OnUpdate
         ' MultiStanza can be edited when ecopath has loaded and the core has more than one stanza group
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded() And (Me.m_core.nStanzas > 0)
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded() And (Me.Core.nStanzas > 0)
     End Sub
 
     ''' <summary>
@@ -2433,7 +2470,7 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the <see cref="m_cmdEditFleets">Edit Fleets command</see>.
     ''' </summary>
     Private Sub OnUpdateEditFleets(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditFleets.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded()
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
     End Sub
 
     Private Sub OnDisplayGroups(ByVal cmd As cCommand) Handles m_cmdDisplayGroups.OnInvoke
@@ -2442,7 +2479,7 @@ Public Class AppLauncher
     End Sub
 
     Private Sub OnUpdateDisplayGroups(ByVal cmd As cCommand) Handles m_cmdDisplayGroups.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded()
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
     End Sub
 
     ''' <summary>
@@ -2468,7 +2505,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub m_cmdImportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdImportLayerData.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded()
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
     End Sub
 
     ''' <summary>
@@ -2493,7 +2530,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub m_cmdExportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdExportLayerData.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded()
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
     End Sub
 
     Private Sub RecentMDBToolStripMenuItem_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiFileRecent.DropDownOpening
@@ -2689,14 +2726,14 @@ Public Class AppLauncher
     ''' <see cref="m_cmdNewEcosimScenario">New Ecosim Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateNewEcosimScenario(ByVal cmd As cCommand) Handles m_cmdNewEcosimScenario.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; loads a new Ecosim scenario
     ''' </summary>
     Private Sub OnLoadEcosimScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcosimScenario.OnInvoke
-        Me.m_coreController.LoadEcosimScenario()
+        Me.CoreController.LoadEcosimScenario()
     End Sub
 
     ''' <summary>
@@ -2704,14 +2741,14 @@ Public Class AppLauncher
     ''' <see cref="m_cmdLoadEcosimScenario">Load Ecosim Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateLoadEcosimScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcosimScenario.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
     Private Sub OnSaveEcosimScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenario.OnInvoke
-        Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSIM_SAVING, Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name)
+        Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSIM_SAVING, Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).Name)
         Me.SetStatusText(strStatus, TriState.True)
         Try
-            Me.m_core.SaveEcosimScenario()
+            Me.Core.SaveEcosimScenario()
         Catch ex As Exception
 
         End Try
@@ -2722,13 +2759,13 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the 'save ecosim scenario' command
     ''' </summary>
     Private Sub OnUpdateSaveEcosimScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenario.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.IsEcosimModified
+        cmd.Enabled = Me.Core.StateMonitor.IsEcosimModified
     End Sub
 
     Private Sub OnSaveEcosimScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenarioAs.OnInvoke
 
         Dim dlg As New EcosimScenarioDlg(EcosimScenarioDlg.eDialogModeType.SaveScenario, _
-                Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex))
+                Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex))
 
         If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
             ' Overwriting?
@@ -2740,7 +2777,7 @@ Public Class AppLauncher
                     ' #Overwrite
                     Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_SAVING, dlg.ScenarioName), TriState.True)
                     Try
-                        Me.m_core.SaveEcosimScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
+                        Me.Core.SaveEcosimScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                     Catch ex As Exception
 
                     End Try
@@ -2754,7 +2791,7 @@ Public Class AppLauncher
             ' Add scenario under new name
             Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_CREATING, dlg.ScenarioName), TriState.True)
             Try
-                Me.m_core.SaveEcosimScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
+                Me.Core.SaveEcosimScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
             Catch ex As Exception
 
             End Try
@@ -2768,7 +2805,7 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the 'save ecosim scenario as' command
     ''' </summary>
     Private Sub OnUpdateSaveEcosimScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenarioAs.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
     End Sub
 
     ''' <summary>
@@ -2782,7 +2819,7 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the <see cref="m_cmdImportTimeSeries">Import TimeSeries command</see>.
     ''' </summary>
     Private Sub m_cmdImportTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdImportTimeSeries.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded()
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded()
     End Sub
 
     ''' <summary>
@@ -2797,7 +2834,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub m_cmdWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdWeightTimeSeries.OnUpdate
         ' JS 23sept08: dialog will switch to load mode if no ts present
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() ' And Me.m_core.HasTimeSeries()
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded() ' And Me.Core.HasTimeSeries()
     End Sub
 
     ''' <summary>
@@ -2811,7 +2848,7 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the <see cref="m_cmdLoadTimeSeries">Load TimeSeries command</see>.
     ''' </summary>
     Private Sub m_cmdLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadTimeSeries.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded()
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded()
     End Sub
 
     ''' <summary>
@@ -2819,9 +2856,9 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub m_cmdReloadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadWeightTimeSeries.OnInvoke
         Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
-        For iDS As Integer = 1 To Me.m_core.nTimeSeriesDatasets
-            If (String.Compare(Me.m_core.TimeSeriesDataset(iDS).Name, strDataset, False) = 0) Then
-                Me.m_core.LoadTimeSeries(iDS, True)
+        For iDS As Integer = 1 To Me.Core.nTimeSeriesDatasets
+            If (String.Compare(Me.Core.TimeSeriesDataset(iDS).Name, strDataset, False) = 0) Then
+                Me.Core.LoadTimeSeries(iDS, True)
                 Exit For
             End If
         Next
@@ -2833,23 +2870,23 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub m_cmdLoadWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadWeightTimeSeries.OnUpdate
         Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() And (Not String.IsNullOrEmpty(strDataset))
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded() And (Not String.IsNullOrEmpty(strDataset))
     End Sub
 
     Private Sub OnExportBiomassToCSV(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnInvoke
         Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-        cmdFS.Invoke(String.Format("EwE6_{0}_Biomass.csv", m_core.EwEModel.Name), "", My.Resources.FILEFILTER_CSV, 1)
+        cmdFS.Invoke(String.Format("EwE6_{0}_Biomass.csv", Me.Core.EwEModel.Name), "", My.Resources.FILEFILTER_CSV, 1)
 
         If cmdFS.Result = DialogResult.OK Then
             ' Save the Ecosim model result to .csv files
-            Me.m_core.dumpEcosimModelResults(cmdFS.FileName)
+            Me.Core.dumpEcosimModelResults(cmdFS.FileName)
         End If
     End Sub
 
     Private Sub OnExportBiomassToCSVs(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimRan
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimRan
     End Sub
 
 #End Region ' Ecosim commands
@@ -2879,15 +2916,15 @@ Public Class AppLauncher
     End Sub
 
     Private Sub OnUpdateNewEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdNewEcospaceScenario.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
     End Sub
 
     Private Sub OnLoadEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcospaceScenario.OnInvoke
-        Me.m_coreController.LoadEcospaceScenario()
+        Me.CoreController.LoadEcospaceScenario()
     End Sub
 
     Private Sub OnUpdateLoadEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcospaceScenario.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
     ''' <summary>
@@ -2896,7 +2933,7 @@ Public Class AppLauncher
     Private Sub OnSaveEcospaceScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenarioAS.OnInvoke
 
         Dim dlg As New EcospaceScenarioDlg(EcospaceScenarioDlg.eDialogModeType.SaveScenario, _
-                Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex))
+                Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex))
         Dim scenarioTarget As cEcospaceScenario = Nothing
 
         If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -2904,9 +2941,9 @@ Public Class AppLauncher
             If Not String.IsNullOrEmpty(dlg.ScenarioName) Then
                 ' #Cool. Now check if this will overwrite a scenario with the same name (case insensitive)
                 scenarioTarget = Nothing
-                For iScenario As Integer = 1 To Me.m_core.EcospaceScenarioCount
-                    If (String.Compare(Me.m_core.EcospaceScenarios(iScenario).Name, dlg.ScenarioName, True) = 0) Then
-                        scenarioTarget = Me.m_core.EcospaceScenarios(iScenario)
+                For iScenario As Integer = 1 To Me.Core.EcospaceScenarioCount
+                    If (String.Compare(Me.Core.EcospaceScenarios(iScenario).Name, dlg.ScenarioName, True) = 0) Then
+                        scenarioTarget = Me.Core.EcospaceScenarios(iScenario)
                     End If
                 Next
 
@@ -2919,7 +2956,7 @@ Public Class AppLauncher
                         ' #Overwrite
                         Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_SAVING, dlg.ScenarioName), TriState.True)
                         Try
-                            Me.m_core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
+                            Me.Core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                         Catch ex As Exception
 
                         End Try
@@ -2933,7 +2970,7 @@ Public Class AppLauncher
                 ' Add scenario
                 Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_CREATING, dlg.ScenarioName), TriState.True)
                 Try
-                    Me.m_core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
+                    Me.Core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                 Catch ex As Exception
 
                 End Try
@@ -2949,17 +2986,17 @@ Public Class AppLauncher
     ''' <see cref="m_cmdSaveEcospaceScenarioAs">Save Ecospace Scenario As</see> command.
     ''' </summary>
     Private Sub OnUpdateSaveEcospaceScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenarioAS.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; saves the current active Ecospace scenario.
     ''' </summary>
     Private Sub OnSaveEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenario.OnInvoke
-        Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSPACE_SAVING, Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name)
+        Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSPACE_SAVING, Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex).Name)
         Me.SetStatusText(strStatus, TriState.True)
         Try
-            Me.m_core.SaveEcospaceScenario()
+            Me.Core.SaveEcospaceScenario()
         Catch ex As Exception
 
         End Try
@@ -2971,14 +3008,14 @@ Public Class AppLauncher
     ''' <see cref="m_cmdSaveEcospaceScenario">Save Ecospace Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateSaveEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenario.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.IsEcospaceModified
+        cmd.Enabled = Me.Core.StateMonitor.IsEcospaceModified
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit basemap dialog.
     ''' </summary>
     Private Sub OnEditEcospaceBasemap(ByVal cmd As cCommand) Handles m_cmdEditBasemap.OnInvoke
-        Dim dlg As New dlgEditBasemap(Me.m_core.EcospaceBasemap)
+        Dim dlg As New dlgEditBasemap(Me.Core.EcospaceBasemap)
         Me.m_Help.HelpTopic(dlg) = "Edit basemap.htm"
         dlg.ShowDialog(Me)
     End Sub
@@ -2987,7 +3024,7 @@ Public Class AppLauncher
     ''' Command handler; handles access to the Ecospace edit basemap dialog.
     ''' </summary>
     Private Sub OnUpdateEditEcospaceBasemap(ByVal cmd As cCommand) Handles m_cmdEditBasemap.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
@@ -3003,7 +3040,7 @@ Public Class AppLauncher
     ''' Command handler; handles access to the Ecospace edit habitats dialog.
     ''' </summary>
     Private Sub OnUpdateEditEcospaceHabitats(ByVal cmd As cCommand) Handles m_cmdEditHabitats.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
@@ -3018,7 +3055,7 @@ Public Class AppLauncher
     ''' Command handler; handles access to the Ecospace edit regions dialog.
     ''' </summary>
     Private Sub OnUpdateEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
@@ -3033,7 +3070,7 @@ Public Class AppLauncher
     ''' Command handler; handles access to the Ecospace edit MPAs dialog.
     ''' </summary>
     Private Sub OnUpdateEditEcospaceMPAs(ByVal cmd As cCommand) Handles m_cmdEditMPAs.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
@@ -3048,7 +3085,7 @@ Public Class AppLauncher
     ''' Command handler; handles access to the Ecospace edit importance layers dialog.
     ''' </summary>
     Private Sub OnUpdateEditEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdEditImportanceLayers.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -3067,7 +3104,7 @@ Public Class AppLauncher
         Dim bSucces As Boolean = False
 
         Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_CREATING, strName), TriState.True)
-        bSucces = Me.m_core.NewEcospaceScenario(strName, strDescription, _
+        bSucces = Me.Core.NewEcospaceScenario(strName, strDescription, _
             strAuthor, strContact, iNumRows, iNumCols, sLatTL, sLonTL, sCellSize)
         Me.SetStatusText("", TriState.False)
         Return bSucces
@@ -3088,7 +3125,7 @@ Public Class AppLauncher
         If (es IsNot Nothing) Then
             ' #Yes: Load it
             Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_LOADING, es.Name), TriState.True)
-            bSucces = Me.m_core.LoadEcospaceScenario(es)
+            bSucces = Me.Core.LoadEcospaceScenario(es)
             Me.SetStatusText("", TriState.False)
 
             ' Update MRU list
@@ -3110,9 +3147,9 @@ Public Class AppLauncher
     Private Sub OnNewEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdNewEcotracerScenario.OnInvoke
 
         ' Prerequesite: Ecosim needs to be loaded
-        Me.m_coreController.LoadState(eCoreExecutionState.EcosimLoaded)
+        Me.CoreController.LoadState(eCoreExecutionState.EcosimLoaded)
         ' Not succesful? abort
-        If Not Me.m_core.StateMonitor.HasEcosimLoaded Then Return
+        If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return
 
         Dim dlg As New EcotracerScenarioDlg(EcotracerScenarioDlg.eDialogModeType.CreateScenario)
 
@@ -3136,7 +3173,7 @@ Public Class AppLauncher
     ''' <see cref="m_cmdNewEcotracerScenario">New Ecotracer Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateNewEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdNewEcotracerScenario.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
     ''' <summary>
@@ -3151,13 +3188,13 @@ Public Class AppLauncher
     ''' <see cref="m_cmdLoadEcotracerScenario">Load Ecotracer Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateLoadEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcotracerScenario.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
     Private Sub OnSaveEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenario.OnInvoke
-        Dim strStatus As String = String.Format(My.Resources.STATUS_ECOTRACER_SAVING, Me.m_core.EcotracerScenarios(Me.m_core.ActiveEcotracerScenarioIndex).Name)
+        Dim strStatus As String = String.Format(My.Resources.STATUS_ECOTRACER_SAVING, Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex).Name)
         Me.SetStatusText(strStatus, TriState.True)
-        Me.m_core.SaveEcotracerScenario()
+        Me.Core.SaveEcotracerScenario()
         Me.SetStatusText("", TriState.False)
     End Sub
 
@@ -3165,13 +3202,13 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the 'save ecotracer scenario' command
     ''' </summary>
     Private Sub OnUpdateSaveEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenario.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.IsEcotracerModified
+        cmd.Enabled = Me.Core.StateMonitor.IsEcotracerModified
     End Sub
 
     Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenarioAS.OnInvoke
 
         Dim dlg As New EcotracerScenarioDlg(EcotracerScenarioDlg.eDialogModeType.SaveScenario, _
-                Me.m_core.EcotracerScenarios(Me.m_core.ActiveEcotracerScenarioIndex))
+                Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex))
 
         If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
             ' Overwriting?
@@ -3182,7 +3219,7 @@ Public Class AppLauncher
 
                     ' #Overwrite
                     Me.SetStatusText(String.Format(My.Resources.STATUS_ECOTRACER_SAVING, dlg.ScenarioName), TriState.True)
-                    m_core.SaveEcotracerScenario(DirectCast(dlg.Scenario, cEcotracerScenario))
+                    Me.Core.SaveEcotracerScenario(DirectCast(dlg.Scenario, cEcotracerScenario))
                     Me.SetStatusText("", TriState.False)
 
                 End If
@@ -3192,7 +3229,7 @@ Public Class AppLauncher
 
             ' Add scenario under new name
             Me.SetStatusText(String.Format(My.Resources.STATUS_ECOTRACER_CREATING, dlg.ScenarioName), TriState.True)
-            Me.m_core.SaveEcotracerScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
+            Me.Core.SaveEcotracerScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
             Me.SetStatusText("", TriState.False)
 
         End If
@@ -3203,7 +3240,7 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the 'save ecotracer scenario as' command
     ''' </summary>
     Private Sub OnUpdateSaveEcotracerScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenarioAS.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcotracerLoaded()
+        cmd.Enabled = Me.Core.StateMonitor.HasEcotracerLoaded()
     End Sub
 
     Private Sub OnEnableEcotracer(ByVal cmd As cCommand) Handles m_cmdEnableEcotracer.OnInvoke
@@ -3222,30 +3259,30 @@ Public Class AppLauncher
 
             Case eTracerRunModeTypes.RunSim ' Ecosim
                 ' Load sim
-                Me.m_coreController.LoadState(eCoreExecutionState.EcosimLoaded)
+                Me.CoreController.LoadState(eCoreExecutionState.EcosimLoaded)
                 ' Not succesful? abort
-                If Not Me.m_core.StateMonitor.HasEcosimLoaded Then Return
+                If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return
                 ' Get property to enable tracer for Sim
-                ecosimModelParams = Me.m_core.EcoSimModelParameters
+                ecosimModelParams = Me.Core.EcoSimModelParameters
                 propSimConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
                 ' Try to load tracer
-                Me.m_coreController.LoadState(eCoreExecutionState.EcotracerLoaded)
+                Me.CoreController.LoadState(eCoreExecutionState.EcotracerLoaded)
 
             Case eTracerRunModeTypes.RunSpace ' Ecospace
                 ' Load space
-                Me.m_coreController.LoadState(eCoreExecutionState.EcospaceLoaded)
+                Me.CoreController.LoadState(eCoreExecutionState.EcospaceLoaded)
                 ' Not succesful? abort
-                If Not Me.m_core.StateMonitor.HasEcospaceLoaded Then Return
+                If Not Me.Core.StateMonitor.HasEcospaceLoaded Then Return
                 ' Get property to enable tracer for Space
-                ecospaceModelParams = Me.m_core.EcospaceModelParameters
+                ecospaceModelParams = Me.Core.EcospaceModelParameters
                 propSpaceConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
                 ' Try to load tracer
-                Me.m_coreController.LoadState(eCoreExecutionState.EcotracerLoaded)
+                Me.CoreController.LoadState(eCoreExecutionState.EcotracerLoaded)
 
         End Select
 
         ' Tracer not loaded?
-        If Not Me.m_core.StateMonitor.HasEcotracerLoaded Then tracerRunMode = eTracerRunModeTypes.Disabled
+        If Not Me.Core.StateMonitor.HasEcotracerLoaded Then tracerRunMode = eTracerRunModeTypes.Disabled
 
         ' Configure properties
         If propSimConTracing IsNot Nothing Then
@@ -3280,7 +3317,7 @@ Public Class AppLauncher
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Dim iScenario As Integer = CInt(mnuItem.Tag)
 
-        Me.m_cmdLoadEcosimScenario.Tag = Me.m_core.EcosimScenarios(iScenario)
+        Me.m_cmdLoadEcosimScenario.Tag = Me.Core.EcosimScenarios(iScenario)
         Me.m_cmdLoadEcosimScenario.Invoke()
         Me.m_cmdLoadEcosimScenario.Tag = Nothing
     End Sub
@@ -3289,7 +3326,7 @@ Public Class AppLauncher
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Dim iScenario As Integer = CInt(mnuItem.Tag)
 
-        Me.m_cmdLoadEcospaceScenario.Tag = Me.m_core.EcospaceScenarios(iScenario)
+        Me.m_cmdLoadEcospaceScenario.Tag = Me.Core.EcospaceScenarios(iScenario)
         Me.m_cmdLoadEcospaceScenario.Invoke()
         Me.m_cmdLoadEcospaceScenario.Tag = Nothing
     End Sub
@@ -3298,7 +3335,7 @@ Public Class AppLauncher
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Dim iScenario As Integer = CInt(mnuItem.Tag)
 
-        Me.m_cmdLoadEcotracerScenario.Tag = Me.m_core.EcotracerScenarios(iScenario)
+        Me.m_cmdLoadEcotracerScenario.Tag = Me.Core.EcotracerScenarios(iScenario)
         Me.m_cmdLoadEcotracerScenario.Invoke()
         Me.m_cmdLoadEcotracerScenario.Tag = Nothing
     End Sub
@@ -3338,7 +3375,7 @@ Public Class AppLauncher
             ' Kick core controller
             If (TypeOf idc Is frmEwE) Then
                 ' Update core state if possible
-                Me.m_coreController.LoadState(DirectCast(idc, frmEwE).CoreExecutionState)
+                Me.CoreController.LoadState(DirectCast(idc, frmEwE).CoreExecutionState)
             End If
         End If
 
@@ -3422,7 +3459,7 @@ Public Class AppLauncher
 
     Private Sub ManageTimeSeries(ByVal mode As dlgManageTimeSeries.eModeType)
 
-        Dim dlg As New dlgManageTimeSeries(mode)
+        Dim dlg As New dlgManageTimeSeries(Me.UIContext, mode)
 
         ' Hmm
         dlg.StartPosition = FormStartPosition.CenterParent

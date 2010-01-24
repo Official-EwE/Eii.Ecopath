@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: dlgSensitivityOfSStoV.vb,v $
-' Revision 1.3  2009/05/28 12:37:20  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.2  2008/12/15 15:54:30  jeroens
-' no message
-'
-' Revision 1.1  2008/11/19 14:40:54  jeroens
-' Moved and renamed
-'
-' Revision 1.2  2008/10/07 18:34:39  villyc
-' updating a vulmult pred-prey swap
-'
-' Revision 1.1  2008/09/26 07:31:53  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -37,7 +17,7 @@ Public Class dlgSensitivityOfSStoV
 
 #Region " Private variables "
 
-    Private m_core As cCore = Nothing
+    Private m_uic As cUIContext = Nothing
     Private m_SSPreyPred(,) As Single ' Sen by pred/prey
     Private m_iNumBlocks As Integer
     Private m_F2TSManager As cF2TSManager = Nothing
@@ -54,19 +34,22 @@ Public Class dlgSensitivityOfSStoV
     ''' 
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore, ByVal manager As cF2TSManager)
+    Public Sub New(ByVal uic As cUIContext, _
+                   ByVal manager As cF2TSManager)
+
         Me.InitializeComponent()
 
         ' Sanity checks
-        Debug.Assert(core IsNot Nothing)
+        Debug.Assert(uic IsNot Nothing)
         Debug.Assert(manager IsNot Nothing)
 
-        Me.m_core = core
+        Me.m_uic = uic
         Me.m_F2TSManager = manager
 
-        ReDim Me.m_SSPreyPred(core.nGroups, core.nGroups)
+        ReDim Me.m_SSPreyPred(Me.m_uic.Core.nGroups, Me.m_uic.Core.nGroups)
 
-        Me.m_ucVulBlocks.Init(core)
+        Me.m_ucVulBlocks.UIContext = Me.m_uic
+
     End Sub
 
 #End Region ' Constructors
@@ -202,7 +185,7 @@ Public Class dlgSensitivityOfSStoV
 
             Case eRunType.SensitivitySS2VByPredator
                 ' Keep the ss for this pred for later use
-                For iPrey = 1 To Me.m_core.nGroups
+                For iPrey = 1 To Me.m_uic.Core.nGroups
                     Me.m_SSPreyPred(iPred, iPrey) = sSen
                 Next
 
@@ -227,8 +210,8 @@ Public Class dlgSensitivityOfSStoV
         Me.m_btnSearch.Enabled = True
 
         'write out the SS matrix that was collected in m_F2TSManager_OnRunStep
-        For i As Integer = 1 To m_core.nGroups
-            For j As Integer = 1 To m_core.nGroups
+        For i As Integer = 1 To Me.m_uic.Core.nGroups
+            For j As Integer = 1 To Me.m_uic.Core.nGroups
                 System.Console.Write(Me.m_SSPreyPred(i, j).ToString & ", ")
             Next
             System.Console.WriteLine()
@@ -476,8 +459,8 @@ Public Class dlgSensitivityOfSStoV
     ''' -----------------------------------------------------------------------
     Private Sub UpdateControls()
 
-        ' Sanity check
-        If (Me.m_core Is Nothing) Then Return
+        ' Sanity checks
+        If (Me.m_uic Is Nothing) Then Return
         If (Me.m_F2TSManager Is Nothing) Then Return
 
         ' Enable transfer buttons based on available search type results
@@ -492,10 +475,10 @@ Public Class dlgSensitivityOfSStoV
         Dim groupPath As cEcoPathGroupInput = Nothing
         Dim groupSim As cEcoSimGroupInput = Nothing
 
-        For iPred As Integer = 1 To Me.m_core.nLivingGroups
-            For iPrey As Integer = 1 To Me.m_core.nGroups
-                groupPath = Me.m_core.EcoPathGroupInputs(iPred)
-                groupSim = Me.m_core.EcoSimGroupInputs(iPred)
+        For iPred As Integer = 1 To Me.m_uic.Core.nLivingGroups
+            For iPrey As Integer = 1 To Me.m_uic.Core.nGroups
+                groupPath = Me.m_uic.Core.EcoPathGroupInputs(iPred)
+                groupSim = Me.m_uic.Core.EcoSimGroupInputs(iPred)
                 If groupPath.DietComp(iPrey) > 0 Then
                     If Math.Abs(groupSim.VulMult(iPrey) - 2) > 0.01 Then Return True
                 End If
@@ -508,14 +491,10 @@ Public Class dlgSensitivityOfSStoV
         Dim groupPath As cEcoPathGroupInput = Nothing
         Dim groupSim As cEcoSimGroupInput = Nothing
 
-        For iPrey As Integer = 1 To Me.m_core.nGroups
-            groupSim = Me.m_core.EcoSimGroupInputs(iPrey)
-            For iPred As Integer = 1 To Me.m_core.nGroups
-                '  groupPath = Me.m_core.EcoPathGroupInputs(iPred)
-                'groupSim = Me.m_core.EcoSimGroupInputs(iPred)
-                '    If groupPath.DietComp(iPrey) > 0 Then
+        For iPrey As Integer = 1 To Me.m_uic.Core.nGroups
+            groupSim = Me.m_uic.Core.EcoSimGroupInputs(iPrey)
+            For iPred As Integer = 1 To Me.m_uic.Core.nGroups
                 groupSim.VulMult(iPred) = 2.0
-                '   End If
             Next iPred
         Next iPrey
 
@@ -583,8 +562,8 @@ Public Class dlgSensitivityOfSStoV
         Me.m_F2TSManager.setNBlocksFromSensitivity(Me.NumBlocks)
 
         Dim vblocks(,) As Integer = m_F2TSManager.VulnerabilityBlocks
-        For iPred As Integer = 1 To Me.m_core.nGroups
-            For iPrey As Integer = 1 To Me.m_core.nGroups
+        For iPred As Integer = 1 To Me.m_uic.Core.nGroups
+            For iPrey As Integer = 1 To Me.m_uic.Core.nGroups
                 If Me.m_F2TSManager.isPredPrey(iPred, iPrey) Then
                     Me.m_ucVulBlocks.Vulblocks(iPred, iPrey) = vblocks(iPred, iPrey)
                 End If

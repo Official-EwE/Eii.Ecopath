@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: frmApplyMedPrimaryProducer.vb,v $
-' Revision 1.1  2008/12/15 19:54:05  jeroens
-' *** empty log message ***
-'
-' Revision 1.2  2008/12/15 15:58:48  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:40  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/06/02 00:01:41  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.1  2008/05/23 15:54:04  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -30,36 +10,34 @@ Imports ScientificInterface.Other
 
 Namespace Ecosim
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Form implementing the Ecosim 'Apply Mediation to Primary Producer' 
+    ''' interface.
+    ''' </summary>
+    ''' =======================================================================
     Public Class frmApplyMedPrimaryProducer
         Inherits frmApplyShapeBase
 
-#Region "Constructor"
+#Region " Constructor "
 
         Public Sub New()
             MyBase.New()
-            InitializeComponent()
-            plApplyFFGrid.Controls.Add(Me.Grid())
+            Me.InitializeComponent()
+            Me.plApplyFFGrid.Controls.Add(Me.Grid())
         End Sub
 
-        Public Sub New(ByVal text As String)
+#End Region ' Constructor
 
-            Me.New()
-            'Set tab text
-            Me.TabText = text
-            'Set window text
-            Me.Text = text
+#Region " Event handlers "
 
-        End Sub
-
-#End Region
-
-#Region "Event handlers"
-
-        Private Sub tsBtnClearAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnClearAll.Click
+        Private Sub tsBtnClearAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles tsBtnClearAll.Click
             Me.ClearAllPairs()
         End Sub
 
-        Private Sub tsBtnSetAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnSetAll.Click
+        Private Sub tsBtnSetAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles tsBtnSetAll.Click
             Me.SetAllPairs()
         End Sub
 

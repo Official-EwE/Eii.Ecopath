@@ -85,7 +85,7 @@ Namespace Ecopath.Controls.FlowDiagram
             ' This supports mouse movement such as the mouse wheel
             Me.SetStyle(ControlStyles.UserMouse, True)
 
-            Me.m_data = New cFlowDiagramData()
+            Me.m_data = New cFlowDiagramData(Me.UIContext)
             Me.m_tree = New cFlowDiagramTree(Me.m_data)
             Me.m_doodler = New cFlowDiagramRenderer(Me.m_data, Me.m_tree)
 

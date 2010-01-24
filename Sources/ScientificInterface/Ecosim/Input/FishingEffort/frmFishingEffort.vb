@@ -64,7 +64,7 @@ Namespace Ecosim
             ' Get the only core reference
             m_Core = cCore.GetInstance()
 
-            Me.m_handler = New cFishingEffortShapeGUIHandler(Me.m_Core, _
+            Me.m_handler = New cFishingEffortShapeGUIHandler(Me.UIContext, _
                     Me.m_shapeToolBox, Me.m_sketchPad, _
                     Me.m_shapeToolboxToolbar, Me.m_sketchPadToolbar)
 

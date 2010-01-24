@@ -41,12 +41,10 @@ Public Class NavigationPanel
 
 #Region " Constructors "
 
-    Public Sub New(ByRef core As cCore, ByRef pluginManager As EwEPlugin.cPluginManager)
+    Public Sub New(ByVal core As cCore, ByVal pluginManager As EwEPlugin.cPluginManager)
 
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
+        Me.InitializeComponent()
 
-        ' Add any initialization after the InitializeComponent() call.
         Me.m_core = core
         Me.m_pluginManager = pluginManager
 

@@ -1,11 +1,3 @@
-'==============================================================================
-'
-' $Log: cFlowDiagramData.vb,v $
-' Revision 1.1  2009/06/22 02:25:37  jeroens
-' Revamped, rewarped and lobotomized
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore
 
@@ -13,13 +5,12 @@ Namespace Ecopath.Controls.FlowDiagram
 
     Public Class cFlowDiagramData
 
-        Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
-        Private m_core As cCore = Nothing
+        Private m_uic As cUIContext = Nothing
 
 #Region " Constructor "
 
-        Public Sub New()
-            Me.m_core = cCore.GetInstance()
+        Public Sub New(ByVal uic As cUIContext)
+            Me.m_uic = uic
         End Sub
 
 #End Region ' Constructor
@@ -28,44 +19,44 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Public ReadOnly Property NumGroups() As Integer
             Get
-                Return Me.m_core.nGroups
+                Return Me.m_uic.Core.nGroups
             End Get
         End Property
 
         Public ReadOnly Property Biomass(ByVal iIndex As Integer) As Single
             Get
-                Return Me.m_core.EcoPathGroupOutputs(iIndex).Biomass
+                Return Me.m_uic.Core.EcoPathGroupOutputs(iIndex).Biomass
             End Get
         End Property
 
         Public ReadOnly Property GroupName(ByVal iIndex As Integer) As String
             Get
-                Return Me.m_core.EcoPathGroupInputs(iIndex).Name
+                Return Me.m_uic.Core.EcoPathGroupInputs(iIndex).Name
             End Get
         End Property
 
         Public ReadOnly Property GroupColor(ByVal iGroup As Integer) As Color
             Get
-                Return Me.m_sg.GroupColor(Me.m_core, iGroup)
+                Return Me.m_uic.StyleGuide.GroupColor(Me.m_uic.Core, iGroup)
             End Get
         End Property
 
         Public ReadOnly Property GroupVisible(ByVal iGroup As Integer) As Boolean
             Get
-                Return Me.m_sg.GroupVisible(iGroup)
+                Return Me.m_uic.StyleGuide.GroupVisible(iGroup)
             End Get
         End Property
 
         Public ReadOnly Property Diet(ByVal iPred As Integer, ByVal iPrey As Integer) As Single
             Get
-                Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iPred)
+                Dim group As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(iPred)
                 Return group.DietComp(iPrey)
             End Get
         End Property
 
         Public ReadOnly Property TrophicLevel(ByVal iIndex As Integer) As Single
             Get
-                Return Me.m_core.EcoPathGroupOutputs(iIndex).TTLX
+                Return Me.m_uic.Core.EcoPathGroupOutputs(iIndex).TTLX
             End Get
         End Property
 

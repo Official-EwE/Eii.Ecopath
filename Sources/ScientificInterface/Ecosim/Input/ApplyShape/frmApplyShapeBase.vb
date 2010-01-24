@@ -1,35 +1,3 @@
-'==============================================================================
-'
-' $Log: frmApplyShapeBase.vb,v $
-' Revision 1.3  2009/02/05 17:48:36  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.2  2009/01/16 18:30:39  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/12/15 19:54:04  jeroens
-' *** empty log message ***
-'
-' Revision 1.2  2008/12/15 15:58:48  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:39  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/06/06 16:01:38  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.2  2008/06/02 00:01:30  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.1  2008/05/23 15:54:36  jeroens
-' Moved
-'
-' Revision 1.1  2008/01/22 02:41:40  jeroens
-' Properly fixed grid apply mode
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -42,8 +10,14 @@ Imports EwEUtils.Core
 
 Namespace Ecosim
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Form baseclass for implementing an Ecosim 'Apply Forcing' or 'Apply 
+    ''' Mediation' interface.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
-    Public Class frmApplyShapeBase
+     Public Class frmApplyShapeBase
         Inherits frmEwE
 
         Private m_ApplyShapeGrid As ApplyShapeEwEGrid = Nothing
@@ -52,20 +26,35 @@ Namespace Ecosim
             Me.m_ApplyShapeGrid = New ApplyShapeEwEGrid(Me.ApplyShapeMode, Me.ApplyTargetMode)
         End Sub
 
-#Region " Event handlers "
+#Region " Baseclass overrides "
 
-        Private Sub DoLoad(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
             ' Hook up to core messages
             ' * Shapes manager to refresh lists of avialable FFs
             ' * Ecopath to refresh lists of available groups
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoPath, eCoreComponentType.PPIManager}
         End Sub
 
-        Private Sub DoDisposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+            MyBase.OnFormClosed(e)
             ' Release core messages
             Me.CoreComponents = Nothing
         End Sub
+
+        Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+                MyBase.UIContext = value
+                Me.m_ApplyShapeGrid.UIContext = value
+            End Set
+        End Property
+
+#End Region ' Baseclass overrides
+
+#Region " Base functionality "
 
         Protected Sub ClearAllPairs()
             Me.Grid.ClearAllPairs()
@@ -75,7 +64,7 @@ Namespace Ecosim
             Me.Grid.SetAllPairs()
         End Sub
 
-#End Region ' Event handlers
+#End Region ' Base functionality
 
 #Region " Mandatory overrides "
 
