@@ -240,7 +240,7 @@ Public Class cEcopathDataStructures
     Public Hlap(,) As Single
     Public Plap(,) As Single
     Public GroupColor() As Integer
-    'Public FleetColor() As Integer
+    Public FleetColor() As Integer
     Public Host(,) As Single  'last is for fishery (combined only)
 
     Public NumPedigreeLevels As Integer
@@ -440,8 +440,7 @@ Public Class cEcopathDataStructures
         ReDim PropDiscard(NumFleet, NumGroups)
         ReDim PropDiscardMort(NumFleet, NumGroups)
         ReDim Market(NumFleet, NumGroups)
-
-        'ReDim FleetColor(NumFleet)
+        ReDim FleetColor(NumFleet)
 
         If (bNeedDefaultFleet) Then
             ' Populate default fleet
@@ -1124,7 +1123,7 @@ Public Class cEcopathDataStructures
             dest.Hlap = Hlap.Clone
             dest.Plap = Plap.Clone
             GroupColor.CopyTo(dest.GroupColor, 0)
-            'FleetColor.CopyTo(dest.FleetColor, 0)
+            FleetColor.CopyTo(dest.FleetColor, 0)
             dest.Host = Host.Clone
             mis.CopyTo(dest.mis, 0)
 
