@@ -1199,14 +1199,16 @@ Namespace MSE
                         MSYeffort(iflt) = 0
                         If iDataset > -1 Then
                             For Each ts As cTimeSeries In DS
-                                If ts.TimeSeriesType = eTimeSeriesType.FishingEffort Then
-                                    If DirectCast(ts, cFleetTimeSeries).FleetIndex = iflt And ts.Enabled = True Then
-                                        'there is an effort in time series, so turn it off. 
-                                        ts.Enabled = False
-                                        TSdisabled = ts
-                                        m_core.UpdateTimeSeries()
-                                        'DS.Update()
-                                    End If
+                                'jb changed to FishingMortality it's forced FishingMortality that prevents the effort from being set...I think...
+                                'If ts.TimeSeriesType = eTimeSeriesType.FishingEffort Then
+                                If ts.TimeSeriesType = eTimeSeriesType.FishingMortality Then
+                                    ' If DirectCast(ts, cFleetTimeSeries).FleetIndex = iflt And ts.Enabled = True Then
+                                    'there is an effort in time series, so turn it off. 
+                                    ts.Enabled = False
+                                    TSdisabled = ts
+                                    m_core.UpdateTimeSeries()
+                                    'DS.Update()
+                                    'End If
                                 End If
                             Next
 
@@ -1382,9 +1384,9 @@ Namespace MSE
                     'marketPrice = 1
 
                     Dim GroupCatch As Single = 0
-                    'For it As Integer = Me.m_data.MSYStartTimeIndex To Me.m_esData.NTimes
-                    'only evaluate for the last 25 years:
-                    For it As Integer = Me.m_esData.NTimes - 25 To Me.m_esData.NTimes
+                    For it As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps
+                        'only evaluate for the last 25 years:
+                        'For it As Integer = Me.m_esData.NTimes - 25 To Me.m_esData.NTimes
                         'get data stored by ecosim over time  
                         'Dim bio As Single = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
                         'sumbio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
