@@ -586,7 +586,7 @@ Public Class cDBDataSource
         If bSucces = False Then Return False
 
         bSucces = bSucces And Me.LoadEcopathGroups()
-        bSucces = bSucces And Me.LoadFleetInfo()
+        bSucces = bSucces And Me.LoadEcopathFleetInfo()
         bSucces = bSucces And Me.LoadParticleSizeDistribution()
         bSucces = bSucces And Me.LoadAuxillaryData()
 
@@ -620,7 +620,7 @@ Public Class cDBDataSource
         ' Start saving
         bSucces = Me.SaveModelInfo()
         bSucces = bSucces And Me.SaveEcopathGroups()
-        bSucces = bSucces And Me.SaveFleetInfo()
+        bSucces = bSucces And Me.SaveEcopathFleetInfo()
         bSucces = bSucces And Me.SaveParticleSizeDistribution()
         bSucces = bSucces And Me.SaveAuxillaryData()
         bSucces = bSucces And Me.SaveEcosimScenarioDefinitions()
@@ -1779,7 +1779,7 @@ Public Class cDBDataSource
         Me.m_db.ReleaseReader(reader)
         reader = Nothing
 
-        bSucces = bSucces And Me.LoadDietComp()
+        bSucces = bSucces And Me.LoadEcopathDietComp()
         bSucces = bSucces And Me.LoadStanza()
 
         Return bSucces
@@ -1869,7 +1869,7 @@ Public Class cDBDataSource
         ' Save changes
         Me.m_db.ReleaseWriter(writer, True)
 
-        bSucces = bSucces And Me.SaveDietComp()
+        bSucces = bSucces And Me.SaveEcopathDietComp()
         bSucces = bSucces And Me.SaveStanza()
 
         Return bSucces
@@ -2057,7 +2057,7 @@ Public Class cDBDataSource
     ''' </summary>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
-    Private Function LoadDietComp() As Boolean
+    Private Function LoadEcopathDietComp() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim reader As IDataReader = Nothing
@@ -2117,7 +2117,7 @@ Public Class cDBDataSource
     ''' </summary>
     ''' <returns>True if succesful</returns>
     ''' -------------------------------------------------------------------
-    Private Function SaveDietComp() As Boolean
+    Private Function SaveEcopathDietComp() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -2259,7 +2259,7 @@ Public Class cDBDataSource
     ''' This check is inherited from EwE5.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Private Function LoadFleetInfo() As Boolean
+    Private Function LoadEcopathFleetInfo() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim bSucces As Boolean = True
@@ -2273,9 +2273,9 @@ Public Class cDBDataSource
             Return False
         End If
 
-        bSucces = LoadFleets()
-        bSucces = bSucces And LoadCatch()
-        bSucces = bSucces And LoadDiscardFate()
+        bSucces = LoadEcopathFleets()
+        bSucces = bSucces And LoadEcopathCatch()
+        bSucces = bSucces And LoadEcopathDiscardFate()
 
         Return bSucces
 
@@ -2283,11 +2283,11 @@ Public Class cDBDataSource
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Loads all fleets.
+    ''' Loads all Ecopath fleets.
     ''' </summary>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
-    Private Function LoadFleets() As Boolean
+    Private Function LoadEcopathFleets() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim reader As IDataReader = Nothing
@@ -2303,7 +2303,7 @@ Public Class cDBDataSource
                 ecopathDS.CostPct(iFleet, eCostIndex.Fixed) = CSng(reader("FixedCost"))
                 ecopathDS.CostPct(iFleet, eCostIndex.Sail) = CSng(reader("SailingCost"))
                 ecopathDS.CostPct(iFleet, eCostIndex.CUPE) = CSng(reader("variableCost"))
-                'ecopathDS.FleetColor(iFleet) = StringUtils.ConvertToInteger(CStr(reader("PoolColor"), Me.m_ni), Globalization.NumberStyles.HexNumber)
+                ecopathDS.FleetColor(iFleet) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
                 iFleet += 1
 
             End While
@@ -2319,7 +2319,7 @@ Public Class cDBDataSource
 
     End Function
 
-    Private Function LoadCatch() As Boolean
+    Private Function LoadEcopathCatch() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim reader As IDataReader = Nothing
@@ -2361,7 +2361,7 @@ Public Class cDBDataSource
 
     End Function
 
-    Private Function LoadDiscardFate() As Boolean
+    Private Function LoadEcopathDiscardFate() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim reader As IDataReader = Nothing
@@ -2414,11 +2414,11 @@ Public Class cDBDataSource
     ''' </summary>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
-    Private Function SaveFleetInfo() As Boolean
+    Private Function SaveEcopathFleetInfo() As Boolean
 
         Dim bSucces As Boolean = True
 
-        bSucces = SaveFleets()
+        bSucces = SaveEcopathFleets()
         bSucces = bSucces And SaveCatch()
         bSucces = bSucces And SaveDiscardFate()
 
@@ -2432,7 +2432,7 @@ Public Class cDBDataSource
     ''' </summary>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
-    Private Function SaveFleets() As Boolean
+    Private Function SaveEcopathFleets() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim writer As cEwEDatabase.cEwEDbWriter = Me.m_db.GetWriter("EcopathFleet")
@@ -2464,7 +2464,7 @@ Public Class cDBDataSource
                 drow("FixedCost") = ecopathDS.CostPct(iFleet, eCostIndex.Fixed)
                 drow("SailingCost") = ecopathDS.CostPct(iFleet, eCostIndex.Sail)
                 drow("variableCost") = ecopathDS.CostPct(iFleet, eCostIndex.CUPE)
-                'drow("PoolColor") = String.Format("{0:x8}", ecopathDS.FleetColor(iFleet))
+                drow("PoolColor") = String.Format("{0:x8}", ecopathDS.FleetColor(iFleet))
 
                 If bAddNewRow Then writer.AddRow(drow)
             Next iFleet
