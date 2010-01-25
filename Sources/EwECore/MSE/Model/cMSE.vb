@@ -1177,6 +1177,9 @@ Namespace MSE
                 Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_quota, Me.m_esData)
             End If
 
+            'next is a vc temp fix for debugging
+            'Data.MSYStartTimeIndex = 649
+
             Try
 
                 For iflt As Integer = 1 To Me.m_esData.nGear
@@ -1214,9 +1217,9 @@ Namespace MSE
                         System.Console.WriteLine()
 
                         Do While Done = False
-                            'For Effort As Single = EffMin To EffMax Step EffStep
+
                             NumberOfSteps += 1
-                            'tryEffort = 2
+
                             Me.SetFishingEffort(iflt, tryEffort)
 
                             'let ecosim init to the new values
@@ -1227,6 +1230,12 @@ Namespace MSE
 
                             'evaluate the ecosim output for this fleet/effort combination
                             CurValue = Me.EvaluateMSY(iflt)
+
+                            'if a fishery catches a group with low catch but high biomass, it may cause the effort to skyrocket
+                            'to avoid this: set a limit on the F values for the exploited groups:
+                            'if that happens set the value to a low value, so that it may try a lower effort
+                            ' If CheckIfFishingMortalitiesTooHigh(iflt) Then CurValue = CurValue / 2
+
                             System.Console.WriteLine(NumberOfSteps.ToString & ", Fleet = " & iflt.ToString & ":  MSY effort " _
                                                      & MSYeffort(iflt).ToString & ":  cur effort " & tryEffort.ToString & ", toolow = " _
                                                      & TooLowEffort.ToString & ", toobig = " & TooBigEffort.ToString & ", maxvalue = " _
@@ -1234,6 +1243,8 @@ Namespace MSE
 
                             'tell the interface an iteration has been completed
                             Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iflt, MSYeffort(iflt)))
+                            If CurValue = 0 Then Done = True 'no effort or no value
+                            If CurValue < 0 Then Stop
 
                             If CurValue > maxValue Then
                                 TooLowEffort = lastEffort
@@ -1374,11 +1385,11 @@ Namespace MSE
                     'For it As Integer = Me.m_data.MSYStartTimeIndex To Me.m_esData.NTimes
                     'only evaluate for the last 25 years:
                     For it As Integer = Me.m_esData.NTimes - 25 To Me.m_esData.NTimes
-                        'get data storted by ecosim over time  
+                        'get data stored by ecosim over time  
                         'Dim bio As Single = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
                         'sumbio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
                         'FleetCatchValue += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it) * Me.m_epdata.Market(curFleet, igrp) ' * PropCaughtByThisGear
-                        GroupCatch += m_esData.ResultsSumCatchByGroupGear(igrp, curFleet, it) * marketPrice
+                        GroupCatch += m_esData.ResultsSumCatchByGroupGear(igrp, curFleet, it)
                         'System.Console.Write("Group " & igrp.ToString & " = " & FleetCatchValue.ToString & ", ")
                     Next
                     'average over the 25 years:
@@ -1420,6 +1431,24 @@ Namespace MSE
                 Return False
             End Try
             Return True
+
+        End Function
+
+        Private Function CheckIfFishingMortalitiesTooHigh(ByVal curFleet As Integer) As Boolean
+
+            CheckIfFishingMortalitiesTooHigh = False
+
+            For iGrp As Integer = 1 To Me.m_esData.nGroups
+                If Me.m_epdata.Landing(curFleet, iGrp) > 0 Then
+                    'need to limit the fishing mortality to avoid groups being crashed completely, making a temp fix here
+                    'm_esData.FishRateMax(iGrp) = m_epdata.PB(iGrp)
+                    'If Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, iGrp, m_core.nEcosimTimeSteps) > 10 * m_epdata.PB(iGrp) Then
+                    If Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, m_core.nEcosimTimeSteps) < 0.000001 * m_epdata.B(iGrp) Then
+                        ' should really use m_esData.FishRateMax(iGrp) Then
+                        Return True
+                    End If
+                End If
+            Next
 
         End Function
 
