@@ -20,8 +20,6 @@ Imports ScientificInterface.Other
     ''' <summary>A number representing the row that contains the first Fleet</summary>
     Private Const iFIRSTFLEETROW As Integer = 1
 
-    ''' <summary>The <see cref="cCore">Core</see> currently being modified.</summary>
-    Private m_core As cCore = Nothing
     ''' <summary>List of active Fleets.</summary>
     Private m_lfiFleets As New List(Of FleetInfo)
     ''' <summary>List of removed Fleets.</summary>
@@ -206,7 +204,6 @@ Imports ScientificInterface.Other
     Public Sub New()
 
         MyBase.New()
-        Me.m_core = cCore.GetInstance()
 
         ' Set up visual models for reflecting Fleet modification status
         With Me.m_vmOriginal
@@ -275,16 +272,14 @@ Imports ScientificInterface.Other
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub FillData()
 
-        ' Get the core reference
-        Dim core As cCore = cCore.GetInstance()
         Dim Fleet As cFleetInput = Nothing
         Dim fi As FleetInfo = Nothing
 
         ' Populate local administration from a snapshot of the live data
 
         ' Make snapshot of Fleet configuration
-        For iFleet As Integer = 1 To core.nFleets
-            Fleet = core.FleetInputs(iFleet)
+        For iFleet As Integer = 1 To Me.Core.nFleets
+            Fleet = Core.FleetInputs(iFleet)
             fi = New FleetInfo(Fleet)
             Me.m_lfiFleets.Add(fi)
         Next
@@ -839,7 +834,7 @@ Imports ScientificInterface.Other
         ' Handle added and removed items
         If (bConfigurationChanged) Then
 
-            If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
+            If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
             cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
@@ -852,12 +847,12 @@ Imports ScientificInterface.Other
                 fi = DirectCast(Me.m_lfiFleets(iFleet), FleetInfo)
                 If (Object.ReferenceEquals(fi.Fleet, Nothing)) Then
                     Dim igt As Integer = iFleet + 1
-                    bSuccess = bSuccess And Me.m_core.AddFleet(fi.Name, igt, iDBID)
+                    bSuccess = bSuccess And Me.Core.AddFleet(fi.Name, igt, iDBID)
                     ' Map this new ID during update
                     htFleetID.Add(fi, iDBID)
                 Else
                     If ((iFleet + 1) <> fi.Fleet.Index) Then
-                        bSuccess = bSuccess And Me.m_core.MoveFleet(fi.Fleet.Index, iFleet + 1)
+                        bSuccess = bSuccess And Me.Core.MoveFleet(fi.Fleet.Index, iFleet + 1)
                     End If
                 End If
             Next
@@ -867,7 +862,7 @@ Imports ScientificInterface.Other
             For iFleet = 0 To Me.m_lfiFleetsRemoved.Count - 1
                 fi = DirectCast(Me.m_lfiFleetsRemoved(iFleetRemove), FleetInfo)
                 If (Not Object.ReferenceEquals(fi.Fleet, Nothing)) And (fi.Confirmed = True) Then
-                    If (Me.m_core.RemoveFleet(fi.Fleet.Index)) Then
+                    If (Me.Core.RemoveFleet(fi.Fleet.Index)) Then
                         Me.m_lfiFleets.Remove(fi)
                         Me.m_lfiFleetsRemoved.Remove(fi)
                     Else
@@ -878,11 +873,11 @@ Imports ScientificInterface.Other
             Next
 
             ' The core will reload now
-            Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
+            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
             cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
             ' Test whether new Fleets were loaded correctly
-            Debug.Assert(Me.m_lfiFleets.Count = Me.m_core.nFleets, "Dialog and core out of sync on Fleets")
+            Debug.Assert(Me.m_lfiFleets.Count = Me.Core.nFleets, "Dialog and core out of sync on Fleets")
         End If
 
         ' Update core objects
@@ -890,7 +885,7 @@ Imports ScientificInterface.Other
             For iFleet = 0 To Me.m_lfiFleets.Count - 1
                 fi = DirectCast(Me.m_lfiFleets(iFleet), FleetInfo)
                 If fi.IsChanged() Then
-                    Fleet = Me.m_core.FleetInputs(iFleet + 1)
+                    Fleet = Me.Core.FleetInputs(iFleet + 1)
                     If Fleet.Name <> fi.Name Then Fleet.Name = fi.Name
                 End If
             Next

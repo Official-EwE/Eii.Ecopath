@@ -1,50 +1,3 @@
-'==============================================================================
-'
-' $Log: FisheryInputNonMarketPriceEwEGrid.vb,v $
-' Revision 1.4  2009/05/21 19:27:17  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:11  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:53:40  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:32  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.18  2008/08/02 03:04:13  jeroens
-' Renamed resources
-'
-' Revision 1.17  2008/06/02 00:01:29  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.16  2008/05/29 22:22:42  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.15  2008/04/07 02:31:09  jeroens
-' Cleaning up resources
-'
-' Revision 1.14  2008/01/11 12:33:18  jeroens
-' Fixed bug 299
-'
-' Revision 1.13  2007/10/10 02:59:14  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.12  2007/08/23 14:50:51  jeroens
-' * Moved NonMarketValue from fleet to groupinput
-'
-' Revision 1.11  2007/07/06 20:11:18  jeroens
-' * Core stanza group list no longer exposed
-'
-' Revision 1.10  2007/06/22 17:33:34  fgao
-' Fixed a bug: Indent the multistanza group display.
-'
-' Revision 1.9  2007/04/29 03:45:12  jeroens
-' * Connected to EwEGridRefresh
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -57,8 +10,13 @@ Imports EwEUtils.Core
 
 Namespace Ecopath.Input
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid accepting Ecopath Non-Market price user input.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
-    Public Class FisheryInputNonMarketPriceEwEGrid
+       Public Class FisheryInputNonMarketPriceEwEGrid
         : Inherits EwEGrid
 
         Public Sub New()
@@ -80,23 +38,22 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim group As cEcoPathGroupInput = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim intStanzaGroupIndex(core.nGroups) As Integer 'Hold the stanza group index
+            Dim intStanzaGroupIndex(Core.nGroups) As Integer 'Hold the stanza group index
             Dim intStanzaGroupIndexPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
 
-            For i As Integer = 1 To core.nGroups : intStanzaGroupIndex(i) = -1 : Next
+            For i As Integer = 1 To Core.nGroups : intStanzaGroupIndex(i) = -1 : Next
 
             'Tag stanza group
-            For stanzaGroupIndex As Integer = 0 To core.nStanzas - 1
-                sg = core.StanzaGroups(stanzaGroupIndex)
+            For stanzaGroupIndex As Integer = 0 To Core.nStanzas - 1
+                sg = Core.StanzaGroups(stanzaGroupIndex)
 
                 For iStanza As Integer = 1 To sg.NStanzas
-                    group = core.EcoPathGroupInputs(sg.iGroups(iStanza))
+                    group = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
                     intStanzaGroupIndex(group.Index) = stanzaGroupIndex
                 Next
             Next
@@ -105,8 +62,8 @@ Namespace Ecopath.Input
             Me.RowsCount = 1
 
             'Create rows for all groups
-            For rowIndex As Integer = 1 To core.nGroups
-                group = core.EcoPathGroupInputs(rowIndex)
+            For rowIndex As Integer = 1 To Core.nGroups
+                group = Core.EcoPathGroupInputs(rowIndex)
                 ' Is group stanza?
                 If intStanzaGroupIndex(group.Index) = -1 Then
                     ' #No: display group info
@@ -114,7 +71,7 @@ Namespace Ecopath.Input
                     FillInRows(iRow, group)
                 Else
                     '#Yes: Group is stanza
-                    sg = core.StanzaGroups(intStanzaGroupIndex(group.Index))
+                    sg = Core.StanzaGroups(intStanzaGroupIndex(group.Index))
                     If intStanzaGroupIndex(group.Index) <> intStanzaGroupIndexPrev Then 'If stanza group appears the first time Then diplay the + control
                         hgcStanza = New EwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)

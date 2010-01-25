@@ -13,21 +13,13 @@ Namespace Ecopath
 
     Public Class EditFleets
 
-#Region "Private variables"
-
-        Private m_Core As cCore = Nothing
-
-#End Region
-
 #Region "Constructors"
-        Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-            ' Add any initialization after the InitializeComponent() call.
-            m_Core = cCore.GetInstance()
-
+        Public Sub New(ByVal uic As cUIContext)
+            Me.InitializeComponent()
+            Me.m_grid.UIContext = uic
         End Sub
+
 #End Region
 
 #Region "Event handlers "
@@ -36,7 +28,8 @@ Namespace Ecopath
             Me.UpdateControls()
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles OK_Button.Click
 
             ' Try to apply grid changes
             If Me.m_grid.Apply() = False Then
@@ -50,37 +43,44 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles Cancel_Button.Click
             Me.DialogResult = Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnInsert.Click
+        Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnInsert.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnMoveUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnMoveUp.Click
+        Private Sub m_btnMoveUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnMoveUp.Click
             Me.m_grid.MoveRowUp()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnMoveDown.Click
+        Private Sub m_btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnMoveDown.Click
             Me.m_grid.MoveRowDown()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnDelete.Click
+        Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnDelete.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
+        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnKeep.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_grid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
+        Private Sub m_grid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
+            Handles m_grid.OnSelectionChanged
             Me.UpdateControls()
         End Sub
 

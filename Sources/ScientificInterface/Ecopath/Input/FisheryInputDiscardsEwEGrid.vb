@@ -1,62 +1,3 @@
-'==============================================================================
-'
-' $Log: FisheryInputDiscardsEwEGrid.vb,v $
-' Revision 1.4  2009/05/21 19:27:16  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:10  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:53:39  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:31  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.22  2008/07/29 13:06:45  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.21  2008/06/02 00:01:28  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.20  2008/05/29 22:22:41  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.19  2008/04/07 02:31:08  jeroens
-' Cleaning up resources
-'
-' Revision 1.18  2008/01/31 17:08:14  jeroens
-' Made fleet column headers live updating
-'
-' Revision 1.17  2008/01/11 12:33:19  jeroens
-' Fixed bug 299
-'
-' Revision 1.16  2007/10/10 02:59:14  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.15  2007/07/06 20:11:18  jeroens
-' * Core stanza group list no longer exposed
-'
-' Revision 1.14  2007/07/03 07:08:47  jeroens
-' * Fixed member naming inconsistencies
-'
-' Revision 1.13  2007/06/22 17:33:34  fgao
-' Fixed a bug: Indent the multistanza group display.
-'
-' Revision 1.12  2007/06/21 22:23:36  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.11  2007/06/15 16:35:49  jeroens
-' * Capable of handling a model without fleets
-'
-' Revision 1.10  2007/06/05 02:45:50  jeroens
-' * Renamed cMultiOperation Add ->Sum
-'
-' Revision 1.9  2007/04/29 03:45:11  jeroens
-' * Connected to EwEGridRefresh
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -70,8 +11,13 @@ Imports EwEUtils.Core
 
 Namespace Ecopath.Input
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid accepting Ecopath Discards user input.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
-    Public Class FisheryInputDiscardsEwEGrid
+     Public Class FisheryInputDiscardsEwEGrid
         : Inherits EwEGrid
 
         Public Sub New()
@@ -81,20 +27,19 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub InitStyle()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
 
             MyBase.InitStyle()
 
             'Define grid dimensions
-            Me.Redim(1, core.nFleets + 3)
+            Me.Redim(1, Me.Core.nFleets + 3)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet name
-            For fleetIndex As Integer = 1 To core.nFleets
-                source = core.FleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
+                source = Core.FleetInputs(fleetIndex)
                 Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(source, eVarNameFlags.Name)
             Next
 
@@ -107,7 +52,6 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim sourceSec As cCoreInputOutputBase = Nothing
             Dim sg As cStanzaGroup = Nothing
@@ -115,7 +59,6 @@ Namespace Ecopath.Input
             Dim intStanzaGroupIndex(core.nGroups) As Integer 'Hold the stanza group index
             Dim intStanzaGroupIndexPrev As Integer = -1
 
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim prop As cProperty = Nothing
 
             Dim alSumRow As New ArrayList()
@@ -198,7 +141,7 @@ Namespace Ecopath.Input
 
                 For rowIndex As Integer = 1 To core.nGroups
                     sourceSec = core.EcoPathGroupInputs(rowIndex)
-                    prop = pm.GetProperty(source, eVarNameFlags.Discards, sourceSec)
+                    prop = Me.PropertyManager.GetProperty(source, eVarNameFlags.Discards, sourceSec)
                     alSumCol.Add(prop)
                 Next
                 opSumCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumCol.ToArray())
@@ -215,10 +158,9 @@ Namespace Ecopath.Input
         End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, _
-          ByRef alSumRow As ArrayList, ByRef alSumAll As ArrayList, Optional ByVal isIndented As Boolean = False)
-            Dim core As cCore = cCore.GetInstance()
+            ByRef alSumRow As ArrayList, ByRef alSumAll As ArrayList, Optional ByVal isIndented As Boolean = False)
+
             Dim sourceSec As cCoreInputOutputBase = Nothing
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim prop As cProperty = Nothing
             Dim propCell As PropertyCell = Nothing
 
@@ -229,11 +171,11 @@ Namespace Ecopath.Input
                 Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
             End If
             ' For each fleet (each column) 
-            For fleetIndex As Integer = 1 To core.nFleets
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
                 ' Get the fleet object 
-                sourceSec = core.FleetInputs(fleetIndex)
+                sourceSec = Core.FleetInputs(fleetIndex)
                 ' Get the index landing property
-                prop = pm.GetProperty(sourceSec, eVarNameFlags.Discards, source)
+                prop = Me.PropertyManager.GetProperty(sourceSec, eVarNameFlags.Discards, source)
 
                 propCell = New PropertyCell(prop)
                 propCell.SuppressZero = True

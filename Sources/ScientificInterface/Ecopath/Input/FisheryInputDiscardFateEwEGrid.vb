@@ -1,62 +1,3 @@
-'==============================================================================
-'
-' $Log: FisheryInputDiscardFateEwEGrid.vb,v $
-' Revision 1.5  2009/05/28 12:36:59  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/05/21 19:27:15  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:10  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:53:39  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:31  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.20  2008/07/29 13:06:44  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.19  2008/06/02 00:01:28  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.18  2008/05/29 22:22:41  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.17  2008/05/13 18:48:06  jeroens
-' Fixed bug 466
-'
-' Revision 1.16  2008/04/07 02:31:08  jeroens
-' Cleaning up resources
-'
-' Revision 1.15  2008/02/13 16:44:29  jeroens
-' Renamed resources
-'
-' Revision 1.14  2008/01/31 17:08:14  jeroens
-' Made fleet column headers live updating
-'
-' Revision 1.13  2007/10/10 02:59:13  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.12  2007/07/03 07:08:47  jeroens
-' * Fixed member naming inconsistencies
-'
-' Revision 1.11  2007/06/21 22:23:36  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.10  2007/06/05 02:45:50  jeroens
-' * Renamed cMultiOperation Add ->Sum
-'
-' Revision 1.9  2007/05/31 13:11:21  jeroens
-' * Renamed StyleGuide StyleFlags to eStyleFlags
-'
-' Revision 1.8  2007/04/29 03:45:11  jeroens
-' * Connected to EwEGridRefresh
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -70,30 +11,35 @@ Imports EwEUtils.Core
 
 Namespace Ecopath.Input
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid accepting Ecopath Discard Fate user input.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class FisheryInputDiscardFateEwEGrid
         : Inherits EwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
             Me.FixedColumnWidths = False
         End Sub
 
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
-            Dim core As cCore = cCore.GetInstance()
+
             Dim source As cCoreInputOutputBase = Nothing
 
-            Me.Redim(core.nFleets + 1, core.nDetritusGroups + 4)
+            Me.Redim(Core.nFleets + 1, Core.nDetritusGroups + 4)
 
             ' Grid Cell (0, 0) - Fleet name
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
 
             ' Dynamic column header - Detritus groups
-            For columnIndex As Integer = 1 To core.nDetritusGroups
-                source = core.EcoPathGroupInputs(core.nGroups - core.nDetritusGroups + columnIndex)
+            For columnIndex As Integer = 1 To Core.nDetritusGroups
+                source = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + columnIndex)
                 Me(0, columnIndex + 1) = New PropertyColumnHeaderCell(source, eVarNameFlags.Name)
             Next
 
@@ -107,7 +53,6 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim sourceSec As cCoreInputOutputBase = Nothing
 
@@ -116,7 +61,6 @@ Namespace Ecopath.Input
             sum.SetStyle(cStyleGuide.eStyleFlags.Sum Or cStyleGuide.eStyleFlags.NotEditable)
 
             Dim prop As cProperty = Nothing
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim alSumAll As New ArrayList()
 
             Dim opSumAll As cMultiOperation = Nothing
@@ -135,9 +79,9 @@ Namespace Ecopath.Input
                 Me(rowIndex, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
                 For columnIndex As Integer = 2 To core.nDetritusGroups + 1
                     ' Get the ecopath input
-                    sourceSec = core.EcoPathGroupInputs(columnIndex - 1)
+                    sourceSec = Me.Core.EcoPathGroupInputs(columnIndex - 1)
                     ' Dynamic indexed Discard fate property 
-                    prop = pm.GetProperty(source, eVarNameFlags.DiscardFate, sourceSec)
+                    prop = Me.PropertyManager.GetProperty(source, eVarNameFlags.DiscardFate, sourceSec)
                     ' Add prop to the arraylist
                     alSumAll.Add(prop)
                     'assigned it to destined cell

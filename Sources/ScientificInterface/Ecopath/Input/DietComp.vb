@@ -1,31 +1,17 @@
-'==============================================================================
-'
-' $Log: DietComp.vb,v $
-' Revision 1.1  2008/09/26 07:31:31  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2007/07/04 17:08:26  jeroens
-' * Fixed runtime error on parameterless constructor
-'
-' Revision 1.3  2007/07/03 21:25:05  jeroens
-' * Reactivated 'Set' in derived grid panels
-'
-' Revision 1.2  2006/10/15 02:56:16  jeroens
-' + Hooked up 'Sum to one' button
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
-
 Imports EwECore
+
+#End Region ' Imports 
 
 Namespace Ecopath.Input
 
-    ''' -----------------------------------------------------------------------
+    ''' =======================================================================
     ''' <summary>
-    ''' 
+    ''' Form implementing the Ecopath Diet Composition interface.
     ''' </summary>
-    ''' -----------------------------------------------------------------------
+    ''' =======================================================================
     Public Class DietComp
 
         Public Sub New()
@@ -39,7 +25,7 @@ Namespace Ecopath.Input
 
         Private Sub tsSumtoOneBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles tsSumtoOneBtn.Click
-            cCore.GetInstance().NormalizeDietInput()
+            Me.UIContext.Core.NormalizeDietInput()
         End Sub
     End Class
 

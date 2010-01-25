@@ -1,94 +1,3 @@
-'==============================================================================
-'
-' $Log: DetritusFateEwEGrid.vb,v $
-' Revision 1.5  2009/05/28 12:36:59  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/05/21 19:27:15  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:09  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:54:29  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:31  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.28  2008/08/02 03:04:12  jeroens
-' Renamed resources
-'
-' Revision 1.27  2008/07/29 13:06:44  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.26  2008/06/02 00:01:28  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.25  2008/05/29 22:22:41  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.24  2008/05/18 01:13:06  jeroens
-' Nitty-gritty
-'
-' Revision 1.23  2008/05/13 18:48:05  jeroens
-' Fixed bug 466
-'
-' Revision 1.22  2008/04/07 02:31:08  jeroens
-' Cleaning up resources
-'
-' Revision 1.21  2008/01/31 17:08:23  jeroens
-' Made fleet column headers live updating
-'
-' Revision 1.20  2008/01/24 14:45:22  jeroens
-' Fixed detritus group selection description
-'
-' Revision 1.19  2008/01/11 12:33:19  jeroens
-' Fixed bug 299
-'
-' Revision 1.18  2007/10/10 02:59:13  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.17  2007/07/06 20:11:17  jeroens
-' * Core stanza group list no longer exposed
-'
-' Revision 1.16  2007/07/03 07:08:47  jeroens
-' * Fixed member naming inconsistencies
-'
-' Revision 1.15  2007/06/21 22:23:36  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.14  2007/06/05 02:45:49  jeroens
-' * Renamed cMultiOperation Add ->Sum
-'
-' Revision 1.13  2007/05/31 13:11:21  jeroens
-' * Renamed StyleGuide StyleFlags to eStyleFlags
-'
-' Revision 1.12  2007/04/29 03:45:11  jeroens
-' * Connected to EwEGridRefresh
-'
-' Revision 1.11  2007/03/21 19:12:15  joeh
-' *Implement stanza hierarchy
-'
-' Revision 1.10  2006/08/15 15:40:29  jeroens
-' * Fixed spelling error
-'
-' Revision 1.9  2006/06/28 13:59:22  jeroens
-' * Renamed iGroup member vars, properties to Index
-' * Renamed GroupName vartype and usage to Name where applicable
-' * Merged usage of varName Name (fleet) with GroupName
-'
-' Revision 1.8  2006/06/20 22:55:48  fgao
-' Grids update
-'
-' Revision 1.7  2006/06/16 03:52:05  cvsuser
-' + JS: Sum cell now represented by simple cSingleProperty rather than top-heavy cFormulaProperty
-'
-' Revision 1.6  2006/06/15 02:28:28  cvsuser
-' + JS: Sum(1) column populated via FormulaProperty to gain consistent colour and decimal display feedback
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -102,6 +11,11 @@ Imports EwEUtils.Core
 
 Namespace Ecopath.Input
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid accepting Ecopath Detritus Fate user input.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class DetritusFateEwEGrid
         : Inherits EwEGrid
@@ -115,27 +29,26 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
 
             'Define grid dimensions
             'Me.Redim(core.nGroups + 1, 3 + core.nDetritusGroups)
-            Me.Redim(core.nGroups + 1, 4 + core.nDetritusGroups)
+            Me.Redim(Core.nGroups + 1, 4 + Core.nDetritusGroups)
 
             'Header cell (0,0) Source \ fate
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCEFATE)
 
             ' Detritus column header cells
-            For i As Integer = 1 To core.nDetritusGroups
-                source = core.EcoPathGroupInputs(core.nGroups - core.nDetritusGroups + i)
+            For i As Integer = 1 To Core.nDetritusGroups
+                source = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + i)
                 Me(0, i + 1) = New PropertyColumnHeaderCell(source, eVarNameFlags.Name)
             Next
 
             ' The export header cell
-            Me(0, core.nDetritusGroups + 2) = New EwEColumnHeaderCell(My.Resources.GENERIC_HEADER_EXPORT)
+            Me(0, Core.nDetritusGroups + 2) = New EwEColumnHeaderCell(My.Resources.GENERIC_HEADER_EXPORT)
             ' The sum header cell
-            Me(0, core.nDetritusGroups + 3) = New EwEColumnHeaderCell(My.Resources.HEADER_SUM)
+            Me(0, Core.nDetritusGroups + 3) = New EwEColumnHeaderCell(My.Resources.HEADER_SUM)
 
             Me.FixedColumns = 2
 
@@ -143,11 +56,9 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim sourceSec As cCoreInputOutputBase = Nothing
 
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim prop As cProperty = Nothing
             Dim propSum As cSingleProperty = Nothing
             Dim propExport As cFormulaProperty = Nothing
@@ -200,7 +111,7 @@ Namespace Ecopath.Input
 
                         Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
                         Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
-                        prop = pm.GetProperty(source, eVarNameFlags.DetritusFate, sourceSec, True, core.nGroups - core.nDetritusGroups)
+                        prop = Me.PropertyManager.GetProperty(source, eVarNameFlags.DetritusFate, sourceSec, True, Core.nGroups - Core.nDetritusGroups)
                         Me(iRow, iCol + 1) = New PropertyCell(prop)
                         alProp.Add(prop)
                     Next
@@ -240,7 +151,7 @@ Namespace Ecopath.Input
 
                         Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
                         Me(iRow, 1) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
-                        prop = pm.GetProperty(source, eVarNameFlags.DetritusFate, sourceSec, True, core.nGroups - core.nDetritusGroups)
+                        prop = Me.PropertyManager.GetProperty(source, eVarNameFlags.DetritusFate, sourceSec, True, Core.nGroups - Core.nDetritusGroups)
                         Me(iRow, iCol + 1) = New PropertyCell(prop)
                         alProp.Add(prop)
                     Next

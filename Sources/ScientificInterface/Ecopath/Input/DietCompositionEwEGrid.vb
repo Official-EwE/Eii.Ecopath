@@ -1,95 +1,3 @@
-'==============================================================================
-'
-' $Log: DietCompositionEwEGrid.vb,v $
-' Revision 1.4  2009/05/21 19:27:15  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:10  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:54:29  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:31  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.31  2008/08/02 03:04:12  jeroens
-' Renamed resources
-'
-' Revision 1.30  2008/07/29 13:06:44  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.29  2008/07/21 23:48:40  jeroens
-' Simplified cell construction
-'
-' Revision 1.28  2008/06/02 00:01:28  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.27  2008/05/29 22:22:41  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.26  2008/04/07 02:31:08  jeroens
-' Cleaning up resources
-'
-' Revision 1.25  2007/10/10 02:59:13  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.24  2007/07/03 07:12:09  jeroens
-' * Fixed member naming inconsistencies
-'
-' Revision 1.23  2007/06/21 23:57:21  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.22  2007/06/21 22:23:36  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.21  2007/06/05 14:00:10  jeroens
-' - Removed directcasts
-'
-' Revision 1.20  2007/06/05 02:45:49  jeroens
-' * Renamed cMultiOperation Add ->Sum
-'
-' Revision 1.19  2007/05/10 00:07:10  jeroens
-' * Last group row correctly displayed
-'
-' Revision 1.18  2007/04/29 03:45:11  jeroens
-' * Connected to EwEGridRefresh
-'
-' Revision 1.17  2007/02/16 00:15:21  fgao
-' Ongoing ecospace
-'
-' Revision 1.16  2006/11/19 04:26:45  jeroens
-' + Fixed diagonal text alignment issue
-'
-' Revision 1.15  2006/10/25 23:35:01  fgao
-' Add cell merge
-'
-' Revision 1.14  2006/10/25 18:47:46  fgao
-' Using individual visualizer to color the cells in the diagonal line.
-'
-' Revision 1.13  2006/10/20 23:20:55  fgao
-' Add row and column indexes and selection.
-'
-' Revision 1.12  2006/10/03 03:19:37  jeroens
-' + Formula properties constructed with unique IDs
-'
-' Revision 1.11  2006/09/30 03:51:08  jeroens
-' + Neatified
-'
-' Revision 1.10  2006/09/29 21:16:40  sherman
-' Added (1-sum) row to bottom
-'
-' Revision 1.9  2006/09/21 01:00:24  jeroens
-' * Updated to cCoreGroupBase
-'
-' Revision 1.8  2006/08/15 15:40:29  jeroens
-' * Fixed spelling error
-'
-' Revision 1.7  2006/07/06 15:53:01  jeroens
-' + Implemented Cell.SuppressZero for DC value cells to increase grid legibility
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -103,6 +11,11 @@ Imports EwEUtils.Core
 
 Namespace Ecopath.Input
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid accepting Ecopath Diet user input.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class DietCompositionEwEGrid
         : Inherits EwEGrid
@@ -116,11 +29,10 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreGroupBase = Nothing
 
             ' Define grid dimensions
-            Me.Redim(core.nGroups + 4, 2)
+            Me.Redim(Core.nGroups + 4, 2)
 
             Dim rowCnt As Integer = Me.RowsCount
             ' Set header cells
@@ -130,8 +42,8 @@ Namespace Ecopath.Input
 
             Dim columnIndex As Integer = 2
 
-            For i As Integer = 1 To core.nGroups
-                source = core.EcoPathGroupInputs(i)
+            For i As Integer = 1 To Core.nGroups
+                source = Core.EcoPathGroupInputs(i)
                 ' Group index header cell
                 Me(i, 0) = New EwERowHeaderCell(i)
                 ' # Group name row header cells
@@ -162,7 +74,6 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
@@ -182,9 +93,9 @@ Namespace Ecopath.Input
             Dim columnIndex As Integer = 2
             Dim rowCnt As Integer = Me.RowsCount
             ' For each column
-            For groupIndex As Integer = 1 To core.nLivingGroups
+            For groupIndex As Integer = 1 To Core.nLivingGroups
                 ' Get the group
-                source = core.EcoPathGroupInputs(groupIndex)
+                source = Core.EcoPathGroupInputs(groupIndex)
 
                 If source.PP < 1 Then
 
@@ -192,9 +103,9 @@ Namespace Ecopath.Input
                     alPropSumAll.Clear()
 
                     ' For each row
-                    For rowIndex As Integer = 1 To core.nGroups
+                    For rowIndex As Integer = 1 To Core.nGroups
                         ' Get index group
-                        sourceSec = core.EcoPathGroupInputs(rowIndex)
+                        sourceSec = Core.EcoPathGroupInputs(rowIndex)
 
                         ' Get the indexed dietcomp property
                         prop = pm.GetProperty(source, eVarNameFlags.DietComp, sourceSec)

@@ -41,7 +41,6 @@ Public Class AppLauncher
 
     Private m_uic As cUIContext = Nothing
 
-    Private m_propertyManager As cPropertyManager = Nothing
     Private m_pluginManager As cPluginManager = Nothing
     Private m_pluginMenuHandler As cPluginMenuHandler = Nothing
     Private m_coreController As cCoreController = Nothing
@@ -1013,13 +1012,13 @@ Public Class AppLauncher
 
     Private Sub InitCoreParams()
 
-        Me.UIContext = New cUIContext(cCore.GetInstance(), cStyleGuide.GetInstance())
+        Me.UIContext = New cUIContext(cCore.GetInstance(), _
+                                      cStyleGuide.GetInstance(), _
+                                      cPropertyManager.GetInstance(), _
+                                      cCommandHandler.GetInstance())
 
         ' Config state monitor
         Me.Core.StateMonitor.SyncObject = Me
-
-        ' Get one and only property manager AFTER the core has been created.
-        Me.m_propertyManager = cPropertyManager.GetInstance()
 
         ' Create plugin manager for this GUI
         Me.m_pluginManager = New cPluginManager()
@@ -2427,10 +2426,11 @@ Public Class AppLauncher
     ''' Command handler; invokes the edit groups interface
     ''' </summary>
     Private Sub OnEditGroups(ByVal cmd As cCommand) Handles m_cmdEditGroups.OnInvoke
-        Dim dlg As New EditGroups
 
+        Dim dlg As New EditGroups(Me.UIContext)
         Me.m_Help.HelpTopic(dlg) = "Edit groups.htm"
         dlg.ShowDialog(Me)
+
     End Sub
 
     ''' <summary>
@@ -2444,7 +2444,7 @@ Public Class AppLauncher
     ''' Command handler; invokes the edit multi stanza interface
     ''' </summary>
     Private Sub OnEditMultiStanza(ByVal cmd As cCommand) Handles m_cmdEditMultiStanza.OnInvoke
-        Dim dlg As New EditMultiStanza()
+        Dim dlg As New EditMultiStanza(Me.UIContext)
         Me.m_Help.HelpTopic(dlg) = "Edit multi stanza.htm"
         dlg.ShowDialog(Me)
     End Sub
@@ -2461,7 +2461,7 @@ Public Class AppLauncher
     ''' Command handler; invokes the edit fleets interface
     ''' </summary>
     Private Sub OnEditFleets(ByVal cmd As cCommand) Handles m_cmdEditFleets.OnInvoke
-        Dim dlg As New EditFleets
+        Dim dlg As New EditFleets(Me.UIContext)
         Me.m_Help.HelpTopic(dlg) = "Edit fleets.htm"
         dlg.ShowDialog(Me)
     End Sub

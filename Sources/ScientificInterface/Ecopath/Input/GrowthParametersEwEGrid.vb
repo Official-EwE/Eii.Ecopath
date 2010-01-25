@@ -10,16 +10,17 @@ Imports EwEUtils.Core
 
 Namespace Ecopath.Input
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid accepting Ecopath Particle Size Distribution Growth user input.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
-    Public Class GrowthParametersEwEGrid
+      Public Class GrowthParametersEwEGrid
         : Inherits EwEGrid
-
-        Private m_core As cCore = Nothing
-        Private m_frm As Form = Nothing
 
         Public Sub New()
             MyBase.new()
-            m_core = cCore.GetInstance
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -44,7 +45,6 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim group As cEcoPathGroupInput = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
@@ -98,7 +98,7 @@ Namespace Ecopath.Input
                 End If
             Next
 
-         End Sub
+        End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal group As cEcoPathGroupInput, Optional ByVal isIndented As Boolean = False)
 

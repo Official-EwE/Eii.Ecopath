@@ -7,73 +7,74 @@ Imports SourceGrid2.Cells
 
 #End Region ' Imports
 
-''' ===========================================================================
-''' <summary>
-''' 
-''' </summary>
-''' ===========================================================================
-<CLSCompliant(False)> _
-Public Class FisheryInputDiscardMortGrid
-    Inherits EwEGrid
+Namespace Ecopath.Input
 
-    Public Sub New()
-        MyBase.new()
-    End Sub
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid accepting Ecopath Discard Mortality user input.
+    ''' </summary>
+    ''' =======================================================================
+    <CLSCompliant(False)> _
+    Public Class FisheryInputDiscardMortGrid
+        Inherits EwEGrid
 
-    Protected Overrides Sub InitStyle()
-        MyBase.InitStyle()
+        Public Sub New()
+            MyBase.new()
+        End Sub
 
-        Dim core As cCore = cCore.GetInstance()
-        Dim src As cCoreInputOutputBase = Nothing
+        Protected Overrides Sub InitStyle()
+            MyBase.InitStyle()
 
-        Me.Redim(1, 2 + core.nFleets)
+            Dim src As cCoreInputOutputBase = Nothing
 
-        Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+            Me.Redim(1, 2 + Core.nFleets)
 
-        For iFleet As Integer = 1 To core.nFleets
-            src = core.FleetInputs(iFleet)
-            Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(src, eVarNameFlags.Name, Nothing, _
-                                                             My.Resources.HEADERMASK_UNIT_ZEROTOONE)
-        Next
+            Me(0, 0) = New EwEColumnHeaderCell("")
+            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
 
-        Me.FixedColumns = 2
-        Me.FixedColumnWidths = True
-    End Sub
-
-    Protected Overrides Sub FillData()
-
-        Dim core As cCore = cCore.GetInstance()
-        Dim group As cCoreInputOutputBase = Nothing
-        Dim fleet As cFleetInput = Nothing
-        Dim cell As ICell = Nothing
-
-        ' For each group
-        For iGroup As Integer = 1 To core.nGroups
-
-            Me.AddRow()
-
-            'Get the group info
-            group = core.EcoPathGroupInputs(iGroup)
-
-            ' Fleet name As row header
-            Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
-            Me(iGroup, 1) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
-
-            ' Fleet cells
-            For iFleet As Integer = 1 To core.nFleets
-                fleet = core.FleetInputs(iFleet)
-                Me(iGroup, 1 + iFleet) = New PropertyCell(fleet, eVarNameFlags.DiscardMortality, group)
+            For iFleet As Integer = 1 To Me.Core.nFleets
+                src = Core.FleetInputs(iFleet)
+                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(src, eVarNameFlags.Name, Nothing, _
+                                                                 My.Resources.HEADERMASK_UNIT_ZEROTOONE)
             Next
-        Next
 
-    End Sub
+            Me.FixedColumns = 2
+            Me.FixedColumnWidths = True
+        End Sub
 
-    Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
-        Get
-            Return eCoreComponentType.EcoPath
-        End Get
-    End Property
+        Protected Overrides Sub FillData()
 
-End Class
+            Dim group As cCoreInputOutputBase = Nothing
+            Dim fleet As cFleetInput = Nothing
+            Dim cell As ICell = Nothing
 
+            ' For each group
+            For iGroup As Integer = 1 To core.nGroups
+
+                Me.AddRow()
+
+                'Get the group info
+                group = core.EcoPathGroupInputs(iGroup)
+
+                ' Fleet name As row header
+                Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
+                Me(iGroup, 1) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
+
+                ' Fleet cells
+                For iFleet As Integer = 1 To Me.Core.nFleets
+                    fleet = Core.FleetInputs(iFleet)
+                    Me(iGroup, 1 + iFleet) = New PropertyCell(fleet, eVarNameFlags.DiscardMortality, group)
+                Next
+            Next
+
+        End Sub
+
+        Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
+            Get
+                Return eCoreComponentType.EcoPath
+            End Get
+        End Property
+
+    End Class
+
+End Namespace

@@ -16,7 +16,7 @@ Namespace Ecopath
 
 #Region " Private variables "
 
-        Private m_core As cCore = Nothing
+        Private m_uic As cUIContext = Nothing
         Private m_fpK As cEwEFormatProvider = Nothing
         Private m_fpRecPwr As cEwEFormatProvider = Nothing
         Private m_fpBab As cEwEFormatProvider = Nothing
@@ -28,16 +28,16 @@ Namespace Ecopath
 
 #End Region ' Private variables
 
-#Region "Constructors"
+#Region " Constructors "
 
-        Public Sub New(Optional ByVal group As cEcoPathGroupInput = Nothing)
+        Public Sub New(ByVal uic As cUIContext, _
+                       Optional ByVal group As cEcoPathGroupInput = Nothing)
 
             Me.InitializeComponent()
 
-            Me.m_core = cCore.GetInstance()
-
+            Me.m_uic = uic
             Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.m_core, Me.m_zgc)
+            Me.m_zgh.Attach(Me.m_uic.Core, Me.m_zgc)
             Me.m_groupInitial = group
 
         End Sub
@@ -46,14 +46,14 @@ Namespace Ecopath
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            Dim bEcosimLoaded As Boolean = (Me.m_core.ActiveEcosimScenarioIndex > -1)
-            Dim mgr As cForcingFunctionManager = Me.m_core.ForcingShapeManager
+            Dim bEcosimLoaded As Boolean = (Me.m_uic.Core.ActiveEcosimScenarioIndex > -1)
+            Dim mgr As cForcingFunctionManager = Me.m_uic.Core.ForcingShapeManager
             Dim lItems As New List(Of Object)
 
             ' Gather stanza names
             lItems.Clear()
-            For iIndex As Integer = 0 To Me.m_core.nStanzas - 1
-                lItems.Add(Me.m_core.StanzaGroups(iIndex))
+            For iIndex As Integer = 0 To Me.m_uic.Core.nStanzas - 1
+                lItems.Add(Me.m_uic.Core.StanzaGroups(iIndex))
             Next
             Me.m_fpStanza = New cEwEFormatProvider(Me.m_cmbStanzaGroups, GetType(Integer), lItems.ToArray())
 
@@ -235,9 +235,9 @@ Namespace Ecopath
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
 
-            Dim bEcosimLoaded As Boolean = Me.m_core.StateMonitor.HasEcosimLoaded()
+            Dim bEcosimLoaded As Boolean = Me.m_uic.Core.StateMonitor.HasEcosimLoaded()
             Dim stanza As cStanzaGroup = Me.m_grid.StanzaGroup
-            Dim source As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(stanza.iGroups(stanza.LeadingB))
+            Dim source As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(stanza.iGroups(stanza.LeadingB))
 
             Me.m_fpStanza.Value = Me.m_grid.StanzaGroup.Index
             Me.m_fpK.Value = source.VBK
@@ -267,9 +267,9 @@ Namespace Ecopath
         ''' -------------------------------------------------------------------
         Private Sub SaveChanges(ByVal bApplyToCore As Boolean)
 
-            Dim bEcosimLoaded As Boolean = Me.m_core.StateMonitor.HasEcosimLoaded()
+            Dim bEcosimLoaded As Boolean = Me.m_uic.Core.StateMonitor.HasEcosimLoaded()
             Dim stanza As cStanzaGroup = Me.m_grid.StanzaGroup
-            Dim groupLeading As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(stanza.iGroups(stanza.LeadingB))
+            Dim groupLeading As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(stanza.iGroups(stanza.LeadingB))
 
             ' vbK obtained from leading group in stanza config
             groupLeading.VBK = CSng(Me.m_fpK.Value)

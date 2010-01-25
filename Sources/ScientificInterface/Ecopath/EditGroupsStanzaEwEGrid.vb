@@ -1,3 +1,5 @@
+#Region " Imports "
+
 Option Strict On
 
 Imports EwECore
@@ -6,6 +8,8 @@ Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports ScientificInterface.Other
 Imports EwEUtils.Drawing
+
+#End Region ' Imports
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
@@ -26,8 +30,6 @@ Imports EwEUtils.Drawing
     ''' <summary>Default VBK</summary>
     Private Const sVBK As Single = 0.3!
 
-    ''' <summary>The <see cref="cCore">Core</see> currently being modified.</summary>
-    Private m_core As cCore = Nothing
     ''' <summary>List of active groups.</summary>
     Private m_lgiGroups As New List(Of GroupInfo)
     ''' <summary>List of removed groups.</summary>
@@ -576,7 +578,7 @@ Imports EwEUtils.Drawing
         ''' </summary>
         ''' <returns>True if changed.</returns>
         ''' -------------------------------------------------------------------
-        Public Function IsChanged() As Boolean
+        Public Function IsChanged(ByVal core As cCore) As Boolean
             Dim gi As GroupInfo = Nothing
             Dim group As cEcoPathGroupInput = Nothing
 
@@ -595,7 +597,7 @@ Imports EwEUtils.Drawing
                 ' Is a new group? Flag as changed
                 If Object.ReferenceEquals(gi.Group, Nothing) Then Return True
                 ' Is an existing group. Now check if group order has changed.
-                group = cCore.GetInstance().EcoPathGroupInputs(Me.StanzaGroup.iGroups(i + 1))
+                group = core.EcoPathGroupInputs(Me.StanzaGroup.iGroups(i + 1))
                 If Not Object.ReferenceEquals(gi.Group, group) Then Return True
                 ' Check if stanza age has changed
                 If gi.StanzaAge <> Me.StanzaGroup.StartAge(i + 1) Then Return True
@@ -690,7 +692,6 @@ Imports EwEUtils.Drawing
     Public Sub New()
 
         MyBase.New()
-        Me.m_core = cCore.GetInstance()
 
         ' Set up visual models for reflecting group modification status
         With Me.m_vmOriginal
@@ -769,7 +770,6 @@ Imports EwEUtils.Drawing
     Protected Overrides Sub FillData()
 
         ' Get the core reference
-        Dim core As cCore = cCore.GetInstance()
         Dim group As cEcoPathGroupInput = Nothing
         Dim gi As GroupInfo = Nothing
         Dim stanza As cStanzaGroup = Nothing
@@ -974,7 +974,7 @@ Imports EwEUtils.Drawing
 
         pos = New Position(iRow, eColumnTypes.GroupColor)
         Dim clr As Color = cStyleGuide.IntToColor(gi.PoolColor)
-        If clr.A = 0 Then clr = cStyleGuide.GetInstance().GroupColorDefault(Me.m_core, iRow, Me.m_lgiGroups.Count)
+        If clr.A = 0 Then clr = cStyleGuide.GetInstance().GroupColorDefault(Me.Core, iRow, Me.m_lgiGroups.Count)
         aCells(eColumnTypes.GroupColor).SetValue(pos, clr)
 
         Select Case gi.Status
@@ -1006,7 +1006,7 @@ Imports EwEUtils.Drawing
         Me.AllowUpdates = False
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
             clr = cStyleGuide.IntToColor(Me.m_lgiGroups(iGroup).PoolColor)
-            If clr.A = 0 Then clr = cStyleGuide.GetInstance().GroupColorDefault(Me.m_core, iGroup + 1, Me.m_lgiGroups.Count)
+            If clr.A = 0 Then clr = cStyleGuide.GetInstance().GroupColorDefault(Me.Core, iGroup + 1, Me.m_lgiGroups.Count)
             Me(iGroup + iFIRSTGROUPROW, eColumnTypes.GroupColor).Value = clr
         Next iGroup
         Me.AllowUpdates = True
@@ -1493,7 +1493,7 @@ Imports EwEUtils.Drawing
         Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
-            Me.m_lgiGroups(iGroup).PoolColor = cStyleGuide.ColorToInt(sg.GroupColorDefault(Me.m_core, iGroup + 1, Me.m_lgiGroups.Count))
+            Me.m_lgiGroups(iGroup).PoolColor = cStyleGuide.ColorToInt(sg.GroupColorDefault(Me.Core, iGroup + 1, Me.m_lgiGroups.Count))
             Me.UpdateRow(iGroup + iFIRSTGROUPROW)
         Next
 
@@ -1900,7 +1900,7 @@ Imports EwEUtils.Drawing
         For iStanza = 0 To Me.m_lsiStanza.Count - 1
             si = DirectCast(Me.m_lsiStanza(iStanza), StanzaInfo)
             bConfigurationChanged = bConfigurationChanged Or si.IsNew()
-            bConfigurationChanged = bConfigurationChanged Or si.IsChanged()
+            bConfigurationChanged = bConfigurationChanged Or si.IsChanged(Me.Core)
         Next iStanza
 
         ' Assess stanza to remove
@@ -1920,7 +1920,7 @@ Imports EwEUtils.Drawing
         ' Handle added and removed items
         If (bConfigurationChanged) Then
 
-            If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then
+            If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then
                 cApplicationStatusNotifier.SetStatusText("", TriState.False)
                 Return False
             End If
@@ -1934,13 +1934,13 @@ Imports EwEUtils.Drawing
                 gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
                 If (gi.IsNew()) Then
                     Dim igt As Integer = iGroup + 1
-                    bSuccess = bSuccess And Me.m_core.AddGroup(gi.Name, gi.PP, gi.vbk, igt, iDBID)
+                    bSuccess = bSuccess And Me.Core.AddGroup(gi.Name, gi.PP, gi.VBK, igt, iDBID)
                     Debug.Assert(igt = iGroup + 1)
                     ' Map this new ID during update
                     htGroupID.Add(gi, iDBID)
                 Else
                     If ((iGroup + 1) <> gi.Group.Index) Then
-                        If Not Me.m_core.MoveGroup(gi.Group.Index, iGroup + 1) Then
+                        If Not Me.Core.MoveGroup(gi.Group.Index, iGroup + 1) Then
                             sb.AppendLine("Failed to move group " & gi.Name)
                             bSuccess = False
                         End If
@@ -1955,7 +1955,7 @@ Imports EwEUtils.Drawing
             While (bSuccess = True) And (iGroup < agi.Length)
                 gi = agi(iGroup)
                 If (Not gi.IsNew()) And (gi.Confirmed = True) Then
-                    If (Me.m_core.RemoveGroup(gi.Group.Index)) Then
+                    If (Me.Core.RemoveGroup(gi.Group.Index)) Then
                         Me.m_lgiGroups.Remove(gi)
                         Me.m_lgiGroupsRemoved.Remove(gi)
                     Else
@@ -1972,7 +1972,7 @@ Imports EwEUtils.Drawing
             While (bSuccess = True) And (iStanza < asiRemove.Length)
                 si = asiRemove(iStanza)
                 If (Not si.IsNew()) Then
-                    If Me.m_core.RemoveStanza(si.StanzaGroup.Index) = True Then
+                    If Me.Core.RemoveStanza(si.StanzaGroup.Index) = True Then
                         Me.m_lsiStanza.Remove(si)
                         Me.m_lsiStanzaRemoved.Remove(si)
                     Else
@@ -2007,7 +2007,7 @@ Imports EwEUtils.Drawing
                         aiGroupID(i) = iDBID
                         aiStartAge(i) = gi.StanzaAge
                     Next
-                    If Not Me.m_core.AppendStanza(si.Name, aiGroupID, aiStartAge, iStanzaID) Then
+                    If Not Me.Core.AppendStanza(si.Name, aiGroupID, aiStartAge, iStanzaID) Then
                         sb.AppendLine("Failed to add stanza configuration " & si.Name)
                         bSuccess = False
                     End If
@@ -2020,12 +2020,12 @@ Imports EwEUtils.Drawing
             While (bSuccess = True) And (iStanza < Me.m_lsiStanza.Count)
                 si = DirectCast(Me.m_lsiStanza(iStanza), StanzaInfo)
                 If (Not si.IsNew()) Then
-                    If si.IsChanged Then
+                    If si.IsChanged(Me.Core) Then
                         Dim sg As cStanzaGroup = si.StanzaGroup
                         ' Remove all current groups
                         For iLifestage As Integer = 1 To si.StanzaGroup.NStanzas
-                            group = Me.m_core.EcoPathGroupInputs(sg.iGroups(iLifestage))
-                            If Not Me.m_core.RemoveStanzaLifestage(sg.Index, CInt(group.GetVariable(eVarNameFlags.DBID))) Then
+                            group = Me.Core.EcoPathGroupInputs(sg.iGroups(iLifestage))
+                            If Not Me.Core.RemoveStanzaLifestage(sg.Index, CInt(group.GetVariable(eVarNameFlags.DBID))) Then
                                 bSuccess = False
                             End If
                         Next
@@ -2037,7 +2037,7 @@ Imports EwEUtils.Drawing
                             Else
                                 iDBID = htGroupID(gi)
                             End If
-                            If Not Me.m_core.AddStanzaLifestage(si.StanzaGroup.Index, iDBID, gi.StanzaAge, gi.StanzaMortality) Then
+                            If Not Me.Core.AddStanzaLifestage(si.StanzaGroup.Index, iDBID, gi.StanzaAge, gi.StanzaMortality) Then
                                 bSuccess = False
                             End If
                         Next
@@ -2052,7 +2052,7 @@ Imports EwEUtils.Drawing
 
             ' The core will reload now
             Try
-                Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
+                Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
             Catch ex As Exception
                 ' this is to catch a core assertion when SumB=0
             End Try
@@ -2070,15 +2070,15 @@ Imports EwEUtils.Drawing
                 gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
                 If gi.IsChanged() Then
                     ' Find groups by ID; the core has reloaded
-                    For iGrpTmp As Integer = 1 To Me.m_core.nGroups
-                        group = Me.m_core.EcoPathGroupInputs(iGrpTmp)
+                    For iGrpTmp As Integer = 1 To Me.Core.nGroups
+                        group = Me.Core.EcoPathGroupInputs(iGrpTmp)
                         If group.getID = gi.Group.getID Then
                             If (group.Name <> gi.Name) Then group.Name = gi.Name
                             If (group.PP <> gi.PP) Then group.PP = gi.PP
                             If (group.VBK <> gi.VBK) Then group.VBK = gi.VBK
                             If (group.PoolColor <> gi.PoolColor) Then
                                 ' Is gi.poolcolor the default color? 
-                                If gi.PoolColor = cStyleGuide.ColorToInt(stgd.GroupColorDefault(Me.m_core, iGrpTmp, Me.m_core.nGroups)) Then
+                                If gi.PoolColor = cStyleGuide.ColorToInt(stgd.GroupColorDefault(Me.Core, iGrpTmp, Me.Core.nGroups)) Then
                                     ' #Yes: Set color to transparent to allow group to show up as true default colour
                                     group.PoolColor = 0
                                 Else

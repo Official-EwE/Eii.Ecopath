@@ -1,65 +1,3 @@
-'==============================================================================
-'
-' $Log: FisheryInputOffVesselPriceEwEGrid.vb,v $
-' Revision 1.5  2009/05/28 12:37:00  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/05/21 19:27:17  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:11  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:53:40  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:32  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/08/04 02:27:45  jeroens
-' Renamed varname MarketPrice to OffVesselPrice
-'
-' Revision 1.4  2008/07/29 13:06:45  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.3  2008/06/02 00:01:29  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.2  2008/05/29 22:22:42  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.1  2008/05/07 00:55:18  jeroens
-' Renamed market price grid
-'
-' Revision 1.18  2008/04/07 02:31:09  jeroens
-' Cleaning up resources
-'
-' Revision 1.17  2008/01/31 17:08:15  jeroens
-' Made fleet column headers live updating
-'
-' Revision 1.16  2008/01/11 12:33:18  jeroens
-' Fixed bug 299
-'
-' Revision 1.15  2007/10/10 02:59:14  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.14  2007/07/06 20:11:18  jeroens
-' * Core stanza group list no longer exposed
-'
-' Revision 1.13  2007/07/03 07:08:47  jeroens
-' * Fixed member naming inconsistencies
-'
-' Revision 1.12  2007/06/22 17:33:34  fgao
-' Fixed a bug: Indent the multistanza group display.
-'
-' Revision 1.11  2007/06/21 22:23:37  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.10  2007/04/29 03:45:12  jeroens
-' * Connected to EwEGridRefresh
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -72,8 +10,13 @@ Imports EwEUtils.Core
 
 Namespace Ecopath.Input
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid accepting Ecopath Off-vessel price user input.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
-    Public Class FisheryInputOffVesselPriceEwEGrid
+      Public Class FisheryInputOffVesselPriceEwEGrid
         : Inherits EwEGrid
 
         Public Sub New()
@@ -85,11 +28,9 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
 
             Me.Redim(1, core.nFleets + 1 + 1)
-
 
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
@@ -107,7 +48,6 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
@@ -162,7 +102,7 @@ Namespace Ecopath.Input
         End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
-            Dim core As cCore = cCore.GetInstance()
+
             Dim sourceSec As cCoreInputOutputBase = Nothing
 
             Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
@@ -172,9 +112,9 @@ Namespace Ecopath.Input
                 Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
             End If
             ' For each fleet
-            For fleetIndex As Integer = 1 To core.nFleets
+            For fleetIndex As Integer = 1 To Core.nFleets
                 ' Get the fleet info
-                sourceSec = core.FleetInputs(fleetIndex)
+                sourceSec = Core.FleetInputs(fleetIndex)
                 ' The market price is indexed by (fleetIndex, groupIndex)
                 ' Add the dynamic property to the destined cell
                 Me(iRow, fleetIndex + 1) = New PropertyCell(sourceSec, eVarNameFlags.OffVesselPrice, source)

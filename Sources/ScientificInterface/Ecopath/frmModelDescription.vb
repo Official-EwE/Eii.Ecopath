@@ -48,8 +48,8 @@ Public Class frmModelDescription
 
         Dim eweModel As cEwEModel = m_core.EwEModel()
         Dim psdParms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters()
+        Dim pm As cPropertyManager = Me.UIContext.PropertyManager
         Dim appl As AppLauncher = AppLauncher.GetInstance()
-        Dim pm As cPropertyManager = cPropertyManager.GetInstance()
 
         Me.m_fpName = New cPropertyFormatProvider(Me.m_tbName, eweModel, eVarNameFlags.Name)
         Me.m_fpDescription = New cPropertyFormatProvider(Me.m_tbDescription, eweModel, eVarNameFlags.Description)

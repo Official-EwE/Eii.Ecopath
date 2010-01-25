@@ -1,34 +1,4 @@
-'==============================================================================
-'
-' $Log: BasicInputEwEGrid.vb,v $
-' Revision 1.9  2009/05/28 12:36:59  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.8  2009/05/21 19:27:14  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.7  2009/03/30 19:01:57  jeroens
-' Z-column now properly hidden
-'
-' Revision 1.6  2009/03/12 14:11:16  jeroens
-' Implemented Z/PB columns
-'
-' Revision 1.5  2009/03/12 01:32:44  jeroens
-' SAVE before you commit! SAVE!
-'
-' Revision 1.4  2009/03/11 19:32:11  jeroens
-' Switched Z, P/B columns
-'
-' Revision 1.3  2009/03/09 15:05:07  jeroens
-' Split P/B col into P/B (non stanza), Z (stanza)
-'
-' Revision 1.2  2009/01/16 18:30:09  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:31:30  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
@@ -37,8 +7,15 @@ Imports ScientificInterface.Other
 Imports SourceGrid2
 Imports EwEUtils.Core
 
+#End Region ' Imports 
+
 Namespace Ecopath.Input
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid displaying Ecopath Basic Input information.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class BasicInputEwEGrid
         : Inherits EwEGrid
@@ -91,27 +68,26 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim cell As EwECellBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim abInStanza(core.nGroups) As Boolean
-            Dim aiStanza(core.nGroups) As Integer 'Hold the stanza group number
+            Dim abInStanza(Core.nGroups) As Boolean
+            Dim aiStanza(Core.nGroups) As Integer 'Hold the stanza group number
             Dim iStanzaPrev As Integer = -1
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
 
-            For i As Integer = 1 To core.nGroups : aiStanza(i) = -1 : Next
+            For i As Integer = 1 To Core.nGroups : aiStanza(i) = -1 : Next
 
             ' Create stanza groups first
             ' Oh yes, this core exposed list(!) is zero-based
-            For stanzaIndex As Integer = 0 To core.nStanzas - 1
-                sg = core.StanzaGroups(stanzaIndex)
+            For stanzaIndex As Integer = 0 To Core.nStanzas - 1
+                sg = Core.StanzaGroups(stanzaIndex)
 
                 ' The group list of a StanzaGroup is one-based! Are you confused yet?
                 For iStanza As Integer = 1 To sg.NStanzas
-                    source = core.EcoPathGroupInputs(sg.iGroups(iStanza))
+                    source = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
                     abInStanza(source.Index) = True
                     aiStanza(source.Index) = stanzaIndex
                 Next
@@ -121,9 +97,9 @@ Namespace Ecopath.Input
             Me.RowsCount = 1
 
             ' Create rows for all groups
-            For groupIndex As Integer = 1 To core.nGroups
+            For groupIndex As Integer = 1 To Core.nGroups
 
-                source = core.EcoPathGroupInputs(groupIndex)
+                source = Core.EcoPathGroupInputs(groupIndex)
 
                 If aiStanza(source.Index) = -1 Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow()
@@ -154,7 +130,7 @@ Namespace Ecopath.Input
 
                 Else 'Group is stanza
 
-                    sg = core.StanzaGroups(aiStanza(source.Index))
+                    sg = Core.StanzaGroups(aiStanza(source.Index))
                     If aiStanza(source.Index) <> iStanzaPrev Then 'If stanza group appears the first time Then diplay the + control
 
                         ' Fill row with dummy cells. We'll do something fancy here one day
@@ -212,22 +188,21 @@ Namespace Ecopath.Input
         End Sub
 
         Friend Sub OnCellDoubleClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
-            Dim dlgEditMultiStanza As EditMultiStanza = Nothing
-            Dim propStanzaDoubleClicked As cProperty = Nothing
-            Dim objStanzaDoubleClicked As cEcoPathGroupInput = Nothing
+            Dim dlg As EditMultiStanza = Nothing
+            Dim prop As cProperty = Nothing
+            Dim group As cEcoPathGroupInput = Nothing
 
             If Not TypeOf cell Is PropertyCell Then Return
-            propStanzaDoubleClicked = DirectCast(cell, PropertyCell).GetProperty()
-            objStanzaDoubleClicked = DirectCast(propStanzaDoubleClicked.Source, cEcoPathGroupInput)
+            prop = DirectCast(cell, PropertyCell).GetProperty()
+            group = DirectCast(prop.Source, cEcoPathGroupInput)
 
-            dlgEditMultiStanza = New EditMultiStanza(objStanzaDoubleClicked)
-            dlgEditMultiStanza.ShowDialog(Me)
+            dlg = New EditMultiStanza(Me.UIContext, group)
+            dlg.ShowDialog(Me)
         End Sub
 
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim ci As ColumnInfo = Me.Columns(eColumnTypes.Z)
 
             Me.Rows(0).Height = 60
@@ -235,7 +210,7 @@ Namespace Ecopath.Input
             Me.Columns(1).Width = 120
             Me.Columns(1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
 
-            ci.Visible = (core.nStanzas > 0)
+            ci.Visible = (Me.Core.nStanzas > 0)
 
             For i As Integer = 2 To Me.ColumnsCount - 1
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
