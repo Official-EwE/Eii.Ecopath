@@ -330,6 +330,7 @@ Namespace Controls.EwEGrid
             End Get
             Set(ByVal value As cUIContext)
                 Me.m_uic = value
+                Me.RefreshContent()
             End Set
         End Property
 
@@ -356,6 +357,29 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cPropertyManager">property manager</see> that 
+        ''' this grid can interact with.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property PropertyManager() As cPropertyManager
+            Get
+                Return Me.m_uic.PropertyManager
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cCommandHandler">command handler</see> that 
+        ''' this grid can interact with.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property ComandHandler() As cCommandHandler
+            Get
+                Return Me.m_uic.CommandHander
+            End Get
+        End Property
 #End Region ' IUIElement implementation
 
 #Region " EwE events "
@@ -379,6 +403,9 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Protected Overrides Sub InitLayout()
             MyBase.InitLayout()
+
+            ' Safety check
+            If (Me.m_uic Is Nothing) Then Return
 
             Me.SuspendLayoutGrid()
             Me.ClearData()

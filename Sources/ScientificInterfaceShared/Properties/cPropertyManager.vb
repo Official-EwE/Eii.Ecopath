@@ -1,33 +1,7 @@
-'==============================================================================
-'
-' $Log: cPropertyManager.vb,v $
-' Revision 1.7  2009/05/28 12:37:05  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.6  2009/05/26 21:55:15  jeroens
-' Responds to messages from more core components
-'
-' Revision 1.5  2009/05/23 11:50:23  jeroens
-' Fixed assertion on nStanzasForStanzaGroup datatype
-'
-' Revision 1.4  2009/02/26 00:55:40  jeroens
-' Pruned history
-'
-' Revision 1.3  2009/01/19 18:07:25  jeroens
-' MessageHandlers, CoreStateMonitor have sync objects
-'
-' Revision 1.2  2009/01/16 18:30:34  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:31:22  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
-Imports eweCore
+Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
 Imports System.ComponentModel
