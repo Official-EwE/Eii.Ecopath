@@ -20,7 +20,7 @@ Public Class frmMSY
 
             'Hardwire run state parameters...for now
             Me.m_mse.ModelParameters.MSYMSYEvaluateValue = True
-            Me.m_mse.ModelParameters.MSYRunSilent = True
+            Me.m_mse.ModelParameters.MSYRunSilent = False
             Me.m_mse.ModelParameters.MSYStartTimeIndex = 2
 
             'get the number of fleets for the progress updates
