@@ -2968,6 +2968,7 @@ Public Class cCore
             Me.m_EcoPathData.CostPct(iFleet, eCostIndex.Fixed) = fleet.FixedCost
             Me.m_EcoPathData.CostPct(iFleet, eCostIndex.CUPE) = fleet.CPUECost
             Me.m_EcoPathData.CostPct(iFleet, eCostIndex.Sail) = fleet.SailCost
+            Me.m_EcoPathData.FleetColor(iFleet) = fleet.PoolColor
 
             For iGroup As Integer = 1 To m_EcoPathData.NumLiving
                 Me.m_EcoPathData.Landing(iFleet, iGroup) = fleet.Landings(iGroup)
@@ -3012,8 +3013,7 @@ Public Class cCore
                 fleet.FixedCost = m_EcoPathData.CostPct(iFleet, eCostIndex.Fixed)
                 fleet.CPUECost = m_EcoPathData.CostPct(iFleet, eCostIndex.CUPE)
                 fleet.SailCost = m_EcoPathData.CostPct(iFleet, eCostIndex.Sail)
-
-                'fleet.PoolColor = m_EcoPathData.FleetColor(iFleet)
+                fleet.PoolColor = m_EcoPathData.FleetColor(iFleet)
 
                 For iGroup = 1 To m_EcoPathData.NumGroups
                     fleet.Landings(iGroup) = CSng(m_EcoPathData.Landing(iFleet, iGroup))
