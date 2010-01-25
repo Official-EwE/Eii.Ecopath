@@ -96,6 +96,17 @@ Namespace Ecosim
             MyBase.OnFormClosed(e)
         End Sub
 
+        Public Overrides Property UIContext() As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As cUIContext)
+                MyBase.UIContext = value
+                Me.m_GridGear.UIContext = value
+                Me.m_GridGroup.UIContext = value
+            End Set
+        End Property
+
         Private Sub cbGears_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles cbGears.SelectedIndexChanged
             m_GridGroup.SelFleetIndex = cbGears.SelectedIndex
