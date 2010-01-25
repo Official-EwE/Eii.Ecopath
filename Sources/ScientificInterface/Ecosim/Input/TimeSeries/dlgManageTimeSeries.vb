@@ -63,6 +63,8 @@ Public Class dlgManageTimeSeries
         ' -- Enable --
         ' Prepare grid
         Me.m_gridEnableTS = New gridWeightTS()
+        m_gridEnableTS.UIContext = Me.m_uic
+
         ' Show grid
         Me.m_plEnableTimeSeries.Controls.Add(Me.m_gridEnableTS)
         ' CFG
