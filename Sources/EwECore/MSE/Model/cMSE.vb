@@ -82,6 +82,7 @@ Namespace MSE
         'unload them????
 
         'ToDo_jb MSY the MSY tests for loaded Effort time series I think it should be looking for F (fishing mortality) 
+        'this now checks F it should be moved out of the fleet loop
 
         'ToDo_jb 30-Dec-09 MSE note Number of years the MSE runs Ecosim for. At one point we had it running for an extra number of years(cSearchDataStructures.ExtraYearsForSearch) 
         'like the Fishing Policy search does.
@@ -99,6 +100,7 @@ Namespace MSE
 
         'ToDo_jb 18-Jan-2010 MSE looks like there may be a problem with Catch by fleet and catch by group these value should be the same but they aren't....
 
+        'ToDo_jb 25-Jan-2010 MSE needs to unload F timeseries
 
 #Region "Private data"
 
@@ -1152,6 +1154,7 @@ Namespace MSE
             Me.m_data.StopRun = False
 
             Dim NumberOfYears As Integer = Me.m_esData.NumYears
+            Dim extraYears As Integer = 25
 
             'Setup Ecosim 
             'timestep handler that ecosim will call where we can grab data during the run
@@ -1170,7 +1173,7 @@ Namespace MSE
             If iDataset > -1 Then DS = Me.m_core.TimeSeriesDataset(iDataset)
 
             'this is required to set the base effort values :
-            m_core.EcoSimModelParameters.NumberYears = NumberOfYears + 25
+            m_core.EcoSimModelParameters.NumberYears = NumberOfYears + extraYears
             SetBaseValues()
 
             If Me.m_core.PluginManager IsNot Nothing Then
@@ -1212,6 +1215,12 @@ Namespace MSE
                                 End If
                             Next
 
+                        End If
+
+                        'UpdateTimeSeries() will reset the NumberYears to the number of years in the timeseries
+                        'make sure this did not make NumberYears smaller
+                        If m_core.EcoSimModelParameters.NumberYears < NumberOfYears + extraYears Then
+                            m_core.EcoSimModelParameters.NumberYears = m_core.EcoSimModelParameters.NumberYears + extraYears
                         End If
 
                         'when projecting the time series, the forcing functions shuld be set to the average over the ecosim run, not to 1
