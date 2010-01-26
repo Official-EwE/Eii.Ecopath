@@ -232,9 +232,7 @@ Public Class cPluginManager
         Dim afi() As FileInfo = Nothing
 
         Try
-            ' Load plugins embedded in the main exe
-            Me.LoadPluginAssembly(Application.ExecutablePath)
-
+            
             di = New DirectoryInfo(strPath)
             'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
             afi = di.GetFiles("*.dll")
