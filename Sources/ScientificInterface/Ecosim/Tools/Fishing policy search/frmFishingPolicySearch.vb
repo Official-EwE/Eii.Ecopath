@@ -16,6 +16,7 @@ Namespace Ecosim
     Public Class frmFishingPolicySearch
 
         Private m_blocks As ucPolicyColorBlocks = Nothing
+        Private m_core As cCore = Nothing
         Private m_manager As cFishingPolicyManager = Nothing
 
         Private m_gridObjectiveWeights As gridSearchObjectivesWeight = Nothing
@@ -34,53 +35,39 @@ Namespace Ecosim
         Private m_lstOptEnabled As New List(Of cControlEnabler)
 
         ''' <summary>Results to be plotted</summary>
+        ''' <remarks></remarks>
         Private m_lptsResults() As ResultPoints
         Private m_zghResults As cZedGraphHelper
 
         Public Sub New()
 
-            Me.InitializeComponent()
+            ' This call is required by the Windows Form Designer.
+            InitializeComponent()
 
-        End Sub
-
-        Public Overrides Property UIContext() As cUIContext
-            Get
-                Return MyBase.UIContext
-            End Get
-            Set(ByVal value As cUIContext)
-                MyBase.UIContext = value
-                Me.m_gridFleetObjectives.UIContext = value
-                Me.m_gridFleetValue.UIContext = value
-                Me.m_gridGroupObjectives.UIContext = value
-                Me.m_gridObjectiveWeights.UIContext = value
-                Me.m_gridSystemObjectives.UIContext = value
-                Me.m_gridSystemObjectivesMulti.UIContext = value
-            End Set
-        End Property
-
-        Private Sub FishingPolicySearch_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+            ' Add any initialization after the InitializeComponent() call.
+            Me.m_core = cCore.GetInstance()
 
             'Initialize Fishing Policy Manager
-            Me.m_manager = Me.UIContext.Core.FishingPolicyManager
+            Me.m_manager = Me.m_core.FishingPolicyManager
 
             Me.m_manager.Connect(AddressOf Me.RunStartedHandler, AddressOf Me.RunCompletedHandler, _
                                 AddressOf Me.SearchProgressHandler, AddressOf Me.SearchCompletedHandler)
 
 
             Me.m_blocks = New ucPolicyColorBlocks()
-            Me.m_gridObjectiveWeights = New gridSearchObjectivesWeight(Me.UIContext.Core.FishingPolicyManager)
-            Me.m_gridFleetObjectives = New gridSearchObjectivesFleet(Me.UIContext.Core.FishingPolicyManager)
-            Me.m_gridGroupObjectives = New gridSearchObjectivesGroup(Me.UIContext.Core.FishingPolicyManager)
+            Me.m_gridObjectiveWeights = New gridSearchObjectivesWeight(Me.m_core.FishingPolicyManager)
+            Me.m_gridFleetObjectives = New gridSearchObjectivesFleet(Me.m_core.FishingPolicyManager)
+            Me.m_gridGroupObjectives = New gridSearchObjectivesGroup(Me.m_core.FishingPolicyManager)
             Me.m_gridSystemObjectives = New gridFPSResultSystemObjectives()
             Me.m_gridSystemObjectivesMulti = New gridFPSResultSystemObjectives()
             Me.m_gridFleetValue = New gridFPSResultFleetValue()
 
-            Me.m_fpDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, Me.UIContext.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
-            Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, Me.UIContext.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
+            Me.m_fpDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
+            Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
-            Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.m_chkUsePlugin, Me.UIContext.Core.FishingPolicyManager.ModelParameters, eVarNameFlags.FPSUseEconomicPlugin)
+            Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.m_chkUsePlugin, m_core.FishingPolicyManager.ModelParameters, eVarNameFlags.FPSUseEconomicPlugin)
 
-            Me.m_propBaseYear = Me.UIContext.PropertyManager.GetProperty(Me.UIContext.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
+            Me.m_propBaseYear = cPropertyManager.GetInstance().GetProperty(m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
             AddHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
 
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkMaxPortUl, eOptimizeApproachTypes.SystemObjective))
@@ -94,27 +81,6 @@ Namespace Ecosim
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries}
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
-
-            Me.m_plBlocks.Controls.Clear()
-            Me.m_plBlocks.Controls.Add(m_blocks)
-            Me.m_blocks.Dock = DockStyle.Fill
-
-            Me.m_scObjectives.Panel1.Controls.Clear()
-            Me.m_scObjectives.Panel1.Controls.Add(Me.m_gridObjectiveWeights)
-            Me.m_gridObjectiveWeights.Dock = DockStyle.Fill
-
-            Me.m_scAarghArghAaargh.Panel1.Controls.Clear()
-            Me.m_scAarghArghAaargh.Panel1.Controls.Add(Me.m_gridFleetObjectives)
-            Me.m_gridFleetObjectives.Dock = DockStyle.Fill
-
-            Me.m_scAarghArghAaargh.Panel2.Controls.Clear()
-            Me.m_scAarghArghAaargh.Panel2.Controls.Add(Me.m_gridGroupObjectives)
-            Me.m_gridGroupObjectives.Dock = DockStyle.Fill
-
-            Me.m_blocks.ParmBlockCodes.nBlockCodes = Me.UIContext.Core.nFleets
-            Me.m_blocks.ParmBlockCodes.SelectedBlockNum = 1
-
-            Me.InitRunParams()
             Me.UpdateControls()
 
         End Sub
@@ -143,33 +109,58 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub FishingPolicySearch_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+            m_plBlocks.Controls.Clear()
+            m_plBlocks.Controls.Add(m_blocks)
+            m_blocks.Dock = DockStyle.Fill
+
+            m_scObjectives.Panel1.Controls.Clear()
+            m_scObjectives.Panel1.Controls.Add(m_gridObjectiveWeights)
+            m_gridObjectiveWeights.Dock = DockStyle.Fill
+
+            m_scAarghArghAaargh.Panel1.Controls.Clear()
+            m_scAarghArghAaargh.Panel1.Controls.Add(m_gridFleetObjectives)
+            m_gridFleetObjectives.Dock = DockStyle.Fill
+
+            m_scAarghArghAaargh.Panel2.Controls.Clear()
+            m_scAarghArghAaargh.Panel2.Controls.Add(m_gridGroupObjectives)
+            m_gridGroupObjectives.Dock = DockStyle.Fill
+
+            m_blocks.ParmBlockCodes.nBlockCodes = m_core.nFleets
+            m_blocks.ParmBlockCodes.SelectedBlockNum = 1
+
+            InitRunParams()
+
+        End Sub
+
         Private Sub InitRunParams()
 
-            Me.m_nudNumberOfRuns.Value = CDec(Me.m_manager.ModelParameters.nRuns)
-            Me.m_nudMaxNumEval.Value = CDec(Me.m_manager.ModelParameters.MaxNumEval)
+            m_nudNumberOfRuns.Value = CDec(Me.m_manager.ModelParameters.nRuns)
+            m_nudMaxNumEval.Value = CDec(Me.m_manager.ModelParameters.MaxNumEval)
             Select Case Me.m_manager.ModelParameters.InitOption
                 Case eInitOption.EcopathBaseF
-                    Me.m_cmbInitUsing.SelectedIndex = 0
+                    m_cmbInitUsing.SelectedIndex = 0
                 Case eInitOption.CurrentF
-                    Me.m_cmbInitUsing.SelectedIndex = 1
+                    m_cmbInitUsing.SelectedIndex = 1
                 Case eInitOption.RandomF
-                    Me.m_cmbInitUsing.SelectedIndex = 2
+                    m_cmbInitUsing.SelectedIndex = 2
             End Select
 
             Select Case Me.m_manager.ModelParameters.SearchOption
                 Case eSearchOptionTypes.Fletch
-                    Me.m_cmbSearchUsing.SelectedIndex = 0
+                    m_cmbSearchUsing.SelectedIndex = 0
                 Case eSearchOptionTypes.DFPmin
-                    Me.m_cmbSearchUsing.SelectedIndex = 1
+                    m_cmbSearchUsing.SelectedIndex = 1
             End Select
 
             Select Case Me.m_manager.ModelParameters.OptimizeApproach
                 Case eOptimizeApproachTypes.SystemObjective
-                    Me.m_cmbOptmApproach.SelectedIndex = 0
-                    Me.InitMaxSOParams()
+                    m_cmbOptmApproach.SelectedIndex = 0
+                    InitMaxSOParams()
                 Case eOptimizeApproachTypes.FleetValues
-                    Me.m_cmbOptmApproach.SelectedIndex = 1
-                    Me.InitMaxFVParams()
+                    m_cmbOptmApproach.SelectedIndex = 1
+                    InitMaxFVParams()
             End Select
 
             ' Plot graph
@@ -347,7 +338,7 @@ Namespace Ecosim
 
                 cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault)
 
-                Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_COMPLETED, _
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_COMPLETED, _
                         eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
 
             Catch ex As Exception
@@ -362,7 +353,7 @@ Namespace Ecosim
             Try
                 Me.m_gridSystemObjectives.RemoveDataRows()
 
-                Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_STARTED, _
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_STARTED, _
                         eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
 
             Catch ex As Exception
@@ -451,7 +442,7 @@ Namespace Ecosim
 
         'send a generic error message
         Private Sub SendErrorMessage(ByVal theMessage As String)
-            Me.UIContext.Core.Messages.SendMessage(New cMessage(theMessage, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
+            m_core.Messages.SendMessage(New cMessage(theMessage, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
         End Sub
 
         Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
@@ -471,7 +462,7 @@ Namespace Ecosim
 
             'If (cf And cProperty.eChangeFlags.Value) = cProperty.eChangeFlags.Value Then
             Me.m_bInUpdate = True
-            Me.m_nudBaseYear.Value = CInt(prop.GetValue()) + Me.UIContext.Core.EcosimFirstYear
+            Me.m_nudBaseYear.Value = CInt(prop.GetValue()) + Me.m_core.EcosimFirstYear
             Me.m_bInUpdate = False
             'End If
 
@@ -483,8 +474,8 @@ Namespace Ecosim
             ' Check to discard premature events
             If Me.m_manager Is Nothing Then Return
 
-            Dim iStart As Integer = Me.UIContext.Core.EcosimFirstYear
-            Dim iEnd As Integer = iStart + Me.UIContext.Core.nEcosimYears
+            Dim iStart As Integer = Me.m_core.EcosimFirstYear
+            Dim iEnd As Integer = iStart + Me.m_core.nEcosimYears
             Dim iValue As Integer = iStart
 
             Try
@@ -508,7 +499,7 @@ Namespace Ecosim
         Private Sub InitResultsPlot()
 
             Me.m_zghResults = New cZedGraphHelper()
-            Me.m_zghResults.Attach(Me.UIContext.Core, Me.m_graphResults)
+            Me.m_zghResults.Attach(Me.m_core, Me.m_graphResults)
             Me.m_zghResults.ShowCursor = False
 
             AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
@@ -670,6 +661,6 @@ Namespace Ecosim
 
     End Class ' frmFishingPolicySearch
 
- 
+
 
 End Namespace
