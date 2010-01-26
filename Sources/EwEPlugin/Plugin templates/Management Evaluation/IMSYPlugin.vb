@@ -4,7 +4,6 @@
 ''' </summary>
 ''' <remarks></remarks>
 Public Interface IMSYPlugin
-    Inherits ICorePlugin
 
     ''' <summary>
     ''' MSY has been initialized
