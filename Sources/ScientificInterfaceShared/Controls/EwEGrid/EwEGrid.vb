@@ -326,6 +326,13 @@ Namespace Controls.EwEGrid
         Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
+                If Me.m_uic Is Nothing Then
+                    Console.WriteLine("UIcontent not set for grid " & Me.Name)
+                    Me.m_uic = New cUIContext(cCore.GetInstance(), _
+                                              cStyleGuide.GetInstance(), _
+                                              cPropertyManager.GetInstance(), _
+                                              cCommandHandler.GetInstance())
+                End If
                 Return Me.m_uic
             End Get
             Set(ByVal value As cUIContext)
@@ -341,7 +348,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Core() As cCore
             Get
-                Return Me.m_uic.Core
+                Return Me.UIContext.Core
             End Get
         End Property
 
@@ -353,7 +360,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public ReadOnly Property StyleGuide() As cStyleGuide
             Get
-                Return Me.m_uic.StyleGuide
+                Return Me.UIContext.StyleGuide
             End Get
         End Property
 
@@ -365,7 +372,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public ReadOnly Property PropertyManager() As cPropertyManager
             Get
-                Return Me.m_uic.PropertyManager
+                Return Me.UIContext.PropertyManager
             End Get
         End Property
 
@@ -377,9 +384,10 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public ReadOnly Property ComandHandler() As cCommandHandler
             Get
-                Return Me.m_uic.CommandHander
+                Return Me.UIContext.CommandHander
             End Get
         End Property
+
 #End Region ' IUIElement implementation
 
 #Region " EwE events "
@@ -405,7 +413,7 @@ Namespace Controls.EwEGrid
             MyBase.InitLayout()
 
             ' Safety check
-            If (Me.m_uic Is Nothing) Then Return
+            If (Me.UIContext Is Nothing) Then Return
 
             Me.SuspendLayoutGrid()
             Me.ClearData()
