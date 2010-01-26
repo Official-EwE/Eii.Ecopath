@@ -964,7 +964,7 @@ Namespace Style
                     clr = cStyleGuide.IntToColor(flt.PoolColor)
                 End If
                 If clr.A = 0 Then
-                    clr = Me.GroupColorDefault(core, iFleet)
+                    clr = Me.FleetColorDefault(core, iFleet)
                 End If
                 Return clr
             End Get

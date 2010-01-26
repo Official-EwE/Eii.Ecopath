@@ -305,8 +305,12 @@ Namespace Ecosim
             For i As Integer = 1 To Me.UIContext.Core.nFleets
                 Dim fleet As cFleetInput = Me.UIContext.Core.FleetInputs(i)
                 If fleet.Landings(iGroup) > 0 Then
+                    Dim clr As Color = Me.UIContext.StyleGuide.FleetColor(Me.UIContext.Core, i)
                     Me.AddCurveToGraphPane(ePaneTypes.Yield, _
-                                           Me.m_zgh.CreateLineItem(fleet.Name, cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, applYieldFleet(i)))
+                                           Me.m_zgh.CreateLineItem(fleet.Name, _
+                                                                   cZedGraphHelper.eCurveTypes.EcosimOutput, _
+                                                                   clr, _
+                                                                   applYieldFleet(i)))
                 End If
             Next
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)

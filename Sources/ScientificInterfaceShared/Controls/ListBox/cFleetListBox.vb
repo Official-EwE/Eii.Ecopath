@@ -566,16 +566,14 @@ Namespace Controls
             ' Render default text, bumped to the right by 22 pixels
             e.Graphics.DrawString(item.ToString(), e.Font, New SolidBrush(clrText), e.Bounds.X + 22, e.Bounds.Y)
 
-            If (clrFleet.A > 0) Then
-                ' Render colour fill
-                Using br As New SolidBrush(clrFleet)
-                    e.Graphics.FillRectangle(br, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
-                End Using
-                ' Render colour box border
-                Using p As New Pen(clrText, 1)
-                    e.Graphics.DrawRectangle(p, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
-                End Using
-            End If
+            ' Render colour fill
+            Using br As New SolidBrush(clrFleet)
+                e.Graphics.FillRectangle(br, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
+            End Using
+            ' Render colour box border
+            Using p As New Pen(clrText, 1)
+                e.Graphics.DrawRectangle(p, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
+            End Using
 
             ' Render default focus rectangle
             e.DrawFocusRectangle()
