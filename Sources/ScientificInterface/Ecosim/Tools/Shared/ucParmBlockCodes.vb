@@ -68,7 +68,7 @@ Namespace Ecosim
                 'Fix bug 441 by JoeH
                 'Change
                 'Me.m_lclrColors.AddRange(sg.GetColorRamp(Me.m_nBlockCodes))
-                Me.m_lclrColors.AddRange(sg.GetColorRamp(Me.m_nBlockCodes - 1))
+                Me.m_lclrColors.AddRange(sg.GetEwE5ColorRamp(Me.m_nBlockCodes - 1))
                 'End change
 
                 Me.nudNumBlockCodes.Value = value

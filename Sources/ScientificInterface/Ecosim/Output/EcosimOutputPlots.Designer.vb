@@ -37,7 +37,7 @@ Namespace Ecosim
             Me.m_plGroups = New System.Windows.Forms.Panel
             Me.m_lblGroup = New System.Windows.Forms.Label
             Me.m_plFleets = New System.Windows.Forms.Panel
-            Me.m_lbFleets = New System.Windows.Forms.ListBox
+            Me.m_lbFleets = New ScientificInterfaceShared.Controls.cFleetListBox
             Me.m_lblFleets = New System.Windows.Forms.Label
             Me.m_plPredators = New System.Windows.Forms.Panel
             Me.m_lblPredators = New System.Windows.Forms.Label
@@ -178,8 +178,14 @@ Namespace Ecosim
             'm_lbFleets
             '
             resources.ApplyResources(Me.m_lbFleets, "m_lbFleets")
+            Me.m_lbFleets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.m_lbFleets.FleetListTracking = ScientificInterfaceShared.Controls.cFleetListBox.eFleetTrackingType.Manual
             Me.m_lbFleets.FormattingEnabled = True
             Me.m_lbFleets.Name = "m_lbFleets"
+            Me.m_lbFleets.SelectedFleet = Nothing
+            Me.m_lbFleets.SelectedFleetIndex = -1
+            Me.m_lbFleets.SortThreshold = -9999.0!
+            Me.m_lbFleets.SortType = ScientificInterfaceShared.Controls.cFleetListBox.eSortType.FleetIndexAsc
             '
             'm_lblFleets
             '
@@ -251,7 +257,7 @@ Namespace Ecosim
         Private WithEvents m_lblGroup As System.Windows.Forms.Label
         Private WithEvents m_lblPredators As System.Windows.Forms.Label
         Private WithEvents m_lblPrey As System.Windows.Forms.Label
-        Private WithEvents m_lbFleets As System.Windows.Forms.ListBox
+        Private WithEvents m_lbFleets As cFleetListBox
         Private WithEvents m_lblFleets As System.Windows.Forms.Label
     End Class
 

@@ -244,7 +244,7 @@ Public Class dlgSensitivityOfSStoV
             ' Create some purdy working colours
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Me.m_ucVulBlocks.RefreshContent()
-            Me.m_ucVulBlocks.BlockColors = sg.GetColorRamp(Me.m_iNumBlocks)
+            Me.m_ucVulBlocks.BlockColors = sg.GetEwE5ColorRamp(Me.m_iNumBlocks)
             Me.m_ucVulBlocks.BlockColors(0) = Color.Black
 
             Me.m_nudNumBlocks.Maximum = Me.m_iNumBlocks

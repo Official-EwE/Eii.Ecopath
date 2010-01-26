@@ -68,17 +68,6 @@ Namespace Ecosim
             MyBase.OnFormClosed(e)
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub tsBtnEditBioPert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-
-
-        End Sub
-
 #End Region ' Events 
 
 #Region " Overrides "

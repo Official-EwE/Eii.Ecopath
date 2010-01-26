@@ -153,7 +153,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\EditFleetsEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Controls\FlowDiagram\cFlowDiagramData.vb" />
     <Compile Include="Ecopath\Controls\FlowDiagram\cFlowDiagramRenderer.vb" />
@@ -168,7 +167,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\EditGroupsStanzaEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\EditMultiStanza.Designer.vb">
       <DependentUpon>EditMultiStanza.vb</DependentUpon>
@@ -177,7 +175,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\EditMultiStanzaEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\frmModelDescription.Designer.vb">
       <DependentUpon>frmModelDescription.vb</DependentUpon>
@@ -195,7 +192,6 @@
       <DependentUpon>ucBioPercent.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecosim\Input\MediationFunction\ucDefBioPercentGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\Basemap\ucZoomBasemap.designer.vb">
       <DependentUpon>ucZoomBasemap.vb</DependentUpon>
@@ -210,7 +206,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecotracer\Input\EcotracerInputGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\NichePropertyColourCell.vb" />
     <Compile Include="Ecosim\Input\EggProduction\ApplyEP.Designer.vb">
@@ -220,7 +215,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\EggProduction\ApplyEPEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\EggProduction\frmEggProduction.Designer.vb">
       <DependentUpon>frmEggProduction.vb</DependentUpon>
@@ -229,7 +223,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FisheryInputFleetSizeDynamicsEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FishingEffort\frmFishingEffort.Designer.vb">
       <DependentUpon>frmFishingEffort.vb</DependentUpon>
@@ -271,10 +264,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\MonteCarlo\MCRunInputGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\MonteCarlo\MCRunOutputGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\ShowAllFits\dlgSelectTSPlots.Designer.vb">
       <DependentUpon>dlgSelectTSPlots.vb</DependentUpon>
@@ -325,10 +316,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\EcosimResultsGridFleet.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\EcosimResultsGridGroup.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Other\dlgDisplayGroups.Designer.vb">
       <DependentUpon>dlgDisplayGroups.vb</DependentUpon>
@@ -349,13 +338,10 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Fit to time series\gridFitToTimeSeries.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Fishing policy search\gridFPSResultFleetValue.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Fishing policy search\gridFPSResultSystemObjectives.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Fishing policy search\frmFishingPolicySearch.Designer.vb">
       <DependentUpon>frmFishingPolicySearch.vb</DependentUpon>
@@ -370,10 +356,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Search\gridSearchObjectivesFleet.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Search\gridSearchObjectivesGroup.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Shared\ucParmBlockCodes.Designer.vb">
       <DependentUpon>ucParmBlockCodes.vb</DependentUpon>
@@ -391,7 +375,6 @@
       <DependentUpon>ucAnomalySearchSketchPad.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecosim\Tools\Shared\ucAnomalySearchSketchPad.vb">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Fit to time series\ucVulnerabiltyBlocks.Designer.vb">
       <DependentUpon>ucVulnerabiltyBlocks.vb</DependentUpon>
@@ -400,7 +383,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Search\gridSearchObjectivesWeight.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayerGroup.Designer.vb">
       <DependentUpon>ucLayerGroup.vb</DependentUpon>
@@ -458,7 +440,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridAssignHabits.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\BasemapFromGIS.Designer.vb">
       <DependentUpon>BasemapFromGIS.vb</DependentUpon>
@@ -467,13 +448,10 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridEditHabitats.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridEditMPAs.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridDispersal.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgEditHabitats.Designer.vb">
       <DependentUpon>dlgEditHabitats.vb</DependentUpon>
@@ -488,14 +466,11 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridFishery.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\cMapDrawer.vb" />
     <Compile Include="Ecospace\Output\EcospaceResultsGridRegion.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\EcospaceResultsGridGroup.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\EcospaceResults.Designer.vb">
       <DependentUpon>EcospaceResults.vb</DependentUpon>
@@ -504,7 +479,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\EcospaceResultsGridGear.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\RunEcospace.Designer.vb">
       <DependentUpon>RunEcospace.vb</DependentUpon>
@@ -574,67 +548,46 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\DetritusFateEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\FisheryInputDiscardFateEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\FisheryInputDiscardsEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\FisheryInputFleetDefinitionEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\FisheryInputLandingsEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\FisheryInputOffVesselPriceEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\FisheryInputNonMarketPriceEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\OtherProductionEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\BasicEstimatesEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\ConsumptionEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\ElectivityEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\FisheryOutputQuantityEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\FisheryOutputValueEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\KeyIndicesEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\MortalityCoefficientsEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\MortalityPredationEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\NicheOverlapPredatorEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\NicheOverlapPreyEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\RespirationEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\SearchRatesEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\GroupInfoEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\EcosimParameters.Designer.vb">
       <DependentUpon>EcosimParameters.vb</DependentUpon>
@@ -643,7 +596,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\Vulnerabilities\VulnerabilitiesEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\RunEcosim.Designer.vb">
       <DependentUpon>RunEcosim.vb</DependentUpon>
@@ -668,10 +620,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\BasicInputEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\DietCompositionEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Panels\NavigationPanel\NavigationPanel.Designer.vb">
       <DependentUpon>NavigationPanel.vb</DependentUpon>
@@ -990,7 +940,6 @@
     </Compile>
     <Compile Include="Controls\cEwEBrushProvider.vb" />
     <Compile Include="Controls\gridResultsBase.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\VisualStyleEditors\ucEditImage.Designer.vb">
       <DependentUpon>ucEditImage.vb</DependentUpon>
@@ -1026,16 +975,12 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\FisheryInputDiscardMortGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\GrowthParametersEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\EcopathStatisticsEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\GrowthEstimatesEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\PSDContributionPlot.Designer.vb">
       <DependentUpon>PSDContributionPlot.vb</DependentUpon>
@@ -1044,7 +989,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\PSDContributionResultEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\PSDPlotByGroup.Designer.vb">
       <DependentUpon>PSDPlotByGroup.vb</DependentUpon>
@@ -1065,7 +1009,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\ApplyShapeEwEGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\dlgApplyShape.Designer.vb">
       <DependentUpon>dlgApplyShape.vb</DependentUpon>
@@ -1107,13 +1050,10 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FishingRegulation\gridFishingQuotas.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FishingRegulation\gridRegulatoryOptions.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FishingRegulation\gridTFMpolicy.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\MediationFunction\MediationGUIHandler.vb" />
     <Compile Include="Ecosim\Input\MediationFunction\ucBioPercentToolbar.Designer.vb">
@@ -1129,7 +1069,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\TimeSeries\gridWeightTS.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\EcosimOutputLineGraph\cEcosimOutputPlotHelper.vb" />
     <Compile Include="Ecosim\Output\ShowAllFits\ShowAllFitsPlotData.vb" />
@@ -1146,7 +1085,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Fit to time series\gridFitToTimeSeriesGroup.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\ImportExport\cImportExportData.vb" />
     <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerData.vb">
@@ -1195,10 +1133,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridEditRegions.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridLayerData.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditor.vb" />
     <Compile Include="Ecospace\Assets\Layers\cLayerFactory.vb" />
@@ -1225,17 +1161,14 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridEditImportanceLayers.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\cEcospaceZedGraphHelper.vb">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\cPlotDrawer.vb" />
     <Compile Include="Ecospace\Tools\gridMPAOptimizations.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Other\Import\cImportGrid.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Other\Import\cImportWizard.vb" />
     <Compile Include="Other\Import\dlgImportDatabase.Designer.vb">
@@ -1332,37 +1265,26 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridFleetRefLevels.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridGroupRefLevels.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridFishingCV.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridFixedEscapement.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridMSEGroupObjectives.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridMSEOjectiveWeights.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridPerformanceResults.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridRiskResults.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridBioCV.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridFishingWeights.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\gridRiskBounds.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSE\MSEPlotting.vb" />
     <None Include="Resources\BreakpointHS.png" />
