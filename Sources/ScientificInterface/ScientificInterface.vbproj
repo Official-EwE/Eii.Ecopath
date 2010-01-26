@@ -1652,6 +1652,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\TEEBProject\TEEBProject\TEEBProject.vbproj">
+      <Project>{1FAAE9A5-C8C6-45B8-AAB3-2BE2332D09D3}</Project>
+      <Name>TEEBProject</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>

@@ -155,6 +155,7 @@ Public Class cMSEDataStructures
     Public MSYStartTimeIndex As Integer
     'VC added a boolean to ex/include fleets from MSY runs:
     Public MSYEvaluateFleet() As Boolean
+    Public MSYEvaluateGroup() As Boolean
 
     ''' <summary>
     ''' run the MSY search without calling the interface
