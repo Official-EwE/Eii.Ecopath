@@ -226,14 +226,18 @@ Public Class cPluginManager
     ''' <summary>Dictionary of <see cref="cPluginAssembly">Plugin assemblies</see>.</summary>
     Private m_dictAssemblies As New Dictionary(Of String, cPluginAssembly)
 
-    Public Sub LoadPlugins(ByVal strPath As String)
+    Public Sub LoadPlugins()
 
         Dim di As DirectoryInfo = Nothing
         Dim afi() As FileInfo = Nothing
 
+        'Get the location of the plugin manager assembly
+        Dim pluginAssembly As Assembly = System.Reflection.Assembly.GetAssembly(GetType(cPluginManager))
+        Dim strPluginPath As String = Path.GetDirectoryName(pluginAssembly.Location)
+
         Try
-            
-            di = New DirectoryInfo(strPath)
+
+            di = New DirectoryInfo(strPluginPath)
             'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
             afi = di.GetFiles("*.dll")
 
