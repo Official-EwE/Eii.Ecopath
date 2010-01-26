@@ -126,7 +126,7 @@
     <value>12, 12</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>314, 400</value>
+    <value>245, 245</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
@@ -205,7 +205,7 @@
     <value>1</value>
   </data>
   <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>231, 418</value>
+    <value>162, 263</value>
   </data>
   <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -241,7 +241,7 @@
     <value>MiddleLeft</value>
   </data>
   <data name="m_btnKeep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 91</value>
+    <value>263, 91</value>
   </data>
   <data name="m_btnKeep.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -277,7 +277,7 @@
     <value>MiddleLeft</value>
   </data>
   <data name="m_btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 62</value>
+    <value>263, 62</value>
   </data>
   <data name="m_btnDelete.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -313,7 +313,7 @@
     <value>MiddleLeft</value>
   </data>
   <data name="m_btnMoveDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 177</value>
+    <value>263, 177</value>
   </data>
   <data name="m_btnMoveDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -349,7 +349,7 @@
     <value>MiddleLeft</value>
   </data>
   <data name="m_btnMoveUp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 148</value>
+    <value>263, 148</value>
   </data>
   <data name="m_btnMoveUp.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -385,7 +385,7 @@
     <value>MiddleLeft</value>
   </data>
   <data name="m_btnInsert.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 33</value>
+    <value>263, 33</value>
   </data>
   <data name="m_btnInsert.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -421,7 +421,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbEdit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 12</value>
+    <value>263, 12</value>
   </data>
   <data name="m_lbEdit.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 18</value>
@@ -457,7 +457,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbOrder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 127</value>
+    <value>263, 127</value>
   </data>
   <data name="m_lbOrder.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 18</value>
@@ -496,7 +496,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnDefault.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 234</value>
+    <value>263, 234</value>
   </data>
   <data name="m_btnDefault.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -532,7 +532,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrColors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 213</value>
+    <value>263, 213</value>
   </data>
   <data name="m_hdrColors.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 18</value>
@@ -565,7 +565,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>436, 459</value>
+    <value>367, 304</value>
+  </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>375, 331</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
