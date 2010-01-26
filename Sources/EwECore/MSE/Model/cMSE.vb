@@ -78,12 +78,6 @@ Namespace MSE
     ''' <remarks>This was the Closed Loop Simulation in EwE5</remarks>
     Public Class cMSE
 
-        'ToDo_jb MSE test if there are any F (fishing mortality) time series loaded and do something
-        'unload them????
-
-        'ToDo_jb MSY the MSY tests for loaded Effort time series I think it should be looking for F (fishing mortality) 
-        'this now checks F it should be moved out of the fleet loop
-
         'ToDo_jb 30-Dec-09 MSE note Number of years the MSE runs Ecosim for. At one point we had it running for an extra number of years(cSearchDataStructures.ExtraYearsForSearch) 
         'like the Fishing Policy search does.
         'I have removed this from cSearchDataStructures.InitSearch(). Now Ecosim is only run for the number of years it is set for in the interface. 
@@ -101,6 +95,9 @@ Namespace MSE
         'ToDo_jb 18-Jan-2010 MSE looks like there may be a problem with Catch by fleet and catch by group these value should be the same but they aren't....
 
         'ToDo_jb 25-Jan-2010 MSE needs to unload F timeseries
+
+        'ToDo_jb 26-Jan-2010 MSY F timeseries checks and unloads F timeseries inside the fleet loop this should happen once at the start
+
 
 #Region "Private data"
 
