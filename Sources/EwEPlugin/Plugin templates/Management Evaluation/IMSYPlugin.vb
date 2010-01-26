@@ -4,6 +4,7 @@
 ''' </summary>
 ''' <remarks></remarks>
 Public Interface IMSYPlugin
+    Inherits IPlugin
 
     ''' <summary>
     ''' MSY has been initialized
