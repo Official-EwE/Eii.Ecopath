@@ -420,7 +420,7 @@ Namespace Ecosim
 
             For iTS As Integer = 1 To core.nTimeSeries - 1
                 ts = core.EcosimTimeSeries(iTS)
-                If (TypeOf (ts) Is cGroupTimeSeries) Then
+                If (TypeOf (ts) Is cGroupTimeSeries) And (ts.Enabled = True) Then
                     gts = DirectCast(ts, cGroupTimeSeries)
                     If (gts.TimeSeriesType = eTimeSeriesType.BiomassAbs) Or _
                        (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or _
