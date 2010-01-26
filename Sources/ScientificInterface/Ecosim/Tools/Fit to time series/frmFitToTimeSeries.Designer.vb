@@ -24,6 +24,7 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFitToTimeSeries))
             Me.m_split1 = New System.Windows.Forms.SplitContainer
             Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button
             Me.m_splitSearch = New System.Windows.Forms.SplitContainer
@@ -45,22 +46,23 @@ Namespace Ecosim
             Me.tpVulnerabilitySearch = New System.Windows.Forms.TabPage
             Me.m_tsVulSearchTools = New System.Windows.Forms.ToolStrip
             Me.m_tsbSensOfSS2V = New System.Windows.Forms.ToolStripButton
-            Me.m_vulnerabilityBlockCodeSelector = New Ecosim.ucParmBlockCodes
-            Me.m_vulnerabilityBlockMatrix = New Ecosim.ucVulnerabiltyBlocks
+            Me.m_vulnerabilityBlockCodeSelector = New ScientificInterface.Ecosim.ucParmBlockCodes
+            Me.m_vulnerabilityBlockMatrix = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks
             Me.tpAnomalySearch = New System.Windows.Forms.TabPage
             Me.m_nudLastYear = New System.Windows.Forms.NumericUpDown
             Me.m_nudFirstYear = New System.Windows.Forms.NumericUpDown
             Me.m_nudSplinePts = New System.Windows.Forms.NumericUpDown
             Me.m_splitAnomalyShape = New System.Windows.Forms.SplitContainer
-            Me.m_sketchPad = New Ecosim.ucAnomalySearchSketchPad
+            Me.m_sketchPad = New ScientificInterface.Ecosim.ucAnomalySearchSketchPad
             Me.m_lbAppliedFF = New System.Windows.Forms.Label
-            Me.m_shapeToolBox = New ucShapeToolbox
+            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
             Me.m_lbFirstYear = New System.Windows.Forms.Label
             Me.m_lbLastYear = New System.Windows.Forms.Label
             Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label
             Me.m_lbSplinePoints = New System.Windows.Forms.Label
             Me.m_tbVariancePrimaryProd = New System.Windows.Forms.TextBox
             Me.Label1 = New System.Windows.Forms.Label
+            Me.m_tsbSearchGroup = New System.Windows.Forms.ToolStripButton
             Me.m_split1.Panel1.SuspendLayout()
             Me.m_split1.Panel2.SuspendLayout()
             Me.m_split1.SuspendLayout()
@@ -346,7 +348,7 @@ Namespace Ecosim
             '
             'm_tsVulSearchTools
             '
-            Me.m_tsVulSearchTools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSensOfSS2V})
+            Me.m_tsVulSearchTools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSensOfSS2V, Me.m_tsbSearchGroup})
             Me.m_tsVulSearchTools.Location = New System.Drawing.Point(3, 3)
             Me.m_tsVulSearchTools.Name = "m_tsVulSearchTools"
             Me.m_tsVulSearchTools.Size = New System.Drawing.Size(517, 25)
@@ -354,7 +356,7 @@ Namespace Ecosim
             '
             'm_tsbSensOfSS2V
             '
-            Me.m_tsbSensOfSS2V.Image = My.Resources.Resources.ZoomHS
+            Me.m_tsbSensOfSS2V.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
             Me.m_tsbSensOfSS2V.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbSensOfSS2V.Name = "m_tsbSensOfSS2V"
             Me.m_tsbSensOfSS2V.Size = New System.Drawing.Size(126, 22)
@@ -454,10 +456,10 @@ Namespace Ecosim
             '
             'm_sketchPad
             '
-            Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
-            Me.m_sketchPad.XMarkValue = -9999.0!
+            Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
             Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Hand
+            Me.m_sketchPad.DisplayAxis = True
             Me.m_sketchPad.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_sketchPad.Editable = True
             Me.m_sketchPad.FirstYear = 0
@@ -469,14 +471,20 @@ Namespace Ecosim
             Me.m_sketchPad.Name = "m_sketchPad"
             Me.m_sketchPad.NumSplinePoints = 0
             Me.m_sketchPad.NumTSYears = 0
-            'Me.m_sketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.Shape = Nothing
+            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShowXMark = False
             Me.m_sketchPad.Size = New System.Drawing.Size(523, 386)
-            Me.m_sketchPad.SketchDrawMode = eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.OK
             Me.m_sketchPad.TabIndex = 0
-            Me.m_sketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.[Auto]
+            Me.m_sketchPad.XMarkLabel = ""
+            Me.m_sketchPad.XMarkValue = -9999.0!
+            Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.YAxisMaxValue = 0.0!
             Me.m_sketchPad.YAxisMinValue = 1.0!
+            Me.m_sketchPad.YMarkLabel = ""
+            Me.m_sketchPad.YMarkValue = -9999.0!
             '
             'm_lbAppliedFF
             '
@@ -495,6 +503,7 @@ Namespace Ecosim
             '
             'm_shapeToolBox
             '
+            Me.m_shapeToolBox.AllowCheckboxes = False
             Me.m_shapeToolBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -503,7 +512,7 @@ Namespace Ecosim
             Me.m_shapeToolBox.Location = New System.Drawing.Point(0, 23)
             Me.m_shapeToolBox.Margin = New System.Windows.Forms.Padding(0)
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
-            Me.m_shapeToolBox.Selection = Nothing
+            Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
             Me.m_shapeToolBox.Size = New System.Drawing.Size(523, 112)
             Me.m_shapeToolBox.TabIndex = 0
             Me.m_shapeToolBox.YAxisMinValue = -9999.0!
@@ -567,12 +576,22 @@ Namespace Ecosim
             Me.Label1.Text = "Search"
             Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
+            'm_tsbSearchGroup
+            '
+            Me.m_tsbSearchGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbSearchGroup.Image = CType(resources.GetObject("m_tsbSearchGroup.Image"), System.Drawing.Image)
+            Me.m_tsbSearchGroup.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbSearchGroup.Name = "m_tsbSearchGroup"
+            Me.m_tsbSearchGroup.Size = New System.Drawing.Size(157, 22)
+            Me.m_tsbSearchGroup.Text = "Search groups with time series"
+            '
             'frmFitToTimeSeries
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(784, 633)
             Me.Controls.Add(Me.m_split1)
+            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmFitToTimeSeries"
             Me.TabText = "Form1"
             Me.Text = "Form1"
@@ -640,6 +659,7 @@ Namespace Ecosim
         Private WithEvents m_plGrid As System.Windows.Forms.Panel
         Private WithEvents m_btnTimeSeriesWeights As System.Windows.Forms.Button
         Private WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_tsbSearchGroup As System.Windows.Forms.ToolStripButton
     End Class
 
 End Namespace

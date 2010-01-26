@@ -13,6 +13,11 @@ Imports EwEUtils.Core
 
 Namespace Ecosim
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Form implementing the Fit To Time Series user interface.
+    ''' </summary>
+    ''' =======================================================================
     Public Class frmFitToTimeSeries
 
 #Region " Private variables "
@@ -23,6 +28,8 @@ Namespace Ecosim
         Private m_SensitivityByPredatorResults As cSensitivityToVulResults = Nothing
         Private m_cmdTSWeights As cCommand = Nothing
         Private m_gridGroupMaxFishingMortality As gridFitToTimeSeriesGroup = Nothing
+        Private m_shapeSelected As cShapeData = Nothing
+        Private m_bInUpdate As Boolean = True
 
 #End Region 'Private variables
 
@@ -343,8 +350,6 @@ Namespace Ecosim
 
         End Sub
 
-        Dim m_shapeSelected As cShapeData = Nothing
-
         Private Sub m_shapeToolBox_OnSelectionChanged(ByVal ashapes As EwECore.cShapeData()) _
             Handles m_shapeToolBox.OnSelectionChanged
 
@@ -385,8 +390,6 @@ Namespace Ecosim
 
         End Sub
 
-        Private m_bInUpdate As Boolean = True
-
         Private Sub m_sketchPad_OnYearRangeChanged(ByVal sender As ucAnomalySearchSketchPad) Handles m_sketchPad.OnYearRangeChanged
             Me.m_bInUpdate = True
             Me.m_nudFirstYear.Value = Math.Min(Math.Max(Me.m_nudFirstYear.Minimum, sender.FirstYear), Me.m_nudFirstYear.Maximum)
@@ -404,6 +407,42 @@ Namespace Ecosim
         Private Sub OnAnomalySearchChecked(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_cbAnomalySearch.CheckedChanged
             Me.UpdateControls()
+        End Sub
+
+        Private Sub m_tsbSearchGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbSearchGroup.Click
+
+            Dim iBlock As Integer = 1
+            Dim core As cCore = Me.UIContext.Core
+            Dim ts As cTimeSeries = Nothing
+            Dim gts As cGroupTimeSeries = Nothing
+            Dim abBlock(core.nGroups) As Boolean
+
+            For iTS As Integer = 1 To core.nTimeSeries - 1
+                ts = core.EcosimTimeSeries(iTS)
+                If (TypeOf (ts) Is cGroupTimeSeries) Then
+                    gts = DirectCast(ts, cGroupTimeSeries)
+                    If (gts.TimeSeriesType = eTimeSeriesType.BiomassAbs) Or _
+                       (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or _
+                       (gts.TimeSeriesType = eTimeSeriesType.Catches) Then
+
+                        abBlock(gts.GroupIndex) = True
+                    End If
+                End If
+            Next
+
+            For i As Integer = 1 To Me.Core.nGroups
+                For j As Integer = 1 To Me.Core.nGroups
+                    If abBlock(i) Then
+                        Me.m_vulnerabilityBlockMatrix.Vulblocks(i, j) = iBlock
+                    Else
+                        Me.m_vulnerabilityBlockMatrix.Vulblocks(i, j) = 0
+                    End If
+                Next j
+                If abBlock(i) Then iBlock += 1
+            Next i
+            Me.m_vulnerabilityBlockMatrix.Invalidate()
+
         End Sub
 
 #End Region ' Private control event handlers
