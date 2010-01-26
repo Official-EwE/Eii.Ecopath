@@ -68,7 +68,7 @@ Namespace Controls
                                         Optional ByVal sProgress As Single = 0.0)
 
             ' Sanity check
-            Debug.Assert(__inst__ IsNot Nothing)
+            If (__inst__ Is Nothing) Then Return
 
             ' Pass the word
             __inst__.m_dispatcher.SetStatusText(strText, tsUseWaitCursor, sProgress)
