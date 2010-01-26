@@ -64,6 +64,7 @@ Namespace Ecopath
                 Me.m_fpStanza.Value = 0
             End If
             Me.m_grid.StanzaGroup = DirectCast(Me.m_fpStanza.Items(CInt(Me.m_fpStanza.Value)), cStanzaGroup)
+            Me.m_grid.UIContext = Me.m_uic
 
             Me.m_fpK = New cEwEFormatProvider(Me.m_txtK, GetType(Single))
             Me.m_fpRecPwr = New cEwEFormatProvider(Me.m_txtRecPwr, GetType(Single))
