@@ -177,7 +177,7 @@ Namespace Ecospace
             Dim drawer As cMapDrawer
             Dim nThreads As Integer = Environment.ProcessorCount
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim lColors As List(Of Color) = sg.GetColorRamp(Me.m_core.nGroups)
+            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.m_core.nGroups)
 
             Me.m_nMapsPerThread = (Me.m_core.nGroups + nThreads - 1) \ nThreads
             If Me.m_drawers Is Nothing Then
@@ -482,7 +482,7 @@ Namespace Ecospace
             ElseIf (Me.m_showGroupMode = eShowGroupType.ShowSingle) Then
 
                 Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-                Dim lColors As List(Of Color) = sg.GetColorRamp(Me.m_core.nGroups)
+                Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.m_core.nGroups)
 
                 'Show one group at a time
                 If (Me.m_iGroupToShow > 0) Then
@@ -551,7 +551,7 @@ Namespace Ecospace
         Private Sub DrawFishingBaseMap(ByRef baseMap(,,) As Single, ByVal iFleet As Integer, ByVal rcPos As Rectangle, ByRef g As Graphics)
 
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim lColors As List(Of Color) = sg.GetColorRamp(CInt(Me.m_nEffortBins))
+            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(CInt(Me.m_nEffortBins))
             Dim cScaler As Single = Me.m_nEffortBins / Me.m_sMaxEffort
 
             For i As Integer = 1 To m_iInRow
@@ -599,7 +599,7 @@ Namespace Ecospace
 
             Dim g As Graphics = e.Graphics
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim lColors As List(Of Color) = sg.GetColorRamp(Me.m_core.nGroups)
+            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.m_core.nGroups)
             Dim sHeight As Single = CSng(Me.m_pbColors.Height / Me.m_core.nGroups)
             Dim brTmp As SolidBrush = Nothing
             For i As Integer = 1 To Me.m_core.nGroups
