@@ -2,6 +2,7 @@
 Option Strict On
 Imports EwECore
 Imports ScientificInterface.Other
+Imports System.ComponentModel
 
 Namespace Ecosim
 
@@ -51,6 +52,7 @@ Namespace Ecosim
         ''' Initialize the control to a given instance of the EwE core.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -58,7 +60,9 @@ Namespace Ecosim
             End Get
             Set(ByVal value As cUIContext)
                 Me.m_uic = value
-                Me.RefreshContent()
+                If (Me.m_uic IsNot Nothing) Then
+                    Me.RefreshContent()
+                End If
             End Set
         End Property
 
