@@ -688,6 +688,9 @@ Namespace Controls
                         Debug.Assert(False)
                 End Select
             End If
+            If ((ct And cStyleGuide.eChangeType.Colours) > 0) Then
+                Me.Invalidate()
+            End If
         End Sub
 
         ''' ---------------------------------------------------------------

@@ -54,8 +54,10 @@ Namespace Style
         Private m_bChanged As Boolean = False
         ''' <summary>Application colour scheme.</summary>
         Private m_dtApplicationColors As New Dictionary(Of cStyleGuide.eApplicationColorType, Color)
-        ''' <summary>Color ramp for obtaining the standard EwE5 colors</summary>
-        Private m_clrrmpEwE5 As New SAUPColorRamp()
+        ''' <summary>Color ramp for obtaining EwE5 group colors</summary>
+        Private m_colorrampGroups As New SAUPColorRamp()
+        ''' <summary>Color ramp for obtaining fleet colors</summary>
+        Private m_colorrampFleets As New ARGBColorRamp(New Color() {Color.LightGreen, Color.LightBlue}, New Double() {0.0#, 1.0#})
         ''' <summary>Start offset for colour ramp.</summary>
         Private Const c_sRampOffsetStart As Single = 0.15!
         ''' <summary>End offset for colour ramp.</summary>
@@ -104,8 +106,8 @@ Namespace Style
             cStyleGuide._inst_ = Me
 
             ' Control how colour ramp delivers its colours
-            Me.m_clrrmpEwE5.ColorOffsetStart = c_sRampOffsetStart
-            Me.m_clrrmpEwE5.ColorOffsetEnd = c_sRampOffsetEnd
+            Me.m_colorrampGroups.ColorOffsetStart = c_sRampOffsetStart
+            Me.m_colorrampGroups.ColorOffsetEnd = c_sRampOffsetEnd
 
             ' Load up
             Me.LoadDefaultApplicationColors()
@@ -747,11 +749,11 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Color IDs supported by the StyleGuide.
+        ''' Enumerated type defining the types of EwE6 user interface elements
+        ''' for which custom colour coding is available.
         ''' </summary>
         ''' <remarks>
-        ''' As may be apparent, not all styles require a foreground and a background.
-        ''' colour.
+        ''' Not all styles will support both foreground and background colours.
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Enum eApplicationColorType As Integer
@@ -779,29 +781,45 @@ Namespace Style
             MAP_BACKGROUND
         End Enum
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Enumerated type defining the types of EwE6 user interface elements
+        ''' for which custom font options are available.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Enum eApplicationFontType As Integer
             NotSet = 0
+            ''' <summary>The font to use for graphs and charts major titles.</summary>
             Title
+            ''' <summary>The font to use for graphs and charts legend text.</summary>
             Legend
+            ''' <summary>The font to use for graphs and charts minor titles, 
+            ''' such as subtitles, axis labels, legend titles, etc.</summary>
             SubTitle
+            ''' <summary>The font to use for graph and chart axis labels.</summary>
             Scale
-            Value
         End Enum
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' To be written
+        ''' Get colours for a given combination of <see cref="eStyleFlags">styles</see>.
         ''' </summary>
-        ''' <param name="eStatus">The status to check</param>
-        ''' <param name="colorText">A text color for this status</param>
-        ''' <param name="colorBackground">A background color for this status</param>
+        ''' <param name="eStatus">The bitwise pattern of <see cref="eStyleFlags">style</see>
+        ''' to retrieve a foreground and background colour for.</param>
+        ''' <param name="colorText">A foreground color that will be returned for the
+        ''' given style pattern.</param>
+        ''' <param name="colorBackground">A background color that will be returned for the
+        ''' given style pattern.</param>
         ''' <remarks>
-        ''' Here, a core variable status will be analyzed to return both a 
-        ''' text color and a background color.
+        ''' The algorithm that picks the colour to return analyzes that provided
+        ''' style flags by order of priority. This priority is arbitrary, where
+        ''' style flags indicating severe statuses will precede over lesser,
+        ''' mere informational style flags.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
         Public Sub GetStyleColors(ByVal eStatus As cStyleGuide.eStyleFlags, _
-            ByRef colorText As Color, ByRef colorBackground As Color)
+                                  ByRef colorText As Color, _
+                                  ByRef colorBackground As Color)
 
             ' Default priorities, used when the provided priorities did not yield
             ' a status to display, or when no priority sequence has been provided.
@@ -830,8 +848,7 @@ Namespace Style
 
             ' Variable statuses may have a text style, a background style or both.
             ' 
-            ' This code can probably do with some serious optimizing, but I'm not in the
-            ' most brilliant mindset today. 
+            ' This code can probably do with some serious optimizing.
 
             ' Now iterate in REVERSE ORDER (e.g. least important styles first)
             ' through the constructed priorities array. Every time a style match
@@ -896,9 +913,15 @@ Namespace Style
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Public property to get and set GroupColor
+        ''' Get/set the color to represent a group.
         ''' </summary>
+        ''' <remarks>
+        ''' Setting the Alpha component of the ARGB colour value to 0 will
+        ''' trigger the style guide to issue default colours for groups.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Property GroupColor(ByVal core As cCore, ByVal iGroup As Integer) As Color
             Get
                 Dim clr As Color = Color.Transparent
@@ -918,6 +941,40 @@ Namespace Style
                     If grp.PoolColor = cStyleGuide.ColorToInt(value) Then Return
                     ' Apply
                     grp.PoolColor = cStyleGuide.ColorToInt(value)
+                    ' Notify the world
+                    Me.ColorsChanged()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the color to represent a fleet.
+        ''' </summary>
+        ''' <remarks>
+        ''' Setting the Alpha component of the ARGB colour value to 0 will
+        ''' trigger the style guide to issue default colours for fleets.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Property FleetColor(ByVal core As cCore, ByVal iFleet As Integer) As Color
+            Get
+                Dim clr As Color = Color.Transparent
+                If (0 <= iFleet) And (iFleet <= core.nFleets) Then
+                    Dim flt As cFleetInput = core.FleetInputs(iFleet)
+                    clr = cStyleGuide.IntToColor(flt.PoolColor)
+                End If
+                If clr.A = 0 Then
+                    clr = Me.GroupColorDefault(core, iFleet)
+                End If
+                Return clr
+            End Get
+            Set(ByVal value As Color)
+                If (0 <= iFleet) And (iFleet <= core.nFleets) Then
+                    Dim flt As cFleetInput = core.FleetInputs(iFleet)
+                    ' Optimization
+                    If flt.PoolColor = cStyleGuide.ColorToInt(value) Then Return
+                    ' Apply
+                    flt.PoolColor = cStyleGuide.ColorToInt(value)
                     ' Notify the world
                     Me.ColorsChanged()
                 End If
@@ -945,18 +1002,35 @@ Namespace Style
             End Set
         End Property
 
-        Public ReadOnly Property GroupColorDefault(ByVal core As cCore, ByVal iGroup As Integer, Optional ByVal nGroups As Integer = -1) As Color
-            Get
-                If nGroups = -1 Then nGroups = core.nGroups
-                Return Me.m_clrrmpEwE5.GetColor(iGroup, nGroups)
-            End Get
-        End Property
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a default colour for a group.
+        ''' </summary>
+        ''' <param name="core">Core to operate onto.</param>
+        ''' <param name="iGroup">The group index to obtain the default colour for.</param>
+        ''' <returns>
+        ''' Default group colours are picked from the Ecopath 5 group colour scheme.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function GroupColorDefault(ByVal core As cCore, _
+                                          ByVal iGroup As Integer) As Color
+            Return Me.m_colorrampGroups.GetColor(iGroup, core.nGroups)
+        End Function
 
-        Public Function GetGroupColorIndex(ByVal core As cCore, ByVal clr As Color, Optional ByVal nGroups As Integer = -1) As Integer
-            For iGroupIndex As Integer = 1 To core.nGroups
-                If (Me.GroupColor(core, iGroupIndex) = clr) Then Return iGroupIndex
-            Next
-            Return -1
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a default colour for a fleet.
+        ''' </summary>
+        ''' <param name="core">Core to operate onto.</param>
+        ''' <param name="iFleet">The fleet index to obtain the default colour for.</param>
+        ''' <returns>
+        ''' Default group colours are picked from a colour ramp that runs from
+        ''' green to blue.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function FleetColorDefault(ByVal core As cCore, _
+                                          ByVal iFleet As Integer) As Color
+            Return Me.m_colorrampFleets.GetColor(iFleet, core.nFleets - 1)
         End Function
 
         Public Shared Function IntToColor(ByVal iColor As Integer) As Color
@@ -967,16 +1041,16 @@ Namespace Style
             Return ((clr.A And &HFF) << 24) + ((clr.R And &HFF) << 16) + ((clr.G And &HFF) << 8) + (clr.B And &HFF)
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Helper method to init the color ramp, one use is Ecospace output
+        ''' Return a list of colours, picked from the Ecopath 5 group colour
+        ''' scheme.
         ''' </summary>
-        ''' <remarks>The get one color algorithm was called from SAUPUtil getColor method
-        ''' rewritten from EwE5, the agorithm is the same but use Double data type
-        ''' for computation to avoid rounding error.</remarks>
-        Public Function GetColorRamp(ByVal iNumLevels As Integer) As List(Of Color)
+        ''' -------------------------------------------------------------------
+        Public Function GetEwE5ColorRamp(ByVal iNumLevels As Integer) As List(Of Color)
             Dim lColors As New List(Of Color)
             For i As Integer = 0 To iNumLevels
-                Dim clr As Color = Me.m_clrrmpEwE5.GetColor(i, iNumLevels)
+                Dim clr As Color = Me.m_colorrampGroups.GetColor(i, iNumLevels)
                 lColors.Add(clr)
             Next
             Return lColors
@@ -1301,8 +1375,7 @@ Namespace Style
                     Return 12
                 Case eApplicationFontType.Legend, eApplicationFontType.SubTitle
                     Return 10
-                Case eApplicationFontType.Scale, _
-                     eApplicationFontType.Value
+                Case eApplicationFontType.Scale
                     Return 8.25
                 Case Else
                     Debug.Assert(False)
