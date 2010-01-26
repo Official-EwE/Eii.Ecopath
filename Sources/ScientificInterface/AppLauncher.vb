@@ -1049,7 +1049,7 @@ Public Class AppLauncher
 
         'Get the location of the plugin manager assembly
         Dim pluginAssembly As Assembly = System.Reflection.Assembly.GetAssembly(GetType(cPluginManager))
-        Dim strPluginPath As String = Path.GetDirectoryName(pluginAssembly.CodeBase)
+        Dim strPluginPath As String = Path.GetDirectoryName(pluginAssembly.Location)
 
         Me.m_pluginManager.LoadPlugins(strPluginPath)
 
