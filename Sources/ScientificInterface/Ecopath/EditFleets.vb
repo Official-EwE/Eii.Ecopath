@@ -84,6 +84,11 @@ Namespace Ecopath
             Me.UpdateControls()
         End Sub
 
+        Private Sub m_btnDefault_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnDefault.Click
+            Me.m_grid.ResetFleetColors()
+        End Sub
+
 #End Region ' Event handlers 
 
 #Region " Updating "

@@ -21,9 +21,9 @@ Imports ScientificInterface.Other
     Private Const iFIRSTFLEETROW As Integer = 1
 
     ''' <summary>List of active Fleets.</summary>
-    Private m_lfiFleets As New List(Of FleetInfo)
+    Private m_lfiFleets As New List(Of cFleetInfo)
     ''' <summary>List of removed Fleets.</summary>
-    Private m_lfiFleetsRemoved As New List(Of FleetInfo)
+    Private m_lfiFleetsRemoved As New List(Of cFleetInfo)
     ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
     ''' to trap cell edit events locally in this grid. These events are essential
     ''' for keeping the local Fleet administration up to date.</summary>
@@ -50,7 +50,6 @@ Imports ScientificInterface.Other
 
 #Region " Helper classes "
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Administrative unit representing a <see cref="cFleetInput">Fleet</see>
@@ -63,10 +62,10 @@ Imports ScientificInterface.Other
     ''' represented.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Class FleetInfo
+    Private Class cFleetInfo
 
         ''' <summary><see cref="cFleetInput">cFleetInput</see> associated with this Fleet, if any.</summary>
-        Private m_Fleet As cFleetInput = Nothing
+        Private m_fleet As cFleetInput = Nothing
         ''' <summary>Name for this Fleet.</summary>
         Private m_strName As String = ""
         ''' <summary>Fleet color.</summary>
@@ -86,7 +85,7 @@ Imports ScientificInterface.Other
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal fleet As cFleetInput)
             Debug.Assert(fleet IsNot Nothing)
-            Me.m_Fleet = fleet
+            Me.m_fleet = fleet
             Me.m_strName = fleet.Name
             Me.m_iColor = fleet.PoolColor
             Me.m_status = AddRemoveItemStatus.Original
@@ -99,7 +98,7 @@ Imports ScientificInterface.Other
         ''' <param name="strName">Name to assign to this administrative unit.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal strName As String)
-            Me.m_Fleet = Nothing
+            Me.m_fleet = Nothing
             Me.m_strName = strName
             Me.m_iColor = 0
             Me.m_status = AddRemoveItemStatus.Added
@@ -142,7 +141,7 @@ Imports ScientificInterface.Other
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Fleet() As cFleetInput
             Get
-                Return Me.m_Fleet
+                Return Me.m_fleet
             End Get
         End Property
 
@@ -174,15 +173,16 @@ Imports ScientificInterface.Other
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether the Fleet has changed.
+        ''' States whether the underlying fleet has been changed.
         ''' </summary>
         ''' <returns>
-        ''' True when Fleet <see cref="Name">Name</see> value has changed.
+        ''' True if the underlying fleet has been changed.
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function IsChanged() As Boolean
-            If Me.m_Fleet Is Nothing Then Return False
-            Return (Me.m_Fleet.Name <> Me.m_strName)
+            If Me.m_fleet Is Nothing Then Return False
+            Return (Me.m_fleet.Name <> Me.m_strName) Or _
+                   (Me.m_fleet.PoolColor <> Me.m_iColor)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -196,7 +196,7 @@ Imports ScientificInterface.Other
                 Return Me.m_status = AddRemoveItemStatus.Removed
             End Get
             Set(ByVal bDelete As Boolean)
-                If Me.m_Fleet IsNot Nothing Then
+                If Me.m_fleet IsNot Nothing Then
                     If bDelete Then
                         Me.m_status = AddRemoveItemStatus.Removed
                     Else
@@ -295,14 +295,15 @@ Imports ScientificInterface.Other
     Protected Overrides Sub FillData()
 
         Dim Fleet As cFleetInput = Nothing
-        Dim fi As FleetInfo = Nothing
+        Dim fi As cFleetInfo = Nothing
 
         ' Populate local administration from a snapshot of the live data
+        Me.m_lfiFleets.Clear()
 
         ' Make snapshot of Fleet configuration
         For iFleet As Integer = 1 To Me.Core.nFleets
             Fleet = Core.FleetInputs(iFleet)
-            fi = New FleetInfo(Fleet)
+            fi = New cFleetInfo(Fleet)
             Me.m_lfiFleets.Add(fi)
         Next
 
@@ -319,7 +320,7 @@ Imports ScientificInterface.Other
     ''' -----------------------------------------------------------------------
     Public Sub UpdateGrid()
 
-        Dim fi As FleetInfo = Nothing
+        Dim fi As cFleetInfo = Nothing
         Dim ri As RowInfo = Nothing
         Dim cells() As Cells.ICellVirtual = Nothing
         Dim pos As SourceGrid2.Position = Nothing
@@ -379,7 +380,7 @@ Imports ScientificInterface.Other
     ''' -----------------------------------------------------------------------
     Private Sub UpdateRow(ByVal iRow As Integer)
 
-        Dim fi As FleetInfo = Nothing
+        Dim fi As cFleetInfo = Nothing
         Dim ri As RowInfo = Nothing
         Dim aCells() As Cells.ICellVirtual = Nothing
         Dim pos As SourceGrid2.Position = Nothing
@@ -388,7 +389,7 @@ Imports ScientificInterface.Other
 
         Me.AllowUpdates = False
 
-        fi = DirectCast(Me.m_lfiFleets(iRow - iFIRSTFLEETROW), FleetInfo)
+        fi = DirectCast(Me.m_lfiFleets(iRow - iFIRSTFLEETROW), cFleetInfo)
         ri = Me.Rows(iRow)
 
         ri.Tag = fi
@@ -458,7 +459,7 @@ Imports ScientificInterface.Other
 
         If Not Me.AllowUpdates Then Return True
 
-        Dim fi As FleetInfo = DirectCast(Me.m_lfiFleets(p.Row - 1), FleetInfo)
+        Dim fi As cFleetInfo = DirectCast(Me.m_lfiFleets(p.Row - 1), cFleetInfo)
 
         Select Case DirectCast(p.Column, eColumnTypes)
 
@@ -490,7 +491,7 @@ Imports ScientificInterface.Other
 
         If Not Me.AllowUpdates Then Return True
 
-        Dim fi As FleetInfo = DirectCast(Me.m_lfiFleets(p.Row - 1), FleetInfo)
+        Dim fi As cFleetInfo = DirectCast(Me.m_lfiFleets(p.Row - 1), cFleetInfo)
 
         Select Case DirectCast(p.Column, eColumnTypes)
             Case eColumnTypes.FleetIndex
@@ -500,7 +501,7 @@ Imports ScientificInterface.Other
                 Dim strName As String = CStr(cell.GetValue(p))
                 ' Check if name is unique
                 For iFleet As Integer = 0 To Me.m_lfiFleets.Count - 1
-                    Dim giTemp As FleetInfo = DirectCast(Me.m_lfiFleets(iFleet), FleetInfo)
+                    Dim giTemp As cFleetInfo = DirectCast(Me.m_lfiFleets(iFleet), cFleetInfo)
                     ' Does name already exist?
                     If (Not Object.ReferenceEquals(giTemp, fi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                         ' Change is not allowed
@@ -526,6 +527,8 @@ Imports ScientificInterface.Other
     Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
 
         Select Case DirectCast(p.Column, eColumnTypes)
+            Case eColumnTypes.FleetColor
+                Me.SelectCustomColor(p.Row)
         End Select
 
     End Sub
@@ -545,13 +548,13 @@ Imports ScientificInterface.Other
         If iRow = -1 Then iRow = Me.SelectedRow
 
         Dim iFleet As Integer = iRow - iFIRSTFLEETROW
-        Dim fi As FleetInfo = Nothing
+        Dim fi As cFleetInfo = Nothing
         Dim strPrompt As String = ""
 
         ' Validate
         If iFleet < 0 Then Return
 
-        fi = DirectCast(Me.m_lfiFleets(iFleet), FleetInfo)
+        fi = DirectCast(Me.m_lfiFleets(iFleet), cFleetInfo)
         ' Toggle 'flagged for deletion' flag
         fi.FlaggedForDeletion = Not fi.FlaggedForDeletion
 
@@ -598,10 +601,10 @@ Imports ScientificInterface.Other
         If Not IsFleetRow(iRow) Then Return False
 
         Dim iFleet As Integer = iRow - iFIRSTFLEETROW
-        Dim fi As FleetInfo = Nothing
+        Dim fi As cFleetInfo = Nothing
         Dim strPrompt As String = ""
 
-        fi = DirectCast(Me.m_lfiFleets(iFleet), FleetInfo)
+        fi = DirectCast(Me.m_lfiFleets(iFleet), cFleetInfo)
         Return fi.FlaggedForDeletion
     End Function
 
@@ -621,7 +624,7 @@ Imports ScientificInterface.Other
     Private Sub CreateFleet(ByVal iRow As Integer)
 
         Dim iFleet As Integer = -1
-        Dim fi As FleetInfo = Nothing
+        Dim fi As cFleetInfo = Nothing
         Dim lstrFleetNames As New List(Of String)
 
         ' Make fit
@@ -636,7 +639,7 @@ Imports ScientificInterface.Other
             lstrFleetNames.Add(Me.m_lfiFleets(i).Name)
         Next i
 
-        fi = New FleetInfo(String.Format(My.Resources.DEFAULT_NEWFLEET_NUM, _
+        fi = New cFleetInfo(String.Format(My.Resources.DEFAULT_NEWFLEET_NUM, _
                 StringUtils.GetNextNumber(lstrFleetNames.ToArray, My.Resources.DEFAULT_NEWFLEET_NUM)))
         Me.m_lfiFleets.Insert(iFleet, fi)
 
@@ -702,7 +705,7 @@ Imports ScientificInterface.Other
     ''' </summary>
     Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
 
-        Dim objTemp As FleetInfo = Nothing
+        Dim objTemp As cFleetInfo = Nothing
         Dim iStep As Integer = 1
         Dim iFromFleet As Integer = iFromRow - iFIRSTFLEETROW
         Dim iToFleet As Integer = iToRow - iFIRSTFLEETROW
@@ -787,7 +790,7 @@ Imports ScientificInterface.Other
         Me.ShowCell(New Position(iRow, 0))
     End Sub
 
-    Private Sub SelectRow(ByVal fi As FleetInfo)
+    Private Sub SelectRow(ByVal fi As cFleetInfo)
         For iFleet As Integer = 0 To Me.m_lfiFleets.Count - 1
             If Object.ReferenceEquals(Me.m_lfiFleets(iFleet), fi) Then
                 Me.SelectRow(iFleet + iFIRSTFLEETROW)
@@ -798,6 +801,41 @@ Imports ScientificInterface.Other
 #End Region ' Selection extension
 
 #End Region ' Admin
+
+#Region " Colors "
+
+    Public Sub ResetFleetColors()
+
+        Dim fi As cFleetInfo = Nothing
+        For i As Integer = 0 To Me.m_lfiFleets.Count - 1
+            fi = Me.m_lfiFleets(i)
+            fi.PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.FleetColorDefault(Me.Core, i))
+        Next
+        Me.UpdateColorColumn()
+
+    End Sub
+
+    Public Sub SelectCustomColor(Optional ByVal iRow As Integer = -1)
+
+        Dim fi As cFleetInfo = Nothing
+        Dim dlgColor As ColorDialog = Nothing
+
+        If iRow = -1 Then iRow = Me.SelectedRow
+
+        If Not Me.IsFleetRow(iRow) Then Return
+
+        fi = Me.m_lfiFleets(iRow - iFIRSTFLEETROW)
+
+        dlgColor = New ColorDialog()
+        dlgColor.Color = cStyleGuide.IntToColor(fi.PoolColor)
+        If dlgColor.ShowDialog() = DialogResult.OK Then
+            fi.PoolColor = cStyleGuide.ColorToInt(dlgColor.Color)
+            Me.UpdateRow(iRow)
+        End If
+
+    End Sub
+
+#End Region ' Colors
 
 #Region " Validation "
 
@@ -831,9 +869,10 @@ Imports ScientificInterface.Other
         Dim strPrompt As String = ""
         Dim bConfigurationChanged As Boolean = False
         Dim bFleetsChanged As Boolean = False
-        Dim fi As FleetInfo = Nothing
-        Dim Fleet As cFleetInput = Nothing
+        Dim fi As cFleetInfo = Nothing
+        Dim fleet As cFleetInput = Nothing
         Dim iFleet As Integer = 0
+        Dim bColorsChanged As Boolean = False
         Dim bSuccess As Boolean = True
 
         ' Validate content of the grid
@@ -841,7 +880,7 @@ Imports ScientificInterface.Other
 
         ' Assess Fleet changes
         For iFleet = 0 To Me.m_lfiFleets.Count - 1
-            fi = DirectCast(Me.m_lfiFleets(iFleet), FleetInfo)
+            fi = DirectCast(Me.m_lfiFleets(iFleet), cFleetInfo)
             ' Check this Fleet is newly added
             If Object.ReferenceEquals(fi.Fleet, Nothing) Then
                 bConfigurationChanged = True
@@ -858,7 +897,7 @@ Imports ScientificInterface.Other
         ' Assess Fleets to remove
         strPrompt = ""
         For iFleet = 0 To Me.m_lfiFleetsRemoved.Count - 1
-            fi = DirectCast(Me.m_lfiFleetsRemoved(iFleet), FleetInfo)
+            fi = DirectCast(Me.m_lfiFleetsRemoved(iFleet), cFleetInfo)
             If (Not Object.ReferenceEquals(fi.Fleet, Nothing)) Then
 
                 strPrompt = String.Format(My.Resources.ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT, fi.Name)
@@ -889,13 +928,13 @@ Imports ScientificInterface.Other
 
             cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
-            Dim htFleetID As New Dictionary(Of FleetInfo, Integer)
+            Dim htFleetID As New Dictionary(Of cFleetInfo, Integer)
             Dim iDBID As Integer = Nothing
 
             ' Add new Fleets
             For iFleet = 0 To Me.m_lfiFleets.Count - 1
 
-                fi = DirectCast(Me.m_lfiFleets(iFleet), FleetInfo)
+                fi = DirectCast(Me.m_lfiFleets(iFleet), cFleetInfo)
                 If (Object.ReferenceEquals(fi.Fleet, Nothing)) Then
                     Dim igt As Integer = iFleet + 1
                     bSuccess = bSuccess And Me.Core.AddFleet(fi.Name, igt, iDBID)
@@ -911,7 +950,7 @@ Imports ScientificInterface.Other
             ' Remove deleted (and confirmed) Fleets
             Dim iFleetRemove As Integer = 0
             For iFleet = 0 To Me.m_lfiFleetsRemoved.Count - 1
-                fi = DirectCast(Me.m_lfiFleetsRemoved(iFleetRemove), FleetInfo)
+                fi = DirectCast(Me.m_lfiFleetsRemoved(iFleetRemove), cFleetInfo)
                 If (Not Object.ReferenceEquals(fi.Fleet, Nothing)) And (fi.Confirmed = True) Then
                     If (Me.Core.RemoveFleet(fi.Fleet.Index)) Then
                         Me.m_lfiFleets.Remove(fi)
@@ -934,12 +973,24 @@ Imports ScientificInterface.Other
         ' Update core objects
         If (bFleetsChanged) Then
             For iFleet = 0 To Me.m_lfiFleets.Count - 1
-                fi = DirectCast(Me.m_lfiFleets(iFleet), FleetInfo)
+                fi = DirectCast(Me.m_lfiFleets(iFleet), cFleetInfo)
                 If fi.IsChanged() Then
-                    Fleet = Me.Core.FleetInputs(iFleet + 1)
-                    If Fleet.Name <> fi.Name Then Fleet.Name = fi.Name
+                    fleet = Me.Core.FleetInputs(iFleet + 1)
+                    If fleet.Name <> fi.Name Then fleet.Name = fi.Name
+                    If fleet.PoolColor <> fi.PoolColor Then
+                        ' Is gi.poolcolor the default color? 
+                        If fi.PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(Me.Core, fleet.Index)) Then
+                            ' #Yes: Set color to transparent to allow group to show up as true default colour
+                            fleet.PoolColor = 0
+                        Else
+                            ' #No: Assign new color
+                            fleet.PoolColor = fi.PoolColor
+                        End If
+                        bColorsChanged = True
+                    End If
                 End If
             Next
+            If bColorsChanged Then cStyleGuide.GetInstance().ColorsChanged()
         End If
 
         Return bSuccess

@@ -33,6 +33,8 @@ Namespace Ecopath
             Me.m_btnInsert = New System.Windows.Forms.Button
             Me.m_lbEdit = New System.Windows.Forms.Label
             Me.m_lbOrder = New System.Windows.Forms.Label
+            Me.m_btnDefault = New System.Windows.Forms.Button
+            Me.m_hdrColors = New System.Windows.Forms.Label
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -124,18 +126,33 @@ Namespace Ecopath
             Me.m_lbOrder.ForeColor = System.Drawing.SystemColors.ControlLightLight
             Me.m_lbOrder.Name = "m_lbOrder"
             '
+            'm_btnDefault
+            '
+            resources.ApplyResources(Me.m_btnDefault, "m_btnDefault")
+            Me.m_btnDefault.Name = "m_btnDefault"
+            Me.m_btnDefault.UseVisualStyleBackColor = True
+            '
+            'm_hdrColors
+            '
+            resources.ApplyResources(Me.m_hdrColors, "m_hdrColors")
+            Me.m_hdrColors.BackColor = System.Drawing.SystemColors.ControlDark
+            Me.m_hdrColors.ForeColor = System.Drawing.SystemColors.ControlLightLight
+            Me.m_hdrColors.Name = "m_hdrColors"
+            '
             'EditFleets
             '
             Me.AcceptButton = Me.OK_Button
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.Controls.Add(Me.m_hdrColors)
             Me.Controls.Add(Me.m_lbOrder)
             Me.Controls.Add(Me.m_lbEdit)
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnDelete)
             Me.Controls.Add(Me.m_grid)
+            Me.Controls.Add(Me.m_btnDefault)
             Me.Controls.Add(Me.m_btnMoveDown)
             Me.Controls.Add(Me.m_btnMoveUp)
             Me.Controls.Add(Me.m_btnInsert)
@@ -158,6 +175,8 @@ Namespace Ecopath
         Private WithEvents m_lbEdit As System.Windows.Forms.Label
         Private WithEvents m_lbOrder As System.Windows.Forms.Label
         Private WithEvents m_grid As EditFleetsEwEGrid
+        Private WithEvents m_btnDefault As System.Windows.Forms.Button
+        Private WithEvents m_hdrColors As System.Windows.Forms.Label
 
     End Class
 

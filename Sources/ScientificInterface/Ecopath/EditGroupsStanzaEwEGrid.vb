@@ -734,6 +734,7 @@ Imports EwEUtils.Drawing
         Dim si As StanzaInfo = Nothing
 
         ' Populate local administration from a snapshot of the live data
+        Me.m_lgiGroups.Clear()
 
         ' Make snapshot of group configuration
         For iGroup As Integer = 1 To core.nGroups
@@ -1392,10 +1393,6 @@ Imports EwEUtils.Drawing
 #End Region ' Row manipulation 
 
 #Region " Colors "
-
-    Public Sub SetDefaultGroupColors()
-
-    End Sub
 
     ''' <summary>
     ''' Helper method to load alternating colours for all groups.
