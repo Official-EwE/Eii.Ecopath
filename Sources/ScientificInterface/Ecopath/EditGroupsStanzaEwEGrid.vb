@@ -640,48 +640,6 @@ Imports EwEUtils.Drawing
 
 #End Region ' Stanza info
 
-#Region " ColorCell "
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' GroupColorCellVisualizer is a base class visualizer that provides 
-    ''' group color feedback.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Private Class GroupColorCellVisualizer
-        Inherits SourceGrid2.VisualModels.Common
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Overidden to render cell value as a color
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Sub DrawCell_ImageAndText( _
-                ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                ByVal p_CellPosition As SourceGrid2.Position, _
-                ByVal e As System.Windows.Forms.PaintEventArgs, _
-                ByVal p_ClientRectangle As System.Drawing.Rectangle, _
-                ByVal p_Status As SourceGrid2.DrawCellStatus)
-
-            Dim value As Object = p_Cell.GetValue(p_CellPosition)
-
-            If Not (TypeOf value Is Color) Then Return
-
-            Dim clr As Color = DirectCast(value, Color)
-            Dim rcColor As New Rectangle(p_ClientRectangle.X + 2, p_ClientRectangle.Y + 2, p_ClientRectangle.Width - 4, p_ClientRectangle.Height - 4)
-
-            ' Draw the background
-            Using br As New SolidBrush(clr)
-                e.Graphics.FillRectangle(br, rcColor)
-            End Using
-
-        End Sub
-
-    End Class
-
-#End Region ' ColorCell
-
 #End Region ' Helper classes
 
     ''' -----------------------------------------------------------------------
@@ -899,7 +857,7 @@ Imports EwEUtils.Drawing
             Me(iRow, eColumnTypes.GroupPP).Behaviors.Add(m_bm)
 
             Me(iRow, eColumnTypes.GroupColor) = New Cells.Real.Cell()
-            Me(iRow, eColumnTypes.GroupColor).VisualModel = New GroupColorCellVisualizer()
+            Me(iRow, eColumnTypes.GroupColor).VisualModel = New cColorCellVisualizer()
             Me(iRow, eColumnTypes.GroupColor).Behaviors.Add(m_bm)
 
             Dim cmb As Cells.Real.ComboBox = New Cells.Real.ComboBox("", GetType(String), astrStanzaNames, False)
@@ -974,7 +932,7 @@ Imports EwEUtils.Drawing
 
         pos = New Position(iRow, eColumnTypes.GroupColor)
         Dim clr As Color = cStyleGuide.IntToColor(gi.PoolColor)
-        If clr.A = 0 Then clr = cStyleGuide.GetInstance().GroupColorDefault(Me.Core, iRow, Me.m_lgiGroups.Count)
+        If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(Me.Core, iRow)
         aCells(eColumnTypes.GroupColor).SetValue(pos, clr)
 
         Select Case gi.Status
@@ -1006,7 +964,7 @@ Imports EwEUtils.Drawing
         Me.AllowUpdates = False
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
             clr = cStyleGuide.IntToColor(Me.m_lgiGroups(iGroup).PoolColor)
-            If clr.A = 0 Then clr = cStyleGuide.GetInstance().GroupColorDefault(Me.Core, iGroup + 1, Me.m_lgiGroups.Count)
+            If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(Me.Core, iGroup + 1)
             Me(iGroup + iFIRSTGROUPROW, eColumnTypes.GroupColor).Value = clr
         Next iGroup
         Me.AllowUpdates = True
@@ -1438,6 +1396,7 @@ Imports EwEUtils.Drawing
     Public Sub SetDefaultGroupColors()
 
     End Sub
+
     ''' <summary>
     ''' Helper method to load alternating colours for all groups.
     ''' </summary>
@@ -1490,10 +1449,9 @@ Imports EwEUtils.Drawing
     End Sub
 
     Public Sub SetScaleGroupColors()
-        Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
-            Me.m_lgiGroups(iGroup).PoolColor = cStyleGuide.ColorToInt(sg.GroupColorDefault(Me.Core, iGroup + 1, Me.m_lgiGroups.Count))
+            Me.m_lgiGroups(iGroup).PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(Me.Core, iGroup + 1))
             Me.UpdateRow(iGroup + iFIRSTGROUPROW)
         Next
 
@@ -1841,7 +1799,6 @@ Imports EwEUtils.Drawing
         Dim stanza As cStanzaGroup = Nothing
         Dim iStanza As Integer = 0
         Dim bSuccess As Boolean = True
-        Dim stgd As cStyleGuide = cStyleGuide.GetInstance()
         Dim sb As New System.Text.StringBuilder
 
         ' =================
@@ -2078,7 +2035,7 @@ Imports EwEUtils.Drawing
                             If (group.VBK <> gi.VBK) Then group.VBK = gi.VBK
                             If (group.PoolColor <> gi.PoolColor) Then
                                 ' Is gi.poolcolor the default color? 
-                                If gi.PoolColor = cStyleGuide.ColorToInt(stgd.GroupColorDefault(Me.Core, iGrpTmp, Me.Core.nGroups)) Then
+                                If gi.PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(Me.Core, iGrpTmp)) Then
                                     ' #Yes: Set color to transparent to allow group to show up as true default colour
                                     group.PoolColor = 0
                                 Else

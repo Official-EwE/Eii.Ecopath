@@ -44,6 +44,7 @@ Imports ScientificInterface.Other
     Private Enum eColumnTypes
         FleetIndex = 0
         FleetName
+        FleetColor
         FleetStatus
     End Enum
 
@@ -68,6 +69,8 @@ Imports ScientificInterface.Other
         Private m_Fleet As cFleetInput = Nothing
         ''' <summary>Name for this Fleet.</summary>
         Private m_strName As String = ""
+        ''' <summary>Fleet color.</summary>
+        Private m_iColor As Integer = 0
         ''' <summary>Flag stating whether a user action is confirmed</summary>
         Private m_bConfirmed As Boolean = True
         ''' <summary>The status of a Fleet in the interface.</summary>
@@ -81,10 +84,11 @@ Imports ScientificInterface.Other
         ''' initialize this instance from. If set, this instance represents a
         ''' Fleet currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Fleet As cFleetInput)
-            Debug.Assert(Fleet IsNot Nothing)
-            Me.m_Fleet = Fleet
-            Me.m_strName = Fleet.Name
+        Public Sub New(ByVal fleet As cFleetInput)
+            Debug.Assert(fleet IsNot Nothing)
+            Me.m_Fleet = fleet
+            Me.m_strName = fleet.Name
+            Me.m_iColor = fleet.PoolColor
             Me.m_status = AddRemoveItemStatus.Original
         End Sub
 
@@ -97,6 +101,7 @@ Imports ScientificInterface.Other
         Public Sub New(ByVal strName As String)
             Me.m_Fleet = Nothing
             Me.m_strName = strName
+            Me.m_iColor = 0
             Me.m_status = AddRemoveItemStatus.Added
         End Sub
 
@@ -111,6 +116,21 @@ Imports ScientificInterface.Other
             End Get
             Set(ByVal value As String)
                 Me.m_strName = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="cEcopathDataStructures.FleetColor">Color</see> value of
+        ''' this administrative unit.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property PoolColor() As Integer
+            Get
+                Return Me.m_iColor
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_iColor = value
             End Set
         End Property
 
@@ -254,6 +274,8 @@ Imports ScientificInterface.Other
         Me(0, eColumnTypes.FleetIndex) = New EwEColumnHeaderCell()
         ' Fleet name cell, editable this time
         Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
+        ' Color
+        Me(0, eColumnTypes.FleetColor) = New EwEColumnHeaderCell(My.Resources.HEADER_COLOR)
 
         ' Fleet index cell
         Me(0, eColumnTypes.FleetStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
@@ -315,6 +337,10 @@ Imports ScientificInterface.Other
             Me(iRow, eColumnTypes.FleetName) = New Cells.Real.Cell("", GetType(String))
             Me(iRow, eColumnTypes.FleetName).Behaviors.Add(m_bm)
 
+            Me(iRow, eColumnTypes.FleetColor) = New Cells.Real.Cell()
+            Me(iRow, eColumnTypes.FleetColor).VisualModel = New cColorCellVisualizer()
+            Me(iRow, eColumnTypes.FleetColor).Behaviors.Add(m_bm)
+
             ' Status
             vm = New VisualModels.Common()
             vm.ImageAlignment = ContentAlignment.MiddleCenter
@@ -337,6 +363,12 @@ Imports ScientificInterface.Other
             UpdateRow(iRow)
         Next iRow
 
+    End Sub
+
+    Protected Overrides Sub FinishStyle()
+        MyBase.FinishStyle()
+        ' Should size to fit header
+        Me.Columns(eColumnTypes.FleetColor).Width = 80
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -368,6 +400,11 @@ Imports ScientificInterface.Other
         pos = New Position(iRow, eColumnTypes.FleetName)
         aCells(eColumnTypes.FleetName).SetValue(pos, CStr(fi.Name))
 
+        pos = New Position(iRow, eColumnTypes.FleetColor)
+        Dim clr As Color = cStyleGuide.IntToColor(fi.PoolColor)
+        If clr.A = 0 Then clr = Me.StyleGuide.FleetColorDefault(Me.Core, iRow)
+        aCells(eColumnTypes.FleetColor).SetValue(pos, clr)
+
         Select Case fi.Status
             Case AddRemoveItemStatus.Original
                 vm = Me.m_vmOriginal
@@ -384,6 +421,20 @@ Imports ScientificInterface.Other
         aCells(eColumnTypes.FleetStatus).VisualModel = vm
         aCells(eColumnTypes.FleetStatus).SetValue(pos, strText)
 
+        Me.AllowUpdates = True
+
+    End Sub
+
+    Private Sub UpdateColorColumn()
+
+        Dim clr As Color = Color.Transparent
+
+        Me.AllowUpdates = False
+        For iFleet As Integer = 0 To Me.m_lfiFleets.Count - 1
+            clr = cStyleGuide.IntToColor(Me.m_lfiFleets(iFleet).PoolColor)
+            If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(Me.Core, iFleet + 1)
+            Me(iFleet + iFIRSTFLEETROW, eColumnTypes.FleetColor).Value = clr
+        Next iFleet
         Me.AllowUpdates = True
 
     End Sub
