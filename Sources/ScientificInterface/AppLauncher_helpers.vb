@@ -320,7 +320,6 @@ Partial Public Class AppLauncher
             Me.StringToFontSetting(My.Settings.FontSubtitle, cStyleGuide.eApplicationFontType.SubTitle)
             Me.StringToFontSetting(My.Settings.FontLegend, cStyleGuide.eApplicationFontType.Legend)
             Me.StringToFontSetting(My.Settings.FontScale, cStyleGuide.eApplicationFontType.Scale)
-            Me.StringToFontSetting(My.Settings.FontValue, cStyleGuide.eApplicationFontType.Value)
 
             Me.m_sg.ResumeEvents()
 
@@ -357,7 +356,6 @@ Partial Public Class AppLauncher
             My.Settings.FontSubtitle = Me.FontSettingToString(cStyleGuide.eApplicationFontType.SubTitle)
             My.Settings.FontLegend = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Legend)
             My.Settings.FontScale = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Scale)
-            My.Settings.FontValue = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Value)
 
             My.Settings.Save()
         End Sub
