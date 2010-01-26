@@ -120,7 +120,7 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = Me.m_vulnerabilityBlockCodeSelector.SelectedBlockNum
 
             Me.m_gridGroupMaxFishingMortality = New gridFitToTimeSeriesGroup(Me.Core.FishingPolicyManager)
-
+            Me.m_gridGroupMaxFishingMortality.UIContext = Me.UIContext
             Me.m_plGrid.Controls.Clear()
             Me.m_plGrid.Controls.Add(m_gridGroupMaxFishingMortality)
             Me.m_gridGroupMaxFishingMortality.Dock = DockStyle.Fill
@@ -347,6 +347,8 @@ Namespace Ecosim
 
         Private Sub m_shapeToolBox_OnSelectionChanged(ByVal ashapes As EwECore.cShapeData()) _
             Handles m_shapeToolBox.OnSelectionChanged
+
+            If Me.UIContext Is Nothing Then Return
 
             Dim iMax As Integer = Me.Core.nEcosimYears
 
