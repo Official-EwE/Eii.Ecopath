@@ -185,6 +185,7 @@ Namespace Controls
                 RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 Me.m_sg = Nothing
                 Me.m_core = Nothing
+                Me.Items.Clear()
             End If
 
         End Sub

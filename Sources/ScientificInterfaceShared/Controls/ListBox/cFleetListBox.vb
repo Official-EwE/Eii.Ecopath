@@ -72,7 +72,8 @@ Namespace Controls
             ''' </summary>
             ''' <param name="fleet">Fleet to link to.</param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal fleet As cFleetInput)
+            Public Sub New(ByVal fleet As cFleetInput, _
+                           Optional ByVal sSortValue As Single = 0.0!)
                 Me.m_fleet = fleet
             End Sub
 
@@ -83,8 +84,7 @@ Namespace Controls
             ''' <returns>The formatted item text.</returns>
             ''' ---------------------------------------------------------------
             Public Overrides Function ToString() As String
-                If Me.m_fleet IsNot Nothing Then Return Me.m_fleet.Name
-                Return My.Resources.GENERIC_VALUE_ALL
+                Return Me.m_fleet.Name
             End Function
 
             ''' ---------------------------------------------------------------
@@ -122,7 +122,6 @@ Namespace Controls
         Private m_sg As cStyleGuide = Nothing
         Private m_sortType As eSortType = eSortType.FleetIndexAsc
         Private m_sSortThreshold As Single = cCore.NULL_VALUE
-        Private m_bShowAllItem As Boolean = True
         Private m_fleettrackingtype As eFleetTrackingType = eFleetTrackingType.AllFleets
 
 #End Region ' Privates
@@ -167,6 +166,7 @@ Namespace Controls
                 RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 Me.m_sg = Nothing
                 Me.m_core = Nothing
+                Me.Items.Clear()
             End If
 
         End Sub
@@ -261,26 +261,6 @@ Namespace Controls
 
 #Region " Behaviour "
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' States whether the listbox should include an 'all fleets' item.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("Include an 'all fleets' item"), _
-         Category("EwE6"), _
-         DefaultValue(True)> _
-        Public Property ShowAllFleetsItem() As Boolean
-            Get
-                Return Me.m_bShowAllItem
-            End Get
-            Set(ByVal value As Boolean)
-                If value <> Me.m_bShowAllItem Then
-                    Me.m_bShowAllItem = value
-                    Me.Populate()
-                End If
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -356,8 +336,8 @@ Namespace Controls
             End Get
             Set(ByVal iFleet As Integer)
                 If (Not Me.IsInitialized()) Then Return
-                If (iFleet < 1 Or iFleet >= Me.m_core.nFleets) Then
-                    Me.SelectedIndex = CInt(IIf(Me.m_bShowAllItem, 0, -1))
+                If (iFleet < 0 Or iFleet >= Me.m_core.nFleets) Then
+                    Me.SelectedIndex = -1
                     Return
                 End If
                 Me.SelectedIndex = Me.FleetIndex(iFleet)
@@ -379,7 +359,7 @@ Namespace Controls
             Set(ByVal fleet As cFleetInput)
                 If (Not Me.IsInitialized()) Then Return
                 If (fleet Is Nothing) Then
-                    Me.SelectedIndex = CInt(IIf(Me.m_bShowAllItem, 0, -1))
+                    Me.SelectedIndex = -1
                     Return
                 End If
                 Me.SelectedIndex = Me.FleetIndex(fleet.Index)
@@ -501,30 +481,32 @@ Namespace Controls
             ' Clear items
             Me.Items.Clear()
 
-            ' Add 'all fleets' item
-            If Me.m_bShowAllItem Then
-                Me.Items.Add(New cFleetItem(Nothing))
-            End If
-
-            ' Determine #fleets to show
+            ' (Re)populate listbox
             Select Case Me.m_fleettrackingtype
 
-                Case eFleetTrackingType.Manual, _
-                     eFleetTrackingType.AllFleets
+                Case eFleetTrackingType.Manual
+                    If aiFleets IsNot Nothing Then
+                        For i As Integer = 0 To aiFleets.Length - 1
+                            Me.Items.Add(New cFleetItem(Me.m_core.FleetInputs(aiFleets(i))))
+                        Next
+                    End If
+
+                Case eFleetTrackingType.AllFleets
                     iFleetStart = 0 : iFleetEnd = Me.m_core.nFleets
+                    For i As Integer = iFleetStart To iFleetEnd
+                        Me.Items.Add(New cFleetItem(Me.m_core.FleetInputs(i)))
+                    Next
 
                 Case eFleetTrackingType.Fleets
                     iFleetStart = 1 : iFleetEnd = Me.m_core.nFleets
+                    For i As Integer = iFleetStart To iFleetEnd
+                        Me.Items.Add(New cFleetItem(Me.m_core.FleetInputs(i)))
+                    Next
 
                 Case Else
-                    Debug.Assert(False, "inclusion type not supported")
+                    Debug.Assert(False, "eFleetTrackingType not supported")
 
             End Select
-
-            ' (Re)populate listbox
-            For i As Integer = iFleetStart To iFleetEnd
-                Me.Items.Add(New cFleetItem(Me.m_core.FleetInputs(i)))
-            Next
 
             Me.ResumeLayout()
 
@@ -561,9 +543,8 @@ Namespace Controls
 
             Dim item As Object = Me.Items(e.Index)
             Dim gi As cFleetListBox.cFleetItem = Nothing
-            Dim clrLegend As Color = Color.Transparent
+            Dim clrFleet As Color = Color.Transparent
             Dim clrText As Color = e.ForeColor
-            Dim bItemValid As Boolean = True
 
             ' Attempt to get item colour if it is a cFleetItem
             If (TypeOf item Is cFleetListBox.cFleetItem) Then
@@ -572,16 +553,8 @@ Namespace Controls
                 ' Has a fleet attached?
                 If (gi.Fleet IsNot Nothing) Then
                     ' #Yes: use dimmed colours
-                    clrLegend = Me.m_sg.FleetColor(Me.m_core, gi.Fleet.Index)
-                    ' Allowed to display and colour fleet?
-                    If Me.m_sg.FleetVisible(gi.Fleet.Index) And gi.SortValue >= Me.SortThreshold Then
-                        ' #Yes: display fleet in full color
-                        clrText = e.ForeColor
-                    Else
-                        ' #No: use dimmed text colour
-                        clrText = SystemColors.ControlDark
-                        bItemValid = False
-                    End If
+                    clrFleet = Me.m_sg.FleetColor(Me.m_core, gi.Fleet.Index)
+                    clrText = e.ForeColor
                 End If
             End If
 
@@ -593,17 +566,11 @@ Namespace Controls
             ' Render default text, bumped to the right by 22 pixels
             e.Graphics.DrawString(item.ToString(), e.Font, New SolidBrush(clrText), e.Bounds.X + 22, e.Bounds.Y)
 
-            If (clrLegend.A > 0) Then
+            If (clrFleet.A > 0) Then
                 ' Render colour fill
-                If bItemValid Then
-                    Using br As New SolidBrush(clrLegend)
-                        e.Graphics.FillRectangle(br, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
-                    End Using
-                Else
-                    Using br As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.BackwardDiagonal, clrLegend, Color.Transparent)
-                        e.Graphics.FillRectangle(br, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
-                    End Using
-                End If
+                Using br As New SolidBrush(clrFleet)
+                    e.Graphics.FillRectangle(br, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
+                End Using
                 ' Render colour box border
                 Using p As New Pen(clrText, 1)
                     e.Graphics.DrawRectangle(p, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
