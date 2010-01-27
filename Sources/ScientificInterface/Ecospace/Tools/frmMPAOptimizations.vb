@@ -159,17 +159,17 @@ Namespace Ecospace
             m_plLayers.Controls.Add(Me.m_ucLayers)
 
             ' Add objective grids
-            Me.m_gridSOObjectives = New gridSearchObjectivesWeight(Me.m_manager)
-            Me.m_gridSOObjectives.FixedColumnWidths = False
+            Me.m_gridSOObjectives = New gridSearchObjectivesWeight()
             Me.m_gridSOObjectives.ShowMPAOptParams = True
+            Me.m_gridSOObjectives.Manager = Me.m_manager
             Me.m_plObjectives.Controls.Add(Me.m_gridSOObjectives)
 
-            Me.m_gridSOFleet = New gridSearchObjectivesFleet(Me.m_manager)
-            Me.m_gridSOFleet.FixedColumnWidths = False
+            Me.m_gridSOFleet = New gridSearchObjectivesFleet()
+            Me.m_gridSOFleet.Manager = Me.m_manager
             Me.m_plFleet.Controls.Add(Me.m_gridSOFleet)
 
-            Me.m_gridSOGroup = New gridSearchObjectivesGroup(Me.m_manager)
-            Me.m_gridSOGroup.FixedColumnWidths = False
+            Me.m_gridSOGroup = New gridSearchObjectivesGroup()
+            Me.m_gridSOGroup.Manager = Me.m_manager
             Me.m_plGroup.Controls.Add(Me.m_gridSOGroup)
 
             Me.m_propSearchType = New cIntegerProperty(MPAOpt, eVarNameFlags.MPAOptSearchType)

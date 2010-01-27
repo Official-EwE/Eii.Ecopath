@@ -27,7 +27,6 @@ Namespace Ecosim
         Private m_dlgSensOfSS As dlgSensitivityOfSStoV = Nothing
         Private m_SensitivityByPredatorResults As cSensitivityToVulResults = Nothing
         Private m_cmdTSWeights As cCommand = Nothing
-        Private m_gridGroupMaxFishingMortality As gridFitToTimeSeriesGroup = Nothing
         Private m_shapeSelected As cShapeData = Nothing
         Private m_bInUpdate As Boolean = True
 
@@ -126,11 +125,8 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockMatrix.BlockColors = Me.m_vulnerabilityBlockCodeSelector.BlockColors
             Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = Me.m_vulnerabilityBlockCodeSelector.SelectedBlockNum
 
-            Me.m_gridGroupMaxFishingMortality = New gridFitToTimeSeriesGroup(Me.Core.FishingPolicyManager)
-            Me.m_gridGroupMaxFishingMortality.UIContext = Me.UIContext
-            Me.m_plGrid.Controls.Clear()
-            Me.m_plGrid.Controls.Add(m_gridGroupMaxFishingMortality)
-            Me.m_gridGroupMaxFishingMortality.Dock = DockStyle.Fill
+            Me.m_grid.Manager = Me.Core.FishingPolicyManager
+            Me.m_grid.UIContext = Me.UIContext
 
             Me.m_shapeHandler = New AppliedFFGUIHandler(Me.UIContext, Me.m_shapeToolBox, Me.m_sketchPad)
 
@@ -531,7 +527,7 @@ Namespace Ecosim
 
         Private Sub m_cbFishingMortalityPenalty_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbFishingMortalityPenalty.CheckedChanged
-            Me.m_plGrid.Enabled = Me.m_cbFishingMortalityPenalty.Checked
+            Me.m_grid.Enabled = Me.m_cbFishingMortalityPenalty.Checked
             Me.UpdateControls()
         End Sub
 

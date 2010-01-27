@@ -56,7 +56,6 @@ Public Class frmMSE
 
 #Region "Private variables"
 
-    Dim m_core As cCore
     Dim m_MSE As cMSEManager
 
     Private m_fpNTrials As cPropertyFormatProvider
@@ -70,7 +69,6 @@ Public Class frmMSE
     Private m_fpUseQuotaRegs As cPropertyFormatProvider
 
     Private m_paneMaster As MasterPane = Nothing
-    Private m_sg As cStyleGuide = Nothing
     Private m_zgh As cZedGraphHelper = Nothing
     Private m_curState As eMSEStates
 
@@ -84,25 +82,7 @@ Public Class frmMSE
 #Region "Construction Initialization and Destruction"
 
     Public Sub New()
-
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
-        ' Add any initialization after the InitializeComponent() call.
-
-        Me.m_core = cCore.GetInstance
-        Me.m_MSE = Me.m_core.MSEManager
-
-        Me.m_fpNTrials = New cPropertyFormatProvider(Me.txNTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
-        Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.ckPlugin, Me.m_MSE.ModelParameters, eVarNameFlags.MSEUseEconomicPlugin)
-        Me.m_fpSave = New cPropertyFormatProvider(Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
-
-        Me.m_fpForecast = New cPropertyFormatProvider(Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
-        Me.m_fpSBPower = New cPropertyFormatProvider(Me.txSBPower, Me.m_MSE.ModelParameters, eVarNameFlags.MSEAssessPower)
-        Me.m_fpKalman = New cPropertyFormatProvider(Me.txKalmanGain, Me.m_MSE.ModelParameters, eVarNameFlags.MSEKalmanGain)
-
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
-
-        m_coreMessage = New cMSEEventSource
+        Me.InitializeComponent()
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -123,9 +103,22 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub OnfrmMSELoad(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
 
-        m_sg = cStyleGuide.GetInstance()
+        Me.m_MSE = Me.UIContext.Core.MSEManager
+
+        Me.m_fpNTrials = New cPropertyFormatProvider(Me.txNTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
+        Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.ckPlugin, Me.m_MSE.ModelParameters, eVarNameFlags.MSEUseEconomicPlugin)
+        Me.m_fpSave = New cPropertyFormatProvider(Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
+
+        Me.m_fpForecast = New cPropertyFormatProvider(Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
+        Me.m_fpSBPower = New cPropertyFormatProvider(Me.txSBPower, Me.m_MSE.ModelParameters, eVarNameFlags.MSEAssessPower)
+        Me.m_fpKalman = New cPropertyFormatProvider(Me.txKalmanGain, Me.m_MSE.ModelParameters, eVarNameFlags.MSEKalmanGain)
+
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
+
+        m_coreMessage = New cMSEEventSource
 
         'Assessment methods Catch Estimated Biomass and Direct Exploitation are stored in the tag property of the radio buttons
         'see the Changed event of the radio buttons for setting the parameters
@@ -143,7 +136,7 @@ Public Class frmMSE
         m_dctEffortControls.Add(eMSEEffortMode.TrackUseQuota, Me.rbTrackUseQuota)
 
         ' Display Groups
-        Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
             cmd.AddControl(Me.btShowHide)
         End If
@@ -156,7 +149,7 @@ Public Class frmMSE
 
         Me.m_plotter = New cMSEPlotter
 
-        Me.m_plotter.Init(Me.m_core, Me.m_MSE, Me.m_zgh, Me.zdGraph, Me.m_sg)
+        Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.m_zgh, Me.zdGraph)
         Me.m_plotter.PlotType = ePlotTypes.Line
         Me.m_plotter.DataType = ePlotData.Biomass
 
@@ -345,7 +338,7 @@ Public Class frmMSE
         Try
             Dim lstData As New List(Of cCoreGroupBase)
             For Each grp As cMSEGroupOutput In Me.m_MSE.GroupOutputs
-                If Me.m_sg.GroupVisible(grp.Index) Then
+                If Me.UIContext.StyleGuide.GroupVisible(grp.Index) Then
                     lstData.Add(grp)
                 End If
             Next
@@ -373,8 +366,8 @@ Public Class frmMSE
 
     Private Function nVisGroups() As Integer
         Dim n As Integer
-        For igrp As Integer = 1 To Me.m_core.nGroups
-            If Me.m_sg.GroupVisible(igrp) Then
+        For igrp As Integer = 1 To Me.UIContext.Core.nGroups
+            If Me.UIContext.StyleGuide.GroupVisible(igrp) Then
                 n += 1
             End If
         Next

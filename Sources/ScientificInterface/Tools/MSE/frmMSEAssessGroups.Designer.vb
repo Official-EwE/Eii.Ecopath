@@ -23,7 +23,9 @@ Partial Class frmMSEAssessGroups
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
+        Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks
         Me.GridBioCV1 = New ScientificInterface.gridBioCV
+        Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
         Me.SuspendLayout()
@@ -35,12 +37,27 @@ Partial Class frmMSEAssessGroups
         Me.SplitContainer1.Name = "SplitContainer1"
         Me.SplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal
         '
+        'SplitContainer1.Panel1
+        '
+        Me.SplitContainer1.Panel1.Controls.Add(Me.m_blocks)
+        '
         'SplitContainer1.Panel2
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.GridBioCV1)
         Me.SplitContainer1.Size = New System.Drawing.Size(652, 483)
         Me.SplitContainer1.SplitterDistance = 217
         Me.SplitContainer1.TabIndex = 0
+        '
+        'm_blocks
+        '
+        Me.m_blocks.CurColor = System.Drawing.Color.Empty
+        Me.m_blocks.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_blocks.Location = New System.Drawing.Point(0, 0)
+        Me.m_blocks.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_blocks.Name = "m_blocks"
+        Me.m_blocks.Size = New System.Drawing.Size(652, 217)
+        Me.m_blocks.TabIndex = 0
+        Me.m_blocks.UIContext = Nothing
         '
         'GridBioCV1
         '
@@ -55,7 +72,7 @@ Partial Class frmMSEAssessGroups
                     Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.GridBioCV1.CustomSort = False
         Me.GridBioCV1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GridBioCV1.FixedColumnWidths = True
+        Me.GridBioCV1.FixedColumnWidths = False
         Me.GridBioCV1.FocusStyle = SourceGrid2.FocusStyle.None
         Me.GridBioCV1.GridToolTipActive = True
         Me.GridBioCV1.Location = New System.Drawing.Point(0, 0)
@@ -82,11 +99,13 @@ Partial Class frmMSEAssessGroups
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSEAssessGroups"
         Me.Text = "frmMSEAssessGroups"
+        Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         Me.SplitContainer1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
-    Friend WithEvents GridBioCV1 As ScientificInterface.gridBioCV
+    Private WithEvents m_blocks As ScientificInterface.Ecosim.ucPolicyColorBlocks
+    Private WithEvents GridBioCV1 As ScientificInterface.gridBioCV
 End Class

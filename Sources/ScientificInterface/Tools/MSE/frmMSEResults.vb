@@ -1,5 +1,4 @@
-﻿
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -14,28 +13,13 @@ Public Class frmMSEResults
 
     Private m_EventSource As cMSEEventSource
 
-    Private Sub onGridTypeCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbGroup.CheckedChanged, rbFleet.CheckedChanged
-        Try
-            Dim rb As RadioButton = DirectCast(sender, RadioButton)
-
-            If rb.Checked Then
-                Me.Grid.GridType = DirectCast(rb.Tag, ScientificInterface.gridRiskResults.eGridType)
-            End If
-
-        Catch ex As Exception
-
-        End Try
-
+    Public Sub New()
+        InitializeComponent()
+        m_EventSource = New cMSEEventSource
     End Sub
 
-    Private Sub frmMSEResults_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-
-        RemoveHandler Me.m_EventSource.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
-        RemoveHandler Me.m_EventSource.onRunCompleted, AddressOf Me.onRunCompleted
-
-    End Sub
-
-    Private Sub frmMSEResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
 
         Me.rbFleet.Tag = ScientificInterface.gridRiskResults.eGridType.Fleet
         Me.rbGroup.Tag = ScientificInterface.gridRiskResults.eGridType.Group
@@ -47,15 +31,11 @@ Public Class frmMSEResults
 
     End Sub
 
+    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        MyBase.OnFormClosed(e)
 
-    Public Sub New()
-
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
-
-        m_EventSource = New cMSEEventSource
-
-        ' Add any initialization after the InitializeComponent() call.
+        RemoveHandler Me.m_EventSource.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
+        RemoveHandler Me.m_EventSource.onRunCompleted, AddressOf Me.onRunCompleted
 
     End Sub
 
@@ -71,6 +51,18 @@ Public Class frmMSEResults
         End Try
     End Sub
 
+    Private Sub onGridTypeCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles rbGroup.CheckedChanged, rbFleet.CheckedChanged
+        Try
+            Dim rb As RadioButton = DirectCast(sender, RadioButton)
+            If rb.Checked Then
+                Me.Grid.GridType = DirectCast(rb.Tag, ScientificInterface.gridRiskResults.eGridType)
+            End If
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
 
     ''' <summary>
     ''' Stats data has changed. For now just update the grid
@@ -84,7 +76,7 @@ Public Class frmMSEResults
         End Try
     End Sub
 
-#Region "Core interactions"
+#Region " Core interactions "
 
     Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
         Try

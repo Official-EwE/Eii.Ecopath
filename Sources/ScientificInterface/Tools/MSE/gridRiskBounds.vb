@@ -1,5 +1,4 @@
-﻿
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -11,20 +10,16 @@ Imports EwECore.MSE
 
 #End Region
 
-
 <CLSCompliant(False)> _
 Public Class gridRiskBounds
     : Inherits EwEGrid
 
-    Private m_core As cCore
-
     Public Sub New()
-
-        Me.m_core = cCore.GetInstance
-
     End Sub
 
     Protected Overrides Sub InitStyle()
+
+        ' ToDo: localize this method
 
         MyBase.InitStyle()
         Me.Redim(1, 4)
@@ -38,10 +33,12 @@ Public Class gridRiskBounds
     Protected Overrides Sub FillData()
         Try
 
-            Dim mse As cMSEManager = Me.m_core.MSEManager
+            ' ToDo: localize this method
+
+            Dim mse As cMSEManager = Me.Core.MSEManager
             If mse Is Nothing Then Exit Sub
 
-            For igrp As Integer = 1 To m_core.nLivingGroups
+            For igrp As Integer = 1 To Me.Core.nLivingGroups
 
                 Me.Rows.Insert(igrp)
                 Me(igrp, 0) = New EwERowHeaderCell(igrp)

@@ -1,6 +1,4 @@
-﻿
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -12,20 +10,16 @@ Imports EwECore.MSE
 
 #End Region
 
-
 <CLSCompliant(False)> _
 Public Class gridPerformanceResults
     : Inherits EwEGrid
 
-    Private m_core As cCore
-
     Public Sub New()
-
-        Me.m_core = cCore.GetInstance
-
     End Sub
 
     Protected Overrides Sub InitStyle()
+
+        ' ToDo: localize this method
 
         MyBase.InitStyle()
         Me.Redim(1, 3)
@@ -37,8 +31,9 @@ Public Class gridPerformanceResults
 
     Protected Overrides Sub FillData()
         Try
+            ' ToDo: localize this method
 
-            Dim mse As cMSEManager = Me.m_core.MSEManager
+            Dim mse As cMSEManager = Me.Core.MSEManager
             If mse Is Nothing Then Exit Sub
             Dim row As Integer = 1
 

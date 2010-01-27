@@ -16,12 +16,7 @@ Imports EwECore.MSE
 Public Class gridFishingCV
     : Inherits EwEGrid
 
-    Private m_core As cCore
-
     Public Sub New()
-
-        Me.m_core = cCore.GetInstance
-
     End Sub
 
     Protected Overrides Sub InitStyle()
@@ -34,23 +29,24 @@ Public Class gridFishingCV
         Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_INCREASEQ)
 
         Me.FixedColumns = 2
+        Me.FixedColumnWidths = False
 
     End Sub
 
     Protected Overrides Sub FillData()
         Try
 
-            Dim mse As cMSEManager = Me.m_core.MSEManager
+            Dim mse As cMSEManager = Me.Core.MSEManager
             If mse Is Nothing Then Exit Sub
 
-            For iFlt As Integer = 1 To m_core.nFleets
+            For i As Integer = 1 To Me.Core.nFleets
 
-                Me.Rows.Insert(iFlt)
+                Me.Rows.Insert(i)
 
-                Me(iFlt, 0) = New EwERowHeaderCell(iFlt)
-                Me(iFlt, 1) = New PropertyRowHeaderCell(mse.FleetInputs(iFlt), eVarNameFlags.Name)
-                Me(iFlt, 2) = New PropertyCell(mse.FleetInputs(iFlt), eVarNameFlags.MSEFleetCV)
-                Me(iFlt, 3) = New PropertyCell(mse.FleetInputs(iFlt), eVarNameFlags.MSEQIncrease)
+                Me(i, 0) = New EwERowHeaderCell(i)
+                Me(i, 1) = New PropertyRowHeaderCell(mse.FleetInputs(i), eVarNameFlags.Name)
+                Me(i, 2) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSEFleetCV)
+                Me(i, 3) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSEQIncrease)
 
             Next
         Catch ex As Exception

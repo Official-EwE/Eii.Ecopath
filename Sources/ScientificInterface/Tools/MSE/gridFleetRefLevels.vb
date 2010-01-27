@@ -14,42 +14,42 @@ Imports EwECore.MSE
 Public Class gridFleetRefLevels
     : Inherits EwEGrid
 
-    Private m_core As cCore
-
     Public Sub New()
-
-        Me.m_core = cCore.GetInstance
-
     End Sub
 
     Protected Overrides Sub InitStyle()
 
+        ' ToDo: localize this method
+
         MyBase.InitStyle()
-        Me.Redim(1, 5)
-        Me(0, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-        Me(0, 1) = New EwEColumnHeaderCell("Catch Lower")
-        Me(0, 2) = New EwEColumnHeaderCell("Catch Upper")
-        Me(0, 3) = New EwEColumnHeaderCell("Effort Lower")
-        Me(0, 4) = New EwEColumnHeaderCell("Effort Upper")
+        Me.Redim(1, 6)
+        Me(0, 0) = New EwEColumnHeaderCell("")
+        Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
+        Me(0, 2) = New EwEColumnHeaderCell("Catch Lower")
+        Me(0, 3) = New EwEColumnHeaderCell("Catch Upper")
+        Me(0, 4) = New EwEColumnHeaderCell("Effort Lower")
+        Me(0, 5) = New EwEColumnHeaderCell("Effort Upper")
 
         Me.FixedColumns = 1
+        Me.FixedColumnWidths = False
 
     End Sub
 
     Protected Overrides Sub FillData()
         Try
 
-            Dim mse As cMSEManager = Me.m_core.MSEManager
+            Dim mse As cMSEManager = Me.UIContext.Core.MSEManager
             If mse Is Nothing Then Exit Sub
 
-            For flt As Integer = 1 To m_core.nFleets
+            For i As Integer = 1 To Me.UIContext.Core.nFleets
 
-                Me.Rows.Insert(flt)
-                Me(flt, 0) = New PropertyRowHeaderCell(mse.FleetInputs(flt), eVarNameFlags.Name)
-                Me(flt, 1) = New PropertyCell(mse.FleetInputs(flt), eVarNameFlags.MSERefFleetCatchLower)
-                Me(flt, 2) = New PropertyCell(mse.FleetInputs(flt), eVarNameFlags.MSERefFleetCatchUpper)
-                Me(flt, 3) = New PropertyCell(mse.FleetInputs(flt), eVarNameFlags.MSERefFleetEffortLower)
-                Me(flt, 4) = New PropertyCell(mse.FleetInputs(flt), eVarNameFlags.MSERefFleetEffortUpper)
+                Me.Rows.Insert(i)
+                Me(i, 0) = New EwERowHeaderCell(i)
+                Me(i, 1) = New PropertyRowHeaderCell(mse.FleetInputs(i), eVarNameFlags.Name)
+                Me(i, 2) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSERefFleetCatchLower)
+                Me(i, 3) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSERefFleetCatchUpper)
+                Me(i, 4) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSERefFleetEffortLower)
+                Me(i, 5) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSERefFleetEffortUpper)
 
             Next
 
@@ -64,4 +64,5 @@ Public Class gridFleetRefLevels
             Return eCoreComponentType.MSE
         End Get
     End Property
+
 End Class

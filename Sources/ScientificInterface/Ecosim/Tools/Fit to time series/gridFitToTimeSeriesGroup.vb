@@ -1,15 +1,4 @@
-﻿'==============================================================================
-' $Log: gridFitToTimeSeriesGroup.vb,v $
-' Revision 1.2  2008/12/15 15:55:35  jeroens
-' no message
-'
-' Revision 1.1  2008/11/27 20:56:11  sherman
-' Switched MaxFishing Mortality to Search routines.
-'
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -26,25 +15,34 @@ Namespace Ecosim
     Public Class gridFitToTimeSeriesGroup
         : Inherits EwEGrid
 
-        Private m_core As cCore
         Private m_manager As ISearchObjective
 
         Private Enum eColumnTypes As Integer
-            Group = 0
+            Index = 0
+            Group
             FLimit
         End Enum
 
-        Public Sub New(ByVal Manager As ISearchObjective)
+        Public Sub New()
             MyBase.New()
-            Me.m_core = cCore.GetInstance()
-            Me.m_manager = Manager
         End Sub
+
+        Public Property Manager() As ISearchObjective
+            Get
+                Return Me.m_manager
+            End Get
+            Set(ByVal value As ISearchObjective)
+                Me.m_manager = value
+                Me.RefreshContent()
+            End Set
+        End Property
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
+            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Group) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP)
             Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_MAXFISHINGMORTAILITY)
 
@@ -54,10 +52,14 @@ Namespace Ecosim
 
             Dim source As cCoreGroupBase = Nothing
 
-            For i As Integer = 1 To m_core.nGroups
+            If Me.Manager Is Nothing Then Return
+            If Me.UIContext Is Nothing Then Return
+
+            For i As Integer = 1 To Me.Core.nGroups
                 source = m_manager.GroupObjectives(i)
 
                 Me.Rows.Insert(i)
+                Me(i, eColumnTypes.Index) = New EwERowHeaderCell(i)
                 Me(i, eColumnTypes.Group) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
                 Me(i, eColumnTypes.FLimit) = New PropertyCell(source, eVarNameFlags.FPSFishingLimit)
             Next
@@ -67,10 +69,11 @@ Namespace Ecosim
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
             Me.FixedColumns = 1
+            Me.FixedColumnWidths = False
         End Sub
 
         Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
-            Return DockStyle.Fill
+            Return DockStyle.None
         End Function
 
     End Class

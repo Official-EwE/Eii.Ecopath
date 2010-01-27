@@ -75,12 +75,12 @@ Partial Class frmMSEPlots
         '
         'btShowHideGroups
         '
-        Me.btShowHideGroups.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btShowHideGroups.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btShowHideGroups.Location = New System.Drawing.Point(188, 24)
         Me.btShowHideGroups.Name = "btShowHideGroups"
-        Me.btShowHideGroups.Size = New System.Drawing.Size(179, 27)
+        Me.btShowHideGroups.Size = New System.Drawing.Size(120, 23)
         Me.btShowHideGroups.TabIndex = 7
-        Me.btShowHideGroups.Text = "Show hide groups"
+        Me.btShowHideGroups.Text = "Show/hide groups"
         Me.btShowHideGroups.UseVisualStyleBackColor = True
         '
         'Label1
@@ -216,5 +216,5 @@ Partial Class frmMSEPlots
     Friend WithEvents rbHisto As System.Windows.Forms.RadioButton
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lbType As System.Windows.Forms.Label
-    Friend WithEvents btShowHideGroups As System.Windows.Forms.Button
+    Private WithEvents btShowHideGroups As System.Windows.Forms.Button
 End Class

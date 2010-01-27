@@ -1,5 +1,4 @@
-﻿
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -15,45 +14,42 @@ Imports EwECore.MSE
 Public Class gridGroupRefLevels
     : Inherits EwEGrid
 
-
-    Private m_core As cCore
-
     Public Sub New()
-
-        Me.m_core = cCore.GetInstance
-
     End Sub
 
     Protected Overrides Sub InitStyle()
 
-        MyBase.InitStyle()
-        Me.Redim(1, 5)
-        Me(0, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-        Me(0, 1) = New EwEColumnHeaderCell("Biomass Lower")
-        Me(0, 2) = New EwEColumnHeaderCell("Biomass Upper")
+        ' ToDo: localize this method
 
-        Me(0, 3) = New EwEColumnHeaderCell("Catch Lower")
-        Me(0, 4) = New EwEColumnHeaderCell("Catch Upper")
+        MyBase.InitStyle()
+        Me.Redim(1, 6)
+        Me(0, 0) = New EwEColumnHeaderCell("")
+        Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+        Me(0, 2) = New EwEColumnHeaderCell("Biomass Lower")
+        Me(0, 3) = New EwEColumnHeaderCell("Biomass Upper")
+        Me(0, 4) = New EwEColumnHeaderCell("Catch Lower")
+        Me(0, 5) = New EwEColumnHeaderCell("Catch Upper")
 
         Me.FixedColumns = 1
+        Me.FixedColumnWidths = False
 
     End Sub
 
     Protected Overrides Sub FillData()
         Try
 
-            Dim mse As cMSEManager = Me.m_core.MSEManager
+            Dim mse As cMSEManager = Me.UIContext.Core.MSEManager
             If mse Is Nothing Then Exit Sub
 
-            For igrp As Integer = 1 To m_core.nLivingGroups
+            For i As Integer = 1 To Me.UIContext.Core.nLivingGroups
 
-                Me.Rows.Insert(igrp)
-                Me(igrp, 0) = New PropertyRowHeaderCell(mse.GroupInputs(igrp), eVarNameFlags.Name)
-                Me(igrp, 1) = New PropertyCell(mse.GroupInputs(igrp), eVarNameFlags.MSERefBioLower)
-                Me(igrp, 2) = New PropertyCell(mse.GroupInputs(igrp), eVarNameFlags.MSERefBioUpper)
-
-                Me(igrp, 3) = New PropertyCell(mse.GroupInputs(igrp), eVarNameFlags.MSERefGroupCatchLower)
-                Me(igrp, 4) = New PropertyCell(mse.GroupInputs(igrp), eVarNameFlags.MSERefGroupCatchUpper)
+                Me.Rows.Insert(i)
+                Me(i, 0) = New EwERowHeaderCell(i)
+                Me(i, 1) = New PropertyRowHeaderCell(mse.GroupInputs(i), eVarNameFlags.Name)
+                Me(i, 2) = New PropertyCell(mse.GroupInputs(i), eVarNameFlags.MSERefBioLower)
+                Me(i, 3) = New PropertyCell(mse.GroupInputs(i), eVarNameFlags.MSERefBioUpper)
+                Me(i, 4) = New PropertyCell(mse.GroupInputs(i), eVarNameFlags.MSERefGroupCatchLower)
+                Me(i, 5) = New PropertyCell(mse.GroupInputs(i), eVarNameFlags.MSERefGroupCatchUpper)
 
             Next
 

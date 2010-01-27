@@ -15,13 +15,8 @@ Namespace Ecosim
 
     Public Class frmFishingPolicySearch
 
-        Private m_blocks As ucPolicyColorBlocks = Nothing
-        Private m_core As cCore = Nothing
         Private m_manager As cFishingPolicyManager = Nothing
 
-        Private m_gridObjectiveWeights As gridSearchObjectivesWeight = Nothing
-        Private m_gridFleetObjectives As gridSearchObjectivesFleet = Nothing
-        Private m_gridGroupObjectives As gridSearchObjectivesGroup = Nothing
         Private m_gridSystemObjectives As gridFPSResultSystemObjectives = Nothing
         Private m_gridSystemObjectivesMulti As gridFPSResultSystemObjectives = Nothing
         Private m_gridFleetValue As gridFPSResultFleetValue = Nothing
@@ -33,41 +28,50 @@ Namespace Ecosim
         Private m_propBaseYear As cProperty = Nothing
 
         Private m_lstOptEnabled As New List(Of cControlEnabler)
-
         ''' <summary>Results to be plotted</summary>
-        ''' <remarks></remarks>
         Private m_lptsResults() As ResultPoints
         Private m_zghResults As cZedGraphHelper
+        Private m_bInUpdate As Boolean = False
 
         Public Sub New()
+            Me.InitializeComponent()
+        End Sub
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
+#Region " Overrides "
 
-            ' Add any initialization after the InitializeComponent() call.
-            Me.m_core = cCore.GetInstance()
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
 
             'Initialize Fishing Policy Manager
-            Me.m_manager = Me.m_core.FishingPolicyManager
-
+            Me.m_manager = Me.Core.FishingPolicyManager
             Me.m_manager.Connect(AddressOf Me.RunStartedHandler, AddressOf Me.RunCompletedHandler, _
                                 AddressOf Me.SearchProgressHandler, AddressOf Me.SearchCompletedHandler)
 
 
-            Me.m_blocks = New ucPolicyColorBlocks()
-            Me.m_gridObjectiveWeights = New gridSearchObjectivesWeight(Me.m_core.FishingPolicyManager)
-            Me.m_gridFleetObjectives = New gridSearchObjectivesFleet(Me.m_core.FishingPolicyManager)
-            Me.m_gridGroupObjectives = New gridSearchObjectivesGroup(Me.m_core.FishingPolicyManager)
+            Me.m_blocks.UIContext = Me.UIContext
+
+            Me.m_gridObjWeights.UIContext = Me.UIContext
+            Me.m_gridObjWeights.Manager = Me.Core.FishingPolicyManager
+
+            Me.m_gridObjFleet.UIContext = Me.UIContext
+            Me.m_gridObjFleet.Manager = Me.Core.FishingPolicyManager
+
+            Me.m_gridObjGroup.UIContext = Me.UIContext
+            Me.m_gridObjGroup.Manager = Me.Core.FishingPolicyManager
+
             Me.m_gridSystemObjectives = New gridFPSResultSystemObjectives()
             Me.m_gridSystemObjectivesMulti = New gridFPSResultSystemObjectives()
             Me.m_gridFleetValue = New gridFPSResultFleetValue()
 
-            Me.m_fpDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
-            Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
+            Me.m_fpDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
+            Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
-            Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.m_chkUsePlugin, m_core.FishingPolicyManager.ModelParameters, eVarNameFlags.FPSUseEconomicPlugin)
+            Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.m_chkUsePlugin, Me.Core.FishingPolicyManager.ModelParameters, eVarNameFlags.FPSUseEconomicPlugin)
 
-            Me.m_propBaseYear = cPropertyManager.GetInstance().GetProperty(m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
+            Me.m_propBaseYear = cPropertyManager.GetInstance().GetProperty(Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
             AddHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
 
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkMaxPortUl, eOptimizeApproachTypes.SystemObjective))
@@ -81,11 +85,16 @@ Namespace Ecosim
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries}
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
+
+            Me.m_blocks.ParmBlockCodes.nBlockCodes = Me.Core.nFleets
+            Me.m_blocks.ParmBlockCodes.SelectedBlockNum = 1
+
+            Me.InitRunParams()
             Me.UpdateControls()
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             RemoveHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
             Me.m_propBaseYear = Nothing
@@ -98,41 +107,26 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub UpdateControls()
+        Public Overrides Property UIContext() As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As cUIContext)
+                MyBase.UIContext = value
+            End Set
+        End Property
 
-            Dim optAproach As eOptimizeApproachTypes = Me.m_manager.ModelParameters.OptimizeApproach
-            For Each ct As cControlEnabler In m_lstOptEnabled
-                ct.Enabled(optAproach)
-            Next
 
-            Me.m_fpUsePlugin.Enabled = (optAproach = eOptimizeApproachTypes.SystemObjective)
 
-        End Sub
+#End Region ' Overrides
 
-        Private Sub FishingPolicySearch_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+#Region " Internals "
 
-            m_plBlocks.Controls.Clear()
-            m_plBlocks.Controls.Add(m_blocks)
-            m_blocks.Dock = DockStyle.Fill
-
-            m_scObjectives.Panel1.Controls.Clear()
-            m_scObjectives.Panel1.Controls.Add(m_gridObjectiveWeights)
-            m_gridObjectiveWeights.Dock = DockStyle.Fill
-
-            m_scAarghArghAaargh.Panel1.Controls.Clear()
-            m_scAarghArghAaargh.Panel1.Controls.Add(m_gridFleetObjectives)
-            m_gridFleetObjectives.Dock = DockStyle.Fill
-
-            m_scAarghArghAaargh.Panel2.Controls.Clear()
-            m_scAarghArghAaargh.Panel2.Controls.Add(m_gridGroupObjectives)
-            m_gridGroupObjectives.Dock = DockStyle.Fill
-
-            m_blocks.ParmBlockCodes.nBlockCodes = m_core.nFleets
-            m_blocks.ParmBlockCodes.SelectedBlockNum = 1
-
-            InitRunParams()
-
-        End Sub
+        Private ReadOnly Property Core() As cCore
+            Get
+                Return Me.UIContext.Core
+            End Get
+        End Property
 
         Private Sub InitRunParams()
 
@@ -188,6 +182,25 @@ Namespace Ecosim
             m_nudMaxEffChg.Value = CDec(Me.m_manager.ModelParameters.MaxEffChange)
             m_nudBaseYear.Value = CDec(Me.m_manager.ObjectiveParameters.BaseYear)
         End Sub
+
+        Private Sub UpdateControls()
+
+            Dim optAproach As eOptimizeApproachTypes = Me.m_manager.ModelParameters.OptimizeApproach
+            For Each ct As cControlEnabler In m_lstOptEnabled
+                ct.Enabled(optAproach)
+            Next
+
+            Me.m_fpUsePlugin.Enabled = (optAproach = eOptimizeApproachTypes.SystemObjective)
+
+        End Sub
+
+        Private Sub SendErrorMessage(ByVal theMessage As String)
+            Me.Core.Messages.SendMessage(New cMessage(theMessage, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
+        End Sub
+
+#End Region ' Internals
+
+#Region " Event handlers "
 
         Private Sub m_nudNumberOfRuns_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudNumberOfRuns.ValueChanged
@@ -256,11 +269,11 @@ Namespace Ecosim
                 Case 0
                     Me.m_manager.ModelParameters.OptimizeApproach = eOptimizeApproachTypes.SystemObjective
                     InitMaxSOParams()
-                    m_gridFleetObjectives.IsMaximizeByFleetValue = False
+                    m_gridObjFleet.IsMaximizeByFleetValue = False
                 Case 1
                     Me.m_manager.ModelParameters.OptimizeApproach = eOptimizeApproachTypes.FleetValues
                     InitMaxFVParams()
-                    m_gridFleetObjectives.IsMaximizeByFleetValue = True
+                    m_gridObjFleet.IsMaximizeByFleetValue = True
             End Select
 
             Me.UpdateControls()
@@ -316,11 +329,46 @@ Namespace Ecosim
             Me.btnStop.Enabled = True
 
             Me.m_plRunParams.Enabled = False
-            Me.m_plBlocks.Enabled = False
+            Me.m_blocks.Enabled = False
 
             cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, -1.0!)
 
         End Sub
+        Private Sub cbIncludeCCosts_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Handles m_chkIncludeCCosts.CheckedChanged
+
+            ' Check to discard premature events
+            If Me.m_manager Is Nothing Then Return
+            Me.m_manager.ModelParameters.IncludeComp = m_chkIncludeCCosts.Checked
+
+        End Sub
+
+        Private Sub cbMaxPortUl_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_chkMaxPortUl.CheckedChanged
+
+            ' Check to discard premature events
+            If Me.m_manager Is Nothing Then Return
+            Me.m_manager.ModelParameters.MaxPortUtil = m_chkMaxPortUl.Checked
+            Me.m_gridObjWeights.ShowMaxPortUtil = m_chkMaxPortUl.Checked
+
+        End Sub
+
+        Private Sub cbPrevCE_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_chkPrevCE.CheckedChanged
+
+            ' Check to discard premature events
+            If Me.m_manager Is Nothing Then Return
+            Me.m_manager.ObjectiveParameters.PrevCostEarning = m_chkPrevCE.Checked
+
+        End Sub
+
+        Private Sub btnStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStop.Click
+            m_manager.StopRun()
+        End Sub
+
+#End Region ' Event handlers
+
+#Region " Callbacks "
 
         ''' <summary>
         ''' Delegate for cFishingPolicyManager.SearchCompletedHandler. This sub will be called when cFishingPolicyManager.Run has completed.
@@ -334,11 +382,11 @@ Namespace Ecosim
                 Me.btnStop.Enabled = False
 
                 Me.m_plRunParams.Enabled = True
-                Me.m_plBlocks.Enabled = True
+                Me.m_blocks.Enabled = True
 
                 cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault)
 
-                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_COMPLETED, _
+                Me.Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_COMPLETED, _
                         eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
 
             Catch ex As Exception
@@ -353,7 +401,7 @@ Namespace Ecosim
             Try
                 Me.m_gridSystemObjectives.RemoveDataRows()
 
-                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_STARTED, _
+                Me.Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_STARTED, _
                         eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
 
             Catch ex As Exception
@@ -408,43 +456,6 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub cbIncludeCCosts_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_chkIncludeCCosts.CheckedChanged
-
-            ' Check to discard premature events
-            If Me.m_manager Is Nothing Then Return
-            Me.m_manager.ModelParameters.IncludeComp = m_chkIncludeCCosts.Checked
-
-        End Sub
-
-        Private Sub cbMaxPortUl_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_chkMaxPortUl.CheckedChanged
-
-            ' Check to discard premature events
-            If Me.m_manager Is Nothing Then Return
-            Me.m_manager.ModelParameters.MaxPortUtil = m_chkMaxPortUl.Checked
-            Me.m_gridObjectiveWeights.ShowMaxPortUtil = m_chkMaxPortUl.Checked
-
-        End Sub
-
-        Private Sub cbPrevCE_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_chkPrevCE.CheckedChanged
-
-            ' Check to discard premature events
-            If Me.m_manager Is Nothing Then Return
-            Me.m_manager.ObjectiveParameters.PrevCostEarning = m_chkPrevCE.Checked
-
-        End Sub
-
-        Private Sub btnStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStop.Click
-            m_manager.StopRun()
-        End Sub
-
-        'send a generic error message
-        Private Sub SendErrorMessage(ByVal theMessage As String)
-            m_core.Messages.SendMessage(New cMessage(theMessage, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
-        End Sub
-
         Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
 
             If msg.Source = eCoreComponentType.TimeSeries Then
@@ -453,8 +464,6 @@ Namespace Ecosim
 
         End Sub
 
-        Private m_bInUpdate As Boolean = False
-
         Private Sub OnBaseYearChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
             Debug.Assert(Object.ReferenceEquals(prop, Me.m_propBaseYear))
 
@@ -462,7 +471,7 @@ Namespace Ecosim
 
             'If (cf And cProperty.eChangeFlags.Value) = cProperty.eChangeFlags.Value Then
             Me.m_bInUpdate = True
-            Me.m_nudBaseYear.Value = CInt(prop.GetValue()) + Me.m_core.EcosimFirstYear
+            Me.m_nudBaseYear.Value = CInt(prop.GetValue()) + Me.Core.EcosimFirstYear
             Me.m_bInUpdate = False
             'End If
 
@@ -474,8 +483,8 @@ Namespace Ecosim
             ' Check to discard premature events
             If Me.m_manager Is Nothing Then Return
 
-            Dim iStart As Integer = Me.m_core.EcosimFirstYear
-            Dim iEnd As Integer = iStart + Me.m_core.nEcosimYears
+            Dim iStart As Integer = Me.Core.EcosimFirstYear
+            Dim iEnd As Integer = iStart + Me.Core.nEcosimYears
             Dim iValue As Integer = iStart
 
             Try
@@ -494,12 +503,14 @@ Namespace Ecosim
             Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
         End Sub
 
+#End Region ' Callbacks
+
 #Region " Graphing Region "
 
         Private Sub InitResultsPlot()
 
             Me.m_zghResults = New cZedGraphHelper()
-            Me.m_zghResults.Attach(Me.m_core, Me.m_graphResults)
+            Me.m_zghResults.Attach(Me.Core, Me.m_graphResults)
             Me.m_zghResults.ShowCursor = False
 
             AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
@@ -660,7 +671,5 @@ Namespace Ecosim
 #End Region ' Helper classes
 
     End Class ' frmFishingPolicySearch
-
-
 
 End Namespace

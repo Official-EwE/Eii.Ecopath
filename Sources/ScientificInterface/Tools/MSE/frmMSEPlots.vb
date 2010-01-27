@@ -20,56 +20,38 @@ Public Class frmMSEPlots
 
     'ToDo_jb 12-Jan-2010 frmMSEPlots Show Hide button should be disabled when Fleet data is selected
 
-    Dim m_core As cCore
-    Dim m_MSE As cMSEManager
-
+    Private m_MSE As cMSEManager
     Private m_paneMaster As MasterPane = Nothing
-    Private m_sg As cStyleGuide = Nothing
     Private m_zgh As cZedGraphHelper = Nothing
     Private m_plotter As cMSEPlotter
     Private m_MSEEvents As cMSEEventSource
     Private m_curPlotType As ePlotTypes
     Private m_curPlotData As ePlotData
 
-    Private Sub frmMSEPlots_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-        RemoveHandler Me.m_MSEEvents.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
-        RemoveHandler Me.m_MSEEvents.onRunCompleted, AddressOf Me.onRunCompleted
+        MyBase.OnLoad(e)
 
-        ' Show/Hide Groups
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
-        Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-        If Not Object.ReferenceEquals(cmd, Nothing) Then
-            cmd.RemoveControl(Me.btShowHideGroups)
-        End If
+        Debug.Assert(Me.UIContext IsNot Nothing)
 
-        RemoveHandler cmd.OnInvoke, AddressOf Me.OnShowHideGroups
+        Me.m_MSE = Me.UIContext.Core.MSEManager
+        Me.m_zgh = New cZedGraphHelper()
+        Me.m_plotter = New cMSEPlotter()
+        Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.m_zgh, Me.ZedGraph)
 
-    End Sub
-
-    Private Sub frmMSEPlots_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.m_core = cCore.GetInstance()
-        Me.m_MSE = Me.m_core.MSEManager
-        m_sg = cStyleGuide.GetInstance
-
-        m_zgh = New cZedGraphHelper
-        Me.m_plotter = New cMSEPlotter
-        Me.m_plotter.Init(Me.m_core, Me.m_MSE, Me.m_zgh, Me.ZedGraph, Me.m_sg)
-
-        m_MSEEvents = New cMSEEventSource
+        Me.m_MSEEvents = New cMSEEventSource
         AddHandler Me.m_MSEEvents.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
         AddHandler Me.m_MSEEvents.onRunCompleted, AddressOf Me.onRunCompleted
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE}
 
         ' Display Groups
-        Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
             cmd.AddControl(Me.btShowHideGroups)
         End If
 
         AddHandler cmd.OnInvoke, AddressOf Me.OnShowHideGroups
-
 
         Me.rbHisto.Tag = ePlotTypes.Histogram
         Me.rbValues.Tag = ePlotTypes.Values
@@ -90,17 +72,28 @@ Public Class frmMSEPlots
 
     End Sub
 
-    Private Sub onRefLevelsChanged()
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        MyBase.OnFormClosed(e)
 
-        Me.m_plotter.AddReference()
+        RemoveHandler Me.m_MSEEvents.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
+        RemoveHandler Me.m_MSEEvents.onRunCompleted, AddressOf Me.onRunCompleted
+
+        ' Show/Hide Groups
+        Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        If Not Object.ReferenceEquals(cmd, Nothing) Then
+            cmd.RemoveControl(Me.btShowHideGroups)
+        End If
+
+        RemoveHandler cmd.OnInvoke, AddressOf Me.OnShowHideGroups
 
     End Sub
 
+    Private Sub onRefLevelsChanged()
+        Me.m_plotter.AddReference()
+    End Sub
 
     Private Sub onRunCompleted()
-
         Me.DrawPlots()
-
     End Sub
 
     Private Sub PlotGroupData(ByVal lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), ByVal PlotType As ePlotTypes, ByVal DataType As ePlotData)
@@ -109,7 +102,7 @@ Public Class frmMSEPlots
         Try
 
             For Each stat As cMSEStats In lstStatObjects
-                If Me.m_sg.GroupVisible(stat.Index) Then
+                If Me.UIContext.StyleGuide.GroupVisible(stat.Index) Then
                     data.Add(stat)
                 End If
             Next
@@ -212,12 +205,8 @@ Public Class frmMSEPlots
     End Sub
 
     Private Sub updateControls()
-        'this does not seem to disable the showhide button
-        'maybe because it belongs to a command???
-        Me.btShowHideGroups.Enabled = True
-        If Me.m_curPlotData = ePlotData.FleetValue Or Me.m_curPlotData = ePlotData.Effort Then
-            Me.btShowHideGroups.Enabled = False
-        End If
+        Me.btShowHideGroups.Visible = (Me.m_curPlotData <> ePlotData.FleetValue) And _
+                                      (Me.m_curPlotData <> ePlotData.Effort)
     End Sub
 
 #Region "Core interactions"

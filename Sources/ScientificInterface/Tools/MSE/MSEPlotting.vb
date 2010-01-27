@@ -99,15 +99,17 @@ Friend Class cMSEPlotter
     ''' <summary>
     ''' Initialize to ZedGraphHelper and a Zedgraph control
     ''' </summary>
-    ''' <param name="theCore"></param>
+    ''' <param name="uic"></param>
     ''' <param name="ZedGraphHelper"></param>
     ''' <param name="ZedGraph"></param>
-    ''' <param name="StyleGuid"></param>
     ''' <remarks></remarks>
-    Public Sub Init(ByVal theCore As cCore, ByVal MSEManager As cMSEManager, ByVal ZedGraphHelper As cZedGraphHelper, ByVal ZedGraph As ZedGraphControl, ByVal StyleGuid As cStyleGuide)
+    Public Sub Init(ByVal uic As cUIContext, _
+                    ByVal MSEManager As cMSEManager, _
+                    ByVal ZedGraphHelper As cZedGraphHelper, _
+                    ByVal ZedGraph As ZedGraphControl)
         Me.m_zgh = ZedGraphHelper
-        Me.m_sg = StyleGuid
-        Me.m_core = theCore
+        Me.m_sg = uic.StyleGuide
+        Me.m_core = uic.Core
         Me.m_zdGraph = ZedGraph
         Me.m_manager = MSEManager
     End Sub
@@ -283,7 +285,7 @@ Friend Class cMSEPlotter
 
     Private Function getRefPoint(ByVal ItemIndex As Integer) As cMSERefPoint
 
-        Dim refPoint As cMSERefPoint
+        Dim refPoint As cMSERefPoint = Nothing
 
         Select Case Me.m_dataType
 

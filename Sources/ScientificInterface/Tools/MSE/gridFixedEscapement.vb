@@ -20,32 +20,30 @@ Public Class gridFixedEscapement
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        Dim core As cCore = cCore.GetInstance()
-        Dim src As cCoreInputOutputBase = Nothing
-
         Me.Redim(1, 3)
         Me(0, 0) = New EwEColumnHeaderCell("")
         Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
         Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_FIXEDESCAPE)
 
         Me.FixedColumns = 2
+        Me.FixedColumnWidths = False
+
     End Sub
 
     Protected Overrides Sub FillData()
 
-        Dim core As cCore = cCore.GetInstance()
         Dim MSEGrp As cMSEGroupInput = Nothing
         Dim group As cCoreInputOutputBase = Nothing
         Dim cell As ICell = Nothing
 
         ' For each group
-        For iGroup As Integer = 1 To core.nLivingGroups
+        For iGroup As Integer = 1 To Me.Core.nLivingGroups
 
             Me.AddRow()
 
-            ''Get the group info
-            group = core.EcoPathGroupInputs(iGroup)
-            MSEGrp = core.MSEManager.GroupInputs(iGroup)
+            ' Get the group info
+            group = Me.Core.EcoPathGroupInputs(iGroup)
+            MSEGrp = Me.Core.MSEManager.GroupInputs(iGroup)
 
             Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
 

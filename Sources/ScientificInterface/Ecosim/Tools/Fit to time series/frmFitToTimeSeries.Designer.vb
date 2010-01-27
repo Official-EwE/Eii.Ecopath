@@ -29,7 +29,7 @@ Namespace Ecosim
             Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button
             Me.m_splitSearch = New System.Windows.Forms.SplitContainer
             Me.m_cbFishingMortalityPenalty = New System.Windows.Forms.CheckBox
-            Me.m_plGrid = New System.Windows.Forms.Panel
+            Me.m_grid = New ScientificInterface.Ecosim.gridFitToTimeSeriesGroup
             Me.m_lbFishingMortality = New System.Windows.Forms.Label
             Me.m_tlbSearch = New System.Windows.Forms.TableLayoutPanel
             Me.m_tbResults = New System.Windows.Forms.TextBox
@@ -46,6 +46,7 @@ Namespace Ecosim
             Me.tpVulnerabilitySearch = New System.Windows.Forms.TabPage
             Me.m_tsVulSearchTools = New System.Windows.Forms.ToolStrip
             Me.m_tsbSensOfSS2V = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbSearchGroup = New System.Windows.Forms.ToolStripButton
             Me.m_vulnerabilityBlockCodeSelector = New ScientificInterface.Ecosim.ucParmBlockCodes
             Me.m_vulnerabilityBlockMatrix = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks
             Me.tpAnomalySearch = New System.Windows.Forms.TabPage
@@ -62,7 +63,6 @@ Namespace Ecosim
             Me.m_lbSplinePoints = New System.Windows.Forms.Label
             Me.m_tbVariancePrimaryProd = New System.Windows.Forms.TextBox
             Me.Label1 = New System.Windows.Forms.Label
-            Me.m_tsbSearchGroup = New System.Windows.Forms.ToolStripButton
             Me.m_split1.Panel1.SuspendLayout()
             Me.m_split1.Panel2.SuspendLayout()
             Me.m_split1.SuspendLayout()
@@ -135,7 +135,7 @@ Namespace Ecosim
             'm_splitSearch.Panel1
             '
             Me.m_splitSearch.Panel1.Controls.Add(Me.m_cbFishingMortalityPenalty)
-            Me.m_splitSearch.Panel1.Controls.Add(Me.m_plGrid)
+            Me.m_splitSearch.Panel1.Controls.Add(Me.m_grid)
             Me.m_splitSearch.Panel1.Controls.Add(Me.m_lbFishingMortality)
             '
             'm_splitSearch.Panel2
@@ -148,7 +148,7 @@ Namespace Ecosim
             'm_cbFishingMortalityPenalty
             '
             Me.m_cbFishingMortalityPenalty.AutoSize = True
-            Me.m_cbFishingMortalityPenalty.Location = New System.Drawing.Point(12, 23)
+            Me.m_cbFishingMortalityPenalty.Location = New System.Drawing.Point(3, 257)
             Me.m_cbFishingMortalityPenalty.Name = "m_cbFishingMortalityPenalty"
             Me.m_cbFishingMortalityPenalty.Size = New System.Drawing.Size(137, 17)
             Me.m_cbFishingMortalityPenalty.TabIndex = 7
@@ -156,16 +156,40 @@ Namespace Ecosim
             Me.m_cbFishingMortalityPenalty.UseVisualStyleBackColor = True
             Me.m_cbFishingMortalityPenalty.Visible = False
             '
-            'm_plGrid
+            'm_grid
             '
-            Me.m_plGrid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Me.m_grid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_plGrid.Location = New System.Drawing.Point(0, 23)
-            Me.m_plGrid.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_plGrid.Name = "m_plGrid"
-            Me.m_plGrid.Size = New System.Drawing.Size(246, 254)
-            Me.m_plGrid.TabIndex = 6
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.BackColor = System.Drawing.Color.White
+            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_grid.CustomSort = False
+            Me.m_grid.FixedColumnWidths = False
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
+            Me.m_grid.Location = New System.Drawing.Point(0, 23)
+            Me.m_grid.Manager = Nothing
+            Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_grid.Name = "m_grid"
+            Me.m_grid.Size = New System.Drawing.Size(246, 231)
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TabIndex = 6
+            Me.m_grid.TrackPropertySelection = True
             '
             'm_lbFishingMortality
             '
@@ -303,7 +327,7 @@ Namespace Ecosim
             'm_cbAnomalySearch
             '
             Me.m_cbAnomalySearch.AutoSize = True
-            Me.m_cbAnomalySearch.Location = New System.Drawing.Point(6, 80)
+            Me.m_cbAnomalySearch.Location = New System.Drawing.Point(3, 80)
             Me.m_cbAnomalySearch.Name = "m_cbAnomalySearch"
             Me.m_cbAnomalySearch.Size = New System.Drawing.Size(101, 17)
             Me.m_cbAnomalySearch.TabIndex = 4
@@ -362,6 +386,15 @@ Namespace Ecosim
             Me.m_tsbSensOfSS2V.Size = New System.Drawing.Size(126, 22)
             Me.m_tsbSensOfSS2V.Text = "Sensitivity of SS to V"
             '
+            'm_tsbSearchGroup
+            '
+            Me.m_tsbSearchGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbSearchGroup.Image = CType(resources.GetObject("m_tsbSearchGroup.Image"), System.Drawing.Image)
+            Me.m_tsbSearchGroup.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbSearchGroup.Name = "m_tsbSearchGroup"
+            Me.m_tsbSearchGroup.Size = New System.Drawing.Size(157, 22)
+            Me.m_tsbSearchGroup.Text = "Search groups with time series"
+            '
             'm_vulnerabilityBlockCodeSelector
             '
             Me.m_vulnerabilityBlockCodeSelector.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -387,6 +420,7 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockMatrix.Size = New System.Drawing.Size(521, 498)
             Me.m_vulnerabilityBlockMatrix.TabIndex = 9
             Me.m_vulnerabilityBlockMatrix.TabStop = False
+            Me.m_vulnerabilityBlockMatrix.UIContext = Nothing
             '
             'tpAnomalySearch
             '
@@ -576,15 +610,6 @@ Namespace Ecosim
             Me.Label1.Text = "Search"
             Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'm_tsbSearchGroup
-            '
-            Me.m_tsbSearchGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsbSearchGroup.Image = CType(resources.GetObject("m_tsbSearchGroup.Image"), System.Drawing.Image)
-            Me.m_tsbSearchGroup.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsbSearchGroup.Name = "m_tsbSearchGroup"
-            Me.m_tsbSearchGroup.Size = New System.Drawing.Size(157, 22)
-            Me.m_tsbSearchGroup.Text = "Search groups with time series"
-            '
             'frmFitToTimeSeries
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -656,7 +681,7 @@ Namespace Ecosim
         Private WithEvents m_tsbSensOfSS2V As System.Windows.Forms.ToolStripButton
         Private WithEvents m_lbAppliedFF As System.Windows.Forms.Label
         Private WithEvents m_cbFishingMortalityPenalty As System.Windows.Forms.CheckBox
-        Private WithEvents m_plGrid As System.Windows.Forms.Panel
+        Private WithEvents m_grid As gridFitToTimeSeriesGroup
         Private WithEvents m_btnTimeSeriesWeights As System.Windows.Forms.Button
         Private WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_tsbSearchGroup As System.Windows.Forms.ToolStripButton

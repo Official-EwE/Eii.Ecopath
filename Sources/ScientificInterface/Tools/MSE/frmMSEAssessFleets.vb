@@ -1,25 +1,27 @@
-﻿Imports ScientificInterface.Ecosim
+﻿#Region " Imports "
+
+Option Strict On
+Imports ScientificInterface.Ecosim
+
+#End Region ' Imports
 
 Public Class frmMSEAssessFleets
-    Private m_blocks As ucPolicyColorBlocks = Nothing
-    Private m_core As EwECore.cCore
 
     Public Sub New()
-        m_core = EwECore.cCore.GetInstance
-
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
-        Me.m_blocks = New ucPolicyColorBlocks()
+        Me.InitializeComponent()
     End Sub
 
-    Private Sub frmMSEAssessFleets_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        SplitContainer1.Panel1.Controls.Clear()
-        SplitContainer1.Panel1.Controls.Add(m_blocks)
-        m_blocks.Dock = DockStyle.Fill
-        m_blocks.ParmBlockCodes.nBlockCodes = m_core.nFleets
-        m_blocks.ParmBlockCodes.SelectedBlockNum = 1
-    End Sub
+    Public Overrides Property UIContext() As cUIContext
+        Get
+            Return MyBase.UIContext
+        End Get
+        Set(ByVal value As cUIContext)
+            MyBase.UIContext = value
+            Me.GridFishingCV1.UIContext = value
+            Me.m_blocks.UIContext = value
+            Me.m_blocks.ParmBlockCodes.nBlockCodes = Me.UIContext.Core.nFleets
+            Me.m_blocks.ParmBlockCodes.SelectedBlockNum = 1
+        End Set
+    End Property
 
 End Class

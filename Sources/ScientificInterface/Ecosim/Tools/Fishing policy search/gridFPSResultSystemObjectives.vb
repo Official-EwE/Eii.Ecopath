@@ -1,32 +1,3 @@
-'==============================================================================
-'
-' $Log: gridFPSResultSystemObjectives.vb,v $
-' Revision 1.7  2009/04/03 20:27:10  jeroens
-' Prepared for more objective results
-'
-' Revision 1.6  2009/03/26 22:47:00  jeroens
-' ClearData -> RemoveDataRows, uses new ClearRow method to properly clean up
-'
-' Revision 1.5  2009/01/31 00:57:02  joeb
-' Fixed bug Diversity cell missing from output grid
-'
-' Revision 1.4  2008/12/15 15:55:35  jeroens
-' no message
-'
-' Revision 1.3  2008/12/02 17:23:14  joeb
-' Resized the fishing block selector to fit on the form
-'
-' Revision 1.2  2008/11/19 19:21:34  jeroens
-' Fixed crash
-'
-' Revision 1.1  2008/11/19 14:40:35  jeroens
-' Moved and renamed
-'
-' Revision 1.1  2008/09/26 07:31:52  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
