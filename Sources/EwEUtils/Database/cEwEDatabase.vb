@@ -549,6 +549,15 @@ Namespace Database
             Return (conn.State = ConnectionState.Open)
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the database can connect to an indicated type.
+        ''' </summary>
+        ''' <param name="dst">The datasource type to test.</param>
+        ''' <returns>True if the OS can connect to a given datasource type.</returns>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Function CanConnect(ByVal dst As eDataSourceTypes) As Boolean
+
 #End Region ' Connection
 
 #Region " Transaction "

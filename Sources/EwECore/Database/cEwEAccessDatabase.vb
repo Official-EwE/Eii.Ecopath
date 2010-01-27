@@ -52,16 +52,16 @@ Namespace Database
         Public Overrides Function Create(ByVal strDatabase As String, _
                 ByVal strModelName As String, _
                 Optional ByVal bOverwrite As Boolean = False, _
-                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
+                Optional ByVal format As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
             Dim strSource As String = ""
             Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Created
 
-            If databaseType = eDataSourceTypes.NotSet Then
-                databaseType = cDataSourceFactory.GetSupportedType(strDatabase)
+            If format = eDataSourceTypes.NotSet Then
+                format = cDataSourceFactory.GetSupportedType(strDatabase)
             End If
 
-            Select Case databaseType
+            Select Case format
                 Case eDataSourceTypes.MDB
                     strSource = "EwE6.mdb"
                 Case eDataSourceTypes.ACCDB
@@ -72,11 +72,12 @@ Namespace Database
 
             If (datResult = eDatasourceAccessType.Created) Then
 
+                ' Save resource file
                 If ResourceUtilities.SaveResourceToFile(strSource, strDatabase, bOverwrite, Assembly.GetExecutingAssembly()) Then
                     Try
                         'Try to open the database to update the model name
                         Dim db As New cEwEAccessDatabase()
-                        datResult = db.Open(strDatabase, databaseType)
+                        datResult = db.Open(strDatabase, format)
                         If (datResult = eDatasourceAccessType.Opened) Then
                             db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, SystemUtilities.GetUserName()))
                             ' Egg - over-easy but slightly obfuscated ;)
@@ -202,15 +203,36 @@ Namespace Database
             If Not String.IsNullOrEmpty(Me.m_conn.ConnectionString) Then
 
                 Try
+
+                    ' Try to open the connection
                     Me.m_conn.Open()
+                    ' Set status
                     datResult = eDatasourceAccessType.Opened
-                Catch e As Exception
-                    Console.WriteLine("** Exception {0} when opening Access db {1}", e.Message, strDatabase)
+                    ' All well: store file name
+                    Me.m_strFileName = strDatabase
+
+                Catch ex As OleDbException
+
+                    Select Case ex.ErrorCode
+                        Case -2147467259
+                            ' File not found
+                            datResult = eDatasourceAccessType.Failed_FileNotFound
+                        Case Else
+                            ' OleDb got into trouble
+                            datResult = eDatasourceAccessType.Failed_Unknown
+                    End Select
+                    Console.WriteLine("** OleDbException {0} when opening Access db {1}", ex.Message, strDatabase)
+
+                Catch ex As InvalidOperationException
                     datResult = eDatasourceAccessType.Failed_OSUnsupported
+                    Console.WriteLine("** InvalidOperationException {0} when opening Access db {1}", ex.Message, strDatabase)
+
+                Catch ex As Exception
+                    Console.WriteLine("** OleDbException {0} when opening Access db {1}", ex.Message, strDatabase)
+                    datResult = eDatasourceAccessType.Failed_Unknown
+
                 End Try
 
-                ' All well: store file name
-                Me.m_strFileName = strDatabase
                 ' Report succes
                 If Not Me.IsConnected() Then
                     datResult = eDatasourceAccessType.Failed_Unknown
@@ -313,6 +335,44 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Overrides Function GetConnection() As IDbConnection
             Return Me.m_conn
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the database can connect to an indicated type.
+        ''' </summary>
+        ''' <param name="dst">The datasource type to test.</param>
+        ''' <returns>True if the OS can connect to a given datasource type.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function CanConnect(ByVal dst As EwEUtils.Core.eDataSourceTypes) As Boolean
+
+            Dim conn As OleDbConnection = New OleDbConnection()
+            Dim strDatabase As String = "~doesnotexist~"
+            Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Opened
+
+            ' Try to assemble connection string
+            Select Case dst
+                Case eDataSourceTypes.MDB
+                    conn.ConnectionString = String.Format(m_strConnectionMDB, strDatabase)
+                Case eDataSourceTypes.ACCDB
+                    conn.ConnectionString = String.Format(m_strConnectionACCDB, strDatabase)
+                Case eDataSourceTypes.NotSet
+                    conn.ConnectionString = ""
+                    datResult = eDatasourceAccessType.Failed_UnknownType
+            End Select
+
+            If Not String.IsNullOrEmpty(conn.ConnectionString) Then
+                Try
+                    conn.Open()
+                    conn.Close() ' Can't be, but hey
+                Catch ex As InvalidOperationException
+                    datResult = eDatasourceAccessType.Failed_OSUnsupported
+                Catch ex As Exception
+                End Try
+            End If
+
+            Return (datResult <> eDatasourceAccessType.Failed_OSUnsupported)
+
         End Function
 
         Private m_bJROSearched As Boolean = False

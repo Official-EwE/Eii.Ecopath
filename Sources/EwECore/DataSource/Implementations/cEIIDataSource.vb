@@ -1194,5 +1194,9 @@ Public Class cEIIDataSource
         Return False
     End Function
 
+    Public Function IsOSSupported(ByVal dst As EwEUtils.Core.eDataSourceTypes) As Boolean _
+        Implements IEwEDataSource.IsOSSupported
+        Return True ' We can do this!
+    End Function
 End Class
 

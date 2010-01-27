@@ -3,6 +3,8 @@
 Option Strict On
 Imports EwECore.Database
 Imports ScientificInterfaceShared.Controls.Wizard
+Imports EwECore.DataSources
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -46,6 +48,9 @@ Namespace Import
 
             ' Initialize the grid
             Me.m_grid.Init(Me.m_wizard)
+
+            ' Initialize the database targets combo box
+            Me.InitDatabaseFormatsCombo()
 
         End Sub
 
@@ -146,7 +151,69 @@ Namespace Import
             Me.m_wizard.PageChanged(Me)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler, called when the output format has been modified.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub m_cmbDatabaseFormat_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_cmbDatabaseFormat.SelectedIndexChanged
+            Me.m_wizard.OutputFormat = DirectCast(Me.m_cmbDatabaseFormat.SelectedItem, cDatabaseTypeItem).DataSourceType
+            Me.m_wizard.PageChanged(Me)
+        End Sub
+
 #End Region ' Events
+
+#Region " Internals "
+
+        Private Class cDatabaseTypeItem
+
+            Private m_dst As eDataSourceTypes = eDataSourceTypes.NotSet
+
+            Public Sub New(ByVal dst As eDataSourceTypes)
+                Me.m_dst = dst
+            End Sub
+
+            Public ReadOnly Property DataSourceType() As eDataSourceTypes
+                Get
+                    Return Me.m_dst
+                End Get
+            End Property
+
+            Public Overrides Function ToString() As String
+                Select Case Me.m_dst
+                    Case eDataSourceTypes.ACCDB
+                        Return "EwE Access 2007 database"
+                    Case eDataSourceTypes.MDB
+                        Return "EwE Access 2003 database"
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+                Return ""
+            End Function
+
+        End Class
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub InitDatabaseFormatsCombo()
+
+            Me.m_cmbDatabaseFormat.Items.Clear()
+            If cDataSourceFactory.IsOSSupported(eDataSourceTypes.ACCDB) Then
+                Me.m_cmbDatabaseFormat.Items.Add(New cDatabaseTypeItem(eDataSourceTypes.ACCDB))
+            End If
+            If cDataSourceFactory.IsOSSupported(eDataSourceTypes.MDB) Then
+                Me.m_cmbDatabaseFormat.Items.Add(New cDatabaseTypeItem(eDataSourceTypes.MDB))
+            End If
+
+            Me.m_cmbDatabaseFormat.SelectedIndex = 0
+
+        End Sub
+
+#End Region ' Internals
 
     End Class
 

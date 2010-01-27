@@ -111,6 +111,14 @@ Namespace DataSources
             Return Create(GetSupportedType(strFileName))
         End Function
 
+        Public Shared Function IsOSSupported(ByVal dst As eDataSourceTypes) As Boolean
+
+            Dim db As IEwEDataSource = cDataSourceFactory.Create(dst)
+            If db Is Nothing Then Return False
+            Return db.IsOSSupported(dst)
+
+        End Function
+
     End Class
 
 End Namespace ' DataSources

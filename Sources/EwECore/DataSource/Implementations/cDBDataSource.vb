@@ -47,6 +47,19 @@ Public Class cDBDataSource
 
     ''' -------------------------------------------------------------------
     ''' <summary>
+    ''' States whether the local OS supports connecting to a datasource
+    ''' of a given type.
+    ''' </summary>
+    ''' <param name="dst"></param>
+    ''' <returns></returns>
+    ''' -------------------------------------------------------------------
+    Public Function IsSupported(ByVal dst As eDataSourceTypes) As Boolean _
+        Implements DataSources.IEwEDataSource.IsOSSupported
+        Return Me.m_db.CanConnect(dst)
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
     ''' Open an existing DB.
     ''' </summary>
     ''' <param name="strName">Name of the DB database to open.</param>
@@ -2598,11 +2611,12 @@ Public Class cDBDataSource
             drow("FleetID") = iDBID
             drow("FleetName") = strFleetName
             drow("Sequence") = iPosition
+            drow("PoolColor") = "00000000"
             writer.AddRow(drow)
             Me.m_db.ReleaseWriter(writer)
 
         Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while appending fleet {1}", ex.Message, strFleetName))
+            Me.LogMessage(String.Format("Error {0} occurred while adding fleet {1}", ex.Message, strFleetName))
             bSucces = False
         End Try
 

@@ -166,6 +166,16 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Function CanCompact(ByVal strTarget As String) As Boolean
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the local OS supports connecting to a datasource
+        ''' of a given type.
+        ''' </summary>
+        ''' <param name="dst"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Function IsOSSupported(ByVal dst As eDataSourceTypes) As Boolean
+
 #End Region ' Generic
 
     End Interface

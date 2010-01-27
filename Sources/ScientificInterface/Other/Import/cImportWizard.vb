@@ -32,6 +32,8 @@ Namespace Import
         Private m_lImportSettings As New List(Of cImportSettings)
         ''' <summary>Folder to place imported models into.</summary>
         Private m_strOutputFolder As String = ""
+        ''' <summary>Format to output databases into.</summary>
+        Private m_outputFormat As eDataSourceTypes
         ''' <summary>Database being opened</summary>
         Private m_strDatabase As String = ""
         ''' <summary>Last imported file name.</summary>
@@ -237,6 +239,20 @@ Namespace Import
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set the output database format.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property OutputFormat() As eDataSourceTypes
+            Get
+                Return Me.m_outputFormat
+            End Get
+            Set(ByVal value As eDataSourceTypes)
+                Me.m_outputFormat = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' States whether the wizard has a valid output path.
         ''' </summary>
         ''' <returns>
@@ -286,14 +302,14 @@ Namespace Import
 
             Dim appl As AppLauncher = AppLauncher.GetInstance()
             Dim db As cEwEDatabase = Nothing
-            Dim strModel As String = Me.EwE6ModelName(setting)
+            Dim strModel As String = Me.EwE6ModelName(setting, Me.OutputFormat)
             Dim bSucces As Boolean = False
 
             ' Only import models selected for import
             If (Not setting.SelectedForImport) Then Return bSucces
 
             ' Request a database to import into
-            db = appl.CreateEcopathModel(strModel, setting.ModelInfo.ID)
+            db = appl.CreateEcopathModel(strModel, setting.ModelInfo.ID, Me.OutputFormat)
 
             ' Able to create target model?
             If (db IsNot Nothing) Then
@@ -321,18 +337,21 @@ Namespace Import
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create a valid EwE6 model path for an import setting.
+        ''' Create a valid EwE6 model path for an import setting and a given 
+        ''' output format.
         ''' </summary>
         ''' <param name="setting">The setting to create an EwE6 model path for.</param>
         ''' <returns>A valid EwE6 model path for an import setting.</returns>
         ''' -------------------------------------------------------------------
-        Private Function EwE6ModelName(ByVal setting As cImportSettings) As String
+        Private Function EwE6ModelName(ByVal setting As cImportSettings, _
+                                       ByVal format As eDataSourceTypes) As String
             Dim strModel As String = Path.Combine(Me.m_strOutputFolder, setting.EwE6ModelName)
-            strModel += cDataSourceFactory.GetDefaultExtension(EwEUtils.Core.eDataSourceTypes.ACCDB)
+            strModel += cDataSourceFactory.GetDefaultExtension(format)
             Return strModel
         End Function
 
 #End Region ' Internals
+
     End Class
 
 End Namespace

@@ -27,12 +27,15 @@ Namespace Import
         Public Sub New(ByVal core As cCore, ByVal db As cEwEDatabase)
 
             Me.InitializeComponent()
-
-            ' Kick off
             Me.m_wizard = New cImportWizard(core, db, Me, Me.m_plWizardContent, Me.m_navigator)
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the file name that was last selected.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property ImportedFileName() As String
             Get
                 Return Me.m_wizard.Filename
