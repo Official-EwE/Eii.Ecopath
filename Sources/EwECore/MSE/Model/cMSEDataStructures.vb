@@ -153,6 +153,7 @@ Public Class cMSEDataStructures
     ''' </summary>
     ''' <remarks></remarks>
     Public MSYStartTimeIndex As Integer
+    Public MSYGroupWeight() As Single
     'VC added a boolean to ex/include fleets from MSY runs:
     Public MSYEvaluateFleet() As Boolean
     Public MSYEvaluateGroup() As Boolean
@@ -295,6 +296,11 @@ Public Class cMSEDataStructures
 
         ReDim Bestimate(NGroups)
         ReDim BestimateLast(NGroups)
+
+        ReDim MSYGroupWeight(NGroups)
+        For iGrp As Integer = 1 To NGroups
+            MSYGroupWeight(iGrp) = 1
+        Next
 
 
     End Sub
