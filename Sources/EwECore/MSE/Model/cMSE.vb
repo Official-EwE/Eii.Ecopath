@@ -1271,17 +1271,19 @@ Namespace MSE
                             If CurValue < 0 Then Stop
 
                             If CheckTangent Then   'only get in here if we are checking the neighbourhood of the max value
-                                If CurValue > maxValue Then
+                                If CurValue < maxValue Then
                                     'go downward
                                     TooLowEffort = LastLowerEffort
                                     TooBigEffort = lastEffort
                                 Else
                                     'move upward
-                                    TooLowEffort = lastEffort
-                                    maxValue = CurValue
+                                    LastLowerEffort = TooLowEffort
+                                    ' TooLowEffort = lastEffort
+                                    ' maxValue = CurValue
                                 End If
                                 CheckTangent = False
                             ElseIf CurValue > maxValue Then   'this is the normal entrypont when moving up
+                                LastLowerEffort = TooLowEffort
                                 TooLowEffort = lastEffort
                                 If maxValue > 0 And TooBigEffort < 0 Then  'move faster if just starting out, and long way to go
                                     If CurValue / maxValue > 0.97 * EffortFactor Then EffortFactor = 4 Else EffortFactor = 2
@@ -1291,8 +1293,8 @@ Namespace MSE
                             Else
                                 If TooBigEffort < 0 Then
                                     TooBigEffort = tryEffort
-                                Else
                                     CheckTangent = True
+                                Else
                                     'we are now somewhere below the msy effort, but at what side?
                                     If tryEffort > MSYeffort(iFlt) Then  'on the right side
                                         'reduce the toobigeffor to the current
@@ -1304,8 +1306,8 @@ Namespace MSE
                             End If
 
                             If CheckTangent Then
-                                tryEffort = 0.999 * tryEffort
-                                LastLowerEffort = TooLowEffort
+                                tryEffort = 1.001 * TooLowEffort
+                                'LastLowerEffort = TooLowEffort / 2
                             Else
                                 If TooBigEffort < 0 Then 'NOT YET FOUND THE TOP, SO DOUBLE UP
                                     tryEffort = tryEffort * EffortFactor
@@ -1330,29 +1332,29 @@ Namespace MSE
 
 
                         '==================this part not needed for teeb ---------------------------
-                        ''We now know the MSY effort, so can estimate, oeh, something
-                        'Me.SetFishingEffort(iFlt, MSYeffort(iFlt))
-                        ''let ecosim init to the new values
-                        'Me.m_Ecosim.Init(True)
-                        ''run ecosim with the current effort
-                        'Me.m_Ecosim.Run()
+                        'We now know the MSY effort, so can estimate, oeh, something
+                        Me.SetFishingEffort(iFlt, MSYeffort(iFlt))
+                        'let ecosim init to the new values
+                        Me.m_Ecosim.Init(True)
+                        'run ecosim with the current effort
+                        Me.m_Ecosim.Run()
 
-                        ''now store the average biomasses from this run as the "MSY-biomass" for this fleet run
-                        'Dim SumBio As Single
-                        'Dim SumCatch As Single
-                        'For igrp As Integer = 1 To Me.m_esData.nGroups
-                        '    SumBio = 0
-                        '    SumCatch = 0
-                        '    If Me.m_epdata.Landing(iFlt, igrp) > 0 Then
-                        '        For it As Integer = 1 To Me.m_esData.NTimes
-                        '            'get data storted by ecosim over time  
-                        '            SumBio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
-                        '            SumCatch += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it)
-                        '        Next
-                        '    End If
-                        '    bMSY(iFlt, igrp) = SumBio / m_esData.NTimes
-                        '    If SumBio > 0 Then fMSY(iFlt, igrp) = SumCatch / SumBio
-                        'Next igrp
+                        'now store the average biomasses from this run as the "MSY-biomass" for this fleet run
+                        Dim SumBio As Single
+                        Dim SumCatch As Single
+                        For igrp As Integer = 1 To Me.m_esData.nGroups
+                            SumBio = 0
+                            SumCatch = 0
+                            If Me.m_epdata.Landing(iFlt, igrp) > 0 Then
+                                For it As Integer = 1 To Me.m_esData.NTimes
+                                    'get data storted by ecosim over time  
+                                    SumBio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
+                                    SumCatch += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it)
+                                Next
+                            End If
+                            bMSY(iFlt, igrp) = SumBio / m_esData.NTimes
+                            If SumBio > 0 Then fMSY(iFlt, igrp) = SumCatch / SumBio
+                        Next igrp
                         '==================this part not needed for teeb ---------------------------
 
                         If Me.m_data.StopRun Then Exit For
