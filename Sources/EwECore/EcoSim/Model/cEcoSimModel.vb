@@ -1791,15 +1791,16 @@ Namespace Ecosim
                     Array.Clear(BrecYear, 0, m_Data.nGroups)
                 End If
 
-                ' JS 11Jan09: Exposed former Network Analysis vars
-                m_Results.TLCatch = Me.m_Data.TLC(iTime)
-                m_Results.FIB = Me.m_Data.FIB(iTime)
+                If (iTime < Me.m_Data.NTimes) Then
+                    ' JS 11Jan09: Exposed former Network Analysis vars
+                    m_Results.TLCatch = Me.m_Data.TLC(iTime)
+                    m_Results.FIB = Me.m_Data.FIB(iTime)
+                End If
 
             Catch ex As Exception
                 cLog.Write(ex)
                 Debug.Assert(False)
             End Try
-
 
         End Sub
 
