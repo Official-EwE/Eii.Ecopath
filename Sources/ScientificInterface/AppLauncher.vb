@@ -474,6 +474,9 @@ Public Class AppLauncher
     ''' <summary>
     ''' Create a new Ecopath model at a requested location.
     ''' </summary>
+    ''' <param name="strFileName">The name of the file to create.</param>
+    ''' <param name="strModelName">The name of the model to create.</param>
+    ''' <param name="format">The file format to create.</param>
     ''' <returns>An Ecopath database, if succesful.</returns>
     ''' <remarks>
     ''' Note that this will NOT load the new model! For this, 
@@ -481,16 +484,18 @@ Public Class AppLauncher
     ''' to be called.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Public Function CreateEcopathModel(ByVal strFileName As String, ByVal strModelName As String) As cEwEDatabase
+    Public Function CreateEcopathModel(ByVal strFileName As String, _
+                                       ByVal strModelName As String, _
+                                       ByVal format As eDataSourceTypes) As cEwEDatabase
 
         Dim db As cEwEDatabase = Nothing
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
         Dim msg As cMessage = Nothing
 
-        Select Case cDataSourceFactory.GetSupportedType(strFileName)
+        Select Case format
             Case eDataSourceTypes.MDB, eDataSourceTypes.ACCDB
                 db = New cEwEAccessDatabase()
-                atResult = db.Create(strFileName, strModelName, True)
+                atResult = db.Create(strFileName, strModelName, True, format)
 
             Case eDataSourceTypes.EII
                 atResult = eDatasourceAccessType.Failed_DeprecatedOperation
@@ -558,6 +563,27 @@ Public Class AppLauncher
 
         Return db
 
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Create a new Ecopath model at a requested location.
+    ''' </summary>
+    ''' <param name="strFileName">The name of the file to create.</param>
+    ''' <param name="strModelName">The name of the model to create.</param>
+    ''' <returns>An Ecopath database, if succesful.</returns>
+    ''' <remarks>
+    ''' <para>Note that this will NOT load the new model! For this, 
+    ''' <see cref="LoadEcopathModel">cAppLauncher.LoadEcopathModel</see> will need
+    ''' to be called.</para>
+    ''' <para>This method distills the database type from the provided file name.</para>
+    ''' </remarks>
+    ''' ---------------------------------------------------------------------------
+    Public Function CreateEcopathModel(ByVal strFileName As String, _
+                                       ByVal strModelName As String) As cEwEDatabase
+        Return Me.CreateEcopathModel(strFileName, _
+                                     strModelName, _
+                                     cDataSourceFactory.GetSupportedType(strFileName))
     End Function
 
     Private Delegate Sub SetStatusTextDelegate(ByVal strText As String, _
