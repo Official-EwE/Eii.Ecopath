@@ -1,50 +1,3 @@
-'==============================================================================
-'
-' $Log: EcosimResultsGridGroup.vb,v $
-' Revision 1.5  2009/05/28 12:37:22  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/01/13 18:00:47  joeb
-' Replace Ecosim summary objects with Ecosim Ouput objects all output data now in Fleet or Group objects
-'
-' Revision 1.3  2008/12/15 15:53:27  jeroens
-' no message
-'
-' Revision 1.2  2008/11/27 03:10:43  jeroens
-' Group visible flags maintained by style guide, no longer by AppLauncher
-'
-' Revision 1.1  2008/09/26 07:31:47  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.11  2008/06/02 00:01:33  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.10  2008/05/11 02:51:35  jeroens
-' Standardized series of resource strings
-'
-' Revision 1.9  2008/03/06 02:36:25  jeroens
-' Fixed refresh issue
-'
-' Revision 1.8  2007/10/12 15:20:50  joeb
-' Changes for Results forms
-'
-' Revision 1.7  2007/09/20 18:54:16  joeb
-' Bug Fixes
-'
-' Revision 1.6  2007/09/19 22:15:18  joeb
-' Added Summary data
-'
-' Revision 1.5  2007/08/07 16:42:57  jeroens
-' * Audited coding guidelines
-'
-' Revision 1.4  2007/05/03 18:58:04  fgao
-' Linked group display to HideUI options..Only show chosen groups..
-'
-' Revision 1.3  2007/04/29 03:45:12  jeroens
-' * Connected to EwEGridRefresh
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -62,15 +15,12 @@ Namespace Ecosim
 
         Private m_iFleetSelected As Integer
         Private m_iNumVisibleGroups As Integer
-        Private m_sg As cStyleGuide = Nothing
 
         Public Sub New()
             MyBase.New()
 
             Me.m_iNumVisibleGroups = 0
 
-            Me.m_sg = cStyleGuide.GetInstance()
-            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
 
         Public Property SelFleetIndex() As Integer
@@ -80,6 +30,18 @@ Namespace Ecosim
             Set(ByVal value As Integer)
                 Me.m_iFleetSelected = value
                 Me.UpdateData()
+            End Set
+        End Property
+
+        Public Overrides Property UIContext() As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As cUIContext)
+                MyBase.UIContext = value
+                If (value IsNot Nothing) Then
+                    AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
             End Set
         End Property
 
@@ -115,10 +77,6 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            'This method init the cells, its visual and data models. 
-            Dim core As cCore = cCore.GetInstance()
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-
             Dim lName As New List(Of String)
             lName.Add(String.Empty)
 
@@ -127,12 +85,11 @@ Namespace Ecosim
 
             Me.m_iNumVisibleGroups = 0
             For iGroup As Integer = 1 To core.nGroups
-                If sg.GroupVisible(iGroup) Then
-                    lName.Add(core.EcoSimGroupOutputs(iGroup).Name)
+                If Me.StyleGuide.GroupVisible(iGroup) Then
+                    lName.Add(Core.EcoSimGroupOutputs(iGroup).Name)
                     Me.m_iNumVisibleGroups += 1
                 End If
             Next
-
 
             Me.InitCells(m_iNumVisibleGroups + 1, lName.ToArray, aCalc)
 
@@ -220,7 +177,11 @@ Namespace Ecosim
 
         Private Sub OnDisposed(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Disposed
-            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+            If Me.StyleGuide IsNot Nothing Then
+                RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            End If
+
         End Sub
 
 #End Region ' Events

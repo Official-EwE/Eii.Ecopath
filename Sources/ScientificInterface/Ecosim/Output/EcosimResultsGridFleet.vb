@@ -1,56 +1,3 @@
-'==============================================================================
-'
-' $Log: EcosimResultsGridFleet.vb,v $
-' Revision 1.3  2009/01/13 18:00:47  joeb
-' Replace Ecosim summary objects with Ecosim Ouput objects all output data now in Fleet or Group objects
-'
-' Revision 1.2  2008/12/15 15:53:26  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:47  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.11  2008/08/05 17:44:37  jeroens
-' Removed outdated alert
-'
-' Revision 1.10  2008/07/29 15:49:17  sherman
-' Removed last sum column on E/S
-'
-' Revision 1.9  2008/06/02 00:01:32  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.8  2008/05/11 02:51:35  jeroens
-' Standardized series of resource strings
-'
-' Revision 1.7  2008/04/07 02:31:11  jeroens
-' Cleaning up resources
-'
-' Revision 1.6  2008/02/22 17:54:41  jeroens
-' Fixed bug 413
-'
-' Revision 1.5  2008/02/17 16:13:31  joeb
-' Added Ecosim Effort
-'
-' Revision 1.4  2008/02/13 19:48:44  jeroens
-' Left alert that Effort E/S is not yet populated
-'
-' Revision 1.3  2007/10/12 15:20:50  joeb
-' Changes for Results forms
-'
-' Revision 1.2  2007/09/19 22:15:18  joeb
-' Added Summary data
-'
-' Revision 1.1  2007/08/07 16:43:40  jeroens
-' * Renamed Gear to Fleet
-'
-' Revision 1.4  2007/05/03 18:56:24  fgao
-' Removed registerGrid..for output grids..
-'
-' Revision 1.3  2007/04/29 03:45:12  jeroens
-' * Connected to EwEGridRefresh
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -103,15 +50,12 @@ Namespace Ecosim
             ' Effort (E/S)
             Me(0, 11) = New EwEColumnHeaderCell(My.Resources.HEADER_EFFORTES)
 
-
         End Sub
 
         'This method init the cells, its visual and data models. 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
-
-            Dim astrNames(core.nFleets) As String
+            Dim astrNames(Core.nFleets) As String
 
             For i As Integer = 1 To core.nFleets
                 astrNames(i) = core.EcosimFleetOutput(i).Name
@@ -127,7 +71,6 @@ Namespace Ecosim
 
         Friend Sub updateData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cEcosimFleetOutput = Nothing
 
             Dim totalValue(0 To 11) As Single
