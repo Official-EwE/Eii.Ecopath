@@ -79,7 +79,7 @@ Namespace Controls
         Protected Class cGroupItem
 
             ''' <summary>Group to show.</summary>
-            Private m_group As cCoreGroupBase = Nothing
+            Private m_group As cEcoPathGroupInput = Nothing
             ''' <summary>A value to sort by.</summary>
             Private m_sValue As Single = 0.0
 
@@ -89,7 +89,7 @@ Namespace Controls
             ''' </summary>
             ''' <param name="group">Group to link to.</param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal group As cCoreGroupBase)
+            Public Sub New(ByVal group As cEcoPathGroupInput)
                 Me.m_group = group
             End Sub
 
@@ -113,7 +113,7 @@ Namespace Controls
             ''' Gets the group linked to the item.
             ''' </summary>
             ''' ---------------------------------------------------------------
-            Public ReadOnly Property Group() As cCoreGroupBase
+            Public ReadOnly Property Group() As cEcoPathGroupInput
                 Get
                     Return Me.m_group
                 End Get
@@ -414,13 +414,13 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Browsable(False)> _
-        Public Property SelectedGroup() As cCoreGroupBase
+        Public Property SelectedGroup() As cEcoPathGroupInput
             Get
                 Dim gi As cGroupItem = DirectCast(Me.SelectedItem, cGroupItem)
                 If gi Is Nothing Then Return Nothing
                 Return gi.Group
             End Get
-            Set(ByVal group As cCoreGroupBase)
+            Set(ByVal group As cEcoPathGroupInput)
                 If (Not Me.IsInitialized()) Then Return
                 If (group Is Nothing) Then
                     Me.SelectedIndex = CInt(IIf(Me.m_bShowAllItem, 0, -1))
