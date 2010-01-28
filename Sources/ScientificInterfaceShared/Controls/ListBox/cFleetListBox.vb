@@ -84,7 +84,7 @@ Namespace Controls
             ''' <returns>The formatted item text.</returns>
             ''' ---------------------------------------------------------------
             Public Overrides Function ToString() As String
-                Return Me.m_fleet.Name
+                Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, Me.m_fleet.Index, Me.m_fleet.Name)
             End Function
 
             ''' ---------------------------------------------------------------

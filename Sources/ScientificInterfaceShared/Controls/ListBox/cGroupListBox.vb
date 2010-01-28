@@ -100,7 +100,11 @@ Namespace Controls
             ''' <returns>The formatted item text.</returns>
             ''' ---------------------------------------------------------------
             Public Overrides Function ToString() As String
-                If Me.m_group IsNot Nothing Then Return Me.m_group.Name
+                If (Me.m_group IsNot Nothing) Then
+                    Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+                                         Me.m_group.Index, _
+                                         Me.m_group.Name)
+                End If
                 Return My.Resources.GENERIC_VALUE_ALL
             End Function
 
