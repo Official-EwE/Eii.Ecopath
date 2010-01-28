@@ -63,7 +63,7 @@ Public Class dlgManageTimeSeries
         ' -- Enable --
         ' Prepare grid
         Me.m_gridEnableTS = New gridWeightTS()
-        m_gridEnableTS.UIContext = Me.m_uic
+        Me.m_gridEnableTS.UIContext = Me.m_uic
 
         ' Show grid
         Me.m_plEnableTimeSeries.Controls.Add(Me.m_gridEnableTS)
@@ -74,6 +74,8 @@ Public Class dlgManageTimeSeries
         'Me.m_strImportDecimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator
         Me.m_tbImportAuthor.Text = Me.m_uic.Core.EwEModel.Author
         Me.m_tbImportContact.Text = Me.m_uic.Core.EwEModel.Contact
+
+        Me.m_spTimeSeriesPreview.UIContext = Me.m_uic
         Me.m_tsh = New cTimeSeriesShapeGUIHandler(Me.m_uic, Nothing, Nothing, Me.m_spTimeSeriesPreview, Nothing)
 
         Me.FillImportDatasetCombo()
