@@ -13,7 +13,6 @@ Public Class frmModelDescription
     Private m_fpNumDigits As cEwEFormatProvider = Nothing
     Private m_fpGroupDigits As cEwEFormatProvider = Nothing
     Private m_fpPSD As cEwEFormatProvider = Nothing
-    Private m_core As cCore = Nothing
 
     ' Unit properties
     Private m_propUnitCurrency As cIntegerProperty = Nothing
@@ -25,29 +24,25 @@ Public Class frmModelDescription
     Private m_csm As cCoreStateMonitor = Nothing
 
     Public Sub New()
-        InitializeComponent()
-        ' Set core
-        Me.m_core = cCore.GetInstance()
-        Me.m_csm = Me.m_core.StateMonitor()
+        Me.InitializeComponent()
     End Sub
 
-    Public Sub New(ByVal strText As String)
-
-        Me.New()
-
-        'Set tab text
-        Me.TabText = strText
-        ' Set the windows text
-        Me.Text = strText
-
-    End Sub
+    Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
+        Get
+            Return MyBase.UIContext
+        End Get
+        Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+            MyBase.UIContext = value
+            Me.m_csm = Me.UIContext.Core.StateMonitor()
+        End Set
+    End Property
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
         MyBase.OnLoad(e)
 
-        Dim eweModel As cEwEModel = m_core.EwEModel()
-        Dim psdParms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters()
+        Dim eweModel As cEwEModel = Me.UIContext.Core.EwEModel()
+        Dim psdParms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters()
         Dim pm As cPropertyManager = Me.UIContext.PropertyManager
         Dim appl As AppLauncher = AppLauncher.GetInstance()
 
@@ -61,19 +56,19 @@ Public Class frmModelDescription
 
         Me.m_fpPSD = New cPropertyFormatProvider(Me.m_chkPSD, psdParms, eVarNameFlags.PSDEnabled)
 
-        Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
+        Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
         AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnUnitCurrencyChanged
 
-        Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
+        Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
         AddHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf OnUnitCurrencyTextChanged
 
-        Me.m_propUnitTime = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitTime), cIntegerProperty)
+        Me.m_propUnitTime = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitTime), cIntegerProperty)
         AddHandler Me.m_propUnitTime.PropertyChanged, AddressOf OnUnitTimeChanged
 
-        Me.m_propUnitTimeText = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
+        Me.m_propUnitTimeText = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
         AddHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf OnUnitTimeTextChanged
 
-        Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitMonetary), cIntegerProperty)
+        Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitMonetary), cIntegerProperty)
         AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
 
         Me.m_txbPath.Text = appl.SelectedFileName()
