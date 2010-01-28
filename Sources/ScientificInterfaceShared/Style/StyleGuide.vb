@@ -57,7 +57,7 @@ Namespace Style
         ''' <summary>Color ramp for obtaining EwE5 group colors</summary>
         Private m_colorrampGroups As New SAUPColorRamp()
         ''' <summary>Color ramp for obtaining fleet colors</summary>
-        Private m_colorrampFleets As New ARGBColorRamp(New Color() {Color.LightGreen, Color.LightBlue}, New Double() {0.0#, 1.0#})
+        Private m_colorrampFleets As New ARGBColorRamp(New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#})
         ''' <summary>Start offset for colour ramp.</summary>
         Private Const c_sRampOffsetStart As Single = 0.15!
         ''' <summary>End offset for colour ramp.</summary>
@@ -1014,7 +1014,39 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Function GroupColorDefault(ByVal core As cCore, _
                                           ByVal iGroup As Integer) As Color
-            Return Me.m_colorrampGroups.GetColor(iGroup, core.nGroups)
+            Return Me.GroupColorDefault(iGroup, core.nGroups)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a default colour for a group.
+        ''' </summary>
+        ''' <param name="iGroup">The group index to obtain the default colour for.</param>
+        ''' <param name="nGroups">The number of groups to scale the colour to.</param>
+        ''' <returns>
+        ''' Default group colours are picked from the Ecopath 5 group colour scheme.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function GroupColorDefault(ByVal iGroup As Integer, _
+                                          ByVal nGroups As Integer) As Color
+            Return Me.m_colorrampGroups.GetColor(iGroup, nGroups)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a default colour for a fleet.
+        ''' </summary>
+        ''' <param name="iFleet">The fleet index to obtain the default colour for.</param>
+        ''' <param name="nFleets">Number of fleets to scale colour by, or -1 to
+        ''' use the max number of fleets as dictated by the <paramref name="core">core</paramref>.</param>
+        ''' <returns>
+        ''' Default group colours are picked from a colour ramp that runs from
+        ''' green to blue.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function FleetColorDefault(ByVal iFleet As Integer, _
+                                          ByVal nFleets As Integer) As Color
+            Return Me.m_colorrampFleets.GetColor(iFleet, nFleets)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1030,7 +1062,7 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Function FleetColorDefault(ByVal core As cCore, _
                                           ByVal iFleet As Integer) As Color
-            Return Me.m_colorrampFleets.GetColor(iFleet, core.nFleets - 1)
+            Return FleetColorDefault(iFleet, core.nFleets)
         End Function
 
         Public Shared Function IntToColor(ByVal iColor As Integer) As Color
