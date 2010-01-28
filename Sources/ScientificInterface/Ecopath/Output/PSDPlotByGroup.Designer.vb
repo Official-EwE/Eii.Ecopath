@@ -29,9 +29,9 @@ Namespace Ecopath.Output
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.zgcZedGraphCntl = New ZedGraph.ZedGraphControl
-            Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
+            Me.m_graph = New ZedGraph.ZedGraphControl
             Me.m_lblGroups = New System.Windows.Forms.Label
+            Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -46,7 +46,7 @@ Namespace Ecopath.Output
             '
             'SplitContainer1.Panel1
             '
-            Me.SplitContainer1.Panel1.Controls.Add(Me.zgcZedGraphCntl)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.m_graph)
             '
             'SplitContainer1.Panel2
             '
@@ -56,37 +56,21 @@ Namespace Ecopath.Output
             Me.SplitContainer1.SplitterDistance = 451
             Me.SplitContainer1.TabIndex = 0
             '
-            'zgcZedGraphCntl
+            'm_graph
             '
-            Me.zgcZedGraphCntl.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.zgcZedGraphCntl.Location = New System.Drawing.Point(0, 0)
-            Me.zgcZedGraphCntl.Margin = New System.Windows.Forms.Padding(0)
-            Me.zgcZedGraphCntl.Name = "zgcZedGraphCntl"
-            Me.zgcZedGraphCntl.ScrollGrace = 0
-            Me.zgcZedGraphCntl.ScrollMaxX = 0
-            Me.zgcZedGraphCntl.ScrollMaxY = 0
-            Me.zgcZedGraphCntl.ScrollMaxY2 = 0
-            Me.zgcZedGraphCntl.ScrollMinX = 0
-            Me.zgcZedGraphCntl.ScrollMinY = 0
-            Me.zgcZedGraphCntl.ScrollMinY2 = 0
-            Me.zgcZedGraphCntl.Size = New System.Drawing.Size(451, 463)
-            Me.zgcZedGraphCntl.TabIndex = 0
-            '
-            'm_lbGroups
-            '
-            Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.m_lbGroups.FormattingEnabled = True
-            Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
-            Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.AllGroups
-            Me.m_lbGroups.IntegralHeight = False
-            Me.m_lbGroups.Location = New System.Drawing.Point(0, 18)
-            Me.m_lbGroups.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_lbGroups.Name = "m_lbGroups"
-            Me.m_lbGroups.ShowAllGroupsItem = False
-            Me.m_lbGroups.Size = New System.Drawing.Size(133, 445)
-            Me.m_lbGroups.SortThreshold = -9999.0!
-            Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
-            Me.m_lbGroups.TabIndex = 0
+            Me.m_graph.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_graph.Location = New System.Drawing.Point(0, 0)
+            Me.m_graph.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_graph.Name = "m_graph"
+            Me.m_graph.ScrollGrace = 0
+            Me.m_graph.ScrollMaxX = 0
+            Me.m_graph.ScrollMaxY = 0
+            Me.m_graph.ScrollMaxY2 = 0
+            Me.m_graph.ScrollMinX = 0
+            Me.m_graph.ScrollMinY = 0
+            Me.m_graph.ScrollMinY2 = 0
+            Me.m_graph.Size = New System.Drawing.Size(451, 463)
+            Me.m_graph.TabIndex = 0
             '
             'm_lblGroups
             '
@@ -102,6 +86,27 @@ Namespace Ecopath.Output
             Me.m_lblGroups.TabIndex = 2
             Me.m_lblGroups.Text = "Groups"
             Me.m_lblGroups.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_lbGroups
+            '
+            Me.m_lbGroups.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.m_lbGroups.FormattingEnabled = True
+            Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
+            Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.LivingGroups
+            Me.m_lbGroups.IntegralHeight = False
+            Me.m_lbGroups.Location = New System.Drawing.Point(0, 18)
+            Me.m_lbGroups.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_lbGroups.Name = "m_lbGroups"
+            Me.m_lbGroups.SelectedGroup = Nothing
+            Me.m_lbGroups.SelectedGroupIndex = -1
+            Me.m_lbGroups.ShowAllGroupsItem = False
+            Me.m_lbGroups.Size = New System.Drawing.Size(133, 445)
+            Me.m_lbGroups.SortThreshold = -9999.0!
+            Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
+            Me.m_lbGroups.TabIndex = 0
             '
             'PSDPlotByGroup
             '
@@ -120,7 +125,7 @@ Namespace Ecopath.Output
         End Sub
         Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
-        Private WithEvents zgcZedGraphCntl As ZedGraph.ZedGraphControl
+        Private WithEvents m_graph As ZedGraph.ZedGraphControl
         Private WithEvents m_lblGroups As System.Windows.Forms.Label
     End Class
 

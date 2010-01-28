@@ -56,9 +56,7 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim source As cEcoPathStats = core.EcopathStats
+            Dim source As cEcoPathStats = Core.EcopathStats
 
             Dim aunitCurrOverTime As cStyleGuide.eUnitType() = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
             Dim strMask2 As String = "{0}/{1}"

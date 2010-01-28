@@ -81,7 +81,6 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
@@ -90,7 +89,7 @@ Namespace Ecopath.Output
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
 
-            For i As Integer = 1 To core.nGroups : aiStanzaGroupIndex(i) = -1 : Next
+            For i As Integer = 1 To Me.Core.nGroups : aiStanzaGroupIndex(i) = -1 : Next
 
             'Tag stanza group
             For iStanzaGroup As Integer = 0 To core.nStanzas - 1
@@ -180,7 +179,6 @@ Namespace Ecopath.Output
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim ci As ColumnInfo = Me.Columns(eColumnTypes.Z)
 
             Me.Rows(0).Height = 60

@@ -61,7 +61,6 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1

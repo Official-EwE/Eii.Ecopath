@@ -14,16 +14,8 @@ Namespace Ecopath.Output
     Public Class GrowthEstimatesEwEGrid
         : Inherits EwEGrid
 
-        Private m_core As cCore = Nothing
-        Private m_frm As Form = Nothing
-
         Public Sub New()
             MyBase.new()
-
-            m_core = cCore.GetInstance
-
-            'Don't manually run! The core execution states take care of this!
-            'm_core.RunPSD(IsGroupSelected)
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -51,19 +43,19 @@ Namespace Ecopath.Output
             Dim source As cCoreInputOutputBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim intStanzaGroupIndex(m_core.nLivingGroups) As Integer 'Hold the stanza group index
+            Dim intStanzaGroupIndex(Core.nLivingGroups) As Integer 'Hold the stanza group index
             Dim intStanzaGroupIndexPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
 
-            For i As Integer = 1 To m_core.nLivingGroups : intStanzaGroupIndex(i) = -1 : Next
+            For i As Integer = 1 To Core.nLivingGroups : intStanzaGroupIndex(i) = -1 : Next
 
             'Tag stanza group
-            For stanzaGroupIndex As Integer = 0 To m_core.nStanzas - 1
-                sg = m_core.StanzaGroups(stanzaGroupIndex)
+            For stanzaGroupIndex As Integer = 0 To Core.nStanzas - 1
+                sg = Core.StanzaGroups(stanzaGroupIndex)
 
                 For iStanza As Integer = 1 To sg.NStanzas
-                    source = m_core.EcoPathGroupInputs(sg.iGroups(iStanza))
+                    source = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
                     intStanzaGroupIndex(source.Index) = stanzaGroupIndex
                 Next
             Next
@@ -72,14 +64,14 @@ Namespace Ecopath.Output
             Me.RowsCount = 1
 
             'Create rows for all groups
-            For groupIndex As Integer = 1 To m_core.nLivingGroups
-                source = m_core.EcoPathGroupOutputs(groupIndex)
+            For groupIndex As Integer = 1 To Core.nLivingGroups
+                source = Core.EcoPathGroupOutputs(groupIndex)
 
                 If intStanzaGroupIndex(source.Index) = -1 Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow
                     FillInRows(iRow, source)
                 Else 'Group is stanza
-                    sg = m_core.StanzaGroups(intStanzaGroupIndex(source.Index))
+                    sg = Core.StanzaGroups(intStanzaGroupIndex(source.Index))
                     If intStanzaGroupIndex(source.Index) <> intStanzaGroupIndexPrev Then 'If stanza group appears the first time Then diplay the + control
                         hgcStanza = New EwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
@@ -99,7 +91,7 @@ Namespace Ecopath.Output
                 End If
             Next groupIndex
 
-          End Sub
+        End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
 
@@ -147,9 +139,9 @@ Namespace Ecopath.Output
 
         Private Function IsGroupSelected() As Boolean()
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim bGroupSelected(m_core.nLivingGroups) As Boolean
+            Dim bGroupSelected(Core.nLivingGroups) As Boolean
 
-            For i As Integer = 1 To m_core.nLivingGroups
+            For i As Integer = 1 To Core.nLivingGroups
                 bGroupSelected(i) = sg.GroupVisible(i)
             Next
             Return bGroupSelected

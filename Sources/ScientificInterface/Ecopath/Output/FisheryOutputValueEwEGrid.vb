@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: FisheryOutputValueEwEGrid.vb,v $
-' Revision 1.6  2009/05/28 12:36:54  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.5  2009/05/21 19:27:12  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.4  2009/01/16 18:30:08  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.3  2008/12/15 15:53:40  jeroens
-' no message
-'
-' Revision 1.2  2008/11/26 02:58:04  jeroens
-' Fixed issue 565 part II
-'
-' Revision 1.1  2008/09/26 07:31:32  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -45,33 +22,36 @@ Namespace Ecopath.Output
         End Sub
 
         Protected Overrides Sub InitStyle()
-            Dim core As cCore = cCore.GetInstance()
+
+            If Me.UIContext Is Nothing Then Return
+
             Dim source As cCoreInputOutputBase = Nothing
 
             MyBase.InitStyle()
 
             'Define grid dimensions
-            Me.Redim(1, core.nFleets + 5)
+            Me.Redim(1, Core.nFleets + 5)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet name
-            For fleetIndex As Integer = 1 To core.nFleets
-                source = core.FleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To Core.nFleets
+                source = Core.FleetInputs(fleetIndex)
                 Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(source, eVarNameFlags.Name)
             Next
 
             ' Catch value column
-            Me(0, core.nFleets + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCHVALUE)
-            Me(0, core.nFleets + 3) = New EwEColumnHeaderCell(My.Resources.HEADER_NONMARKET_VALUE, cStyleGuide.eUnitType.Monetary)
-            Me(0, core.nFleets + 4) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALVALUE, cStyleGuide.eUnitType.Monetary)
+            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCHVALUE)
+            Me(0, Core.nFleets + 3) = New EwEColumnHeaderCell(My.Resources.HEADER_NONMARKET_VALUE, cStyleGuide.eUnitType.Monetary)
+            Me(0, Core.nFleets + 4) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALVALUE, cStyleGuide.eUnitType.Monetary)
 
             Me.FixedColumns = 2
+            Me.FixedColumnWidths = False
         End Sub
 
         Protected Overrides Sub FillData()
-            Dim core As cCore = cCore.GetInstance()
+
             Dim source As cEcoPathGroupInput = Nothing
             Dim iRow As Integer = -1
 
@@ -100,9 +80,8 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FillRows(ByVal iRow As Integer, ByVal source As cEcoPathGroupInput)
-            Dim core As cCore = cCore.GetInstance()
+
             Dim sourceSec As cCoreInputOutputBase = Nothing
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim propLandings As cProperty = Nothing
 
             ' Single marketprice property
@@ -135,10 +114,10 @@ Namespace Ecopath.Output
                 ' Get the fleet object 
                 sourceSec = core.FleetInputs(fleetIndex)
                 ' Get the index landing property
-                propLandings = pm.GetProperty(sourceSec, eVarNameFlags.Landings, source)
+                propLandings = Me.PropertyManager.GetProperty(sourceSec, eVarNameFlags.Landings, source)
                 alProdLandingsMarketPrice.Add(propLandings)
                 ' Get the index market price property
-                propMarketPrice = pm.GetProperty(sourceSec, eVarNameFlags.OffVesselPrice, source)
+                propMarketPrice = Me.PropertyManager.GetProperty(sourceSec, eVarNameFlags.OffVesselPrice, source)
                 alProdLandingsMarketPrice.Add(propMarketPrice)
                 ' Set the property to the cell
                 opProdLandingsMarketPrice = New cMultiOperation(cMultiOperation.eOperatorType.Multiply, alProdLandingsMarketPrice.ToArray())
@@ -163,8 +142,8 @@ Namespace Ecopath.Output
             ' Non-market value
             ' .. multiply group non-market value by calculated broup biomass
             opNonMarketValue = New cBinaryOperation(cBinaryOperation.eOperatorType.Multiply, _
-                pm.GetProperty(source, eVarNameFlags.NonMarketValue), _
-                pm.GetProperty(core.EcoPathGroupOutputs(source.Index), eVarNameFlags.Biomass))
+                Me.PropertyManager.GetProperty(source, eVarNameFlags.NonMarketValue), _
+                Me.PropertyManager.GetProperty(Core.EcoPathGroupOutputs(source.Index), eVarNameFlags.Biomass))
             propProdNonMarketValue = New cFormulaProperty(opNonMarketValue)
             propCell = New PropertyCell(CType(propProdNonMarketValue, cProperty))
             propCell.SuppressZero = True
@@ -179,12 +158,11 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FillTotalValueRow()
+
             Dim iRow As Integer
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim sourceSec As cCoreInputOutputBase = Nothing
 
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim propLandings As cProperty = Nothing
             Dim propMarketPrice As cProperty = Nothing
             Dim alProdLandingsMarketPrice As ArrayList = New ArrayList()
@@ -212,10 +190,10 @@ Namespace Ecopath.Output
                     sourceSec = core.EcoPathGroupInputs(rowIndex)
                     alProdLandingsMarketPrice.Clear()
                     ' Get the index landing property
-                    propLandings = pm.GetProperty(source, eVarNameFlags.Landings, sourceSec)
+                    propLandings = Me.PropertyManager.GetProperty(source, eVarNameFlags.Landings, sourceSec)
                     alProdLandingsMarketPrice.Add(propLandings)
                     ' Get the index market price property
-                    propMarketPrice = pm.GetProperty(source, eVarNameFlags.OffVesselPrice, sourceSec)
+                    propMarketPrice = Me.PropertyManager.GetProperty(source, eVarNameFlags.OffVesselPrice, sourceSec)
                     alProdLandingsMarketPrice.Add(propMarketPrice)
                     ' Set the property 
                     opProdLandingsMarketPrice = New cMultiOperation(cMultiOperation.eOperatorType.Multiply, alProdLandingsMarketPrice.ToArray())
@@ -242,11 +220,9 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FillTotalCostRow()
-            Dim iRow As Integer
-            Dim core As cCore = cCore.GetInstance()
-            Dim source As cCoreInputOutputBase = Nothing
 
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim iRow As Integer
+            Dim source As cCoreInputOutputBase = Nothing
             Dim propFixedCost As cProperty = Nothing
             Dim propCPUECost As cProperty = Nothing
             Dim propSailCost As cProperty = Nothing
@@ -276,15 +252,15 @@ Namespace Ecopath.Output
                 source = core.FleetInputs(fleetIndex)
 
                 'Fixed cost 
-                propFixedCost = pm.GetProperty(source, eVarNameFlags.FixedCost)
+                propFixedCost = Me.PropertyManager.GetProperty(source, eVarNameFlags.FixedCost)
                 alSumFixedCPUESailCost.Add(propFixedCost)
 
                 'Effort related cost
-                propCPUECost = pm.GetProperty(source, eVarNameFlags.CPUECost)
+                propCPUECost = Me.PropertyManager.GetProperty(source, eVarNameFlags.CPUECost)
                 alSumFixedCPUESailCost.Add(propCPUECost)
 
                 'Sailing related cost
-                propSailCost = pm.GetProperty(source, eVarNameFlags.SailCost)
+                propSailCost = Me.PropertyManager.GetProperty(source, eVarNameFlags.SailCost)
                 alSumFixedCPUESailCost.Add(propSailCost)
 
                 'Total cost
@@ -308,11 +284,10 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FillTotalProfitRow()
+
             Dim iRow As Integer
-            Dim core As cCore = cCore.GetInstance()
             Dim opMinusValueCost As cBinaryOperation = Nothing
             Dim propMinusValueCost As cFormulaProperty = Nothing
-
             Dim alSumProfit As New ArrayList()
             Dim opSumProfit As cMultiOperation = Nothing
             Dim propSumProfit As cFormulaProperty = Nothing

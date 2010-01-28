@@ -14,23 +14,14 @@ Namespace Ecopath.Output
 
 #Region " Variables "
 
-        Private m_core As cCore = Nothing
         Private m_zgh As cZedGraphHelper = Nothing
 
 #End Region ' Variables
 
 #Region " Constructor "
+
         Public Sub New()
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
-            Me.m_core = cCore.GetInstance()
-            Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.m_core, Me.zgcZedGraphCntl)
-
-            'Don't manually run! The core execution states take care of this!
-            'm_core.RunPSD(IsGroupSelected)
+            Me.InitializeComponent()
         End Sub
 
 #End Region ' Constructor
@@ -39,7 +30,14 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            Me.m_lbGroups.Attach(Me.m_core, cStyleGuide.GetInstance())
+            MyBase.OnLoad(e)
+
+            Debug.Assert(Me.UIContext IsNot Nothing)
+
+            Me.m_zgh = New cZedGraphHelper()
+            Me.m_zgh.Attach(Me.Core, Me.zgcZedGraphCntl)
+
+            Me.m_lbGroups.Attach(Me.Core, Me.StyleGuide)
             Me.m_lbGroups.SelectedIndex = 0
 
         End Sub
@@ -73,36 +71,35 @@ Namespace Ecopath.Output
 
         Private Sub InitGraphPane(ByVal strTitle As String, ByVal strXAxisTitle As String, ByVal strYAxisTitle As String)
 
-            Dim psd As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim psd As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim gp As GraphPane = Me.m_zgh.ConfigurePane(strTitle, strXAxisTitle, strYAxisTitle, False)
 
             gp.XAxis.Scale.Min = Int(Math.Log10(psd.FirstWeightClass))
-            gp.XAxis.Scale.Max = Math.Round(Math.Log10(psd.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
+            gp.XAxis.Scale.Max = Math.Round(Math.Log10(psd.FirstWeightClass * 2 ^ (Me.Core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
             gp.YAxis.Scale.Min = 0
 
         End Sub
 
         Private Sub AddCurves(ByVal pane As GraphPane)
 
-            Dim psd As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim psd As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
             Dim grpOutput As cEcoPathGroupOutput = Nothing
-            Dim sSystemPSD(m_core.nWeightClasses) As Single
-            Dim sgStyleGuide As cStyleGuide = cStyleGuide.GetInstance
+            Dim sSystemPSD(Me.Core.nWeightClasses) As Single
             Dim curveSelected As BarItem = Nothing
             Dim iSelectedGrpNum As Integer = 1
 
-            InitLists(resultLists, m_core.nLivingGroups) '3)
+            InitLists(resultLists, Me.Core.nLivingGroups) '3)
 
             'Find the system PSD by summing the group PSD
             FindSystemPSD(sSystemPSD)
 
-            For igroup As Integer = 1 To m_core.nLivingGroups
+            For igroup As Integer = 1 To Me.Core.nLivingGroups
                 'No need to check if group is selected. Generate the result list even for the not selected group. It will have zero Y values
                 'If IsGroupSelected(igroup) Then
-                grpOutput = m_core.EcoPathGroupOutputs(igroup)
-                For iWtClass As Integer = 1 To m_core.nWeightClasses
+                grpOutput = Me.Core.EcoPathGroupOutputs(igroup)
+                For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                     sXValue = CSng(psd.FirstWeightClass * 2 ^ (iWtClass - 1))
                     If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                         'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 1000000000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
@@ -119,18 +116,18 @@ Namespace Ecopath.Output
             pane.CurveList.Clear()
 
             'Find the selected group number based on the selected index
-            For iGroup As Integer = 1 To m_core.nLivingGroups
-                If m_core.EcoPathGroupOutputs(iGroup).Name = m_lbGroups.Items(m_lbGroups.SelectedIndex).ToString() Then
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
+                If Me.Core.EcoPathGroupOutputs(iGroup).Name = m_lbGroups.Items(m_lbGroups.SelectedIndex).ToString() Then
                     iSelectedGrpNum = iGroup
                     Exit For
                 End If
             Next
 
-            For iGroup As Integer = 1 To m_core.nLivingGroups
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
                 If iGroup = iSelectedGrpNum Then
-                    curveSelected = AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), sgStyleGuide.GroupColor(Me.m_core, iGroup - 1), Color.Gray)
+                    curveSelected = AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), Me.StyleGuide.GroupColor(Me.Core, iGroup - 1), Color.Gray)
                 Else
-                    AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), sgStyleGuide.GroupColor(Me.m_core, iGroup - 1), Color.Gray)
+                    AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), Me.StyleGuide.GroupColor(Me.Core, iGroup - 1), Color.Gray)
                 End If
             Next
 
@@ -166,10 +163,10 @@ Namespace Ecopath.Output
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
-            For iGroup As Integer = 1 To m_core.nLivingGroups
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
                 If Me.m_lbGroups.GroupIndex(iGroup) > -1 Then
-                    grpOutput = m_core.EcoPathGroupOutputs(iGroup)
-                    For iWtClass As Integer = 1 To m_core.nWeightClasses
+                    grpOutput = Me.Core.EcoPathGroupOutputs(iGroup)
+                    For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                         sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
                     Next
                 End If

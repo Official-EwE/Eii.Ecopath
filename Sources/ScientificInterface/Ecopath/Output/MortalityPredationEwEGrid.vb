@@ -149,7 +149,6 @@ Namespace Ecopath.Output
 
             MyBase.InitStyle()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreGroupBase = Nothing
             Dim groupIndex As Integer
 
@@ -181,7 +180,6 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim cell As PropertyCell = Nothing

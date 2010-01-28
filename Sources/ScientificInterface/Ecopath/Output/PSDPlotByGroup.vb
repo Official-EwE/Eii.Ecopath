@@ -14,8 +14,7 @@ Namespace Ecopath.Output
     Public Class PSDPlotByGroup
 
 #Region " Variables "
-        Private m_core As cCore = Nothing
-        Private m_MasterPane As MasterPane
+
         Private m_zgh As cZedGraphHelper = Nothing
         Private m_Time() As Single
         Private m_Weight() As Single
@@ -35,16 +34,7 @@ Namespace Ecopath.Output
 #Region " Constructor "
 
         Public Sub New()
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
-            Me.m_core = cCore.GetInstance()
-            Me.m_MasterPane = New MasterPane
-
-            Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.m_core, Me.zgcZedGraphCntl)
-
+            Me.InitializeComponent()
         End Sub
 
 #End Region ' Constructor
@@ -53,19 +43,28 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Debug.Assert(Me.UIContext IsNot Nothing)
 
-            Me.m_lbGroups.Attach(Me.m_core, cStyleGuide.GetInstance())
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
+
+            Me.m_zgh = New cZedGraphHelper()
+            Me.m_zgh.Attach(Me.Core, Me.m_graph)
             Me.m_zgh.Configure("")
 
-            CreatePane(ePaneTypes.Weight, My.Resources.HEADER_WEIGHT, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_G)
-            CreatePane(ePaneTypes.Number, My.Resources.HEADER_SURVIVAL, My.Resources.PSD_XAXISLABEL_AGE, "")
-            CreatePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_G)
-            CreatePane(ePaneTypes.PSD, My.Resources.HEADER_CONTRIBPSD, My.Resources.PSD_XAXISLABEL_BODYWEIGHT, My.Resources.PSD_YAXISLABEL_BIOMASS)
+            Me.m_lbGroups.Attach(Me.Core, Me.StyleGuide)
+
+            Me.m_graph.MasterPane.PaneList.Clear()
+
+            Me.CreatePane(ePaneTypes.Weight, My.Resources.HEADER_WEIGHT, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_G)
+            Me.CreatePane(ePaneTypes.Number, My.Resources.HEADER_SURVIVAL, My.Resources.PSD_XAXISLABEL_AGE, "")
+            Me.CreatePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_G)
+            Me.CreatePane(ePaneTypes.PSD, My.Resources.HEADER_CONTRIBPSD, My.Resources.PSD_XAXISLABEL_BODYWEIGHT, My.Resources.PSD_YAXISLABEL_BIOMASS)
+
             If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
-                CreatePane(ePaneTypes.LorenzenMortality, My.Resources.HEADER_MORTALITY, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_PERYEAR)
+                Me.CreatePane(ePaneTypes.LorenzenMortality, My.Resources.HEADER_MORTALITY, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_PERYEAR)
             End If
-            m_lbGroups.SelectedIndex = 0
+
+            Me.m_lbGroups.SelectedIndex = 0
 
         End Sub
 
@@ -91,10 +90,10 @@ Namespace Ecopath.Output
             'Define a new graph pane
             Dim pane As New GraphPane
 
-            Debug.Assert(m_MasterPane.PaneList.Count = PaneNo)
+            Debug.Assert(Me.m_graph.MasterPane.PaneList.Count = PaneNo)
 
             'Add the graphPane to the masterPane
-            m_MasterPane.Add(pane)
+            Me.m_graph.MasterPane.Add(pane)
 
             Me.InitGraphPane(strPaneTitle, strXaxisTitle, stryaxistitle, PaneNo, CInt(PaneNo) + 1)
 
@@ -103,18 +102,18 @@ Namespace Ecopath.Output
         Private Sub InitGraphPane(ByVal strPaneTitle As String, ByVal strXAxisTitle As String, ByVal strYAxisTitle As String, _
                                   ByVal paneType As ePaneTypes, ByVal iPane As Integer)
 
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim gp As GraphPane = Me.m_zgh.ConfigurePane(strPaneTitle, strYAxisTitle, strXAxisTitle, False, LegendPos.TopCenter, iPane)
 
             Select Case paneType
                 Case ePaneTypes.PSD
                     gp.XAxis.Scale.Min = Int(Math.Log10(parms.FirstWeightClass))
-                    gp.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
+                    gp.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (Me.Core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
                     gp.YAxis.Scale.Min = 0
                     'gp.YAxis.Scale.Max = 8 if PSDPlotByGroup has the same scale as that of PSDContributionPlot
                 Case Else
                     gp.XAxis.Scale.Min = 0
-                    'gp.XAxis.Scale.Max = CDbl(Me.m_core.EcosimFirstYear + (m_core.nEcosimTimeSteps / cCore.N_MONTHS))
+                    'gp.XAxis.Scale.Max = CDbl(Me.Core.EcosimFirstYear + (Me.Core.nEcosimTimeSteps / cCore.N_MONTHS))
                     gp.YAxis.Scale.Min = 0
             End Select
 
@@ -125,23 +124,22 @@ Namespace Ecopath.Output
             'Add single curve into graph first
             'Results data structure
 
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
             Dim grpOutput As cEcoPathGroupOutput = Nothing
-            Dim sgStyleGuide As cStyleGuide = cStyleGuide.GetInstance
-            Dim sSystemPSD(m_core.nWeightClasses) As Single
-            Dim iSelectedGrpNum As Integer
+            Dim sSystemPSD(Me.Core.nWeightClasses) As Single
+            Dim iSelectedGrpNum As Integer = 1
 
             'Find the selected group number based on the selected index
-            For iGroup As Integer = 1 To m_core.nLivingGroups
-                If m_core.EcoPathGroupOutputs(iGroup).Name = m_lbGroups.Items(m_lbGroups.SelectedIndex).ToString() Then
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
+                If Me.Core.EcoPathGroupOutputs(iGroup).Name = m_lbGroups.Items(m_lbGroups.SelectedIndex).ToString() Then
                     iSelectedGrpNum = iGroup
                     Exit For
                 End If
             Next
 
-            grpOutput = m_core.EcoPathGroupOutputs(iSelectedGrpNum)
+            grpOutput = Me.Core.EcoPathGroupOutputs(iSelectedGrpNum)
             Select Case parms.MortalityType
                 Case ePSDMortalityTypes.GroupZ
                     InitLists(resultLists, 4)
@@ -149,9 +147,9 @@ Namespace Ecopath.Output
                     InitLists(resultLists, 5)
             End Select
 
-            For iTimeStep As Integer = 1 To m_core.nAgeSteps
+            For iTimeStep As Integer = 1 To Me.Core.nAgeSteps
 
-                sXValue = (iTimeStep - 1) * grpOutput.TmaxOutput / (m_core.nAgeSteps - 1)
+                sXValue = (iTimeStep - 1) * grpOutput.TmaxOutput / (Me.Core.nAgeSteps - 1)
 
                 'Weight plot
                 If grpOutput.EcopathWeight(iTimeStep) > 0 Then
@@ -176,7 +174,7 @@ Namespace Ecopath.Output
             'Find the system PSD by summing the group PSD
             FindSystemPSD(sSystemPSD)
 
-            For iWtClass As Integer = 1 To m_core.nWeightClasses
+            For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                 sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
                 If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                     'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 1000000000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
@@ -188,21 +186,21 @@ Namespace Ecopath.Output
             Next
 
             'Set the master pane title
-            m_MasterPane.Title.Text = CStr(m_lbGroups.SelectedItem.ToString)
+            Me.m_graph.MasterPane.Title.Text = CStr(m_lbGroups.SelectedItem.ToString)
 
             ' Clear all panes
-            For Each gp As GraphPane In m_MasterPane.PaneList
+            For Each gp As GraphPane In Me.m_graph.MasterPane.PaneList
                 gp.CurveList.Clear()
             Next
 
-            AddCurveToGraphPane(ePaneTypes.Weight, resultLists(0), sgStyleGuide.GroupColor(m_core, iSelectedGrpNum - 1))
-            AddCurveToGraphPane(ePaneTypes.Number, resultLists(1), sgStyleGuide.GroupColor(m_core, iSelectedGrpNum - 1))
-            AddCurveToGraphPane(ePaneTypes.Biomass, resultLists(2), sgStyleGuide.GroupColor(m_core, iSelectedGrpNum - 1))
-            AddCurveToGraphPane(ePaneTypes.PSD, resultLists(3), sgStyleGuide.GroupColor(m_core, iSelectedGrpNum - 1))
+            AddCurveToGraphPane(ePaneTypes.Weight, resultLists(0), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
+            AddCurveToGraphPane(ePaneTypes.Number, resultLists(1), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
+            AddCurveToGraphPane(ePaneTypes.Biomass, resultLists(2), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
+            AddCurveToGraphPane(ePaneTypes.PSD, resultLists(3), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
 
             'Lorenzen mortality plot if mortality type is Lorenzen
             If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
-                AddCurveToGraphPane(ePaneTypes.LorenzenMortality, resultLists(4), sgStyleGuide.GroupColor(m_core, iSelectedGrpNum - 1))
+                AddCurveToGraphPane(ePaneTypes.LorenzenMortality, resultLists(4), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
             End If
         End Sub
 
@@ -215,7 +213,7 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub AddCurveToGraphPane(ByVal paneType As ePaneTypes, ByVal list As PointPairList, ByVal clr As Color)
-            Dim gp As GraphPane = m_MasterPane.PaneList(CInt(paneType))
+            Dim gp As GraphPane = Me.m_graph.MasterPane.PaneList(CInt(paneType))
             Dim brItem As BarItem
 
             Select Case paneType
@@ -228,24 +226,24 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub UpdatePlots()
-            Me.zgcZedGraphCntl.AxisChange()
+            Me.m_graph.AxisChange()
 
             'Tell ZedGraph to auto layout the new GraphPanes
             'Cannot move that part up to the InitMasterPane, Title is dynamic here..??
             Dim g As Graphics = Me.CreateGraphics()
-            m_MasterPane.SetLayout(g, PaneLayout.SquareColPreferred)
+            Me.m_graph.MasterPane.SetLayout(g, PaneLayout.SquareColPreferred)
             g.Dispose()
 
-            Me.zgcZedGraphCntl.Refresh()
+            Me.m_graph.Refresh()
         End Sub
 
         Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
-            For iGroup As Integer = 1 To m_core.nLivingGroups
-                grpOutput = m_core.EcoPathGroupOutputs(iGroup)
-                For iWtClass As Integer = 1 To m_core.nWeightClasses
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
+                grpOutput = Me.Core.EcoPathGroupOutputs(iGroup)
+                For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                     sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
                 Next
             Next

@@ -76,7 +76,6 @@ Namespace Ecopath.Output
 
             MyBase.InitStyle()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreGroupBase = Nothing
 
             Me.Redim(core.nGroups + 3, 2)
@@ -115,7 +114,6 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreGroupBase = Nothing
 

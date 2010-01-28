@@ -68,16 +68,16 @@ Namespace Ecopath.Output
             Me.FixedColumnWidths = False
         End Sub
 
-
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
 
-            Dim core As cCore = cCore.GetInstance()
+            If Me.UIContext Is Nothing Then Return
+
             Dim source As cCoreGroupBase = Nothing
 
             ' Define grid dimensions
-            Me.Redim(core.nLivingGroups + 1, 2)
+            Me.Redim(Core.nLivingGroups + 1, 2)
 
             ' Set header cells
             ' # (0,0)
@@ -87,9 +87,9 @@ Namespace Ecopath.Output
             Dim columnIndex As Integer = 2
 
             ' For every living groups
-            For i As Integer = 1 To core.nLivingGroups
+            For i As Integer = 1 To Core.nLivingGroups
                 'Get group output
-                source = core.EcoPathGroupOutputs(i)
+                source = Core.EcoPathGroupOutputs(i)
                 ' Define column header cell
                 Me.Columns.Insert(columnIndex)
                 Me(0, columnIndex) = New PropertyColumnHeaderCell(source, eVarNameFlags.Index)
@@ -103,11 +103,9 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim prop As cProperty = Nothing
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
 
             For columnIndex As Integer = 2 To core.nLivingGroups + 1
                 source = core.EcoPathGroupOutputs(columnIndex - 1)
@@ -120,7 +118,7 @@ Namespace Ecopath.Output
                             Dim cell As PropertyCell = Nothing
 
                             ' Get the indexed property by (rowIndex, columnIndex)
-                            prop = pm.GetProperty(sourceSec, eVarNameFlags.Plap, source)
+                            prop = Me.PropertyManager.GetProperty(sourceSec, eVarNameFlags.Plap, source)
                             ' Add property to the cell
                             cell = New PropertyCell(prop)
                             ' Config cell
@@ -132,7 +130,7 @@ Namespace Ecopath.Output
                         Dim cell As NichePropertyColourCell = Nothing
 
                         ' Get the indexed property by (rowIndex, columnIndex)
-                        prop = pm.GetProperty(sourceSec, eVarNameFlags.Plap, source)
+                        prop = Me.PropertyManager.GetProperty(sourceSec, eVarNameFlags.Plap, source)
                         ' Add property to the cell
                         cell = New NichePropertyColourCell(prop)
                         ' Place cell into grid
