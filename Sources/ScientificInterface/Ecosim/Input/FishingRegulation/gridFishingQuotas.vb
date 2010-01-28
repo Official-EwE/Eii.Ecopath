@@ -49,10 +49,12 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Sub InitStyle()
+
             MyBase.InitStyle()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim src As cCoreInputOutputBase = Nothing
+
+            If Me.UIContext Is Nothing Then Return
 
             Me.Redim(1, 2 + core.nFleets)
 
@@ -72,10 +74,8 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim reg As cEcosimFisheriesRegulation = Nothing
             Dim group As cCoreInputOutputBase = Nothing
-            '  Dim cell As ICell = Nothing
 
             ' For each group
             For iGroup As Integer = 1 To core.nGroups

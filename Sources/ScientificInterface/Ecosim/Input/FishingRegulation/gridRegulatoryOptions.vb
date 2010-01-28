@@ -87,9 +87,7 @@ Namespace Ecosim
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
-            Dim src As cCoreInputOutputBase = Nothing
 
             Me.Redim(1, iNumCols)
 
@@ -104,11 +102,11 @@ Namespace Ecosim
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
+
         End Sub
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim fleet As cFleetInput = Nothing
             Dim reg As cEcosimFisheriesRegulation = Nothing
 
