@@ -48,7 +48,6 @@ Namespace Ecosim
 
 #Region " Private vars "
 
-        Private m_core As cCore = Nothing
         Private m_graphpane As GraphPane = Nothing
         Private m_bEcosimRunning As Boolean = False
         Private m_coreStateMonitor As cCoreStateMonitor = Nothing
@@ -56,34 +55,13 @@ Namespace Ecosim
         Private m_mhEcosim As cMessageHandler = Nothing
         Private m_SRResults As List(Of SRLine)
         Private m_zgh As cZedGraphHelper = Nothing
-        Private m_sg As cStyleGuide = Nothing
 
 #End Region ' Private vars
 
 #Region " Constructors "
 
         Public Sub New()
-
             Me.InitializeComponent()
-
-            Me.m_core = cCore.GetInstance()
-            Me.m_sg = cStyleGuide.GetInstance()
-            Me.m_coreStateMonitor = Me.m_core.StateMonitor
-            Me.m_graphpane = Me.m_plot.GraphPane
-            Me.m_SRResults = New List(Of SRLine)
-            Me.m_zgh = New cZedGraphHelper()
-
-        End Sub
-
-        Public Sub New(ByVal text As String)
-
-            Me.New()
-
-            'Set tab text
-            Me.TabText = text
-            'Set window text
-            Me.Text = text
-
         End Sub
 
 #End Region ' Constructors
@@ -92,8 +70,13 @@ Namespace Ecosim
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
+            Me.m_coreStateMonitor = Me.Core.StateMonitor
+            Me.m_graphpane = Me.m_plot.GraphPane
+            Me.m_SRResults = New List(Of SRLine)
+            Me.m_zgh = New cZedGraphHelper()
+
             Me.LoadGroups()
-            Me.m_zgh.Attach(Me.m_core, Me.m_plot)
+            Me.m_zgh.Attach(Me.Core, Me.m_plot)
             Me.m_zgh.ConfigurePane(My.Resources.SR_PLOT_TITLE, _
                                    String.Format(My.Resources.SR_PLOT_X_AXIS, String.Empty), _
                                    String.Format(My.Resources.HEADER_RECRUITMENT_UNIT, String.Empty), _
@@ -105,21 +88,21 @@ Namespace Ecosim
 
             ' Start listening for core messages
             Me.m_mhEcosim = New cMessageHandler(AddressOf EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, m_SyncObj)
-            Me.m_core.Messages.AddMessageHandler(Me.m_mhEcosim)
+            Me.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            Me.m_core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
+            Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
             Me.m_mhEcosim = Nothing
             Me.m_zgh.Detach()
 
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             MyBase.OnFormClosed(e)
 
@@ -140,9 +123,9 @@ Namespace Ecosim
                 For i As Integer = 0 To m_SRResults.Count - 1
                     m_SRResults(i).SRDataList.Clear()
                 Next
-                m_core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
+                Me.Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
             Else
-                m_core.StopEcoSim()
+                Me.Core.StopEcoSim()
             End If
 
         End Sub
@@ -156,11 +139,11 @@ Namespace Ecosim
             If results.hasSRData Then
 
                 For i As Integer = 1 To results.nStanza
-                    stanza = m_core.StanzaGroups(i - 1)
+                    stanza = Me.Core.StanzaGroups(i - 1)
 
                     For j As Integer = 1 To stanza.NStanzas - 1
 
-                        group = Me.m_core.EcoPathGroupInputs(stanza.iGroups(j))
+                        group = Me.Core.EcoPathGroupInputs(stanza.iGroups(j))
                         tmpSR = New SRData()
                         If results.hasSRData(i, j) Then
 
@@ -310,13 +293,13 @@ Namespace Ecosim
 
             m_SRResults.Clear()
 
-            If m_core.nStanzas > 0 Then
+            If Me.Core.nStanzas > 0 Then
                 m_tvGroups.Nodes.Add(My.Resources.HEADER_SHOWALL)
 
                 'Stanza group index is Zero-based.
-                For i As Integer = 0 To m_core.nStanzas - 1
+                For i As Integer = 0 To Me.Core.nStanzas - 1
                     ' Get stanza group
-                    stanza = m_core.StanzaGroups(i)
+                    stanza = Me.Core.StanzaGroups(i)
                     ' Add stanza node
                     node = New TreeNode(stanza.Name)
                     node.Tag = stanza
@@ -324,12 +307,12 @@ Namespace Ecosim
 
                     ' Add subnodes for life stages
                     iGroupLast = stanza.iGroups(stanza.NStanzas)
-                    groupEnd = m_core.EcoPathGroupInputs(iGroupLast)
+                    groupEnd = Me.Core.EcoPathGroupInputs(iGroupLast)
 
                     For j As Integer = 1 To stanza.NStanzas - 1
 
                         iGroup = stanza.iGroups(j)
-                        groupStart = m_core.EcoPathGroupInputs(iGroup)
+                        groupStart = Me.Core.EcoPathGroupInputs(iGroup)
 
                         strTitle = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, groupStart.Name, groupEnd.Name)
                         srl = New SRLine()
@@ -391,7 +374,7 @@ Namespace Ecosim
                 Next
 
                 curve = pane.AddCurve(srl.Title, ppl, _
-                                      Me.m_sg.GroupColor(Me.m_core, srl.GroupStart.Index), _
+                                      Me.StyleGuide.GroupColor(Me.Core, srl.GroupStart.Index), _
                                       SymbolType.Circle)
 
                 curve.IsVisible = srl.IsVisible

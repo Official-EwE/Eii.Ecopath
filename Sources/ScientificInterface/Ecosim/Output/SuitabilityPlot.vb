@@ -1,31 +1,24 @@
-﻿'==============================================================================
-'
-' $Log: SuitabilityPlot.vb,v $
-' Revision 1.2  2008/12/10 20:56:20  joeh
-' Finalize the Suitability Plot
-'
-' Revision 1.1  2008/12/09 00:30:01  joeh
-' Add node for the three Suitability curves (Electivity, Functional response and Suitability)
-'
-'
+﻿
 Namespace Ecosim
 
     Public Class SuitabilityPlot
 
         Public Sub New()
-
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
-            
+            Me.InitializeComponent()
         End Sub
 
-        Private Sub SuitabilityPlot_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Dim SuitabilityPlot As New ucSuitabilityPlot()
+        Public Overrides Property UIContext() As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As cUIContext)
+                MyBase.UIContext = value
+                Me.m_plot.UIContext = value
+            End Set
+        End Property
 
-            SuitabilityPlot.Dock = DockStyle.Fill
-            Me.Controls.Add(SuitabilityPlot)
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
         End Sub
     End Class
 

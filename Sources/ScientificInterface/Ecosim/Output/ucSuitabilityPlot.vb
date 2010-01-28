@@ -1,33 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: ucSuitabilityPlot.vb,v $
-' Revision 1.8  2009/05/28 12:37:23  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.7  2009/04/07 20:02:11  jeroens
-' Updated to use ZedGraphHelper Attach
-'
-' Revision 1.6  2009/04/03 18:21:53  jeroens
-' Deliberately detached zedgraphhelper
-'
-' Revision 1.5  2009/01/14 17:48:44  jeroens
-' Fixed compiler warning
-'
-' Revision 1.4  2008/12/15 15:56:03  jeroens
-' no message
-'
-' Revision 1.3  2008/12/10 20:56:20  joeh
-' Finalize the Suitability Plot
-'
-' Revision 1.2  2008/12/09 19:52:43  joeb
-' Changes to UpdateGraph to draw data (still not done)
-'
-' Revision 1.1  2008/12/09 00:30:02  joeh
-' Add node for the three Suitability curves (Electivity, Functional response and Suitability)
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -36,35 +7,24 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports ZedGraph
 
 #End Region ' Imports
 
 Public Class ucSuitabilityPlot
-
-#Region " Helper classes "
-
-    Private Class cPredatorItem
-        Private m_group As cEcoPathGroupInput = Nothing
-        Public Sub New(ByVal group As cEcoPathGroupInput)
-            Me.m_group = group
-        End Sub
-        Public Overrides Function ToString() As String
-            Return Me.m_group.Name
-        End Function
-        Public ReadOnly Property Predator() As cEcoPathGroupInput
-            Get
-                Return Me.m_group
-            End Get
-        End Property
-    End Class
-
-#End Region ' Helper classes
+    Implements IUIElement
 
 #Region " Private variables "
 
+    Private m_uic As cUIContext = Nothing
     Private m_zgh As cZedGraphHelper = Nothing
-    Private m_core As cCore = cCore.GetInstance()
-    Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
+    Private m_plottype As ePlotTypes = ePlotTypes.Electivity
+
+    Private Enum ePlotTypes As Integer
+        Electivity = 0
+        Suitability
+        FunctionalResponse
+    End Enum
 
 #End Region ' Private variables
 
@@ -76,40 +36,50 @@ Public Class ucSuitabilityPlot
 
 #End Region ' Constructor
 
+#Region " IUIElement implementation "
+
+    Public Property UIContext() As cUIContext _
+        Implements IUIElement.UIContext
+        Get
+            Return Me.m_uic
+        End Get
+        Set(ByVal value As cUIContext)
+            Me.m_uic = value
+        End Set
+    End Property
+
+#End Region ' IUIElement implementation
+
 #Region " Events "
 
-    Private Sub ucSuitabilityPlot_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Load
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+        Debug.Assert(Me.m_uic IsNot Nothing)
+
+        MyBase.OnLoad(e)
 
         Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.m_core, Me.m_graph)
+        Me.m_zgh.Attach(Me.m_uic.Core, Me.m_graph)
 
-        Me.UpdatePlotTypeDropdown()
-        Me.UpdatePredatorDropdown()
+        Me.m_lbGroups.Attach(Me.m_uic.Core, Me.m_uic.StyleGuide)
 
-        AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+        Me.m_rbElectivity.Checked = True
+
+        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+        Me.UpdatePredatorList()
+        Me.UpdateGraph()
 
     End Sub
 
-    Private Sub ucSuitabilityPlot_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Disposed
+    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+        MyBase.OnHandleDestroyed(e)
 
         Me.m_zgh.Detach()
         Me.m_zgh = Nothing
 
-        RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-        Me.m_sg = Nothing
+        RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-    End Sub
-
-    Private Sub m_tscmbPlotType_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tscmbPlotType.SelectedIndexChanged
-        Me.UpdateGraph()
-    End Sub
-
-    Private Sub m_tscmbPredator_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tscmbPredator.SelectedIndexChanged
-        Me.UpdateGraph()
     End Sub
 
     Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
@@ -117,133 +87,154 @@ Public Class ucSuitabilityPlot
         Me.UpdateGraph()
     End Sub
 
+    Private Sub OnPlotSuitability(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_rbSuitability.CheckedChanged
+        Me.PlotType = ePlotTypes.Suitability
+        Me.UpdateGraph()
+    End Sub
+
+    Private Sub OnPlotFunctionalResponse(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_rbFunctionalResponse.CheckedChanged
+        Me.PlotType = ePlotTypes.FunctionalResponse
+        Me.UpdateGraph()
+    End Sub
+
+    Private Sub OnPlotElectivity(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_rbElectivity.CheckedChanged
+        Me.PlotType = ePlotTypes.Electivity
+        Me.UpdateGraph()
+    End Sub
+
+    Private Sub OnSelectPredator(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_lbGroups.SelectedIndexChanged
+        Me.UpdateGraph()
+    End Sub
+
 #End Region ' Events
 
 #Region " Internals "
 
+    Private Property PlotType() As ePlotTypes
+        Get
+            Return Me.m_plottype
+        End Get
+        Set(ByVal value As ePlotTypes)
+            Me.m_plottype = value
+        End Set
+    End Property
+
     Private Function SelectedPredator() As cEcoPathGroupInput
-        'If (Me.m_cmbPredator.SelectedIndex > -1) Then
-        '    Return DirectCast(Me.m_cmbPredator.SelectedItem, cPredatorItem).Predator
-        'End If
-        If (Me.m_tscmbPredator.SelectedIndex > -1) Then
-            Return DirectCast(Me.m_tscmbPredator.SelectedItem, cPredatorItem).Predator
-        End If
-        Return Nothing
+        Return Me.m_lbGroups.SelectedGroup
     End Function
 
-    Private Sub UpdatePlotTypeDropdown()
-        With Me.m_tscmbPlotType
-            .Items.Clear()
-            .Items.Add(My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY)
-            .Items.Add(My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP)
-            .Items.Add(My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY)
-            If .Items.Count > 0 Then
-                .Sorted = True
-                .SelectedIndex = 0
-            End If
-        End With
-    End Sub
+    Private Sub UpdatePredatorList()
 
-    Private Sub UpdatePredatorDropdown()
         Dim group As cEcoPathGroupInput = Nothing
-        'Me.m_cmbPredator.Items.Clear()
-        'For iGroup As Integer = 1 To Me.m_core.nGroups
-        '    group = Me.m_core.EcoPathGroupInputs(iGroup)
-        '    If group.IsConsumer Then Me.m_cmbPredator.Items.Add(New cPredatorItem(group))
-        'Next
-        'If Me.m_cmbPredator.Items.Count > 0 Then Me.m_cmbPredator.SelectedIndex = 0
-        Me.m_tscmbPredator.Items.Clear()
-        For iGroup As Integer = 1 To Me.m_core.nGroups
-            group = Me.m_core.EcoPathGroupInputs(iGroup)
-            If group.IsConsumer Then Me.m_tscmbPredator.Items.Add(New cPredatorItem(group))
+        Dim liGroups As New List(Of Integer)
+
+        Me.m_lbGroups.Items.Clear()
+        For iGroup As Integer = 1 To Me.UIContext.Core.nGroups
+            group = Me.UIContext.Core.EcoPathGroupInputs(iGroup)
+            If group.IsConsumer Then liGroups.Add(group.Index)
         Next
-        If Me.m_tscmbPredator.Items.Count > 0 Then Me.m_tscmbPredator.SelectedIndex = 0
+        Me.m_lbGroups.Populate(liGroups.ToArray())
+        Me.m_lbGroups.SelectedIndex = 0
+
     End Sub
 
     Private Sub UpdateGraph()
-
-        ' ToDo_JS: Globalize this method
 
         Dim predIn As cEcoPathGroupInput = Me.SelectedPredator()
         Dim predOut As cEcosimGroupOutput = Nothing
         Dim preyEcopath As cEcoPathGroupOutput = Nothing
         Dim preyOut As cEcosimGroupOutput = Nothing
-        Dim asX As Double()
-        Dim asY As Double()
+        Dim asX(Me.UIContext.Core.nEcosimTimeSteps - 1) As Double
+        Dim asY(Me.UIContext.Core.nEcosimTimeSteps - 1) As Double
         Dim Xmax As Double
         Dim Ymax As Double
+        Dim strTitle As String = ""
+        Dim strXAxisTitle As String = ""
+        Dim strYAxisTitle As String = ""
+        Dim gp As GraphPane = Me.m_graph.GraphPane
 
-        If predIn Is Nothing Then
-            With Me.m_graph.GraphPane
-                .Title.Text = ""
-                .CurveList.Clear()
-            End With
-        Else
-            With Me.m_graph.GraphPane()
-                Select Case Me.m_tscmbPlotType.SelectedItem.ToString
-                    Case My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY
-                        .Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY & vbCrLf & _
-                                      My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
-                        .XAxis.Title.Text = ""
-                        .YAxis.Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY
-                    Case My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP
-                        .Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP & vbCrLf & _
-                                      My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
-                        .XAxis.Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM
-                        .YAxis.Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_QPREY_BPRED
-                    Case My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY
-                        .Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY & vbCrLf & _
-                                      My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
-                        .XAxis.Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM
-                        .YAxis.Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY
-                End Select
-                .CurveList.Clear()
+        ' Clear
+        gp.Title.Text = ""
+        gp.CurveList.Clear()
 
-                ReDim asX(Me.m_core.nEcosimTimeSteps - 1)
-                ReDim asY(Me.m_core.nEcosimTimeSteps - 1)
+        If (predIn IsNot Nothing) Then
 
-                For iPrey As Integer = 1 To Me.m_core.nGroups
-                    preyEcopath = Me.m_core.EcoPathGroupOutputs(iPrey)
-                    predOut = Me.m_core.EcoSimGroupOutputs(predIn.Index)
-                    preyOut = Me.m_core.EcoSimGroupOutputs(iPrey)
+            Select Case Me.m_plottype
 
-                    If (predIn.DietComp(iPrey) > 0.0!) And (preyEcopath.Biomass > 0.0) Then
+                Case ePlotTypes.Electivity
+                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY & vbCrLf & _
+                               My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
+                    strXAxisTitle = ""
+                    strYAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY
 
-                        Array.Clear(asX, 0, asX.Length)
-                        Array.Clear(asY, 0, asX.Length)
+                Case ePlotTypes.FunctionalResponse
+                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP & vbCrLf & _
+                               My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
+                    strXAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM
+                    strYAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_QPREY_BPRED
 
-                        For iTime As Integer = 1 To Me.m_core.nEcosimTimeSteps
+                Case ePlotTypes.Suitability
+                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY & vbCrLf & _
+                               My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
+                    strXAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM
+                    strYAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY
 
-                            Select Case Me.m_tscmbPlotType.SelectedItem.ToString
-                                Case My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY
-                                    '"Electivity"
-                                    'x = time
-                                    'y = Electpred(prey,t)
-                                    asX(iTime - 1) = iTime
-                                    asY(iTime - 1) = predOut.Electivity(preyOut.Index, iTime)
-                                Case My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP
-                                    ' "Functional response"
-                                    'x = Bprey(T)/Bprey(0)
-                                    'y = Qpred(prey,t)/Bpred(t)
-                                    asX(iTime - 1) = preyOut.Biomass(iTime) / preyEcopath.Biomass
-                                    asY(iTime - 1) = preyOut.Consumption(predIn.Index, iTime) / predOut.Biomass(iTime)
-                                Case My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY
-                                    '"Suitability"
-                                    'x = Bprey(T)/Bprey(0)
-                                    'y = Elect(pred,prey)
-                                    asX(iTime - 1) = preyOut.Biomass(iTime) / preyEcopath.Biomass
-                                    asY(iTime - 1) = predOut.Electivity(preyOut.Index, iTime)
-                            End Select
-                            Xmax = Math.Max(asX(iTime - 1), Xmax)
-                            Ymax = Math.Max(asY(iTime - 1), Ymax)
-                        Next
+            End Select
 
-                        .AddCurve(preyEcopath.Name, asX, asY, Me.m_sg.GroupColor(Me.m_core, iPrey), ZedGraph.SymbolType.None)
-                    End If
-                Next
-                .XAxis.Scale.Max = Xmax * 1.01
-                .YAxis.Scale.Max = Ymax * 1.01
-            End With
+            Me.m_zgh.ConfigurePane(strTitle, strXAxisTitle, strYAxisTitle, False)
+
+            For iPrey As Integer = 1 To Me.UIContext.Core.nGroups
+                preyEcopath = Me.UIContext.Core.EcoPathGroupOutputs(iPrey)
+                predOut = Me.UIContext.Core.EcoSimGroupOutputs(predIn.Index)
+                preyOut = Me.UIContext.Core.EcoSimGroupOutputs(iPrey)
+
+                If (predIn.DietComp(iPrey) > 0.0!) And (preyEcopath.Biomass > 0.0) Then
+
+                    Array.Clear(asX, 0, asX.Length)
+                    Array.Clear(asY, 0, asY.Length)
+
+                    For iTime As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
+
+                        Select Case Me.m_plottype
+
+                            Case ePlotTypes.Electivity
+                                asX(iTime - 1) = iTime
+                                asY(iTime - 1) = predOut.Electivity(preyOut.Index, iTime)
+
+                            Case ePlotTypes.FunctionalResponse
+                                'x = Bprey(T)/Bprey(0)
+                                'y = Qpred(prey,t)/Bpred(t)
+                                asX(iTime - 1) = preyOut.Biomass(iTime) / preyEcopath.Biomass
+                                asY(iTime - 1) = preyOut.Consumption(predIn.Index, iTime) / predOut.Biomass(iTime)
+
+                            Case ePlotTypes.Suitability
+                                'x = Bprey(T)/Bprey(0)
+                                'y = Elect(pred,prey)
+                                asX(iTime - 1) = preyOut.Biomass(iTime) / preyEcopath.Biomass
+                                asY(iTime - 1) = predOut.Electivity(preyOut.Index, iTime)
+
+                        End Select
+
+                        Xmax = Math.Max(asX(iTime - 1), Xmax)
+                        Ymax = Math.Max(asY(iTime - 1), Ymax)
+                    Next
+
+                    ' Add curve
+                    gp.AddCurve(preyEcopath.Name, _
+                                asX, asY, _
+                                Me.m_uic.StyleGuide.GroupColor(Me.UIContext.Core, iPrey), _
+                                ZedGraph.SymbolType.None)
+                End If
+            Next
+
+            ' Fix axis scales
+            gp.XAxis.Scale.Max = Xmax
+            gp.YAxis.Scale.Max = Ymax * 1.2
+
         End If
 
         Me.m_graph.AxisChange()
