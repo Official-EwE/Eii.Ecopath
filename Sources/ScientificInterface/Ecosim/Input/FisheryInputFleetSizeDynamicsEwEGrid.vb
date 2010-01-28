@@ -36,7 +36,6 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
 
             For rowIndex As Integer = 1 To core.nFleets
