@@ -27,54 +27,52 @@ Namespace Ecosim
             All
         End Enum
 
-        Private m_core As cCore
+#Region " Private vars "
+
+        Private m_uic As cUIContext = Nothing
         Private m_PPIManager As cPPIManager
         Private m_lPPI As New List(Of cPredPreyInteraction)
         Private m_lFFs As New List(Of cForcingFunction)
 
         Private m_iSelPrey As Integer = -1
+        Private m_strSelPreyName As String = ""
         Private m_iSelPredIndex As Integer = -1
+        Private m_strSelPredName As String = ""
 
-        Private m_strSelPreyName As String = String.Empty
-        Private m_strSelPredName As String = String.Empty
-
-        'Image list used for displaying thumbnails
-        Private m_ilLarge As New ImageList
-        Private m_ilSmall As New ImageList
+        ''' <summary>Image list used for displaying large thumbnails.</summary>
+        Private m_ilLarge As New ImageList()
+        ''' <summary>Image list used for displaying small thumbnails.</summary>
+        Private m_ilSmall As New ImageList()
 
         Private m_editMode As eEditMode = eEditMode.PredPrey
         Private m_nGroups As Integer = 0
 
-        Private Const LARGE_ICON_WIDTH As Integer = 48
-        Private Const LARGE_ICON_HEIGHT As Integer = 48
-        Private Const SMALL_ICON_WIDTH As Integer = 16
-        Private Const SMALL_ICON_HEIGHT As Integer = 16
-
         Private m_shapeMode As eApplyShapeTypes = eApplyShapeTypes.NotSet
         Private m_targetType As eApplyTargetTypes = eApplyTargetTypes.NotSet
 
-        Public Sub New(ByVal iPrey As Integer, ByVal iPred As Integer, _
-                ByVal shapeType As eApplyShapeTypes, ByVal targetType As eApplyTargetTypes)
+#End Region ' Private vars
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal iPrey As Integer, ByVal iPred As Integer, _
+                       ByVal shapeType As eApplyShapeTypes, ByVal targetType As eApplyTargetTypes)
+
             Try
 
-                Init(eEditMode.PredPrey, shapeType, targetType)
+                Me.Init(uic, eEditMode.PredPrey, shapeType, targetType)
 
                 ' the index for selected prey and predator index
                 Me.m_iSelPrey = iPrey
                 Me.m_iSelPredIndex = iPred
 
                 'Set the Prey and Predator name from index here. They are not editable
-                m_strSelPreyName = m_core.EcoPathGroupInputs(m_iSelPrey).Name
-                m_strSelPredName = m_core.EcoPathGroupInputs(m_iSelPredIndex).Name
+                m_strSelPreyName = Me.m_uic.Core.EcoPathGroupInputs(m_iSelPrey).Name
+                m_strSelPredName = Me.m_uic.Core.EcoPathGroupInputs(m_iSelPredIndex).Name
 
                 m_lPPI.Add(m_PPIManager.Interaction(m_iSelPredIndex, m_iSelPrey))
 
             Catch ex As Exception
                 ' NOP
             End Try
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         End Sub
 
@@ -85,16 +83,17 @@ Namespace Ecosim
         ''' <param name="iGroup">Group this dialog was opened for.</param>
         ''' <param name="editMode">Flag stating how this group should be interpreted.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal iGroup As Integer, ByVal editMode As eEditMode, _
-                ByVal shapeType As eApplyShapeTypes, ByVal targetType As eApplyTargetTypes)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal iGroup As Integer, ByVal editMode As eEditMode, _
+                       ByVal shapeType As eApplyShapeTypes, ByVal targetType As eApplyTargetTypes)
 
-            Init(editMode, shapeType, targetType)
+            Init(uic, editMode, shapeType, targetType)
 
             Select Case editMode
 
                 Case eEditMode.Prey
                     m_iSelPrey = iGroup
-                    m_strSelPreyName = m_core.EcoPathGroupInputs(m_iSelPrey).Name
+                    m_strSelPreyName = Me.m_uic.Core.EcoPathGroupInputs(m_iSelPrey).Name
 
                     For i As Integer = 1 To m_nGroups
                         If m_PPIManager.isPredPrey(i, m_iSelPrey) Then
@@ -104,7 +103,7 @@ Namespace Ecosim
 
                 Case eEditMode.Predator
                     m_iSelPredIndex = iGroup
-                    m_strSelPredName = m_core.EcoPathGroupInputs(m_iSelPredIndex).Name
+                    m_strSelPredName = Me.m_uic.Core.EcoPathGroupInputs(m_iSelPredIndex).Name
 
                     For i As Integer = 1 To m_nGroups
                         If m_PPIManager.isPredPrey(m_iSelPredIndex, i) Then
@@ -124,22 +123,26 @@ Namespace Ecosim
         ''' Create the dialog for all diets
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal shapeType As eApplyShapeTypes, ByVal targetType As eApplyTargetTypes)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal shapeType As eApplyShapeTypes, _
+                       ByVal targetType As eApplyTargetTypes)
 
-            Init(eEditMode.All, shapeType, targetType)
+            Init(uic, eEditMode.All, shapeType, targetType)
 
-            For predIndex As Integer = 1 To m_core.nLivingGroups
+            For iPred As Integer = 1 To Me.m_uic.Core.nLivingGroups
                 ' For each row (rowIndex - Prey)
-                For preyIndex As Integer = 1 To m_core.nGroups
+                For iPrey As Integer = 1 To Me.m_uic.Core.nGroups
                     ' Can assign FF at this spot in the matrix?
-                    If m_PPIManager.isPredPrey(predIndex, preyIndex) Then
-                        m_lPPI.Add(m_PPIManager.Interaction(predIndex, preyIndex))
+                    If m_PPIManager.isPredPrey(iPred, iPrey) Then
+                        m_lPPI.Add(m_PPIManager.Interaction(iPred, iPrey))
                     End If
                 Next
             Next
         End Sub
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            Debug.Assert(Me.m_uic IsNot Nothing)
 
             LoadAvailableShapes()
             LoadMultiplierOption()
@@ -162,14 +165,17 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub Init(ByVal editMode As eEditMode, ByVal shapeType As eApplyShapeTypes, ByVal targetType As eApplyTargetTypes)
+        Private Sub Init(ByVal uic As cUIContext, _
+                         ByVal editMode As eEditMode, _
+                         ByVal shapeType As eApplyShapeTypes, _
+                         ByVal targetType As eApplyTargetTypes)
 
             Me.InitializeComponent()
 
-            ' Get the only core reference
-            Me.m_core = cCore.GetInstance()
+            Me.m_uic = uic
+
             ' Get the Prey - Pred interaction manager
-            Me.m_PPIManager = Me.m_core.PPInteractionManager
+            Me.m_PPIManager = Me.m_uic.Core.PPInteractionManager
 
             Me.m_editMode = editMode
             Me.m_shapeMode = shapeType
@@ -192,7 +198,7 @@ Namespace Ecosim
 
             Me.GenerateImages()
 
-            Me.m_nGroups = m_core.nGroups
+            Me.m_nGroups = Me.m_uic.Core.nGroups
             Me.m_lPPI.Clear()
 
         End Sub
@@ -208,7 +214,7 @@ Namespace Ecosim
 
             cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
 
-            Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
+            Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Update)
 
             ' Update Applied Shape info for this Pred Prey Pair
             Try
@@ -241,7 +247,7 @@ Namespace Ecosim
 
             End Try
 
-            Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, True)
+            Me.m_uic.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, True)
             cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -292,6 +298,20 @@ Namespace Ecosim
         End Sub
 
 #Region "Private methods"
+
+        Private ReadOnly Property LargeIconSize() As Integer
+            Get
+                Debug.Assert(Me.m_uic.StyleGuide IsNot Nothing)
+                Return Me.m_uic.StyleGuide.ThumbnailSize
+            End Get
+        End Property
+
+        Private ReadOnly Property SmallIconSize() As Integer
+            Get
+                Debug.Assert(Me.m_uic.StyleGuide IsNot Nothing)
+                Return CInt(Math.Ceiling(Me.m_uic.StyleGuide.ThumbnailSize / 3))
+            End Get
+        End Property
 
         Private Property Shape(ByVal lvi As ListViewItem) As cForcingFunction
             Get
@@ -389,7 +409,6 @@ Namespace Ecosim
 
         End Sub
 
-
         Private Function GetMultiplier() As String
 
             If rbSearchRate.Checked Then
@@ -455,20 +474,20 @@ Namespace Ecosim
             Dim bmp As Bitmap = Nothing
 
             'Set up the thumbnail image size
-            m_ilLarge.ImageSize = New Size(LARGE_ICON_WIDTH, LARGE_ICON_HEIGHT)
-            m_ilSmall.ImageSize = New Size(SMALL_ICON_WIDTH, SMALL_ICON_HEIGHT)
+            m_ilLarge.ImageSize = New Size(LargeIconSize, LargeIconSize)
+            m_ilSmall.ImageSize = New Size(SmallIconSize, SmallIconSize)
 
             If m_lFFs.Count > 0 Then
 
                 For Each shapeFunc As cForcingFunction In m_lFFs
 
-                    bmp = New Bitmap(LARGE_ICON_WIDTH, LARGE_ICON_HEIGHT)
+                    bmp = New Bitmap(LargeIconSize, LargeIconSize)
                     Using g As Graphics = Graphics.FromImage(bmp)
                         ShapeImage.DrawShape(shapeFunc, New Rectangle(0, 0, bmp.Width, bmp.Height), g, Color.Red, eSketchDrawModeTypes.Line)
                         m_ilLarge.Images.Add(bmp)
                     End Using
 
-                    bmp = New Bitmap(SMALL_ICON_WIDTH, SMALL_ICON_HEIGHT)
+                    bmp = New Bitmap(SmallIconSize, SmallIconSize)
                     Using g As Graphics = Graphics.FromImage(bmp)
                         ShapeImage.DrawShape(shapeFunc, New Rectangle(0, 0, bmp.Width, bmp.Height), g, Color.Red, eSketchDrawModeTypes.Line)
                         m_ilSmall.Images.Add(bmp)
