@@ -9,6 +9,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared
 Imports System.ComponentModel
 Imports System.Windows.Forms
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -277,6 +278,57 @@ Public Class frmEwE
         Set(ByVal value As cUIContext)
             Me.m_uic = value
         End Set
+    End Property
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="cCore">core</see> that this grid connects to.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property Core() As cCore
+        Get
+            If Me.UIContext Is Nothing Then Return Nothing
+            Return Me.UIContext.Core
+        End Get
+    End Property
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="cStyleGuide">style guide</see> that this grid 
+    ''' connects to.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property StyleGuide() As cStyleGuide
+        Get
+            If Me.UIContext Is Nothing Then Return Nothing
+            Return Me.UIContext.StyleGuide
+        End Get
+    End Property
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="cPropertyManager">property manager</see> that 
+    ''' this grid can interact with.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property PropertyManager() As cPropertyManager
+        Get
+            If Me.UIContext Is Nothing Then Return Nothing
+            Return Me.UIContext.PropertyManager
+        End Get
+    End Property
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="cCommandHandler">command handler</see> that 
+    ''' this grid can interact with.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property ComandHandler() As cCommandHandler
+        Get
+            If Me.UIContext Is Nothing Then Return Nothing
+            Return Me.UIContext.CommandHander
+        End Get
     End Property
 
 #End Region ' Form overrides
