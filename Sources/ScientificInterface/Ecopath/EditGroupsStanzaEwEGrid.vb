@@ -17,8 +17,10 @@ Imports EwEUtils.Drawing
 ''' </summary>
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
-   Public Class EditGroupsStanzaEwEGrid
-    : Inherits EwEGrid
+Public Class EditGroupsStanzaEwEGrid
+    Inherits EwEGrid
+
+#Region " Private vars "
 
     ''' <summary>String to clear a group stanza allocation.</summary>
     ''' <remarks>This is a rather hokey solution to represent empty stanza groups.
@@ -67,6 +69,8 @@ Imports EwEUtils.Drawing
         StanzaAge
         GroupStatus
     End Enum
+
+#End Region ' Private vars
 
 #Region " Helper classes "
 
@@ -737,16 +741,16 @@ Imports EwEUtils.Drawing
         Me.m_lgiGroups.Clear()
 
         ' Make snapshot of group configuration
-        For iGroup As Integer = 1 To core.nGroups
-            group = core.EcoPathGroupInputs(iGroup)
+        For iGroup As Integer = 1 To Core.nGroups
+            group = Core.EcoPathGroupInputs(iGroup)
             gi = New GroupInfo(group)
             Me.m_lgiGroups.Add(gi)
         Next
 
         ' Make snapshot of stanza configuration
-        For iStanza As Integer = 0 To core.nStanzas - 1
-            stanza = core.StanzaGroups(iStanza)
-            si = New StanzaInfo(stanza, core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
+        For iStanza As Integer = 0 To Core.nStanzas - 1
+            stanza = Core.StanzaGroups(iStanza)
+            si = New StanzaInfo(stanza, Core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
             Me.m_lsiStanza.Add(si)
 
             ' Stanza group list is a one-based array
@@ -933,7 +937,7 @@ Imports EwEUtils.Drawing
 
         pos = New Position(iRow, eColumnTypes.GroupColor)
         Dim clr As Color = cStyleGuide.IntToColor(gi.PoolColor)
-        If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(Me.Core, iRow)
+        If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(iRow, Me.m_lgiGroups.Count)
         aCells(eColumnTypes.GroupColor).SetValue(pos, clr)
 
         Select Case gi.Status
@@ -965,7 +969,7 @@ Imports EwEUtils.Drawing
         Me.AllowUpdates = False
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
             clr = cStyleGuide.IntToColor(Me.m_lgiGroups(iGroup).PoolColor)
-            If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(Me.Core, iGroup + 1)
+            If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(iGroup + 1, Me.m_lgiGroups.Count)
             Me(iGroup + iFIRSTGROUPROW, eColumnTypes.GroupColor).Value = clr
         Next iGroup
         Me.AllowUpdates = True
@@ -1448,7 +1452,7 @@ Imports EwEUtils.Drawing
     Public Sub SetScaleGroupColors()
 
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
-            Me.m_lgiGroups(iGroup).PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(Me.Core, iGroup + 1))
+            Me.m_lgiGroups(iGroup).PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(iGroup + 1, Me.m_lgiGroups.Count))
             Me.UpdateRow(iGroup + iFIRSTGROUPROW)
         Next
 
@@ -2032,7 +2036,7 @@ Imports EwEUtils.Drawing
                             If (group.VBK <> gi.VBK) Then group.VBK = gi.VBK
                             If (group.PoolColor <> gi.PoolColor) Then
                                 ' Is gi.poolcolor the default color? 
-                                If gi.PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(Me.Core, iGrpTmp)) Then
+                                If gi.PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(iGrpTmp, Me.m_lgiGroups.Count)) Then
                                     ' #Yes: Set color to transparent to allow group to show up as true default colour
                                     group.PoolColor = 0
                                 Else

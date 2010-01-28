@@ -17,6 +17,8 @@ Imports ScientificInterface.Other
    Public Class EditFleetsEwEGrid
     : Inherits EwEGrid
 
+#Region " Private vars "
+
     ''' <summary>A number representing the row that contains the first Fleet</summary>
     Private Const iFIRSTFLEETROW As Integer = 1
 
@@ -47,6 +49,8 @@ Imports ScientificInterface.Other
         FleetColor
         FleetStatus
     End Enum
+
+#End Region ' Private vars
 
 #Region " Helper classes "
 
@@ -403,7 +407,7 @@ Imports ScientificInterface.Other
 
         pos = New Position(iRow, eColumnTypes.FleetColor)
         Dim clr As Color = cStyleGuide.IntToColor(fi.PoolColor)
-        If clr.A = 0 Then clr = Me.StyleGuide.FleetColorDefault(Me.Core, iRow)
+        If clr.A = 0 Then clr = Me.StyleGuide.FleetColorDefault(iRow, Me.m_lfiFleets.Count)
         aCells(eColumnTypes.FleetColor).SetValue(pos, clr)
 
         Select Case fi.Status
@@ -428,15 +432,21 @@ Imports ScientificInterface.Other
 
     Private Sub UpdateColorColumn()
 
+        Dim fi As cFleetInfo = Nothing
         Dim clr As Color = Color.Transparent
 
         Me.AllowUpdates = False
-        For iFleet As Integer = 0 To Me.m_lfiFleets.Count - 1
-            clr = cStyleGuide.IntToColor(Me.m_lfiFleets(iFleet).PoolColor)
-            If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(Me.Core, iFleet + 1)
-            Me(iFleet + iFIRSTFLEETROW, eColumnTypes.FleetColor).Value = clr
-        Next iFleet
+        For iRow As Integer = iFIRSTFLEETROW To Me.RowsCount - 1
+            fi = DirectCast(Me.m_lfiFleets(iRow - iFIRSTFLEETROW), cFleetInfo)
+            clr = cStyleGuide.IntToColor(fi.PoolColor)
+            If clr.A = 0 Then
+                clr = Me.StyleGuide.FleetColorDefault(iRow - iFIRSTFLEETROW + 1, Me.m_lfiFleets.Count)
+            End If
+            Me(iRow, eColumnTypes.FleetColor).Value = clr
+        Next iRow
         Me.AllowUpdates = True
+
+        Me.Invalidate()
 
     End Sub
 
@@ -807,9 +817,9 @@ Imports ScientificInterface.Other
     Public Sub ResetFleetColors()
 
         Dim fi As cFleetInfo = Nothing
-        For i As Integer = 0 To Me.m_lfiFleets.Count - 1
-            fi = Me.m_lfiFleets(i)
-            fi.PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.FleetColorDefault(Me.Core, i))
+        For iFleet As Integer = 0 To Me.m_lfiFleets.Count - 1
+            fi = Me.m_lfiFleets(iFleet)
+            fi.PoolColor = 0
         Next
         Me.UpdateColorColumn()
 
@@ -979,7 +989,7 @@ Imports ScientificInterface.Other
                     If fleet.Name <> fi.Name Then fleet.Name = fi.Name
                     If fleet.PoolColor <> fi.PoolColor Then
                         ' Is gi.poolcolor the default color? 
-                        If fi.PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(Me.Core, fleet.Index)) Then
+                        If fi.PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.FleetColorDefault(fleet.Index, Me.m_lfiFleets.Count)) Then
                             ' #Yes: Set color to transparent to allow group to show up as true default colour
                             fleet.PoolColor = 0
                         Else

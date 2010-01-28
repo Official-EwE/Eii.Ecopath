@@ -81,7 +81,6 @@ Public Class EditMultiStanzaEwEGrid
 
     Protected Overrides Sub FillData()
 
-        Dim core As cCore = cCore.GetInstance()
         Dim source As cEcoPathGroupInput = Nothing
         Dim ewec As EwECell = Nothing
         Dim bReadOnly As Boolean
@@ -149,8 +148,6 @@ Public Class EditMultiStanzaEwEGrid
     End Sub
 
     Public Sub SetStanzaGroupValues(ByVal bApplyToCore As Boolean)
-
-        Dim core As cCore = cCore.GetInstance()
 
         For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
 
