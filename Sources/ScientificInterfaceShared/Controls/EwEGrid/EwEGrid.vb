@@ -327,7 +327,7 @@ Namespace Controls.EwEGrid
             Implements IUIElement.UIContext
             Get
                 If Me.m_uic Is Nothing Then
-                    Console.WriteLine("UIcontent not set for grid " & Me.Name)
+                    Console.WriteLine("UIcontent not set for grid " & Me.GetType.Name)
                     Me.m_uic = New cUIContext(cCore.GetInstance(), _
                                               cStyleGuide.GetInstance(), _
                                               cPropertyManager.GetInstance(), _
@@ -348,6 +348,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Core() As cCore
             Get
+                If Me.UIContext Is Nothing Then Return Nothing
                 Return Me.UIContext.Core
             End Get
         End Property
@@ -360,6 +361,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public ReadOnly Property StyleGuide() As cStyleGuide
             Get
+                If Me.UIContext Is Nothing Then Return Nothing
                 Return Me.UIContext.StyleGuide
             End Get
         End Property
@@ -372,6 +374,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public ReadOnly Property PropertyManager() As cPropertyManager
             Get
+                If Me.UIContext Is Nothing Then Return Nothing
                 Return Me.UIContext.PropertyManager
             End Get
         End Property
@@ -384,6 +387,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public ReadOnly Property ComandHandler() As cCommandHandler
             Get
+                If Me.UIContext Is Nothing Then Return Nothing
                 Return Me.UIContext.CommandHander
             End Get
         End Property
@@ -412,13 +416,14 @@ Namespace Controls.EwEGrid
         Protected Overrides Sub InitLayout()
             MyBase.InitLayout()
 
-            ' Safety check
-            If (Me.UIContext Is Nothing) Then Return
-
             Me.SuspendLayoutGrid()
             Me.ClearData()
             Me.InitStyle()
-            Me.FillData()
+
+            If (Me.UIContext IsNot Nothing) Then
+                Me.FillData()
+            End If
+
             Me.FinishStyle()
             Me.ResumeLayoutGrid()
 
@@ -460,23 +465,29 @@ Namespace Controls.EwEGrid
         ''' <summary>
         ''' Finalizes the grid by formatting the grid header and column widths to indicated sizes after data has been provided.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Protected Overridable Sub FinishStyle()
+
+            Dim cell As ICell = Nothing
 
             Me.AutoSizeAll()
 
             'Add the selection of whole grid.
             If (Me.RowsCount > 0) And (Me.ColumnsCount > 0) Then
-                Me(0, 0).Behaviors.Add(m_ceCellClick)
+                cell = Me(0, 0)
+                If cell IsNot Nothing Then cell.Behaviors.Add(Me.m_ceCellClick)
             End If
 
             'Add the selection of whole row while clicking first column
             For i As Integer = 1 To Me.RowsCount - 1
-                Me(i, 0).Behaviors.Add(m_ceRowSelect)
+                cell = Me(i, 0)
+                If cell IsNot Nothing Then cell.Behaviors.Add(Me.m_ceRowSelect)
             Next
 
             'Add the selection of whole column while clicking first row 
             For i As Integer = 1 To Me.ColumnsCount - 1
-                Me(0, i).Behaviors.Add(m_ceColSelect)
+                cell = Me(0, i)
+                If cell IsNot Nothing Then cell.Behaviors.Add(Me.m_ceColSelect)
             Next
 
             Me.FixedColumnWidths = Me.m_bFixedColumnWidths
