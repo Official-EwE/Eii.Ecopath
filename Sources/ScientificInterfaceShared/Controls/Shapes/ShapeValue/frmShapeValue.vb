@@ -15,11 +15,11 @@ Public Class frmShapeValue
 
 #Region " Private vars "
 
+    Private m_uic As cUIContext = Nothing
     Private m_shape As cShapeData = Nothing
     Private m_iNumPoints As Integer = 0
     Private m_SketchPad As ucSketchPad = Nothing
     Private m_grid As ShapeValueGrid = Nothing
-    Private m_core As cCore = Nothing
     Private m_displayMode As eDisplayMode = eDisplayMode.Monthly
     Private m_editMode As eDialogEditModeType = eDialogEditModeType.EditTimeSeries
 
@@ -34,13 +34,15 @@ Public Class frmShapeValue
 
     Private Const cNUMROWS_EMTPY As Integer = 100
 
-    Public Sub New(Optional ByVal shape As cShapeData = Nothing)
+    Public Sub New(ByVal uic As cUIContext, _
+                   Optional ByVal shape As cShapeData = Nothing)
 
         Me.InitializeComponent()
 
-        Me.m_core = cCore.GetInstance()
+        Me.m_uic = uic
 
         Me.m_grid = New ShapeValueGrid()
+        Me.m_grid.UIContext = uic
         Me.pnlValueGrid.Controls.Add(Me.m_grid)
 
         ' Store shape
@@ -186,14 +188,6 @@ Public Class frmShapeValue
 
     End Sub
 
-    'Private Sub btnSetYears_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-    '    Handles btnSetNoOfYears.Click
-
-    '    Me.NumPoints = Integer.Parse(Me.m_lblNumYears.Text)
-    '    Me.m_grid.SetValues(Me.NumPoints, Me.m_shape, Me.m_displayMode)
-
-    'End Sub
-
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles btnOK.Click
 
@@ -230,12 +224,9 @@ Public Class frmShapeValue
     Private Sub cmbType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles cmbType.SelectedIndexChanged
 
-        Dim core As cCore = cCore.GetInstance()
-
         Me.FillPoolCodeComboBox()
-
-        'cmbPoolCode.SelectedIndex = 0
         Me.UpdateControls()
+
     End Sub
 
     Private Sub AnyTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
@@ -363,13 +354,12 @@ Public Class frmShapeValue
     ''' <remarks></remarks>
     Private Sub LoadEmptyGrid()
 
-        Dim core As cCore = cCore.GetInstance()
         Dim lstrTSNames As New List(Of String)
         Dim iNextTS As Integer = -1
 
         ' Get next TS sequential number
-        For i As Integer = 1 To Me.m_core.nTimeSeries
-            lstrTSNames.Add(Me.m_core.EcosimTimeSeries(i).Name)
+        For i As Integer = 1 To Me.m_uic.Core.nTimeSeries
+            lstrTSNames.Add(Me.m_uic.Core.EcosimTimeSeries(i).Name)
         Next
         iNextTS = EwEUtils.Utilities.StringUtils.GetNextNumber(lstrTSNames.ToArray(), My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES)
 
@@ -407,7 +397,6 @@ Public Class frmShapeValue
 
         Debug.Assert(Me.m_editMode = eDialogEditModeType.EditTimeSeries)
 
-        Dim core As cCore = cCore.GetInstance
         Dim ts As cTimeSeries = Nothing
         Dim iPoolCode As Integer
         Dim fts As cFleetTimeSeries = Nothing
@@ -441,7 +430,7 @@ Public Class frmShapeValue
         Me.m_grid.ApplyValues(ts)
 
         ts.Update()
-        bSucces = core.UpdateTimeSeries()
+        bSucces = Me.m_uic.Core.UpdateTimeSeries()
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         Return bSucces
@@ -451,7 +440,6 @@ Public Class frmShapeValue
 
         Debug.Assert(Me.m_editMode = eDialogEditModeType.EditForcing)
 
-        Dim core As cCore = cCore.GetInstance
         Dim ff As cForcingFunction = Nothing
 
         'Get the time series
@@ -476,7 +464,6 @@ Public Class frmShapeValue
 
     Private Function OnAddTimeSeries() As Boolean
 
-        Dim core As cCore = cCore.GetInstance
         Dim iFirstYear As Integer = 1
         Dim strName As String
         Dim sWeight As Single
@@ -494,13 +481,11 @@ Public Class frmShapeValue
         ' Set the pool code
         iPoolCode = cmbPoolCode.SelectedIndex + 1
 
-
         ' Gather values
         Dim asValues(Me.m_iNumPoints) As Single
         For i As Integer = 1 To m_iNumPoints - 1
             asValues(i - 1) = CSng(Me.m_grid(i, 1).Value)
         Next
-
 
         Try
             iFirstYear = Integer.Parse(CStr(Me.m_grid(0, 1).Value))
@@ -508,7 +493,7 @@ Public Class frmShapeValue
 
         End Try
 
-        bSucces = core.AddTimeSeries(strName, iPoolCode, tsType, _
+        bSucces = Me.m_uic.Core.AddTimeSeries(strName, iPoolCode, tsType, _
                 sWeight, asValues, iDBID)
 
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
@@ -517,10 +502,11 @@ Public Class frmShapeValue
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Update the state of crucial controls based on the content in the form
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Private Sub UpdateControls()
 
         Dim bEnableOk As Boolean = True
@@ -594,7 +580,6 @@ Public Class frmShapeValue
 
         Dim fts As cFleetTimeSeries
         Dim gts As cGroupTimeSeries
-        Dim core As cCore = cCore.GetInstance()
 
         cmbPoolCode.DropDownStyle = ComboBoxStyle.DropDownList
         cmbPoolCode.Items.Clear()
@@ -602,23 +587,23 @@ Public Class frmShapeValue
         Select Case cTimeSeriesFactory.TimeSeriesCategory(SelectedTimeSeriesType())
             Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
                 lblPoolCode.Text = My.Resources.LABEL_FLEET
-                For i As Integer = 1 To core.nFleets
-                    cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, core.FleetInputs(i).Name))
+                For i As Integer = 1 To Me.m_uic.Core.nFleets
+                    cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, Me.m_uic.Core.FleetInputs(i).Name))
                 Next
                 If Me.m_shape IsNot Nothing Then
                     fts = CType(Me.m_shape, cFleetTimeSeries)
-                    If ((fts.FleetIndex > 0 And fts.FleetIndex <= core.nFleets)) Then
+                    If ((fts.FleetIndex > 0 And fts.FleetIndex <= Me.m_uic.Core.nFleets)) Then
                         cmbPoolCode.SelectedIndex = fts.FleetIndex - 1
                     End If
                 End If
             Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
                 lblPoolCode.Text = My.Resources.LABEL_GROUP
-                For i As Integer = 1 To core.nGroups
-                    cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, core.EcoPathGroupInputs(i).Name))
+                For i As Integer = 1 To Me.m_uic.Core.nGroups
+                    cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, Me.m_uic.Core.EcoPathGroupInputs(i).Name))
                 Next
                 If (Me.m_shape IsNot Nothing) Then
                     gts = CType(Me.m_shape, cGroupTimeSeries)
-                    If ((gts.GroupIndex > 0 And gts.GroupIndex <= core.nGroups)) Then
+                    If ((gts.GroupIndex > 0 And gts.GroupIndex <= Me.m_uic.Core.nGroups)) Then
                         cmbPoolCode.SelectedIndex = gts.GroupIndex - 1
                     End If
                 End If

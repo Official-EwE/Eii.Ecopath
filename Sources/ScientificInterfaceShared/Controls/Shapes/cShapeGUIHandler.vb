@@ -355,6 +355,12 @@ Namespace Controls
 
 #Region " Public access "
 
+        Public ReadOnly Property UIContext() As cUIContext
+            Get
+                Return Me.m_uic
+            End Get
+        End Property
+
         Public ReadOnly Property Core() As cCore
             Get
                 Return Me.m_uic.Core
@@ -739,7 +745,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub AddTimeSeries()
-            Dim frm As frmShapeValue = New frmShapeValue()
+            Dim frm As frmShapeValue = New frmShapeValue(Me.UIContext)
             If (frm.ShowDialog() = DialogResult.OK) Then
                 ' Ecosim will reload, which means a reload of datasets and time series
                 ' As a result, this control will be told to update
@@ -886,7 +892,7 @@ Namespace Controls
             Debug.Assert(shape IsNot Nothing, "Need valid TS")
             Debug.Assert(TypeOf shape Is cTimeSeries, "Need valid TS")
 
-            Dim dlg As New frmShapeValue(shape)
+            Dim dlg As New frmShapeValue(Me.UIContext, shape)
             Try
                 dlg.ShowDialog()
             Catch ex As Exception
@@ -1389,7 +1395,7 @@ Namespace Controls
             Debug.Assert(shape IsNot Nothing, "Need valid FF")
             Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
 
-            Dim dlg As New frmShapeValue(shape)
+            Dim dlg As New frmShapeValue(Me.UIContext, shape)
             dlg.ShowDialog()
 
         End Sub

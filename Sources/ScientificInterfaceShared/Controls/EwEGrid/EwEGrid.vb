@@ -326,8 +326,8 @@ Namespace Controls.EwEGrid
         Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
-                If Me.m_uic Is Nothing Then
-                    Console.WriteLine("UIcontent not set for grid " & Me.GetType.Name)
+                If (Me.m_uic Is Nothing) And (Me.DesignMode = False) Then
+                    Console.WriteLine("WARNING: UIcontent created for unfixed grid " & Me.GetType.Name)
                     Me.m_uic = New cUIContext(cCore.GetInstance(), _
                                               cStyleGuide.GetInstance(), _
                                               cPropertyManager.GetInstance(), _

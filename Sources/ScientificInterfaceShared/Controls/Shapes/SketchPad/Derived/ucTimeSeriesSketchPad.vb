@@ -15,26 +15,33 @@ Imports ScientificInterfaceShared.Definitions
 Namespace Controls
 
     Public Class ucTimeSeriesSketchPad
+        Implements IUIElement
 
         Private m_AxisYMarks As eAxisTickmarkDisplayModeTypes
+        Private m_uic As cUIContext = Nothing
+
+        Public Sub New()
+
+            Me.InitializeComponent()
+            Me.m_sketchDrawMode = eSketchDrawModeTypes.Dots
+            Me.m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Absolute
+
+        End Sub
+
+        Public Property UIContext() As cUIContext Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
 
         Public WriteOnly Property AxisXMark() As eAxisTickmarkDisplayModeTypes
             Set(ByVal value As eAxisTickmarkDisplayModeTypes)
                 m_AxisYMarks = value
             End Set
         End Property
-
-        Public Sub New()
-
-            ' This call is required by the Windows Form Designer.
-            Me.InitializeComponent()
-
-            Me.m_sketchDrawMode = eSketchDrawModeTypes.Dots
-
-            'Default display as Absolute value
-            Me.m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Absolute
-
-        End Sub
 
         Protected Overrides Sub DrawShape(ByVal shape As EwECore.cShapeData, _
                 ByVal rcImage As System.Drawing.Rectangle, _
@@ -44,8 +51,10 @@ Namespace Controls
                 ByVal drawMode As eSketchDrawModeTypes, _
                 ByVal sYMax As Single)
 
-             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim core As cCore = cCore.GetInstance
+            If Me.m_uic Is Nothing Then Return
+
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            Dim core As cCore = Me.m_uic.Core
             Dim strType As String = ""
             Dim strName As String = ""
             Dim strLabel As String = ""
@@ -168,8 +177,7 @@ Namespace Controls
         ''' </summary>
         Private Function GetAxisX() As String()
 
-            Dim core As cCore = cCore.GetInstance
-            Dim iDS As Integer = core.ActiveTimeSeriesDatasetIndex
+            Dim iDS As Integer = Me.m_uic.Core.ActiveTimeSeriesDatasetIndex
             Dim ds As cTimeSeriesDataset = Nothing
             Dim ts As cTimeSeries = DirectCast(Me.Shape, cTimeSeries)
             Dim iTSFinalYear As Integer = 0
@@ -182,7 +190,7 @@ Namespace Controls
 
             If Not Me.IsSeasonal Then
 
-                If iDS >= 0 Then ds = core.TimeSeriesDataset(iDS)
+                If iDS >= 0 Then ds = Me.m_uic.Core.TimeSeriesDataset(iDS)
 
                 If ds IsNot Nothing Then
                     iTSFirstYear = ds.FirstYear
@@ -216,7 +224,8 @@ Namespace Controls
             MyBase.OnShapeChanged()
         End Sub
 
-        Private Sub ForcingSketchPad_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+        Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+            MyBase.OnResize(e)
             Me.OnShapeChanged()
         End Sub
 
