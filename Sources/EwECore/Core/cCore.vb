@@ -4773,6 +4773,9 @@ Public Class cCore
             m_EcoSim.InitStanza()
             m_EcoSim.SetDefaultParameters()
 
+            m_TSData.ClearTimeSeries()
+
+
             'jb I still need to deal with how to handle these problems
             ds = DirectCast(DataSource, IEcosimDatasource)
             If Not ds.LoadEcosimScenario(Me.m_EcoPathData.EcosimScenarioDBID(iScenario)) Then
