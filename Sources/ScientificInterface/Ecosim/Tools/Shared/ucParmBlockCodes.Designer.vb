@@ -19,7 +19,7 @@ Namespace Ecosim
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.pbxBlockCodes = New System.Windows.Forms.PictureBox
             Me.nudNumBlockCodes = New System.Windows.Forms.NumericUpDown

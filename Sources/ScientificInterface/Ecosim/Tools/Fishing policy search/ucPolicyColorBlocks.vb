@@ -56,14 +56,14 @@ Namespace Ecosim
                 Return Me.m_uic
             End Get
             Set(ByVal value As cUIContext)
+                Me.m_uic = value
+                Me.m_blockCodes.UIContext = Me.UIContext
 
-                If Not Object.ReferenceEquals(value, Me.m_uic) Then
-                    Me.m_uic = value
-                    Me.m_FPManager = Me.m_uic.Core.FishingPolicyManager
+                If (value IsNot Nothing) Then
+                    Me.m_FPManager = Me.UIContext.Core.FishingPolicyManager
                     Me.m_FPParams = Me.m_FPManager.ModelParameters
                     Me.Init()
                 End If
-
             End Set
         End Property
 
@@ -106,72 +106,69 @@ Namespace Ecosim
 #Region " Events "
 
         Private Sub btnSetEveryGear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles btnSetEveryGear.Click
+            Handles m_btnSetGear.Click
 
-            Me.SetSeqColorCodes(2, Me.m_iTotalBlocks, CInt(Me.nupYearBlockNum.Value))
+            Me.SetSeqColorCodes(2, Me.m_iTotalBlocks, CInt(Me.m_nudNumYearsPerBlock.Value))
 
         End Sub
 
         Private Sub nupSeqStartYear_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles nupSeqStartYear.ValueChanged
+            Handles m_nudSeqStartYear.ValueChanged
 
-            Dim startYear As Integer = CInt(nupSeqStartYear.Value)
-            Dim endYear As Integer = CInt(nupSeqEndYear.Value)
+            Dim startYear As Integer = CInt(m_nudSeqStartYear.Value)
+            Dim endYear As Integer = CInt(m_nudSeqEndYear.Value)
 
-            Me.nupSeqEndYear.Minimum = Me.nupSeqStartYear.Value
+            Me.m_nudSeqEndYear.Minimum = Me.m_nudSeqStartYear.Value
 
             Me.SetSeqColorCodes(startYear, endYear, Me.m_iTotalBlocks)
 
         End Sub
 
         Private Sub nupSeqEndYear_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles nupSeqEndYear.ValueChanged
+            Handles m_nudSeqEndYear.ValueChanged
 
-            Dim startYear As Integer = CInt(nupSeqStartYear.Value)
-            Dim endYear As Integer = CInt(nupSeqEndYear.Value)
+            Dim startYear As Integer = CInt(m_nudSeqStartYear.Value)
+            Dim endYear As Integer = CInt(m_nudSeqEndYear.Value)
 
-            Me.nupSeqStartYear.Maximum = Me.nupSeqEndYear.Value
+            Me.m_nudSeqStartYear.Maximum = Me.m_nudSeqEndYear.Value
 
             Me.SetSeqColorCodes(startYear, endYear, Me.m_iTotalBlocks)
 
         End Sub
 
         Private Sub pbFishingBlocks_Paint(ByVal sender As System.Object, ByVal e As PaintEventArgs) _
-            Handles pbFishingBlocks.Paint
-
+            Handles m_pbFishingBlocks.Paint
             If (Me.UIContext Is Nothing) Then Return
-
             Me.CalcParams(e.Graphics)
             Me.DrawRowCols(e.Graphics)
-
         End Sub
 
         Private Sub pbFishingBlocks_MouseDown(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
-            Handles pbFishingBlocks.MouseDown
+            Handles m_pbFishingBlocks.MouseDown
             Me.m_bIsSketching = True
         End Sub
 
         Private Sub pbFishingBlocks_MouseMove(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
-            Handles pbFishingBlocks.MouseMove
+            Handles m_pbFishingBlocks.MouseMove
             If Me.m_bIsSketching Then
                 Me.ProcessCellClick(e.X, e.Y)
             End If
         End Sub
 
         Private Sub pbFishingBlocks_MouseUp(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
-            Handles pbFishingBlocks.MouseUp
+            Handles m_pbFishingBlocks.MouseUp
             Me.m_bIsSketching = False
         End Sub
 
         Private Sub pbFishingBlocks_MouseClick(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
-            Handles pbFishingBlocks.MouseClick
+            Handles m_pbFishingBlocks.MouseClick
             Me.ProcessCellClick(e.X, e.Y)
         End Sub
 
         Private Sub PolicyColorBlocks_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.SizeChanged
             ' Redraw the fishing blocks
-            Me.pbFishingBlocks.Invalidate()
+            Me.m_pbFishingBlocks.Invalidate()
         End Sub
 
 #End Region ' Events
@@ -182,7 +179,7 @@ Namespace Ecosim
 
             'right now if anything changed just reload
             Init()
-            pbFishingBlocks.Invalidate()
+            m_pbFishingBlocks.Invalidate()
 
         End Sub
 
@@ -193,8 +190,8 @@ Namespace Ecosim
         Private Sub Init()
 
             m_iTotalBlocks = Me.m_uic.Core.EcoSimModelParameters.NumberYears
-            nupSeqEndYear.Maximum = m_iTotalBlocks
-            nupYearBlockNum.Maximum = m_iTotalBlocks
+            m_nudSeqEndYear.Maximum = m_iTotalBlocks
+            m_nudNumYearsPerBlock.Maximum = m_iTotalBlocks
 
             m_bIsSketching = False
 
@@ -212,9 +209,9 @@ Namespace Ecosim
                 Next
             Next
 
-            nupYearBlockNum.Value = CDec(m_iTotalBlocks)
-            nupSeqStartYear.Value = CDec(Math.Min(2, m_iTotalBlocks))
-            nupSeqEndYear.Value = CDec(m_iTotalBlocks)
+            m_nudNumYearsPerBlock.Value = CDec(m_iTotalBlocks)
+            m_nudSeqStartYear.Value = CDec(Math.Min(2, m_iTotalBlocks))
+            m_nudSeqEndYear.Value = CDec(m_iTotalBlocks)
             m_bIsFirstTimeLoaded = False
 
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
@@ -232,17 +229,17 @@ Namespace Ecosim
             'Draw row lines
             For i As Integer = 1 To m_iRows - 1
                 Dim yPos As Single = 0 + i * m_sRowHeight
-                g.DrawLine(Pens.Gray, 0, yPos, pbFishingBlocks.Width, yPos)
-                g.DrawString(Me.m_uic.Core.FleetInputs(i).Name, pbFishingBlocks.Font, Brushes.Black, 1, yPos + 1)
+                g.DrawLine(Pens.Gray, 0, yPos, m_pbFishingBlocks.Width, yPos)
+                g.DrawString(Me.m_uic.Core.FleetInputs(i).Name, m_pbFishingBlocks.Font, Brushes.Black, 1, yPos + 1)
             Next
 
-            g.DrawLine(Pens.Gray, m_sFirstColWidth, pbFishingBlocks.Top, m_sFirstColWidth, pbFishingBlocks.Bottom)
+            g.DrawLine(Pens.Gray, m_sFirstColWidth, m_pbFishingBlocks.Top, m_sFirstColWidth, m_pbFishingBlocks.Bottom)
 
             For j As Integer = 1 To m_iCols
                 Dim xPos As Single = m_sFirstColWidth + (j - 1) * m_sColWidth
-                g.DrawLine(Pens.Gray, xPos, 0, xPos, pbFishingBlocks.Height)
+                g.DrawLine(Pens.Gray, xPos, 0, xPos, m_pbFishingBlocks.Height)
                 Dim txt As String = (j Mod 10).ToString
-                g.DrawString(txt, pbFishingBlocks.Font, Brushes.Black, xPos + 1, 1)
+                g.DrawString(txt, m_pbFishingBlocks.Font, Brushes.Black, xPos + 1, 1)
                 'If j < 3 Then Console.WriteLine("Col {0} xPos = {1}", j, xPos)
             Next
 
@@ -261,18 +258,18 @@ Namespace Ecosim
         Private Sub CalcParams(ByRef g As Graphics)
 
             Me.m_iRows = Me.m_uic.Core.nFleets + 1
-            Me.m_sRowHeight = CSng(pbFishingBlocks.Height / Me.m_iRows)
+            Me.m_sRowHeight = CSng(m_pbFishingBlocks.Height / Me.m_iRows)
 
             Dim sLenMax As Single = -1
             For i As Integer = 0 To Me.m_uic.Core.nFleets - 1
-                Dim tmpWidth As Single = g.MeasureString(Me.m_uic.Core.FleetInputs(i + 1).Name, pbFishingBlocks.Font).Width
+                Dim tmpWidth As Single = g.MeasureString(Me.m_uic.Core.FleetInputs(i + 1).Name, m_pbFishingBlocks.Font).Width
                 If sLenMax < tmpWidth Then sLenMax = tmpWidth
             Next
 
             'First column line 
             Me.m_sFirstColWidth = sLenMax + 10
             Me.m_iCols = Me.m_iTotalBlocks + 1
-            Me.m_sColWidth = CSng((pbFishingBlocks.Width - Me.m_sFirstColWidth) / Me.m_iTotalBlocks)
+            Me.m_sColWidth = CSng((m_pbFishingBlocks.Width - Me.m_sFirstColWidth) / Me.m_iTotalBlocks)
 
         End Sub
 
@@ -309,7 +306,7 @@ Namespace Ecosim
                 End If
             End If
 
-            Me.pbFishingBlocks.Invalidate()
+            Me.m_pbFishingBlocks.Invalidate()
 
         End Sub
 
@@ -381,7 +378,7 @@ Namespace Ecosim
                 m_FPManager.SearchBlocks(iflt).BatchEdit = False
             Next iflt
 
-            pbFishingBlocks.Invalidate()
+            m_pbFishingBlocks.Invalidate()
 
         End Sub
 

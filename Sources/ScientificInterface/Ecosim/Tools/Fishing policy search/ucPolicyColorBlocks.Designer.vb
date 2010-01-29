@@ -19,65 +19,65 @@ Namespace Ecosim
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.pbFishingBlocks = New System.Windows.Forms.PictureBox
-            Me.Label1 = New System.Windows.Forms.Label
-            Me.Label2 = New System.Windows.Forms.Label
+            Me.m_pbFishingBlocks = New System.Windows.Forms.PictureBox
+            Me.m_lblSequenceYear = New System.Windows.Forms.Label
+            Me.m_lblYears = New System.Windows.Forms.Label
             Me.lblInitializationHeader = New System.Windows.Forms.Label
-            Me.nupSeqEndYear = New System.Windows.Forms.NumericUpDown
-            Me.lblEndYear = New System.Windows.Forms.Label
-            Me.nupSeqStartYear = New System.Windows.Forms.NumericUpDown
-            Me.lblStartYear = New System.Windows.Forms.Label
-            Me.nupYearBlockNum = New System.Windows.Forms.NumericUpDown
-            Me.btnSetEveryGear = New System.Windows.Forms.Button
+            Me.m_nudSeqEndYear = New System.Windows.Forms.NumericUpDown
+            Me.m_lblEndYear = New System.Windows.Forms.Label
+            Me.m_nudSeqStartYear = New System.Windows.Forms.NumericUpDown
+            Me.m_lblStartYear = New System.Windows.Forms.Label
+            Me.m_nudNumYearsPerBlock = New System.Windows.Forms.NumericUpDown
+            Me.m_btnSetGear = New System.Windows.Forms.Button
             Me.m_blockCodes = New ScientificInterface.Ecosim.ucParmBlockCodes
-            CType(Me.pbFishingBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.nupSeqEndYear, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.nupSeqStartYear, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.nupYearBlockNum, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbFishingBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudSeqEndYear, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudSeqStartYear, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudNumYearsPerBlock, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
-            'pbFishingBlocks
+            'm_pbFishingBlocks
             '
-            Me.pbFishingBlocks.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Me.m_pbFishingBlocks.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.pbFishingBlocks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.pbFishingBlocks.Location = New System.Drawing.Point(0, 72)
-            Me.pbFishingBlocks.Margin = New System.Windows.Forms.Padding(0)
-            Me.pbFishingBlocks.Name = "pbFishingBlocks"
-            Me.pbFishingBlocks.Size = New System.Drawing.Size(694, 164)
-            Me.pbFishingBlocks.TabIndex = 0
-            Me.pbFishingBlocks.TabStop = False
+            Me.m_pbFishingBlocks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_pbFishingBlocks.Location = New System.Drawing.Point(0, 72)
+            Me.m_pbFishingBlocks.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_pbFishingBlocks.Name = "m_pbFishingBlocks"
+            Me.m_pbFishingBlocks.Size = New System.Drawing.Size(694, 164)
+            Me.m_pbFishingBlocks.TabIndex = 0
+            Me.m_pbFishingBlocks.TabStop = False
             '
-            'Label1
+            'm_lblSequenceYear
             '
-            Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.Label1.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-            Me.Label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.Label1.Location = New System.Drawing.Point(532, 0)
-            Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(164, 18)
-            Me.Label1.TabIndex = 12
-            Me.Label1.Text = "Sequence year"
-            Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.m_lblSequenceYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lblSequenceYear.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblSequenceYear.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
+            Me.m_lblSequenceYear.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblSequenceYear.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_lblSequenceYear.Location = New System.Drawing.Point(532, 0)
+            Me.m_lblSequenceYear.Name = "m_lblSequenceYear"
+            Me.m_lblSequenceYear.Size = New System.Drawing.Size(164, 18)
+            Me.m_lblSequenceYear.TabIndex = 12
+            Me.m_lblSequenceYear.Text = "Sequence year"
+            Me.m_lblSequenceYear.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'Label2
+            'm_lblYears
             '
-            Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.Label2.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-            Me.Label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.Label2.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.Label2.Location = New System.Drawing.Point(418, 0)
-            Me.Label2.Name = "Label2"
-            Me.Label2.Size = New System.Drawing.Size(108, 18)
-            Me.Label2.TabIndex = 11
-            Me.Label2.Text = "Years/Block"
-            Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.m_lblYears.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lblYears.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblYears.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
+            Me.m_lblYears.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblYears.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_lblYears.Location = New System.Drawing.Point(418, 0)
+            Me.m_lblYears.Name = "m_lblYears"
+            Me.m_lblYears.Size = New System.Drawing.Size(108, 18)
+            Me.m_lblYears.TabIndex = 11
+            Me.m_lblYears.Text = "Years/Block"
+            Me.m_lblYears.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'lblInitializationHeader
             '
@@ -94,68 +94,68 @@ Namespace Ecosim
             Me.lblInitializationHeader.Text = "Blocks"
             Me.lblInitializationHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'nupSeqEndYear
+            'm_nudSeqEndYear
             '
-            Me.nupSeqEndYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.nupSeqEndYear.Location = New System.Drawing.Point(647, 21)
-            Me.nupSeqEndYear.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
-            Me.nupSeqEndYear.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.nupSeqEndYear.Name = "nupSeqEndYear"
-            Me.nupSeqEndYear.Size = New System.Drawing.Size(47, 20)
-            Me.nupSeqEndYear.TabIndex = 8
-            Me.nupSeqEndYear.Value = New Decimal(New Integer() {2, 0, 0, 0})
+            Me.m_nudSeqEndYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_nudSeqEndYear.Location = New System.Drawing.Point(647, 21)
+            Me.m_nudSeqEndYear.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.m_nudSeqEndYear.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudSeqEndYear.Name = "m_nudSeqEndYear"
+            Me.m_nudSeqEndYear.Size = New System.Drawing.Size(47, 20)
+            Me.m_nudSeqEndYear.TabIndex = 8
+            Me.m_nudSeqEndYear.Value = New Decimal(New Integer() {2, 0, 0, 0})
             '
-            'lblEndYear
+            'm_lblEndYear
             '
-            Me.lblEndYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.lblEndYear.Location = New System.Drawing.Point(610, 23)
-            Me.lblEndYear.Name = "lblEndYear"
-            Me.lblEndYear.Size = New System.Drawing.Size(31, 16)
-            Me.lblEndYear.TabIndex = 7
-            Me.lblEndYear.Text = "End:"
+            Me.m_lblEndYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lblEndYear.Location = New System.Drawing.Point(610, 23)
+            Me.m_lblEndYear.Name = "m_lblEndYear"
+            Me.m_lblEndYear.Size = New System.Drawing.Size(31, 16)
+            Me.m_lblEndYear.TabIndex = 7
+            Me.m_lblEndYear.Text = "End:"
             '
-            'nupSeqStartYear
+            'm_nudSeqStartYear
             '
-            Me.nupSeqStartYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.nupSeqStartYear.Location = New System.Drawing.Point(565, 21)
-            Me.nupSeqStartYear.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
-            Me.nupSeqStartYear.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.nupSeqStartYear.Name = "nupSeqStartYear"
-            Me.nupSeqStartYear.Size = New System.Drawing.Size(39, 20)
-            Me.nupSeqStartYear.TabIndex = 6
-            Me.nupSeqStartYear.Value = New Decimal(New Integer() {2, 0, 0, 0})
+            Me.m_nudSeqStartYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_nudSeqStartYear.Location = New System.Drawing.Point(565, 21)
+            Me.m_nudSeqStartYear.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.m_nudSeqStartYear.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudSeqStartYear.Name = "m_nudSeqStartYear"
+            Me.m_nudSeqStartYear.Size = New System.Drawing.Size(39, 20)
+            Me.m_nudSeqStartYear.TabIndex = 6
+            Me.m_nudSeqStartYear.Value = New Decimal(New Integer() {2, 0, 0, 0})
             '
-            'lblStartYear
+            'm_lblStartYear
             '
-            Me.lblStartYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.lblStartYear.Location = New System.Drawing.Point(532, 23)
-            Me.lblStartYear.Name = "lblStartYear"
-            Me.lblStartYear.Size = New System.Drawing.Size(36, 20)
-            Me.lblStartYear.TabIndex = 5
-            Me.lblStartYear.Text = "Start:"
+            Me.m_lblStartYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lblStartYear.Location = New System.Drawing.Point(532, 23)
+            Me.m_lblStartYear.Name = "m_lblStartYear"
+            Me.m_lblStartYear.Size = New System.Drawing.Size(36, 20)
+            Me.m_lblStartYear.TabIndex = 5
+            Me.m_lblStartYear.Text = "Start:"
             '
-            'nupYearBlockNum
+            'm_nudNumYearsPerBlock
             '
-            Me.nupYearBlockNum.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.nupYearBlockNum.Location = New System.Drawing.Point(418, 21)
-            Me.nupYearBlockNum.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
-            Me.nupYearBlockNum.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.nupYearBlockNum.Name = "nupYearBlockNum"
-            Me.nupYearBlockNum.Size = New System.Drawing.Size(45, 20)
-            Me.nupYearBlockNum.TabIndex = 2
-            Me.nupYearBlockNum.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudNumYearsPerBlock.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_nudNumYearsPerBlock.Location = New System.Drawing.Point(418, 21)
+            Me.m_nudNumYearsPerBlock.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.m_nudNumYearsPerBlock.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudNumYearsPerBlock.Name = "m_nudNumYearsPerBlock"
+            Me.m_nudNumYearsPerBlock.Size = New System.Drawing.Size(45, 20)
+            Me.m_nudNumYearsPerBlock.TabIndex = 2
+            Me.m_nudNumYearsPerBlock.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
-            'btnSetEveryGear
+            'm_btnSetGear
             '
-            Me.btnSetEveryGear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.btnSetEveryGear.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.btnSetEveryGear.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.btnSetEveryGear.Location = New System.Drawing.Point(469, 21)
-            Me.btnSetEveryGear.Name = "btnSetEveryGear"
-            Me.btnSetEveryGear.Size = New System.Drawing.Size(57, 22)
-            Me.btnSetEveryGear.TabIndex = 3
-            Me.btnSetEveryGear.Text = "&Set gear"
-            Me.btnSetEveryGear.UseVisualStyleBackColor = True
+            Me.m_btnSetGear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnSetGear.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            Me.m_btnSetGear.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.m_btnSetGear.Location = New System.Drawing.Point(469, 21)
+            Me.m_btnSetGear.Name = "m_btnSetGear"
+            Me.m_btnSetGear.Size = New System.Drawing.Size(57, 22)
+            Me.m_btnSetGear.TabIndex = 3
+            Me.m_btnSetGear.Text = "&Set gear"
+            Me.m_btnSetGear.UseVisualStyleBackColor = True
             '
             'm_blockCodes
             '
@@ -169,41 +169,41 @@ Namespace Ecosim
             Me.m_blockCodes.Size = New System.Drawing.Size(417, 54)
             Me.m_blockCodes.TabIndex = 0
             '
-            'PolicyColorBlocks
+            'ucPolicyColorBlocks
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.pbFishingBlocks)
-            Me.Controls.Add(Me.Label1)
-            Me.Controls.Add(Me.Label2)
+            Me.Controls.Add(Me.m_pbFishingBlocks)
+            Me.Controls.Add(Me.m_lblSequenceYear)
+            Me.Controls.Add(Me.m_lblYears)
             Me.Controls.Add(Me.lblInitializationHeader)
             Me.Controls.Add(Me.m_blockCodes)
-            Me.Controls.Add(Me.nupSeqEndYear)
-            Me.Controls.Add(Me.btnSetEveryGear)
-            Me.Controls.Add(Me.lblEndYear)
-            Me.Controls.Add(Me.nupYearBlockNum)
-            Me.Controls.Add(Me.nupSeqStartYear)
-            Me.Controls.Add(Me.lblStartYear)
-            Me.Name = "PolicyColorBlocks"
+            Me.Controls.Add(Me.m_nudSeqEndYear)
+            Me.Controls.Add(Me.m_btnSetGear)
+            Me.Controls.Add(Me.m_lblEndYear)
+            Me.Controls.Add(Me.m_nudNumYearsPerBlock)
+            Me.Controls.Add(Me.m_nudSeqStartYear)
+            Me.Controls.Add(Me.m_lblStartYear)
+            Me.Name = "ucPolicyColorBlocks"
             Me.Size = New System.Drawing.Size(694, 236)
-            CType(Me.pbFishingBlocks, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.nupSeqEndYear, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.nupSeqStartYear, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.nupYearBlockNum, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbFishingBlocks, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudSeqEndYear, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudSeqStartYear, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudNumYearsPerBlock, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents pbFishingBlocks As System.Windows.Forms.PictureBox
-        Friend WithEvents m_blockCodes As ucParmBlockCodes
-        Friend WithEvents nupYearBlockNum As System.Windows.Forms.NumericUpDown
-        Friend WithEvents btnSetEveryGear As System.Windows.Forms.Button
-        Friend WithEvents nupSeqEndYear As System.Windows.Forms.NumericUpDown
-        Friend WithEvents lblEndYear As System.Windows.Forms.Label
-        Friend WithEvents nupSeqStartYear As System.Windows.Forms.NumericUpDown
-        Friend WithEvents lblStartYear As System.Windows.Forms.Label
-        Friend WithEvents Label2 As System.Windows.Forms.Label
-        Friend WithEvents lblInitializationHeader As System.Windows.Forms.Label
-        Friend WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_pbFishingBlocks As System.Windows.Forms.PictureBox
+        Private WithEvents m_blockCodes As ucParmBlockCodes
+        Private WithEvents m_nudNumYearsPerBlock As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_btnSetGear As System.Windows.Forms.Button
+        Private WithEvents m_nudSeqEndYear As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblEndYear As System.Windows.Forms.Label
+        Private WithEvents m_nudSeqStartYear As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblStartYear As System.Windows.Forms.Label
+        Private WithEvents m_lblYears As System.Windows.Forms.Label
+        Private WithEvents lblInitializationHeader As System.Windows.Forms.Label
+        Private WithEvents m_lblSequenceYear As System.Windows.Forms.Label
 
     End Class
 

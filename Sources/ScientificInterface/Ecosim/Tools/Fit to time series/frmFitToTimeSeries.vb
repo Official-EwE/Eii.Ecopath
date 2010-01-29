@@ -146,7 +146,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
                                         AddressOf OnRunStopped, AddressOf Me.OnModelRun)
@@ -207,6 +207,16 @@ Namespace Ecosim
 
             End Select
         End Sub
+
+        Public Overrides Property UIContext() As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As cUIContext)
+                MyBase.UIContext = value
+                Me.m_vulnerabilityBlockCodeSelector.UIContext = value
+            End Set
+        End Property
 
 #End Region ' Private form event handlers
 

@@ -51,7 +51,7 @@ Namespace Ecosim
                                 AddressOf Me.SearchProgressHandler, AddressOf Me.SearchCompletedHandler)
 
 
-            Me.m_blocks.UIContext = Me.UIContext
+            Me.m_blocks.ParmBlockCodes.nBlockCodes = Me.Core.nGroups
 
             Me.m_gridObjWeights.UIContext = Me.UIContext
             Me.m_gridObjWeights.Manager = Me.Core.FishingPolicyManager
@@ -113,10 +113,9 @@ Namespace Ecosim
             End Get
             Set(ByVal value As cUIContext)
                 MyBase.UIContext = value
+                Me.m_blocks.UIContext = value
             End Set
         End Property
-
-
 
 #End Region ' Overrides
 
@@ -516,7 +515,7 @@ Namespace Ecosim
             AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
         End Sub
 
-        Private Sub ReInitResultsPlot(ByVal nSearchBlocks As Integer, ByRef pbc As ucParmBlockCodes)
+        Private Sub ReInitResultsPlot(ByVal nSearchBlocks As Integer, ByVal pbc As ucParmBlockCodes)
             Dim zgcr As New ZedGraph.ColorSymbolRotator
 
             Me.m_graphResults.GraphPane.Legend.Position = ZedGraph.LegendPos.Right
