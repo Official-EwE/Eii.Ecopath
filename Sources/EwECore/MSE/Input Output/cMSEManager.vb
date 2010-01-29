@@ -449,13 +449,17 @@ Namespace MSE
 
         End Function
 
-        Public Sub RunMSYSearch()
+        Public Sub RunMSYSearch(ByVal byFleet As Boolean)
 
             Dim orgSearchMode As eSearchModes = Me.m_search.SearchMode
             Me.m_search.SearchMode = eSearchModes.NotInSearch
 
-            Me.m_MSE.RunMSYSearch()
-            Me.m_MSE.RunBoEstimation()
+            If byFleet Then
+                Me.m_MSE.RunMSYSearch()
+                Me.m_MSE.RunBoEstimation()
+            Else 'F by group
+                Me.m_MSE.RunMSYSearchUsingFishingMortalityInsteadOfEffort()
+            End If
 
             'the MSY search set BBase, Blim and Fopt these are in the Ecosim group inputs 
             'Load the core values into the interface objects

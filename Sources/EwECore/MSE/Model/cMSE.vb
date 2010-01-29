@@ -1166,6 +1166,7 @@ Namespace MSE
             Me.m_esData.bTimestepOutput = True
 
             Dim MSYeffort(Me.m_esData.nGear) As Single
+            Dim MSYF(Me.m_epdata.NumGroups) As Single
             Dim bMSY(Me.m_esData.nGear, Me.m_epdata.NumGroups) As Double
             Dim fMSY(Me.m_esData.nGear, Me.m_epdata.NumGroups) As Double
 
@@ -1435,7 +1436,7 @@ Namespace MSE
                 m_core.EcoSimModelParameters.NumberYears = NumberOfYears
 
                 If Me.m_core.PluginManager IsNot Nothing Then
-                    Me.m_pluginManager.MSYEffortCompleted(MSYeffort)
+                    Me.m_pluginManager.MSYEffortCompleted(MSYeffort, MSYF)
                 End If
 
                 'MsgBox("MSY reference levels calculated")
@@ -1448,6 +1449,206 @@ Namespace MSE
 
 
         End Sub
+
+
+        Public Sub RunMSYSearchUsingFishingMortalityInsteadOfEffort()
+            'WE'll run Ecosim for an additional 25 years to avoid the effort not being sustainable
+
+            Me.m_data.StopRun = False
+
+            Dim NumberOfYears As Integer = Me.m_esData.NumYears
+            Dim extraYears As Integer = 25
+            Dim nGroups As Integer = Me.m_data.NGroups
+
+            'Setup Ecosim 
+            'timestep handler that ecosim will call where we can grab data during the run
+            'see the Private Sub onMSYEcosimTimestep(...)
+            Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onMSYEcosimTimestep
+
+            Me.m_esData.bTimestepOutput = True
+
+            Dim MSYF(nGroups) As Single
+            Dim MSYEffort(m_epdata.NumFleet) As Single
+
+            'Dim GroupEffort() As Single
+
+            'this is required to set the base effort values :
+            m_core.EcoSimModelParameters.NumberYears = NumberOfYears + extraYears
+            SetBaseValues()
+
+            If Me.m_core.PluginManager IsNot Nothing Then
+                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_quota, Me.m_esData)
+            End If
+
+            'next is a vc temp fix for debugging
+            'Data.MSYStartTimeIndex = 649
+
+            Try
+
+                For iGrp As Integer = 1 To nGroups
+
+                    If Data.MSYEvaluateGroup(iGrp) And Me.m_epdata.fCatch(iGrp) > 0 Then
+                        'fCatch is the Ecopath sum of landings and discards 
+                        Dim maxF As Single = 0
+                        For iT As Integer = 1 To Data.MSYStartTimeIndex
+                            If m_esData.FishRateNo(iGrp, iT) > maxF Then
+                                maxF = m_esData.FishRateNo(iGrp, iT)
+                            End If
+                        Next
+
+                        MSYF(iGrp) = 0
+                        'ReDim GroupEffort(m_data.NGroups)
+                        'For iGroup As Integer = 1 To Me.m_data.NGroups
+                        'If Data.MSYEvaluateGroup(iGroup) Then
+                        'If m_epdata.Landing(iFlt, iGroup) > 0 Then 'only if this fleet catches this group
+                        Dim Done As Boolean = False
+                        Dim CurValue As Double = 0
+                        Dim lastValue As Double = 0
+                        Dim maxValue As Double = 0
+
+                        Dim lastF As Double = 0
+                        Dim TooBigF As Double = -99
+                        Dim TooLowF As Double = -0.5
+                        Dim tryF As Double = 0.01
+
+                        Dim NumberOfSteps As Integer = 0
+
+                        If m_core.EcoSimModelParameters.NumberYears < NumberOfYears + extraYears Then
+                            m_core.EcoSimModelParameters.NumberYears = NumberOfYears + extraYears
+                        End If
+
+                        System.Console.WriteLine()
+                        Dim FFactor As Integer = 2
+                        Dim CheckTangent As Boolean = False
+                        Dim LastLowerF As Double = 0
+
+                        Dim StoreF(m_core.EcoSimModelParameters.NumberYears) As Single
+                        SetFishingMortalityOverTime(iGrp, StoreF, False)
+
+                        Do While Done = False
+
+                            NumberOfSteps += 1
+
+                            'let ecosim init to the new values
+                            Me.m_Ecosim.Init(True)
+
+                            Me.SetFishingMortality(iGrp, CSng(tryF))
+
+
+                            'run ecosim with the current effort
+                            Me.m_Ecosim.Run()
+
+                            'evaluate the ecosim output for this fleet/effort combination
+                            CurValue = Me.EvaluateMSYF(iGrp)
+
+                            'if a fishery catches a group with low catch but high biomass, it may cause the effort to skyrocket
+                            'to avoid this: set a limit on the F values for the exploited groups:
+                            'if that happens set the value to a low value, so that it may try a lower effort
+                            ' If CheckIfFishingMortalitiesTooHigh(iflt) Then CurValue = CurValue / 2
+
+                            System.Console.WriteLine(NumberOfSteps.ToString & ", Group = " & iGrp.ToString & _
+                                                     ", MSY F = " & MSYF(iGrp).ToString & _
+                                                     ", Cur F = " & tryF.ToString & _
+                                                     ", toolow = " & TooLowF.ToString & _
+                                                     ", toobig = " & TooBigF.ToString & _
+                                                     ", maxvalue = " & maxValue.ToString & _
+                                                     ", curvalue = " & CurValue.ToString)
+
+                            'tell the interface an iteration has been completed
+                            Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iGrp, CSng(MSYF(iGrp))))
+                            If CurValue = 0 Then Done = True 'no effort or no value
+                            If CurValue < 0 Then Stop
+
+                            If CheckTangent Then   'only get in here if we are checking the neighbourhood of the max value
+                                If CurValue < maxValue Then
+                                    'go downward
+                                    TooLowF = LastLowerF
+                                    TooBigF = lastF
+                                Else
+                                    'move upward
+                                    LastLowerF = TooLowF
+                                    ' TooLowEffort = lastEffort
+                                    ' maxValue = CurValue
+                                End If
+                                CheckTangent = False
+                            ElseIf CurValue > maxValue Then   'this is the normal entrypont when moving up
+                                LastLowerF = TooLowF
+                                TooLowF = lastF
+                                If maxValue > 0 And TooBigF < 0 Then  'move faster if just starting out, and long way to go
+                                    If CurValue / maxValue > 0.97 * FFactor Then FFactor = 4 Else FFactor = 2
+                                End If
+                                maxValue = CurValue
+                                MSYF(iGrp) = CSng(tryF)
+                            Else
+                                If TooBigF < 0 Then
+                                    TooBigF = tryF
+                                    CheckTangent = True
+                                Else
+                                    'we are now somewhere below the msy effort, but at what side?
+                                    If tryF > MSYF(iGrp) Then  'on the right side
+                                        'reduce the toobigeffor to the current
+                                        TooBigF = tryF
+                                    Else   'below MSY
+                                        TooLowF = tryF
+                                    End If
+                                End If
+                            End If
+
+                            If CheckTangent Then
+                                tryF = 1.001 * TooLowF
+                                'LastLowerEffort = TooLowEffort / 2
+                            Else
+                                If TooBigF < 0 Then 'NOT YET FOUND THE TOP, SO DOUBLE UP
+                                    tryF = tryF * FFactor
+                                Else  'have previously found a bigger effort that gave lower value, so now we have bounds
+                                    tryF = (TooBigF - TooLowF) / 2 + TooLowF
+                                End If
+                            End If
+                            'Cap the max F:
+                            If tryF > maxF Then
+                                tryF = maxF
+                                TooBigF = tryF
+                            End If
+
+
+                            lastValue = CurValue
+                            If tryF > 0 And CheckTangent = False Then
+                                If Math.Abs(1 - lastF / tryF) < 0.01 Then Done = True
+                            End If
+                            lastF = tryF
+
+                            If Me.m_data.StopRun Then Exit Do
+                        Loop
+
+
+                        If Me.m_data.StopRun Then Exit For
+
+                        'Finally reset the F to the original value 
+                        SetFishingMortalityOverTime(iGrp, StoreF, True)
+                    End If
+                Next iGrp
+
+                'done plugin
+
+                'reset the number of years that Ecosim will run
+                m_core.EcoSimModelParameters.NumberYears = NumberOfYears
+
+                If Me.m_core.PluginManager IsNot Nothing Then
+                    Me.m_pluginManager.MSYEffortCompleted(MSYEffort, MSYF)
+                End If
+
+                'MsgBox("MSY reference levels calculated")
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, Me.ToString & ".RunMSYSearchUsingFishingMortalityInsteadOfEffort() Exception: " & ex.Message)
+                Me.m_core.Messages.SendMessage(New cMessage("Error while calculating MSYF. " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
+            End Try
+
+
+        End Sub
+
+
 
         Private Function EvaluateMSY(ByVal curFleet As Integer) As Single
             'MSY Search has just completed a run 
@@ -1473,8 +1674,8 @@ Namespace MSE
                     'marketPrice = 1
 
                     Dim GroupCatch As Single = 0
-                    For it As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps
-                        'only evaluate for the last 25 years:
+                    For it As Integer = Me.m_core.nEcosimTimeSteps To Me.m_core.nEcosimTimeSteps  'just one time step should do
+                        'only evaluate for the last 25 years: LAST TIMESTEP
                         'For it As Integer = Me.m_esData.NTimes - 25 To Me.m_esData.NTimes
                         'get data stored by ecosim over time  
                         'Dim bio As Single = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
@@ -1484,7 +1685,7 @@ Namespace MSE
                         'System.Console.Write("Group " & igrp.ToString & " = " & FleetCatchValue.ToString & ", ")
                     Next
                     'average over the 25 years:
-                    FleetCatchValue += (GroupCatch * m_data.MSYGroupWeight(igrp) * marketPrice / 25)
+                    FleetCatchValue += (GroupCatch * m_data.MSYGroupWeight(igrp) * marketPrice)
                 End If
             Next igrp
             Return FleetCatchValue
@@ -1493,37 +1694,116 @@ Namespace MSE
 
         Private Function SetFishingEffort(ByVal Fleet As Integer, ByVal Val As Single) As Boolean
 
-            Try
-                Dim Manager As cFishingEffortManger = Me.m_core.FishingEffortShapeManager
-                Dim Shape As cShapeData = Nothing
+            Dim Manager As cFishingEffortManger = Me.m_core.FishingEffortShapeManager
+            Dim Shape As cShapeData = Nothing
 
-                Dim StartStep As Integer
-                Dim EndStep As Integer
-                If Fleet = 0 Then
-                    StartStep = 0
-                    EndStep = Me.m_core.nFleets - 1
-                Else
-                    StartStep = Fleet - 1
-                    EndStep = Fleet - 1
-                End If
+            Dim StartStep As Integer
+            Dim EndStep As Integer
+            If Fleet = 0 Then
+                StartStep = 0
+                EndStep = Me.m_core.nFleets - 1
+            Else
+                StartStep = Fleet - 1
+                EndStep = Fleet - 1
+            End If
 
-                For iFl As Integer = StartStep To EndStep
-                    Shape = Manager.Item(iFl)
-                    Shape.LockUpdates()
+            For iFl As Integer = StartStep To EndStep
+                Shape = Manager.Item(iFl)
+                Shape.LockUpdates()
+                Try
                     Shape.ShapeData(1) = 1
                     For iTimeStep As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
-                        Shape.ShapeData(iTimeStep) = Val
+                        Shape.ShapeData(iTimeStep) = 2 ' Val
                         'set effort to unity 
                     Next
-                    Shape.UnlockUpdates()
-                Next
-                Manager.Update()
-            Catch ex As Exception
-                Return False
-            End Try
+                Catch ex As Exception
+                    'Return False
+                End Try
+                Shape.UnlockUpdates()
+            Next
+            Manager.Update()
             Return True
 
         End Function
+
+        Private Function EvaluateMSYF(ByVal curGroup As Integer) As Single
+            'MSY Search has just completed a run 
+            'evaluate the value of the catch for this group with this Fishing mortality
+
+            Dim GroupCatch As Single = 0
+            For it As Integer = Me.m_core.nEcosimTimeSteps To Me.m_core.nEcosimTimeSteps
+                'only evaluate for the last timestep
+                GroupCatch += m_esData.FishRateNo(curGroup, it) * m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, curGroup, it)
+                '.Fish1.ResultsOverTime.ResultsSumCatchByGroupGear(igrp, iflt, it)
+                'System.Console.Write("Group " & igrp.ToString & " = " & FleetCatchValue.ToString & ", ")
+            Next
+            'average over the 25 years:
+            Return GroupCatch
+
+        End Function
+
+
+        Private Function SetFishingMortality(ByVal Group As Integer, ByVal Val As Single) As Boolean
+
+            'Dim FManager As cFishingMortalityManger = Me.m_core.FishMortShapeManager
+            'Dim Shape As cShapeData = Nothing
+            Dim bSucces As Boolean = True
+            'Shape = FManager.Item(Group)
+            'Shape.LockUpdates()
+
+            Try
+                For iTimeStep As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
+                    '    Shape.ShapeData(iTimeStep) = Val
+                    m_esData.FishRateNo(Group, iTimeStep) = Val 'FishRateNo(nGroups,nTime)
+                Next
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            'Shape.UnlockUpdates()
+            'FManager.Update()
+
+            Return bSucces
+
+        End Function
+
+
+        Private Function SetFishingMortalityOverTime(ByVal Group As Integer, ByVal Ftime() As Single, ByVal Setting As Boolean) As Boolean
+
+            'Could not get direct setting of cfishingmortalitymanger to work:
+            'Dim FManager As cFishingMortalityManger = Me.m_core.FishMortShapeManager
+            'Dim Shape As cShapeData = Nothing
+            Dim bSucces As Boolean = True
+            'Shape = FManager.Item(Group)
+            'Shape.LockUpdates()
+
+            Try
+                For iTimeStep As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps
+                    If Setting Then
+                        m_esData.FishRateNo(Group, iTimeStep) = Ftime(iTimeStep)
+                    Else
+                        Ftime(iTimeStep) = m_esData.FishRateNo(Group, iTimeStep)
+                    End If
+                Next
+                'For iTimeStep As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
+                '    If Setting Then
+                '        Shape.ShapeData(iTimeStep) = Ftime(iTimeStep)
+                '    Else
+                '        Ftime(iTimeStep) = Shape.ShapeData(iTimeStep)
+                '    End If
+                'Next
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            'Shape.UnlockUpdates()
+            'FManager.Update()
+
+            Return bSucces
+
+        End Function
+
 
         Private Function CheckIfFishingMortalitiesTooHigh(ByVal curFleet As Integer) As Boolean
 

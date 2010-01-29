@@ -1175,10 +1175,10 @@ Public Class cPluginManager
     End Function
 
 
-    Public Function MSYEffortCompleted(ByVal MSYEffortByFleet() As Single) As Boolean
+    Public Function MSYEffortCompleted(ByVal MSYEffortByFleet() As Single, ByVal MSYFbyGroup() As Single) As Boolean
 
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSYPlugin), "MSYEffortCompleted", _
-                                                    New Object() {MSYEffortByFleet})
+                                                    New Object() {MSYEffortByFleet, MSYFbyGroup})
 
 
     End Function

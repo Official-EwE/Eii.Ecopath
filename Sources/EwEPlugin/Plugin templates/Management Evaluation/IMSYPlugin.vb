@@ -28,8 +28,9 @@ Public Interface IMSYPlugin
     ''' MSY search has completed all its iteration and computed effort for all fleets. Interface objects have not been populated at this time.
     ''' </summary>
     ''' <param name="MSYEffortByFleet">MSY effort for all fleets</param>
+    ''' <param name="MSYFbyGroup">MSY Fishing mortality for groups</param>
     ''' <remarks></remarks>
-    Sub MSYEffortCompleted(ByVal MSYEffortByFleet() As Single)
+    Sub MSYEffortCompleted(ByVal MSYEffortByFleet() As Single, ByVal MSYFbyGroup() As Single)
 
     ''' <summary>
     ''' MSY search is completed all iterface object have been populated.
