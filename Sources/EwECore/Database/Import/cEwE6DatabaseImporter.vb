@@ -1133,7 +1133,6 @@ Namespace Database
                         Me.AddRemark(readerStanza("remarks"), eDataTypes.Stanza, iStanzaID, eVarNameFlags.Name)
                     Else
                         ' Import error: stanza config missing essential first stage
-                        ' ToDo_JS: globalize this
                         Me.LogMessage(String.Format("Multi-stanza configuration {0} missing essential first life stage. This stanza configuration cannot be imported.", strStanzaName), _
                                 eMessageType.DataImport, eMessageImportance.Information, True)
                     End If
