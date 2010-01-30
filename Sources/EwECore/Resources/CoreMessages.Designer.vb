@@ -545,6 +545,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The parameter estimation routine can work only with one of B, P/B, and EE unknown per group. Here, more than one of these are unknown for group &apos;{0}&apos;.{1}{1}In addition, the Q/B may be unknown for a given predator, i.e., IF: B, PB, QB and EE are known for one of its prey, and IF: all groups that prey on these two groups have known B and QB.{1}{1}Please re-edit the input parameters..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecopath failed to estimate one or more parameters..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC() As String
@@ -1779,6 +1788,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Variable &apos;{0}&apos; has been adjusted.
+        '''</summary>
+        Friend Shared ReadOnly Property VARIABLE_VALIDATION_ADJUSTED() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_VALIDATION_ADJUSTED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Variable &apos;{0}&apos; cleared..
         '''</summary>
         Friend Shared ReadOnly Property VARIABLE_VALIDATION_CLEARED() As String
@@ -1829,6 +1847,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property VARIABLE_VALIDATION_PASSED() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_VALIDATION_PASSED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Reset vulnerabilities to a default value of {0}?.
+        '''</summary>
+        Friend Shared ReadOnly Property VULNERABILITIES_PROMPT_RESET() As String
+            Get
+                Return ResourceManager.GetString("VULNERABILITIES_PROMPT_RESET", resourceCulture)
             End Get
         End Property
     End Class

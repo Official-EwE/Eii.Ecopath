@@ -2608,20 +2608,11 @@ ONE:
             Dim msg As cMessage = Nothing
 
             Try
-                ' ToDo_JS: Localize this
-                strMsg = "The parameter estimation routine can work only with one of B, P/B, and EE unknown per group. "
-                strMsg = strMsg & "Here, more than one of these are unknown for " & m_Data.GroupName(i) & "." 'group " & i% & "."
-                strMsg = strMsg & vbCrLf & vbCrLf
-                strMsg = strMsg & "In addition, the Q/B may be unknown for a given predator, i.e., IF: "
-                strMsg = strMsg & "B, PB, QB and EE are known for one of its prey, and IF: all groups that prey on "
-                strMsg = strMsg & "these two groups have known B and QB."
-                strMsg = strMsg & vbCrLf & vbCrLf
-                strMsg = strMsg & "Please re-edit the input parameters."
-
+                strMsg = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING, _
+                                       Me.m_Data.GroupName(i), vbCrLf)
                 msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = False
                 NotifyCore(msg)
-                ' MsgBox(StrLong, vbCritical + vbOKOnly, "Parameter estimation failed")
 
             Catch ex As Exception
                 cLog.Write("Error in MsgManyMissingPar(). Error: " + ex.Message())
