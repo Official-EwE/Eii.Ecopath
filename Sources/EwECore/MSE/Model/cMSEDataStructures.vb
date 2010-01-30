@@ -202,33 +202,6 @@ Public Class cMSEDataStructures
 
         Try
 
-            'default assessment method
-            ' Fs from biomass estimates by pool
-            AssessMethod = eAssessmentMethods.CatchEstmBio
-
-            AssessPower = 1
-
-            'set default values
-            For i = 1 To NGroups
-
-                CVbiomEst(i) = 0.2
-                GstockPred(i) = 0.6
-                KalmanGain(i) = 0.65
-                BioRiskValue(i, 0) = 0.5 'lower
-                BioRiskValue(i, 1) = 2 'upper
-
-                For j = 1 To nFleets
-                    If Me.m_ESData.relQ(j, i) > 0 Then
-                        Fweight(j, i) = 1
-                    End If
-                Next
-            Next
-
-            For iFlt As Integer = 1 To nFleets
-                Qgrow(iFlt) = 0.1
-                CVFest(iFlt) = 0.3
-            Next iFlt
-
             ' JS 28Jan2010: moved to datasource
             ''load the bounds /traffic light object with the values from the Quotas
             'Me.DefaultBioBounds()
@@ -257,6 +230,9 @@ Public Class cMSEDataStructures
 
     End Sub
 
+    ''' <summary>
+    ''' Redimension variables and set default variable values.
+    ''' </summary>
     Public Sub RedimVars()
 
         ReDim GstockPred(NGroups)
@@ -292,6 +268,33 @@ Public Class cMSEDataStructures
         ReDim Me.CatchGroupBounds(NGroups)
         ReDim Me.CatchFleetBounds(Me.nFleets)
         ReDim Me.EffortFleetBounds(Me.nFleets)
+
+        'default assessment method
+        ' Fs from biomass estimates by pool
+        AssessMethod = eAssessmentMethods.CatchEstmBio
+
+        AssessPower = 1
+
+        'set default values
+        For iGrp As Integer = 1 To NGroups
+
+            CVbiomEst(iGrp) = 0.2
+            GstockPred(iGrp) = 0.6
+            KalmanGain(iGrp) = 0.65
+            BioRiskValue(iGrp, 0) = 0.5 'lower
+            BioRiskValue(iGrp, 1) = 2 'upper
+
+            For iFlt As Integer = 1 To nFleets
+                If Me.m_ESData.relQ(iFlt, iGrp) > 0 Then
+                    Fweight(iFlt, iGrp) = 1
+                End If
+            Next
+        Next
+
+        For iFlt As Integer = 1 To nFleets
+            Qgrow(iFlt) = 0.1
+            CVFest(iFlt) = 0.3
+        Next iFlt
 
     End Sub
 
