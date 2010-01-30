@@ -471,34 +471,7 @@ Public Class dlgSensitivityOfSStoV
 
     End Sub
 
-    Private Function HasNonDefaultVulnerabilty() As Boolean
-        Dim groupPath As cEcoPathGroupInput = Nothing
-        Dim groupSim As cEcoSimGroupInput = Nothing
 
-        For iPred As Integer = 1 To Me.m_uic.Core.nLivingGroups
-            For iPrey As Integer = 1 To Me.m_uic.Core.nGroups
-                groupPath = Me.m_uic.Core.EcoPathGroupInputs(iPred)
-                groupSim = Me.m_uic.Core.EcoSimGroupInputs(iPred)
-                If groupPath.DietComp(iPrey) > 0 Then
-                    If Math.Abs(groupSim.VulMult(iPrey) - 2) > 0.01 Then Return True
-                End If
-            Next iPrey
-        Next iPred
-        Return False
-    End Function
-
-    Private Function SetDefaultVulnerabilities() As Boolean
-        Dim groupPath As cEcoPathGroupInput = Nothing
-        Dim groupSim As cEcoSimGroupInput = Nothing
-
-        For iPrey As Integer = 1 To Me.m_uic.Core.nGroups
-            groupSim = Me.m_uic.Core.EcoSimGroupInputs(iPrey)
-            For iPred As Integer = 1 To Me.m_uic.Core.nGroups
-                groupSim.VulMult(iPred) = 2.0
-            Next iPred
-        Next iPrey
-
-    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -520,11 +493,7 @@ Public Class dlgSensitivityOfSStoV
             Me.m_runType = eRunType.SensitivitySS2VByPredPrey
         Else
 
-            If Me.HasNonDefaultVulnerabilty() Then
-                If MsgBox("Reset all vulnerabilities to default (2)?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                    Me.SetDefaultVulnerabilities()
-                End If
-            End If
+            Me.m_uic.Core.CheckResetDefaultVulnerabilities()
 
             If (Me.m_F2TSManager.RunSensitivitySS2VByPredator() = False) Then
                 Return False

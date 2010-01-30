@@ -418,14 +418,16 @@ Namespace Ecosim
         Private Sub m_tsbSearchGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbSearchGroup.Click
 
+            Dim nBlocks As Integer = Me.m_vulnerabilityBlockCodeSelector.nBlockCodes
             Dim iBlock As Integer = 1
-            Dim core As cCore = Me.UIContext.Core
             Dim ts As cTimeSeries = Nothing
             Dim gts As cGroupTimeSeries = Nothing
             Dim abBlock(core.nGroups) As Boolean
 
-            For iTS As Integer = 1 To core.nTimeSeries - 1
-                ts = core.EcosimTimeSeries(iTS)
+            Me.Core.CheckResetDefaultVulnerabilities()
+
+            For iTS As Integer = 1 To Core.nTimeSeries - 1
+                ts = Me.Core.EcosimTimeSeries(iTS)
                 If (TypeOf (ts) Is cGroupTimeSeries) And (ts.Enabled = True) Then
                     gts = DirectCast(ts, cGroupTimeSeries)
                     If (gts.TimeSeriesType = eTimeSeriesType.BiomassAbs) Or _
@@ -437,8 +439,8 @@ Namespace Ecosim
                 End If
             Next
 
-            For i As Integer = 1 To Me.Core.nGroups
-                For j As Integer = 1 To Me.Core.nGroups
+            For i As Integer = 1 To Math.Min(Me.Core.nGroups, nBlocks)
+                For j As Integer = 1 To Math.Min(Me.Core.nGroups, nBlocks)
                     If abBlock(i) Then
                         Me.m_vulnerabilityBlockMatrix.Vulblocks(i, j) = iBlock
                     Else
