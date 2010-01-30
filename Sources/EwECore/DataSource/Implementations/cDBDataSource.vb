@@ -28,11 +28,29 @@ Public Class cDBDataSource
     Implements IEcospaceDatasource
     Implements IEcotracerDatasource
 
+#Region " Internal definitions "
+
+    ''' <summary>Core components stored with Ecopath.</summary>
+    Private Shared s_EcopathComponents() As eCoreComponentType = {eCoreComponentType.Core, eCoreComponentType.DataSource, eCoreComponentType.EcoPath}
+    ''' <summary>Core components stored with Ecosim.</summary>
+    Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries, eCoreComponentType.EcoSimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.PPIManager, eCoreComponentType.FishingPolicySearch, eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
+    ''' <summary>Core components stored with Ecospace.</summary>
+    Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.EcoSpace, eCoreComponentType.MPAOptimization}
+    ''' <summary>Core components stored with Ecotracer.</summary>
+    Private Shared s_EcotracerComponents() As eCoreComponentType = {eCoreComponentType.Ecotracer}
+
+#End Region ' Internal definitions
+
+#Region " Private vars "
+
     ''' <summary>The <see cref="cEwEDatabase">Database</see> connected to this datasource.</summary>
     Private m_db As cEwEDatabase = Nothing
     ''' <summary>The <see cref="cCore">core</see> connected to this datasource.</summary>
     Private m_core As cCore = Nothing
+    ''' <summary>Datasource name</summary>
     Private m_strName As String = ""
+
+#End Region ' Private vars
 
 #Region " Generic "
 
@@ -375,8 +393,7 @@ Public Class cDBDataSource
     ''' -------------------------------------------------------------------
     Friend Function IsChanged() As Boolean Implements DataSources.IEwEDataSource.IsModified
         If Not Me.IsConnected() Then Return False
-        Return Me.IsChanged(eCoreComponentType.DataSource) Or _
-               Me.IsChanged(eCoreComponentType.Core)
+        Return Me.IsChanged(Nothing)
     End Function
 
     ''' -------------------------------------------------------------------
@@ -386,7 +403,7 @@ Public Class cDBDataSource
     ''' </summary>
     ''' -------------------------------------------------------------------
     Friend Sub ClearChanged() Implements IEwEDataSource.ClearChanged
-        Me.ClearChanged(eCoreComponentType.NotSet)
+        Me.ClearChanged(Nothing)
     End Sub
 
     ''' <summary>Dictionary of changed core components.</summary>
@@ -408,12 +425,20 @@ Public Class cDBDataSource
     ''' Helper method; states whether there are pending changes for a particular
     ''' <see cref="eCoreComponentType">EwE component</see>.
     ''' </summary>
-    ''' <param name="component">The EwE component to check.</param>
+    ''' <param name="acomponents">The EwE components to check.</param>
     ''' <returns>True if there are any pending changes for any datatype that
     ''' belongs to this EwE component.</returns>
     ''' -------------------------------------------------------------------
-    Private Function IsChanged(ByVal component As eCoreComponentType) As Boolean
-        Return Me.m_dictChangedComponents.ContainsKey(component)
+    Private Function IsChanged(ByVal acomponents As eCoreComponentType()) As Boolean
+        Dim bIsChanged As Boolean = False
+        If (acomponents Is Nothing) Then
+            Return (Me.m_dictChangedComponents.Count > 0)
+        Else
+            For Each component As eCoreComponentType In acomponents
+                bIsChanged = bIsChanged Or Me.m_dictChangedComponents.ContainsKey(component)
+            Next
+        End If
+        Return bIsChanged
     End Function
 
     ''' -------------------------------------------------------------------
@@ -421,17 +446,20 @@ Public Class cDBDataSource
     ''' Clears the changed administration for all datatypes that belong to
     ''' a given <see cref="eCoreComponentType">EwE component</see>.
     ''' </summary>
-    ''' <param name="component">The EwE component to clear the changed
+    ''' <param name="acomponents">The EwE components to clear the changed
     ''' adminsitration for.</param>
     ''' -------------------------------------------------------------------
-    Private Sub ClearChanged(ByVal component As eCoreComponentType)
+    Private Sub ClearChanged(ByVal acomponents As eCoreComponentType())
 
-        If (component = eCoreComponentType.NotSet) Then
+        If (acomponents Is Nothing) Then
             Me.m_dictChangedComponents.Clear()
-        ElseIf Me.m_dictChangedComponents.ContainsKey(component) Then
-            Me.m_dictChangedComponents.Remove(component)
+        Else
+            For Each component As eCoreComponentType In acomponents
+                If Me.m_dictChangedComponents.ContainsKey(component) Then
+                    Me.m_dictChangedComponents.Remove(component)
+                End If
+            Next component
         End If
-
     End Sub
 
 #End Region ' Change management
@@ -613,7 +641,7 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.LoadTimeSeriesDatasets()
 
         ' Clear changed admin
-        Me.ClearChanged()
+        Me.ClearChanged(s_EcopathComponents)
 
         Return bSucces
 
@@ -648,10 +676,8 @@ Public Class cDBDataSource
 
         ' Save succesful?
         If bSucces Then
-            ' #Yes: Clear changed flags
-            Me.ClearChanged(eCoreComponentType.Core)
-            Me.ClearChanged(eCoreComponentType.EcoPath)
-            Me.ClearChanged(eCoreComponentType.DataSource)
+            ' #Yes: Clear ecopath changed flags
+            Me.ClearChanged(s_EcopathComponents)
         End If
 
         Return bSucces
@@ -1691,7 +1717,7 @@ Public Class cDBDataSource
     Public Function IsEcopathModified() As Boolean Implements DataSources.IEcopathDataSource.IsEcopathModified
 
         If Not Me.IsConnected() Then Return False
-        Return Me.IsChanged(eCoreComponentType.EcoPath)
+        Return Me.IsChanged(s_EcopathComponents)
 
     End Function
 
@@ -2869,14 +2895,7 @@ Public Class cDBDataSource
         ' Hmm, maybe the datasource should have a better way to 'remember' whether a sim scenario has been loaded.
         If Not Me.IsConnected() Then Return False
         If ecopathDS.ActiveEcosimScenario < 0 Then Return False
-
-        Return Me.IsChanged(eCoreComponentType.EcoSim) Or _
-               Me.IsChanged(eCoreComponentType.ShapesManager) Or _
-               Me.IsChanged(eCoreComponentType.TimeSeries) Or _
-               Me.IsChanged(eCoreComponentType.EcoSimFitToTimeSeries) Or _
-               Me.IsChanged(eCoreComponentType.EcoSimMonteCarlo) Or _
-               Me.IsChanged(eCoreComponentType.PPIManager) Or _
-               Me.IsChanged(eCoreComponentType.FishingPolicySearch)
+        Return Me.IsChanged(s_EcosimComponents)
 
     End Function
 
@@ -2954,7 +2973,7 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.LoadShapes()
         bSucces = bSucces And Me.LoadEcosimMSE(iDBID)
 
-        Me.ClearChanged(eCoreComponentType.EcoSim)
+        Me.ClearChanged(s_EcosimComponents)
 
         Return bSucces
     End Function
@@ -3077,14 +3096,18 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.SaveEcosimMSE(idm)
 
         If bSucces Then
+            ' Commit save
             bSucces = Me.m_db.CommitTransaction(True)
         Else
             Me.m_db.RollbackTransaction()
         End If
 
-        ' Reload ecosim scenario definitions 
-        Me.LoadEcosimScenarioDefinitions()
-        Me.ClearChanged(eCoreComponentType.EcoSim)
+        If (bSucces) Then
+            ' Clear changed admin
+            Me.ClearChanged(s_EcosimComponents)
+            ' Reload ecosim scenario definitions 
+            Me.LoadEcosimScenarioDefinitions()
+        End If
 
         Return bSucces
 
@@ -3150,7 +3173,7 @@ Public Class cDBDataSource
             ' Reload scenario definitions
             bSucces = bSucces And Me.LoadEcosimScenarioDefinitions()
 
-            Me.ClearChanged(eCoreComponentType.EcoSim)
+            Me.ClearChanged(s_EcosimComponents)
 
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
@@ -5914,7 +5937,7 @@ Public Class cDBDataSource
 
         Try
             writer = Me.m_db.GetWriter("EcosimScenarioMSE")
-            writer.NewRow()
+            drow = writer.NewRow()
 
             drow("ScenarioID") = iScenarioID
             drow("AssessMethod") = mseDS.AssessMethod
@@ -5962,8 +5985,7 @@ Public Class cDBDataSource
         If Not Me.IsConnected() Then Return False
         If ecopathDS.ActiveEcospaceScenario < 0 Then Return False
 
-        Return Me.IsChanged(eCoreComponentType.EcoSpace) Or _
-               Me.IsChanged(eCoreComponentType.MPAOptimization)
+        Return Me.IsChanged(s_EcospaceComponents)
 
     End Function
 
@@ -6055,7 +6077,7 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.LoadEcospaceBasemap(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
 
-        Me.ClearChanged(eCoreComponentType.EcoSpace)
+        Me.ClearChanged(s_EcospaceComponents)
 
         Return bSucces
     End Function
@@ -6178,8 +6200,6 @@ Public Class cDBDataSource
         ' Reload ecospace scenario definitions to update lastsaved data
         Me.LoadEcospaceScenarioDefinitions()
 
-        If bSucces Then Me.ClearChanged(eCoreComponentType.EcoSpace)
-
         Return bSucces
     End Function
 
@@ -6205,6 +6225,8 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(iScenario))
+
+        bSucces = Me.m_db.BeginTransaction()
 
         Try
 
@@ -6258,9 +6280,18 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.SaveEcospaceBasemap(idm)
         bSucces = bSucces And Me.SaveEcospaceWeightLayers(idm)
 
-        ' Reload ecospace scenario definitions 
-        Me.LoadEcospaceScenarioDefinitions()
-        Me.ClearChanged(eCoreComponentType.EcoSpace)
+        If bSucces Then
+            bSucces = Me.m_db.CommitTransaction(True)
+        Else
+            Me.m_db.RollbackTransaction()
+        End If
+
+        If bSucces Then
+            ' Clear changed admin
+            Me.ClearChanged(s_EcospaceComponents)
+            ' Reload ecospace scenario definitions 
+            Me.LoadEcospaceScenarioDefinitions()
+        End If
 
         Return bSucces
 
@@ -6356,7 +6387,7 @@ Public Class cDBDataSource
             ' Reload scenario definitions
             bSucces = bSucces And Me.LoadEcospaceScenarioDefinitions()
 
-            Me.ClearChanged(eCoreComponentType.EcoSpace)
+            Me.ClearChanged(s_EcospaceComponents)
 
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
@@ -8322,7 +8353,7 @@ Public Class cDBDataSource
         If Not Me.IsConnected() Then Return False
         If ecopathDS.ActiveEcotracerScenario < 0 Then Return False
 
-        Return Me.IsChanged(eCoreComponentType.Ecotracer)
+        Return Me.IsChanged(s_EcotracerComponents)
 
     End Function
 
@@ -8379,7 +8410,7 @@ Public Class cDBDataSource
         ' Load additional data
         bSucces = bSucces And Me.LoadEcotracerGroups(iScenarioID)
 
-        Me.ClearChanged(eCoreComponentType.Ecotracer)
+        Me.ClearChanged(s_EcotracerComponents)
 
         Return bSucces
 
@@ -8474,10 +8505,12 @@ Public Class cDBDataSource
             Me.m_db.RollbackTransaction()
         End If
 
-        ' Reload ecotracer scenario definitions to update lastsaved data
-        Me.LoadEcotracerScenarioDefinitions()
-
-        If bSucces Then Me.ClearChanged(eCoreComponentType.Ecotracer)
+        If bSucces Then
+            ' Reload ecotracer scenario definitions
+            Me.LoadEcotracerScenarioDefinitions()
+            ' Clear changed admin
+            Me.ClearChanged(s_EcotracerComponents)
+        End If
 
         Return bSucces
     End Function
@@ -8643,7 +8676,7 @@ Public Class cDBDataSource
             ' Reload scenario definitions
             bSucces = bSucces And Me.LoadEcotracerScenarioDefinitions()
 
-            Me.ClearChanged(eCoreComponentType.Ecotracer)
+            Me.ClearChanged(s_EcotracerComponents)
 
         Catch ex As Exception
             Me.m_db.RollbackTransaction()
