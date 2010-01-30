@@ -60,6 +60,8 @@ Public Class cCore
 
 #End Region ' Shared consts
 
+#Region " Public delegates "
+
     ''' <summary>
     ''' Delegate defintion used to pass a message from the core to the interface.
     ''' </summary>
@@ -75,55 +77,50 @@ Public Class cCore
     ''' <param name="EcospaceResults">Ecospace results for a single time step.</param>
     Public Delegate Sub EcoSpaceInterfaceDelegate(ByRef EcospaceResults As cEcospaceTimestep)
 
-    Friend m_publisher As New cMessagePublisher
+#End Region ' Public delegates
+
+    ''' <summary>Datasource used by the core for reading and writing model data.</summary>
+    Private m_DataSource As IEwEDataSource = Nothing
+    ''' <summary>Plug-in manager.</summary>
     Private WithEvents m_pluginManager As cPluginManager = Nothing
+    ''' <summary>Path for EwE core processes to write output information to.</summary>
+    Private m_strOutputPath As String = ""
+    ''' <summary>Core state monitor</summary>
+    Private WithEvents m_StateMonitor As cCoreStateMonitor = Nothing
+    ''' <summary>Core thread synchronization object for thread marshalling.</summary>
+    Private m_SyncObj As System.Threading.SynchronizationContext = Nothing
+
+    ''' <summary>Core state manager</summary>
+    ''' <remarks>performs actions to bring core state up-to-date</remarks>
+    Private m_StateManager As cCoreStateManager = Nothing
+
+    ''' <summary>Manager to access interface specific to the "Game" interface </summary>
+    Private m_gameManager As cGameServerInterface = Nothing
+
+    Private m_ShapeManagers As Dictionary(Of eDataTypes, cBaseShapeManager) = Nothing
+    Private m_PedigreeManagers As Dictionary(Of eVarNameFlags, cPedigreeManager) = Nothing
+    Private m_MonteCarlo As cMonteCarloManager
+    Private m_ConTracer As cContaminantTracer
+
+    ''' <summary>Class to wrap stand alone functions for internal and external access.</summary>
+    Private m_Functions As cEcoFunctions = Nothing
 
     Private m_EwEModel As cEwEModel = Nothing
     Private m_stanzaGroups As New cCoreInputOutputList(Of cStanzaGroup)(eDataTypes.Stanza, 0)
-    Private m_ShapeManagers As Dictionary(Of eDataTypes, cBaseShapeManager)
-
-    Private m_PedigreeManagers As Dictionary(Of eVarNameFlags, cPedigreeManager)
-
-    ''' <summary>
-    ''' Datasource used by all models.
-    ''' </summary>
-    Private m_DataSource As IEwEDataSource = Nothing
-
-    ''' <summary>
-    ''' Path for EwE core processes to write output information to.
-    ''' </summary>
-    Private m_strOutputPath As String = ""
-    Friend m_validators As cValidatorManager
-
-    Friend m_Stanza As cStanzaDatastructures
-
-    ''' <summary>Core state monitor</summary>
-    Private WithEvents m_StateMonitor As cCoreStateMonitor
-    ''' <summary>Core state manager</summary>
-    ''' <remarks>performs actions to bring core state up-to-date</remarks>
-    Private m_StateManager As cCoreStateManager
-
-
-    Friend m_TSData As cTimeSeriesDataStructures
     Private m_timeSeriesDatasets As New cCoreInputOutputList(Of cTimeSeriesDataset)(eDataTypes.TimeSeriesDataset, 1)
-
     Private m_timeSeriesGroup As New cCoreInputOutputList(Of cTimeSeries)(eDataTypes.GroupTimeSeries, 1)
     Private m_timeSeriesFleet As New cCoreInputOutputList(Of cTimeSeries)(eDataTypes.FleetTimeSeries, 1)
+
+    ''' <summary>The central core message publisher.</summary>
+    Friend m_publisher As New cMessagePublisher
+    Friend m_validators As cValidatorManager = Nothing
+
+    Friend m_TSData As cTimeSeriesDataStructures
     Friend m_SpaceTSData As cEcospaceTimeSeriesDataStructures
-
-    Private m_MonteCarlo As cMonteCarloManager
+    Friend m_Stanza As cStanzaDatastructures
     Friend m_FitToTimeSeriesData As cF2TSDataStructures
-
     Friend m_tracerData As cContaminantTracerDataStructures
-    Private m_ConTracer As cContaminantTracer
 
-    ''' <summary>Manager to access interface specific to the "Game" interface </summary>
-    Private m_gameManager As cGameServerInterface
-
-    ''' <summary>Class to wrap stand alone functions for internal and external access.</summary>
-    Private m_Functions As cEcoFunctions
-
-    Private m_SyncObj As System.Threading.SynchronizationContext
 
 #Region "Private Initialization Flags"
 
@@ -4418,7 +4415,7 @@ Public Class cCore
 
 #End Region 'EcoPath
 
-#Region "EcoSim"
+#Region " EcoSim "
 
 #Region " Variables "
 
@@ -5207,8 +5204,7 @@ Public Class cCore
                 iFlt = fleet.Index
 
                 If iFlt = 0 Then
-                    ' ToDo_JS: localize this
-                    fleet.Name = "Combined Fleets"
+                    fleet.Name = My.Resources.CoreDefaults.CORE_ALL_FLEETS
                 Else
                     fleet.Name = m_EcoPathData.FleetName(iFlt)
                 End If
@@ -6287,6 +6283,68 @@ Public Class cCore
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Check if Ecosim has non-default vulnerabilities, and if so, reset the
+    ''' vulnerabilties. 
+    ''' </summary>
+    ''' <param name="bQuiet">Flag stating whether the user should be prompted
+    ''' whether vulnerabilities should be reset.</param>
+    ''' <param name="sDefaultValue">The value to test vulnerabilities for, and
+    ''' to set vulnerabilties to.</param>
+    ''' <returns>True if Ecosim has all default vulnerabilties.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function CheckResetDefaultVulnerabilities(Optional ByVal bQuiet As Boolean = False, _
+                                                     Optional ByVal sDefaultValue As Single = 2.0!) As Boolean
+
+        Dim groupSim As cEcoSimGroupInput = Nothing
+        Dim fmsg As cFeedbackMessage = Nothing
+
+        If Not Me.HasNonDefaultVulnerabilty(sDefaultValue) Then Return True
+
+        If Not bQuiet Then
+            fmsg = New cFeedbackMessage(String.Format(My.Resources.CoreMessages.VULNERABILITIES_PROMPT_RESET, sDefaultValue), _
+                                        eCoreComponentType.EcoSim, eMessageImportance.Information, _
+                                        cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+            Me.m_publisher.SendMessage(fmsg)
+            If fmsg.Reply = cFeedbackMessage.eReply.NO Then Return False
+        End If
+
+        For iPrey As Integer = 1 To Me.nGroups
+            groupSim = Me.EcoSimGroupInputs(iPrey)
+            For iPred As Integer = 1 To Me.nGroups
+                groupSim.VulMult(iPred) = sDefaultValue
+            Next iPred
+        Next iPrey
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Test whether Ecosim has non-default vulnerabilities.
+    ''' </summary>
+    ''' <param name="sValue">The value to test for, 2.0 by default.</param>
+    ''' <returns>True if Ecosim has non-default vulnerabilties.</returns>
+    ''' <remarks>
+    ''' A 0.01 margin of error is tolerated in this test.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function HasNonDefaultVulnerabilty(Optional ByVal sValue As Single = 2.0!) As Boolean
+
+        Dim groupPath As cEcoPathGroupInput = Nothing
+        Dim groupSim As cEcoSimGroupInput = Nothing
+
+        For iPred As Integer = 1 To Me.nLivingGroups
+            For iPrey As Integer = 1 To Me.nGroups
+                groupPath = Me.EcoPathGroupInputs(iPred)
+                groupSim = Me.EcoSimGroupInputs(iPred)
+                If groupPath.DietComp(iPrey) > 0 Then
+                    If (Math.Abs(groupSim.VulMult(iPrey)) - Math.Abs(sValue)) > 0.01 Then Return True
+                End If
+            Next iPrey
+        Next iPred
+        Return False
+    End Function
 
     ''' <summary>
     ''' The vulnerabilities have changed
@@ -10164,9 +10222,9 @@ Public Class cCore
     End Sub
 
     Private Function GetAffectedVariableStatus(ByVal obj As cCoreInputOutputBase, ByVal varName As eVarNameFlags, Optional ByVal iSecIndex As Integer = cCore.NULL_VALUE) As cVariableStatus
-        ' ToDo_JS: Localize this
+        Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Return New cVariableStatus(obj, eStatusFlags.OK, _
-                String.Format("Variable {0} has been adjusted", cCoreEnumNamesIndex.GetInstance.GetVarName(varName)), _
+                String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_ADJUSTED, cni.GetVarName(varName)), _
                 varName, obj.DataType, obj.CoreComponent, obj.Index, iSecIndex)
     End Function
 
