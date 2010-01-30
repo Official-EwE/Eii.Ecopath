@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: cMSEParameters.vb,v $
-' Revision 1.6  2009/06/01 17:07:38  joeb
-' MSE debugging
-'
-' Revision 1.5  2009/05/26 22:02:34  jeroens
-' EconData availability variable value and status obtained from plug-in
-'
-' Revision 1.4  2009/05/26 20:19:41  jeroens
-' Variables no longer Stored
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
@@ -247,7 +233,7 @@ Public Class cMSEParameters
         End Set
     End Property
 
-    Public Property MSYMSYEvaluateValue() As Boolean
+    Public Property MSYEvaluateValue() As Boolean
         Get
             Return CBool(GetVariable(eVarNameFlags.MSYEvalValue))
         End Get

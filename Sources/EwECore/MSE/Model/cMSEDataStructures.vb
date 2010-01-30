@@ -1,36 +1,9 @@
-'==============================================================================
-'
-' $Log: cMSEDataStructures.vb,v $
-' Revision 1.4  2009/07/03 23:41:36  joeb
-' MSE interface changes
-'
-' Revision 1.3  2009/06/01 17:07:38  joeb
-' MSE debugging
-'
-' Revision 1.2  2009/05/11 21:28:09  joeb
-' Adding MSE data to Decision Support Tool (Multi Player Game)
-'
-' Revision 1.1  2008/09/26 07:30:27  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.9  2008/05/12 18:59:52  joeb
-' Restructure of search objects to use ISearchObjective interface
-'
-' Revision 1.8  2008/05/05 16:21:46  joeb
-' CurrentIteration is now Integer instead of Boolen????
-'
-' Revision 1.7  2008/05/01 20:35:15  joeb
-' Moved summary varaibles from MSE to here
-'
-' Revision 1.6  2008/04/28 18:00:01  joeb
-' Initialization
-'
-' Revision 1.5  2008/04/24 14:51:18  joeb
-' Added mean results varaibles
-'
-Option Strict On
+#Region " Imports "
 
+Option Strict On
 Imports Microsoft.VisualBasic
+
+#End Region ' Imports
 
 Public Enum eMSEEffortMode
 
@@ -42,7 +15,6 @@ Public Enum eMSEEffortMode
     Tracking
 
 End Enum
-
 
 Public Class cMSEDataStructures
 
@@ -175,9 +147,26 @@ Public Class cMSEDataStructures
 #Region "Private data"
 
     Private m_curIter As Integer
-    Private m_core As cCore
+    Private m_EPData As cEcopathDataStructures
+    Private m_ESData As cEcosimDatastructures
+    Private m_QuotaData As cQuotaDataStructures
 
 #End Region
+
+#Region " Constructor "
+
+    Public Sub New(ByVal EPdata As cEcopathDataStructures, _
+                   ByVal ESdata As cEcosimDatastructures, _
+                   ByVal QuotaData As cQuotaDataStructures)
+        Me.NTrials = 10 'default number of trials
+        Me.EffortMode = eMSEEffortMode.PredictUseQuota
+        Me.StopRun = False
+        Me.m_EPData = EPdata
+        Me.m_ESData = ESdata
+        Me.m_QuotaData = QuotaData
+    End Sub
+
+#End Region 'Constructor
 
 #Region "Methods and Properties"
 
@@ -208,14 +197,10 @@ Public Class cMSEDataStructures
     ''' <summary>
     ''' Set default values for the Management Strategy Evaluation model cMSE
     ''' </summary>
-    Public Sub Init(ByRef theCore As cCore)
+    Public Sub Init()
         Dim i As Integer, j As Integer
 
         Try
-
-            m_core = theCore
-
-            Me.Dimension()
 
             'default assessment method
             ' Fs from biomass estimates by pool
@@ -232,27 +217,28 @@ Public Class cMSEDataStructures
                 BioRiskValue(i, 0) = 0.5 'lower
                 BioRiskValue(i, 1) = 2 'upper
 
-                For j = 1 To m_core.nFleets
-                    If m_core.m_EcoSimData.relQ(j, i) > 0 Then
+                For j = 1 To nFleets
+                    If Me.m_ESData.relQ(j, i) > 0 Then
                         Fweight(j, i) = 1
                     End If
                 Next
             Next
 
-            For iFlt As Integer = 1 To m_core.nFleets
+            For iFlt As Integer = 1 To nFleets
                 Qgrow(iFlt) = 0.1
                 CVFest(iFlt) = 0.3
             Next iFlt
 
-            'load the bounds /traffic light object with the values from the Quotas
-            Me.DefaultBioBounds()
-            '
-            Me.DefaultCatchBounds()
+            ' JS 28Jan2010: moved to datasource
+            ''load the bounds /traffic light object with the values from the Quotas
+            'Me.DefaultBioBounds()
+            ''
+            'Me.DefaultCatchBounds()
 
-            Me.BioStats = New cMSESummaryStats(Me, Me.BioBounds, Me.m_core.nGroups)
-            Me.CatchGroupStats = New cMSESummaryStats(Me, Me.CatchGroupBounds, Me.m_core.nGroups)
-            Me.CatchFleetStats = New cMSESummaryStats(Me, Me.CatchFleetBounds, Me.m_core.nFleets)
-            Me.EffortStats = New cMSESummaryStats(Me, Me.EffortFleetBounds, Me.m_core.nFleets)
+            Me.BioStats = New cMSESummaryStats(Me, Me.BioBounds, NGroups)
+            Me.CatchGroupStats = New cMSESummaryStats(Me, Me.CatchGroupBounds, NGroups)
+            Me.CatchFleetStats = New cMSESummaryStats(Me, Me.CatchFleetBounds, nFleets)
+            Me.EffortStats = New cMSESummaryStats(Me, Me.EffortFleetBounds, nFleets)
 
             Me.ProfitSum = New cMSESummaryStats(Me, Nothing, 1)
             Me.JobsSum = New cMSESummaryStats(Me, Nothing, 1)
@@ -271,7 +257,7 @@ Public Class cMSEDataStructures
 
     End Sub
 
-    Private Sub Dimension()
+    Public Sub RedimVars()
 
         ReDim GstockPred(NGroups)
         ReDim RstockPred(NGroups)
@@ -302,6 +288,10 @@ Public Class cMSEDataStructures
             MSYGroupWeight(iGrp) = 1
         Next
 
+        ReDim BioBounds(NGroups)
+        ReDim Me.CatchGroupBounds(NGroups)
+        ReDim Me.CatchFleetBounds(Me.nFleets)
+        ReDim Me.EffortFleetBounds(Me.nFleets)
 
     End Sub
 
@@ -309,18 +299,14 @@ Public Class cMSEDataStructures
     ''' Load the Bounds/Traffic light objects with the values from the Quota data Blim and Bbase
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub DefaultBioBounds()
+    Public Sub DefaultBioBounds(ByVal igrp As Integer)
 
         Try
-            ReDim BioBounds(NGroups)
-
-            For igrp As Integer = 1 To m_core.nGroups
-                If m_core.m_QuotaData.Blim(igrp) >= 0 Then
-                    Me.BioBounds(igrp) = New cMSEBounds(igrp, m_core.m_QuotaData.Blim(igrp), m_core.m_QuotaData.Bbase(igrp))
-                Else
-                    Me.BioBounds(igrp) = New cMSEBounds(igrp, m_core.m_EcoPathData.B(igrp) * 0.1F, m_core.m_EcoPathData.B(igrp) * 0.4F)
-                End If
-            Next
+            If Me.m_QuotaData.Blim(igrp) >= 0 Then
+                Me.BioBounds(igrp) = New cMSEBounds(igrp, Me.m_QuotaData.Blim(igrp), Me.m_QuotaData.Bbase(igrp))
+            Else
+                Me.BioBounds(igrp) = New cMSEBounds(igrp, Me.m_EPData.B(igrp) * 0.1F, Me.m_EPData.B(igrp) * 0.4F)
+            End If
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, Me.ToString & ".LoadBounds() Exception: " & ex.Message)
@@ -328,41 +314,20 @@ Public Class cMSEDataStructures
 
     End Sub
 
-    Public Sub DefaultCatchBounds()
+    Public Sub DefaultCatchBoundsGroup(ByVal igrp As Integer)
+
+        Dim LB As Single = 0.5F
+        Dim UB As Single = 2.0F
 
         Try
-            Dim igrp As Integer
-            Dim sumCatch As Single
-            Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim LB As Single = 0.5F
-            Dim UB As Single = 2.0F
-
             'Catch by Group
-            ReDim Me.CatchGroupBounds(NGroups)
-            For igrp = 1 To NGroups
-                Dim tCatch As Single = epData.fCatch(igrp)
-                If tCatch > 0 Then
-                    Me.CatchGroupBounds(igrp) = New cMSEBounds(igrp, tCatch * LB, tCatch * UB)
-                Else
-                    'no catch??? set the bounds to NULL_VALUE this will show up in the interface and we can decide what to do then
-                    Me.CatchGroupBounds(igrp) = New cMSEBounds(igrp, cCore.NULL_VALUE, cCore.NULL_VALUE)
-                End If
-            Next
-
-            'Catch by fleet
-            ReDim Me.CatchFleetBounds(Me.nFleets)
-            'Effort by fleet 
-            ReDim Me.EffortFleetBounds(Me.nFleets)
-
-            For iflt As Integer = 1 To Me.nFleets
-                sumCatch = 0
-                'sum the ecopath catch for this fleet
-                For igrp = 1 To NGroups
-                    sumCatch += epData.Landing(iflt, igrp) + epData.Discard(iflt, igrp)
-                Next
-                Me.CatchFleetBounds(iflt) = New cMSEBounds(iflt, sumCatch * LB, sumCatch * UB)
-                Me.EffortFleetBounds(iflt) = New cMSEBounds(iflt, 0.5, 2)
-            Next
+            Dim tCatch As Single = Me.m_EPData.fCatch(igrp)
+            If tCatch > 0 Then
+                Me.CatchGroupBounds(igrp) = New cMSEBounds(igrp, tCatch * LB, tCatch * UB)
+            Else
+                'no catch??? set the bounds to NULL_VALUE this will show up in the interface and we can decide what to do then
+                Me.CatchGroupBounds(igrp) = New cMSEBounds(igrp, cCore.NULL_VALUE, cCore.NULL_VALUE)
+            End If
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -371,10 +336,26 @@ Public Class cMSEDataStructures
 
     End Sub
 
-    Public Sub New()
-        Me.NTrials = 10 'default number of trials
-        Me.EffortMode = eMSEEffortMode.PredictUseQuota
-        Me.StopRun = False
+    Public Sub DefaultCatchBoundsFleet(ByVal iflt As Integer)
+
+        Dim LB As Single = 0.5F
+        Dim UB As Single = 2.0F
+        Dim sumCatch As Single
+
+        Try
+            sumCatch = 0
+            'sum the ecopath catch for this fleet
+            For igrp As Integer = 1 To NGroups
+                sumCatch += Me.m_EPData.Landing(iflt, igrp) + Me.m_EPData.Discard(iflt, igrp)
+            Next
+            Me.CatchFleetBounds(iflt) = New cMSEBounds(iflt, sumCatch * LB, sumCatch * UB)
+            Me.EffortFleetBounds(iflt) = New cMSEBounds(iflt, 0.5, 2)
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, Me.ToString & ".LoadBounds() Exception: " & ex.Message)
+        End Try
+
     End Sub
 
     ''' <summary>
@@ -390,9 +371,9 @@ Public Class cMSEDataStructures
         Array.Clear(Fwc, 0, Fwc.Length)
 
         For iFlt = 1 To Me.nFleets
-            For iGrp = 1 To m_core.nLivingGroups
+            For iGrp = 1 To Me.m_EPData.NumLiving
                 Wftot(iFlt) = Wftot(iFlt) + Fweight(iFlt, iGrp)
-                Fwc(iFlt, 0) = Fwc(iFlt, 0) + Fweight(iFlt, iGrp) * m_core.m_EcoSimData.relQ(iFlt, iGrp)
+                Fwc(iFlt, 0) = Fwc(iFlt, 0) + Fweight(iFlt, iGrp) * Me.m_ESData.relQ(iFlt, iGrp)
             Next
             If Wftot(iFlt) > 0 Then Fwc(iFlt, 0) = Fwc(iFlt, 0) / Wftot(iFlt)
             Fwc(iFlt, 1) = Fwc(iFlt, 0)
@@ -435,19 +416,19 @@ Public Class cMSEDataStructures
 
     Public ReadOnly Property NGroups() As Integer
         Get
-            Return Me.m_core.nGroups
+            Return Me.m_EPData.NumGroups
         End Get
     End Property
 
     Public ReadOnly Property nTimeSteps() As Integer
         Get
-            Return Me.m_core.nEcosimTimeSteps
+            Return Me.m_ESData.NTimes
         End Get
     End Property
 
     Public ReadOnly Property nFleets() As Integer
         Get
-            Return Me.m_core.nFleets
+            Return Me.m_EPData.NumFleet
         End Get
     End Property
 
@@ -949,4 +930,5 @@ Public Class cMSESummaryStats
 End Class
 
 #End Region
+
 

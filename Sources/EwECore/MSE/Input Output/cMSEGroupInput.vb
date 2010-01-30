@@ -1,23 +1,10 @@
-'==============================================================================
-'
-' $Log: cMSEGroupInput.vb,v $
-' Revision 1.2  2009/01/16 18:30:32  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:27  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/05/29 22:22:50  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.4  2008/04/24 14:53:41  joeb
-' Added CVS Log header
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+
+#End Region
 
 Namespace MSE
 

@@ -1,69 +1,3 @@
-'==============================================================================
-'
-' $Log: cMSEManager.vb,v $
-' Revision 1.12  2009/07/03 23:41:34  joeb
-' MSE interface changes
-'
-' Revision 1.11  2009/06/01 17:07:36  joeb
-' MSE debugging
-'
-' Revision 1.10  2009/05/26 22:02:34  jeroens
-' EconData availability variable value and status obtained from plug-in
-'
-' Revision 1.9  2009/05/26 16:45:23  joeb
-' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
-'
-' Revision 1.8  2009/05/20 16:28:47  joeb
-' Renamed eCallBackTypes.Stopped to RunCompleted
-'
-' Revision 1.7  2009/05/15 15:02:33  joeb
-' Outputs constructed when the Manager is contructed
-'
-' Revision 1.6  2009/05/13 17:21:14  joeb
-' Split outputs objects into groups and not groups
-'
-' Revision 1.5  2009/05/11 21:28:07  joeb
-' Adding MSE data to Decision Support Tool (Multi Player Game)
-'
-' Revision 1.4  2009/01/16 18:30:32  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.3  2008/12/09 19:49:15  joeb
-' Ouput objects now use core data instead of buffering data
-'
-' Revision 1.2  2008/11/28 16:54:13  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.1  2008/09/26 07:30:27  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.14  2008/07/14 01:43:03  jeroens
-' Fixed crash when opening for empty Ecosim model
-'
-' Revision 1.13  2008/06/06 15:56:05  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.12  2008/05/20 15:38:53  joeb
-' Parameter object
-'
-' Revision 1.11  2008/05/12 19:00:17  joeb
-' Restructure of search objects to use ISearchObjective interface
-'
-' Revision 1.10  2008/05/08 15:51:18  joeb
-' Fixed broken build setWait() and ReleaseWait()
-'
-' Revision 1.9  2008/05/05 16:22:32  joeb
-' More changes for output object
-'
-' Revision 1.8  2008/05/01 20:36:16  joeb
-' Added output object
-'
-' Revision 1.7  2008/04/24 20:04:36  joeb
-' Now inherits from cThreadedManagerBase
-'
-' Revision 1.6  2008/04/24 14:53:41  joeb
-' Added CVS Log header
-'
 Option Strict On
 
 Imports EwECore
@@ -103,7 +37,7 @@ Namespace MSE
 
         Private m_core As cCore
         Private m_MSE As cMSE
-        Private m_MSEdata As New cMSEDataStructures
+        Private m_MSEdata As cMSEDataStructures
         Private m_search As cSearchDatastructures
         Private m_searchObjective As cSearchObjective
 
@@ -271,7 +205,6 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property ModelParameters() As cMSEParameters
             Get
                 Return Me.m_parameters
@@ -282,11 +215,11 @@ Namespace MSE
 
 #Region "Construction Initialization and Running of the model"
 
-        Public Sub New(ByVal theCore As cCore)
+        Public Sub New(ByVal theCore As cCore, ByVal data As cMSEDataStructures)
             Me.m_output = New cMSEOutput(theCore)
             Me.m_parameters = New cMSEParameters(theCore)
-            Me.m_MSEdata = New cMSEDataStructures
             Me.m_MSE = New cMSE(theCore)
+            Me.m_MSEdata = data
 
             Me.m_VarToStat.Add(eVarNameFlags.MSEBiomassHistogram, eMSEStatNames.PercentageHistogram)
             Me.m_VarToStat.Add(eVarNameFlags.MSEBiomassMeanValues, eMSEStatNames.MeanRun)
@@ -492,7 +425,7 @@ Namespace MSE
             'cMSEDataStructures are not part of the core!!!!!
             'Only the MSEManager and model know about them 
             'this may have to change when the input/output object are created
-            m_MSEdata.Init(theCore)
+            m_MSEdata.Init()
 
             m_MSE.Init(m_MSEdata, m_core.m_QuotaData, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData, Me.m_core.PluginManager)
             m_MSE.InitAssessment()
@@ -650,7 +583,7 @@ Namespace MSE
 
                 m_parameters.MSYStartTimeIndex = Me.m_MSEdata.MSYStartTimeIndex
                 m_parameters.MSYRunSilent = Me.m_MSEdata.MSYRunSilent
-                m_parameters.MSYMSYEvaluateValue = Me.m_MSEdata.MSYEvaluateValue
+                m_parameters.MSYEvaluateValue = Me.m_MSEdata.MSYEvaluateValue
 
                 m_parameters.ResetStatusFlags()
 
@@ -724,7 +657,7 @@ Namespace MSE
                         Me.m_MSEdata.StopRun = Me.m_parameters.StopRun
                         Me.m_MSEdata.SaveOutput = Me.m_parameters.Save
 
-                        Me.m_MSEdata.MSYEvaluateValue = Me.m_parameters.MSYMSYEvaluateValue
+                        Me.m_MSEdata.MSYEvaluateValue = Me.m_parameters.MSYEvaluateValue
                         Me.m_MSEdata.MSYRunSilent = Me.m_parameters.MSYRunSilent
                         Me.m_MSEdata.MSYStartTimeIndex = Me.m_parameters.MSYStartTimeIndex
 

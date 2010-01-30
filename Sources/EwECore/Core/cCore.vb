@@ -541,6 +541,7 @@ Public Class cCore
         Me.m_MPAOptData = New cMPAOptDataStructures
         Me.m_PSDData = New cPSDDatastructures
         Me.m_QuotaData = New cQuotaDataStructures(AddressOf Me.GetCoreCounter)
+        Me.m_MSEData = New cMSEDataStructures(Me.m_EcoPathData, Me.m_EcoSimData, Me.m_QuotaData)
 
         ' Create core state monitor and manager
         Me.m_StateMonitor = New cCoreStateMonitor(Me)
@@ -4451,6 +4452,7 @@ Public Class cCore
     Private m_InterfaceDelegate As Ecosim.EcoSimTimeStepDelegate
 
     Friend m_QuotaData As cQuotaDataStructures
+    Friend m_MSEData As cMSEDataStructures
 
     ''thread that the EcoSim model is running on
     'Private m_EcoSimThread As System.Threading.Thread
@@ -10999,7 +11001,6 @@ Public Class cCore
     ''' <summary>
     ''' Build and initialize the search managers
     ''' </summary>
-    ''' <remarks></remarks>
     Private Sub InitSearchManagers()
 
         Dim SearchManager As ISearchObjective
@@ -11015,7 +11016,7 @@ Public Class cCore
 
         'MSE
         If Not Me.m_SearchManagers.ContainsKey(eDataTypes.MSEManager) Then
-            SearchManager = New cMSEManager(Me)
+            SearchManager = New cMSEManager(Me, Me.m_MSEData)
             Me.m_SearchManagers.Add(eDataTypes.MSEManager, SearchManager)
         End If
 

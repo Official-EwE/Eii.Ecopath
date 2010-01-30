@@ -19,7 +19,7 @@ Public Class frmMSY
         Try
 
             'Hardwire run state parameters...for now
-            Me.m_mse.ModelParameters.MSYMSYEvaluateValue = True
+            Me.m_mse.ModelParameters.MSYEvaluateValue = True
             Me.m_mse.ModelParameters.MSYRunSilent = False
             Me.m_mse.ModelParameters.MSYStartTimeIndex = 2
 

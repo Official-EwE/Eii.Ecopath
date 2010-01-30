@@ -1,25 +1,7 @@
-'==============================================================================
-'
-' $Log: cMSEFleetInput.vb,v $
-' Revision 1.2  2009/01/16 18:30:32  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:26  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.6  2008/07/02 01:55:26  jeroens
-' Added option to force status flag total reset (fixes bug 503)
-'
-' Revision 1.5  2008/05/29 22:22:49  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.4  2008/04/24 14:53:41  joeb
-' Added CVS Log header
-'
-'==============================================================================
-
+#Region "Imports"
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+#End Region
 
 Namespace MSE
 

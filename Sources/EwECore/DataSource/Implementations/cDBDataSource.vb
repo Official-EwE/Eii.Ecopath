@@ -53,7 +53,7 @@ Public Class cDBDataSource
     ''' <param name="dst"></param>
     ''' <returns></returns>
     ''' -------------------------------------------------------------------
-    Public Function IsSupported(ByVal dst As eDataSourceTypes) As Boolean _
+    Public Function IsOSSupported(ByVal dst As eDataSourceTypes) As Boolean _
         Implements DataSources.IEwEDataSource.IsOSSupported
         Return Me.m_db.CanConnect(dst)
     End Function
@@ -2905,6 +2905,7 @@ Public Class cDBDataSource
         ecosimDS.SetDefaultParameters()
 
         Me.m_core.m_QuotaData.RedimVars()
+        Me.m_core.m_MSEData.RedimVars()
 
         reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenario WHERE (ScenarioID={0})", iDBID))
         Try
@@ -2951,6 +2952,7 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.LoadEcosimFleets(iDBID)
         bSucces = bSucces And Me.LoadEcosimQuota(iDBID)
         bSucces = bSucces And Me.LoadShapes()
+        bSucces = bSucces And Me.LoadEcosimMSE(iDBID)
 
         Me.ClearChanged(eCoreComponentType.EcoSim)
 
@@ -3072,6 +3074,7 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.SaveEcosimQuota(idm)
         bSucces = bSucces And Me.SaveShapes(idm)
         bSucces = bSucces And Me.SaveTimeSeries(idm)
+        bSucces = bSucces And Me.SaveEcosimMSE(idm)
 
         If bSucces Then
             bSucces = Me.m_db.CommitTransaction(True)
@@ -3488,53 +3491,66 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim quoataDS As cQuotaDataStructures = Me.m_core.m_QuotaData
+        Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim reader As IDataReader = Nothing
         Dim bSucces As Boolean = True
-        Dim i As Integer = 0
+        Dim iEcopathGroup As Integer = 0
 
-        For j As Integer = 1 To ecosimDS.nGroups
+        For igroup As Integer = 1 To ecosimDS.nGroups
 
             ' Me.CreateRepairEcosimGroup(ecopathDS.GroupDBID(j), iScenarioID, True)
 
-            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcoSimScenarioGroup WHERE (ScenarioID={0}) AND (EcopathGroupID={1})", iScenarioID, ecopathDS.GroupDBID(j)))
+            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcoSimScenarioGroup WHERE (ScenarioID={0}) AND (EcopathGroupID={1})", iScenarioID, ecopathDS.GroupDBID(igroup)))
 
             Try
                 reader.Read()
 
                 ' Find ecopath group index to store matching ecosim group data at
-                i = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("EcopathGroupID")))
-
-                ' Debug.Assert(i = j)
+                iEcopathGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("EcopathGroupID")))
 
                 ' Read fields
-                ecosimDS.GroupDBID(i) = CInt(reader("GroupID"))
-                ecosimDS.PBmaxs(i) = CSng(reader("pbmaxs"))
-                ecosimDS.FtimeMax(i) = CSng(reader("FtimeMax"))
-                ecosimDS.FtimeAdjust(i) = CSng(reader("FtimeAdjust"))
-                ecosimDS.MoPred(i) = CSng(reader("MoPred"))
-                ecosimDS.FishRateMax(i) = CSng(reader("FishRateMax"))
+                ecosimDS.GroupDBID(iEcopathGroup) = CInt(reader("GroupID"))
+                ecosimDS.PBmaxs(iEcopathGroup) = CSng(reader("pbmaxs"))
+                ecosimDS.FtimeMax(iEcopathGroup) = CSng(reader("FtimeMax"))
+                ecosimDS.FtimeAdjust(iEcopathGroup) = CSng(reader("FtimeAdjust"))
+                ecosimDS.MoPred(iEcopathGroup) = CSng(reader("MoPred"))
+                ecosimDS.FishRateMax(iEcopathGroup) = CSng(reader("FishRateMax"))
                 ' ecosimDS.ShowGroup(i) = CBool(reader("Show"))
 
-                ecosimDS.RiskTime(i) = CSng(reader("RiskTime"))
-                ecosimDS.QmQo(i) = CSng(reader("QmQo"))
-                ecosimDS.CmCo(i) = CSng(reader("CmCo"))
-                ecosimDS.SwitchPower(i) = CSng(reader("SwitchPower"))
-                ecosimDS.GroupFishRateNoDBID(i) = CInt(reader("FishMortShapeID"))
-                ecosimDS.SalOpt(i) = CSng(Me.ReadSafe(reader, "SalOpt", 35.0!))
-                ecosimDS.SdSalLeft(i) = CSng(Me.ReadSafe(reader, "SdSalLeft", 1000.0!))
-                ecosimDS.SdSalRight(i) = CSng(Me.ReadSafe(reader, "SdSalRight", 1000.0!))
-                ecosimDS.TempOpt(i) = CSng(Me.ReadSafe(reader, "TempOpt", 10.0!))
-                ecosimDS.TempLeft(i) = CSng(Me.ReadSafe(reader, "TempLeft", 1000.0!))
-                ecosimDS.TempRight(i) = CSng(Me.ReadSafe(reader, "TempRight", 1000.0!))
-                quoataDS.Blim(i) = CSng(Me.ReadSafe(reader, "Blim", -9999))
-                quoataDS.Bbase(i) = CSng(Me.ReadSafe(reader, "Bbase", -9999))
-                quoataDS.Fopt(i) = CSng(Me.ReadSafe(reader, "Fopt", -9999))
+                ecosimDS.RiskTime(iEcopathGroup) = CSng(reader("RiskTime"))
+                ecosimDS.QmQo(iEcopathGroup) = CSng(reader("QmQo"))
+                ecosimDS.CmCo(iEcopathGroup) = CSng(reader("CmCo"))
+                ecosimDS.SwitchPower(iEcopathGroup) = CSng(reader("SwitchPower"))
+                ecosimDS.GroupFishRateNoDBID(iEcopathGroup) = CInt(reader("FishMortShapeID"))
+                ecosimDS.SalOpt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "SalOpt", 35.0!))
+                ecosimDS.SdSalLeft(iEcopathGroup) = CSng(Me.ReadSafe(reader, "SdSalLeft", 1000.0!))
+                ecosimDS.SdSalRight(iEcopathGroup) = CSng(Me.ReadSafe(reader, "SdSalRight", 1000.0!))
+                ecosimDS.TempOpt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "TempOpt", 10.0!))
+                ecosimDS.TempLeft(iEcopathGroup) = CSng(Me.ReadSafe(reader, "TempLeft", 1000.0!))
+                ecosimDS.TempRight(iEcopathGroup) = CSng(Me.ReadSafe(reader, "TempRight", 1000.0!))
 
-                bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), i)
+                quotaDS.Blim(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Blim", -9999))
+                quotaDS.Bbase(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Bbase", -9999))
+                quotaDS.Fopt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Fopt", -9999))
+                quotaDS.FixedEscapement(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedEscapement", 0.0!))
+
+                mseDS.CVbiomEst(iEcopathGroup) = CSng(Me.ReadSafe(reader, "BiomassCV", 0.2!))
+                mseDS.BioRiskValue(iEcopathGroup, 0) = CSng(Me.ReadSafe(reader, "LowerRisk", 0.5!))
+                mseDS.BioRiskValue(iEcopathGroup, 1) = CSng(Me.ReadSafe(reader, "UpperRisk", 2.0!))
+
+                mseDS.DefaultBioBounds(iEcopathGroup)
+                mseDS.BioBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower))
+                mseDS.BioBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "BiomassRefUpper", mseDS.BioBounds(iEcopathGroup).Upper))
+
+                mseDS.DefaultCatchBoundsGroup(iEcopathGroup)
+                mseDS.CatchGroupBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower))
+                mseDS.CatchGroupBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper))
+
+                bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, i))
+                Me.LogMessage(String.Format("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iEcopathGroup))
                 bSucces = False
             End Try
 
@@ -3550,6 +3566,7 @@ Public Class cDBDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim reader As IDataReader = Nothing
         Dim iFleetID As Integer = -1
         Dim iShapeID As Integer = -1
@@ -3589,12 +3606,23 @@ Public Class cDBDataSource
             End If
 
             Try
-                quotaDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
-                quotaDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
                 ecosimDS.Epower(iFleet) = CSng(Me.ReadSafe(reader, "Epower", 3))
                 ecosimDS.PcapBase(iFleet) = CSng(Me.ReadSafe(reader, "PCapBase", 0.5))
                 ecosimDS.CapDepreciate(iFleet) = CSng(Me.ReadSafe(reader, "CapDepreciate", 0.06))
                 ecosimDS.CapBaseGrowth(iFleet) = CSng(Me.ReadSafe(reader, "CapBaseGrowth", 0.2))
+
+                quotaDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
+                quotaDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
+
+                mseDS.CVFest(iFleet) = CSng(Me.ReadSafe(reader, "CV", 0.3!))
+                mseDS.Qgrow(iFleet) = CSng(Me.ReadSafe(reader, "QIncrease", 0.1!))
+
+                mseDS.DefaultCatchBoundsFleet(iFleet)
+                mseDS.CatchFleetBounds(iFleet).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchFleetBounds(iFleet).Lower))
+                mseDS.CatchFleetBounds(iFleet).Upper = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchFleetBounds(iFleet).Upper))
+                mseDS.EffortFleetBounds(iFleet).Lower = CSng(Me.ReadSafe(reader, "EffortRefLower", mseDS.EffortFleetBounds(iFleet).Lower))
+                mseDS.EffortFleetBounds(iFleet).Upper = CSng(Me.ReadSafe(reader, "EffortRefUpper", mseDS.EffortFleetBounds(iFleet).Upper))
+                'mseDS.MSYEvaluateFleet(iFleet) = (CInt(Me.ReadSafe(reader, "MSYEvaluateFleet", True)) = 1)
 
             Catch ex As Exception
                 bSucces = False
@@ -3635,6 +3663,7 @@ Public Class cDBDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim reader As IDataReader = Nothing
         Dim iFleetID As Integer = -1
         Dim iFleet As Integer = -1
@@ -3654,6 +3683,7 @@ Public Class cDBDataSource
 
                 If (iFleet > 0) And (iGroup > 0) Then
                     quotaDS.Quota(iFleet, iGroup) = CSng(reader("Quota"))
+                    mseDS.Fweight(iFleet, iGroup) = CSng(Me.ReadSafe(reader, "FWeight", 1.0))
                 End If
             End While
 
@@ -3675,6 +3705,7 @@ Public Class cDBDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
@@ -3755,10 +3786,19 @@ Public Class cDBDataSource
                 drow("TempOpt") = ecosimDS.TempOpt(i)
                 drow("TempLeft") = ecosimDS.TempLeft(i)
                 drow("TempRight") = ecosimDS.TempRight(i)
+
                 drow("Blim") = quotaDS.Blim(i)
                 drow("Bbase") = quotaDS.Bbase(i)
                 drow("Fopt") = quotaDS.Fopt(i)
-                'drow("Kalwt") = ... MSE
+                drow("FixedEscapement") = quotaDS.FixedEscapement(i)
+
+                drow("BiomassCV") = mseDS.CVbiomEst(i)
+                drow("LowerRisk") = mseDS.BioRiskValue(i, 0)
+                drow("UpperRisk") = mseDS.BioRiskValue(i, 1)
+                drow("BiomassRefLower") = mseDS.BioBounds(i).Lower
+                drow("BiomassRefUpper") = mseDS.BioBounds(i).Upper
+                drow("CatchRefLower") = mseDS.CatchGroupBounds(i).Lower
+                drow("CatchRefUpper") = mseDS.CatchGroupBounds(i).Upper
 
                 drow.EndEdit()
 
@@ -3778,6 +3818,7 @@ Public Class cDBDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
@@ -3838,6 +3879,14 @@ Public Class cDBDataSource
                 drow("CapDepreciate") = ecosimDS.CapDepreciate(iFleet)
                 drow("CapBaseGrowth") = ecosimDS.CapBaseGrowth(iFleet)
 
+                drow("CV") = mseDS.CVFest(iFleet)
+                drow("QIncrease") = mseDS.Qgrow(iFleet)
+                drow("CatchRefLower") = mseDS.CatchFleetBounds(iFleet).Lower
+                drow("CatchRefUpper") = mseDS.CatchFleetBounds(iFleet).Upper
+                drow("EffortRefLower") = mseDS.CatchFleetBounds(iFleet).Lower
+                drow("EffortRefUpper") = mseDS.CatchFleetBounds(iFleet).Upper
+                'drow("MSYEvaluateFleet") = CInt(IIf(mseDS.MSYEvaluateFleet(iFleet), 1, 0))
+
                 ' Wrap up: was this a new row?
                 If bNewRow Then
                     ' #Yes: add it to the writer
@@ -3863,6 +3912,7 @@ Public Class cDBDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim strSQL As String = ""
@@ -3887,6 +3937,7 @@ Public Class cDBDataSource
                     drow("EcosimGroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
                     ' Write dynamic bit
                     drow("Quota") = quotaDS.Quota(iFleet, iGroup)
+                    drow("Fweight") = mseDS.Fweight(iFleet, iGroup)
                     ' Add new row to the writer
                     writer.AddRow(drow)
                 Next iGroup
@@ -5801,6 +5852,95 @@ Public Class cDBDataSource
 #End Region ' Modify
 
 #End Region ' Time series
+
+#Region " MSE "
+
+#Region " Load "
+
+    Private Function LoadEcosimMSE(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
+        Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT * FROM EcoSimScenarioMSE WHERE (ScenarioID={0})", iScenarioID))
+        Dim bSucces As Boolean = True
+
+        If reader IsNot Nothing Then
+
+            reader.Read()
+            Try
+
+                mseDS.AssessMethod = DirectCast(Me.ReadSafe(reader, "AssessMethod", eAssessmentMethods.CatchEstmBio), eAssessmentMethods)
+                mseDS.AssessPower = CSng(Me.ReadSafe(reader, "AssessPower", 1))
+                mseDS.NTrials = CInt(Me.ReadSafe(reader, "NTrials", 10))
+                mseDS.MSYStartTimeIndex = CInt(Me.ReadSafe(reader, "StartIndex", 2))
+
+                For iGroup As Integer = 1 To ecopathDS.NumGroups
+                    mseDS.GstockPred(iGroup) = CSng(Me.ReadSafe(reader, "ForcastGain", 0.6))
+                    mseDS.KalmanGain(iGroup) = CSng(Me.ReadSafe(reader, "KalmanGain", 0.6))
+                Next iGroup
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
+                bSucces = False
+            End Try
+
+            Me.m_db.ReleaseReader(reader)
+            reader = Nothing
+
+        End If
+
+        Return bSucces
+    End Function
+
+#End Region ' Load
+
+#Region " Save "
+
+    Private Function SaveEcosimMSE(ByRef idm As cIDMappings) As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
+        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim drow As DataRow = Nothing
+        Dim strSQL As String = ""
+        Dim iScenarioID As Integer = 0
+        Dim bSucces As Boolean = True
+
+        ' Obtain mapped scenario ID
+        iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+
+        strSQL = String.Format("DELETE FROM EcosimScenarioMSE WHERE (ScenarioID={0})", iScenarioID)
+        bSucces = Me.m_db.Execute(strSQL)
+
+        Try
+            writer = Me.m_db.GetWriter("EcosimScenarioMSE")
+            writer.NewRow()
+
+            drow("ScenarioID") = iScenarioID
+            drow("AssessMethod") = mseDS.AssessMethod
+            drow("AssessPower") = mseDS.AssessPower
+            drow("ForcastGain") = mseDS.GstockPred(1)
+            drow("KalmanGain") = mseDS.KalmanGain(1)
+            drow("Ntrials") = mseDS.NTrials
+            drow("StartIndex") = mseDS.MSYStartTimeIndex
+
+            writer.AddRow(drow)
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while saving MSE", ex.Message))
+            bSucces = False
+        End Try
+
+        ' Save changes
+        Me.m_db.ReleaseWriter(writer, True)
+
+        Return bSucces
+
+    End Function
+
+#End Region ' Save
+
+#End Region ' MSE
 
 #End Region ' EcoSim
 

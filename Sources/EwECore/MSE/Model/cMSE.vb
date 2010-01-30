@@ -1,38 +1,3 @@
-'==============================================================================
-'
-' $Log: cMSE.vb,v $
-' Revision 1.10  2009/07/03 23:41:36  joeb
-' MSE interface changes
-'
-' Revision 1.9  2009/06/01 17:07:38  joeb
-' MSE debugging
-'
-' Revision 1.8  2009/05/26 16:45:24  joeb
-' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
-'
-' Revision 1.7  2009/05/20 16:29:37  joeb
-' Renamed eCallBackTypes.Stopped to RunCompleted
-'
-' Revision 1.6  2009/05/11 21:28:08  joeb
-' Adding MSE data to Decision Support Tool (Multi Player Game)
-'
-' Revision 1.5  2009/04/02 20:54:38  jeroens
-' Uses eSearchResultCriteriaTypes
-'
-' Revision 1.4  2008/12/09 19:49:17  joeb
-' Ouput objects now use core data instead of buffering data
-'
-' Revision 1.3  2008/12/02 19:08:21  joeb
-' Added flag for computation of EcoSim timestep ouput
-'
-' Revision 1.2  2008/11/28 16:54:14  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.1  2008/09/26 07:30:27  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwECore
@@ -2185,4 +2150,5 @@ Namespace MSE
     End Class
 
 #End Region
+
 End Namespace
