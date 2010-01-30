@@ -3558,9 +3558,9 @@ Public Class cDBDataSource
                 quotaDS.Fopt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Fopt", -9999))
                 quotaDS.FixedEscapement(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedEscapement", 0.0!))
 
-                mseDS.CVbiomEst(iEcopathGroup) = CSng(Me.ReadSafe(reader, "BiomassCV", 0.2!))
-                mseDS.BioRiskValue(iEcopathGroup, 0) = CSng(Me.ReadSafe(reader, "LowerRisk", 0.5!))
-                mseDS.BioRiskValue(iEcopathGroup, 1) = CSng(Me.ReadSafe(reader, "UpperRisk", 2.0!))
+                mseDS.CVbiomEst(iEcopathGroup) = CSng(Me.ReadSafe(reader, "BiomassCV", mseDS.CVbiomEst(iEcopathGroup)))
+                mseDS.BioRiskValue(iEcopathGroup, 0) = CSng(Me.ReadSafe(reader, "LowerRisk", mseDS.BioRiskValue(iEcopathGroup, 0)))
+                mseDS.BioRiskValue(iEcopathGroup, 1) = CSng(Me.ReadSafe(reader, "UpperRisk", mseDS.BioRiskValue(iEcopathGroup, 1)))
 
                 mseDS.DefaultBioBounds(iEcopathGroup)
                 mseDS.BioBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower))
@@ -3637,8 +3637,8 @@ Public Class cDBDataSource
                 quotaDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
                 quotaDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
 
-                mseDS.CVFest(iFleet) = CSng(Me.ReadSafe(reader, "CV", 0.3!))
-                mseDS.Qgrow(iFleet) = CSng(Me.ReadSafe(reader, "QIncrease", 0.1!))
+                mseDS.CVFest(iFleet) = CSng(Me.ReadSafe(reader, "CV", mseDS.CVFest(iFleet)))
+                mseDS.Qgrow(iFleet) = CSng(Me.ReadSafe(reader, "QIncrease", mseDS.Qgrow(iFleet)))
 
                 mseDS.DefaultCatchBoundsFleet(iFleet)
                 mseDS.CatchFleetBounds(iFleet).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchFleetBounds(iFleet).Lower))
