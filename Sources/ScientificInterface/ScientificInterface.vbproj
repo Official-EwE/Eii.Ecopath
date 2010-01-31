@@ -912,6 +912,10 @@
       <DependentUpon>ucBioPercentToolbar.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\Vulnerabilities\dlgEstimateVs.resx">
+      <DependentUpon>dlgEstimateVs.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Output\SuitabilityPlot.resx">
       <DependentUpon>SuitabilityPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1129,6 +1133,15 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\TimeSeries\gridWeightTS.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\Vulnerabilities\dlgEstimateVs.Designer.vb">
+      <DependentUpon>dlgEstimateVs.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\Vulnerabilities\dlgEstimateVs.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\Vulnerabilities\gridEstimateVs.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\EcosimOutputLineGraph\cEcosimOutputPlotHelper.vb" />

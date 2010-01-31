@@ -46,16 +46,16 @@ Namespace Ecosim
                 source = m_Core.EcoPathGroupInputs(i)
                 ' Group index header cell
                 Me(i, 0) = New EwERowHeaderCell(i)
-                Me(i, 0).Behaviors.Add(m_RowColClick)
+                'Me(i, 0).Behaviors.Add(m_RowColClick)
 
                 ' # Group name row header cells
                 Me(i, 1) = New EwERowHeaderCell(source.Name)
-                Me(i, 1).Behaviors.Add(m_RowColClick)
+                'Me(i, 1).Behaviors.Add(m_RowColClick)
 
                 If source.PP < 1 Then
                     Me.Columns.Insert(columnIndex)
                     Me(0, columnIndex) = New PropertyColumnHeaderCell(source, eVarNameFlags.Index)
-                    Me(0, columnIndex).Behaviors.Add(m_RowColClick)
+                    'Me(0, columnIndex).Behaviors.Add(m_RowColClick)
                     columnIndex = columnIndex + 1
                 End If
             Next
