@@ -74,6 +74,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to B missing for group &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property B_MISSING_GROUP() As String
+            Get
+                Return ResourceManager.GetString("B_MISSING_GROUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to BioAccum must be greater than or equal to zero..
         '''</summary>
         Friend Shared ReadOnly Property BIOACCUM_RANGE() As String
@@ -559,6 +568,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The generalized inverse routine is trying to estimate {0} unknown from {1} equations. The solution will not be unique. Check the estimated values carefully..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_NOTUNIQUE() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_NOTUNIQUE", resourceCulture)
             End Get
         End Property
         
@@ -1532,6 +1550,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property QB_CLEARED() As String
             Get
                 Return ResourceManager.GetString("QB_CLEARED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Q/B missing for group &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property QB_MISSING_GROUP() As String
+            Get
+                Return ResourceManager.GetString("QB_MISSING_GROUP", resourceCulture)
             End Get
         End Property
         

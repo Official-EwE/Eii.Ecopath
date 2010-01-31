@@ -2299,7 +2299,7 @@ exitSub:
             Next i
 
             NN = Kount : MM = kountj
-            If NN < MM Then Call ManyUnknown(m_Data.NumLiving, NN, MM, NoBQB)
+            If NN < MM Then Me.ManyUnknown(m_Data.NumLiving, NN, MM, NoBQB)
             If NN <> 0 And MM <> 0 Then
                 'If g_in_Ranger = 0 And g_in_senseloop = 0 Then
                 'frmGIM.Show
@@ -2580,26 +2580,45 @@ ONE:
         End Sub
 
         Private Sub ManyUnknown(ByVal NumLiving As Integer, ByVal NN As Integer, ByVal MM As Integer, ByVal NoBQB() As Integer)
-            'Static showGenMess As Integer
-            Dim i As Integer
-            Dim strMsg As String
+
             Dim msg As cMessage = Nothing
+            Dim vs As cVariableStatus = Nothing
+            Dim varname As eVarNameFlags = eVarNameFlags.NotSet
+            Dim strMsg As String = ""
+            Dim i As Integer
 
             If InParameterEstimation = 0 Then
                 Exit Sub
             End If
 
-            ' ToDo_JS: Localize this
-            strMsg = "The generalized inverse routine is trying to estimate " & MM & " unknown "
-            strMsg = strMsg & "from " & NN & " equations. The solution will not be unique. The unknown(s) are:" & vbCrLf
-            For i = 1 To NumLiving
-                If NoBQB(i) = 1 Then strMsg$ = strMsg$ & " B  for group " & i & vbCrLf
-                If NoBQB(i) = 10 Then strMsg$ = strMsg$ & "Q/B for group " & i & vbCrLf
-            Next i
-            strMsg = strMsg & vbCrLf & "Check the estimated values carefully."
+            ' Create error message
+            strMsg = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_NOTUNIQUE, MM, NN)
             msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
             msg.Suppressable = False
-            NotifyCore(msg)
+
+            ' Add error details
+            For i = 1 To NumLiving
+                ' Reset varname
+                varname = eVarNameFlags.NotSet
+                ' Determine error detail
+                If NoBQB(i) = 1 Then
+                    strMsg = String.Format(My.Resources.CoreMessages.B_MISSING_GROUP, Me.m_Data.GroupName(i))
+                    varname = eVarNameFlags.BiomassAreaInput
+                ElseIf NoBQB(i) = 10 Then
+                    strMsg = String.Format(My.Resources.CoreMessages.QB_MISSING_GROUP, Me.m_Data.GroupName(i))
+                    varname = eVarNameFlags.QBInput
+                End If
+                ' Has error detail?
+                If (varname <> eVarNameFlags.NotSet) Then
+                    ' #Yes: append to message
+                    vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, varname, _
+                                             eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
+                    msg.AddVariable(vs)
+                End If
+            Next i
+
+            ' Send error
+            Me.NotifyCore(msg)
 
         End Sub
 

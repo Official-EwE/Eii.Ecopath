@@ -830,4 +830,16 @@ System Error: {0}</value>
     <value>Variable '{0}' has been adjusted</value>
     <comment>{0}=variable name</comment>
   </data>
+  <data name="B_MISSING_GROUP" xml:space="preserve">
+    <value>B missing for group '{0}'</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_NOTUNIQUE" xml:space="preserve">
+    <value>The generalized inverse routine is trying to estimate {0} unknown from {1} equations. The solution will not be unique. Check the estimated values carefully.</value>
+    <comment>{0}=num unknown vars, {1}=num equations</comment>
+  </data>
+  <data name="QB_MISSING_GROUP" xml:space="preserve">
+    <value>Q/B missing for group '{0}'</value>
+    <comment>{0}=group name</comment>
+  </data>
 </root>
