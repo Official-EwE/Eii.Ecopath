@@ -31,8 +31,8 @@ Namespace Ecosim
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_rbPredMort = New System.Windows.Forms.RadioButton
             Me.m_rbFMaxM = New System.Windows.Forms.RadioButton
-            Me.m_rbBuBo = New System.Windows.Forms.RadioButton
-            Me.m_rbBoBu = New System.Windows.Forms.RadioButton
+            Me.m_rbBuB0 = New System.Windows.Forms.RadioButton
+            Me.m_rbB0Bu = New System.Windows.Forms.RadioButton
             Me.m_hdrMethodology = New System.Windows.Forms.Label
             Me.m_graph = New ZedGraph.ZedGraphControl
             Me.m_grid = New ScientificInterface.Ecosim.gridEstimateVs
@@ -52,8 +52,8 @@ Namespace Ecosim
             '
             Me.m_scMain.Panel1.Controls.Add(Me.m_rbPredMort)
             Me.m_scMain.Panel1.Controls.Add(Me.m_rbFMaxM)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbBuBo)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbBoBu)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_rbBuB0)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_rbB0Bu)
             Me.m_scMain.Panel1.Controls.Add(Me.m_hdrMethodology)
             Me.m_scMain.Panel1.Controls.Add(Me.m_graph)
             '
@@ -75,19 +75,19 @@ Namespace Ecosim
             Me.m_rbFMaxM.TabStop = True
             Me.m_rbFMaxM.UseVisualStyleBackColor = True
             '
-            'm_rbBuBo
+            'm_rbBuB0
             '
-            resources.ApplyResources(Me.m_rbBuBo, "m_rbBuBo")
-            Me.m_rbBuBo.Name = "m_rbBuBo"
-            Me.m_rbBuBo.TabStop = True
-            Me.m_rbBuBo.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbBuB0, "m_rbBuB0")
+            Me.m_rbBuB0.Name = "m_rbBuB0"
+            Me.m_rbBuB0.TabStop = True
+            Me.m_rbBuB0.UseVisualStyleBackColor = True
             '
-            'm_rbBoBu
+            'm_rbB0Bu
             '
-            resources.ApplyResources(Me.m_rbBoBu, "m_rbBoBu")
-            Me.m_rbBoBu.Name = "m_rbBoBu"
-            Me.m_rbBoBu.TabStop = True
-            Me.m_rbBoBu.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbB0Bu, "m_rbB0Bu")
+            Me.m_rbB0Bu.Name = "m_rbB0Bu"
+            Me.m_rbB0Bu.TabStop = True
+            Me.m_rbB0Bu.UseVisualStyleBackColor = True
             '
             'm_hdrMethodology
             '
@@ -178,8 +178,8 @@ Namespace Ecosim
         Private WithEvents m_grid As gridEstimateVs
         Private WithEvents m_graph As ZedGraphControl
         Private WithEvents m_hdrMethodology As System.Windows.Forms.Label
-        Private WithEvents m_rbBoBu As System.Windows.Forms.RadioButton
-        Private WithEvents m_rbBuBo As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbB0Bu As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbBuB0 As System.Windows.Forms.RadioButton
         Private WithEvents m_rbFMaxM As System.Windows.Forms.RadioButton
         Private WithEvents m_rbPredMort As System.Windows.Forms.RadioButton
 

@@ -21,7 +21,7 @@ Namespace Ecosim
             B0Bu = 0
             BuB0
             FMaxM
-            FMaxBoBu
+            FMaxB0Bu
         End Enum
 
 #Region " Private vars "
@@ -29,7 +29,7 @@ Namespace Ecosim
         ''' <summary>UI context to use.</summary>
         Private m_uic As cUIContext = Nothing
         Private m_zgh As cZedGraphHelper = Nothing
-        Private m_estimationmethod As eEstimationTypes = eEstimationTypes.BuB0
+        Private m_estimationmethod As eEstimationTypes = eEstimationTypes.B0Bu
 
 #End Region ' Private vars
 
@@ -50,6 +50,7 @@ Namespace Ecosim
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.m_uic.Core, Me.m_graph)
 
+            ' ToDo: Select first group with Fish1 > 0
             Me.m_grid.SelectedGroupIndex = 1
 
             Me.UpdateControls()
@@ -87,14 +88,14 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub m_rbBoBu_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_rbBoBu.CheckedChanged
-            If (Me.m_rbBoBu.Checked) Then Me.EstimationMethod = eEstimationTypes.B0Bu
+        Private Sub m_rbB0Bu_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_rbB0Bu.CheckedChanged
+            If (Me.m_rbB0Bu.Checked) Then Me.EstimationMethod = eEstimationTypes.B0Bu
         End Sub
 
-        Private Sub m_rbBuBo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_rbBuBo.CheckedChanged
-            If (Me.m_rbBuBo.Checked) Then Me.EstimationMethod = eEstimationTypes.BuB0
+        Private Sub m_rbBuB0_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_rbBuB0.CheckedChanged
+            If (Me.m_rbBuB0.Checked) Then Me.EstimationMethod = eEstimationTypes.BuB0
         End Sub
 
         Private Sub m_rbFMaxM_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -104,7 +105,7 @@ Namespace Ecosim
 
         Private Sub m_rbPredMort_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_rbPredMort.CheckedChanged
-            If (Me.m_rbPredMort.Checked) Then Me.EstimationMethod = eEstimationTypes.FMaxBoBu
+            If (Me.m_rbPredMort.Checked) Then Me.EstimationMethod = eEstimationTypes.FMaxB0Bu
         End Sub
 
         Private Sub OnGroupSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
@@ -134,7 +135,6 @@ Namespace Ecosim
             End Get
             Private Set(ByVal value As eEstimationTypes)
                 Me.m_estimationmethod = value
-                MsgBox("Extimating method " & CInt(m_estimationmethod) & " for group " & Me.SelectedGroupIndex)
                 Me.UpdateGrid()
                 Me.UpdatePlot()
             End Set
@@ -154,19 +154,21 @@ Namespace Ecosim
         End Function
 
         Private Sub UpdateControls()
-            Me.m_rbBoBu.Checked = (Me.EstimationMethod = eEstimationTypes.B0Bu)
-            Me.m_rbBuBo.Checked = (Me.EstimationMethod = eEstimationTypes.BuB0)
+            Me.m_rbB0Bu.Checked = (Me.EstimationMethod = eEstimationTypes.B0Bu)
+            Me.m_rbBuB0.Checked = (Me.EstimationMethod = eEstimationTypes.BuB0)
             Me.m_rbFMaxM.Checked = (Me.EstimationMethod = eEstimationTypes.FMaxM)
-            Me.m_rbPredMort.Checked = (Me.EstimationMethod = eEstimationTypes.FMaxBoBu)
+            Me.m_rbPredMort.Checked = (Me.EstimationMethod = eEstimationTypes.FMaxB0Bu)
         End Sub
 
         Private Sub UpdateGrid()
-
+            ' ToDo: implement this
         End Sub
 
 #Region " Plot "
 
         Private Sub UpdatePlot()
+
+            ' ToDo: localize this method
 
             If (Me.SelectedGroupIndex <= 0) Then Return
 
@@ -188,9 +190,9 @@ Namespace Ecosim
                     strXAxis = "Max F / M"
                     strYAxis = "Vulnerability"
 
-                Case eEstimationTypes.FMaxBoBu
+                Case eEstimationTypes.FMaxB0Bu
                     strXAxis = "Ecopath biomass / carrying capacity"
-                    strYAxis = "Pred. mort (rel)"
+                    strYAxis = "Predation mort. (rel.)"
 
             End Select
             Me.m_zgh.ConfigurePane(strTitle, strXAxis, strYAxis, True)
@@ -207,23 +209,23 @@ Namespace Ecosim
             Dim j As Integer
             Dim i As Integer
             Dim bIsLogScale As Boolean = False
-            Dim StepSize As Long
+            Dim dStepSize As Double
 
             Dim Vant As Single
             Dim PlotVal(2, 10000) As Single
             Dim XVal(10000) As Single
-            Dim sXMax As Single = 0
-            Dim sYMax As Single = 0
+            Dim sYMax As Single = Single.MinValue
+
+            ' ToDo: fix log scale confusion
 
             Select Case Me.EstimationMethod
 
-                Case eEstimationTypes.BuB0  'B unfished / B ecopath
-                    sXMax = 100
-                    sYMax = 0
+                Case eEstimationTypes.B0Bu
                     For i = 0 To 1
-                        For j = 100 To 10000 'Step 0.1
+                        For j = 100 To 10000
                             B = CSng(j / 100)
-                            Vant = Me.m_uic.Core.CalcEcosimVulBo(B, iGroup, i = 1)
+                            Vant = Me.m_uic.Core.CalcEcosimVulB0(B, iGroup, i = 1)
+                            If Vant < 0 Then Vant = 1
                             XVal(j) = B
                             PlotVal(i, j) = Vant
                             sYMax = Math.Max(sYMax, Vant)
@@ -231,18 +233,17 @@ Namespace Ecosim
                     Next
                     If sYMax > 0 Then
                         i = CInt(CLng(Math.Log(sYMax) / Math.Log(10)) \ 1 - 1)
-                        StepSize = CLng(10 ^ i)
-                        If StepSize <= 0 Then StepSize = 1
+                        dStepSize = 10 ^ i
+                        If dStepSize <= 0 Then dStepSize = 1
                     End If
 
-                Case eEstimationTypes.B0Bu   'B Ecopath / B unfished
-                    sXMax = 1
-                    sYMax = 0
+                Case eEstimationTypes.BuB0
                     For i = 0 To 1
-                        For j = 100 To 10000  ' Step 0.1
+                        For j = 100 To 10000
                             B = CSng(j / 100)
                             XVal(j) = 1 / B
-                            Vant = Me.m_uic.Core.CalcEcosimVulBo(B, iGroup, i = 1)
+                            Vant = Me.m_uic.Core.CalcEcosimVulB0(B, iGroup, i = 1)
+                            If Vant < 0 Then Vant = 1
                             'for Becopath / bunfished plot then display log10 of vulnerability
                             PlotVal(i, j) = CSng(Math.Log(Vant) / Math.Log(10))
                             sYMax = Math.Max(sYMax, PlotVal(i, j))
@@ -250,13 +251,12 @@ Namespace Ecosim
                     Next
                     If sYMax > 0 Then sYMax = CSng(Math.Round(sYMax + 0.5, 0))
 
-                Case eEstimationTypes.FMaxM   'Fmax/M
-                    sXMax = 10
-                    sYMax = 0
+                Case eEstimationTypes.FMaxM
                     For i = 0 To 1
-                        For j = 10 To 1000 'Step 0.1
+                        For j = 10 To 1000
                             B = CSng(j / 100)
                             Vant = Me.m_uic.Core.CalcEcosimVulFMax(B, iGroup, i = 1)
+                            If Vant < 0 Then Vant = 1
                             XVal(j) = B
                             PlotVal(i, j) = Vant
                             sYMax = Math.Max(sYMax, Vant)
@@ -276,18 +276,18 @@ Namespace Ecosim
                     End If
                     If sYMax > 0 And bIsLogScale = False Then
                         i = CInt(CLng(Math.Log(sYMax) / Math.Log(10)) \ 1) - 1
-                        StepSize = CLng(10 ^ i)
-                        If StepSize <= 0 Then StepSize = 1
+                        dStepSize = 10 ^ i
+                        If dStepSize <= 0 Then dStepSize = 1
                     End If
 
-                Case eEstimationTypes.FMaxBoBu   'predation mortality versus B Ecopath / B unfished
-                    sXMax = 1
+                Case eEstimationTypes.FMaxB0Bu
                     sYMax = 1
                     For i = 0 To 1
-                        For j = 100 To 10000  ' Step 0.1
+                        For j = 100 To 10000
                             B = CSng(j / 100)
                             XVal(j) = 1 / B
-                            Vant = Me.m_uic.Core.CalcEcosimVulBo(B, iGroup, i = 1)
+                            Vant = Me.m_uic.Core.CalcEcosimVulB0(B, iGroup, i = 1)
+                            If Vant < 0 Then Vant = 1
                             'for Becopath / bunfished plot then display log10 of vulnerability
                             PlotVal(i, j) = 1 / Vant
                         Next
@@ -295,22 +295,30 @@ Namespace Ecosim
             End Select
 
             gp.CurveList.Clear()
-            gp.CurveList.Add(Me.GetPlotLine(XVal, PlotVal, False))
-            gp.CurveList.Add(Me.GetPlotLine(XVal, PlotVal, True))
+            gp.CurveList.Add(Me.MakePlotLine(XVal, PlotVal, True))
+            gp.CurveList.Add(Me.MakePlotLine(XVal, PlotVal, False))
             gp.XAxis.Type = DirectCast(IIf(bIsLogScale, AxisType.Log, AxisType.Linear), AxisType)
+            gp.XAxis.Scale.IsUseTenPower = False
             gp.YAxis.Type = DirectCast(IIf(bIsLogScale, AxisType.Log, AxisType.Linear), AxisType)
+            gp.YAxis.Scale.IsUseTenPower = False
 
-            gp.XAxis.Scale.Min = 0
-            gp.XAxis.Scale.Max = sXMax * 1.2
-            gp.YAxis.Scale.Min = 0
-            gp.YAxis.Scale.Max = sYMax * 1.2
+            ' ToDo: set up scale values
+            'gp.XAxis.Scale.Min = sXMin : gp.XAxis.Scale.Max = sXMax
+            'gp.YAxis.Scale.Min = sYMin : gp.YAxis.Scale.Max = sYMax
 
             gp.AxisChange()
             Me.m_zgh.Redraw()
 
         End Sub
 
-        Private Function GetPlotLine(ByVal XVal() As Single, _
+        ''' <summary>
+        ''' Generate a line to plot from estimated values.
+        ''' </summary>
+        ''' <param name="XVal"></param>
+        ''' <param name="PlotVal"></param>
+        ''' <param name="bFTimeOn"></param>
+        ''' <returns></returns>
+        Private Function MakePlotLine(ByVal XVal() As Single, _
                                      ByVal PlotVal(,) As Single, _
                                      ByVal bFTimeOn As Boolean) As LineItem
 
@@ -330,7 +338,7 @@ Namespace Ecosim
             li.Symbol.IsVisible = False
 
             Select Case Me.EstimationMethod
-                Case eEstimationTypes.B0Bu, eEstimationTypes.BuB0, eEstimationTypes.FMaxBoBu
+                Case eEstimationTypes.B0Bu, eEstimationTypes.BuB0, eEstimationTypes.FMaxB0Bu
                     For j As Integer = 100 To 10000
                         li.AddPoint(XVal(j), PlotVal(iIndex, j))
                         If XVal(j) = 0 Then Exit For
