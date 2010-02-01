@@ -4534,6 +4534,60 @@ Namespace Ecosim
 
         End Sub
 
+        Friend Function VulBo(ByVal BmaxBo As Single, _
+                              ByVal iGroup As Integer, _
+                              ByVal FtimeOn As Boolean) As Single
+
+            Dim Q As Single
+            Dim gc As Single
+            Dim M As Single
+            Dim mp As Single
+            Dim v As Single
+
+            If BmaxBo > 1 And Me.m_Data.SimGE(iGroup) > 0 And Me.m_Data.Fish1(iGroup) > 0 Then
+                If FtimeOn Then
+                    M = Me.m_Data.mo(iGroup) + StartEatenOf(iGroup) / Me.m_Data.StartBiomass(iGroup)
+                    mp = (Me.m_Data.MoPred(iGroup) * Me.m_Data.mo(iGroup) + StartEatenOf(iGroup) / Me.m_Data.StartBiomass(iGroup)) / M
+                    gc = Me.m_Data.SimGE(iGroup) * StartEatenBy(iGroup) / Me.m_Data.StartBiomass(iGroup)
+                    If M <> gc Then v = (-gc * BmaxBo + (1 - mp) * M * BmaxBo + mp * M) / (M - gc)
+                Else
+                    M = Me.m_Data.mo(iGroup) + StartEatenOf(iGroup) / Me.m_Data.StartBiomass(iGroup)
+                    Q = M / Me.m_Data.SimGE(iGroup)
+                    If Q <> StartEatenBy(iGroup) / Me.m_Data.StartBiomass(iGroup) Then v = Q * (1 - BmaxBo) / (Q - StartEatenBy(iGroup) / Me.m_Data.StartBiomass(iGroup))
+                End If
+                If v > 1 Then Return v Else Return -1 'was Log(Log(v) / 2 + 1) where it's v now
+            End If
+            Return -1
+
+        End Function
+
+        Friend Function VulFmax(ByVal Fpo As Single, _
+                                ByVal iGroup As Integer, _
+                                ByVal FtimeOn As Boolean) As Single
+
+            Dim Q As Single
+            Dim gc As Single
+            Dim M As Single
+            Dim mp As Single
+            Dim v As Single
+
+            If Fpo > 0 And Me.m_Data.SimGE(iGroup) > 0 Then
+                If FtimeOn Then
+                    M = Me.m_Data.mo(iGroup) + StartEatenOf(iGroup) / Me.m_Data.StartBiomass(iGroup)
+                    mp = (Me.m_Data.MoPred(iGroup) * Me.m_Data.mo(iGroup) + StartEatenOf(iGroup) / Me.m_Data.StartBiomass(iGroup)) / M
+                    gc = mp * M / (M + Fpo * M - Me.m_Data.SimGE(iGroup) * StartEatenBy(iGroup) / Me.m_Data.StartBiomass(iGroup))
+                    v = mp * M / (M - Me.m_Data.SimGE(iGroup) * StartEatenBy(iGroup) / Me.m_Data.StartBiomass(iGroup) + Fpo * M)
+                Else
+                    M = Me.m_Data.mo(iGroup) + StartEatenOf(iGroup) / Me.m_Data.StartBiomass(iGroup)
+                    Q = M / Me.m_Data.SimGE(iGroup) * (1 + Fpo)
+                    If Q <> StartEatenBy(iGroup) / Me.m_Data.StartBiomass(iGroup) Then v = Q / (Q - StartEatenBy(iGroup) / Me.m_Data.StartBiomass(iGroup))
+                End If
+                If v > 1 Then Return v Else Return -1 'was Log(Log(v) / 2 + 1) where it's v now
+            End If
+            Return -1
+
+        End Function
+
     End Class
 
 End Namespace

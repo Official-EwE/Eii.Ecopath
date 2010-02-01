@@ -6346,10 +6346,11 @@ Public Class cCore
         Return False
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' The vulnerabilities have changed
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Friend Sub VulnerabilitiesChanged()
 
         Try
@@ -6367,12 +6368,17 @@ Public Class cCore
 
     End Sub
 
-    Friend Sub InitSailingCost()
+    Public Function CalcEcosimVulB0(ByVal BmaxBo As Single, _
+                                    ByVal iGroup As Integer, _
+                                    ByVal FtimeOn As Boolean) As Single
+        Return Me.m_EcoSim.VulBo(BmaxBo, iGroup, FtimeOn)
+    End Function
 
-        Me.m_Ecospace.CalculateCostOfSailing()
-        Me.m_EcospaceBasemap.LayerSailingCost.Invalidate()
-
-    End Sub
+    Public Function CalcEcosimVulFMax(ByVal Fpo As Single, _
+                                      ByVal iGroup As Integer, _
+                                      ByVal FtimeOn As Boolean) As Single
+        Return Me.m_EcoSim.VulFmax(Fpo, iGroup, FtimeOn)
+    End Function
 
 #End Region 'EcoSim
 
@@ -6447,6 +6453,13 @@ Public Class cCore
         Return True
 
     End Function
+
+    Friend Sub InitSailingCost()
+
+        Me.m_Ecospace.CalculateCostOfSailing()
+        Me.m_EcospaceBasemap.LayerSailingCost.Invalidate()
+
+    End Sub
 
     ''' <summary>
     ''' Run the Ecospace model with the currently loaded Ecosim and Ecospace scenario
