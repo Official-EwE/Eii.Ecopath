@@ -61,9 +61,9 @@ Public Class cDBUpdate6_00_07_001
         Dim bSucces As Boolean = True
 
         ' Create MSE parameteres table
-        bSucces = bSucces And db.Execute("CREATE TABLE EcoSimScenarioMSE (ScearioID LONG, AssessMethod AS INTEGER, AssessPower AS SINGLE, KalmanGain AS SINGLE, ForcastGain AS SINGLE, NTrials AS INTEGER, StartIndex AS INTEGER)")
-        bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioMSE ADD CONSTRAINT PK_INDEX PRIMARY KEY (ScearioID)")
-        bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioMSE ADD FOREIGN KEY (ScearioID) REFERENCES EcosimScenario(ScearioID)")
+        bSucces = bSucces And db.Execute("CREATE TABLE EcosimScenarioMSE (ScenarioID LONG, AssessMethod INTEGER, AssessPower SINGLE, KalmanGain SINGLE, ForcastGain SINGLE, NTrials INTEGER, StartIndex INTEGER)")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioMSE ADD CONSTRAINT PK_INDEX PRIMARY KEY (ScenarioID)")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioMSE ADD FOREIGN KEY (ScenarioID) REFERENCES EcosimScenario(ScenarioID)")
 
         ' Extend Ecosim groups
         bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioGroup ADD COLUMN BiomassCV SINGLE")
