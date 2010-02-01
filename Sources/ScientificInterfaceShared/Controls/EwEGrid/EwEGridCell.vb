@@ -25,10 +25,13 @@ Namespace Controls.EwEGrid
 
 #Region " Construction "
 
-        Public Sub New(ByVal objVal As Object, ByRef t As Type)
+        Public Sub New(ByVal objVal As Object, ByVal t As Type, _
+                       Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
             MyBase.New(objVal, t)
             ' Set value
             If objVal IsNot Nothing Then Me.Value = objVal
+            ' Set style
+            Me.Style = style
         End Sub
 
 #End Region ' Construction 
