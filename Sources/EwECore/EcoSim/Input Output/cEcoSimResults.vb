@@ -5,10 +5,12 @@
 ''' <remarks></remarks>
 Public Class cEcoSimResults
     Public nGroups As Integer
+    Public nFleets As Integer
     Public CurrentT As Long
     Public Biomass() As Single
     Public TLCatch As Single
     Public FIB As Single
+    Public Effort() As Single
 
     ''' <summary> Computed number of Fish by group </summary>
     Public FishCount() As Single
@@ -65,6 +67,7 @@ Public Class cEcoSimResults
 
         nGroups = numGroups
         nStanza = numStanzas
+        nFleets = nFleets
         nMaxLifeStages = maxLifeStages
 
         ReDim Biomass(nGroups)
@@ -75,6 +78,7 @@ Public Class cEcoSimResults
         ReDim BStock(nStanza, nMaxLifeStages)
         ReDim BRecruitment(nStanza, nMaxLifeStages)
         ReDim FishCount(nGroups)
+        ReDim Effort(nFleets)
 
     End Sub
 
@@ -89,6 +93,7 @@ Public Class cEcoSimResults
         Array.Clear(Me.m_hasSRData, 0, m_hasSRData.Length)
         Array.Clear(Me.BRecruitment, 0, BRecruitment.Length)
         Array.Clear(Me.BStock, 0, BStock.Length)
+        Array.Clear(Me.Effort, 0, nFleets)
 
     End Sub
 

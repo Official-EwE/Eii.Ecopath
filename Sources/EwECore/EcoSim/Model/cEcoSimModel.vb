@@ -1727,6 +1727,7 @@ Namespace Ecosim
                 'effort
                 For iflt = 1 To m_Data.nGear
                     m_Data.ResultsEffort(iflt, iTime) = m_Data.ResultsEffort(iflt, iTime) + m_Data.FishRateGear(iflt, iTime)
+                    m_Results.Effort(iflt) = m_Data.ResultsEffort(iflt, iTime)
                 Next
 
                 'now set average weight for all multi stanza groups
