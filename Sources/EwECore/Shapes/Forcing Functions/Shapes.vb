@@ -602,7 +602,9 @@ Public Class cMediationFunction
         Next ipt
 
         m_data.MediationTitles(m_iEcoSimIndex) = Me.Name
-        m_data.ForcingApplicationType(m_iEcoSimIndex) = Me.m_ForcingApplicationType
+
+        ' Forcing application type not applicable to mediation functions
+        'm_data.ForcingApplicationType(m_iEcoSimIndex) = Me.m_ForcingApplicationType
 
         'shape parameters
         m_data.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType = m_ShapeFunctionType
