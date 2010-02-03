@@ -401,12 +401,12 @@ Public Class ucResults
         Me.m_tscmbFleets.Enabled = (Me.m_data.Parameters.ResultsByFleet = True)
         Me.m_tscmbFleets.SelectedItem = Me.GetCoreComboItem(Me.m_plFlow.FleetFilter, Me.m_tscmbFleets)
 
-        Me.m_tsddGraphType.Visible = (Me.m_viewMode <> eViewModeType.Ecopath)
-        Me.m_tsmiRevenueCost.Checked = (Me.m_graphmode = eGraphModeType.CostRevenue)
-        Me.m_tsmiCostBreakdown.Checked = (Me.m_graphmode = eGraphModeType.Cost)
-        Me.m_tsmiRevenueBreakdown.Checked = (Me.m_graphmode = eGraphModeType.Revenue)
+        Me.m_tslblData.Visible = (Me.m_viewMode <> eViewModeType.Ecopath)
+        Me.m_tscmbGraphData.Visible = (Me.m_viewMode <> eViewModeType.Ecopath)
 
         Me.m_bInUpdate = False
+
+        cToolstripUtils.HideRepeatingSeparators(Me.m_tsResults)
 
     End Sub
 
