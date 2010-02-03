@@ -53,7 +53,6 @@ Public Class frmMSY
 
             For i As Integer = 1 To Me.m_core.nFleets
                 iStr = iStr & i.ToString & vbTab & MSY(i).ToString & vbCrLf
-
             Next
             Me.txtMSYresults.Text = iStr
         End If
