@@ -1159,6 +1159,8 @@ Namespace Core
         GameEconomicCost
         GameEconomicCostPM
         GameEconomicProfit
+        GameEconomicProfitByFleet
+        GameEconomicProfitByFleetPM
         GameEconomicProfitPM
         GameEconomicJobsTotal
         GameEconomicJobsTotalPM
