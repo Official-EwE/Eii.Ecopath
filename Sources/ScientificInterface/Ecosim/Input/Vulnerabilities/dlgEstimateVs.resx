@@ -280,7 +280,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>505, 274</value>
+    <value>505, 243</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -319,7 +319,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>675, 202</value>
+    <value>675, 347</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -352,10 +352,10 @@
     <value>140</value>
   </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>675, 480</value>
+    <value>675, 594</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>274</value>
+    <value>243</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -376,7 +376,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>531, 499</value>
+    <value>531, 613</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -403,7 +403,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>612, 499</value>
+    <value>612, 613</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -430,7 +430,7 @@
     <value>True</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>699, 534</value>
+    <value>699, 648</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

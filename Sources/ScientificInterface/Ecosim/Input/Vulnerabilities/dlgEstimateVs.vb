@@ -18,10 +18,10 @@ Namespace Ecosim
         Implements IUIElement
 
         Friend Enum eEstimationTypes As Integer
-            B0Bu = 0
-            BuB0
+            BoBu = 0
+            BuBo
             FMaxM
-            FMaxB0Bu
+            FMaxBoBu
         End Enum
 
 #Region " Private vars "
@@ -29,7 +29,7 @@ Namespace Ecosim
         ''' <summary>UI context to use.</summary>
         Private m_uic As cUIContext = Nothing
         Private m_zgh As cZedGraphHelper = Nothing
-        Private m_estimationmethod As eEstimationTypes = eEstimationTypes.B0Bu
+        Private m_estimationmethod As eEstimationTypes = eEstimationTypes.BoBu
 
 #End Region ' Private vars
 
@@ -90,12 +90,12 @@ Namespace Ecosim
 
         Private Sub m_rbB0Bu_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_rbB0Bu.CheckedChanged
-            If (Me.m_rbB0Bu.Checked) Then Me.EstimationMethod = eEstimationTypes.B0Bu
+            If (Me.m_rbB0Bu.Checked) Then Me.EstimationMethod = eEstimationTypes.BoBu
         End Sub
 
         Private Sub m_rbBuB0_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_rbBuB0.CheckedChanged
-            If (Me.m_rbBuB0.Checked) Then Me.EstimationMethod = eEstimationTypes.BuB0
+            If (Me.m_rbBuB0.Checked) Then Me.EstimationMethod = eEstimationTypes.BuBo
         End Sub
 
         Private Sub m_rbFMaxM_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -105,7 +105,7 @@ Namespace Ecosim
 
         Private Sub m_rbPredMort_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_rbPredMort.CheckedChanged
-            If (Me.m_rbPredMort.Checked) Then Me.EstimationMethod = eEstimationTypes.FMaxB0Bu
+            If (Me.m_rbPredMort.Checked) Then Me.EstimationMethod = eEstimationTypes.FMaxBoBu
         End Sub
 
         Private Sub OnGroupSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
@@ -154,10 +154,10 @@ Namespace Ecosim
         End Function
 
         Private Sub UpdateControls()
-            Me.m_rbB0Bu.Checked = (Me.EstimationMethod = eEstimationTypes.B0Bu)
-            Me.m_rbBuB0.Checked = (Me.EstimationMethod = eEstimationTypes.BuB0)
+            Me.m_rbB0Bu.Checked = (Me.EstimationMethod = eEstimationTypes.BoBu)
+            Me.m_rbBuB0.Checked = (Me.EstimationMethod = eEstimationTypes.BuBo)
             Me.m_rbFMaxM.Checked = (Me.EstimationMethod = eEstimationTypes.FMaxM)
-            Me.m_rbPredMort.Checked = (Me.EstimationMethod = eEstimationTypes.FMaxB0Bu)
+            Me.m_rbPredMort.Checked = (Me.EstimationMethod = eEstimationTypes.FMaxBoBu)
         End Sub
 
         Private Sub UpdateGrid()
@@ -178,11 +178,11 @@ Namespace Ecosim
             Dim strYAxis As String = ""
 
             Select Case Me.EstimationMethod
-                Case eEstimationTypes.B0Bu
+                Case eEstimationTypes.BoBu
                     strXAxis = "Carrying capacity / Ecopath biomass"
                     strYAxis = "Vulnerability"
 
-                Case eEstimationTypes.BuB0
+                Case eEstimationTypes.BuBo
                     strXAxis = "Ecopath biomass / carrying capacity"
                     strYAxis = "Vulnerability"
 
@@ -190,7 +190,7 @@ Namespace Ecosim
                     strXAxis = "Max F / M"
                     strYAxis = "Vulnerability"
 
-                Case eEstimationTypes.FMaxB0Bu
+                Case eEstimationTypes.FMaxBoBu
                     strXAxis = "Ecopath biomass / carrying capacity"
                     strYAxis = "Predation mort. (rel.)"
 
@@ -220,11 +220,11 @@ Namespace Ecosim
 
             Select Case Me.EstimationMethod
 
-                Case eEstimationTypes.B0Bu
+                Case eEstimationTypes.BoBu
                     For i = 0 To 1
                         For j = 100 To 10000
                             B = CSng(j / 100)
-                            Vant = Me.m_uic.Core.CalcEcosimVulB0(B, iGroup, i = 1)
+                            Vant = Me.m_uic.Core.CalcEcosimVulBo(B, iGroup, i = 1)
                             If Vant < 0 Then Vant = 1
                             XVal(j) = B
                             PlotVal(i, j) = Vant
@@ -237,12 +237,12 @@ Namespace Ecosim
                         If dStepSize <= 0 Then dStepSize = 1
                     End If
 
-                Case eEstimationTypes.BuB0
+                Case eEstimationTypes.BuBo
                     For i = 0 To 1
                         For j = 100 To 10000
                             B = CSng(j / 100)
                             XVal(j) = 1 / B
-                            Vant = Me.m_uic.Core.CalcEcosimVulB0(B, iGroup, i = 1)
+                            Vant = Me.m_uic.Core.CalcEcosimVulBo(B, iGroup, i = 1)
                             If Vant < 0 Then Vant = 1
                             'for Becopath / bunfished plot then display log10 of vulnerability
                             PlotVal(i, j) = CSng(Math.Log(Vant) / Math.Log(10))
@@ -280,13 +280,13 @@ Namespace Ecosim
                         If dStepSize <= 0 Then dStepSize = 1
                     End If
 
-                Case eEstimationTypes.FMaxB0Bu
+                Case eEstimationTypes.FMaxBoBu
                     sYMax = 1
                     For i = 0 To 1
                         For j = 100 To 10000
                             B = CSng(j / 100)
                             XVal(j) = 1 / B
-                            Vant = Me.m_uic.Core.CalcEcosimVulB0(B, iGroup, i = 1)
+                            Vant = Me.m_uic.Core.CalcEcosimVulBo(B, iGroup, i = 1)
                             If Vant < 0 Then Vant = 1
                             'for Becopath / bunfished plot then display log10 of vulnerability
                             PlotVal(i, j) = 1 / Vant
@@ -338,7 +338,7 @@ Namespace Ecosim
             li.Symbol.IsVisible = False
 
             Select Case Me.EstimationMethod
-                Case eEstimationTypes.B0Bu, eEstimationTypes.BuB0, eEstimationTypes.FMaxB0Bu
+                Case eEstimationTypes.BoBu, eEstimationTypes.BuBo, eEstimationTypes.FMaxBoBu
                     For j As Integer = 100 To 10000
                         li.AddPoint(XVal(j), PlotVal(iIndex, j))
                         If XVal(j) = 0 Then Exit For

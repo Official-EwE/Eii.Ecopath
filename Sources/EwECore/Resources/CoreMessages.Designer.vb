@@ -1482,7 +1482,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Model data has changed since the last time you saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - revert to last saved data\nCancel - abort this operation..
+        '''  Looks up a localized string similar to Model data has changed since the last time you saved. Do you wish to save these changes?.
         '''</summary>
         Friend Shared ReadOnly Property PROMPT_SAVE_CHANGES() As String
             Get

@@ -776,7 +776,7 @@ System Error: {0}</value>
     <value>Particle Size Distribution run completed.</value>
   </data>
   <data name="PROMPT_SAVE_CHANGES" xml:space="preserve">
-    <value>Model data has changed since the last time you saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - revert to last saved data\nCancel - abort this operation.</value>
+    <value>Model data has changed since the last time you saved. Do you wish to save these changes?</value>
   </data>
   <data name="DATABASE_BACKUP_FAILED" xml:space="preserve">
     <value>Failed to make a backup copy of your database to '{0}'</value>

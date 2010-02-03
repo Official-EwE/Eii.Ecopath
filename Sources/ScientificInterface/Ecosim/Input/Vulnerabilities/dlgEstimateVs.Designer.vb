@@ -122,7 +122,7 @@ Namespace Ecosim
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
             resources.ApplyResources(Me.m_grid, "m_grid")
-            Me.m_grid.FixedColumnWidths = False
+            Me.m_grid.FixedColumnWidths = True
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.Name = "m_grid"
@@ -160,11 +160,11 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_btnCancel)
             Me.Controls.Add(Me.m_scMain)
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "dlgEstimateVs"
             Me.ShowInTaskbar = False
+            Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)

@@ -1897,7 +1897,9 @@ Public Class cCore
                 End If
 
             Case cFeedbackMessage.eReply.NO
-                ' Do nothing
+                ' Forget changes
+                Me.DiscardChanges()
+
         End Select
 
         ' All well, proceed.
@@ -6368,7 +6370,7 @@ Public Class cCore
 
     End Sub
 
-    Public Function CalcEcosimVulB0(ByVal BmaxBo As Single, _
+    Public Function CalcEcosimVulBo(ByVal BmaxBo As Single, _
                                     ByVal iGroup As Integer, _
                                     ByVal FtimeOn As Boolean) As Single
         Return Me.m_EcoSim.VulBo(BmaxBo, iGroup, FtimeOn)

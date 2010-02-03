@@ -18,10 +18,11 @@ Namespace Ecosim
         Private Enum eColumnTypes As Integer
             Index = 0
             Name
+            PotGrowth
+            VwoFTo
+            VwithFTo
             FMax
-            ApplyVwoFT
             VwoFT
-            ApplyVwithFT
             VwithFT
         End Enum
 
@@ -32,14 +33,15 @@ Namespace Ecosim
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.PotGrowth) = New EwEColumnHeaderCell("Poten. growth (Bunf/Bo)")
             Me(0, eColumnTypes.FMax) = New EwEColumnHeaderCell("FMax")
-            Me(0, eColumnTypes.ApplyVwoFT) = New EwEColumnHeaderCell("Apply")
-            Me(0, eColumnTypes.VwoFT) = New EwEColumnHeaderCell("V without FT")
-            Me(0, eColumnTypes.ApplyVwithFT) = New EwEColumnHeaderCell("Apply")
-            Me(0, eColumnTypes.VwithFT) = New EwEColumnHeaderCell("V with FT")
+            Me(0, eColumnTypes.VwoFTo) = New EwEColumnHeaderCell("Vulnerability w/o FT")
+            Me(0, eColumnTypes.VwoFT) = New EwEColumnHeaderCell("Vulnerability w/o FT")
+            Me(0, eColumnTypes.VwithFTo) = New EwEColumnHeaderCell("Vulnerability w. FT")
+            Me(0, eColumnTypes.VwithFT) = New EwEColumnHeaderCell("Vulnerability w. FT")
 
             Me.FixedColumns = 1
-            Me.FixedColumnWidths = False
+            Me.FixedColumnWidths = True ' To accomodate long header labels
 
             Me.Selection.SelectionMode = GridSelectionMode.Row
 
@@ -56,20 +58,17 @@ Namespace Ecosim
 
                 Me.AddRow()
                 Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(iGroup)
-
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
-
-                Me(iGroup, eColumnTypes.ApplyVwoFT) = New Cells.Real.CheckBox(False)
-                Me(iGroup, eColumnTypes.ApplyVwoFT).Behaviors.Add(Me.m_bm)
-
+                Me(iGroup, eColumnTypes.PotGrowth) = New EwECell(3, GetType(Single), eStyleFlags.OK)
+                Me(iGroup, eColumnTypes.FMax) = New EwECell(3, GetType(Single), eStyleFlags.OK)
+                Me(iGroup, eColumnTypes.VwoFTo) = New EwECell(1, GetType(Single), eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.VwoFTo).Behaviors.Add(Me.m_bm)
                 Me(iGroup, eColumnTypes.VwoFT) = New EwECell(1, GetType(Single), eStyleFlags.NotEditable)
-
-                Me(iGroup, eColumnTypes.ApplyVwithFT) = New Cells.Real.CheckBox(False)
-                Me(iGroup, eColumnTypes.ApplyVwithFT).Behaviors.Add(Me.m_bm)
-
+                Me(iGroup, eColumnTypes.VwoFT).Behaviors.Add(Me.m_bm)
+                Me(iGroup, eColumnTypes.VwithFTo) = New EwECell(2, GetType(Single), eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.VwithFTo).Behaviors.Add(Me.m_bm)
                 Me(iGroup, eColumnTypes.VwithFT) = New EwECell(2, GetType(Single), eStyleFlags.NotEditable)
-
-                Me(iGroup, eColumnTypes.FMax) = New EwECell(3, GetType(Single), eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.VwithFT).Behaviors.Add(Me.m_bm)
 
             Next
 
@@ -106,6 +105,27 @@ Namespace Ecosim
                 End If
             End Set
         End Property
+
+        Protected Overrides Sub OnCellClicked(ByVal p As SourceGrid2.Position, ByVal cell As ICellVirtual)
+            MyBase.OnCellClicked(p, cell)
+
+            Dim cols As eColumnTypes() = {eColumnTypes.VwithFTo, eColumnTypes.VwoFTo, eColumnTypes.VwithFT, eColumnTypes.VwoFT}
+
+            If Array.IndexOf(cols, DirectCast(p.Column, eColumnTypes)) = -1 Then Return
+            If Not (TypeOf cell Is EwECell) Then Return
+
+            Dim cellTest As EwECell = Nothing
+            For Each col As eColumnTypes In cols
+                cellTest = DirectCast(Me(p.Row, col), EwECell)
+                If CInt(col) = p.Column Then
+                    cellTest.Style = cellTest.Style Or eStyleFlags.Checked
+                Else
+                    cellTest.Style = cellTest.Style And (Not eStyleFlags.Checked)
+                End If
+                cellTest.Invalidate()
+            Next
+
+        End Sub
 
     End Class
 
