@@ -49,7 +49,7 @@ Public Class ucResults
         Equilibrium
     End Enum
 
-    Enum eGraphModeType As Integer
+    Enum eGraphDataType As Integer
         CostRevenue = 0
         Cost
         Revenue
@@ -67,7 +67,7 @@ Public Class ucResults
     ''' <summary>Viewmode dictates what type of result screen the user sees.</summary>
     Private m_viewMode As eViewModeType = eViewModeType.Ecosim
     ''' <summary>Graphmode dictates what data is viewed in result graphs.</summary>
-    Private m_graphmode As eGraphModeType = eGraphModeType.CostRevenue
+    Private m_graphmode As eGraphDataType = eGraphDataType.CostRevenue
     ''' <summary>Current view to update when triggers arrive.</summary>
     Private m_view As IResultView = Nothing
     ''' <summary>Update feedback prevention flaggibit.</summary>
@@ -131,6 +131,13 @@ Public Class ucResults
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
+
+        Me.m_tscmbGraphData.Items.Clear()
+        For Each gd As eGraphDataType In [Enum].GetValues(GetType(eGraphDataType))
+            Me.m_tscmbGraphData.Items.Add(gd)
+        Next
+        Me.m_tscmbGraphData.SelectedIndex = 0
+
         ' Restore last selection
         Me.m_tscmbFleets.SelectedIndex = Math.Min(Me.m_tscmbFleets.Items.Count - 1, Math.Max(-1, ucResults.g_iLastFleet))
     End Sub
@@ -213,29 +220,9 @@ Public Class ucResults
         ' NOP
     End Sub
 
-    Private Sub OnViewCostRevenue(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsmiRevenueCost.Click
-        Me.SetGraphMode(eGraphModeType.CostRevenue)
-    End Sub
-
-    Private Sub OnViewCostBreakdown(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsmiCostBreakdown.Click
-        Me.SetGraphMode(eGraphModeType.Cost)
-    End Sub
-
-    Private Sub OnViewRevenueBreakdown(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsmiRevenueBreakdown.Click
-        Me.SetGraphMode(eGraphModeType.Revenue)
-    End Sub
-
-    Private Sub OnViewJobs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsmiJobs.Click
-        Me.SetGraphMode(eGraphModeType.Jobs)
-    End Sub
-
-    Private Sub OnViewDependents(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsmiDependents.Click
-        Me.SetGraphMode(eGraphModeType.Dependents)
+    Private Sub m_tscmbGraphData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tscmbGraphData.Click
+        Me.SetGraphData(DirectCast(Me.m_tscmbGraphData.SelectedItem, eGraphDataType))
     End Sub
 
 #Region " Commands "
@@ -463,13 +450,13 @@ Public Class ucResults
         Me.m_scResults.ResumeLayout()
 
         ' Yippee
-        Me.SetGraphMode(Me.m_graphmode)
+        Me.SetGraphData(Me.m_graphmode)
         Me.UpdateResults()
         Me.UpdateControls()
 
     End Sub
 
-    Private Sub SetGraphMode(ByVal graphmode As eGraphModeType)
+    Private Sub SetGraphData(ByVal graphmode As eGraphDataType)
 
         Me.m_graphmode = graphmode
         Me.UpdateControls()
@@ -485,14 +472,14 @@ Public Class ucResults
 
         Select Case graphmode
 
-            Case eGraphModeType.CostRevenue
+            Case eGraphDataType.CostRevenue
                 strGraphTitle = "Revenue and Cost"
                 strYAxisLabel = "Revenue and Cost ({0})"
                 avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTotal, _
                                                       cResults.eVariableType.Cost, _
                                                       cResults.eVariableType.Profit}
 
-            Case eGraphModeType.Cost
+            Case eGraphDataType.Cost
                 strGraphTitle = "Cost"
                 strYAxisLabel = "Cost breakdown ({0})"
                 avars = New cResults.eVariableType() {cResults.eVariableType.CostAgriculture, _
@@ -501,7 +488,7 @@ Public Class ucResults
                                                       cResults.eVariableType.CostManagementRoyaltyCertificationObservers, _
                                                       cResults.eVariableType.CostRawmaterial}
 
-            Case eGraphModeType.Revenue
+            Case eGraphDataType.Revenue
                 strGraphTitle = "Revenue"
                 strYAxisLabel = "Revenue breakdown ({0})"
                 avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTickets, _
@@ -510,13 +497,13 @@ Public Class ucResults
                                                       cResults.eVariableType.RevenueProductsOther, _
                                                       cResults.eVariableType.RevenueAgriculture}
 
-            Case eGraphModeType.Jobs
+            Case eGraphDataType.Jobs
                 strGraphTitle = "Jobs"
                 strYAxisLabel = "Jobs"
                 avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfJobsTotal, _
                                                       cResults.eVariableType.NumberOfJobsMaleTotal, _
                                                       cResults.eVariableType.NumberOfJobsFemaleTotal}
-            Case eGraphModeType.Dependents
+            Case eGraphDataType.Dependents
                 strGraphTitle = "Dependents"
                 strYAxisLabel = "Dependents"
                 avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfDependentsTotal, _

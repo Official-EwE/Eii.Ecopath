@@ -35,17 +35,13 @@ Partial Class ucResults
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripButton
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripButton
         Me.m_tsbEquilibrium = New System.Windows.Forms.ToolStripButton
-        Me.m_tsddGraphType = New System.Windows.Forms.ToolStripSplitButton
-        Me.m_tsmiRevenueCost = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiCostBreakdown = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiRevenueBreakdown = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.m_tsmiJobs = New System.Windows.Forms.ToolStripMenuItem
         Me.m_btnRunEcosim = New System.Windows.Forms.Button
         Me.m_scResults = New System.Windows.Forms.SplitContainer
         Me.m_plFlow = New EwEValueChainPlugin.plFlow
         Me.m_btnRunEquilibrium = New System.Windows.Forms.Button
-        Me.m_tsmiDependents = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tscmbGraphData = New System.Windows.Forms.ToolStripComboBox
+        Me.m_tslblData = New System.Windows.Forms.ToolStripLabel
+        Me.m_tssSep3 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsResults.SuspendLayout()
         Me.m_scResults.Panel1.SuspendLayout()
         Me.m_scResults.SuspendLayout()
@@ -65,7 +61,7 @@ Partial Class ucResults
         '
         'm_tsResults
         '
-        Me.m_tsResults.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslFleets, Me.m_tscmbFleets, Me.m_tssep1, Me.m_tsbShowFlow, Me.m_tssep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEquilibrium, Me.m_tsddGraphType})
+        Me.m_tsResults.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblData, Me.m_tscmbGraphData, Me.m_tssSep3, Me.m_tslFleets, Me.m_tscmbFleets, Me.m_tssep1, Me.m_tsbShowFlow, Me.m_tssep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEquilibrium})
         Me.m_tsResults.Location = New System.Drawing.Point(0, 0)
         Me.m_tsResults.Name = "m_tsResults"
         Me.m_tsResults.Size = New System.Drawing.Size(751, 25)
@@ -132,47 +128,6 @@ Partial Class ucResults
         Me.m_tsbEquilibrium.Text = "Equilibrium"
         Me.m_tsbEquilibrium.ToolTipText = "Show equilibrium results graph"
         '
-        'm_tsddGraphType
-        '
-        Me.m_tsddGraphType.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.m_tsddGraphType.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiRevenueCost, Me.m_tsmiCostBreakdown, Me.m_tsmiRevenueBreakdown, Me.ToolStripSeparator1, Me.m_tsmiJobs, Me.m_tsmiDependents})
-        Me.m_tsddGraphType.Image = CType(resources.GetObject("m_tsddGraphType.Image"), System.Drawing.Image)
-        Me.m_tsddGraphType.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.m_tsddGraphType.Name = "m_tsddGraphType"
-        Me.m_tsddGraphType.Size = New System.Drawing.Size(77, 22)
-        Me.m_tsddGraphType.Text = "Graph data"
-        Me.m_tsddGraphType.Visible = False
-        '
-        'm_tsmiRevenueCost
-        '
-        Me.m_tsmiRevenueCost.Name = "m_tsmiRevenueCost"
-        Me.m_tsmiRevenueCost.Size = New System.Drawing.Size(184, 22)
-        Me.m_tsmiRevenueCost.Tag = ""
-        Me.m_tsmiRevenueCost.Text = "&Revenue and cost"
-        '
-        'm_tsmiCostBreakdown
-        '
-        Me.m_tsmiCostBreakdown.Name = "m_tsmiCostBreakdown"
-        Me.m_tsmiCostBreakdown.Size = New System.Drawing.Size(184, 22)
-        Me.m_tsmiCostBreakdown.Text = "&Cost breakdown"
-        '
-        'm_tsmiRevenueBreakdown
-        '
-        Me.m_tsmiRevenueBreakdown.Name = "m_tsmiRevenueBreakdown"
-        Me.m_tsmiRevenueBreakdown.Size = New System.Drawing.Size(184, 22)
-        Me.m_tsmiRevenueBreakdown.Text = "&Revenue breakdown"
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(181, 6)
-        '
-        'm_tsmiJobs
-        '
-        Me.m_tsmiJobs.Name = "m_tsmiJobs"
-        Me.m_tsmiJobs.Size = New System.Drawing.Size(184, 22)
-        Me.m_tsmiJobs.Text = "&Jobs"
-        '
         'm_btnRunEcosim
         '
         Me.m_btnRunEcosim.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -229,11 +184,22 @@ Partial Class ucResults
         Me.m_btnRunEquilibrium.Text = "Run E&quilibrium"
         Me.m_btnRunEquilibrium.UseVisualStyleBackColor = True
         '
-        'm_tsmiDependents
+        'm_tscmbGraphData
         '
-        Me.m_tsmiDependents.Name = "m_tsmiDependents"
-        Me.m_tsmiDependents.Size = New System.Drawing.Size(184, 22)
-        Me.m_tsmiDependents.Text = "&Dependents"
+        Me.m_tscmbGraphData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_tscmbGraphData.Name = "m_tscmbGraphData"
+        Me.m_tscmbGraphData.Size = New System.Drawing.Size(121, 25)
+        '
+        'm_tslblData
+        '
+        Me.m_tslblData.Name = "m_tslblData"
+        Me.m_tslblData.Size = New System.Drawing.Size(34, 22)
+        Me.m_tslblData.Text = "&Data:"
+        '
+        'm_tssSep3
+        '
+        Me.m_tssSep3.Name = "m_tssSep3"
+        Me.m_tssSep3.Size = New System.Drawing.Size(6, 25)
         '
         'ucResults
         '
@@ -269,12 +235,8 @@ Partial Class ucResults
     Private WithEvents m_btnRunEquilibrium As System.Windows.Forms.Button
     Private WithEvents m_tsbEcosim As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbEquilibrium As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_tsddGraphType As System.Windows.Forms.ToolStripSplitButton
-    Private WithEvents m_tsmiRevenueCost As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiCostBreakdown As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiRevenueBreakdown As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents m_tsmiJobs As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiDependents As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tscmbGraphData As System.Windows.Forms.ToolStripComboBox
+    Private WithEvents m_tslblData As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_tssSep3 As System.Windows.Forms.ToolStripSeparator
 
 End Class
