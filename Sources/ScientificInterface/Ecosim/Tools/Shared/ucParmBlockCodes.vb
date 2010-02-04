@@ -264,7 +264,7 @@ Namespace Ecosim
             Dim sBlockWidth As Single = Me.BlockWidth()
             Dim sX As Single = Me.m_iSelectedBlock * sBlockWidth
             Dim sY As Single = Me.m_pbxBlockCodes.ClientRectangle.Height
-            Dim clrHighlight As Color = Me.UIContext.StyleGuide.TextColor(cStyleGuide.eStyleFlags.Highlight)
+            Dim clrHighlight As Color = Me.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
 
             For iBlock As Integer = 0 To Me.m_iNumBlocks
                 Using brTmp As New SolidBrush(Me.BlockColor(iBlock))
