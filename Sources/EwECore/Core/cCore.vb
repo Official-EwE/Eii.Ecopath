@@ -4791,7 +4791,7 @@ Public Class cCore
             m_EcoSimData.DefaultSummaryPeriods()
 
             'Init PropLandedTime() and Propdiscardtime() to Ecopath values so they can be used during the initialization of Ecosim
-            m_QuotaData.InitToEcoPath(Me.m_EcoPathData)
+            '  m_QuotaData.InitToEcoPath(Me.m_EcoPathData)
 
             m_EcoSim.Init(True)
 
