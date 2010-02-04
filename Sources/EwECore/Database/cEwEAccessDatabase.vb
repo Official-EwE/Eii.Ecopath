@@ -45,7 +45,8 @@ Namespace Database
         ''' </summary>
         ''' <param name="strDatabase">The file name of the .MDB to create.</param>
         ''' <param name="bOverwrite">States whether an existing database may be overwritten.</param>
-        ''' <param name="databaseType">Database type to force.</param>
+        ''' <param name="format">Database format type to use. If not set, the 
+        ''' database type is deducted from the <paramref name="strDatabase">database</paramref>.</param>
         ''' <returns>A <see cref="eDatasourceAccessType">eDatasourceAccessType</see> value</returns>
         ''' <remarks>Note that this will NOT open the newly created database.</remarks>
         ''' -------------------------------------------------------------------

@@ -121,12 +121,6 @@ Namespace Ecosim
 
 #Region " Internals "
 
-        Private ReadOnly Property Core() As cCore
-            Get
-                Return Me.UIContext.Core
-            End Get
-        End Property
-
         Private Sub InitRunParams()
 
             m_nudNumberOfRuns.Value = CDec(Me.m_manager.ModelParameters.nRuns)

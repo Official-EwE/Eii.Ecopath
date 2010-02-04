@@ -61,7 +61,7 @@ Imports ScientificInterface.Other
     ''' </summary>
     ''' <remarks>
     ''' This class can represent existing and new Fleets. If this class has its
-    ''' <see cref="FleetInfo.Fleet">Fleet</see> parameter set, a real live
+    ''' <see cref="cFleetInfo.Fleet">Fleet</see> parameter set, a real live
     ''' Fleet is represented. If this parameter is not set, a new Fleet is
     ''' represented.
     ''' </remarks>

@@ -564,12 +564,6 @@ Namespace Ecosim
 
 #Region " Internal implementation "
 
-        Private ReadOnly Property Core() As cCore
-            Get
-                Return Me.UIContext.Core
-            End Get
-        End Property
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Update state of main controls based on user selections.

@@ -67,8 +67,10 @@ Namespace Import
             ''' <summary>
             ''' Create a new import setting for an EwE5 model.
             ''' </summary>
-            ''' <param name="mi">The <see cref="cEwE6DatabaseImporter.cEwE5ModelInfo">
-            ''' to create import settings for.</param>
+            ''' <param name="mi">
+            ''' The <see cref="cEwE6DatabaseImporter.cEwE5ModelInfo">EwE5 model</see>
+            ''' to create import settings for.
+            ''' </param>
             ''' -----------------------------------------------------------------------
             Public Sub New(ByVal mi As cEwE6DatabaseImporter.cEwE5ModelInfo)
                 Me.m_mi = mi

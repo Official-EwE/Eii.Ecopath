@@ -43,6 +43,25 @@ Namespace Ecosim
 
 #End Region ' Constructor
 
+#Region " IUIElement implementation "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="cUIContext">UI context</see> to use.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
+
+#End Region ' IUIElement implementation
+
 #Region " Public interfaces "
 
         ''' -------------------------------------------------------------------
@@ -136,22 +155,31 @@ Namespace Ecosim
 
 #Region " Public events "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event notifying that the number of blocks have changed.
+        ''' </summary>
+        ''' <param name="sender">
+        ''' The <see cref="ucParmBlockCodes">block code parameters control</see>
+        ''' that sent this event.
+        ''' </param>
+        ''' -------------------------------------------------------------------
         Public Event OnNumBlocksChanged(ByVal sender As ucParmBlockCodes)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event notifying that selected block has changed.
+        ''' </summary>
+        ''' <param name="sender">
+        ''' The <see cref="ucParmBlockCodes">block code parameters control</see>
+        ''' that sent this event.
+        ''' </param>
+        ''' -------------------------------------------------------------------
         Public Event OnBlockSelected(ByVal sender As ucParmBlockCodes)
 
 #End Region ' Public events
 
 #Region " Public properties "
-
-        Public Property UIContext() As cUIContext _
-            Implements IUIElement.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Set(ByVal value As cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
 
 #End Region ' Public properties
 
@@ -257,6 +285,12 @@ Namespace Ecosim
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Render the blocks picture box on a given graphics instance.
+        ''' </summary>
+        ''' <param name="g">The graphics to draw onto.</param>
+        ''' -------------------------------------------------------------------
         Private Sub PaintBlocks(ByVal g As Graphics)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -278,12 +312,16 @@ Namespace Ecosim
 
         End Sub
 
-        Private Function BlockWidth() As Single
-
-            ' Allow for 0-color black
-            Return CSng(m_pbxBlockCodes.ClientRectangle.Width / (Me.m_iNumBlocks + 1))
-
-        End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the width of a single block to draw.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private ReadOnly Property BlockWidth() As Single
+            Get
+                Return CSng(m_pbxBlockCodes.ClientRectangle.Width / (Me.m_iNumBlocks + 1))
+            End Get
+        End Property
 
 #End Region ' Internal implementation
 
