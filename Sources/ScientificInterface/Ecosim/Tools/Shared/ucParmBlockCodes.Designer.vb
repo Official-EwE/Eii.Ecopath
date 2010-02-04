@@ -21,103 +21,103 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.pbxBlockCodes = New System.Windows.Forms.PictureBox
-            Me.nudNumBlockCodes = New System.Windows.Forms.NumericUpDown
-            Me.nudSelectedBlockCode = New System.Windows.Forms.NumericUpDown
-            Me.lblNumBlocks = New System.Windows.Forms.Label
-            Me.lblSelectedBlock = New System.Windows.Forms.Label
-            Me.slSelectedBlockCode = New ucSlider
-            CType(Me.pbxBlockCodes, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.nudNumBlockCodes, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.nudSelectedBlockCode, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_pbxBlockCodes = New System.Windows.Forms.PictureBox
+            Me.m_nudNumBlockCodes = New System.Windows.Forms.NumericUpDown
+            Me.m_nudSelectedBlockCode = New System.Windows.Forms.NumericUpDown
+            Me.m_lblNumBlocks = New System.Windows.Forms.Label
+            Me.m_lblSelectedBlock = New System.Windows.Forms.Label
+            Me.m_slSelectedBlockCode = New ScientificInterfaceShared.Controls.ucSlider
+            CType(Me.m_pbxBlockCodes, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudNumBlockCodes, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudSelectedBlockCode, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
-            'pbxBlockCodes
+            'm_pbxBlockCodes
             '
-            Me.pbxBlockCodes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_pbxBlockCodes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.pbxBlockCodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.pbxBlockCodes.Location = New System.Drawing.Point(139, 3)
-            Me.pbxBlockCodes.Name = "pbxBlockCodes"
-            Me.pbxBlockCodes.Size = New System.Drawing.Size(371, 20)
-            Me.pbxBlockCodes.TabIndex = 0
-            Me.pbxBlockCodes.TabStop = False
+            Me.m_pbxBlockCodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_pbxBlockCodes.Location = New System.Drawing.Point(139, 3)
+            Me.m_pbxBlockCodes.Name = "m_pbxBlockCodes"
+            Me.m_pbxBlockCodes.Size = New System.Drawing.Size(371, 20)
+            Me.m_pbxBlockCodes.TabIndex = 0
+            Me.m_pbxBlockCodes.TabStop = False
             '
-            'nudNumBlockCodes
+            'm_nudNumBlockCodes
             '
-            Me.nudNumBlockCodes.Location = New System.Drawing.Point(82, 3)
-            Me.nudNumBlockCodes.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
-            Me.nudNumBlockCodes.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.nudNumBlockCodes.Name = "nudNumBlockCodes"
-            Me.nudNumBlockCodes.Size = New System.Drawing.Size(51, 20)
-            Me.nudNumBlockCodes.TabIndex = 1
-            Me.nudNumBlockCodes.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudNumBlockCodes.Location = New System.Drawing.Point(82, 3)
+            Me.m_nudNumBlockCodes.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
+            Me.m_nudNumBlockCodes.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudNumBlockCodes.Name = "m_nudNumBlockCodes"
+            Me.m_nudNumBlockCodes.Size = New System.Drawing.Size(51, 20)
+            Me.m_nudNumBlockCodes.TabIndex = 1
+            Me.m_nudNumBlockCodes.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
-            'nudSelectedBlockCode
+            'm_nudSelectedBlockCode
             '
-            Me.nudSelectedBlockCode.Location = New System.Drawing.Point(82, 29)
-            Me.nudSelectedBlockCode.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
-            Me.nudSelectedBlockCode.Name = "nudSelectedBlockCode"
-            Me.nudSelectedBlockCode.Size = New System.Drawing.Size(51, 20)
-            Me.nudSelectedBlockCode.TabIndex = 3
-            Me.nudSelectedBlockCode.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudSelectedBlockCode.Location = New System.Drawing.Point(82, 29)
+            Me.m_nudSelectedBlockCode.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_nudSelectedBlockCode.Name = "m_nudSelectedBlockCode"
+            Me.m_nudSelectedBlockCode.Size = New System.Drawing.Size(51, 20)
+            Me.m_nudSelectedBlockCode.TabIndex = 3
+            Me.m_nudSelectedBlockCode.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
-            'lblNumBlocks
+            'm_lblNumBlocks
             '
-            Me.lblNumBlocks.AutoSize = True
-            Me.lblNumBlocks.Location = New System.Drawing.Point(3, 5)
-            Me.lblNumBlocks.Name = "lblNumBlocks"
-            Me.lblNumBlocks.Size = New System.Drawing.Size(73, 13)
-            Me.lblNumBlocks.TabIndex = 0
-            Me.lblNumBlocks.Text = "&No. of blocks:"
+            Me.m_lblNumBlocks.AutoSize = True
+            Me.m_lblNumBlocks.Location = New System.Drawing.Point(3, 5)
+            Me.m_lblNumBlocks.Name = "m_lblNumBlocks"
+            Me.m_lblNumBlocks.Size = New System.Drawing.Size(73, 13)
+            Me.m_lblNumBlocks.TabIndex = 0
+            Me.m_lblNumBlocks.Text = "&No. of blocks:"
             '
-            'lblSelectedBlock
+            'm_lblSelectedBlock
             '
-            Me.lblSelectedBlock.AutoSize = True
-            Me.lblSelectedBlock.Location = New System.Drawing.Point(3, 31)
-            Me.lblSelectedBlock.Name = "lblSelectedBlock"
-            Me.lblSelectedBlock.Size = New System.Drawing.Size(52, 13)
-            Me.lblSelectedBlock.TabIndex = 2
-            Me.lblSelectedBlock.Text = "&Selected:"
+            Me.m_lblSelectedBlock.AutoSize = True
+            Me.m_lblSelectedBlock.Location = New System.Drawing.Point(3, 31)
+            Me.m_lblSelectedBlock.Name = "m_lblSelectedBlock"
+            Me.m_lblSelectedBlock.Size = New System.Drawing.Size(52, 13)
+            Me.m_lblSelectedBlock.TabIndex = 2
+            Me.m_lblSelectedBlock.Text = "&Selected:"
             '
-            'slSelectedBlockCode
+            'm_slSelectedBlockCode
             '
-            Me.slSelectedBlockCode.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_slSelectedBlockCode.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.slSelectedBlockCode.Location = New System.Drawing.Point(139, 27)
-            Me.slSelectedBlockCode.Maximum = 100
-            Me.slSelectedBlockCode.Minimum = 0
-            Me.slSelectedBlockCode.Name = "slSelectedBlockCode"
-            Me.slSelectedBlockCode.Size = New System.Drawing.Size(371, 23)
-            Me.slSelectedBlockCode.TabIndex = 4
-            Me.slSelectedBlockCode.Value = 0
+            Me.m_slSelectedBlockCode.Location = New System.Drawing.Point(139, 27)
+            Me.m_slSelectedBlockCode.Maximum = 100
+            Me.m_slSelectedBlockCode.Minimum = 0
+            Me.m_slSelectedBlockCode.Name = "m_slSelectedBlockCode"
+            Me.m_slSelectedBlockCode.Size = New System.Drawing.Size(371, 23)
+            Me.m_slSelectedBlockCode.TabIndex = 4
+            Me.m_slSelectedBlockCode.Value = 0
             '
-            'ParmBlockCodes
+            'ucParmBlockCodes
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.lblSelectedBlock)
-            Me.Controls.Add(Me.lblNumBlocks)
-            Me.Controls.Add(Me.nudSelectedBlockCode)
-            Me.Controls.Add(Me.nudNumBlockCodes)
-            Me.Controls.Add(Me.pbxBlockCodes)
-            Me.Controls.Add(Me.slSelectedBlockCode)
+            Me.Controls.Add(Me.m_lblSelectedBlock)
+            Me.Controls.Add(Me.m_lblNumBlocks)
+            Me.Controls.Add(Me.m_nudSelectedBlockCode)
+            Me.Controls.Add(Me.m_nudNumBlockCodes)
+            Me.Controls.Add(Me.m_pbxBlockCodes)
+            Me.Controls.Add(Me.m_slSelectedBlockCode)
             Me.Margin = New System.Windows.Forms.Padding(0)
-            Me.Name = "ParmBlockCodes"
+            Me.Name = "ucParmBlockCodes"
             Me.Size = New System.Drawing.Size(513, 55)
-            CType(Me.pbxBlockCodes, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.nudNumBlockCodes, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.nudSelectedBlockCode, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbxBlockCodes, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudNumBlockCodes, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudSelectedBlockCode, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents pbxBlockCodes As System.Windows.Forms.PictureBox
-        Friend WithEvents nudNumBlockCodes As System.Windows.Forms.NumericUpDown
-        Friend WithEvents nudSelectedBlockCode As System.Windows.Forms.NumericUpDown
-        Friend WithEvents slSelectedBlockCode As ucSlider
-        Friend WithEvents lblNumBlocks As System.Windows.Forms.Label
-        Friend WithEvents lblSelectedBlock As System.Windows.Forms.Label
+        Private WithEvents m_nudNumBlockCodes As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblNumBlocks As System.Windows.Forms.Label
+        Private WithEvents m_pbxBlockCodes As System.Windows.Forms.PictureBox
+        Private WithEvents m_lblSelectedBlock As System.Windows.Forms.Label
+        Private WithEvents m_nudSelectedBlockCode As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_slSelectedBlockCode As ScientificInterfaceShared.Controls.ucSlider
 
     End Class
 

@@ -319,7 +319,7 @@ Namespace Ecosim
             If (iRow > m_BlockCells.GetLength(0) - 1) Then Return
 
             ' Fill single block
-            Me.m_FPManager.SearchBlocks(iRow).SearchBlocks(iCol) = Me.m_blockCodes.SelectedBlockNum
+            Me.m_FPManager.SearchBlocks(iRow).SearchBlocks(iCol) = Me.m_blockCodes.SelectedBlock
             Me.m_BlockCells(iRow, iCol) = Me.m_FPManager.SearchBlocks(iRow).SearchBlocks(iCol)
 
         End Sub
@@ -331,17 +331,16 @@ Namespace Ecosim
             If m_BlockCells Is Nothing Then Return
             If endYear > m_BlockCells.GetLength(1) - 1 Then endYear = m_BlockCells.GetLength(1) - 1
 
-            Dim nColors As Integer = m_blockCodes.nBlockCodes - 1
+            Dim nColors As Integer = m_blockCodes.NumBlocks - 1
             Dim yearSegment As Integer = CInt(Math.Ceiling(m_iTotalBlocks / yearPerBlock))
             Dim totalClr As Integer = yearSegment * Me.m_uic.Core.nFleets
 
             If totalClr > nColors Then
-                m_blockCodes.nBlockCodes = totalClr + 1
+                m_blockCodes.NumBlocks = totalClr + 1
             End If
 
-            Dim colors As List(Of Color) = m_blockCodes.BlockColors
             Dim cnt As Integer = 1
-            Dim stepSize As Integer = CInt(Math.Floor(m_blockCodes.nBlockCodes / totalClr))
+            Dim stepSize As Integer = CInt(Math.Floor(m_blockCodes.NumBlocks / totalClr))
 
             For i As Integer = 1 To m_BlockCells.GetLength(0) - 1
                 'Console.WriteLine("iColor = {0} selClr = {1}", cnt, selClr)

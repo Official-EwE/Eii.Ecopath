@@ -5,21 +5,33 @@ Option Strict On
 
 Imports ScientificInterface.Other
 
-#End Region
+#End Region ' Imports
 
 Namespace Ecosim
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' User control allowing the user to set a number of colour blocks
+    ''' and a block selection.
+    ''' </summary>
+    ''' =======================================================================
     Public Class ucParmBlockCodes
         Implements IUIElement
 
-#Region "Private variables"
+#Region " Private variables "
+
+        ''' <summary>ToDo: obtain from style guide.</summary>
+        Private Const g_iSelectionBorderWidth As Integer = 3
 
         ''' <summary>UI context.</summary>
         Private m_uic As cUIContext = Nothing
         ''' <summary>Number of blocks to show.</summary>
-        Private m_nBlockCodes As Integer = 30
+        Private m_iNumBlocks As Integer = 30
         ''' <summary>Selected color index.</summary>
-        Private m_iSelectedBlockCode As Integer = 15
+        Private m_iSelectedBlock As Integer = 15
+
+        ''' <summary>Update feedback loop prevention.</summary>
+        Private m_bInUpdate As Boolean = False
 
 #End Region
 
@@ -27,77 +39,97 @@ Namespace Ecosim
 
         Public Sub New()
             Me.InitializeComponent()
-            Me.Dock = DockStyle.Fill
         End Sub
 
 #End Region ' Constructor
 
 #Region " Public interfaces "
 
-        Public Property nBlockCodes() As Integer
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the number of blocks.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property NumBlocks() As Integer
             Get
-                Return Me.m_nBlockCodes
+                Return Me.m_iNumBlocks
             End Get
 
             Set(ByVal value As Integer)
 
-                If value = Me.m_nBlockCodes Then Return
+                ' Truncate value
+                value = Math.Max(0, Math.Min(CInt(Me.m_nudNumBlockCodes.Maximum), value))
 
-                Me.m_nBlockCodes = value
+                ' Optimization
+                If (value = Me.m_iNumBlocks) Then Return
 
-                Me.nudNumBlockCodes.Value = value
-                Me.nudSelectedBlockCode.Maximum = value
-                Me.slSelectedBlockCode.Maximum = value
+                ' Update number of blocks
+                Me.m_iNumBlocks = value
+                Me.SelectedBlock = Me.SelectedBlock ' Auto-truncate
+                Me.UpdateControls()
 
                 RaiseEvent OnNumBlocksChanged(Me)
-
-                Me.SelectedBlockNum = 0
-                Me.Invalidate(True)
 
             End Set
         End Property
 
-        Public ReadOnly Property BlockColors() As List(Of Color)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the index of the current selected block in the control.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property SelectedBlock() As Integer
             Get
-                Dim lcolors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.m_nBlockCodes - 1)
+                Return Me.m_iSelectedBlock
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_iSelectedBlock = Math.Max(0, Math.Min(Me.m_iNumBlocks, value))
+
+                If (Me.m_uic Is Nothing) Then Return
+                Me.UpdateControls()
+
+                RaiseEvent OnBlockSelected(Me)
+
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the colors representing the blocks in this control.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property BlockColors() As Color()
+            Get
+                Dim lcolors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.m_iNumBlocks - 1)
                 lcolors.Insert(0, Color.Black)
-                Return lcolors
+                Return lcolors.ToArray
             End Get
         End Property
 
-        Public ReadOnly Property BlockColor(ByVal i As Integer) As Color
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get colors for a single block in this control.
+        ''' </summary>
+        ''' <param name="iBlock">The index of the block to access the color for.</param>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property BlockColor(ByVal iBlock As Integer) As Color
             Get
-                If i >= 0 And i <= Me.nBlockCodes Then
-                    Return Me.BlockColors(i)
+                If iBlock >= 0 And iBlock <= Me.NumBlocks Then
+                    Return Me.BlockColors(iBlock)
                 End If
                 Return Color.Black
             End Get
         End Property
 
-        Public ReadOnly Property SelectedBlockCode() As Color
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the color for the current selected block in the control.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property SelectedBlockColor() As Color
             Get
-                Return Me.BlockColor(Me.m_iSelectedBlockCode)
+                Return Me.BlockColor(Me.m_iSelectedBlock)
             End Get
-        End Property
-
-        Public Property SelectedBlockNum() As Integer
-            Get
-                Return Me.m_iSelectedBlockCode
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iSelectedBlockCode = Math.Max(0, Math.Min(Me.m_nBlockCodes, value))
-
-                If (Me.m_uic Is Nothing) Then Return
-
-                ' Update controls
-                Me.nudSelectedBlockCode.Value = Me.m_iSelectedBlockCode
-                Me.slSelectedBlockCode.Value = Me.m_iSelectedBlockCode
-
-                RaiseEvent OnBlockSelected(Me)
-
-                Me.Invalidate()
-
-            End Set
         End Property
 
 #End Region ' Public interfaces
@@ -121,12 +153,13 @@ Namespace Ecosim
             End Set
         End Property
 
-#End Region 'Public properties
+#End Region ' Public properties
 
-#Region " Private event handlers "
+#Region " Overrides "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+            Me.UpdateControls()
         End Sub
 
         Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
@@ -134,65 +167,122 @@ Namespace Ecosim
             Me.Invalidate()
         End Sub
 
-        Private Sub nudNumBlockCodes_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles nudNumBlockCodes.ValueChanged
-            ' Wait until ready to respond
+#End Region ' Overrides
+
+#Region " Control events "
+
+        Private Sub OnNumBocksChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudNumBlockCodes.ValueChanged
+
             If (Me.m_uic Is Nothing) Then Return
-            Me.nBlockCodes = Convert.ToInt32(Me.nudNumBlockCodes.Value)
+            If (Me.m_bInUpdate = True) Then Return
+
+            Me.NumBlocks = Convert.ToInt32(Me.m_nudNumBlockCodes.Value)
+
         End Sub
 
-        Private Sub nudSelectedBlockCode_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles nudSelectedBlockCode.ValueChanged
-            ' Wait until ready to respond
+        Private Sub OnSelectedBlockCodeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudSelectedBlockCode.ValueChanged
+
             If (Me.m_uic Is Nothing) Then Return
-            Me.SelectedBlockNum = Convert.ToInt32(Me.nudSelectedBlockCode.Value)
+            If (Me.m_bInUpdate = True) Then Return
+
+            Me.SelectedBlock = Convert.ToInt32(Me.m_nudSelectedBlockCode.Value)
+
         End Sub
 
-        Private Sub pbxBlockCodes_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
-            Handles pbxBlockCodes.MouseDown
-            ' Wait until ready to respond
+        Private Sub OnBlockSelectionChanged(ByVal sender As Object, ByVal e As MouseEventArgs) _
+            Handles m_pbxBlockCodes.MouseDown
+
             If (Me.m_uic Is Nothing) Then Return
-            Me.SelectedBlockNum = CInt(Int(CSng(e.X) / Me.BlockWidth()))
+            If (Me.m_bInUpdate = True) Then Return
+
+            Me.SelectedBlock = CInt(Int(CSng(e.X) / Me.BlockWidth()))
+
         End Sub
 
-        Private Sub tbSelectedBlockCode_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles slSelectedBlockCode.ValueChanged
-            ' Wait until ready to respond
+        Private Sub OnBlockSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_slSelectedBlockCode.ValueChanged
+
             If (Me.m_uic Is Nothing) Then Return
-            Me.SelectedBlockNum = slSelectedBlockCode.Value
+            If (Me.m_bInUpdate = True) Then Return
+
+            Me.SelectedBlock = Me.m_slSelectedBlockCode.Value
+
         End Sub
 
-        Private Sub pbxBlockCodes_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
-            Handles pbxBlockCodes.Paint
+        Private Sub OnPaintBlocks(ByVal sender As Object, ByVal e As PaintEventArgs) _
+            Handles m_pbxBlockCodes.Paint
+
             If (Me.m_uic Is Nothing) Then Return
-            Dim sBlockWidth As Single = Me.BlockWidth()
-            Me.DrawBlocks(e.Graphics)
-            Me.DrawBorderSelectedBlockCode(e.Graphics, m_iSelectedBlockCode * sBlockWidth, sBlockWidth)
+            Me.PaintBlocks(e.Graphics)
+
         End Sub
 
-#End Region
+#End Region ' Control events
 
 #Region " Internal implementation "
 
-        Private Sub DrawBlocks(ByVal g As Graphics)
-            Dim sBlockWidth As Single = Me.BlockWidth()
-            For iBlock As Integer = 0 To Me.m_nBlockCodes
-                Using tmpBrush As New SolidBrush(Me.BlockColor(iBlock))
-                    g.FillRectangle(tmpBrush, sBlockWidth * iBlock, 0, sBlockWidth, Me.pbxBlockCodes.Height)
-                End Using
-            Next
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update state and value of controls.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub UpdateControls()
+
+            If Me.m_bInUpdate Then Return
+
+            Me.m_bInUpdate = True
+
+            Me.m_nudNumBlockCodes.Value = Me.m_iNumBlocks
+
+            Try
+
+                Me.m_nudSelectedBlockCode.Value = 0
+                Me.m_slSelectedBlockCode.Value = 0
+
+                Me.m_nudSelectedBlockCode.Maximum = Me.m_iNumBlocks
+                Me.m_slSelectedBlockCode.Maximum = Me.m_iNumBlocks
+
+                Me.m_nudSelectedBlockCode.Value = Me.m_iSelectedBlock
+                Me.m_slSelectedBlockCode.Value = Me.m_iSelectedBlock
+
+            Catch ex As Exception
+
+            End Try
+
+            Me.m_pbxBlockCodes.Invalidate()
+
+            Me.m_bInUpdate = False
+
         End Sub
 
-        Private Sub DrawBorderSelectedBlockCode(ByVal g As Graphics, ByVal sngX As Single, ByVal sngWidth As Single)
-            Const nPenWidth As Integer = 3
-            Dim penDrawing As New System.Drawing.Pen(Color.Blue, nPenWidth)
-            g.DrawRectangle(penDrawing, sngX, 0, sngWidth, Me.pbxBlockCodes.ClientRectangle.Height - nPenWidth + 1)
-            penDrawing.Dispose()
-            penDrawing = Nothing
+        Private Sub PaintBlocks(ByVal g As Graphics)
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim sBlockWidth As Single = Me.BlockWidth()
+            Dim sX As Single = Me.m_iSelectedBlock * sBlockWidth
+            Dim sY As Single = Me.m_pbxBlockCodes.ClientRectangle.Height
+            Dim clrHighlight As Color = Me.UIContext.StyleGuide.TextColor(cStyleGuide.eStyleFlags.Highlight)
+
+            For iBlock As Integer = 0 To Me.m_iNumBlocks
+                Using brTmp As New SolidBrush(Me.BlockColor(iBlock))
+                    g.FillRectangle(brTmp, sBlockWidth * iBlock, 0, sBlockWidth, sY)
+                End Using
+            Next
+
+            Using penTmp As New System.Drawing.Pen(clrHighlight, 3)
+                g.DrawRectangle(penTmp, sX, 0, sBlockWidth, sY - g_iSelectionBorderWidth + 1)
+            End Using
+
         End Sub
 
         Private Function BlockWidth() As Single
-            Return CSng(pbxBlockCodes.ClientRectangle.Width / (Me.m_nBlockCodes + 1)) ' Allow for 0-color black
+
+            ' Allow for 0-color black
+            Return CSng(m_pbxBlockCodes.ClientRectangle.Width / (Me.m_iNumBlocks + 1))
+
         End Function
 
 #End Region ' Internal implementation

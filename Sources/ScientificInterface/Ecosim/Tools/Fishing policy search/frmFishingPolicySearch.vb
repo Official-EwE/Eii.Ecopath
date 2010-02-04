@@ -51,7 +51,7 @@ Namespace Ecosim
                                 AddressOf Me.SearchProgressHandler, AddressOf Me.SearchCompletedHandler)
 
 
-            Me.m_blocks.ParmBlockCodes.nBlockCodes = Me.Core.nGroups
+            Me.m_blocks.ParmBlockCodes.NumBlocks = Me.Core.nGroups
 
             Me.m_gridObjWeights.UIContext = Me.UIContext
             Me.m_gridObjWeights.Manager = Me.Core.FishingPolicyManager
@@ -86,8 +86,8 @@ Namespace Ecosim
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
 
-            Me.m_blocks.ParmBlockCodes.nBlockCodes = Me.Core.nFleets
-            Me.m_blocks.ParmBlockCodes.SelectedBlockNum = 1
+            Me.m_blocks.ParmBlockCodes.NumBlocks = Me.Core.nFleets
+            Me.m_blocks.ParmBlockCodes.SelectedBlock = 1
 
             Me.InitRunParams()
             Me.UpdateControls()

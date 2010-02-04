@@ -22,7 +22,7 @@ Namespace Ecosim
         ''' <summary>Two-dim arr of integer representing vulnerability blocks layout.</summary>
         Private m_a2iVulBlocks(,) As Integer
         ''' <summary>Block colours to show.</summary>
-        Private m_lclrBlockCodes As List(Of Color)
+        Private m_acolors As Color()
         ''' <summary>Index of the selected block with the list of block colours.</summary>
         Private m_iSelectedBlockCodeIndex As Integer = 0
         ''' <summary>Helper var; remembers the last processed mouse position while drawing.</summary>
@@ -83,16 +83,16 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get or set the block colours that this control should reflect. The
-        ''' number of available block colours is set the the number of colours
-        ''' in the list passed to this property.
+        ''' number of available block colours is set to the number of colours
+        ''' passed to this property.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property BlockColors() As List(Of Color)
+        Public Property BlockColors() As Color()
             Get
-                Return Me.m_lclrBlockCodes
+                Return Me.m_acolors
             End Get
-            Set(ByVal value As List(Of Color))
-                Me.m_lclrBlockCodes = value
+            Set(ByVal value As Color())
+                Me.m_acolors = value
                 Me.Invalidate()
             End Set
         End Property
@@ -214,10 +214,10 @@ Namespace Ecosim
                                 'Fix bug 441 by JoeH
                                 'Change
                                 'If iBlock <= Me.m_lclrBlockCodes.Count Then
-                                If iBlock <= Me.m_lclrBlockCodes.Count - 1 Then
+                                If iBlock <= Me.m_acolors.Count - 1 Then
                                     'End Change
                                     ' Render solid block
-                                    Using tmpBrush As New SolidBrush(Me.m_lclrBlockCodes(iBlock))
+                                    Using tmpBrush As New SolidBrush(Me.m_acolors(iBlock))
                                         e.Graphics.FillRectangle(tmpBrush, i * szCell.Width, j * szCell.Height, szCell.Width, szCell.Height)
                                     End Using
                                 Else

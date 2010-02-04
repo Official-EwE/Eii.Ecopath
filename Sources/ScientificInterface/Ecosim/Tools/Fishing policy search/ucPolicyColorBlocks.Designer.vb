@@ -164,8 +164,8 @@ Namespace Ecosim
             Me.m_blockCodes.Location = New System.Drawing.Point(-2, 18)
             Me.m_blockCodes.Margin = New System.Windows.Forms.Padding(0)
             Me.m_blockCodes.Name = "m_blockCodes"
-            Me.m_blockCodes.nBlockCodes = 30
-            Me.m_blockCodes.SelectedBlockNum = 15
+            Me.m_blockCodes.NumBlocks = 30
+            Me.m_blockCodes.SelectedBlock = 15
             Me.m_blockCodes.Size = New System.Drawing.Size(417, 54)
             Me.m_blockCodes.TabIndex = 0
             '

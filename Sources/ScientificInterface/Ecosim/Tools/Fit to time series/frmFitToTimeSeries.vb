@@ -120,10 +120,10 @@ Namespace Ecosim
             Me.m_nudSplinePts.Value = Me.m_F2TSManager.NumSplinePoints
             Me.m_tbxVariance.Text = CStr(Me.m_F2TSManager.VulnerabilityVariance)
             Me.m_tbVariancePrimaryProd.Text = CStr(Me.m_F2TSManager.PPVariance)
-            Me.m_vulnerabilityBlockCodeSelector.SelectedBlockNum = 1
+            Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = 1
             Me.m_vulnerabilityBlockMatrix.UIContext = Me.UIContext
             Me.m_vulnerabilityBlockMatrix.BlockColors = Me.m_vulnerabilityBlockCodeSelector.BlockColors
-            Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = Me.m_vulnerabilityBlockCodeSelector.SelectedBlockNum
+            Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = Me.m_vulnerabilityBlockCodeSelector.SelectedBlock
 
             Me.m_grid.Manager = Me.Core.FishingPolicyManager
             Me.m_grid.UIContext = Me.UIContext
@@ -268,7 +268,7 @@ Namespace Ecosim
                 Me.m_F2TSManager.VulnerabilityVariance = 10.0!
             End Try
             Me.m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
-            Me.m_F2TSManager.nBlockCodes = Me.m_vulnerabilityBlockCodeSelector.nBlockCodes
+            Me.m_F2TSManager.nBlockCodes = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
 
             m_F2TSManager.RunSearch()
 
@@ -298,17 +298,17 @@ Namespace Ecosim
             If (m_dlgSensOfSS IsNot Nothing) Then Return
 
             Me.m_dlgSensOfSS = New dlgSensitivityOfSStoV(Me.UIContext, Me.m_F2TSManager)
-            Me.m_dlgSensOfSS.NumBlocks = Me.m_vulnerabilityBlockCodeSelector.nBlockCodes
+            Me.m_dlgSensOfSS.NumBlocks = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
 
             m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
-            m_F2TSManager.nBlockCodes = m_vulnerabilityBlockCodeSelector.nBlockCodes
+            m_F2TSManager.nBlockCodes = m_vulnerabilityBlockCodeSelector.NumBlocks
 
 
             If Me.m_dlgSensOfSS.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
 
                 ' Transfer values from the Sensitivity form to this form
                 ' Number of blocks, colors on the main form should match those set by the user on the Sensitivity form
-                Me.m_vulnerabilityBlockCodeSelector.nBlockCodes = Me.m_dlgSensOfSS.NumBlocks
+                Me.m_vulnerabilityBlockCodeSelector.NumBlocks = Me.m_dlgSensOfSS.NumBlocks
 
                 ' Transfer vulnerabiltiy blocks
                 For iPred As Integer = 1 To Me.Core.nGroups
@@ -325,17 +325,20 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub m_VulnerabilityBlockCodeSelector_OnBlockSelected(ByVal sender As ucParmBlockCodes) Handles m_vulnerabilityBlockCodeSelector.OnBlockSelected
-            Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = sender.SelectedBlockNum
+        Private Sub m_VulnerabilityBlockCodeSelector_OnBlockSelected(ByVal sender As ucParmBlockCodes) _
+            Handles m_vulnerabilityBlockCodeSelector.OnBlockSelected
+            Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = sender.SelectedBlock
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_VulnerabilityBlockCodeSelector_OnNumBlocksChanged(ByVal sender As ucParmBlockCodes) Handles m_vulnerabilityBlockCodeSelector.OnNumBlocksChanged
+        Private Sub m_VulnerabilityBlockCodeSelector_OnNumBlocksChanged(ByVal sender As ucParmBlockCodes) _
+            Handles m_vulnerabilityBlockCodeSelector.OnNumBlocksChanged
             Me.m_vulnerabilityBlockMatrix.BlockColors = sender.BlockColors
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_nudFirstYear_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_nudFirstYear.ValueChanged
+        Private Sub m_nudFirstYear_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudFirstYear.ValueChanged
             If (Not Me.m_bInUpdate) Then Me.m_sketchPad.FirstYear = CInt(Me.m_nudFirstYear.Value)
             Me.UpdateControls()
         End Sub
@@ -418,7 +421,7 @@ Namespace Ecosim
         Private Sub m_tsbSearchGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbSearchGroup.Click
 
-            Dim nBlocks As Integer = Me.m_vulnerabilityBlockCodeSelector.nBlockCodes
+            Dim nBlocks As Integer = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
             Dim iBlock As Integer = 1
             Dim ts As cTimeSeries = Nothing
             Dim gts As cGroupTimeSeries = Nothing

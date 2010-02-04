@@ -402,8 +402,8 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockCodeSelector.Location = New System.Drawing.Point(0, 30)
             Me.m_vulnerabilityBlockCodeSelector.Margin = New System.Windows.Forms.Padding(0)
             Me.m_vulnerabilityBlockCodeSelector.Name = "m_vulnerabilityBlockCodeSelector"
-            Me.m_vulnerabilityBlockCodeSelector.nBlockCodes = 30
-            Me.m_vulnerabilityBlockCodeSelector.SelectedBlockNum = 15
+            Me.m_vulnerabilityBlockCodeSelector.NumBlocks = 30
+            Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = 15
             Me.m_vulnerabilityBlockCodeSelector.Size = New System.Drawing.Size(524, 52)
             Me.m_vulnerabilityBlockCodeSelector.TabIndex = 1
             '
