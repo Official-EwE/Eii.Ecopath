@@ -309,6 +309,8 @@ Namespace Ecosim
                 ' Transfer values from the Sensitivity form to this form
                 ' Number of blocks, colors on the main form should match those set by the user on the Sensitivity form
                 Me.m_vulnerabilityBlockCodeSelector.NumBlocks = Me.m_dlgSensOfSS.NumBlocks
+                ' Init block colors via selector
+                Me.m_vulnerabilityBlockMatrix.BlockColors = Me.m_vulnerabilityBlockCodeSelector.BlockColors
 
                 ' Transfer vulnerabiltiy blocks
                 For iPred As Integer = 1 To Me.Core.nGroups

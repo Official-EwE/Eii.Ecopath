@@ -24,6 +24,7 @@ Public Class dlgSensitivityOfSStoV
     Private m_SSbase As Single = 0.0
     Private m_runType As eRunType = eRunType.Idle
     Private m_runResultType As eRunType = eRunType.Idle
+    Private m_bInUpdate As Boolean = False
 
 #End Region ' Private variables
 
@@ -54,26 +55,60 @@ Public Class dlgSensitivityOfSStoV
 
 #End Region ' Constructors
 
-#Region " Events "
-
-#Region " Form "
+#Region " Public access "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub dlgSensitivityOfSStoV_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.UpdateControls()
-    End Sub
+    Public Property NumBlocks() As Integer
+        Get
+            Return Me.m_iNumBlocks
+        End Get
+        Set(ByVal value As Integer)
+
+            ' Truncate
+            value = Math.Max(0, Math.Min(CInt(Me.m_nudNumBlocks.Maximum), value))
+            ' Set
+            Me.m_iNumBlocks = value
+            ' Respond
+            Me.UpdateControls()
+            Me.UpdateDisplay()
+
+        End Set
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Clean-up
+    ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub dlgSensitivityOfSStoV_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Public ReadOnly Property VulnerabilityBlocks() As Integer(,)
+        Get
+            Return Me.m_ucVulBlocks.Vulblocks
+        End Get
+    End Property
+
+#End Region ' Public access
+
+#Region " Private events "
+
+#Region " Form "
+
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+        MyBase.OnLoad(e)
+        Me.m_nudNumBlocks.Maximum = Me.m_uic.Core.nGroups * Me.m_uic.Core.nGroups
+        Me.UpdateControls()
+
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+
+        MyBase.OnFormClosed(e)
         Me.m_F2TSManager = Nothing
+
     End Sub
 
 #End Region ' Form
@@ -86,9 +121,15 @@ Public Class dlgSensitivityOfSStoV
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub OnSearchCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_rbSearchPred.CheckedChanged, m_rbSearchPredPrey.CheckedChanged
-        '
-        Me.UpdateControls()
+        Handles m_rbSearchPred.CheckedChanged, _
+                m_rbSearchPredPrey.CheckedChanged
+
+        If (Me.m_rbSearchPredPrey.Checked) Then
+            Me.RunType = eRunType.SensitivitySS2VByPredPrey
+        Else
+            Me.RunType = eRunType.SensitivitySS2VByPredator
+        End If
+
     End Sub
 
     ''' -------------------------------------------------------------------
@@ -96,19 +137,11 @@ Public Class dlgSensitivityOfSStoV
     ''' 
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub OnTransferCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_rbTransferPredCol.CheckedChanged, m_rbTransferPredPreyCell.CheckedChanged, m_rbSearchPred.CheckedChanged
-        '
-        Me.UpdateControls()
-    End Sub
+    Private Sub OnSearch(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSearch.Click
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Private Sub m_btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSearch.Click
         Me.StartRun()
+
     End Sub
 
     ''' -------------------------------------------------------------------
@@ -117,11 +150,21 @@ Public Class dlgSensitivityOfSStoV
     ''' </summary>
     ''' -------------------------------------------------------------------
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnOk.Click
+        Handles m_btnOk.Click
 
         If (Me.StopRun() = False) Then Return
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
+
+    End Sub
+
+    Private Sub OnNumBlocksChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_nudNumBlocks.ValueChanged
+
+        If (Me.m_uic Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
+
+        Me.NumBlocks = CInt(Me.m_nudNumBlocks.Value)
 
     End Sub
 
@@ -136,18 +179,6 @@ Public Class dlgSensitivityOfSStoV
         If (Me.StopRun() = False) Then Return
         Me.DialogResult = Windows.Forms.DialogResult.Cancel
         Me.Close()
-
-    End Sub
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Private Sub m_btnUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnUpdate.Click
-
-        Me.UpdateDisplay()
 
     End Sub
 
@@ -225,232 +256,29 @@ Public Class dlgSensitivityOfSStoV
 
 #End Region ' F2TS manager
 
-#End Region ' Events
-
-#Region " Public access "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property NumBlocks() As Integer
-        Get
-            Return Me.m_iNumBlocks
-        End Get
-        Set(ByVal value As Integer)
-            Me.m_iNumBlocks = value
-
-            ' Create some purdy working colours
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Me.m_ucVulBlocks.RefreshContent()
-            Me.m_ucVulBlocks.BlockColors = sg.GetEwE5ColorRamp(Me.m_iNumBlocks).ToArray
-            Me.m_ucVulBlocks.BlockColors(0) = Color.Black
-
-            Me.m_nudNumBlocks.Maximum = Me.m_iNumBlocks
-            Me.m_nudNumBlocks.Value = Me.m_iNumBlocks
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property VulnerabilityBlocks() As Integer(,)
-        Get
-            Return Me.m_ucVulBlocks.Vulblocks
-        End Get
-    End Property
-
-#End Region ' Public access
+#End Region ' Private events
 
 #Region " Internal implementation "
 
-#Region "Sorting of sensitivities "
+    Private Property RunType() As eRunType
+        Get
+            Return Me.m_runType
+        End Get
+        Set(ByVal value As eRunType)
+            Me.m_runType = value
+            Me.ResultType = eRunType.Idle
+        End Set
+    End Property
 
-    'This code is no longer used
-    'sorting is handled by the manager in cF2TSManager.setNBlocksFromSensitivity(nBlocks)
-#If 0 Then
-
-
-    Private Sub UpdateByPredPrey()
-        Me.NumBlocks = CInt(Me.m_nudNumBlocks.Value)
-        SortMostSensitiveLinks()
-    End Sub
-
-    Private Sub UpdateByPredatorColumn()
-        Me.NumBlocks = CInt(Me.m_nudNumBlocks.Value)
-        SortMostSensitiveLinksByPredators(Me.m_iNumBlocks, True)
-    End Sub
-
-    Private Sub UpdateByPreyRow()
-        Me.NumBlocks = CInt(Me.m_nudNumBlocks.Value)
-        SortMostSensitiveLinksByPredators(Me.m_iNumBlocks, False)
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="iNumMostSensitiveConsumers"></param>
-    ''' <param name="blnPredator"></param>
-    ''' -----------------------------------------------------------------------
-    Private Sub SortMostSensitiveLinksByPredators(ByVal iNumMostSensitiveConsumers As Integer, ByVal blnPredator As Boolean)
-        Dim MaxS(1) As Single
-        Dim StoreSens(m_core.nGroups, m_core.nGroups) As Single
-        Dim MaxSens(iNumMostSensitiveConsumers, 3) As Single
-        Dim GrpSens(m_core.nGroups) As Single
-        Dim Smax As Single
-
-        'jb m_SSPreyPred(i,j) contains SS(i,j)-SSbase
-
-        ' Determine SMax
-        For iPred As Integer = 1 To Me.m_core.nGroups
-            For iPrey As Integer = 1 To Me.m_core.nGroups
-                'Smax = Math.Max(Smax, Math.Abs(m_SSPreyPred(iPred, iPrey) - m_SSbase))
-                Smax = Math.Max(Smax, Math.Abs(m_SSPreyPred(iPred, iPrey)))
-            Next iPrey
-        Next iPred
-
-        'Scale and temp store sensibilities
-        'sum up sensibilities by consumers
-        For iPred As Integer = 1 To Me.m_core.nGroups
-            For iPrey As Integer = 1 To Me.m_core.nGroups
-                StoreSens(iPred, iPrey) = Math.Abs(m_SSPreyPred(iPred, iPrey)) / Smax
-                ' StoreSens(iPred, iPrey) = Math.Abs(m_SSPreyPred(iPred, iPrey) - m_SSbase) / Smax
-                If blnPredator Then
-                    GrpSens(iPred) += StoreSens(iPred, iPrey)
-                Else
-                    GrpSens(iPrey) += StoreSens(iPred, iPrey)
-                End If
-            Next iPrey
-        Next iPred
-
-        'Now find the 'intNumMostSensitiveConsumers' most important predators
-        For k As Integer = iNumMostSensitiveConsumers To 1 Step -1
-            MaxS(0) = -1
-            'Find the max sensitivity
-            For i As Integer = 1 To m_core.nLivingGroups 'NumLiving
-                If GrpSens(i) > MaxS(0) Then
-                    MaxS(0) = GrpSens(i)
-                    MaxS(1) = i
-                End If
-            Next
-
-            MaxSens(k, 3) = MaxS(1) '=grp 'i'
-            GrpSens(CInt(MaxS(1))) = 0
-        Next
-
-        'jb I changed this
-        'bin the sensitiviy to change in V into the number of blocks (variables to search) selected by the user
-        'I think this is the intent of the EwE5 code in frmSearch.Command6_Click()
-        Dim ibin As Integer
-        For iPred As Integer = 1 To Me.m_core.nGroups
-            For iPrey As Integer = 1 To Me.m_core.nGroups
-
-                If Me.m_F2TSManager.isPredPrey(iPred, iPrey) Then
-                    ibin = CInt(m_SSPreyPred(iPred, iPrey) / Smax * (NumBlocks - 1)) + 1
-                    Me.m_ucVulBlocks.Vulblocks(iPred, iPrey) = ibin
-                End If
-            Next iPrey
-        Next iPred
-
-
-        ''We've got the info now, so transfer it to the sens form
-        'For k As Integer = 1 To iNumMostSensitiveConsumers
-        '    For iPred As Integer = 1 To Me.m_core.nGroups
-        '        For iPrey As Integer = 1 To Me.m_core.nGroups
-        '            ' Set to 0
-        '            Me.m_ucVulBlocks.Vulblocks(iPred, iPrey) = 0
-        '            ' Determine what to do next
-        '            If blnPredator Then 'sort most sensitive links by predator column
-        '                If iPred = MaxSens(k, 3) Then
-        '                    'Only these columns of blocks will be changed to color code other than 0
-        '                    Me.m_ucVulBlocks.Vulblocks(iPred, iPrey) = k
-
-        '                End If
-        '            Else 'sort most sensitive links by prey row
-        '                If iPrey = MaxSens(k, 3) Then
-        '                    'Only these rows of blocks will be changed to color code other than 0
-        '                    Me.m_ucVulBlocks.Vulblocks(iPred, iPrey) = k
-        '                End If
-        '            End If
-        '        Next iPrey
-        '    Next iPred
-        'Next k
-
-        Me.m_ucVulBlocks.Invalidate()
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub SortMostSensitiveLinks()
-        Dim MaxS(2) As Single
-        Dim StoreSens(Me.m_core.nGroups, Me.m_core.nGroups) As Single
-        Dim MaxSens(Me.m_iNumBlocks, 4) As Single
-        Dim Smax As Single
-
-        ' Determine SMax
-        For iPred As Integer = 1 To Me.m_core.nGroups
-            For iPrey As Integer = 1 To Me.m_core.nGroups
-                Smax = Math.Max(Smax, Math.Abs(m_SSPreyPred(iPred, iPrey)))
-                '  Smax = Math.Max(Smax, Math.Abs(m_SSPreyPred(iPred, iPrey) - m_SSbase))
-            Next iPrey
-        Next iPred
-
-        'Scale and temp store sensibilities
-        'sum up sensibilities by consumers
-        For iPred As Integer = 1 To Me.m_core.nGroups
-            For iPrey As Integer = 1 To Me.m_core.nGroups
-                StoreSens(iPred, iPrey) = Math.Abs(m_SSPreyPred(iPred, iPrey)) / Smax
-                '  StoreSens(iPred, iPrey) = Math.Abs(m_SSPreyPred(iPred, iPrey) - m_SSbase) / Smax
-            Next iPrey
-        Next iPred
-
-        For k As Integer = Me.m_iNumBlocks To 1 Step -1
-            MaxS(0) = -1
-            'Find the max sensitivity
-            For iPred As Integer = 1 To Me.m_core.nGroups
-                For iPrey As Integer = 1 To Me.m_core.nGroups
-                    If StoreSens(iPred, iPrey) > MaxS(0) Then
-                        MaxS(0) = StoreSens(iPred, iPred)
-                        MaxS(1) = iPred
-                        MaxS(2) = iPrey
-                    End If
-                Next
-            Next
-            'Now the link with max sensititivy (maxs(0)) is stored in maxs(1)
-            MaxSens(k, 0) = MaxS(0)
-            MaxSens(k, 1) = MaxS(1)
-            MaxSens(k, 2) = MaxS(2)
-            StoreSens(CInt(MaxS(1)), CInt(MaxS(2))) = 0
-        Next
-
-        'We've got the info now, so transfer it to the sens form
-
-        'Initialize Vulnerability Blocks' color code to 0 (black).  Some blocks will be changed later to other color code
-        'MakeSearchVisibleTrueFalse True, True, False
-        For iPred As Integer = 1 To Me.m_core.nGroups
-            For iPrey As Integer = 1 To Me.m_core.nGroups
-                Me.m_ucVulBlocks.Vulblocks(iPred, iPrey) = 0
-            Next iPrey
-        Next iPred
-
-        For k As Integer = 1 To Me.m_iNumBlocks
-            'Only these blocks will be changed to color code other than 0
-            Me.m_ucVulBlocks.Vulblocks(CInt(MaxSens(k, 1)), CInt(MaxSens(k, 2))) = k
-        Next
-
-        Me.m_ucVulBlocks.Invalidate()
-    End Sub
-
-#End If
-
-#End Region
+    Private Property ResultType() As eRunType
+        Get
+            Return Me.m_runResultType
+        End Get
+        Set(ByVal value As eRunType)
+            Me.m_runResultType = value
+            Me.UpdateControls()
+        End Set
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -462,16 +290,29 @@ Public Class dlgSensitivityOfSStoV
         ' Sanity checks
         If (Me.m_uic Is Nothing) Then Return
         If (Me.m_F2TSManager Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
 
-        ' Enable transfer buttons based on available search type results
+        Me.m_bInUpdate = True
 
-        ' Enable OK and Apply when having valid run results
-        Me.m_btnOk.Enabled = (Me.m_runResultType <> eRunType.Idle)
-        Me.m_btnUpdate.Enabled = (Me.m_runResultType <> eRunType.Idle)
+        ' Create some purdy working colours
+        Dim lColors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.m_iNumBlocks)
+        lColors.Insert(0, Color.Black)
+
+        Me.m_ucVulBlocks.RefreshContent()
+        Me.m_ucVulBlocks.BlockColors = lColors.ToArray
+
+        Me.m_nudNumBlocks.Value = Me.m_iNumBlocks
+
+        'Me.m_rbTransferPredPreyCell.Enabled = Me.HasRun() And False
+        'Me.m_rbTransferPredCol.Enabled = Me.HasRun() And (Me.ResultType = eRunType.SensitivitySS2VByPredPrey)
+        'Me.m_rbTransferPredRow.Enabled = Me.HasRun() And (Me.ResultType = eRunType.SensitivitySS2VByPredator)
+
+        Me.m_nudNumBlocks.Enabled = Me.HasRun()
+        Me.m_btnOk.Enabled = Me.HasRun()
+
+        Me.m_bInUpdate = False
 
     End Sub
-
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -518,44 +359,39 @@ Public Class dlgSensitivityOfSStoV
         Return Me.m_F2TSManager.StopRun()
     End Function
 
+    Private Function HasRun() As Boolean
+        ' States whether a search has been ran
+        Return (Me.m_runResultType <> eRunType.Idle)
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' 
     ''' </summary>
-    ''' <returns></returns>
     ''' -------------------------------------------r----------------------------
-    Private Function UpdateDisplay() As Boolean
+    Private Sub UpdateDisplay()
 
-        Me.NumBlocks = CInt(Me.m_nudNumBlocks.Value)
-        'have the manager sort the blocks acording to the last run sensitivity type
-        Me.m_F2TSManager.setNBlocksFromSensitivity(Me.NumBlocks)
+        If (Me.m_F2TSManager Is Nothing) Then Return
 
-        Dim vblocks(,) As Integer = m_F2TSManager.VulnerabilityBlocks
-        For iPred As Integer = 1 To Me.m_uic.Core.nGroups
-            For iPrey As Integer = 1 To Me.m_uic.Core.nGroups
-                If Me.m_F2TSManager.isPredPrey(iPred, iPrey) Then
-                    Me.m_ucVulBlocks.Vulblocks(iPred, iPrey) = vblocks(iPred, iPrey)
-                End If
-            Next iPrey
-        Next iPred
+        If Me.HasRun Then
 
-        Me.m_ucVulBlocks.Invalidate()
+            'have the manager sort the blocks acording to the last run sensitivity type
+            Me.m_F2TSManager.setNBlocksFromSensitivity(Me.NumBlocks)
 
-        'If Me.m_rbTransferPredPreyCell.Checked = True Then
-        '    Me.UpdateByPredPrey()
-        'End If
+            Dim vblocks(,) As Integer = m_F2TSManager.VulnerabilityBlocks
+            For iPred As Integer = 1 To Me.m_uic.Core.nGroups
+                For iPrey As Integer = 1 To Me.m_uic.Core.nGroups
+                    If Me.m_F2TSManager.isPredPrey(iPred, iPrey) Then
+                        Me.m_ucVulBlocks.Vulblocks(iPred, iPrey) = vblocks(iPred, iPrey)
+                    End If
+                Next iPrey
+            Next iPred
 
-        'If Me.m_rbTransferPredCol.Checked = True Then
-        '    Me.UpdateByPredatorColumn()
-        'End If
+            Me.m_ucVulBlocks.Invalidate()
 
-        'If Me.m_rbTransferPredRow.Checked = True Then
-        '    Me.UpdateByPreyRow()
-        'End If
+        End If
 
-        ' Validate inputs
-        Me.UpdateControls()
-    End Function
+    End Sub
 
 #End Region ' Internal implementation
 

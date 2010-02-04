@@ -118,8 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_ucVulBlocks.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="m_ucVulBlocks.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_ucVulBlocks.Enabled" type="System.Boolean, mscorlib">
@@ -127,121 +127,43 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_ucVulBlocks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>204, 12</value>
   </data>
   <data name="m_ucVulBlocks.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_ucVulBlocks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>451, 287</value>
+    <value>449, 416</value>
   </data>
   <data name="m_ucVulBlocks.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_ucVulBlocks.Name" xml:space="preserve">
     <value>m_ucVulBlocks</value>
   </data>
   <data name="&gt;&gt;m_ucVulBlocks.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.ucVulnerabiltyBlocks, EwE6, Version=6.0.3.7, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.Ecosim.ucVulnerabiltyBlocks, EwE6, Version=6.0.7.128, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_ucVulBlocks.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_ucVulBlocks.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_pbSearch.Name" xml:space="preserve">
-    <value>m_pbSearch</value>
-  </data>
-  <data name="&gt;&gt;m_pbSearch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbSearch.Parent" xml:space="preserve">
-    <value>m_gbSearch</value>
-  </data>
-  <data name="&gt;&gt;m_pbSearch.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearch.Name" xml:space="preserve">
-    <value>m_btnSearch</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearch.Parent" xml:space="preserve">
-    <value>m_gbSearch</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearch.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_rbSearchPredPrey.Name" xml:space="preserve">
-    <value>m_rbSearchPredPrey</value>
-  </data>
-  <data name="&gt;&gt;m_rbSearchPredPrey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbSearchPredPrey.Parent" xml:space="preserve">
-    <value>m_gbSearch</value>
-  </data>
-  <data name="&gt;&gt;m_rbSearchPredPrey.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_rbSearchPred.Name" xml:space="preserve">
-    <value>m_rbSearchPred</value>
-  </data>
-  <data name="&gt;&gt;m_rbSearchPred.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbSearchPred.Parent" xml:space="preserve">
-    <value>m_gbSearch</value>
-  </data>
-  <data name="&gt;&gt;m_rbSearchPred.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_gbSearch.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_gbSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 3</value>
-  </data>
-  <data name="m_gbSearch.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 3, 3</value>
-  </data>
-  <data name="m_gbSearch.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 3, 3</value>
-  </data>
-  <data name="m_gbSearch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 119</value>
-  </data>
-  <data name="m_gbSearch.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_gbSearch.Text" xml:space="preserve">
-    <value>&amp;Search</value>
-  </data>
-  <data name="&gt;&gt;m_gbSearch.Name" xml:space="preserve">
-    <value>m_gbSearch</value>
-  </data>
-  <data name="&gt;&gt;m_gbSearch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbSearch.Parent" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;m_gbSearch.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_pbSearch.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_pbSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 91</value>
+    <value>12, 438</value>
   </data>
   <data name="m_pbSearch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 23</value>
+    <value>479, 23</value>
   </data>
   <data name="m_pbSearch.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="m_pbSearch.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;m_pbSearch.Name" xml:space="preserve">
     <value>m_pbSearch</value>
@@ -250,7 +172,7 @@
     <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_pbSearch.Parent" xml:space="preserve">
-    <value>m_gbSearch</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_pbSearch.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -262,7 +184,7 @@
     <value>Popup</value>
   </data>
   <data name="m_btnSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>89, 91</value>
+    <value>111, 75</value>
   </data>
   <data name="m_btnSearch.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -280,16 +202,16 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnSearch.Parent" xml:space="preserve">
-    <value>m_gbSearch</value>
+    <value>Panel1</value>
   </data>
   <data name="&gt;&gt;m_btnSearch.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_rbSearchPredPrey.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbSearchPredPrey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 43</value>
+    <value>7, 48</value>
   </data>
   <data name="m_rbSearchPredPrey.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 17</value>
@@ -307,7 +229,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbSearchPredPrey.Parent" xml:space="preserve">
-    <value>m_gbSearch</value>
+    <value>Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbSearchPredPrey.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -316,7 +238,7 @@
     <value>True</value>
   </data>
   <data name="m_rbSearchPred.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 20</value>
+    <value>7, 25</value>
   </data>
   <data name="m_rbSearchPred.Size" type="System.Drawing.Size, System.Drawing">
     <value>79, 17</value>
@@ -334,241 +256,40 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbSearchPred.Parent" xml:space="preserve">
-    <value>m_gbSearch</value>
+    <value>Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbSearchPred.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="TableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;TableLayoutPanel2.Name" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel2.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="TableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_gbSearch" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="GroupBox1" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,38.57143,Percent,61.42857" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
-  </data>
-  <data name="TableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>451, 412</value>
-  </data>
-  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="TableLayoutPanel2" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_ucVulBlocks" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,Absolute,125" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="TableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Name" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="TableLayoutPanel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="TableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 287</value>
-  </data>
-  <data name="TableLayoutPanel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="TableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="TableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>451, 125</value>
-  </data>
-  <data name="TableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel2.Name" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel2.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="TableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_gbSearch" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="GroupBox1" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,38.57143,Percent,61.42857" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_nudNumBlocks.Name" xml:space="preserve">
-    <value>m_nudNumBlocks</value>
-  </data>
-  <data name="&gt;&gt;m_nudNumBlocks.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudNumBlocks.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_nudNumBlocks.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredPreyCell.Name" xml:space="preserve">
-    <value>m_rbTransferPredPreyCell</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredPreyCell.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredPreyCell.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredPreyCell.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredRow.Name" xml:space="preserve">
-    <value>m_rbTransferPredRow</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredRow.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredRow.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredRow.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_btnUpdate.Name" xml:space="preserve">
-    <value>m_btnUpdate</value>
-  </data>
-  <data name="&gt;&gt;m_btnUpdate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnUpdate.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_btnUpdate.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredCol.Name" xml:space="preserve">
-    <value>m_rbTransferPredCol</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredCol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredCol.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredCol.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="GroupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 3</value>
-  </data>
-  <data name="GroupBox1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 0, 3</value>
-  </data>
-  <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 119</value>
-  </data>
-  <data name="GroupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="GroupBox1.Text" xml:space="preserve">
-    <value>Display</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Name" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;GroupBox1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblNumCategories.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 96</value>
+  <data name="m_lblNumCategories.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 29</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblNumCategories.Size" type="System.Drawing.Size, System.Drawing">
     <value>111, 13</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblNumCategories.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
+  <data name="m_lblNumCategories.Text" xml:space="preserve">
     <value>Number of &amp;categories:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="&gt;&gt;m_lblNumCategories.Name" xml:space="preserve">
+    <value>m_lblNumCategories</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblNumCategories.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+  <data name="&gt;&gt;m_lblNumCategories.Parent" xml:space="preserve">
+    <value>Panel2</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;m_lblNumCategories.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_nudNumBlocks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>123, 94</value>
+    <value>121, 27</value>
   </data>
   <data name="m_nudNumBlocks.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 20</value>
@@ -583,133 +304,22 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_nudNumBlocks.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+    <value>Panel2</value>
   </data>
   <data name="&gt;&gt;m_nudNumBlocks.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_rbTransferPredPreyCell.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbTransferPredPreyCell.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 66</value>
-  </data>
-  <data name="m_rbTransferPredPreyCell.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 17</value>
-  </data>
-  <data name="m_rbTransferPredPreyCell.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_rbTransferPredPreyCell.Text" xml:space="preserve">
-    <value>by Predator/Prey cell</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredPreyCell.Name" xml:space="preserve">
-    <value>m_rbTransferPredPreyCell</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredPreyCell.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredPreyCell.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredPreyCell.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_rbTransferPredRow.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbTransferPredRow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 43</value>
-  </data>
-  <data name="m_rbTransferPredRow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 17</value>
-  </data>
-  <data name="m_rbTransferPredRow.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_rbTransferPredRow.Text" xml:space="preserve">
-    <value>by Prey row</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredRow.Name" xml:space="preserve">
-    <value>m_rbTransferPredRow</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredRow.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredRow.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredRow.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_btnUpdate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="m_btnUpdate.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="m_btnUpdate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>194, 91</value>
-  </data>
-  <data name="m_btnUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="m_btnUpdate.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_btnUpdate.Text" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="&gt;&gt;m_btnUpdate.Name" xml:space="preserve">
-    <value>m_btnUpdate</value>
-  </data>
-  <data name="&gt;&gt;m_btnUpdate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnUpdate.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_btnUpdate.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_rbTransferPredCol.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbTransferPredCol.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 20</value>
-  </data>
-  <data name="m_rbTransferPredCol.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 17</value>
-  </data>
-  <data name="m_rbTransferPredCol.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="m_rbTransferPredCol.Text" xml:space="preserve">
-    <value>by Predator column</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredCol.Name" xml:space="preserve">
-    <value>m_rbTransferPredCol</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredCol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredCol.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_rbTransferPredCol.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>388, 438</value>
+    <value>578, 438</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="m_btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -724,19 +334,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>4</value>
   </data>
   <data name="m_btnOk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 438</value>
+    <value>497, 438</value>
   </data>
   <data name="m_btnOk.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="m_btnOk.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_btnOk.Text" xml:space="preserve">
     <value>OK</value>
@@ -751,7 +361,124 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_lblSearch.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lblSearch.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblSearch.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_lblSearch.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_lblSearch.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 18</value>
+  </data>
+  <data name="m_lblSearch.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_lblSearch.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="m_lblSearch.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblSearch.Name" xml:space="preserve">
+    <value>m_lblSearch</value>
+  </data>
+  <data name="&gt;&gt;m_lblSearch.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblSearch.Parent" xml:space="preserve">
+    <value>Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lblSearch.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="Panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="Panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 98</value>
+  </data>
+  <data name="Panel1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;Panel1.Name" xml:space="preserve">
+    <value>Panel1</value>
+  </data>
+  <data name="&gt;&gt;Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Panel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Panel1.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_lblTransfer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lblTransfer.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblTransfer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblTransfer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_lblTransfer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_lblTransfer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 18</value>
+  </data>
+  <data name="m_lblTransfer.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_lblTransfer.Text" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="m_lblTransfer.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblTransfer.Name" xml:space="preserve">
+    <value>m_lblTransfer</value>
+  </data>
+  <data name="&gt;&gt;m_lblTransfer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblTransfer.Parent" xml:space="preserve">
+    <value>Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_lblTransfer.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="Panel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 116</value>
+  </data>
+  <data name="Panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 126</value>
+  </data>
+  <data name="Panel2.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;Panel2.Name" xml:space="preserve">
+    <value>Panel2</value>
+  </data>
+  <data name="&gt;&gt;Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Panel2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Panel2.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -760,10 +487,13 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>472, 473</value>
+    <value>662, 473</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>480, 500</value>
+    <value>500, 318</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Sensitivity of SS to V</value>
