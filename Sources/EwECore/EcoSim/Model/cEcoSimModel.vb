@@ -437,6 +437,9 @@ Namespace Ecosim
                 'to make sure any edits made in Ecosim are used for the initialization
                 m_Results = New cEcoSimResults(Me.nGroups, m_stanza.Nsplit, m_stanza.MaxAgeSplit, Me.m_EPData.NumFleet)
 
+                'Init PropLandedTime() and Propdiscardtime() to Ecopath values so they can be used during the initialization of Ecosim
+                Me.m_Quota.InitToEcoPath(Me.m_EPData)
+
                 RedimEcoSimVars()
 
                 SetInlinks()

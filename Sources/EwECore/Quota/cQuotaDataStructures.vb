@@ -67,8 +67,14 @@ Public Class cQuotaDataStructures
 
     Public QuotaTime(,) As Single
 
-
+    ''' <summary>
+    ''' Init Propdiscardtime(fleet,group) and PropLandedTime(fleet,group) to landing and discard proportions calculated in Ecopath
+    ''' </summary>
+    ''' <param name="EcopathData"></param>
+    ''' <remarks></remarks>
     Public Sub InitToEcoPath(ByVal EcopathData As cEcopathDataStructures)
+        'Called by Ecosim.Init() at the start of an Ecosim run
+        'Propdiscardtime() and PropLandedTime() will not be initialized until Ecosim has been Initialized
 
         For iflt As Integer = 1 To Me.m_counters.nFleets
             For igrp As Integer = 1 To Me.m_counters.nGroups
