@@ -1158,6 +1158,8 @@ Namespace Core
         'Economic data for the game
         GameEconomicCost
         GameEconomicCostPM
+        GameEconomicCostByFleet
+        GameEconomicCostByFleetPM
         GameEconomicProfit
         GameEconomicProfitByFleet
         GameEconomicProfitByFleetPM
@@ -1171,6 +1173,8 @@ Namespace Core
 
         GameEconomicTaxes
         GameEconomicTaxesPM
+        GameEconomicTaxesByFleet
+        GameEconomicTaxesByFleetPM
 
         GameEconomicSubsidies
         GameEconomicSubsidiesPM
