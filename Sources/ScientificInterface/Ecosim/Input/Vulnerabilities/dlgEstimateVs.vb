@@ -208,15 +208,10 @@ Namespace Ecosim
             Dim B As Single
             Dim j As Integer
             Dim i As Integer
-            Dim bIsLogScale As Boolean = False
-            Dim dStepSize As Double
-
             Dim Vant As Single
             Dim PlotVal(2, 10000) As Single
             Dim XVal(10000) As Single
-            Dim sYMax As Single = Single.MinValue
-
-            ' ToDo: fix log scale confusion
+            Dim bIsLogScale As Boolean = False
 
             Select Case Me.EstimationMethod
 
@@ -228,30 +223,23 @@ Namespace Ecosim
                             If Vant < 0 Then Vant = 1
                             XVal(j) = B
                             PlotVal(i, j) = Vant
-                            sYMax = Math.Max(sYMax, Vant)
                         Next
                     Next
-                    If sYMax > 0 Then
-                        i = CInt(CLng(Math.Log(sYMax) / Math.Log(10)) \ 1 - 1)
-                        dStepSize = 10 ^ i
-                        If dStepSize <= 0 Then dStepSize = 1
-                    End If
 
                 Case eEstimationTypes.BuBo
+                    bIsLogScale = True
                     For i = 0 To 1
                         For j = 100 To 10000
                             B = CSng(j / 100)
                             XVal(j) = 1 / B
                             Vant = Me.m_uic.Core.CalcEcosimVulBo(B, iGroup, i = 1)
                             If Vant < 0 Then Vant = 1
-                            'for Becopath / bunfished plot then display log10 of vulnerability
-                            PlotVal(i, j) = CSng(Math.Log(Vant) / Math.Log(10))
-                            sYMax = Math.Max(sYMax, PlotVal(i, j))
+                            PlotVal(i, j) = Vant
                         Next
                     Next
-                    If sYMax > 0 Then sYMax = CSng(Math.Round(sYMax + 0.5, 0))
 
                 Case eEstimationTypes.FMaxM
+                    Dim sYMax As Single = 0
                     For i = 0 To 1
                         For j = 10 To 1000
                             B = CSng(j / 100)
@@ -262,33 +250,15 @@ Namespace Ecosim
                             sYMax = Math.Max(sYMax, Vant)
                         Next
                     Next
-
-                    If sYMax > 100 Then
-                        sYMax = CSng(Math.Round(Math.Log(sYMax) / Math.Log(10) + 0.5, 0)) ' \ 1
-                        bIsLogScale = True
-                        For i = 0 To 1
-                            For j = 1 To 1000
-                                If PlotVal(i, j) > 0 Then PlotVal(i, j) = CSng(Math.Log(PlotVal(i, j)) / Math.Log(10))
-                            Next
-                        Next
-                    Else
-                        bIsLogScale = False
-                    End If
-                    If sYMax > 0 And bIsLogScale = False Then
-                        i = CInt(CLng(Math.Log(sYMax) / Math.Log(10)) \ 1) - 1
-                        dStepSize = 10 ^ i
-                        If dStepSize <= 0 Then dStepSize = 1
-                    End If
+                    bIsLogScale = (sYMax > 100)
 
                 Case eEstimationTypes.FMaxBoBu
-                    sYMax = 1
                     For i = 0 To 1
                         For j = 100 To 10000
                             B = CSng(j / 100)
                             XVal(j) = 1 / B
                             Vant = Me.m_uic.Core.CalcEcosimVulBo(B, iGroup, i = 1)
                             If Vant < 0 Then Vant = 1
-                            'for Becopath / bunfished plot then display log10 of vulnerability
                             PlotVal(i, j) = 1 / Vant
                         Next
                     Next
@@ -297,14 +267,19 @@ Namespace Ecosim
             gp.CurveList.Clear()
             gp.CurveList.Add(Me.MakePlotLine(XVal, PlotVal, True))
             gp.CurveList.Add(Me.MakePlotLine(XVal, PlotVal, False))
-            gp.XAxis.Type = DirectCast(IIf(bIsLogScale, AxisType.Log, AxisType.Linear), AxisType)
-            gp.XAxis.Scale.IsUseTenPower = False
+            gp.XAxis.Type = AxisType.Linear
             gp.YAxis.Type = DirectCast(IIf(bIsLogScale, AxisType.Log, AxisType.Linear), AxisType)
-            gp.YAxis.Scale.IsUseTenPower = False
+            gp.YAxis.Scale.IsUseTenPower = bIsLogScale
 
-            ' ToDo: set up scale values
-            'gp.XAxis.Scale.Min = sXMin : gp.XAxis.Scale.Max = sXMax
-            'gp.YAxis.Scale.Min = sYMin : gp.YAxis.Scale.Max = sYMax
+            gp.XAxis.Scale.MinGrace = 0.0#
+            gp.XAxis.Scale.MinAuto = True
+            gp.XAxis.Scale.MaxAuto = True
+            gp.XAxis.Scale.MaxGrace = 0.0#
+
+            gp.YAxis.Scale.MinAuto = True
+            gp.YAxis.Scale.MaxAuto = True
+            gp.YAxis.Scale.MinGrace = 0.0#
+            gp.YAxis.Scale.MaxGrace = 0.0#
 
             gp.AxisChange()
             Me.m_zgh.Redraw()
