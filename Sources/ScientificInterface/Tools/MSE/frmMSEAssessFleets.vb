@@ -19,8 +19,8 @@ Public Class frmMSEAssessFleets
             MyBase.UIContext = value
             Me.GridFishingCV1.UIContext = value
             Me.m_blocks.UIContext = value
-            Me.m_blocks.ParmBlockCodes.nBlockCodes = Me.UIContext.Core.nFleets
-            Me.m_blocks.ParmBlockCodes.SelectedBlockNum = 1
+            Me.m_blocks.ParmBlockCodes.NumBlocks = Me.UIContext.Core.nFleets
+            Me.m_blocks.ParmBlockCodes.SelectedBlock = 1
         End Set
     End Property
 
