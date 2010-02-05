@@ -461,7 +461,7 @@ Namespace NetUtilities
             End Get
             Set(ByVal value As Boolean)
                 Me.m_bAuthorized = value
-#If VERBOSE_LEVEL >= 1 Then
+#If VERBOSE_LEVEL >= 2 Then
                 Console.WriteLine("sw {0} authorized {1}", Me.ToString(), CStr(value))
 #End If
                 If value = True Then
@@ -511,7 +511,7 @@ Namespace NetUtilities
             ms.Seek(0, 0)
 
             Try
-#If VERBOSE_LEVEL >= 1 Then
+#If VERBOSE_LEVEL >= 3 Then
                 Console.WriteLine("sw {0} sending {1}", Me.ToString(), obj.ToString())
 #End If
                 bSucces = SendBinary(ms.GetBuffer(), bRequiresAuthorization, bSendImmediately)
@@ -628,7 +628,7 @@ Namespace NetUtilities
 
             Try
 
-#If VERBOSE_LEVEL >= 1 Then
+#If VERBOSE_LEVEL >= 3 Then
                 Console.WriteLine("sw {0} read buffer {1} bytes ", Me.ToString(), iNumBytes)
 #End If
 
@@ -820,7 +820,7 @@ Namespace NetUtilities
 #End If
                         End Try
 
-#If VERBOSE_LEVEL >= 1 Then
+#If VERBOSE_LEVEL >= 2 Then
                         Console.WriteLine("sw {0} received data '{1}'", Me.ToString(), objRead.ToString())
 #End If
                     Else
@@ -938,7 +938,7 @@ Namespace NetUtilities
             Array.Copy(byMessage, 0, byData, 4, iLength)
 
             Try
-#If VERBOSE_LEVEL >= 1 Then
+#If VERBOSE_LEVEL >= 3 Then
                 Me.m_iQueue += (iLength + 4)
                 Console.WriteLine("sw BeginSend() {0} sending {1} bytes (queue size {2})", Me.ToString(), (iLength + 4), Me.m_iQueue)
 #End If
@@ -978,7 +978,7 @@ Namespace NetUtilities
                 nb = s.EndSend(ar)
                 m_iNumPendingSend -= 1
 
-#If VERBOSE_LEVEL >= 1 Then
+#If VERBOSE_LEVEL >= 3 Then
                 Me.m_iQueue -= (nb)
                 Console.WriteLine("sw SendCallback() {0} received {1} bytes (queue size {2})", Me.ToString(), nb, Me.m_iQueue)
 #End If
