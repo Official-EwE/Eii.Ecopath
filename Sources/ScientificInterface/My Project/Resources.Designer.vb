@@ -4474,6 +4474,24 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing mort. / total mort..
+        '''</summary>
+        Friend ReadOnly Property MORT_FISH_TOT() As String
+            Get
+                Return ResourceManager.GetString("MORT_FISH_TOT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Proportion natural mort..
+        '''</summary>
+        Friend ReadOnly Property MORT_NAT() As String
+            Get
+                Return ResourceManager.GetString("MORT_NAT", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property MoveDown() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("MoveDown", resourceCulture)

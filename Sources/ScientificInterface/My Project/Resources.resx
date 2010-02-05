@@ -2473,4 +2473,10 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Model '{0}' converted succesfully to '{1}'</value>
     <comment>{0} = EwE5 model name, {1}=EwE6 model name</comment>
   </data>
+  <data name="MORT_FISH_TOT" xml:space="preserve">
+    <value>Fishing mort. / total mort.</value>
+  </data>
+  <data name="MORT_NAT" xml:space="preserve">
+    <value>Proportion natural mort.</value>
+  </data>
 </root>

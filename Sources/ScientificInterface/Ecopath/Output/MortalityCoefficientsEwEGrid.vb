@@ -54,8 +54,8 @@ Namespace Ecopath.Output
             Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCURATE2)
             Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_NETMIGRATE)
             Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_OTHERMORTRATE)
-            Me(0, 8) = New EwEColumnHeaderCell("Fishing mort. / total mort.")
-            Me(0, 9) = New EwEColumnHeaderCell("Proportion natural mort.")
+            Me(0, 8) = New EwEColumnHeaderCell(My.Resources.MORT_FISH_TOT)
+            Me(0, 9) = New EwEColumnHeaderCell(My.Resources.MORT_NAT)
 
             Me.FixedColumns = 2
 
