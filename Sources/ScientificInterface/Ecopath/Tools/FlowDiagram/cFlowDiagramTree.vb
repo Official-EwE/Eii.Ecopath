@@ -16,7 +16,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Helper class, implements building of a flow diagram tree.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cFlowDiagramTree
@@ -253,7 +253,9 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #End Region ' Constructor
 
-        Public Sub DrawBackground(ByVal g As Graphics, ByVal rc As Rectangle)
+#Region " Drawing "
+
+        Friend Sub DrawBackground(ByVal g As Graphics, ByVal rc As Rectangle)
 
             Dim iUnitHeight As Integer = CInt(rc.Height / Me.m_iNumTrophicLevels)
 
@@ -279,9 +281,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-#Region " Drawing "
-
-        Public Sub DrawNode(ByRef g As Graphics, _
+        Friend Sub DrawNode(ByRef g As Graphics, _
                             ByVal rc As Rectangle, _
                             ByVal iGroup As Integer)
 
@@ -316,7 +316,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Public Sub DrawConnection(ByRef g As Graphics, _
+        Friend Sub DrawConnection(ByRef g As Graphics, _
                                   ByVal rc As Rectangle, _
                                   ByVal iPred As Integer, _
                                   ByVal iPrey As Integer, _
@@ -350,7 +350,7 @@ Namespace Ecopath.Controls.FlowDiagram
                                         Me.LineConnectionType)
         End Sub
 
-        Public Sub DrawLegend(ByRef g As Graphics, _
+        Friend Sub DrawLegend(ByRef g As Graphics, _
                               ByVal sValMax As Single, ByVal ptTopLeft As Point, _
                               ByVal strTitle As String, _
                               Optional ByVal iXSize As Integer = 75, _

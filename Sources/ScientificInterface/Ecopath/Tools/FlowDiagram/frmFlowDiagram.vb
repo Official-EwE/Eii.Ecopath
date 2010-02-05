@@ -1,37 +1,3 @@
-'==============================================================================
-'
-' $Log: frmFlowDiagram.vb,v $
-' Revision 1.2  2009/06/29 16:07:40  jeroens
-' Added default file name
-' Fixed file filter index bug
-'
-' Revision 1.1  2009/06/22 02:25:37  jeroens
-' Revamped, rewarped and lobotomized
-'
-' Revision 1.7  2009/05/21 18:53:42  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.6  2009/05/11 01:50:55  jeroens
-' Renamed command classes
-'
-' Revision 1.5  2009/02/07 17:48:39  jeroens
-' cINIFile moved
-'
-' Revision 1.4  2009/02/05 21:11:55  jeroens
-' Labels can be dragged
-'
-' Revision 1.3  2008/11/21 23:06:15  sherman
-' Fixed bugs: 550
-' - Added listeners to properties, changed text names, made scaling more rhobust.
-'
-' Revision 1.2  2008/11/08 23:52:37  jeroens
-' Renamed file commands
-'
-' Revision 1.1  2008/09/26 07:31:28  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -51,6 +17,11 @@ Imports System.Drawing.Imaging
 
 Namespace Ecopath.Controls.FlowDiagram
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Form presenting the Ecopath Flow Diagram interface.
+    ''' </summary>
+    ''' =======================================================================
     Public Class FlowDiagram
         : Inherits frmEwE
 
@@ -85,10 +56,6 @@ Namespace Ecopath.Controls.FlowDiagram
             ' This supports mouse movement such as the mouse wheel
             Me.SetStyle(ControlStyles.UserMouse, True)
 
-            Me.m_data = New cFlowDiagramData(Me.UIContext)
-            Me.m_tree = New cFlowDiagramTree(Me.m_data)
-            Me.m_doodler = New cFlowDiagramRenderer(Me.m_data, Me.m_tree)
-
         End Sub
 
         Public Sub New(ByVal text As String)
@@ -105,10 +72,19 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            Me.m_data = New cFlowDiagramData(Me.UIContext)
+            Me.m_tree = New cFlowDiagramTree(Me.m_data)
+            Me.m_doodler = New cFlowDiagramRenderer(Me.m_data, Me.m_tree)
+
             Me.m_pgFlowDiagram.SelectedObject = Me.m_tree
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath}
             Me.UpdateControls()
+
             AddHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
+
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)

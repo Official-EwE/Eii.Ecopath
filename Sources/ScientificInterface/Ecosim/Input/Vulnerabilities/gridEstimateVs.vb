@@ -48,7 +48,6 @@ Namespace Ecosim
             Me(0, eColumnTypes.PG_VwithFT) = New EwEColumnHeaderCell("Vulnerability w. FT")
             Me(0, eColumnTypes.FMax_VwithFT) = New EwEColumnHeaderCell("Vulnerability w. FT")
 
-            Me.FixedColumns = 1
             Me.FixedColumnWidths = True ' To accomodate long header labels
 
             Me.Selection.SelectionMode = GridSelectionMode.Row
@@ -86,6 +85,7 @@ Namespace Ecosim
 
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
+            Me.FixedColumns = 2
         End Sub
 
         Public Property SelectedGroupIndex() As Integer
@@ -177,8 +177,7 @@ Namespace Ecosim
             ' Can cell be selected?
             If (iColSelect > -1) Then
                 cell = DirectCast(Me(iRow, CInt(iColSelect)), EwECell)
-                If ((cell.Style And eStyleFlags.Checked) = eStyleFlags.Checked) And _
-                   ((cell.Style And eStyleFlags.NotEditable) = eStyleFlags.NotEditable) Then
+                If ((cell.Style And eStyleFlags.Null) = eStyleFlags.Null) Then
                     iColSelect = -1
                 End If
             End If

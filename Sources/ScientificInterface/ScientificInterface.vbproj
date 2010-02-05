@@ -155,10 +155,10 @@
     <Compile Include="Ecopath\EditFleetsEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Controls\FlowDiagram\cFlowDiagramData.vb" />
-    <Compile Include="Ecopath\Controls\FlowDiagram\cFlowDiagramRenderer.vb" />
-    <Compile Include="Ecopath\Controls\FlowDiagram\cFlowDiagramTree.vb" />
-    <Compile Include="Ecopath\Controls\FlowDiagram\frmFlowDiagram.vb">
+    <Compile Include="Ecopath\Tools\FlowDiagram\cFlowDiagramData.vb" />
+    <Compile Include="Ecopath\Tools\FlowDiagram\cFlowDiagramRenderer.vb" />
+    <Compile Include="Ecopath\Tools\FlowDiagram\cFlowDiagramTree.vb" />
+    <Compile Include="Ecopath\Tools\FlowDiagram\frmFlowDiagram.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\EditGroups.Designer.vb">
@@ -731,7 +731,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Ecopath\Controls\FlowDiagram\frmFlowDiagram.resx">
+    <EmbeddedResource Include="Ecopath\Tools\FlowDiagram\frmFlowDiagram.resx">
       <DependentUpon>frmFlowDiagram.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1693,6 +1693,9 @@
       <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
       <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Ecopath\Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>
