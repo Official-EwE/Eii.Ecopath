@@ -3200,6 +3200,8 @@ Public Class cDBDataSource
             ' Delete 'soft links': database links forged by database updates
             '    DB update 6.04022
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE (ScenarioID={0})", iDBID))
+            '    DB update 6.07001
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioMSE WHERE (ScenarioID={0})", iDBID))
             ' Delete actual scenario
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenario WHERE (ScenarioID={0})", iDBID))
         Catch ex As Exception
