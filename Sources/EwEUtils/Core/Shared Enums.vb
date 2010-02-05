@@ -140,6 +140,10 @@ Namespace Core
         MortCoNetMig
         ''' <summary></summary>
         MortCoOtherMort
+        ''' <summary>[Fishing Mort] / [Total mort]</summary>
+        FishMortTotMort
+        ''' <summary>1- FishMortTotMort</summary>
+        NatMortPerTotMort
 
         'added by JB Jan-30-06 for EcoPath Outputs
         ''' <summary></summary>

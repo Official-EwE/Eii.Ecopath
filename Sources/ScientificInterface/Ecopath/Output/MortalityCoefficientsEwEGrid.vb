@@ -45,7 +45,7 @@ Namespace Ecopath.Output
 
             MyBase.InitStyle()
 
-            Me.Redim(1, 8)
+            Me.Redim(1, 10)
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
             Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_PBZ)
@@ -54,6 +54,8 @@ Namespace Ecopath.Output
             Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCURATE2)
             Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_NETMIGRATE)
             Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_OTHERMORTRATE)
+            Me(0, 8) = New EwEColumnHeaderCell("Fishing mort. / total mort.")
+            Me(0, 9) = New EwEColumnHeaderCell("Proportion natural mort.")
 
             Me.FixedColumns = 2
 
@@ -101,7 +103,7 @@ Namespace Ecopath.Output
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
                         ' Complete row with dummy cells
-                        For i As Integer = 2 To 7 : Me(iRow, i) = New EwERowHeaderCell() : Next
+                        For i As Integer = 2 To 9 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaGroupIndexPrev = intStanzaGroupIndex(source.Index)
                     Else
                         hgcStanza = dtStanzaCells(sg)
@@ -135,6 +137,8 @@ Namespace Ecopath.Output
             Me(iRow, 5) = New PropertyCell(source, eVarNameFlags.BioAccumRatePerYear)
             Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.MortCoNetMig)
             Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.MortCoOtherMort)
+            Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.FishMortTotMort)
+            Me(iRow, 9) = New PropertyCell(source, eVarNameFlags.NatMortPerTotMort)
 
             Me.SetCellAlert(DirectCast(Me(iRow, 1), EwECellBase), bMortAlert)
             Me.SetCellAlert(DirectCast(Me(iRow, 3), EwECellBase), bMortAlert And bCatchAlert)

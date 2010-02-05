@@ -2775,6 +2775,9 @@ Public Class cCore
                 output.MortCoOtherMort = CSng((1 - m_EcoPathData.EE(iGroup)) * m_EcoPathData.PB(iGroup))
                 output.MortCoPB = CSng(m_EcoPathData.PB(iGroup))
                 output.MortCoPredMort = m_EcoPathData.M2(iGroup)
+                Dim m0 As Single = CSng((1 - m_EcoPathData.EE(iGroup)))
+                output.FishMortPerTotMort = output.MortCoFishRate / (m0 + m_EcoPathData.M2(iGroup) + output.MortCoFishRate) 'F/Z
+                output.NatMortPerTotMort = CSng(1.0 - output.FishMortPerTotMort) 'M/Z
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'consumption

@@ -245,6 +245,8 @@ Public Class cEcoPathGroupOutput
         m_bReadOnly = True
         AllowValidation = False
 
+        'todo_jb f/z and m/z
+
         'get the number of groups from the core delegate
         m_nGroups = m_core.GetCoreCounter(eCoreCounterTypes.nGroups)
         m_dataType = eDataTypes.EcoPathGroupOutput
@@ -373,6 +375,13 @@ Public Class cEcoPathGroupOutput
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.PSD, eStatusFlags.NotEditable, eCoreCounterTypes.nWeightClasses, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
         'End Joeh
+
+        val = New cValue(New Single, eVarNameFlags.FishMortTotMort, eStatusFlags.NotEditable, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
+        'NatMortPerTotMort
+        val = New cValue(New Single, eVarNameFlags.NatMortPerTotMort, eStatusFlags.NotEditable, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
+
 
     End Sub
 
@@ -1095,6 +1104,41 @@ Public Class cEcoPathGroupOutput
         Set(ByVal newValue As Single)
             If Not m_bReadOnly Then
                 SetVariable(eVarNameFlags.Alpha, newValue, iPred)
+            End If
+        End Set
+    End Property
+
+    ''' <summary>
+    '''  Fishing mort / total mort 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>output.FishMortPerTotMort = output.MortCoFishRate / (m0 + m_EcoPathData.M2(iGroup) + output.MortCoFishRate) 'F/Z</remarks>
+    Public Property FishMortPerTotMort() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.FishMortTotMort))
+        End Get
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.FishMortTotMort, newValue)
+            End If
+        End Set
+    End Property
+
+
+    ''' <summary>
+    '''  Proportion of mortality due to predation and other mort 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>output.NatMortPerTotMort = CSng(1.0 - output.FishMortPerTotMort) 'M/Z</remarks>
+    Public Property NatMortPerTotMort() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.NatMortPerTotMort))
+        End Get
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.NatMortPerTotMort, newValue)
             End If
         End Set
     End Property
