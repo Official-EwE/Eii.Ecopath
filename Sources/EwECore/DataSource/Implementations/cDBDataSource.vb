@@ -518,9 +518,11 @@ Public Class cDBDataSource
 
                 ' Development-time sanity checks.
                 Debug.Assert(d IsNot Nothing, String.Format("cIDMappings.Add: no dictionary for datatype {0} ({1}), something is very wrong!", dt.ToString, CInt(dt)))
-                Debug.Assert(Not d.ContainsKey(iIDOrg), String.Format("cIDMappings: DBID {0} already mapped", iIDOrg))
+                Debug.Assert(Not d.ContainsKey(iIDOrg), String.Format("cIDMappings: DBID {0} is already used to define a mapping", iIDOrg))
+                Debug.Assert(Not d.ContainsValue(iIDNew), String.Format("cIDMappings: DBID {0} already mapped to", iIDNew))
 
                 d.Add(iIDOrg, iIDNew)
+
             Catch ex As Exception
                 ' Development-time panic event.
                 Debug.Assert(False, String.Format("cIDMappings.Add: ID Mapping failed '{0}'", ex.Message))
@@ -3734,7 +3736,9 @@ Public Class cDBDataSource
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
+        Dim bNewRow As Boolean = False
         Dim iScenarioID As Integer = 0
+        Dim iNextGroupID As Integer = 0
         Dim iGroupID As Integer = 0
         Dim bSucces As Boolean = True
         Dim objKeys() As Object = {Nothing, Nothing}
@@ -3754,10 +3758,12 @@ Public Class cDBDataSource
             iNextShapeID = 1
         End Try
 
-        ' JS 10aug07: First try to repair Ecosim groups
-        For i As Integer = 1 To ecosimDS.nGroups
-            Me.CreateRepairEcosimGroup(ecopathDS.GroupDBID(i), iScenarioID)
-        Next i
+        ' Get next available group ID
+        Try
+            iNextGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcosimScenarioGroup")) + 1
+        Catch ex As Exception
+            iNextGroupID = 1
+        End Try
 
         ' JS 28may07: Change of strategy. The primary key in table EcosimScenarioGroup has been changed from
         '             (ScenarioID, SimGroupID) to (ScenarioID, PathGroupID) for the simple reason that when
@@ -3774,7 +3780,19 @@ Public Class cDBDataSource
                 ' Find row for scenario and ecopath ID
                 objKeys(1) = ecopathDS.GroupDBID(i)
                 drow = dt.Rows.Find(objKeys)
-                Debug.Assert(drow IsNot Nothing, String.Format("Cannot find ecosim group {0} (path group {1}) for scenario {2}", ecosimDS.GroupDBID(i), ecopathDS.GroupDBID(i), iScenarioID))
+
+                bNewRow = (drow Is Nothing)
+                If bNewRow Then
+                    drow = writer.NewRow()
+                    drow("ScenarioID") = iScenarioID
+                    drow("EcopathGroupID") = ecopathDS.GroupDBID(i)
+                    drow("GroupID") = iNextGroupID
+                    iNextGroupID += 1
+                Else
+                    drow.BeginEdit()
+                End If
+
+                iGroupID = CInt(drow("GroupID"))
 
                 ' Store ecosim group ID mapping now we know it
                 ' JS 12Jul09: group mapping is stored by ECOPATH group ID since this is the only constant
@@ -3784,9 +3802,8 @@ Public Class cDBDataSource
                 '             ecosim datastructures. This caused the ID mapping context to be populated
                 '             with Ecosim IDs for groups from the previous scenario, NOT the new scenario,
                 '             thus creating Ecosim scenarios what were bugged right from the start.
-                idm.Add(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(i), CInt(drow("GroupID")))
+                idm.Add(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(i), iGroupID)
 
-                drow.BeginEdit()
                 drow("pbmaxs") = ecosimDS.PBmaxs(i)
                 drow("FtimeMax") = ecosimDS.FtimeMax(i)
                 drow("FtimeAdjust") = ecosimDS.FtimeAdjust(i)
@@ -3825,8 +3842,11 @@ Public Class cDBDataSource
                 drow("CatchRefLower") = mseDS.CatchGroupBounds(i).Lower
                 drow("CatchRefUpper") = mseDS.CatchGroupBounds(i).Upper
 
-                drow.EndEdit()
-
+                If bNewRow Then
+                    writer.AddRow(drow)
+                Else
+                    drow.EndEdit()
+                End If
             Next i
             Me.m_db.ReleaseWriter(writer)
 
@@ -3891,12 +3911,15 @@ Public Class cDBDataSource
                 End If
 
                 If bDuplicating Then
-                    idm.Add(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(iFleet), iNextShapeID)
+                    iShapeID = iNextShapeID
                     iNextShapeID += 1
+                Else
+                    iShapeID = CInt(drow("FishRateShapeID"))
                 End If
+                idm.Add(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(iFleet), iShapeID)
 
                 ' Write dynamic bit
-                drow("FishRateShapeID") = idm.GetID(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(iFleet))
+                drow("FishRateShapeID") = iShapeID
                 drow("MaxEffort") = quotaDS.MaxEffort(iFleet)
                 drow("QuotaType") = CInt(quotaDS.QuotaType(iFleet))
                 drow("Epower") = ecosimDS.Epower(iFleet)
@@ -4857,7 +4880,7 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim iShape As Integer = 0
@@ -4880,9 +4903,9 @@ Public Class cDBDataSource
                             If (iShape > 0) Then
                                 ' Save assignment
                                 drow = writer.NewRow()
+                                drow("ScenarioID") = iScenarioID
                                 drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredator))
                                 drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
-                                drow("ScenarioID") = idm.GetID(eDataTypes.EcoSimScenario, iScenarioID)
                                 If (ecosimDS.IsMedFunction(iPrey, iPredator, iShapeNo)) Then
                                     drow("ShapeID") = ecosimDS.MediationDBIDs(iShape)
                                 Else
@@ -4892,7 +4915,7 @@ Public Class cDBDataSource
                                 writer.AddRow(drow)
                             End If
                         Catch ex As Exception
-                            Debug.Assert(False, String.Format("Index error on pred {0}, prey {1}, shape {2}", iPredator, iPrey, iShape))
+                            'Debug.Assert(False, String.Format("Index error on pred {0}, prey {1}, shape {2}", iPredator, iPrey, iShape))
                         End Try
 
                     Next iShapeNo
