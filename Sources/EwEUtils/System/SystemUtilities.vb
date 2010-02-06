@@ -70,13 +70,13 @@ Namespace SystemUtilities
         ''' </summary>
         ''' <param name="strLocationDir"></param>
         ''' <param name="strAppName"></param>
-        ''' <param name="strOutputFileName"></param>
+        ''' <param name="strOutputParameters"></param>
         ''' <param name="strSecondaryOutputDirectory"></param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
         Private Shared Function ExecuteApplication(ByVal strLocationDir As String, _
                                                    ByVal strAppName As String, _
-                                                   ByVal strOutputFileName As String, _
+                                                   ByVal strOutputParameters As String, _
                                                    Optional ByVal strSecondaryOutputDirectory As String = "") As Boolean
             Dim bSuccess As Boolean = False
             Dim strFullAppPath As String = ""
@@ -90,13 +90,9 @@ Namespace SystemUtilities
                 'Check if the application EcoPath install this application or it was deleted
                 If Not File.Exists(strFullAppPath) Then
                     bSuccess = False
-                ElseIf Not File.Exists(strOutputFileName) Then
-                    ' JS 19ap09 (happy 4th birthday Sascha!) do not throw exception; the calling code is not ready for this
-                    'Throw New Exception("The parameter file " & strOutputFileName & " can not be accessed in " & strFullAppPath & strOutputFileName & "\ .")
-                    bSuccess = False
                 Else
                     'Execute external application
-                    Shell(strFullAppPath & " " & strOutputFileName, AppWinStyle.NormalFocus)
+                    Shell(strFullAppPath & " " & strOutputParameters, AppWinStyle.NormalFocus)
                     bSuccess = True
                 End If
 
