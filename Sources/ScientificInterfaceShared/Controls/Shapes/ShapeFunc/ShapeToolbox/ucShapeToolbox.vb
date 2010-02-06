@@ -377,16 +377,26 @@ Namespace Controls
         Private Sub lvShapes_ItemChecked(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckedEventArgs) _
             Handles lvShapes.ItemChecked
 
-            If (m_bInUpdate) Then Return
+            Dim ts As cTimeSeries = Nothing
 
             ' Sanity check
             If (e.Item Is Nothing) Then Return
 
             Dim shape As cShapeData = DirectCast(e.Item.Tag, cShapeData)
+
             If (TypeOf shape Is cTimeSeries) Then
-                DirectCast(shape, cTimeSeries).Enabled = e.Item.Checked
-                ' HACK!!!
-                cCore.GetInstance().UpdateTimeSeries()
+
+                ts = DirectCast(shape, cTimeSeries)
+                If (ts.Enabled <> e.Item.Checked) Then
+                    ' Update enabled state
+                    ts.Enabled = e.Item.Checked
+
+                    ' HACK!!!
+                    If (m_bInUpdate = False) Then
+                        cCore.GetInstance().UpdateTimeSeries()
+                    End If
+                End If
+
             End If
 
         End Sub
