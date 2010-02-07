@@ -3574,7 +3574,7 @@ Public Class cDBDataSource
                 mseDS.CatchGroupBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower))
                 mseDS.CatchGroupBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper))
 
-                bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
+                ' bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iEcopathGroup))
@@ -4481,6 +4481,8 @@ Public Class cDBDataSource
 
     End Function
 
+#If 0 Then ' Fish mort data is solely an output: no more need to store in DB
+
     Private Function LoadFishMortShape(ByVal iShapeID As Integer, ByVal iForcingShape As Integer) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -4521,6 +4523,8 @@ Public Class cDBDataSource
         Return bSucces
 
     End Function
+
+#End If
 
 #End Region ' Shape load helpers
 
@@ -4648,7 +4652,7 @@ Public Class cDBDataSource
                     Else
                         drow.EndEdit()
                     End If
-                    bSucces = bSucces And Me.SaveFishMortShape(iShape, idm)
+                    ' bSucces = bSucces And Me.SaveFishMortShape(iShape, idm)
                 End If
             Next iShape
 
@@ -5086,6 +5090,8 @@ Public Class cDBDataSource
 
     End Function
 
+#If 0 Then ' Fish mort data is solely an output: no more need to store in DB
+
     Private Function SaveFishMortShape(ByVal iShape As Integer, ByVal idm As cIDMappings) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -5132,6 +5138,8 @@ Public Class cDBDataSource
         Return bSucces
 
     End Function
+
+#End If
 
 #End Region ' Shape save helpers
 
