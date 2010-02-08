@@ -20,7 +20,7 @@ Namespace Import
         ''' Initialize the welcome page.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Init(ByVal wizard As cWizard) _
+        Public Sub Init(ByVal wizard As cWizard, ByVal uic As cUIContext) _
             Implements IWizardPage.Init
             ' NOP
         End Sub

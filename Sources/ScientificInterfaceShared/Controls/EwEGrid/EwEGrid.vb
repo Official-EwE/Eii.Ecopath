@@ -326,13 +326,13 @@ Namespace Controls.EwEGrid
         Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
-                If (Me.m_uic Is Nothing) And (Me.DesignMode = False) Then
-                    Console.WriteLine("WARNING: UIcontent created for unfixed grid " & Me.GetType.Name)
-                    Me.m_uic = New cUIContext(cCore.GetInstance(), _
-                                              cStyleGuide.GetInstance(), _
-                                              cPropertyManager.GetInstance(), _
-                                              cCommandHandler.GetInstance())
-                End If
+                'If (Me.m_uic Is Nothing) And (Me.DesignMode = False) Then
+                '    Console.WriteLine("WARNING: UIcontent created for unfixed grid " & Me.GetType.Name)
+                '    Me.m_uic = New cUIContext(cCore.GetInstance(), _
+                '                              cStyleGuide.GetInstance(), _
+                '                              cPropertyManager.GetInstance(), _
+                '                              cCommandHandler.GetInstance())
+                'End If
                 Return Me.m_uic
             End Get
             Set(ByVal value As cUIContext)

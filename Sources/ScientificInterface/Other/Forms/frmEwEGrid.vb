@@ -31,7 +31,7 @@ Public Class frmEwEGrid
     ''' all currently selected EwE variables can be modified. Conditions apply.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Private Class QuickEditHandler
+    Protected Class cQuickEditHandler
 
 #Region " Private variables "
 
@@ -39,6 +39,7 @@ Public Class frmEwEGrid
         Private m_form As frmEwEGrid = Nothing
         ''' <summary>The grid whose selection is monitored.</summary>
         Private m_grid As EwEGrid = Nothing
+
         ''' <summary>The toolstrip that is managed by this handler.</summary>
         Private m_ts As ToolStrip = Nothing
         ''' <summary>Flag stating whether a toolstrip was created by this handler (true), or whether an existing toolstrip was hijacked (false).</summary>
@@ -379,7 +380,7 @@ Public Class frmEwEGrid
                         Me.m_ttbValue.Text = CStr(objValue)
                     ElseIf (TypeOf objValue Is Single) Or (TypeOf objValue Is Double) Or (TypeOf objValue Is Integer) Then
                         Try
-                            Me.m_ttbValue.Text = cStyleGuide.GetInstance().FormatNumber(CSng(objValue))
+                            Me.m_ttbValue.Text = Me.m_form.StyleGuide.FormatNumber(CSng(objValue))
                         Catch ex As Exception
                         End Try
                     ElseIf TypeOf objValue Is Boolean Then
@@ -414,7 +415,7 @@ Public Class frmEwEGrid
 
             ' Get grid selection
             Dim sel As SourceGrid2.Selection = Me.m_grid.Selection
-            Dim core As cCore = cCore.GetInstance()
+            Dim core As cCore = Me.m_form.Core
 
             ' To stop a flood of updates, and to halt any conflicting operations 
             ' while we're at it.
@@ -449,7 +450,7 @@ Public Class frmEwEGrid
 
         Private Sub ImportFromCSV()
 
-            Dim cmdh As cCommandHandler = cCommandHandler.getinstance()
+            Dim cmdh As cCommandHandler = Me.m_form.CommandHandler
             Dim cmdOF As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
             Dim fs As Stream = Nothing
             Dim sr As StreamReader = Nothing
@@ -475,7 +476,7 @@ Public Class frmEwEGrid
 
         Private Sub ExportToCSV()
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.m_form.CommandHandler
             Dim cmdSF As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim fs As Stream = Nothing
             Dim sw As StreamWriter = Nothing
@@ -497,7 +498,7 @@ Public Class frmEwEGrid
 
         End Sub
 
-#End Region 'Internal implementation
+#End Region ' Internal implementation
 
     End Class
 
@@ -508,7 +509,7 @@ Public Class frmEwEGrid
     ''' <summary>The grid in this form.</summary>
     Private m_grid As EwEGrid = Nothing
     ''' <summary><see cref="QuickEditHandler">Quick Edit Handler</see> for this form.</summary>
-    Private m_qeHandler As QuickEditHandler = Nothing
+    Private m_qeHandler As cQuickEditHandler = Nothing
 
 #End Region ' Variables
 
@@ -590,6 +591,11 @@ Public Class frmEwEGrid
 
         ' Designer crap
         If (Me.m_grid Is Nothing) Then Return
+
+        ' Use a quick edit handler on all grids
+        ' JS 05Sep09: QEbar was Input grid only. Now, CSV interaction is available for all grids
+        Me.SetQuickEditHandler(True)
+
         ' Connect to message sources
         Me.CoreComponents = Me.m_grid.MessageSources
 
@@ -617,31 +623,6 @@ Public Class frmEwEGrid
 
 #End Region ' Form overrides
 
-#Region " Public interfaces "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set core execution state for the form.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Overrides Property CoreExecutionState() As eCoreExecutionState
-
-        Get
-            Return MyBase.CoreExecutionState
-        End Get
-
-        Set(ByVal value As eCoreExecutionState)
-            MyBase.CoreExecutionState = value
-            ' Use a quick edit handler on all grids
-            ' JS 05Sep09: QEbar was Input grid only. Now, CSV interaction is available for all grids
-            Me.SetQuickEditHandler(True)
-        End Set
-
-    End Property
-
-#End Region ' Public interfaces
-
 #Region " Internals "
 
     ''' -----------------------------------------------------------------------
@@ -650,9 +631,22 @@ Public Class frmEwEGrid
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
-    Protected Function Grid() As EwEGrid
-        Return m_grid
-    End Function
+    Protected ReadOnly Property Grid() As EwEGrid
+        Get
+            Return m_grid
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get a reference to the on-board <see cref="cQuickEditHandler">Quick edit handler</see>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected ReadOnly Property QuickEditHandler() As cQuickEditHandler
+        Get
+            Return Me.m_qeHandler
+        End Get
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -662,14 +656,14 @@ Public Class frmEwEGrid
     ''' (true) or released (false).</param>
     ''' <remarks>
     ''' This code is pretty robust, do not worry about calling it too much.
-    ''' Note that it's important to release any handler when the form 
+    ''' Note that it's important to release all event handlers when a form 
     ''' gets destroyed.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Private Sub SetQuickEditHandler(ByVal bSet As Boolean)
         If bSet Then
             If (Me.m_qeHandler Is Nothing) Then
-                Me.m_qeHandler = New QuickEditHandler()
+                Me.m_qeHandler = New cQuickEditHandler()
                 Me.m_qeHandler.Attach(Me)
             End If
         Else

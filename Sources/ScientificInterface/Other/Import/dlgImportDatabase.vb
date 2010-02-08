@@ -24,10 +24,10 @@ Namespace Import
 
 #End Region ' Private vars
 
-        Public Sub New(ByVal core As cCore, ByVal db As cEwEDatabase)
+        Public Sub New(ByVal uic As cUIContext, ByVal db As cEwEDatabase)
 
             Me.InitializeComponent()
-            Me.m_wizard = New cImportWizard(core, db, Me, Me.m_plWizardContent, Me.m_navigator)
+            Me.m_wizard = New cImportWizard(uic, db, Me, Me.m_plWizardContent, Me.m_navigator)
 
         End Sub
 

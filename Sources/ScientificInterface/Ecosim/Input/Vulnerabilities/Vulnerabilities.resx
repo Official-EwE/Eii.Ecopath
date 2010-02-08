@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="tsVUlnerabilities.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 0</value>
+  <metadata name="m_tsVUlnerabilities.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tsbEstimateVs.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="m_tsbEstimateVs.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
@@ -136,66 +136,38 @@
         s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="tsbEstimateVs.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsbEstimateVs.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsbEstimateVs.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsbEstimateVs.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 22</value>
   </data>
-  <data name="tsbEstimateVs.Text" xml:space="preserve">
+  <data name="m_tsbEstimateVs.Text" xml:space="preserve">
     <value>&amp;Estimate vulnerabilities</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tsbEstimateVs.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="tsVUlnerabilities.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tsVUlnerabilities.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tsVUlnerabilities.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsVUlnerabilities.Size" type="System.Drawing.Size, System.Drawing">
     <value>693, 25</value>
   </data>
-  <data name="tsVUlnerabilities.TabIndex" type="System.Int32, mscorlib">
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_tsVUlnerabilities.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="tsVUlnerabilities.Text" xml:space="preserve">
+  <data name="m_tsVUlnerabilities.Text" xml:space="preserve">
     <value>ToolStrip1</value>
   </data>
-  <data name="&gt;&gt;tsVUlnerabilities.Name" xml:space="preserve">
-    <value>tsVUlnerabilities</value>
+  <data name="&gt;&gt;m_tsVUlnerabilities.Name" xml:space="preserve">
+    <value>m_tsVUlnerabilities</value>
   </data>
-  <data name="&gt;&gt;tsVUlnerabilities.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsVUlnerabilities.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsVUlnerabilities.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tsVUlnerabilities.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;tsVUlnerabilities.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="plVulGrid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="plVulGrid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 28</value>
-  </data>
-  <data name="plVulGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>693, 384</value>
-  </data>
-  <data name="plVulGrid.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;plVulGrid.Name" xml:space="preserve">
-    <value>plVulGrid</value>
-  </data>
-  <data name="&gt;&gt;plVulGrid.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;plVulGrid.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;plVulGrid.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tsVUlnerabilities.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -207,16 +179,19 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>693, 410</value>
   </data>
-  <data name="&gt;&gt;tsbEstimateVs.Name" xml:space="preserve">
-    <value>tsbEstimateVs</value>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
-  <data name="&gt;&gt;tsbEstimateVs.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsbEstimateVs.Name" xml:space="preserve">
+    <value>m_tsbEstimateVs</value>
+  </data>
+  <data name="&gt;&gt;m_tsbEstimateVs.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Vulnerabilities</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.EwEGridContentPanel, EwE6, Version=6.0.0.15, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.128, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

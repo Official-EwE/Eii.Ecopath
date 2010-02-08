@@ -1,51 +1,66 @@
-'==============================================================================
-'
-' $Log: Vulnerabilities.vb,v $
-' Revision 1.2  2008/12/15 15:56:03  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:45  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.12  2007/07/08 00:56:52  jeroens
-' * Fixed runtime error on missing parameterless constructor
-'
-' Revision 1.11  2007/07/03 21:25:05  jeroens
-' * Reactivated 'Set' in derived grid panels
-'
-' Revision 1.10  2007/07/03 20:19:15  jeroens
-' + Reinstituted Vulnerabilities toolbar
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Commands
 
-#End Region
+#End Region ' Imports
 
 Namespace Ecosim
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Form implementing the Ecosim Vulnerabilities interface.
+    ''' </summary>
+    ''' =======================================================================
     Public Class Vulnerabilities
 
+#Region " Private vars "
+
+        Private m_cmdEstimateVs As cCommand = Nothing
+
+#End Region ' Private vars
+
+#Region " Constructor "
+
         Public Sub New()
-            MyBase.New(New VulnerabilitiesEwEGrid)
-            InitializeComponent()
+            MyBase.New(New VulnerabilitiesEwEGrid())
+            Me.InitializeComponent()
         End Sub
+
+#End Region ' Constructor
+
+#Region " Overloads "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-            plVulGrid.Controls.Add(Me.Grid)
+            MyBase.OnLoad(e)
+
+            If Me.UIContext Is Nothing Then Return
+
+            Me.m_cmdEstimateVs = Me.CommandHandler.GetCommand("EstimateVs")
+            If (Me.m_cmdEstimateVs IsNot Nothing) Then
+                Me.m_cmdEstimateVs.AddControl(Me.m_tsbEstimateVs)
+            End If
+
+#If Not Debug Then
+            ' Remove estimate V's from release version while under development
+            Me.m_tsbEstimateVs.Visible = False
+#End If
+
         End Sub
 
-        Private Sub tsbEstimateVs_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles tsbEstimateVs.Click
-            ' ToDo: fix bug 229 (http://sources.ecopath.org/trac/Ecopath/ticket/229)
-            MsgBox("To be implemented...", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+            If (Me.m_cmdEstimateVs IsNot Nothing) Then
+                Me.m_cmdEstimateVs.RemoveControl(Me.m_tsbEstimateVs)
+            End If
+            MyBase.OnFormClosed(e)
         End Sub
+
+#End Region ' Overloads
 
     End Class
 
 End Namespace
+

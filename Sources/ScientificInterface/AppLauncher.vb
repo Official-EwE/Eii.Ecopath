@@ -109,6 +109,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdPropertySelection As PropertySelectionCommand = Nothing
     Private WithEvents m_cmdDisplayGroups As cDisplayGroupsCommand = Nothing
     Private WithEvents m_cmdEnableEcotracer As cCommand = Nothing
+    Private WithEvents m_cmdEstimateVs As cCommand = Nothing
     ' ToDo_JS: Discontinue, move to Ecosim UI
     Private WithEvents m_cmdExportBiomassToCSV As cCommand = Nothing
 
@@ -135,14 +136,12 @@ Public Class AppLauncher
 
     Public Sub New()
 
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
+        Me.InitializeComponent()
 
         Debug.Assert(AppLauncher.__inst__ Is Nothing, "Only one instance of AppLauncher allowed")
         AppLauncher.__inst__ = Me
 
         Me.m_applictionStatusNotifier = New cApplicationStatusNotifier(Me)
-
 
         If Me.m_SyncObj Is Nothing Then
             'create the sync object on the same thread that created the AppLauncher
@@ -151,6 +150,10 @@ Public Class AppLauncher
             If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
         End If
 
+#If Not Debug Then
+        ' Remove estimate V's from release version while under development
+        Me.m_tsmiEcosimEstimateVs.Visible = False
+#End If
 
     End Sub
 
@@ -1003,6 +1006,10 @@ Public Class AppLauncher
         Me.m_cmdEnableEcotracer = New cCommand("EnableEcotracer")
         cmdh.Add(Me.m_cmdEnableEcotracer)
 
+        Me.m_cmdEstimateVs = New cCommand("EstimateVs")
+        Me.m_cmdEstimateVs.AddControl(Me.m_tsmiEcosimEstimateVs)
+        cmdh.Add(Me.m_cmdEstimateVs)
+
         Me.m_cmdExportBiomassToCSV = New cCommand("ExportEcosimBiomassToCSV")
         cmdh.Add(Me.m_cmdExportBiomassToCSV)
 
@@ -1434,7 +1441,7 @@ Public Class AppLauncher
                 Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
                     AddRecentFilesSetting(strFileName)
 
-                    Dim dlg As New Import.dlgImportDatabase(Me.Core, db)
+                    Dim dlg As New Import.dlgImportDatabase(Me.UIContext, db)
                     If dlg.ShowDialog(Me) = DialogResult.OK Then
                         ' Update file name
                         strFileName = dlg.ImportedFileName
@@ -2908,6 +2915,17 @@ Public Class AppLauncher
             ' Save the Ecosim model result to .csv files
             Me.Core.dumpEcosimModelResults(cmdFS.FileName)
         End If
+    End Sub
+
+    Private Sub OnEstimateVsInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdEstimateVs.OnInvoke
+        Dim dlg As New dlgEstimateVs(Me.UIContext)
+        dlg.ShowDialog(Me)
+    End Sub
+
+    Private Sub OnEstimateVsUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdEstimateVs.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded()
     End Sub
 
     Private Sub OnExportBiomassToCSVs(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnUpdate

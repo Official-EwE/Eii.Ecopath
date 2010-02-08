@@ -22,6 +22,8 @@ Namespace Import
 
         ''' <summary>The attached wizard.</summary>
         Private m_wizard As cImportWizard = Nothing
+        ''' <summary>UI context.</summary>
+        Private m_uic As cUIContext = Nothing
 
 #End Region ' Private vars
 
@@ -32,7 +34,7 @@ Namespace Import
         ''' Initialize the model selection page with the wizard content.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Init(ByVal wizard As cWizard) _
+        Public Sub Init(ByVal wizard As cWizard, ByVal uic As cUIContext) _
              Implements IWizardPage.Init
 
             ' Sanity checks
@@ -40,6 +42,7 @@ Namespace Import
 
             ' Remember wizard
             Me.m_wizard = DirectCast(wizard, cImportWizard)
+            Me.m_uic = uic
 
             ' Show database name in header
             Me.m_hdr.SubText = Me.m_wizard.Database
@@ -47,6 +50,7 @@ Namespace Import
             Me.m_tbxOutputFolder.Text = Me.m_wizard.OutputFolder
 
             ' Initialize the grid
+            Me.m_grid.UIContext = uic
             Me.m_grid.Init(Me.m_wizard)
 
             ' Initialize the database targets combo box

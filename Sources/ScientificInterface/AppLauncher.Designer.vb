@@ -91,6 +91,7 @@
         Me.m_tsmiTimeSeriesEditWeights = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesReloadLast = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiExportBiomassToCSV = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcosimEstimateVs = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuTools = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuEcotracer = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerNew = New System.Windows.Forms.ToolStripMenuItem
@@ -454,7 +455,7 @@
         '
         'MenuEcosim
         '
-        Me.MenuEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights, Me.m_tsmiTimeSeriesReloadLast, m_tssEcosim3, Me.m_tsmiExportBiomassToCSV})
+        Me.MenuEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights, Me.m_tsmiTimeSeriesReloadLast, m_tssEcosim3, Me.m_tsmiExportBiomassToCSV, Me.m_tsmiEcosimEstimateVs})
         Me.MenuEcosim.Name = "MenuEcosim"
         resources.ApplyResources(Me.MenuEcosim, "MenuEcosim")
         '
@@ -507,6 +508,11 @@
         '
         Me.m_tsmiExportBiomassToCSV.Name = "m_tsmiExportBiomassToCSV"
         resources.ApplyResources(Me.m_tsmiExportBiomassToCSV, "m_tsmiExportBiomassToCSV")
+        '
+        'm_tsmiEcosimEstimateVs
+        '
+        Me.m_tsmiEcosimEstimateVs.Name = "m_tsmiEcosimEstimateVs"
+        resources.ApplyResources(Me.m_tsmiEcosimEstimateVs, "m_tsmiEcosimEstimateVs")
         '
         'MenuTools
         '
@@ -670,6 +676,7 @@
     Private WithEvents m_tsmiFileCompact As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuEcosim As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents m_ssMain As ScientificInterface.cEwEStatusBar
+    Private WithEvents m_tsmiEcosimEstimateVs As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 

@@ -153,19 +153,19 @@ Namespace Import
         ''' <summary>
         ''' Construct a new import wizard.
         ''' </summary>
-        ''' <param name="core">The EwE core to operate on.</param>
+        ''' <param name="uic">The UI context to operate on.</param>
         ''' <param name="db">The EwE5 database to import from.</param>
         ''' <param name="parent">The form hosting the wizard UI.</param>
         ''' <param name="content">The panel where this wizard can display its pages.</param>
         ''' <param name="nav">The navigation that controls this wizard.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, _
+        Public Sub New(ByVal uic As cUIContext, _
                        ByRef db As cEwEDatabase, _
                        ByVal parent As Form, _
                        ByVal content As Panel, _
                        ByVal nav As IWizardNavigation)
 
-            MyBase.New(core, parent, content, nav)
+            MyBase.New(uic, parent, content, nav)
 
             ' Hook up with data
             Me.m_dbImp = New cEwE6DatabaseImporter(core)

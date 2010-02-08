@@ -41,7 +41,7 @@ Namespace Import
         ''' import messages and immediately starting the import process.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Init(ByVal wizard As cWizard) _
+        Public Sub Init(ByVal wizard As cWizard, ByVal uic As cUIContext) _
                Implements IWizardPage.Init
 
             ' Sanity checks

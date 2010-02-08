@@ -1,5 +1,3 @@
-Imports WeifenLuo.WinFormsUI.Docking
-
 Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -24,45 +22,38 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Vulnerabilities))
-            Me.tsVUlnerabilities = New System.Windows.Forms.ToolStrip
-            Me.tsbEstimateVs = New System.Windows.Forms.ToolStripButton
-            Me.plVulGrid = New System.Windows.Forms.Panel
-            Me.tsVUlnerabilities.SuspendLayout()
+            Me.m_tsVUlnerabilities = New System.Windows.Forms.ToolStrip
+            Me.m_tsbEstimateVs = New System.Windows.Forms.ToolStripButton
+            Me.m_tsVUlnerabilities.SuspendLayout()
             Me.SuspendLayout()
             '
             'tsVUlnerabilities
             '
-            Me.tsVUlnerabilities.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbEstimateVs})
-            resources.ApplyResources(Me.tsVUlnerabilities, "tsVUlnerabilities")
-            Me.tsVUlnerabilities.Name = "tsVUlnerabilities"
+            Me.m_tsVUlnerabilities.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbEstimateVs})
+            resources.ApplyResources(Me.m_tsVUlnerabilities, "m_tsVUlnerabilities")
+            Me.m_tsVUlnerabilities.Name = "m_tsVUlnerabilities"
             '
             'tsbEstimateVs
             '
-            Me.tsbEstimateVs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsbEstimateVs, "tsbEstimateVs")
-            Me.tsbEstimateVs.Name = "tsbEstimateVs"
-            '
-            'plVulGrid
-            '
-            resources.ApplyResources(Me.plVulGrid, "plVulGrid")
-            Me.plVulGrid.Name = "plVulGrid"
+            Me.m_tsbEstimateVs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbEstimateVs, "m_tsbEstimateVs")
+            Me.m_tsbEstimateVs.Name = "m_tsbEstimateVs"
+
             '
             'Vulnerabilities
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.plVulGrid)
-            Me.Controls.Add(Me.tsVUlnerabilities)
+            Me.Controls.Add(Me.m_tsVUlnerabilities)
             Me.Name = "Vulnerabilities"
-            Me.tsVUlnerabilities.ResumeLayout(False)
-            Me.tsVUlnerabilities.PerformLayout()
+            Me.m_tsVUlnerabilities.ResumeLayout(False)
+            Me.m_tsVUlnerabilities.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents tsVUlnerabilities As System.Windows.Forms.ToolStrip
-        Friend WithEvents tsbEstimateVs As System.Windows.Forms.ToolStripButton
-        Friend WithEvents plVulGrid As System.Windows.Forms.Panel
+        Private WithEvents m_tsVUlnerabilities As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsbEstimateVs As System.Windows.Forms.ToolStripButton
 
     End Class
 

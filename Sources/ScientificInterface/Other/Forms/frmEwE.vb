@@ -324,7 +324,7 @@ Public Class frmEwE
     ''' this grid can interact with.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public ReadOnly Property ComandHandler() As cCommandHandler
+    Public ReadOnly Property CommandHandler() As cCommandHandler
         Get
             If Me.UIContext Is Nothing Then Return Nothing
             Return Me.UIContext.CommandHander
