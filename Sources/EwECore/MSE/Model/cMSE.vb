@@ -1487,7 +1487,7 @@ Namespace MSE
                         Dim CheckTangent As Boolean = False
                         Dim LastLowerF As Double = 0
 
-                        Dim StoreF(m_core.EcoSimModelParameters.NumberYears) As Single
+                        Dim StoreF(12 * m_core.EcoSimModelParameters.NumberYears) As Single
                         SetFishingMortalityOverTime(iGrp, StoreF, False)
 
                         Do While Done = False
@@ -1578,7 +1578,7 @@ Namespace MSE
 
                             lastValue = CurValue
                             If tryF > 0 And CheckTangent = False Then
-                                If Math.Abs(1 - lastF / tryF) < 0.01 Then Done = True
+                                If Math.Abs(1 - lastF / tryF) < 0.001 Then Done = True
                             End If
                             lastF = tryF
 
