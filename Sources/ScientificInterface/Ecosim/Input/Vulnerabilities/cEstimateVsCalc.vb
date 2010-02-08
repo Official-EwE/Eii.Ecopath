@@ -31,7 +31,7 @@ Namespace Ecosim
         Public Function SimDC(ByVal k As Integer, ByVal l As Integer) As Single
 
             Dim FractionWOimport As Single
-            Dim asSimDC(Me.m_core.nLivingGroups, Me.m_core.nGroups) As Single
+            Dim asSimDC(Me.m_core.nGroups, Me.m_core.nGroups) As Single
 
             'VC210898   To take care of import (a part of the diet composition):
             '           Rescale diet so as not to incorporate import:
@@ -46,9 +46,9 @@ Namespace Ecosim
                 For i As Integer = 1 To Me.m_core.nGroups 'prey
                     'Next cause an overflow if Fraction WOImport=0, therefore a trap
                     If FractionWOimport = 0 Then
-                        asSimDC(j, i) = 0
+                        asSimDC(i, j) = 0
                     Else
-                        asSimDC(j, i) = group.DietComp(i) '/ FractionWOimport
+                        asSimDC(i, j) = group.DietComp(i) '/ FractionWOimport
                     End If
                 Next
             Next
@@ -70,6 +70,7 @@ Namespace Ecosim
                 If SimQB(j) > 0 And SimDC(j, i) > 0 Then _
                     sStartEatenOf += Me.m_core.StartBiomass(j) * SimQB(j) * SimDC(j, i)
             Next
+            Return sStartEatenOf
 
         End Function
 

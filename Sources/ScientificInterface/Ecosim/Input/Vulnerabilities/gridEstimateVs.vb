@@ -110,9 +110,12 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
+            If Me.m_calc Is Nothing Then Return
+
             Dim group As cEcoSimGroupInput = Nothing
             Dim sPotGrowth As Single = 0.0!
             Dim sFMax As Single = 0.0!
+            Dim style As cStyleGuide.eStyleFlags = eStyleFlags.OK
 
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
 
@@ -121,6 +124,7 @@ Namespace Ecosim
                 sFMax = 0.0! ' Col 7 in the EwE5 code
 
                 If Me.m_calc.Fish1(iGroup) = 0 Then
+                    sPotGrowth = cCore.NULL_VALUE
                     sFMax = 1.2!
                 Else
                     sPotGrowth = 2.0!
@@ -133,7 +137,8 @@ Namespace Ecosim
                 Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(iGroup)
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
 
-                Me(iGroup, eColumnTypes.PotGrowth) = New EwECell(sPotGrowth, GetType(Single), eStyleFlags.OK)
+                If sPotGrowth >= 0 Then style = eStyleFlags.OK Else style = eStyleFlags.Null Or eStyleFlags.NotEditable
+                Me(iGroup, eColumnTypes.PotGrowth) = New EwECell(sPotGrowth, GetType(Single), style)
                 Me(iGroup, eColumnTypes.PotGrowth).Behaviors.Add(Me.m_bm)
 
                 Me(iGroup, eColumnTypes.FMax) = New EwECell(sFMax, GetType(Single), eStyleFlags.OK)
@@ -174,7 +179,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As ICellVirtual) As Boolean
+        Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As ICellVirtual) As Boolean
 
             Select Case DirectCast(p.Column, eColumnTypes)
 
@@ -187,7 +192,7 @@ Namespace Ecosim
                     ' NOP
             End Select
 
-            Return MyBase.OnCellValueChanged(p, cell)
+            Return MyBase.OnCellEdited(p, cell)
 
         End Function
 
@@ -211,8 +216,8 @@ Namespace Ecosim
             End If
 
             If (Me.m_calc.Fish1(iRow) > 0) Then
-                Me.SetVulCell(iRow, eColumnTypes.FMax_VwithFT, Me.Core.CalcEcosimVulFMax(sPotGrowth, iRow, True))
-                Me.SetVulCell(iRow, eColumnTypes.FMax_VwoFT, Me.Core.CalcEcosimVulFMax(sPotGrowth, iRow, False))
+                Me.SetVulCell(iRow, eColumnTypes.FMax_VwithFT, Me.Core.CalcEcosimVulFMax(sFMax, iRow, True))
+                Me.SetVulCell(iRow, eColumnTypes.FMax_VwoFT, Me.Core.CalcEcosimVulFMax(sFMax, iRow, False))
             Else
                 Me.SetVulCell(iRow, eColumnTypes.FMax_VwithFT, cCore.NULL_VALUE)
                 Me.SetVulCell(iRow, eColumnTypes.FMax_VwoFT, cCore.NULL_VALUE)
