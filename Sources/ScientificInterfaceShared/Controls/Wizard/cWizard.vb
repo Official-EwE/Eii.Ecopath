@@ -24,8 +24,8 @@ Namespace Controls.Wizard
 
 #Region " Private vars "
 
-        ''' <summary>Core that this wizard operates on.</summary>
-        Private m_core As cCore = Nothing
+        ''' <summary>UI Context that a wizard operates on.</summary>
+        Private m_uic As cUIContext
 
         ''' <summary>List of wizard pages.</summary>
         Private m_lPages As New List(Of Type)
@@ -49,11 +49,12 @@ Namespace Controls.Wizard
         ''' <summary>
         ''' Constructor, create a new wizard and embeds itself into your form, muahahaha!
         ''' </summary>
+        ''' <param name="uic">UI context to operate on.</param>
         ''' <param name="parent">Form hosting this wizard.</param>
         ''' <param name="content">Panel where wizard can display its content.</param>
         ''' <param name="nav">Navigator attached to this wizard.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, _
+        Public Sub New(ByVal uic As cUIContext, _
                        ByVal parent As Form, _
                        ByVal content As Panel, _
                        ByVal nav As IWizardNavigation)
@@ -61,7 +62,7 @@ Namespace Controls.Wizard
             ' Sanity checks
             Debug.Assert(nav IsNot Nothing)
 
-            Me.m_core = core
+            Me.m_uic = uic
 
             Me.m_parent = parent
             Me.m_content = content
@@ -135,7 +136,7 @@ Namespace Controls.Wizard
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Core() As cCore
             Get
-                Return Me.m_core
+                Return Me.m_uic.Core
             End Get
         End Property
 
@@ -203,7 +204,7 @@ Namespace Controls.Wizard
             ' Create new page
             Me.m_page = DirectCast(Activator.CreateInstance(Me.m_lPages(Me.m_iPageActive)), IWizardPage)
 
-            Me.m_page.Init(Me)
+            Me.m_page.Init(Me, Me.m_uic)
 
             ctrl = DirectCast(Me.m_page, Control)
             ctrl.Dock = DockStyle.Fill

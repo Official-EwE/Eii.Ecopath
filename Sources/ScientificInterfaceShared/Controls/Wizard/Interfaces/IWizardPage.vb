@@ -18,7 +18,7 @@ Namespace Controls.Wizard
         ''' Initialize a page with the wizard content.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Sub Init(ByVal wizard As cWizard)
+        Sub Init(ByVal wizard As cWizard, ByVal uic As cUIContext)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
