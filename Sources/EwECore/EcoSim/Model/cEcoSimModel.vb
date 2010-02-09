@@ -13,14 +13,12 @@ Namespace Ecosim
     ''' <summary>
     ''' Reason the model completed
     ''' </summary>
-    ''' <remarks>
-    ''' Completed The model finished the run successfully
-    ''' UserInterupted User stopped model from completing 
-    ''' ErrorEncountered Error while model was running
-    ''' </remarks>
     Public Enum eEcoSimCompletedReason
+        ''' <summary>The model finished the run successfully</summary>
         Completed
+        ''' <summary>User stopped model from completing</summary>
         UserInterupted
+        ''' <summary>Error while model was running</summary>
         ErrorEncountered
     End Enum
 
@@ -3364,7 +3362,65 @@ Namespace Ecosim
 
         End Function
 
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="iGroup"></param>
+        ''' <param name="PotGrowth">Potential growth values to use.</param>
+        ''' <param name="FWMax">FWMax values to use</param>
+        ''' <param name="estimated">Two-dimensional array with estmated vulnerabilities.</param>
+        Public Function EstimateVulnerabilities(ByVal iGroup As Integer, _
+                                                ByRef PotGrowth As Single, ByRef FWMax As Single, _
+                                                ByVal estimated As Single()) As Boolean
 
+            Try
+
+                ' Calculate PotGrowth if needed
+                If PotGrowth <= 0 Then
+                    If Me.m_Data.Fish1(iGroup) = 0 Then
+                        PotGrowth = cCore.NULL_VALUE
+                    Else
+                        PotGrowth = 2.0!
+                    End If
+                End If
+
+                ' Calculate FWMax if needed
+                If (FWMax <= 0) Then
+                    If Me.m_Data.Fish1(iGroup) = 0 Then
+                        FWMax = 1.2!
+                    Else
+                        If (Me.m_Data.mo(iGroup) + Me.StartEatenOf(iGroup) > 0) Then
+                            FWMax = 1.1 * Me.m_Data.Fish1(iGroup) / (Me.m_Data.mo(iGroup) + Me.StartEatenOf(iGroup) / Me.m_Data.StartBiomass(iGroup))
+                        Else
+                            FWMax = cCore.NULL_VALUE
+                        End If
+                    End If
+                End If
+
+                ' Estimate Vs
+                If (Me.m_Data.Fish1(iGroup) > 0) And (Me.m_Data.SimGE(iGroup) > 0) Then
+                    estimated(0) = Me.VulBo(PotGrowth, iGroup, True)
+                    estimated(1) = Me.VulBo(PotGrowth, iGroup, False)
+                Else
+                    estimated(0) = cCore.NULL_VALUE
+                    estimated(1) = cCore.NULL_VALUE
+                End If
+
+                If (FWMax > 0) Then
+                    estimated(2) = VulFmax(FWMax, iGroup, True)
+                    estimated(3) = VulFmax(FWMax, iGroup, False)
+                Else
+                    estimated(2) = cCore.NULL_VALUE
+                    estimated(3) = cCore.NULL_VALUE
+                End If
+
+            Catch ex As Exception
+                Return False
+            End Try
+
+            Return True
+
+        End Function
 
         Private Sub CalcMo()
             Dim i As Integer ', gro

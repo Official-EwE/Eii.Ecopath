@@ -6385,6 +6385,12 @@ Public Class cCore
         Return Me.m_EcoSim.VulFmax(Fpo, iGroup, FtimeOn)
     End Function
 
+    Public Function EstimateVulnerabilities(ByVal iGroup As Integer, _
+                                            ByRef PotGrowth As Single, ByRef FWMax As Single, _
+                                            ByVal estimates As Single()) As Boolean
+        Return Me.m_EcoSim.EstimateVulnerabilities(iGroup, PotGrowth, FWMax, estimates)
+    End Function
+
 #End Region 'EcoSim
 
 #Region "Ecospace"
