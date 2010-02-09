@@ -29,7 +29,6 @@ Namespace Ecosim
         ''' <summary>UI context to use.</summary>
         Private m_uic As cUIContext = Nothing
         Private m_zgh As cZedGraphHelper = Nothing
-        Private m_calc As cEstimateVsCalc = Nothing
 
         Private m_estimationmethod As eEstimationTypes = eEstimationTypes.BoBu
 
@@ -52,20 +51,17 @@ Namespace Ecosim
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.m_uic.Core, Me.m_graph)
 
-            Me.m_calc = New cEstimateVsCalc(Me.UIContext.Core)
+            Me.m_grid.SelectedGroupIndex = 1
 
-            ' Set initial grid group selection
-            Dim iGroup As Integer = 1
-            While (Me.m_calc.Fish1(iGroup) <= 0) And (iGroup < Me.UIContext.Core.nLivingGroups)
-                iGroup += 1
-            End While
-            Me.m_grid.SelectedGroupIndex = iGroup
+            AddHandler Me.m_grid.OnSelectedVulnerabilitiesChanged, AddressOf OnSelectedVulnerabilitiesChanged
 
             Me.UpdateControls()
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+
+            RemoveHandler Me.m_grid.OnSelectedVulnerabilitiesChanged, AddressOf OnSelectedVulnerabilitiesChanged
 
             MyBase.OnFormClosed(e)
             Me.m_zgh.Detach()
@@ -122,15 +118,19 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnOK.Click
+            Handles m_btnCancel.Click
             Me.Close()
         End Sub
 
         Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnCancel.Click
+            Handles m_btnOK.Click
             If Me.Apply() Then
                 Me.Close()
             End If
+        End Sub
+
+        Private Sub OnSelectedVulnerabilitiesChanged(ByVal grid As gridEstimateVs)
+            Me.UpdateControls()
         End Sub
 
 #End Region ' Events
@@ -157,14 +157,20 @@ Namespace Ecosim
         End Property
 
         Private Function Apply() As Boolean
+            Me.m_grid.ApplySelectedVulnerabilities()
             Return True
         End Function
 
         Private Sub UpdateControls()
+
+            Dim bHasSelectedVulnerabilities As Boolean = Me.m_grid.HasSelectedVulnerabilities()
+
             Me.m_rbB0Bu.Checked = (Me.EstimationMethod = eEstimationTypes.BoBu)
             Me.m_rbBuB0.Checked = (Me.EstimationMethod = eEstimationTypes.BuBo)
             Me.m_rbFMaxM.Checked = (Me.EstimationMethod = eEstimationTypes.FMaxM)
             Me.m_rbPredMort.Checked = (Me.EstimationMethod = eEstimationTypes.FMaxBoBu)
+            Me.m_btnOK.Enabled = Me.m_grid.HasSelectedVulnerabilities
+
         End Sub
 
 #Region " Plot "

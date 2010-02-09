@@ -10,17 +10,7 @@ Namespace Ecosim
     Public Class gridEstimateVs
         Inherits EwEGrid
 
-#Region " Internals "
-
-        ''' <summary>Feedback style to use for selected vul cells.</summary>
-        Private Const c_styleSelect As cStyleGuide.eStyleFlags = eStyleFlags.Highlight
-
-        ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
-        ''' to trap cell edit events locally in this grid. These events are essential
-        ''' for keeping the local Fleet administration up to date.</summary>
-        Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
-
-        Private m_calc As cEstimateVsCalc = Nothing
+#Region " Private vars and declarations "
 
         Private Enum eColumnTypes As Integer
             ''' <summary>Index column.</summary>
@@ -41,7 +31,19 @@ Namespace Ecosim
             FMax_VwithFT
         End Enum
 
-#End Region ' Internals
+        Private Shared c_vulcols As eColumnTypes() = {eColumnTypes.PG_VwithFT, _
+                                                      eColumnTypes.PG_VwoFT, _
+                                                      eColumnTypes.FMax_VwithFT, _
+                                                      eColumnTypes.FMax_VwoFT}
+
+        ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
+        ''' to trap cell edit events locally in this grid. These events are essential
+        ''' for keeping the local Fleet administration up to date.</summary>
+        Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
+        ''' <summary>Feedback style to use for selected vul cells.</summary>
+        Private Const c_styleSelect As cStyleGuide.eStyleFlags = eStyleFlags.Highlight
+
+#End Region ' Private vars and declarations
 
 #Region " Public properties "
 
@@ -50,12 +52,11 @@ Namespace Ecosim
                 Return MyBase.UIContext
             End Get
             Set(ByVal value As cUIContext)
-                If (value IsNot Nothing) Then
-                    Me.m_calc = New cEstimateVsCalc(value.Core)
-                End If
                 MyBase.UIContext = value
             End Set
         End Property
+
+        Public Event OnSelectedVulnerabilitiesChanged(ByVal sender As gridEstimateVs)
 
         Public Property SelectedGroupIndex() As Integer
             Get
@@ -85,6 +86,64 @@ Namespace Ecosim
             End Set
         End Property
 
+        Public Function HasSelectedVulnerabilities() As Boolean
+
+            Dim cell As EwECell = Nothing
+
+            For Each col As eColumnTypes In gridEstimateVs.c_vulcols
+                For iRow As Integer = 1 To Me.RowsCount - 1
+                    If Me.IsVulCellSelected(iRow, col) Then
+                        Return True
+                    End If
+                Next
+            Next
+            Return False
+
+        End Function
+
+        Public Sub ApplySelectedVulnerabilities()
+
+            Dim sVul As Single = cCore.NULL_VALUE
+            Dim group As cEcoPathGroupInput = Nothing
+            Dim groupSim As cEcoSimGroupInput = Nothing
+
+            Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
+
+            Try
+
+                For iGroup As Integer = 1 To Me.Core.nGroups
+
+                    ' Get group
+                    group = Me.Core.EcoPathGroupInputs(iGroup)
+
+                    ' Get selected vul, if any
+                    sVul = cCore.NULL_VALUE
+                    For Each col As eColumnTypes In gridEstimateVs.c_vulcols
+                        If Me.IsVulCellSelected(iGroup, col) Then
+                            sVul = CSng(Me(iGroup, col).Value)
+                        End If
+                    Next
+
+                    ' Has vul?
+                    If sVul > 1 Then
+                        For i As Integer = 1 To Me.Core.nGroups
+                            'Update vulmult(prey,pred)
+                            If group.DietComp(i) > 0 Then
+                                groupSim = Me.Core.EcoSimGroupInputs(i)
+                                groupSim.VulMult(iGroup) = sVul
+                            End If
+                        Next
+                    End If
+
+                Next
+            Catch ex As Exception
+
+            End Try
+
+            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim)
+
+        End Sub
+
 #End Region ' Public properties
 
 #Region " Overrides "
@@ -110,28 +169,19 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            If Me.m_calc Is Nothing Then Return
-
             Dim group As cEcoSimGroupInput = Nothing
             Dim sPotGrowth As Single = 0.0!
             Dim sFMax As Single = 0.0!
             Dim style As cStyleGuide.eStyleFlags = eStyleFlags.OK
+            Dim estimates(4) As Single
 
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
 
                 group = Me.Core.EcoSimGroupInputs(iGroup)
-                sPotGrowth = 0.0! ' Col 3 in the EwE5 code
-                sFMax = 0.0! ' Col 7 in the EwE5 code
+                sPotGrowth = cCore.NULL_VALUE ' Col 3 in the EwE5 code
+                sFMax = cCore.NULL_VALUE ' Col 7 in the EwE5 code
 
-                If Me.m_calc.Fish1(iGroup) = 0 Then
-                    sPotGrowth = cCore.NULL_VALUE
-                    sFMax = 1.2!
-                Else
-                    sPotGrowth = 2.0!
-                    If (Me.m_calc.mo(iGroup) + Me.m_calc.StartEatenOf(iGroup) > 0) Then
-                        sFMax = 1.1! * Me.m_calc.Fish1(iGroup) / (Me.m_calc.mo(iGroup) + Me.m_calc.StartEatenOf(iGroup)) / Me.Core.StartBiomass(iGroup)
-                    End If
-                End If
+                Me.Core.EstimateVulnerabilities(iGroup, sPotGrowth, sFMax, estimates)
 
                 Me.AddRow()
                 Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(iGroup)
@@ -144,13 +194,13 @@ Namespace Ecosim
                 Me(iGroup, eColumnTypes.FMax) = New EwECell(sFMax, GetType(Single), eStyleFlags.OK)
                 Me(iGroup, eColumnTypes.FMax).Behaviors.Add(Me.m_bm)
 
-                Me(iGroup, eColumnTypes.PG_VwoFT) = New EwECell(0.0!, GetType(Single), eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.PG_VwoFT) = New EwECell(estimates(0), GetType(Single), eStyleFlags.NotEditable)
                 Me(iGroup, eColumnTypes.PG_VwoFT).Behaviors.Add(Me.m_bm)
-                Me(iGroup, eColumnTypes.FMax_VwoFT) = New EwECell(0.0!, GetType(Single), eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.FMax_VwoFT) = New EwECell(estimates(1), GetType(Single), eStyleFlags.NotEditable)
                 Me(iGroup, eColumnTypes.FMax_VwoFT).Behaviors.Add(Me.m_bm)
-                Me(iGroup, eColumnTypes.PG_VwithFT) = New EwECell(0.0!, GetType(Single), eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.PG_VwithFT) = New EwECell(estimates(2), GetType(Single), eStyleFlags.NotEditable)
                 Me(iGroup, eColumnTypes.PG_VwithFT).Behaviors.Add(Me.m_bm)
-                Me(iGroup, eColumnTypes.FMax_VwithFT) = New EwECell(0.0!, GetType(Single), eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.FMax_VwithFT) = New EwECell(estimates(3), GetType(Single), eStyleFlags.NotEditable)
                 Me(iGroup, eColumnTypes.FMax_VwithFT).Behaviors.Add(Me.m_bm)
 
                 Me.RecalcVulnerabilities(iGroup)
@@ -168,13 +218,19 @@ Namespace Ecosim
             MyBase.OnCellClicked(p, cell)
 
             Select Case DirectCast(p.Column, eColumnTypes)
+
                 Case eColumnTypes.FMax_VwithFT, _
                      eColumnTypes.FMax_VwoFT, _
                      eColumnTypes.PG_VwithFT, _
                      eColumnTypes.PG_VwoFT
-                    Me.UpdateVulSelection(p.Row, p.Column)
+
+                    If Me.UpdateVulSelection(p.Row, DirectCast(p.Column, eColumnTypes)) Then
+                        RaiseEvent OnSelectedVulnerabilitiesChanged(Me)
+                    End If
+
                 Case Else
                     ' NOP
+
             End Select
 
         End Sub
@@ -204,24 +260,14 @@ Namespace Ecosim
 
             Dim sPotGrowth As Single = CSng(Me(iRow, eColumnTypes.PotGrowth).Value)
             Dim sFMax As Single = CSng(Me(iRow, eColumnTypes.FMax).Value)
+            Dim estimates(4) As Single
 
-            ' ToDo: Make calculator obsolete, use Ecosim instead
-            '       Fish1 etc could be exposed by EcosimGroupInputs as read-only computed values?
-            If (Me.m_calc.Fish1(iRow) > 0) And (Me.m_calc.SimGE(iRow) > 0) Then
-                Me.SetVulCell(iRow, eColumnTypes.PG_VwithFT, Me.Core.CalcEcosimVulBo(sPotGrowth, iRow, True))
-                Me.SetVulCell(iRow, eColumnTypes.PG_VwoFT, Me.Core.CalcEcosimVulBo(sPotGrowth, iRow, False))
-            Else
-                Me.SetVulCell(iRow, eColumnTypes.PG_VwithFT, cCore.NULL_VALUE)
-                Me.SetVulCell(iRow, eColumnTypes.PG_VwoFT, cCore.NULL_VALUE)
-            End If
+            Me.Core.EstimateVulnerabilities(iRow, sPotGrowth, sFMax, estimates)
 
-            If (Me.m_calc.Fish1(iRow) > 0) Then
-                Me.SetVulCell(iRow, eColumnTypes.FMax_VwithFT, Me.Core.CalcEcosimVulFMax(sFMax, iRow, True))
-                Me.SetVulCell(iRow, eColumnTypes.FMax_VwoFT, Me.Core.CalcEcosimVulFMax(sFMax, iRow, False))
-            Else
-                Me.SetVulCell(iRow, eColumnTypes.FMax_VwithFT, cCore.NULL_VALUE)
-                Me.SetVulCell(iRow, eColumnTypes.FMax_VwoFT, cCore.NULL_VALUE)
-            End If
+            Me.SetVulCell(iRow, eColumnTypes.PG_VwithFT, estimates(0))
+            Me.SetVulCell(iRow, eColumnTypes.PG_VwoFT, estimates(1))
+            Me.SetVulCell(iRow, eColumnTypes.FMax_VwithFT, estimates(2))
+            Me.SetVulCell(iRow, eColumnTypes.FMax_VwoFT, estimates(3))
 
         End Sub
 
@@ -237,39 +283,71 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub UpdateVulSelection(ByVal iRow As Integer, ByVal iColSelect As Integer)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="iRow"></param>
+        ''' <param name="col"></param>
+        ''' <returns>True if a vulnerability selection was changed.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function UpdateVulSelection(ByVal iRow As Integer, ByVal col As eColumnTypes) As Boolean
 
-            Dim cols As eColumnTypes() = {eColumnTypes.PG_VwithFT, _
-                                          eColumnTypes.PG_VwoFT, _
-                                          eColumnTypes.FMax_VwithFT, _
-                                          eColumnTypes.FMax_VwoFT}
-            If Array.IndexOf(cols, DirectCast(iColSelect, eColumnTypes)) = -1 Then Return
+            If Array.IndexOf(gridEstimateVs.c_vulcols, DirectCast(col, eColumnTypes)) = -1 Then Return False
 
             ' Validate incoming column
-            Dim cell As EwECell = DirectCast(Me(iRow, CInt(iColSelect)), EwECell)
+            Dim cell As EwECell = DirectCast(Me(iRow, col), EwECell)
+            Dim bCellChanged As Boolean = False
 
             ' Clear column if cell cannot be selected
             If ((cell.Style And eStyleFlags.Null) = eStyleFlags.Null) Then
-                iColSelect = -1
+                col = eColumnTypes.Index
             End If
 
             ' Toggle cell checked state
-            If ((cell.Style And gridEstimateVs.c_styleSelect) = gridEstimateVs.c_styleSelect) Then
-                iColSelect = -1
+            If (Me.IsVulCellSelected(iRow, col)) Then
+                col = eColumnTypes.Index
             End If
 
             ' Update checked cells
-            For Each column As eColumnTypes In cols
-                cell = DirectCast(Me(iRow, CInt(column)), EwECell)
-                If CInt(column) = iColSelect Then
+            For Each colVuls As eColumnTypes In gridEstimateVs.c_vulcols
+                Dim bIsCellSelected As Boolean = Me.IsVulCellSelected(iRow, colVuls)
+                Dim bNeedCellSelected As Boolean = (colVuls = col)
+
+                If (bIsCellSelected <> bNeedCellSelected) Then
+                    Me.IsVulCellSelected(iRow, colVuls) = bNeedCellSelected
+                    bCellChanged = True
+                End If
+            Next
+            Return bCellChanged
+
+        End Function
+
+        Private Property IsVulCellSelected(ByVal iRow As Integer, ByVal col As eColumnTypes) As Boolean
+            Get
+
+                If (iRow < 1) Or (iRow >= Me.RowsCount) Then Return False
+                If (Array.IndexOf(c_vulcols, col) = -1) Then Return False
+
+                Dim cell As EwECell = DirectCast(Me(iRow, col), EwECell)
+                Return ((cell.Style And gridEstimateVs.c_styleSelect) = gridEstimateVs.c_styleSelect)
+
+            End Get
+            Set(ByVal value As Boolean)
+
+                If (iRow < 1) Or (iRow >= Me.RowsCount) Then Return
+                If (Array.IndexOf(c_vulcols, col) = -1) Then Return
+
+                Dim cell As EwECell = DirectCast(Me(iRow, col), EwECell)
+                If value Then
                     cell.Style = cell.Style Or gridEstimateVs.c_styleSelect
                 Else
                     cell.Style = cell.Style And (Not gridEstimateVs.c_styleSelect)
                 End If
                 cell.Invalidate()
-            Next
 
-        End Sub
+            End Set
+        End Property
 
 #End Region ' Internals
 

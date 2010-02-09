@@ -1135,7 +1135,6 @@
     <Compile Include="Ecosim\Input\TimeSeries\gridWeightTS.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\Vulnerabilities\cEstimateVsCalc.vb" />
     <Compile Include="Ecosim\Input\Vulnerabilities\dlgEstimateVs.Designer.vb">
       <DependentUpon>dlgEstimateVs.vb</DependentUpon>
     </Compile>
