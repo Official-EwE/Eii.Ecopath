@@ -1223,16 +1223,7 @@ Namespace MSE
                             'if that happens set the value to a low value, so that it may try a lower effort
                             ' If CheckIfFishingMortalitiesTooHigh(iflt) Then CurValue = CurValue / 2
 
-                            System.Console.WriteLine(NumberOfSteps.ToString & ", Fleet = " & iFlt.ToString & _
-                                                     ", MSY effort = " & MSYeffort(iFlt).ToString & _
-                                                     ", Cur effort = " & tryEffort.ToString & _
-                                                     ", toolow = " & TooLowEffort.ToString & _
-                                                     ", toobig = " & TooBigEffort.ToString & _
-                                                     ", maxvalue = " & maxValue.ToString & _
-                                                     ", curvalue = " & CurValue.ToString)
-
-                            'tell the interface an iteration has been completed
-                            Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iFlt, CSng(MSYeffort(iFlt))))
+                            
                             If CurValue = 0 Then Done = True 'no effort or no value
                             If CurValue < 0 Then Stop
 
@@ -1287,6 +1278,17 @@ Namespace MSE
                                 If Math.Abs(1 - lastEffort / tryEffort) < 0.01 Then Done = True
                             End If
                             lastEffort = tryEffort
+
+                            System.Console.WriteLine(NumberOfSteps.ToString & ", Fleet = " & iFlt.ToString & _
+                                                     ", MSY effort = " & MSYeffort(iFlt).ToString & _
+                                                     ", Cur effort = " & tryEffort.ToString & _
+                                                     ", toolow = " & TooLowEffort.ToString & _
+                                                     ", toobig = " & TooBigEffort.ToString & _
+                                                     ", maxvalue = " & maxValue.ToString & _
+                                                     ", curvalue = " & CurValue.ToString)
+
+                            'tell the interface an iteration has been completed
+                            Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iFlt, CSng(MSYeffort(iFlt))))
 
                             If Me.m_data.StopRun Then Exit Do
                         Loop
@@ -1457,7 +1459,8 @@ Namespace MSE
                         Dim maxF As Single = 0
                         For iT As Integer = 1 To Data.MSYStartTimeIndex
                             If m_esData.FishRateNo(iGrp, iT) > maxF Then
-                                maxF = m_esData.FishRateNo(iGrp, iT)
+                                maxF = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, iGrp, iT)
+                                '.m_esData.FishRateNo(iGrp, iT)
                             End If
                         Next
 
@@ -1511,16 +1514,7 @@ Namespace MSE
                             'if that happens set the value to a low value, so that it may try a lower effort
                             ' If CheckIfFishingMortalitiesTooHigh(iflt) Then CurValue = CurValue / 2
 
-                            System.Console.WriteLine(NumberOfSteps.ToString & ", Group = " & iGrp.ToString & _
-                                                     ", MSY F = " & MSYF(iGrp).ToString & _
-                                                     ", Cur F = " & tryF.ToString & _
-                                                     ", toolow = " & TooLowF.ToString & _
-                                                     ", toobig = " & TooBigF.ToString & _
-                                                     ", maxvalue = " & maxValue.ToString & _
-                                                     ", curvalue = " & CurValue.ToString)
-
-                            'tell the interface an iteration has been completed
-                            Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iGrp, CSng(MSYF(iGrp))))
+                         
                             If CurValue = 0 Then Done = True 'no effort or no value
                             If CurValue < 0 Then Stop
 
@@ -1578,9 +1572,21 @@ Namespace MSE
 
                             lastValue = CurValue
                             If tryF > 0 And CheckTangent = False Then
-                                If Math.Abs(1 - lastF / tryF) < 0.001 Then Done = True
+                                If Math.Abs(1 - lastF / tryF) < 0.01 Then Done = True
                             End If
                             lastF = tryF
+
+                            System.Console.WriteLine(NumberOfSteps.ToString & ", Group = " & iGrp.ToString & _
+                                                  ", MSY F = " & MSYF(iGrp).ToString & _
+                                                  ", Cur F = " & tryF.ToString & _
+                                                  ", toolow = " & TooLowF.ToString & _
+                                                  ", toobig = " & TooBigF.ToString & _
+                                                  ", maxvalue = " & maxValue.ToString & _
+                                                  ", curvalue = " & CurValue.ToString)
+
+                            'tell the interface an iteration has been completed
+                            Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iGrp, CSng(MSYF(iGrp))))
+
 
                             If Me.m_data.StopRun Then Exit Do
                         Loop
