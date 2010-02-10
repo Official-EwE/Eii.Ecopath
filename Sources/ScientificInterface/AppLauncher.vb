@@ -58,7 +58,8 @@ Public Class AppLauncher
     Private m_DeserializeDockContent As DeserializeDockContent
     Private m_Help As ApplicationHelp = Nothing
 
-    ' -- commands --
+#Region " Commands "
+
     Private WithEvents m_cmdFileOpen As cFileOpenCommand = Nothing
     Private WithEvents m_cmdFileSave As cFileSaveCommand = Nothing
     Private WithEvents m_cmdDirectoryOpen As cDirectoryOpenCommand = Nothing
@@ -103,6 +104,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdImportTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdLoadTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdWeightTimeSeries As cCommand = Nothing
+    Private WithEvents m_cmdExportTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdLoadWeightTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdPluginGUICommand As PluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
@@ -112,6 +114,8 @@ Public Class AppLauncher
     Private WithEvents m_cmdEstimateVs As cCommand = Nothing
     ' ToDo_JS: Discontinue, move to Ecosim UI
     Private WithEvents m_cmdExportBiomassToCSV As cCommand = Nothing
+
+#End Region ' Commands
 
     ''' <summary>Style guide updater.</summary>
     Private m_styleguideupdater As StyleGuideUpdater = Nothing
@@ -986,6 +990,11 @@ Public Class AppLauncher
         Me.m_cmdLoadWeightTimeSeries = New cCommand("LoadWeightTimeSeries")
         Me.m_cmdLoadWeightTimeSeries.AddControl(Me.m_tsmiTimeSeriesReloadLast)
         cmdh.Add(Me.m_cmdLoadWeightTimeSeries)
+
+        'Create and configure ExportTimeSeries command
+        Me.m_cmdExportTimeSeries = New cCommand("ExportTimeSeries")
+        Me.m_cmdExportTimeSeries.AddControl(Me.m_tsmiTimeSeriesExport)
+        cmdh.Add(Me.m_cmdExportTimeSeries)
 
         'Create and configure Help>About command
         Me.m_cmdHelpAbout = New cCommand("HelpAbout")
@@ -2852,6 +2861,25 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub m_cmdImportTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdImportTimeSeries.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded()
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; exports the currently loaded time series dataset to a CSV file.
+    ''' </summary>
+    Private Sub m_cmdExportTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdExportTimeSeries.OnInvoke
+
+        Dim tsw As New cTimeSeriesCSVWriter(Me.Core)
+        tsw.Write(",", ".")
+
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdExportTimeSeries">Export TimeSeries command</see>.
+    ''' </summary>
+    Private Sub m_cmdExportTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdExportTimeSeries.OnUpdate
+        cmd.Enabled = (Me.Core.ActiveTimeSeriesDatasetIndex > -1)
     End Sub
 
     ''' <summary>

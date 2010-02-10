@@ -574,6 +574,12 @@
   <data name="m_tsmiTimeSeriesImport.Text" xml:space="preserve">
     <value>Import &amp;Time Series...</value>
   </data>
+  <data name="m_tsmiTimeSeriesExport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>258, 22</value>
+  </data>
+  <data name="m_tsmiTimeSeriesExport.Text" xml:space="preserve">
+    <value>E&amp;xport time series to .csv file...</value>
+  </data>
   <data name="m_tsmiTimeSeriesLoad.Size" type="System.Drawing.Size, System.Drawing">
     <value>258, 22</value>
   </data>
@@ -6234,6 +6240,12 @@
   </data>
   <data name="&gt;&gt;m_tsbModel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiTimeSeriesExport.Name" xml:space="preserve">
+    <value>m_tsmiTimeSeriesExport</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiTimeSeriesExport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AppLauncher</value>
