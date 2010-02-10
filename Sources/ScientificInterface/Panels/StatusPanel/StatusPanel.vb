@@ -246,7 +246,11 @@ Public Class StatusPanel
                 ' Remove old messages from the bottom of the list
                 Me.tvStatus.Nodes.RemoveAt(iMaxMessages - 1)
             End While
-            tnMessage.EnsureVisible()
+
+            ' JS 10feb2010: ensure visible not always seem to do reveal the newest item
+            'tnMessage.EnsureVisible()
+            Me.tvStatus.TopNode = tnMessage
+
         Catch ex As Exception
             ' Hmm
         End Try
