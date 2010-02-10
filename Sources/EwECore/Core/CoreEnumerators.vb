@@ -155,6 +155,8 @@ Public Enum eMessageType
     DataAddedOrRemoved
     ''' <summary>Data import related issue.</summary>
     DataImport
+    ''' <summary>Data export related issue.</summary>
+    DataExport
 
     '''' <summary>Time step in Ecospace</summary>
     '''' <remarks>This was added for testing and is not used at this time</remarks>
