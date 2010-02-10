@@ -122,12 +122,11 @@ Public Class StatusPanel
                 bPopup = True
             Case eMessageImportance.Information
                 bPopup = False
-            Case eMessageImportance.Maintenance
-                bPopup = False
-            Case eMessageImportance.Progress
-                bPopup = False
+            Case eMessageImportance.Maintenance, _
+                 eMessageImportance.Progress
+                Return
             Case Else
-                bPopup = False
+                Return
         End Select
 
         ' Requires feedback (overrules popup settings)
