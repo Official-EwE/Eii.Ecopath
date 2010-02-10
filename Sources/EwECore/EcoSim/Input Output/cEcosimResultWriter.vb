@@ -1,24 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cEcosimResultWriter.vb,v $
-' Revision 1.5  2009/05/25 13:22:58  jeroens
-' Added DiscardChanges
-'
-' Revision 1.4  2009/05/22 16:22:22  jeroens
-' Made robust on invalid group integers
-'
-' Revision 1.3  2009/05/21 18:53:35  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.2  2009/05/19 13:44:56  jeroens
-' Renamed result writer methods
-'
-' Revision 1.1  2009/05/18 20:23:59  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports System.IO
