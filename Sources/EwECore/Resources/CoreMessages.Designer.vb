@@ -1761,6 +1761,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to export time series &apos;{0}&apos; to &apos;{1}&apos;: {2}.
+        '''</summary>
+        Friend Shared ReadOnly Property TIMESERIES_EXPORT_FAILED() As String
+            Get
+                Return ResourceManager.GetString("TIMESERIES_EXPORT_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Time series dataset &apos;{0}&apos; exported to &apos;{1}&apos;..
+        '''</summary>
+        Friend Shared ReadOnly Property TIMESERIES_EXPORT_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("TIMESERIES_EXPORT_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Time Series dataset &apos;{0}&apos; failed to load. {1}.
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_LOAD_FAILED() As String

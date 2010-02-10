@@ -842,4 +842,12 @@ System Error: {0}</value>
     <value>Q/B missing for group '{0}'</value>
     <comment>{0}=group name</comment>
   </data>
+  <data name="TIMESERIES_EXPORT_FAILED" xml:space="preserve">
+    <value>Failed to export time series '{0}' to '{1}': {2}</value>
+    <comment>{0}=dataset name, {1}=destination file, {2}=error text</comment>
+  </data>
+  <data name="TIMESERIES_EXPORT_SUCCESS" xml:space="preserve">
+    <value>Time series dataset '{0}' exported to '{1}'.</value>
+    <comment>{0}=dataset name, {1}=destination file</comment>
+  </data>
 </root>

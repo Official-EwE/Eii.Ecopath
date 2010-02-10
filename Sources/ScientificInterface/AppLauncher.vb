@@ -2869,8 +2869,18 @@ Public Class AppLauncher
     Private Sub m_cmdExportTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdExportTimeSeries.OnInvoke
 
+        Dim sfd As New SaveFileDialog()
         Dim tsw As New cTimeSeriesCSVWriter(Me.Core)
-        tsw.Write(",", ".")
+
+        sfd.Filter = My.Resources.FILEFILTER_CSV
+        sfd.FileName = tsw.DefaultFileName
+        sfd.CheckFileExists = False
+        sfd.CheckPathExists = True
+        sfd.OverwritePrompt = True
+
+        If (sfd.ShowDialog(Me) = Windows.Forms.DialogResult.OK) Then
+            tsw.Write(sfd.FileName, ",", ".")
+        End If
 
     End Sub
 

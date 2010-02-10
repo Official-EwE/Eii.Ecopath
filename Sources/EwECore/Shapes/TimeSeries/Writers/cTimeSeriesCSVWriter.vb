@@ -44,23 +44,40 @@ Public Class cTimeSeriesCSVWriter
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Reads any number of Time Series data from a text source. The
-    ''' Time Series are exposed by this collection as <see cref="cTimeSeries">cTimeSeries</see>
-    ''' objects.
+    ''' Get a default CSV file name for the current loaded dataset, if any.
     ''' </summary>
-    ''' <param name="strDelimiter">
-    ''' String delimiting character to use when splitting the text into different columns.
-    ''' </param>
-    ''' <param name="strDecimalSeparator">
-    ''' Decimal separator to use when interpreting floating point values in the text.
-    ''' </param>
+    ''' <returns>A file name for the current loaded dataset in the current
+    ''' core <see cref="cCore.OutputPath">output path</see>, or an empty string
+    ''' if no time series are loaded.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property DefaultFileName() As String
+        Get
+            If (Me.m_core.ActiveTimeSeriesDatasetIndex = -1) Then Return ""
+            ' Get dataset
+            Dim ds As cTimeSeriesDataset = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
+            ' Is dataset available?
+            If (ds Is Nothing) Then Return ""
+            ' 
+            Return Path.Combine(Me.m_core.OutputPath, FileUtilities.ToValidFileName(ds.Name, True)) & ".csv"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Writes the current loaded time series dataset to a CSV file.
+    ''' </summary>
+    ''' <param name="strFileName">Name of the file to save to.</param>
+    ''' <param name="strDelimiter">String delimiting character to use when 
+    ''' separating the text into different columns.</param>
+    ''' <param name="strDecimalSeparator">Decimal separator to use when 
+    ''' interpreting floating point values in the text.</param>
     ''' <returns>True when succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Write(ByVal strDelimiter As String, _
-                                      ByVal strDecimalSeparator As String, _
-                                      Optional ByVal strPath As String = "") As Boolean
+    Public Overridable Function Write(ByVal strFileName As String, _
+                                      ByVal strDelimiter As String, _
+                                      ByVal strDecimalSeparator As String) As Boolean
 
-        Dim strFileName As String = ""
         Dim ds As cTimeSeriesDataset = Nothing
         Dim ts As cTimeSeries = Nothing
         Dim msg As cMessage = Nothing
@@ -73,12 +90,6 @@ Public Class cTimeSeriesCSVWriter
         ds = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
         ' Is dataset available?
         If (ds Is Nothing) Then Return False
-
-        ' Create CSV file name
-        If String.IsNullOrEmpty(strPath) Then
-            strPath = Me.m_core.OutputPath
-        End If
-        strFileName = Path.Combine(strPath, FileUtilities.ToValidFileName(ds.Name, True)) & ".csv"
 
         Try
             Using sw As StreamWriter = New StreamWriter(strFileName, False)
@@ -144,7 +155,7 @@ Public Class cTimeSeriesCSVWriter
                 sw.Close()
 
                 ' Create success message
-                msg = New cMessage(String.Format("Time series dataset exported to {0}", strFileName), _
+                msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_SUCCESS, ds.Name, strFileName), _
                                    eMessageType.DataExport, eCoreComponentType.TimeSeries, eMessageImportance.Information)
 
             End Using
@@ -152,7 +163,7 @@ Public Class cTimeSeriesCSVWriter
         Catch ex As Exception
 
             ' Create error message
-            msg = New cMessage(String.Format("Failed to save time series CSV file {0}: {1}", strFileName, ex.Message), _
+            msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_FAILED, ds.Name, strFileName, ex.Message), _
                                eMessageType.DataExport, _
                                eCoreComponentType.TimeSeries, _
                                eMessageImportance.Critical)
