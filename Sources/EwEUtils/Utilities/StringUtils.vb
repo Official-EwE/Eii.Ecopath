@@ -294,13 +294,16 @@ Namespace Utilities
         ''' Generic conversion helper, converts a string into an integer value using
         ''' the fixed EwE number format of decimal points and NO thousands separator.
         ''' </summary>
-        ''' <param name="strNumber"></param>
-        ''' <returns></returns>
+        ''' <param name="strNumber">The number to convert.</param>
+        ''' <param name="strDecimalSeparator">Separator for decimals.</param>
+        ''' <param name="strThousandsSeparator">Separator for thousands (a.k.a digit grouping separator)</param>
+        ''' <param name="iNullValue">Value to return in case parse failed.</param>
+        ''' <returns>An integer value.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function ConvertToInteger(ByVal strNumber As String, _
                                                 Optional ByVal iNullValue As Integer = -9999, _
-                                                Optional ByVal strDecimalSepartor As String = ".", _
-                                                Optional ByVal strThousandsSepartor As String = "") As Integer
+                                                Optional ByVal strDecimalSeparator As String = ".", _
+                                                Optional ByVal strThousandsSeparator As String = "") As Integer
 
             Select Case strNumber.Trim
                 Case "-", "_" : strNumber = ""
@@ -310,11 +313,11 @@ Namespace Utilities
 
                 Try
 
-                    Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+                    Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
                     Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
 
-                    ni.NumberDecimalSeparator = strDecimalSepartor
-                    ni.NumberGroupSeparator = strThousandsSepartor
+                    ni.NumberDecimalSeparator = strDecimalSeparator
+                    ni.NumberGroupSeparator = strThousandsSeparator
 
                     Return Convert.ToInt32(strNumber, ni)
 
@@ -333,13 +336,16 @@ Namespace Utilities
         ''' Generic conversion helper, converts a string into a single value using
         ''' the fixed EwE number format of decimal points and NO thousands separator.
         ''' </summary>
-        ''' <param name="strNumber"></param>
-        ''' <returns></returns>
+        ''' <param name="strNumber">The number to convert.</param>
+        ''' <param name="strDecimalSeparator">Separator for decimals.</param>
+        ''' <param name="strThousandsSeparator">Separator for thousands (a.k.a digit grouping separator)</param>
+        ''' <param name="sNullValue">Value to return in case parse failed.</param>
+        ''' <returns>A single value.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function ConvertToSingle(ByVal strNumber As String, _
                                                Optional ByVal sNullValue As Single = -9999.0!, _
-                                               Optional ByVal strDecimalSepartor As String = ".", _
-                                               Optional ByVal strThousandsSepartor As String = "") As Single
+                                               Optional ByVal strDecimalSeparator As String = ".", _
+                                               Optional ByVal strThousandsSeparator As String = "") As Single
 
             Select Case strNumber.Trim
                 Case "-", "_" : strNumber = ""
@@ -348,11 +354,11 @@ Namespace Utilities
             If Not String.IsNullOrEmpty(strNumber) Then
 
                 Try
-                    Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+                    Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
                     Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
 
-                    ni.NumberDecimalSeparator = strDecimalSepartor
-                    ni.NumberGroupSeparator = strThousandsSepartor
+                    ni.NumberDecimalSeparator = strDecimalSeparator
+                    ni.NumberGroupSeparator = strThousandsSeparator
 
                     Return Convert.ToSingle(strNumber, ni)
                 Catch ex As Exception
@@ -370,13 +376,16 @@ Namespace Utilities
         ''' Generic conversion helper, converts a string into a single value using
         ''' the fixed EwE number format of decimal points and NO thousands separator.
         ''' </summary>
-        ''' <param name="strNumber"></param>
-        ''' <returns></returns>
+        ''' <param name="strNumber">The number to convert.</param>
+        ''' <param name="strDecimalSeparator">Separator for decimals.</param>
+        ''' <param name="strThousandsSeparator">Separator for thousands (a.k.a digit grouping separator)</param>
+        ''' <param name="dNullValue">Value to return in case parse failed.</param>
+        ''' <returns>A double value.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function ConvertToDouble(ByVal strNumber As String, _
-                                               Optional ByVal dNullValue As Double = -9999.0, _
-                                               Optional ByVal strDecimalSepartor As String = ".", _
-                                               Optional ByVal strThousandsSepartor As String = "") As Double
+                                               Optional ByVal dNullValue As Double = -9999.0#, _
+                                               Optional ByVal strDecimalSeparator As String = ".", _
+                                               Optional ByVal strThousandsSeparator As String = "") As Double
 
             Select Case strNumber.Trim
                 Case "-", "_" : strNumber = ""
@@ -386,11 +395,11 @@ Namespace Utilities
 
                 Try
 
-                    Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+                    Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
                     Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
 
-                    ni.NumberDecimalSeparator = strDecimalSepartor
-                    ni.NumberGroupSeparator = strThousandsSepartor
+                    ni.NumberDecimalSeparator = strDecimalSeparator
+                    ni.NumberGroupSeparator = strThousandsSeparator
 
                     Return Convert.ToDouble(strNumber, ni)
                 Catch ex As Exception
@@ -412,14 +421,14 @@ Namespace Utilities
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public Shared Function FormatInteger(ByVal iValue As Integer, _
-                                             Optional ByVal strDecimalSepartor As String = ".", _
-                                             Optional ByVal strThousandsSepartor As String = "") As String
+                                             Optional ByVal strDecimalSeparator As String = ".", _
+                                             Optional ByVal strThousandsSeparator As String = "") As String
 
-            Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+            Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
             Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
 
-            ni.NumberDecimalSeparator = strDecimalSepartor
-            ni.NumberGroupSeparator = strThousandsSepartor
+            ni.NumberDecimalSeparator = strDecimalSeparator
+            ni.NumberGroupSeparator = strThousandsSeparator
 
             Return Convert.ToString(iValue, ni)
 
@@ -434,14 +443,14 @@ Namespace Utilities
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public Shared Function FormatSingle(ByVal sValue As Single, _
-                                            Optional ByVal strDecimalSepartor As String = ".", _
-                                            Optional ByVal strThousandsSepartor As String = "") As String
+                                            Optional ByVal strDecimalSeparator As String = ".", _
+                                            Optional ByVal strThousandsSeparator As String = "") As String
 
-            Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+            Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
             Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
 
-            ni.NumberDecimalSeparator = strDecimalSepartor
-            ni.NumberGroupSeparator = strThousandsSepartor
+            ni.NumberDecimalSeparator = strDecimalSeparator
+            ni.NumberGroupSeparator = strThousandsSeparator
 
             Return Convert.ToString(sValue, ni)
 
@@ -456,14 +465,14 @@ Namespace Utilities
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public Shared Function FormatDouble(ByVal dValue As Double, _
-                                            Optional ByVal strDecimalSepartor As String = ".", _
-                                            Optional ByVal strThousandsSepartor As String = "") As String
+                                            Optional ByVal strDecimalSeparator As String = ".", _
+                                            Optional ByVal strThousandsSeparator As String = "") As String
 
-            Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+            Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
             Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
 
-            ni.NumberDecimalSeparator = strDecimalSepartor
-            ni.NumberGroupSeparator = strThousandsSepartor
+            ni.NumberDecimalSeparator = strDecimalSeparator
+            ni.NumberGroupSeparator = strThousandsSeparator
 
             Return Convert.ToString(dValue, ni)
 
