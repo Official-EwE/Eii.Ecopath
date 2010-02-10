@@ -15,11 +15,13 @@ Imports System.Text
 ''' Reads one or more time series from a text input source.
 ''' </summary>
 ''' <remarks>
-''' ToDo_JS: describe time series text input format.
+''' Time series text input format is hopefully described in the latest manual.
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public MustInherit Class cTimeSeriesTextReader
     Implements ICollection(Of cTimeSeriesImport)
+
+#Region " Private vars "
 
     Private m_core As cCore = Nothing
 
@@ -37,26 +39,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <summary>Decimal separator to use when interpreting floating point values in the text.</summary>
     Private m_strDecimalSeparator As String = ""
 
-#Region " Private Enums "
-
-    Private Enum eTimeSeriesAliases As Integer
-        BRel = 0
-        BAbs = 1
-        BForced = -1
-        Forcing = 2
-        Effort = 3
-        Z = 4
-        F = 5
-        FConst = -5
-        C = 6
-        [Catch] = 6
-        CForced = -6
-        WAvg = 7
-        ConcRel = 8
-        ConcAbs = 9
-    End Enum
-
-#End Region ' Private Enums
+#End Region ' Private vars
 
 #Region " Preview class "
 
@@ -200,6 +183,8 @@ Public MustInherit Class cTimeSeriesTextReader
 
 #End Region ' Preview class
 
+#Region " Constructor "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Constructor, initializes a new instance of this class.
@@ -210,6 +195,8 @@ Public MustInherit Class cTimeSeriesTextReader
     Public Sub New(ByVal core As cCore)
         Me.m_core = core
     End Sub
+
+#End Region ' Constructor
 
 #Region " Reading "
 
