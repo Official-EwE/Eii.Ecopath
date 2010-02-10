@@ -541,12 +541,14 @@ Public MustInherit Class cTimeSeriesTextReader
                         If (sValue <> 0) Then
                             ' Write preview value
                             Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = CStr(sValue)
-                            ' Is value negative?
-                            If (sValue < 0.0!) Then
-                                ' #Yes: throw an error
-                                ' ToDo_JS: report column!
-                                Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_VALUENEGATIVE, iLineNumber)
-                            End If
+                            ' JS 10Feb2010: Select types of TS are allowed to be negative. 
+                            '               Just do not attempt to be smart here.
+                            '' Is value negative?
+                            'If (sValue < 0.0!) Then
+                            '    ' #Yes: throw an error
+                            '    ' ToDo_JS: report column!
+                            '    Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_VALUENEGATIVE, iLineNumber)
+                            'End If
                         End If
                     Catch ex As Exception
                         ' JS04feb08: error parsing value
