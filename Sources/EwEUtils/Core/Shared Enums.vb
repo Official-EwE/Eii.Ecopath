@@ -1985,4 +1985,25 @@ Namespace Core
 
 #End Region ' Forcing application types
 
+#Region " Time series "
+
+    Public Enum eTimeSeriesAliases As Integer
+        BRel = 0
+        BAbs = 1
+        BForced = -1
+        Forcing = 2
+        Effort = 3
+        Z = 4
+        F = 5
+        FConst = -5
+        C = 6
+        [Catch] = 6
+        CForced = -6
+        WAvg = 7
+        ConcRel = 8
+        ConcAbs = 9
+    End Enum
+
+#End Region
+
 End Namespace ' Core
