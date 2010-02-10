@@ -108,7 +108,7 @@ Public Class cTimeSeriesCSVWriter
                 For iTS As Integer = 1 To Me.m_core.nTimeSeries
                     ts = Me.m_core.EcosimTimeSeries(iTS)
                     sw.Write(strDelimiter & " ")
-                    sw.Write(StringUtils.FormatSingle(ts.WtType, strDecimalSeparator, strDelimiter))
+                    sw.Write(StringUtils.FormatSingle(ts.WtType, strDecimalSeparator, ""))
                 Next
                 sw.WriteLine()
 
@@ -120,10 +120,10 @@ Public Class cTimeSeriesCSVWriter
                     sw.Write(strDelimiter & " ")
                     If TypeOf ts Is cGroupTimeSeries Then
                         sw.Write(StringUtils.FormatInteger(DirectCast(ts, cGroupTimeSeries).GroupIndex, _
-                                                           strDecimalSeparator, strDelimiter))
+                                                           strDecimalSeparator, ""))
                     ElseIf TypeOf ts Is cFleetTimeSeries Then
                         sw.Write(StringUtils.FormatInteger(DirectCast(ts, cFleetTimeSeries).FleetIndex, _
-                                                           strDecimalSeparator, strDelimiter))
+                                                           strDecimalSeparator, ""))
                     Else
                         ' Should never happen, unless a new type of time series is defined.
                         Debug.Assert(False)
@@ -137,7 +137,8 @@ Public Class cTimeSeriesCSVWriter
                 For iTS As Integer = 1 To Me.m_core.nTimeSeries
                     ts = Me.m_core.EcosimTimeSeries(iTS)
                     sw.Write(strDelimiter & " ")
-                    sw.Write(ts.TimeSeriesType.ToString())
+                    ' Write time series type as int, not as string
+                    sw.Write(StringUtils.FormatInteger(ts.TimeSeriesType, strDecimalSeparator, ""))
                 Next
                 sw.WriteLine()
 
@@ -147,7 +148,7 @@ Public Class cTimeSeriesCSVWriter
                     For iTS As Integer = 1 To Me.m_core.nTimeSeries
                         ts = Me.m_core.EcosimTimeSeries(iTS)
                         sw.Write(strDelimiter & " ")
-                        sw.Write(StringUtils.FormatSingle(ts.ShapeData(iYear), strDecimalSeparator, strDelimiter))
+                        sw.Write(StringUtils.FormatSingle(ts.ShapeData(iYear), strDecimalSeparator, ""))
                     Next
                     sw.WriteLine()
                 Next
