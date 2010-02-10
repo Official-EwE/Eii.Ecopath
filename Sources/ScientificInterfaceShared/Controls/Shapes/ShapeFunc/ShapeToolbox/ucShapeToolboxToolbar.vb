@@ -90,6 +90,7 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Duplicate, Me.m_tsbDuplicate)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Load, Me.m_tsbLoad)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Import, Me.m_tsbImport)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Export, Me.m_tsbExport)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Remove, Me.m_tsbRemove)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ResetAll, Me.m_tsbResetAll)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToZero, Me.m_tsbSetTo0)
@@ -149,6 +150,14 @@ Namespace Controls
 
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Import)
+
+        End Sub
+
+        Private Sub tsbExport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbExport.Click
+
+            If (Me.m_handler Is Nothing) Then Return
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Export)
 
         End Sub
 

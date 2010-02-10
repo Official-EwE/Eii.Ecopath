@@ -37,13 +37,14 @@ Namespace Controls
             Me.m_tsbSetTo0 = New System.Windows.Forms.ToolStripButton
             Me.m_tsbSetToValue = New System.Windows.Forms.ToolStripButton
             Me.m_tsbResetAll = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbExport = New System.Windows.Forms.ToolStripButton
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToValue, Me.m_tsbResetAll})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToValue, Me.m_tsbResetAll})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -142,6 +143,15 @@ Namespace Controls
             Me.m_tsbResetAll.Size = New System.Drawing.Size(53, 22)
             Me.m_tsbResetAll.Text = "Reset &All"
             '
+            'm_tsbExport
+            '
+            Me.m_tsbExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbExport.Image = CType(resources.GetObject("m_tsbExport.Image"), System.Drawing.Image)
+            Me.m_tsbExport.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbExport.Name = "m_tsbExport"
+            Me.m_tsbExport.Size = New System.Drawing.Size(55, 22)
+            Me.m_tsbExport.Text = "E&xport..."
+            '
             'ucShapeToolboxToolbar
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -167,6 +177,7 @@ Namespace Controls
         Private WithEvents m_tsbSetTo0 As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbSetToValue As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbResetAll As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbExport As System.Windows.Forms.ToolStripButton
 
     End Class
 

@@ -38,7 +38,8 @@ Namespace Controls
             ''' <summary>Import shape data.</summary>
             Import
             ''' <summary>Load shape data.</summary>
-            ''' <remarks>JS 22nov07: Is this used at all?</remarks>
+            Export
+            ''' <summary>Export shape data.</summary>
             Load
             ''' <summary>Modify the values in a shape.</summary>
             Modify
@@ -548,6 +549,8 @@ Namespace Controls
                     Return False
                 Case eShapeCommandTypes.Import
                     Return True
+                Case eShapeCommandTypes.Export
+                    Return True
                 Case eShapeCommandTypes.Load
                     Return True
                 Case eShapeCommandTypes.Modify
@@ -589,7 +592,8 @@ Namespace Controls
                     Return True
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Add, _
-                     eShapeCommandTypes.Weight
+                     eShapeCommandTypes.Weight, _
+                     eShapeCommandTypes.Export
                     Return Me.Core.HasTimeSeries
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Duplicate, _
@@ -630,6 +634,9 @@ Namespace Controls
 
                 Case eShapeCommandTypes.Import
                     Me.ImportTimeSeries()
+
+                Case eShapeCommandTypes.Export
+                    Me.ExportTimeSeries()
 
                 Case eShapeCommandTypes.Load
                     Me.LoadDatasets()
@@ -836,6 +843,18 @@ Namespace Controls
             ' Launch via command!
             Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmd As cCommand = cmdh.GetCommand("ImportTimeSeries")
+            If cmd IsNot Nothing Then cmd.Invoke()
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Implementation of the <see cref="eShapeCommandTypes.Export">ExportTimeSeries</see> commmand.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub ExportTimeSeries()
+            ' Launch via command!
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand("ExportTimeSeries")
             If cmd IsNot Nothing Then cmd.Invoke()
         End Sub
 

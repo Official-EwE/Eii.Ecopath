@@ -242,6 +242,9 @@ Namespace Controls
             Me.ImportToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Import)
             Me.ImportToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Import)
 
+            Me.ExportToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Export)
+            Me.ExportToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Export)
+
             Me.RemoveToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Remove)
             Me.RemoveToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Remove)
 
@@ -440,11 +443,19 @@ Namespace Controls
         End Sub
 
         ''' <summary>
-        ''' Import a Time Series.
+        ''' Import a time series dataset.
         ''' </summary>
         Private Sub tsBtnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles ImportToolStripMenuItem.Click
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Import)
+        End Sub
+
+        ''' <summary>
+        ''' Export a time series dataset.
+        ''' </summary>
+        Private Sub tsBtnExport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles ExportToolStripMenuItem.Click
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Export)
         End Sub
 
         ''' <summary>
