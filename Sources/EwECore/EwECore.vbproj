@@ -309,6 +309,7 @@
     <Compile Include="Quota\cQuotaDataStructures.vb" />
     <Compile Include="Search\SearchInputOutput.vb" />
     <Compile Include="Search\SearchManager.vb" />
+    <Compile Include="Shapes\TimeSeries\Writers\cTimeSeriesCSVWriter.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesDataset.vb" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
