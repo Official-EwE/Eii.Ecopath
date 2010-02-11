@@ -72,7 +72,6 @@ Namespace Ecospace
 
         ' == Data ==
 
-        Private m_core As cCore = Nothing
         Private m_manager As cMPAOptManager = Nothing
         Private m_basemap As cEcospaceBasemap = Nothing
 
@@ -134,7 +133,6 @@ Namespace Ecospace
         Public Sub New()
 
             Me.InitializeComponent()
-            Me.m_core = cCore.GetInstance
 
         End Sub
 
@@ -146,10 +144,10 @@ Namespace Ecospace
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            Dim SpaceOpt As cCoreInputOutputBase = Me.m_core.EcospaceModelParameters
+            Dim SpaceOpt As cCoreInputOutputBase = Me.UIContext.Core.EcospaceModelParameters
             Dim MPAOpt As cMPAOptParameters = Nothing
 
-            Me.m_manager = m_core.MPAOptimizationManager
+            Me.m_manager = UIContext.Core.MPAOptimizationManager
             Me.m_manager.Connect(Me, AddressOf Me.OnSeedCellCallback, AddressOf OnSeedRunStateCallback)
 
             MPAOpt = Me.m_manager.MPAOptimizationParamters
@@ -417,7 +415,7 @@ Namespace Ecospace
                 ' Get area closed
                 iAreaClosed = CInt(Me.m_cmbAreaClosed.Items(iLevel))
                 ' Wrap this in a core map layer to handle projections
-                ldataTmp = New cEcospaceLayerIntegerNxM(Me.m_core, _
+                ldataTmp = New cEcospaceLayerIntegerNxM(Me.UIContext.Core, _
                                     Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
                 layerTmp = New cLayer(ldataTmp, Nothing, Nothing)
@@ -526,7 +524,7 @@ Namespace Ecospace
             Dim clrFlush As Color = zgcr.NextColor
 
             Me.m_zghProgress = New cZedGraphHelper()
-            Me.m_zghProgress.Attach(Me.m_core, Me.m_graphProgress)
+            Me.m_zghProgress.Attach(Me.UIContext, Me.m_graphProgress)
 
             Me.m_graphProgress.GraphPane.Legend.Position = ZedGraph.LegendPos.Right
             Me.m_graphProgress.GraphPane.Title.IsVisible = False
@@ -560,7 +558,7 @@ Namespace Ecospace
             Dim zgcr As New ZedGraph.ColorSymbolRotator
 
             Me.m_zghResults = New cZedGraphHelper()
-            Me.m_zghResults.Attach(Me.m_core, Me.m_graphResults)
+            Me.m_zghResults.Attach(Me.UIContext, Me.m_graphResults)
             Me.m_zghResults.ShowCursor = True
 
             AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
@@ -746,7 +744,7 @@ Namespace Ecospace
 
         Private Sub Reload()
             ' Store ref
-            Me.m_basemap = Me.m_core.EcospaceBasemap
+            Me.m_basemap = Me.UIContext.Core.EcospaceBasemap
             ' Initalize the m_ucBasemap
             Me.m_ucZoom.m_map.Basemap = Me.m_basemap
             Me.ReloadMap()
@@ -777,13 +775,13 @@ Namespace Ecospace
         Private Sub ReloadMPAChoices()
 
             ' Get MPA optimization params to connect start MPA to
-            Dim MPAOpt As cMPAOptParameters = Me.m_core.MPAOptimizationManager.MPAOptimizationParamters
+            Dim MPAOpt As cMPAOptParameters = Me.UIContext.Core.MPAOptimizationManager.MPAOptimizationParamters
             ' Create list of available MPAs
             Dim alMPAs As New List(Of cCoreInputOutputBase)
 
             ' Build list of MPAs
-            For iMPA As Integer = 1 To Me.m_core.nMPAs
-                alMPAs.Add(Me.m_core.EcospaceMPAs(iMPA))
+            For iMPA As Integer = 1 To Me.UIContext.Core.nMPAs
+                alMPAs.Add(Me.UIContext.Core.EcospaceMPAs(iMPA))
             Next
 
             ' Connect MPA optimization property to MPA control
@@ -948,7 +946,7 @@ Namespace Ecospace
         Private Function AddBaseLayers(ByVal varName As eVarNameFlags) As cLayer()
 
             Dim strGroup As String = cLayerFactory.GetLayerGroup(varName)
-            Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.m_core, varName)
+            Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.UIContext.Core, varName)
             Dim l As cLayer = Nothing
 
             ' Add group, and collapse and hide habitat layers
@@ -985,7 +983,7 @@ Namespace Ecospace
                 ' Redim data
                 ReDim Me.m_aiFeedback(Me.m_basemap.InRow, Me.m_basemap.InCol)
                 ' Create layer to use for showing the data
-                datalayerTemp = New cEcospaceLayerIntegerNxM(Me.m_core, Me.m_aiFeedback)
+                datalayerTemp = New cEcospaceLayerIntegerNxM(Me.UIContext.Core, Me.m_aiFeedback)
 
                 Select Case Me.SearchType
 
@@ -999,7 +997,7 @@ Namespace Ecospace
                         ' AND THAT THE BEST CELL SHOWS UP ON THE CURRENT CELL
 
                         ' Create best cell layer
-                        alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPASeedBest, datalayerTemp)
+                        alayers = cLayerFactory.GetLayers(Me.UIContext.Core, eVarNameFlags.LayerMPASeedBest, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
@@ -1008,7 +1006,7 @@ Namespace Ecospace
                         lRunStateLayers.AddRange(alayers)
 
                         ' Create current cell layer(s)
-                        alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPASeedCurrent, datalayerTemp)
+                        alayers = cLayerFactory.GetLayers(Me.UIContext.Core, eVarNameFlags.LayerMPASeedCurrent, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
@@ -1023,7 +1021,7 @@ Namespace Ecospace
                         strGroup = cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPARandom)
 
                         ' Create current cell layer(s)
-                        alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPARandom, datalayerTemp)
+                        alayers = cLayerFactory.GetLayers(Me.UIContext.Core, eVarNameFlags.LayerMPARandom, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
@@ -1568,20 +1566,20 @@ Namespace Ecospace
             ' Check MPA selection
             If Me.m_cmbMPA.SelectedIndex = -1 Then
                 ' ToDo_JS: Globalize this
-                Me.m_core.Messages.SendMessage(New cMessage("MPA selection required", eMessageType.Any, eCoreComponentType.MPAOptimization, eMessageImportance.Warning))
+                Me.UIContext.Core.Messages.SendMessage(New cMessage("MPA selection required", eMessageType.Any, eCoreComponentType.MPAOptimization, eMessageImportance.Warning))
                 Return False
             End If
 
             ' Check mandated rebuilding
             If CSng(source.GetVariable(eVarNameFlags.FPSMandatedRebuildingWeight)) > 0.0 Then
                 bOk = False
-                For iGroup As Integer = 1 To Me.m_core.nGroups
+                For iGroup As Integer = 1 To Me.UIContext.Core.nGroups
                     source = Me.m_manager.GroupObjectives(iGroup)
                     bOk = bOk Or (CSng(source.GetVariable(eVarNameFlags.FPSGroupMandRelBiom)) > 0.0)
                 Next
                 If bOk = False Then
                     ' ToDo_JS: Globalize this
-                    Me.m_core.Messages.SendMessage(New cMessage("No mandated biomasses specified", eMessageType.Any, eCoreComponentType.MPAOptimization, eMessageImportance.Warning))
+                    Me.UIContext.Core.Messages.SendMessage(New cMessage("No mandated biomasses specified", eMessageType.Any, eCoreComponentType.MPAOptimization, eMessageImportance.Warning))
                     Return False
                 End If
             End If

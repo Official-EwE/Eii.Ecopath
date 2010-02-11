@@ -243,7 +243,7 @@ Namespace Ecospace
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
             Me.m_zgh = New cEcospaceZedGraphHelper()
-            Me.m_zgh.Attach(Me.m_core, Me.m_zgPlotLarge)
+            Me.m_zgh.Attach(Me.UIContext, Me.m_zgPlotLarge)
             Me.m_zgh.ShowPointValue = True
 
             cmdDisplayGroups = cmdh.GetCommand("DisplayGroups")

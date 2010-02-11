@@ -86,7 +86,7 @@ Namespace Ecosim
             Me.m_lbGroups.Attach(Me.m_core, Me.m_sg)
 
             Me.m_zgp = New cEcosimOutputPlotHelper()
-            Me.m_zgp.Attach(Me.m_core, Me.m_graph)
+            Me.m_zgp.Attach(Me.UIContext, Me.m_graph)
 
             Me.m_zgp.ConfigurePane(My.Resources.HEADER_RELATIVEBIOMASS, My.Resources.HEADER_YEAR, My.Resources.HEADER_RELATIVEBIOMASS, False)
             Me.m_zgp.ShowMultipleRuns = Me.m_tsmShowMultipleRuns.Selected

@@ -503,7 +503,7 @@ Namespace Ecosim
         Private Sub InitResultsPlot()
 
             Me.m_zghResults = New cZedGraphHelper()
-            Me.m_zghResults.Attach(Me.Core, Me.m_graphResults)
+            Me.m_zghResults.Attach(Me.UIContext, Me.m_graphResults)
             Me.m_zghResults.ShowCursor = False
 
             AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos

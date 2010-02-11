@@ -56,14 +56,12 @@ Namespace Ecosim
 
             MyBase.OnLoad(e)
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
-            Dim cmd As cCommand = Nothing
             Dim group As cCoreGroupBase = Nothing
 
             Me.m_parms = Me.UIContext.Core.EcoSimModelParameters()
             Me.m_paneMaster = Me.m_graph.MasterPane
             Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.UIContext.Core, Me.m_graph, [Enum].GetValues(GetType(ePaneTypes)).Length)
+            Me.m_zgh.Attach(Me.UIContext, Me.m_graph, [Enum].GetValues(GetType(ePaneTypes)).Length)
             Me.m_zgh.ShowPointValue = True
 
             Me.ConfigurePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
@@ -143,7 +141,7 @@ Namespace Ecosim
         ''' </summary>
         Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSaveData.Click
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
             Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
             Dim bSaveAnnual As Boolean = False 'Save each time steps
             Dim writer As New cEcosimResultWriter(Me.UIContext.Core)
@@ -167,7 +165,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub btnTimeSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
             Dim cmd As cCommand = cmdh.GetCommand("LoadTimeSeries")
             If (cmd IsNot Nothing) Then cmd.Invoke()
         End Sub

@@ -48,7 +48,7 @@ Namespace Ecopath.Output
             Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
 
             Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.Core, Me.m_graph)
+            Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
             Me.m_zgh.Configure("")
 
             Me.m_lbGroups.Attach(Me.Core, Me.StyleGuide)

@@ -113,14 +113,13 @@ Namespace Controls
 
 #Region " Public interfaces "
 
-        Public Overrides Sub Attach(ByVal core As EwECore.cCore, _
+        Public Overrides Sub Attach(ByVal uic As cUIContext, _
                                     ByVal zgc As ZedGraph.ZedGraphControl, _
                                     Optional ByVal iNumPanes As Integer = 1)
 
             Debug.Assert(iNumPanes = 1)
-            Debug.Assert(core IsNot Nothing)
 
-            MyBase.Attach(core, zgc, 1)
+            MyBase.Attach(uic, zgc, 1)
 
             Me.m_graphPane = Me.GetPane(1)
         End Sub

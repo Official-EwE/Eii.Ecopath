@@ -110,7 +110,7 @@ Public Class cKeystonenessGraph
         Me.AddToolstripItems()
 
         Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.NetworkManager.Core, Me.Graph, 1)
+        Me.m_zgh.Attach(Me.NetworkManager.UIContext, Me.Graph, 1)
         Me.m_zgh.ShowPointValue = True
 
         Return bSucces

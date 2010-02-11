@@ -31,14 +31,12 @@ Namespace Controls
 
 #Region " Private vars "
 
+        Private m_uic As cUIContext = Nothing
+
         ''' <summary>Wrapped ZedGraph control.</summary>
         Private m_zgc As ZedGraphControl = Nothing
-        ''' <summary>Core to accompany this monster.</summary>
-        Private m_core As cCore = Nothing
         ''' <summary>Number of panels wanted in the zed graph</summary>
         Private m_nPanels As Integer = 1
-        ''' <summary>Style! Styyyyyle, baby!</summary>
-        Private m_sg As cStyleGuide = Nothing
         ''' <summary>Registered lines representing EwE groups.</summary>
         Private m_dtGroupLines As New Dictionary(Of LineItem, Integer)
         ''' <summary>Registered axis that need to display units.</summary>
@@ -96,22 +94,25 @@ Namespace Controls
         ''' <summary>
         ''' Attach a zedgraph helper to a zedgraph control.
         ''' </summary>
-        ''' <param name="core">Core to monitor.</param>
+        ''' <param name="uic">cUIContext providing UI contextual information.</param>
         ''' <param name="zgc">ZedGraph control to control.</param>
         ''' <param name="iNumPanels">Number of panels to create.</param>
         ''' <remarks>
         ''' Make sure to cleanup using <see cref="Detach">Detach</see>.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Attach(ByVal core As cCore, _
+        Public Overridable Sub Attach(ByVal uic As cUIContext, _
                                       ByVal zgc As ZedGraphControl, _
                                       Optional ByVal iNumPanels As Integer = 1)
 
+            ' Sanity checks
+            Debug.Assert(uic IsNot Nothing)
+            Debug.Assert(zgc IsNot Nothing)
+
             If Me.m_zgc IsNot Nothing Then Me.Detach()
 
-            Me.m_core = core
+            Me.m_uic = uic
             Me.m_zgc = zgc
-            Me.m_sg = cStyleGuide.GetInstance()
             Me.m_nPanels = iNumPanels
 
             While Me.m_zgc.MasterPane.PaneList.Count < iNumPanels
@@ -132,7 +133,7 @@ Namespace Controls
             AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
             AddHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
-            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             ' Configure graph control
             Me.InitStyle()
@@ -159,14 +160,12 @@ Namespace Controls
             RemoveHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
             RemoveHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
-            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             Me.m_dtGroupLines.Clear()
             Me.m_dtAxisLabels.Clear()
 
-            Me.m_sg = Nothing
             Me.m_zgc = Nothing
-            Me.m_core = Nothing
 
         End Sub
 
@@ -189,7 +188,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public ReadOnly Property StyleGuide() As cStyleGuide
             Get
-                Return Me.m_sg
+                Return Me.m_uic.StyleGuide
             End Get
         End Property
 
@@ -200,7 +199,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Core() As cCore
             Get
-                Return Me.m_core
+                Return Me.m_uic.Core
             End Get
         End Property
 
@@ -606,8 +605,8 @@ Namespace Controls
                                         ByVal iGroup As Integer, _
                                         ByVal ppl As PointPairList) As LineItem
 
-            Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
-            Return Me.CreateLineItem(group.Name, curveType, Me.m_sg.GroupColor(Me.m_core, group.Index), ppl)
+            Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+            Return Me.CreateLineItem(group.Name, curveType, Me.StyleGuide.GroupColor(Me.Core, group.Index), ppl)
 
         End Function
 
@@ -670,8 +669,8 @@ Namespace Controls
             Dim pp As PointPair = curve(iPoint)
             Return String.Format(My.Resources.GENERIC_LABEL_GRAPHVALUE, _
                                  curve.Label.Text, _
-                                 Me.m_sg.FormatNumber(pp.X), _
-                                 Me.m_sg.FormatNumber(pp.Y))
+                                 Me.StyleGuide.FormatNumber(pp.X), _
+                                 Me.StyleGuide.FormatNumber(pp.Y))
         End Function
 
 #End Region ' Tooltip
@@ -1067,8 +1066,8 @@ Namespace Controls
         Private Sub InitColors()
             For iPane As Integer = 1 To Me.m_nPanels
                 With Me.GetPane(iPane)
-                    .Chart.Fill = New Fill(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
-                    .Fill = New Fill(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
+                    .Chart.Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
+                    .Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
 
                     Me.RemoveCursor(iPane)
                     Me.SetCursor(iPane)
@@ -1078,7 +1077,7 @@ Namespace Controls
 
             ' Refresh all registered lines
             For Each l As LineItem In Me.m_dtGroupLines.Keys
-                l.Color = Me.m_sg.GroupColor(Me.m_core, Me.m_dtGroupLines(l))
+                l.Color = Me.StyleGuide.GroupColor(Me.Core, Me.m_dtGroupLines(l))
             Next
 
         End Sub
@@ -1089,50 +1088,50 @@ Namespace Controls
                 With Me.GetPane(iPane)
                     .IsFontsScaled = False
 
-                    .Title.FontSpec.Family = Me.m_sg.FontFamilyName(cStyleGuide.eApplicationFontType.Title)
-                    .Title.FontSpec.Size = Me.m_sg.FontSize(cStyleGuide.eApplicationFontType.Title)
-                    .Title.FontSpec.IsBold = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Bold) = FontStyle.Bold)
-                    .Title.FontSpec.IsItalic = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Italic) = FontStyle.Italic)
-                    .Title.FontSpec.IsUnderline = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Underline) = FontStyle.Underline)
+                    .Title.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.Title)
+                    .Title.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.Title)
+                    .Title.FontSpec.IsBold = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Bold) = FontStyle.Bold)
+                    .Title.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Italic) = FontStyle.Italic)
+                    .Title.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Underline) = FontStyle.Underline)
 
-                    .XAxis.Title.FontSpec.Family = Me.m_sg.FontFamilyName(cStyleGuide.eApplicationFontType.SubTitle)
+                    .XAxis.Title.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.SubTitle)
                     .YAxis.Title.FontSpec.Family = .XAxis.Title.FontSpec.Family
-                    .XAxis.Title.FontSpec.Size = Me.m_sg.FontSize(cStyleGuide.eApplicationFontType.SubTitle)
+                    .XAxis.Title.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.SubTitle)
                     .YAxis.Title.FontSpec.Size = .XAxis.Title.FontSpec.Size
-                    .XAxis.Title.FontSpec.IsBold = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Bold) = FontStyle.Bold)
+                    .XAxis.Title.FontSpec.IsBold = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Bold) = FontStyle.Bold)
                     .YAxis.Title.FontSpec.IsBold = .XAxis.Title.FontSpec.IsBold
-                    .XAxis.Title.FontSpec.IsItalic = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Italic) = FontStyle.Italic)
+                    .XAxis.Title.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Italic) = FontStyle.Italic)
                     .YAxis.Title.FontSpec.IsItalic = .XAxis.Title.FontSpec.IsItalic
-                    .XAxis.Title.FontSpec.IsUnderline = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Underline) = FontStyle.Underline)
+                    .XAxis.Title.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Underline) = FontStyle.Underline)
                     .YAxis.Title.FontSpec.IsUnderline = .XAxis.Title.FontSpec.IsUnderline
 
-                    .XAxis.Scale.FontSpec.Family = Me.m_sg.FontFamilyName(cStyleGuide.eApplicationFontType.Scale)
+                    .XAxis.Scale.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.Scale)
                     .YAxis.Scale.FontSpec.Family = .XAxis.Scale.FontSpec.Family
-                    .XAxis.Scale.FontSpec.Size = Me.m_sg.FontSize(cStyleGuide.eApplicationFontType.Scale)
+                    .XAxis.Scale.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.Scale)
                     .YAxis.Scale.FontSpec.Size = .XAxis.Scale.FontSpec.Size
-                    .XAxis.Scale.FontSpec.IsBold = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Bold) = FontStyle.Bold)
+                    .XAxis.Scale.FontSpec.IsBold = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Bold) = FontStyle.Bold)
                     .YAxis.Scale.FontSpec.IsBold = .XAxis.Scale.FontSpec.IsBold
-                    .XAxis.Scale.FontSpec.IsItalic = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Italic) = FontStyle.Italic)
+                    .XAxis.Scale.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Italic) = FontStyle.Italic)
                     .YAxis.Scale.FontSpec.IsItalic = .XAxis.Scale.FontSpec.IsItalic
-                    .XAxis.Scale.FontSpec.IsUnderline = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Underline) = FontStyle.Underline)
+                    .XAxis.Scale.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Underline) = FontStyle.Underline)
                     .YAxis.Scale.FontSpec.IsUnderline = .XAxis.Scale.FontSpec.IsUnderline
 
-                    .Legend.FontSpec.Family = Me.m_sg.FontFamilyName(cStyleGuide.eApplicationFontType.Legend)
-                    .Legend.FontSpec.Size = Me.m_sg.FontSize(cStyleGuide.eApplicationFontType.Legend)
-                    .Legend.FontSpec.IsBold = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Bold) = FontStyle.Bold)
-                    .Legend.FontSpec.IsItalic = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Italic) = FontStyle.Italic)
-                    .Legend.FontSpec.IsUnderline = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Underline) = FontStyle.Underline)
+                    .Legend.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.Legend)
+                    .Legend.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.Legend)
+                    .Legend.FontSpec.IsBold = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Bold) = FontStyle.Bold)
+                    .Legend.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Italic) = FontStyle.Italic)
+                    .Legend.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Underline) = FontStyle.Underline)
 
                 End With
             Next
 
             With Me.m_zgc.MasterPane
                 .Border.IsVisible = False
-                .Title.FontSpec.Family = Me.m_sg.FontFamilyName(cStyleGuide.eApplicationFontType.Title)
-                .Title.FontSpec.Size = Me.m_sg.FontSize(cStyleGuide.eApplicationFontType.Title)
-                .Title.FontSpec.IsBold = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Bold) = FontStyle.Bold)
-                .Title.FontSpec.IsItalic = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Italic) = FontStyle.Italic)
-                .Title.FontSpec.IsUnderline = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Underline) = FontStyle.Underline)
+                .Title.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.Title)
+                .Title.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.Title)
+                .Title.FontSpec.IsBold = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Bold) = FontStyle.Bold)
+                .Title.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Italic) = FontStyle.Italic)
+                .Title.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Underline) = FontStyle.Underline)
 
                 Using g As Graphics = Me.m_zgc.CreateGraphics()
                     .SetLayout(g, PaneLayout.SquareColPreferred)
@@ -1146,8 +1145,8 @@ Namespace Controls
 
         Private Sub InitLegend(Optional ByVal gp As GraphPane = Nothing)
 
-            Dim bShow As Boolean = (Me.m_sg.ShowLegends = TriState.True) Or _
-                                   (Me.m_sg.ShowLegends = TriState.UseDefault And Me.m_bShowLegend = True)
+            Dim bShow As Boolean = (Me.StyleGuide.ShowLegends = TriState.True) Or _
+                                   (Me.StyleGuide.ShowLegends = TriState.UseDefault And Me.m_bShowLegend = True)
 
             If gp Is Nothing Then
                 For Each gp In Me.m_zgc.MasterPane.PaneList
@@ -1211,7 +1210,7 @@ Namespace Controls
                 Me.m_liCursor(iPane) = New LineItem(My.Resources.GENERIC_TEXT_CURSOR, _
                         New Double() {Me.m_sCursorPos(iPane), Me.m_sCursorPos(iPane)}, _
                         New Double() {dYMin, dYMax}, _
-                        Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), _
+                        Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), _
                         SymbolType.None, _
                         3)
 

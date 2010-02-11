@@ -1,27 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: frmTFMpolicy.vb,v $
-' Revision 1.6  2009/05/28 12:37:39  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.5  2009/04/07 20:02:09  jeroens
-' Updated to use ZedGraphHelper Attach
-'
-' Revision 1.4  2009/04/03 18:21:54  jeroens
-' Deliberately detached zedgraphhelper
-'
-' Revision 1.3  2008/10/08 22:14:16  jeroens
-' Drag w SHIFT
-'
-' Revision 1.2  2008/10/08 21:18:24  jeroens
-' Globalized
-'
-' Revision 1.1  2008/10/08 17:57:35  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -64,10 +41,8 @@ Namespace Ecosim
 
             MyBase.OnLoad(e)
 
-            Dim core As cCore = cCore.GetInstance()
-
             Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(core, Me.m_graph)
+            Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
             Me.m_zgh.ConfigurePane("", My.Resources.HEADER_BIOMASS, My.Resources.HEADER_TFM, True)
 
             Me.m_zgh.AllowZoom = False
@@ -76,7 +51,7 @@ Namespace Ecosim
 
             ' Hahaha
             If (core.nGroups > 0) Then
-                Me.m_grid.Group = cCore.GetInstance().EcoSimGroupInputs(1)
+                Me.m_grid.Group = Me.Core.EcoSimGroupInputs(1)
             End If
 
         End Sub
@@ -115,7 +90,7 @@ Namespace Ecosim
             End Get
             Set(ByVal value As cEcoSimGroupInput)
 
-                Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+                Dim pm As cPropertyManager = Me.PropertyManager
 
                 ' Unregister
                 If (Me.m_group IsNot Nothing) Then

@@ -107,7 +107,7 @@ Namespace Ecosim
             Me.m_mcmanager.bRetainFits = cbRetainEstimates.Checked
 
             Me.m_plothelper = New cEcosimOutputPlotHelper()
-            Me.m_plothelper.Attach(Me.m_core, Me.m_graph)
+            Me.m_plothelper.Attach(Me.UIContext, Me.m_graph)
             Me.m_plothelper.ShowMultipleRuns = True
             ' ToDo_JS: localize this
             Me.m_plothelper.ConfigurePane("Monte carlo trials", "Time", "Biomass", False)

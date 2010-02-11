@@ -76,7 +76,7 @@ Namespace Ecosim
             Me.m_zgh = New cZedGraphHelper()
 
             Me.LoadGroups()
-            Me.m_zgh.Attach(Me.Core, Me.m_plot)
+            Me.m_zgh.Attach(Me.UIContext, Me.m_plot)
             Me.m_zgh.ConfigurePane(My.Resources.SR_PLOT_TITLE, _
                                    String.Format(My.Resources.SR_PLOT_X_AXIS, String.Empty), _
                                    String.Format(My.Resources.HEADER_RECRUITMENT_UNIT, String.Empty), _

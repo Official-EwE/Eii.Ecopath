@@ -80,12 +80,11 @@ Friend Class cMSEPlotter
     Private Const LB_TAG As String = "LB"
     Private Const UB_TAG As String = "UB"
 
-    Private m_sg As cStyleGuide = Nothing
+    Private m_uic As cUIContext = Nothing
     Private m_zgh As cZedGraphHelper = Nothing
     Private m_zdGraph As ZedGraphControl
     Private m_manager As cMSEManager
     Private m_nvis As Integer
-    Private m_core As cCore
     Private m_type As ePlotTypes
     Private m_dataType As ePlotData
     Private m_Data As List(Of cCoreGroupBase)
@@ -108,8 +107,7 @@ Friend Class cMSEPlotter
                     ByVal ZedGraphHelper As cZedGraphHelper, _
                     ByVal ZedGraph As ZedGraphControl)
         Me.m_zgh = ZedGraphHelper
-        Me.m_sg = uic.StyleGuide
-        Me.m_core = uic.Core
+        Me.m_uic = uic
         Me.m_zdGraph = ZedGraph
         Me.m_manager = MSEManager
     End Sub
@@ -150,9 +148,9 @@ Friend Class cMSEPlotter
         Try
             Dim npanes As Integer = Me.nVisGroups
             If Me.m_dataType = ePlotData.Effort Or Me.m_dataType = ePlotData.FleetValue Then
-                npanes = Me.m_core.nFleets
+                npanes = Me.m_uic.Core.nFleets
             End If
-            Me.m_zgh.Attach(Me.m_core, Me.m_zdGraph, npanes)
+            Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, npanes)
 
             Me.ClearData()
             Me.ClearGraphs()
@@ -175,7 +173,7 @@ Friend Class cMSEPlotter
             If Me.m_Data IsNot Nothing Then
 
                 If Me.m_type <> ePlotTypes.Line Then
-                    Me.m_zgh.Attach(Me.m_core, Me.m_zdGraph, Me.m_Data.Count)
+                    Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, Me.m_Data.Count)
                     Me.ClearGraphs()
                     Me.configPanes()
                 End If
@@ -362,10 +360,13 @@ Friend Class cMSEPlotter
             Case ePlotData.Biomass, ePlotData.GroupCatch
                 'By group
                 For Each grp As cCoreGroupBase In Me.m_manager.GroupInputs
-                    If Me.m_sg.GroupVisible(grp.Index) Then
+                    If Me.m_uic.StyleGuide.GroupVisible(grp.Index) Then
                         ipane += 1
-                        Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, CDbl(Me.m_core.EcosimFirstYear), CDbl(Me.m_core.EcosimFirstYear + (m_core.nEcosimTimeSteps / cCore.N_MONTHS)), _
-                          Me.YLabel, 0, 0, False, LegendPos.Top, ipane)
+                        Me.m_zgh.ConfigurePane(grp.Name, _
+                                               Me.XLabel, _
+                                               CDbl(Me.m_uic.Core.EcosimFirstYear), _
+                                               CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
+                                               Me.YLabel, 0, 0, False, LegendPos.Top, ipane)
                         Me.m_zgh.AutoscalePane(ipane) = True
                     End If
                 Next
@@ -373,11 +374,15 @@ Friend Class cMSEPlotter
             Case ePlotData.Effort, ePlotData.FleetValue
                 'By Fleet
                 Dim flt As cFleetInput
-                For iflt As Integer = 1 To Me.m_core.nFleets
-                    flt = Me.m_core.FleetInputs(iflt)
+                For iflt As Integer = 1 To Me.m_uic.Core.nFleets
+                    flt = Me.m_uic.Core.FleetInputs(iflt)
                     ipane += 1
-                    Me.m_zgh.ConfigurePane(flt.Name, Me.XLabel, CDbl(Me.m_core.EcosimFirstYear), CDbl(Me.m_core.EcosimFirstYear + (m_core.nEcosimTimeSteps / cCore.N_MONTHS)), _
-                      Me.YLabel, 0, 0, False, LegendPos.Top, ipane)
+                    Me.m_zgh.ConfigurePane(flt.Name, _
+                                           Me.XLabel, _
+                                           CDbl(Me.m_uic.Core.EcosimFirstYear), _
+                                           CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
+                                           Me.YLabel, 0, 0, _
+                                           False, LegendPos.Top, ipane)
                     Me.m_zgh.AutoscalePane(ipane) = True
                 Next
 
@@ -531,8 +536,8 @@ Friend Class cMSEPlotter
                     'cMSEStats.Values(iteration) is zero based!!!
                     values = data.Values(iter)
 
-                    For iTime As Integer = 0 To m_core.nEcosimTimeSteps - 1
-                        dx = Me.m_core.EcosimFirstYear + ((iTime + 1) / cCore.N_MONTHS)
+                    For iTime As Integer = 0 To Me.m_uic.Core.nEcosimTimeSteps - 1
+                        dx = Me.m_uic.Core.EcosimFirstYear + ((iTime + 1) / cCore.N_MONTHS)
                         ppl.Add(dx, values(iTime))
                     Next
 
@@ -572,8 +577,8 @@ Friend Class cMSEPlotter
 
                 Dim ppl As New PointPairList
 
-                For iTime As Integer = 1 To m_core.nEcosimTimeSteps
-                    dx = Me.m_core.EcosimFirstYear + (iTime / cCore.N_MONTHS)
+                For iTime As Integer = 1 To Me.m_uic.Core.nEcosimTimeSteps
+                    dx = Me.m_uic.Core.EcosimFirstYear + (iTime / cCore.N_MONTHS)
                     ppl.Add(dx, data.Biomass(iTime))
                 Next
 
@@ -596,8 +601,8 @@ Friend Class cMSEPlotter
         Dim dx As Double
 
         Dim ppl As New PointPairList
-        For iTime As Integer = 1 To m_core.nEcosimTimeSteps
-            dx = Me.m_core.EcosimFirstYear + (iTime / cCore.N_MONTHS)
+        For iTime As Integer = 1 To Me.m_uic.Core.nEcosimTimeSteps
+            dx = Me.m_uic.Core.EcosimFirstYear + (iTime / cCore.N_MONTHS)
             ppl.Add(dx, StatsData.Mean(iTime))
         Next
 
@@ -613,7 +618,7 @@ Friend Class cMSEPlotter
     End Sub
 
     Private Sub plotRefLine(ByVal LowerBound As Single, ByVal UpperBound As Single, ByVal pane As ZedGraph.GraphPane)
-        Dim dx As Double
+        'Dim dx As Double
 
         Me.removeRefLines(pane)
 
@@ -642,10 +647,10 @@ Friend Class cMSEPlotter
             Dim pplUB As New PointPairList
 
             pplLB.Add(0, LowerBound)
-            pplLB.Add(m_core.nEcosimTimeSteps, LowerBound)
+            pplLB.Add(Me.m_uic.Core.nEcosimTimeSteps, LowerBound)
 
             pplUB.Add(0, UpperBound)
-            pplUB.Add(m_core.nEcosimTimeSteps, UpperBound)
+            pplUB.Add(Me.m_uic.Core.nEcosimTimeSteps, UpperBound)
 
             Dim LBItem As LineItem = New ZedGraph.LineItem("", pplLB, Color.Pink, SymbolType.None, 1)
             Dim UBItem As LineItem = New ZedGraph.LineItem("", pplUB, Color.Pink, SymbolType.None, 1)
@@ -681,7 +686,7 @@ Friend Class cMSEPlotter
         Try
             'if this is group data then get the colour from the style guide
             If StatsData.DataType = eDataTypes.MSECatchByGroupStats Or StatsData.DataType = eDataTypes.MSEBiomassStats Then
-                Return Me.m_sg.GroupColor(Me.m_core, StatsData.Index)
+                Return Me.m_uic.StyleGuide.GroupColor(Me.m_uic.Core, StatsData.Index)
             End If
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".getLineColour() Exception thrown from the Style Guide. Default colour will be used.")
@@ -694,8 +699,8 @@ Friend Class cMSEPlotter
 
     Private Function nVisGroups() As Integer
         Dim n As Integer
-        For igrp As Integer = 1 To Me.m_core.nGroups
-            If Me.m_sg.GroupVisible(igrp) Then
+        For igrp As Integer = 1 To Me.m_uic.Core.nGroups
+            If Me.m_uic.StyleGuide.GroupVisible(igrp) Then
                 n += 1
             End If
         Next

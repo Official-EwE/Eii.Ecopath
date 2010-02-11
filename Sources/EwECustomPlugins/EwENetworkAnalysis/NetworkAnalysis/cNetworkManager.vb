@@ -1,80 +1,4 @@
-'==============================================================================
-'
-' $Log: cNetworkManager.vb,v $
-' Revision 1.24  2009/06/06 21:55:39  jeroens
-' Added DetritusByTrophicLevel
-'
-' Revision 1.23  2009/06/05 02:50:25  jeroens
-' Moving calcs from UI to manager for reuse
-'
-' Revision 1.22  2009/06/04 18:04:07  jeroens
-' Moved transfer efficiency computations to manager
-'
-' Revision 1.21  2009/06/03 02:22:40  jeroens
-' Implemented VC changes 2jun09
-'
-' Revision 1.20  2009/06/02 15:56:20  jeroens
-' Added TotalImpact (needs validation)
-'
-' Revision 1.19  2009/06/02 02:38:51  jeroens
-' Renamed exposed keystoneness indicators
-'
-' Revision 1.18  2009/05/30 00:00:54  jeroens
-' Toolstrip usage centralized
-'
-' Revision 1.17  2009/05/28 12:37:17  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.16  2009/05/28 02:14:33  jeroens
-' Keystoneness vars exposed
-'
-' Revision 1.15  2009/05/21 18:53:38  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.14  2009/05/04 02:12:49  jeroens
-' NA Sim off unless initiated from NA nav tree
-'
-' Revision 1.13  2009/05/02 03:02:17  jeroens
-' Cleaned up
-'
-' Revision 1.12  2009/05/01 17:46:40  jeroens
-' Simplified run state management
-' Uses central status feedback
-'
-' Revision 1.11  2009/04/28 19:00:30  jeroens
-' Revamped to be able to use styleguide hide groups, rather than an isolated hidegroups interface
-'
-' Revision 1.10  2009/04/28 16:37:29  jeroens
-' Fixed issue 617
-'
-' Revision 1.9  2009/03/22 14:01:37  jeroens
-' Core state monitor exec event parameters simplified
-'
-' Revision 1.8  2009/01/23 03:10:59  jeroens
-' Removed unused references
-'
-' Revision 1.7  2009/01/16 18:30:33  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.6  2008/11/28 16:54:56  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.5  2008/11/24 18:11:07  jeroens
-' Electivity exposed
-'
-' Revision 1.4  2008/11/13 19:34:14  joeh
-' Fix the error in the calculation of total ascendency
-'
-' Revision 1.3  2008/11/11 21:35:20  joeb
-' Moved FunctionKemptonsQ to cCore.EcoFunctions.KemptonsQ so it would be accessible for the Seach functions
-'
-' Revision 1.2  2008/11/10 06:30:30  jeroens
-' No need to assert
-'
-' Revision 1.1  2008/09/26 07:31:00  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -82,6 +6,8 @@ Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
 Imports EwECore
 Imports EwEUtils.Core
+
+#End Region ' Imports
 
 ' ToDo_JS: localize this class
 
@@ -128,8 +54,8 @@ Public Class cNetworkManager
     End Enum
 
     Private m_econetwork As cEcoNetwork = Nothing
-    Private m_core As cCore = Nothing
-    Private m_corestatemonitor As cCoreStateMonitor = Nothing
+    Private m_uic As cUIContext = Nothing
+    Private Corestatemonitor As cCoreStateMonitor = Nothing
     Private m_epdata As cEcopathDataStructures = Nothing
     Private m_esdata As cEcosimDatastructures = Nothing
     Private m_messagesource As eCoreComponentType = eCoreComponentType.Plugin
@@ -164,18 +90,18 @@ Public Class cNetworkManager
 
     Friend Function Init(ByRef theCore As cCore) As Boolean
 
-        m_core = theCore
-        m_corestatemonitor = m_core.StateMonitor
-        m_publisher = theCore.Messages
-        m_econetwork = New cEcoNetwork(Me)
+        Me.m_uic = New cUIContext(theCore, cStyleGuide.GetInstance(), Nothing, Nothing)
+        Me.Corestatemonitor = Me.m_uic.Core.StateMonitor
+        Me.m_publisher = theCore.Messages
+        Me.m_econetwork = New cEcoNetwork(Me)
 
-        AddHandler Me.m_corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+        AddHandler Me.Corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
         Return True
 
     End Function
 
     Friend Sub Clear()
-        RemoveHandler Me.m_corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+        RemoveHandler Me.Corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
     End Sub
 
 #End Region ' Construction and initialization
@@ -199,7 +125,7 @@ Public Class cNetworkManager
 
         Dim bSucces As Boolean = True
         Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-        Dim abGroupsToShow(Me.m_core.nGroups) As Boolean
+        Dim abGroupsToShow(Me.Core.nGroups) As Boolean
 
         Debug.Assert(m_econetwork IsNot Nothing)
 
@@ -216,7 +142,7 @@ Public Class cNetworkManager
 
         If bSucces And (m_runstate <> eRunState.CoreNotReady) Then
             Try
-                For iGroup As Integer = 1 To Me.m_core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
                     abGroupsToShow(iGroup) = True
                     ' JS: group hiding has not yet been enabled
                     'abGroupsToShow(iGroup) = sg.GroupVisible(iGroup)
@@ -289,7 +215,7 @@ Public Class cNetworkManager
 
         If m_econetwork Is Nothing Then
             'message of some sort
-            m_core.Messages.SendMessage(New cMessage("Network Analysis not initialized properly.", eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Critical))
+            Core.Messages.SendMessage(New cMessage("Network Analysis not initialized properly.", eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Critical))
             Return False
         End If
 
@@ -301,7 +227,7 @@ Public Class cNetworkManager
                     'implicitly run the network analysis if it has not been run
                     If Not Me.RunMainNetwork() Then
                         'ooopssss........
-                        m_core.Messages.SendMessage(New cMessage("Required Primary Production could not be run because of a problem in Network Analysis.", _
+                        Core.Messages.SendMessage(New cMessage("Required Primary Production could not be run because of a problem in Network Analysis.", _
                                                                  eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
                         Return False
                     End If
@@ -319,13 +245,13 @@ Public Class cNetworkManager
             Catch ex As Exception
                 cLog.Write(ex)
                 Dim msg As String = Me.unravelExceptionMessage(ex)
-                m_core.Messages.SendMessage(New cMessage(Me.ToString & ".RunReguiredPrimaryProd() Error " & msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical))
+                Core.Messages.SendMessage(New cMessage(Me.ToString & ".RunReguiredPrimaryProd() Error " & msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical))
 
                 bSuccess = False
             End Try
         Else
             'message of some sort
-            m_core.Messages.SendMessage(New cMessage("Required Primary Production can not be run.", eMessageType.StateNotMet, m_messagesource, eMessageImportance.Warning))
+            Core.Messages.SendMessage(New cMessage("Required Primary Production can not be run.", eMessageType.StateNotMet, m_messagesource, eMessageImportance.Warning))
             bSuccess = False
         End If
 
@@ -506,9 +432,9 @@ Public Class cNetworkManager
 
             If Not Me.m_bUseEcosimNetwork Then Return False
 
-            If Not m_core.StateMonitor.HasEcosimLoaded Then
+            If Not Core.StateMonitor.HasEcosimLoaded Then
                 'No Ecosim Scenario is loaded the Ecosim network analysis can not be run
-                m_core.Messages.SendMessage(New cMessage("Please load an Ecosim scenario before running Network Analysis for Ecosim.", _
+                Core.Messages.SendMessage(New cMessage("Please load an Ecosim scenario before running Network Analysis for Ecosim.", _
                          eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning))
 
                 Return False
@@ -517,12 +443,12 @@ Public Class cNetworkManager
             If Me.m_bIsEcosimNetworkRun Then Return True
 
             cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_NETWORKANALYSIS, TriState.True)
-            Me.m_bIsEcosimNetworkRun = Me.m_core.RunEcoSim()
+            Me.m_bIsEcosimNetworkRun = Me.Core.RunEcoSim()
             cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         Catch ex As Exception
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage("Error while running Network Analysis for Ecosim. " & ex.Message, _
+            Core.Messages.SendMessage(New cMessage("Error while running Network Analysis for Ecosim. " & ex.Message, _
                                             eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
             Return False
         End Try
@@ -546,9 +472,9 @@ Public Class cNetworkManager
             End If
 
             'If m_runstate < eRunState.EcosimIsLoaded Then
-            If Not m_core.StateMonitor.HasEcosimLoaded Then
+            If Not Core.StateMonitor.HasEcosimLoaded Then
                 'No Ecosim Scenario is loaded this can not be initialized
-                m_core.Messages.SendMessage(New cMessage("Network Analysis for Ecosim could not be initialized because an Ecosim scenario has not been loaded.", _
+                Core.Messages.SendMessage(New cMessage("Network Analysis for Ecosim could not be initialized because an Ecosim scenario has not been loaded.", _
                          eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
                 Return False
             End If
@@ -558,7 +484,7 @@ Public Class cNetworkManager
                 'implicitly run the network analysis if it has not been run
                 If Not Me.RunMainNetwork() Then
                     'ooopssss........
-                    m_core.Messages.SendMessage(New cMessage("Network Analysis for Ecosim could not be initialized because of a problem in Network Analysis.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
+                    Core.Messages.SendMessage(New cMessage("Network Analysis for Ecosim could not be initialized because of a problem in Network Analysis.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
                     Return False
                 End If
             End If
@@ -704,7 +630,13 @@ Public Class cNetworkManager
 
     Public ReadOnly Property Core() As cCore
         Get
-            Return Me.m_core
+            Return Me.m_uic.Core
+        End Get
+    End Property
+
+    Public ReadOnly Property UIContext() As cUIContext
+        Get
+            Return Me.m_uic
         End Get
     End Property
 
@@ -722,19 +654,19 @@ Public Class cNetworkManager
 
     Public ReadOnly Property nGroups() As Integer
         Get
-            Return Me.m_core.nGroups
+            Return Me.Core.nGroups
         End Get
     End Property
 
     Public ReadOnly Property nLivingGroups() As Integer
         Get
-            Return Me.m_core.nLivingGroups
+            Return Me.Core.nLivingGroups
         End Get
     End Property
 
     Public ReadOnly Property nDetritusGroups() As Integer
         Get
-            Return Me.m_core.nDetritusGroups
+            Return Me.Core.nDetritusGroups
         End Get
     End Property
 
@@ -751,7 +683,7 @@ Public Class cNetworkManager
 
     Public ReadOnly Property nFleets() As Integer
         Get
-            Return Me.m_core.nFleets
+            Return Me.Core.nFleets
         End Get
     End Property
 
@@ -1805,7 +1737,7 @@ Public Class cNetworkManager
 
     Public ReadOnly Property nEcosimTimesteps() As Integer
         Get
-            Return m_core.nEcosimTimeSteps
+            Return Core.nEcosimTimeSteps
         End Get
     End Property
 

@@ -57,7 +57,7 @@ Namespace Ecopath.Output
             Me.m_core = cCore.GetInstance()
             Me.m_coreStateMonitor = Me.m_core.StateMonitor
             Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.m_core, Me.m_zedgraph)
+            Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph)
 
             ' Connect to show/hide groups command
             cmdh = cCommandHandler.GetInstance()

@@ -1,50 +1,3 @@
-'==============================================================================
-'
-' $Log: ucBioPercent.vb,v $
-' Revision 1.7  2009/05/28 12:37:52  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.6  2009/04/07 20:02:11  jeroens
-' Updated to use ZedGraphHelper Attach
-'
-' Revision 1.5  2009/04/03 18:21:57  jeroens
-' Deliberately detached zedgraphhelper
-'
-' Revision 1.4  2009/03/24 20:28:34  jeroens
-' Uses mediation tool bar
-'
-' Revision 1.3  2009/03/24 16:33:55  jeroens
-' Made crash-safe
-'
-' Revision 1.2  2008/12/15 16:00:49  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:38  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.16  2008/09/19 14:14:38  jeroens
-' Fixed issue 496
-'
-' Revision 1.15  2008/08/02 03:04:21  jeroens
-' Renamed resources
-'
-' Revision 1.14  2008/05/07 01:39:07  jeroens
-' Fixed bugs 281, 378, 470
-'
-' Revision 1.13  2008/05/05 08:35:50  jeroens
-' Uses Styleguide group colors instead of group PoolColorArgb
-'
-' Revision 1.12  2008/04/07 02:31:21  jeroens
-' Cleaning up resources
-'
-' Revision 1.11  2007/11/15 15:03:15  jeroens
-' * Changed Load interface to use proper core objects
-'
-' Revision 1.10  2007/10/03 01:54:28  jeroens
-' * Reworked styleguide, colormanager
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -59,22 +12,17 @@ Imports ZedGraph
 Namespace Ecosim
 
     Public Class ucBioPercent
+        Implements IUIElement
 
-        Private m_core As cCore = Nothing
+        Private m_uic As cUIContext = Nothing
         Private m_medfn As cMediationFunction = Nothing
         Private m_RdmColor As ColorSymbolRotator = Nothing
         Private m_zgh As cZedGraphHelper = Nothing
 
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
-            ' Get the only core reference
-            m_core = cCore.GetInstance()
-
-            m_RdmColor = New ColorSymbolRotator
+            me.InitializeComponent()
+            Me.m_RdmColor = New ColorSymbolRotator
 
         End Sub
 
@@ -88,13 +36,20 @@ Namespace Ecosim
             End Set
         End Property
 
-        Private Sub ucBiomassPercentage_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
 
-            'Me.Dock = DockStyle.Fill
-
-            InitGraphPane()
-            LoadGraphData()
-
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+            Me.InitGraphPane()
+            Me.LoadGraphData()
         End Sub
 
         Protected Overrides Sub DestroyHandle()
@@ -105,7 +60,7 @@ Namespace Ecosim
         Private Sub InitGraphPane()
 
             Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.m_core, Me.m_zedgraph)
+            Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph)
             Me.m_zgh.ConfigurePane("", My.Resources.ECOSIM_DEF_MED_X_AXIS, My.Resources.HEADER_RELATIVEWEIGHT, True)
 
             'Dim pane As GraphPane = m_zedgraph.GraphPane
@@ -122,11 +77,11 @@ Namespace Ecosim
 
         Public Sub LoadGraphData()
 
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Dim medGrp As cMediatingGroup = Nothing
             Dim medFlt As cMediatingFleet = Nothing
             Dim list As PointPairList = Nothing
             Dim pane As GraphPane = m_zedgraph.GraphPane
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim clr As Color = Color.Transparent
             Dim myCurve As BarItem = Nothing
@@ -141,8 +96,8 @@ Namespace Ecosim
                     list.Add(i + 1, medGrp.Weight)
 
                     ' Get the group
-                    source = Me.m_core.EcoPathGroupInputs(medGrp.iGroupIndex)
-                    clr = sg.GroupColor(Me.m_core, medGrp.iGroupIndex)
+                    source = Me.m_uic.Core.EcoPathGroupInputs(medGrp.iGroupIndex)
+                    clr = sg.GroupColor(Me.m_uic.Core, medGrp.iGroupIndex)
 
                     myCurve = pane.AddBar(source.Name, list, clr)
                     myCurve.Bar.Fill = New Fill(clr)
@@ -154,7 +109,7 @@ Namespace Ecosim
                     medFlt = m_medfn.Fleet(i)
 
                     ' Get the fleet
-                    source = m_core.FleetInputs(medFlt.iFleetIndex)
+                    source = Me.m_uic.Core.FleetInputs(medFlt.iFleetIndex)
                     list.Add(i + 1 + m_medfn.CountGroup, medFlt.Weight)
 
                     clr = m_RdmColor.NextColor
@@ -180,7 +135,7 @@ Namespace Ecosim
         Public Sub LoadGraphData(ByVal data As Dictionary(Of cCoreInputOutputBase, Single))
 
             Dim myPane As GraphPane = m_zedgraph.GraphPane
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Dim source As cCoreInputOutputBase = Nothing
             Dim clr As Color = Color.Transparent
             Dim myCurve As BarItem = Nothing
@@ -203,7 +158,7 @@ Namespace Ecosim
                         myCurve.Bar.Fill = New Fill(clr)
                     Else
                         ' #No: get the group
-                        clr = cStyleGuide.GetInstance().GroupColor(Me.m_core, source.Index)
+                        clr = Me.m_uic.StyleGuide.GroupColor(Me.m_uic.Core, source.Index)
                         myCurve = myPane.AddBar(source.Name, list, clr)
                         myCurve.Bar.Fill = New Fill(clr)
                     End If

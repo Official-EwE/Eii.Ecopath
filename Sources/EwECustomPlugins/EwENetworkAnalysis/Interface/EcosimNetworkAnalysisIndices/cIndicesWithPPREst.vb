@@ -49,7 +49,7 @@ Public Class cIndicesWithPPREst
         End If
 
         Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.NetworkManager.Core, Me.Graph, 2)
+        Me.m_zgh.Attach(Me.NetworkManager.UIContext, Me.Graph, 2)
         Me.m_zgh.ShowPointValue = True
 
         Me.Graph.Visible = bSucces

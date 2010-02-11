@@ -49,7 +49,7 @@ Namespace Ecosim
             MyBase.OnLoad(e)
 
             Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.m_uic.Core, Me.m_graph)
+            Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
 
             Me.m_grid.SelectedGroupIndex = 1
 

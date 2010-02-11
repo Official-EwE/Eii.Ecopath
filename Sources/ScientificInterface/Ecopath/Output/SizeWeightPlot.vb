@@ -13,27 +13,24 @@ Namespace Ecopath.Output
 
     Public Class SizeWeightPlot
 
-#Region "Variables"
-        Private m_core As cCore = Nothing
-        Private m_zgh As cZedGraphHelper = Nothing
-#End Region 'Variables
+#Region " Variables "
 
-#Region "Constructor"
+        Private m_zgh As cZedGraphHelper = Nothing
+
+#End Region ' Variables
+
+#Region " Constructor "
+
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
+            Me.InitializeComponent()
 
-            ' Add any initialization after the InitializeComponent() call.
-            Me.m_core = cCore.GetInstance()
             Me.m_zgh = New cZedGraphHelper()
+            Me.m_zgh.Attach(Me.UIContext, Me.zgcZedGraphCntl)
 
-            Me.m_zgh.Attach(Me.m_core, Me.zgcZedGraphCntl)
-
-            'Don't manually run! The core execution states take care of this!
-            'm_core.RunPSD(IsGroupSelected)
         End Sub
-#End Region 'Constructor
+
+#End Region ' Constructor
 
 #Region " Event handlers "
 
@@ -47,18 +44,18 @@ Namespace Ecopath.Output
 
             UpdatePlot()
 
-            'parms = Me.m_core.ParticleSizeDistributionParameters
+            'parms = Me.me.UIContext.Core.ParticleSizeDistributionParameters
             'If parms.PSDEnabled = False Then
             '    str = My.Resources.PSD_MSG_PSDDISABLED
             '    msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-            '    Me.m_core.Messages.SendMessage(msg)
+            '    Me.me.UIContext.Core.Messages.SendMessage(msg)
             'End If
         End Sub
 
         'Private Sub SizeWeightPlot_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         '    Dim parms As cPSDParameters = Nothing
 
-        '    parms = Me.m_core.ParticleSizeDistributionParameters
+        '    parms = Me.me.UIContext.Core.ParticleSizeDistributionParameters
         '    If parms.PSDEnabled = False Then Me.Close()
         'End Sub
 
@@ -67,9 +64,10 @@ Namespace Ecopath.Output
             Me.m_zgh = Nothing
             MyBase.OnFormClosed(e)
         End Sub
-#End Region 'Event handlers
+#End Region ' Event handlers
 
-#Region "Helper methods"
+#Region " Helper methods "
+
         Private Function CreatePane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
                                     ByVal strYAxisTitle As String) As GraphPane
             Dim pane As GraphPane = Me.zgcZedGraphCntl.GraphPane
@@ -93,7 +91,7 @@ Namespace Ecopath.Output
             pane.YAxis.Title.FontSpec.Size = 14
 
             pane.XAxis.Scale.Min = 1
-            pane.XAxis.Scale.Max = m_core.nLivingGroups
+            pane.XAxis.Scale.Max = Me.UIContext.Core.nLivingGroups
             pane.YAxis.Scale.Min = 0
 
             pane.YAxis.MinorTic.IsAllTics = False
@@ -108,8 +106,8 @@ Namespace Ecopath.Output
 
             InitLists(resultLists, 2)
 
-            For iGroup As Integer = 1 To m_core.nLivingGroups
-                grpOutput = m_core.EcoPathGroupOutputs(iGroup)
+            For iGroup As Integer = 1 To Me.UIContext.Core.nLivingGroups
+                grpOutput = Me.UIContext.Core.EcoPathGroupOutputs(iGroup)
                 resultLists(0).Add(iGroup, grpOutput.BiomassAvgSzWt)
                 resultLists(1).Add(iGroup, grpOutput.BiomassSzWt)
             Next
@@ -140,15 +138,15 @@ Namespace Ecopath.Output
         End Sub
 
         Private Function IsGroupSelected() As Boolean()
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim bGroupSelected(m_core.nLivingGroups) As Boolean
+            Dim bGroupSelected(Me.UIContext.Core.nLivingGroups) As Boolean
 
-            For i As Integer = 1 To m_core.nLivingGroups
-                bGroupSelected(i) = sg.GroupVisible(i)
+            For i As Integer = 1 To Me.UIContext.Core.nLivingGroups
+                bGroupSelected(i) = Me.UIContext.StyleGuide.GroupVisible(i)
             Next
             Return bGroupSelected
         End Function
-#End Region 'Helper methods
+
+#End Region ' Helper methods
 
     End Class
 

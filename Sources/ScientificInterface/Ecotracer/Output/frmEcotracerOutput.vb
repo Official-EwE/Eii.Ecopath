@@ -168,7 +168,7 @@ Public Class frmEcotracerOutput
         Me.m_core = cCore.GetInstance()
         Me.m_sg = cStyleGuide.GetInstance()
         Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.m_core, Me.m_zgc)
+        Me.m_zgh.Attach(Me.UIContext, Me.m_zgc)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 

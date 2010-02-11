@@ -37,7 +37,7 @@ Namespace Ecopath
 
             Me.m_uic = uic
             Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.m_uic.Core, Me.m_zgc)
+            Me.m_zgh.Attach(Me.m_uic, Me.m_zgc)
             Me.m_groupInitial = group
 
         End Sub
