@@ -1684,7 +1684,7 @@ Namespace MSE
                 Try
                     Shape.ShapeData(1) = 1
                     For iTimeStep As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
-                        Shape.ShapeData(iTimeStep) = 2 ' Val
+                        Shape.ShapeData(iTimeStep) = Val
                         'set effort to unity 
                     Next
                 Catch ex As Exception
