@@ -406,6 +406,11 @@ Public Class AppLauncher
         ' Open the datasource
         atResult = ds.Open(strFileName, Me.Core)
 
+        If (atResult <> eDatasourceAccessType.Opened) Then
+            Me.ReportFileAccessError(atResult, strFileName)
+            Return False
+        End If
+
         ' Ok, now let's see if the core can work with this
         If Me.Core.LoadModel(ds) Then
 
@@ -1421,6 +1426,30 @@ Public Class AppLauncher
             Return String.Format(My.Resources.GENERIC_CAPTION_OPENMODEL, Me.SelectedFileName(False))
         End If
     End Function
+
+    Private Sub ReportFileAccessError(ByVal atResult As eDatasourceAccessType, ByVal strFileName As String)
+
+        ' ToDo: localize this method
+        Dim msg As cMessage = Nothing
+
+        Select Case atResult
+            Case eDatasourceAccessType.Failed_OSUnsupported
+                msg = New cMessage(String.Format("Your system does not have to proper drivers installed to read the file format of model '{0}'. Visit http://msdn.microsoft.com/en-us/data/aa937730.aspx to download the required Microsoft ACCDB drivers", strFileName), _
+                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
+            Case eDatasourceAccessType.Failed_FileNotFound
+                msg = New cMessage(String.Format("Unable to find model '{0}'.", strFileName), _
+                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
+            Case eDatasourceAccessType.Failed_CannotSave
+                msg = New cMessage(String.Format("Unable to save your model to location '{0}'.", strFileName), _
+                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
+            Case Else
+                msg = New cMessage(String.Format("An error occurred while attempting to access model '{0}'.", strFileName), _
+                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
+        End Select
+
+        Me.Core.Messages.SendMessage(msg)
+
+    End Sub
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
