@@ -1434,7 +1434,7 @@ Public Class AppLauncher
 
         Select Case atResult
             Case eDatasourceAccessType.Failed_OSUnsupported
-                msg = New cMessage(String.Format("Your system does not have to proper drivers installed to read the file format of model '{0}'. Visit http://msdn.microsoft.com/en-us/data/aa937730.aspx to download the required Microsoft ACCDB drivers", strFileName), _
+                msg = New cMessage(String.Format("Your system does not have to proper drivers installed to read the file format of model '{0}'. Visit http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&displaylang=en to download the required Microsoft ACCDB drivers", strFileName), _
                                    eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
             Case eDatasourceAccessType.Failed_FileNotFound
                 msg = New cMessage(String.Format("Unable to find model '{0}'.", strFileName), _
