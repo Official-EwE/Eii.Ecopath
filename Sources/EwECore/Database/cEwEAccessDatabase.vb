@@ -234,11 +234,6 @@ Namespace Database
 
                 End Try
 
-                ' Report succes
-                If Not Me.IsConnected() Then
-                    datResult = eDatasourceAccessType.Failed_Unknown
-                End If
-
             End If
 
             Return datResult
