@@ -114,20 +114,6 @@ Public Class StatusPanel
 
         If String.IsNullOrEmpty(msg.Message) Then Return
 
-        ' Check settings
-        Select Case msg.Importance
-            Case eMessageImportance.Critical
-                bPopup = True
-            Case eMessageImportance.Warning
-                bPopup = True
-            Case eMessageImportance.Information
-                bPopup = False
-            Case eMessageImportance.Maintenance, _
-                 eMessageImportance.Progress
-                Return
-            Case Else
-                Return
-        End Select
 
         ' Requires feedback (overrules popup settings)
         If (TypeOf msg Is cFeedbackMessage) Then
@@ -135,6 +121,21 @@ Public Class StatusPanel
             Me.HandleFeedbackMessage(DirectCast(msg, cFeedbackMessage))
             ' Disable popup
             bPopup = False
+        Else
+            ' Check settings
+            Select Case msg.Importance
+                Case eMessageImportance.Critical
+                    bPopup = True
+                Case eMessageImportance.Warning
+                    bPopup = True
+                Case eMessageImportance.Information
+                    bPopup = False
+                Case eMessageImportance.Maintenance, _
+                     eMessageImportance.Progress
+                    Return
+                Case Else
+                    Return
+            End Select
         End If
 
         ' Need to show a popup for this message?
