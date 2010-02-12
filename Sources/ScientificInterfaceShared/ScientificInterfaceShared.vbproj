@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -149,6 +149,21 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
+    <Compile Include="Controls\MessageBox\Templates\frmOneButton.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\MessageBox\Templates\frmThreeButtons.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\MessageBox\Templates\frmThreeButtonsCheckBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\MessageBox\Templates\frmTwoButtons.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\MessageBox\Templates\frmTwoButtonsCheckBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\Pyramid\cPyramid.vb" />
     <Compile Include="Controls\Shapes\cShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeFunc\ShapeImage.vb" />
@@ -296,6 +311,21 @@
     <EmbeddedResource Include="Controls\GlyphSelect\ucGlyphSelect.resx">
       <DependentUpon>ucGlyphSelect.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MessageBox\Templates\frmOneButton.resx">
+      <DependentUpon>frmOneButton.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MessageBox\Templates\frmThreeButtons.resx">
+      <DependentUpon>frmThreeButtons.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MessageBox\Templates\frmThreeButtonsCheckBox.resx">
+      <DependentUpon>frmThreeButtonsCheckBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MessageBox\Templates\frmTwoButtons.resx">
+      <DependentUpon>frmTwoButtons.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MessageBox\Templates\frmTwoButtonsCheckBox.resx">
+      <DependentUpon>frmTwoButtonsCheckBox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgChangeShape.resx">
       <DependentUpon>dlgChangeShape.vb</DependentUpon>
