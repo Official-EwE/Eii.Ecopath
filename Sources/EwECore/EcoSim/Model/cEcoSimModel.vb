@@ -442,10 +442,11 @@ Namespace Ecosim
 
                 SetInlinks()
 
-                'redim and load any time series forcing data 
-                'PoolForceBB, PoolForceCatch and PoolForceZ
+                'jb 12-Feb-2010 Reloading of forcing data overwrites user edits of effort
+                'We just need to make sure the forcing data arrays are dimensioned big enough to handle the run length
                 Me.m_RefData.nGroups = Me.nGroups
-                Me.m_RefData.LoadForcingData(Me.m_Data, Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.NdatYear))
+                Me.m_RefData.redimFocingData(Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.NdatYear))
+                'Me.m_RefData.LoadForcingData(Me.m_Data, Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.NdatYear))
 
                 DefaultDF()
 
@@ -1682,6 +1683,7 @@ Namespace Ecosim
                     For iflt = 1 To m_Data.nGear    'Discarded fish has no value
                         SumEf = SumEf + m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp)
                     Next
+
 
                     If SumEf > 0 Then
                         Dim bioCatch As Single

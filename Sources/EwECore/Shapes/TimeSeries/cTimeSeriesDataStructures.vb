@@ -195,9 +195,25 @@ Public Class cTimeSeriesDataStructures
     ''' <remarks></remarks>
     Public Sub redimFocingData(ByVal nYears As Integer)
 
-        ReDim PoolForceBB(nGroups, nYears)
-        ReDim PoolForceZ(nGroups, nYears)
-        ReDim PoolForceCatch(nGroups, nYears)
+        Try
+
+            If PoolForceBB Is Nothing Then
+                ReDim PoolForceBB(nGroups, nYears)
+                ReDim PoolForceZ(nGroups, nYears)
+                ReDim PoolForceCatch(nGroups, nYears)
+            End If
+
+            If Not PoolForceBB Is Nothing And nYears > Me.NdatYear Then
+                'number of years the model is running for is greater then the forcing data
+                'preserve the existing forcng data 
+                ReDim Preserve PoolForceBB(nGroups, nYears)
+                ReDim Preserve PoolForceZ(nGroups, nYears)
+                ReDim Preserve PoolForceCatch(nGroups, nYears)
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
 
     End Sub
 
