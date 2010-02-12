@@ -10,6 +10,11 @@ Imports System.Security.AccessControl
 
 Namespace Utilities
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Helper class offering miscellaneous file-related functionalities.
+    ''' </summary>
+    ''' =======================================================================
     Public Class FileUtilities
 
         ''' -------------------------------------------------------------------

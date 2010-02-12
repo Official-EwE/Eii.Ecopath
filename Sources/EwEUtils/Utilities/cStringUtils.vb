@@ -216,6 +216,13 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Converts an arabic value into a roman representation.
+        ''' </summary>
+        ''' <param name="nArabicValue">The value to convert.</param>
+        ''' <returns>A number in roman format, in upper case.</returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function ToRoman(ByVal nArabicValue As Integer) As String
 
             Dim nThousands As Integer

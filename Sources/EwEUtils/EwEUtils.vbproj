@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -98,13 +98,16 @@
     <Compile Include="Net\cSerializableObject.vb" />
     <Compile Include="System\cAssemblyInfo.vb" />
     <Compile Include="System\SystemUtilities.vb" />
-    <Compile Include="Utilities\FileUtilities.vb" />
-    <Compile Include="Utilities\ResourceUtilities.vb" />
+    <Compile Include="Utilities\cFileUtils.vb" />
+    <Compile Include="Utilities\cRegistryUtils.vb" />
+    <Compile Include="Utilities\cResourceUtils.vb" />
+    <Compile Include="Utilities\cSoundUtils.vb" />
     <Compile Include="Win32 API\cINIFile.vb" />
-    <Compile Include="Utilities\PropertyUtils.vb" />
-    <Compile Include="Utilities\StringUtils.vb" />
+    <Compile Include="Utilities\cPropertyUtils.vb" />
+    <Compile Include="Utilities\cStringUtils.vb" />
     <Compile Include="Utilities\UriBuilder.vb" />
     <Compile Include="Win32 API\ComDlg32.vb" />
+    <Compile Include="Win32 API\winmm.vb" />
     <Compile Include="Win32 API\GDIplus.vb" />
     <Compile Include="Win32 API\Kernel32.vb" />
     <Compile Include="Win32 API\User32.vb" />
