@@ -148,7 +148,6 @@
     <Compile Include="Controls\ListView\cSmoothListView.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\MessageBox\CheckedMessageBox.vb" />
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
     <Compile Include="Controls\Pyramid\cPyramid.vb" />
     <Compile Include="Controls\Shapes\cShapeGUIHandler.vb" />
