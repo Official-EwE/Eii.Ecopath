@@ -236,61 +236,54 @@ Namespace Controls
         Friend WithEvents picIcon As System.Windows.Forms.PictureBox
         Friend WithEvents lblMessage As System.Windows.Forms.Label
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTwoButtons))
             Me.btnTwo = New System.Windows.Forms.Button
             Me.btnOne = New System.Windows.Forms.Button
             Me.picIcon = New System.Windows.Forms.PictureBox
             Me.lblMessage = New System.Windows.Forms.Label
+            CType(Me.picIcon, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'btnTwo
             '
-            Me.btnTwo.Location = New System.Drawing.Point(8, 64)
+            resources.ApplyResources(Me.btnTwo, "btnTwo")
             Me.btnTwo.Name = "btnTwo"
-            Me.btnTwo.Size = New System.Drawing.Size(72, 24)
-            Me.btnTwo.TabIndex = 0
-            Me.btnTwo.Text = "Button2"
             '
             'btnOne
             '
-            Me.btnOne.Location = New System.Drawing.Point(88, 64)
+            resources.ApplyResources(Me.btnOne, "btnOne")
             Me.btnOne.Name = "btnOne"
-            Me.btnOne.Size = New System.Drawing.Size(72, 24)
-            Me.btnOne.TabIndex = 1
-            Me.btnOne.Text = "Button1"
             '
             'picIcon
             '
-            Me.picIcon.Location = New System.Drawing.Point(16, 16)
+            resources.ApplyResources(Me.picIcon, "picIcon")
             Me.picIcon.Name = "picIcon"
-            Me.picIcon.Size = New System.Drawing.Size(32, 32)
-            Me.picIcon.TabIndex = 2
             Me.picIcon.TabStop = False
             '
             'lblMessage
             '
-            Me.lblMessage.AutoSize = True
-            Me.lblMessage.Location = New System.Drawing.Point(80, 16)
+            resources.ApplyResources(Me.lblMessage, "lblMessage")
             Me.lblMessage.Name = "lblMessage"
-            Me.lblMessage.Size = New System.Drawing.Size(38, 16)
-            Me.lblMessage.TabIndex = 3
-            Me.lblMessage.Text = "Label1"
             '
             'frmTwoButtons
             '
             Me.AcceptButton = Me.btnTwo
-            Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-            Me.ClientSize = New System.Drawing.Size(186, 96)
+            resources.ApplyResources(Me, "$this")
+            Me.ControlBox = False
             Me.Controls.Add(Me.lblMessage)
             Me.Controls.Add(Me.picIcon)
             Me.Controls.Add(Me.btnOne)
             Me.Controls.Add(Me.btnTwo)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+            Me.MaximizeBox = False
+            Me.MinimizeBox = False
             Me.Name = "frmTwoButtons"
             Me.ShowInTaskbar = False
-            Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-            Me.Text = "frmTwoButtons"
+            Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
             Me.TopMost = True
+            CType(Me.picIcon, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
 

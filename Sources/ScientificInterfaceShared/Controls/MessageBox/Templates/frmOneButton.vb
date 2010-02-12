@@ -210,6 +210,7 @@ Namespace Controls
         Friend WithEvents picIcon As PictureBox
         Friend WithEvents btnOne As Button
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOneButton))
             Me.btnOne = New System.Windows.Forms.Button
             Me.lblMessage = New System.Windows.Forms.Label
             Me.picIcon = New System.Windows.Forms.PictureBox
@@ -218,45 +219,33 @@ Namespace Controls
             '
             'btnOne
             '
-            Me.btnOne.Location = New System.Drawing.Point(8, 72)
+            resources.ApplyResources(Me.btnOne, "btnOne")
             Me.btnOne.Name = "btnOne"
-            Me.btnOne.Size = New System.Drawing.Size(72, 24)
-            Me.btnOne.TabIndex = 0
-            Me.btnOne.Text = "&OK"
             '
             'lblMessage
             '
-            Me.lblMessage.AutoSize = True
-            Me.lblMessage.Location = New System.Drawing.Point(64, 16)
+            resources.ApplyResources(Me.lblMessage, "lblMessage")
             Me.lblMessage.Name = "lblMessage"
-            Me.lblMessage.Size = New System.Drawing.Size(33, 13)
-            Me.lblMessage.TabIndex = 1
-            Me.lblMessage.Text = "Label"
             '
             'picIcon
             '
-            Me.picIcon.Location = New System.Drawing.Point(16, 24)
+            resources.ApplyResources(Me.picIcon, "picIcon")
             Me.picIcon.Name = "picIcon"
-            Me.picIcon.Size = New System.Drawing.Size(32, 32)
-            Me.picIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-            Me.picIcon.TabIndex = 2
             Me.picIcon.TabStop = False
             '
             'frmOneButton
             '
             Me.AcceptButton = Me.btnOne
-            Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-            Me.ClientSize = New System.Drawing.Size(104, 106)
+            resources.ApplyResources(Me, "$this")
             Me.ControlBox = False
             Me.Controls.Add(Me.picIcon)
             Me.Controls.Add(Me.lblMessage)
             Me.Controls.Add(Me.btnOne)
+            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "frmOneButton"
             Me.ShowInTaskbar = False
-            Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-            Me.Text = "frmOneButton"
             Me.TopMost = True
             CType(Me.picIcon, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)

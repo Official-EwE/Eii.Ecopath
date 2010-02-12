@@ -243,6 +243,7 @@ Namespace Controls
         Friend WithEvents lblMessage As System.Windows.Forms.Label
         Friend WithEvents chkRemember As System.Windows.Forms.CheckBox
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTwoButtonsCheckBox))
             Me.btnTwo = New System.Windows.Forms.Button
             Me.btnOne = New System.Windows.Forms.Button
             Me.picIcon = New System.Windows.Forms.PictureBox
@@ -253,61 +254,49 @@ Namespace Controls
             '
             'btnTwo
             '
-            Me.btnTwo.Location = New System.Drawing.Point(8, 72)
+            resources.ApplyResources(Me.btnTwo, "btnTwo")
             Me.btnTwo.Name = "btnTwo"
-            Me.btnTwo.Size = New System.Drawing.Size(72, 24)
-            Me.btnTwo.TabIndex = 0
-            Me.btnTwo.Text = "Button2"
             '
             'btnOne
             '
-            Me.btnOne.Location = New System.Drawing.Point(88, 72)
+            Me.btnOne.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            resources.ApplyResources(Me.btnOne, "btnOne")
             Me.btnOne.Name = "btnOne"
-            Me.btnOne.Size = New System.Drawing.Size(72, 24)
-            Me.btnOne.TabIndex = 1
-            Me.btnOne.Text = "Button1"
             '
             'picIcon
             '
-            Me.picIcon.Location = New System.Drawing.Point(16, 16)
+            resources.ApplyResources(Me.picIcon, "picIcon")
             Me.picIcon.Name = "picIcon"
-            Me.picIcon.Size = New System.Drawing.Size(32, 32)
-            Me.picIcon.TabIndex = 2
             Me.picIcon.TabStop = False
             '
             'lblMessage
             '
-            Me.lblMessage.AutoSize = True
-            Me.lblMessage.Location = New System.Drawing.Point(80, 16)
+            resources.ApplyResources(Me.lblMessage, "lblMessage")
             Me.lblMessage.Name = "lblMessage"
-            Me.lblMessage.Size = New System.Drawing.Size(39, 13)
-            Me.lblMessage.TabIndex = 3
-            Me.lblMessage.Text = "Label1"
             '
             'chkRemember
             '
-            Me.chkRemember.Location = New System.Drawing.Point(32, 48)
+            resources.ApplyResources(Me.chkRemember, "chkRemember")
             Me.chkRemember.Name = "chkRemember"
-            Me.chkRemember.Size = New System.Drawing.Size(144, 16)
-            Me.chkRemember.TabIndex = 4
-            Me.chkRemember.Text = "&Remember answer"
             '
             'frmTwoButtonsCheckBox
             '
             Me.AcceptButton = Me.btnTwo
             Me.AccessibleRole = System.Windows.Forms.AccessibleRole.Border
-            Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-            Me.ClientSize = New System.Drawing.Size(173, 98)
+            resources.ApplyResources(Me, "$this")
+            Me.CancelButton = Me.btnOne
+            Me.ControlBox = False
             Me.Controls.Add(Me.chkRemember)
             Me.Controls.Add(Me.lblMessage)
             Me.Controls.Add(Me.picIcon)
             Me.Controls.Add(Me.btnOne)
             Me.Controls.Add(Me.btnTwo)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+            Me.MaximizeBox = False
+            Me.MinimizeBox = False
             Me.Name = "frmTwoButtonsCheckBox"
             Me.ShowInTaskbar = False
-            Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-            Me.Text = "frmTwoButtons"
+            Me.TopMost = True
             CType(Me.picIcon, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()

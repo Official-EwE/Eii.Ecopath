@@ -13,7 +13,7 @@ Namespace Controls
     ''' Factory for conjuring a custom message box.
     ''' </summary>
     ''' =======================================================================
-    Friend Class cCustomMessageBox
+    Public Class cCustomMessageBox
 
 #Region " Declarations "
 
@@ -32,23 +32,23 @@ Namespace Controls
 
 #Region " Public Show Options "
 
-        Friend Shared Function Show(ByVal Text As String) As DialogResult
+        Public Shared Function Show(ByVal Text As String) As DialogResult
             Return cCustomMessageBox.Show(Text, "")
         End Function
 
-        Friend Shared Function Show(ByVal Text As String, _
+        Public Shared Function Show(ByVal Text As String, _
                                     ByVal Caption As String) As DialogResult
             Return cCustomMessageBox.Show(Text, Caption, Nothing)
         End Function
 
-        Friend Shared Function Show(ByVal Text As String, _
+        Public Shared Function Show(ByVal Text As String, _
                                     ByVal Caption As String, _
                                     ByVal Buttons As MessageBoxButtons, _
                                     Optional ByVal Sound As String = "") As DialogResult
             Return cCustomMessageBox.Show(Text, Caption, Buttons, MessageBoxIcon.Information, Sound)
         End Function
 
-        Friend Shared Function Show(ByVal Text As String, _
+        Public Shared Function Show(ByVal Text As String, _
                                     ByVal Caption As String, _
                                     ByVal Buttons As MessageBoxButtons, _
                                     ByRef Suppress As Boolean, _
@@ -56,7 +56,7 @@ Namespace Controls
             Return cCustomMessageBox.Show(Text, Caption, Buttons, MessageBoxIcon.Information, Suppress, Sound)
         End Function
 
-        Friend Shared Function Show(ByVal Text As String, _
+        Public Shared Function Show(ByVal Text As String, _
                                     ByVal Caption As String, _
                                     ByVal Buttons As MessageBoxButtons, _
                                     ByVal IconType As MessageBoxIcon, _
@@ -81,7 +81,7 @@ Namespace Controls
             Return options.Result
         End Function
 
-        Friend Shared Function Show(ByVal Text As String, _
+        Public Shared Function Show(ByVal Text As String, _
                                     ByVal Caption As String, _
                                     ByVal Buttons As MessageBoxButtons, _
                                     ByVal IconType As MessageBoxIcon, _
@@ -108,7 +108,6 @@ Namespace Controls
             Return options.Result
 
         End Function
-
 
 #End Region ' Public Show Options
 

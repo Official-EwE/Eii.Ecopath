@@ -254,6 +254,7 @@ Namespace Controls
         Friend WithEvents picIcon As System.Windows.Forms.PictureBox
         Friend WithEvents chkRemember As System.Windows.Forms.CheckBox
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmThreeButtonsCheckBox))
             Me.btnThree = New System.Windows.Forms.Button
             Me.btnTwo = New System.Windows.Forms.Button
             Me.btnOne = New System.Windows.Forms.Button
@@ -265,58 +266,40 @@ Namespace Controls
             '
             'btnThree
             '
-            Me.btnThree.Location = New System.Drawing.Point(8, 72)
+            resources.ApplyResources(Me.btnThree, "btnThree")
             Me.btnThree.Name = "btnThree"
-            Me.btnThree.Size = New System.Drawing.Size(72, 24)
-            Me.btnThree.TabIndex = 0
-            Me.btnThree.Text = "Button3"
             '
             'btnTwo
             '
-            Me.btnTwo.Location = New System.Drawing.Point(88, 72)
+            resources.ApplyResources(Me.btnTwo, "btnTwo")
             Me.btnTwo.Name = "btnTwo"
-            Me.btnTwo.Size = New System.Drawing.Size(72, 24)
-            Me.btnTwo.TabIndex = 1
-            Me.btnTwo.Text = "Button2"
             '
             'btnOne
             '
-            Me.btnOne.Location = New System.Drawing.Point(176, 72)
+            resources.ApplyResources(Me.btnOne, "btnOne")
             Me.btnOne.Name = "btnOne"
-            Me.btnOne.Size = New System.Drawing.Size(72, 24)
-            Me.btnOne.TabIndex = 2
-            Me.btnOne.Text = "Button1"
             '
             'lblMessage
             '
-            Me.lblMessage.AutoSize = True
-            Me.lblMessage.Location = New System.Drawing.Point(56, 16)
+            resources.ApplyResources(Me.lblMessage, "lblMessage")
             Me.lblMessage.Name = "lblMessage"
-            Me.lblMessage.Size = New System.Drawing.Size(39, 13)
-            Me.lblMessage.TabIndex = 3
-            Me.lblMessage.Text = "Label1"
             '
             'picIcon
             '
-            Me.picIcon.Location = New System.Drawing.Point(16, 16)
+            resources.ApplyResources(Me.picIcon, "picIcon")
             Me.picIcon.Name = "picIcon"
-            Me.picIcon.Size = New System.Drawing.Size(32, 32)
-            Me.picIcon.TabIndex = 4
             Me.picIcon.TabStop = False
             '
             'chkRemember
             '
-            Me.chkRemember.Location = New System.Drawing.Point(16, 48)
+            resources.ApplyResources(Me.chkRemember, "chkRemember")
             Me.chkRemember.Name = "chkRemember"
-            Me.chkRemember.Size = New System.Drawing.Size(144, 16)
-            Me.chkRemember.TabIndex = 5
-            Me.chkRemember.Text = "&Remember answer"
             '
             'frmThreeButtonsCheckBox
             '
             Me.AcceptButton = Me.btnThree
-            Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-            Me.ClientSize = New System.Drawing.Size(256, 98)
+            resources.ApplyResources(Me, "$this")
+            Me.ControlBox = False
             Me.Controls.Add(Me.chkRemember)
             Me.Controls.Add(Me.picIcon)
             Me.Controls.Add(Me.lblMessage)
@@ -324,10 +307,10 @@ Namespace Controls
             Me.Controls.Add(Me.btnTwo)
             Me.Controls.Add(Me.btnThree)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+            Me.MaximizeBox = False
+            Me.MinimizeBox = False
             Me.Name = "frmThreeButtonsCheckBox"
             Me.ShowInTaskbar = False
-            Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-            Me.Text = "frmThreeButtons"
             Me.TopMost = True
             CType(Me.picIcon, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
