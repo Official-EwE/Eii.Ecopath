@@ -5742,32 +5742,39 @@ Public Class cDBDataSource
                 drow.EndEdit()
 
                 Select Case cTimeSeriesFactory.TimeSeriesCategory(DirectCast(tsDS.TimeSeriesType(iTS), eTimeSeriesType))
+
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+
                         drow = dtFleets.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
                         bHasRow = (Object.ReferenceEquals(drow, Nothing) = False)
 
-                        If bHasRow Then drow.BeginEdit() Else drow = writer.NewRow() : drow("TimeSeriesID") = tsDS.iTimeSeriesDBID(iTS)
+                        If bHasRow Then drow.BeginEdit() Else drow = writerFleets.NewRow() : drow("TimeSeriesID") = tsDS.iTimeSeriesDBID(iTS)
+
                         If (tsDS.iPool(iTS) > 0) Then
                             iPoolID = ecopathDS.FleetDBID(tsDS.iPool(iTS))
                         Else
                             iPoolID = 0
                         End If
                         drow("FleetID") = iPoolID
-                        If bHasRow Then drow.EndEdit() Else writer.AddRow(drow)
+
+                        If bHasRow Then drow.EndEdit() Else writerFleets.AddRow(drow)
 
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
+
                         drow = dtGroups.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
                         bHasRow = (Object.ReferenceEquals(drow, Nothing) = False)
 
-                        If bHasRow Then drow.BeginEdit() Else drow = writer.NewRow() : drow("TimeSeriesID") = tsDS.iTimeSeriesDBID(iTS)
+                        If bHasRow Then drow.BeginEdit() Else drow = writerGroups.NewRow() : drow("TimeSeriesID") = tsDS.iTimeSeriesDBID(iTS)
+
                         If (tsDS.iPool(iTS) > 0) Then
                             iPoolID = ecopathDS.GroupDBID(tsDS.iPool(iTS))
                         Else
                             iPoolID = 0
                         End If
+
                         drow("GroupID") = iPoolID
                         drow("VariableName") = tsDS.strCustomVariableName(iTS)
-                        If bHasRow Then drow.EndEdit() Else writer.AddRow(drow)
+                        If bHasRow Then drow.EndEdit() Else writerGroups.AddRow(drow)
 
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing, cTimeSeriesFactory.eTimeSeriesCategoryType.NotSet
                         Debug.Assert(False)
