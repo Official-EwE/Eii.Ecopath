@@ -360,9 +360,7 @@ Namespace NetUtilities
             ' No luck?
             If Not Me.Connected Then
                 ' #Ouch! Raise event
-#If VERBOSE_LEVEL >= 2 Then
                 Console.WriteLine("sw {0} failed to connect to {1}:{2}", Me.ToString(), ip.ToString(), iPort)
-#End If
                 Me.m_syncObject.Send(New SendOrPostCallback(AddressOf SendEvent), _
                                      New cEventInfo(cEventInfo.eEventType.Status, eStatusTypes.Disconnected))
                 Return False
