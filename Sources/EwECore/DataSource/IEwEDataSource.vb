@@ -153,7 +153,7 @@ Namespace DataSources
         ''' and no new database is generated.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function Compact(ByVal strTarget As String) As Boolean
+        Function Compact(ByVal strTarget As String) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>

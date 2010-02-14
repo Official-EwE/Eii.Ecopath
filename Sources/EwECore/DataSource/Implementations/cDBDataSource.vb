@@ -92,7 +92,7 @@ Public Class cDBDataSource
         ' Attempt to open existing
         Dim atResult As eDatasourceAccessType = Me.m_db.Open(strName, datasourceType)
         ' Any luck?
-        If atResult = eDatasourceAccessType.Opened Then
+        If atResult = eDatasourceAccessType.Success Then
             ' Store core
             Me.m_core = core
             Me.m_strName = strName
@@ -129,7 +129,7 @@ Public Class cDBDataSource
         ' Create new db
         Dim atResult As eDatasourceAccessType = Me.m_db.Create(strName, strModelName, True)
 
-        If atResult = eDatasourceAccessType.Created Then
+        If atResult = eDatasourceAccessType.Success Then
             atResult = Me.Open(strName, core)
         End If
 
@@ -597,7 +597,7 @@ Public Class cDBDataSource
 
 #Region " Cleanup "
 
-    Public Function Compact(ByVal strTarget As String) As Boolean _
+    Public Function Compact(ByVal strTarget As String) As eDatasourceAccessType _
         Implements DataSources.IEwEDataSource.Compact
         Return Me.m_db.Compact(strTarget, strTarget)
     End Function

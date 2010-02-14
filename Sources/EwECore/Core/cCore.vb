@@ -2316,7 +2316,7 @@ Public Class cCore
         ' Saving to a new file name?
         If (Not String.IsNullOrEmpty(strFileName)) Then
             ' #Yes: First save current database to a new location
-            If (DirectCast(DataSource, cDBDataSource).SaveAs(strFileName, Me.m_EwEModel.Name)) = eDatasourceAccessType.Created Then
+            If (DirectCast(DataSource, cDBDataSource).SaveAs(strFileName, Me.m_EwEModel.Name)) = eDatasourceAccessType.Success Then
                 ' #Succes! The datasource has been changed this new location, now save data in memory to the new datasource.
                 bSucces = Me.SaveChanges(True)
             End If

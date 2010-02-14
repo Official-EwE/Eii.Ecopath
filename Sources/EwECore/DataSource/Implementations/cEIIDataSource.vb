@@ -1184,9 +1184,9 @@ Public Class cEIIDataSource
 #End If
 #End Region
 
-    Public Function Compact(ByVal strTarget As String) As Boolean _
+    Public Function Compact(ByVal strTarget As String) As eDatasourceAccessType _
         Implements DataSources.IEwEDataSource.Compact
-        Return False
+        Return eDatasourceAccessType.Failed_OSUnsupported
     End Function
 
     Public Function CanCompact(ByVal strTarget As String) As Boolean _

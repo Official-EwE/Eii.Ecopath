@@ -5,13 +5,14 @@ Option Strict On
 Imports System.IO
 Imports System.Data.OleDb
 Imports System.Reflection
+Imports System.Text
 Imports Microsoft.Win32 ' Goodbye Mono
+Imports dao
 Imports EwECore.DataSources
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports EwEUtils.Win32Api
-Imports System.Text
 Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
@@ -56,7 +57,7 @@ Namespace Database
                 Optional ByVal format As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
             Dim strSource As String = ""
-            Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Created
+            Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Success
 
             If format = eDataSourceTypes.NotSet Then
                 format = cDataSourceFactory.GetSupportedType(strDatabase)
@@ -71,7 +72,7 @@ Namespace Database
                     datResult = eDatasourceAccessType.Failed_UnknownType
             End Select
 
-            If (datResult = eDatasourceAccessType.Created) Then
+            If (datResult = eDatasourceAccessType.Success) Then
 
                 ' Save resource file
                 If ResourceUtilities.SaveResourceToFile(strSource, strDatabase, bOverwrite, Assembly.GetExecutingAssembly()) Then
@@ -116,7 +117,7 @@ Namespace Database
                 Optional ByVal bOverwrite As Boolean = False, _
                 Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
-            Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Created
+            Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Success
             Dim strDatabaseFrom As String = Me.Name
             Dim bSucces As Boolean = True
 
@@ -136,7 +137,7 @@ Namespace Database
             datResult = Me.Create(strDatabaseTo, strModelName, bOverwrite)
 
             ' Succes?
-            If (datResult = eDatasourceAccessType.Created) Then
+            If (datResult = eDatasourceAccessType.Success) Then
 
                 ' #Yes: this is painful... File Copy the current DB on top of the newly created DB
                 Try
@@ -371,111 +372,6 @@ Namespace Database
 
         End Function
 
-        Private m_bJROSearched As Boolean = False
-        Private m_bJROFound As Boolean = False
-
-        Private Function IsCorrectJRO(ByVal strFile As String) As Boolean
-
-            If String.IsNullOrEmpty(strFile) Then Return False
-            If Not File.Exists(strFile) Then Return False
-
-            Dim fvi As FileVersionInfo = FileVersionInfo.GetVersionInfo(strFile)
-            ' JRO 2.6 or newer
-            Return ((fvi.FileMajorPart > 2) Or _
-                    (fvi.FileMajorPart = 2) And (fvi.FileMinorPart >= 60))
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Recursively find JRO registry entry to a valid registered copy of
-        ''' msjro.dll, ye good ole' Jet engine database headaches that we
-        ''' unfortunately need for compacting an MS Aaargcess Database.
-        ''' </summary>
-        ''' <param name="key">Registry to start searching.</param>
-        ''' <returns>
-        ''' True if a <see cref="IsCorrectJRO">correct</see> JRO version is 
-        ''' reffered to by one <paramref name="key">key</paramref> or one of
-        ''' its subkeys.
-        ''' </returns>
-        ''' -------------------------------------------------------------------
-        Function FindJRORecursive(ByVal key As RegistryKey) As Boolean
-
-            Dim aKeys As String() = Nothing
-            Dim keyValue As Object = Nothing
-            Dim keyValueKind As RegistryValueKind = Nothing
-            Dim strFile As String = ""
-
-            If (key IsNot Nothing) Then
-                keyValue = key.GetValue("")
-
-                If keyValue IsNot Nothing Then
-
-                    strFile = ""
-                    keyValueKind = key.GetValueKind("")
-
-                    ' Get default key
-                    Select Case keyValueKind
-
-                        Case RegistryValueKind.String, _
-                             RegistryValueKind.ExpandString, _
-                             RegistryValueKind.MultiString
-
-                            strFile = CStr(keyValue).ToLower
-
-                        Case RegistryValueKind.Binary
-                            Dim abData As Byte() = DirectCast(keyValue, Byte())
-                            Dim sb As New StringBuilder()
-
-                            For i As Integer = 0 To abData.Length - 1
-                                sb.Append(Chr(i))
-                            Next
-                            strFile = sb.ToString().ToLower
-
-                    End Select
-
-                    If Not String.IsNullOrEmpty(strFile) Then
-                        If strFile.EndsWith("msjro.dll") Then
-                            If (IsCorrectJRO(strFile)) Then Return True
-                        End If
-                    End If
-                End If
-
-                For Each strSubkeyName As String In key.GetSubKeyNames
-                    If FindJRORecursive(key.OpenSubKey(strSubkeyName, False)) Then Return True
-                Next
-            End If
-            Return False
-
-        End Function
-
-        Function FindJRO() As Boolean
-            ' "Universal" JRO key (same root on XP, Vista and Windows 7)
-            Return FindJRORecursive(Registry.ClassesRoot.OpenSubKey("TypeLib\{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}", False))
-        End Function
-
-        ' JS 20oct09: disabled slow file search, replaced by more speedy registry search version
-        'Private Function FindJRO() As Boolean
-
-        '    If Not Me.m_bJROSearched Then
-        '        Dim strDir As String = ""
-        '        Dim strFile As String = ""
-
-        '        strDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles)
-        '        strFile = FileUtilities.FindFile("msjro.dll", strDir, True)
-        '        Me.m_bJROFound = Me.IsCorrectJRO(strFile)
-
-        '        If Not Me.m_bJROFound Then
-        '            strDir = Environment.GetFolderPath(Environment.SpecialFolder.System)
-        '            strFile = FileUtilities.FindFile("msjro.dll", strDir, False)
-        '            Me.m_bJROFound = Me.IsCorrectJRO(strFile)
-        '        End If
-
-        '        Me.m_bJROSearched = True
-        '    End If
-        '    Return Me.m_bJROFound
-        'End Function
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns if the compact database engine is available.
@@ -485,98 +381,101 @@ Namespace Database
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public Overrides Function CanCompact(ByVal strConnectionFrom As String, ByVal strConnectionTo As String) As Boolean
-            If Not Me.m_bJROSearched Then Me.m_bJROFound = FindJRO()
-            Return Me.m_bJROFound
+
+            Dim compact As IDatabaseCompact = cDatabaseCompactFactory.GetDatabaseCompact(strConnectionFrom)
+            If (compact Is Nothing) Then Return False
+            Return compact.CanCompact()
+
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Compact the current M$ Access database.
         ''' </summary>
-        ''' <param name="strDBFrom">Source database to compact.</param>
-        ''' <param name="strDBTo">Target database to compact to. Can be left blank.</param>
+        ''' <param name="strFileFrom">Source database to compact.</param>
+        ''' <param name="strFileTo">Target database to compact to. Can be left blank.</param>
         ''' <returns>True if succesful.</returns>
         ''' <remarks>
         ''' Only MDB databases can be compacted for now. Note that the database
         ''' cannot be <see cref="IsConnected">connected</see> when compacting.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Compact(ByVal strDBFrom As String, ByVal strDBTo As String) As Boolean
+        Public Overrides Function Compact(ByVal strFileFrom As String, _
+                                          ByVal strFileTo As String) As eDatasourceAccessType
 
             ' Fix params
-            If String.IsNullOrEmpty(strDBTo) Then strDBTo = strDBFrom
+            If String.IsNullOrEmpty(strFileTo) Then strFileTo = strFileFrom
 
+            Dim bCompactToOriginal As Boolean = (String.Compare(strFileFrom, strFileTo, True) = 0)
+            Dim strConnectionFrom As String = ""
+            Dim strConnectionTo As String = ""
             Dim strConnection As String = ""
-            Dim bCompactToOriginal As Boolean = (String.Compare(strDBFrom, strDBTo, True) = 0)
-            Dim strDBSource As String = ""
-            Dim strDBTarget As String = ""
+            Dim result As eDatasourceAccessType = eDatasourceAccessType.Success
+            Dim comp As IDatabaseCompact = cDatabaseCompactFactory.GetDatabaseCompact(strFileFrom)
 
-            Select Case cDataSourceFactory.GetSupportedType(strDBFrom)
+            Select Case cDataSourceFactory.GetSupportedType(strFileFrom)
                 Case eDataSourceTypes.MDB
                     strConnection = Me.m_strConnectionMDB
                 Case eDataSourceTypes.ACCDB
                     ' Accdb needs different compaction engine, no idea how to do that for now
-                    'strConnection = Me.m_strConnectionACCDB
+                    strConnection = Me.m_strConnectionACCDB
                 Case Else
                     ' Not supported
                     strConnection = ""
             End Select
 
             ' No connection string for compacting this type of database?
-            If String.IsNullOrEmpty(strConnection) Then Return False
+            If String.IsNullOrEmpty(strConnection) Then Return eDatasourceAccessType.Failed_OSUnsupported
             ' Cannot compact when connected
-            If Me.IsConnected Then Return False
+            Debug.Assert(Me.IsConnected = False)
 
             Try
 
-                Dim jro As New JRO.JetEngine()
-                ' Able to get JET engine?
-                If jro IsNot Nothing Then
-                    ' #Yes: try to compact
-                    Dim strDBToOrg As String = strDBTo
-                    ' Identical database specified for in and out?
-                    If (bCompactToOriginal) Then
-                        ' #Yes: compact DB to temp location
-                        strDBTo = System.IO.Path.GetTempFileName()
-                    End If
-
-                    If File.Exists(strDBTo) Then
-                        Try
-                            File.Delete(strDBTo)
-                        Catch ex As Exception
-                            Return False
-                        End Try
-                    End If
-
-                    ' Try to compact
-                    strDBSource = String.Format(strConnection, strDBFrom)
-                    strDBTarget = String.Format(strConnection, strDBTo)
-
-                    'jro.CompactDatabase("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\nwind.mdb", _
-                    '"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\NewNwind.mdb;Jet OLEDB:Engine Type=5")
-
-                    jro.CompactDatabase(strDBSource, strDBTarget)
-
-                    ' Is succesfully compacted?
-                    If File.Exists(strDBTo) Then
-                        ' #Yes: Need to copy from temp location?
-                        If (bCompactToOriginal) Then
-                            ' #Yes: Overwrite original db with compacted db
-                            File.Copy(strDBTo, strDBToOrg, True)
-                            ' Delete temp location compacted database
-                            File.Delete(strDBTo)
-                        End If
-                    End If
-                    Return True
-                Else
-                    ' Unable to find JET engine COM object - woops, nothing we can do!
+                ' #Yes: try to compact
+                Dim strDBToOrg As String = strFileTo
+                ' Identical database specified for in and out?
+                If (bCompactToOriginal) Then
+                    ' #Yes: compact DB to temp location
+                    strFileTo = System.IO.Path.GetTempFileName()
                 End If
 
-            Catch ex As Exception
+                If File.Exists(strFileTo) Then
+                    Try
+                        File.Delete(strFileTo)
+                    Catch ex As Exception
+                        Return eDatasourceAccessType.Failed_CannotSave
+                    End Try
+                End If
 
+                ' Set up connections
+                strConnectionFrom = String.Format(strConnection, strFileFrom)
+                strConnectionTo = String.Format(strConnection, strFileTo)
+
+                ' Attempt to Compact
+                result = comp.Compact(strFileFrom, strConnectionFrom, strFileTo, strConnectionTo)
+                ' Is successful?
+                If (result <> eDatasourceAccessType.Success) Then
+                    ' #No: report compact failure
+                    Return result
+                End If
+
+                ' Is succesfully compacted?
+                If File.Exists(strFileTo) Then
+                    ' #Yes: Need to copy from temp location?
+                    If (bCompactToOriginal) Then
+                        ' #Yes: Overwrite original db with compacted db
+                        File.Copy(strFileTo, strDBToOrg, True)
+                        ' Delete temp location compacted database
+                        File.Delete(strFileTo)
+                    End If
+                End If
+                Return eDatasourceAccessType.Success
+
+            Catch ex As Exception
+                ' Wow
             End Try
 
-            Return False
+            Return eDatasourceAccessType.Failed_Unknown
 
         End Function
 

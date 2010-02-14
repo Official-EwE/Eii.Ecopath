@@ -227,6 +227,10 @@
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerRegionGroupOutput.vb" />
     <Compile Include="Core\cCoreStateManager.vb" />
     <Compile Include="Core\cEwEScenario.vb" />
+    <Compile Include="Database\Compact\cCompactDAO.vb" />
+    <Compile Include="Database\Compact\cCompactJRO.vb" />
+    <Compile Include="Database\Compact\cDatabaseCompactFactory.vb" />
+    <Compile Include="Database\Compact\IDatabaseCompact.vb" />
     <Compile Include="Database\Import\cEwE6DatabaseImporter.vb" />
     <Compile Include="Database\Updates\cDBUpdate.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_01_01.vb" />
@@ -348,6 +352,14 @@
       <VersionMinor>6</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Access.Dao">
+      <Guid>{4AC9E1DA-5BAD-4AC7-86E3-24F4CDCECA28}</Guid>
+      <VersionMajor>12</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
   </ItemGroup>
