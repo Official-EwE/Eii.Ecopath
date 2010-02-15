@@ -85,11 +85,11 @@ Public Class cData
 
         ' Create DB if not already there
         If Not File.Exists(Me.m_strDBName) Then
-            bSucces = (Me.m_db.Create(Me.m_strDBName, strModelName, True) = eDatasourceAccessType.Created)
+            bSucces = (Me.m_db.Create(Me.m_strDBName, strModelName, True) = eDatasourceAccessType.Success)
             bNewDB = True
         End If
 
-        If Me.m_db.Open(Me.m_strDBName, eDataSourceTypes.MDB) = eDatasourceAccessType.Opened Then
+        If Me.m_db.Open(Me.m_strDBName, eDataSourceTypes.MDB) = eDatasourceAccessType.Success Then
             If bNewDB Then
                 'bSucces = Me.m_db.InitModel(Me)
             Else

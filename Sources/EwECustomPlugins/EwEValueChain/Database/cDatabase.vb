@@ -343,7 +343,7 @@ Public Class cDatabase
                                      Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
         ' Databasetype ignored
         If cDatabase.SaveDatabaseToFile(strDatabase, bOverwrite) Then
-            Return eDatasourceAccessType.Created
+            Return eDatasourceAccessType.Success
         Else
             Return eDatasourceAccessType.Failed_Unknown
         End If
