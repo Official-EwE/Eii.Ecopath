@@ -657,7 +657,7 @@ Public Class plFlow
         ' Has a mask?
         If Not String.IsNullOrEmpty(strMask) Then
             ' #Yes: concoct a name with an autonumber
-            strName = String.Format(strMask, EwEUtils.Utilities.StringUtils.GetNextNumber(lstrNames.ToArray, strMask))
+            strName = String.Format(strMask, EwEUtils.Utilities.cStringUtils.GetNextNumber(lstrNames.ToArray, strMask))
         End If
 
         ' (try to) create unit
