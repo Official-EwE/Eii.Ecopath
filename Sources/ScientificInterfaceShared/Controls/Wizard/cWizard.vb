@@ -184,34 +184,39 @@ Namespace Controls.Wizard
         ''' <param name="iPage">Index of the page to switch to.</param>
         ''' -------------------------------------------------------------------
         Protected Sub SwitchPage(ByVal iPage As Integer)
+
             Dim ctrl As Control = Nothing
+            Dim pageNew As IWizardPage = Nothing
 
             ' Optimization
             If (iPage = Me.m_iPageActive) Then Return
 
             ' Hold layout while switching
+            Me.m_parent.Cursor = Cursors.WaitCursor
             Me.m_content.SuspendLayout()
-
-            ' Clear existing page
-            If Me.m_page IsNot Nothing Then
-                Me.m_page.Close()
-                Me.m_content.Controls.Clear()
-            End If
 
             ' Truncate page number
             Me.m_iPageActive = Math.Max(0, Math.Min(Me.m_lPages.Count - 1, iPage))
 
             ' Create new page
-            Me.m_page = DirectCast(Activator.CreateInstance(Me.m_lPages(Me.m_iPageActive)), IWizardPage)
+            pageNew = DirectCast(Activator.CreateInstance(Me.m_lPages(Me.m_iPageActive)), IWizardPage)
+            pageNew.Init(Me, Me.m_uic)
 
-            Me.m_page.Init(Me, Me.m_uic)
+            ' Switch pages only after new page init is complete
+            If Me.m_page IsNot Nothing Then
+                Me.m_page.Close()
+                Me.m_content.Controls.Clear()
+            End If
+            Me.m_page = pageNew
 
             ctrl = DirectCast(Me.m_page, Control)
             ctrl.Dock = DockStyle.Fill
             Me.m_content.Controls.Add(ctrl)
             ctrl.Show()
 
+            ' Halt!
             Me.m_content.ResumeLayout()
+            If Not Me.m_page.IsBusy Then Me.m_parent.Cursor = Cursors.Default
 
             Me.m_nav.UpdateNavigation()
 
