@@ -7,12 +7,14 @@ Imports System.Reflection
 Imports System.Globalization
 Imports System.Resources
 Imports System.IO
+Imports System.Drawing
+Imports System.Windows.Forms
 
 #End Region ' Imports
 
 Namespace Utilities
 
-    Public Class ResourceUtilities
+    Public Class cResourceUtils
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -82,6 +84,58 @@ Namespace Utilities
             sFile.Close()
             Return True
 
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the system icon for a <see cref="MessageBoxIcon">message box 
+        ''' icon</see> identifier.
+        ''' </summary>
+        ''' <param name="mbi"><see cref="MessageBoxIcon">message box icon</see>
+        ''' identifier to get the system icon for.</param>
+        ''' <returns>An <see cref="Icon">Icon</see>, or Nothing if the icon
+        ''' could not be found.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetMessageBoxIcon(ByVal mbi As MessageBoxIcon) As Icon
+
+            Dim objIcon As Icon = Nothing
+
+            Select Case mbi
+                Case MessageBoxIcon.Asterisk
+                    objIcon = SystemIcons.Asterisk
+                Case MessageBoxIcon.Error
+                    objIcon = SystemIcons.Error
+                Case MessageBoxIcon.Exclamation
+                    objIcon = SystemIcons.Exclamation
+                Case MessageBoxIcon.Hand, _
+                     MessageBoxIcon.Stop
+                    objIcon = SystemIcons.Hand
+                Case MessageBoxIcon.Information
+                    objIcon = SystemIcons.Information
+                Case MessageBoxIcon.Question
+                    objIcon = SystemIcons.Question
+                Case MessageBoxIcon.Warning
+                    objIcon = SystemIcons.Warning
+                Case Else
+                    ' NOP
+            End Select
+
+            Return objIcon
+
+        End Function
+
+        Public Shared Function GetButtonText(ByVal dlr As DialogResult) As String
+            ' ToDo: localize this method
+            Select Case dlr
+                Case DialogResult.OK : Return "&Ok"
+                Case DialogResult.Yes : Return "&Yes"
+                Case DialogResult.No : Return "&No"
+                Case DialogResult.Ignore : Return "&Ignore"
+                Case DialogResult.Abort : Return "&Abort"
+                Case DialogResult.Cancel : Return "&Cancel"
+                Case DialogResult.Retry : Return "&Retry"
+            End Select
+            Return ""
         End Function
 
     End Class
