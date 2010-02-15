@@ -135,7 +135,7 @@ Namespace Import
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.EwE5Model) = ewec
 
-                Me(iRow, eColumnTypes.Import) = New Cells.Real.CheckBox(False)
+                Me(iRow, eColumnTypes.Import) = New Cells.Real.CheckBox(imp.SelectedForImport)
                 Me(iRow, eColumnTypes.Import).Behaviors.Add(m_bm)
 
                 ewec = New EwECell("", GetType(String))
