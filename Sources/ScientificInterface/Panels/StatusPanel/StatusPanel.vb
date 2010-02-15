@@ -376,7 +376,7 @@ Public Class StatusPanel
     ''' -------------------------------------------------------------------
     Private Sub HandleFeedbackMessage(ByVal msg As cFeedbackMessage)
 
-        Dim mbs As MessageBoxButtons = MessageBoxButtons.YesNo
+        Dim mbb As MessageBoxButtons = MessageBoxButtons.YesNo
         Dim mbi As MessageBoxIcon = MessageBoxIcon.Question
         Dim dlr As DialogResult = Windows.Forms.DialogResult.No
         Dim strMessage As String = ""
@@ -386,11 +386,11 @@ Public Class StatusPanel
         ' Translate feedback style into .NET MessageBox style
         Select Case msg.ReplyStyle
             Case cFeedbackMessage.eReplyStyle.OK_CANCEL
-                mbs = MessageBoxButtons.OKCancel
+                mbb = MessageBoxButtons.OKCancel
             Case cFeedbackMessage.eReplyStyle.YES_NO
-                mbs = MessageBoxButtons.YesNo
+                mbb = MessageBoxButtons.YesNo
             Case cFeedbackMessage.eReplyStyle.YES_NO_CANCEL
-                mbs = MessageBoxButtons.YesNoCancel
+                mbb = MessageBoxButtons.YesNoCancel
         End Select
 
         Select Case msg.Importance
@@ -407,34 +407,35 @@ Public Class StatusPanel
         ' Pop the question
         Me.ToMessageBoxText(msg, strMessage)
 
-        '' Is message suppressable?
-        'If msg.Suppressable Then
+        ' Is message suppressable?
+        If msg.Suppressable Then
 
-        '    ' #Yes: handle autoreply
+            ' #Yes: handle autoreply
 
-        '    ' Sanity check
-        '    Debug.Assert(msg.Type <> eMessageType.NotSet, "Feedback message not propery configured for auto-reply: messagetype not set")
+            ' Sanity check
+            Debug.Assert(msg.Type <> eMessageType.NotSet, "Feedback message not propery configured for auto-reply: messagetype not set")
 
-        '    ' Get reply, if any
-        '    dlr = Me.m_msh.AutoReply(msg.Source, msg.Type)
-        '    ' Is 'none'?
-        '    If (dlr = Windows.Forms.DialogResult.None) Then
-        '        ' #Yes: prompt needed
+            ' Get reply, if any
+            dlr = Me.m_msh.AutoReply(msg.Source, msg.Type)
+            ' Is 'none'?
+            If (dlr = Windows.Forms.DialogResult.None) Then
+                ' #Yes: prompt needed
 
-        '        ' Assume to repeat the question
-        '        Dim bChecked As Boolean = False
-        '        ' Show dialog
-        '        dlr = CheckedMessageBox.Show(strMessage, "test", mbs, mbi, _
-        '            bChecked, My.Resources.GENERIC_PROMPT_USEANSWERAGAIN)
-        '        ' Auto-reply requested?
-        '        If bChecked Then
-        '            ' #Yes: store auto-reply
-        '            Me.m_msh.AutoReply(msg.Source, msg.Type) = dlr
-        '        End If
-        '    End If
-        'Else
-        dlr = MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbs, mbi)
-        'End If
+                ' Assume to repeat the question
+                Dim bChecked As Boolean = False
+                ' Show dialog
+                dlr = cCustomMessageBox.Show(strMessage, AppLauncher.GetInstance().Text, _
+                                             mbb, mbi, _
+                                             bChecked, "Hide this type of message until a model is reloaded")
+                ' Auto-reply requested?
+                If bChecked Then
+                    ' #Yes: store auto-reply
+                    Me.m_msh.AutoReply(msg.Source, msg.Type) = dlr
+                End If
+            End If
+        Else
+            dlr = MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi)
+        End If
 
         ' Translate .NET MessageBox result into reply
         Select Case dlr
@@ -488,30 +489,30 @@ Public Class StatusPanel
             ' == Show the message ==
 
             ' Can the message be suppressed?
-            'If msg.Suppressable Then
+            If msg.Suppressable Then
 
-            '    ' #Yes: check suppressed state
+                ' #Yes: check suppressed state
 
-            '    ' Sanity check
-            '    Debug.Assert(msg.Type <> eMessageType.NotSet, "Message not propery configured for suppression: messagetype not set")
+                ' Sanity check
+                Debug.Assert(msg.Type <> eMessageType.NotSet, "Message not propery configured for suppression: messagetype not set")
 
-            '    If (Not Me.m_msh.Suppress(msg.Source, msg.Type)) Then
-            '        ' #No: Good, prepare to show message
-            '        ' Assume message will not be suppressed
-            '        Dim bSuppress As Boolean = False
-            '        ' Invoke the special message box
-            '        CheckedMessageBox.Show(strMessage, "test", mbb, mbi, _
-            '                bSuppress, My.Resources.GENERIC_PROMPT_DONOTSHOWMESSAGEAGAIN, _
-            '                MessageBoxDefaultButton.Button1)
-            '        If bSuppress Then
-            '            '#Yes: suppress it during the rest of this session
-            '            Me.m_msh.Suppress(msg.Source, msg.Type) = True
-            '        End If
-            '    End If
-            'Else
-            '' #No: show the message
-            MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
-            'End If
+                If (Not Me.m_msh.Suppress(msg.Source, msg.Type)) Then
+                    ' #No: Good, prepare to show message
+                    ' Assume message will not be suppressed
+                    Dim bSuppress As Boolean = False
+                    ' Invoke the special message box
+                    cCustomMessageBox.Show(strMessage, AppLauncher.GetInstance().Text, _
+                                           mbb, mbi, _
+                                           bSuppress, "Hide this type of message until a model is reloaded")
+                    If bSuppress Then
+                        '#Yes: suppress it during the rest of this session
+                        Me.m_msh.Suppress(msg.Source, msg.Type) = True
+                    End If
+                End If
+            Else
+                ' #No: show the message
+                MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
+            End If
         End If
 
             Return bError
