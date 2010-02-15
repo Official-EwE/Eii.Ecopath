@@ -177,7 +177,7 @@ Public Class cLindemanSpineDiagram
         For iTL As Integer = 1 To Me.NumTrophicLevels
 
             ' Prepare TL label
-            If iTL = 1 Then strTL = "P" Else strTL = StringUtils.ToRoman(iTL)
+            If iTL = 1 Then strTL = "P" Else strTL = cStringUtils.ToRoman(iTL)
 
             ' Prep values B and BAccum
             sB = Me.NetworkManager.BiomassByTrophicLevel(iTL)
@@ -225,7 +225,7 @@ Public Class cLindemanSpineDiagram
         Next iTL
 
         For iTL As Integer = 1 To Me.NumTrophicLevels
-            If (iTL = 1) Then strTL = "D" Else strTL = StringUtils.ToRoman(iTL)
+            If (iTL = 1) Then strTL = "D" Else strTL = cStringUtils.ToRoman(iTL)
 
             sImp = Me.NetworkManager.DetImport(iTL)
             sTST = Me.NetworkManager.DetThroughtput(iTL) * 100 / (Me.NetworkManager.DetThroughtputSum + Me.NetworkManager.PPThroughtputSum)

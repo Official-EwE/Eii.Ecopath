@@ -55,7 +55,7 @@ Public Class cFromDetritus
         Grid.Visible = True
 
         For i As Integer = NetworkManager.nTrophicLevels To 1 Step -1
-            strRowContent(0) = StringUtils.ToRoman(i)
+            strRowContent(0) = cStringUtils.ToRoman(i)
             If i = 1 Then
                 strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.DetImport(i))
                 asSum(1) = asSum(1) + NetworkManager.DetImport(i)

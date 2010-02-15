@@ -46,7 +46,7 @@ Public Class cAbsoluteFlows
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME_TRP_LVL
         For j As Integer = 1 To NetworkManager.nTrophicLevels
-            astrRowContent(j + 1) = StringUtils.ToRoman(j)
+            astrRowContent(j + 1) = cStringUtils.ToRoman(j)
         Next
         Grid.Rows(0).SetValues(astrRowContent)
         Grid.Rows(0).Visible = True

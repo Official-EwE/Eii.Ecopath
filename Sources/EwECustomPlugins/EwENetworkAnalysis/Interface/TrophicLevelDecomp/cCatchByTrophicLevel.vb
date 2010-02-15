@@ -69,7 +69,7 @@ Public Class cCatchByTrophicLevel
         Grid.Rows(0).Visible = True
 
         For i As Integer = NetworkManager.nTrophicLevels To 1 Step -1
-            strRowContent(0) = StringUtils.ToRoman(i)
+            strRowContent(0) = cStringUtils.ToRoman(i)
             strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.CatchByTrophicLevel(i))
             strRowContent(2) = Me.StyleGuide.FormatNumber(CatchGroupsShown(i))
             Grid.Rows(NetworkManager.nTrophicLevels - i + 1).SetValues(strRowContent)

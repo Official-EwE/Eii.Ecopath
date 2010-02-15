@@ -48,7 +48,7 @@ Public Class cTransferEfficiency
         ReDim strRowContent(Grid.Columns.Count)
         strRowContent(0) = My.Resources.COL_HDR_SOURCE_TRP_LVL
         For i As Integer = 2 To NetworkManager.nTrophicLevels
-            strRowContent(i - 1) = StringUtils.ToRoman(i)
+            strRowContent(i - 1) = cStringUtils.ToRoman(i)
         Next
         Grid.Rows(0).SetValues(strRowContent)
         Grid.Rows(0).Visible = True

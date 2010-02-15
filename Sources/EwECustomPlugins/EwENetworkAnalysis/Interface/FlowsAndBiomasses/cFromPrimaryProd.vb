@@ -55,7 +55,7 @@ Public Class cFromPrimaryProd
 
         For i As Integer = NetworkManager.nTrophicLevels To 1 Step -1
             'strRowContent(0) = CStr(i)
-            strRowContent(0) = StringUtils.ToRoman(i)
+            strRowContent(0) = cStringUtils.ToRoman(i)
             If i = 1 Then
                 strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.PPImport(i))
                 sSum(1) = sSum(1) + NetworkManager.PPImport(i)

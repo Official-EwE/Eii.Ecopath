@@ -79,7 +79,7 @@ Public Class cBiomassByTrophicLevel
         Grid.Rows(0).Visible = True
 
         For i As Integer = NetworkManager.nTrophicLevels To 1 Step -1
-            astrRowContent(0) = StringUtils.ToRoman(i)
+            astrRowContent(0) = cStringUtils.ToRoman(i)
             astrRowContent(1) = Me.StyleGuide.FormatNumber(asBiomassGroupsShown(i))
             If i = 1 Then
                 astrRowContent(2) = Me.StyleGuide.FormatNumber(asMassDetritusShown(i))

@@ -171,7 +171,7 @@ Public Class cLindemanSpine
         ' Create max TL sub menu
         tsmi = New ToolStripMenuItem(My.Resources.MNU_CONTENT_MAXTL)
         For iTL As Integer = 1 To Me.NetworkManager.nTrophicLevels
-            tsmiChild = New ToolStripMenuItem(StringUtils.ToRoman(iTL))
+            tsmiChild = New ToolStripMenuItem(cStringUtils.ToRoman(iTL))
             tsmiChild.Tag = iTL
             AddHandler tsmiChild.Click, AddressOf OnContentNumTrophicLevels
             tsmi.DropDownItems.Add(tsmiChild)

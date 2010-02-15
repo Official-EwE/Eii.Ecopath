@@ -213,13 +213,13 @@ Public Class cResultWriter
                     If (iMonth = (cCore.N_MONTHS - 1)) Then
                         ' #Yes: average value and add it
                         asValues(j) /= cCore.N_MONTHS
-                        sb.Append(StringUtils.FormatSingle(asValues(j)))
+                        sb.Append(cStringUtils.FormatSingle(asValues(j)))
                         sb.Append(", ")
                         bLineAdded = True
                     End If
                 Else
                     ' #No: add value
-                    sb.Append(StringUtils.FormatSingle(asValues(j)))
+                    sb.Append(cStringUtils.FormatSingle(asValues(j)))
                     sb.Append(", ")
                     bLineAdded = True
                 End If
@@ -348,13 +348,13 @@ Public Class cResultWriter
                     If (iMonth = (cCore.N_MONTHS - 1)) Then
                         ' #Yes: average value and add it
                         asValues(j) /= cCore.N_MONTHS
-                        sb.Append(StringUtils.FormatSingle(asValues(j)))
+                        sb.Append(cStringUtils.FormatSingle(asValues(j)))
                         sb.Append(", ")
                         bLineAdded = True
                     End If
                 Else
                     ' #No: add value
-                    sb.Append(StringUtils.FormatSingle(asValues(j)))
+                    sb.Append(cStringUtils.FormatSingle(asValues(j)))
                     sb.Append(", ")
                     bLineAdded = True
                 End If

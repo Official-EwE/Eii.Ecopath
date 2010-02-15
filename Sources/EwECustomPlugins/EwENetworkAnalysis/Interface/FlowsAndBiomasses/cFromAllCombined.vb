@@ -54,7 +54,7 @@ Public Class cFromAllCombined
         Grid.Rows(0).Visible = True
 
         For i As Integer = NetworkManager.nTrophicLevels To 1 Step -1
-            astrRowContent(0) = StringUtils.ToRoman(i)
+            astrRowContent(0) = cStringUtils.ToRoman(i)
             If i = 1 Then
                 astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.DetImport(i) + NetworkManager.PPImport(i))
                 asSum(1) = asSum(1) + NetworkManager.DetImport(i) + NetworkManager.PPImport(i)
