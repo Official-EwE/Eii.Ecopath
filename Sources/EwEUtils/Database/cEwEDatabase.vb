@@ -159,7 +159,7 @@ Namespace Database
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Disconnects from the database.
+            ''' Disconnects the cEwEDBWriter from the database.
             ''' </summary>
             ''' <param name="bSaveChanges">States whether changes need to be saved (true)
             ''' or discarded (false).</param>
@@ -184,7 +184,7 @@ Namespace Database
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' States whether currently connected.
+            ''' Returns whether the cEwEDBWriter is currently <see cref="Connect">connected</see>.
             ''' </summary>
             ''' <returns>True if connected.</returns>
             ''' ---------------------------------------------------------------
@@ -518,13 +518,29 @@ Namespace Database
 
 #Region " Maintenance "
 
-        Public Overridable Function Compact(ByVal strConnectionFrom As String, ByVal strConnectionTo As String) As Boolean
-            Return False
-        End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Compact an EwE database.
+        ''' </summary>
+        ''' <param name="strFileFrom">Source database to compact.</param>
+        ''' <param name="strFileTo">Target database to compact to. If left 
+        ''' blank, the source database is replaced with a compacted version.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Function Compact(ByVal strFileFrom As String, _
+                                             ByVal strFileTo As String) As eDatasourceAccessType
 
-        Public Overridable Function CanCompact(ByVal strConnectionFrom As String, ByVal strConnectionTo As String) As Boolean
-            Return False
-        End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns if a compact engine is available for the underlying database.
+        ''' </summary>
+        ''' <param name="strConnectionFrom">Compact source.</param>
+        ''' <param name="strConnectionTo">Compact target.</param>
+        ''' <returns>True if a compact engine is available for the underlying 
+        ''' database.</returns>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Function CanCompact(ByVal strConnectionFrom As String, _
+                                                ByVal strConnectionTo As String) As Boolean
 
 #End Region ' Maintenance
 
