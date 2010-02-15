@@ -811,7 +811,7 @@ Namespace Controls
             Next
 
             ' Concoct a new name based on the numbered strings that are found
-            iNextTSNumber = StringUtils.GetNextNumber(lstrTSNames.ToArray(), My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES)
+            iNextTSNumber = cStringUtils.GetNextNumber(lstrTSNames.ToArray(), My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES)
             strNewTSName = String.Format(My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES, iNextTSNumber)
 
             ' Generate TS data
@@ -1512,7 +1512,7 @@ Namespace Controls
             Next
 
             ' Concoct a new name based on the numbered strings that are found
-            iNextShapeNumber = StringUtils.GetNextNumber(lstrFFNames.ToArray(), Me.NewShapeNameMask)
+            iNextShapeNumber = cStringUtils.GetNextNumber(lstrFFNames.ToArray(), Me.NewShapeNameMask)
             Return String.Format(Me.NewShapeNameMask, iNextShapeNumber)
 
         End Function
