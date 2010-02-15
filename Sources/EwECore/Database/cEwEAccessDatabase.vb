@@ -75,7 +75,7 @@ Namespace Database
             If (datResult = eDatasourceAccessType.Success) Then
 
                 ' Save resource file
-                If ResourceUtilities.SaveResourceToFile(strSource, strDatabase, bOverwrite, Assembly.GetExecutingAssembly()) Then
+                If cResourceUtils.SaveResourceToFile(strSource, strDatabase, bOverwrite, Assembly.GetExecutingAssembly()) Then
                     Try
                         'Try to open the database to update the model name
                         Dim db As New cEwEAccessDatabase()
