@@ -4147,7 +4147,7 @@ Public Class cDBDataSource
             ' Read z-scale
             astrZScale = Me.SplitNumberString(CStr(readerShape("Zscale")))
             For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, astrZScale.Length)
-                ecosimDS.zscale(ipt, iForcingShape) = StringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
+                ecosimDS.zscale(ipt, iForcingShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
             Next ipt
             For ipt As Integer = Math.Min(ecosimDS.ForcePoints, astrZScale.Length) + 1 To ecosimDS.ForcePoints
                 ecosimDS.zscale(ipt, iForcingShape) = 1.0
@@ -4195,7 +4195,7 @@ Public Class cDBDataSource
             ' Read z-scale
             astrZScale = Me.SplitNumberString(CStr(readerShape("Zscale")))
             For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, astrZScale.Length)
-                ecosimDS.zscale(ipt, iForcingShape) = StringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
+                ecosimDS.zscale(ipt, iForcingShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
             Next ipt
             For ipt As Integer = Math.Min(ecosimDS.ForcePoints, astrZScale.Length) + 1 To ecosimDS.ForcePoints
                 ecosimDS.zscale(ipt, iForcingShape) = 1.0
@@ -4244,7 +4244,7 @@ Public Class cDBDataSource
             astrZScale = Me.SplitNumberString(CStr(readerShape("Zscale")))
             ' Write points
             For ipt As Integer = 1 To Math.Min(ecosimDS.NMedPoints, astrZScale.Length)
-                ecosimDS.Medpoints(ipt, iMediationShape) = StringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
+                ecosimDS.Medpoints(ipt, iMediationShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
             Next ipt
             For ipt As Integer = Math.Min(ecosimDS.NMedPoints, astrZScale.Length) + 1 To ecosimDS.NMedPoints
                 ecosimDS.Medpoints(ipt, iMediationShape) = 1.0
@@ -4481,7 +4481,7 @@ Public Class cDBDataSource
             strMemo = CStr(readerShape("zScale"))
             astrMemoBits = strMemo.Trim.Split(CChar(" "))
             For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
-                ecosimDS.FishRateGear(iFishingRateShape, j) = StringUtils.ConvertToSingle(astrMemoBits(j - 1), 1)
+                ecosimDS.FishRateGear(iFishingRateShape, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 1)
             Next
             ecosimDS.FishRateGearDBID(iFishingRateShape) = iShapeID
 
@@ -4729,7 +4729,7 @@ Public Class cDBDataSource
             ' Assemble Zscale
             For ipt As Integer = 1 To ecosimDS.ForcePoints
                 If (ipt > 1) Then sbZScale.Append(" ")
-                sbZScale.Append(StringUtils.FormatSingle(ecosimDS.zscale(ipt, iShape)))
+                sbZScale.Append(cStringUtils.FormatSingle(ecosimDS.zscale(ipt, iShape)))
             Next
             drow("Zscale") = sbZScale.ToString()
 
@@ -4787,7 +4787,7 @@ Public Class cDBDataSource
             ' Assemble Zscale
             For ipt As Integer = 1 To ecosimDS.ForcePoints
                 If (ipt > 1) Then sbZScale.Append(" ")
-                sbZScale.Append(StringUtils.FormatSingle(ecosimDS.zscale(ipt, iShape)))
+                sbZScale.Append(cStringUtils.FormatSingle(ecosimDS.zscale(ipt, iShape)))
             Next
             drow("Zscale") = sbZScale.ToString()
 
@@ -4840,7 +4840,7 @@ Public Class cDBDataSource
             ' Assemble Zscale
             For ipt As Integer = 1 To ecosimDS.NMedPoints
                 If (ipt > 1) Then sbZScale.Append(" ")
-                sbZScale.Append(StringUtils.FormatSingle(ecosimDS.Medpoints(ipt, iShape)))
+                sbZScale.Append(cStringUtils.FormatSingle(ecosimDS.Medpoints(ipt, iShape)))
             Next
             drow("Zscale") = sbZScale.ToString()
 
@@ -5087,7 +5087,7 @@ Public Class cDBDataSource
             drow("Title") = ecosimDS.FishRateGearTitle(iShape)
             For ipt As Integer = 1 To ecosimDS.NTimes
                 If (ipt > 1) Then sbZScale.Append(" ")
-                sbZScale.Append(StringUtils.FormatSingle(ecosimDS.FishRateGear(iShape, ipt)))
+                sbZScale.Append(cStringUtils.FormatSingle(ecosimDS.FishRateGear(iShape, ipt)))
             Next
             drow("Zscale") = sbZScale.ToString()
 
@@ -5267,7 +5267,7 @@ Public Class cDBDataSource
                 ' Assemble Zscale
                 For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, asData.Length - 1)
                     If (ipt > 1) Then sbZScale.Append(" ")
-                    sbZScale.Append(StringUtils.FormatSingle(asData(ipt)))
+                    sbZScale.Append(cStringUtils.FormatSingle(asData(ipt)))
                 Next
                 drow("zScale") = sbZScale.ToString()
             End If
@@ -5435,7 +5435,7 @@ Public Class cDBDataSource
             For iYear As Integer = 0 To ts.XMax - 1
                 For iMonth As Integer = 1 To iRepetitions
                     If sbZScale.Length > 0 Then sbZScale.Append(" ")
-                    sbZScale.Append(StringUtils.FormatSingle(ts.ShapeData(iYear)))
+                    sbZScale.Append(cStringUtils.FormatSingle(ts.ShapeData(iYear)))
                 Next
             Next
 
@@ -5488,7 +5488,7 @@ Public Class cDBDataSource
         ' Concoct time series memo
         For iYear As Integer = 0 To ts.XMax - 1
             If (iYear > 0) Then sbValues.Append(" ")
-            sbValues.Append(StringUtils.FormatSingle(ts.ShapeData(iYear)))
+            sbValues.Append(cStringUtils.FormatSingle(ts.ShapeData(iYear)))
         Next
         drow("TimeValues") = sbValues.ToString()
 
@@ -5686,7 +5686,7 @@ Public Class cDBDataSource
 
                 For iYear = 1 To Math.Min(tsDS.nDatasetNumYears(iDataset), astrTimeValues.Length)
                     Try
-                        tsDS.sValues(iYear, iSeries) = StringUtils.ConvertToSingle(astrTimeValues(iYear - 1))
+                        tsDS.sValues(iYear, iSeries) = cStringUtils.ConvertToSingle(astrTimeValues(iYear - 1))
                     Catch ex As Exception
                         ex = ex
                         ' Woops
@@ -5751,7 +5751,7 @@ Public Class cDBDataSource
                 sbValues.Length = 0
                 For iYear As Integer = 1 To tsDS.nDatasetNumYears(tsDS.ActiveDatasetIndex)
                     If (iYear > 1) Then sbValues.Append(" ")
-                    sbValues.Append(StringUtils.FormatSingle(tsDS.sValues(iYear, iTS)))
+                    sbValues.Append(cStringUtils.FormatSingle(tsDS.sValues(iYear, iTS)))
                 Next
                 drow("TimeValues") = sbValues.ToString()
 
@@ -5870,7 +5870,7 @@ Public Class cDBDataSource
             ' Concoct time series memo
             For iYear As Integer = 0 To asValues.Length - 1
                 If (iYear > 0) Then sbValues.Append(" ")
-                sbValues.Append(StringUtils.FormatSingle((iYear)))
+                sbValues.Append(cStringUtils.FormatSingle((iYear)))
             Next
             drow("TimeValues") = sbValues.ToString()
             writer.AddRow(drow)
@@ -7202,12 +7202,12 @@ Public Class cDBDataSource
                 ' Monthly PrefRow
                 astrSplit = CStr(reader("PrefRow")).Split(CChar(" "))
                 For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                    ecospaceDS.PrefRow(iGroup, iMonth) = StringUtils.ConvertToInteger(astrSplit(iMonth - 1))
+                    ecospaceDS.PrefRow(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
                 Next
                 ' Monthly PrefCol
                 astrSplit = CStr(reader("PrefCol")).Split(CChar(" "))
                 For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                    ecospaceDS.Prefcol(iGroup, iMonth) = StringUtils.ConvertToInteger(astrSplit(iMonth - 1))
+                    ecospaceDS.Prefcol(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
                 Next
 
             End While
@@ -7317,14 +7317,14 @@ Public Class cDBDataSource
                 sbTemp.Length = 0
                 For iMonth As Integer = 1 To cCore.N_MONTHS
                     If iMonth > 1 Then sbTemp.Append(CChar(" "))
-                    sbTemp.Append(StringUtils.FormatSingle(ecospaceDS.PrefRow(iGroup, iMonth)))
+                    sbTemp.Append(cStringUtils.FormatSingle(ecospaceDS.PrefRow(iGroup, iMonth)))
                 Next
                 drow("PrefRow") = sbTemp.ToString()
 
                 sbTemp.Length = 0
                 For iMonth As Integer = 1 To cCore.N_MONTHS
                     If iMonth > 1 Then sbTemp.Append(CChar(" "))
-                    sbTemp.Append(StringUtils.FormatSingle(ecospaceDS.Prefcol(iGroup, iMonth)))
+                    sbTemp.Append(cStringUtils.FormatSingle(ecospaceDS.Prefcol(iGroup, iMonth)))
                 Next
                 drow("PrefCol") = sbTemp.ToString()
 

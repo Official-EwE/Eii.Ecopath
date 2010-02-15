@@ -671,7 +671,7 @@ Namespace Database
                     ' Provide default in case of an exception
                     sValue = 0
                 End Try
-                astrMemoBits(i) = StringUtils.FormatSingle(sValue)
+                astrMemoBits(i) = cStringUtils.FormatSingle(sValue)
             Next
 
             Return astrMemoBits

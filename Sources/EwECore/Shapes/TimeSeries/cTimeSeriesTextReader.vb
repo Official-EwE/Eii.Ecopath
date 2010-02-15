@@ -310,7 +310,7 @@ Public MustInherit Class cTimeSeriesTextReader
 
             ' Is this the weight line?
             ' 060613VC: There may be a Weight for each time series from now on
-            If StringUtils.BeginsWith(astrCols(0), "weight") Then
+            If cStringUtils.BeginsWith(astrCols(0), "weight") Then
                 If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
                     Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_WEIGHTVALUEMISSING, iLineNumber)
                     bSucces = False
@@ -323,7 +323,7 @@ Public MustInherit Class cTimeSeriesTextReader
             End If
 
             ' Pool code
-            If Not StringUtils.BeginsWithOneOf(astrCols(0), New String() {"pool", "group", "fleet"}) Then
+            If Not cStringUtils.BeginsWithOneOf(astrCols(0), New String() {"pool", "group", "fleet"}) Then
                 Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLLINEMISSING, astrCols(0)), iLineNumber)
                 bSucces = False
             End If
@@ -340,7 +340,7 @@ Public MustInherit Class cTimeSeriesTextReader
             Me.m_tsPreview.AddRow(strLine, astrCols)
 
             ' Dat type
-            If Not StringUtils.BeginsWithOneOf(astrCols(0), New String() {"type", "code", "dat"}) Then
+            If Not cStringUtils.BeginsWithOneOf(astrCols(0), New String() {"type", "code", "dat"}) Then
                 Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPELINEMISSING, astrCols(0)), iLineNumber)
                 bSucces = False
             End If
@@ -361,7 +361,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 Me.m_tsPreview.AddRow(strLine, astrCols)
 
                 Try
-                    iYear = StringUtils.ConvertToInteger(astrCols(0))
+                    iYear = cStringUtils.ConvertToInteger(astrCols(0))
                 Catch ex As Exception
                     Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARLINEMISSING, iLineNumber)
                     bSucces = False
@@ -443,7 +443,7 @@ Public MustInherit Class cTimeSeriesTextReader
         astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
         If (String.Compare(astrCols(0), "weight", True) = 0) Then
             Try
-                For i As Integer = 1 To iNumSeries : asWtType(i - 1) = StringUtils.ConvertToSingle(astrCols(i), 0, Me.m_strDecimalSeparator) : Next i
+                For i As Integer = 1 To iNumSeries : asWtType(i - 1) = cStringUtils.ConvertToSingle(astrCols(i), 0, Me.m_strDecimalSeparator) : Next i
             Catch ex As Exception
                 Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_WEIGHTFORMAT, iLineNumber)
             End Try
@@ -453,7 +453,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ' Read pool code from columns
         Try
             For i As Integer = 1 To iNumSeries
-                aiDatPool(i - 1) = StringUtils.ConvertToInteger(astrCols(i))
+                aiDatPool(i - 1) = cStringUtils.ConvertToInteger(astrCols(i))
                 If (aiDatPool(i - 1) < 1) Then
                     Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLFORMAT, iLineNumber)
                 End If
@@ -472,7 +472,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 ' JS28oct09 allow strings as time series types too
                 aiType(i - 1) = Me.ToTimeSeriesType(astrCols(i))
                 If (aiType(i - 1) = eTimeSeriesType.NotSet) Then
-                    aiType(i - 1) = DirectCast(StringUtils.ConvertToInteger(astrCols(i)), eTimeSeriesType)
+                    aiType(i - 1) = DirectCast(cStringUtils.ConvertToInteger(astrCols(i)), eTimeSeriesType)
                     If (aiType(i - 1) = cCore.NULL_VALUE) Then
                         Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPEFORMAT, iLineNumber)
                     End If
@@ -536,7 +536,7 @@ Public MustInherit Class cTimeSeriesTextReader
                     ' #Yes: get the value
                     Try
                         ' Try to parse the value
-                        sValue = StringUtils.ConvertToSingle(astrCols(iColumn), 0, Me.m_strDecimalSeparator)
+                        sValue = cStringUtils.ConvertToSingle(astrCols(iColumn), 0, Me.m_strDecimalSeparator)
                         ' Add parsed value to preview
                         If (sValue <> 0) Then
                             ' Write preview value
@@ -626,7 +626,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <returns>An array of strings.</returns>
     ''' -----------------------------------------------------------------------
     Private Function SplitLine(ByVal strLine As String) As String()
-        Dim astrBits As String() = StringUtils.SplitQualified(strLine, Me.m_strDelimiter)
+        Dim astrBits As String() = cStringUtils.SplitQualified(strLine, Me.m_strDelimiter)
         ' Trim spaces
         For iBit As Integer = 0 To astrBits.Length - 1
             astrBits(iBit) = astrBits(iBit).Trim

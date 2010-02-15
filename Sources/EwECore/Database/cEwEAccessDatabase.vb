@@ -83,9 +83,9 @@ Namespace Database
                         If (datResult = eDatasourceAccessType.Opened) Then
                             db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, SystemUtilities.GetUserName()))
                             ' Egg - over-easy but slightly obfuscated ;)
-                            If strModelName.ToLower().Contains(StringUtils.Shift("Dbsm!Xbmufst").ToLower()) Then
-                                db.Execute(String.Format("UPDATE EcopathGroup SET GroupName='{0}' WHERE GroupID=1", StringUtils.Shift("Dijdlfo!tiju")))
-                                db.Execute(String.Format("UPDATE EcopathFleet SET FleetName='{0}' WHERE FleetID=1", StringUtils.Shift("Tfbm!cbtifst")))
+                            If strModelName.ToLower().Contains(cStringUtils.Shift("Dbsm!Xbmufst").ToLower()) Then
+                                db.Execute(String.Format("UPDATE EcopathGroup SET GroupName='{0}' WHERE GroupID=1", cStringUtils.Shift("Dijdlfo!tiju")))
+                                db.Execute(String.Format("UPDATE EcopathFleet SET FleetName='{0}' WHERE FleetID=1", cStringUtils.Shift("Tfbm!cbtifst")))
                             End If
                             db.Close()
                         End If
