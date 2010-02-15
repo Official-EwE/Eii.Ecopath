@@ -3742,8 +3742,13 @@ Namespace Database
                                 drow("InRow") = pt.Y
                                 drow("InCol") = pt.X
                                 drow("PortID") = 1
-                                writerFishMap.AddRow(drow)
-                            Next
+                                Try
+                                    writerFishMap.AddRow(drow)
+                                Catch ex As ConstraintException
+                                    ' NOP: data is a duplicate, simply ignore it
+                                End Try
+
+                            Next pt
 
                             ' Write GearHab flag field to proper table combining (ScenarioID, FleetID, HabitatID)
                             strFlags = CStr(Me.FixValue(reader, "GearHab", ""))
@@ -3760,7 +3765,7 @@ Namespace Database
                                         writerHabFish.AddRow(drow)
                                     End If
                                 End If
-                            Next
+                            Next iHabitat
 
                             ' Write MPAfish flag field to proper table combining (ScenarioID, FleetID, MPAID)
                             strFlags = CStr(Me.FixValue(reader, "MPAFish", ""))
@@ -3777,7 +3782,7 @@ Namespace Database
                                         writerMPAFish.AddRow(drow)
                                     End If
                                 End If
-                            Next
+                            Next iMPA
 
                             ' Import Remarks
                             Me.AddRemark(reader("remark"), eDataTypes.EcospaceFleet, iFleetID, eVarNameFlags.Name)
@@ -3789,19 +3794,19 @@ Namespace Database
                                     eMessageType.DataImport, eMessageImportance.Information)
                         End If
 
-            ' JS 061221: References do not need to be imported for now
-            'ImportRefCode("RefCode", "quickRef")
+                        ' JS 061221: References do not need to be imported for now
+                        'ImportRefCode("RefCode", "quickRef")
 
-            ' Remember fleet ID mapping
-            Me.HashKey(eDataTypes.EcospaceFleet, strEcopathFleet, eDataTypes.EcoSpaceScenario, iScenarioID) = iFleetID
+                        ' Remember fleet ID mapping
+                        Me.HashKey(eDataTypes.EcospaceFleet, strEcopathFleet, eDataTypes.EcoSpaceScenario, iScenarioID) = iFleetID
 
-            ' Next fleet
-            iFleetID += 1
+                        ' Next fleet
+                        iFleetID += 1
 
-            Me.m_dbEwE5.ReleaseReader(reader)
+                        Me.m_dbEwE5.ReleaseReader(reader)
 
-                    Next
-                Next
+                    Next strEcopathFleet
+                Next strEcospaceScenario
             End If
 
             Me.m_dbEwE6.ReleaseWriter(writer)
