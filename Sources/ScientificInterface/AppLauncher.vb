@@ -406,7 +406,7 @@ Public Class AppLauncher
         ' Open the datasource
         atResult = ds.Open(strFileName, Me.Core)
 
-        If (atResult <> eDatasourceAccessType.Opened) Then
+        If (atResult <> eDatasourceAccessType.Success) Then
             Me.ReportFileAccessError(atResult, strFileName)
             Return False
         End If
@@ -519,7 +519,7 @@ Public Class AppLauncher
         ' Provide status feedback
         Select Case atResult
 
-            Case eDatasourceAccessType.Created, eDatasourceAccessType.Opened
+            Case eDatasourceAccessType.Success, eDatasourceAccessType.Opened
                 msg = New cMessage(String.Format(My.Resources.PROMPT_MODELCREATED, strFileName), _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, eMessageImportance.Information)
@@ -1351,8 +1351,10 @@ Public Class AppLauncher
     Private Function CompactModel() As Boolean
 
         Dim ds As IEwEDataSource = Me.Core.DataSource
-        Dim bSucces As Boolean = False
+        Dim result As eDatasourceAccessType = eDatasourceAccessType.Success
         Dim strFileName As String = Me.SelectedFileName()
+        Dim msg As cMessage = Nothing
+        Dim bSucces As Boolean = True
 
         ' ToDo: localize this method
         If Me.AskFeedback("To compact your database your model will need to be closed. Are you sure you want to compact your database?", _
@@ -1363,12 +1365,37 @@ Public Class AppLauncher
         If Me.CloseEcopathModel() = False Then Return False
 
         Me.SetStatusText("Compacting database...", TriState.True)
-        bSucces = ds.Compact(strFileName)
+        result = ds.Compact(strFileName)
         Me.SetStatusText("", TriState.False)
 
-        If bSucces = True Then
-            bSucces = bSucces And Me.LoadEcopathModel(strFileName, eLoadSourceType.API)
+        If result = eDatasourceAccessType.Success Then
+            bSucces = Me.LoadEcopathModel(strFileName, eLoadSourceType.API)
+            If bSucces Then
+                msg = New cMessage("Your database was compacted succesfully.", _
+                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
+            Else
+                msg = New cMessage("Your database was compacted correctly, but EwE was not able to reload the database. Please contact EwE technical support", _
+                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
+            End If
+        Else
+            ' Report error
+            Select Case result
+                Case eDatasourceAccessType.Failed_OSUnsupported
+                    msg = New cMessage("Your operating system does not seem to be able to compact this type of database.", _
+                                       eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
+                Case eDatasourceAccessType.Failed_CannotSave
+                    msg = New cMessage("Unable to create a temporary file while compacting database. Please check if you are low in disk space.", _
+                                       eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
+                Case eDatasourceAccessType.Failed_FileNotFound
+                Case eDatasourceAccessType.Failed_Unknown
+                    msg = New cMessage("Failed to compact database.", _
+                                       eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
+            End Select
+            bSucces = False
         End If
+
+        ' Send error
+        Me.Core.Messages.SendMessage(msg)
 
         Return bSucces
 
@@ -2444,7 +2471,7 @@ Public Class AppLauncher
         If (ds Is Nothing) Then
             cmd.Enabled = False
         Else
-            cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded) And ds.CanCompact("")
+            cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded) And ds.CanCompact(Me.SelectedFileName)
         End If
     End Sub
 
