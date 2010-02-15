@@ -1879,10 +1879,8 @@ Namespace Core
     ''' </summary>
     ''' -------------------------------------------------------------------
     Public Enum eDatasourceAccessType As Integer
-        ''' <summary>Database succesfully created.</summary>
-        Created = 0
-        ''' <summary>Database succesfully opened.</summary>
-        Opened = 0
+        ''' <summary>Database operation succesful.</summary>
+        Success = 0
         ''' <summary>Database could not be saved in the indicated location.</summary>
         Failed_CannotSave
         ''' <summary>An unknown database type was requested.</summary>
@@ -1898,6 +1896,10 @@ Namespace Core
         Failed_DeprecatedOperation
         ''' <summary>File is not found.</summary>
         Failed_FileNotFound
+        ''' <summary>Deprecated, use <see cref="eDatasourceAccessType.Success">Sccess</see> instead.</summary>
+        Opened = Success
+        ''' <summary>Deprecated, use <see cref="eDatasourceAccessType.Success">Sccess</see> instead.</summary>
+        Created = Success
     End Enum
 
 #End Region ' Datasource types
