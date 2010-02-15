@@ -157,7 +157,7 @@ Public Class cPluginAssembly
     Public ReadOnly Property AlwaysEnabled() As Boolean
         Get
             ' Core plugins always enabled
-            Return StringUtils.EndsWith(Me.Filename, "ewecore.dll", True)
+            Return cStringUtils.EndsWith(Me.Filename, "ewecore.dll", True)
         End Get
     End Property
 
