@@ -703,7 +703,7 @@ Namespace Ecospace
             Next
 
             mi = New MPAInfo(String.Format(My.Resources.DEFAULT_NEWMPA_NUM, _
-                    StringUtils.GetNextNumber(lstrMPAs.ToArray(), My.Resources.DEFAULT_NEWMPA_NUM)))
+                    cStringUtils.GetNextNumber(lstrMPAs.ToArray(), My.Resources.DEFAULT_NEWMPA_NUM)))
             Me.m_alMPAs.Insert(iMPA, mi)
 
             Me.UpdateGrid()

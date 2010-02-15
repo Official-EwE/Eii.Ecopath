@@ -620,7 +620,7 @@ Namespace Ecospace
 
             ' Format new hab with an autonumber value based on existing names
             hi = New HabitatInfo(String.Format(My.Resources.DEFAULT_NEWHABITAT_NUM, _
-                    StringUtils.GetNextNumber(lstrHabitats.ToArray(), My.Resources.DEFAULT_NEWHABITAT_NUM)))
+                    cStringUtils.GetNextNumber(lstrHabitats.ToArray(), My.Resources.DEFAULT_NEWHABITAT_NUM)))
             Me.m_alHabitats.Insert(iHabitat, hi)
 
             Me.UpdateGrid()

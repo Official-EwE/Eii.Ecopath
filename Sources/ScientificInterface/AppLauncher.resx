@@ -679,6 +679,9 @@
   <metadata name="m_tsModel.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 24</value>
   </metadata>
+  <data name="m_tsModel.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="m_tsbEcopath.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
     <value>None</value>
   </data>
@@ -782,7 +785,7 @@
     <value>m_ssMain</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
-    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.7.205, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.7.214, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -5758,6 +5761,9 @@
         AACAAQAAgAEAAMADAADABwAA8A8AAPw/AAA=
 </value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Ecopath with Ecosim 6</value>
   </data>
@@ -6151,6 +6157,12 @@
   <data name="&gt;&gt;m_tsmiTimeSeriesImport.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsmiTimeSeriesExport.Name" xml:space="preserve">
+    <value>m_tsmiTimeSeriesExport</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiTimeSeriesExport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsmiTimeSeriesLoad.Name" xml:space="preserve">
     <value>m_tsmiTimeSeriesLoad</value>
   </data>
@@ -6240,12 +6252,6 @@
   </data>
   <data name="&gt;&gt;m_tsbModel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiTimeSeriesExport.Name" xml:space="preserve">
-    <value>m_tsmiTimeSeriesExport</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiTimeSeriesExport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AppLauncher</value>

@@ -1322,7 +1322,7 @@ Public Class EditGroupsStanzaEwEGrid
             lstrGroupNames.Add(Me.m_lgiGroups(i).Name)
         Next i
         gi = New GroupInfo( _
-            String.Format(My.Resources.DEFAULT_NEWGROUP_NUM, StringUtils.GetNextNumber(lstrGroupNames.ToArray, My.Resources.DEFAULT_NEWGROUP_NUM)))
+            String.Format(My.Resources.DEFAULT_NEWGROUP_NUM, cStringUtils.GetNextNumber(lstrGroupNames.ToArray, My.Resources.DEFAULT_NEWGROUP_NUM)))
         Me.m_lgiGroups.Insert(iGroup, gi)
 
         Me.UpdateGrid()

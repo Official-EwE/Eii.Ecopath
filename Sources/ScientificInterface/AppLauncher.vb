@@ -1441,8 +1441,7 @@ Public Class AppLauncher
     End Sub
 
     Private Sub UpdateModelPathText(ByVal strText As String)
-        Me.m_tsbModel.ToolTipText = strText
-        Me.m_tsbModel.Text = strText ' StringUtils.TruncatePath(strText, Me.m_tsbModel.Font, Me.m_tsbModel.Width)
+        Me.m_tsbModel.Text = cStringUtils.TruncatePath(strText, Me.m_tsbModel.Font, Me.m_tsbModel.Width)
         Me.m_tsbModel.Visible = Not String.IsNullOrEmpty(strText)
     End Sub
 
@@ -1703,7 +1702,7 @@ Public Class AppLauncher
 
     Private Sub ProcessCommandLine()
 
-        Dim astrCmd As String() = StringUtils.SplitQualified(Microsoft.VisualBasic.Command(), " ")
+        Dim astrCmd As String() = cStringUtils.SplitQualified(Microsoft.VisualBasic.Command(), " ")
 
         If (astrCmd.Length > 0) Then
             If Not String.IsNullOrEmpty(astrCmd(0)) Then

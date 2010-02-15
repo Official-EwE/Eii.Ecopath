@@ -692,7 +692,7 @@ Namespace Ecospace
             Next
 
             ' Format new layer with an autonumber value based on existing names
-            Dim iNextNum As Integer = StringUtils.GetNextNumber(lstrLayers.ToArray(), My.Resources.DEFAULT_NEWLAYER_NUM)
+            Dim iNextNum As Integer = cStringUtils.GetNextNumber(lstrLayers.ToArray(), My.Resources.DEFAULT_NEWLAYER_NUM)
             Dim strName As String = String.Format(My.Resources.DEFAULT_NEWLAYER_NUM, iNextNum)
 
             li = New LayerInfo(strName, "", 1.0!)

@@ -598,7 +598,7 @@ Namespace Ecospace
             Next
 
             Me.CreateRegion(String.Format(My.Resources.DEFAULT_NEWREGION_NUM, _
-                    StringUtils.GetNextNumber(lstrRegions.ToArray(), My.Resources.DEFAULT_NEWREGION_NUM)))
+                    cStringUtils.GetNextNumber(lstrRegions.ToArray(), My.Resources.DEFAULT_NEWREGION_NUM)))
         End Sub
 
         ''' <summary>

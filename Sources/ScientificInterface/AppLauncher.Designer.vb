@@ -87,6 +87,7 @@
         Me.m_tsmiEcosimSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimSaveAs = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesImport = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiTimeSeriesExport = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesLoad = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesEditWeights = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesReloadLast = New System.Windows.Forms.ToolStripMenuItem
@@ -104,7 +105,6 @@
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbModel = New System.Windows.Forms.ToolStripButton
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar
-        Me.m_tsmiTimeSeriesExport = New System.Windows.Forms.ToolStripMenuItem
         m_tssModel1 = New System.Windows.Forms.ToolStripSeparator
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator
@@ -489,6 +489,12 @@
         Me.m_tsmiTimeSeriesImport.Name = "m_tsmiTimeSeriesImport"
         resources.ApplyResources(Me.m_tsmiTimeSeriesImport, "m_tsmiTimeSeriesImport")
         '
+        'm_tsmiTimeSeriesExport
+        '
+        Me.m_tsmiTimeSeriesExport.Image = Global.ScientificInterface.My.Resources.Resources.ExportXMLHS
+        Me.m_tsmiTimeSeriesExport.Name = "m_tsmiTimeSeriesExport"
+        resources.ApplyResources(Me.m_tsmiTimeSeriesExport, "m_tsmiTimeSeriesExport")
+        '
         'm_tsmiTimeSeriesLoad
         '
         Me.m_tsmiTimeSeriesLoad.Name = "m_tsmiTimeSeriesLoad"
@@ -553,10 +559,14 @@
         '
         'm_tsModel
         '
-        Me.m_tsModel.CanOverflow = False
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, m_tssModel1, Me.m_tsbModel})
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
+        Me.m_tsModel.CanOverflow = False
+        Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, m_tssModel1, Me.m_tsbModel})
+        Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
+        Me.m_tsModel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
+        Me.m_tsModel.Stretch = True
         '
         'm_tsbEcopath
         '
@@ -593,12 +603,6 @@
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
-        '
-        'm_tsmiTimeSeriesExport
-        '
-        Me.m_tsmiTimeSeriesExport.Image = Global.ScientificInterface.My.Resources.Resources.ExportXMLHS
-        Me.m_tsmiTimeSeriesExport.Name = "m_tsmiTimeSeriesExport"
-        resources.ApplyResources(Me.m_tsmiTimeSeriesExport, "m_tsmiTimeSeriesExport")
         '
         'AppLauncher
         '

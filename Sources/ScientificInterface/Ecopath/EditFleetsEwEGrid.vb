@@ -650,7 +650,7 @@ Imports ScientificInterface.Other
         Next i
 
         fi = New cFleetInfo(String.Format(My.Resources.DEFAULT_NEWFLEET_NUM, _
-                StringUtils.GetNextNumber(lstrFleetNames.ToArray, My.Resources.DEFAULT_NEWFLEET_NUM)))
+                cStringUtils.GetNextNumber(lstrFleetNames.ToArray, My.Resources.DEFAULT_NEWFLEET_NUM)))
         Me.m_lfiFleets.Insert(iFleet, fi)
 
         Me.UpdateGrid()
