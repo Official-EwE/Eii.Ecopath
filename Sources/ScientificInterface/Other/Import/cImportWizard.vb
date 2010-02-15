@@ -176,7 +176,9 @@ Namespace Import
 
             ' Prepare import settings
             For Each mi As cEwE6DatabaseImporter.cEwE5ModelInfo In Me.m_dbImp.GetModels
-                Me.m_lImportSettings.Add(New cImportSettings(mi))
+                Dim imp As New cImportSettings(mi)
+                imp.SelectedForImport = (Me.m_dbImp.GetModels.Count = 1)
+                Me.m_lImportSettings.Add(imp)
             Next
 
             ' Add pages
