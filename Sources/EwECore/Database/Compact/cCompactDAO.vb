@@ -55,8 +55,6 @@ Namespace Database
                                 ByVal strConnectionTo As String) As EwEUtils.Core.eDatasourceAccessType _
             Implements IDatabaseCompact.Compact
 
-            Dim engine As Dao.DBEngine = Nothing
-
             ' Safety check: can compact at all?
             If Not Me.CanCompact() Then
                 ' #No: abort
@@ -65,23 +63,21 @@ Namespace Database
 
             Try
                 ' Create engine
-                engine = New Dao.DBEngine()
+                Dim engine As Dao.DBEngine = New Dao.DBEngine()
+
+                ' Able to get JET engine?
+                If (engine Is Nothing) Then Return eDatasourceAccessType.Failed_OSUnsupported
+
+                ' Compact DB
+                engine.CompactDatabase(strFileFrom, strFileTo)
+                ' Return result
+
+                Return eDatasourceAccessType.Success
             Catch ex As Exception
                 ' Woops
                 Return eDatasourceAccessType.Failed_OSUnsupported
             End Try
 
-            ' Able to get JET engine?
-            If (engine Is Nothing) Then Return eDatasourceAccessType.Failed_OSUnsupported
-
-            Try
-                ' Compact DB
-                engine.CompactDatabase(strFileFrom, strFileTo)
-                ' Return result
-                Return eDatasourceAccessType.Success
-            Catch ex As Exception
-                ' HMMM
-            End Try
 
             Return eDatasourceAccessType.Failed_Unknown
         End Function
