@@ -597,11 +597,27 @@ Public Class cDBDataSource
 
 #Region " Cleanup "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Compact the data in the datasource. Please ensure that this operation
+    ''' is possible via <see cref="CanCompact">CanCompact</see>.
+    ''' </summary>
+    ''' <param name="strTarget">The destination to compact the datasource to.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function Compact(ByVal strTarget As String) As eDatasourceAccessType _
         Implements DataSources.IEwEDataSource.Compact
         Return Me.m_db.Compact(strTarget, strTarget)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether the data underlying the datasource can be compacted.
+    ''' </summary>
+    ''' <param name="strTarget">The destination to test whether the datasource 
+    ''' can compact to.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Public Function CanCompact(ByVal strTarget As String) As Boolean _
         Implements IEwEDataSource.CanCompact
         Return Me.m_db.CanCompact(strTarget, strTarget)
