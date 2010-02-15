@@ -15,103 +15,75 @@ Namespace Controls
     ''' =======================================================================
     Public Class cCustomMessageBox
 
-#Region " Declarations "
+#Region " Public interfaces "
 
-        Friend Structure sMessageBoxOptions
-            Public Icon As Icon
-            Public Prompt As String
-            Public Caption As String
-            Public Sound As String
-            Public MessageBoxIcon As MessageBoxIcon
-            Public Buttons As MessageBoxButtons
-            Public Result As DialogResult
-            Public CanSuppress As Boolean
-        End Structure
-
-#End Region ' Declarations
-
-#Region " Public Show Options "
-
-        Public Shared Function Show(ByVal Text As String) As DialogResult
-            Return cCustomMessageBox.Show(Text, "")
+        Public Shared Function Show(ByVal strText As String) As DialogResult
+            Return cCustomMessageBox.Show(strText, "")
         End Function
 
-        Public Shared Function Show(ByVal Text As String, _
-                                    ByVal Caption As String) As DialogResult
-            Return cCustomMessageBox.Show(Text, Caption, Nothing)
+        Public Shared Function Show(ByVal strText As String, _
+                                    ByVal strCaption As String) As DialogResult
+            Return cCustomMessageBox.Show(strText, strCaption, _
+                                          MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Function
 
-        Public Shared Function Show(ByVal Text As String, _
-                                    ByVal Caption As String, _
-                                    ByVal Buttons As MessageBoxButtons, _
-                                    Optional ByVal Sound As String = "") As DialogResult
-            Return cCustomMessageBox.Show(Text, Caption, Buttons, MessageBoxIcon.Information, Sound)
-        End Function
+        Public Shared Function Show(ByVal strText As String, _
+                                    ByVal strCaption As String, _
+                                    ByVal mbb As MessageBoxButtons, _
+                                    ByVal mbi As MessageBoxIcon) As DialogResult
 
-        Public Shared Function Show(ByVal Text As String, _
-                                    ByVal Caption As String, _
-                                    ByVal Buttons As MessageBoxButtons, _
-                                    ByRef Suppress As Boolean, _
-                                    Optional ByVal Sound As String = "") As DialogResult
-            Return cCustomMessageBox.Show(Text, Caption, Buttons, MessageBoxIcon.Information, Suppress, Sound)
-        End Function
-
-        Public Shared Function Show(ByVal Text As String, _
-                                    ByVal Caption As String, _
-                                    ByVal Buttons As MessageBoxButtons, _
-                                    ByVal IconType As MessageBoxIcon, _
-                                    Optional ByVal Sound As String = "") As DialogResult
-
-            Dim options As New sMessageBoxOptions
+            Dim frm As frmCustomMessageBox = Nothing
 
             ' Provide defaults
-            If String.IsNullOrEmpty(Caption) Then Caption = "Message"
+            If String.IsNullOrEmpty(strCaption) Then strCaption = "Message"
 
-            With options
-                .Prompt = Text
-                .Caption = Caption
-                .Sound = Sound
-                .Buttons = Buttons
-                .MessageBoxIcon = IconType
-                .Icon = cCustomMessageBox.GetIcon(MessageBoxIcon.Information)
-                .CanSuppress = False
-            End With
+            frm = New frmCustomMessageBox(strText, strCaption, mbb, mbi)
+            frm.ShowDialog()
 
-            cCustomMessageBox.ShowDialog(options)
-            Return options.Result
+            Return frm.Result
+
         End Function
 
-        Public Shared Function Show(ByVal Text As String, _
-                                    ByVal Caption As String, _
-                                    ByVal Buttons As MessageBoxButtons, _
-                                    ByVal IconType As MessageBoxIcon, _
-                                    ByRef Suppress As Boolean, _
-                                    Optional ByVal Sound As String = "") As DialogResult
-            Dim options As New sMessageBoxOptions
+        Public Shared Function Show(ByVal strText As String, _
+                                    ByRef bIsChecked As Boolean, _
+                                    ByVal strCheckPrompt As String) As DialogResult
+            Return cCustomMessageBox.Show(strText, "", bIsChecked, strCheckPrompt)
+        End Function
+
+        Public Shared Function Show(ByVal strText As String, _
+                                    ByVal strCaption As String, _
+                                    ByRef bIsChecked As Boolean, _
+                                    ByVal strCheckPrompt As String) As DialogResult
+            Return cCustomMessageBox.Show(strText, strCaption, _
+                                          MessageBoxButtons.OK, MessageBoxIcon.Information, _
+                                          bIsChecked, strCheckPrompt)
+        End Function
+
+        Public Shared Function Show(ByVal strText As String, _
+                                    ByVal strCaption As String, _
+                                    ByVal mbb As MessageBoxButtons, _
+                                    ByVal mbi As MessageBoxIcon, _
+                                    ByRef bIsChecked As Boolean, _
+                                    ByVal strCheckPrompt As String) As DialogResult
+
+            Dim frm As frmCustomMessageBox = Nothing
 
             ' Provide defaults
-            If String.IsNullOrEmpty(Caption) Then Caption = "Message"
+            If String.IsNullOrEmpty(strCaption) Then strCaption = "Message"
 
-            With options
-                .Prompt = Text
-                .Caption = Caption
-                .Sound = Sound
-                .Buttons = Buttons
-                .MessageBoxIcon = IconType
-                .Icon = cCustomMessageBox.GetIcon(MessageBoxIcon.Information)
-                .CanSuppress = True
-            End With
+            frm = New frmCustomMessageBox(strText, strCaption, mbb, mbi, strCheckPrompt)
+            frm.ShowDialog()
 
-            cCustomMessageBox.ShowDialog(options)
-
-            Suppress = options.CanSuppress
-            Return options.Result
+            ' Transfer checked state
+            bIsChecked = frm.IsChecked
+            ' Return result
+            Return frm.Result
 
         End Function
 
-#End Region ' Public Show Options
+#End Region ' Public interfaces
 
-#Region " Private Subs And Functions "
+#Region " Internals "
 
         Private Shared Function GetIcon(ByVal Icon As MessageBoxIcon) As Icon
 
@@ -141,51 +113,7 @@ Namespace Controls
 
         End Function
 
-        Private Shared Sub ShowDialog(ByVal options As sMessageBoxOptions)
-
-            Select Case options.Buttons
-
-                Case MessageBoxButtons.OK
-                    cCustomMessageBox.Make1Button(options)
-
-                Case MessageBoxButtons.YesNo, _
-                     MessageBoxButtons.OKCancel, _
-                     MessageBoxButtons.RetryCancel
-                    cCustomMessageBox.Make2Button(options)
-
-                Case MessageBoxButtons.AbortRetryIgnore, _
-                     MessageBoxButtons.YesNoCancel
-                    cCustomMessageBox.Make3Button(options)
-
-            End Select
-        End Sub
-
-        Private Shared Sub Make3Button(ByVal options As sMessageBoxOptions)
-            Dim frm As Form = Nothing
-            If options.CanSuppress Then
-                frm = New frmThreeButtonsCheckBox(options)
-            Else
-                frm = New frmThreeButtons(options)
-            End If
-            frm.ShowDialog()
-        End Sub
-
-        Private Shared Sub Make2Button(ByVal options As sMessageBoxOptions)
-            Dim frm As Form = Nothing
-            If options.CanSuppress Then
-                frm = New frmTwoButtonsCheckBox(options)
-            Else
-                frm = New frmTwoButtons(options)
-            End If
-            frm.ShowDialog()
-        End Sub
-
-        Private Shared Sub Make1Button(ByVal options As sMessageBoxOptions)
-            Dim frm As frmOneButton = New frmOneButton(options)
-            frm.ShowDialog()
-        End Sub
-
-#End Region ' Private Subs And Functions
+#End Region ' Internals
 
     End Class
 
