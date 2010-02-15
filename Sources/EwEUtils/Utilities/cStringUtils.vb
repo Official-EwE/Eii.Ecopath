@@ -19,7 +19,7 @@ Namespace Utilities
     ''' Class offering string utilities.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class StringUtils
+    Public Class cStringUtils
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
