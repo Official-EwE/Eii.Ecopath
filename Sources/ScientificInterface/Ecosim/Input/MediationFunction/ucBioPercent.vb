@@ -77,6 +77,9 @@ Namespace Ecosim
 
         Public Sub LoadGraphData()
 
+            ' Sanity check
+            If (Me.m_uic Is Nothing) Then Return
+
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Dim medGrp As cMediatingGroup = Nothing
             Dim medFlt As cMediatingFleet = Nothing
