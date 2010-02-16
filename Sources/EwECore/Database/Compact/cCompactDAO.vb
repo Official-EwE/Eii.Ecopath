@@ -61,8 +61,6 @@ Namespace Database
                 Return eDatasourceAccessType.Failed_OSUnsupported
             End If
 
-#If 0 Then
-
             Try
                 ' Create engine
                 Dim engine As Dao.DBEngine = New Dao.DBEngine()
@@ -80,8 +78,6 @@ Namespace Database
                 Return eDatasourceAccessType.Failed_OSUnsupported
             End Try
 
-#End If
-
             Return eDatasourceAccessType.Failed_Unknown
         End Function
 
@@ -92,8 +88,6 @@ Namespace Database
         Function DetectDAO() As Boolean
 
             If cCompactDAO.s_bEngineSearched Then Return cCompactDAO.s_bEngineFound
-
-#If 0 Then
 
             Try
 
@@ -107,8 +101,6 @@ Namespace Database
             Catch ex As Exception
                 cCompactDAO.s_bEngineFound = False
             End Try
-#End If
-
             cCompactDAO.s_bEngineSearched = True
 
             Return cCompactDAO.s_bEngineFound
