@@ -1289,10 +1289,6 @@
   <data name="HEADER_LOWERLIMIT" xml:space="preserve">
     <value>Lower limit</value>
   </data>
-  <data name="GENERIC_ITEMSTATUS_ORIGINAL" xml:space="preserve">
-    <value>Original</value>
-    <comment>Used in complex item management dialogs. States that an item was part of the original set of items when the dialog was opened (item is neither added nor deleted)</comment>
-  </data>
   <data name="ECOSIM_PROMPT_SAVEDESTINATION" xml:space="preserve">
     <value>Please select the destination to save Ecosim results.</value>
   </data>
@@ -2478,5 +2474,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="MORT_NAT" xml:space="preserve">
     <value>Proportion natural mort.</value>
+  </data>
+  <data name="HEADER_PP" xml:space="preserve">
+    <value>Part of production from primary productivity</value>
   </data>
 </root>

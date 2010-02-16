@@ -471,7 +471,7 @@ Namespace Ecospace
             Select Case li.Status
                 Case AddRemoveItemStatus.Original
                     vm = Me.m_vmOriginal
-                    strText = My.Resources.GENERIC_ITEMSTATUS_ORIGINAL
+                    strText = ""
                 Case AddRemoveItemStatus.Added
                     vm = Me.m_vmAdded
                     strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING

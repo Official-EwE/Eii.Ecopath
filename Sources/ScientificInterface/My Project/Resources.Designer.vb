@@ -1831,15 +1831,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Original.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_ITEMSTATUS_ORIGINAL() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_ITEMSTATUS_ORIGINAL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to {0} ({1}).
         '''</summary>
         Friend ReadOnly Property GENERIC_LABEL_DETAILEDLABEL() As String
@@ -3644,6 +3635,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_POPULATIONBIOMASS() As String
             Get
                 Return ResourceManager.GetString("HEADER_POPULATIONBIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Part of production from primary productivity.
+        '''</summary>
+        Friend ReadOnly Property HEADER_PP() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PP", resourceCulture)
             End Get
         End Property
         
