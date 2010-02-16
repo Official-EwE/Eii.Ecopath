@@ -1261,11 +1261,6 @@ Public Class AppLauncher
         Try
             classObject = Activator.CreateInstance(t)
 
-            If (TypeOf (classObject) Is IUIElement) Then
-                ' Configure new object with UI context
-                DirectCast(classObject, IUIElement).UIContext = Me.UIContext
-            End If
-
             If TypeOf classObject Is DockContent Then
                 ' Is dock content
                 Dim cnt As DockContent = DirectCast(classObject, DockContent)
@@ -1288,6 +1283,12 @@ Public Class AppLauncher
                 ' Provide form with state
                 DirectCast(frmNew, frmEwE).CoreExecutionState = state
             End If
+
+            If (TypeOf (frmNew) Is IUIElement) Then
+                ' Configure new object with UI context
+                DirectCast(frmNew, IUIElement).UIContext = Me.UIContext
+            End If
+
 
             ' Set form icon based on core state
             Select Case state
