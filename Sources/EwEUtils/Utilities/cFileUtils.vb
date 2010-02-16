@@ -47,7 +47,7 @@ Namespace Utilities
             End If
 
             ' Clean up
-            strText = strText.Replace(" ", "_")
+            'strText = strText.Replace(" ", "_") ' Spaces are definitely allowed under 32 bit ;-)
             strText = strText.Replace("\", "-")
             strText = strText.Replace("/", "-")
 
