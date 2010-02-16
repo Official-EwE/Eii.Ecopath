@@ -38,6 +38,20 @@ Namespace Ecosim
 
 #End Region
 
+#Region " Overrides "
+
+        Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+                MyBase.UIContext = value
+                Me.m_bioPercent.UIContext = value
+            End Set
+        End Property
+
+#End Region ' Overrides
+
 #Region " Events "
 
         ''' -------------------------------------------------------------------
