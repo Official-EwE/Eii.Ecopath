@@ -870,6 +870,69 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fit to Time Series aborted..
+        '''</summary>
+        Friend Shared ReadOnly Property F2TS_ABORTED() As String
+            Get
+                Return ResourceManager.GetString("F2TS_ABORTED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fit to Time Series error &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property F2TS_ERROR() As String
+            Get
+                Return ResourceManager.GetString("F2TS_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Estimation Error &apos;{0}&apos;, original parameter values have been restored..
+        '''</summary>
+        Friend Shared ReadOnly Property F2TS_ERROR_ESTIMATION() As String
+            Get
+                Return ResourceManager.GetString("F2TS_ERROR_ESTIMATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Nothing to estimate, exiting search. Sketch interactions before searching again..
+        '''</summary>
+        Friend Shared ReadOnly Property F2TS_ERROR_INTERACTIONS() As String
+            Get
+                Return ResourceManager.GetString("F2TS_ERROR_INTERACTIONS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sensitivity routine has not been run. The blocks can not be set..
+        '''</summary>
+        Friend Shared ReadOnly Property F2TS_ERROR_SENSITIVITY_SETBLOCKS() As String
+            Get
+                Return ResourceManager.GetString("F2TS_ERROR_SENSITIVITY_SETBLOCKS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Estimates have converged. Do you want to do more iterations?.
+        '''</summary>
+        Friend Shared ReadOnly Property F2TS_PROMPT_CONVERGED() As String
+            Get
+                Return ResourceManager.GetString("F2TS_PROMPT_CONVERGED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to More Iterations?.
+        '''</summary>
+        Friend Shared ReadOnly Property F2TS_PROMPT_ITERATIONS() As String
+            Get
+                Return ResourceManager.GetString("F2TS_PROMPT_ITERATIONS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Forcing shape data has changed..
         '''</summary>
         Friend Shared ReadOnly Property FORCING_DATA_CHANGED() As String

@@ -850,4 +850,27 @@ System Error: {0}</value>
     <value>Time series dataset '{0}' exported to '{1}'.</value>
     <comment>{0}=dataset name, {1}=destination file</comment>
   </data>
+  <data name="F2TS_ABORTED" xml:space="preserve">
+    <value>Fit to Time Series aborted.</value>
+  </data>
+  <data name="F2TS_ERROR" xml:space="preserve">
+    <value>Fit to Time Series error '{0}'</value>
+    <comment>{0} = error text</comment>
+  </data>
+  <data name="F2TS_ERROR_ESTIMATION" xml:space="preserve">
+    <value>Estimation Error '{0}', original parameter values have been restored.</value>
+    <comment>{0} = error text</comment>
+  </data>
+  <data name="F2TS_ERROR_INTERACTIONS" xml:space="preserve">
+    <value>Nothing to estimate, exiting search. Sketch interactions before searching again.</value>
+  </data>
+  <data name="F2TS_ERROR_SENSITIVITY_SETBLOCKS" xml:space="preserve">
+    <value>Sensitivity routine has not been run. The blocks can not be set.</value>
+  </data>
+  <data name="F2TS_PROMPT_CONVERGED" xml:space="preserve">
+    <value>Estimates have converged. Do you want to do more iterations?</value>
+  </data>
+  <data name="F2TS_PROMPT_ITERATIONS" xml:space="preserve">
+    <value>More Iterations?</value>
+  </data>
 </root>
