@@ -12,6 +12,7 @@ Imports System.Windows.Forms
 Imports EwEUtils.Commands
 Imports System.IO
 Imports SourceGrid2.Cells
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -445,7 +446,7 @@ Public Class frmEwEGrid
         End Sub
 
         Private Function GetCSVFileName() As String
-            Return Me.m_form.Text
+            Return FileUtilities.ToValidFileName(Me.m_form.Core.EwEModel.Name & "-" & Me.m_form.Text, False)
         End Function
 
         Private Sub ImportFromCSV()
