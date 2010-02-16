@@ -638,7 +638,7 @@ Namespace Ecopath
                         msg.Suppressable = True
                     End If
                     msg.AddVariable(New cVariableStatus(eStatusFlags.InvalidModelResult, _
-                                String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE, Me.m_Data.GroupName(i), m_Data.EE(1)), _
+                                String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE, Me.m_Data.GroupName(i), m_Data.EE(i)), _
                                 eVarNameFlags.EEOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
                 End If
             Next
