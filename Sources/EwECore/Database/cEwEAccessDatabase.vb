@@ -6,13 +6,10 @@ Imports System.IO
 Imports System.Data.OleDb
 Imports System.Reflection
 Imports System.Text
-Imports Microsoft.Win32 ' Goodbye Mono
-Imports dao
 Imports EwECore.DataSources
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
-Imports EwEUtils.Win32Api
 Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
