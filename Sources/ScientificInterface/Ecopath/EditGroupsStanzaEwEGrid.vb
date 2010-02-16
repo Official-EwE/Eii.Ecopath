@@ -705,7 +705,7 @@ Public Class EditGroupsStanzaEwEGrid
         Me(0, eColumnTypes.GroupPPConsumer) = New EwEColumnHeaderCell(My.Resources.HEADER_CONSUMER)
         Me(0, eColumnTypes.GroupPPProducer) = New EwEColumnHeaderCell(My.Resources.HEADER_PRODUCER)
         Me(0, eColumnTypes.GroupPPDetritus) = New EwEColumnHeaderCell(My.Resources.HEADER_DETRITUS)
-        Me(0, eColumnTypes.GroupPP) = New EwEColumnHeaderCell(My.Resources.HEADER_PP_ABBR)
+        Me(0, eColumnTypes.GroupPP) = New EwEColumnHeaderCell(My.Resources.HEADER_PP)
 
         ' Color
         Me(0, eColumnTypes.GroupColor) = New EwEColumnHeaderCell(My.Resources.HEADER_COLOR)
@@ -785,14 +785,7 @@ Public Class EditGroupsStanzaEwEGrid
     ''' </summary>
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
-
-        Me.Columns(eColumnTypes.GroupPPConsumer).Width = 80
-        Me.Columns(eColumnTypes.GroupPPProducer).Width = 80
-        Me.Columns(eColumnTypes.GroupPPDetritus).Width = 80
-        Me.Columns(eColumnTypes.GroupPP).Width = 40
-        Me.Columns(eColumnTypes.GroupColor).Width = 40
-
-        Me.Columns(eColumnTypes.StanzaAge).Width = 80
+        Me.AutoSizeColumnRange(1, Me.ColumnsCount - 1, 1, Me.RowsCount - 1)
     End Sub
 
     Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
@@ -858,7 +851,7 @@ Public Class EditGroupsStanzaEwEGrid
             Me(iRow, eColumnTypes.GroupPPDetritus) = New Cells.Real.CheckBox(False)
             Me(iRow, eColumnTypes.GroupPPDetritus).Behaviors.Add(m_bm)
 
-            Me(iRow, eColumnTypes.GroupPP) = New Cells.Real.Cell(0, GetType(Single))
+            Me(iRow, eColumnTypes.GroupPP) = New EwECell(0, GetType(Single))
             Me(iRow, eColumnTypes.GroupPP).Behaviors.Add(m_bm)
 
             Me(iRow, eColumnTypes.GroupColor) = New Cells.Real.Cell()
@@ -906,7 +899,7 @@ Public Class EditGroupsStanzaEwEGrid
 
         Dim gi As GroupInfo = Nothing
         Dim ri As RowInfo = Nothing
-        Dim aCells() As Cells.ICellVirtual = Nothing
+        Dim ewec As EwECell = Nothing
         Dim pos As SourceGrid2.Position = Nothing
         Dim vm As VisualModels.Common = Nothing
         Dim strText As String = ""
@@ -917,33 +910,38 @@ Public Class EditGroupsStanzaEwEGrid
         ri = Me.Rows(iRow)
 
         ri.Tag = gi
-        aCells = ri.GetCells()
 
         pos = New Position(iRow, eColumnTypes.GroupIndex)
-        aCells(eColumnTypes.GroupIndex).SetValue(pos, CInt(iRow))
+        Me(iRow, eColumnTypes.GroupIndex).SetValue(pos, CInt(iRow))
 
         pos = New Position(iRow, eColumnTypes.GroupName)
-        aCells(eColumnTypes.GroupName).SetValue(pos, CStr(gi.Name))
+        Me(iRow, eColumnTypes.GroupName).SetValue(pos, CStr(gi.Name))
 
         ' Change to radio buttons or edit box + slider + icon?
         pos = New Position(iRow, eColumnTypes.GroupPPConsumer)
-        aCells(eColumnTypes.GroupPPConsumer).SetValue(pos, CBool(gi.PP = 0.0))
+        Me(iRow, eColumnTypes.GroupPPConsumer).SetValue(pos, CBool(gi.PP = 0.0))
         pos = New Position(iRow, eColumnTypes.GroupPPProducer)
-        aCells(eColumnTypes.GroupPPProducer).SetValue(pos, CBool(gi.PP = 1.0))
+        Me(iRow, eColumnTypes.GroupPPProducer).SetValue(pos, CBool(gi.PP = 1.0))
         pos = New Position(iRow, eColumnTypes.GroupPPDetritus)
-        aCells(eColumnTypes.GroupPPDetritus).SetValue(pos, CBool(gi.PP = 2.0))
+        Me(iRow, eColumnTypes.GroupPPDetritus).SetValue(pos, CBool(gi.PP = 2.0))
         pos = New Position(iRow, eColumnTypes.GroupPP)
-        aCells(eColumnTypes.GroupPP).SetValue(pos, gi.PP)
+        ewec = DirectCast(Me(iRow, eColumnTypes.GroupPP), EwECell)
+        ewec.SetValue(pos, gi.PP)
+        If (gi.PP > 1.0!) Then
+            ewec.Style = ewec.Style Or cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable
+        Else
+            ewec.Style = ewec.Style And Not (cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+        End If
 
         pos = New Position(iRow, eColumnTypes.GroupColor)
         Dim clr As Color = cStyleGuide.IntToColor(gi.PoolColor)
         If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(iRow, Me.m_lgiGroups.Count)
-        aCells(eColumnTypes.GroupColor).SetValue(pos, clr)
+        Me(iRow, eColumnTypes.GroupColor).SetValue(pos, clr)
 
         Select Case gi.Status
             Case AddRemoveItemStatus.Original
                 vm = Me.m_vmOriginal
-                strText = My.Resources.GENERIC_ITEMSTATUS_ORIGINAL
+                strText = ""
             Case AddRemoveItemStatus.Added
                 vm = Me.m_vmAdded
                 strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
@@ -953,8 +951,8 @@ Public Class EditGroupsStanzaEwEGrid
         End Select
 
         pos = New Position(iRow, eColumnTypes.GroupStatus)
-        aCells(eColumnTypes.GroupStatus).VisualModel = vm
-        aCells(eColumnTypes.GroupStatus).SetValue(pos, strText)
+        Me(iRow, eColumnTypes.GroupStatus).VisualModel = vm
+        Me(iRow, eColumnTypes.GroupStatus).SetValue(pos, strText)
 
         Me.UpdateStanzaCells(iRow)
 
