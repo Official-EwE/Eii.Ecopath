@@ -2026,6 +2026,107 @@ Public Class cCore
 
     End Function
 
+#If 0 Then
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns if the compact database engine is available.
+    ''' </summary>
+    ''' <returns>True if can compact the current data source.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function CanCompact() As Boolean
+
+        If Me.DataSource Is Nothing Then Return False
+        If Me.PluginManager Is Nothing Then Return False
+
+        Return Me.PluginManager.CanCompactDatabase(cDataSourceFactory.GetSupportedType(Me.DataSource.ToString()))
+
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Compact the current M$ Access database.
+    ''' </summary>
+    ''' <param name="strFileTo">Target database to compact to. Can be left blank.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function Compact(ByVal strFileTo As String) As eDatasourceAccessType
+
+        Dim strFileFrom As String = Me.DataSource.ToString()
+        Dim dst As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strFileFrom)
+
+        ' Fix params
+        If String.IsNullOrEmpty(strFileTo) Then strFileTo = strFileFrom
+
+        Dim bCompactToOriginal As Boolean = (String.Compare(strFileFrom, strFileTo, True) = 0)
+        Dim strConnectionFrom As String = ""
+        Dim strConnectionTo As String = ""
+        Dim strConnection As String = ""
+        Dim result As eDatasourceAccessType = eDatasourceAccessType.Success
+        'Dim comp As IDatabaseCompact = cDatabaseCompactFactory.GetDatabaseCompact(strFileFrom)
+
+        Select Case cDataSourceFactory.GetSupportedType(strFileFrom)
+            Case eDataSourceTypes.MDB
+                strConnection = Me.m_strConnectionMDB
+            Case eDataSourceTypes.ACCDB
+                ' Accdb needs different compaction engine, no idea how to do that for now
+                strConnection = Me.m_strConnectionACCDB
+            Case Else
+                ' Not supported
+                strConnection = ""
+        End Select
+
+        ' No connection string for compacting this type of database?
+        If String.IsNullOrEmpty(strConnection) Then Return eDatasourceAccessType.Failed_OSUnsupported
+        ' Cannot compact when connected
+        Debug.Assert(Me.DataSource.IsConnected = False)
+
+        Try
+
+            ' #Yes: try to compact
+            Dim strDBToOrg As String = strFileTo
+            ' Identical database specified for in and out?
+            If (bCompactToOriginal) Then
+                ' #Yes: compact DB to temp location
+                strFileTo = System.IO.Path.GetTempFileName()
+            End If
+
+            If File.Exists(strFileTo) Then
+                Try
+                    File.Delete(strFileTo)
+                Catch ex As Exception
+                    Return eDatasourceAccessType.Failed_CannotSave
+                End Try
+            End If
+
+            ' Set up connections
+            strConnectionFrom = String.Format(strConnection, strFileFrom)
+            strConnectionTo = String.Format(strConnection, strFileTo)
+
+            If Me.PluginManager.CompactDatabase(dst, strFileFrom, "", strFileTo, "", result) Then
+
+                ' Is succesfully compacted?
+                If File.Exists(strFileTo) Then
+                    ' #Yes: Need to copy from temp location?
+                    If (bCompactToOriginal) Then
+                        ' #Yes: Overwrite original db with compacted db
+                        File.Copy(strFileTo, strDBToOrg, True)
+                        ' Delete temp location compacted database
+                        File.Delete(strFileTo)
+                    End If
+                End If
+
+            End If
+
+        Catch ex As Exception
+            ' Wow
+        End Try
+
+        Return result
+
+    End Function
+#End If
+
 #End Region ' Datasource
 
 #Region "EwEModel"
