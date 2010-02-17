@@ -36,7 +36,8 @@ Namespace Ecosim
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Helper class, inherits a regular forcing shape handler that dynamically
+        ''' includes forcing shapes that are applied.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Class AppliedFFGUIHandler
