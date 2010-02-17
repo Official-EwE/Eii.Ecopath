@@ -85,7 +85,6 @@ Namespace MSE
         Private TotValBase As Single, EmployBase As Single
 
         Private m_pluginManager As cPluginManager
-        Private m_bUsePluginData As Boolean
         Private m_orgPredictEffort As Boolean
 
         'fishing mortality at the current time step
