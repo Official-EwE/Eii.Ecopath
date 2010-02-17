@@ -7,6 +7,8 @@ Imports System.Collections.Generic
 Imports ZedGraph
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Properties
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -21,14 +23,18 @@ Public Class ucEcosimGraph
     Implements IResultView
     Implements IGraphView
 
-    Private m_core As cCore = cCore.GetInstance()
+    Private m_uic As cUIContext = New cUIContext(cCore.GetInstance(), _
+                                                 cStyleGuide.GetInstance(), _
+                                                 cPropertyManager.getinstance(), _
+                                                 cCommandHandler.GetInstance())
     Private m_zgh As cZedGraphHelper = Nothing
     Private m_data As cData = Nothing
     Private m_aVars() As cResults.eVariableType = Nothing
 
     Public Sub New(ByVal data As cData)
+
         Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Nothing, Me)
+        Me.m_zgh.Attach(Me.m_uic, Me)
         Me.m_data = data
         Me.PrepareGraph()
     End Sub
