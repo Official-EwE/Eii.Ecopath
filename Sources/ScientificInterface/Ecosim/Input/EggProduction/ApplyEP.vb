@@ -101,9 +101,7 @@ Namespace Ecosim
 
         Private Sub m_grid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
             Handles m_grid.OnSelectionChanged
-
             Me.UpdateSetControls()
-
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
@@ -140,7 +138,6 @@ Namespace Ecosim
             Dim item As ListViewItem = Nothing
             Dim rcItem As Rectangle = New Rectangle(0, 0, Me.StyleGuide.ThumbnailSize, Me.StyleGuide.ThumbnailSize)
             Dim bmp As Bitmap = Nothing
-            Dim g As Graphics = Nothing
             Dim iItemIndex As Integer = 0
             Dim astrShapeNames As String()
             Dim strSelection As String = Me.m_tscEggProdShapes.Text
@@ -162,10 +159,10 @@ Namespace Ecosim
 
                         ' Create image
                         bmp = New Bitmap(rcItem.Width, rcItem.Height)
-                        g = Graphics.FromImage(bmp)
-                        ShapeImage.DrawShape(shapeFunc, rcItem, g, Color.Red, eSketchDrawModeTypes.Fill, Math.Max(2.0!, shapeFunc.YMax))
-                        largeImageList.Images.Add(bmp)
-                        g.Dispose()
+                        Using g As Graphics = Graphics.FromImage(bmp)
+                            ShapeImage.DrawShape(shapeFunc, rcItem, g, Color.Red, eSketchDrawModeTypes.Fill, Math.Max(2.0!, shapeFunc.YMax))
+                            largeImageList.Images.Add(bmp)
+                        End Using
 
                         ' Create label
                         item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, (shapeFunc.ID + 1), shapeFunc.Name))
@@ -223,13 +220,13 @@ Namespace Ecosim
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
 
-            Dim bRefreshGrid As Boolean = False
             Dim bRefreshForm As Boolean = False
+            Dim bRefreshShapes As Boolean = False
 
             ' Check for relevant messages:
             ' * Refresh on any ShapesManager EggProd message
             If ((msg.Source = eCoreComponentType.ShapesManager) And (msg.DataType = eDataTypes.EggProd)) Then
-                bRefreshGrid = (msg.Type = eMessageType.DataModified)
+                bRefreshShapes = (msg.Type = eMessageType.DataModified)
                 bRefreshForm = (msg.Type = eMessageType.DataAddedOrRemoved)
             End If
 
@@ -238,8 +235,11 @@ Namespace Ecosim
                 bRefreshForm = (msg.Type = eMessageType.DataAddedOrRemoved)
             End If
 
-            'If bRefreshGrid Then Me.m_grid.ResetData()
-            If bRefreshForm Then Me.InitForm()
+            If bRefreshForm Then
+                Me.InitForm()
+            Else
+                If bRefreshShapes Then Me.LoadShapes()
+            End If
 
         End Sub
 
