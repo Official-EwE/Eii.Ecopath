@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CDECE065-503A-4562-A955-06777B2F909E}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -293,6 +293,7 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerPort.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerSail.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\IEcospaceLayerFleet.vb" />
+    <Compile Include="External data\cNetworkAnalysisDataSource.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptManager.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptOutput.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptParameters.vb" />
@@ -305,7 +306,7 @@
     <Compile Include="MSE\Input Output\cMSEManager.vb" />
     <Compile Include="MSE\Input Output\cMSEOutput.vb" />
     <Compile Include="MSE\Input Output\cMSEParameters.vb" />
-    <Compile Include="Core\cEconomicDataSource.vb" />
+    <Compile Include="External data\cEconomicDataSource.vb" />
     <Compile Include="MSE\Model\cMSE.vb" />
     <Compile Include="MSE\Model\cMSEDataStructures.vb" />
     <Compile Include="Particle size distribution\Input Output\cPSDParameters.vb" />

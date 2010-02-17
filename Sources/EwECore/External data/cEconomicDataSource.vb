@@ -1,10 +1,13 @@
-﻿
+﻿#Region " Imports "
+
 Option Strict On
 
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
 Imports EwEUtils.Core
+
+#End Region ' Imports
 
 ''' <summary>
 ''' Implemention of IDataConsumerPlugin that fires an event when ever Economic data is available.
@@ -13,7 +16,9 @@ Imports EwEUtils.Core
 Public Class cEconomicDataSource
     Implements Data.IDataConsumerPlugin
 
-#Region "Public events"
+    Private Shared s_core As cCore = Nothing
+
+#Region " Public events "
 
     ''' <summary>
     ''' Event that get fired when IEconomicData is available
@@ -22,9 +27,9 @@ Public Class cEconomicDataSource
     ''' <remarks></remarks>
     Public Event onEconomicData(ByVal EconomicData As IEconomicData)
 
-#End Region
+#End Region ' Public events
 
-#Region "Singleton 'Shared' interface"
+#Region " Singleton 'Shared' interface "
 
     ''' <summary>
     ''' Return the instance of this class created by the PluginManager
@@ -38,7 +43,7 @@ Public Class cEconomicDataSource
 
             Dim plugins As ICollection(Of EwEPlugin.IPlugin)
 
-            plugins = cCore.GetInstance.PluginManager.GetPlugins("ewecore.ceconomicdatasource")
+            plugins = s_core.PluginManager.GetPlugins(cEconomicDataSource.InternalName)
             For Each plugin As IPlugin In plugins
                 If TypeOf plugin Is cEconomicDataSource Then
                     dataSource = DirectCast(plugin, cEconomicDataSource)
@@ -56,9 +61,9 @@ Public Class cEconomicDataSource
 
     End Function
 
-#End Region
+#End Region ' Singleton 'Shared' interface
 
-#Region "Private methods"
+#Region " Private methods "
 
     Private Sub FireonEconomicData(ByVal data As IEconomicData)
         Try
@@ -68,12 +73,18 @@ Public Class cEconomicDataSource
         End Try
     End Sub
 
-#End Region
+    Private Shared ReadOnly Property InternalName() As String
+        Get
+            Return GetType(cEconomicDataSource).ToString
+        End Get
+    End Property
 
-#Region "IDataConsumerPlugin implementation"
+#End Region ' Private methods
 
+#Region " IDataConsumerPlugin implementation "
 
-    Public Function ReceiveData(ByVal strDataName As String, ByVal data As EwEPlugin.Data.IPluginData) As Boolean Implements EwEPlugin.Data.IDataConsumerPlugin.ReceiveData
+    Public Function ReceiveData(ByVal strDataName As String, ByVal data As EwEPlugin.Data.IPluginData) As Boolean _
+        Implements EwEPlugin.Data.IDataConsumerPlugin.ReceiveData
 
         Try
             If TypeOf data Is IEconomicData Then
@@ -87,34 +98,39 @@ Public Class cEconomicDataSource
 
     End Function
 
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author() As String _
+        Implements EwEPlugin.IPlugin.Author
         Get
             Return "UBC Fisheries Centre"
         End Get
     End Property
 
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact() As String _
+        Implements EwEPlugin.IPlugin.Contact
         Get
             Return "mailto:support@ecopath.org"
         End Get
     End Property
 
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description() As String _
+        Implements EwEPlugin.IPlugin.Description
         Get
             Return "Core plugin to provide economic data from an external source."
         End Get
     End Property
 
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-
+    Public Sub Initialize(ByVal core As Object) _
+        Implements EwEPlugin.IPlugin.Initialize
+        s_core = DirectCast(core, cCore)
     End Sub
 
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name() As String _
+        Implements EwEPlugin.IPlugin.Name
         Get
-            Return Me.ToString
+            Return cEconomicDataSource.InternalName
         End Get
     End Property
 
-#End Region
+#End Region ' IDataConsumerPlugin implementation
 
 End Class
