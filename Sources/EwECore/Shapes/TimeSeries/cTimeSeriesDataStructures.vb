@@ -145,6 +145,13 @@ Public Class cTimeSeriesDataStructures
         Me.RedimTimeSeries()
         Me.RedimEnabledTimeSeries()
 
+        'jb 16-Feb-2010 Fixed bug that caused RedimForcingData() to throw a redim preserve exception when loading a second model that contained more groups
+        'RedimForcingData() tries to preserve existing data if the number of timesteps changed  
+        'this clears out the existing forcing data which forces RedimForcingData() to allocate new memory instead of trying to preserve the existing values
+        Erase Me.PoolForceBB
+        Erase Me.PoolForceCatch
+        Erase Me.PoolForceZ
+
     End Sub
 
     Friend Sub RedimTimeSeries()
