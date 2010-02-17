@@ -1,35 +1,3 @@
-'==============================================================================
-'
-' $Log: EcosimParameters.vb,v $
-' Revision 1.9  2009/05/11 01:50:54  jeroens
-' Renamed command classes
-'
-' Revision 1.8  2009/04/23 13:46:33  jeroens
-' Fixed crash on deleting scenarios while params form is open
-'
-' Revision 1.7  2009/04/04 14:08:41  jeroens
-' Added Use Variable P/Q check box
-'
-' Revision 1.6  2009/03/19 16:02:26  jeroens
-' Added FormatProvider.Release
-'
-' Revision 1.5  2009/02/05 17:48:36  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.4  2009/01/16 18:30:38  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.3  2008/12/15 15:53:27  jeroens
-' no message
-'
-' Revision 1.2  2008/10/08 19:27:21  jeroens
-' Added checkbox for sim RegulatoryFeedback flag
-'
-' Revision 1.1  2008/09/26 07:31:34  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -43,9 +11,15 @@ Imports EwEUtils.Core
 
 Namespace Ecosim
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Form implementing the Ecosim parameters user interface.
+    ''' </summary>
+    ''' =======================================================================
     Public Class EcosimParameters
 
-        Private m_core As cCore = Nothing
+#Region " Private vars "
+
         Private m_fpScenarioName As cEwEFormatProvider = Nothing
         Private m_fpScenarioDescription As cEwEFormatProvider = Nothing
         Private m_fpAuthor As cEwEFormatProvider = Nothing
@@ -62,31 +36,20 @@ Namespace Ecosim
         Private m_propConTracing As cBooleanProperty = Nothing
         Private m_propPredictEffort As cBooleanProperty = Nothing
 
+#End Region ' Private vars
+
         Public Sub New()
-            InitializeComponent()
-            ' Set core
-            Me.m_core = cCore.GetInstance()
-        End Sub
-
-        Public Sub New(ByVal strText As String)
-
-            Me.New()
-
-            'Set tab text
-            Me.TabText = strText
-            ' Set the windows text
-            Me.Text = strText
-
+            Me.InitializeComponent()
         End Sub
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs) 
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
-            Dim ecosimModelParams As cEcoSimModelParameters = m_core.EcoSimModelParameters()
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim ecosimModelParams As cEcoSimModelParameters = Core.EcoSimModelParameters()
+            Dim pm As cPropertyManager = Me.PropertyManager
 
             Me.m_fpNumYears = New cPropertyFormatProvider(Me.m_nudNumberYears, ecosimModelParams, eVarNameFlags.EcoSimNYears)
             Me.m_fpNutBaseFreeProp = New cPropertyFormatProvider(Me.m_nudNutBaseFreeProp, ecosimModelParams, eVarNameFlags.NutBaseFreeProp)
@@ -113,7 +76,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             Me.m_fpScenarioName.Release()
             Me.m_fpScenarioDescription.Release()
@@ -144,13 +107,14 @@ Namespace Ecosim
 
         Dim m_bInUpdate As Boolean = False
 
-        Private Sub chkConTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_chkConTracing.Click, m_chkUseVarPQ.Click
+        Private Sub chkConTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_chkConTracing.Click, m_chkUseVarPQ.Click
 
-            If m_bInUpdate = True Then Return
+            If (Me.m_bInUpdate = True) Then Return
 
-            m_bInUpdate = True
+            Me.m_bInUpdate = True
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("EnableEcotracer")
             If (cmd IsNot Nothing) Then
                 If (Me.m_chkConTracing.Checked) Then
@@ -159,7 +123,7 @@ Namespace Ecosim
                     cmd.Tag = eTracerRunModeTypes.Disabled
                 End If
                 cmd.Invoke()
-                If (Me.m_core.ActiveEcotracerScenarioIndex <= 0) Then
+                If (Me.Core.ActiveEcotracerScenarioIndex <= 0) Then
                     Me.m_chkConTracing.Checked = False
                 End If
             End If
@@ -167,7 +131,7 @@ Namespace Ecosim
             ' If tracer scenario loaded turn this on
             Me.m_propConTracing.SetValue(Me.m_chkConTracing.Checked)
 
-            m_bInUpdate = False
+            Me.m_bInUpdate = False
 
         End Sub
 
@@ -202,8 +166,8 @@ Namespace Ecosim
 
             Dim scenarioDef As cEcoSimScenario = Nothing
 
-            If (m_core.ActiveEcosimScenarioIndex > 0) Then
-                scenarioDef = m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex)
+            If (Me.Core.ActiveEcosimScenarioIndex > 0) Then
+                scenarioDef = Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex)
             End If
 
             If Me.m_fpScenarioName IsNot Nothing Then Me.m_fpScenarioName.Release()
@@ -222,7 +186,7 @@ Namespace Ecosim
 
         Private Sub UpdateFFFormatProviders()
             ' Assemble list of FFs
-            Dim ffm As cForcingFunctionManager = Me.m_core.ForcingShapeManager()
+            Dim ffm As cForcingFunctionManager = Me.Core.ForcingShapeManager()
             Dim aItems(ffm.Count) As Object
 
             aItems(0) = My.Resources.GENERIC_VALUE_NONE

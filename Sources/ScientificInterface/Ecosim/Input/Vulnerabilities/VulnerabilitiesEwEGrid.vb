@@ -15,9 +15,7 @@ Namespace Ecosim
     Public Class VulnerabilitiesEwEGrid
         Inherits EwEGrid
 
-        Private m_Core As cCore = cCore.GetInstance()
         Private m_RowColClick As New BehaviorModels.CustomEvents
-
         Private m_VisDiagonal As New SourceGrid2.VisualModels.Common
 
         Public Sub New()
@@ -31,9 +29,11 @@ Namespace Ecosim
 
             MyBase.InitStyle()
 
+            If (Me.UIContext Is Nothing) Then Return
+
             ' Define grid dimensions
             Dim source As cCoreGroupBase = Nothing
-            Me.Redim(m_Core.nGroups + 1, 2)
+            Me.Redim(Me.Core.nGroups + 1, 2)
 
             ' Set header cells
             ' # (0,0)
@@ -42,8 +42,8 @@ Namespace Ecosim
 
             Dim columnIndex As Integer = 2
 
-            For i As Integer = 1 To m_Core.nGroups
-                source = m_Core.EcoPathGroupInputs(i)
+            For i As Integer = 1 To Me.Core.nGroups
+                source = Me.Core.EcoPathGroupInputs(i)
                 ' Group index header cell
                 Me(i, 0) = New EwERowHeaderCell(i)
                 'Me(i, 0).Behaviors.Add(m_RowColClick)
@@ -63,20 +63,21 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Sub FillData()
+
             Dim grpPrey As cCoreGroupBase = Nothing
             Dim grpPred As cCoreGroupBase = Nothing
             Dim iCol As Integer = 2
             Dim prop As cProperty = Nothing
             Dim cell As PropertyCell = Nothing
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim pm As cPropertyManager = Me.PropertyManager
 
             ' Populate grid data cells
-            For iPrey As Integer = 1 To m_Core.nGroups
-                grpPrey = m_Core.EcoSimGroupInputs(iPrey)
+            For iPrey As Integer = 1 To Me.Core.nGroups
+                grpPrey = Me.Core.EcoSimGroupInputs(iPrey)
                 iCol = 2
-                For iPred As Integer = 1 To m_Core.nLivingGroups
+                For iPred As Integer = 1 To Me.Core.nLivingGroups
                     ' JS 16may08: Use ecopath groups for sec indexes
-                    grpPred = m_Core.EcoPathGroupInputs(iPred)
+                    grpPred = Me.Core.EcoPathGroupInputs(iPred)
 
                     If grpPred.PP < 1 Then
 
