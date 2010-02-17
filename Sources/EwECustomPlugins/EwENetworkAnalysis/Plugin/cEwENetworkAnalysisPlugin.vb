@@ -18,6 +18,7 @@ Public Class cEwENetworkAnalysisPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
+    Implements EwEPlugin.IEcosimRunCompletedPlugin
     Implements EwEPlugin.Data.IDataProducerPlugin
     Implements IDisposedPlugin
 
@@ -167,9 +168,9 @@ Public Class cEwENetworkAnalysisPlugin
                 m_manager.IsEcosimNetworkRan = False
                 'End Add
 
-                If m_manager.RunWithEcopath Then
-                    m_manager.RunMainNetwork()
-                    ' Todo: dispatch data
+                If Me.m_manager.RunWithEcopath Then
+                    Me.m_manager.RunMainNetwork()
+                    Me.BroadcastResults()
                 End If
 
                 'System.Console.WriteLine(Me.ToString & ".EcopathRan() Successfull.")
@@ -182,8 +183,8 @@ Public Class cEwENetworkAnalysisPlugin
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
 
-            m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() Error: " & ex.Message _
-                            , EwECore.eMessageType.ErrorEncountered, eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
+            m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() Error: " & ex.Message, _
+                            EwECore.eMessageType.ErrorEncountered, eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
 
         End Try
 
@@ -324,7 +325,11 @@ Public Class cEwENetworkAnalysisPlugin
     ''' <param name="iTime"></param>
     ''' <param name="Ecosimresults"></param>
     ''' <remarks></remarks>
-    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer, ByVal Ecosimresults As Object) Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, _
+                                 ByVal EcosimDatastructures As Object, _
+                                 ByVal iTime As Integer, ByVal Ecosimresults As Object) _
+        Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+
         Try
             'Only run the Ecosim Network Analysis if it is turned on
             If Not m_manager.UseEcosimNetwork Then
@@ -346,6 +351,22 @@ Public Class cEwENetworkAnalysisPlugin
             'eat the exception
         End Try
 
+    End Sub
+
+    Public Sub EcosimRunCompleted(ByVal EcosimDatastructures As Object) _
+        Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
+
+        Try
+
+            If Me.m_manager.RunWithEcosim Then
+                If Me.m_manager.RunEcosimNetwork() Then
+                    Me.BroadcastResults()
+                End If
+            End If
+
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 #End Region ' Ecosim
@@ -413,7 +434,8 @@ Public Class cEwENetworkAnalysisPlugin
 
         Try
             If String.Compare(strDataName, Me.Name, True) = 0 Then
-                data = Me.GetData()
+                Me.PopulateData()
+                data = Me.m_ddx
             End If
         Catch ex As Exception
             data = Nothing
@@ -428,15 +450,17 @@ Public Class cEwENetworkAnalysisPlugin
 
         Try
             If typeData Is GetType(INetworkAnalysisData) Then
-                data = Me.GetData()
+                Me.PopulateData()
+                data = Me.m_ddx
             End If
         Catch ex As Exception
             data = Nothing
         End Try
         Return (data IsNot Nothing)
+
     End Function
 
-    Private Function GetData() As cEwENetworkAnalysisData
+    Private Sub PopulateData()
 
         ' Run network if needed
         If Not Me.m_manager.IsMainNetworkRun Then
@@ -478,11 +502,16 @@ Public Class cEwENetworkAnalysisPlugin
         Me.m_ddx.Ascendancy(5, 5) = m_manager.CapacityTotalsTotal
         Me.m_ddx.Ascendancy(6, 5) = m_manager.CapacityTotalsPer
 
-        ' ToDo: look up plugin assembly name dynamically
-        ' Dim s As String = System.Reflection.Assembly.GetAssembly(GetType(cEwENetworkAnalysisPlugin)).FullName)
-        Return Me.m_ddx
+    End Sub
 
-    End Function
+    Private Sub BroadcastResults()
+
+        If (Me.m_broadcaster IsNot Nothing) Then
+            Me.PopulateData()
+            Me.m_broadcaster.BroadcastData(Me.Name, Me.m_ddx)
+        End If
+
+    End Sub
 
 #End Region ' Data exchange
 
