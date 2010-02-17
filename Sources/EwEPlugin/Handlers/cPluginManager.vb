@@ -1104,6 +1104,30 @@ Public Class cPluginManager
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether remote data is enabled.
+    ''' </summary>
+    ''' <param name="dataType">The type of the data to match.</param>
+    ''' <param name="runType">Run type that the data is requested for, or
+    ''' Null if the run type is irrelevant.</param>
+    ''' <returns>True if the requested data is available.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Property EnableData(ByVal dataType As Type, ByVal runType As IRunType) As Boolean
+        Get
+            Return Me.TryInvokeMethod(GetType(IDataProducerPlugin), _
+                                      "IsEnabled", _
+                                      New Object() {dataType, runType}, _
+                                      eInvocationType.Any)
+        End Get
+        Set(ByVal value As Boolean)
+            Me.TryInvokeMethod(GetType(IDataProducerPlugin), _
+                                      "SetEnabled", _
+                                      New Object() {dataType, runType, value}, _
+                                      eInvocationType.Any)
+        End Set
+    End Property
+
 #End Region ' Data Exchange Plugins 
 
 #Region " Search plugins "

@@ -375,35 +375,38 @@ Public Class cEwENetworkAnalysisPlugin
         Return (typeData Is GetType(INetworkAnalysisData))
     End Function
 
-    Public Property Enable(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
-        Implements EwEPlugin.Data.IDataProducerPlugin.Enable
-        Get
-            If (String.Compare(strDataName, Me.Name, True) <> 0) Then Return False
+    Public Sub SetEnabled(ByVal strDataName As String, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
+        Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
 
+        If (String.Compare(strDataName, Me.Name, True) = 0) Then
             If TypeOf runType Is cEcopathRunType Then
-                Return Me.m_manager.RunWithEcopath
+                Me.m_manager.RunWithEcopath = bEnabled
             End If
 
             If TypeOf runType Is cEcosimRunType Then
-                Return Me.m_manager.RunWithEcosim
+                Me.m_manager.RunWithEcosim = bEnabled
             End If
 
-            Return False
-        End Get
-        Set(ByVal value As Boolean)
+        End If
 
-            If (String.Compare(strDataName, Me.Name, True) = 0) Then
-                If TypeOf runType Is cEcopathRunType Then
-                    Me.m_manager.RunWithEcopath = value
-                End If
+    End Sub
 
-                If TypeOf runType Is cEcosimRunType Then
-                    Me.m_manager.RunWithEcosim = value
-                End If
+    Public Function IsEnabled(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
+        Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
 
-            End If
-        End Set
-    End Property
+        If (String.Compare(strDataName, Me.Name, True) <> 0) Then Return False
+
+        If TypeOf runType Is cEcopathRunType Then
+            Return Me.m_manager.RunWithEcopath
+        End If
+
+        If TypeOf runType Is cEcosimRunType Then
+            Return Me.m_manager.RunWithEcosim
+        End If
+
+        Return False
+
+    End Function
 
     Public Function GetDataByName(ByVal strDataName As String, ByRef data As IPluginData) As Boolean _
             Implements IDataProducerPlugin.GetDataByName

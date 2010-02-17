@@ -552,51 +552,51 @@ Public Class cPluginPoint
 
     End Function
 
-    Public Property Enable(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
-        Implements EwEPlugin.Data.IDataProducerPlugin.Enable
-        Get
+    Public Function IsEnabled(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
+         Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
 
-            Dim parms As cParameters = Me.Data.Parameters
+        Dim parms As cParameters = Me.Data.Parameters
 
-            If (parms Is Nothing) Then Return False
-            If (String.Compare(strDataName, Me.Name, True) <> 0) Then Return False
+        If (parms Is Nothing) Then Return False
+        If (String.Compare(strDataName, Me.Name, True) <> 0) Then Return False
+
+        If TypeOf runType Is cEcopathRunType Then
+            Return parms.RunWithEcosim
+        End If
+
+        If TypeOf runType Is cEcosimRunType Then
+            Return parms.RunWithEcosim
+        End If
+
+        If TypeOf runType Is cFishingPolicySearchRunType Then
+            Return parms.RunWithFishingPolicySearch
+        End If
+
+        Return False
+
+    End Function
+
+    Public Sub SetEnabled(ByVal strDataName As String, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
+        Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+
+        Dim parms As cParameters = Me.Data.Parameters
+        If (String.Compare(strDataName, Me.Name, True) = 0) And _
+           (parms IsNot Nothing) Then
 
             If TypeOf runType Is cEcopathRunType Then
-                Return parms.RunWithEcosim
+                parms.RunWithEcopath = bEnabled
             End If
 
             If TypeOf runType Is cEcosimRunType Then
-                Return parms.RunWithEcosim
+                parms.RunWithEcosim = bEnabled
             End If
 
             If TypeOf runType Is cFishingPolicySearchRunType Then
-                Return parms.RunWithFishingPolicySearch
+                parms.RunWithFishingPolicySearch = bEnabled
             End If
 
-            Return False
-
-        End Get
-        Set(ByVal value As Boolean)
-
-            Dim parms As cParameters = Me.Data.Parameters
-            If (String.Compare(strDataName, Me.Name, True) = 0) And _
-               (parms IsNot Nothing) Then
-
-                If TypeOf runType Is cEcopathRunType Then
-                    parms.RunWithEcopath = value
-                End If
-
-                If TypeOf runType Is cEcosimRunType Then
-                    parms.RunWithEcosim = value
-                End If
-
-                If TypeOf runType Is cFishingPolicySearchRunType Then
-                    parms.RunWithFishingPolicySearch = value
-                End If
-
-            End If
-        End Set
-    End Property
+        End If
+    End Sub
 
 #End Region ' Data exchange
 
