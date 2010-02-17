@@ -32,7 +32,6 @@ Public Class cNetworkManager
         All = 14
     End Enum
 
-
     ''' <summary>
     ''' State infomation for the core set in CoreStateMonitor_CoreExecutionStateEvent(...)
     ''' </summary>
@@ -71,14 +70,12 @@ Public Class cNetworkManager
     ''' <summary>To comment</summary>
     Private m_bIsRequiredPrimaryProdRun As Boolean = False
 
-#If 0 Then ' Unused code
-    ''' <summary>List of iGroups that have fish catch </summary>
-    Private lstCatch As New List(Of Integer)
-#End If
-
     ''' <summary><see cref="cMessagePublisher">Core message publisher</see> for
     ''' sending messages through the EwE core system.</summary>
     Private m_publisher As cMessagePublisher = Nothing
+
+    Private m_bRunWithEcopath As Boolean = False
+    Private m_bRunWithEcosim As Boolean = False
 
 #End Region ' Private data
 
@@ -549,6 +546,28 @@ Public Class cNetworkManager
 #End Region ' Public Methods for running models
 
 #Region " Public Properties "
+
+#Region " Settings "
+
+    Public Property RunWithEcopath() As Boolean
+        Get
+            Return Me.m_bRunWithEcopath
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bRunWithEcopath = value
+        End Set
+    End Property
+
+    Public Property RunWithEcosim() As Boolean
+        Get
+            Return Me.m_bRunWithEcosim
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bRunWithEcosim = value
+        End Set
+    End Property
+
+#End Region ' Settings
 
 #Region " Inputs "
 
