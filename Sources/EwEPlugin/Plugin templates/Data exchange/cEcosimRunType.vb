@@ -1,12 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cEcosimRunType.vb,v $
-' Revision 1.1  2009/04/16 19:27:15  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwEUtils.Core

@@ -1,11 +1,3 @@
-'==============================================================================
-'
-' $Log: IDataConsumerPlugin.vb,v $
-' Revision 1.1  2009/01/21 19:08:12  jeroens
-' Moved and split into separate files
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On

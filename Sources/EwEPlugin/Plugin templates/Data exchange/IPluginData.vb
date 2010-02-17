@@ -1,15 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: IPluginData.vb,v $
-' Revision 1.2  2009/04/16 19:29:08  jeroens
-' Added RunType
-'
-' Revision 1.1  2009/01/21 19:08:12  jeroens
-' Moved and split into separate files
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwEUtils.Core

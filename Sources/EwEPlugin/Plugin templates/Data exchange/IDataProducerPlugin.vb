@@ -83,6 +83,17 @@ Namespace Data
         ''' -----------------------------------------------------------------------
         Function GetDataByName(ByVal strDataName As String, ByRef data As IPluginData) As Boolean
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether a plug-in distributes data for a given run type.
+        ''' </summary>
+        ''' <param name="strDataName">Name of the data to interact with.</param>
+        ''' <param name="runType">
+        ''' <see cref="IRunType">Run type</see> of the data to enable or disable.
+        ''' </param>
+        ''' -----------------------------------------------------------------------
+        Property Enable(ByVal strDataName As String, ByVal runType As IRunType) As Boolean
+
     End Interface
 
 End Namespace
