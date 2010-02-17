@@ -1,53 +1,3 @@
-'==============================================================================
-'
-' $Log: ApplyEP.vb,v $
-' Revision 1.4  2009/02/05 17:48:36  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.3  2009/01/16 18:30:06  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 16:01:58  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:35  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.22  2008/06/06 16:01:36  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.21  2008/06/02 00:07:44  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.20  2008/04/07 02:31:05  jeroens
-' Cleaning up resources
-'
-' Revision 1.19  2008/02/19 13:08:21  jeroens
-' Local QuickEditHandler Set label and Button follow combo box enabled behaviour
-'
-' Revision 1.18  2008/01/27 03:07:48  jeroens
-' Fixed bug 227
-'
-' Revision 1.17  2008/01/25 17:43:33  jeroens
-' InitForm called when form needs to refresh
-'
-' Revision 1.16  2007/11/13 15:35:08  jeroens
-' * Fixed bug 227
-'
-' Revision 1.15  2007/11/04 02:02:42  jeroens
-' * Fixed bug 325
-'
-' Revision 1.14  2007/10/29 14:04:59  jeroens
-' * Updated to reworked shape controls
-'
-' Revision 1.13  2007/10/20 02:50:38  jeroens
-' * ApplyEP form did not update to shape updates
-'
-' Revision 1.12  2007/10/16 13:49:19  jeroens
-' + Added header
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -60,71 +10,84 @@ Imports EwEUtils.Core
 #End Region
 
 Namespace Ecosim
+
     Public Class ApplyEP
 
 #Region "Constructor"
 
-        Private m_Core As cCore
-
         Private m_EPManager As cEggProductionManager
         Private m_bInUpdate As Boolean = False
 
-        Private Const ICON_WIDTH As Integer = 48
-        Private Const ICON_HEIGHT As Integer = 48
-
         Public Sub New()
-
-            ' This call is required by the Windows Form Designer.
             InitializeComponent()
-
-            m_Core = cCore.GetInstance()
-            m_EPManager = m_Core.EggProdShapeManager
-
-        End Sub
-
-        Public Sub New(ByVal text As String)
-
-            Me.New()
-            'Set tab text
-            Me.TabText = text
-            'Set window text
-            Me.Text = text
-
         End Sub
 
 #End Region
 
-#Region " Event handlers "
+#Region " Overrides "
 
-        Private Sub ApplyFF_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            ' Config manager
+            Me.m_EPManager = Me.Core.EggProdShapeManager
             ' Apply resources text to Set button
             Me.m_tsbSet.Text = My.Resources.LABEL_SET
             ' Init the form to the current data
-            InitForm()
+            Me.InitForm()
             ' Hook up to baseclass refresh
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager}
+
+            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
         End Sub
 
-        Private Sub ApplyEP_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+            ' Release style guide
+            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             ' Disconnect from baseclass refresh
             Me.CoreComponents = Nothing
+            ' Done
+            MyBase.OnFormClosed(e)
         End Sub
 
-        Private Sub m_tscEggProdShapes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tscEggProdShapes.SelectedIndexChanged
+        Public Overrides Property UIContext() As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As cUIContext)
+                MyBase.UIContext = value
+                Me.m_grid.UIContext = value
+            End Set
+        End Property
+
+#End Region ' Overrides
+
+#Region " Event handlers "
+
+        Private Sub m_tscEggProdShapes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tscEggProdShapes.SelectedIndexChanged
+
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
             Me.m_grid.SelectShapeName(Me.m_tscEggProdShapes.Text)
             Me.m_bInUpdate = False
+
         End Sub
 
-        Private Sub tsbSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbSet.Click
+        Private Sub tsbSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbSet.Click
+
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
             Me.m_grid.SelectShapeName(Me.m_tscEggProdShapes.Text)
             Me.m_bInUpdate = False
+
         End Sub
 
-        Private Sub m_lvShapes_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_lvShapes.SelectedIndexChanged
+        Private Sub m_lvShapes_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_lvShapes.SelectedIndexChanged
+
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
             If m_lvShapes.SelectedItems.Count = 1 Then
@@ -133,10 +96,21 @@ Namespace Ecosim
                 Me.m_grid.SelectShapeName("")
             End If
             Me.m_bInUpdate = False
+
         End Sub
 
-        Private Sub m_grid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
+        Private Sub m_grid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
+            Handles m_grid.OnSelectionChanged
+
             Me.UpdateSetControls()
+
+        End Sub
+
+        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+            ' Respond to color changes and thumbnail size changes
+            If (ct And (cStyleGuide.eChangeType.Thumbnails Or cStyleGuide.eChangeType.Colours)) > 0 Then
+                Me.LoadShapes()
+            End If
         End Sub
 
 #End Region ' Event handlers
@@ -146,7 +120,7 @@ Namespace Ecosim
         Private Sub InitForm()
 
             ' JS 20sep07: Pragmatic fix, also test for available egg production shapes
-            If m_Core.nStanzas > 0 And m_Core.EggProdShapeManager.Count > 0 Then
+            If Me.Core.nStanzas > 0 And Me.Core.EggProdShapeManager.Count > 0 Then
                 Me.m_tlpContent.Visible = True
                 Me.m_lblNoStanza.Visible = False
                 Me.LoadShapes()
@@ -164,7 +138,7 @@ Namespace Ecosim
             'Set up the thumbnail image size
             Dim largeImageList As New ImageList
             Dim item As ListViewItem = Nothing
-            Dim rcItem As Rectangle = New Rectangle(0, 0, ICON_WIDTH, ICON_HEIGHT)
+            Dim rcItem As Rectangle = New Rectangle(0, 0, Me.StyleGuide.ThumbnailSize, Me.StyleGuide.ThumbnailSize)
             Dim bmp As Bitmap = Nothing
             Dim g As Graphics = Nothing
             Dim iItemIndex As Integer = 0
@@ -187,7 +161,7 @@ Namespace Ecosim
                     For Each shapeFunc As cForcingFunction In m_EPManager
 
                         ' Create image
-                        bmp = New Bitmap(ICON_WIDTH, ICON_HEIGHT)
+                        bmp = New Bitmap(rcItem.Width, rcItem.Height)
                         g = Graphics.FromImage(bmp)
                         ShapeImage.DrawShape(shapeFunc, rcItem, g, Color.Red, eSketchDrawModeTypes.Fill, Math.Max(2.0!, shapeFunc.YMax))
                         largeImageList.Images.Add(bmp)
@@ -242,6 +216,7 @@ Namespace Ecosim
             Me.m_tsbSet.Enabled = bEnabled
 
         End Sub
+
 #End Region ' Internals
 
 #Region " Mandatory overrides "
