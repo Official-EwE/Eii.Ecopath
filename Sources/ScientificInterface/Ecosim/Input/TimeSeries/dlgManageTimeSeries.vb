@@ -449,7 +449,7 @@ Public Class dlgManageTimeSeries
 #Region " Import "
 
     Private Sub FillImportDatasetCombo()
-        Dim core As cCore = cCore.GetInstance()
+
         Dim ds As cTimeSeriesDataset = Nothing
         Dim iSelection As Integer = 0
         Dim strDatasetNew As String = ""
@@ -462,8 +462,8 @@ Public Class dlgManageTimeSeries
             strDatasetNew = My.Resources.ECOSIM_DEFAULT_NEWDATASET
         End If
 
-        For iDS As Integer = 1 To core.nTimeSeriesDatasets
-            ds = core.TimeSeriesDataset(iDS)
+        For iDS As Integer = 1 To Me.m_uic.Core.nTimeSeriesDatasets
+            ds = Me.m_uic.Core.TimeSeriesDataset(iDS)
             Me.m_cmbImportDataset.Items.Add(ds.Name)
         Next
 
@@ -493,11 +493,11 @@ Public Class dlgManageTimeSeries
 
             Case cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.CSV
                 If TypeOf Me.m_tr Is cTimeSeriesCSVReader Then Return
-                Me.m_tr = New cTimeSeriesCSVReader(cCore.GetInstance())
+                Me.m_tr = New cTimeSeriesCSVReader(Me.m_uic.Core)
 
             Case cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.Clipboard
                 If TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then Return
-                Me.m_tr = New cTimeSeriesClipboardReader(cCore.GetInstance())
+                Me.m_tr = New cTimeSeriesClipboardReader(Me.m_uic.Core)
 
             Case Else
                 Debug.Assert(False)
