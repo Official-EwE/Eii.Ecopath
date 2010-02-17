@@ -11,12 +11,12 @@ Imports EwEUtils.Core
 #End Region ' Imports
 
 Public Class cPluginPoint
-    Implements EwEPlugin.Data.IDatabasePlugin
     Implements EwEPlugin.IEcopathPlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IEcosimRunCompletedPlugin
+    Implements EwEPlugin.Data.IDatabasePlugin
     Implements EwEPlugin.Data.IDataProducerPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
@@ -40,7 +40,9 @@ Public Class cPluginPoint
 
 #End Region ' Privates
 
-#Region " Plugin point implementation "
+#Region " IPlugin point implementation "
+
+#Region " IPlugin "
 
     ''' <summary>
     ''' Initialize the Plugin. This is called when the core loads the Plugin. It will only be called once.
@@ -91,18 +93,6 @@ Public Class cPluginPoint
 
     End Sub
 
-    Private Sub EcopathMessageHandler(ByRef msg As cMessage)
-
-        Try
-            ' Take care of deleted groups and fleets
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
-
-    End Sub
-
-#Region " GUI "
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Internal name of the plug-in.
@@ -135,6 +125,34 @@ Public Class cPluginPoint
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Author() As String _
+        Implements EwEPlugin.IPlugin.Author
+        Get
+            Return "UBC Fisheries Centre, ECOST project, North Sea Centre"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Contact() As String _
+        Implements EwEPlugin.IPlugin.Contact
+        Get
+            Return "mailto:v.christensen@fisheries.ubc.ca,j.steenbeek@fisheries.ubc.ca"
+        End Get
+    End Property
+
+#End Region ' IPlugin
+
+#Region " GUI "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Image to display for controls activating the Value Chain plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -159,30 +177,6 @@ Public Class cPluginPoint
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String _
-        Implements EwEPlugin.IPlugin.Author
-        Get
-            Return "UBC Fisheries Centre, ECOST project, North Sea Centre"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String _
-        Implements EwEPlugin.IPlugin.Contact
-        Get
-            Return "mailto:v.christensen@fisheries.ubc.ca,j.steenbeek@fisheries.ubc.ca"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Text to be displayed on tooltips for controls activating the plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -200,6 +194,7 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef f As Windows.Forms.Form) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
+
         ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
         Dim bIsFormReady As Boolean = False
 
@@ -557,6 +552,52 @@ Public Class cPluginPoint
 
     End Function
 
+    Public Property Enable(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
+        Implements EwEPlugin.Data.IDataProducerPlugin.Enable
+        Get
+
+            Dim parms As cParameters = Me.Data.Parameters
+
+            If (parms Is Nothing) Then Return False
+            If (String.Compare(strDataName, Me.Name, True) <> 0) Then Return False
+
+            If TypeOf runType Is cEcopathRunType Then
+                Return parms.RunWithEcosim
+            End If
+
+            If TypeOf runType Is cEcosimRunType Then
+                Return parms.RunWithEcosim
+            End If
+
+            If TypeOf runType Is cFishingPolicySearchRunType Then
+                Return parms.RunWithFishingPolicySearch
+            End If
+
+            Return False
+
+        End Get
+        Set(ByVal value As Boolean)
+
+            Dim parms As cParameters = Me.Data.Parameters
+            If (String.Compare(strDataName, Me.Name, True) = 0) And _
+               (parms IsNot Nothing) Then
+
+                If TypeOf runType Is cEcopathRunType Then
+                    parms.RunWithEcopath = value
+                End If
+
+                If TypeOf runType Is cEcosimRunType Then
+                    parms.RunWithEcosim = value
+                End If
+
+                If TypeOf runType Is cFishingPolicySearchRunType Then
+                    parms.RunWithFishingPolicySearch = value
+                End If
+
+            End If
+        End Set
+    End Property
+
 #End Region ' Data exchange
 
 #Region " Search "
@@ -662,6 +703,14 @@ Public Class cPluginPoint
 #End Region ' Exhibitionism
 
 #Region " Helpers "
+
+    Private Sub EcopathMessageHandler(ByRef msg As cMessage)
+        Try
+            ' Take care of deleted groups and fleets
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
 
     Private Function HasInterface() As Boolean
         If Me.m_form Is Nothing Then Return False
