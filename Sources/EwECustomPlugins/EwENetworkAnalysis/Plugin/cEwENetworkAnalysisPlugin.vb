@@ -1,7 +1,6 @@
 #Region " Imports "
 
 Option Strict On
-Option Explicit On
 
 Imports EwECore
 Imports EwEPlugin
@@ -19,11 +18,8 @@ Public Class cEwENetworkAnalysisPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
-    Implements IDataProducerPlugin
+    Implements EwEPlugin.Data.IDataProducerPlugin
     Implements IDisposedPlugin
-    'at this time we do not need these plugin points
-    'Implements EwEPlugin.IEcosimRunCompletedPlugin
-    'Implements EwEPlugin.IEcosimBeginTimestepPlugin
 
 #Region " Private vars "
 
@@ -42,8 +38,50 @@ Public Class cEwENetworkAnalysisPlugin
     Private m_frmNA As frmNetworkAnalysis = Nothing
     ''' <summary>NA remote control.</summary>
     Private m_remote As cNetworkAnalysisRemote = Nothing
+    ''' <summary>Ooooh, that was long ago...</summary>
+    Private m_ddx As cEwENetworkAnalysisData = Nothing
 
 #End Region ' Private vars
+
+#Region " Generic "
+
+    Public ReadOnly Property Name() As String _
+        Implements EwEPlugin.IPlugin.Name
+        Get
+            Return "NetworkAnalysis"
+        End Get
+    End Property
+
+    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+        Get
+            Dim ai As New cAssemblyInfo(Assembly.GetAssembly(GetType(cEwENetworkAnalysisPlugin)))
+            Return ai.Description
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+        Get
+            Return "UBC Fisheries Centre"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+        Get
+            Return "mailto:support@ecopath.org"
+        End Get
+    End Property
+
+#End Region ' Generic
 
 #Region " Core "
 
@@ -59,6 +97,7 @@ Public Class cEwENetworkAnalysisPlugin
         Try
             If TypeOf core Is EwECore.cCore Then
                 Me.m_core = DirectCast(core, EwECore.cCore)
+                Me.m_ddx = New cEwENetworkAnalysisData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
 
                 Me.m_manager = New cNetworkManager
                 Me.m_manager.Init(m_core)
@@ -108,7 +147,8 @@ Public Class cEwENetworkAnalysisPlugin
     ''' </summary>
     ''' <param name="EcopathDataStructures"></param>
     ''' <remarks></remarks>
-    Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object) Implements EwEPlugin.IEcopathRunCompletedPlugin.EcopathRunCompleted
+    Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object) _
+        Implements EwEPlugin.IEcopathRunCompletedPlugin.EcopathRunCompleted
 
         'test the error handling 
         ' Throw New Exception("Error Test from Network Analysis Plugin.")
@@ -126,6 +166,11 @@ Public Class cEwENetworkAnalysisPlugin
                 m_manager.IsRequiredPrimaryProdRun = False
                 m_manager.IsEcosimNetworkRan = False
                 'End Add
+
+                If m_manager.RunWithEcopath Then
+                    m_manager.RunMainNetwork()
+                    ' Todo: dispatch data
+                End If
 
                 'System.Console.WriteLine(Me.ToString & ".EcopathRan() Successfull.")
             Else
@@ -145,45 +190,6 @@ Public Class cEwENetworkAnalysisPlugin
     End Sub
 
 #End Region ' Ecopath
-
-#Region " Generic "
-
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
-        Get
-            Return Me.ControlText()
-        End Get
-    End Property
-
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
-        Get
-            Dim ai As New cAssemblyInfo(Assembly.GetAssembly(GetType(cEwENetworkAnalysisPlugin)))
-            Return ai.Description
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
-        Get
-            Return "UBC Fisheries Centre"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
-        Get
-            Return "mailto:support@ecopath.org"
-        End Get
-    End Property
-
-#End Region ' Generic
 
 #Region " GUI "
 
@@ -346,63 +352,22 @@ Public Class cEwENetworkAnalysisPlugin
 
 #Region " Data exchange "
 
-    Private Class cNetworkAnalysisData
-
-        Implements IPluginData
-        Implements INetworkAnalysisData
-
-        Private m_strAssemblyName As String = ""
-        Private m_strPluginName As String = ""
-        Private m_assAscendancy As Single(,) = Nothing
-
-        Public Sub New(ByVal strAssemblyName As String, ByVal strPluginName As String, ByVal assAscendancy As Single(,))
-            Me.m_strAssemblyName = strAssemblyName
-            Me.m_strPluginName = strPluginName
-            Me.m_assAscendancy = assAscendancy
-        End Sub
-
-        Public ReadOnly Property AssemblyName() As String _
-            Implements IPluginData.AssemblyName
-            Get
-                Return Me.m_strAssemblyName
-            End Get
-        End Property
-
-        Public ReadOnly Property PluginName() As String _
-            Implements IPluginData.PluginName
-            Get
-                Return Me.m_strPluginName
-            End Get
-        End Property
-
-        Public ReadOnly Property Ascendancy() As Single(,) _
-            Implements INetworkAnalysisData.Ascendancy
-            Get
-                Return Me.m_assAscendancy
-            End Get
-        End Property
-
-        Public ReadOnly Property RunType() As IRunType _
-            Implements IPluginData.RunType
-            Get
-                Return Nothing
-            End Get
-        End Property
-
-    End Class
-
     Private m_broadcaster As IDataBroadcaster = Nothing
 
     Public Sub Broadcaster(ByVal broadcaster As IDataBroadcaster) _
         Implements IDataProducerPlugin.Broadcaster
-
         Me.m_broadcaster = broadcaster
-
     End Sub
 
-    Public Function ProducesData(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
+    Public Function IsDataAvailable(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
         Implements IDataProducerPlugin.IsDataAvailable
-        Return (strDataName = "AscendancyTotal")
+        Dim bIsAvailable As Boolean = False
+        Try
+            bIsAvailable = (String.Compare(strDataName, Me.Name, True) = 0)
+        Catch ex As Exception
+            bIsAvailable = False
+        End Try
+        Return bIsAvailable
     End Function
 
     Public Function ProducesData(ByVal typeData As System.Type, ByVal runType As IRunType) As Boolean _
@@ -410,14 +375,43 @@ Public Class cEwENetworkAnalysisPlugin
         Return (typeData Is GetType(INetworkAnalysisData))
     End Function
 
+    Public Property Enable(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
+        Implements EwEPlugin.Data.IDataProducerPlugin.Enable
+        Get
+            If (String.Compare(strDataName, Me.Name, True) <> 0) Then Return False
+
+            If TypeOf runType Is cEcopathRunType Then
+                Return Me.m_manager.RunWithEcopath
+            End If
+
+            If TypeOf runType Is cEcosimRunType Then
+                Return Me.m_manager.RunWithEcosim
+            End If
+
+            Return False
+        End Get
+        Set(ByVal value As Boolean)
+
+            If (String.Compare(strDataName, Me.Name, True) = 0) Then
+                If TypeOf runType Is cEcopathRunType Then
+                    Me.m_manager.RunWithEcopath = value
+                End If
+
+                If TypeOf runType Is cEcosimRunType Then
+                    Me.m_manager.RunWithEcosim = value
+                End If
+
+            End If
+        End Set
+    End Property
+
     Public Function GetDataByName(ByVal strDataName As String, ByRef data As IPluginData) As Boolean _
             Implements IDataProducerPlugin.GetDataByName
 
         Try
-            Select Case strDataName
-                Case "AscendancyTotal"
-                    data = Me.GetData()
-            End Select
+            If String.Compare(strDataName, Me.Name, True) = 0 Then
+                data = Me.GetData()
+            End If
         Catch ex As Exception
             data = Nothing
         End Try
@@ -439,53 +433,51 @@ Public Class cEwENetworkAnalysisPlugin
         Return (data IsNot Nothing)
     End Function
 
-    Private Function GetData() As cNetworkAnalysisData
-
-        Dim asData(6, 5) As Single
+    Private Function GetData() As cEwENetworkAnalysisData
 
         ' Run network if needed
         If Not Me.m_manager.IsMainNetworkRun Then
             Me.m_manager.RunMainNetwork()
         End If
 
-        asData(1, 1) = m_manager.AscendancyImportTotal
-        asData(2, 1) = m_manager.AscendancyImportPer
-        asData(3, 1) = m_manager.OverheadImportTotal
-        asData(4, 1) = m_manager.OverheadImportPer
-        asData(5, 1) = m_manager.CapacityImportTotal
-        asData(6, 1) = m_manager.CapacityImportPer
+        Me.m_ddx.Ascendancy(1, 1) = m_manager.AscendancyImportTotal
+        Me.m_ddx.Ascendancy(2, 1) = m_manager.AscendancyImportPer
+        Me.m_ddx.Ascendancy(3, 1) = m_manager.OverheadImportTotal
+        Me.m_ddx.Ascendancy(4, 1) = m_manager.OverheadImportPer
+        Me.m_ddx.Ascendancy(5, 1) = m_manager.CapacityImportTotal
+        Me.m_ddx.Ascendancy(6, 1) = m_manager.CapacityImportPer
 
-        asData(1, 2) = m_manager.AscendancyInternalFlowTotal
-        asData(2, 2) = m_manager.AscendancyInternalFlowPer
-        asData(3, 2) = m_manager.OverheadFlowTotal
-        asData(4, 2) = m_manager.OverheadFlowPer
-        asData(5, 2) = m_manager.CapacityFlowTotal
-        asData(6, 2) = m_manager.CapacityFlowPer
+        Me.m_ddx.Ascendancy(1, 2) = m_manager.AscendancyInternalFlowTotal
+        Me.m_ddx.Ascendancy(2, 2) = m_manager.AscendancyInternalFlowPer
+        Me.m_ddx.Ascendancy(3, 2) = m_manager.OverheadFlowTotal
+        Me.m_ddx.Ascendancy(4, 2) = m_manager.OverheadFlowPer
+        Me.m_ddx.Ascendancy(5, 2) = m_manager.CapacityFlowTotal
+        Me.m_ddx.Ascendancy(6, 2) = m_manager.CapacityFlowPer
 
-        asData(1, 3) = m_manager.AscendancyExportTotal
-        asData(2, 3) = m_manager.AscendancyExportPer
-        asData(3, 3) = m_manager.OverheadExportTotal
-        asData(4, 3) = m_manager.OverheadExportPer
-        asData(5, 3) = m_manager.CapacityExportTotal
-        asData(6, 3) = m_manager.CapacityExportPer
+        Me.m_ddx.Ascendancy(1, 3) = m_manager.AscendancyExportTotal
+        Me.m_ddx.Ascendancy(2, 3) = m_manager.AscendancyExportPer
+        Me.m_ddx.Ascendancy(3, 3) = m_manager.OverheadExportTotal
+        Me.m_ddx.Ascendancy(4, 3) = m_manager.OverheadExportPer
+        Me.m_ddx.Ascendancy(5, 3) = m_manager.CapacityExportTotal
+        Me.m_ddx.Ascendancy(6, 3) = m_manager.CapacityExportPer
 
-        asData(1, 4) = m_manager.AscendancyRespTotal
-        asData(2, 4) = m_manager.AscendancyRespPer
-        asData(3, 4) = m_manager.OverheadRespTotal
-        asData(4, 4) = m_manager.OverheadRespPer
-        asData(5, 4) = m_manager.CapacityRespTotal
-        asData(6, 4) = m_manager.CapacityRespPer
+        Me.m_ddx.Ascendancy(1, 4) = m_manager.AscendancyRespTotal
+        Me.m_ddx.Ascendancy(2, 4) = m_manager.AscendancyRespPer
+        Me.m_ddx.Ascendancy(3, 4) = m_manager.OverheadRespTotal
+        Me.m_ddx.Ascendancy(4, 4) = m_manager.OverheadRespPer
+        Me.m_ddx.Ascendancy(5, 4) = m_manager.CapacityRespTotal
+        Me.m_ddx.Ascendancy(6, 4) = m_manager.CapacityRespPer
 
-        asData(1, 5) = m_manager.AscendancyTotalsTotal
-        asData(2, 5) = m_manager.AscendancyTotalsPer
-        asData(3, 5) = m_manager.OverheadTotalsTotal
-        asData(4, 5) = m_manager.OverheadTotalsPer
-        asData(5, 5) = m_manager.CapacityTotalsTotal
-        asData(6, 5) = m_manager.CapacityTotalsPer
+        Me.m_ddx.Ascendancy(1, 5) = m_manager.AscendancyTotalsTotal
+        Me.m_ddx.Ascendancy(2, 5) = m_manager.AscendancyTotalsPer
+        Me.m_ddx.Ascendancy(3, 5) = m_manager.OverheadTotalsTotal
+        Me.m_ddx.Ascendancy(4, 5) = m_manager.OverheadTotalsPer
+        Me.m_ddx.Ascendancy(5, 5) = m_manager.CapacityTotalsTotal
+        Me.m_ddx.Ascendancy(6, 5) = m_manager.CapacityTotalsPer
 
         ' ToDo: look up plugin assembly name dynamically
         ' Dim s As String = System.Reflection.Assembly.GetAssembly(GetType(cEwENetworkAnalysisPlugin)).FullName)
-        Return New cNetworkAnalysisData("EwENetworkAnalysis", Me.Name, asData)
+        Return Me.m_ddx
 
     End Function
 
