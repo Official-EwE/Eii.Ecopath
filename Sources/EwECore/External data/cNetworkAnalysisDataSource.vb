@@ -15,25 +15,35 @@ Imports EwEUtils.Core
 Public Class cNetworkAnalysisDataSource
     Implements Data.IDataConsumerPlugin
 
+#Region " Private vars "
+
     Private Shared s_core As cCore = Nothing
+
+#End Region ' Private vars
 
 #Region " Public events "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Event that get fired when INetworkAnalysisData is available
     ''' </summary>
     ''' <param name="NetworkAnalysisData">The data that is available.</param>
+    ''' -----------------------------------------------------------------------
     Public Event onNetworkAnalysisData(ByVal NetworkAnalysisData As INetworkAnalysisData)
 
 #End Region ' Public events
 
 #Region " Singleton 'Shared' interface "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Return the instance of this class created by the PluginManager
+    ''' Return the instance of this class created by the PluginManager.
     ''' </summary>
     ''' <returns>The only instance of cEconomicDataSource. Otherwise nothing</returns>
-    ''' <remarks>An instance of this class is loaded from the Core via the Plugin manager. This allows classes in the core to retrieve an instance of cEconomicDataSource for Economic data.</remarks>
+    ''' <remarks>An instance of this class is loaded from the Core via the Plugin 
+    ''' manager. This allows classes in the core to retrieve an instance of 
+    ''' cEconomicDataSource for Economic data.</remarks>
+    ''' -----------------------------------------------------------------------
     Public Shared Function getInstance() As cNetworkAnalysisDataSource
 
         Dim dataSource As cNetworkAnalysisDataSource = Nothing
@@ -61,6 +71,26 @@ Public Class cNetworkAnalysisDataSource
     End Function
 
 #End Region ' Singleton 'Shared' interface
+
+#Region " Public interfaces "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether any network analysis data producer, if available, 
+    ''' should deliver data for a given <see cref="IRunType">run type</see>.
+    ''' </summary>
+    ''' <param name="runtype"></param>
+    ''' -----------------------------------------------------------------------
+    Public Property EnableData(ByVal runtype As IRunType) As Boolean
+        Get
+            Return s_core.PluginManager.EnableData(GetType(INetworkAnalysisData), runtype)
+        End Get
+        Set(ByVal value As Boolean)
+            s_core.PluginManager.EnableData(GetType(INetworkAnalysisData), runtype) = value
+        End Set
+    End Property
+
+#End Region ' Public interfaces
 
 #Region " Private methods "
 

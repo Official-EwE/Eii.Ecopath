@@ -16,26 +16,35 @@ Imports EwEUtils.Core
 Public Class cEconomicDataSource
     Implements Data.IDataConsumerPlugin
 
+#Region " Private vars "
+
     Private Shared s_core As cCore = Nothing
+
+#End Region ' Private vars
 
 #Region " Public events "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Event that get fired when IEconomicData is available
     ''' </summary>
     ''' <param name="EconomicData"></param>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Public Event onEconomicData(ByVal EconomicData As IEconomicData)
 
 #End Region ' Public events
 
 #Region " Singleton 'Shared' interface "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Return the instance of this class created by the PluginManager
     ''' </summary>
     ''' <returns>The only instance of cEconomicDataSource. Otherwise nothing</returns>
-    ''' <remarks>An instance of this class is loaded from the Core via the Plugin manager. This allows classes in the core to retrieve an instance of cEconomicDataSource for Economic data.</remarks>
+    ''' <remarks>An instance of this class is loaded from the Core via the Plugin 
+    ''' manager. This allows classes in the core to retrieve an instance of 
+    ''' cEconomicDataSource for Economic data.</remarks>
+    ''' -----------------------------------------------------------------------
     Public Shared Function getInstance() As cEconomicDataSource
         Dim dataSource As cEconomicDataSource
 
@@ -62,6 +71,26 @@ Public Class cEconomicDataSource
     End Function
 
 #End Region ' Singleton 'Shared' interface
+
+#Region " Public interfaces "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether any economic data producer, if available, should deliver 
+    ''' data for a given <see cref="IRunType">run type</see>.
+    ''' </summary>
+    ''' <param name="runtype"></param>
+    ''' -----------------------------------------------------------------------
+    Public Property EnableData(ByVal runtype As IRunType) As Boolean
+        Get
+            Return s_core.PluginManager.EnableData(GetType(IEconomicData), runtype)
+        End Get
+        Set(ByVal value As Boolean)
+            s_core.PluginManager.EnableData(GetType(IEconomicData), runtype) = value
+        End Set
+    End Property
+
+#End Region ' Public interfaces
 
 #Region " Private methods "
 
