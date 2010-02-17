@@ -1,68 +1,3 @@
-'==============================================================================
-'
-' $Log: RespirationEwEGrid.vb,v $
-' Revision 1.5  2009/05/28 12:36:57  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/05/21 19:27:13  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:09  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:56:19  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:33  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.20  2008/08/02 03:04:11  jeroens
-' Renamed resources
-'
-' Revision 1.19  2008/06/02 00:01:27  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.18  2008/05/29 22:22:40  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.17  2008/04/07 02:31:07  jeroens
-' Cleaning up resources
-'
-' Revision 1.16  2008/01/11 12:33:17  jeroens
-' Fixed bug 299
-'
-' Revision 1.15  2007/10/10 02:59:12  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.14  2007/08/03 17:18:10  jeroens
-' * Uses cell-based unit support
-'
-' Revision 1.13  2007/07/06 20:11:17  jeroens
-' * Core stanza group list no longer exposed
-'
-' Revision 1.12  2007/06/21 23:57:21  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.11  2007/05/04 23:53:05  fgao
-' Add temporary Unit settings for grid header
-'
-' Revision 1.10  2007/04/29 03:45:10  jeroens
-' * Connected to EwEGridRefresh
-'
-' Revision 1.9  2007/04/19 19:19:22  joeh
-' *Fix the first two columns in the grid
-'
-' Revision 1.8  2007/04/18 21:48:11  joeh
-' *Implement stanza heirachy
-'
-' Revision 1.7  2006/09/29 18:06:41  sherman
-' Changed Header Column to header column instead of propertycell
-'
-' Revision 1.6  2006/08/19 09:48:17  jeroens
-' + Completed grid content
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -106,7 +41,6 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
