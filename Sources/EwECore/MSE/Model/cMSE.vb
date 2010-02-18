@@ -1,11 +1,11 @@
 Option Strict On
 
+Imports System.IO
 Imports EwECore
 Imports EwECore.Ecosim
+Imports EwECore.ExternalData
 Imports EwEUtils.Core
 Imports EwEPlugin
-Imports System.IO
-
 
 Namespace MSE
 
@@ -91,7 +91,7 @@ Namespace MSE
         'calc in UpdateQuotas() using the estimated biomass
         Private FtargetT() As Single
 
-        Private WithEvents EconomicData As cEconomicDataSource
+        Private WithEvents m_EconomicData As cEconomicDataSource
 
         Private m_MSYCallBack As MSYProgressDelegate
         Private m_baseEffort(,) As Single 'base value relative effort FishRateGear()
@@ -122,8 +122,9 @@ Namespace MSE
 
         Private ReadOnly Property UsePlugin() As Boolean
             Get
-                If Me.m_Search.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
-                    Return True
+                If (Me.m_EconomicData IsNot Nothing) Then
+                    Return (Me.m_Search.MSEUseEconomicPlugin = True) And _
+                           (Me.m_EconomicData.EnableData(New cEcosimRunType) = True)
                 End If
                 Return False
             End Get
@@ -147,7 +148,7 @@ Namespace MSE
             Me.m_epdata = EcopathData
             Me.m_pluginManager = PluginManager
 
-            Me.EconomicData = cEconomicDataSource.getInstance()
+            Me.m_EconomicData = cEconomicDataSource.getInstance()
             Me.m_data.InitForRun()
 
             'VC added a boolean to ex/include fleets from MSY runs
@@ -1222,7 +1223,7 @@ Namespace MSE
                             'if that happens set the value to a low value, so that it may try a lower effort
                             ' If CheckIfFishingMortalitiesTooHigh(iflt) Then CurValue = CurValue / 2
 
-                            
+
                             If CurValue = 0 Then Done = True 'no effort or no value
                             If CurValue < 0 Then Stop
 
@@ -1513,7 +1514,7 @@ Namespace MSE
                             'if that happens set the value to a low value, so that it may try a lower effort
                             ' If CheckIfFishingMortalitiesTooHigh(iflt) Then CurValue = CurValue / 2
 
-                         
+
                             If CurValue = 0 Then Done = True 'no effort or no value
                             If CurValue < 0 Then Stop
 
@@ -1930,7 +1931,7 @@ Namespace MSE
         ''' </summary>
         ''' <param name="EconomicData"></param>
         ''' <remarks></remarks>
-        Private Sub onEconomicData(ByVal EconomicData As EwEUtils.Core.IEconomicData) Handles EconomicData.onEconomicData
+        Private Sub onEconomicData(ByVal EconomicData As EwEUtils.Core.IEconomicData) Handles m_EconomicData.onEconomicData
 
             Try
 

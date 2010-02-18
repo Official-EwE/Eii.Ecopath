@@ -25,7 +25,7 @@ Public Class cParameters
 
     Private m_bRunWithEcopath As Boolean = False
     Private m_bRunWithEcosim As Boolean = False
-    Private m_bRunWithFishingPolicySearch As Boolean = False
+    Private m_bRunSearches As Boolean = False
     Private m_bResultsByFleet As Boolean = False
     Private m_sEffortMin As Single = 0.0!
     Private m_sEffortMax As Single = 4.0!
@@ -91,13 +91,13 @@ Public Class cParameters
         End Set
     End Property
 
-    Public Property RunWithFishingPolicySearch() As Boolean
+    Public Property RunWithSearches() As Boolean
         Get
-            Return Me.m_bRunWithFishingPolicySearch
+            Return Me.m_bRunSearches
         End Get
         Set(ByVal bRunWithFishingPolicySearch As Boolean)
-            If (Me.m_bRunWithFishingPolicySearch <> bRunWithFishingPolicySearch) Then
-                Me.m_bRunWithFishingPolicySearch = bRunWithFishingPolicySearch
+            If (Me.m_bRunSearches <> bRunWithFishingPolicySearch) Then
+                Me.m_bRunSearches = bRunWithFishingPolicySearch
                 Me.SetChanged()
             End If
         End Set

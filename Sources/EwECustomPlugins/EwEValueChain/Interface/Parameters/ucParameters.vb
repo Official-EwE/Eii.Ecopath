@@ -5,6 +5,7 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Database.cEwEDatabase
 
 #End Region ' Imports
 
@@ -25,6 +26,8 @@ Public Class ucParameters
     Private m_fpFMin As cEwEFormatProvider = Nothing
     Private m_fpFMax As cEwEFormatProvider = Nothing
     Private m_fpIncr As cEwEFormatProvider = Nothing
+
+    Private m_bInUpdate As Boolean = False
 
 #Region " Constructor "
 
@@ -56,19 +59,12 @@ Public Class ucParameters
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Me.m_fpFMin = New cEwEFormatProvider(Me.m_nudEffortMin, GetType(Single))
+        Me.m_fpFMax = New cEwEFormatProvider(Me.m_nudEffortMax, GetType(Single))
+        Me.m_fpIncr = New cEwEFormatProvider(Me.m_nudEffortIncr, GetType(Single))
+
         ' Init check boxes
         Try
-            Me.m_chkRunWithEcopath.Checked = Me.m_data.Parameters.RunWithEcopath
-            Me.m_chkRunWithEcosim.Checked = Me.m_data.Parameters.RunWithEcosim
-            Me.m_chkRunWithFishingPolicySearch.Checked = Me.m_data.Parameters.RunWithFishingPolicySearch
-            Me.m_chkResultsByFleet.Checked = Me.m_data.Parameters.ResultsByFleet
-
-            Me.m_fpFMin = New cEwEFormatProvider(Me.m_nudEffortMin, GetType(Single))
-            Me.m_fpFMin.Value = Me.m_data.Parameters.EquilibriumEffortMin
-            Me.m_fpFMax = New cEwEFormatProvider(Me.m_nudEffortMax, GetType(Single))
-            Me.m_fpFMax.Value = Me.m_data.Parameters.EquilibriumEffortMax
-            Me.m_fpIncr = New cEwEFormatProvider(Me.m_nudEffortIncr, GetType(Single))
-            Me.m_fpIncr.Value = Me.m_data.Parameters.EquilibriumEffortIncrement
 
             For iFleet As Integer = 1 To Me.m_core.nFleets
                 Me.m_clbFleets.Items.Add(Me.m_core.FleetInputs(iFleet).Name)
@@ -78,8 +74,14 @@ Public Class ucParameters
 
         End Try
 
+        ' Reflect parameters values in controls
+        Me.UpdateControlValues()
+
         ' Start listening to core state changes
         AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+        ' Start listening to parameter changes
+        AddHandler Me.m_data.Parameters.OnChanged, AddressOf OnParametersChanged
+
         ' Force core state dependent initialization
         Me.OnCoreStateChanged(Me.m_core.StateMonitor)
 
@@ -89,12 +91,15 @@ Public Class ucParameters
     ''' <summary>
     ''' Unload me!
     ''' </summary>
-    ''' <param name="bDisposing"></param>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+        MyBase.OnHandleDestroyed(e)
 
         ' Stop listening to core state changes
         RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+        ' Stop listening to parameter changes
+        RemoveHandler Me.m_data.Parameters.OnChanged, AddressOf OnParametersChanged
+
         ' Unplug Ecosim controls
         Me.ConfigureEcosimControls(False)
 
@@ -130,6 +135,7 @@ Public Class ucParameters
     ''' -----------------------------------------------------------------------
     Private Sub OnRunWithEcopathCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_chkRunWithEcopath.CheckedChanged
+        If Me.m_bInUpdate Then Return
         Me.m_data.Parameters.RunWithEcopath = Me.m_chkRunWithEcopath.Checked
     End Sub
 
@@ -140,6 +146,7 @@ Public Class ucParameters
     ''' -----------------------------------------------------------------------
     Private Sub OnRunWithEcosimCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
           Handles m_chkRunWithEcosim.CheckedChanged
+        If Me.m_bInUpdate Then Return
         Me.m_data.Parameters.RunWithEcosim = Me.m_chkRunWithEcosim.Checked
     End Sub
 
@@ -149,8 +156,9 @@ Public Class ucParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub OnRunWithFishingPolicySearchCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-         Handles m_chkRunWithFishingPolicySearch.CheckedChanged
-        Me.m_data.Parameters.RunWithFishingPolicySearch = Me.m_chkRunWithFishingPolicySearch.Checked
+         Handles m_chkRunWithSearches.CheckedChanged
+        If Me.m_bInUpdate Then Return
+        Me.m_data.Parameters.RunWithSearches = Me.m_chkRunWithSearches.Checked
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -160,38 +168,72 @@ Public Class ucParameters
     ''' -----------------------------------------------------------------------
     Private Sub OnResultsByFleetChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_chkResultsByFleet.CheckedChanged
+        If Me.m_bInUpdate Then Return
         Me.m_data.Parameters.ResultsByFleet = Me.m_chkResultsByFleet.Checked
     End Sub
 
     Private Sub m_nudEffortMin_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_nudEffortMin.ValueChanged
         If (Me.m_data Is Nothing) Then Return
+        If Me.m_bInUpdate Then Return
         Me.m_data.Parameters.EquilibriumEffortMin = CSng(Me.m_nudEffortMin.Value)
     End Sub
 
     Private Sub m_nudEffortMax_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_nudEffortMax.ValueChanged
+
         If (Me.m_data Is Nothing) Then Return
+        If Me.m_bInUpdate Then Return
+
         Me.m_data.Parameters.EquilibriumEffortMax = CSng(Me.m_nudEffortMax.Value)
     End Sub
 
     Private Sub m_nudEffortIncr_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_nudEffortIncr.ValueChanged
+
         If (Me.m_data Is Nothing) Then Return
+        If Me.m_bInUpdate Then Return
+
         Me.m_data.Parameters.EquilibriumEffortIncrement = CSng(Me.m_nudEffortIncr.Value)
     End Sub
 
     Private Sub m_clbFleets_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_clbFleets.SelectedIndexChanged
+
+        If Me.m_bInUpdate Then Return
+
         Me.m_data.Parameters.EquilibriumFleetsToVary.Clear()
         For Each iFleet As Integer In Me.m_clbFleets.CheckedIndices
             Me.m_data.Parameters.EquilibriumFleetsToVary.Add(iFleet + 1)
         Next
     End Sub
 
+    Private Sub OnParametersChanged(ByVal obj As cOOPStorable)
+        Me.UpdateControlValues()
+    End Sub
+
 #End Region ' Events
 
 #Region " Internals "
+
+    Private Sub UpdateControlValues()
+
+        Me.m_bInUpdate = True
+        Try
+            Me.m_chkRunWithEcopath.Checked = Me.m_data.Parameters.RunWithEcopath
+            Me.m_chkRunWithEcosim.Checked = Me.m_data.Parameters.RunWithEcosim
+            Me.m_chkRunWithSearches.Checked = Me.m_data.Parameters.RunWithSearches
+            Me.m_chkResultsByFleet.Checked = Me.m_data.Parameters.ResultsByFleet
+
+            Me.m_fpFMin.Value = Me.m_data.Parameters.EquilibriumEffortMin
+            Me.m_fpFMax.Value = Me.m_data.Parameters.EquilibriumEffortMax
+            Me.m_fpIncr.Value = Me.m_data.Parameters.EquilibriumEffortIncrement
+        Catch ex As Exception
+
+        End Try
+        Me.m_bInUpdate = False
+
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

@@ -21,7 +21,7 @@ Partial Class ucParameters
         Me.m_lblIntegration = New System.Windows.Forms.Label
         Me.m_chkRunWithEcopath = New System.Windows.Forms.CheckBox
         Me.m_chkRunWithEcosim = New System.Windows.Forms.CheckBox
-        Me.m_chkRunWithFishingPolicySearch = New System.Windows.Forms.CheckBox
+        Me.m_chkRunWithSearches = New System.Windows.Forms.CheckBox
         Me.m_lblEQ = New System.Windows.Forms.Label
         Me.m_clbFleets = New System.Windows.Forms.CheckedListBox
         Me.m_lblFleets = New System.Windows.Forms.Label
@@ -179,15 +179,15 @@ Partial Class ucParameters
         Me.m_chkRunWithEcosim.Text = "Run with Eco&sim"
         Me.m_chkRunWithEcosim.UseVisualStyleBackColor = True
         '
-        'm_chkRunWithFishingPolicySearch
+        'm_chkRunWithSearches
         '
-        Me.m_chkRunWithFishingPolicySearch.AutoSize = True
-        Me.m_chkRunWithFishingPolicySearch.Location = New System.Drawing.Point(6, 70)
-        Me.m_chkRunWithFishingPolicySearch.Name = "m_chkRunWithFishingPolicySearch"
-        Me.m_chkRunWithFishingPolicySearch.Size = New System.Drawing.Size(114, 17)
-        Me.m_chkRunWithFishingPolicySearch.TabIndex = 3
-        Me.m_chkRunWithFishingPolicySearch.Text = "Run with &searches"
-        Me.m_chkRunWithFishingPolicySearch.UseVisualStyleBackColor = True
+        Me.m_chkRunWithSearches.AutoSize = True
+        Me.m_chkRunWithSearches.Location = New System.Drawing.Point(6, 70)
+        Me.m_chkRunWithSearches.Name = "m_chkRunWithSearches"
+        Me.m_chkRunWithSearches.Size = New System.Drawing.Size(114, 17)
+        Me.m_chkRunWithSearches.TabIndex = 3
+        Me.m_chkRunWithSearches.Text = "Run with &searches"
+        Me.m_chkRunWithSearches.UseVisualStyleBackColor = True
         '
         'm_lblEQ
         '
@@ -298,7 +298,7 @@ Partial Class ucParameters
         Me.Controls.Add(Me.m_lblEffortMin)
         Me.Controls.Add(Me.m_lblFleets)
         Me.Controls.Add(Me.m_clbFleets)
-        Me.Controls.Add(Me.m_chkRunWithFishingPolicySearch)
+        Me.Controls.Add(Me.m_chkRunWithSearches)
         Me.Controls.Add(Me.m_chkRunWithEcosim)
         Me.Controls.Add(Me.m_chkResultsByFleet)
         Me.Controls.Add(Me.m_chkRunWithEcopath)
@@ -333,7 +333,7 @@ Partial Class ucParameters
     Private WithEvents m_lblIntegration As System.Windows.Forms.Label
     Private WithEvents m_chkRunWithEcopath As System.Windows.Forms.CheckBox
     Private WithEvents m_chkRunWithEcosim As System.Windows.Forms.CheckBox
-    Private WithEvents m_chkRunWithFishingPolicySearch As System.Windows.Forms.CheckBox
+    Private WithEvents m_chkRunWithSearches As System.Windows.Forms.CheckBox
     Private WithEvents m_tlpSponsors As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_lblSponsors As System.Windows.Forms.Label
     Private WithEvents m_lblEQ As System.Windows.Forms.Label

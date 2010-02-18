@@ -505,7 +505,7 @@ Public Class cPluginPoint
 
         Dim bIsAvailable As Boolean = False
         Try
-            bIsAvailable = (String.Compare(strDataName, Me.Name, True) = 0) And Me.SupportsRunType(runType)
+            bIsAvailable = (String.Compare(strDataName, Me.Name, True) = 0)
         Catch ex As Exception
             bIsAvailable = False
         End Try
@@ -518,7 +518,7 @@ Public Class cPluginPoint
 
         Dim bIsAvailable As Boolean = False
         Try
-            bIsAvailable = (typeData Is GetType(IEconomicData)) And Me.SupportsRunType(runType)
+            bIsAvailable = (typeData Is GetType(IEconomicData))
         Catch ex As Exception
             bIsAvailable = False
         End Try
@@ -555,21 +555,29 @@ Public Class cPluginPoint
     Public Function IsEnabled(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
          Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
 
-        Dim parms As cParameters = Me.Data.Parameters
-
-        If (parms Is Nothing) Then Return False
         If (String.Compare(strDataName, Me.Name, True) <> 0) Then Return False
+        Return Me.IsEnabled(GetType(IEconomicData), runType)
 
-        If TypeOf runType Is cEcopathRunType Then
+    End Function
+
+    Public Function IsEnabled(ByVal typeData As System.Type, ByVal runtype As IRunType) As Boolean _
+         Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
+
+        If Not (typeData Is GetType(IEconomicData)) Then Return False
+
+        Dim parms As cParameters = Me.Data.Parameters
+        If (parms Is Nothing) Then Return False
+
+        If TypeOf runtype Is cEcopathRunType Then
             Return parms.RunWithEcosim
         End If
 
-        If TypeOf runType Is cEcosimRunType Then
+        If TypeOf runtype Is cEcosimRunType Then
             Return parms.RunWithEcosim
         End If
 
-        If TypeOf runType Is cFishingPolicySearchRunType Then
-            Return parms.RunWithFishingPolicySearch
+        If TypeOf runtype Is cSearchRunType Then
+            Return parms.RunWithSearches
         End If
 
         Return False
@@ -579,23 +587,31 @@ Public Class cPluginPoint
     Public Sub SetEnabled(ByVal strDataName As String, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
         Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
 
-        Dim parms As cParameters = Me.Data.Parameters
-        If (String.Compare(strDataName, Me.Name, True) = 0) And _
-           (parms IsNot Nothing) Then
-
-            If TypeOf runType Is cEcopathRunType Then
-                parms.RunWithEcopath = bEnabled
-            End If
-
-            If TypeOf runType Is cEcosimRunType Then
-                parms.RunWithEcosim = bEnabled
-            End If
-
-            If TypeOf runType Is cFishingPolicySearchRunType Then
-                parms.RunWithFishingPolicySearch = bEnabled
-            End If
-
+        If (String.Compare(strDataName, Me.Name, True) = 0) Then
+            Me.SetEnabled(GetType(IEconomicData), runType, bEnabled)
         End If
+
+    End Sub
+
+    Public Sub SetEnabled(ByVal typeData As System.Type, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
+        Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+
+        Dim parms As cParameters = Me.Data.Parameters
+        If (parms Is Nothing) Then Return
+        If Not (typeData Is GetType(IEconomicData)) Then Return
+
+        If TypeOf runType Is cEcopathRunType Then
+            parms.RunWithEcopath = bEnabled
+        End If
+
+        If TypeOf runType Is cEcosimRunType Then
+            parms.RunWithEcosim = bEnabled
+        End If
+
+        If TypeOf runType Is cFishingPolicySearchRunType Then
+            parms.RunWithSearches = bEnabled
+        End If
+
     End Sub
 
 #End Region ' Data exchange
@@ -617,7 +633,7 @@ Public Class cPluginPoint
         If (parms Is Nothing) Then Return
 
         ' Only respond to fishing policy search when allowed to respond
-        If (parms.RunWithFishingPolicySearch = False) Then Return
+        If (parms.RunWithSearches = False) Then Return
         ' Only respond to fishing policy search
         If (ds.SearchMode <> eSearchModes.FishingPolicy) Then Return
 
@@ -660,7 +676,7 @@ Public Class cPluginPoint
         If (parms Is Nothing) Then Return
 
         ' Only respond to fishing policy search when allowed to respond
-        If (parms.RunWithFishingPolicySearch = False) Then Return
+        If (parms.RunWithSearches = False) Then Return
         ' Only respond to fishing policy search
         If (ds.SearchMode <> eSearchModes.FishingPolicy) Then Return
 
@@ -718,22 +734,22 @@ Public Class cPluginPoint
         Return True
     End Function
 
-    Private Function SupportsRunType(ByVal runType As IRunType) As Boolean
+    'Private Function SupportsRunType(ByVal runType As IRunType) As Boolean
 
-        Dim parms As cParameters = Me.m_data.Parameters
+    '    Dim parms As cParameters = Me.m_data.Parameters
 
-        If parms IsNot Nothing Then
-            If TypeOf (runType) Is cEcopathRunType Then
-                Return parms.RunWithEcopath
-            ElseIf TypeOf (runType) Is cEcosimRunType Then
-                Return parms.RunWithEcosim
-            ElseIf TypeOf (runType) Is cFishingPolicySearchRunType Then
-                Return parms.RunWithFishingPolicySearch
-            End If
-        End If
-        Return False
+    '    If parms IsNot Nothing Then
+    '        If TypeOf (runType) Is cEcopathRunType Then
+    '            Return parms.RunWithEcopath
+    '        ElseIf TypeOf (runType) Is cEcosimRunType Then
+    '            Return parms.RunWithEcosim
+    '        ElseIf TypeOf (runType) Is cFishingPolicySearchRunType Then
+    '            Return parms.RunWithSearches
+    '        End If
+    '    End If
+    '    Return False
 
-    End Function
+    'End Function
 
 #End Region
 

@@ -16,6 +16,7 @@ Imports EwECore.SearchObjectives
 Imports EwECore.Database
 Imports System.IO
 Imports EwEUtils.Utilities
+Imports EwECore.ExternalData
 
 #End Region ' Imports
 
@@ -4276,9 +4277,10 @@ Public Class cCore
 
         Dim bAllowValidationOrg As Boolean = parms.AllowValidation
         Dim bAvailable As Boolean = False
+        Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
 
-        If Me.PluginManager IsNot Nothing Then
-            bAvailable = Me.PluginManager.IsDataAvailable(GetType(IEconomicData), New EwEPlugin.cEcosimRunType)
+        If (ds IsNot Nothing) Then
+            bAvailable = ds.IsDataAvailable(New EwEPlugin.cEcosimRunType)
         End If
 
         parms.AllowValidation = False
@@ -4286,7 +4288,8 @@ Public Class cCore
             parms.ClearStatusFlags(varname, eStatusFlags.NotEditable)
         Else
             parms.SetStatusFlags(varname, eStatusFlags.NotEditable)
-            parms.SetVariable(varname, False)
+            ' JS 19Feb10: disabled flag reset; the plug-in is responsible for handling this
+            'parms.SetVariable(varname, False)
         End If
         parms.AllowValidation = bAllowValidationOrg
 
@@ -10819,6 +10822,16 @@ Public Class cCore
                 'the client may have edited values that are not editable
                 obj.ResetStatusFlags()
 
+            Case eDataTypes.MSEParameters
+
+                Select Case value.varName
+                    Case eVarNameFlags.MSEUseEconomicPlugin
+                        Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
+                        If (ds IsNot Nothing) Then
+                            ds.EnableData(New cEcosimRunType) = CBool(value.Value)
+                        End If
+
+                End Select
         End Select
 
         ' Update multi-stanza info

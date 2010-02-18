@@ -180,8 +180,6 @@ Public Class cMSEParameters
         End Set
     End Property
 
-
-
     Public Property UseEconomicPlugin() As Boolean
         Get
             Return CBool(GetVariable(eVarNameFlags.MSEUseEconomicPlugin))
@@ -201,7 +199,6 @@ Public Class cMSEParameters
             SetVariable(eVarNameFlags.MSEStop, value)
         End Set
     End Property
-
 
     Public Property Save() As Boolean
         Get
@@ -242,7 +239,6 @@ Public Class cMSEParameters
             SetVariable(eVarNameFlags.MSYEvalValue, value)
         End Set
     End Property
-
 
 #End Region
 

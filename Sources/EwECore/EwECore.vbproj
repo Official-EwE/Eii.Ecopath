@@ -294,6 +294,7 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerSail.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\IEcospaceLayerFleet.vb" />
     <Compile Include="External data\cNetworkAnalysisDataSource.vb" />
+    <Compile Include="External data\IExternalData.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptManager.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptOutput.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptParameters.vb" />

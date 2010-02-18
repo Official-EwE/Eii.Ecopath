@@ -396,18 +396,26 @@ Public Class cEwENetworkAnalysisPlugin
         Return (typeData Is GetType(INetworkAnalysisData))
     End Function
 
+    Public Sub SetEnabled(ByVal typeData As System.Type, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
+        Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+
+        If Not (typeData Is GetType(INetworkAnalysisData)) Then Return
+
+        If TypeOf runType Is cEcopathRunType Then
+            Me.m_manager.RunWithEcopath = bEnabled
+        End If
+
+        If TypeOf runType Is cEcosimRunType Then
+            Me.m_manager.RunWithEcosim = bEnabled
+        End If
+
+    End Sub
+
     Public Sub SetEnabled(ByVal strDataName As String, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
         Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
 
         If (String.Compare(strDataName, Me.Name, True) = 0) Then
-            If TypeOf runType Is cEcopathRunType Then
-                Me.m_manager.RunWithEcopath = bEnabled
-            End If
-
-            If TypeOf runType Is cEcosimRunType Then
-                Me.m_manager.RunWithEcosim = bEnabled
-            End If
-
+            Me.SetEnabled(GetType(INetworkAnalysisData), runType, bEnabled)
         End If
 
     End Sub
@@ -416,6 +424,14 @@ Public Class cEwENetworkAnalysisPlugin
         Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
 
         If (String.Compare(strDataName, Me.Name, True) <> 0) Then Return False
+        Return Me.IsEnabled(GetType(IEconomicData), runType)
+
+    End Function
+
+    Public Function IsEnabled(ByVal typeData As System.Type, ByVal runType As IRunType) As Boolean _
+        Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
+
+        If Not (typeData Is GetType(INetworkAnalysisData)) Then Return False
 
         If TypeOf runType Is cEcopathRunType Then
             Return Me.m_manager.RunWithEcopath
@@ -424,8 +440,6 @@ Public Class cEwENetworkAnalysisPlugin
         If TypeOf runType Is cEcosimRunType Then
             Return Me.m_manager.RunWithEcosim
         End If
-
-        Return False
 
     End Function
 

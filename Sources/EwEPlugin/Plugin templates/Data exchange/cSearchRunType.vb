@@ -5,7 +5,7 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cFishingPolicySearchRunType
-    Inherits cSearchRunType
+Public Class cSearchRunType
+    Implements IRunType
 
 End Class

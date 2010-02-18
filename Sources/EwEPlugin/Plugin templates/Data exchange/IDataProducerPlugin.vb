@@ -105,6 +105,29 @@ Namespace Data
         ''' -----------------------------------------------------------------------
         Function IsEnabled(ByVal strDataName As String, ByVal runType As IRunType) As Boolean
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Set whether a plug-in distributes data for a given run type.
+        ''' </summary>
+        ''' <param name="typeData"><see cref="Type">Type</see> of the data to enable.</param>
+        ''' <param name="runType">
+        ''' <see cref="IRunType">Run type</see> of the data to enable or disable.
+        ''' </param>
+        ''' -----------------------------------------------------------------------
+        Sub SetEnabled(ByVal typeData As Type, ByVal runType As IRunType, ByVal bEnable As Boolean)
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get whether a plug-in distributes data for a given run type.
+        ''' </summary>
+        ''' <param name="typeData"><see cref="Type">Type</see> of the data to request 
+        ''' enabled state for.</param>
+        ''' <param name="runType">
+        ''' <see cref="IRunType">Run type</see> of the data to enable or disable.
+        ''' </param>
+        ''' -----------------------------------------------------------------------
+        Function IsEnabled(ByVal typeData As Type, ByVal runType As IRunType) As Boolean
+
     End Interface
 
 End Namespace
