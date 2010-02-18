@@ -220,9 +220,10 @@ Public Class ucResults
         ' NOP
     End Sub
 
-    Private Sub m_tscmbGraphData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tscmbGraphData.Click
+    Private Sub OnGraphDataSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tscmbGraphData.SelectedIndexChanged
         Me.SetGraphData(DirectCast(Me.m_tscmbGraphData.SelectedItem, eGraphDataType))
+        Me.UpdateResults()
     End Sub
 
 #Region " Commands "
@@ -520,8 +521,6 @@ Public Class ucResults
         End Select
 
         gv.SetData(strGraphTitle, strXAxisLabel, Nothing, strYAxisLabel, aUnitsYAxis, avars)
-
-        Me.UpdateResults()
 
     End Sub
 
