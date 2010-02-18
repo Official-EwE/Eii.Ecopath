@@ -86,6 +86,7 @@ Namespace MSE
 
         Private m_pluginManager As cPluginManager
         Private m_orgPredictEffort As Boolean
+        Private m_orgUsePlugin As Boolean = False
 
         'fishing mortality at the current time step
         'calc in UpdateQuotas() using the estimated biomass
@@ -207,6 +208,12 @@ Namespace MSE
                 Dim iflt As Integer
                 ReDim BestTime(m_epdata.NumGroups)
 
+                Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
+                If (ds IsNot Nothing) Then
+                    Me.m_orgUsePlugin = ds.EnableData(New cEcosimRunType)
+                    ds.EnableData(New cEcosimRunType) = Me.UsePlugin
+                End If
+
                 Me.m_data.StopRun = False
 
                 Me.m_data.clearBioRisk()
@@ -236,6 +243,17 @@ Namespace MSE
 
         End Sub
 
+        Public Sub FinalizeRun()
+
+            'set the ecosim predict effort flag back to its original value
+            Me.m_esData.PredictSimEffort = Me.m_orgPredictEffort
+
+            Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
+            If (ds IsNot Nothing) Then
+                ds.EnableData(New cEcosimRunType) = Me.m_orgUsePlugin
+            End If
+
+        End Sub
 
         Private Function getOutputDirectory() As String
 
@@ -736,8 +754,7 @@ Namespace MSE
 
                 Select Case CallBackType
                     Case eCallBackTypes.RunCompleted
-                        'set the ecosim predict effort flag back to its original value
-                        Me.m_esData.PredictSimEffort = Me.m_orgPredictEffort
+                        Me.FinalizeRun()
                 End Select
 
                 System.Console.WriteLine("MSE Callback = " & CallBackType.ToString)
