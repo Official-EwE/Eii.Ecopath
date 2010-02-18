@@ -10822,16 +10822,6 @@ Public Class cCore
                 'the client may have edited values that are not editable
                 obj.ResetStatusFlags()
 
-            Case eDataTypes.MSEParameters
-
-                Select Case value.varName
-                    Case eVarNameFlags.MSEUseEconomicPlugin
-                        Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
-                        If (ds IsNot Nothing) Then
-                            ds.EnableData(New cEcosimRunType) = CBool(value.Value)
-                        End If
-
-                End Select
         End Select
 
         ' Update multi-stanza info
