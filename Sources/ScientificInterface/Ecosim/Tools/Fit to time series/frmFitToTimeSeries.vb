@@ -424,11 +424,11 @@ Namespace Ecosim
         Private Sub m_tsbSearchGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbSearchGroup.Click
 
-            Dim nBlocks As Integer = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
+            Dim nBlocks As Integer = 0 ' Me.m_vulnerabilityBlockCodeSelector.NumBlocks
             Dim iBlock As Integer = 1
             Dim ts As cTimeSeries = Nothing
             Dim gts As cGroupTimeSeries = Nothing
-            Dim abBlock(core.nGroups) As Boolean
+            Dim abUseBlock(core.nGroups) As Boolean
 
             Me.Core.CheckResetDefaultVulnerabilities()
 
@@ -440,20 +440,26 @@ Namespace Ecosim
                     '   (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or _
                     If (gts.TimeSeriesType = eTimeSeriesType.Catches) Then
 
-                        abBlock(gts.GroupIndex) = True
+                        abUseBlock(gts.GroupIndex) = True
+                        nBlocks += 1
                     End If
                 End If
             Next
 
-            For i As Integer = 1 To Math.Min(Me.Core.nGroups, nBlocks)
-                For j As Integer = 1 To Math.Min(Me.Core.nGroups, nBlocks)
-                    If abBlock(i) Then
+            ' Bump up the number of blocks if neccessary
+            Me.m_vulnerabilityBlockCodeSelector.NumBlocks = _
+                Math.Max(Me.m_vulnerabilityBlockCodeSelector.NumBlocks, nBlocks)
+
+            iBlock = 1
+            For i As Integer = 1 To Me.Core.nGroups
+                For j As Integer = 1 To Me.Core.nGroups
+                    If abUseBlock(i) Then
                         Me.m_vulnerabilityBlockMatrix.Vulblocks(i, j) = iBlock
                     Else
                         Me.m_vulnerabilityBlockMatrix.Vulblocks(i, j) = 0
                     End If
                 Next j
-                If abBlock(i) Then iBlock += 1
+                If abUseBlock(i) Then iBlock += 1
             Next i
             Me.m_vulnerabilityBlockMatrix.Invalidate()
 
