@@ -2478,4 +2478,86 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_PP" xml:space="preserve">
     <value>Part of production from primary productivity</value>
   </data>
+  <data name="HEADER_GROSS_EFFICIENCY" xml:space="preserve">
+    <value>Gross efficiency (catch/net p.p.)</value>
+  </data>
+  <data name="HEADER_INDEX_CONNECTANCE" xml:space="preserve">
+    <value>Connectance Index</value>
+  </data>
+  <data name="HEADER_INDEX_ONMIVORY" xml:space="preserve">
+    <value>System Omnivory Index</value>
+  </data>
+  <data name="HEADER_MEAN_CATCH_TL" xml:space="preserve">
+    <value>Mean trophic level of the catch</value>
+  </data>
+  <data name="HEADER_NET_PROD" xml:space="preserve">
+    <value>Net system production</value>
+  </data>
+  <data name="HEADER_PARAMETER" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="HEADER_SUM_BnonDET" xml:space="preserve">
+    <value>Total biomass (excluding detritus)</value>
+  </data>
+  <data name="HEADER_SUM_BT" xml:space="preserve">
+    <value>Total biomass/total throughput</value>
+  </data>
+  <data name="HEADER_SUM_CATCH" xml:space="preserve">
+    <value>Total catches</value>
+  </data>
+  <data name="HEADER_SUM_CONSUMPTION" xml:space="preserve">
+    <value>Sum of all consumption</value>
+  </data>
+  <data name="HEADER_SUM_COST" xml:space="preserve">
+    <value>Total cost</value>
+  </data>
+  <data name="HEADER_SUM_COST_FIXED" xml:space="preserve">
+    <value>Total fixed cost</value>
+  </data>
+  <data name="HEADER_SUM_COST_VARIABLE" xml:space="preserve">
+    <value>Total variable cost</value>
+  </data>
+  <data name="HEADER_SUM_EXPORTS" xml:space="preserve">
+    <value>Sum of all exports</value>
+  </data>
+  <data name="HEADER_SUM_FLOW_DET" xml:space="preserve">
+    <value>Sum of all flows into detritus</value>
+  </data>
+  <data name="HEADER_SUM_FLOW_RESP" xml:space="preserve">
+    <value>Sum of all respiratory flows</value>
+  </data>
+  <data name="HEADER_SUM_NET_PP" xml:space="preserve">
+    <value>Calculated total net primary production</value>
+  </data>
+  <data name="HEADER_SUM_PPB" xml:space="preserve">
+    <value>Total primary production/total biomass</value>
+  </data>
+  <data name="HEADER_SUM_PP_RESP" xml:space="preserve">
+    <value>Total primary production/total respiration</value>
+  </data>
+  <data name="HEADER_SUM_PROD" xml:space="preserve">
+    <value>Sum of all production</value>
+  </data>
+  <data name="HEADER_SUM_PROFIT" xml:space="preserve">
+    <value>Profit</value>
+  </data>
+  <data name="HEADER_SUM_THROUGHPUT" xml:space="preserve">
+    <value>Total system throughput</value>
+  </data>
+  <data name="HEADER_SUM_VALUE" xml:space="preserve">
+    <value>Total value</value>
+  </data>
+  <data name="HEADER_SUM_VALUE_MARKET" xml:space="preserve">
+    <value>Total market value</value>
+  </data>
+  <data name="HEADER_SUM_VALUE_SHADOW" xml:space="preserve">
+    <value>Total shadow value</value>
+  </data>
+  <data name="HEADER_UNITS" xml:space="preserve">
+    <value>Units</value>
+  </data>
+  <data name="GENERIC_HEADER_UNITUNIT" xml:space="preserve">
+    <value>{0}/{1}</value>
+    <comment>{0}: unit 1, {1}: unit 2</comment>
+  </data>
 </root>
