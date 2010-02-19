@@ -37,8 +37,8 @@ Namespace Controls
         Private m_zgc As ZedGraphControl = Nothing
         ''' <summary>Number of panels wanted in the zed graph</summary>
         Private m_nPanels As Integer = 1
-        ''' <summary>Registered lines representing EwE groups.</summary>
-        Private m_dtGroupLines As New Dictionary(Of LineItem, Integer)
+        '''' <summary>Registered lines representing EwE groups.</summary>
+        'Private m_dtGroupLines As New Dictionary(Of LineItem, Integer)
         ''' <summary>Registered axis that need to display units.</summary>
         Private m_dtAxisLabels As New Dictionary(Of Axis, cAxisLabelFormatter)
 
@@ -50,6 +50,9 @@ Namespace Controls
         Private m_bShowCursor() As Boolean
         Private m_sCursorPos() As Single
         Private m_liCursor() As LineItem
+
+        ' == Cumulative ==
+        Private m_bCumulative() As Boolean
 
         ''' <summary>To set the max and min auto options.</summary>
         Public Enum ScaleOptions
@@ -63,28 +66,28 @@ Namespace Controls
 
 #Region " Public enums "
 
-        Public Enum eCurveTypes As Integer
-            EcosimOutput
-            TimeSeries
-        End Enum
+    Public Enum eCurveTypes As Integer
+        EcosimOutput
+        TimeSeries
+    End Enum
 
 #End Region ' Public enums
 
 #Region " Construction / destruction "
 
-        Public Sub New()
-        End Sub
+    Public Sub New()
+    End Sub
 
-        Protected Overrides Sub Finalize()
-            Me.Detach()
-            MyBase.Finalize()
-        End Sub
+    Protected Overrides Sub Finalize()
+        Me.Detach()
+        MyBase.Finalize()
+    End Sub
 
 #End Region ' Construction / destruction
 
 #Region " Selection "
 
-        Public Event OnCurveClicked(ByVal curve As CurveItem, ByVal iPoint As Integer)
+    Public Event OnCurveClicked(ByVal curve As CurveItem, ByVal iPoint As Integer)
 
 #End Region ' Selection
 
@@ -126,6 +129,7 @@ Namespace Controls
             ReDim Me.m_bShowCursor(iNumPanels)
             ReDim Me.m_liCursor(iNumPanels)
             ReDim Me.m_sCursorPos(iNumPanels)
+            ReDim Me.m_bCumulative(iNumPanels)
 
             AddHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             AddHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
@@ -162,7 +166,7 @@ Namespace Controls
 
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-            Me.m_dtGroupLines.Clear()
+            'Me.m_dtGroupLines.Clear()
             Me.m_dtAxisLabels.Clear()
 
             Me.m_zgc = Nothing
@@ -418,8 +422,16 @@ Namespace Controls
         Public Overridable Sub PlotLines(ByVal lines As List(Of LineItem), _
                              Optional ByVal iPane As Integer = 1, _
                              Optional ByVal bRescale As Boolean = True, _
-                             Optional ByVal bClear As Boolean = True)
+                             Optional ByVal bClear As Boolean = True, _
+                             Optional ByVal bCumulative As Boolean = False)
             Try
+
+                If (Me.IsPaneCumulative(iPane) <> bCumulative) Then
+                    bClear = True
+                    Me.IsPaneCumulative(iPane) = bCumulative
+                End If
+
+                Dim li As LineItem = Nothing
 
                 With Me.GetPane(iPane)
 
@@ -427,12 +439,38 @@ Namespace Controls
                     If bClear Then .CurveList.Clear()
 
                     If lines IsNot Nothing Then
-                        For Each li As LineItem In lines
-                            ' If not provided, use pane title
-                            If String.IsNullOrEmpty(li.Label.Text) Then li.Label.Text = .Title.Text
+                        For i As Integer = 0 To lines.Count - 1
+                            ' Get line
+                            li = lines(i)
+                            ' Has no line titel?
+                            If String.IsNullOrEmpty(li.Label.Text) Then
+                                ' #Yes: use pane title to identify line
+                                li.Label.Text = .Title.Text
+                            End If
+
+                            If Me.IsPaneCumulative(iPane) Then
+
+                                ' Note that this code assumes that every line added here has the 
+                                ' exact number of points in the exact same X-axis order. No validations 
+                                ' are performed whether this is indeed the case
+
+                                If .CurveList.Count > 0 Then
+                                    Dim liTemp As New LineItem(li.Label.Text, Nothing, li.Color, li.Symbol.Type)
+                                    Dim liPrev As LineItem = DirectCast(.CurveList(0), LineItem)
+                                    For iPt As Integer = 0 To li.Points.Count - 1
+                                        liTemp.AddPoint(li.Points(iPt).X, li.Points(iPt).Y + liPrev.Points(iPt).Y)
+                                    Next
+                                    li = liTemp
+                                End If
+                                ' Set cumulative colour style
+                                With li.Line.Fill
+                                    .IsVisible = True
+                                    .Brush = New SolidBrush(li.Color)
+                                End With
+                            End If
                             ' Add the curve
                             .CurveList.Add(li)
-                        Next li
+                        Next i
 
                     End If
                 End With
@@ -592,6 +630,19 @@ Namespace Controls
             End Set
         End Property
 
+        ''' <summary>
+        ''' Get/set whether the values in a pane should be added cumulatively.
+        ''' </summary>
+        ''' <param name="iPane"></param>
+        Public Property IsPaneCumulative(Optional ByVal iPane As Integer = 1) As Boolean
+            Get
+                Return Me.m_bCumulative(iPane)
+            End Get
+            Protected Set(ByVal value As Boolean)
+                Me.m_bCumulative(iPane) = value
+            End Set
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Create an EwE-styled line
@@ -674,46 +725,6 @@ Namespace Controls
         End Function
 
 #End Region ' Tooltip
-
-#Region " Line colour management "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Register a <see cref="LineItem">line</see> currently existing in the 
-        ''' wrapped graph, and connect it to an <see cref="cEcoPathGroupInput">Ecopath group</see>. 
-        ''' The line colour will be coloured according to the <see cref="cStyleGuide.GroupColor">colour</see> 
-        ''' of the group, and colour changes will be automagically applied.
-        ''' </summary>
-        ''' <param name="line">The <see cref="LineItem">line</see> to register.</param>
-        ''' <param name="iGroup">The <see cref="cEcoPathGroupInput.Index">Index</see> of
-        ''' the group to connect this line to.</param>
-        ''' <remarks>
-        ''' <para>A line that is registered should be properly unregister with 
-        ''' <see cref="UnregisterGroupLine">UnregisterGroupLine</see>.</para>
-        ''' <para>Note that the line should already exist in the graph. This is 
-        ''' not enforced, but it makes sense, doesn't it?</para>
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Sub RegisterGroupLine(ByVal line As LineItem, ByVal iGroup As Integer)
-            Me.m_dtGroupLines(line) = iGroup
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Unregister a <see cref="LineItem">line</see> currently existing in the 
-        ''' wrapped graph from the automatic group colour management.
-        ''' </summary>
-        ''' <param name="line">The <see cref="LineItem">line</see> to unregister.</param>
-        ''' <remarks>
-        ''' Lines should be registered with <see cref="RegisterGroupLine">RegisterGroupLine</see>
-        ''' first.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Sub UnregisterGroupLine(ByVal line As LineItem)
-            Me.m_dtGroupLines.Remove(line)
-        End Sub
-
-#End Region ' Line colour management
 
 #Region " Axis label management "
 
@@ -1074,11 +1085,6 @@ Namespace Controls
 
                 End With
             Next iPane
-
-            ' Refresh all registered lines
-            For Each l As LineItem In Me.m_dtGroupLines.Keys
-                l.Color = Me.StyleGuide.GroupColor(Me.Core, Me.m_dtGroupLines(l))
-            Next
 
         End Sub
 
