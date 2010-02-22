@@ -1,10 +1,12 @@
+#Region " Imports "
+
 Option Strict On
-Imports System.IO
-Imports System.Data
-Imports System.Data.OleDb
-Imports EwEPlugin
-Imports EwEUtils.Database
 Imports System.Reflection
+Imports System.Text
+Imports EwEUtils.Core
+Imports EwEUtils.Database
+
+#End Region ' Imports
 
 Namespace Database
 
@@ -16,7 +18,7 @@ Namespace Database
     <CLSCompliant(False)> _
     Public Class cDatabaseUpdater
 
-#Region " Private helper classes "
+#Region " Private bits "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>Helper class to sort database update plug-ins by 
@@ -33,20 +35,20 @@ Namespace Database
 
         End Class
 
-#End Region ' Private helper classes
-
-#Region " Public interfaces "
-
         ''' <summary>Core to operate onto.</summary>
         Private m_core As cCore = Nothing
         ''' <summary>The baseline database version that this updater can update from</summary>
         Private m_sBaselineVersion As Single = 0.0
         ''' <summary>All available DB updates.</summary>
-        Private m_lUpdates As New List(Of cDBUpdate)
+        Private m_lUpdates As cDBUpdate() = Nothing
+
+#End Region ' Private bits
+
+#Region " Public interfaces "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor
+        ''' Constructor.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal core As cCore, ByVal sBaselineVersion As Single)
@@ -89,7 +91,13 @@ Namespace Database
 
 #Region " Internals "
 
-        Private Function GetUpdates() As List(Of cDBUpdate)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns all available update objects in this assembly.
+        ''' </summary>
+        ''' <returns>An array of available updates.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function GetUpdates() As cDBUpdate()
 
             Dim lUpdates As New List(Of cDBUpdate)
             Dim clsType As Type = Nothing
@@ -117,7 +125,7 @@ Namespace Database
             ' Sort list, ascending by update number
             lUpdates.Sort(New cDBUpdatePluginContextSort())
             ' Done
-            Return lUpdates
+            Return lUpdates.ToArray()
 
         End Function
 
@@ -134,14 +142,14 @@ Namespace Database
         ''' -----------------------------------------------------------------------
         Public Function HasDatabaseUpdates(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
 
-            Dim sVerDB As Single = db.GetVersion()
+            Dim sDBVersion As Single = db.GetVersion()
 
             ' Sanity checks
             If db Is Nothing Then Return False
-            If sVerDB < sBaselineVersion Then Return False
+            If sDBVersion < sBaselineVersion Then Return False
 
-            For Each ip As cDBUpdate In Me.m_lUpdates
-                If (ip.UpdateVersion > sVerDB) Then
+            For Each update As cDBUpdate In Me.m_lUpdates
+                If (update.UpdateVersion > sDBVersion) Then
                     Return True
                 End If
             Next
@@ -161,59 +169,117 @@ Namespace Database
         ''' -----------------------------------------------------------------------
         Public Function UpdateDatabase(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
 
-            Dim strDescription As String = ""
+            ' ToDo_JS: Globalize this method
+
+            Dim sDBVersion As Single = 0.0!
+            Dim iUpdate As Integer = 0
+            Dim update As cDBUpdate = Nothing
             Dim bSucces As Boolean = True
-            Dim msg As cMessage = Nothing
 
-            ' Sanity checks
-            If db Is Nothing Then Return False
-            If db.GetVersion() < sBaselineVersion Then Return True
+            ' Sanity check
+            If (db Is Nothing) Then Return False
 
-            For Each ip As cDBUpdate In Me.m_lUpdates
-                ' Check
-                If (ip.UpdateVersion > db.GetVersion()) Then
-                    Try
-                        If db.BeginTransaction() Then
-                            If ip.ApplyUpdate(db) Then
+            ' Get DB version
+            sDBVersion = db.GetVersion()
 
-                                Dim sbDescription As New System.Text.StringBuilder()
-                                Dim iBit As Integer = 0
-                                For Each strBit As String In ip.UpdateDescription.Split(New String() {"." & vbNewLine, vbNewLine}, StringSplitOptions.RemoveEmptyEntries)
-                                    strBit = strBit.Trim
-                                    If Not String.IsNullOrEmpty(strBit) Then
-                                        If iBit > 0 Then sbDescription.Append("; ")
-                                        sbDescription.Append(strBit)
-                                        iBit += 1
-                                    End If
-                                Next
-                                db.SetVersion(ip.UpdateVersion, sbDescription.ToString())
-                            Else
-                                msg = New cMessage("Database update " & ip.UpdateVersion & " failed", eMessageType.Any, EwEUtils.Core.eCoreComponentType.DataSource, eMessageImportance.Critical)
-                                Me.m_core.Messages.SendMessage(msg)
-                                bSucces = False
-                            End If
+            ' Abort if no need to run updates
+            If (sDBVersion < sBaselineVersion) Then Return True
 
-                            ' Terminate transaction
+            ' For all updates
+            While (iUpdate < Me.m_lUpdates.Length) And (bSucces = True)
+
+                ' Get update
+                update = Me.m_lUpdates(iUpdate)
+
+                ' Version ok?
+                If (update.UpdateVersion > sDBVersion) Then
+                    ' #Yes: able to start transaction?
+                    If db.BeginTransaction() Then
+                        Try
+                            ' #Yes: run the update
+                            bSucces = update.ApplyUpdate(db)
+                            ' Update ran successful?
                             If bSucces Then
-                                bSucces = db.CommitTransaction(True)
+                                ' #Yes: Update database version
+                                db.SetVersion(update.UpdateVersion, Me.ToShortDescription(update.UpdateDescription))
                             Else
-                                db.RollbackTransaction()
+                                ' #No: report a generic error
+                                Me.ReportUpdateError("Database update " & update.UpdateVersion & " failed")
                             End If
+
+                        Catch ex As Exception
+                            ' Woops!
+                            Me.ReportUpdateError("Database update " & update.UpdateVersion & " failed: " & ex.Message)
+                            bSucces = False
+                        End Try
+
+                        ' Update ran succesfully?
+                        If bSucces Then
+                            ' #Yes: commit changes
+                            bSucces = db.CommitTransaction(True)
+                        Else
+                            ' #No: rollback changes
+                            db.RollbackTransaction()
                         End If
 
-                    Catch ex As Exception
-                        msg = New cMessage("Database update " & ip.UpdateVersion & " failed: " & ex.Message, _
-                                           eMessageType.Any, EwEUtils.Core.eCoreComponentType.DataSource, eMessageImportance.Critical)
-                        Me.m_core.Messages.SendMessage(msg)
+                    Else
+                        ' #No: failed to start transaction - an update did not clean up well
+                        Me.ReportUpdateError("Database version " & sDBVersion & " update sequence failed for update " & update.UpdateVersion)
                         bSucces = False
-                    End Try
+                    End If
 
                 End If
-            Next
+
+                ' Next
+                iUpdate += 1
+            End While
+
             Return bSucces
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a database update description into a short description.
+        ''' </summary>
+        ''' <param name="strDescription"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function ToShortDescription(ByVal strDescription As String) As String
+
+            Dim sbDescription As New StringBuilder()
+            Dim strBit As String = ""
+            Dim iBit As Integer = 0
+
+            For Each strBit In strDescription.Split(New String() {"." & vbNewLine, vbNewLine}, StringSplitOptions.RemoveEmptyEntries)
+                strBit = strBit.Trim
+                If Not String.IsNullOrEmpty(strBit) Then
+                    If iBit > 0 Then sbDescription.Append("; ")
+                    sbDescription.Append(strBit)
+                    iBit += 1
+                End If
+            Next
+            Return sbDescription.ToString()
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Send an error message to the core.
+        ''' </summary>
+        ''' <param name="strError"></param>
+        ''' -------------------------------------------------------------------
+        Private Sub ReportUpdateError(ByVal strError As String)
+
+            Dim msg As cMessage = New cMessage(strError, _
+                                               eMessageType.DataImport, _
+                                               eCoreComponentType.DataSource, _
+                                               eMessageImportance.Critical)
+
+            Me.m_core.Messages.SendMessage(msg)
+
+
+        End Sub
 #End Region ' Internals
 
     End Class
