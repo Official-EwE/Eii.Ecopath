@@ -592,7 +592,7 @@ Namespace Database
             'Me.m_dbEwE6.ReleaseWriter(Me.m_writerReferences, True)
 
             ' Now run all available updates on the new EwE6 database
-            dbUpd = New cDatabaseUpdater(6.0, Me.m_core.PluginManager)
+            dbUpd = New cDatabaseUpdater(Me.m_core, 6.0!)
             dbUpd.UpdateDatabase(Me.m_dbEwE6)
             dbUpd = Nothing
 

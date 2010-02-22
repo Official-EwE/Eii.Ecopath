@@ -1953,7 +1953,7 @@ Public Class cCore
         ' Run database updates
         If (TypeOf ds.Connection Is cEwEDatabase) Then
             Dim db As cEwEDatabase = DirectCast(ds.Connection, cEwEDatabase)
-            Dim dbUpd As New cDatabaseUpdater(6.0, Me.PluginManager)
+            Dim dbUpd As New cDatabaseUpdater(Me, 6.0!)
 
             If dbUpd.HasUpdates(db) Then
                 ' Create a copy of the database for select types

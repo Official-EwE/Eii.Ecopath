@@ -50,28 +50,6 @@ Public Class cDBUpdate6_00_06_003
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Decided to elaborate in the description.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Overrides ReadOnly Property Description() As String
-        Get
-            Dim sb As New StringBuilder()
-            sb.AppendLine("This update addresses Ecosim fleet related incompatibilities with older EwE5 models")
-            sb.AppendLine()
-            sb.AppendLine("1. Older EwE5 models did not require a unique fleet to be defined for every Ecosim scenario. " & _
-                           "Such fleets would be defined when Ecosim was loaded. " & _
-                           "Ecosim fleets in EwE6 however have a larger set of mandatory attributes, and thus requires a matching definition to be in place for every fleet defined in Ecopath." & _
-                           "This update fixes that problem")
-            sb.AppendLine()
-            sb.AppendLine("2. A bug in the EwE5 to EwE6 import process would assign the same fishing effort forcing data to any missing fleet definition in Ecosim." & _
-                           "This had the result that effort was mistakenly carried over for a fleet between scenarios." & _
-                           "This update fixes that problem")
-            Return sb.ToString()
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Do yer thang.
     ''' </summary>
     ''' <param name="db"></param>
