@@ -83,7 +83,7 @@ Namespace Ecopath.Output
             Me.AddRow(My.Resources.HEADER_SUM_VALUE, source, eVarNameFlags.EcopathStatsTotalValue, cStyleGuide.eUnitType.Monetary)
             Me.AddRow(My.Resources.HEADER_SUM_COST_FIXED, source, eVarNameFlags.EcopathStatsTotalFixedCost, cStyleGuide.eUnitType.Monetary)
             Me.AddRow(My.Resources.HEADER_SUM_COST_VARIABLE, source, eVarNameFlags.EcopathStatsTotalVarCost, cStyleGuide.eUnitType.Monetary)
-            Me.AddRow(My.Resources.HEADER_SUM_PROFIT, source, eVarNameFlags.EcopathStatsTotalCost, cStyleGuide.eUnitType.Monetary)
+            Me.AddRow(My.Resources.HEADER_SUM_COST, source, eVarNameFlags.EcopathStatsTotalCost, cStyleGuide.eUnitType.Monetary)
             Me.AddRow(My.Resources.HEADER_SUM_PROFIT, source, eVarNameFlags.EcopathStatsProfit, cStyleGuide.eUnitType.Monetary)
 
         End Sub
