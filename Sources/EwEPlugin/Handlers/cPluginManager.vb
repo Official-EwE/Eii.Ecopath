@@ -1,3 +1,5 @@
+#Region " Imports "
+
 Option Strict On
 Imports System
 Imports System.IO
@@ -7,10 +9,11 @@ Imports System.Threading
 Imports System.Reflection
 Imports System.ComponentModel
 Imports System.Windows.Forms
-Imports Microsoft.VisualBasic
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEPlugin.Data
+
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -71,21 +74,6 @@ Public Class cPluginManager
                 Return Me.m_assembly
             End Get
         End Property
-    End Class
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>Helper class to sort database update plug-ins by 
-    ''' <see cref="IDatabaseUpdatePlugin.UpdateVersion">Version</see>, in
-    ''' ascending order.</summary>
-    ''' -----------------------------------------------------------------------
-    Private Class IDatabaseUpdatePluginContextSort
-        Implements IComparer(Of cPluginContext)
-
-        Public Function Compare(ByVal x As cPluginContext, ByVal y As cPluginContext) As Integer _
-                Implements IComparer(Of cPluginContext).Compare
-            Return CInt(IIf(DirectCast(x.Plugin, IDatabaseUpdatePlugin).UpdateVersion < DirectCast(y.Plugin, IDatabaseUpdatePlugin).UpdateVersion, -1, 1))
-        End Function
-
     End Class
 
     ''' -----------------------------------------------------------------------
@@ -377,14 +365,14 @@ Public Class cPluginManager
                 Next
                 Me.RaisePluginException(plugAssem, loaderEX)
 
-                Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & vbNewLine & strFileName & vbNewLine & loaderEX.Message)
+                Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & strFileName & ": " & loaderEX.Message)
             End If
 
         Catch ex As Exception
 
             'catch any generic exceptions
             Me.RaisePluginException(plugAssem, ex)
-            Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & vbNewLine & strFileName & vbNewLine & ex.Message)
+            Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & strFileName & ": " & ex.Message)
 
         End Try
 
@@ -908,7 +896,7 @@ Public Class cPluginManager
                                                     "EcospaceEndTimeStepPost", _
                                                     New Object() {EcospaceDatastructures, iTimeStep})
 
-     End Function
+    End Function
 
 #End Region ' Ecospace Plugins
 
@@ -1431,124 +1419,6 @@ Public Class cPluginManager
     End Sub
 
 #End Region ' Plugin exception
-
-#Region " Database updates "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Run available database update plug-ins.
-    ''' </summary>
-    ''' <param name="db">The database to update.</param>
-    ''' <param name="sBaselineVersion">Database version to start updating from.</param>
-    ''' <remarks>
-    ''' This method does not attempt to cross thread boundaries.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Public Function UpdateDatabase(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
-
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabaseUpdatePlugin))
-        Dim lPlugins As New List(Of cPluginContext)
-        Dim ip As IDatabaseUpdatePlugin = Nothing
-        Dim strDescription As String = ""
-        Dim bSucces As Boolean = True
-
-        ' Sanity checks
-        If db Is Nothing Then Return False
-        If db.GetVersion() < sBaselineVersion Then Return True
-
-        ' Transform collection into list (there must be a better way?)
-        For Each ipc As cPluginContext In collPlugins
-            lPlugins.Add(ipc)
-        Next
-
-        lPlugins.Sort(New IDatabaseUpdatePluginContextSort())
-
-        For Each ipc As cPluginContext In lPlugins
-            ' Get plugin
-            ip = DirectCast(ipc.Plugin, IDatabaseUpdatePlugin)
-            ' Check
-            If (ip.UpdateVersion > db.GetVersion() Or ip.UpdateVersion = -9999) Then
-                Try
-                    If db.BeginTransaction() Then
-                        If ip.ApplyUpdate(db) Then
-
-                            Dim sbDescription As New System.Text.StringBuilder()
-                            Dim iBit As Integer = 0
-                            For Each strBit As String In ip.UpdateDescription.Split(New String() {"." & vbNewLine, vbNewLine}, StringSplitOptions.RemoveEmptyEntries)
-                                strBit = strBit.Trim
-                                If Not String.IsNullOrEmpty(strBit) Then
-                                    If iBit > 0 Then sbDescription.Append("; ")
-                                    sbDescription.Append(strBit)
-                                    iBit += 1
-                                End If
-                            Next
-                            db.SetVersion(ip.UpdateVersion, sbDescription.ToString())
-                            'Console.WriteLine("Applied update {0}", ip.UpdateVersion)
-                        Else
-                            Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", New Exception("(generic failure)"))
-                            'Console.WriteLine("Failed update {0}", ip.UpdateVersion)
-                            bSucces = False
-                        End If
-
-                        ' Terminate transaction
-                        If bSucces Then
-                            bSucces = db.CommitTransaction(True)
-                        Else
-                            db.RollbackTransaction()
-                        End If
-                    End If
-
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", ex)
-                    bSucces = False
-                End Try
-
-            End If
-        Next
-        Return bSucces
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns whether plug-ins have been found that can upgrade an
-    ''' <see cref="cEwEDatabase">EwE database</see> to a newer version that
-    ''' exceeds a requested <paramref name="sBaselineVersion">baseline version</paramref>.
-    ''' </summary>
-    ''' <param name="db">The EwE database to test for upgrades.</param>
-    ''' <param name="sBaselineVersion">The baseline database version required 
-    ''' by the EwE software.</param>
-    ''' <returns>True if updates are available.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function HasDatabaseUpdates(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
-
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabaseUpdatePlugin))
-        Dim lPlugins As New List(Of cPluginContext)
-        Dim ip As IDatabaseUpdatePlugin = Nothing
-        Dim sVerDB As Single = db.GetVersion()
-
-        ' Sanity checks
-        If db Is Nothing Then Return False
-        If sVerDB < sBaselineVersion Then Return False
-
-        ' Transform collection into list (there must be a better way?)
-        For Each ipc As cPluginContext In collPlugins
-            lPlugins.Add(ipc)
-        Next
-
-        lPlugins.Sort(New IDatabaseUpdatePluginContextSort())
-
-        For Each ipc As cPluginContext In lPlugins
-            ip = DirectCast(ipc.Plugin, IDatabaseUpdatePlugin)
-            If (ip.UpdateVersion > sVerDB) Or (ip.UpdateVersion = -9999) Then
-                Return True
-            End If
-        Next
-        Return False
-
-    End Function
-
-#End Region ' Database updates
 
 #Region " Internal generic invocation "
 
