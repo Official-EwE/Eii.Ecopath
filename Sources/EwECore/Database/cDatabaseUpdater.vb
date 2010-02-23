@@ -116,6 +116,7 @@ Namespace Database
                             ' #Yes: Create update instance
                             upd = DirectCast(Activator.CreateInstance(clsType, New Object() {}), cDBUpdate)
                             ' Add to the list of updates
+                            lUpdates.Add(upd)
                         End If
                     End If
                 Next
