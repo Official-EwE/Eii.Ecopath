@@ -590,8 +590,12 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Function BeginTransaction() As Boolean
             If Not (Me.m_transaction Is Nothing) Then Return False
-            Me.m_transaction = Me.GetConnection.BeginTransaction()
-            Return True
+            Try
+                Me.m_transaction = Me.GetConnection.BeginTransaction()
+                Return True
+            Catch ex As Exception
+                Return False
+            End Try
         End Function
 
         ''' -------------------------------------------------------------------
