@@ -65,7 +65,6 @@ Namespace Ecosim
         ' Private Ntimes As Integer
         Private StepsPerYear As Integer
         Private TimeNow As Single
-        Private StepsPerMonth As Single
         Private DeltaT As Single 'delta time in years one month set in SetTimeSteps
         Private nvar As Single
 
@@ -224,7 +223,6 @@ Namespace Ecosim
         Private m_OnTimeStepDelegate As EcoSimTimeStepDelegate = Nothing
         Private m_OnRunCompletedDelegate As EcoSimRunCompletedDelegate
 
-
         'Management Strategy Evaluator 
         Private m_MSE As MSE.cMSE
 
@@ -235,6 +233,18 @@ Namespace Ecosim
         Public bStopRunning As Boolean
 
         Private m_SyncObj As System.Threading.SynchronizationContext
+
+        ''' <summary> Biomass averaged from sub timesteps to a monthly value</summary>
+        Private BBAvg() As Single
+
+        ''' <summary> Loss averaged from sub timesteps to a monthly value</summary>
+        Private LossAvg() As Single
+
+        Private EatenByAvg() As Single
+        Private EatenOfAvg() As Single
+        Private PredAvg() As Single
+
+        Private RiskRateAvg() As Single
 
 #End Region
 
@@ -258,22 +268,10 @@ Namespace Ecosim
             Me.RunModelValue(m_Data.NumYears, m_search.Frates, m_search.nBlocks)
 
             Try
-                If Me.m_Data.bMultiThreaded Then
-                    If Me.m_OnRunCompletedDelegate <> Nothing Then
-                        m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.onRunCompleted), Nothing)
-                    End If
-                End If
+                m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireRunCompleted), Nothing)
             Catch ex As Exception
                 Debug.Assert(False, "Exception calling Ecosim.OnRunCompleted() Exception: " & ex.Message)
             End Try
-
-            'xxxxxxxxxxxxxxxxx
-            'At this time the multithreading can only be turned On by a plugin
-            'If multithreading is on when other modules or plugins are used(i.e. ValueChain or Fishing Policy Search...) it must be turned Off for them to function properly
-            'So turn if Off by default
-            'It will only be valid for one run of Ecosim
-            'xxxxxxxxxxxxxxxxxx
-            Me.m_Data.bMultiThreaded = False
 
         End Sub
 
@@ -575,7 +573,6 @@ Namespace Ecosim
             Dim j As Integer
             Dim t As Single
             Dim iyr As Integer, iyf As Integer
-            Dim told As Single
             Dim RelFopt() As Single, QGrowUsed() As Single
             Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
             Dim sumBio As Single, sumCatch As Single
@@ -612,6 +609,14 @@ Namespace Ecosim
             ReDim m_search.LastYearIncomeSpecies(m_EPData.NumFleet, m_EPData.NumGroups)
             ReDim BestTime(m_EPData.NumLiving)
             ReDim BrecYear(nGroups)
+            ReDim BBAvg(nGroups)
+            ReDim LossAvg(nGroups)
+            ReDim EatenByAvg(nGroups)
+            ReDim EatenOfAvg(nGroups)
+            ReDim PredAvg(nGroups)
+
+
+
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
             '*
             If m_search.bInSearch Then
@@ -785,10 +790,19 @@ Namespace Ecosim
                     'is wrong later in time step
                     Me.setBiomassForcing(iyr)
 
-                    rk4(BB, nvar, t, DeltaT)
+                    Me.clearMonthlyStanzaVars()
+                    For irk4 As Integer = 1 To Me.m_Data.StepsPerMonth
+
+                        If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimSubTimestepBegin(BB, t, DeltaT, irk4, m_Data)
+                        'update stanza groups on the last iteration
+                        Dim UpdateStanza As Boolean = (irk4 = Me.m_Data.StepsPerMonth)
+                        rk4(BB, nvar, t, DeltaT, UpdateStanza)
+                        t += DeltaT
+                        If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimSubTimestepEnd(BB, t, DeltaT, irk4, m_Data)
+
+                    Next irk4
+
                     ' cLog.WriteArrayToFile("b EwE6.csv", BB, itime.ToString)
-                    told = t
-                    t = t + DeltaT * StepsPerMonth
 
                     If AbortRun Then
                         'rk4() sent a message
@@ -881,6 +895,9 @@ Namespace Ecosim
 
             PlotDataInfo(False, m_Data.SS, m_Data.SSGroup)
             ' System.Console.WriteLine("Ecosim SS = " & m_Data.SS.ToString)
+
+            'Set values back to defaults... StepsPerMonth = 1
+            Me.m_Data.onEcosimRunCompleted()
 
             If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimRunCompleted(m_Data)
 
@@ -1036,23 +1053,13 @@ Namespace Ecosim
 
 
 
-        Private Sub rk4(ByRef B() As Single, ByRef nvar As Integer, ByRef t As Single, ByRef DeltaT As Single)
+        Private Sub rk4(ByRef B() As Single, ByRef nvar As Integer, ByRef t As Single, ByRef DeltaT As Single, ByVal UpdateStanzaGroups As Boolean)
             'this version taken from CJW's simII 290597 vc
             'runge-kutta integration from Press et al 1992 ed p 707
             'jb the runge-kutta integration method looks like it came directly from Numerical Recipies in C
             Dim dh As Single, d6 As Single, th As Single
             Dim EatenbySt(100) As Single, LossSt(100) As Single
             Dim i As Integer
-            'Dim imonth As Integer
-            'jb removed from npairs code
-            'Dim iju As Integer,  iad As Integer
-            'Dim Sad As Single, Sju As Single, Bjuv As Single, Nju As Single, GroPer As Single
-            'Dim Ka As Integer, Age As Integer, prep As Single, WbarJuv As Single
-            'Dim RecThisAge As Single, Badd As Single
-            'Dim j As Integer
-
-            '090905VC: imonth is not used so it can be ignored
-            'imonth = t * 12 Mod 12 + 1
 
             '090905VC&JB: discussion with Carl:
             'can we run Ecosim at different time scales? Joe and I are looking at the code, 
@@ -1089,26 +1096,20 @@ Namespace Ecosim
             '  cLog.WriteArrayToFile("dydx EwE6.csv", dydx, t.ToString)
 
             If m_TracerData.EcoSimConSimOn = True Then
-                m_ConTracer.loss = m_Data.loss 'loss computed by Ecosim in Derivt
+                m_ConTracer.loss = m_Data.loss 'Ecosim loss computed in Derivt
                 m_ConTracer.Cupdate(B)
             End If
 
-            SaveEiiDataFromEcosim(B)
+            'SaveEiiDataFromEcosim(B)
 
             For i = 1 To nGroups
                 EatenbySt(i) = m_Data.Eatenby(i)
                 LossSt(i) = m_Data.loss(i)
 
-                If (m_Data.NoIntegrate(i) = i Or m_Data.NoIntegrate(i) < 0) Then
-                    CBlast(i) = m_Data.Eatenby(i) / m_Data.pred(i)
-                End If
-
-                'If No(i, KageMax(i)) > 0 Then
-                '    CBlast(i) = EatenbySt(i) / No(i, KageMax(i))
-                'End If
-
-                RiskRate(i) = m_Data.Eatenof(i) / B(i) + m_Data.mo(i) + 0.0000000001
-                Qopt(i) = m_Data.Qmain(i) + m_Data.Qrisk(i) / RiskRate(i)
+                'averages use to update Ftime() at end of month
+                Me.EatenByAvg(i) += Me.m_Data.Eatenby(i)
+                Me.EatenOfAvg(i) += Me.m_Data.Eatenof(i)
+                Me.PredAvg(i) += Me.m_Data.pred(i)
             Next
 
             For i = 1 To nvar
@@ -1128,7 +1129,9 @@ Namespace Ecosim
                     yt(i) = (1 - m_Data.SorWt) * biomeq(i) + m_Data.SorWt * B(i)
                 End If
             Next
+
             Derivt(th, yt, dym)
+
             For i = 1 To nvar
                 If m_Data.NoIntegrate(i) <> 0 Then
                     yt(i) = B(i) + DeltaT * dym(i)
@@ -1144,8 +1147,8 @@ Namespace Ecosim
 
                 End If
             Next
+
             Derivt(t + DeltaT, yt, dyt)
-            'If imonth = 1 Then CheckState B, Irun
 
             '  Derivt t, b(), dydx()
             'may have to call deriv here again to reset consumption and loss rates?
@@ -1163,119 +1166,80 @@ Namespace Ecosim
                 End If
             Next
 
-            'If t = 0 Then Irun = Irun + 1: CheckState B, Irun: Stop
+            'average biomass and loss to a monthly value for SplitUpdate
+            avgMonthlyStanzaVars(B, UpdateStanzaGroups)
 
-            SplitUpdate(B)
+            'only update biomass for stanza groups and Ftime() on the last sub timestep
+            If UpdateStanzaGroups Then
+                'monthly averaged value are temporary
+                'SplitUpdate(,,) updates Biomass in the last argument BtoUpdate
+                SplitUpdate(Me.BBAvg, Me.LossAvg, B)
 
-            If m_Data.EvolveIsOn = False Then
                 For i = 1 To nGroups 'N
 
+                    'Feeding time update at the end of the month using the monthly average values
+                    If (m_Data.NoIntegrate(i) = i Or m_Data.NoIntegrate(i) < 0) Then
+                        CBlast(i) = Me.EatenByAvg(i) / Me.PredAvg(i)
+                    End If
+
+                    RiskRate(i) = Me.EatenOfAvg(i) / Me.BBAvg(i) + m_Data.mo(i) + 0.0000000001
+                    Qopt(i) = m_Data.Qmain(i) + m_Data.Qrisk(i) / RiskRate(i)
+
                     If CBlast(i) > 0 And (m_Data.NoIntegrate(i) = i Or m_Data.NoIntegrate(i) < 0) Then
-                        m_Data.Ftime(i) = 0.1 + 0.9 * m_Data.Ftime(i) * (1 - m_Data.FtimeAdjust(i) + m_Data.FtimeAdjust(i) * Qopt(i) / CBlast(i))
+                        m_Data.Ftime(i) = 0.1 + 0.9 * m_Data.Ftime(i) * (1 - m_Data.FtimeAdjust(i) + m_Data.FtimeAdjust(i) * Qopt(i) / Me.CBlast(i))
                     End If
                     If m_Data.Ftime(i) > m_Data.FtimeMax(i) Then m_Data.Ftime(i) = m_Data.FtimeMax(i)
-
                 Next
 
-            Else
-                evolve(B)
             End If
+
         End Sub
 
-        Private Sub evolve(ByVal Biomass() As Single)
-            Dim FMove As Single, Ftimecheck() As Single, DFtime() As Single
-            Dim DfitCheck() As Single, DfitBase() As Single, i As Integer
-            Dim DeltaTime As Single
-            ReDim Ftimecheck(nGroups), DFtime(nGroups), DfitCheck(nGroups), DfitBase(nGroups)
-            Dim dydxbase(100) As Single, dydxnew(100) As Single, DfitNum(100) As Single
+        Private Sub clearMonthlyStanzaVars()
+            Array.Clear(Me.BBAvg, 0, nGroups + 1)
+            Array.Clear(Me.LossAvg, 0, nGroups + 1)
 
-            FMove = 0.5
+            Array.Clear(Me.EatenByAvg, 0, nGroups + 1)
+            Array.Clear(Me.EatenOfAvg, 0, nGroups + 1)
+            Array.Clear(Me.PredAvg, 0, nGroups + 1)
 
-            'obtain base estimate of dfitness/dftime at current ftime
-            'note DfitDFtime gives exact answer only when there is no cannibalism
-            '(derivative should be larger when there is?)
-            DfitDFtime(Biomass, DfitBase, m_Data.Ftime)
-            'then obtain second estimate at increased ftime
-            '  Derivt 0, Biomass(), dydxbase()
-
-            For i = 1 To nGroups
-                '     Ftime(i) = Ftime(i) + 0.001
-                '     Derivt 0, Biomass(), dydxnew()
-                '     Ftime(i) = Ftime(i) - 0.001
-                '     DfitNum(i) = (dydxnew(i) - dydxbase(i)) / Biomass(i) / 0.001
-                DFtime(i) = 0.1 * m_Data.Ftime(i)
-                Ftimecheck(i) = m_Data.Ftime(i) + DFtime(i)
-                Dfitness(i) = DfitBase(i)
-            Next
-            DfitDFtime(Biomass, DfitCheck, Ftimecheck)
-            'project ftime that would make dfitness/dftime=0, change ftime partway to this value
-            For i = 1 To m_EPData.NumLiving
-                If Math.Abs(Ftimecheck(i) - m_Data.Ftime(i)) > 0.0000000001 And m_Data.SimGE(i) > 0 Then
-                    'DeltaTime = Sgn(DfitBase(i)) * Abs(FMove * DfitBase(i) * DFtime(i) / (Ftimecheck(i) -  m_data.ftime(i)))
-                    'following is second derivative method for moving to optimum ftime
-                    'it doesn't work in most cases, due to pos 2nd deriv at ftime=1
-                    'DeltaTime = -FMove * DfitBase(i) * DFtime(i) / (DfitCheck(i) - DfitBase(i))
-                    'below is simpler gradient move (equal to derivative, constrained)
-                    DeltaTime = DfitBase(i)
-                    If Math.Abs(DeltaTime) > 0.01 Then DeltaTime = 0.01 * Math.Sign(DeltaTime)
-                    ' If Abs(DeltaTime) > 0.1 *  m_data.ftime(i) Then DeltaTime = Sgn(DeltaTime) * 0.1 *  m_data.ftime(i)
-                    m_Data.Ftime(i) = m_Data.Ftime(i) + DeltaTime
-                    If m_Data.Ftime(i) > m_Data.FtimeMax(i) Then m_Data.Ftime(i) = m_Data.FtimeMax(i)
-                    If m_Data.Ftime(i) < 0.01 Then m_Data.Ftime(i) = 0.01
-                End If
-            Next
         End Sub
 
-        Private Sub DfitDFtime(ByVal Biomass() As Single, ByVal Dfit() As Single, ByVal Fti() As Single)
-            'This routine calculates derivative of dB/B dt with respect to the time
-            '(relative) spent foraging (Ftime) by pool which affects eatenof and eatenby
-            'components of dB/dt
-            'the derivative of "fitness" dB/Bdt with respect to ftime is stored in the
-            'array Dfitness(pool)
-            Dim i As Integer, j As Integer, ii As Integer
-            Dim eat As Single
-            Dim aeff As Single
-            Dim Den As Single
+        ''' <summary>
+        ''' Average biomass and loss from sub timesteps(more then one per month) to monthly values 
+        ''' </summary>
+        ''' <param name="BB"></param>
+        ''' <param name="UpdateStanza"></param>
+        ''' <remarks>Multistanza calculations SplitUpdate() need to run on a monthly timestep using the monthly average values for biomass and loss</remarks>
+        Private Sub avgMonthlyStanzaVars(ByVal BB() As Single, ByVal UpdateStanza As Boolean)
 
-            setpred(Biomass)
-            ' Erase Eatenof
-            ' ReDim Eatenof(nGroups)
-            ' Erase Eatenby
-            ' ReDim Eatenby(nGroups)
-            ReDim Deatenby(nGroups)
-            ReDim Deatenof(nGroups)
-            For ii = 1 To m_Data.inlinks
-                i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
-                'prey
-                ' For j = 1 To N  'VC ignore detritus; CJW had nGroups 'predator
-                aeff = A(i, j) * Fti(j)
-                Select Case m_Data.FlowType(i, j) 'prey always first
-                    Case 1 'donor controlled flow
-                        eat = aeff * Biomass(i)
-                    Case 3 'limited total flow
-                        eat = aeff * Biomass(i) * m_Data.pred(j) / (1 + aeff * m_Data.pred(j) * Biomass(i) / m_Data.maxflow(i, j))
-                    Case 2 'prey limited flow
-                        Den = (m_Data.vulrate(i, j) + m_Data.vulrate(i, j) * Fti(i) + aeff * m_Data.pred(j))
-                        eat = aeff * Biomass(i) * m_Data.pred(j) * m_Data.vulrate(i, j) * Fti(i) / Den
-                    Case Else
-                        eat = 0
-                End Select
-                'Eatenof(i) = Eatenof(i) + eat
-                'Eatenby(j) = Eatenby(j) + eat
-                If m_Data.FlowType(i, j) = 2 Then
-                    Deatenof(i) = Deatenof(i) + eat / Fti(i) - m_Data.vulrate(i, j) * eat / Den
-                    Deatenby(j) = Deatenby(j) + eat / Fti(j) - A(i, j) * m_Data.pred(j) * eat / Den
+            For igrp As Integer = 1 To Me.nGroups
+
+                'sum Biomass and Loss
+                Me.BBAvg(igrp) += BB(igrp)
+                Me.LossAvg(igrp) += Me.m_Data.loss(igrp)
+
+                'EatenByAvg, EatenOfAvg and PredAvg were summed after the first call to derivt
+
+                If UpdateStanza Then
+                    Me.BBAvg(igrp) = Me.BBAvg(igrp) / Me.m_Data.StepsPerMonth
+                    Me.LossAvg(igrp) = Me.LossAvg(igrp) / Me.m_Data.StepsPerMonth
+                    Me.EatenByAvg(igrp) = Me.EatenByAvg(igrp) / Me.m_Data.StepsPerMonth
+                    Me.EatenOfAvg(igrp) = Me.EatenOfAvg(igrp) / Me.m_Data.StepsPerMonth
+                    Me.PredAvg(igrp) = Me.PredAvg(igrp) / Me.m_Data.StepsPerMonth
                 End If
             Next
-            For i = 1 To m_EPData.NumLiving
-                If m_Data.SimGE(i) > 0 Then
-                    Dfit(i) = (m_Data.SimGE(i) * Deatenby(i) - Deatenof(i)) / m_EPData.B(i) - m_Data.MoPred(i) * m_Data.mo(i)
-                End If
-            Next
+
         End Sub
 
-
-        Private Sub SplitUpdate(ByVal B() As Single)
+        ''' <summary>
+        ''' Updates numbers, weight, and biomass for multiple stanza species
+        ''' </summary>
+        ''' <param name="BAvg">Average biomass over all the sub timesteps</param>
+        ''' <param name="LossAvg">Average loss over all the sub timesteps</param>
+        ''' <param name="BtoUpdate">Biomass array to update to multistanza biomass</param>
+        ''' <remarks>BAvg and LossAvg are temporary variables any changes to them will be lost. To update biomass use BtoUpdate(ngroups)</remarks>
+        Private Sub SplitUpdate(ByVal BAvg() As Single, ByVal LossAvg() As Single, ByVal BtoUpdate() As Single)
             'updates numbers, weight, and biomass for multiple stanza species
             Dim isp As Integer, ist As Integer, ieco As Integer, ia As Integer
             Dim Su As Single, Gf As Single, Nt As Single
@@ -1289,7 +1253,9 @@ Namespace Ecosim
                     Be = 0
                     For ist = 1 To m_stanza.Nstanza(isp)
                         ieco = m_stanza.EcopathCode(isp, ist)
-                        Su = Math.Exp(-m_Data.loss(ieco) / 12.0# / B(ieco))
+                        'jb 16-Feb-2010 changed to use monthly averaged biomass and loss 
+                        'Su = Math.Exp(-m_Data.loss(ieco) / 12.0# / B(ieco))
+                        Su = Math.Exp(-LossAvg(ieco) / 12.0# / BAvg(ieco))
                         Gf = m_Data.Eatenby(ieco) / m_Data.pred(ieco)  '(month factor here included in splitalpha scaling setup)
                         For ia = m_stanza.Age1(isp, ist) To m_stanza.Age2(isp, ist)
                             m_stanza.NageS(isp, ia) = m_stanza.NageS(isp, ia) * Su
@@ -1327,7 +1293,7 @@ Namespace Ecosim
                     'finally set abundance at youngest age to recruitment rate
                     ieco = m_stanza.EcopathCode(isp, m_stanza.Nstanza(isp)) 'code for adult biomass for sp isp
                     'VILLY: note following assumes we extend pair list for egg prod and recpower to add multistanza options  at end of pair lists
-                    Srec(ieco) = B(ieco)
+                    Srec(ieco) = BAvg(ieco)
                     If m_stanza.BaseEggsStanza(isp) > 0 Then
                         m_stanza.NageS(isp, m_stanza.Age1(isp, 1)) = m_stanza.RscaleSplit(isp) * m_Data.tval(m_stanza.EggProdShapeSplit(isp)) * m_stanza.RzeroS(isp) * m_Data.tval(m_stanza.HatchCode(isp))
                     End If
@@ -1338,11 +1304,10 @@ Namespace Ecosim
                 End If
             Next
 
-            'cLog.WriteMatrixToFile("N At Age EwE6.csv", m_stanza.NageS, "EwE6")
-            'cLog.WriteMatrixToFile("W At Age EwE6.csv", m_stanza.WageS, "EwE6")
-
-            ' finally update bioamss and pred index information for all species
-            SplitSetPred(B)
+            ' finally update biomass, pred and NumSplit information for all multistanza species
+            'BAvg(averaged biomass) is a temporary variable and will be destroyed 
+            'use(BtoUpdate) this is the actual biomass array from the last sub timestep
+            SplitSetPred(BtoUpdate)
 
         End Sub
 
@@ -1544,7 +1509,7 @@ Namespace Ecosim
         End Function
 
 
-        Private Sub onRunCompleted(ByVal Obj As Object)
+        Private Sub fireRunCompleted(ByVal Obj As Object)
             If Me.m_OnRunCompletedDelegate <> Nothing Then
                 Me.m_OnRunCompletedDelegate.Invoke(Obj)
             End If
@@ -1569,9 +1534,11 @@ Namespace Ecosim
         Private Sub FireOnTimeStep(ByVal iTime As Integer)
 
             If m_OnTimeStepDelegate IsNot Nothing Then
+
                 Try
+
                     If Me.m_Data.bMultiThreaded Then
-                        'Marshall the call to an interface onto the thread that created Ecosim via the 
+                        'Marshall the call to an interface onto the thread that created Ecosim via the SynchronizationContext
                         Me.MarshallTimeStep(iTime)
                     Else
                         'Call the TimeStepDelegate directly
@@ -1583,6 +1550,7 @@ Namespace Ecosim
                     cLog.Write(ex)
                     Debug.Assert(False, "Ecosim Error: the interface Ecosim Time Step handler through an error that was not handled.")
                 End Try
+
             End If
         End Sub
 
@@ -2030,14 +1998,12 @@ Namespace Ecosim
                 'jb changed the logic
                 'If rrate > 24 And m_Data.NoIntegrate(i) = i Or m_Data.NoIntegrate(i) = 0 Then m_Data.NoIntegrate(i) = 0
                 If rrate > 24 And m_Data.NoIntegrate(i) = i Then
-                    'if the rate of loss [loss biomass]/[ecopath biomass]is greater then 24(?) then turn of the numeric integration 
+                    'if the rate of loss [loss biomass]/[ecopath biomass]is greater then 24(?) then turn off the numeric integration 
                     m_Data.NoIntegrate(i) = 0
                 End If
             Next
 
-            StepsPerMonth = 1
-
-            DeltaT = 1 / 12
+            DeltaT = 1 / (12 * Me.m_Data.StepsPerMonth)
 
         End Sub
 
@@ -2638,14 +2604,13 @@ Namespace Ecosim
             'cLog.WriteMatrixToFile("W At Age EwE6.csv", m_stanza.WageS, "EwE6")
             'cLog.WriteMatrixToFile("SplitAlpha 6.csv", m_stanza.SplitAlpha, "EwE6")
             'jb
-            'pred in EwE5 for detritus is 1e-20 EwEr it is zero 
+            'pred in EwE5 for detritus is 1e-20 EwE6 it is zero 
             'which is effectivly zero so it should not matter
 
             'cLog.WriteMatrixToFile("SplitRflow 6.csv", m_stanza.SplitRflow, "EwE6")
             'cLog.WriteArrayToFile("Pred 6.csv", m_Data.pred, "EwE6")
             'cLog.WriteMatrixToFile("NumSplit 6.csv", m_stanza.NumSplit, "EwE6")
             'cLog.WriteMatrixToFile("EggsSplit 6.csv", m_stanza.EggsSplit, "EwE6")
-
 
         End Sub
 
@@ -2664,14 +2629,15 @@ Namespace Ecosim
                         pt = pt + m_stanza.NageS(isp, ia) * m_stanza.WWa(isp, ia) 'VILLY: wwa should be w^2/3 from yer ecopath initialization setup
                         Nt = Nt + m_stanza.NageS(isp, ia)
                     Next ia
-                    ' Debug.Assert((ieco = 1) = False)
+
                     ieco = m_stanza.EcopathCode(isp, ist)
                     B(ieco) = Bt
                     m_Data.pred(ieco) = pt  'VILLY: note this avoids using setpred routine for multi stanza species, hope it will work ok
                     m_stanza.NumSplit(isp, ist) = Nt
+
                 Next ist
             Next isp
-            'Debug.Print WageS(2, Age2(2, 3) - 1), WageS(2, Age2(2, 3))
+
         End Sub
 
 
@@ -4209,7 +4175,6 @@ Namespace Ecosim
                 ' Ntimes 
                 d.StepsPerYear = StepsPerYear
                 d.TimeNow = TimeNow
-                d.StepsPerMonth = StepsPerMonth
                 d.DeltaT = DeltaT
                 d.nvar = nvar
                 d.DoingEiiSaving2Round = DoingEiiSaving2Round
@@ -4650,6 +4615,102 @@ Namespace Ecosim
             Return -1
 
         End Function
+
+#Region "Evolve functions stored for reference"
+
+#If EVOLVE Then
+
+            Private Sub evolve(ByVal Biomass() As Single)
+            Dim FMove As Single, Ftimecheck() As Single, DFtime() As Single
+            Dim DfitCheck() As Single, DfitBase() As Single, i As Integer
+            Dim DeltaTime As Single
+            ReDim Ftimecheck(nGroups), DFtime(nGroups), DfitCheck(nGroups), DfitBase(nGroups)
+            Dim dydxbase(100) As Single, dydxnew(100) As Single, DfitNum(100) As Single
+
+            FMove = 0.5
+
+            'obtain base estimate of dfitness/dftime at current ftime
+            'note DfitDFtime gives exact answer only when there is no cannibalism
+            '(derivative should be larger when there is?)
+            DfitDFtime(Biomass, DfitBase, m_Data.Ftime)
+            'then obtain second estimate at increased ftime
+            '  Derivt 0, Biomass(), dydxbase()
+
+            For i = 1 To nGroups
+                '     Ftime(i) = Ftime(i) + 0.001
+                '     Derivt 0, Biomass(), dydxnew()
+                '     Ftime(i) = Ftime(i) - 0.001
+                '     DfitNum(i) = (dydxnew(i) - dydxbase(i)) / Biomass(i) / 0.001
+                DFtime(i) = 0.1 * m_Data.Ftime(i)
+                Ftimecheck(i) = m_Data.Ftime(i) + DFtime(i)
+                Dfitness(i) = DfitBase(i)
+            Next
+            DfitDFtime(Biomass, DfitCheck, Ftimecheck)
+            'project ftime that would make dfitness/dftime=0, change ftime partway to this value
+            For i = 1 To m_EPData.NumLiving
+                If Math.Abs(Ftimecheck(i) - m_Data.Ftime(i)) > 0.0000000001 And m_Data.SimGE(i) > 0 Then
+                    'DeltaTime = Sgn(DfitBase(i)) * Abs(FMove * DfitBase(i) * DFtime(i) / (Ftimecheck(i) -  m_data.ftime(i)))
+                    'following is second derivative method for moving to optimum ftime
+                    'it doesn't work in most cases, due to pos 2nd deriv at ftime=1
+                    'DeltaTime = -FMove * DfitBase(i) * DFtime(i) / (DfitCheck(i) - DfitBase(i))
+                    'below is simpler gradient move (equal to derivative, constrained)
+                    DeltaTime = DfitBase(i)
+                    If Math.Abs(DeltaTime) > 0.01 Then DeltaTime = 0.01 * Math.Sign(DeltaTime)
+                    ' If Abs(DeltaTime) > 0.1 *  m_data.ftime(i) Then DeltaTime = Sgn(DeltaTime) * 0.1 *  m_data.ftime(i)
+                    m_Data.Ftime(i) = m_Data.Ftime(i) + DeltaTime
+                    If m_Data.Ftime(i) > m_Data.FtimeMax(i) Then m_Data.Ftime(i) = m_Data.FtimeMax(i)
+                    If m_Data.Ftime(i) < 0.01 Then m_Data.Ftime(i) = 0.01
+                End If
+            Next
+        End Sub
+
+        Private Sub DfitDFtime(ByVal Biomass() As Single, ByVal Dfit() As Single, ByVal Fti() As Single)
+            'This routine calculates derivative of dB/B dt with respect to the time
+            '(relative) spent foraging (Ftime) by pool which affects eatenof and eatenby
+            'components of dB/dt
+            'the derivative of "fitness" dB/Bdt with respect to ftime is stored in the
+            'array Dfitness(pool)
+            Dim i As Integer, j As Integer, ii As Integer
+            Dim eat As Single
+            Dim aeff As Single
+            Dim Den As Single
+
+            setpred(Biomass)
+            ReDim Deatenby(nGroups)
+            ReDim Deatenof(nGroups)
+            For ii = 1 To m_Data.inlinks
+                i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
+                'prey
+                ' For j = 1 To N  'VC ignore detritus; CJW had nGroups 'predator
+                aeff = A(i, j) * Fti(j)
+                Select Case m_Data.FlowType(i, j) 'prey always first
+                    Case 1 'donor controlled flow
+                        eat = aeff * Biomass(i)
+                    Case 3 'limited total flow
+                        eat = aeff * Biomass(i) * m_Data.pred(j) / (1 + aeff * m_Data.pred(j) * Biomass(i) / m_Data.maxflow(i, j))
+                    Case 2 'prey limited flow
+                        Den = (m_Data.vulrate(i, j) + m_Data.vulrate(i, j) * Fti(i) + aeff * m_Data.pred(j))
+                        eat = aeff * Biomass(i) * m_Data.pred(j) * m_Data.vulrate(i, j) * Fti(i) / Den
+                    Case Else
+                        eat = 0
+                End Select
+                'Eatenof(i) = Eatenof(i) + eat
+                'Eatenby(j) = Eatenby(j) + eat
+                If m_Data.FlowType(i, j) = 2 Then
+                    Deatenof(i) = Deatenof(i) + eat / Fti(i) - m_Data.vulrate(i, j) * eat / Den
+                    Deatenby(j) = Deatenby(j) + eat / Fti(j) - A(i, j) * m_Data.pred(j) * eat / Den
+                End If
+            Next
+            For i = 1 To m_EPData.NumLiving
+                If m_Data.SimGE(i) > 0 Then
+                    Dfit(i) = (m_Data.SimGE(i) * Deatenby(i) - Deatenof(i)) / m_EPData.B(i) - m_Data.MoPred(i) * m_Data.mo(i)
+                End If
+            Next
+        End Sub
+
+#End If
+
+#End Region
 
     End Class
 

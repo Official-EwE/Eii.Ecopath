@@ -202,16 +202,6 @@ Public Class cEcosimDatastructures
     Public TimeJuv() As Single
     Public maxtimejuv() As Single
     Public mintimejuv() As Single
-    '  Public FLimit() As Single
-
-    'Public wk() As Single     'weight at recruitment to adult stage
-    'Public wzero() As Single  'weight at recruitment to juvenile stage
-
-    'Public WavgWk() As Single
-    'Public Prepo() As Single
-    'Public rzero() As Single
-    ' Public WtGrow() As Single
-
 
     ''' <summary>
     ''' Flag for doing integration in rk4 for each group
@@ -220,7 +210,7 @@ Public Class cEcosimDatastructures
     ''' value = i "NoIntegrate(1) = 1" do the normal integration,
     ''' value = 0 "NoIntegrate(1) = 0" no integration,
     ''' value less than 0 "NoIntegrate(2)= -2" this is a stanza group the final integration is handled by SplitUpdate()
-    ''' this was also used to tell if a group is part of a splitpool "If NoIntegrate(iGroup) GreaterThan 0 and NoIntegrate(iGroup) NotEqualTo iGroup then" this is a splitpool
+    ''' this was also used to tell if a group is part of a splitpool 
     ''' </remarks>
     Public NoIntegrate() As Integer
 
@@ -339,10 +329,7 @@ Public Class cEcosimDatastructures
     'is this shape a seasonal forcing shape
     Public isSeasonal() As Boolean
 
-
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-
     'Mediation vars 
     'these may get moved into their own class
     Public MediationShapes As Integer
@@ -375,7 +362,6 @@ Public Class cEcosimDatastructures
 
     Public EggProdShape() As Single
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
     Public pbm() As Single
     Public pred() As Single
@@ -430,8 +416,6 @@ Public Class cEcosimDatastructures
     'catch by group
     Public SumCatch(,) As Single
 
-
-
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'new foraging arena variables
     Public Narena As Integer, Iarena() As Integer, Jarena() As Integer
@@ -448,7 +432,6 @@ Public Class cEcosimDatastructures
     Public PeatArenaSetFromDataBase As Boolean
     Public BoutFeeding As Boolean 'this needs an interface
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
     Public RelaSwitch() As Single
 
@@ -472,10 +455,27 @@ Public Class cEcosimDatastructures
 
 
     ''' <summary>
-    ''' Is Ecosim running on a seperate thread from the interface
+    ''' Boolean flag that tells Ecosim to run on it's own thread.
     ''' </summary>
-    ''' <remarks>True if Ecosim is running on a seperate thread. False otherwise</remarks>
+    ''' <remarks>
+    ''' True if Ecosim is running on a seperate thread. False otherwise. 
+    ''' This flag can only be set from code and it not available from the scientific interface. 
+    ''' The scientific interface is suppose to be thread safe but plugin interfaces may NOT be. 
+    ''' Once the Ecosim run has completed bMultiThreaded will be set to False. bMultiThreaded will only be true for one run.
+    ''' </remarks>
     Public bMultiThreaded As Boolean
+
+    ''' <summary>
+    ''' Number of sub timesteps Ecosim will run per month 
+    ''' </summary>
+    ''' <remarks>
+    ''' Monthly timesteps in Ecosim can be divided into multiple sub timesteps. The number of sub timesteps in set via the cEcosimDatastructures.StepsPerMonth which has a default of one.  
+    ''' This allows a plugin to run Ecosim with more then 12 timesteps per year. Once Ecosim has run it will reset cEcosimDatastructures.StepsPerMonth to its default value of one 
+    ''' all subsequent runs of Ecosim will be on a monthly timestep unless cEcosimDatastructures.StepsPerMonth has been reset before the next run. 
+    ''' This funtionality is only available via code and has no user interface. 
+    ''' User interface objects e.g. cCore.EcosimGroupOutputs are NOT update for sub timesteps and will not be updated until the end of the monthly timestep. 
+    ''' </remarks>
+    Public StepsPerMonth As Integer
 
 
     Public Sub RedimVars()
@@ -935,29 +935,17 @@ Public Class cEcosimDatastructures
         mintimejuv(0) = 1
         maxtimejuv(0) = 1.0001
         RecPower(0) = 1
-        'wk(0) = 1
-        '' T0(0) = 0
-        ''      vbK(0) = 0.3
-        'WavgWk(0) = 2
-        'Prepo(0) = 0.3
-        'WtGrow(0) = 0.8
         FtimeMax(0) = 2
         FtimeAdjust(0) = 0.5
         MoPred(0) = 0
         'Next other parameters
         Discount = 5
-        ' ColorScaling = 22.5
-        ' SRaxis = 2
         NumYears = 20
         StepSize = 100
-        ' NudgeStart = 1
-        ' NudgeEnd = 1.5
-        ' NudgeFactor = 0.5
         SystemRecovery = 1
         SorWt = 0.5
-        'tempstr = 
-        'frmSim1.fValueToPerturb.Text = tempstr
         EquilibriumStepSize = 0.003
+        StepsPerMonth = 1
 
         'Hack warning temp hard wire of summary time periods
         SumStart(0) = 0
@@ -968,28 +956,8 @@ Public Class cEcosimDatastructures
         Integrate = True
 
         VulMultAll = 2
-        'wavgwk
-        'AinLW(0) = 0.1
-        'BinLW(0) = 3
-
-        '    NudgeChecked = IIf(Success = 1, True, False)
-        '     BiomassOn = True
-
 
         Dim i As Integer
-
-        'For i = 1 To CInt((nGroups / 2))
-        '    'WavgWk(i) = WavgWk(0) '3
-        '    'wk(i) = wk(0) '0.1
-        '    'Prepo(i) = Prepo(0) '0.3
-        '    'WtGrow(i) = WtGrow(0) ' 0.8
-
-        '    'jb these are growth variable from the original code that are not used at this time
-        '    ' T0(i) =  T0(0) '0
-        '    ' AinLW(i) =  AinLW(0)
-        '    ' BinLW(i) =  BinLW(0) '3
-
-        'Next
 
         For i = 1 To nGroups     'prey
             QmQo(i) = 1
@@ -1563,5 +1531,15 @@ Public Class cEcosimDatastructures
         ReDim SumCatch(2, nGroups)
 
     End Sub
+
+    ''' <summary>
+    ''' An Ecosim run has completed
+    ''' </summary>
+    ''' <remarks>Sets StepsPerMonth and bMultiThreaded to default values</remarks>
+    Public Sub onEcosimRunCompleted()
+        Me.StepsPerMonth = 1
+        Me.bMultiThreaded = False
+    End Sub
+
 End Class
 
