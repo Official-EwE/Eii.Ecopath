@@ -167,8 +167,8 @@ Namespace Controls
         ''' <param name="bDisposing"></param>
         ''' ---------------------------------------------------------------
         Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
-            MyBase.Dispose(bDisposing)
             Me.Detach()
+            MyBase.Dispose(bDisposing)
         End Sub
 
 #Region " Attach / detach "
@@ -268,12 +268,12 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Property SortValue(ByVal iGroup As Integer) As Single
             Get
-                Dim gi As cGroupItem = Me.GroupItem(iGroup)
+                Dim gi As cGroupItem = Me.GroupItem(Me.GroupIndex(iGroup))
                 If (gi Is Nothing) Then Return cCore.NULL_VALUE
                 Return gi.SortValue
             End Get
             Set(ByVal value As Single)
-                Dim gi As cGroupItem = Me.GroupItem(iGroup)
+                Dim gi As cGroupItem = Me.GroupItem(Me.GroupIndex(iGroup))
                 If (gi IsNot Nothing) Then
                     gi.SortValue = value
                 End If
