@@ -1,53 +1,3 @@
-'==============================================================================
-'
-' $Log: SearchRatesEwEGrid.vb,v $
-' Revision 1.4  2009/05/21 19:27:14  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:09  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:56:19  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:34  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.15  2008/08/02 03:04:12  jeroens
-' Renamed resources
-'
-' Revision 1.14  2008/07/29 13:06:44  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.13  2008/07/21 23:48:40  jeroens
-' Simplified cell construction
-'
-' Revision 1.12  2008/06/02 00:01:27  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.11  2008/05/29 22:22:41  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.10  2007/10/10 02:59:13  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.9  2007/07/03 07:08:47  jeroens
-' * Fixed member naming inconsistencies
-'
-' Revision 1.8  2007/06/21 23:57:21  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.7  2007/04/29 03:45:10  jeroens
-' * Connected to EwEGridRefresh
-'
-' Revision 1.6  2006/09/21 01:00:24  jeroens
-' * Updated to cCoreGroupBase
-'
-' Revision 1.5  2006/08/20 02:08:06  jeroens
-' + Completed contents
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -72,7 +22,6 @@ Namespace Ecopath.Output
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreGroupBase = Nothing
 
             Me.Redim(core.nGroups + 1, 2)
@@ -100,7 +49,6 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim prop As cProperty = Nothing
