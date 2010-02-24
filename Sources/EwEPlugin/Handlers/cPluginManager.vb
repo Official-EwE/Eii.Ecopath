@@ -740,6 +740,36 @@ Public Class cPluginManager
 
     End Function
 
+
+    Public Function EcosimSubTimestepBegin(ByRef BiomassAtTimestep() As Single, _
+                                           ByVal TimeInYears As Single, _
+                                           ByVal DeltaT As Single, _
+                                           ByVal SubTimestepIndex As Integer, _
+                                           ByVal EcosimDatastructures As Object) As Boolean
+
+        ' Invoke IEcosimBeginTimestepPlugin.EcosimBeginTimeStep(iTimeStep)
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimSubTimestepsPlugin), _
+                                                    "EcosimSubTimeStepBegin", _
+                                                    New Object() {BiomassAtTimestep, TimeInYears, DeltaT, SubTimestepIndex, EcosimDatastructures})
+
+        Return bSucces
+
+    End Function
+
+    Public Function EcosimSubTimestepEnd(ByRef BiomassAtTimestep() As Single, _
+                                          ByVal TimeInYears As Single, _
+                                          ByVal DeltaT As Single, _
+                                          ByVal SubTimestepIndex As Integer, _
+                                          ByVal EcosimDatastructures As Object) As Boolean
+
+        ' Invoke IEcosimBeginTimestepPlugin.EcosimBeginTimeStep(iTimeStep)
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimSubTimestepsPlugin), _
+                                                    "EcosimSubTimeStepEnd", _
+                                                    New Object() {BiomassAtTimestep, TimeInYears, DeltaT, SubTimestepIndex, EcosimDatastructures})
+
+        Return bSucces
+
+    End Function
     'Public Function EcosimEndTimeStepStats(ByVal EcosimIndicies As Object) As Boolean
 
     '    Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimEndTimestepStatsPlugin))
