@@ -1,56 +1,3 @@
-'==============================================================================
-'
-' $Log: ConsumptionEwEGrid.vb,v $
-' Revision 1.4  2009/05/21 19:27:10  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:08  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:58:24  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:32  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.16  2008/08/02 03:04:11  jeroens
-' Renamed resources
-'
-' Revision 1.15  2008/07/29 13:06:43  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.14  2008/07/21 23:48:40  jeroens
-' Simplified cell construction
-'
-' Revision 1.13  2008/06/02 00:01:25  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.12  2008/05/29 22:22:39  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.11  2008/04/07 02:31:05  jeroens
-' Cleaning up resources
-'
-' Revision 1.10  2007/10/10 02:59:11  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.9  2007/07/03 07:08:45  jeroens
-' * Fixed member naming inconsistencies
-'
-' Revision 1.8  2007/06/21 23:57:20  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.7  2007/06/05 02:45:49  jeroens
-' * Renamed cMultiOperation Add ->Sum
-'
-' Revision 1.6  2007/04/29 03:45:09  jeroens
-' * Connected to EwEGridRefresh
-'
-' Revision 1.5  2006/08/20 02:07:49  jeroens
-' + Added header
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -119,7 +66,7 @@ Namespace Ecopath.Output
 
             ' Variable used for sum cells
             Dim prop As cProperty = Nothing
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim pm As cPropertyManager = Me.PropertyManager
             Dim alPropSumAll As New ArrayList()
             Dim propSum As cFormulaProperty = Nothing
             Dim opSumAll As cMultiOperation = Nothing
