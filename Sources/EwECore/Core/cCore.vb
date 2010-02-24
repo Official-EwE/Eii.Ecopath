@@ -6042,8 +6042,10 @@ Public Class cCore
 
         'if Ecosim is being run on a thread then setup the RunCompletedDelegate
         'this will call  Me.EcoSimRunCompleted(Nothing) once Ecosim has completed the run
+        Dim bMultiThread As Boolean
         Me.m_EcoSim.RunCompletedDelegate = Nothing
         If Me.m_EcoSimData.bMultiThreaded Then
+            bMultiThread = True
             Me.m_EcoSim.RunCompletedDelegate = AddressOf Me.EcoSimRunCompleted
         End If
 
@@ -6057,7 +6059,7 @@ Public Class cCore
         'if not mulithreaded then the Ecosim run has completed 
         'do any processing to complete the run (populate objects, send any messages...)
         'if running in on a thread then Me.EcoSimRunCompleted(Nothing) will be called via the delegate set before the run
-        If Not Me.m_EcoSimData.bMultiThreaded Then
+        If Not bMultiThread Then
             Me.EcoSimRunCompleted(Nothing)
         End If
 
