@@ -1,103 +1,4 @@
-'==============================================================================
-'
-' $Log: frmEcotracerOutput.vb,v $
-' Revision 1.8  2009/05/28 12:37:32  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.7  2009/05/11 01:50:55  jeroens
-' Renamed command classes
-'
-' Revision 1.6  2009/04/07 20:02:06  jeroens
-' Updated to use ZedGraphHelper Attach
-'
-' Revision 1.5  2009/04/03 18:21:53  jeroens
-' Deliberately detached zedgraphhelper
-'
-' Revision 1.4  2009/02/05 17:48:40  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.3  2009/01/16 18:30:39  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/11/28 16:57:04  joeb
-' Removed ToDo with my name on it
-'
-' Revision 1.1  2008/09/26 07:32:04  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.24  2008/09/02 14:47:28  jeroens
-' Simplified ZedGraphHelper wrap interface
-'
-' Revision 1.23  2008/08/02 03:04:19  jeroens
-' Renamed resources
-'
-' Revision 1.22  2008/07/18 17:51:41  jeroens
-' Updated to new ZedGraphHelper interface
-'
-' Revision 1.21  2008/06/02 00:01:41  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.20  2008/05/29 22:23:02  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.19  2008/05/07 01:39:05  jeroens
-' Fixed bugs 281, 378, 470
-'
-' Revision 1.18  2008/05/05 08:35:35  jeroens
-' Uses Styleguide group colors instead of group PoolColorArgb
-'
-' Revision 1.17  2008/04/15 15:41:06  joeb
-' Added more comments
-'
-' Revision 1.16  2008/04/07 21:15:37  joeb
-' Changed the xaxis scale to years
-'
-' Revision 1.15  2008/04/07 17:48:34  jeroens
-' Pretty!
-'
-' Revision 1.14  2008/04/02 18:48:45  joeb
-' Minor tweaks
-'
-' Revision 1.13  2008/03/31 18:32:10  joeb
-' Sorting of groups list box
-'
-' Revision 1.12  2008/03/31 16:22:30  joeb
-' Changed layout of controls
-'
-' Revision 1.11  2008/03/26 21:02:25  joeb
-' Added CB
-'
-' Revision 1.10  2008/03/19 15:24:39  joeb
-' Base for running Ecosim and Ecospace from the output form
-'
-' Revision 1.9  2008/03/18 16:51:59  joeb
-' Added ToDo's
-'
-' Revision 1.8  2008/03/04 23:10:29  joeb
-' Adding tons of stuff. Responding to core messages is the biggest change.
-'
-' Revision 1.7  2008/03/03 22:13:24  joeb
-' still adding stuff
-'
-' Revision 1.6  2008/03/03 16:07:47  joeb
-' Implemented EcoSpace
-'
-' Revision 1.5  2007/12/23 20:04:59  jeroens
-' + Added placeholder code. This needs some serious thinking!!!
-'
-' Revision 1.4  2007/12/22 16:49:22  jeroens
-' * Uses ZedGraphHelper
-'
-' Revision 1.3  2007/12/21 15:36:43  jeroens
-' + Responds to group colour changes
-'
-' Revision 1.2  2007/12/21 13:44:53  jeroens
-' + Tied to Ecosim data (not space yet)
-'
-' Revision 1.1  2007/12/18 21:29:21  sherman
-' Added Ecotracer Output
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -105,6 +6,8 @@ Imports ZedGraph
 Imports ScientificInterface.Other
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -458,7 +361,7 @@ Public Class frmEcotracerOutput
 
                 Debug.Assert(lines IsNot Nothing, Me.ToString, ".PlotGroup() Me.m_DisplayHelper.GetGroupLines() failed!")
 
-                m_zgh.PlotLines(lines)
+                m_zgh.PlotLines(lines.ToArray)
 
             End If 'If Me.m_DisplayHelper.bCanPlot Then
 

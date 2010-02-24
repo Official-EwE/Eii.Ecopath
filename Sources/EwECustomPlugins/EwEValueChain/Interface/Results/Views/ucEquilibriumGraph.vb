@@ -78,7 +78,7 @@ Public Class ucEquilibriumGraph
         Me.MasterPane.PaneList(0).XAxis.Scale.Min = sMin
         Me.MasterPane.PaneList(0).XAxis.Scale.Max = sMax
 
-        Me.m_zgh.PlotLines(lLines)
+        Me.m_zgh.PlotLines(lLines.ToArray)
 
     End Sub
 

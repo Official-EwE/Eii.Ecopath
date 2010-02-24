@@ -419,7 +419,7 @@ Namespace Controls
         ''' <remarks>Note that this method clears out all lines existing in the
         ''' indicated panel.</remarks>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub PlotLines(ByVal lines As List(Of LineItem), _
+        Public Overridable Sub PlotLines(ByVal lines() As LineItem, _
                              Optional ByVal iPane As Integer = 1, _
                              Optional ByVal bRescale As Boolean = True, _
                              Optional ByVal bClear As Boolean = True, _
@@ -435,41 +435,46 @@ Namespace Controls
 
                 With Me.GetPane(iPane)
 
-                    ' ToDo_JS: auto-unregister group lines
                     If bClear Then .CurveList.Clear()
 
                     If lines IsNot Nothing Then
-                        For i As Integer = 0 To lines.Count - 1
+                        For i As Integer = 0 To lines.Length - 1
                             ' Get line
                             li = lines(i)
-                            ' Has no line titel?
-                            If String.IsNullOrEmpty(li.Label.Text) Then
-                                ' #Yes: use pane title to identify line
-                                li.Label.Text = .Title.Text
-                            End If
+                            ' Just to make sure
+                            If (li IsNot Nothing) Then
 
-                            If Me.IsPaneCumulative(iPane) Then
-
-                                ' Note that this code assumes that every line added here has the 
-                                ' exact number of points in the exact same X-axis order. No validations 
-                                ' are performed whether this is indeed the case
-
-                                If .CurveList.Count > 0 Then
-                                    Dim liTemp As New LineItem(li.Label.Text, Nothing, li.Color, li.Symbol.Type)
-                                    Dim liPrev As LineItem = DirectCast(.CurveList(0), LineItem)
-                                    For iPt As Integer = 0 To li.Points.Count - 1
-                                        liTemp.AddPoint(li.Points(iPt).X, li.Points(iPt).Y + liPrev.Points(iPt).Y)
-                                    Next
-                                    li = liTemp
+                                ' Has no line titel?
+                                If String.IsNullOrEmpty(li.Label.Text) Then
+                                    ' #Yes: use pane title to identify line
+                                    li.Label.Text = .Title.Text
                                 End If
-                                ' Set cumulative colour style
-                                With li.Line.Fill
-                                    .IsVisible = True
-                                    .Brush = New SolidBrush(li.Color)
-                                End With
+
+                                If Me.IsPaneCumulative(iPane) Then
+
+                                    ' Note that this code assumes that every line added here has the 
+                                    ' exact number of points in the exact same X-axis order. No validations 
+                                    ' are performed whether this is indeed the case
+
+                                    If .CurveList.Count > 0 Then
+                                        Dim liOffset As LineItem = DirectCast(.CurveList(0), LineItem)
+                                        For iPt As Integer = 0 To li.Points.Count - 1
+                                            li(iPt).Y += liOffset.Points(iPt).Y
+                                        Next
+                                    End If
+                                    ' Set cumulative colour style
+                                    li.Line.Fill = New Fill(li.Color)
+                                    li.Line.Fill.IsVisible = True
+                                    li.Line.Color = Color.SlateGray
+                                Else
+                                    li.Line.Fill.IsVisible = False
+                                End If
+
+                                ' Add the curve
+                                .CurveList.Add(li)
+                            Else
+                                Debug.Assert(False)
                             End If
-                            ' Add the curve
-                            .CurveList.Add(li)
                         Next i
 
                     End If

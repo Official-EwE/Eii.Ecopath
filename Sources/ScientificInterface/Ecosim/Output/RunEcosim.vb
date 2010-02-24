@@ -52,6 +52,12 @@ Namespace Ecosim
 
         Private m_ccb As cCustomComboBoxFleetGroupTree = Nothing
 
+        ' === plot data ==
+        Private m_plotdata As ePlotData = ePlotData.Biomass
+        Private m_bIsAnnual As Boolean = False
+        Private m_bIsCumulative As Boolean = False
+        Private m_bIsExploring As Boolean = False
+
 #End Region ' Variables
 
 #Region " Constructors "
@@ -119,6 +125,9 @@ Namespace Ecosim
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
+            ' Unplug
+            Me.IsExploring = False
 
             ' Show/Hide Groups
             Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
@@ -195,47 +204,48 @@ Namespace Ecosim
 
         Private Sub AnnualOutputToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiShowAnnualOutput.Click
+
+            If Me.m_bInUpdate Then Return
+
             Me.m_tsmiShowAnnualOutput.Checked = Not Me.m_tsmiShowAnnualOutput.Checked
-            Me.m_zgp.Clear()
-            Me.PopulateGroupBox()
-            Me.m_zgp.RescaleAndRedraw()
+            Me.IsAnnualPlot = Me.m_tsmiShowAnnualOutput.Checked
         End Sub
 
         Private Sub ShowLegendToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiShowLegend.Click
+
             Me.m_tsmiShowLegend.Checked = Not Me.m_tsmiShowLegend.Checked
             Me.m_zgp.ShowLegend = Me.m_tsmiShowLegend.Checked
             Me.m_zgp.RescaleAndRedraw()
+
         End Sub
 
         Private Sub CumulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiCumulative.Click
+
+            If Me.m_bInUpdate Then Return
             Me.m_tsmiRelative.Checked = Not Me.m_tsmiCumulative.Checked
-            Me.PopulateGraph()
+            Me.IsCumulativePlot = Me.m_tsmiCumulative.Checked
+
         End Sub
 
         Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiRelative.Click
+
+            If Me.m_bInUpdate Then Return
             Me.m_tsmiCumulative.Checked = Not Me.m_tsmiRelative.Checked
-            Me.PopulateGraph()
+            Me.IsCumulativePlot = (Me.m_tsmiRelative.Checked = False)
+
         End Sub
 
         Private Sub BiomassToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiBiomass.Click
-            Me.m_tsmiCatch.Checked = Not Me.m_tsmiBiomass.Checked
-            'Set default plot type to relative
-            Me.m_tsmiRelative.Checked = True
-            Me.PopulateGroupBox()
-            Me.PopulateGraph()
+            Me.PlotDataType = ePlotData.Biomass
         End Sub
 
         Private Sub CatchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiCatch.Click
-            Me.m_tsmiBiomass.Checked = Not Me.m_tsmiCatch.Checked
-            'Set default plot type to relative
-            Me.m_tsmiRelative.Checked = True
-            Me.PopulateGroupBox()
-            Me.PopulateGraph()
+            Me.PlotDataType = ePlotData.GroupCatch
         End Sub
 
         Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -275,10 +285,10 @@ Namespace Ecosim
         Private Sub m_tsmiSortMostChanged_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiSortMostChanged.Click, m_tssbExplore.Click
 
-            ' Show or hide cursor
-            Me.m_zgp.ShowCursor = Not Me.m_zgp.ShowCursor
-            Me.m_tsmiSortMostChanged.Checked = Me.m_zgp.ShowCursor
-            Me.UpdateControls()
+            If Me.m_bInUpdate Then Return
+
+            Me.m_tsmiSortMostChanged.Checked = Not Me.m_tsmiSortMostChanged.Checked
+            Me.IsExploring = Me.m_tsmiSortMostChanged.Checked
 
         End Sub
 
@@ -288,6 +298,7 @@ Namespace Ecosim
             Single.TryParse(Me.m_tstbChangeAmount.Text, Me.m_sChangeTrackSize)
             Me.m_sChangeTrackSize = Math.Max(0, Me.m_sChangeTrackSize)
             Me.m_tstbChangeAmount.Text = CStr(Me.m_sChangeTrackSize)
+
             Me.UpdateControls()
 
         End Sub
@@ -319,8 +330,15 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnSyncCursor(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
-            If Me.m_tsmiSortMostChanged.Checked Then
-                Me.SortGroupsAtTimestep(CInt(Math.Round(sPos * cCore.N_MONTHS)))
+            If Me.IsExploring Then
+                Try
+                    ' Hmm, this logic fails when time series are loaded; in that case
+                    ' the X value is corrected by the Ecosim year. Let's hack around this
+                    ' for now.
+                    Me.SortGroupsAtTimestep(CInt(Math.Round((sPos - Me.m_core.EcosimFirstYear) * cCore.N_MONTHS)))
+                Catch ex As Exception
+
+                End Try
             End If
         End Sub
 
@@ -341,7 +359,6 @@ Namespace Ecosim
 
             Dim bEcosimRunning As Boolean = m_coreStateMonitor.IsEcosimRunning
             Dim bHasEcosimResults As Boolean = m_coreStateMonitor.HasEcosimRan
-            Dim strRunLabel As String = String.Format(My.Resources.ECOSIM_LABEL_RUN, (Me.m_zgp.NumRuns + 1))
 
             ' Does not have ecosim results?
             If (Not m_coreStateMonitor.HasEcopathRan) Then
@@ -358,7 +375,10 @@ Namespace Ecosim
                     cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.True, 0)
                 Else
                     cApplicationStatusNotifier.SetStatusText("", TriState.False, 0)
-                    Me.m_zgp.CreateRun(strRunLabel)
+                    If Not Me.m_zgp.ShowMultipleRuns Then
+                        Me.m_zgp.Clear()
+                    End If
+                    Me.m_zgp.CreateRun(String.Format(My.Resources.ECOSIM_LABEL_RUN, (Me.m_zgp.NumRuns + 1)))
                     Me.PopulateRunsBox()
                     Me.PopulateGroupBox()
                 End If
@@ -518,6 +538,82 @@ Namespace Ecosim
 
 #Region " Internal implementation "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether plot is cumulative (True) or relative (False)
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Property IsCumulativePlot() As Boolean
+            Get
+                Return Me.m_bIsCumulative
+            End Get
+            Set(ByVal value As Boolean)
+                If (value = Me.m_bIsCumulative) Then Return
+
+                Me.m_bIsCumulative = value
+                Me.UpdateControls()
+                Me.PopulateGraph()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether plot displays annual values.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Property IsAnnualPlot() As Boolean
+            Get
+                Return Me.m_bIsAnnual
+            End Get
+            Set(ByVal value As Boolean)
+                If (value = Me.m_bIsAnnual) Then Return
+
+                Me.m_bIsAnnual = value
+                Me.UpdateControls()
+                Me.PopulateGraph()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the user is exploring values with the cursor.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Property IsExploring() As Boolean
+            Get
+                Return Me.m_bIsExploring
+            End Get
+            Set(ByVal value As Boolean)
+                If (value = Me.m_bIsExploring) Then Return
+
+                Me.m_bIsExploring = value
+
+                ' Show or hide cursor
+                Me.m_zgp.ShowCursor = Me.m_bIsExploring
+
+                Me.UpdateControls()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set type of data to plot.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Property PlotDataType() As ePlotData
+            Get
+                Return Me.m_plotdata
+            End Get
+            Set(ByVal value As ePlotData)
+                If (value = Me.m_plotdata) Then Return
+
+                Me.m_plotdata = value
+                Me.m_bIsCumulative = False ' Switch to relative view
+                Me.UpdateControls()
+                Me.PopulateGraph()
+            End Set
+        End Property
+
         Private Sub PopulateRunsBox()
 
             Me.m_lbRuns.SuspendLayout()
@@ -550,41 +646,6 @@ Namespace Ecosim
             Me.m_lbGroups.ShowAllGroupsItem = True
             Me.m_lbGroups.Populate()
 
-            'Me.m_lbGroups.Items.Clear()
-            'Me.m_lbGroups.Items.Add(New cGroupListBox.cGroupItem(Nothing))
-
-            'For iGroup As Integer = 1 To m_core.nGroups
-
-            '    ' Include visible groups only
-            '    bIncludeGroup = Me.m_sg.GroupVisible(iGroup)
-
-            '    ' Displaying catch and discards?
-            '    If m_tsmiCatch.Checked Then
-
-            '        ' Get sum of landings and discards for this group
-            '        sSumDiscardsLandings = 0
-            '        For f As Integer = 1 To m_core.nFleets
-            '            sSumDiscardsLandings += (Me.m_core.FleetInputs(f).Discards(iGroup) + Me.m_core.FleetInputs(f).Landings(iGroup))
-            '        Next f
-
-            '        ' Include when group has landings and/or discards
-            '        bIncludeGroup = bIncludeGroup And (sSumDiscardsLandings > 0)
-            '    End If
-
-            '    ' Include group?
-            '    If bIncludeGroup Then
-            '        ' #Yes: add group to the list of options
-            '        group = Me.m_core.EcoPathGroupInputs(iGroup)
-            '        gi = New cGroupListBox.cGroupItem(group)
-            '        Me.m_lbGroups.Items.Add(gi)
-
-            '        If Object.ReferenceEquals(group, groupSelected) Then
-            '            Me.m_lbGroups.SelectedItem = gi
-            '        End If
-            '    End If
-
-            'Next
-
             If Me.m_lbGroups.SelectedItem Is Nothing Then
                 Me.m_lbGroups.SelectedIndex = 0
             End If
@@ -599,233 +660,73 @@ Namespace Ecosim
         ''' Populate the graph.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub PopulateGraph()
+        Private Sub PopulateGraph()
 
             Dim pplData As New PointPairList()
-            Dim pplSum As New PointPairList()
+            Dim src As cEcosimGroupOutput = Nothing
+            Dim dValue As Double = 0.0#
+            Dim iGroup As Integer = 0
+            Dim bIncludeDataPoint As Boolean = True
 
-            ' Safety check
-            If Me.m_zgp Is Nothing Then Return
-
-            'jb added if ecosim has not run then the Ecosim EcoSimGroupOutputs will not be populated and can not be plotted
-            If Not Me.m_core.StateMonitor.HasEcosimRan Then
-                Return
-            End If
+            ' Safety checks
+            If (Me.m_zgp Is Nothing) Then Return
+            If (Not Me.m_zgp.isReady) Then Return
+            If (Not Me.m_core.StateMonitor.HasEcosimRan) Then Return
 
             ' Clear curves out of current run, if applicable
             Me.m_zgp.ResetRun()
 
-            If Not Me.m_zgp.isReady Then
-                'The graph has not been initialized don't try to draw the data
-                'this can happen is some other process ran Ecosim and PopulateGraph() gets called in response
-                Return
-            End If
-
-            ' === Cumulative plot ===
-
-            If m_tsmiCumulative.Checked Then
-                If m_tsmiBiomass.Checked Then
-                    'Biomass
-                    m_zgp.DataName = My.Resources.HEADER_BIOMASS_CUMULATIVE
-                ElseIf m_tsmiCatch.Checked Then
-                    'Catch
-                    m_zgp.DataName = My.Resources.HEADER_CATCH_CUMULATIVE
-                Else
-                    Debug.Assert(False)
-                End If
-
-                'Initialize listSum.Y=0
-                pplSum.Add(0, 0)
-                For t As Integer = 1 To m_core.nEcosimTimeSteps
-                    If m_tsmiShowAnnualOutput.Checked Then
-                        If t Mod cCore.N_MONTHS = 0 Then
-                            pplSum.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, 0.0)
-                        End If
+            ' Set title
+            Select Case Me.PlotDataType
+                Case ePlotData.Biomass
+                    If Me.m_bIsCumulative Then
+                        m_zgp.DataName = My.Resources.HEADER_BIOMASS_CUMULATIVE
                     Else
-                        ' 2) Add a single point to temp list
-                        pplSum.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, 0.0)
+                        m_zgp.DataName = My.Resources.HEADER_RELATIVEBIOMASS
                     End If
-                Next t
-
-                For iLBItem As Integer = 1 To Me.m_lbGroups.Items.Count - 1
-
-                    'Dim i As Integer = DirectCast(Me.m_lbGroups.Items(iLBItem), cGroupListBox.cGroupItem).Group.Index
-                    Dim i As Integer = Me.m_lbGroups.GetGroupIndexAt(iLBItem)
-
-                    'Catch
-                    If m_tsmiCatch.Checked Then
-                        'Find the sum of discard and landing of the group
-                        Dim dblSumDiscardsLandings As Double = 0.0
-                        For f As Integer = 1 To m_core.nFleets
-                            dblSumDiscardsLandings = dblSumDiscardsLandings + m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i)
-                        Next f
-                        'If sum=0 then skip this group
-                        If Not dblSumDiscardsLandings > 0 Then Continue For
+                Case ePlotData.GroupCatch
+                    If Me.m_bIsCumulative Then
+                        m_zgp.DataName = My.Resources.HEADER_CATCH_CUMULATIVE
+                    Else
+                        m_zgp.DataName = My.Resources.HEADER_RELATIVE_CATCH
                     End If
+                Case Else
+                    Debug.Assert(False, "Data " & Me.PlotDataType.ToString & " not supported by this graph")
+            End Select
 
+            ' For all groups in the group list box
+            For iGroupItem As Integer = 1 To Me.m_lbGroups.Items.Count - 1
+                ' Get actual group index
+                iGroup = Me.m_lbGroups.GetGroupIndexAt(iGroupItem)
+                ' Is a group?
+                If (iGroup > 0) Then
+
+                    ' Yes: Create data list
                     pplData = New PointPairList
-                    If m_tsmiBiomass.Checked Then
-                        'Biomass
-                        pplData.Add(0, m_core.EcoPathGroupOutputs(i).Biomass())
-                    ElseIf m_tsmiCatch.Checked Then
-                        'Catch
-                        pplData.Add(0, m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())
-                    Else
-                        Debug.Assert(False)
-                    End If
+                    pplData.Add(0, 1) ' Brute force to make 0 TS 1
+                    src = Me.m_core.EcoSimGroupOutputs(iGroup)
 
-                    For t As Integer = 1 To m_core.nEcosimTimeSteps
-                        If m_tsmiShowAnnualOutput.Checked Then
-                            If t Mod cCore.N_MONTHS = 0 Then
-                                If m_tsmiBiomass.Checked Then
-                                    'Biomass
-                                    pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)))
-                                ElseIf m_tsmiCatch.Checked Then
-                                    'Catch
-                                    'jb changed to use Yield computed by Ecosim 
-                                    'pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
-                                    '  (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t))))
-                                    pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Yield(t)))
+                    For iTimeStep As Integer = 1 To m_core.nEcosimTimeSteps
 
-                                Else
-                                    Debug.Assert(False)
-                                End If
-                            End If
-                        Else
-                            ' 2) Add a single point to temp list
-                            If m_tsmiBiomass.Checked Then
-                                'Biomass
-                                pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)))
-                            ElseIf m_tsmiCatch.Checked Then
-                                'Catch
-                                pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Yield(t)))
-                            Else
-                                Debug.Assert(False)
-                            End If
+                        dValue = CDbl(Me.GetDataPoint(iGroup, iTimeStep))
+
+                        ' Determine if datapoint should be displayed
+                        bIncludeDataPoint = (Me.IsAnnualPlot = False) Or (iTimeStep Mod cCore.N_MONTHS = 0)
+
+                        ' Should datapoint be displayed?
+                        If bIncludeDataPoint Then
+                            ' #Yes: display it
+                            pplData.Add(CDbl(iTimeStep / cCore.N_MONTHS) + m_core.EcosimFirstYear, dValue)
                         End If
-                    Next t
 
-                    'listSum=listSum+list1
-                    For j As Integer = 0 To pplSum.Count - 1
-                        pplSum(j).Y = pplSum(j).Y + pplData(j).Y
-                    Next
+                    Next iTimeStep
 
-                    For j As Integer = 0 To pplSum.Count - 1
-                        pplData(j).Y = pplSum(j).Y
-                    Next
+                    ' Add line
+                    m_zgp.AddLine(src.Name, iGroup, eLineType.Value, Me.PlotDataType, pplData, Me.IsCumulativePlot)
 
-                    ' 3) Store the line
-                    If m_tsmiBiomass.Checked Then
-                        'Biomass
-                        If m_tsmiCumulative.Checked Then
-                            'Cumulative highlight
-                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
-                                          i, cEcosimOutputPlotHelper.eLineType.CumulativeBiomass, pplData)
-                        Else
-                            'Cumulative selected
-                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
-                                          i, cEcosimOutputPlotHelper.eLineType.CumulativeSelectedBiomass, pplData)
-                        End If
-                    ElseIf m_tsmiCatch.Checked Then
-                        'Catch
-                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
-                                      i, cEcosimOutputPlotHelper.eLineType.CumulativeCatch, pplData)
-                    Else
-                        Debug.Assert(False)
-                    End If
-
-                Next
-            End If
-
-            ' === Relative plot ===
-
-            If m_tsmiRelative.Checked Then
-                If m_tsmiBiomass.Checked Then
-                    'Biomass
-                    m_zgp.DataName = My.Resources.HEADER_RELATIVEBIOMASS
-                ElseIf m_tsmiCatch.Checked Then
-                    'Catch
-                    m_zgp.DataName = My.Resources.HEADER_RELATIVE_CATCH
-                Else
-                    Debug.Assert(False)
                 End If
 
-                ' todo: change to groups that listed in group box
-                For j As Integer = 1 To Me.m_lbGroups.Items.Count - 1
-
-                    'Dim i As Integer = DirectCast(Me.m_lbGroups.Items(j), cGroupListBox.cGroupItem).Group.Index
-                    Dim i As Integer = Me.m_lbGroups.GetGroupIndexAt(j)
-
-                    If (i > -1) Then
-
-                        ' No need to check; group would not be available otherwise
-
-                        ''Catch
-                        'If CatchToolStripMenuItem.Checked Then
-                        '    'Find the sum of discard and landing of the group
-                        '    Dim dblSumDiscardsLandings As Double = 0.0
-                        '    For f As Integer = 1 To m_core.nFleets
-                        '        dblSumDiscardsLandings = dblSumDiscardsLandings + m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i)
-                        '    Next f
-                        '    'If sum=0 then skip this group
-                        '    If Not dblSumDiscardsLandings > 0 Then Continue For
-                        'End If
-
-                        pplData = New PointPairList
-                        pplData.Add(0, 1) ' Brute force to make 0 TS 1
-                        For t As Integer = 1 To m_core.nEcosimTimeSteps
-                            If m_tsmiShowAnnualOutput.Checked Then
-                                If t Mod cCore.N_MONTHS = 0 Then
-
-
-
-                                    If m_tsmiBiomass.Checked Then
-                                        'Biomass
-                                        pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).BiomassRel(t)))
-                                    ElseIf m_tsmiCatch.Checked Then
-                                        'Catch
-                                        pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).YieldRel(t)))
-                                    Else
-                                        Debug.Assert(False)
-                                    End If
-
-                                End If
-                            Else
-
-                                ' 2) Add a single point to temp list
-                                If m_tsmiBiomass.Checked Then
-                                    'Biomass
-                                    pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).BiomassRel(t)))
-                                ElseIf m_tsmiCatch.Checked Then
-                                    'Catch
-                                    'jb changed to use relative values computed by Ecosim original code left for reference until this has been vetted
-                                    'pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
-                                    '    (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / (m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())))
-                                    pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).YieldRel(t)))
-                                Else
-                                    Debug.Assert(False)
-                                End If
-
-                            End If
-                        Next t
-
-                        ' 3) Store the line
-                        If m_tsmiBiomass.Checked Then
-                            'Biomass
-                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
-                                          i, cEcosimOutputPlotHelper.eLineType.RelativeBiomass, pplData)
-                        ElseIf m_tsmiCatch.Checked Then
-                            'Catch
-                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
-                                          i, cEcosimOutputPlotHelper.eLineType.RelativeCatch, pplData)
-                        Else
-                            Debug.Assert(False)
-                        End If
-
-                    End If
-
-                Next j
-            End If
+            Next iGroupItem
 
             Me.m_graph.GraphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
             Me.m_graph.GraphPane.XAxis.Scale.Max = m_core.EcoSimModelParameters.NumberYears + m_core.EcosimFirstYear
@@ -840,78 +741,112 @@ Namespace Ecosim
 
         End Sub
 
-        Public Sub PopulateGraphTimeSeries()
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Place all available time series on the graph for the current data
+        ''' plot type.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub PopulateGraphTimeSeries()
 
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim ppl As New PointPairList()
             Dim ts As cTimeSeries = Nothing
+            Dim gts As cGroupTimeSeries = Nothing
+            Dim group As cEcoPathGroupInput = Nothing
+            Dim StartBio As Single = 0.0!
+            Dim EDataQ As Single = 0.0!
 
-            If (Me.m_tsmiBiomass.Checked = False) Then Return
-            If (Me.m_tsmiRelative.Checked = False) Then Return
+            ' Only plot time series for biomass 
+            If (Me.PlotDataType <> ePlotData.Biomass) Then Return
+            ' Only plot data when NOT showing cumulative data
+            If (Me.IsCumulativePlot) Then Return
 
-            For i As Integer = 1 To m_core.nTimeSeries
-                ts = m_core.EcosimTimeSeries(i)
-                If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
-                    If TypeOf ts Is cGroupTimeSeries Then
-                        Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
-                        If gts.Enabled() Then
-                            'm_abHasTSData(gts.GroupIndex) = True
-                            Dim da() As Single = gts.ShapeData()
-                            Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(gts.GroupIndex)
-                            ppl = New PointPairList
+            ' For all time series
+            For iTS As Integer = 1 To m_core.nTimeSeries
+                ' Get TS
+                ts = m_core.EcosimTimeSeries(iTS)
+                ' Is ts usable?
+                If ((ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or _
+                    (ts.TimeSeriesType = eTimeSeriesType.BiomassAbs)) And _
+                   (ts.Enabled = True) Then
 
-                            'Scaling values for relative and actual observed biomass values (reference data)
-                            'BiomassRel (relative value)scale values by exp(DataQ) DataQ = mle mean(sumof(log(observed/predicted))
-                            'BiomassAbs (actual value) scale to relative [b(t)]/[b(0)] no statistical scaling
-                            Dim startBio As Single = m_core.StartBiomass(gts.GroupIndex)
-                            Dim eDataQ As Single = gts.eDataQ
-                            If ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
-                                'don't use the stat scaler for actual values
-                                eDataQ = 1
-                            End If
+                    ' Sanity check
+                    Debug.Assert(TypeOf ts Is cGroupTimeSeries, "Relative Biomass TS should be cGroupTimeSeries object, check for import")
 
-                            For j As Integer = 1 To m_core.EcoSimModelParameters.NumberYears
-                                If j < da.Length Then
-                                    If da(j) > 0 Then
-                                        ' Minus 1 because it should start with the first year
-                                        ppl.Add(j + m_core.EcosimFirstYear - 1, (da(j) / eDataQ) / startBio)
-                                    End If
-                                End If
-                            Next
+                    gts = DirectCast(ts, cGroupTimeSeries)
+                    group = Me.m_core.EcoPathGroupInputs(gts.GroupIndex)
+                    ppl = New PointPairList()
 
-                            ' Add line to graph.
-                            m_zgp.AddLine(String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, ts.Name, group.Name), _
-                                          gts.GroupIndex, cEcosimOutputPlotHelper.eLineType.TimeSeries, ppl)
-
-                        End If
-
+                    'Scaling values for relative and actual observed biomass values (reference data)
+                    'BiomassRel (relative value)scale values by exp(DataQ) DataQ = mle mean(sumof(log(observed/predicted))
+                    'BiomassAbs (actual value) scale to relative [b(t)]/[b(0)] no statistical scaling
+                    If (ts.TimeSeriesType = eTimeSeriesType.BiomassAbs) Then
+                        'don't use the stat scaler for actual values
+                        EDataQ = 1
                     Else
-                        Debug.Assert(True, "Relative Biomass TS should be cGroupTimeSeries object, check for import")
+                        EDataQ = gts.eDataQ
                     End If
-                End If
+                    StartBio = m_core.StartBiomass(gts.GroupIndex)
 
-            Next
+                    For iYear As Integer = 1 To m_core.EcoSimModelParameters.NumberYears
+                        If iYear < gts.ShapeData().Length Then
+                            If gts.ShapeData(iYear) > 0 Then
+                                ' Minus 1 because it should start with the first year
+                                ppl.Add(iYear + m_core.EcosimFirstYear - 1, (gts.ShapeData()(iYear) / EDataQ) / StartBio)
+                            End If
+                        End If
+                    Next
+
+                    ' Add line to graph.
+                    m_zgp.AddLine(String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, ts.Name, group.Name), _
+                                  gts.GroupIndex, eLineType.TimeSeries, Me.PlotDataType, ppl, False)
+
+                End If
+            Next iTS
+
         End Sub
+
+        Private Function GetDataPoint(ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+            Dim src As cEcosimGroupOutput = Me.m_core.EcoSimGroupOutputs(iGroup)
+            ' Get data point value
+            Select Case Me.PlotDataType
+                Case ePlotData.Biomass
+                    Return CSng(IIf(Me.IsCumulativePlot, src.Biomass(iTimeStep), src.BiomassRel(iTimeStep)))
+                Case ePlotData.GroupCatch
+                    Return CSng(IIf(Me.IsCumulativePlot, src.Yield(iTimeStep), src.YieldRel(iTimeStep)))
+            End Select
+            Return cCore.NULL_VALUE
+        End Function
 
         Private Sub SortGroupsAtTimestep(ByVal iTimeStep As Integer)
 
             Dim iGroup As Integer = 0
             Dim sValue As Single = 0.0
 
-            If Me.m_zgp.NumRuns < 1 Then Return
+            If (Me.m_zgp.NumRuns < 1) Then Return
+            Debug.Assert(Me.IsExploring = True)
 
-            Me.m_lbGroups.SortThreshold = Me.m_sChangeTrackSize
+            'Me.m_lbGroups.Sorted = False
 
             For i As Integer = 0 To Me.m_lbGroups.Items.Count
                 iGroup = Me.m_lbGroups.GetGroupIndexAt(i)
-                If (i > 0) Then
+                If (iGroup > 0) Then
+                    ' Grab value from data
+                    'sValue = Me.GetDataPoint(iGroup, iTimeStep)
                     sValue = CSng(Me.m_zgp.GetValueAt(iGroup, Me.m_zgp.NumRuns - 1, iTimeStep))
-                    ' ToDo: Handle value depending on what is being displayed
-                    Me.m_lbGroups.SortValue(iGroup) = CSng(Math.Abs(sValue - 1.0))
+                    ' Set sort value
+                    If Me.IsCumulativePlot Then
+                        ' Set this to sort value
+                        Me.m_lbGroups.SortValue(iGroup) = sValue
+                    Else
+                        ' Set this to sort value
+                        Me.m_lbGroups.SortValue(iGroup) = CSng(Math.Abs(sValue - 1.0))
+                    End If
                 End If
             Next
 
-            Me.m_lbGroups.Sorted = (Me.m_zgp.ShowCursor = True)
+            'Me.m_lbGroups.Sorted = True
+
             Me.m_lbGroups.Refresh()
 
         End Sub
@@ -966,6 +901,10 @@ Namespace Ecosim
 
         Private Sub UpdateControls()
 
+            If (Me.m_zgp Is Nothing) Then Return
+
+            Me.m_bInUpdate = True
+
             ' Configure run/stop button
             Me.btnRunOrStop.Text = CStr(IIf(Me.m_bEcosimRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
             Me.btnRunOrStop.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
@@ -977,22 +916,32 @@ Namespace Ecosim
             Me.tsbSetTo0.Enabled = (Me.m_sketchPad.Shape IsNot Nothing)
             Me.tsbResetFs.Enabled = True
 
-            If Me.m_zgp Is Nothing Then Return
+            Me.m_tsmiCumulative.Checked = (Me.m_bIsCumulative = True)
+            Me.m_tsmiRelative.Checked = (Me.m_bIsCumulative = False)
+            Me.m_tsmiShowAnnualOutput.Checked = Me.m_bIsAnnual
+
+            Me.m_tsmiBiomass.Checked = (Me.PlotDataType = ePlotData.Biomass)
+            Me.m_tsmiCatch.Checked = (Me.PlotDataType = ePlotData.GroupCatch)
 
             Me.m_tsmiAutoscale.Checked = (Me.m_zgp.AutoScaleOption = cZedGraphHelper.ScaleOptions.MaxOnly)
             Me.m_tsmiCustomScaleLabel.Checked = Not m_tsmiAutoscale.Checked
             Me.m_tstbMax.Text = CStr(Me.m_zgp.YScaleMax)
             Me.m_tstbMin.Text = CStr(Me.m_zgp.YScaleMin)
 
-            If Me.m_tsmiSortMostChanged.Checked Then
+            If Me.IsExploring Then
+                Me.m_lbGroups.SortThreshold = Me.m_sChangeTrackSize
                 Me.m_lbGroups.SortType = cGroupListBox.eSortType.ValueDesc
+                Me.m_tsmiSortMostChanged.Checked = True
             Else
                 Me.m_lbGroups.SortThreshold = cCore.NULL_VALUE
                 Me.m_lbGroups.SortType = cGroupListBox.eSortType.GroupIndexAsc
+                Me.m_tsmiSortMostChanged.Checked = False
             End If
 
             Me.m_scOptions.Panel1Collapsed = Not Me.m_tsmShowMultipleRuns.Checked
             Me.m_tstbChangeAmount.Text = CStr(Me.m_sChangeTrackSize)
+
+            Me.m_bInUpdate = False
 
         End Sub
 
@@ -1017,17 +966,6 @@ Namespace Ecosim
                     iGroup = Math.Max(0, Me.m_lbGroups.GetGroupIndexAt(iItem))
                     Me.m_zgp.Highlight(iGroup, iRun - 1)
                 Next
-                'For Each groupitem As Object In Me.m_lbGroups.SelectedItems
-                '    If TypeOf (groupitem) Is cGroupListBox.cGroupItem Then
-                '        gi = DirectCast(groupitem, cGroupListBox.cGroupItem)
-                '        If (gi.Group IsNot Nothing) Then
-                '            iGroup = gi.Group.Index
-                '        Else
-                '            iGroup = 0
-                '        End If
-                '        Me.m_zgp.Highlight(iGroup, iRun - 1)
-                '    End If
-                'Next groupitem
             Next iRun
 
             Me.m_graph.Invalidate()

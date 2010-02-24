@@ -463,6 +463,8 @@ Namespace Ecosim
 
         Private Sub newRun()
 
+            ' ToDo: globalize this method
+
             Me.m_nTrials += 1
             Me.m_plothelper.CreateRun(String.Format("Iteration {0}", Me.m_nTrials))
             Me.m_lpplIteration.Clear()
@@ -480,8 +482,8 @@ Namespace Ecosim
                     group = Me.m_core.EcoPathGroupInputs(iGroup)
 
                     Me.m_plothelper.AddLine(group.Name, iGroup, _
-                                            cEcosimOutputPlotHelper.eLineType.RelativeBiomass, _
-                                            Me.m_lpplIteration(iGroup - 1))
+                                            eLineType.Value, ePlotData.Biomass, _
+                                            Me.m_lpplIteration(iGroup - 1), False)
 
                 Next iGroup
 

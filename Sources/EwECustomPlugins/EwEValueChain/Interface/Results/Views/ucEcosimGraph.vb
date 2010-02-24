@@ -78,7 +78,7 @@ Public Class ucEcosimGraph
 
         End If
 
-        Me.m_zgh.PlotLines(lLines)
+        Me.m_zgh.PlotLines(lLines.ToArray)
 
     End Sub
 

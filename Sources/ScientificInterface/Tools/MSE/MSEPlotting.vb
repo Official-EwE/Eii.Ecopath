@@ -23,18 +23,6 @@ Friend Enum ePlotTypes
     Line
 End Enum
 
-''' <summary>
-''' Type of data being plotted
-''' </summary>
-''' <remarks>This can't be EwECore.eDataTypes because the data comes from the same Core objects. 
-''' Can't use eVarNameFlags because there is more than one type of data in a plot.</remarks>
-Friend Enum ePlotData
-    Biomass
-    GroupCatch
-    FleetValue
-    Effort
-End Enum
-
 #End Region
 
 #Region "Plotting Class"
@@ -547,7 +535,7 @@ Friend Class cMSEPlotter
 
                 Next
 
-                Me.m_zgh.PlotLines(lstLines, ipane, False, False)
+                Me.m_zgh.PlotLines(lstLines.ToArray, ipane, False, False)
                 Me.plotMean(data, Me.m_zgh.GetPane(ipane))
             Next
 
@@ -586,7 +574,7 @@ Friend Class cMSEPlotter
                                                             System.Drawing.Color.Gray, ppl)
                 lstLines.Add(Line)
 
-                Me.m_zgh.PlotLines(lstLines, ipane, True, False)
+                Me.m_zgh.PlotLines(lstLines.ToArray, ipane, True, False)
             Next
 
             Me.m_zgh.RescaleAndRedraw()

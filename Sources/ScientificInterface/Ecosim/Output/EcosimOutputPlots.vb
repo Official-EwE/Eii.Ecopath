@@ -299,7 +299,6 @@ Namespace Ecosim
             Me.AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplConsB))
             Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplFeedTime))
 
-            'Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplYield))
             For i As Integer = 1 To Me.UIContext.Core.nFleets
                 Dim fleet As cFleetInput = Me.UIContext.Core.FleetInputs(i)
                 If fleet.Landings(iGroup) > 0 Then
@@ -308,7 +307,8 @@ Namespace Ecosim
                                            Me.m_zgh.CreateLineItem(fleet.Name, _
                                                                    cZedGraphHelper.eCurveTypes.EcosimOutput, _
                                                                    clr, _
-                                                                   applYieldFleet(i)))
+                                                                   applYieldFleet(i)), _
+                                           True)
                 End If
             Next
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)
@@ -526,11 +526,13 @@ Namespace Ecosim
         ''' <param name="paneType">Index of the graph pane</param>
         ''' <param name="li">The curve</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurveToGraphPane(ByVal paneType As ePaneTypes, ByVal li As LineItem)
+        Private Sub AddCurveToGraphPane(ByVal paneType As ePaneTypes, _
+                                        ByVal li As LineItem, _
+                                        Optional ByVal bCumulative As Boolean = False)
 
             Dim lli As New List(Of ZedGraph.LineItem)
             lli.Add(li)
-            Me.AddCurvesToGraphPane(paneType, lli)
+            Me.AddCurvesToGraphPane(paneType, lli, bCumulative)
 
         End Sub
 
@@ -542,9 +544,11 @@ Namespace Ecosim
         ''' <param name="lli">The lists of data points for the multiple curves</param>
         ''' <remarks>Overloaded method with different color options.</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurvesToGraphPane(ByVal paneType As ePaneTypes, ByVal lli As List(Of LineItem))
+        Private Sub AddCurvesToGraphPane(ByVal paneType As ePaneTypes, _
+                                         ByVal lli As List(Of LineItem), _
+                                         Optional ByVal bCumulative As Boolean = False)
 
-            Me.m_zgh.PlotLines(lli, CInt(paneType), True, False)
+            Me.m_zgh.PlotLines(lli.ToArray, CInt(paneType), True, False, bCumulative)
 
         End Sub
 

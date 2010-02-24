@@ -153,7 +153,7 @@ Namespace Ecosim
 
                 lLines.Add(line)
                 ' Plot graph, but rescale ONLY when not dragging
-                Me.m_zgh.PlotLines(lLines, 1, (Me.m_dragtype = eDragType.None))
+                Me.m_zgh.PlotLines(lLines.ToArray, 1, (Me.m_dragtype = eDragType.None))
             Else
                 Me.m_zgh.PlotLines(Nothing)
             End If
