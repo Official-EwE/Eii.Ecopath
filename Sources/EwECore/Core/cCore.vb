@@ -2319,6 +2319,7 @@ Public Class cCore
 
                 'copy the input data into the output data this could wait for a model run but it may be safer to do it here
                 m_EcoPathData.CopyInputToModelArrays()
+                m_PSDData.Enabled = False ' Fixes bug 683
                 m_PSDData.CopyInputToModelArrays()
 
                 'compute the stanza data from the parameters loaded from the model 
