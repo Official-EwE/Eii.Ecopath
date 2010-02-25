@@ -64,28 +64,20 @@ Namespace Ecosim
             Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph)
             Me.m_zgh.ConfigurePane("", My.Resources.ECOSIM_DEF_MED_X_AXIS, My.Resources.HEADER_RELATIVEWEIGHT, True)
 
-            'Dim pane As GraphPane = m_zedgraph.GraphPane
-
-            '' Fill the axis background with a color gradient
-            'pane.Chart.Fill = New Fill(Color.White, Color.LightGray, 90.0F)
-            '' Fill the legend background with a color gradient
-            'pane.Legend.Fill = New Fill(Color.White, Color.FromArgb(255, 255, 250), 90.0F)
-            '' Fill the pane background with a solid color
-            'pane.Fill = New Fill(Color.FromArgb(250, 250, 255))
-
         End Sub
 
 
         Public Sub LoadGraphData()
 
-            ' Sanity check
+            ' Sanity checks
             If (Me.m_uic Is Nothing) Then Return
+            If (Me.IsDisposed) Then Return
 
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Dim medGrp As cMediatingGroup = Nothing
             Dim medFlt As cMediatingFleet = Nothing
             Dim list As PointPairList = Nothing
-            Dim pane As GraphPane = m_zedgraph.GraphPane
+            Dim pane As GraphPane = Me.m_zgh.GetPane(1)
             Dim source As cCoreInputOutputBase = Nothing
             Dim clr As Color = Color.Transparent
             Dim myCurve As BarItem = Nothing
