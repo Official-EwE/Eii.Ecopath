@@ -60,7 +60,7 @@ Namespace Ecopath.Input
             Dim aiStanzaGroups(Core.nGroups) As Integer 'Hold the stanza group index
             Dim iStanzaGroupPrev As Integer = -1
 
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim pm As cPropertyManager = Me.PropertyManager
             Dim prop As cProperty = Nothing
 
             Dim alSumRow As New ArrayList()
