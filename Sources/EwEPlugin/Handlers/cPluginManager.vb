@@ -148,6 +148,8 @@ Public Class cPluginManager
     Private m_dlgtCoreState As CanExecutePlugin = Nothing
     ''' <summary>Sync object to marshall plug-in calls across threads.</summary>
     Private m_sync As System.Threading.SynchronizationContext = Nothing
+    ''' <summary>Id of the thread that create the plugin manager used to decide if the sync object should be used to marshall plug-in calls across threads.</summary>
+    Private m_ThreadID As Integer
 
 #End Region ' Private variables
 
@@ -1551,14 +1553,17 @@ Public Class cPluginManager
 
 #End If
 
-        ' Has sync object?
-        If (Me.m_sync IsNot Nothing) Then
-            ' #Yes: build info to cross over
-            Dim inf As New cInvokeMethodInfo(typePlugin, strMethod, aArgs, invocation)
-            ' Yo Maurice
-            Me.m_sync.Send(New SendOrPostCallback(AddressOf Me.MarshallInvokeMethod), inf)
-            ' Return result
-            Return inf.Result
+        'Only marshall the call via the SyncObject if TryInvokeMethod() is not on the same thread as the PluginManager was created on
+        If Not (System.Threading.Thread.CurrentThread.ManagedThreadId = Me.m_ThreadID) Then
+            ' Has sync object?
+            If (Me.m_sync IsNot Nothing) Then
+                ' #Yes: build info to cross over
+                Dim inf As New cInvokeMethodInfo(typePlugin, strMethod, aArgs, invocation)
+                ' Yo Maurice
+                Me.m_sync.Send(New SendOrPostCallback(AddressOf Me.MarshallInvokeMethod), inf)
+                ' Return result
+                Return inf.Result
+            End If
         End If
 
         Return Me.InvokeMethod(typePlugin, strMethod, aArgs, invocation)
@@ -1757,4 +1762,7 @@ Public Class cPluginManager
 
 #End Region ' Private helper methods
 
+    Public Sub New()
+        Me.m_ThreadID = Threading.Thread.CurrentThread.ManagedThreadId
+    End Sub
 End Class
