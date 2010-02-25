@@ -137,7 +137,7 @@ Namespace Ecopath.Input
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
                         'Complete row with dummy cells
-                        For i As Integer = 2 To 4 : Me(iRow, i) = New EwERowHeaderCell() : Next
+                        For i As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         iStanzaPrev = aiStanza(source.Index)
                     Else
                         hgcStanza = dtStanzaCells(sg)
