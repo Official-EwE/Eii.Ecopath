@@ -22,7 +22,7 @@ Public Interface IEcosimSubTimestepsPlugin
     ''' <param name="SubTimestepIndex">Index of the current sub timestep 1 to cEcosimDatastructures.StepsPerMonth</param>
     ''' <param name="EcosimDatastructures">Ecosim data structures cEcosimDatastructures cast to an object</param>
     ''' <remarks> 
-    ''' In Ecosim a sub timestep is the number of timesteps to run per month set via cEcosimDatastructures.StepsPerMonth with a default of one.
+    ''' In Ecosim the number of sub time steps to run per month is set via the cEcosimDatastructures.StepsPerMonth with a default of one.
     ''' EcosimSubTimeStepBegin() is called once at the start of each Ecosim sub timestep. 
     ''' A sub timestep only runs the numeric integration routine (rk4) and does not call the timestep delegate passed to cCore.RunEcosim(EcoSimTimeStepDelegate) 
     ''' or set any of the Core's Ecosim output objects e.g. cCore.EcosimGroupOutputs will not be update to the values of the new sub timestep. 
@@ -39,7 +39,7 @@ Public Interface IEcosimSubTimestepsPlugin
     ''' <param name="SubTimestepIndex">Index of the current sub timestep 1 to cEcosimDatastructures.StepsPerMonth</param>
     ''' <param name="EcosimDatastructures">Ecosim data structures cEcosimDatastructures cast to an object</param>
     ''' <remarks> 
-    ''' In Ecosim a sub timestep is the number of timesteps to run per month set via cEcosimDatastructures.StepsPerMonth with a default of one.
+    ''' In Ecosim the number of sub time steps to run per month is set via the cEcosimDatastructures.StepsPerMonth with a default of one.
     ''' EcosimSubTimeStepEnd() is called once at the end of each Ecosim sub timestep. 
     ''' A sub timestep only runs the numeric integration routine (rk4) and does not call the timestep delegate passed to cCore.RunEcosim(EcoSimTimeStepDelegate) 
     ''' or set any of the Core's Ecosim output objects e.g. cCore.EcosimGroupOutputs will not be update to the values of the new sub timestep. 
