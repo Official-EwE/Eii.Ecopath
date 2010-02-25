@@ -155,6 +155,12 @@ Public Class cPluginManager
 
 #Region " Initialization "
 
+    Public Sub New()
+        'Store the Thread ID of the thread that created the Plugin Manager 
+        'It will be used to decide if a call to TryInvokeMethod needs to marshall the call
+        Me.m_ThreadID = Threading.Thread.CurrentThread.ManagedThreadId
+    End Sub
+
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Assign an EwECore to the plugin manager. This core will be used to 
@@ -1762,7 +1768,4 @@ Public Class cPluginManager
 
 #End Region ' Private helper methods
 
-    Public Sub New()
-        Me.m_ThreadID = Threading.Thread.CurrentThread.ManagedThreadId
-    End Sub
 End Class
