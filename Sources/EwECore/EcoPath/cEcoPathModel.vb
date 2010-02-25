@@ -1191,11 +1191,16 @@ Namespace Ecopath
             Dim vs As cVariableStatus = Nothing
 
             For i As Integer = 1 To m_Data.NumGroups
-                SumDF = 0
+                SumDF = 0.0!
+                DFtooBig(i) = False
                 For j As Integer = 1 To m_Data.NumDetrit
-                    SumDF = SumDF + m_Data.DF(i, j)
+                    SumDF += m_Data.DF(i, j)
                 Next
-                If SumDF > 1 Then DFtooBig(i) = True : nFound = nFound + 1
+                ' JS 25Feb10: added grace range to this test
+                If Math.Round(SumDF, 4) > 1.0! Then
+                    DFtooBig(i) = True
+                    nFound += 1
+                End If
             Next
 
             If nFound > 0 Then
