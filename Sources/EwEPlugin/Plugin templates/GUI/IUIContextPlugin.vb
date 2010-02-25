@@ -1,4 +1,4 @@
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 
@@ -6,17 +6,20 @@ Option Strict On
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' 
+''' Plugin interface that defines all functionality required to receive a user
+''' interface UI context.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Interface IToolbarItemPlugin
-    Inherits IGUIPlugin
+Public Interface IUIContextPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Override this to specify the toolbar item location for this plugin.
+    ''' Implement this plug-in point to receive a user interface context. See
+    ''' ScientificInterfaceShared > Controls > cUIContext for a full description
+    ''' of this object.
     ''' </summary>
+    ''' <param name="uic"></param>
     ''' -----------------------------------------------------------------------
-    ReadOnly Property ToolbarItemLocation() As String
+    Sub UIContext(ByVal uic As Object)
 
 End Interface

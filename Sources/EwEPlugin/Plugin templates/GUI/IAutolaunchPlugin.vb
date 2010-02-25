@@ -1,19 +1,8 @@
-'==============================================================================
-'
-' $Log: IAutolaunchPlugin.vb,v $
-' Revision 1.2  2008/11/17 13:06:00  jeroens
-' Fixed auto-launch behaviour
-'
-' Revision 1.1  2008/09/05 16:08:36  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
-Imports System.Drawing
-Imports EwEUtils.Core
-Imports EwEUtils.Commands
+#End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>

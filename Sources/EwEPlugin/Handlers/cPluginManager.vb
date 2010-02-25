@@ -143,6 +143,8 @@ Public Class cPluginManager
 
     ''' <summary>The one core for this plugin manager.</summary>
     Private m_core As Object = Nothing
+    ''' <summary>The one UI context for this plug-in manager.</summary>
+    Private m_uic As Object = Nothing
     ''' <summary>Delegate that this class can use to check whether the current core
     ''' execution state allows a plug-in to run.</summary>
     Private m_dlgtCoreState As CanExecutePlugin = Nothing
@@ -180,6 +182,26 @@ Public Class cPluginManager
                     ip.Initialize(Me.m_core)
                 Next
             Next
+        End Set
+    End Property
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Assign an UI Context to the plugin manager. This context will be passed to
+    ''' any plug-in that requires this interface at startup.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Property UIContext() As Object
+        Get
+            Return Me.m_uic
+        End Get
+        Set(ByVal uic As Object)
+            ' Remember core
+            Me.m_uic = uic
+            ' Initialize active plugins
+            Me.TryInvokeMethod(GetType(IUIContextPlugin), _
+                                      "UIContext", _
+                                      New Object() {Me.m_uic})
         End Set
     End Property
 
@@ -319,6 +341,17 @@ Public Class cPluginManager
                                     End Try
                                 End If
 
+                                ' Is UI Context assigned?
+                                If (Me.m_uic IsNot Nothing) Then
+                                    If (TypeOf (ip) Is IUIContextPlugin) Then
+                                        Try
+                                            DirectCast(ip, IUIContextPlugin).UIContext(Me.m_uic)
+                                        Catch ex As Exception
+                                            ' Disable the plugin entirely
+                                            plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
+                                        End Try
+                                    End If
+                                End If
                             End If
 
                             ' Yeah, got info allright
@@ -493,7 +526,7 @@ Public Class cPluginManager
 
 #Region " Plugin invocation "
 
-#Region " Core Plugin "
+#Region " Core "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -616,9 +649,9 @@ Public Class cPluginManager
 
     End Sub
 
-#End Region ' Core Plugin
+#End Region ' Core
 
-#Region " Ecopath Plugin"
+#Region " Ecopath "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -663,9 +696,9 @@ Public Class cPluginManager
 
     End Function
 
-#End Region ' Ecopath Plugin
+#End Region ' Ecopath
 
-#Region " Ecosim Plugin "
+#Region " Ecosim "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -778,6 +811,7 @@ Public Class cPluginManager
         Return bSucces
 
     End Function
+
     'Public Function EcosimEndTimeStepStats(ByVal EcosimIndicies As Object) As Boolean
 
     '    Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimEndTimestepStatsPlugin))
@@ -841,9 +875,9 @@ Public Class cPluginManager
 
     End Function
 
-#End Region ' Ecosim Plugins
+#End Region ' Ecosim
 
-#Region " Ecospace Plugins "
+#Region " Ecospace "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -936,9 +970,9 @@ Public Class cPluginManager
 
     End Function
 
-#End Region ' Ecospace Plugins
+#End Region ' Ecospace
 
-#Region " Ecotracer Plugins "
+#Region " Ecotracer "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -993,9 +1027,9 @@ Public Class cPluginManager
 
     End Sub
 
-#End Region ' Ecotracer Plugins
+#End Region ' Ecotracer 
 
-#Region " Data Exchange Plugins "
+#Region " Data Exchange "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -1154,9 +1188,9 @@ Public Class cPluginManager
         End Set
     End Property
 
-#End Region ' Data Exchange Plugins 
+#End Region ' Data Exchange 
 
-#Region " Search plugins "
+#Region " Search "
 
     Public Function SearchInitialized(ByVal SearchDS As Object) As Boolean
 
@@ -1188,9 +1222,9 @@ Public Class cPluginManager
 
     End Function
 
-#End Region ' Search plugins
+#End Region ' Search 
 
-#Region "MSE and MSY"
+#Region " MSE and MSY "
 
     Public Function MSEInitialized(ByVal MSEModel As Object, _
                                    ByVal MSEDataStructure As Object, _
@@ -1241,9 +1275,7 @@ Public Class cPluginManager
 
     End Function
 
-
-
-#End Region
+#End Region ' MSE and MSY
 
 #End Region ' Plugin invocation
 

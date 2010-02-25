@@ -1,9 +1,12 @@
+#Region " Imports "
+
 Option Strict On
 Imports System
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwEUtils.Core
-Imports EwEUtils.Commands
+
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

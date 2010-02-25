@@ -1,18 +1,9 @@
-'==============================================================================
-'
-' $Log: INavigationTreeItemPlugin.vb,v $
-' Revision 1.1  2008/09/26 07:31:08  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2006/09/20 00:50:02  jeroens
-' - No longer exposes a Form class. This plug-in type is invoked just like any other. The form should be launched via the central CommandHandler in OnInvoke
-'
-' Revision 1.2  2006/09/06 16:53:37  jeroens
-' + Commenting
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
+
+#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

@@ -1,14 +1,15 @@
-'==============================================================================
-'
-' $Log: IMenuItemPlugin.vb,v $
-' Revision 1.1  2008/09/26 07:31:08  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/06/27 02:33:16  jeroens
-' Added header
-'
-'==============================================================================
+#Region " Imports "
 
+Option Strict On
+
+#End Region ' Imports
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Plugin interface that defines all functionality required to add a menu
+''' item to the EwE main menu.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Interface IMenuItemPlugin
     Inherits IGUIPlugin
 
