@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: MCRunInputGrid.vb,v $
-' Revision 1.3  2009/06/24 18:22:47  jeroens
-' Enabled for use in the .NET designer
-'
-' Revision 1.2  2008/12/15 15:55:37  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:47  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -94,10 +80,10 @@ Namespace Ecosim
                 mcGrp = m_mcmanager.Groups(i)
                 Me(i, 0) = New EwERowHeaderCell(mcGrp.Index)
                 Me(i, 1) = New EwERowHeaderCell(mcGrp.Name)
-                Me(i, 2) = New PropertyCell(mcGrp, flags(0))
-                Me(i, 3) = New PropertyCell(mcGrp, flags(1))
-                Me(i, 4) = New PropertyCell(mcGrp, flags(2))
-                Me(i, 5) = New PropertyCell(mcGrp, flags(3))
+                Me(i, 2) = New PropertyCell(Me.PropertyManager, mcGrp, flags(0))
+                Me(i, 3) = New PropertyCell(Me.PropertyManager, mcGrp, flags(1))
+                Me(i, 4) = New PropertyCell(Me.PropertyManager, mcGrp, flags(2))
+                Me(i, 5) = New PropertyCell(Me.PropertyManager, mcGrp, flags(3))
             Next
 
         End Sub

@@ -24,7 +24,7 @@ Namespace Ecospace.Basemap.Layers
     ''' -----------------------------------------------------------------------
     Public Class dlgEditLayer
 
-        Private m_core As cCore = Nothing
+        Private m_uic As cUIContext = Nothing
 
         ''' <summary>Original layer this dialog was invoked for.</summary>
         Private m_layerOriginal As cLayer = Nothing
@@ -58,14 +58,17 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="layer"></param>
         ''' <param name="layerDepth"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByRef layer As cLayer, ByVal layerDepth As cLayer, ByVal opentype As eOpenDialogTypes)
-            InitializeComponent()
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByRef layer As cLayer, _
+                       ByVal layerDepth As cLayer, _
+                       ByVal opentype As eOpenDialogTypes)
 
-            ' Who needs sanity?
+            Me.InitializeComponent()
+
             Debug.Assert(layer IsNot Nothing)
 
             ' Set the references
-            Me.m_core = cCore.GetInstance()
+            Me.m_uic = uic
 
             Me.m_layerOriginal = layer
             Me.m_layerDepth = layerDepth
@@ -87,7 +90,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_ucZoomControl.Dock = DockStyle.Fill
 
             Me.m_ucPreview = Me.m_ucZoomControl.Map()
-            Me.m_ucPreview.Basemap = Me.m_core.EcospaceBasemap
+            Me.m_ucPreview.Basemap = Me.m_uic.Core.EcospaceBasemap
             Me.m_ucPreview.AddLayer(Me.m_layerWork)
             If ((Not Object.ReferenceEquals(Me.m_layerOriginal, Me.m_layerDepth)) And _
                 (Not Object.ReferenceEquals(Me.m_layerDepth, Nothing))) Then
@@ -286,7 +289,7 @@ Namespace Ecospace.Basemap.Layers
 
             If (HasUniqueSource()) Then
 
-                Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+                Dim pm As cPropertyManager = Me.m_uic.PropertyManager
                 Dim p As cProperty = pm.GetProperty(Me.m_layerOriginal.Source, eVarNameFlags.Name)
 
                 If (p IsNot Nothing) Then

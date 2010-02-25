@@ -103,11 +103,11 @@ Namespace Ecopath.Input
 
                 If aiStanza(source.Index) = -1 Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow()
-                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
-                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
-                    Me(iRow, eColumnTypes.Area) = New PropertyCell(source, eVarNameFlags.Area)
+                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                    Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Area)
 
-                    cell = New PropertyCell(source, eVarNameFlags.BiomassAreaInput)
+                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaInput)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.BA) = cell
 
@@ -115,18 +115,18 @@ Namespace Ecopath.Input
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iRow, eColumnTypes.Z) = cell
 
-                    cell = New PropertyCell(source, eVarNameFlags.PBInput)
+                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBInput)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.PB) = cell
 
-                    cell = New PropertyCell(source, eVarNameFlags.QBInput)
+                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.QBInput)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.QB) = cell
 
-                    Me(iRow, eColumnTypes.EE) = New PropertyCell(source, eVarNameFlags.EEInput)
-                    Me(iRow, eColumnTypes.GE) = New PropertyCell(source, eVarNameFlags.GEInput)
-                    Me(iRow, eColumnTypes.GS) = New PropertyCell(source, eVarNameFlags.GS)
-                    Me(iRow, eColumnTypes.DetImp) = New PropertyCell(source, eVarNameFlags.DetImp)
+                    Me(iRow, eColumnTypes.EE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EEInput)
+                    Me(iRow, eColumnTypes.GE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GEInput)
+                    Me(iRow, eColumnTypes.GS) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GS)
+                    Me(iRow, eColumnTypes.DetImp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.DetImp)
 
                 Else 'Group is stanza
 
@@ -140,7 +140,7 @@ Namespace Ecopath.Input
                         hgcStanza = New EwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
                         Me(iRow, eColumnTypes.Index) = hgcStanza
-                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
 
                         iStanzaPrev = aiStanza(source.Index)
                     Else
@@ -149,16 +149,16 @@ Namespace Ecopath.Input
 
                     'display group info
                     iRow = Me.AddRow()
-                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
-                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
-                    Me(iRow, eColumnTypes.Area) = New PropertyCell(source, eVarNameFlags.Area)
+                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                    Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Area)
 
-                    cell = New PropertyCell(source, eVarNameFlags.BiomassAreaInput)
+                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaInput)
                     cell.Behaviors.Add(m_bm)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.BA) = cell
 
-                    cell = New PropertyCell(source, eVarNameFlags.PBInput)
+                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBInput)
                     cell.Behaviors.Add(m_bm)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.Z) = cell
@@ -168,16 +168,16 @@ Namespace Ecopath.Input
                     cell.Behaviors.Add(m_bm)
                     Me(iRow, eColumnTypes.PB) = cell
 
-                    cell = New PropertyCell(source, eVarNameFlags.QBInput)
+                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.QBInput)
                     cell.Behaviors.Add(m_bm)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.QB) = cell
 
-                    Me(iRow, eColumnTypes.EE) = New PropertyCell(source, eVarNameFlags.EEInput)
-                    Me(iRow, eColumnTypes.GE) = New PropertyCell(source, eVarNameFlags.GEInput)
+                    Me(iRow, eColumnTypes.EE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EEInput)
+                    Me(iRow, eColumnTypes.GE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GEInput)
                     Me(iRow, eColumnTypes.GE).Behaviors.Add(m_bm)
-                    Me(iRow, eColumnTypes.GS) = New PropertyCell(source, eVarNameFlags.GS)
-                    Me(iRow, eColumnTypes.DetImp) = New PropertyCell(source, eVarNameFlags.DetImp)
+                    Me(iRow, eColumnTypes.GS) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GS)
+                    Me(iRow, eColumnTypes.DetImp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.DetImp)
 
                     hgcStanza.AddChildRow(iRow)
 

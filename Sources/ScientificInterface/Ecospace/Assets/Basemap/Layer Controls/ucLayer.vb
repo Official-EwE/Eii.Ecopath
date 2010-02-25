@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: ucLayer.vb,v $
-' Revision 1.2  2008/11/05 01:16:04  jeroens
-' Pruned log
-'
-' Revision 1.1  2008/11/04 04:39:35  jeroens
-' Moved
-'
-' Revision 1.2  2008/10/10 18:04:02  jeroens
-' Updated to renamed layers classes
-'
-' Revision 1.1  2008/09/26 07:31:59  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -30,6 +13,7 @@ Namespace Ecospace
 
     Partial Public Class ucLayer
 
+        Private m_uic As cUIContext = Nothing
         ''' <summary>Layer</summary>
         Private m_layer As cLayer = Nothing
         ''' <summary>Parent layer group</summary>
@@ -46,7 +30,7 @@ Namespace Ecospace
 
 #Region " Constructor "
 
-        Public Sub New(ByVal l As cLayer)
+        Public Sub New(ByVal uic As cUIContext, ByVal l As cLayer)
 
             ' This call is required by the Windows Form Designer.
             Me.InitializeComponent()
@@ -57,6 +41,7 @@ Namespace Ecospace
             Me.SetStyle(ControlStyles.ResizeRedraw, True)
             Me.SetStyle(ControlStyles.UserPaint, True)
 
+            Me.m_uic = uic
             Me.m_layer = l
 
             AddHandler m_layer.LayerChanged, AddressOf OnLayerChanged
@@ -109,9 +94,8 @@ Namespace Ecospace
         End Sub
 
         Public Sub EditLayer(ByVal openType As dlgEditLayer.eOpenDialogTypes)
-            Dim dlgEditLay As New dlgEditLayer(Me.m_layer, Nothing, openType)
-            dlgEditLay.ShowDialog()
-            ' Dialog will update the layer
+            Dim dlg As New dlgEditLayer(Me.m_uic, Me.m_layer, Nothing, openType)
+            dlg.ShowDialog()
         End Sub
 
         ''' <summary>

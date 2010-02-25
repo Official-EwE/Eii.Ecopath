@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: gridFishery.vb,v $
-' Revision 1.4  2009/05/21 19:27:19  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:07  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:55:35  jeroens
-' no message
-'
-' Revision 1.1  2008/11/04 04:58:44  jeroens
-' Renamed
-'
-' Revision 1.1  2008/09/26 07:31:56  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -109,8 +89,8 @@ Namespace Ecospace
                     Me(i, m_Core.nHabitats + 1 + iMPA).Behaviors.Add(m_ah)
                 Next
 
-                Me(i, Me.ColumnsCount - 2) = New PropertyCell(source, eVarNameFlags.EffectivePower)
-                Me(i, Me.ColumnsCount - 1) = New PropertyCell(source, eVarNameFlags.SEmult)
+                Me(i, Me.ColumnsCount - 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EffectivePower)
+                Me(i, Me.ColumnsCount - 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SEmult)
 
             Next
 

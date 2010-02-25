@@ -32,9 +32,9 @@ Public Class gridFishingWeights
 
         For iFleet As Integer = 1 To Me.Core.nFleets
             src = Me.Core.FleetInputs(iFleet)
-            Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(src, _
-                eVarNameFlags.Name, Nothing, _
-                My.Resources.GENERIC_LABEL_DETAILEDLABEL, cStyleGuide.eUnitType.Currency)
+            Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, _
+                                                             src, eVarNameFlags.Name, Nothing, _
+                                                             My.Resources.GENERIC_LABEL_DETAILEDLABEL, cStyleGuide.eUnitType.Currency)
         Next
 
         Me.FixedColumns = 2
@@ -63,12 +63,12 @@ Public Class gridFishingWeights
 
                 ' Fleet name As row header
                 Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
-                Me(iGroup, 1) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
+                Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To Me.Core.nFleets
                     fleet = mse.FleetInputs(iFleet)
-                    Me(iGroup, 1 + iFleet) = New PropertyCell(fleet, eVarNameFlags.MSEFleetWeight, group)
+                    Me(iGroup, 1 + iFleet) = New PropertyCell(Me.PropertyManager, fleet, eVarNameFlags.MSEFleetWeight, group)
                 Next
             Next
 

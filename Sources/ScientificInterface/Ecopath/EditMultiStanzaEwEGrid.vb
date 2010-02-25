@@ -98,10 +98,10 @@ Public Class EditMultiStanzaEwEGrid
             iRow = Me.AddRow
 
             'Index
-            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
+            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
 
             'Name
-            Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
             'Start age
             ewec = New EwECell(0, GetType(Integer))

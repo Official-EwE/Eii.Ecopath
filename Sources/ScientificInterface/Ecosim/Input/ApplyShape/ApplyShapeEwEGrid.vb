@@ -332,7 +332,7 @@ Namespace Ecosim
         Private Sub InsertColumn(ByRef source As cCoreGroupBase, ByVal columnIndex As Integer)
             Me.Columns.Insert(columnIndex)
             ' # Group name column header cells
-            Me(0, columnIndex) = New PropertyColumnHeaderCell(source, eVarNameFlags.Index)
+            Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             Me(0, columnIndex).Behaviors.Add(m_RowColClick)
         End Sub
 

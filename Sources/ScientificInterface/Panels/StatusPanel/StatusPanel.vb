@@ -18,14 +18,17 @@ Imports WeifenLuo.WinFormsUI.Docking
 ''' </summary>
 ''' -----------------------------------------------------------------------
 Public Class StatusPanel
+    Implements IUIElement
 
     Private m_msh As New cMessageStateHandler()
-    Private m_il As New ImageList
+    Private m_il As New ImageList()
+    Private m_uic As cUIContext = Nothing
 
-    Public Sub New()
+    Public Sub New(ByVal uic As cUIContext)
 
         Me.InitializeComponent()
-        ' Set tab label
+
+        Me.UIContext = uic
         Me.TabText = My.Resources.HEADER_STATUS
 
         ' Prepare image list
@@ -41,6 +44,7 @@ Public Class StatusPanel
 
         ' Start listening to core messages
         Me.ConfigMessageHandlers(True)
+
     End Sub
 
     Private Sub OnDisposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -59,6 +63,20 @@ Public Class StatusPanel
         Me.tvStatus.Nodes.Clear()
         Me.m_msh.Clear(eCoreComponentType.Core)
     End Sub
+
+#Region " IUIElement implementation "
+
+    Private Property UIContext() As cUIContext _
+        Implements IUIElement.UIContext
+        Get
+            Return Me.m_uic
+        End Get
+        Set(ByVal value As cUIContext)
+            Me.m_uic = value
+        End Set
+    End Property
+
+#End Region ' IUIElement implementation
 
 #Region " Core message handling "
 
@@ -515,7 +533,7 @@ Public Class StatusPanel
             End If
         End If
 
-            Return bError
+        Return bError
     End Function
 
 #End Region ' Helper methods

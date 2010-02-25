@@ -80,7 +80,7 @@ Namespace Ecopath.Output
 
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
                         ' Complete row with dummy cells
                         For i As Integer = 2 To 6 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaGroupIndexPrev = intStanzaGroupIndex(source.Index)
@@ -99,17 +99,17 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
-            Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
+            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
-            Me(iRow, 2) = New PropertyCell(source, eVarNameFlags.Respiration)
-            Me(iRow, 3) = New PropertyCell(source, eVarNameFlags.Assimilation)
-            Me(iRow, 4) = New PropertyCell(source, eVarNameFlags.RespAssim)
-            Me(iRow, 5) = New PropertyCell(source, eVarNameFlags.ProdResp)
-            Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.RespBiom)
+            Me(iRow, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Respiration)
+            Me(iRow, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Assimilation)
+            Me(iRow, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.RespAssim)
+            Me(iRow, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.ProdResp)
+            Me(iRow, 6) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.RespBiom)
         End Sub
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType

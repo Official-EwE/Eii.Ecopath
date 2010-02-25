@@ -99,9 +99,11 @@ Public Class NichePropertyColourCell
     ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces.</param>
     ''' <param name="SourceSec">An optional secundary index in the VarName, or Nothing when irrelevant.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-            Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
-        MyBase.new(Source, VarName, SourceSec)
+    Public Sub New(ByVal pm As cPropertyManager, _
+                   ByVal Source As cCoreInputOutputBase, _
+                   ByVal VarName As eVarNameFlags, _
+                   Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
+        MyBase.new(pm, Source, VarName, SourceSec)
         ' Set shared visualizer
         Me.VisualModel = g_visualizer
     End Sub

@@ -184,7 +184,7 @@ Namespace Ecotracer
                 If (Me.IsConnectedToEcosim() = True) Then Return
                 If (Me.m_core.ActiveEcosimScenarioIndex <= 0) Then Return
 
-                Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+                Dim pm As cPropertyManager = Me.PropertyManager
                 Dim ecosimModelParams As cEcoSimModelParameters = m_core.EcoSimModelParameters()
 
                 Me.m_propEcosimConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
@@ -210,7 +210,7 @@ Namespace Ecotracer
                 If Me.IsConnectedToEcospace() Then Return
                 If (Me.m_core.ActiveEcospaceScenarioIndex <= 0) Then Return
 
-                Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+                Dim pm As cPropertyManager = Me.PropertyManager
                 Dim ecospaceModelParams As cEcospaceModelParameters = m_core.EcospaceModelParameters()
 
                 Me.m_propEcospaceConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)

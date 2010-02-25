@@ -64,7 +64,7 @@ Namespace Ecopath.Input
                 source = Core.FleetInputs(rowIndex)
                 Me(rowIndex, 0) = New EwERowHeaderCell(rowIndex)
                 ' Fleet name column
-                Me(rowIndex, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                Me(rowIndex, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
                 'Fixed cost column
                 prop = pm.GetProperty(source, eVarNameFlags.FixedCost)

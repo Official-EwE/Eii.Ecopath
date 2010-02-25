@@ -130,6 +130,8 @@ Namespace Controls.EwEGrid
         ''' Constructor to create a column header cell that synchronizes 
         ''' its <see cref="DisplayText">display text</see> live with core data.
         ''' </summary>
+        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see>
+        ''' to extract data from.</param>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
         ''' object to deliver the core data.</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">variable</see> 
@@ -139,10 +141,11 @@ Namespace Controls.EwEGrid
         ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when this variable
         ''' does not require an index.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As cCoreInputOutputBase, _
+        Public Sub New(ByVal pm As cPropertyManager, _
+                       ByVal Source As cCoreInputOutputBase, _
                        ByVal VarName As eVarNameFlags, _
                        Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
-            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec))
+            Me.New(pm.GetProperty(Source, VarName, SourceSec))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -152,6 +155,8 @@ Namespace Controls.EwEGrid
         ''' The core value is inserted in the cell display text via a 
         ''' <see cref="Strings.Format">format mask</see>.
         ''' </summary>
+        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see>
+        ''' to extract data from.</param>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
         ''' object to deliver the core data.</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">variable</see> 
@@ -163,11 +168,12 @@ Namespace Controls.EwEGrid
         ''' <param name="strUnitMask">The format mask to apply. This mask must
         ''' contain a '{0}' field where the property value is to be inserted.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As cCoreInputOutputBase, _
+        Public Sub New(ByVal pm As cPropertyManager, _
+                       ByVal Source As cCoreInputOutputBase, _
                        ByVal VarName As eVarNameFlags, _
                        ByVal SourceSec As cCoreInputOutputBase, _
                        ByVal strUnitMask As String)
-            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask)
+            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -178,6 +184,8 @@ Namespace Controls.EwEGrid
         ''' Both the core value and the unit text are inserted in the cell 
         ''' display text via a <see cref="Strings.Format">format mask</see>.
         ''' </summary>
+        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see>
+        ''' to extract data from.</param>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
         ''' object to deliver the core data.</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">variable</see> 
@@ -194,12 +202,13 @@ Namespace Controls.EwEGrid
         ''' <param name="unitType">Definition of the unit to place in the cell
         ''' display text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As cCoreInputOutputBase, _
+        Public Sub New(ByVal pm As cPropertyManager, _
+                       ByVal Source As cCoreInputOutputBase, _
                        ByVal VarName As eVarNameFlags, _
                        ByVal SourceSec As cCoreInputOutputBase, _
                        ByVal strUnitMask As String, _
                        ByVal unitType As cStyleGuide.eUnitType)
-            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, New cStyleGuide.eUnitType() {unitType})
+            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, New cStyleGuide.eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -210,6 +219,8 @@ Namespace Controls.EwEGrid
         ''' Both the core value and the unit texts are inserted in the cell 
         ''' display text via a <see cref="Strings.Format">format mask</see>.
         ''' </summary>
+        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see>
+        ''' to extract data from.</param>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
         ''' object to deliver the core data.</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">variable</see> 
@@ -226,12 +237,13 @@ Namespace Controls.EwEGrid
         ''' <param name="aUnitTypes">Definitions of units to place in the cell
         ''' display text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As cCoreInputOutputBase, _
+        Public Sub New(ByVal pm As cPropertyManager, _
+                       ByVal Source As cCoreInputOutputBase, _
                        ByVal VarName As eVarNameFlags, _
                        ByVal SourceSec As cCoreInputOutputBase, _
                        ByVal strUnitMask As String, _
                        ByVal aUnitTypes() As cStyleGuide.eUnitType)
-            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
+            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
         End Sub
 
         ''' -------------------------------------------------------------------

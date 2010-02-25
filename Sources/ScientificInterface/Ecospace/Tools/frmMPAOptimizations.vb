@@ -153,7 +153,7 @@ Namespace Ecospace
             MPAOpt = Me.m_manager.MPAOptimizationParamters
 
             ' Add LayersControl
-            Me.m_ucLayers = New ucLayersControl()
+            Me.m_ucLayers = New ucLayersControl(Me.UIContext)
             m_plLayers.Controls.Add(Me.m_ucLayers)
 
             ' Add objective grids

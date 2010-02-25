@@ -1,5 +1,4 @@
-﻿
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -10,7 +9,6 @@ Imports EwEUtils.Core
 Imports EwECore.MSE
 
 #End Region
-
 
 <CLSCompliant(False)> _
 Public Class gridFishingCV
@@ -44,9 +42,9 @@ Public Class gridFishingCV
                 Me.Rows.Insert(i)
 
                 Me(i, 0) = New EwERowHeaderCell(i)
-                Me(i, 1) = New PropertyRowHeaderCell(mse.FleetInputs(i), eVarNameFlags.Name)
-                Me(i, 2) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSEFleetCV)
-                Me(i, 3) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSEQIncrease)
+                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.Name)
+                Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSEFleetCV)
+                Me(i, 3) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSEQIncrease)
 
             Next
         Catch ex As Exception

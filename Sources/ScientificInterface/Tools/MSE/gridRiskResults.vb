@@ -163,7 +163,7 @@ Public Class gridRiskResults
             Me.Rows.Insert(rowIndex)
 
             Me(rowIndex, 0) = New EwERowHeaderCell(rowIndex)
-            Me(rowIndex, 1) = New PropertyRowHeaderCell(aSources(rowIndex - 1), eVarNameFlags.Name)
+            Me(rowIndex, 1) = New PropertyRowHeaderCell(Me.PropertyManager, aSources(rowIndex - 1), eVarNameFlags.Name)
 
             'not the best way to do this 
             'set the Style of the cell base on its column index not its contents

@@ -82,13 +82,13 @@ Namespace Ecosim
 
                 If Not m_bIsMaxByFleetValue Then
                     Me(i, 0) = New EwERowHeaderCell(i)
-                    Me(i, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
-                    Me(i, 2) = New PropertyCell(source, eVarNameFlags.FPSFleetJobCatchValue)
+                    Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                    Me(i, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetJobCatchValue)
                 Else
                     Me(i, 0) = New EwERowHeaderCell(i)
-                    Me(i, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
-                    Me(i, 2) = New PropertyCell(source, eVarNameFlags.FPSFleetJobCatchValue)
-                    Me(i, 4) = New PropertyCell(source, eVarNameFlags.FPSFleetTargetProfit)
+                    Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                    Me(i, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetJobCatchValue)
+                    Me(i, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetTargetProfit)
                 End If
             Next
 

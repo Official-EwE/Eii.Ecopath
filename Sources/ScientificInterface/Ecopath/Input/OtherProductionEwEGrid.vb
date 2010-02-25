@@ -74,13 +74,13 @@ Namespace Ecopath.Input
 
                 If intStanza(source.Index) = -1 Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow
-                    Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
-                    Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
-                    Me(iRow, 2) = New PropertyCell(source, eVarNameFlags.Immig)
-                    Me(iRow, 3) = New PropertyCell(source, eVarNameFlags.Emig)
-                    Me(iRow, 4) = New PropertyCell(source, eVarNameFlags.EmigRate)
-                    Me(iRow, 5) = New PropertyCell(source, eVarNameFlags.BioAccum)
-                    Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.BioAccumRate)
+                    Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                    Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                    Me(iRow, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Immig)
+                    Me(iRow, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Emig)
+                    Me(iRow, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EmigRate)
+                    Me(iRow, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
+                    Me(iRow, 6) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRate)
                 Else 'Group is stanza
                     sg = Core.StanzaGroups(intStanza(source.Index))
                     If intStanza(source.Index) <> intStanzaPrev Then 'If stanza group appears the first time Then display + control
@@ -88,7 +88,7 @@ Namespace Ecopath.Input
                         dtStanzaCells.Add(sg, hgcStanza)
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
                         'Complete row with dummy cells
                         For i As Integer = 2 To 6 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaPrev = intStanza(source.Index)
@@ -98,13 +98,13 @@ Namespace Ecopath.Input
                     'Display group info
                     iRow = Me.AddRow
                     hgcStanza.AddChildRow(iRow)
-                    Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
-                    Me(iRow, 1) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
-                    Me(iRow, 2) = New PropertyCell(source, eVarNameFlags.Immig)
-                    Me(iRow, 3) = New PropertyCell(source, eVarNameFlags.Emig)
-                    Me(iRow, 4) = New PropertyCell(source, eVarNameFlags.EmigRate)
-                    Me(iRow, 5) = New PropertyCell(source, eVarNameFlags.BioAccum)
-                    Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.BioAccumRate)
+                    Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                    Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                    Me(iRow, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Immig)
+                    Me(iRow, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Emig)
+                    Me(iRow, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EmigRate)
+                    Me(iRow, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
+                    Me(iRow, 6) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRate)
                 End If
             Next
 

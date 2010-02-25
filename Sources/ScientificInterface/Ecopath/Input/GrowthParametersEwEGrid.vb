@@ -84,7 +84,7 @@ Namespace Ecopath.Input
                         dtStanzaCells.Add(sg, hgcStanza)
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
                         ' Complete row with dummy cells
                         For i As Integer = 2 To 9 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaGroupIndexPrev = intStanzaGroupIndex(group.Index)
@@ -103,22 +103,22 @@ Namespace Ecopath.Input
         Private Sub FillInRows(ByVal iRow As Integer, ByVal group As cEcoPathGroupInput, Optional ByVal isIndented As Boolean = False)
 
             ' Get the group name from EcopathInput
-            Me(iRow, 0) = New PropertyRowHeaderCell(group, eVarNameFlags.Index)
+            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
 
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(group, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             End If
 
-            Me(iRow, 2) = New PropertyCell(group, eVarNameFlags.AinLWInput)
-            Me(iRow, 3) = New PropertyCell(group, eVarNameFlags.BinLWInput)
-            Me(iRow, 4) = New PropertyCell(group, eVarNameFlags.LooInput)
-            Me(iRow, 5) = New PropertyCell(group, eVarNameFlags.WinfInput)
-            Me(iRow, 6) = New PropertyCell(group, eVarNameFlags.VBK)
-            Me(iRow, 7) = New PropertyCell(group, eVarNameFlags.t0Input)
-            Me(iRow, 8) = New PropertyCell(group, eVarNameFlags.TCatchInput)
-            Me(iRow, 9) = New PropertyCell(group, eVarNameFlags.TmaxInput)
+            Me(iRow, 2) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.AinLWInput)
+            Me(iRow, 3) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BinLWInput)
+            Me(iRow, 4) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.LooInput)
+            Me(iRow, 5) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.WinfInput)
+            Me(iRow, 6) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.VBK)
+            Me(iRow, 7) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.t0Input)
+            Me(iRow, 8) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.TCatchInput)
+            Me(iRow, 9) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.TmaxInput)
 
         End Sub
 

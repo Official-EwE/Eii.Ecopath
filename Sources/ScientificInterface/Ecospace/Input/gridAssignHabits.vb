@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: gridAssignHabits.vb,v $
-' Revision 1.5  2009/05/28 12:37:40  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/05/21 18:53:44  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:07  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:55:33  jeroens
-' no message
-'
-' Revision 1.1  2008/11/04 04:58:44  jeroens
-' Renamed
-'
-' Revision 1.1  2008/09/26 07:31:54  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -143,7 +120,7 @@ Namespace Ecospace
                 Me(iGroup, m_Core.nHabitats + 2) = New PropertyCell(propFormula)
 
                 ' Ecopath area
-                cell = New PropertyCell(groupEcopath, eVarNameFlags.Area)
+                cell = New PropertyCell(Me.PropertyManager, groupEcopath, eVarNameFlags.Area)
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
                 Me(iGroup, m_Core.nHabitats + 3) = cell
 
@@ -217,7 +194,7 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Private Function HabAreaFormula(ByVal iGroup As Integer, ByVal iHabitat As Integer) As cExpression
 
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim pm As cPropertyManager = Me.PropertyManager
             Dim group As cEcospaceGroup = Nothing
             Dim habitat As cEcospaceHabitat = Nothing
             Dim bopGroupPrefersHabitat As cBooleanOperand = Nothing

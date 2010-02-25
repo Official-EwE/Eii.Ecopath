@@ -1,71 +1,3 @@
-'==============================================================================
-'
-' $Log: KeyIndicesEwEGrid.vb,v $
-' Revision 1.5  2009/05/28 12:36:55  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/05/21 19:27:12  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:08  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:55:37  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:33  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.22  2008/08/02 03:04:11  jeroens
-' Renamed resources
-'
-' Revision 1.21  2008/06/02 00:01:26  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.20  2008/05/29 22:22:40  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.19  2008/04/07 02:31:06  jeroens
-' Cleaning up resources
-'
-' Revision 1.18  2008/01/11 12:33:17  jeroens
-' Fixed bug 299
-'
-' Revision 1.17  2007/10/10 02:59:12  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.16  2007/08/07 16:41:19  jeroens
-' + EcopathOutput BiomAccumRate now propery represented
-'
-' Revision 1.15  2007/08/03 17:18:10  jeroens
-' * Uses cell-based unit support
-'
-' Revision 1.14  2007/07/06 20:11:17  jeroens
-' * Core stanza group list no longer exposed
-'
-' Revision 1.13  2007/06/21 23:57:20  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.12  2007/05/04 23:53:05  fgao
-' Add temporary Unit settings for grid header
-'
-' Revision 1.11  2007/04/29 03:45:10  jeroens
-' * Connected to EwEGridRefresh
-'
-' Revision 1.10  2007/04/19 19:19:22  joeh
-' *Fix the first two columns in the grid
-'
-' Revision 1.9  2007/04/18 21:48:03  joeh
-' *Implement stanza heirachy
-'
-' Revision 1.8  2007/04/18 21:36:50  joeh
-' *Implement stanza heirachy
-'
-' Revision 1.7  2006/08/19 09:48:17  jeroens
-' + Completed grid content
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -147,7 +79,7 @@ Namespace Ecopath.Output
 
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
                         ' Complete row with dummy cells
                         For i As Integer = 2 To 7 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaGroupIndexPrev = intStanzaGroupIndex(source.Index)
@@ -165,19 +97,19 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
-            Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
+            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
 
-            Me(iRow, 2) = New PropertyCell(source, eVarNameFlags.BioAccum)
-            Me(iRow, 3) = New PropertyCell(source, eVarNameFlags.BioAccumRatePerYear)
-            Me(iRow, 4) = New PropertyCell(source, eVarNameFlags.NetMigration)
-            Me(iRow, 5) = New PropertyCell(source, eVarNameFlags.FlowToDet)
-            Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.NetEfficiency)
-            Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.OmnivoryIndex)
+            Me(iRow, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
+            Me(iRow, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
+            Me(iRow, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetMigration)
+            Me(iRow, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FlowToDet)
+            Me(iRow, 6) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetEfficiency)
+            Me(iRow, 7) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OmnivoryIndex)
         End Sub
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType

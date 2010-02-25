@@ -11,6 +11,7 @@ Imports System.Text
 ''' ---------------------------------------------------------------------------
 Public Class RemarkPanel
 
+    Private m_uic As cUIContext = Nothing
     ''' <summary>The property selection command to listen to.</summary>
     Private m_cmd As PropertySelectionCommand = Nothing
     ''' <summary>The currently selected property.</summary>
@@ -25,17 +26,17 @@ Public Class RemarkPanel
     ''' Constructor, initializes a new instance of the PropertiesPanel.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub New()
+    Public Sub New(ByVal uic As cUIContext)
 
-        ' Do the .NET stuff
         Me.InitializeComponent()
+        Me.m_uic = uic
 
         ' Create property selection command
-        Me.m_cmd = CType(cCommandHandler.GetInstance().GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
+        Me.m_cmd = DirectCast(Me.m_uic.CommandHander.GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
         AddHandler Me.m_cmd.OnInvoke, AddressOf OnInvoke
 
         ' Hook up to core state monitor
-        Me.m_sm = cCore.GetInstance().StateMonitor
+        Me.m_sm = Me.m_uic.Core.StateMonitor
         AddHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
 
         ' Init panel
@@ -43,8 +44,8 @@ Public Class RemarkPanel
 
     End Sub
 
-    Private Sub OnDisposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles Me.Disposed
+    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+        MyBase.OnHandleDestroyed(e)
 
         ' Clean up
         If Me.m_cmd IsNot Nothing Then
@@ -57,7 +58,6 @@ Public Class RemarkPanel
         End If
 
     End Sub
-
 
 #Region " Command handling "
 

@@ -1,18 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: EcopathStatisticsEwEGrid.vb,v $
-' Revision 1.3  2009/05/28 12:36:54  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.2  2009/02/20 17:58:31  jeroens
-' Renamed UnitCell to EwEUnitCell
-'
-' Revision 1.1  2009/01/29 23:37:21  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -27,6 +13,11 @@ Imports SourceGrid2
 
 Namespace Ecopath.Output
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid clas, showing Ecopath statistics values.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class EcopathStatisticsEwEGrid
         : Inherits EwEGrid
@@ -104,7 +95,7 @@ Namespace Ecopath.Output
 
             Dim iRow As Integer = Me.AddRow()
             Me(iRow, eColumnTypes.Header) = New EwERowHeaderCell(strHeader)
-            Me(iRow, eColumnTypes.Value) = New PropertyCell(source, vnf)
+            Me(iRow, eColumnTypes.Value) = New PropertyCell(Me.PropertyManager, source, vnf)
             Me(iRow, eColumnTypes.Units) = New EwEUnitCell(strUnitMask, aUnitTypes)
 
         End Sub

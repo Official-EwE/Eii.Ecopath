@@ -1035,10 +1035,11 @@ Public Class AppLauncher
     Private Sub InitPanels()
 
         m_DeserializeDockContent = New DeserializeDockContent(AddressOf GetContentFromPersistentString)
+
         ' Init panels
-        m_NavPanel = New NavigationPanel(Me.Core, Me.m_pluginManager)
-        m_StatusPanel = New StatusPanel()
-        m_RemarkPanel = New RemarkPanel()
+        m_NavPanel = New NavigationPanel(Me.UIContext, Me.m_pluginManager)
+        m_StatusPanel = New StatusPanel(Me.UIContext)
+        m_RemarkPanel = New RemarkPanel(Me.UIContext)
         m_StartPage = New WebBrowserDC()
 
         ' Add panels

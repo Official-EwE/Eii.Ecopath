@@ -60,8 +60,8 @@ Namespace Ecosim
 
                 Me.Rows.Insert(i)
                 Me(i, eColumnTypes.Index) = New EwERowHeaderCell(i)
-                Me(i, eColumnTypes.Group) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
-                Me(i, eColumnTypes.FLimit) = New PropertyCell(source, eVarNameFlags.FPSFishingLimit)
+                Me(i, eColumnTypes.Group) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(i, eColumnTypes.FLimit) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFishingLimit)
             Next
 
         End Sub

@@ -54,7 +54,7 @@ Namespace Ecosim
 
                 If source.PP < 1 Then
                     Me.Columns.Insert(columnIndex)
-                    Me(0, columnIndex) = New PropertyColumnHeaderCell(source, eVarNameFlags.Index)
+                    Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     'Me(0, columnIndex).Behaviors.Add(m_RowColClick)
                     columnIndex = columnIndex + 1
                 End If

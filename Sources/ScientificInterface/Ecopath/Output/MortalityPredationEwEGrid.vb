@@ -60,11 +60,12 @@ Namespace Ecopath.Output
             ''' <summary>PB value to monitor.</summary>
             Private m_propPB As cSingleProperty = Nothing
 
-            Public Sub New(ByVal source As cCoreInputOutputBase, ByVal varname As eVarNameFlags, _
-                Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
-                MyBase.New(source, varname, sourceSec)
+            Public Sub New(ByVal pm As cPropertyManager, _
+                           ByVal source As cCoreInputOutputBase, _
+                           ByVal varname As eVarNameFlags, _
+                           Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
+                MyBase.New(pm, source, varname, sourceSec)
 
-                Dim pm As cPropertyManager = cPropertyManager.GetInstance()
                 Me.PB = DirectCast(pm.GetProperty(source, eVarNameFlags.PBOutput, sourceSec), cSingleProperty)
             End Sub
             ''' -----------------------------------------------------------------------
@@ -169,7 +170,7 @@ Namespace Ecopath.Output
 
                 If source.PP < 1 Then
                     Me.Columns.Insert(columnIndex)
-                    Me(0, columnIndex) = New PropertyColumnHeaderCell(source, eVarNameFlags.Index)
+                    Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     columnIndex = columnIndex + 1
                 End If
             Next
@@ -191,7 +192,7 @@ Namespace Ecopath.Output
                     sourceSec = core.EcoPathGroupOutputs(groupIndex)
                     If sourceSec.PP < 1 Then
                         ' Create cell
-                        cell = New MortalityGridCell(source, eVarNameFlags.PredMort, sourceSec)
+                        cell = New MortalityGridCell(Me.PropertyManager, source, eVarNameFlags.PredMort, sourceSec)
                         ' Value cells suppress zeroes to increase legibility of the grid
                         Cell.SuppressZero(-1) = True
                         ' Activate the cell

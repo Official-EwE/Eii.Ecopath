@@ -77,7 +77,7 @@ Namespace Ecopath.Input
                         dtStanzaCells.Add(sg, hgcStanza)
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
                         ' Complete row with dummy cells
                         For i As Integer = 2 To 2 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaGroupIndexPrev = intStanzaGroupIndex(group.Index)
@@ -93,17 +93,20 @@ Namespace Ecopath.Input
 
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, ByVal group As cEcoPathGroupInput, Optional ByVal isIndented As Boolean = False)
+        Private Sub FillInRows(ByVal iRow As Integer, _
+                               ByVal group As cEcoPathGroupInput, _
+                               Optional ByVal isIndented As Boolean = False)
+
             ' Get the group name from EcopathInput
-            Me(iRow, 0) = New PropertyRowHeaderCell(group, eVarNameFlags.Index)
+            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
 
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(group, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             End If
 
-            Me(iRow, 2) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
+            Me(iRow, 2) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.NonMarketValue)
 
         End Sub
 

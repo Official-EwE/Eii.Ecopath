@@ -39,32 +39,32 @@ Public Class gridPerformanceResults
 
             Me.Rows.Insert(row)
             Me(row, 0) = New EwERowHeaderCell("Net economic value")
-            Me(row, 1) = New PropertyCell(mse.Output, eVarNameFlags.MSEEconomicValue)
-            Me(row, 2) = New PropertyCell(mse.Output, eVarNameFlags.MSEMeanEconomicValue)
+            Me(row, 1) = New PropertyCell(Me.PropertyManager, mse.Output, eVarNameFlags.MSEEconomicValue)
+            Me(row, 2) = New PropertyCell(Me.PropertyManager, mse.Output, eVarNameFlags.MSEMeanEconomicValue)
 
             row += 1
             Me.Rows.Insert(row)
             Me(row, 0) = New EwERowHeaderCell("Social(employment) value")
-            Me(row, 1) = New PropertyCell(mse.Output, eVarNameFlags.MSEEmployValue)
-            Me(row, 2) = New PropertyCell(mse.Output, eVarNameFlags.MSEMeanEmployValue)
+            Me(row, 1) = New PropertyCell(Me.PropertyManager, mse.Output, eVarNameFlags.MSEEmployValue)
+            Me(row, 2) = New PropertyCell(Me.PropertyManager, mse.Output, eVarNameFlags.MSEMeanEmployValue)
 
             row += 1
             Me.Rows.Insert(row)
             Me(row, 0) = New EwERowHeaderCell("Mandated rebuilding")
-            Me(row, 1) = New PropertyCell(mse.Output, eVarNameFlags.MSEMandatedValue)
-            Me(row, 2) = New PropertyCell(mse.Output, eVarNameFlags.MSEMeanMandatedValue)
+            Me(row, 1) = New PropertyCell(Me.PropertyManager, mse.Output, eVarNameFlags.MSEMandatedValue)
+            Me(row, 2) = New PropertyCell(Me.PropertyManager, mse.Output, eVarNameFlags.MSEMeanMandatedValue)
 
             row += 1
             Me.Rows.Insert(row)
             Me(row, 0) = New EwERowHeaderCell("Ecosytem structure")
-            Me(row, 1) = New PropertyCell(mse.Output, eVarNameFlags.MSEEcologicalValue)
-            Me(row, 2) = New PropertyCell(mse.Output, eVarNameFlags.MSEMeanEcologicalValue)
+            Me(row, 1) = New PropertyCell(Me.PropertyManager, mse.Output, eVarNameFlags.MSEEcologicalValue)
+            Me(row, 2) = New PropertyCell(Me.PropertyManager, mse.Output, eVarNameFlags.MSEMeanEcologicalValue)
 
             row += 1
             Me.Rows.Insert(row)
             Me(row, 0) = New EwERowHeaderCell("Overall value")
-            Me(row, 1) = New PropertyCell(mse.Output, eVarNameFlags.MSEBestTotalValue)
-            Me(row, 2) = New PropertyCell(mse.Output, eVarNameFlags.MSEWeightedTotalValue)
+            Me(row, 1) = New PropertyCell(Me.PropertyManager, mse.Output, eVarNameFlags.MSEBestTotalValue)
+            Me(row, 2) = New PropertyCell(Me.PropertyManager, mse.Output, eVarNameFlags.MSEWeightedTotalValue)
 
         Catch ex As Exception
             Debug.Assert(False)

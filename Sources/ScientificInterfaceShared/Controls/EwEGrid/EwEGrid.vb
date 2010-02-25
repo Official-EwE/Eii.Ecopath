@@ -61,10 +61,10 @@ Namespace Controls.EwEGrid
     '''    
     '''           source = core.EcoPathGroupInputs(groupIndex)
     '''    
-    '''           Me(groupIndex, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
-    '''           Me(groupIndex, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
-    '''           Me(groupIndex, 2) = New PropertyCell(source, eVarNameFlags.Area)
-    '''           Me(groupIndex, 3) = New PropertyCell(source, eVarNameFlags.BiomassAreaInput)
+    '''           Me(groupIndex, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+    '''           Me(groupIndex, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+    '''           Me(groupIndex, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Area)
+    '''           Me(groupIndex, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaInput)
     '''    
     '''       Next groupIndex
     '''    

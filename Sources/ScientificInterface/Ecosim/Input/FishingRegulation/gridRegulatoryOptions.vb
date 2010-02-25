@@ -120,8 +120,8 @@ Namespace Ecosim
                 Me.AddRow()
 
                 Me(iFleet, eColumnTypes.Index) = New EwERowHeaderCell(iFleet)
-                Me(iFleet, eColumnTypes.Name) = New PropertyRowHeaderCell(fleet, eVarNameFlags.Name)
-                Me(iFleet, eColumnTypes.MaxEffort) = New PropertyCell(reg, eVarNameFlags.MaxEffort)
+                Me(iFleet, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Name)
+                Me(iFleet, eColumnTypes.MaxEffort) = New PropertyCell(Me.PropertyManager, reg, eVarNameFlags.MaxEffort)
 
                 Me(iFleet, eColumnTypes.OptionNotUsed) = New SourceGrid2.Cells.Real.CheckBox(True)
                 Me(iFleet, eColumnTypes.OptionNotUsed).Behaviors.Add(m_bm)

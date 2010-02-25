@@ -42,9 +42,9 @@ Public Class gridRiskBounds
 
                 Me.Rows.Insert(igrp)
                 Me(igrp, 0) = New EwERowHeaderCell(igrp)
-                Me(igrp, 1) = New PropertyRowHeaderCell(mse.GroupInputs(igrp), eVarNameFlags.Name)
-                Me(igrp, 2) = New PropertyCell(mse.GroupInputs(igrp), eVarNameFlags.MSELowerRisk)
-                Me(igrp, 3) = New PropertyCell(mse.GroupInputs(igrp), eVarNameFlags.MSEUpperRisk)
+                Me(igrp, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.GroupInputs(igrp), eVarNameFlags.Name)
+                Me(igrp, 2) = New PropertyCell(Me.PropertyManager, mse.GroupInputs(igrp), eVarNameFlags.MSELowerRisk)
+                Me(igrp, 3) = New PropertyCell(Me.PropertyManager, mse.GroupInputs(igrp), eVarNameFlags.MSEUpperRisk)
 
             Next
         Catch ex As Exception

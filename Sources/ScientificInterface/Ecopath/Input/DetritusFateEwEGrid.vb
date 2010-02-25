@@ -42,7 +42,7 @@ Namespace Ecopath.Input
             ' Detritus column header cells
             For i As Integer = 1 To Core.nDetritusGroups
                 source = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + i)
-                Me(0, i + 1) = New PropertyColumnHeaderCell(source, eVarNameFlags.Name)
+                Me(0, i + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
             ' The export header cell
@@ -109,8 +109,8 @@ Namespace Ecopath.Input
 
                         sourceSec = core.EcoPathGroupInputs(core.nGroups - core.nDetritusGroups + iCol)
 
-                        Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
-                        Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                        Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                        Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                         prop = Me.PropertyManager.GetProperty(source, eVarNameFlags.DetritusFate, sourceSec, True, Core.nGroups - Core.nDetritusGroups)
                         Me(iRow, iCol + 1) = New PropertyCell(prop)
                         alProp.Add(prop)
@@ -129,13 +129,13 @@ Namespace Ecopath.Input
                     '            been sufficient, but this way the cell inherits StyleGuide colour and decimals feedback.
                     Me(iRow, Me.ColumnsCount - 1) = New PropertyCell(propSum)
                 Else 'Group is stanza
-                    sg = core.StanzaGroups(aiStanza(source.Index))
+                    sg = Core.StanzaGroups(aiStanza(source.Index))
                     If aiStanza(source.Index) <> iStanzaPrev Then 'If stanza group appears the first time Then display + control
                         iRow = Me.AddRow()
                         hgcStanza = New EwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
                         'Complete row with dummy cells
                         For i As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         iStanzaPrev = aiStanza(source.Index)
@@ -145,12 +145,12 @@ Namespace Ecopath.Input
                     'Display group info
                     iRow = Me.AddRow()
                     hgcStanza.AddChildRow(iRow)
-                    For iCol As Integer = 1 To core.nDetritusGroups
+                    For iCol As Integer = 1 To Core.nDetritusGroups
 
-                        sourceSec = core.EcoPathGroupInputs(core.nGroups - core.nDetritusGroups + iCol)
+                        sourceSec = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + iCol)
 
-                        Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
-                        Me(iRow, 1) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
+                        Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                        Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
                         prop = Me.PropertyManager.GetProperty(source, eVarNameFlags.DetritusFate, sourceSec, True, Core.nGroups - Core.nDetritusGroups)
                         Me(iRow, iCol + 1) = New PropertyCell(prop)
                         alProp.Add(prop)

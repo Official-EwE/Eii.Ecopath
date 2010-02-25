@@ -38,7 +38,7 @@ Namespace Ecopath.Output
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
                 source = Core.FleetInputs(fleetIndex)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(source, eVarNameFlags.Name)
+                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
             ' Catch value column
@@ -104,8 +104,8 @@ Namespace Ecopath.Output
             Dim opTotalValue As cBinaryOperation = Nothing
             Dim propTotalValue As cFormulaProperty = Nothing
 
-            Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
-            Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
             alSumRow.Clear()
             ' For each fleet (each column) 

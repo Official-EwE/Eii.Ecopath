@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: BasicEstimatesEwEGrid.vb,v $
-' Revision 1.7  2009/05/28 12:36:54  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.6  2009/05/21 19:27:10  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.5  2009/03/30 19:01:56  jeroens
-' Z-column now properly hidden
-'
-' Revision 1.4  2009/03/12 14:11:16  jeroens
-' Implemented Z/PB columns
-'
-' Revision 1.3  2009/01/16 18:30:07  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:58:24  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:32  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -122,7 +96,7 @@ Namespace Ecopath.Output
                         hgcStanza = New EwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
                         Me(iRow, eColumnTypes.Index) = hgcStanza
-                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
 
                         iStanzaGroupIndexPrev = aiStanzaGroupIndex(source.Index)
 
@@ -142,20 +116,20 @@ Namespace Ecopath.Output
 
             Dim cell As EwECellBase = Nothing
 
-            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
+            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If bIsStanza Then
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
 
-            Me(iRow, eColumnTypes.TL) = New PropertyCell(source, eVarNameFlags.TTLX)
-            Me(iRow, eColumnTypes.Area) = New PropertyCell(source, eVarNameFlags.Area)
-            Me(iRow, eColumnTypes.BA) = New PropertyCell(source, eVarNameFlags.BiomassAreaOutput)
-            Me(iRow, eColumnTypes.B) = New PropertyCell(source, eVarNameFlags.Biomass)
+            Me(iRow, eColumnTypes.TL) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TTLX)
+            Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Area)
+            Me(iRow, eColumnTypes.BA) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaOutput)
+            Me(iRow, eColumnTypes.B) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Biomass)
 
             If bIsStanza Then
-                Me(iRow, eColumnTypes.Z) = New PropertyCell(source, eVarNameFlags.PBOutput)
+                Me(iRow, eColumnTypes.Z) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBOutput)
             Else
                 cell = New EwECell("", GetType(String))
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
@@ -163,16 +137,16 @@ Namespace Ecopath.Output
             End If
 
             If Not bIsStanza Then
-                Me(iRow, eColumnTypes.PB) = New PropertyCell(source, eVarNameFlags.PBOutput)
+                Me(iRow, eColumnTypes.PB) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBOutput)
             Else
                 cell = New EwECell("", GetType(String))
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.PB) = cell
             End If
 
-            Me(iRow, eColumnTypes.QB) = New PropertyCell(source, eVarNameFlags.QBOutput)
-            Me(iRow, eColumnTypes.EE) = New PropertyCell(source, eVarNameFlags.EEOutput)
-            Me(iRow, eColumnTypes.GE) = New PropertyCell(source, eVarNameFlags.GEOutput)
+            Me(iRow, eColumnTypes.QB) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.QBOutput)
+            Me(iRow, eColumnTypes.EE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EEOutput)
+            Me(iRow, eColumnTypes.GE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GEOutput)
 
         End Sub
 

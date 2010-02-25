@@ -1,30 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: gridTFMpolicy.vb,v $
-' Revision 1.7  2009/05/21 18:53:45  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.6  2009/01/16 18:30:43  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.5  2008/12/15 15:55:35  jeroens
-' no message
-'
-' Revision 1.4  2008/10/08 22:13:47  jeroens
-' Selection event sent when initializing to a group
-'
-' Revision 1.3  2008/10/08 21:18:24  jeroens
-' Globalized
-'
-' Revision 1.2  2008/10/08 20:47:49  jeroens
-' Added CVBest, KalWT
-'
-' Revision 1.1  2008/10/08 17:57:36  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -118,11 +92,11 @@ Namespace Ecosim
                 Me.AddRow()
 
                 Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(iGroup)
-                Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
+                Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
-                Me(iGroup, eColumnTypes.BBase) = New PropertyCell(group, eVarNameFlags.MSEBBase)
-                Me(iGroup, eColumnTypes.BLim) = New PropertyCell(group, eVarNameFlags.MSEBLim)
-                Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(group, eVarNameFlags.MSEFmax)
+                Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
+                Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
+                Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
 
                 Me.Rows(iGroup).Tag = group
 

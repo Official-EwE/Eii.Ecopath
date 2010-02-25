@@ -45,11 +45,11 @@ Public Class gridGroupRefLevels
 
                 Me.Rows.Insert(i)
                 Me(i, 0) = New EwERowHeaderCell(i)
-                Me(i, 1) = New PropertyRowHeaderCell(mse.GroupInputs(i), eVarNameFlags.Name)
-                Me(i, 2) = New PropertyCell(mse.GroupInputs(i), eVarNameFlags.MSERefBioLower)
-                Me(i, 3) = New PropertyCell(mse.GroupInputs(i), eVarNameFlags.MSERefBioUpper)
-                Me(i, 4) = New PropertyCell(mse.GroupInputs(i), eVarNameFlags.MSERefGroupCatchLower)
-                Me(i, 5) = New PropertyCell(mse.GroupInputs(i), eVarNameFlags.MSERefGroupCatchUpper)
+                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.GroupInputs(i), eVarNameFlags.Name)
+                Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.GroupInputs(i), eVarNameFlags.MSERefBioLower)
+                Me(i, 3) = New PropertyCell(Me.PropertyManager, mse.GroupInputs(i), eVarNameFlags.MSERefBioUpper)
+                Me(i, 4) = New PropertyCell(Me.PropertyManager, mse.GroupInputs(i), eVarNameFlags.MSERefGroupCatchLower)
+                Me(i, 5) = New PropertyCell(Me.PropertyManager, mse.GroupInputs(i), eVarNameFlags.MSERefGroupCatchUpper)
 
             Next
 

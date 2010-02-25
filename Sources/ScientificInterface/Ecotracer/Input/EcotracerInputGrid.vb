@@ -1,53 +1,3 @@
-'==============================================================================
-'
-' $Log: EcotracerInputGrid.vb,v $
-' Revision 1.1  2008/09/26 07:32:03  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.12  2008/08/02 03:04:16  jeroens
-' Renamed resources
-'
-' Revision 1.11  2008/07/29 13:06:45  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.10  2008/06/02 00:01:35  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.9  2008/05/29 22:22:55  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.8  2008/04/07 02:31:15  jeroens
-' Cleaning up resources
-'
-' Revision 1.7  2008/01/08 11:24:34  jeroens
-' Merged input parms and group grid in one screen
-'
-' Revision 1.6  2008/01/06 11:02:24  jeroens
-' * Fixed env input cells r/o state
-'
-' Revision 1.5  2008/01/03 17:40:41  joeb
-' Renamed excretion rate column
-'
-' Revision 1.4  2007/12/29 20:29:06  joeb
-' Changed Lipophilic to Excretion
-'
-' Revision 1.3  2007/12/21 18:08:48  jeroens
-' * Hacked environment into grid
-'
-' Revision 1.2  2007/12/21 15:32:03  jeroens
-' * Implemented
-'
-' Revision 1.1  2007/12/05 03:54:04  jeroens
-' * Initial version
-'
-' Revision 1.1  2007/11/06 19:27:55  jeroens
-' * Moved
-'
-' Revision 1.1  2007/11/06 03:14:15  jeroens
-' + Added as prototype
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
@@ -128,13 +78,13 @@ Namespace Ecotracer
                 group = core.EcotracerGroupInputs(iGroup)
 
                 iRow = Me.AddRow()
-                Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(group, eVarNameFlags.Index)
-                Me(iRow, eColumnTypes.GroupName) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
-                Me(iRow, eColumnTypes.ConcEnv) = New PropertyCell(group, eVarNameFlags.CZero)
-                Me(iRow, eColumnTypes.ConcImmBiomass) = New PropertyCell(group, eVarNameFlags.CImmig)
-                Me(iRow, eColumnTypes.DirectAbsorptionRate) = New PropertyCell(group, eVarNameFlags.CEnvironment)
-                Me(iRow, eColumnTypes.DecayRate) = New PropertyCell(group, eVarNameFlags.CDecay)
-                Me(iRow, eColumnTypes.ExcretionRate) = New PropertyCell(group, eVarNameFlags.CExcretionRate)
+                Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+                Me(iRow, eColumnTypes.GroupName) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.ConcEnv) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CZero)
+                Me(iRow, eColumnTypes.ConcImmBiomass) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CImmig)
+                Me(iRow, eColumnTypes.DirectAbsorptionRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CEnvironment)
+                Me(iRow, eColumnTypes.DecayRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CDecay)
+                Me(iRow, eColumnTypes.ExcretionRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CExcretionRate)
 
             Next iGroup
 

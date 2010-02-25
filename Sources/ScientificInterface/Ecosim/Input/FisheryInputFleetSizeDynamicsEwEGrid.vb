@@ -42,11 +42,11 @@ Namespace Ecosim
                 source = core.EcosimFleetInputs(rowIndex)
                 Me.Rows.Insert(rowIndex)
                 Me(rowIndex, 0) = New EwERowHeaderCell(rowIndex)
-                Me(rowIndex, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
-                Me(rowIndex, 2) = New PropertyCell(source, eVarNameFlags.EPower)
-                Me(rowIndex, 3) = New PropertyCell(source, eVarNameFlags.PcapBase)
-                Me(rowIndex, 4) = New PropertyCell(source, eVarNameFlags.CapDepreciate)
-                Me(rowIndex, 5) = New PropertyCell(source, eVarNameFlags.CapBaseGrowth)
+                Me(rowIndex, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(rowIndex, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EPower)
+                Me(rowIndex, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PcapBase)
+                Me(rowIndex, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.CapDepreciate)
+                Me(rowIndex, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.CapBaseGrowth)
             Next
 
         End Sub

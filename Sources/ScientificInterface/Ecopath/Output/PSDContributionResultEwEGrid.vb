@@ -79,8 +79,8 @@ Namespace Ecopath.Output
             Dim sTotal As Single = 0.0!
             Dim cell As EwECell = Nothing
 
-            Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
-            Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
             ' For each weight class (each column) 
             For wtClassIndex As Integer = 1 To Core.nWeightClasses

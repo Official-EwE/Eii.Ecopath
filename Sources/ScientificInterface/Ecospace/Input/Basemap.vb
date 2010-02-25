@@ -60,7 +60,7 @@ Namespace Ecospace.Basemap
             Me.m_ucBasemap = plBasemap.Map()
 
             ' Add LayersControl
-            Me.m_ucLayers = New ucLayersControl()
+            Me.m_ucLayers = New ucLayersControl(Me.UIContext)
             plLayers.Controls.Add(Me.m_ucLayers)
 
             Me.Basemap = Me.m_core.EcospaceBasemap
@@ -110,8 +110,8 @@ Namespace Ecospace.Basemap
 
             MyBase.OnLoad(e)
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
+            Dim pm As cPropertyManager = Me.PropertyManager
             Dim source As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
 
             Me.m_cmdEditBasemap = cmdh.GetCommand("EditBasemap")

@@ -49,11 +49,11 @@ Namespace Ecosim
                 mcGrp = m_mcmanager.Groups(i)
                 Me(i, 0) = New EwERowHeaderCell(mcGrp.Index)
                 Me(i, 1) = New EwERowHeaderCell(mcGrp.Name)
-                Me(i, 2) = New PropertyCell(mcGrp, eVarNameFlags.mcBbf)
-                Me(i, 3) = New PropertyCell(mcGrp, eVarNameFlags.mcPBbf)
-                Me(i, 4) = New PropertyCell(mcGrp, eVarNameFlags.mcQBbf)
-                Me(i, 5) = New PropertyCell(mcGrp, eVarNameFlags.mcEEbf)
-                Me(i, 6) = New PropertyCell(mcGrp, eVarNameFlags.mcBAbf)
+                Me(i, 2) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcBbf)
+                Me(i, 3) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcPBbf)
+                Me(i, 4) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcQBbf)
+                Me(i, 5) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcEEbf)
+                Me(i, 6) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcBAbf)
             Next
 
         End Sub

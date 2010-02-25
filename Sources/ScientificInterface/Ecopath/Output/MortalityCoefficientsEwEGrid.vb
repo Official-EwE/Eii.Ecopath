@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: MortalityCoefficientsEwEGrid.vb,v $
-' Revision 1.6  2009/05/28 12:36:55  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.5  2009/05/21 18:53:45  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.4  2009/03/11 19:31:51  jeroens
-' Minimal housekeeping
-'
-' Revision 1.3  2009/01/16 18:30:08  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:55:37  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:33  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -101,7 +78,7 @@ Namespace Ecopath.Output
 
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
                         ' Complete row with dummy cells
                         For i As Integer = 2 To 9 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaGroupIndexPrev = intStanzaGroupIndex(source.Index)
@@ -125,20 +102,20 @@ Namespace Ecopath.Output
             Dim bMortAlert As Boolean = (source.MortCoOtherMort < 0)
             Dim bCatchAlert As Boolean = (source.MortCoFishRate > source.PBOutput)
 
-            Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
+            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
-            Me(iRow, 2) = New PropertyCell(source, eVarNameFlags.PBOutput)
-            Me(iRow, 3) = New PropertyCell(source, eVarNameFlags.MortCoFishRate)
-            Me(iRow, 4) = New PropertyCell(source, eVarNameFlags.MortCoPredMort)
-            Me(iRow, 5) = New PropertyCell(source, eVarNameFlags.BioAccumRatePerYear)
-            Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.MortCoNetMig)
-            Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.MortCoOtherMort)
-            Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.FishMortTotMort)
-            Me(iRow, 9) = New PropertyCell(source, eVarNameFlags.NatMortPerTotMort)
+            Me(iRow, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBOutput)
+            Me(iRow, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoFishRate)
+            Me(iRow, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoPredMort)
+            Me(iRow, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
+            Me(iRow, 6) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoNetMig)
+            Me(iRow, 7) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoOtherMort)
+            Me(iRow, 8) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FishMortTotMort)
+            Me(iRow, 9) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NatMortPerTotMort)
 
             Me.SetCellAlert(DirectCast(Me(iRow, 1), EwECellBase), bMortAlert)
             Me.SetCellAlert(DirectCast(Me(iRow, 3), EwECellBase), bMortAlert And bCatchAlert)

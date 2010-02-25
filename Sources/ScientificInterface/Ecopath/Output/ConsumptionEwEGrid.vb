@@ -42,7 +42,7 @@ Namespace Ecopath.Output
 
                 If source.PP < 1 Or source.PP = 2 Then
                     Me.Columns.Insert(columnIndex)
-                    Me(0, columnIndex) = New PropertyColumnHeaderCell(source, eVarNameFlags.Index)
+                    Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     columnIndex = columnIndex + 1
                 End If
             Next

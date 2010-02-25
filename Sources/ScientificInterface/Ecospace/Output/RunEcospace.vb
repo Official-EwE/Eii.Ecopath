@@ -223,9 +223,9 @@ Namespace Ecospace
 
         Protected Overrides Sub OnLoad(ByVal e As EventArgs)
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdDisplayGroups As cCommand = Nothing
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim pm As cPropertyManager = Me.PropertyManager
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
 
             Me.m_lblProgress.Text = ""

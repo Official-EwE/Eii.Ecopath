@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: GroupInfoEwEGrid.vb,v $
-' Revision 1.6  2009/05/21 18:53:42  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.5  2009/01/16 18:30:38  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.4  2008/12/15 15:55:36  jeroens
-' no message
-'
-' Revision 1.3  2008/11/27 20:56:10  sherman
-' Switched MaxFishing Mortality to Search routines.
-'
-' Revision 1.2  2008/11/12 21:35:31  jeroens
-' Resources!
-'
-' Revision 1.1  2008/09/26 07:31:35  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -133,7 +110,7 @@ Namespace Ecosim
                         hgcStanza = New EwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
                         Me(iRow, eColumnTypes.Index) = hgcStanza
-                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
                         Me(iRow, eColumnTypes.DenDepCatchability) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.FeedingTimeAdjustRate) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.MaxRelFeedingTime) = New EwERowHeaderCell()
@@ -166,31 +143,31 @@ Namespace Ecosim
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
             Dim cell As EwECellBase = Nothing
-            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
+            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
 
-            cell = New PropertyCell(source, eVarNameFlags.MaxRelPB)
+            cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MaxRelPB)
             cell.SuppressZero = True
             Me(iRow, eColumnTypes.MaxRelPB) = cell
-            Me(iRow, eColumnTypes.MaxRelFeedingTime) = New PropertyCell(source, eVarNameFlags.MaxRelFeedingTime)
-            Me(iRow, eColumnTypes.FeedingTimeAdjustRate) = New PropertyCell(source, eVarNameFlags.FeedingTimeAdjRate)
-            Me(iRow, eColumnTypes.OtherMortFeedingTime) = New PropertyCell(source, eVarNameFlags.OtherMortFeedingTime)
-            Me(iRow, eColumnTypes.PredatorFeedingTime) = New PropertyCell(source, eVarNameFlags.PredEffectFeedingTime)
-            Me(iRow, eColumnTypes.DenDepCatchability) = New PropertyCell(source, eVarNameFlags.DenDepCatchability)
-            'Me(iRow, eColumnTypes.FLimit) = New PropertyCell(source, eVarNameFlags.EcosimGroupMaxMort)
-            Me(iRow, eColumnTypes.QBMaxQBO) = New PropertyCell(source, eVarNameFlags.QBMaxQBio)
-            Me(iRow, eColumnTypes.SwitchPower) = New PropertyCell(source, eVarNameFlags.SwitchingPower)
-            Me(iRow, eColumnTypes.SalinityOpt) = New PropertyCell(source, eVarNameFlags.SalinityOpt)
-            Me(iRow, eColumnTypes.SalinitySpreadLeft) = New PropertyCell(source, eVarNameFlags.SalinitySpreadLeft)
-            Me(iRow, eColumnTypes.SalinitySpreadRight) = New PropertyCell(source, eVarNameFlags.SalinitySpreadRight)
+            Me(iRow, eColumnTypes.MaxRelFeedingTime) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MaxRelFeedingTime)
+            Me(iRow, eColumnTypes.FeedingTimeAdjustRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FeedingTimeAdjRate)
+            Me(iRow, eColumnTypes.OtherMortFeedingTime) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OtherMortFeedingTime)
+            Me(iRow, eColumnTypes.PredatorFeedingTime) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PredEffectFeedingTime)
+            Me(iRow, eColumnTypes.DenDepCatchability) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.DenDepCatchability)
+            'Me(iRow, eColumnTypes.FLimit) = New PropertyCell(me.PropertyManager, source, eVarNameFlags.EcosimGroupMaxMort)
+            Me(iRow, eColumnTypes.QBMaxQBO) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.QBMaxQBio)
+            Me(iRow, eColumnTypes.SwitchPower) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SwitchingPower)
+            Me(iRow, eColumnTypes.SalinityOpt) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SalinityOpt)
+            Me(iRow, eColumnTypes.SalinitySpreadLeft) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SalinitySpreadLeft)
+            Me(iRow, eColumnTypes.SalinitySpreadRight) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SalinitySpreadRight)
 
-            Me(iRow, eColumnTypes.TempOpt) = New PropertyCell(source, eVarNameFlags.TemperatureOpt)
-            Me(iRow, eColumnTypes.TempSpreadLeft) = New PropertyCell(source, eVarNameFlags.TemperatureSpreadLeft)
-            Me(iRow, eColumnTypes.TempSpreadRight) = New PropertyCell(source, eVarNameFlags.TemperatureSpreadRight)
+            Me(iRow, eColumnTypes.TempOpt) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TemperatureOpt)
+            Me(iRow, eColumnTypes.TempSpreadLeft) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TemperatureSpreadLeft)
+            Me(iRow, eColumnTypes.TempSpreadRight) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TemperatureSpreadRight)
 
         End Sub
 

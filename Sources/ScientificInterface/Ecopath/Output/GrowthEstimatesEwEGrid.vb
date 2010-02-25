@@ -77,7 +77,7 @@ Namespace Ecopath.Output
                         dtStanzaCells.Add(sg, hgcStanza)
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
                         ' Complete row with dummy cells
                         For i As Integer = 2 To 9 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaGroupIndexPrev = intStanzaGroupIndex(source.Index)
@@ -95,22 +95,22 @@ Namespace Ecopath.Output
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
 
-            Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
+            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
 
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
 
-            Me(iRow, 2) = New PropertyCell(source, eVarNameFlags.AinLWOutput)
-            Me(iRow, 3) = New PropertyCell(source, eVarNameFlags.BinLWOutput)
-            Me(iRow, 4) = New PropertyCell(source, eVarNameFlags.LooOutput)
-            Me(iRow, 5) = New PropertyCell(source, eVarNameFlags.WinfOutput)
-            Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.VBK)
-            Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.t0Output)
-            Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.TCatchOutput)
-            Me(iRow, 9) = New PropertyCell(source, eVarNameFlags.TmaxOutput)
+            Me(iRow, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.AinLWOutput)
+            Me(iRow, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BinLWOutput)
+            Me(iRow, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.LooOutput)
+            Me(iRow, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.WinfOutput)
+            Me(iRow, 6) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.VBK)
+            Me(iRow, 7) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.t0Output)
+            Me(iRow, 8) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TCatchOutput)
+            Me(iRow, 9) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TmaxOutput)
 
         End Sub
 

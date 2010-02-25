@@ -92,7 +92,7 @@ Namespace Ecopath.Output
                 source = Core.EcoPathGroupOutputs(i)
                 ' Define column header cell
                 Me.Columns.Insert(columnIndex)
-                Me(0, columnIndex) = New PropertyColumnHeaderCell(source, eVarNameFlags.Index)
+                Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                 ' Define row header cell
                 Me(i, 0) = New EwERowHeaderCell(i)
                 Me(i, 1) = New EwERowHeaderCell(source.Name)

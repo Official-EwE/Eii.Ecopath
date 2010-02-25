@@ -40,7 +40,7 @@ Namespace Ecopath.Input
             ' Dynamic column header - Detritus groups
             For columnIndex As Integer = 1 To Core.nDetritusGroups
                 source = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + columnIndex)
-                Me(0, columnIndex + 1) = New PropertyColumnHeaderCell(source, eVarNameFlags.Name)
+                Me(0, columnIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
             ' Export header cell
@@ -76,7 +76,7 @@ Namespace Ecopath.Input
                 alSumAll.Clear()
                 ' Fleet name As row header
                 Me(rowIndex, 0) = New EwERowHeaderCell(rowIndex)
-                Me(rowIndex, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                Me(rowIndex, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 For columnIndex As Integer = 2 To core.nDetritusGroups + 1
                     ' Get the ecopath input
                     sourceSec = Me.Core.EcoPathGroupInputs(columnIndex - 1)

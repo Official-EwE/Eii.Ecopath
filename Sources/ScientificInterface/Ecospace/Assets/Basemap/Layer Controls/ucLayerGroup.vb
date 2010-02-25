@@ -104,6 +104,7 @@ Namespace Ecospace
     ''' -----------------------------------------------------------------------
     Partial Public Class ucLayerGroup
 
+        Private m_uic As cUIContext = Nothing
         ''' <summary>Collapsed/expanded mode.</summary>
         Private m_bCollapsed As Boolean = False
         ''' <summary>Visible/invisible mode.</summary>
@@ -120,8 +121,8 @@ Namespace Ecospace
 
 #Region " Constructor "
 
-        Public Sub New(ByVal strText As String)
-            InitializeComponent()
+        Public Sub New(ByVal uic As cUIContext, ByVal strText As String)
+            Me.InitializeComponent()
 
             'Enable double buffering
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
@@ -129,7 +130,9 @@ Namespace Ecospace
             Me.SetStyle(ControlStyles.ResizeRedraw, True)
             Me.SetStyle(ControlStyles.UserPaint, True)
 
+            Me.m_uic = uic
             Me.Text = strText
+
             Me.UpdateControls()
         End Sub
 
@@ -168,7 +171,7 @@ Namespace Ecospace
         ''' <param name="lPosition">Layer to position this layer before, if any</param>
         ''' -------------------------------------------------------------------
         Public Sub AddLayer(ByVal l As cLayer, Optional ByVal lPosition As cLayer = Nothing)
-            Dim ucl As New ucLayer(l)
+            Dim ucl As New ucLayer(Me.m_uic, l)
 
             Me.fpItems.Controls.Add(ucl)
             ucl.LayerGroup = Me

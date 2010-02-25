@@ -51,7 +51,7 @@ Namespace Ecopath.Input
                 If source.PP < 1 Then
                     Me.Columns.Insert(columnIndex)
                     ' # Group name column header cells
-                    Me(0, columnIndex) = New PropertyColumnHeaderCell(source, eVarNameFlags.Index)
+                    Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     columnIndex = columnIndex + 1
                 End If
             Next

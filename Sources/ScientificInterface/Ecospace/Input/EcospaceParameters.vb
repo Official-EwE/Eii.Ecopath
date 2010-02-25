@@ -120,7 +120,7 @@ Namespace Ecospace
         Private Sub InitContent()
 
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim pm As cPropertyManager = Me.PropertyManager
 
             ' Start listening to props
             Me.m_bpUseIBM = CType(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)

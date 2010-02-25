@@ -41,11 +41,11 @@ Public Class NavigationPanel
 
 #Region " Constructors "
 
-    Public Sub New(ByVal core As cCore, ByVal pluginManager As EwEPlugin.cPluginManager)
+    Public Sub New(ByVal uic As cUIContext, ByVal pluginManager As EwEPlugin.cPluginManager)
 
         Me.InitializeComponent()
 
-        Me.m_core = core
+        Me.m_core = uic.Core
         Me.m_pluginManager = pluginManager
 
         AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged

@@ -1,44 +1,3 @@
-'==============================================================================
-'
-' $Log: gridDispersal.vb,v $
-' Revision 1.4  2009/05/21 19:27:18  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:07  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:55:33  jeroens
-' no message
-'
-' Revision 1.1  2008/11/04 04:58:44  jeroens
-' Renamed
-'
-' Revision 1.1  2008/09/26 07:31:55  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.12  2008/07/02 18:02:39  jeroens
-' Updates on new Ecospace scenario load
-'
-' Revision 1.11  2008/06/02 00:01:23  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.10  2008/05/29 22:22:39  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.9  2008/04/07 02:31:11  jeroens
-' Cleaning up resources
-'
-' Revision 1.8  2007/11/07 21:40:49  jeroens
-' * True/False (Advecting, Migratory) columns changed to checkboxes
-'
-' Revision 1.7  2007/10/16 15:21:11  jeroens
-' * Responds to Ecopath group changes
-'
-' Revision 1.6  2007/07/26 18:43:58  jeroens
-' * Woopsy
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -106,17 +65,17 @@ Namespace Ecospace
                 Me.Rows.Insert(iGroup)
 
                 source = Me.m_core.EcospaceGroups(iGroup)
-                Me(iGroup, eColumnTypes.Index) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
-                Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                Me(iGroup, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
                 'MVel - Base dispersal rate
-                Me(iGroup, eColumnTypes.DispersalRate) = New PropertyCell(source, eVarNameFlags.MVel)
+                Me(iGroup, eColumnTypes.DispersalRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MVel)
                 'Rel dispersal in bad habitat
-                Me(iGroup, eColumnTypes.RelDisp) = New PropertyCell(source, eVarNameFlags.RelMoveBad)
+                Me(iGroup, eColumnTypes.RelDisp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.RelMoveBad)
                 ' Rel. vul.to pred. in bad habitat
-                Me(iGroup, eColumnTypes.RelVul) = New PropertyCell(source, eVarNameFlags.RelVulBad)
+                Me(iGroup, eColumnTypes.RelVul) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.RelVulBad)
                 'Rel. feed.rate in bad habitat
-                Me(iGroup, eColumnTypes.RelFeedRate) = New PropertyCell(source, eVarNameFlags.EatEffBad)
+                Me(iGroup, eColumnTypes.RelFeedRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EatEffBad)
                 'Advected?
                 Me(iGroup, eColumnTypes.Advected) = New Cells.Real.CheckBox(source.IsAdvected())
                 Me(iGroup, eColumnTypes.Advected).Behaviors.Add(m_ah)
@@ -124,11 +83,11 @@ Namespace Ecospace
                 Me(iGroup, eColumnTypes.Migrating) = New Cells.Real.CheckBox(source.IsMigratory())
                 Me(iGroup, eColumnTypes.Migrating).Behaviors.Add(m_ah)
                 'North/south concentration
-                Me(iGroup, eColumnTypes.NSCont) = New PropertyCell(source, eVarNameFlags.MigrationConcRow)
+                Me(iGroup, eColumnTypes.NSCont) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MigrationConcRow)
                 'East/west concentration
-                Me(iGroup, eColumnTypes.EWCont) = New PropertyCell(source, eVarNameFlags.MigrationConcCol)
+                Me(iGroup, eColumnTypes.EWCont) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MigrationConcCol)
                 'Barrier avoidance weight
-                Me(iGroup, eColumnTypes.BarrierAvoidance) = New PropertyCell(source, eVarNameFlags.BarrierAvoidanceWeight)
+                Me(iGroup, eColumnTypes.BarrierAvoidance) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BarrierAvoidanceWeight)
 
                 Me.UpdateRow(iGroup)
             Next

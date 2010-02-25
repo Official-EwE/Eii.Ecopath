@@ -38,8 +38,10 @@ Namespace Ecopath.Input
             ' Dynamic column header - fleet names
             For fleetIndex As Integer = 1 To core.nFleets
                 source = core.FleetInputs(fleetIndex)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(source, eVarNameFlags.Name, Nothing, _
-                        My.Resources.GENERIC_HEADER_PROP_A_PER_B, New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary, cStyleGuide.eUnitType.Currency})
+                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, _
+                                                                     source, eVarNameFlags.Name, Nothing, _
+                                                                     My.Resources.GENERIC_HEADER_PROP_A_PER_B, _
+                                                                     New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary, cStyleGuide.eUnitType.Currency})
             Next
 
             Me.FixedColumns = 2
@@ -85,7 +87,7 @@ Namespace Ecopath.Input
                         dtStanzaCells.Add(sg, hgcStanza)
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
                         ' Complete row with dummy cells
                         For i As Integer = 2 To core.nFleets + 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaGroupIndexPrev = intStanzaGroupIndex(source.Index)
@@ -105,11 +107,11 @@ Namespace Ecopath.Input
 
             Dim sourceSec As cCoreInputOutputBase = Nothing
 
-            Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
+            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
             ' For each fleet
             For fleetIndex As Integer = 1 To Core.nFleets
@@ -117,7 +119,7 @@ Namespace Ecopath.Input
                 sourceSec = Core.FleetInputs(fleetIndex)
                 ' The market price is indexed by (fleetIndex, groupIndex)
                 ' Add the dynamic property to the destined cell
-                Me(iRow, fleetIndex + 1) = New PropertyCell(sourceSec, eVarNameFlags.OffVesselPrice, source)
+                Me(iRow, fleetIndex + 1) = New PropertyCell(Me.PropertyManager, sourceSec, eVarNameFlags.OffVesselPrice, source)
             Next
         End Sub
 

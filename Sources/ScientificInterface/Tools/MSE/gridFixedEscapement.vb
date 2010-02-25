@@ -48,8 +48,8 @@ Public Class gridFixedEscapement
             Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
 
             'Group name as row header
-            Me(iGroup, 1) = New PropertyRowHeaderCell(MSEGrp, eVarNameFlags.Name)
-            Me(iGroup, 2) = New PropertyCell(MSEGrp, eVarNameFlags.MSEFixedEscapement)
+            Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, MSEGrp, eVarNameFlags.Name)
+            Me(iGroup, 2) = New PropertyCell(Me.PropertyManager, MSEGrp, eVarNameFlags.MSEFixedEscapement)
         Next
 
     End Sub

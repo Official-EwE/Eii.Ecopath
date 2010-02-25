@@ -116,41 +116,43 @@ Namespace Ecosim
             ' Standard rows
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_NET_ECONOMIC_VALUE)
-            Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSEconomicWeight)
+            Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSEconomicWeight)
 
             ' MaxPortUtil rows
             If m_bShowMaxPortUtil Then
                 iRow = Me.AddRow()
                 Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_PREDICTIONVARIANCE)
-                Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSPredictionVariance)
+                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSPredictionVariance)
 
                 iRow = Me.AddRow()
                 Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_EXISTENCE_VALUE)
-                Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSExistenceValue)
+                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSExistenceValue)
 
             Else
                 iRow = Me.AddRow()
                 Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT)
-                Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSSocialWeight)
+                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSSocialWeight)
 
                 iRow = Me.AddRow()
                 Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_MANDATED_REBUILDING)
-                Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSMandatedRebuildingWeight)
+                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSMandatedRebuildingWeight)
 
                 iRow = Me.AddRow()
                 Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_ECOSYSTEM_STRUCTURE)
-                Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSEcoSystemWeight)
+                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSEcoSystemWeight)
             End If
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_BIOMASS_DIVERSITY)
-            Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSBiomassDiversityWeight)
+            Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSBiomassDiversityWeight)
 
             If Me.m_bShowMPAOptParams Then
                 ' HACK
                 iRow = Me.AddRow()
                 Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_BOUNDARYWEIGHT)
-                Me(iRow, 1) = New PropertyCell(Me.UIContext.Core.MPAOptimizationManager.MPAOptimizationParamters, eVarNameFlags.MPAOptBoundaryWeight)
+                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, _
+                                               Me.Core.MPAOptimizationManager.MPAOptimizationParamters, _
+                                               eVarNameFlags.MPAOptBoundaryWeight)
             Else
 
             End If

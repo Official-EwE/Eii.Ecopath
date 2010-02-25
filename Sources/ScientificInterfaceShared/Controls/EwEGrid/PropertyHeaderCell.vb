@@ -50,7 +50,9 @@ Namespace Controls.EwEGrid
         ''' <param name="unitType">The <see cref="cStyleGuide.eUnitType">unit of measurement</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+        Public Sub New(ByVal prop As cProperty, _
+                       ByVal strUnitMask As String, _
+                       ByVal unitType As cStyleGuide.eUnitType)
             Me.New(prop)
             Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
         End Sub
@@ -75,19 +77,23 @@ Namespace Controls.EwEGrid
         ''' <summary>
         ''' Constructor
         ''' </summary>
+        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see> to obtain values from.</param>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">An optional secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-                Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
-            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec))
+        Public Sub New(ByVal pm As cPropertyManager, _
+                       ByVal Source As cCoreInputOutputBase, _
+                       ByVal VarName As eVarNameFlags, _
+                       Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
+            Me.New(pm.GetProperty(Source, VarName, SourceSec))
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor
         ''' </summary>
+        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see> to obtain values from.</param>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
@@ -97,16 +103,20 @@ Namespace Controls.EwEGrid
         ''' <param name="unitType">The <see cref="cStyleGuide.eUnitType">unit of measurement</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-                ByVal SourceSec As cCoreInputOutputBase, _
-                ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
-            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, New cStyleGuide.eUnitType() {unitType})
+        Public Sub New(ByVal pm As cPropertyManager, _
+                       ByVal Source As cCoreInputOutputBase, _
+                       ByVal VarName As eVarNameFlags, _
+                       ByVal SourceSec As cCoreInputOutputBase, _
+                       ByVal strUnitMask As String, _
+                       ByVal unitType As cStyleGuide.eUnitType)
+            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, New cStyleGuide.eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor
         ''' </summary>
+        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see> to obtain values from.</param>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
@@ -116,10 +126,13 @@ Namespace Controls.EwEGrid
         ''' <param name="aUnitTypes">The <see cref="cStyleGuide.eUnitType">unit of measurements</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-                ByVal SourceSec As cCoreInputOutputBase, _
-                ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
-            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
+        Public Sub New(ByVal pm As cPropertyManager, _
+                       ByVal Source As cCoreInputOutputBase, _
+                       ByVal VarName As eVarNameFlags, _
+                       ByVal SourceSec As cCoreInputOutputBase, _
+                       ByVal strUnitMask As String, _
+                       ByVal aUnitTypes() As cStyleGuide.eUnitType)
+            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
         End Sub
 
 #End Region ' Construction 

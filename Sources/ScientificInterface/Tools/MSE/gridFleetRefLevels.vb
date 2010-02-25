@@ -45,11 +45,11 @@ Public Class gridFleetRefLevels
 
                 Me.Rows.Insert(i)
                 Me(i, 0) = New EwERowHeaderCell(i)
-                Me(i, 1) = New PropertyRowHeaderCell(mse.FleetInputs(i), eVarNameFlags.Name)
-                Me(i, 2) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSERefFleetCatchLower)
-                Me(i, 3) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSERefFleetCatchUpper)
-                Me(i, 4) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSERefFleetEffortLower)
-                Me(i, 5) = New PropertyCell(mse.FleetInputs(i), eVarNameFlags.MSERefFleetEffortUpper)
+                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.Name)
+                Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSERefFleetCatchLower)
+                Me(i, 3) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSERefFleetCatchUpper)
+                Me(i, 4) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSERefFleetEffortLower)
+                Me(i, 5) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSERefFleetEffortUpper)
 
             Next
 

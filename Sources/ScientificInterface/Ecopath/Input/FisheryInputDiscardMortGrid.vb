@@ -34,7 +34,8 @@ Namespace Ecopath.Input
 
             For iFleet As Integer = 1 To Me.Core.nFleets
                 src = Core.FleetInputs(iFleet)
-                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(src, eVarNameFlags.Name, Nothing, _
+                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, _
+                                                                 src, eVarNameFlags.Name, Nothing, _
                                                                  My.Resources.HEADERMASK_UNIT_ZEROTOONE)
             Next
 
@@ -58,12 +59,12 @@ Namespace Ecopath.Input
 
                 ' Fleet name As row header
                 Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
-                Me(iGroup, 1) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
+                Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To Me.Core.nFleets
                     fleet = Core.FleetInputs(iFleet)
-                    Me(iGroup, 1 + iFleet) = New PropertyCell(fleet, eVarNameFlags.DiscardMortality, group)
+                    Me(iGroup, 1 + iFleet) = New PropertyCell(Me.PropertyManager, fleet, eVarNameFlags.DiscardMortality, group)
                 Next
             Next
 

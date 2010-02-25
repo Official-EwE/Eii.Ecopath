@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: ucLayersControl.vb,v $
-' Revision 1.3  2009/05/11 01:51:03  jeroens
-' Renamed command classes
-'
-' Revision 1.2  2008/11/05 01:14:22  jeroens
-' Optionally clear new layer groups
-'
-' Revision 1.1  2008/11/04 04:39:35  jeroens
-' Moved
-'
-' Revision 1.2  2008/10/10 18:04:02  jeroens
-' Updated to renamed layers classes
-'
-' Revision 1.1  2008/09/26 07:32:00  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -38,12 +18,14 @@ Namespace Ecospace
     ''' -----------------------------------------------------------------------
     Public Class ucLayersControl
 
+        Private m_uic As cUIContext = Nothing
         Private m_dtGroups As New Dictionary(Of String, ucLayerGroup)
         Private m_dtLayerToGroup As New Dictionary(Of cLayer, String)
 
-        Public Sub New()
+        Public Sub New(ByVal uic As cUIContext)
             InitializeComponent()
             Me.Dock = DockStyle.Fill
+            Me.m_uic = uic
         End Sub
 
 #Region " Item access "
@@ -115,7 +97,7 @@ Namespace Ecospace
                 End If
             Else
                 ' #No: create new group layer control
-                ucg = New ucLayerGroup(strGroup)
+                ucg = New ucLayerGroup(Me.m_uic, strGroup)
                 Me.fpItems.Controls.Add(ucg)
                 Me.m_dtGroups(strGroup) = ucg
             End If
