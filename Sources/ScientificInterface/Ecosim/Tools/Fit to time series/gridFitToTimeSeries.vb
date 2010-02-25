@@ -26,9 +26,8 @@ Public Class gridFitToTimeSeries
 
         Me.Redim(1, 2)
 
-        ' ToDo_JS: globalize this
-        Me(0, eColumnTypes.TimeSeriesName) = New EwEColumnHeaderCell("Time series")
-        Me(0, eColumnTypes.TimeSeriesWeight) = New EwEColumnHeaderCell("Weight")
+        Me(0, eColumnTypes.TimeSeriesName) = New EwEColumnHeaderCell(My.Resources.HEADER_TIMESERIES)
+        Me(0, eColumnTypes.TimeSeriesWeight) = New EwEColumnHeaderCell(My.Resources.HEADER_WEIGHT)
 
         Me.AutoStretchColumnsToFitWidth = True
         ' Fixed "Editor not attached to the grid" crash: cannot edit a fixed column, duh!

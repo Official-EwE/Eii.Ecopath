@@ -744,7 +744,7 @@ Namespace Ecosim
 
             fbDlg.SelectedPath = My.Settings.LastSelectedDirectory
             fbDlg.ShowNewFolderButton = True
-            fbDlg.Description = My.Resources.ECOSIM_SAVE_ALL_FITS_VALUE_FOLDER_SELECTION
+            fbDlg.Description = My.Resources.PROMPT_FOLDER_SELECTION
 
             If fbDlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 Return fbDlg.SelectedPath

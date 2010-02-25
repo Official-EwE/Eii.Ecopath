@@ -55,7 +55,7 @@ Namespace Ecosim
             Me(0, eColumnTypes.Group) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP)
             Me(0, eColumnTypes.ManRB) = New EwEColumnHeaderCell(My.Resources.HEADER_MANDATED_BIOMASS_RELATIVE)
             Me(0, eColumnTypes.StructureW) = New EwEColumnHeaderCell(My.Resources.HEADER_STRUCTURERELATIVEWEIGHT)
-            Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_MAXFISHINGMORTAILITY)
+            Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXFISHINGMORTAILITY)
 
         End Sub
 

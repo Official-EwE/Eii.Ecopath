@@ -1357,39 +1357,38 @@ Public Class AppLauncher
         Dim msg As cMessage = Nothing
         Dim bSucces As Boolean = True
 
-        ' ToDo: localize this method
-        If Me.AskFeedback("To compact your database your model will need to be closed. Are you sure you want to compact your database?", _
+        If Me.AskFeedback(My.Resources.PROMPT_MODEL_COMPACT, _
              cFeedbackMessage.eReplyStyle.YES_NO, cFeedbackMessage.eReply.YES) <> cFeedbackMessage.eReply.YES Then
             Return False
         End If
 
         If Me.CloseEcopathModel() = False Then Return False
 
-        Me.SetStatusText("Compacting database...", TriState.True)
+        Me.SetStatusText(My.Resources.STATUS_MODEL_COMPACTING, TriState.True)
         result = ds.Compact(strFileName)
         Me.SetStatusText("", TriState.False)
 
         If result = eDatasourceAccessType.Success Then
             bSucces = Me.LoadEcopathModel(strFileName, eLoadSourceType.API)
             If bSucces Then
-                msg = New cMessage("Your database was compacted succesfully.", _
+                msg = New cMessage(My.Resources.STATUS_MODEL_COMPACT_SUCCESS, _
                                    eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
             Else
-                msg = New cMessage("Your database was compacted correctly, but EwE was not able to reload the database. Please contact EwE technical support", _
+                msg = New cMessage(My.Resources.STATUS_MODEL_COMPACT_RELOADFAIL, _
                                    eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
             End If
         Else
             ' Report error
             Select Case result
                 Case eDatasourceAccessType.Failed_OSUnsupported
-                    msg = New cMessage("Your operating system does not seem to be able to compact this type of database.", _
+                    msg = New cMessage(My.Resources.STATUS_MODEL_COMPACTING_OS, _
                                        eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
                 Case eDatasourceAccessType.Failed_CannotSave
-                    msg = New cMessage("Unable to create a temporary file while compacting database. Please check if you are low in disk space.", _
+                    msg = New cMessage(My.Resources.STATUS_MODEL_COMPACTING_TEMPFILE, _
                                        eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
                 Case eDatasourceAccessType.Failed_FileNotFound
                 Case eDatasourceAccessType.Failed_Unknown
-                    msg = New cMessage("Failed to compact database.", _
+                    msg = New cMessage(My.Resources.STATUS_MODEL_COMPACTING_FAILED, _
                                        eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
             End Select
             bSucces = False
@@ -1456,21 +1455,20 @@ Public Class AppLauncher
 
     Private Sub ReportFileAccessError(ByVal atResult As eDatasourceAccessType, ByVal strFileName As String)
 
-        ' ToDo: localize this method
         Dim msg As cMessage = Nothing
 
         Select Case atResult
             Case eDatasourceAccessType.Failed_OSUnsupported
-                msg = New cMessage(String.Format("Your system does not have to proper drivers installed to read the file format of model '{0}'. Visit http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&displaylang=en to download the required Microsoft ACCDB drivers", strFileName), _
+                msg = New cMessage(String.Format(My.Resources.STATUS_MODEL_ACCESS_OS, strFileName), _
                                    eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
             Case eDatasourceAccessType.Failed_FileNotFound
-                msg = New cMessage(String.Format("Unable to find model '{0}'.", strFileName), _
+                msg = New cMessage(String.Format(My.Resources.STATUS_MODEL_ACCESS_404, strFileName), _
                                    eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
             Case eDatasourceAccessType.Failed_CannotSave
-                msg = New cMessage(String.Format("Unable to save your model to location '{0}'.", strFileName), _
+                msg = New cMessage(String.Format(My.Resources.STATUS_MODEL_SAVE_404, strFileName), _
                                    eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
             Case Else
-                msg = New cMessage(String.Format("An error occurred while attempting to access model '{0}'.", strFileName), _
+                msg = New cMessage(String.Format(My.Resources.STATUS_MODEL_ACCESS_FAILED, strFileName), _
                                    eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
         End Select
 

@@ -721,15 +721,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Please select or create the folder you want to save Ecosim all fits results..
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_SAVE_ALL_FITS_VALUE_FOLDER_SELECTION() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_SAVE_ALL_FITS_VALUE_FOLDER_SELECTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Delete Ecosim scenario - Ecopath model {0}.
         '''</summary>
         Friend ReadOnly Property ECOSIM_SCENARIO_DELETE_CAPTION() As String
@@ -1759,7 +1750,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Cannot open file {0}.
+        '''  Looks up a localized string similar to Cannot open file &apos;{0}&apos;.
         '''</summary>
         Friend ReadOnly Property GENERIC_ERROR_FILEOPEN() As String
             Get
@@ -1863,15 +1854,6 @@ Namespace My.Resources
         Friend ReadOnly Property GENERIC_LABEL_INDEXEDLABEL() As String
             Get
                 Return ResourceManager.GetString("GENERIC_LABEL_INDEXEDLABEL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Max fishing mortality.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_MAXFISHINGMORTAILITY() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_MAXFISHINGMORTAILITY", resourceCulture)
             End Get
         End Property
         
@@ -3396,6 +3378,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to &lt; {0}.
+        '''</summary>
+        Friend ReadOnly Property HEADER_LESSTHAN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LESSTHAN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Lower limit.
         '''</summary>
         Friend ReadOnly Property HEADER_LOWERLIMIT() As String
@@ -3450,6 +3441,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Max fishing mortality.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MAXFISHINGMORTAILITY() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MAXFISHINGMORTAILITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Max rel. P/B.
         '''</summary>
         Friend ReadOnly Property HEADER_MAXRELPB() As String
@@ -3491,6 +3491,24 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_MINWEIGHT() As String
             Get
                 Return ResourceManager.GetString("HEADER_MINWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE5 model.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MODEL_EWE5() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MODEL_EWE5", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE6 model name.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MODEL_EWE6() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MODEL_EWE6", resourceCulture)
             End Get
         End Property
         
@@ -4274,6 +4292,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_TIMEFORCING() As String
             Get
                 Return ResourceManager.GetString("HEADER_TIMEFORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Time series.
+        '''</summary>
+        Friend ReadOnly Property HEADER_TIMESERIES() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TIMESERIES", resourceCulture)
             End Get
         End Property
         
@@ -5213,6 +5240,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Please select or create a folder.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_FOLDER_SELECTION() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_FOLDER_SELECTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to You are about to delete forcing function &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
         Friend ReadOnly Property PROMPT_FORCING_DELETE() As String
@@ -5263,6 +5299,15 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_INVALIDTARGETPATH() As String
             Get
                 Return ResourceManager.GetString("PROMPT_INVALIDTARGETPATH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to To compact your database your model will need to be closed. Are you sure you want to compact your database?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_MODEL_COMPACT() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_MODEL_COMPACT", resourceCulture)
             End Get
         End Property
         
@@ -5974,6 +6019,96 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_LOADING() As String
             Get
                 Return ResourceManager.GetString("STATUS_LOADING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unable to find model &apos;{0}&apos;..
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_ACCESS_404() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_ACCESS_404", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to An error occurred while attempting to access model &apos;{0}&apos;..
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_ACCESS_FAILED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_ACCESS_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Your system does not have to proper drivers installed to read the file format of model &apos;{0}&apos;. Visit http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&amp;displaylang=en to download the required Microsoft ACCDB drivers.
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_ACCESS_OS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_ACCESS_OS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Your database was compacted correctly, but EwE was not able to reload the database. Please contact EwE technical support.
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_COMPACT_RELOADFAIL() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_COMPACT_RELOADFAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Your database was compacted succesfully..
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_COMPACT_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_COMPACT_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Compacting model....
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_COMPACTING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_COMPACTING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to compact database..
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_COMPACTING_FAILED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_COMPACTING_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Your Windows installation does not have the necessary components installed to compact this type of database..
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_COMPACTING_OS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_COMPACTING_OS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unable to create a temporary file while compacting database. Please check if you are low in disk space..
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_COMPACTING_TEMPFILE() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_COMPACTING_TEMPFILE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unable to save your model to location &apos;{0}&apos;..
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_SAVE_404() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_SAVE_404", resourceCulture)
             End Get
         End Property
         

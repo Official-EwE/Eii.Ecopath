@@ -91,9 +91,9 @@ Namespace Import
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
             ' Create columns
-            Me(0, eColumnTypes.EwE5Model) = New EwEColumnHeaderCell("Old model")
-            Me(0, eColumnTypes.Import) = New EwEColumnHeaderCell("Import")
-            Me(0, eColumnTypes.EwE6Model) = New EwEColumnHeaderCell("New model name")
+            Me(0, eColumnTypes.EwE5Model) = New EwEColumnHeaderCell(My.Resources.HEADER_MODEL_EWE5)
+            Me(0, eColumnTypes.Import) = New EwEColumnHeaderCell(My.Resources.HEADER_IMPORT)
+            Me(0, eColumnTypes.EwE6Model) = New EwEColumnHeaderCell(My.Resources.HEADER_MODEL_EWE6)
 
             ' Configure columns
             Me.FixedColumns = 1
@@ -139,11 +139,13 @@ Namespace Import
                 Me(iRow, eColumnTypes.Import).Behaviors.Add(m_bm)
 
                 ewec = New EwECell("", GetType(String))
-                ewec.Style = cStyleGuide.eStyleFlags.NotEditable
                 ewec.Behaviors.Add(Me.m_bm)
                 Me(iRow, eColumnTypes.EwE6Model) = ewec
 
                 Me.ImportSettings(iRow) = imp
+
+                ' Update EwE6 model cell to process import settings state
+                Me.UpdateEwE6ModelCell(iRow)
 
             Next
 

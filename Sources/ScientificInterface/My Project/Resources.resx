@@ -311,7 +311,7 @@
   <data name="ECOSPACE_DISPERSAL_RELFEEDRATE" xml:space="preserve">
     <value>Rel. feed. rate in bad habitat</value>
   </data>
-  <data name="GENERIC_LABEL_MAXFISHINGMORTAILITY" xml:space="preserve">
+  <data name="HEADER_MAXFISHINGMORTAILITY" xml:space="preserve">
     <value>Max fishing mortality</value>
   </data>
   <data name="OPTIONS_COLORDLG_IMG_BACKGROUND_COLOR" xml:space="preserve">
@@ -438,7 +438,7 @@
   </data>
   <data name="FIT2TS_PROGRESS_RUNSTARTED" xml:space="preserve">
     <value>Search started, base SS = {0}</value>
-    <comment>{0}: time run started</comment>
+    <comment>{0}: base SS value</comment>
   </data>
   <data name="bell" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -648,8 +648,8 @@
   <data name="STATUS_PLEASE_WAIT" xml:space="preserve">
     <value>Please wait a moment...</value>
   </data>
-  <data name="ECOSIM_SAVE_ALL_FITS_VALUE_FOLDER_SELECTION" xml:space="preserve">
-    <value>Please select or create the folder you want to save Ecosim all fits results.</value>
+  <data name="PROMPT_FOLDER_SELECTION" xml:space="preserve">
+    <value>Please select or create a folder</value>
   </data>
   <data name="HEADER_GROUPNUM" xml:space="preserve">
     <value>Group number</value>
@@ -715,7 +715,7 @@
     <comment>Text label for Quick Edit interface in Grid toolbars</comment>
   </data>
   <data name="GENERIC_ERROR_FILEOPEN" xml:space="preserve">
-    <value>Cannot open file {0}</value>
+    <value>Cannot open file '{0}'</value>
     <comment>{0}= file name, either relative or absolute</comment>
   </data>
   <data name="GENERIC_ITEMSTATUS_DELETEPENDING" xml:space="preserve">
@@ -1284,7 +1284,7 @@
   </data>
   <data name="FIT2TS_PROGRESS_RUNSTEP" xml:space="preserve">
     <value>Iteration {0},  SS =  {1}</value>
-    <comment>{0}: step #, {1}: step data</comment>
+    <comment>{0}: iteration #, {1}: SS value at iteration</comment>
   </data>
   <data name="HEADER_LOWERLIMIT" xml:space="preserve">
     <value>Lower limit</value>
@@ -1938,7 +1938,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
     <value>'{0}' failed to save to file '{1}': {2}.</value>
-    <comment>{0}: item that saved. {1}: file dest. {2}: error reason</comment>
+    <comment>{0}: item that saved. {1}: file dest. {2}: error message</comment>
   </data>
   <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
     <value>'{0}' is succesfully saved to file '{1}'.</value>
@@ -2379,7 +2379,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="GENERIC_LABEL_HOME" xml:space="preserve">
     <value>Home</value>
-    <comment>owser start page.</comment>
+    <comment>owner start page.</comment>
   </data>
   <data name="ExportXMLHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ExportXMLHS.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -2559,5 +2559,51 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="GENERIC_HEADER_UNITUNIT" xml:space="preserve">
     <value>{0}/{1}</value>
     <comment>{0}: unit 1, {1}: unit 2</comment>
+  </data>
+  <data name="HEADER_MODEL_EWE5" xml:space="preserve">
+    <value>EwE5 model</value>
+  </data>
+  <data name="HEADER_MODEL_EWE6" xml:space="preserve">
+    <value>EwE6 model name</value>
+  </data>
+  <data name="HEADER_TIMESERIES" xml:space="preserve">
+    <value>Time series</value>
+  </data>
+  <data name="HEADER_LESSTHAN" xml:space="preserve">
+    <value>&lt; {0}</value>
+    <comment>{0}: a value</comment>
+  </data>
+  <data name="PROMPT_MODEL_COMPACT" xml:space="preserve">
+    <value>To compact your database your model will need to be closed. Are you sure you want to compact your database?</value>
+  </data>
+  <data name="STATUS_MODEL_ACCESS_404" xml:space="preserve">
+    <value>Unable to find model '{0}'.</value>
+  </data>
+  <data name="STATUS_MODEL_ACCESS_FAILED" xml:space="preserve">
+    <value>An error occurred while attempting to access model '{0}'.</value>
+  </data>
+  <data name="STATUS_MODEL_ACCESS_OS" xml:space="preserve">
+    <value>Your system does not have to proper drivers installed to read the file format of model '{0}'. Visit http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&amp;displaylang=en to download the required Microsoft ACCDB drivers</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING" xml:space="preserve">
+    <value>Compacting model...</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING_FAILED" xml:space="preserve">
+    <value>Failed to compact database.</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING_OS" xml:space="preserve">
+    <value>Your Windows installation does not have the necessary components installed to compact this type of database.</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING_TEMPFILE" xml:space="preserve">
+    <value>Unable to create a temporary file while compacting database. Please check if you are low in disk space.</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACT_RELOADFAIL" xml:space="preserve">
+    <value>Your database was compacted correctly, but EwE was not able to reload the database. Please contact EwE technical support</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACT_SUCCESS" xml:space="preserve">
+    <value>Your database was compacted succesfully.</value>
+  </data>
+  <data name="STATUS_MODEL_SAVE_404" xml:space="preserve">
+    <value>Unable to save your model to location '{0}'.</value>
   </data>
 </root>

@@ -44,7 +44,7 @@ Namespace Ecosim
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Group) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP)
-            Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_MAXFISHINGMORTAILITY)
+            Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXFISHINGMORTAILITY)
 
         End Sub
 

@@ -18,6 +18,45 @@ Namespace Import
     Public Class ucImportPageModels
         Implements IWizardPage
 
+#Region " Private helper class "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper class, reflects an EwE database type in the list candidate
+        ''' import formats.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Class cDatabaseTypeItem
+
+            Private m_dst As eDataSourceTypes = eDataSourceTypes.NotSet
+
+            Public Sub New(ByVal dst As eDataSourceTypes)
+                Me.m_dst = dst
+            End Sub
+
+            Public ReadOnly Property DataSourceType() As eDataSourceTypes
+                Get
+                    Return Me.m_dst
+                End Get
+            End Property
+
+            Public Overrides Function ToString() As String
+                Dim strFileFilter As String = ""
+                Select Case Me.m_dst
+                    Case eDataSourceTypes.ACCDB
+                        strFileFilter = My.Resources.FILEFILTER_SAVE_ACCDB
+                    Case eDataSourceTypes.MDB
+                        strFileFilter = My.Resources.FILEFILTER_SAVE_MDB
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+                Return strFileFilter.Split("|"c)(0)
+            End Function
+
+        End Class
+
+#End Region ' Private helper class
+
 #Region " Private vars "
 
         ''' <summary>The attached wizard.</summary>
@@ -134,7 +173,7 @@ Namespace Import
              Handles m_btnBrowse.Click
 
             Dim fd As New FolderBrowserDialog()
-            fd.Description = "Select folder to place imported model(s) into"
+            fd.Description = My.Resources.PROMPT_FOLDER_SELECTION
             fd.ShowNewFolderButton = True
             fd.SelectedPath = Me.m_tbxOutputFolder.Text
 
@@ -169,34 +208,6 @@ Namespace Import
 #End Region ' Events
 
 #Region " Internals "
-
-        Private Class cDatabaseTypeItem
-
-            Private m_dst As eDataSourceTypes = eDataSourceTypes.NotSet
-
-            Public Sub New(ByVal dst As eDataSourceTypes)
-                Me.m_dst = dst
-            End Sub
-
-            Public ReadOnly Property DataSourceType() As eDataSourceTypes
-                Get
-                    Return Me.m_dst
-                End Get
-            End Property
-
-            Public Overrides Function ToString() As String
-                Select Case Me.m_dst
-                    Case eDataSourceTypes.ACCDB
-                        Return "EwE Access 2007 database"
-                    Case eDataSourceTypes.MDB
-                        Return "EwE Access 2003 database"
-                    Case Else
-                        Debug.Assert(False)
-                End Select
-                Return ""
-            End Function
-
-        End Class
 
         ''' -------------------------------------------------------------------
         ''' <summary>

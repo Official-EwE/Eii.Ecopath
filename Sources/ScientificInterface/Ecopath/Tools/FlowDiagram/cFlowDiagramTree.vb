@@ -376,8 +376,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 g.FillRectangle(brLegend, New Rectangle(ptIconTL, New Size(CInt(iXSize * 0.2), iIconHeight)))
                 brLegend.Dispose()
 
-                ' ToDo: localize this
-                g.DrawString(String.Format("< {0}", Me.m_sg.FormatNumber(Me.GetNiceNumber(sValInc))), _
+                g.DrawString(String.Format(My.Resources.HEADER_LESSTHAN, Me.m_sg.FormatNumber(Me.GetNiceNumber(sValInc))), _
                              font, brush, _
                              New Point(CInt(ptIconTL.X + iXSize * 0.3), ptIconTL.Y))
                 ptIconTL.Y += iIconHeight
