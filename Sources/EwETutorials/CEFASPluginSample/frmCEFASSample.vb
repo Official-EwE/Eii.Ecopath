@@ -25,7 +25,7 @@
 
         'StepsPerMonth is the number of sub time steps to run in one month Default value = 1
         'bMultiThreaded Boolean flag to run Ecosim on a seperate thread Default value = False
-        'Both values are set to default values after an Ecosim run
+        'Both values are set to default values after an Ecosim run so they need to be set at the start of each run
         Me.m_plugin.EcosimDS.StepsPerMonth = Integer.Parse(Me.txStepsPerMonth.Text)
         Me.m_plugin.EcosimDS.bMultiThreaded = Me.ckMultiThread.Checked
 

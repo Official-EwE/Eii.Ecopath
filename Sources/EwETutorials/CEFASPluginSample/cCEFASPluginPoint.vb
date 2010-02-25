@@ -55,14 +55,14 @@ Public Class cCEFASPluginPoint
     ''' <summary>Generic <see cref="EwEPlugin.IPlugin.Name">IPlugin.Name</see> implementation.</summary>
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "Ecosim on thread Plugin Example"
+            Return "CEFAS sample plug-in"
         End Get
     End Property
 
     ''' <summary>Generic <see cref="EwEPlugin.IPlugin.Description">IPlugin.Description</see> implementation.</summary>
     Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "Run Ecosim in on a seperate thread."
+            Return "Run Ecosim thread and variable time step"
         End Get
     End Property
 
@@ -89,14 +89,14 @@ Public Class cCEFASPluginPoint
 
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Ecosim threaded plug-in"
+            Return "CEFAS plug-in sample"
         End Get
     End Property
 
     ''' <summary>What shows up when hovering over the menu.</summary>
     Public ReadOnly Property ControlTooltipText() As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            Return "Ecosim on thread"
+            Return "Multi thread and variable time step sample"
         End Get
     End Property
 
@@ -143,10 +143,10 @@ Public Class cCEFASPluginPoint
     Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
 
         Debug.Assert(TypeOf objEcoSim Is Ecosim.cEcoSimModel, Me.ToString & _
-                    ".CoreInitialized() argument objEcoSim is not a cEcosimDatastructures object.")
+                    ".CoreInitialized() argument objEcoSim is not a cEcoSimModel object.")
 
         Debug.Assert(TypeOf objEcoPath Is Ecopath.cEcoPathModel, Me.ToString & _
-            ".CoreInitialized() argument objEcoPath is not a cEcopathDataStructures object.")
+            ".CoreInitialized() argument objEcoPath is not a cEcoPathModel object.")
 
         Try
             'get the Ecosim and Ecopath data from the Models
