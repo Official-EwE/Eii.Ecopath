@@ -76,7 +76,7 @@ Namespace Ecopath.Input
 
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreGroupBase = Nothing
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim pm As cPropertyManager = Me.PropertyManager
             Dim prop As cProperty = Nothing
             Dim propSum As cFormulaProperty = Nothing
             Dim prop1MinusSum As cFormulaProperty = Nothing
