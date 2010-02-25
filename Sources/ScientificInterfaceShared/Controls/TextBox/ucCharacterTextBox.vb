@@ -123,12 +123,11 @@ Namespace Controls
                     Case Else
                         strText = Me.Character()
 
-                        ' ToDo_JS: globalize this, taking L2R/R2L reading order in account
                         Select Case Convert.ToChar(m_iChar)
-                            Case "."c : strText &= " (period)"
-                            Case ","c : strText &= " (comma)"
-                            Case ":"c : strText &= " (colon)"
-                            Case ";"c : strText &= " (semi-colon)"
+                            Case "."c : strText = My.Resources.GENERIC_CHAR_PERIOD
+                            Case ","c : strText = My.Resources.GENERIC_CHAR_COMMA
+                            Case ":"c : strText = My.Resources.GENERIC_CHAR_COLON
+                            Case ";"c : strText = My.Resources.GENERIC_CHAR_SEMICOLON
                         End Select
                 End Select
                 Me.Text = strText

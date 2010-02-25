@@ -131,6 +131,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to : (colon).
+        '''</summary>
+        Friend ReadOnly Property GENERIC_CHAR_COLON() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_CHAR_COLON", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to , (comma).
+        '''</summary>
+        Friend ReadOnly Property GENERIC_CHAR_COMMA() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_CHAR_COMMA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to . (period).
+        '''</summary>
+        Friend ReadOnly Property GENERIC_CHAR_PERIOD() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_CHAR_PERIOD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to ; (semi-colon).
+        '''</summary>
+        Friend ReadOnly Property GENERIC_CHAR_SEMICOLON() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_CHAR_SEMICOLON", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to AED|UAE Dirham|AFN|Afghanistan Afghani|ALL|Albanian Lek|AMD|Armenian Dram|ANG|Antillean Guilder|AOR|Angolan New Kwanza|ARS|Argentinian Peso|AUD|Australian Dollar|AWG|Aruban Florin|AZM|Azerbaijan Manat|BAM|Bosnian Konvertibilna Marka|BBD|Barbadian Dollar|BDT|Bangladesh Taka|BGN|Bulgarian New Lev|BHD|Bahraini Dinar|BIF|Burundian Franc|BMD|Bermudan Dollar|BND|Brunei Dollar|BOB|Bolivian Boliviano|BRL|Brazilian Real|BSD|Bahamas Dollar|BTN|Bhutan Ngultrum|BWP|Botswana Pula|BYB|Belarussian Ruble|BZD|Belizean Dolla [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property GENERIC_CURRENCIES() As String

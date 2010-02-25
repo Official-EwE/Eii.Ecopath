@@ -344,4 +344,20 @@
   <data name="BUTTON_CLOSE" xml:space="preserve">
     <value>&amp;Close</value>
   </data>
+  <data name="GENERIC_CHAR_COLON" xml:space="preserve">
+    <value>: (colon)</value>
+    <comment>'Colon' character description</comment>
+  </data>
+  <data name="GENERIC_CHAR_COMMA" xml:space="preserve">
+    <value>, (comma)</value>
+    <comment>'Comma' character description</comment>
+  </data>
+  <data name="GENERIC_CHAR_PERIOD" xml:space="preserve">
+    <value>. (period)</value>
+    <comment>'Period' character description</comment>
+  </data>
+  <data name="GENERIC_CHAR_SEMICOLON" xml:space="preserve">
+    <value>; (semi-colon)</value>
+    <comment>'Semi-colon' character description</comment>
+  </data>
 </root>
