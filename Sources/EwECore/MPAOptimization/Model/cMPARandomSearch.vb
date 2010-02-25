@@ -72,7 +72,7 @@ Public Class cMPARandomSearch
             m_EcoSpace = EcoSpaceModel
             m_data = MPAOptData
 
-            m_SpaceData = m_EcoSpace.EcoSpaceParameters
+            m_SpaceData = m_EcoSpace.EcoSpaceData
             m_search = m_EcoSpace.SearchData
 
             'set EcoSpace to use this MPA optimization model
@@ -544,7 +544,7 @@ Public Class cMPARandomSearch
         If iYear = Me.m_data.EcoSpaceEndYear Then
             KeepOrReloadCellValues(Biomass)
         ElseIf iYear = Me.m_data.EcoSpaceEndYear Then
-            iYear = CInt(m_EcoSpace.EcoSpaceParameters.TotalTime)
+            iYear = CInt(m_EcoSpace.EcoSpaceData.TotalTime)
             m_EcoSpace.StopRun = True
         End If
 

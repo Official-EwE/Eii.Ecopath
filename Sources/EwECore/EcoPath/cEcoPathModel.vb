@@ -140,10 +140,10 @@ Namespace Ecopath
         ''' <remarks>
         ''' This is the wrapper that contains all the underlying data for EcoPath
         ''' </remarks>
-        Public Property ModelingData() As cEcopathDataStructures
+        Public Property EcopathData() As cEcopathDataStructures
 
             Get
-                ModelingData = m_Data
+                EcopathData = m_Data
             End Get
 
             Set(ByVal NewParameters As cEcopathDataStructures)

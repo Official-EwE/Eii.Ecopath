@@ -301,16 +301,16 @@ Namespace Ecosim
         End Property
 
         ''' <summary>
-        ''' Get or Set the EcoPath parameters and variables 
+        ''' Get or Set the EcoPath data
         ''' </summary>
         ''' <value></value>
         ''' <remarks>
         ''' This is used to initialize EcoSim with the last EcoPath estimated parameters
         ''' See cModelInterface.InitEcoSim(...)
         ''' </remarks>
-        Public Property EcopathParameters() As cEcopathDataStructures
+        Public Property EcopathData() As cEcopathDataStructures
             Get
-                EcopathParameters = m_EPData
+                EcopathData = m_EPData
             End Get
 
             Set(ByVal NewParameters As cEcopathDataStructures)
@@ -319,6 +319,21 @@ Namespace Ecosim
 
         End Property
 
+        ''' <summary>
+        ''' Get or Set the Ecosim data
+        ''' </summary>
+        ''' <value></value>
+        ''' <remarks>
+        ''' </remarks>
+        Public Property EcosimData() As cEcosimDatastructures
+            Get
+                Return Me.m_Data
+            End Get
+
+            Set(ByVal value As cEcosimDatastructures)
+                Me.m_Data = value
+            End Set
+        End Property
 
         Public Property TimeSeriesData() As cTimeSeriesDataStructures
             Get
@@ -798,6 +813,7 @@ Namespace Ecosim
                         Dim UpdateStanza As Boolean = (irk4 = Me.m_Data.StepsPerMonth)
                         rk4(BB, nvar, t, DeltaT, UpdateStanza)
                         t += DeltaT
+                        Me.setBiomassForcing(iyr)
                         If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimSubTimestepEnd(BB, t, DeltaT, irk4, m_Data)
 
                     Next irk4
@@ -809,8 +825,6 @@ Namespace Ecosim
                         'm_publisher.AddMessage(New cMessage("Ecosim run aborted.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
                         Exit Sub
                     End If
-
-                    Me.setBiomassForcing(iyr)
 
                     CheckIfSmall(1, nvar, BB)
 
@@ -896,10 +910,11 @@ Namespace Ecosim
             PlotDataInfo(False, m_Data.SS, m_Data.SSGroup)
             ' System.Console.WriteLine("Ecosim SS = " & m_Data.SS.ToString)
 
+            If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimRunCompleted(m_Data)
+
             'Set values back to defaults... StepsPerMonth = 1
             Me.m_Data.onEcosimRunCompleted()
 
-            If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimRunCompleted(m_Data)
 
             ' System.Console.WriteLine("Sum Bio = " & sumBio.ToString & ", Sum Catch = " & sumCatch.ToString)
 

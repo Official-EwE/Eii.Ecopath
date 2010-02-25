@@ -295,7 +295,7 @@ Public Class cEcoSpace
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property EcoPathParameters() As cEcopathDataStructures
+    Public Property EcoPathData() As cEcopathDataStructures
         Get
             Return m_EPdata
         End Get
@@ -311,7 +311,7 @@ Public Class cEcoSpace
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property EcoSimParameters() As cEcosimDatastructures
+    Public Property EcoSimData() As cEcosimDatastructures
         Get
             Return m_SimData
         End Get
@@ -320,7 +320,7 @@ Public Class cEcoSpace
         End Set
     End Property
 
-    Public Property EcoSpaceParameters() As cEcospaceDataStructures
+    Public Property EcoSpaceData() As cEcospaceDataStructures
         Get
             Return m_Data
         End Get
@@ -329,7 +329,7 @@ Public Class cEcoSpace
         End Set
     End Property
 
-    Public Property StanzaParameters() As cStanzaDatastructures
+    Public Property StanzaData() As cStanzaDatastructures
         Get
             Return m_Stanza
         End Get
@@ -5029,7 +5029,7 @@ exitline:
             'Sail(AF, ix, iy) = 0
             For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
-                    If Me.EcoSpaceParameters.Depth(i, j) > 0 Then 'water cell
+                    If Me.EcoSpaceData.Depth(i, j) > 0 Then 'water cell
                         Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS))
                         Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS))
                         'Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS) / 2.0!)
@@ -5050,7 +5050,7 @@ exitline:
             For j = 1 To m_Data.InCol
                 If minD(i, j) < Single.MaxValue Then Disti = minD(i, j) Else Disti = 0.0!
                 'If ActiveFleet = 0 Then    'Same for all fleets
-                For K = 0 To Me.EcoPathParameters.NumFleet
+                For K = 0 To Me.EcoPathData.NumFleet
                     'Port(K, i, j) = Port(0, i, j)
                     Me.m_Data.Sail(K, i, j) = Disti
                 Next
@@ -5133,7 +5133,7 @@ exitline:
                     For iCol = 1 To m_Data.InCol
 
                         ' Is water cell?
-                        If Me.EcoSpaceParameters.Depth(iRow, iCol) > 0 Then
+                        If Me.EcoSpaceData.Depth(iRow, iCol) > 0 Then
 
                             Longi = CSng(m_Data.Lon1 + (iRow / m_Data.IDH_SS))
                             Lati = CSng(m_Data.Lat1 - (iCol / m_Data.IDH_SS))

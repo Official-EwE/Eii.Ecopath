@@ -1016,7 +1016,7 @@ Public Class cCore
             'End Joeh
 
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
-            m_EcoPath.ModelingData = m_EcoPathData
+            m_EcoPath.EcopathData = m_EcoPathData
 
             'protect against error loading the validators
             Try
@@ -4684,7 +4684,7 @@ Public Class cCore
 
             'set the output variables from EcoPath as the Input for EcoSim
             'this sets the baseline state for EcoSim as the last run EcoPath model
-            m_EcoSim.EcopathParameters = Me.m_EcoPathData
+            m_EcoSim.EcopathData = Me.m_EcoPathData
             m_EcoSim.m_Data = Me.m_EcoSimData
             m_EcoSim.m_stanza = Me.m_Stanza
             m_EcoSim.TracerData = Me.m_tracerData
@@ -6555,11 +6555,11 @@ Public Class cCore
         m_EcoSpaceData.DefaultBasemapDimensions()
         m_EcoSpaceData.RedimMigratoryVariables()
 
-        m_Ecospace.EcoSpaceParameters = Me.m_EcoSpaceData
-        m_Ecospace.StanzaParameters = Me.m_Stanza
-        m_Ecospace.EcoPathParameters = Me.m_EcoPathData
+        m_Ecospace.EcoSpaceData = Me.m_EcoSpaceData
+        m_Ecospace.StanzaData = Me.m_Stanza
+        m_Ecospace.EcoPathData = Me.m_EcoPathData
         m_Ecospace.EcoSim = Me.m_EcoSim
-        m_Ecospace.EcoSimParameters = Me.m_EcoSimData
+        m_Ecospace.EcoSimData = Me.m_EcoSimData
         m_Ecospace.ContaiminantTracerData = m_tracerData
 
         'sub in core to call at each time step

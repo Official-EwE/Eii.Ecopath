@@ -129,7 +129,7 @@ Namespace EcoSeed
                 'set EcoSpace to use this MPA optimization model
                 m_EcoSpace.MPAOptimization = Me
 
-                m_SpaceData = m_EcoSpace.EcoSpaceParameters
+                m_SpaceData = m_EcoSpace.EcoSpaceData
                 m_data = EcoSeedData
                 m_data.SeedBlockSize2 = 1 'default is one cell per iteration
 
@@ -521,7 +521,7 @@ Namespace EcoSeed
             If iYear = Me.m_data.EcoSpaceStartYear Then
                 KeepOrReloadCellValues(Biomass)
             ElseIf iYear = Me.m_data.EcoSpaceEndYear Then
-                iYear = CInt(m_EcoSpace.EcoSpaceParameters.TotalTime)
+                iYear = CInt(m_EcoSpace.EcoSpaceData.TotalTime)
                 m_EcoSpace.StopRun = True
             End If
 
