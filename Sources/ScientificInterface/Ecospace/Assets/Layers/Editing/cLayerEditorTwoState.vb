@@ -19,7 +19,11 @@ Namespace Ecospace.Basemap.Layers
     Public Class cLayerEditorTwoState
         Inherits cLayerEditor
 
-        Public Sub New(Optional ByVal typeGUI As Type = Nothing)
+        Public Sub New()
+            Me.New(Nothing)
+        End Sub
+
+        Public Sub New(ByVal typeGUI As Type)
             MyBase.New(typeGUI)
         End Sub
 

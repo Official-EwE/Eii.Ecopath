@@ -27,8 +27,6 @@ Namespace Ecospace.Basemap
 
 #Region " Private vars "
 
-        ''' <summary>The one and only reference to the core.</summary>
-        Private m_core As cCore = Nothing
         Private m_basemapData As cEcospaceBasemap = Nothing
         ''' <summary>The one and only administration of layers.</summary>
         Private m_layers As New List(Of cLayer)
@@ -50,33 +48,7 @@ Namespace Ecospace.Basemap
 #Region " Constructors "
 
         Public Sub New()
-
-            ' This call is required by the Windows Form Designer.
             Me.InitializeComponent()
-
-            ' Initialize the data
-            Me.m_core = cCore.GetInstance()
-            ' Initalize m_ucBasemap
-            Me.m_ucBasemap = plBasemap.Map()
-
-            ' Add LayersControl
-            Me.m_ucLayers = New ucLayersControl(Me.UIContext)
-            plLayers.Controls.Add(Me.m_ucLayers)
-
-            Me.Basemap = Me.m_core.EcospaceBasemap
-            Me.m_ucBasemap.Editable = True
-
-        End Sub
-
-        Public Sub New(ByVal text As String)
-
-            Me.New()
-
-            'Set tab text
-            Me.TabText = text
-            'Set window text
-            Me.Text = text
-
         End Sub
 
 #End Region ' Constructors
@@ -112,7 +84,17 @@ Namespace Ecospace.Basemap
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim pm As cPropertyManager = Me.PropertyManager
-            Dim source As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
+            Dim source As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
+
+            ' Initalize m_ucBasemap
+            Me.m_ucBasemap = Me.plBasemap.Map()
+
+            ' Add LayersControl
+            Me.m_ucLayers = New ucLayersControl(Me.UIContext)
+            plLayers.Controls.Add(Me.m_ucLayers)
+
+            Me.Basemap = Me.Core.EcospaceBasemap
+            Me.m_ucBasemap.Editable = True
 
             Me.m_cmdEditBasemap = cmdh.GetCommand("EditBasemap")
             If (Not Object.ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then
@@ -163,7 +145,7 @@ Namespace Ecospace.Basemap
             ' Clean up
             Me.RemoveAllLayers()
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
 
             If (Not Object.ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then
                 Me.m_cmdEditBasemap.RemoveControl(Me.tsbEditBasemap)
@@ -229,7 +211,7 @@ Namespace Ecospace.Basemap
             If ((cf And cProperty.eChangeFlags.Value) = cf) Then
                 If CBool(prop.GetValue()) Then
                     If (Me.m_layerRelCin Is Nothing) Then
-                        Me.m_layerRelCin = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerRelCin)(0)
+                        Me.m_layerRelCin = cLayerFactory.GetLayers(Me.Core, eVarNameFlags.LayerRelCin)(0)
                         Me.AddLayer(Me.m_layerRelCin, cLayerFactory.GetLayerGroup(eVarNameFlags.LayerRelCin))
                     End If
                 Else
@@ -282,7 +264,7 @@ Namespace Ecospace.Basemap
         ''' -------------------------------------------------------------------
         Private Sub AddData(ByVal varName As eVarNameFlags, Optional ByVal bClearGroup As Boolean = True)
 
-            Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.m_core, varName)
+            Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.Core, varName)
             Dim strGroup As String = cLayerFactory.GetLayerGroup(varName)
 
             ' Define group
@@ -395,7 +377,7 @@ Namespace Ecospace.Basemap
             ' Refresh basemap on ANY data added or removed message from Ecospace
             If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
                 ' Refresh it all
-                Me.Basemap = Me.m_core.EcospaceBasemap
+                Me.Basemap = Me.Core.EcospaceBasemap
             End If
         End Sub
 

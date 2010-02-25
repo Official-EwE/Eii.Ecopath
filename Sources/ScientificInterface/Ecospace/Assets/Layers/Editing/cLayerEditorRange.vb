@@ -1,12 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cLayerEditorRange.vb,v $
-' Revision 1.1  2008/11/04 04:40:16  jeroens
-' Split into separate files, moved
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore
