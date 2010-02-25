@@ -1070,6 +1070,7 @@ Public Class AppLauncher
 
         ' Create plugin manager for this GUI
         Me.m_pluginManager = New cPluginManager()
+        Me.m_pluginManager.SyncObject = Me.m_SyncObj
         ' Distribute plugin manager
         Me.Core.PluginManager = Me.m_pluginManager
         Me.m_pluginManager.Core = Me.Core
