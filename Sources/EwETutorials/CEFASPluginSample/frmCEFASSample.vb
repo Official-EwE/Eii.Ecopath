@@ -23,6 +23,12 @@
 
         Me.lstTimesteps.Items.Clear()
 
+        'StepsPerMonth is the number of sub time steps to run in one month Default value = 1
+        'bMultiThreaded Boolean flag to run Ecosim on a seperate thread Default value = False
+        'Both values are set to default values after an Ecosim run
+        Me.m_plugin.EcosimDS.StepsPerMonth = Integer.Parse(Me.txStepsPerMonth.Text)
+        Me.m_plugin.EcosimDS.bMultiThreaded = Me.ckMultiThread.Checked
+
         Me.m_plugin.Core.RunEcoSim()
 
     End Sub
@@ -45,6 +51,7 @@
 
     Friend Sub onEcosimMonthlyTimeStep(ByVal TimeStep As Integer)
         Me.lstTimesteps.Items.Add("Month = " & TimeStep.ToString)
+        Me.lstTimesteps.SetSelected(Me.lstTimesteps.Items.Count - 1, True)
         Me.lstTimesteps.Refresh()
     End Sub
 

@@ -5,33 +5,11 @@ Imports EwEUtils
 Public Class cCEFASPluginPoint
     Implements EwEPlugin.IGUIPlugin
     Implements EwEPlugin.IMenuItemPlugin
-    Implements EwEPlugin.IEcosimInitializedPlugin
+    Implements EwEPlugin.ICorePlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IEcosimSubTimestepsPlugin
     Implements EwEPlugin.IEcosimRunCompletedPlugin
 
-    ''' <summary>
-    ''' Delegate for marshalling data onto the UI thread. Called by the monthly timestep plugin point.
-    ''' </summary>
-    ''' <param name="TimeStep"></param>
-    ''' <remarks>UI elements must be called from the same thread as they are created on. Forms provide the .Invoke method that will marshall calls. </remarks>
-    Delegate Sub MarshallOnMonthlyTimeStep(ByVal TimeStep As Integer)
-
-    ''' <summary>
-    ''' Delegate for marshalling data onto the UI thread. Called by the sub timestep plugin point.
-    ''' </summary>
-    ''' <param name="TimeInYears"></param>
-    ''' <param name="DeltaT"></param>
-    ''' <param name="SubTimestepIndex"></param>
-    ''' <param name="EcosimDatastructures"></param>
-    ''' <remarks>UI elements must be called from the same thread as they are created on. Forms provide the .Invoke method that will marshall calls. </remarks>
-    Delegate Sub MarshallOnSubTimeStep(ByVal TimeInYears As Single, ByVal DeltaT As Single, ByVal SubTimestepIndex As Integer, ByVal EcosimDatastructures As Object)
-
-    ''' <summary>
-    '''  Delegate for marshalling calls onto the UI thread. Called by the IEcosimRunCompletedPlugin plugin point.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Delegate Sub MarshallOnRunCompleted()
 
 
 #Region " Private Variables "
@@ -40,9 +18,11 @@ Public Class cCEFASPluginPoint
 
     Private m_CEFASForm As frmCEFASSample
 
-    Private m_EcopathDs As cEcopathDataStructures
+    Private m_EcopathDS As cEcopathDataStructures
     Private m_EcosimDS As cEcosimDatastructures
     Private m_EcospaceDS As cEcospaceDataStructures
+
+    Private sumIncrease As Single
 
 #End Region
 
@@ -160,25 +140,24 @@ Public Class cCEFASPluginPoint
 
 #Region "Storage of Datastructures"
 
-    ''' <summary>
-    ''' Called by the core when Ecosim is initalized properly
-    ''' </summary>
-    Public Sub EcosimInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
+    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
 
-        Debug.Assert(TypeOf EcosimDatastructures Is EwECore.cEcosimDatastructures, Me.ToString & _
-                            ".EcosimInitialized() argument EcosimDatastructures is not a cEcosimDatastructures object.")
+        Debug.Assert(TypeOf objEcoSim Is Ecosim.cEcoSimModel, Me.ToString & _
+                    ".CoreInitialized() argument objEcoSim is not a cEcosimDatastructures object.")
+
+        Debug.Assert(TypeOf objEcoPath Is Ecopath.cEcoPathModel, Me.ToString & _
+            ".CoreInitialized() argument objEcoPath is not a cEcopathDataStructures object.")
+
         Try
-            If TypeOf EcosimDatastructures Is EwECore.cEcosimDatastructures Then
-                m_EcosimDS = DirectCast(EcosimDatastructures, cEcosimDatastructures)
-                System.Console.WriteLine(Me.ToString & ".EcosimInitialized() Successfull.")
-            Else
-                Debug.Assert(False, "Accepted the wrong kind of Ecopath Datastructures")
-            End If
+            'get the Ecosim and Ecopath data from the Models
+            m_EcosimDS = DirectCast(objEcoSim, Ecosim.cEcoSimModel).EcosimData
+            m_EcopathDS = DirectCast(objEcoPath, Ecopath.cEcoPathModel).EcopathData
+
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
-    End Sub
 
+    End Sub
 
 #End Region
 
@@ -194,11 +173,7 @@ Public Class cCEFASPluginPoint
 
             If Me.HasInterface(Me.m_CEFASForm) Then
 
-                If Me.EcosimDS.bMultiThreaded Then
-                    Me.m_CEFASForm.Invoke(New MarshallOnMonthlyTimeStep(AddressOf Me.m_CEFASForm.onEcosimMonthlyTimeStep), New Object() {iTime})
-                Else
-                    Me.m_CEFASForm.onEcosimMonthlyTimeStep(iTime)
-                End If
+                Me.m_CEFASForm.onEcosimMonthlyTimeStep(iTime)
 
             End If
 
@@ -217,8 +192,8 @@ Public Class cCEFASPluginPoint
         Try
 
             If Me.HasInterface(Me.m_CEFASForm) Then
-                'when the EcosimRunCompleted plugin point is called Ecosim will have reset bMultiThreaded=False and StepsPerMonth=1 (default values)
-                Me.m_CEFASForm.Invoke(New MarshallOnRunCompleted(AddressOf Me.m_CEFASForm.onEcosimRunCompleted), Nothing)
+
+                Me.m_CEFASForm.onEcosimRunCompleted()
 
             End If
 
@@ -241,10 +216,10 @@ Public Class cCEFASPluginPoint
 
     Public Property EcopathDS() As cEcopathDataStructures
         Get
-            Return Me.m_EcopathDs
+            Return Me.m_EcopathDS
         End Get
         Set(ByVal value As cEcopathDataStructures)
-            Me.m_EcopathDs = value
+            Me.m_EcopathDS = value
         End Set
     End Property
 
@@ -283,6 +258,20 @@ Public Class cCEFASPluginPoint
     ''' <remarks>Any changes made to BiomassAtTimestep() or EcosimDatastructures will be used by Ecosim during the timestep</remarks>
     Public Sub EcosimSubTimeStepBegin(ByRef BiomassAtTimestep() As Single, ByVal TimeInYears As Single, ByVal DeltaT As Single, ByVal SubTimestepIndex As Integer, ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimSubTimestepsPlugin.EcosimSubTimeStepBegin
 
+        Try
+
+            'Any changes made to BiomassAtTimestep(ngroups) will be use for the next times step
+            For igrp As Integer = 1 To Me.EcosimDS.nGroups
+                If Me.EcopathDS.PP(igrp) > 0 Then
+                    'increase biomass of primary producers by some fixed amount per year
+                    BiomassAtTimestep(igrp) += Me.EcopathDS.B(igrp) * 0.5F * DeltaT
+                End If
+            Next
+
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     ''' <summary>
@@ -302,11 +291,7 @@ Public Class cCEFASPluginPoint
 
             If Me.HasInterface(Me.m_CEFASForm) Then
 
-                If Me.EcosimDS.bMultiThreaded Then
-                    Me.m_CEFASForm.Invoke(New MarshallOnSubTimeStep(AddressOf Me.m_CEFASForm.onEcosimSubTimestep), New Object() {TimeInYears, DeltaT, SubTimestepIndex, EcosimDatastructures})
-                Else
-                    Me.m_CEFASForm.onEcosimSubTimestep(TimeInYears, DeltaT, SubTimestepIndex, EcosimDatastructures)
-                End If
+                Me.m_CEFASForm.onEcosimSubTimestep(TimeInYears, DeltaT, SubTimestepIndex, EcosimDatastructures)
 
             End If
 
@@ -317,4 +302,5 @@ Public Class cCEFASPluginPoint
 
 #End Region
 
+  
 End Class
