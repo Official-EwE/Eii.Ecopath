@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: gridEditHabitats.vb,v $
-' Revision 1.3  2009/05/28 12:37:40  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.2  2008/12/15 15:55:33  jeroens
-' no message
-'
-' Revision 1.1  2008/11/04 04:58:44  jeroens
-' Renamed
-'
-' Revision 1.2  2008/10/29 15:45:48  jeroens
-' Fixed issue 562
-'
-' Revision 1.1  2008/09/26 07:31:56  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -38,8 +18,6 @@ Namespace Ecospace
         ''' <summary>A number representing the row that contains the first Habitat</summary>
         Private Const iFIRSTHABITATROW As Integer = 1
 
-        ''' <summary>The <see cref="cCore">Core</see> currently being modified.</summary>
-        Private m_core As cCore = Nothing
         ''' <summary>List of active Habitats.</summary>
         Private m_alHabitats As New List(Of HabitatInfo)
         ''' <summary>List of removed Habitats.</summary>
@@ -236,7 +214,6 @@ Namespace Ecospace
         Public Sub New()
 
             MyBase.New()
-            Me.m_core = cCore.GetInstance()
 
             ' Set up visual models for reflecting Habitat modification status
             With Me.m_vmOriginal
@@ -313,8 +290,8 @@ Namespace Ecospace
 
             ' Make snapshot of Habitat configuration
             ' SKIP ALL HABITAT HERE!
-            For iHabitat As Integer = 1 To Me.m_core.nHabitats - 1
-                Habitat = Me.m_core.EcospaceHabitats(iHabitat)
+            For iHabitat As Integer = 1 To Me.Core.nHabitats - 1
+                Habitat = Me.Core.EcospaceHabitats(iHabitat)
                 hi = New HabitatInfo(Habitat)
                 Me.m_alHabitats.Add(hi)
             Next
@@ -806,7 +783,7 @@ Namespace Ecospace
             ' Handle added and removed items
             If (bConfigurationChanged) Then
 
-                If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
+                If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
                 cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
@@ -814,7 +791,7 @@ Namespace Ecospace
                 For iHabitat = 0 To Me.m_alHabitats.Count - 1
                     hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
                     If (hi.IsNew()) Then
-                        bSuccess = bSuccess And Me.m_core.AddEcospaceHabitat(hi.Name, iDBID)
+                        bSuccess = bSuccess And Me.Core.AddEcospaceHabitat(hi.Name, iDBID)
                     End If
                 Next
 
@@ -827,7 +804,7 @@ Namespace Ecospace
                     Debug.Assert(Not hi.IsNew())
 
                     If (hi.Confirmed()) Then
-                        If (Me.m_core.RemoveEcospaceHabitat(hi.Habitat)) Then
+                        If (Me.Core.RemoveEcospaceHabitat(hi.Habitat)) Then
                             Me.m_alHabitats.Remove(hi)
                             Me.m_alHabitatsRemoved.Remove(hi)
                         Else
@@ -838,12 +815,12 @@ Namespace Ecospace
                 Next
 
                 ' The core will reload now
-                Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+                Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
                 cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
                 ' Test whether new Habitats were loaded correctly 
                 ' !! taking into account that this dialog does NOT contain the All habitat, hence the '-1'
-                Debug.Assert(Me.m_alHabitats.Count = (Me.m_core.nHabitats - 1), ">> Internal panic: Dialog and core out of sync on Habitats")
+                Debug.Assert(Me.m_alHabitats.Count = (Me.Core.nHabitats - 1), ">> Internal panic: Dialog and core out of sync on Habitats")
             End If
 
             ' Update core objects
@@ -857,9 +834,9 @@ Namespace Ecospace
                         ' Find core habitat with same BDID (cannot use cached cEcospaceHabitat instances since the core has reloaded)
                         Dim bFound As Boolean = False
                         ' For every core habitat instance
-                        For iHabTest As Integer = 1 To Me.m_core.nHabitats - 1
+                        For iHabTest As Integer = 1 To Me.Core.nHabitats - 1
                             ' Get core habitat instance
-                            Dim habTest As cEcospaceHabitat = Me.m_core.EcospaceHabitats(iHabTest)
+                            Dim habTest As cEcospaceHabitat = Me.Core.EcospaceHabitats(iHabTest)
                             ' Has matching ID?
                             If (habTest.getID = hi.Habitat.getID) Then
                                 ' #Yes: Update

@@ -15,9 +15,6 @@ Namespace Ecospace
     Public Class gridFishery
         : Inherits EwEGrid
 
-        'Core reference
-        Private m_Core As cCore = cCore.GetInstance()
-
         Private m_ah As New SourceGrid2.BehaviorModels.CustomEvents
 
         Public Sub New()
@@ -38,30 +35,30 @@ Namespace Ecospace
             Dim source As cCoreInputOutputBase = Nothing
 
             'Define grid dimensions
-            Me.Redim(m_Core.nFleets + 1, m_Core.nHabitats + m_Core.nMPAs + 4)
+            Me.Redim(Me.Core.nFleets + 1, Me.Core.nHabitats + Me.Core.nMPAs + 4)
 
             'Set header cells #(0,0)
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_HEADER_FLEETHABUSE)
 
             'Dynamic row header - fleet name
-            For i As Integer = 1 To m_Core.nFleets
-                source = m_Core.EcospaceFleets(i)
+            For i As Integer = 1 To Me.Core.nFleets
+                source = Me.Core.EcospaceFleets(i)
                 Me(i, 0) = New EwERowHeaderCell(i)
                 '# Fleet name header 
                 Me(i, 1) = New EwERowHeaderCell(source.Name)
             Next
 
             'Dynamic column header - Habitats and MPAs
-            For j As Integer = 0 To m_Core.nHabitats - 1
-                source = m_Core.EcospaceHabitats(j)
+            For j As Integer = 0 To Me.Core.nHabitats - 1
+                source = Me.Core.EcospaceHabitats(j)
                 Me(0, j + 2) = New EwEColumnHeaderCell(source.Name)
             Next
 
             'Dynamic column header - MPAs
-            For k As Integer = 1 To m_Core.nMPAs
-                source = m_Core.EcospaceMPAs(k)
-                Me(0, m_Core.nHabitats + 1 + k) = New EwEColumnHeaderCell(source.Name)
+            For k As Integer = 1 To Me.Core.nMPAs
+                source = Me.Core.EcospaceMPAs(k)
+                Me(0, Me.Core.nHabitats + 1 + k) = New EwEColumnHeaderCell(source.Name)
             Next
 
             'Column header cell - Effective power
@@ -71,22 +68,21 @@ Namespace Ecospace
 
         End Sub
 
-
         Protected Overrides Sub FillData()
 
-            For i As Integer = 1 To m_Core.nFleets
+            For i As Integer = 1 To Me.Core.nFleets
 
-                Dim source As cEcospaceFleet = m_Core.EcospaceFleets(i)
+                Dim source As cEcospaceFleet = Me.Core.EcospaceFleets(i)
 
                 'Fleet / habitat assignments
-                For iHabitat As Integer = 0 To m_Core.nHabitats - 1
+                For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
                     Me(i, iHabitat + 2) = New Cells.Real.CheckBox(source.HabitatFishery(iHabitat))
                     Me(i, iHabitat + 2).Behaviors.Add(m_ah)
                 Next
 
-                For iMPA As Integer = 1 To m_Core.nMPAs
-                    Me(i, m_Core.nHabitats + 1 + iMPA) = New Cells.Real.CheckBox(CBool(source.MPAFishery(iMPA)))
-                    Me(i, m_Core.nHabitats + 1 + iMPA).Behaviors.Add(m_ah)
+                For iMPA As Integer = 1 To Me.Core.nMPAs
+                    Me(i, Me.Core.nHabitats + 1 + iMPA) = New Cells.Real.CheckBox(CBool(source.MPAFishery(iMPA)))
+                    Me(i, Me.Core.nHabitats + 1 + iMPA).Behaviors.Add(m_ah)
                 Next
 
                 Me(i, Me.ColumnsCount - 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EffectivePower)
@@ -100,15 +96,15 @@ Namespace Ecospace
 
         Private Sub m_ahValueChanged(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
 
-            Dim fleet As cEcospaceFleet = m_Core.EcospaceFleets(e.Position.Row)
+            Dim fleet As cEcospaceFleet = Me.Core.EcospaceFleets(e.Position.Row)
             Dim col As Integer = e.Position.Column - 2
             Dim bChecked As Boolean = CBool(e.Cell.GetValue(e.Position))
 
-            If col <= m_Core.nHabitats - 1 Then
+            If col <= Me.Core.nHabitats - 1 Then
                 ' Core will prevent conflicts in assigning habitats
                 fleet.HabitatFishery(col) = bChecked
-            ElseIf col <= m_Core.nHabitats + m_Core.nMPAs - 1 Then
-                fleet.MPAFishery(col - m_Core.nHabitats + 1) = bChecked
+            ElseIf col <= Me.Core.nHabitats + Me.Core.nMPAs - 1 Then
+                fleet.MPAFishery(col - Me.Core.nHabitats + 1) = bChecked
             End If
 
             UpdateRow(e.Position.Row)
@@ -121,19 +117,19 @@ Namespace Ecospace
         ''' <param name="i">Row number to update.</param>
         Private Sub UpdateRow(ByVal i As Integer)
 
-            Dim source As cEcospaceFleet = m_Core.EcospaceFleets(i)
+            Dim source As cEcospaceFleet = Me.Core.EcospaceFleets(i)
 
             'Fleet / habitat assignments
-            For iHabitat As Integer = 0 To m_Core.nHabitats - 1
+            For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
                 Me(i, iHabitat + 2).Behaviors.Remove(m_ah)
                 Me(i, iHabitat + 2).Value = CBool(source.HabitatFishery(iHabitat))
                 Me(i, iHabitat + 2).Behaviors.Add(m_ah)
             Next
 
-            For iMPA As Integer = 1 To m_Core.nMPAs
-                Me(i, m_Core.nHabitats + 1 + iMPA).Behaviors.Remove(m_ah)
-                Me(i, m_Core.nHabitats + 1 + iMPA).Value = CBool(source.MPAFishery(iMPA))
-                Me(i, m_Core.nHabitats + 1 + iMPA).Behaviors.Add(m_ah)
+            For iMPA As Integer = 1 To Me.Core.nMPAs
+                Me(i, Me.Core.nHabitats + 1 + iMPA).Behaviors.Remove(m_ah)
+                Me(i, Me.Core.nHabitats + 1 + iMPA).Value = CBool(source.MPAFishery(iMPA))
+                Me(i, Me.Core.nHabitats + 1 + iMPA).Behaviors.Add(m_ah)
             Next
 
         End Sub

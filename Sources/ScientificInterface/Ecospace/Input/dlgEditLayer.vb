@@ -17,12 +17,14 @@ Imports EwEUtils.Commands
 
 Namespace Ecospace.Basemap.Layers
 
-    ''' -----------------------------------------------------------------------
+    ''' =======================================================================
     ''' <summary>
-    ''' Document purpose of this dialog
+    ''' Dialog, implementing the Ecospace Edit Layer user interface.
     ''' </summary>
-    ''' -----------------------------------------------------------------------
+    ''' =======================================================================
     Public Class dlgEditLayer
+
+#Region " Private variables "
 
         Private m_uic As cUIContext = Nothing
 
@@ -44,12 +46,14 @@ Namespace Ecospace.Basemap.Layers
         Private m_fpWeight As cEwEFormatProvider = Nothing
         Private m_fpDescription As cEwEFormatProvider = Nothing
 
+#End Region ' Private variables
+
+#Region " Constructors "
+
         Public Enum eOpenDialogTypes As Integer
             Appearance = 0
             Data
         End Enum
-
-#Region " Constructors "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -63,8 +67,6 @@ Namespace Ecospace.Basemap.Layers
                        ByVal layerDepth As cLayer, _
                        ByVal opentype As eOpenDialogTypes)
 
-            Me.InitializeComponent()
-
             Debug.Assert(layer IsNot Nothing)
 
             ' Set the references
@@ -75,6 +77,8 @@ Namespace Ecospace.Basemap.Layers
             Me.m_openType = opentype
 
             Me.m_layerWork = New cLayer(layer) ' Work on a clone
+
+            Me.InitializeComponent()
 
         End Sub
 
@@ -101,6 +105,8 @@ Namespace Ecospace.Basemap.Layers
             Me.pnBasemap.Controls.Add(Me.m_ucZoomControl)
             Me.m_ucZoomControl.PositionMode = ucZoomBaseMap.ePositionModeTypes.Center
             Me.m_ucZoomControl.Zoom(ucZoomBaseMap.eZoomTypes.ZoomReset)
+
+            Me.m_grid.UIContext = Me.m_uic
 
             ' Show your stuff
             Me.LoadLayer()

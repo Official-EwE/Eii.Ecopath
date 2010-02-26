@@ -1,31 +1,4 @@
-'==============================================================================
-'
-' $Log: dlgEditBasemap.vb,v $
-' Revision 1.2  2009/03/19 16:02:26  jeroens
-' Added FormatProvider.Release
-'
-' Revision 1.1  2008/09/26 07:31:56  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/08/11 04:39:35  jeroens
-' Simplified  Ecospace core class names
-'
-' Revision 1.4  2008/06/02 00:01:23  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.3  2008/05/29 22:22:39  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.2  2007/12/03 22:17:22  jeroens
-' * Uses EwE format providers
-'
-' Revision 1.1  2007/10/21 15:22:07  jeroens
-' * Moved
-'
-' Revision 1.4  2007/09/21 14:44:05  jeroens
-' * Fixed map resize test bug
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -34,21 +7,32 @@ Imports ScientificInterface.Controls
 Imports ScientificInterface.Other
 Imports EwEUtils.Core
 
+#End Region ' Imports
+
+''' =======================================================================
+''' <summary>
+''' Dialog, implementing the Ecospace Edit Basemap user interface.
+''' </summary>
+''' =======================================================================
 Public Class dlgEditBasemap
 
+#Region " Private vars "
+
+    Private m_uic As cUIContext = Nothing
     Private m_basemap As cEcospaceBasemap = Nothing
+
     Private m_fpInCol As cEwEFormatProvider = Nothing
     Private m_fpInRow As cEwEFormatProvider = Nothing
     Private m_fpLat As cEwEFormatProvider = Nothing
     Private m_fpLon As cEwEFormatProvider = Nothing
     Private m_fpCellLength As cEwEFormatProvider = Nothing
 
-    Public Sub New(ByVal basemap As cEcospaceBasemap)
+#End Region ' Private vars
+
+    Public Sub New(ByVal uic As cUIContext)
+        Me.m_uic = uic
+        Me.m_basemap = Me.m_uic.Core.EcospaceBasemap
         Me.InitializeComponent()
-        ' Sanity checks
-        Debug.Assert(basemap IsNot Nothing)
-        ' Remember the milk
-        Me.m_basemap = basemap
     End Sub
 
 #Region " Events "
@@ -148,7 +132,7 @@ Public Class dlgEditBasemap
 
         If bResizeMap Then
             ' Whooohooo! if THIS is not going to cause a Tsunami...
-            cCore.GetInstance().ResizeEcospaceBasemap(iRowCount, iColCount)
+            Me.m_uic.Core.ResizeEcospaceBasemap(iRowCount, iColCount)
         End If
     End Sub
 

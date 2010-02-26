@@ -15,8 +15,6 @@ Namespace Ecospace
     Public Class gridAssignHabits
         : Inherits EwEGrid
 
-        ''' <summary>Core reference.</summary>
-        Private m_Core As cCore = cCore.GetInstance()
         ''' <summary>Checkbox cell interaction.</summary>
         Private m_ah As New BehaviorModels.CustomEvents
 
@@ -26,17 +24,18 @@ Namespace Ecospace
 
             MyBase.New()
 
-            m_delegatePositionEvent = New SourceGrid2.PositionEventHandler(AddressOf m_ahValueChanged)
+            Me.m_delegatePositionEvent = New SourceGrid2.PositionEventHandler(AddressOf m_ahValueChanged)
             AddHandler m_ah.ValueChanged, m_delegatePositionEvent
 
             Me.FixedColumnWidths = False
 
         End Sub
 
-        Private Sub AssignHabitatsEwEGrid_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
             ' Clean up
             RemoveHandler m_ah.ValueChanged, m_delegatePositionEvent
-            m_delegatePositionEvent = Nothing
+            Me.m_delegatePositionEvent = Nothing
+            MyBase.OnHandleDestroyed(e)
         End Sub
 
 #Region " Grid Overriden methods "
@@ -49,37 +48,37 @@ Namespace Ecospace
             Dim source As cCoreInputOutputBase = Nothing
 
             'Define grid dimensions
-            Me.Redim(m_Core.nGroups + 2, m_Core.nHabitats + 4)
+            Me.Redim(Me.Core.nGroups + 2, Me.Core.nHabitats + 4)
 
             'Set header cells # (0,0)
             Me(0, 0) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_HEADER_GROUP_HABITAT)
             Me(0, 0).ColumnSpan = 2
 
             'Dynamic row header - group name 
-            For i As Integer = 1 To m_Core.nGroups
-                source = m_Core.EcospaceGroups(i)
+            For i As Integer = 1 To Me.Core.nGroups
+                source = Me.Core.EcospaceGroups(i)
                 Me(i, 0) = New EwERowHeaderCell(i)
                 ' # Group name row header cells
                 Me(i, 1) = New EwERowHeaderCell(source.Name)
             Next
 
             'Row header cell - Habitat area
-            Me(m_Core.nGroups + 1, 0) = New EwERowHeaderCell(m_Core.nGroups + 1)
-            Me(m_Core.nGroups + 1, 1) = New EwERowHeaderCell(My.Resources.ECOSPACE_HEADER_HABITAT_AREA)
+            Me(Me.Core.nGroups + 1, 0) = New EwERowHeaderCell(Me.Core.nGroups + 1)
+            Me(Me.Core.nGroups + 1, 1) = New EwERowHeaderCell(My.Resources.ECOSPACE_HEADER_HABITAT_AREA)
 
             'Dynamic column header - Habitat name
-            For j As Integer = 0 To m_Core.nHabitats - 1
-                source = m_Core.EcospaceHabitats(j)
+            For j As Integer = 0 To Me.Core.nHabitats - 1
+                source = Me.Core.EcospaceHabitats(j)
                 ' +1 to compensate for header column, +1 to compensate for zero-based habitat index.
                 Me(0, j + 2) = New EwEColumnHeaderCell(source.Name)
             Next
 
             'Column header cell - Ecospace area
-            Me(0, m_Core.nHabitats + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_ECOSPACE_AREA)
+            Me(0, Me.Core.nHabitats + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_ECOSPACE_AREA)
 
             'Column header cell - Ecopath area
-            Me(0, m_Core.nHabitats + 3) = New EwEColumnHeaderCell(My.Resources.HEADER_ECOPATH_AREA)
-            Me(0, m_Core.nHabitats + 3).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
+            Me(0, Me.Core.nHabitats + 3) = New EwEColumnHeaderCell(My.Resources.HEADER_ECOPATH_AREA)
+            Me(0, Me.Core.nHabitats + 3).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
 
             Me.FixedColumns = 2
 
@@ -92,17 +91,17 @@ Namespace Ecospace
             Dim cell As EwECellBase = Nothing
 
             ' Raster of formulas for check box cells
-            Dim exFormulas(m_Core.nGroups, m_Core.nHabitats) As cExpression
+            Dim exFormulas(Me.Core.nGroups, Me.Core.nHabitats) As cExpression
             Dim exFormula As cExpression = Nothing
             Dim propFormula As cFormulaProperty = Nothing
 
-            For iGroup As Integer = 1 To m_Core.nGroups
+            For iGroup As Integer = 1 To Me.Core.nGroups
 
                 ' Get sources
-                groupEcospace = m_Core.EcospaceGroups(iGroup)
-                groupEcopath = m_Core.EcoPathGroupInputs(iGroup)
+                groupEcospace = Me.Core.EcospaceGroups(iGroup)
+                groupEcopath = Me.Core.EcoPathGroupInputs(iGroup)
 
-                For iHabitat As Integer = 0 To m_Core.nHabitats - 1
+                For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
                     ' Create check box cells
                     Me(iGroup, iHabitat + 2) = New Cells.Real.CheckBox(groupEcospace.PreferredHabitat(iHabitat))
                     Me(iGroup, iHabitat + 2).Behaviors.Add(m_ah)
@@ -117,23 +116,23 @@ Namespace Ecospace
                 ' 2. Wrap formula in a property. This property is named to allow users to add remarks to it.
                 propFormula = New cFormulaProperty(cValueID.Generate(groupEcospace.getID, "SumHabArea"), exFormula)
                 ' 3. Apply formula to cell.
-                Me(iGroup, m_Core.nHabitats + 2) = New PropertyCell(propFormula)
+                Me(iGroup, Me.Core.nHabitats + 2) = New PropertyCell(propFormula)
 
                 ' Ecopath area
                 cell = New PropertyCell(Me.PropertyManager, groupEcopath, eVarNameFlags.Area)
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
-                Me(iGroup, m_Core.nHabitats + 3) = cell
+                Me(iGroup, Me.Core.nHabitats + 3) = cell
 
             Next
 
             ' Ecospace Area Sum cells - column habitat summaries
-            For iHabitat As Integer = 0 To m_Core.nHabitats - 1
+            For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
                 ' 1. Build formula that averages the total habitat of preferred areas for this habitat
                 exFormula = AvgHabAreaFormula(iHabitat, exFormulas)
                 ' 2. Wrap formula in a property. This property is named to allow users to add remarks to it.
                 propFormula = New cFormulaProperty(cValueID.Generate(groupEcospace.getID, "AvgHabArea"), exFormula)
                 ' 3. Apply formula to cell.
-                Me(m_Core.nGroups + 1, iHabitat + 2) = New PropertyCell(propFormula)
+                Me(Me.Core.nGroups + 1, iHabitat + 2) = New PropertyCell(propFormula)
             Next
 
         End Sub
@@ -150,7 +149,7 @@ Namespace Ecospace
 
         Private Sub m_ahValueChanged(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
 
-            Dim group As cEcospaceGroup = m_Core.EcospaceGroups(e.Position.Row)
+            Dim group As cEcospaceGroup = Me.Core.EcospaceGroups(e.Position.Row)
             Dim iHabitat As Integer = e.Position.Column - 2
 
             ' Set new preferred habitat
@@ -161,9 +160,9 @@ Namespace Ecospace
         End Sub
 
         Private Sub UpdateRow(ByVal iRow As Integer)
-            Dim group As cEcospaceGroup = m_Core.EcospaceGroups(iRow)
+            Dim group As cEcospaceGroup = Me.Core.EcospaceGroups(iRow)
 
-            For iHabitat As Integer = 0 To m_Core.nHabitats - 1
+            For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
                 ' Updating from within code: do not throw value changed events
                 Me(iRow, 2 + iHabitat).Behaviors.Remove(m_ah)
                 ' Update value
@@ -200,8 +199,8 @@ Namespace Ecospace
             Dim bopGroupPrefersHabitat As cBooleanOperand = Nothing
             Dim copHabArea As cConditionalOperation = Nothing
 
-            group = Me.m_Core.EcospaceGroups(iGroup)
-            habitat = Me.m_Core.EcospaceHabitats(iHabitat)
+            group = Me.Core.EcospaceGroups(iGroup)
+            habitat = Me.Core.EcospaceHabitats(iHabitat)
 
             ' 1. Construct PrefHab T/F test [group.PrefHab(iHabitat) = true]
             bopGroupPrefersHabitat = New cBooleanOperand( _
@@ -232,8 +231,8 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Private Function SumHabAreaFormula(ByVal iGroup As Integer, ByRef exFormulas(,) As cExpression) As cExpression
 
-            Dim exSum(Me.m_Core.nHabitats - 1) As cExpression
-            For iHabitat As Integer = 0 To Me.m_Core.nHabitats - 1
+            Dim exSum(Me.Core.nHabitats - 1) As cExpression
+            For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
                 exSum(iHabitat) = exFormulas(iGroup, iHabitat)
             Next iHabitat
             ' Return the sum of all preferred habitats
@@ -253,8 +252,8 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Private Function AvgHabAreaFormula(ByVal iHabitat As Integer, ByRef exFormulas(,) As cExpression) As cExpression
 
-            Dim exSum(Me.m_Core.nGroups - 1) As cExpression
-            For iGroup As Integer = 1 To m_Core.nGroups
+            Dim exSum(Me.Core.nGroups - 1) As cExpression
+            For iGroup As Integer = 1 To Me.Core.nGroups
                 exSum(iGroup - 1) = exFormulas(iGroup, iHabitat)
             Next iGroup
             ' Return the average of all preferred habitats.

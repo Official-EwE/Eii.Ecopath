@@ -216,16 +216,23 @@ Public Class gridLayerData
     ''' for keeping the local Layer administration up to date.</summary>
     Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
 
-    Private m_core As cCore = Nothing
     Private m_basemap As cEcospaceBasemap = Nothing
     Private m_layer As cLayer = Nothing
 
     Public Sub New()
         MyBase.New()
-        Me.m_core = cCore.GetInstance()
-        Me.m_basemap = Me.m_core.EcospaceBasemap
         Me.TrackPropertySelection = False
     End Sub
+
+    Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
+        Get
+            Return MyBase.UIContext
+        End Get
+        Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+            MyBase.UIContext = value
+            Me.m_basemap = value.Core.EcospaceBasemap
+        End Set
+    End Property
 
     Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
         Return DockStyle.None

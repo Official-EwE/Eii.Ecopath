@@ -3158,7 +3158,7 @@ Public Class AppLauncher
     ''' Command handler; invokes the Ecospace edit basemap dialog.
     ''' </summary>
     Private Sub OnEditEcospaceBasemap(ByVal cmd As cCommand) Handles m_cmdEditBasemap.OnInvoke
-        Dim dlg As New dlgEditBasemap(Me.Core.EcospaceBasemap)
+        Dim dlg As New dlgEditBasemap(Me.UIContext)
         Me.m_Help.HelpTopic(dlg) = "Edit basemap.htm"
         dlg.ShowDialog(Me)
     End Sub
@@ -3174,7 +3174,7 @@ Public Class AppLauncher
     ''' Command handler; invokes the Ecospace edit habitats dialog.
     ''' </summary>
     Private Sub OnEditEcospaceHabitats(ByVal cmd As cCommand) Handles m_cmdEditHabitats.OnInvoke
-        Dim dlg As New dlgEditHabitats()
+        Dim dlg As New dlgEditHabitats(Me.UIContext)
         Me.m_Help.HelpTopic(dlg) = "Edit habitats.htm"
         dlg.ShowDialog(Me)
     End Sub
@@ -3190,7 +3190,7 @@ Public Class AppLauncher
     ''' Command handler; invokes the Ecospace edit regions dialog.
     ''' </summary>
     Private Sub OnEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnInvoke
-        Dim dlg As New dlgEditRegions()
+        Dim dlg As New dlgEditRegions(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
 
@@ -3205,7 +3205,7 @@ Public Class AppLauncher
     ''' Command handler; invokes the Ecospace edit MPAs dialog.
     ''' </summary>
     Private Sub OnEditEcospaceMPAs(ByVal cmd As cCommand) Handles m_cmdEditMPAs.OnInvoke
-        Dim dlg As New dlgEditMPAs()
+        Dim dlg As New dlgEditMPAs(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
 
@@ -3220,7 +3220,7 @@ Public Class AppLauncher
     ''' Command handler; invokes the Ecospace edit importance layers dialog.
     ''' </summary>
     Private Sub OnEditEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdEditImportanceLayers.OnInvoke
-        Dim dlg As New dlgEditImportanceLayers()
+        Dim dlg As New dlgEditImportanceLayers(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
 

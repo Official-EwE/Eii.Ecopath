@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: gridEditMPAs.vb,v $
-' Revision 1.4  2009/05/28 12:37:42  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.3  2009/03/23 02:25:04  jeroens
-' No longer uses month resource strings; uses OS date formatting options instead
-'
-' Revision 1.2  2008/12/15 15:55:34  jeroens
-' no message
-'
-' Revision 1.1  2008/11/04 04:58:44  jeroens
-' Renamed
-'
-' Revision 1.2  2008/10/29 15:45:49  jeroens
-' Fixed issue 562
-'
-' Revision 1.1  2008/09/26 07:31:56  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -41,8 +18,6 @@ Namespace Ecospace
         ''' <summary>A number representing the row that contains the first MPA</summary>
         Private Const iFIRSTMPAROW As Integer = 1
 
-        ''' <summary>The <see cref="cCore">Core</see> currently being modified.</summary>
-        Private m_core As cCore = Nothing
         ''' <summary>List of active MPAs.</summary>
         Private m_alMPAs As New List(Of MPAInfo)
         ''' <summary>List of removed MPAs.</summary>
@@ -265,7 +240,6 @@ Namespace Ecospace
         Public Sub New()
 
             MyBase.New()
-            Me.m_core = cCore.GetInstance()
             Me.FixedColumnWidths = False
 
             ' Set up visual models for reflecting MPA modification status
@@ -342,15 +316,14 @@ Namespace Ecospace
         Protected Overrides Sub FillData()
 
             ' Get the core reference
-            Dim core As cCore = cCore.GetInstance()
             Dim MPA As cEcospaceMPA = Nothing
             Dim mi As MPAInfo = Nothing
 
             ' Populate local administration from a snapshot of the live data
 
             ' Make snapshot of MPA configuration 
-            For iMPA As Integer = 1 To core.nMPAs
-                MPA = core.EcospaceMPAs(iMPA)
+            For iMPA As Integer = 1 To Me.Core.nMPAs
+                MPA = Me.Core.EcospaceMPAs(iMPA)
                 mi = New MPAInfo(MPA)
                 Me.m_alMPAs.Add(mi)
             Next
@@ -871,7 +844,7 @@ Namespace Ecospace
             ' Handle added and removed items
             If (bConfigurationChanged) Then
 
-                If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
+                If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
                 cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
@@ -879,7 +852,7 @@ Namespace Ecospace
                 For iMPA = 0 To Me.m_alMPAs.Count - 1
                     mi = DirectCast(Me.m_alMPAs(iMPA), MPAInfo)
                     If (mi.IsNew()) Then
-                        bSuccess = bSuccess And Me.m_core.AddEcospaceMPA(mi.Name, mi.MPAMonths, iDBID)
+                        bSuccess = bSuccess And Me.Core.AddEcospaceMPA(mi.Name, mi.MPAMonths, iDBID)
                     End If
                 Next
 
@@ -888,7 +861,7 @@ Namespace Ecospace
                     For iMPA = 0 To Me.m_alMPAsRemoved.Count - 1
                         mi = DirectCast(Me.m_alMPAsRemoved(iMPA), MPAInfo)
                         If (Not mi.IsNew()) Then
-                            If (Me.m_core.RemoveEcospaceMPA(mi.MPA)) Then
+                            If (Me.Core.RemoveEcospaceMPA(mi.MPA)) Then
                                 Me.m_alMPAs.Remove(mi)
                             Else
                                 bSuccess = False
@@ -900,16 +873,16 @@ Namespace Ecospace
 
                 ' The core will reload now
                 If bSuccess Then
-                    bSuccess = Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, True)
+                    bSuccess = Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, True)
                     ' Test whether new MPAs were loaded correctly
-                    Debug.Assert(Me.m_alMPAs.Count = Me.m_core.nMPAs, ">> Internal panic: Dialog and core out of sync on MPAs")
+                    Debug.Assert(Me.m_alMPAs.Count = Me.Core.nMPAs, ">> Internal panic: Dialog and core out of sync on MPAs")
                 Else
-                    Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+                    Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
                 End If
                 cApplicationStatusNotifier.SetStatusText("", TriState.False)
             End If
 
-                ' Update core objects
+            ' Update core objects
             If (bMPAsChanged) Then
                 ' For each local MPA admin unit
                 For iMPA = 0 To Me.m_alMPAs.Count - 1
@@ -920,9 +893,9 @@ Namespace Ecospace
                         ' Find core MPA with same BDID (cannot use cached cEcospaceMPA instances since the core has reloaded)
                         Dim bFound As Boolean = False
                         ' For every core MPA instance
-                        For iMPATest As Integer = 1 To Me.m_core.nMPAs
+                        For iMPATest As Integer = 1 To Me.Core.nMPAs
                             ' Get core MPA instance
-                            Dim MPATest As cEcospaceMPA = Me.m_core.EcospaceMPAs(iMPATest)
+                            Dim MPATest As cEcospaceMPA = Me.Core.EcospaceMPAs(iMPATest)
                             ' Has matching ID?
                             If (MPATest.getID = mi.MPA.getID) Then
                                 ' #Yes: Update
@@ -943,7 +916,7 @@ Namespace Ecospace
                 Next
 
                 '' Apply all changes
-                'Me.m_core.SaveEcospaceScenario()
+                'Me.Core.SaveEcospaceScenario()
             End If
 
             Return bSuccess

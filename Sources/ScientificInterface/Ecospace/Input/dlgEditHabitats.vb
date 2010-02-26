@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: dlgEditHabitats.vb,v $
-' Revision 1.2  2008/12/15 15:54:30  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:57  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/08/09 02:54:22  jeroens
-' Cleaned up
-'
-' Revision 1.2  2008/06/02 00:01:23  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.1  2007/09/18 14:38:14  jeroens
-' * Renamed
-'
-' Revision 1.17  2007/09/14 16:55:36  jeroens
-' * Revamped, in progress
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -32,32 +9,38 @@ Imports EwECore
 
 Namespace Ecospace
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Dialog, implementing the Ecospace Edit Habitats user interface.
+    ''' </summary>
+    ''' =======================================================================
     Public Class dlgEditHabitats
 
-#Region "Private variables"
+#Region " Private variables "
 
-        Private m_Core As cCore
+        Private m_uic As cUIContext = Nothing
 
-#End Region
+#End Region ' Private variables
 
 #Region "Constructors"
-        Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-            ' Add any initialization after the InitializeComponent() call.
-            m_Core = cCore.GetInstance()
-
+        Public Sub New(ByVal uic As cUIContext)
+            Me.m_uic = uic
+            Me.InitializeComponent()
         End Sub
+
 #End Region
 
-#Region "Event handlers "
+#Region " Event handlers "
 
-        Private Sub Dialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+            Me.m_grid.UIContext = Me.m_uic
             Me.UpdateControls()
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles OK_Button.Click
 
             ' Try to apply grid changes
             If Me.m_grid.Apply() = False Then

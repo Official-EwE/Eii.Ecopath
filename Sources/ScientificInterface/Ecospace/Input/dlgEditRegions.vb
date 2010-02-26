@@ -9,9 +9,14 @@ Imports EwECore
 
 Namespace Ecospace
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Dialog, implementing the Ecospace Edit Regions user interface.
+    ''' </summary>
+    ''' =======================================================================
     Public Class dlgEditRegions
 
-#Region "Private variables"
+#Region " Private variables "
 
         Private Enum AllocationModeType As Integer
             None = 0
@@ -19,25 +24,27 @@ Namespace Ecospace
             Cell = 2
         End Enum
 
-        Private m_core As cCore
+        Private m_uic As cUIContext = Nothing
         Private m_eAllocateRegions As AllocationModeType = AllocationModeType.None
 
 #End Region
 
-#Region "Constructors"
-        Public Sub New()
+#Region " Constructors "
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-            ' Add any initialization after the InitializeComponent() call.
-            m_core = cCore.GetInstance()
+        Public Sub New(ByVal uic As cUIContext)
+
+            Me.m_uic = uic
+            Me.InitializeComponent()
 
         End Sub
-#End Region
 
-#Region "Event handlers "
+#End Region ' Constructors
 
-        Private Sub Dialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+#Region " Event handlers "
+
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+            Me.m_grid.UIContext = Me.m_uic
             Me.UpdateControls()
         End Sub
 

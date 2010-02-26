@@ -19,12 +19,10 @@ Namespace Ecospace
         ''' <summary>A number representing the row that contains the first Region</summary>
         Private Const iFIRSTREGIONROW As Integer = 1
 
-        ''' <summary>The <see cref="cCore">Core</see> currently being modified.</summary>
-        Private m_core As cCore = Nothing
         ''' <summary>List of active Regions.</summary>
-        Private m_alRegions As New List(Of RegionInfo)
+        Private m_alRegions As New List(Of cRegionInfo)
         ''' <summary>List of removed Regions.</summary>
-        Private m_alRegionsRemoved As New List(Of RegionInfo)
+        Private m_alRegionsRemoved As New List(Of cRegionInfo)
         ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
         ''' to trap cell edit events locally in this grid. These events are essential
         ''' for keeping the local Region administration up to date.</summary>
@@ -66,12 +64,12 @@ Namespace Ecospace
         ''' </summary>
         ''' <remarks>
         ''' This class can represent existing and new Regions. If this class has its
-        ''' <see cref="RegionInfo.Region">Region</see> parameter set, a real live
+        ''' <see cref="cRegionInfo.Region">Region</see> parameter set, a real live
         ''' Region is represented. If this parameter is not set, a new Region is
         ''' represented.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Class RegionInfo
+        Private Class cRegionInfo
 
             ''' <summary><see cref="cEcospaceRegion">cEcospaceRegion</see> associated with this Region, if any.</summary>
             Private m_Region As cEcospaceRegion = Nothing
@@ -257,7 +255,6 @@ Namespace Ecospace
         Public Sub New()
 
             MyBase.New()
-            Me.m_core = cCore.GetInstance()
 
             ' Set up visual models for reflecting Region modification status
             With Me.m_vmOriginal
@@ -327,16 +324,15 @@ Namespace Ecospace
         Protected Overrides Sub FillData()
 
             ' Get the core reference
-            Dim core As cCore = cCore.GetInstance()
             Dim Region As cEcospaceRegion = Nothing
-            Dim ri As RegionInfo = Nothing
+            Dim ri As cRegionInfo = Nothing
 
             ' Populate local administration from a snapshot of the live data
 
             ' Make snapshot of Region configuration 
-            For iRegion As Integer = 1 To core.nRegions
-                Region = core.EcospaceRegions(iRegion)
-                ri = New RegionInfo(Region)
+            For iRegion As Integer = 1 To Me.Core.nRegions
+                Region = Me.Core.EcospaceRegions(iRegion)
+                ri = New cRegionInfo(Region)
                 Me.m_alRegions.Add(ri)
             Next
 
@@ -353,7 +349,7 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Public Sub UpdateGrid()
 
-            Dim ri As RegionInfo = Nothing
+            Dim ri As cRegionInfo = Nothing
             Dim rowInfo As RowInfo = Nothing
             Dim cells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
@@ -403,7 +399,7 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Private Sub UpdateRow(ByVal iRow As Integer)
 
-            Dim ri As RegionInfo = Nothing
+            Dim ri As cRegionInfo = Nothing
             Dim rowInfo As RowInfo = Nothing
             Dim aCells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
@@ -412,7 +408,7 @@ Namespace Ecospace
 
             Me.AllowUpdates = False
 
-            ri = DirectCast(Me.m_alRegions(iRow - iFIRSTREGIONROW), RegionInfo)
+            ri = DirectCast(Me.m_alRegions(iRow - iFIRSTREGIONROW), cRegionInfo)
             rowInfo = Me.Rows(iRow)
 
             rowInfo.Tag = ri
@@ -463,7 +459,7 @@ Namespace Ecospace
 
             If Not Me.AllowUpdates Then Return True
 
-            Dim ri As RegionInfo = DirectCast(Me.m_alRegions(p.Row - 1), RegionInfo)
+            Dim ri As cRegionInfo = DirectCast(Me.m_alRegions(p.Row - 1), cRegionInfo)
 
             Select Case DirectCast(p.Column, eColumnTypes)
 
@@ -495,7 +491,7 @@ Namespace Ecospace
 
             If Not Me.AllowUpdates Then Return True
 
-            Dim ri As RegionInfo = DirectCast(Me.m_alRegions(p.Row - 1), RegionInfo)
+            Dim ri As cRegionInfo = DirectCast(Me.m_alRegions(p.Row - 1), cRegionInfo)
 
             Select Case DirectCast(p.Column, eColumnTypes)
                 Case eColumnTypes.RegionIndex
@@ -505,7 +501,7 @@ Namespace Ecospace
                     Dim strName As String = CStr(cell.GetValue(p))
                     ' Check if name is unique
                     For iRegion As Integer = 0 To Me.m_alRegions.Count - 1
-                        Dim giTemp As RegionInfo = DirectCast(Me.m_alRegions(iRegion), RegionInfo)
+                        Dim giTemp As cRegionInfo = DirectCast(Me.m_alRegions(iRegion), cRegionInfo)
                         ' Does name already exist?
                         If (Not Object.ReferenceEquals(giTemp, ri)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                             ' Change is not allowed
@@ -550,12 +546,12 @@ Namespace Ecospace
             If iRow = -1 Then iRow = Me.SelectedRow
 
             Dim iRegion As Integer = iRow - iFIRSTREGIONROW
-            Dim ri As RegionInfo = Nothing
+            Dim ri As cRegionInfo = Nothing
 
             ' Validate
             If iRegion < 0 Then Return
 
-            ri = DirectCast(Me.m_alRegions(iRegion), RegionInfo)
+            ri = DirectCast(Me.m_alRegions(iRegion), cRegionInfo)
             Me.RemoveRegion(ri, Not ri.FlaggedForDeletion, True)
 
         End Sub
@@ -578,7 +574,7 @@ Namespace Ecospace
             If Not IsRegionRow(iRow) Then Return False
 
             Dim iRegion As Integer = iRow - iFIRSTREGIONROW
-            Dim ri As RegionInfo = DirectCast(Me.m_alRegions(iRegion), RegionInfo)
+            Dim ri As cRegionInfo = DirectCast(Me.m_alRegions(iRegion), cRegionInfo)
 
             Return ri.FlaggedForDeletion
         End Function
@@ -590,7 +586,7 @@ Namespace Ecospace
             If Not Me.CanAddRow() Then Return
 
             Dim lstrRegions As New List(Of String)
-            Dim ri As RegionInfo = Nothing
+            Dim ri As cRegionInfo = Nothing
 
             ' Collect all current region names
             For Each ri In Me.m_alRegions
@@ -612,17 +608,17 @@ Namespace Ecospace
 
             Dim iHab As Integer = 0
             Dim hab As cEcospaceHabitat = Nothing
-            Dim ri As RegionInfo = Nothing
+            Dim ri As cRegionInfo = Nothing
 
             ' Delete all existing regions
-            Dim ari As RegionInfo() = Me.m_alRegions.ToArray
+            Dim ari As cRegionInfo() = Me.m_alRegions.ToArray
             For Each ri In ari
                 Me.RemoveRegion(ri, False, False)
             Next
 
             ' Create new regions for each habitat
-            For iHab = 1 To Me.m_core.nHabitats - 1
-                hab = Me.m_core.EcospaceHabitats(iHab)
+            For iHab = 1 To Me.Core.nHabitats - 1
+                hab = Me.Core.EcospaceHabitats(iHab)
                 ri = Me.CreateRegion(hab.Name, False)
                 ri.Habitat = hab
             Next
@@ -637,13 +633,13 @@ Namespace Ecospace
 
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Dim ri As RegionInfo = Nothing
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            Dim ri As cRegionInfo = Nothing
 
             ' ToDo_JS: Prompt for confirmation if this will create an insane pile of regions?
 
             ' Delete all existing regions
-            Dim ari As RegionInfo() = Me.m_alRegions.ToArray
+            Dim ari As cRegionInfo() = Me.m_alRegions.ToArray
             For Each ri In ari
                 Me.RemoveRegion(ri, False, False)
             Next
@@ -672,9 +668,9 @@ Namespace Ecospace
         ''' The created <see cref="RegionInfo">region</see>.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Private Function CreateRegion(ByVal strName As String, Optional ByVal bUpdate As Boolean = True) As RegionInfo
+        Private Function CreateRegion(ByVal strName As String, Optional ByVal bUpdate As Boolean = True) As cRegionInfo
 
-            Dim ri As RegionInfo = New RegionInfo(strName)
+            Dim ri As cRegionInfo = New cRegionInfo(strName)
             Me.m_alRegions.Add(ri)
             If (bUpdate = True) Then
                 Me.UpdateGrid()
@@ -689,7 +685,7 @@ Namespace Ecospace
         ''' Remove a region.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub RemoveRegion(ByVal ri As RegionInfo, ByVal bRemove As Boolean, Optional ByVal bUpdate As Boolean = True)
+        Private Sub RemoveRegion(ByVal ri As cRegionInfo, ByVal bRemove As Boolean, Optional ByVal bUpdate As Boolean = True)
 
             ' Toggle 'flagged for deletion' flag
             ri.FlaggedForDeletion = Not ri.FlaggedForDeletion
@@ -781,7 +777,7 @@ Namespace Ecospace
             Me.ShowCell(New Position(iRow, 0))
         End Sub
 
-        Private Sub SelectRow(ByVal ri As RegionInfo)
+        Private Sub SelectRow(ByVal ri As cRegionInfo)
             For iRegion As Integer = 0 To Me.m_alRegions.Count - 1
                 If Object.ReferenceEquals(Me.m_alRegions(iRegion), ri) Then
                     Me.SelectRow(iRegion + iFIRSTREGIONROW)
@@ -825,7 +821,7 @@ Namespace Ecospace
             Dim strPrompt As String = ""
             Dim bConfigurationChanged As Boolean = False
             Dim bRegionsChanged As Boolean = False
-            Dim ri As RegionInfo = Nothing
+            Dim ri As cRegionInfo = Nothing
             Dim iDBID As Integer = Nothing
             Dim Region As cEcospaceRegion = Nothing
             Dim iRegion As Integer = 0
@@ -840,7 +836,7 @@ Namespace Ecospace
 
             ' Assess Region changes
             For iRegion = 0 To Me.m_alRegions.Count - 1
-                ri = DirectCast(Me.m_alRegions(iRegion), RegionInfo)
+                ri = DirectCast(Me.m_alRegions(iRegion), cRegionInfo)
                 bConfigurationChanged = bConfigurationChanged Or ri.IsNew()
                 bRegionsChanged = bRegionsChanged Or ri.IsChanged()
             Next iRegion
@@ -867,7 +863,7 @@ Namespace Ecospace
             Else
                 ' Assess Regions to remove
                 For iRegion = 0 To Me.m_alRegionsRemoved.Count - 1
-                    ri = DirectCast(Me.m_alRegionsRemoved(iRegion), RegionInfo)
+                    ri = DirectCast(Me.m_alRegionsRemoved(iRegion), cRegionInfo)
                     If (Not ri.IsNew()) Then
 
                         strPrompt = String.Format(My.Resources.ECOSPACE_EDITREGION_CONFIRMDELETE_PROMPT, ri.Name)
@@ -895,15 +891,15 @@ Namespace Ecospace
             ' Handle added and removed items
             If (bConfigurationChanged) Then
 
-                If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
+                If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
                 cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
                 ' Add new Regions
                 For iRegion = 0 To Me.m_alRegions.Count - 1
-                    ri = DirectCast(Me.m_alRegions(iRegion), RegionInfo)
+                    ri = DirectCast(Me.m_alRegions(iRegion), cRegionInfo)
                     If (ri.IsNew()) Then
-                        bSuccess = bSuccess And Me.m_core.AddEcospaceRegion(ri.Name, iDBID)
+                        bSuccess = bSuccess And Me.Core.AddEcospaceRegion(ri.Name, iDBID)
 
                         ' Prepare mapping
                         Select Case Me.m_allocateRegionsFlag
@@ -921,14 +917,14 @@ Namespace Ecospace
                 ' Remove deleted (and confirmed) Regions
                 Dim iRegionRemove As Integer = 0
                 For iRegion = 0 To Me.m_alRegionsRemoved.Count - 1
-                    ri = DirectCast(Me.m_alRegionsRemoved(iRegionRemove), RegionInfo)
+                    ri = DirectCast(Me.m_alRegionsRemoved(iRegionRemove), cRegionInfo)
 
                     ' Sanity check
                     Debug.Assert(Not ri.IsNew())
 
                     If (ri.Confirmed()) Then
                         ' Find region to remove
-                        If (Me.m_core.RemoveEcospaceRegion(ri.Region)) Then
+                        If (Me.Core.RemoveEcospaceRegion(ri.Region)) Then
                             Me.m_alRegions.Remove(ri)
                             Me.m_alRegionsRemoved.Remove(ri)
                         Else
@@ -938,11 +934,11 @@ Namespace Ecospace
                     End If
                 Next iRegion
 
-                Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+                Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
                 cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
                 ' Test whether new Regions were loaded correctly
-                Debug.Assert(Me.m_alRegions.Count = Me.m_core.nRegions, "Dialog and core out of sync on Regions")
+                Debug.Assert(Me.m_alRegions.Count = Me.Core.nRegions, "Dialog and core out of sync on Regions")
             End If
 
             ' Update core objects
@@ -950,15 +946,15 @@ Namespace Ecospace
                 ' For each local region admin unit
                 For iRegion = 0 To Me.m_alRegions.Count - 1
                     ' Get local admin unit
-                    ri = DirectCast(Me.m_alRegions(iRegion), RegionInfo)
+                    ri = DirectCast(Me.m_alRegions(iRegion), cRegionInfo)
                     ' Has it changed?
                     If ri.IsChanged() Then
                         ' Find core region with same BDID (cannot use cached cEcospaceRegion instances since the core has reloaded)
                         Dim bFound As Boolean = False
                         ' For every core region instance
-                        For iRegionTest As Integer = 1 To Me.m_core.nRegions - 1
+                        For iRegionTest As Integer = 1 To Me.Core.nRegions - 1
                             ' Get core region instance
-                            Dim RegionTest As cEcospaceRegion = Me.m_core.EcospaceRegions(iRegionTest)
+                            Dim RegionTest As cEcospaceRegion = Me.Core.EcospaceRegions(iRegionTest)
                             ' Has matching ID?
                             If (RegionTest.getID = ri.Region.getID) Then
                                 ' #Yes: Update
@@ -976,7 +972,7 @@ Namespace Ecospace
                 Next
 
                 '' Apply all changes
-                'Me.m_core.SaveEcospaceScenario()
+                'Me.Core.SaveEcospaceScenario()
             End If
 
             Select Case Me.m_allocateRegionsFlag
@@ -993,7 +989,7 @@ Namespace Ecospace
 
         Private Function AllocateRegionsFromHabitats(ByVal dtHabitatIDToRegionID As Dictionary(Of Integer, Integer)) As Boolean
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
             Dim bmlRegions As cEcospaceLayer = bm.LayerRegion()
             Dim bmlHabitats As cEcospaceLayer = bm.LayerHabitat()
             Dim iHab As Integer = 0
@@ -1017,7 +1013,7 @@ Namespace Ecospace
                     ' Is habitat present at this cell?
                     If (iHab > 0) Then
                         ' #Yes: get habitat
-                        hab = Me.m_core.EcospaceHabitats(iHab)
+                        hab = Me.Core.EcospaceHabitats(iHab)
                         ' Get DBID for habitat
                         iHabDBID = CInt(hab.GetVariable(eVarNameFlags.DBID))
                         ' Find if there is a region mapping
@@ -1049,7 +1045,7 @@ Namespace Ecospace
 
         Private Function AllocateRegionsFromCells(ByVal dtCellToRegionID As Dictionary(Of Point, Integer)) As Boolean
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
             Dim bmlRegions As cEcospaceLayer = bm.LayerRegion()
             Dim ptCell As Point = Nothing
             Dim iReg As Integer = 0
@@ -1093,8 +1089,8 @@ Namespace Ecospace
         Private Function GetRegionMappings() As Dictionary(Of Integer, cEcospaceRegion)
             Dim d As New Dictionary(Of Integer, cEcospaceRegion)
             Dim r As cEcospaceRegion = Nothing
-            For iReg As Integer = 1 To Me.m_core.nRegions
-                r = Me.m_core.EcospaceRegions(iReg)
+            For iReg As Integer = 1 To Me.Core.nRegions
+                r = Me.Core.EcospaceRegions(iReg)
                 d(CInt(r.GetVariable(eVarNameFlags.DBID))) = r
             Next
             Return d

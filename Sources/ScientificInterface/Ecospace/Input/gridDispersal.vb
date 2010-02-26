@@ -16,7 +16,6 @@ Namespace Ecospace
         : Inherits EwEGrid
 
         Private m_ah As New SourceGrid2.BehaviorModels.CustomEvents
-        Private m_core As cCore = cCore.GetInstance()
 
         Private Enum eColumnTypes As Integer
             Index = 0
@@ -35,6 +34,11 @@ Namespace Ecospace
         Public Sub New()
             MyBase.New()
             AddHandler m_ah.ValueChanged, New SourceGrid2.PositionEventHandler(AddressOf m_ahValueChanged)
+        End Sub
+
+        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+            MyBase.OnHandleDestroyed(e)
+            Me.m_ah = Nothing
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -61,10 +65,10 @@ Namespace Ecospace
 
             Dim source As cEcospaceGroup = Nothing
 
-            For iGroup As Integer = 1 To Me.m_core.nGroups
+            For iGroup As Integer = 1 To Me.Core.nGroups
                 Me.Rows.Insert(iGroup)
 
-                source = Me.m_core.EcospaceGroups(iGroup)
+                source = Me.Core.EcospaceGroups(iGroup)
                 Me(iGroup, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
@@ -104,7 +108,7 @@ Namespace Ecospace
         Private Sub m_ahValueChanged(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
 
             Dim iGroup As Integer = e.Position.Row
-            Dim group As cEcospaceGroup = Me.m_core.EcospaceGroups(iGroup)
+            Dim group As cEcospaceGroup = Me.Core.EcospaceGroups(iGroup)
             Dim colType As eColumnTypes = DirectCast(e.Position.Column, eColumnTypes)
             Dim bChecked As Boolean = CBool(e.Cell.GetValue(e.Position))
 
@@ -126,7 +130,7 @@ Namespace Ecospace
         ''' <param name="i">Row number to update.</param>
         Private Sub UpdateRow(ByVal i As Integer)
 
-            Dim group As cEcospaceGroup = Me.m_core.EcospaceGroups(i)
+            Dim group As cEcospaceGroup = Me.Core.EcospaceGroups(i)
 
             Me(i, eColumnTypes.Advected).Behaviors.Remove(m_ah)
             Me(i, eColumnTypes.Advected).Value = CBool(group.IsAdvected())
@@ -136,10 +140,6 @@ Namespace Ecospace
             Me(i, eColumnTypes.Migrating).Value = CBool(group.IsMigratory())
             Me(i, eColumnTypes.Migrating).Behaviors.Add(m_ah)
 
-        End Sub
-
-        Private Sub DispersalEwEGrid_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-            Me.m_ah = Nothing
         End Sub
 
     End Class

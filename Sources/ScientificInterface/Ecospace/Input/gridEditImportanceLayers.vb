@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: gridEditImportanceLayers.vb,v $
-' Revision 1.6  2009/05/28 12:37:41  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.5  2008/12/15 15:55:33  jeroens
-' no message
-'
-' Revision 1.4  2008/11/11 07:37:28  jeroens
-' New layers have a weight of 1
-'
-' Revision 1.3  2008/11/04 04:58:44  jeroens
-' Renamed
-'
-' Revision 1.2  2008/10/29 17:07:09  jeroens
-' Fixed issue 562
-'
-' Revision 1.1  2008/09/26 07:31:58  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -36,13 +13,11 @@ Namespace Ecospace
 
     <CLSCompliant(False)> _
     Public Class gridEditImportanceLayers
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         ''' <summary>A number representing the row that contains the first Layer</summary>
         Private Const iFIRSTDATAROW As Integer = 1
 
-        ''' <summary>The <see cref="cCore">Core</see> currently being modified.</summary>
-        Private m_core As cCore = Nothing
         ''' <summary>List of active Layers.</summary>
         Private m_alLayers As New List(Of LayerInfo)
         ''' <summary>List of removed Layers.</summary>
@@ -278,7 +253,6 @@ Namespace Ecospace
         Public Sub New()
 
             MyBase.New()
-            Me.m_core = cCore.GetInstance()
             Me.FixedColumnWidths = False
 
             ' Set up visual models for reflecting Layer modification status
@@ -356,8 +330,8 @@ Namespace Ecospace
             ' Populate local administration from a snapshot of the live data
 
             ' Make snapshot of Layer configuration
-            For iLayer As Integer = 1 To Me.m_core.nImportanceLayers
-                Layer = Me.m_core.EcospaceBasemap.LayerImportance(iLayer)
+            For iLayer As Integer = 1 To Me.Core.nImportanceLayers
+                Layer = Me.Core.EcospaceBasemap.LayerImportance(iLayer)
                 li = New LayerInfo(Layer)
                 Me.m_alLayers.Add(li)
             Next
@@ -872,7 +846,7 @@ Namespace Ecospace
             ' Handle added and removed items
             If (bConfigurationChanged) Then
 
-                If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
+                If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
                 cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
@@ -880,7 +854,7 @@ Namespace Ecospace
                 For iLayer = 0 To Me.m_alLayers.Count - 1
                     li = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
                     If (li.IsNew()) Then
-                        bSuccess = bSuccess And Me.m_core.AddEcospaceImportanceLayer(li.Name, li.Description, li.Weight, iDBID)
+                        bSuccess = bSuccess And Me.Core.AddEcospaceImportanceLayer(li.Name, li.Description, li.Weight, iDBID)
                     End If
                 Next
 
@@ -893,7 +867,7 @@ Namespace Ecospace
                     Debug.Assert(Not li.IsNew())
 
                     If (li.Confirmed()) Then
-                        If (Me.m_core.RemoveEcospaceImportanceLayer(li.Layer)) Then
+                        If (Me.Core.RemoveEcospaceImportanceLayer(li.Layer)) Then
                             Me.m_alLayers.Remove(li)
                             Me.m_alLayersRemoved.Remove(li)
                         Else
@@ -904,11 +878,11 @@ Namespace Ecospace
                 Next
 
                 ' The core will reload now
-                Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+                Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
                 cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
                 ' Test whether new Layers were loaded correctly 
-                Debug.Assert(Me.m_alLayers.Count = Me.m_core.nImportanceLayers, ">> Internal panic: Dialog and core out of sync on Layers")
+                Debug.Assert(Me.m_alLayers.Count = Me.Core.nImportanceLayers, ">> Internal panic: Dialog and core out of sync on Layers")
             End If
 
             ' Update core objects
@@ -922,9 +896,9 @@ Namespace Ecospace
                         ' Find core layer with same BDID (cannot use cached cEcospaceBasemap instances since the core has reloaded)
                         Dim bFound As Boolean = False
                         ' For every core layer instance (and yes, this array is one-based)
-                        For iLayTest As Integer = 1 To Me.m_core.nImportanceLayers
+                        For iLayTest As Integer = 1 To Me.Core.nImportanceLayers
                             ' Get core layer instance
-                            Dim layTest As cEcospaceLayerImportance = Me.m_core.EcospaceBasemap.LayerImportance(iLayTest)
+                            Dim layTest As cEcospaceLayerImportance = Me.Core.EcospaceBasemap.LayerImportance(iLayTest)
                             ' Has matching ID?
                             If (layTest.getID = li.Layer.getID) Then
                                 ' #Yes: Update

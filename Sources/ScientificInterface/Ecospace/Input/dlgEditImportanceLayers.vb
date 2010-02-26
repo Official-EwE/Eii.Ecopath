@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: dlgEditImportanceLayers.vb,v $
-' Revision 1.4  2008/12/15 15:54:30  jeroens
-' no message
-'
-' Revision 1.3  2008/11/11 07:36:52  jeroens
-' Added comments
-'
-' Revision 1.2  2008/11/06 05:59:56  jeroens
-' Bypassed bug 530
-'
-' Revision 1.1  2008/08/10 17:04:41  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -26,29 +9,33 @@ Imports EwECore
 
 Namespace Ecospace
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Dialog, implementing the Ecospace Edit Importance Layers user interface.
+    ''' </summary>
+    ''' =======================================================================
     Public Class dlgEditImportanceLayers
 
 #Region " Private variables "
 
-        Private m_core As cCore = Nothing
+        Private m_uic As cUIContext = Nothing
 
 #End Region ' Private variables
 
 #Region " Constructors "
 
-        Public Sub New()
-
-            InitializeComponent()
-            Me.m_core = cCore.GetInstance()
-
+        Public Sub New(ByVal uic As cUIContext)
+            Me.m_uic = uic
+            Me.InitializeComponent()
         End Sub
 
 #End Region ' Constructors
 
 #Region " Events "
 
-        Private Sub Dialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+            Me.m_grid.UIContext = Me.m_uic
             Me.UpdateControls()
         End Sub
 
