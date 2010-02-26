@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports System.Windows.Forms
 Imports ZedGraph
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports 
 
@@ -22,9 +23,10 @@ Namespace CyclesAll
                                          ByVal datagrid As DataGridView, _
                                          ByVal graph As ZedGraphControl, _
                                          ByVal plot As ucPlot, _
-                                         ByVal toolstrip As ToolStrip) As Boolean
+                                         ByVal toolstrip As ToolStrip, _
+                                         ByVal uic As cUIContext) As Boolean
 
-            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
+            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
 
             If (MsgBox(My.Resources.PROMPT_COMPUTE_ALL_CYCLES, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes) Then
                 bSucces = Me.NetworkManager.FindPathwaysCyclesAll()

@@ -24,9 +24,10 @@ Public Class cIndicesWithPPREst
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _
                                      ByVal plot As ucPlot, _
-                                     ByVal toolstrip As ToolStrip) As Boolean
+                                     ByVal toolstrip As ToolStrip, _
+                                     ByVal uic As cUIContext) As Boolean
 
-        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
 
         ' PPR not on yet?
         If (Me.NetworkManager.EcosimPPROn = False) Then
@@ -49,7 +50,7 @@ Public Class cIndicesWithPPREst
         End If
 
         Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.NetworkManager.UIContext, Me.Graph, 2)
+        Me.m_zgh.Attach(uic, Me.Graph, 2)
         Me.m_zgh.ShowPointValue = True
 
         Me.Graph.Visible = bSucces

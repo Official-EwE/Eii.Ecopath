@@ -13,6 +13,7 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports EwEUtils.Win32Api
 Imports ZedGraph
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -28,8 +29,9 @@ Public Class cFlowPyramid
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _
                                      ByVal plot As ucPlot, _
-                                     ByVal toolstrip As ToolStrip) As Boolean
-        Return MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
+                                     ByVal toolstrip As ToolStrip, _
+                                     ByVal uic As cUIContext) As Boolean
+        Return MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
     End Function
 
     Public Overrides Sub DisplayData()

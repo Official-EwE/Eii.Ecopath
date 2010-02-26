@@ -9,7 +9,6 @@ Imports ScientificInterfaceShared
 
 Public Class frmNetworkAnalysis
 
-    ''' <summary>NA manager in charge of computations.</summary>
     Private m_networkmanager As cNetworkManager = Nothing
     ''' <summary>Control manager in charge of UI elements.</summary>
     Private m_contentmanager As cContentManager = Nothing
@@ -22,9 +21,14 @@ Public Class frmNetworkAnalysis
     ''' <summary></summary>
     Private m_cmdDisplayGroups As cDisplayGroupsCommand = Nothing
 
-    Public Sub New(ByRef networkmanager As cNetworkManager)
+    Private m_uic As cUIContext = Nothing
+
+    Public Sub New(ByVal networkmanager As cNetworkManager, ByVal uic As cUIContext)
         Me.InitializeComponent()
         Me.m_networkmanager = networkmanager
+        Me.m_uic = uic
+
+        Debug.Assert(uic IsNot Nothing, "Essential data missing")
     End Sub
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
@@ -45,7 +49,7 @@ Public Class frmNetworkAnalysis
         Me.m_tlpInfo.Visible = True
         Me.m_tlpInfo.Dock = DockStyle.Fill
 
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
         Me.m_cmdDisplayGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
             Me.m_cmdDisplayGroups.AddControl(Me.tsmiDisplayGroups)
@@ -207,7 +211,9 @@ Public Class frmNetworkAnalysis
         If (Me.m_contentmanager IsNot Nothing) Then
 
             ' Try to attach content manager
-            If Me.m_contentmanager.Attach(Me.m_networkmanager, Me.m_datagrid, Me.m_graph, Me.m_plot, Me.m_toolstrip) Then
+            If Me.m_contentmanager.Attach(Me.m_networkmanager, _
+                                          Me.m_datagrid, Me.m_graph, Me.m_plot, Me.m_toolstrip, _
+                                          Me.m_uic) Then
 
                 Try
                     ' Display data if succesful
@@ -276,7 +282,7 @@ Public Class frmNetworkAnalysis
     Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tsbtnOutputIndicesCSV.Click
 
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
         Dim cmdDOC As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
         Dim strFileName As String = ""
         Dim bAnnual As Boolean = False
@@ -323,7 +329,7 @@ Public Class frmNetworkAnalysis
 
         ' ToDo: localize this
 
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
         Dim bAnnual As Boolean = False
 

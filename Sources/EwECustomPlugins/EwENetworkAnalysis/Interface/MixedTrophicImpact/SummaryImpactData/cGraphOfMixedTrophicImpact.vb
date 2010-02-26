@@ -12,6 +12,7 @@ Imports EwECore
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -32,8 +33,9 @@ Public Class cGraphOfMixedTrophicImpact
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _
                                      ByVal plot As ucPlot, _
-                                     ByVal toolstrip As ToolStrip) As Boolean
-        Return MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
+                                     ByVal toolstrip As ToolStrip, _
+                                     ByVal uic As cUIContext) As Boolean
+        Return MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
     End Function
 
     Public Overrides Sub DisplayData()

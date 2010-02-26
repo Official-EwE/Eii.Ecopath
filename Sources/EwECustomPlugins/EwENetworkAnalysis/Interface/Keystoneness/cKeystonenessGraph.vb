@@ -101,8 +101,9 @@ Public Class cKeystonenessGraph
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _
                                      ByVal plot As ucPlot, _
-                                     ByVal toolstrip As ToolStrip) As Boolean
-        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
+                                     ByVal toolstrip As ToolStrip, _
+                                     ByVal uic As cUIContext) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
 
         Me.Graph.Visible = bSucces
         Me.Toolstrip.Visible = bSucces
@@ -110,7 +111,7 @@ Public Class cKeystonenessGraph
         Me.AddToolstripItems()
 
         Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.NetworkManager.UIContext, Me.Graph, 1)
+        Me.m_zgh.Attach(uic, Me.Graph, 1)
         Me.m_zgh.ShowPointValue = True
 
         Return bSucces

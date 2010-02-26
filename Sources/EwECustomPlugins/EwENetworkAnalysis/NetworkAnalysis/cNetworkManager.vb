@@ -52,8 +52,8 @@ Public Class cNetworkManager
 
     End Enum
 
+    Private m_core As cCore = Nothing
     Private m_econetwork As cEcoNetwork = Nothing
-    Private m_uic As cUIContext = Nothing
     Private Corestatemonitor As cCoreStateMonitor = Nothing
     Private m_epdata As cEcopathDataStructures = Nothing
     Private m_esdata As cEcosimDatastructures = Nothing
@@ -87,8 +87,8 @@ Public Class cNetworkManager
 
     Friend Function Init(ByRef theCore As cCore) As Boolean
 
-        Me.m_uic = New cUIContext(theCore, cStyleGuide.GetInstance(), Nothing, Nothing)
-        Me.Corestatemonitor = Me.m_uic.Core.StateMonitor
+        Me.m_core = theCore
+        Me.Corestatemonitor = theCore.StateMonitor
         Me.m_publisher = theCore.Messages
         Me.m_econetwork = New cEcoNetwork(Me)
 
@@ -649,13 +649,7 @@ Public Class cNetworkManager
 
     Public ReadOnly Property Core() As cCore
         Get
-            Return Me.m_uic.Core
-        End Get
-    End Property
-
-    Public ReadOnly Property UIContext() As cUIContext
-        Get
-            Return Me.m_uic
+            Return Me.m_Core
         End Get
     End Property
 

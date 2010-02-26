@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports System.Windows.Forms
 Imports ZedGraph
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports 
 
@@ -23,9 +24,10 @@ Namespace TL1ToPreyToConsumer
                                          ByVal datagrid As DataGridView, _
                                          ByVal graph As ZedGraphControl, _
                                          ByVal plot As ucPlot, _
-                                         ByVal toolstrip As ToolStrip) As Boolean
+                                         ByVal toolstrip As ToolStrip, _
+                                         ByVal uic As cUIContext) As Boolean
 
-            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
+            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
             Me.Grid.Visible = bSucces
             Me.Toolstrip.Visible = bSucces
             Me.ToolstripShowGroupSelections(My.Resources.LBL_PATH_TO, My.Resources.LBL_PATH_VIA)

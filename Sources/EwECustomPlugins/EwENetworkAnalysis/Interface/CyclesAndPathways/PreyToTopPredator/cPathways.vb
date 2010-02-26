@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports System.Windows.Forms
 Imports ZedGraph
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports 
 
@@ -18,11 +19,12 @@ Namespace PreyToPredator
         End Sub
 
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                        ByVal datagrid As DataGridView, _
-                                        ByVal graph As ZedGraphControl, _
-                                        ByVal plot As ucPlot, _
-                                        ByVal toolstrip As ToolStrip) As Boolean
-            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
+                                         ByVal datagrid As DataGridView, _
+                                         ByVal graph As ZedGraphControl, _
+                                         ByVal plot As ucPlot, _
+                                         ByVal toolstrip As ToolStrip, _
+                                         ByVal uic As cUIContext) As Boolean
+            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
 
             Me.Grid.Visible = bSucces
 

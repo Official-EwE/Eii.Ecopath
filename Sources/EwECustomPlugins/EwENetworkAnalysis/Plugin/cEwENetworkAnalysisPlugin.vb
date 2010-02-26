@@ -9,6 +9,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports EwEUtils.SystemUtilities
 Imports System.Reflection
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -20,10 +21,12 @@ Public Class cEwENetworkAnalysisPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IEcosimRunCompletedPlugin
     Implements EwEPlugin.Data.IDataProducerPlugin
+    Implements EwEPlugin.IUIContextPlugin
     Implements IDisposedPlugin
 
 #Region " Private vars "
 
+    Private m_uic As cUIContext = Nothing
     Private m_core As cCore = Nothing
     Private m_bInitOK As Boolean = False
 
@@ -220,7 +223,7 @@ Public Class cEwENetworkAnalysisPlugin
 
             ' Create form when not ready
             If Not Me.HasUI() Then
-                Me.m_frmNA = New frmNetworkAnalysis(m_manager)
+                Me.m_frmNA = New frmNetworkAnalysis(m_manager, Me.m_uic)
             End If
 
             ' JS 05may09: do not show form; the loading framework should take care of this
@@ -262,13 +265,19 @@ Public Class cEwENetworkAnalysisPlugin
         End Get
     End Property
 
-    Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+    Public ReadOnly Property NavigationTreeItemLocation() As String _
+        Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
             'this will put the navigation item at the end of the tree as top level node 
             'Not the best place there should be a Plugins node and all plugins should go under it
             Return "ndParameterization|ndEcopathOutputTools"
         End Get
     End Property
+
+    Public Sub UIContext(ByVal uic As Object) _
+        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Me.m_uic = DirectCast(uic, cUIContext)
+    End Sub
 
 #End Region ' GUI
 

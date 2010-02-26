@@ -6,6 +6,7 @@ Option Explicit On
 Imports System.Windows.Forms
 Imports ZedGraph
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -20,8 +21,9 @@ Public Class cFromPrimaryProd
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _
                                      ByVal plot As ucPlot, _
-                                     ByVal toolstrip As ToolStrip) As Boolean
-        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
+                                     ByVal toolstrip As ToolStrip, _
+                                     ByVal uic As cUIContext) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
         Me.Grid.Visible = bSucces
         Return bSucces
     End Function

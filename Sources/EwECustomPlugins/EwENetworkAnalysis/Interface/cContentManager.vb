@@ -31,7 +31,7 @@ Public MustInherit Class cContentManager
     ''' <summary></summary>
     Private m_toolstrip As ToolStrip = Nothing
     ''' <summary></summary>
-    Private m_sg As cStyleGuide = Nothing
+    Private m_uic As cUIContext = Nothing
 
 #End Region ' Private variables
 
@@ -53,7 +53,11 @@ Public MustInherit Class cContentManager
                                        ByVal datagrid As DataGridView, _
                                        ByVal graph As ZedGraphControl, _
                                        ByVal plot As ucPlot, _
-                                       ByVal toolstrip As ToolStrip) As Boolean
+                                       ByVal toolstrip As ToolStrip, _
+                                       ByVal uic As cUIContext) As Boolean
+
+        ' Sanity checks
+        Debug.Assert(uic IsNot Nothing)
 
         ' Store all references
         Me.m_manager = manager
@@ -61,12 +65,12 @@ Public MustInherit Class cContentManager
         Me.m_graph = graph
         Me.m_plot = plot
         Me.m_toolstrip = toolstrip
+        Me.m_uic = uic
 
         ' Hide all managed controls
         Me.HideControls()
 
-        Me.m_sg = cStyleGuide.GetInstance()
-        AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         cToolstripUtils.HideRepeatingSeparators(Me.m_toolstrip)
 
@@ -87,14 +91,14 @@ Public MustInherit Class cContentManager
         ' Hide all controls
         Me.HideControls()
 
-        RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-        Me.m_sg = Nothing
+        RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         Me.m_manager = Nothing
         Me.m_datagrid = Nothing
         Me.m_graph = Nothing
         Me.m_plot = Nothing
         Me.m_toolstrip = Nothing
+        Me.m_uic = Nothing
 
     End Sub
 
@@ -231,12 +235,23 @@ Public MustInherit Class cContentManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Return the one and only style guide.
+    ''' Return the one and only ui context.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected ReadOnly Property UIContext() As cUIContext
+        Get
+            Return Me.m_uic
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Return the style guide provided by the UI context.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected ReadOnly Property StyleGuide() As cStyleGuide
         Get
-            Return Me.m_sg
+            Return Me.m_uic.StyleGuide
         End Get
     End Property
 
