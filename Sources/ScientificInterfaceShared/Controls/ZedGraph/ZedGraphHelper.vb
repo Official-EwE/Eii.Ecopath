@@ -735,14 +735,21 @@ Namespace Controls
 
         Private Class cAxisLabelFormatter
 
+            Private m_uic As cUIContext = Nothing
             Private m_axis As Axis = Nothing
             Protected m_aUnitTypes() As cStyleGuide.eUnitType
             Protected m_strUnitMask As String = ""
 
-            Public Sub New(ByVal axis As Axis, ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+            Public Sub New(ByVal uic As cUIContext, _
+                           ByVal axis As Axis, _
+                           ByVal strUnitMask As String, _
+                           ByVal aUnitTypes() As cStyleGuide.eUnitType)
+
+                Me.m_uic = uic
                 Me.m_axis = axis
                 Me.m_strUnitMask = strUnitMask
                 Me.m_aUnitTypes = aUnitTypes
+
             End Sub
 
             Public Sub Update()
@@ -773,7 +780,7 @@ Namespace Controls
             End Property
 
             Private Function GetUnitString(ByVal unitType As cStyleGuide.eUnitType) As String
-                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+                Dim sg As cStyleGuide = Me.m_uic.styleguide
                 Dim strUnitString As String = ""
                 Select Case unitType
                     Case cStyleGuide.eUnitType.Currency
@@ -810,7 +817,7 @@ Namespace Controls
 
             If aUnitTypes IsNot Nothing Then
                 Try
-                    Dim alf As New cAxisLabelFormatter(axis, strLabel, aUnitTypes)
+                    Dim alf As New cAxisLabelFormatter(Me.m_uic, axis, strLabel, aUnitTypes)
                     Me.m_dtAxisLabels(axis) = alf
                     alf.Update()
                 Catch ex As Exception
