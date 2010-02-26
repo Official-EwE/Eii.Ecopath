@@ -226,10 +226,7 @@ Public Class cEwENetworkAnalysisPlugin
 
             ' Create form when not ready
             If Not Me.HasUI() Then
-                Me.m_frmNA = New frmNetworkAnalysis(m_manager, Me.m_uic)
-                ' Make sure not to confuse Scientific Interface
-                Me.m_frmNA.Text = Me.ControlText
-                Me.m_frmNA.TabText = Me.ControlText
+                Me.m_frmNA = New frmNetworkAnalysis(Me.ControlText, Me.m_manager, Me.m_uic)
             End If
 
             ' JS 05may09: do not show form; the loading framework should take care of this

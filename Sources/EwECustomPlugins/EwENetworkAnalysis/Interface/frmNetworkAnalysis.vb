@@ -23,12 +23,17 @@ Public Class frmNetworkAnalysis
 
     Private m_uic As cUIContext = Nothing
 
-    Public Sub New(ByVal networkmanager As cNetworkManager, ByVal uic As cUIContext)
-        Me.InitializeComponent()
+    Public Sub New(ByVal strText As String, ByVal networkmanager As cNetworkManager, ByVal uic As cUIContext)
+
         Me.m_networkmanager = networkmanager
         Me.m_uic = uic
 
         Debug.Assert(uic IsNot Nothing, "Essential data missing")
+
+        Me.InitializeComponent()
+        Me.Text = strText
+        Me.TabText = strText
+
     End Sub
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
