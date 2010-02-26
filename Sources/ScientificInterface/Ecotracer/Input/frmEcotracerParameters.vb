@@ -238,7 +238,7 @@ Namespace Ecotracer
 
         Private Sub SetTracerRunMode(ByVal tracerRunMode As eTracerRunModeTypes)
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("EnableEcotracer")
 
             cmd.Tag = tracerRunMode

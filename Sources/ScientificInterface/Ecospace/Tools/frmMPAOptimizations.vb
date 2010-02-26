@@ -290,7 +290,7 @@ Namespace Ecospace
             ' Note that the command is invoked manually here because in THIS FORM only the command will be enabled when
             ' preparing Ecoseed. Yes, it's a half-ass solution while in fact the entire GUI should become aware the 
             ' running of a model by blocking out any possibility to enter/edit data.
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("EditImportanceLayers")
             If cmd IsNot Nothing Then cmd.Invoke()
 
@@ -399,7 +399,7 @@ Namespace Ecospace
         Private Sub OnSave(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnSave.Click
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("ExportLayerData")
             Dim lLayers As New List(Of cLayer)
             Dim layerTmp As cLayer = Nothing

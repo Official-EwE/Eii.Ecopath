@@ -256,7 +256,7 @@ Namespace Ecospace
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdDisplayGroups As cCommand = cmdh.GetCommand("DisplayGroups")
             If (cmdDisplayGroups IsNot Nothing) Then cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups)
 
@@ -331,7 +331,7 @@ Namespace Ecospace
 
         Private Sub SaveMapImage()
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim bmp As Bitmap = Nothing
             Dim g As Graphics = Nothing

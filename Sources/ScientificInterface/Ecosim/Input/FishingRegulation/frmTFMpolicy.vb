@@ -49,8 +49,9 @@ Namespace Ecosim
             Me.m_zgh.AllowPan = False
             Me.m_zgh.AllowEdit = True
 
+            Me.m_grid.UIContext = Me.UIContext
             ' Hahaha
-            If (core.nGroups > 0) Then
+            If (Core.nGroups > 0) Then
                 Me.m_grid.Group = Me.Core.EcoSimGroupInputs(1)
             End If
 
@@ -65,7 +66,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub HandleGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
-                Handles m_grid.OnSelectionChanged
+            Handles m_grid.OnSelectionChanged
             ' Update group selection according to user actions in the grid
             Me.Group = Me.m_grid.Group
         End Sub

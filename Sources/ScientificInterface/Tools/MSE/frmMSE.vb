@@ -88,7 +88,7 @@ Public Class frmMSE
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         ' Show/Hide Groups
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.CommandHandler
         Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
             cmd.RemoveControl(Me.btShowHide)

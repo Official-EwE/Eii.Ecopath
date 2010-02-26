@@ -213,10 +213,12 @@ Namespace Controls
 
                 Me.lvShapes.ResumeLayout()
 
-                Me.m_bInUpdate = True
-                Me.UpdateControls()
-                RaiseEvent OnSelectionChanged(lShapes.ToArray())
-                Me.m_bInUpdate = False
+                If Not Me.m_bInUpdate Then
+                    Me.m_bInUpdate = True
+                    Me.UpdateControls()
+                    RaiseEvent OnSelectionChanged(lShapes.ToArray())
+                    Me.m_bInUpdate = False
+                End If
 
             End Set
         End Property

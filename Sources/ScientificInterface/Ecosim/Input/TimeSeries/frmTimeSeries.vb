@@ -64,7 +64,7 @@ Namespace Ecosim
 
             ' Once hooked up, try to get TS if not here yet
             If Not Me.UIContext.Core.HasTimeSeries Then
-                Dim cmdh As cCommandHandler = cCommandHandler.GetInstance
+                Dim cmdh As cCommandHandler = Me.CommandHandler
                 Dim cmd As cCommand = cmdh.GetCommand("LoadTimeSeries")
                 If cmd IsNot Nothing Then
                     cmd.Invoke()

@@ -908,7 +908,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Public Function ExtractDataToCSV() As Boolean
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim sw As StreamWriter = Nothing
             Dim strFN As String = ""

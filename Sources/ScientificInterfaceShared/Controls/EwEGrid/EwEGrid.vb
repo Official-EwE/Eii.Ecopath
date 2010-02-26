@@ -326,13 +326,6 @@ Namespace Controls.EwEGrid
         Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
-                If (Me.m_uic Is Nothing) And (Me.DesignMode = False) Then
-                    Console.WriteLine("WARNING: UIcontent created for unfixed grid " & Me.GetType.Name)
-                    Me.m_uic = New cUIContext(cCore.GetInstance(), _
-                                              cStyleGuide.GetInstance(), _
-                                              cPropertyManager.GetInstance(), _
-                                              cCommandHandler.GetInstance())
-                End If
                 Return Me.m_uic
             End Get
             Set(ByVal value As cUIContext)
@@ -416,13 +409,15 @@ Namespace Controls.EwEGrid
         Protected Overrides Sub InitLayout()
             MyBase.InitLayout()
 
+            If (Me.UIContext Is Nothing) Then Return
+
             Me.SuspendLayoutGrid()
             Me.ClearData()
             Me.InitStyle()
 
-            If (Me.UIContext IsNot Nothing) Then
-                Me.FillData()
-            End If
+            'If (Me.UIContext IsNot Nothing) Then
+            Me.FillData()
+            'End If
 
             Me.FinishStyle()
             Me.ResumeLayoutGrid()
@@ -854,7 +849,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Private Sub OnSelectionChange(ByVal sender As Object, ByVal e As SourceGrid2.SelectionChangeEventArgs)
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.ComandHandler
             Dim cmd As cCommand = cmdh.GetCommand(PropertySelectionCommand.COMMAND_NAME)
             Dim sc As PropertySelectionCommand = Nothing
             Dim c As SourceGrid2.Cells.ICell = Nothing

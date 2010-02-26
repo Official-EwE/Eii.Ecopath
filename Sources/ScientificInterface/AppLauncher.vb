@@ -730,7 +730,7 @@ Public Class AppLauncher
         ' Set app caption
         Me.Text = Me.GetApplicationCaption()
         ' Start controlling the status strip
-        Me.m_ssMain.Connect(Me.Core)
+        Me.m_ssMain.Attach(Me.UIContext)
         ' Start controlling forms
         Me.m_FormStateHelper = New cEwEFormStateHelper(Me.Core.StateMonitor, Me.m_DockPanel)
 
@@ -761,7 +761,7 @@ Public Class AppLauncher
         Me.SaveMainFormSettings()
 
         ' Cleanup: disconnect command handler from idle event
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
         RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
 
         RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
@@ -780,22 +780,22 @@ Public Class AppLauncher
 
     Private Sub InitCommands()
 
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
 
         ' Create and configure File Open command
-        Me.m_cmdFileOpen = cFileOpenCommand.GetInstance()
+        Me.m_cmdFileOpen = New cFileOpenCommand()
         cmdh.Add(Me.m_cmdFileOpen)
 
         ' Create and configure File Save command
-        Me.m_cmdFileSave = cFileSaveCommand.GetInstance()
+        Me.m_cmdFileSave = New cFileSaveCommand()
         cmdh.Add(Me.m_cmdFileSave)
 
         ' Create and configure Directory Open command
-        Me.m_cmdDirectoryOpen = cDirectoryOpenCommand.GetInstance()
+        Me.m_cmdDirectoryOpen = New cDirectoryOpenCommand()
         cmdh.Add(Me.m_cmdDirectoryOpen)
 
         ' Create and configure Execute command
-        Me.m_cmdExecute = cExecuteCommand.GetInstance()
+        Me.m_cmdExecute = New cExecuteCommand()
         cmdh.Add(Me.m_cmdExecute)
 
         ' Create and configure new command
@@ -1063,7 +1063,8 @@ Public Class AppLauncher
         Me.UIContext = New cUIContext(cCore.GetInstance(), _
                                       cStyleGuide.GetInstance(), _
                                       cPropertyManager.GetInstance(), _
-                                      cCommandHandler.GetInstance())
+                                      cCommandHandler.GetInstance(), _
+                                      New cFormPositionSettings())
 
         ' Config state monitor
         Me.Core.StateMonitor.SyncObject = Me
@@ -1071,9 +1072,15 @@ Public Class AppLauncher
         ' Create plugin manager for this GUI
         Me.m_pluginManager = New cPluginManager()
         Me.m_pluginManager.SyncObject = Me.m_SyncObj
+        Me.m_pluginManager.UIContext = Me.UIContext
+
+        ' Config plugin manager
+        Me.m_pluginManager.Core = Me.Core
+        Me.m_pluginManager.UIContext = Me.UIContext
+
         ' Distribute plugin manager
         Me.Core.PluginManager = Me.m_pluginManager
-        Me.m_pluginManager.Core = Me.Core
+
         ' Create plugin menu handler to position plugin menu items in the main menu from this form
         Me.m_pluginMenuHandler = New cPluginMenuHandler(Me.MainMenuStrip, Me.m_pluginManager)
 
@@ -1081,7 +1088,7 @@ Public Class AppLauncher
         Me.m_coreController = New cCoreController(Me.Core.StateMonitor, Me.Core.StateManager)
 
         ' Initialize style guide updater
-        Me.m_styleguideupdater = New StyleGuideUpdater(Me.Core, cStyleGuide.GetInstance())
+        Me.m_styleguideupdater = New StyleGuideUpdater(Me.Core, Me.StyleGuide)
         Me.m_styleguideupdater.Load()
 
     End Sub
@@ -1338,7 +1345,7 @@ Public Class AppLauncher
             Me.m_StatusPanel.Reset()
 
             ' Clear the properties cache
-            cPropertyManager.GetInstance().Clear(eCoreComponentType.EcoPath)
+            Me.m_uic.PropertyManager.Clear(eCoreComponentType.EcoPath)
             ' Clean up
             GC.Collect()
             ' Redraw everything immediately
@@ -1550,13 +1557,12 @@ Public Class AppLauncher
         ' Save the user settings when EwE exits
         My.Settings.LastSelectedDirectory = Me.m_strLastSelectedPath
 
-        Dim fs As cFormPositionSettings = cFormPositionSettings.GetInstance()
-        fs.Store(Me, False)
+        Me.m_uic.FormPositionSettings.Store(Me, False)
 
         Me.SaveDockPanelLayout()
         Me.m_styleguideupdater.Save()
 
-        My.Settings.FormPositions = fs.Setting
+        My.Settings.FormPositions = Me.m_uic.FormPositionSettings.Setting
         My.Settings.Save()
 
     End Sub
@@ -2190,7 +2196,7 @@ Public Class AppLauncher
     Private Sub OnNewFile(ByVal cmd As cCommand) Handles m_cmdNewModel.OnInvoke
 
         Dim db As cEwEDatabase = Nothing
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         cmdFS.Invoke(My.Resources.DEFAULT_NEWMODELNAME, "", My.Resources.FILEFILTER_MODEL_SAVE, 1)
@@ -2218,7 +2224,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnLoadModel(ByVal cmd As cCommand) Handles m_cmdLoadModel.OnInvoke
 
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         If cmd.Tag IsNot Nothing Then
@@ -2370,7 +2376,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnSaveModelAs(ByVal cmd As cCommand) Handles m_cmdSaveModelAs.OnInvoke
 
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         Dim strFileFilter As String = ""
@@ -3000,7 +3006,7 @@ Public Class AppLauncher
     End Sub
 
     Private Sub OnExportBiomassToCSV(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnInvoke
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         cmdFS.Invoke(String.Format("EwE6_{0}_Biomass.csv", Me.Core.EwEModel.Name), "", My.Resources.FILEFILTER_CSV, 1)
@@ -3382,7 +3388,7 @@ Public Class AppLauncher
 
     Private Sub OnEnableEcotracer(ByVal cmd As cCommand) Handles m_cmdEnableEcotracer.OnInvoke
 
-        Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+        Dim pm As cPropertyManager = Me.m_uic.PropertyManager
         Dim ecosimModelParams As cEcoSimModelParameters = Nothing
         Dim propSimConTracing As cBooleanProperty = Nothing
         Dim ecospaceModelParams As cEcospaceModelParameters = Nothing
@@ -3479,8 +3485,6 @@ Public Class AppLauncher
 
     Private Sub DefaultSettingLoadedEventHandler(ByVal sender As Object, ByVal e As System.Configuration.SettingsLoadedEventArgs)
 
-        Dim fs As cFormPositionSettings = cFormPositionSettings.GetInstance()
-
         Me.m_strLastSelectedPath = My.Settings.LastSelectedDirectory
         If Not Directory.Exists(Me.m_strLastSelectedPath) Then
             'the last selected directory is not a valid directory; set it to My documents by default
@@ -3488,11 +3492,11 @@ Public Class AppLauncher
         End If
 
         ' Read form positions
-        fs.Setting = My.Settings.FormPositions
+        Me.m_uic.FormPositionSettings.Setting = My.Settings.FormPositions
 
         ' Get the form position from user settings
         Me.StartPosition = FormStartPosition.Manual
-        fs.Apply(Me, False)
+        Me.m_uic.FormPositionSettings.Apply(Me, False)
 
     End Sub
 

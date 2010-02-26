@@ -81,7 +81,7 @@ Namespace Ecosim
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = Nothing
 
             If cmdh Is Nothing Then Return
@@ -130,7 +130,7 @@ Namespace Ecosim
             Me.IsExploring = False
 
             ' Show/Hide Groups
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.RemoveControl(Me.m_tsbtnShowHideGroups)

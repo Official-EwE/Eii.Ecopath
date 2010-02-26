@@ -190,23 +190,26 @@ Namespace Ecospace
 
 #Region " Events "
 
-        Private Sub ucLayer_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
             ' Remove from event handler
             RemoveHandler m_layer.LayerChanged, AddressOf OnLayerChanged
 
             Me.m_layer = Nothing
             Me.m_lgParent = Nothing
+            MyBase.OnHandleDestroyed(e)
         End Sub
 
-        Private Sub pbLayer_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
+        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+            MyBase.OnPaint(e)
+
+            If Me.m_uic Is Nothing Then Return
 
             Dim rcControl As Rectangle = New Rectangle(0, 0, Me.Width, Me.Height)
             Dim rcEditable As Rectangle = Nothing
             Dim rcVisible As Rectangle = Nothing
             Dim rcLabel As Rectangle = Nothing
             Dim rcPreview As Rectangle = Nothing
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
-            Dim prop As cProperty = pm.GetProperty(Me.Layer.Source, eVarNameFlags.Name)
+            Dim prop As cProperty = Me.m_uic.PropertyManager.GetProperty(Me.Layer.Source, eVarNameFlags.Name)
             Dim img As Image = Nothing
             Dim fmt As New StringFormat()
 

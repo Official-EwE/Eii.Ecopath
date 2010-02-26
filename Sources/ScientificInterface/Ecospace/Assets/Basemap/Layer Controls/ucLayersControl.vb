@@ -271,10 +271,10 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Private Sub FireSelectionCommand(ByVal layer As cLayer)
 
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
             Dim cmd As cCommand = cmdh.GetCommand(PropertySelectionCommand.COMMAND_NAME)
             Dim sc As PropertySelectionCommand = Nothing
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim pm As cPropertyManager = Me.m_uic.PropertyManager
             Dim prop As cProperty = Nothing
 
             If Not Object.ReferenceEquals(layer, Nothing) Then

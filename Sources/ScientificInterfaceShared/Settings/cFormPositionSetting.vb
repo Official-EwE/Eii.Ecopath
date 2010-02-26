@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: cFormPositionSetting.vb,v $
-' Revision 1.3  2008/12/15 15:37:54  jeroens
-' no message
-'
-' Revision 1.2  2008/11/06 04:44:56  jeroens
-' Fixed bug 554
-'
-' Revision 1.1  2008/08/14 01:50:21  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -164,33 +150,20 @@ Public Class cFormPositionSettings
 
 #Region " Private vars "
 
-    ''' <summary>Singleton instance.</summary>
-    Private Shared __inst__ As cFormPositionSettings
     ''' <summary>All maintained form positions.</summary>
     Private m_dictFormPositions As New Dictionary(Of String, cFormPosition)
 
 #End Region ' Private vars
 
-#Region " Singleton "
+#Region " Constructor "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>Enforced singleton.</summary>
     ''' -----------------------------------------------------------------------
-    Private Sub New()
+    Public Sub New()
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns the singleton instance of this class.
-    ''' </summary>
-    ''' <returns>The singleton instance of this class.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Shared Function GetInstance() As cFormPositionSettings
-        If __inst__ Is Nothing Then __inst__ = New cFormPositionSettings()
-        Return __inst__
-    End Function
-
-#End Region ' Singleton
+#End Region ' Constructor
 
 #Region " Public interfaces "
 

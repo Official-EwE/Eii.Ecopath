@@ -191,7 +191,7 @@ Public Class dlgManageTimeSeries
     Private Sub OnImportBrowseSource(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnImportBrowse.Click
 
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         cmdFO.Invoke(Me.m_strImportFileName, "", My.Resources.FILEFILTER_CSV & "|" & My.Resources.FILEFILTER_TEXT)

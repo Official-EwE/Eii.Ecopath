@@ -63,8 +63,13 @@ Namespace Ecosim
             Me.m_gridObjGroup.Manager = Me.Core.FishingPolicyManager
 
             Me.m_gridSystemObjectives = New gridFPSResultSystemObjectives()
+            Me.m_gridSystemObjectives.UIContext = Me.UIContext
+
             Me.m_gridSystemObjectivesMulti = New gridFPSResultSystemObjectives()
+            Me.m_gridSystemObjectivesMulti.UIContext = Me.UIContext
+
             Me.m_gridFleetValue = New gridFPSResultFleetValue()
+            Me.m_gridFleetValue.UIContext = Me.UIContext
 
             Me.m_fpDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
             Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)

@@ -29,22 +29,9 @@ Namespace Commands
 
 #End Region ' Private vars
 
-#Region " Singleton "
-
-        Private Shared __inst__ As cExecuteCommand = Nothing
-
-        Public Shared Function GetInstance() As cExecuteCommand
-            If cExecuteCommand.__inst__ Is Nothing Then
-                cExecuteCommand.__inst__ = New cExecuteCommand()
-            End If
-            Return __inst__
-        End Function
-
-        Private Sub New()
+        Public Sub New()
             MyBase.New(COMMAND_NAME, Nothing)
         End Sub
-
-#End Region ' Singleton
 
 #Region " Public interfaces "
 

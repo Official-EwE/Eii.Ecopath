@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: cFileSaveCommand.vb,v $
-' Revision 1.1  2009/05/11 01:46:28  jeroens
-' Renamed
-'
-' Revision 1.3  2009/05/02 01:47:32  jeroens
-' Added Invoke alternative
-'
-' Revision 1.2  2008/11/10 05:33:32  jeroens
-' Renamed
-'
-' Revision 1.1  2008/09/09 14:42:28  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -50,19 +33,6 @@ Namespace Commands
 
 #End Region ' Privates
 
-#Region " Singleton "
-
-        Private Shared __inst__ As cFileSaveCommand = Nothing
-
-        Public Shared Function GetInstance() As cFileSaveCommand
-            If cFileSaveCommand.__inst__ Is Nothing Then
-                cFileSaveCommand.__inst__ = New cFileSaveCommand()
-            End If
-            Return __inst__
-        End Function
-
-#End Region ' Singleton
-
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
         ''' -----------------------------------------------------------------------
@@ -73,7 +43,7 @@ Namespace Commands
         ''' Constructor, initializes a new instance of the NavigationCommand class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub New()
+        Public Sub New()
             MyBase.New(COMMAND_NAME)
         End Sub
 

@@ -31,6 +31,8 @@ Namespace Controls
         Private m_propman As cPropertyManager = Nothing
         ''' <summary>The command handler that a UI can interact with.</summary>
         Private m_cmdhandler As cCommandHandler = Nothing
+        ''' <summary>The form positions settings that a UI can interact with.</summary>
+        Private m_formpos As cFormPositionSettings = Nothing
 
 #End Region ' Privates vars
 
@@ -46,11 +48,13 @@ Namespace Controls
         Public Sub New(ByVal core As cCore, _
                        ByVal sg As cStyleGuide, _
                        ByVal propman As cPropertyManager, _
-                       ByVal cmdhandler As cCommandHandler)
+                       ByVal cmdhandler As cCommandHandler, _
+                       ByVal formpos As cFormPositionSettings)
             Me.m_core = core
             Me.m_sg = sg
             Me.m_propman = propman
             Me.m_cmdhandler = cmdhandler
+            Me.m_formpos = formpos
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -100,6 +104,17 @@ Namespace Controls
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cFormPositionSettings">form position settings manager</see> that a 
+        ''' UI can interact with.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property FormPositionSettings() As cFormPositionSettings
+            Get
+                Return Me.m_formpos
+            End Get
+        End Property
     End Class
 
 End Namespace ' Controls

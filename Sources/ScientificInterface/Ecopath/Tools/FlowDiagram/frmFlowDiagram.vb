@@ -160,7 +160,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Handles m_tsmiLoad.Click
 
             Dim ifData As cINIFile = Nothing
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
             cmdFO.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 1)
@@ -183,7 +183,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Handles m_tsmiSave.Click
 
             Dim ifData As cINIFile = Nothing
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 1)
@@ -212,7 +212,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Handles m_tsmiSaveToImage.Click
 
             Dim fmt As Imaging.ImageFormat = Imaging.ImageFormat.Bmp
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim fs As FileStream = Nothing
             Dim hdc As IntPtr = Nothing ' :)

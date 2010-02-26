@@ -283,7 +283,7 @@ Namespace Ecospace
         Private Sub cbContaminantTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_cbContaminantTracing.Click
 
             If m_cbContaminantTracing.Checked Then
-                Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+                Dim cmdh As cCommandHandler = Me.CommandHandler
                 Dim cmd As cCommand = cmdh.GetCommand("EnableEcotracer")
 
                 If (cmd IsNot Nothing) Then

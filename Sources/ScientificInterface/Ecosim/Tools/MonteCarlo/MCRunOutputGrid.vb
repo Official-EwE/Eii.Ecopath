@@ -58,10 +58,6 @@ Namespace Ecosim
 
         End Sub
 
-        Public Sub RefreshData()
-            Me.FillData()
-        End Sub
-
     End Class
 
 End Namespace

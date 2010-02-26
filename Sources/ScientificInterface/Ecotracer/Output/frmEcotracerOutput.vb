@@ -148,7 +148,7 @@ Public Class frmEcotracerOutput
             'No Ecospace scenario has been load
             If Me.m_core.StateMonitor.HasEcospaceLoaded = False Then
                 'Ask the user for a Ecospace scenario via the command
-                Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand("LoadEcospaceScenario")
+                Dim cmd As cCommand = Me.CommandHandler.GetCommand("LoadEcospaceScenario")
                 Debug.Assert(cmd IsNot Nothing, Me.ToString & ".btRunSpace_Click() LoadEcospaceScenario Command could not be found.")
                 cmd.Invoke()
             End If
@@ -203,7 +203,7 @@ Public Class frmEcotracerOutput
     End Sub
 
     Private Sub OnDisplayGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnShowHideGroups.Click
-        Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand("DisplayGroups")
+        Dim cmd As cCommand = Me.CommandHandler.GetCommand("DisplayGroups")
         Debug.Assert(cmd IsNot Nothing, Me.ToString & ".OnDisplayGroups() DisplayGroups Command could not be found.")
         cmd.Invoke()
     End Sub

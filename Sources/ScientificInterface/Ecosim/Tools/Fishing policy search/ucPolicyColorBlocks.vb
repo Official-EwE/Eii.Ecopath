@@ -214,12 +214,10 @@ Namespace Ecosim
             m_nudSeqEndYear.Value = CDec(m_iTotalBlocks)
             m_bIsFirstTimeLoaded = False
 
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
-
-            Me.m_PropBaseYear = DirectCast(pm.GetProperty(Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear), cIntegerProperty)
+            Me.m_PropBaseYear = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear), cIntegerProperty)
             AddHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
 
-            Me.m_PropEcosimNYears = DirectCast(pm.GetProperty(Me.m_uic.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears), cIntegerProperty)
+            Me.m_PropEcosimNYears = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears), cIntegerProperty)
             AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
 
         End Sub

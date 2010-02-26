@@ -113,16 +113,23 @@ Namespace Ecosim
             Me.m_plothelper.ConfigurePane("Monte carlo trials", "Time", "Biomass", False)
             Me.m_plothelper.AutoScaleOption() = cZedGraphHelper.ScaleOptions.Both
 
+            ' Configure grids
+            Me.m_gridB.UIContext = Me.UIContext
+            Me.m_gridBA.UIContext = Me.UIContext
+            Me.m_gridEE.UIContext = Me.UIContext
+            Me.m_gridPB.UIContext = Me.UIContext
+            Me.m_gridBestFit.UIContext = Me.UIContext
+
             Me.m_cmdRunMonteCarlo = New cCommand("RunMonteCarlo")
             Me.m_cmdRunMonteCarlo.AddControl(Me.btnRunTrials)
-            cCommandHandler.GetInstance().Add(Me.m_cmdRunMonteCarlo)
+            Me.CommandHandler.Add(Me.m_cmdRunMonteCarlo)
 
             Me.m_cmdStopMonteCarlo = New cCommand("StopMonteCarlo")
             Me.m_cmdStopMonteCarlo.AddControl(Me.btnStop)
-            cCommandHandler.GetInstance().Add(Me.m_cmdStopMonteCarlo)
+            Me.CommandHandler.Add(Me.m_cmdStopMonteCarlo)
 
             ' Connect to ApplyTS command
-            Me.m_cmdLoadTS = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
+            Me.m_cmdLoadTS = Me.CommandHandler.GetCommand("LoadTimeSeries")
             If Me.m_cmdLoadTS IsNot Nothing Then Me.m_cmdLoadTS.AddControl(Me.btnTS)
 
             Me.m_propNYears = New cSingleProperty(m_core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears)
@@ -139,11 +146,11 @@ Namespace Ecosim
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            cCommandHandler.GetInstance().Remove(Me.m_cmdRunMonteCarlo)
-            cCommandHandler.GetInstance().Remove(Me.m_cmdStopMonteCarlo)
+            Me.CommandHandler.Remove(Me.m_cmdRunMonteCarlo)
+            Me.CommandHandler.Remove(Me.m_cmdStopMonteCarlo)
 
             ' Disconnect from ApplyTS command
-            Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand("WeightTimeSeries")
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("WeightTimeSeries")
             If cmd IsNot Nothing Then cmd.RemoveControl(Me.btnTS)
 
             Me.m_lbGroups.Detach()
@@ -264,7 +271,7 @@ Namespace Ecosim
                 Me.btnTS.Enabled = True
 
                 'populate the grid with new values (biomass....)
-                Me.m_gridBestFit.RefreshData()
+                Me.m_gridBestFit.RefreshContent()
 
                 ' Select outputs
                 Me.m_tcOutput.SelectedTab = m_tbpBestTrial

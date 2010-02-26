@@ -247,7 +247,7 @@ Public Class frmEwE
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnLoad(ByVal e As EventArgs)
         MyBase.OnLoad(e)
-        cFormPositionSettings.GetInstance().Apply(Me)
+        Me.UIContext.FormPositionSettings.Apply(Me)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -256,7 +256,7 @@ Public Class frmEwE
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
-        cFormPositionSettings.GetInstance().Store(Me)
+        Me.UIContext.FormPositionSettings.Store(Me)
         Me.CoreComponents = Nothing
         MyBase.OnFormClosed(e)
     End Sub

@@ -527,7 +527,7 @@ Namespace Controls
                 Me.ShapeToolBox.AllowCheckboxes = True
             End If
 
-            Me.UpdateShapeList(New cShapeData() {sp.Shape})
+            Me.UpdateShapeList(New cShapeData() {sp.Shape}, eAutoSelectMode.SelectFirstShape)
         End Sub
 
 #Region " Baseclass overrides "
@@ -669,7 +669,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Sub Refresh()
             If Me.m_bInUpdate Then Return
-            Me.UpdateShapeList(Me.SelectedShapes)
+            Me.UpdateShapeList(Me.SelectedShapes, eAutoSelectMode.SelectCurrentShape)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -1541,7 +1541,21 @@ Namespace Controls
         ''' <param name="ashapeSelect">Forcing functions to select.</param>
         ''' -------------------------------------------------------------------
         Private Sub UpdateShapeList(Optional ByVal ashapeSelect As cShapeData() = Nothing)
+
+            Dim bHasSelection As Boolean = False
+            Dim bHasShapes As Boolean = False
+
             Me.m_lShapes = Me.GetShapeList()
+
+            If ashapeSelect IsNot Nothing Then
+                bHasSelection = (ashapeSelect.Length > 0)
+            End If
+            bHasShapes = (Me.m_lShapes.Count > 0)
+
+            If (bHasShapes And Not bHasSelection) Then
+                ashapeSelect = New cShapeData() {Me.m_lShapes(0)}
+            End If
+
             If (Me.ShapeToolBox IsNot Nothing) Then
                 Me.ShapeToolBox.SetShapes(Me.m_lShapes, ashapeSelect)
             Else

@@ -52,7 +52,7 @@ Namespace Ecopath.Output
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
             Dim parms As cPSDParameters = Nothing
-            Dim cmdh As cCommandHandler = Nothing
+            Dim cmdh As cCommandHandler = Me.CommandHandler
 
             Me.m_core = cCore.GetInstance()
             Me.m_coreStateMonitor = Me.m_core.StateMonitor
@@ -60,7 +60,6 @@ Namespace Ecopath.Output
             Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph)
 
             ' Connect to show/hide groups command
-            cmdh = cCommandHandler.GetInstance()
             Me.m_cmdShowGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
             If Not Object.ReferenceEquals(Me.m_cmdShowGroups, Nothing) Then
                 Me.m_cmdShowGroups.AddControl(Me.m_tsbnShowHideGroups)
@@ -89,7 +88,6 @@ Namespace Ecopath.Output
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             ' Detach format providers
             Me.m_fpNoOfPointsPSD.Release()

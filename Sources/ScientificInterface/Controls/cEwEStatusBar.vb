@@ -12,8 +12,8 @@ Imports System.Reflection
 Public Class cEwEStatusBar
     Inherits StatusStrip
 
-    ''' <summary>The core to observe.</summary>
-    Private m_core As cCore = Nothing
+    ''' <summary>The ui context to use.</summary>
+    Private m_uic As cUIContext = Nothing
 
     ''' <summary>The property selection command to listen to.</summary>
     Private WithEvents m_cmd As PropertySelectionCommand = Nothing
@@ -41,21 +41,21 @@ Public Class cEwEStatusBar
         Me.InitializeComponent()
     End Sub
 
-    Public Sub Connect(ByVal core As cCore)
+    Public Sub Attach(ByVal uic As cUIContext)
 
         Dim an As AssemblyName = Assembly.GetExecutingAssembly().GetName()
 
-        Me.m_core = core
-        Me.m_cmd = CType(cCommandHandler.GetInstance().GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
-        Me.m_csm = core.StateMonitor
+        Me.m_uic = uic
+        Me.m_cmd = DirectCast(Me.m_uic.CommandHander.GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
+        Me.m_csm = Me.m_uic.Core.StateMonitor
         Me.m_tslVersion.Text = an.Version.ToString()
 
         Me.UpdateSelectionPane()
 
     End Sub
 
-    Public Sub Disconnect()
-
+    Public Sub Detach()
+        Me.m_csm = Nothing
     End Sub
 
 #Region " Events "
@@ -126,7 +126,7 @@ Public Class cEwEStatusBar
     Public Sub UpdateModelPanes()
 
         Dim appl As AppLauncher = AppLauncher.GetInstance()
-        Dim eweModel As cEwEModel = Me.m_core.EwEModel
+        Dim eweModel As cEwEModel = Me.m_uic.Core.EwEModel
         Dim simScenario As cEcoSimScenario = Nothing
         Dim tsds As cTimeSeriesDataset = Nothing
         Dim spaceScenario As cEcospaceScenario = Nothing
@@ -150,11 +150,11 @@ Public Class cEwEStatusBar
             ' -------
             ' Ecosim
             ' -------
-            If Me.m_core.ActiveEcosimScenarioIndex >= 0 Then
-                simScenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
+            If Me.m_uic.Core.ActiveEcosimScenarioIndex >= 0 Then
+                simScenario = Me.m_uic.Core.EcosimScenarios(Me.m_uic.Core.ActiveEcosimScenarioIndex)
 
-                If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
-                    tsds = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
+                If Me.m_uic.Core.ActiveTimeSeriesDatasetIndex > 0 Then
+                    tsds = Me.m_uic.Core.TimeSeriesDataset(Me.m_uic.Core.ActiveTimeSeriesDatasetIndex)
                     strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
                                                vbNewLine, _
                                                simScenario.Name, _
@@ -177,8 +177,8 @@ Public Class cEwEStatusBar
             ' -------
             ' Ecospace
             ' -------
-            If (Me.m_core.ActiveEcospaceScenarioIndex >= 0) Then
-                spaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
+            If (Me.m_uic.Core.ActiveEcospaceScenarioIndex >= 0) Then
+                spaceScenario = Me.m_uic.Core.EcospaceScenarios(Me.m_uic.Core.ActiveEcospaceScenarioIndex)
                 strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP, _
                                            vbNewLine, _
                                            spaceScenario.Name, _
@@ -191,9 +191,10 @@ Public Class cEwEStatusBar
             ' -------
             ' Ecotracer
             ' -------
-            If (Me.m_core.ActiveEcotracerScenarioIndex >= 0) Then
-                tracerScenario = Me.m_core.EcotracerScenarios(Me.m_core.ActiveEcotracerScenarioIndex)
+            If (Me.m_uic.Core.ActiveEcotracerScenarioIndex >= 0) Then
+                tracerScenario = Me.m_uic.Core.EcotracerScenarios(Me.m_uic.Core.ActiveEcotracerScenarioIndex)
                 strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOTRACER_TOOLTIP, _
+                                           vbNewLine, _
                                            tracerScenario.Name, _
                                            Me.ToTooltipLabel(tracerScenario.Description))
                 Me.UpdateToolstripItem(Me.m_tsEcotracerScenario, tracerScenario.Name, strTooltip)
