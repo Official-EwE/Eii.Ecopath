@@ -93,13 +93,13 @@ Namespace Ecosim
 #Region " Events "
 
         Private Sub m_rbB0Bu_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_rbB0Bu.CheckedChanged
-            If (Me.m_rbB0Bu.Checked) Then Me.EstimationMethod = eEstimationTypes.BoBu
+            Handles m_rbBoBu.CheckedChanged
+            If (Me.m_rbBoBu.Checked) Then Me.EstimationMethod = eEstimationTypes.BoBu
         End Sub
 
         Private Sub m_rbBuB0_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_rbBuB0.CheckedChanged
-            If (Me.m_rbBuB0.Checked) Then Me.EstimationMethod = eEstimationTypes.BuBo
+            Handles m_rbBuBo.CheckedChanged
+            If (Me.m_rbBuBo.Checked) Then Me.EstimationMethod = eEstimationTypes.BuBo
         End Sub
 
         Private Sub m_rbFMaxM_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -165,8 +165,8 @@ Namespace Ecosim
 
             Dim bHasSelectedVulnerabilities As Boolean = Me.m_grid.HasSelectedVulnerabilities()
 
-            Me.m_rbB0Bu.Checked = (Me.EstimationMethod = eEstimationTypes.BoBu)
-            Me.m_rbBuB0.Checked = (Me.EstimationMethod = eEstimationTypes.BuBo)
+            Me.m_rbBoBu.Checked = (Me.EstimationMethod = eEstimationTypes.BoBu)
+            Me.m_rbBuBo.Checked = (Me.EstimationMethod = eEstimationTypes.BuBo)
             Me.m_rbFMaxM.Checked = (Me.EstimationMethod = eEstimationTypes.FMaxM)
             Me.m_rbPredMort.Checked = (Me.EstimationMethod = eEstimationTypes.FMaxBoBu)
             Me.m_btnOK.Enabled = Me.m_grid.HasSelectedVulnerabilities

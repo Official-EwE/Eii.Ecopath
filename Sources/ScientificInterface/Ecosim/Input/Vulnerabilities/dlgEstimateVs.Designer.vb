@@ -31,13 +31,14 @@ Namespace Ecosim
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_rbPredMort = New System.Windows.Forms.RadioButton
             Me.m_rbFMaxM = New System.Windows.Forms.RadioButton
-            Me.m_rbBuB0 = New System.Windows.Forms.RadioButton
-            Me.m_rbB0Bu = New System.Windows.Forms.RadioButton
+            Me.m_rbBuBo = New System.Windows.Forms.RadioButton
+            Me.m_rbBoBu = New System.Windows.Forms.RadioButton
             Me.m_hdrMethodology = New System.Windows.Forms.Label
             Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.m_grid = New ScientificInterface.Ecosim.gridEstimateVs
             Me.m_btnCancel = New System.Windows.Forms.Button
             Me.m_btnOK = New System.Windows.Forms.Button
+            Me.m_grid = New ScientificInterface.Ecosim.gridEstimateVs
+            Me.m_lblPrompt = New System.Windows.Forms.Label
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -52,13 +53,14 @@ Namespace Ecosim
             '
             Me.m_scMain.Panel1.Controls.Add(Me.m_rbPredMort)
             Me.m_scMain.Panel1.Controls.Add(Me.m_rbFMaxM)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbBuB0)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbB0Bu)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_rbBuBo)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_rbBoBu)
             Me.m_scMain.Panel1.Controls.Add(Me.m_hdrMethodology)
             Me.m_scMain.Panel1.Controls.Add(Me.m_graph)
             '
             'm_scMain.Panel2
             '
+            Me.m_scMain.Panel2.Controls.Add(Me.m_lblPrompt)
             Me.m_scMain.Panel2.Controls.Add(Me.m_grid)
             '
             'm_rbPredMort
@@ -75,19 +77,19 @@ Namespace Ecosim
             Me.m_rbFMaxM.TabStop = True
             Me.m_rbFMaxM.UseVisualStyleBackColor = True
             '
-            'm_rbBuB0
+            'm_rbBuBo
             '
-            resources.ApplyResources(Me.m_rbBuB0, "m_rbBuB0")
-            Me.m_rbBuB0.Name = "m_rbBuB0"
-            Me.m_rbBuB0.TabStop = True
-            Me.m_rbBuB0.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbBuBo, "m_rbBuBo")
+            Me.m_rbBuBo.Name = "m_rbBuBo"
+            Me.m_rbBuBo.TabStop = True
+            Me.m_rbBuBo.UseVisualStyleBackColor = True
             '
-            'm_rbB0Bu
+            'm_rbBoBu
             '
-            resources.ApplyResources(Me.m_rbB0Bu, "m_rbB0Bu")
-            Me.m_rbB0Bu.Name = "m_rbB0Bu"
-            Me.m_rbB0Bu.TabStop = True
-            Me.m_rbB0Bu.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbBoBu, "m_rbBoBu")
+            Me.m_rbBoBu.Name = "m_rbBoBu"
+            Me.m_rbBoBu.TabStop = True
+            Me.m_rbBoBu.UseVisualStyleBackColor = True
             '
             'm_hdrMethodology
             '
@@ -109,6 +111,20 @@ Namespace Ecosim
             Me.m_graph.ScrollMinY = 0
             Me.m_graph.ScrollMinY2 = 0
             '
+            'm_btnCancel
+            '
+            resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+            Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.m_btnCancel.Name = "m_btnCancel"
+            Me.m_btnCancel.UseVisualStyleBackColor = True
+            '
+            'm_btnOK
+            '
+            resources.ApplyResources(Me.m_btnOK, "m_btnOK")
+            Me.m_btnOK.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.m_btnOK.Name = "m_btnOK"
+            Me.m_btnOK.UseVisualStyleBackColor = True
+            '
             'm_grid
             '
             Me.m_grid.AutoSizeMinHeight = 10
@@ -121,10 +137,10 @@ Namespace Ecosim
                         Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
-            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = True
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SelectedGroupIndex = -1
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -139,19 +155,10 @@ Namespace Ecosim
             Me.m_grid.TrackPropertySelection = True
             Me.m_grid.UIContext = Nothing
             '
-            'm_btnCancel
+            'm_lblPrompt
             '
-            resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
-            Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.m_btnCancel.Name = "m_btnCancel"
-            Me.m_btnCancel.UseVisualStyleBackColor = True
-            '
-            'm_btnOK
-            '
-            resources.ApplyResources(Me.m_btnOK, "m_btnOK")
-            Me.m_btnOK.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.m_btnOK.Name = "m_btnOK"
-            Me.m_btnOK.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_lblPrompt, "m_lblPrompt")
+            Me.m_lblPrompt.Name = "m_lblPrompt"
             '
             'dlgEstimateVs
             '
@@ -168,6 +175,7 @@ Namespace Ecosim
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
+            Me.m_scMain.Panel2.PerformLayout()
             Me.m_scMain.ResumeLayout(False)
             Me.ResumeLayout(False)
 
@@ -178,10 +186,11 @@ Namespace Ecosim
         Private WithEvents m_grid As gridEstimateVs
         Private WithEvents m_graph As ZedGraphControl
         Private WithEvents m_hdrMethodology As System.Windows.Forms.Label
-        Private WithEvents m_rbB0Bu As System.Windows.Forms.RadioButton
-        Private WithEvents m_rbBuB0 As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbBoBu As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbBuBo As System.Windows.Forms.RadioButton
         Private WithEvents m_rbFMaxM As System.Windows.Forms.RadioButton
         Private WithEvents m_rbPredMort As System.Windows.Forms.RadioButton
+        Private WithEvents m_lblPrompt As System.Windows.Forms.Label
 
     End Class
 

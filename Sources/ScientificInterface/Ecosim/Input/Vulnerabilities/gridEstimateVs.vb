@@ -1,8 +1,13 @@
-﻿Imports EwECore
+﻿#Region " Imports "
+
+Option Strict On
+Imports EwECore
 Imports EwEUtils.Core
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Style.cStyleGuide
+
+#End Region ' Imports
 
 Namespace Ecosim
 
@@ -31,6 +36,7 @@ Namespace Ecosim
             FMax_VwithFT
         End Enum
 
+        ''' <summary>Column indices displaying computed vul values.</summary>
         Private Shared c_vulcols As eColumnTypes() = {eColumnTypes.PG_VwithFT, _
                                                       eColumnTypes.PG_VwoFT, _
                                                       eColumnTypes.FMax_VwithFT, _
@@ -274,12 +280,19 @@ Namespace Ecosim
         Private Sub SetVulCell(ByVal iRow As Integer, ByVal iCol As eColumnTypes, ByVal sValue As Single)
 
             Dim cell As EwECell = DirectCast(Me(iRow, iCol), EwECell)
-            cell.Value = sValue
+            Dim style As cStyleGuide.eStyleFlags = cell.Style
+
+            ' Adjust style
+            style = style Or eStyleFlags.ValueComputed
             If sValue > 0 Then
-                cell.Style = cell.Style And (Not eStyleFlags.Null)
+                style = style And (Not eStyleFlags.Null)
             Else
-                cell.Style = cell.Style Or eStyleFlags.Null
+                style = style Or eStyleFlags.Null
             End If
+
+            ' Config cell
+            cell.Style = style
+            cell.Value = sValue
 
         End Sub
 

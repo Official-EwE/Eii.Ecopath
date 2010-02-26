@@ -132,6 +132,9 @@
   <data name="m_rbPredMort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_rbPredMort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_rbPredMort.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 99</value>
   </data>
@@ -142,7 +145,7 @@
     <value>4</value>
   </data>
   <data name="m_rbPredMort.Text" xml:space="preserve">
-    <value>Predation mort (rel) / B0/Bunf</value>
+    <value>Predation mort (rel) / Bo/Bunf</value>
   </data>
   <data name="&gt;&gt;m_rbPredMort.Name" xml:space="preserve">
     <value>m_rbPredMort</value>
@@ -158,6 +161,9 @@
   </data>
   <data name="m_rbFMaxM.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_rbFMaxM.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_rbFMaxM.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 76</value>
@@ -183,62 +189,71 @@
   <data name="&gt;&gt;m_rbFMaxM.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_rbBuB0.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_rbBuBo.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_rbBuB0.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_rbBuBo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbBuBo.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 53</value>
   </data>
-  <data name="m_rbBuB0.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_rbBuBo.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 17</value>
   </data>
-  <data name="m_rbBuB0.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_rbBuBo.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_rbBuB0.Text" xml:space="preserve">
-    <value>B unfished / B0 (Ecopath)</value>
+  <data name="m_rbBuBo.Text" xml:space="preserve">
+    <value>B unfished / Bo (Ecopath)</value>
   </data>
-  <data name="&gt;&gt;m_rbBuB0.Name" xml:space="preserve">
-    <value>m_rbBuB0</value>
+  <data name="&gt;&gt;m_rbBuBo.Name" xml:space="preserve">
+    <value>m_rbBuBo</value>
   </data>
-  <data name="&gt;&gt;m_rbBuB0.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbBuBo.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_rbBuB0.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_rbBuBo.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;m_rbBuB0.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbBuBo.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_rbB0Bu.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_rbBoBu.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_rbB0Bu.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_rbBoBu.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbBoBu.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 30</value>
   </data>
-  <data name="m_rbB0Bu.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_rbBoBu.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 17</value>
   </data>
-  <data name="m_rbB0Bu.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_rbBoBu.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_rbB0Bu.Text" xml:space="preserve">
-    <value>B0 (Ecopath) / B unfished</value>
+  <data name="m_rbBoBu.Text" xml:space="preserve">
+    <value>Bo (Ecopath) / B unfished</value>
   </data>
-  <data name="&gt;&gt;m_rbB0Bu.Name" xml:space="preserve">
-    <value>m_rbB0Bu</value>
+  <data name="&gt;&gt;m_rbBoBu.Name" xml:space="preserve">
+    <value>m_rbBoBu</value>
   </data>
-  <data name="&gt;&gt;m_rbB0Bu.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbBoBu.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_rbB0Bu.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_rbBoBu.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;m_rbB0Bu.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbBoBu.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_hdrMethodology.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_hdrMethodology.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_hdrMethodology.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -253,7 +268,7 @@
     <value>0</value>
   </data>
   <data name="m_hdrMethodology.Text" xml:space="preserve">
-    <value>Estimate Vulnerabilties from</value>
+    <value>Estimate Vulnerabilties from:</value>
   </data>
   <data name="m_hdrMethodology.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -274,13 +289,13 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
-    <value>170, 0</value>
+    <value>176, 0</value>
   </data>
   <data name="m_graph.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>505, 243</value>
+    <value>499, 242</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -312,14 +327,38 @@
   <data name="m_scMain.Panel1MinSize" type="System.Int32, mscorlib">
     <value>140</value>
   </data>
-  <data name="m_grid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="m_lblPrompt.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblPrompt.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 3</value>
+  </data>
+  <data name="m_lblPrompt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>286, 13</value>
+  </data>
+  <data name="m_lblPrompt.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblPrompt.Text" xml:space="preserve">
+    <value>Select which computed vulnerabilities to transfer to Ecosim:</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrompt.Name" xml:space="preserve">
+    <value>m_lblPrompt</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrompt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrompt.Parent" xml:space="preserve">
+    <value>m_scMain.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrompt.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>0, 19</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>675, 347</value>
+    <value>675, 329</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -328,13 +367,13 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridEstimateVs, EwE6, Version=6.0.7.128, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.Ecosim.gridEstimateVs, EwE6, Version=6.0.7.226, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -355,7 +394,7 @@
     <value>675, 594</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>243</value>
+    <value>242</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -374,6 +413,9 @@
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
+  </data>
+  <data name="m_btnCancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
     <value>531, 613</value>
@@ -401,6 +443,9 @@
   </data>
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
+  </data>
+  <data name="m_btnOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
     <value>612, 613</value>
@@ -431,6 +476,9 @@
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>699, 648</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
