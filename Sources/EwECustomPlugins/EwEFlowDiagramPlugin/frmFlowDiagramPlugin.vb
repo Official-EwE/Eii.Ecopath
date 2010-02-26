@@ -26,6 +26,16 @@ Public Class frmFlowDiagramPlugin
 
 #End Region ' Privates
 
+    Public Sub New(ByVal strText As String, ByVal Parent As cEwEFlowDiagramPlugin)
+
+        Me.InitializeComponent()
+        Me.Text = strText
+        Me.TabText = strText
+
+        Me.m_Parent = Parent
+
+    End Sub
+
     ''' <summary>
     '''  Create Ascci Flw put together all the necessary information from EcoPathGroupOutputs and EcoPathDataStructures
     ''' </summary>
@@ -33,7 +43,7 @@ Public Class frmFlowDiagramPlugin
     ''' <remarks></remarks>
     Public Sub CreateAsciiFlw(ByVal flowfile As String, Optional ByVal CreateFile As Boolean = True)  '(EiiFile As String)
 
-        Dim core As cCore = cCore.GetInstance()
+        Dim core As cCore = Me.m_Parent.Core
 
         Dim GrpName As String
         Dim impVal As Single
@@ -161,7 +171,7 @@ Public Class frmFlowDiagramPlugin
 
     Private Sub SDF_btn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SDF_btn.Click
         Try
-            Dim OutputFile As String = FileUtilities.MakeTempFile(cCore.GetInstance().EwEModel.Name & ".flw")
+            Dim OutputFile As String = FileUtilities.MakeTempFile(Me.m_Parent.Core.EwEModel.Name & ".flw")
 
             If System.IO.File.Exists(OutputFile) Then
                 ' File exist, prompt user
@@ -181,14 +191,4 @@ Public Class frmFlowDiagramPlugin
 
     End Sub
 
-
-    Public Sub New(ByVal Parent As cEwEFlowDiagramPlugin)
-
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
-
-        'This make m_EcopathDs that refer cEcopathDataStructures available for CreateAsciiFlw
-        m_Parent = Parent
-
-    End Sub
 End Class

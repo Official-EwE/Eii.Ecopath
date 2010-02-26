@@ -1,25 +1,4 @@
-'==============================================================================
-'
-' $Log: cEwEFlowDiagramPlugin.vb,v $
-' Revision 1.3  2009/05/28 14:44:32  jeroens
-' Updated to build
-'
-' Revision 1.2  2009/01/16 18:30:27  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:45  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/07/30 00:33:18  antonior
-' *** empty log message ***
-'
-' Revision 1.2  2008/07/29 19:32:30  antonior
-' *** empty log message ***
-'
-' Revision 1.1  2008/07/11 17:19:23  sherman
-' *** empty log message ***
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -28,6 +7,7 @@ Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 
+#End Region ' Imports
 
 Public Class cEwEFlowDiagramPlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
@@ -83,7 +63,7 @@ Public Class cEwEFlowDiagramPlugin
 
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Flow Diagram plug-in"
+            Return "Flow diagram - EwE5 style"
         End Get
     End Property
 
@@ -109,7 +89,7 @@ Public Class cEwEFlowDiagramPlugin
             End If
             ' Create form when not ready
             If Not bIsFormReady Then
-                Me.m_frmFDInterface = New frmFlowDiagramPlugin(Me)
+                Me.m_frmFDInterface = New frmFlowDiagramPlugin(Me.ControlText, Me)
             End If
 
             ' Activate the form
@@ -168,9 +148,15 @@ Public Class cEwEFlowDiagramPlugin
         End Get
     End Property
 
+    Public ReadOnly Property Core() As cCore
+        Get
+            Return Me.m_core
+        End Get
+    End Property
+
 #End Region ' GUI
 
-#Region "Ecopath"
+#Region " Ecopath "
 
     ''' <summary>
     ''' Called by the core when Ecopath has run successfuly 
@@ -204,7 +190,7 @@ Public Class cEwEFlowDiagramPlugin
 
     End Sub
 
-#End Region
+#End Region ' Ecopath
 
 #Region " Plugin Properties "
 
@@ -216,7 +202,7 @@ Public Class cEwEFlowDiagramPlugin
 
     Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "Flow Diagram plug-in"
+            Return "Flow Diagram plug-in for Ecopath with Ecosim version 6"
         End Get
     End Property
 

@@ -255,12 +255,13 @@ Public Class NavigationPanel
 
             ' Does node text compare to requested text?
             If (String.Compare(nodeSearch.Text, strText) = 0) Then
-                ' #Yes: is this a registered node?
-                If (Me.m_nodeController.SearchNodeByName(nodeSearch.Name) IsNot Nothing) Then
-                    ' #Yes: got it
-                    nodeFound = nodeSearch
-                    Exit For
-                End If
+                ' JS 26Feb2010: do not search registered nodes since this will not find nodes added via plug-ins.
+                '' #Yes: is this a registered node?
+                'If (Me.m_nodeController.SearchNodeByName(nodeSearch.Name) IsNot Nothing) Then
+                ' #Yes: got it
+                nodeFound = nodeSearch
+                Exit For
+                'End If
             End If
 
             ' Search all child nodes
