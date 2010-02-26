@@ -21,14 +21,15 @@ Namespace Controls
     ''' ------------------------------------------------------------------
     <CLSCompliant(True)> _
     Public Class ucShapeToolbox
+        Implements IUIElement
 
 #Region " Variables "
 
+        Private m_uic As cUIContext = Nothing
         Private m_handler As cShapeGUIHandler = Nothing
         Private m_lShapes As New List(Of cShapeData)
         Private m_clr As Color
         Private m_sMinYScale As Single = cCore.NULL_VALUE
-        Private m_sg As cStyleGuide = Nothing
 
 #End Region ' Variables
 
@@ -37,8 +38,6 @@ Namespace Controls
         Public Sub New()
             Me.InitializeComponent()
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
-            Me.m_sg = cStyleGuide.GetInstance()
-            Me.Selection = Nothing
         End Sub
 
 #End Region ' Constructors
@@ -224,6 +223,20 @@ Namespace Controls
 
 #End Region ' Properties
 
+#Region " IUIElement implementation "
+
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
+
+#End Region ' IUIElement implementation
+
 #Region " Helper methods "
 
         Private Sub UpdateControls()
@@ -280,6 +293,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub UpdateThumbnails()
 
+            Dim iThumbSize As Integer = Me.m_uic.StyleGuide.ThumbnailSize
             Dim largeImageList As New ImageList
             Dim item As ListViewItem = Nothing
             Dim shape As cShapeData = Nothing
@@ -293,7 +307,7 @@ Namespace Controls
             lvShapes.Items.Clear()
 
             'Set up the thumbnail image size
-            largeImageList.ImageSize = New Size(Me.m_sg.ThumbnailSize, Me.m_sg.ThumbnailSize)
+            largeImageList.ImageSize = New Size(iThumbSize, iThumbSize)
 
             If Me.m_lShapes.Count > 0 Then
 
@@ -340,40 +354,52 @@ Namespace Controls
 
 #Region " Event handlers "
 
-        Private Sub DoLoad(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            MyBase.OnLoad(e)
+
+            If (Me.m_uic Is Nothing) Then Return
+
             Dim cmd As cCommand = Nothing
 
-            cmd = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
-            If cmd IsNot Nothing Then
-            End If
+            'Me.m_uic.CommandHander.GetCommand("LoadTimeSeries")
+            'If cmd IsNot Nothing Then
+            '    cmd.AddControl(Me.
+            'End If
 
-            cmd = cCommandHandler.GetInstance().GetCommand("WeightTimeSeries")
+            cmd = Me.m_uic.CommandHander.GetCommand("WeightTimeSeries")
             If cmd IsNot Nothing Then
                 cmd.AddControl(Me.ApplyToolStripMenuItem)
             End If
 
-            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             Me.m_bInUpdate = True
+            Me.Selection = Nothing
             Me.UpdateThumbnails()
             Me.m_bInUpdate = False
 
         End Sub
 
-        Private Sub DoDisposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+
             Dim cmd As cCommand = Nothing
 
-            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            If (Me.m_uic IsNot Nothing) Then
 
-            cmd = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
-            If cmd IsNot Nothing Then
+                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+                'cmd = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
+                'If cmd IsNot Nothing Then
+                'End If
+
+                cmd = Me.m_uic.CommandHander.GetCommand("WeightTimeSeries")
+                If cmd IsNot Nothing Then
+                    cmd.RemoveControl(Me.ApplyToolStripMenuItem)
+                End If
             End If
 
-            cmd = cCommandHandler.GetInstance().GetCommand("WeightTimeSeries")
-            If cmd IsNot Nothing Then
-                cmd.RemoveControl(Me.ApplyToolStripMenuItem)
-            End If
-
+            MyBase.OnHandleDestroyed(e)
 
         End Sub
 

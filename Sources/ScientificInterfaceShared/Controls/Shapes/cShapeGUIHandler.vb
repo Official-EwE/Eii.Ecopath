@@ -266,7 +266,7 @@ Namespace Controls
 
             Dim msg As cMessage = Nothing
             Dim strError As String = ""
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             If sp Is Nothing Then Return
@@ -394,6 +394,7 @@ Namespace Controls
                     Me.m_sketchPad.YAxisMinValue = Me.MinYScale
                     Me.m_sketchPad.SketchDrawMode = Me.SketchDrawMode
                     Me.m_sketchPad.Handler = Me
+                    Me.m_sketchPad.UIContext = Me.UIContext
                 End If
             End Set
         End Property
@@ -419,6 +420,7 @@ Namespace Controls
                 If (Me.m_shapeToolBox IsNot Nothing) Then
                     AddHandler Me.m_shapeToolBox.OnSelectionChanged, AddressOf OnShapeSelected
                     Me.m_shapeToolBox.Handler = Me
+                    Me.m_shapeToolBox.UIContext = Me.UIContext
                     Me.m_shapeToolBox.Color = Me.Color
                     Me.m_shapeToolBox.YAxisMinValue = Me.MinYScale
                 End If
@@ -766,7 +768,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub WeightTimeSeries()
-            Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand("WeightTimeSeries")
+            Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand("WeightTimeSeries")
 
             If cmd IsNot Nothing Then
                 cmd.Invoke()
@@ -779,7 +781,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub LoadDatasets()
-            Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
+            Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand("LoadTimeSeries")
 
             If cmd IsNot Nothing Then
                 cmd.Invoke()
@@ -841,7 +843,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Private Sub ImportTimeSeries()
             ' Launch via command!
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
             Dim cmd As cCommand = cmdh.GetCommand("ImportTimeSeries")
             If cmd IsNot Nothing Then cmd.Invoke()
         End Sub
@@ -853,7 +855,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Private Sub ExportTimeSeries()
             ' Launch via command!
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
             Dim cmd As cCommand = cmdh.GetCommand("ExportTimeSeries")
             If cmd IsNot Nothing Then cmd.Invoke()
         End Sub

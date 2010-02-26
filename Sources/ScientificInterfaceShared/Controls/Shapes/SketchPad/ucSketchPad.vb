@@ -30,6 +30,7 @@ Namespace Controls
     ''' </remarks>
     <CLSCompliant(True)> _
     Public Class ucSketchPad
+        Implements IUIElement
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -52,10 +53,8 @@ Namespace Controls
 
 #Region " Variables "
 
-        ''' <summary>The one core</summary>
-        Private m_core As cCore = Nothing
-        ''' <summary>Styleguide to listen to.</summary>
-        Private m_sg As cStyleGuide = Nothing
+        ''' <summary>The one UI context</summary>
+        Private m_uic As cUIContext = Nothing
         ''' <summary>The manager of this control.</summary>
         Private m_handler As cShapeGUIHandler = Nothing
         ''' <summary>The shape shown in this control.</summary>
@@ -110,10 +109,7 @@ Namespace Controls
 
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
+            Me.InitializeComponent()
 
             ' Enable double buffering
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
@@ -122,9 +118,6 @@ Namespace Controls
             Me.SetStyle(ControlStyles.ResizeRedraw, True)
 
             Me.Dock = DockStyle.Fill
-
-            Me.m_core = cCore.GetInstance()
-            Me.m_sg = cStyleGuide.GetInstance()
 
             ' Default rendering mode
             Me.m_sketchDrawMode = eSketchDrawModeTypes.Fill
@@ -506,16 +499,33 @@ Namespace Controls
 
 #End Region ' Public access
 
+#Region " IUIElement implementation "
+
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
+                Me.UpdateControl()
+            End Set
+        End Property
+
+#End Region ' IUIElement implementation
+
 #Region " Private Methods "
 
         Private Sub UpdateControl()
 
+            If (Me.m_uic Is Nothing) Then Return
+
             If ((Me.Style And cStyleGuide.eStyleFlags.NotEditable) = 0) And (Me.m_shape IsNot Nothing) Then
                 Me.Enabled = True
-                Me.BackColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
+                Me.BackColor = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
             Else
                 Me.Enabled = False
-                Me.BackColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND)
+                Me.BackColor = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND)
             End If
 
             Me.UpdateCursor()
@@ -763,7 +773,8 @@ Namespace Controls
         ''' <summary>
         ''' Mouse click handler; starts mouse capture and initiates shape drawing.
         ''' </summary>
-        Private Sub SketchPad_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseDown
+        Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
+            MyBase.OnMouseDown(e)
 
             Dim bShiftPressed As Boolean = (User32.GetAsyncKeyState(&H10) < 0)
             If Not Me.Editable Then Return
@@ -785,8 +796,8 @@ Namespace Controls
         ''' <summary>
         ''' Mouse up handler; finalizes the shape when the mouse is captured.
         ''' </summary>
-        Private Sub SketchPad_MouseUp(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
-            Handles MyBase.MouseUp
+        Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
+            MyBase.OnMouseUp(e)
 
             If Not Me.Editable Then Return
             If Not Me.Capture Then Return
@@ -816,6 +827,10 @@ Namespace Controls
 #End Region ' Mouse events
 
 #Region " Local events "
+
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+        End Sub
 
         ''' <summary>
         ''' This generated the shape changed event so its thumbnail image can synchronize with it.

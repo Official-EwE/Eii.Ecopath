@@ -1,35 +1,3 @@
-'==============================================================================
-'
-' $Log: ucShapeToolboxToolbar.vb,v $
-' Revision 1.7  2009/04/16 17:49:00  jeroens
-' m_!
-'
-' Revision 1.6  2009/04/12 22:14:18  jeroens
-' Initial state correctly processed
-'
-' Revision 1.5  2009/03/24 14:08:23  jeroens
-' Uses moved cToolstripUtils
-'
-' Revision 1.4  2009/03/20 17:55:42  jeroens
-' Shape controls are multiple selection
-'
-' Revision 1.3  2009/03/02 20:08:02  jeroens
-' Defaults -> ResetAll
-'
-' Revision 1.2  2009/03/02 02:04:15  jeroens
-' Properly named handlers
-'
-' Revision 1.1  2008/12/15 15:36:41  jeroens
-' Moved from ScInt
-'
-' Revision 1.2  2008/11/05 05:09:08  jeroens
-' Apply -> Weight
-'
-' Revision 1.1  2008/09/26 07:31:43  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 Imports EwEUtils.Commands
 
