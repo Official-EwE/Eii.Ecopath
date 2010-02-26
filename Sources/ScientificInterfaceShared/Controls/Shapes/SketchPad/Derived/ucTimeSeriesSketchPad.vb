@@ -18,7 +18,6 @@ Namespace Controls
         Implements IUIElement
 
         Private m_AxisYMarks As eAxisTickmarkDisplayModeTypes
-        Private m_uic As cUIContext = Nothing
 
         Public Sub New()
 
@@ -27,15 +26,6 @@ Namespace Controls
             Me.m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Absolute
 
         End Sub
-
-        Public Property UIContext() As cUIContext Implements IUIElement.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Set(ByVal value As cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
 
         Public WriteOnly Property AxisXMark() As eAxisTickmarkDisplayModeTypes
             Set(ByVal value As eAxisTickmarkDisplayModeTypes)
@@ -51,10 +41,10 @@ Namespace Controls
                 ByVal drawMode As eSketchDrawModeTypes, _
                 ByVal sYMax As Single)
 
-            If Me.m_uic Is Nothing Then Return
+            If Me.UIContext Is Nothing Then Return
 
-            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-            Dim core As cCore = Me.m_uic.Core
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Dim core As cCore = Me.UIContext.Core
             Dim strType As String = ""
             Dim strName As String = ""
             Dim strLabel As String = ""
@@ -177,7 +167,7 @@ Namespace Controls
         ''' </summary>
         Private Function GetAxisX() As String()
 
-            Dim iDS As Integer = Me.m_uic.Core.ActiveTimeSeriesDatasetIndex
+            Dim iDS As Integer = Me.UIContext.Core.ActiveTimeSeriesDatasetIndex
             Dim ds As cTimeSeriesDataset = Nothing
             Dim ts As cTimeSeries = DirectCast(Me.Shape, cTimeSeries)
             Dim iTSFinalYear As Integer = 0
@@ -190,7 +180,7 @@ Namespace Controls
 
             If Not Me.IsSeasonal Then
 
-                If iDS >= 0 Then ds = Me.m_uic.Core.TimeSeriesDataset(iDS)
+                If iDS >= 0 Then ds = Me.UIContext.Core.TimeSeriesDataset(iDS)
 
                 If ds IsNot Nothing Then
                     iTSFirstYear = ds.FirstYear
