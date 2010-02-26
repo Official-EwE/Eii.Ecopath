@@ -453,7 +453,6 @@ Public Class cEcosimDatastructures
 
     Public PredictSimEffort As Boolean
 
-
     ''' <summary>
     ''' Boolean flag that tells Ecosim to run on it's own thread.
     ''' </summary>
@@ -476,7 +475,6 @@ Public Class cEcosimDatastructures
     ''' User interface objects e.g. cCore.EcosimGroupOutputs are NOT update for sub timesteps and will not be updated until the end of the monthly timestep. 
     ''' </remarks>
     Public StepsPerMonth As Integer
-
 
     Public Sub RedimVars()
 

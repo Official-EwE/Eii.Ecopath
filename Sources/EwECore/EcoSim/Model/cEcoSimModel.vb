@@ -2004,6 +2004,7 @@ Namespace Ecosim
 
             'turn of numeric intergration for groups where rate of change is to big
             For i = 1 To nGroups
+
                 If i > m_EPData.NumLiving Then
                     m_Data.NoIntegrate(i) = 0 'VC following CJWs email of 05dec97
                 End If
@@ -4292,7 +4293,7 @@ Namespace Ecosim
                 d.CBlast = CBlast.Clone
                 d.PredPerBiomass = PredPerBiomass.Clone
 
-                d.ResetPred = ResetPred.Clone
+                ' d.ResetPred = ResetPred.Clone
 
 
                 ' ConKtrophic.clone 
