@@ -4960,9 +4960,10 @@ exitline:
         Dim ix As Integer
         Dim iy As Integer
         Dim j As Integer
-        Dim K As Integer
+        Dim iPort As Integer
+        Dim iFleet As Integer
         Dim Ports As Integer
-        Dim minD(,) As Single
+        Dim minD(,,) As Single
         Dim Dist As Single
         Dim Lati As Single
         Dim Longi As Single
@@ -4972,20 +4973,16 @@ exitline:
         Dim PortY() As Integer
         Dim Disti As Single
 
+        ' This calculation does NOT take the shape of land into account
+
         If m_Data.IDH_SS <= 0 Then m_Data.IDH_SS = 2
 
-        'Dim SA As Single    'SailingCost per unit distance for this gear
-        '                    'Unit distances are calculated here
-        'If Lat1 = 0 And Lon1 = 0 Then MsgBox("Enter latitude and longitude", vbOKOnly) : Exit Sub
-        'SA = cost(AF, 3)      'SailingCost(AF)
-        'Erase PortX()
-        'Erase PortY()
         Ports = 0
         For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
                 Me.m_Data.Port(0, i, j) = False
-                For K = 1 To Me.m_Data.nFleets
-                    If Me.m_Data.Port(K, i, j) = True Then
+                For iFleet = 1 To Me.m_Data.nFleets
+                    If Me.m_Data.Port(iFleet, i, j) = True Then
                         Ports += 1
                         Me.m_Data.Port(0, i, j) = True
                         Exit For
@@ -5004,161 +5001,56 @@ exitline:
                     PortY(Ports) = j
                 End If
             Next
-        Next        'If Ports = 0 Then
-        '    MsgBox("No ports/landingsplaces entered for " + frmSpace.listFleet.Text, vbInformation + vbOKOnly, "Ecospace, no ports")
-        '    Exit Sub
-        'End If
-        'OK now, there are ports
-        Dist = 0
+        Next
 
-        'ReDim Vis(Inrow, Incol)
-        ReDim minD(m_Data.InRow, m_Data.InCol)
-        For i = 1 To m_Data.InRow
-            For j = 1 To m_Data.InCol
-                minD(i, j) = Single.MaxValue
-            Next j
-        Next i
-
-        For K = 1 To Ports      'go port by port
-            ix = PortX(K)
-            iy = PortY(K)
-            LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS))
-            LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS))
-            'LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS) / 2.0!)
-            'LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS) / 2.0!)
-            'Sail(AF, ix, iy) = 0
+        ReDim minD(Me.m_Data.nFleets, Me.m_Data.InRow, Me.m_Data.InCol)
+        For iFleet = 0 To Me.m_Data.nFleets
             For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
-                    If Me.EcoSpaceData.Depth(i, j) > 0 Then 'water cell
-                        Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS))
-                        Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS))
-                        'Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS) / 2.0!)
-                        'Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS) / 2.0!)
-                        Dist = CalDistance(LonPort, LatPort, Longi, Lati, eDistanceType.NauticalMiles)
-                        minD(i, j) = Math.Min(Dist, minD(i, j))
-                    Else
-                        minD(i, j) = 0
-                    End If
+                    minD(iFleet, i, j) = Single.MaxValue
                 Next j
             Next i
-            'test the neighboring cells
-            'Calc8Dist i, j
-            'FindMinDistFor8Neighbors i, j
-        Next
+        Next iFleet
 
-        For i = 1 To m_Data.InRow
-            For j = 1 To m_Data.InCol
-                If minD(i, j) < Single.MaxValue Then Disti = minD(i, j) Else Disti = 0.0!
-                'If ActiveFleet = 0 Then    'Same for all fleets
-                For K = 0 To Me.EcoPathData.NumFleet
-                    'Port(K, i, j) = Port(0, i, j)
-                    Me.m_Data.Sail(K, i, j) = Disti
-                Next
-                'Else
-                'Sail(ActiveFleet, i, j) = IIf(Min(i, j) < 200000, Min(i, j), 0)
-                ''Next place zero sailing cost for non-coastal ports
-                'If Sail(ActiveFleet, i, j) < 0 And Depth(i, j) > 0 Then Sail(ActiveFleet, i, j) = 0
-                'End If
-            Next j
-        Next i
+        For iPort = 1 To Ports      'go port by port
+            ix = PortX(iPort)
+            iy = PortY(iPort)
+            LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS))
+            LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS))
+            For iFleet = 0 To Me.m_Data.nFleets
+                ' Is this fleet based in a this port?
+                If Me.m_Data.Port(iFleet, ix, iy) Then
+                    'LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS) / 2.0!)
+                    'LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS) / 2.0!)
+                    'Sail(AF, ix, iy) = 0
+                    For i = 1 To m_Data.InRow
+                        For j = 1 To m_Data.InCol
+                            If Me.EcoSpaceData.Depth(i, j) > 0 Then 'water cell
+                                Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS))
+                                Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS))
+                                'Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS) / 2.0!)
+                                'Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS) / 2.0!)
+                                Dist = CalDistance(LonPort, LatPort, Longi, Lati, eDistanceType.NauticalMiles)
+                                minD(iFleet, i, j) = Math.Min(Dist, minD(iFleet, i, j))
+                            Else
+                                minD(iFleet, i, j) = 0
+                            End If
+                        Next j
+                    Next i
+                    'test the neighboring cells
+                    'Calc8Dist i, j
+                    'FindMinDistFor8Neighbors i, j
+                End If
+            Next iFleet
+        Next iPort
 
-    End Sub
-
-    Public Sub CalculateCostOfSailingPerFleet()
-
-        Dim iRow As Integer
-        Dim iCol As Integer
-        Dim iFleet As Integer
-        Dim iPort As Integer
-        Dim ix As Integer
-        Dim iy As Integer
-        Dim Ports(Me.m_Data.nFleets) As Integer
-        Dim MaxPorts As Integer = 0
-        Dim minD(Me.m_Data.nFleets, m_Data.InRow, m_Data.InCol) As Single
-        Dim Lati As Single
-        Dim Longi As Single
-        Dim LatPort As Single
-        Dim LonPort As Single
-        Dim PortX(,) As Integer
-        Dim PortY(,) As Integer
-        Dim Disti As Single
-
-        If m_Data.IDH_SS <= 0 Then m_Data.IDH_SS = 2
-
-        ' Loop 1: determin 'all' ports layout and determine max no of ports
-        For iRow = 1 To m_Data.InRow
-            For iCol = 1 To m_Data.InCol
-                Me.m_Data.Port(0, iRow, iCol) = False
-                iFleet = 1
-                While (iFleet <= Me.m_Data.nFleets) And (Me.m_Data.Port(0, iRow, iCol) = False)
-                    ' Found a port?
-                    If Me.m_Data.Port(iFleet, iRow, iCol) = True Then
-                        Me.m_Data.Port(0, iRow, iCol) = True
-                        MaxPorts += 1
-                    End If
-                    iFleet += 1
-                End While
-            Next iCol
-        Next iRow
-
-        ReDim PortX(Me.m_Data.nFleets, MaxPorts)
-        ReDim PortY(Me.m_Data.nFleets, MaxPorts)
-
-        For iRow = 1 To m_Data.InRow
-            For iCol = 1 To m_Data.InCol
-                For iFleet = 0 To Me.m_Data.nFleets
-                    If Me.m_Data.Port(iFleet, iRow, iCol) = True Then
-                        Ports(iFleet) += 1
-                        PortX(iFleet, Ports(iFleet)) = iRow
-                        PortY(iFleet, Ports(iFleet)) = iCol
-                    End If
-                    ' Init MinD for this fleet cell
-                    minD(iFleet, iRow, iCol) = Single.MaxValue
-                Next
-            Next
-        Next
-
-        'OK now, there are ports
         For iFleet = 0 To Me.m_Data.nFleets
-
-            ' Determine min sailing cost per fleet across all ports
-            For iPort = 1 To Ports(iFleet)      'go port by port
-
-                ix = PortX(iFleet, iPort) : iy = PortY(iFleet, iPort)
-
-                LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS))
-                LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS))
-
-                For iRow = 1 To m_Data.InRow
-                    For iCol = 1 To m_Data.InCol
-
-                        ' Is water cell?
-                        If Me.EcoSpaceData.Depth(iRow, iCol) > 0 Then
-
-                            Longi = CSng(m_Data.Lon1 + (iRow / m_Data.IDH_SS))
-                            Lati = CSng(m_Data.Lat1 - (iCol / m_Data.IDH_SS))
-
-                            Dim Dist As Single = CalDistance(LonPort, LatPort, _
-                                                             Longi, Lati, _
-                                                             eDistanceType.NauticalMiles)
-                            minD(iFleet, iRow, iCol) = Math.Min(Dist, minD(iFleet, iRow, iCol))
-                        Else
-                            minD(iFleet, iRow, iCol) = 0
-                        End If
-                    Next iCol
-                Next iRow
-            Next
-
-            ' Update sailing cost map for this fleet
-            For iRow = 1 To m_Data.InRow
-                For iCol = 1 To m_Data.InCol
-                    If minD(iFleet, iRow, iCol) < Single.MaxValue Then
-                        Me.m_Data.Sail(iFleet, iRow, iCol) = minD(iFleet, iRow, iCol)
-                    Else
-                        Me.m_Data.Sail(iFleet, iRow, iCol) = Disti
-                    End If
-                Next iCol
-            Next iRow
+            For i = 1 To m_Data.InRow
+                For j = 1 To m_Data.InCol
+                    If minD(iFleet, i, j) < Single.MaxValue Then Disti = minD(iFleet, i, j) Else Disti = 0.0!
+                    Me.m_Data.Sail(iFleet, i, j) = Disti
+                Next j
+            Next i
         Next iFleet
 
     End Sub
