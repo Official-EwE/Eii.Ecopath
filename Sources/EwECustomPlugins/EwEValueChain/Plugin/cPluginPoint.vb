@@ -7,6 +7,7 @@ Imports System.Text
 Imports System.Reflection
 Imports System.Threading
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -21,9 +22,11 @@ Public Class cPluginPoint
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.ISearchPlugin
+    Implements EwEPlugin.IUIContextPlugin
 
 #Region " Privates "
 
+    Private m_uic As cUIContext = Nothing
     Private m_core As EwECore.cCore = Nothing
     Private m_bInitOK As Boolean = False
     Private m_form As frmMain = Nothing
@@ -150,6 +153,11 @@ Public Class cPluginPoint
 #End Region ' IPlugin
 
 #Region " GUI "
+
+    Public Sub UIContext(ByVal uic As Object) _
+        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Me.m_uic = DirectCast(uic, cUIContext)
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -713,6 +721,12 @@ Public Class cPluginPoint
     Public ReadOnly Property Core() As cCore
         Get
             Return Me.m_core
+        End Get
+    End Property
+
+    Public ReadOnly Property Context() As cUIContext
+        Get
+            Return Me.m_uic
         End Get
     End Property
 

@@ -63,6 +63,8 @@ Public Class ucResults
     Private m_model As cModel = Nothing
     ''' <summary>Instance of model results to reflect.</summary>
     Private m_result As cResults = Nothing
+    ''' <summary>UI context to operate on.</summary>
+    Private m_uic As cUIContext = Nothing
 
     ''' <summary>Viewmode dictates what type of result screen the user sees.</summary>
     Private m_viewMode As eViewModeType = eViewModeType.Ecosim
@@ -84,12 +86,7 @@ Public Class ucResults
 
 #Region " Constructor "
 
-    Public Sub New()
-        Me.InitializeComponent()
-        Debug.Assert(False, "Yo dude, it's not cool to use this constructor. Use the sacry-looking one with like all those parameters instead.")
-    End Sub
-
-    Public Sub New(ByVal data As cData, ByVal model As cModel, ByVal result As cResults)
+    Public Sub New(ByVal data As cData, ByVal model As cModel, ByVal result As cResults, ByVal uic As cUIContext)
 
         Me.InitializeComponent()
 
@@ -429,10 +426,10 @@ Public Class ucResults
                 ctrl = New ucEcopathTable()
 
             Case eViewModeType.Ecosim
-                ctrl = New ucEcosimGraph(Me.m_data)
+                ctrl = New ucEcosimGraph(Me.m_data, Me.m_uic)
 
             Case eViewModeType.Equilibrium
-                ctrl = New ucEquilibriumGraph()
+                ctrl = New ucEquilibriumGraph(Me.m_uic)
 
             Case Else
                 Debug.Assert(False, "View mode {0} not supported", viewMode.ToString())

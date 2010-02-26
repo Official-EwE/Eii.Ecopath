@@ -23,18 +23,13 @@ Public Class ucEcosimGraph
     Implements IResultView
     Implements IGraphView
 
-    Private m_uic As cUIContext = New cUIContext(cCore.GetInstance(), _
-                                                 cStyleGuide.GetInstance(), _
-                                                 cPropertyManager.getinstance(), _
-                                                 cCommandHandler.GetInstance())
     Private m_zgh As cZedGraphHelper = Nothing
     Private m_data As cData = Nothing
     Private m_aVars() As cResults.eVariableType = Nothing
 
-    Public Sub New(ByVal data As cData)
-
+    Public Sub New(ByVal data As cData, ByVal uic As cUIContext)
         Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.m_uic, Me)
+        Me.m_zgh.Attach(uic, Me)
         Me.m_data = data
         Me.PrepareGraph()
     End Sub

@@ -68,7 +68,7 @@ Public Class frmMain
             Case "ndDefaults"
                 Me.ShowForm(New ucDefaults(Me.m_plugin.Data))
             Case "ndRun"
-                Me.ShowForm(New ucResults(Me.m_plugin.Data, Me.m_plugin.Model, Me.m_plugin.Results))
+                Me.ShowForm(New ucResults(Me.m_plugin.Data, Me.m_plugin.Model, Me.m_plugin.Results, Me.m_plugin.Context))
         End Select
 
     End Sub

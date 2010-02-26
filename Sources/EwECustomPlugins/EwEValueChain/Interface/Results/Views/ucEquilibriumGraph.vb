@@ -23,16 +23,12 @@ Public Class ucEquilibriumGraph
     Implements IResultView
     Implements IGraphView
 
-    Private m_uic As cUIContext = New cUIContext(cCore.GetInstance(), _
-                                                 cStyleGuide.GetInstance(), _
-                                                 cPropertyManager.getinstance(), _
-                                                 cCommandHandler.GetInstance())
     Private m_zgh As cZedGraphHelper = Nothing
     Private m_aVars() As cResults.eVariableType = Nothing
 
-    Public Sub New()
+    Public Sub New(ByVal uic As cUIContext)
         Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.m_uic, Me)
+        Me.m_zgh.Attach(uic, Me)
         Me.PrepareGraph()
     End Sub
 
