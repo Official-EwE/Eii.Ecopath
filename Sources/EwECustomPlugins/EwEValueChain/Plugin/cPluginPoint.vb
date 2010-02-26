@@ -214,8 +214,6 @@ Public Class cPluginPoint
             If Not Me.HasInterface() Then
                 ' #No: create it
                 Me.m_form = New frmMain(Me, Me.ControlText)
-                Me.m_form.Text = Me.ControlText
-                Me.m_form.TabText = Me.ControlText
             End If
 
             ' JS 04may09: do not show form; the loading framework is responsible for this
