@@ -20,7 +20,6 @@ Namespace Ecosim
 
 #Region " Private vars "
 
-        Private m_core As EwECore.cCore = Nothing
         Private m_mcmanager As cMonteCarloManager = Nothing
         Private m_plothelper As cEcosimOutputPlotHelper = Nothing
 
@@ -55,20 +54,7 @@ Namespace Ecosim
 
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
             Me.InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
-            Me.m_core = cCore.GetInstance
-            Me.m_mcmanager = Me.m_core.EcosimMonteCarlo
-            Me.m_mcmanager.Load()
-
-            'set the call back delegates for the monte carlo trials and ecopath iteration
-            Me.m_mcmanager.MonteCarloStepHandler = AddressOf MonteCarloStepHandler
-            Me.m_mcmanager.MonteCarloEcopathStepHandler = AddressOf Me.MonteCarloEcopathStepHandler
-            Me.m_mcmanager.MonteCarloCompletedHandler = AddressOf Me.MonteCarloCompletedHandler
-            Me.m_mcmanager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
-            Me.m_mcmanager.SyncObject = Me
 
         End Sub
 
@@ -78,11 +64,18 @@ Namespace Ecosim
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            ' Set via designer
-            'm_gridB.DisplayInputValue = eMCRunDisplayInputValueTypes.B
-            'm_gridPB.DisplayInputValue = eMCRunDisplayInputValueTypes.PB
-            'm_gridEE.DisplayInputValue = eMCRunDisplayInputValueTypes.EE
-            'm_gridBA.DisplayInputValue = eMCRunDisplayInputValueTypes.BA
+            If (Me.UIContext Is Nothing) Then Return
+
+            ' Add any initialization after the InitializeComponent() call.
+            Me.m_mcmanager = Me.Core.EcosimMonteCarlo
+            Me.m_mcmanager.Load()
+
+            'set the call back delegates for the monte carlo trials and ecopath iteration
+            Me.m_mcmanager.MonteCarloStepHandler = AddressOf MonteCarloStepHandler
+            Me.m_mcmanager.MonteCarloEcopathStepHandler = AddressOf Me.MonteCarloEcopathStepHandler
+            Me.m_mcmanager.MonteCarloCompletedHandler = AddressOf Me.MonteCarloCompletedHandler
+            Me.m_mcmanager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
+            Me.m_mcmanager.SyncObject = Me
 
             Me.m_fpNumTrials = New cEwEFormatProvider(Me.nudNumTrials, GetType(Integer))
             Me.m_fpNumTrials.Value = m_mcmanager.nTrials
@@ -132,12 +125,12 @@ Namespace Ecosim
             Me.m_cmdLoadTS = Me.CommandHandler.GetCommand("LoadTimeSeries")
             If Me.m_cmdLoadTS IsNot Nothing Then Me.m_cmdLoadTS.AddControl(Me.btnTS)
 
-            Me.m_propNYears = New cSingleProperty(m_core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears)
+            Me.m_propNYears = New cSingleProperty(Me.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears)
             AddHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
 
             Debug.Assert(Me.m_cmdLoadTS IsNot Nothing, "Command failed to load.")
 
-            Me.m_lbGroups.Attach(Me.m_core, cStyleGuide.GetInstance())
+            Me.m_lbGroups.Attach(Me.Core, Me.StyleGuide)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
             Me.PopulateGroupBox()
@@ -295,9 +288,9 @@ Namespace Ecosim
             Try
 
                 ' Store results
-                For iGroup As Integer = 1 To Me.m_core.nLivingGroups
+                For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     ppl = Me.m_lpplIteration(iGroup - 1)
-                    ppl.Add(New PointPair(Me.m_core.EcosimFirstYear + CInt(lTime), results.Biomass(iGroup)))
+                    ppl.Add(New PointPair(Me.Core.EcosimFirstYear + CInt(lTime), results.Biomass(iGroup)))
                 Next
 
             Catch ex As Exception
@@ -354,11 +347,11 @@ Namespace Ecosim
         Private Sub m_cmdRunMonteCarlo_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
             Handles m_cmdRunMonteCarlo.OnUpdate
 
-            cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() And _
-                          Me.m_core.HasAppliedTimeSeries() And _
+            cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded() And _
+                          Me.Core.HasAppliedTimeSeries() And _
                           Not Me.m_mcmanager.isRunning
 
-            If m_core.HasAppliedTimeSeries() Then
+            If Me.Core.HasAppliedTimeSeries() Then
                 ' JS 11dec07: is this necessary?
                 Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
             End If
@@ -408,8 +401,8 @@ Namespace Ecosim
         End Sub
 
         Private Sub UpdateGraphXAxis()
-            Me.m_graph.GraphPane.XAxis.Scale.Min = Me.m_core.EcosimFirstYear
-            Me.m_graph.GraphPane.XAxis.Scale.Max = Me.m_core.EcoSimModelParameters.NumberYears + Me.m_core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Min = Me.Core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Max = Me.Core.EcoSimModelParameters.NumberYears + Me.Core.EcosimFirstYear
             Me.m_graph.AxisChange()
         End Sub
 
@@ -450,10 +443,10 @@ Namespace Ecosim
             'Me.m_lbGroups.SuspendLayout()
             'Me.m_lbGroups.Items.Clear()
 
-            'For iGroup As Integer = 1 To m_core.nLivingGroups
+            'For iGroup As Integer = 1 To Me.Core.nLivingGroups
 
             '    ' #Yes: add group to the list of options
-            '    group = Me.m_core.EcoPathGroupInputs(iGroup)
+            '    group = Me.Core.EcoPathGroupInputs(iGroup)
             '    gi = New cGroupListBox.cGroupItem(group)
             '    Me.m_lbGroups.Items.Add(gi)
 
@@ -478,15 +471,15 @@ Namespace Ecosim
 
             If (Me.m_mcmanager.bShowPlot = True) Then
 
-                For iGroup As Integer = 1 To Me.m_core.nLivingGroups
+                For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     Me.m_lpplIteration.Add(New PointPairList())
                 Next
 
 
                 Dim group As cEcoPathGroupInput = Nothing
-                For iGroup As Integer = 1 To Me.m_core.nLivingGroups
+                For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     ' Get the ecopath group
-                    group = Me.m_core.EcoPathGroupInputs(iGroup)
+                    group = Me.Core.EcoPathGroupInputs(iGroup)
 
                     Me.m_plothelper.AddLine(group.Name, iGroup, _
                                             eLineType.Value, ePlotData.Biomass, _

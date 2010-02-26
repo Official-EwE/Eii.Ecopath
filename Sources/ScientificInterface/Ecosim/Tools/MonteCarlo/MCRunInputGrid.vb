@@ -17,7 +17,6 @@ Namespace Ecosim
         : Inherits EwEGrid
 
         Private m_value As eMCRunDisplayInputValueTypes = 0
-        Private m_core As cCore = Nothing
         Private m_mcmanager As cMonteCarloManager = Nothing
 
         Public Sub New()
@@ -29,19 +28,25 @@ Namespace Ecosim
                 Return m_value
             End Get
             Set(ByVal value As eMCRunDisplayInputValueTypes)
-                Me.m_core = cCore.GetInstance()
-                Me.m_mcmanager = m_core.EcosimMonteCarlo
                 Me.m_value = value
                 Me.RefreshContent()
+            End Set
+        End Property
+
+        Public Overrides Property UIContext() As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_mcmanager = value.Core.EcosimMonteCarlo
+                MyBase.UIContext = value
             End Set
         End Property
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
-            If Me.m_core Is Nothing Then Return
-
-            Me.Redim(m_core.nLivingGroups + 1, 6)
+            Me.Redim(Me.Core.nLivingGroups + 1, 6)
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
             Me(0, 2) = New EwEColumnHeaderCell(My.Resources.MCRUN_HEADER_CV)
@@ -53,8 +58,6 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Sub FillData()
-
-            If Me.m_core Is Nothing Then Return
 
             Select Case m_value
                 Case eMCRunDisplayInputValueTypes.B
@@ -76,7 +79,7 @@ Namespace Ecosim
             Dim mcGrp As cCoreGroupBase = Nothing
             'Dim mcGroup As cMonteCarloGroup = Nothing
 
-            For i As Integer = 1 To m_core.nLivingGroups
+            For i As Integer = 1 To Me.Core.nLivingGroups
                 mcGrp = m_mcmanager.Groups(i)
                 Me(i, 0) = New EwERowHeaderCell(mcGrp.Index)
                 Me(i, 1) = New EwERowHeaderCell(mcGrp.Name)
