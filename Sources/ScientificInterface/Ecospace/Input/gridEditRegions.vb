@@ -665,7 +665,7 @@ Namespace Ecospace
         ''' Create a new region.
         ''' </summary>
         ''' <returns>
-        ''' The created <see cref="RegionInfo">region</see>.
+        ''' The created <see cref="cRegionInfo">region</see>.
         ''' </returns>
         ''' -------------------------------------------------------------------
         Private Function CreateRegion(ByVal strName As String, Optional ByVal bUpdate As Boolean = True) As cRegionInfo
