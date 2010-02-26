@@ -94,7 +94,8 @@ Public Class cEwENetworkAnalysisPlugin
     ''' </summary>
     ''' <param name="core"></param>
     ''' <remarks></remarks>
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(ByVal core As Object) _
+        Implements EwEPlugin.IPlugin.Initialize
 
         Debug.Assert(TypeOf core Is EwECore.cCore, Me.ToString & ".Initialize() argument core is not a cCore object.")
         m_bInitOK = False
@@ -203,7 +204,8 @@ Public Class cEwENetworkAnalysisPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property ControlText() As String _
+        Implements EwEPlugin.IGUIPlugin.ControlText
         Get
             Return "Network analysis"
         End Get
@@ -215,7 +217,8 @@ Public Class cEwENetworkAnalysisPlugin
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks>This will handle click events from all interface controls</remarks>
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef f As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef f As Windows.Forms.Form) _
+        Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         'Interface item has been clicked
         'Show the Main Network interface
@@ -224,6 +227,9 @@ Public Class cEwENetworkAnalysisPlugin
             ' Create form when not ready
             If Not Me.HasUI() Then
                 Me.m_frmNA = New frmNetworkAnalysis(m_manager, Me.m_uic)
+                ' Make sure not to confuse Scientific Interface
+                Me.m_frmNA.Text = Me.ControlText
+                Me.m_frmNA.TabText = Me.ControlText
             End If
 
             ' JS 05may09: do not show form; the loading framework should take care of this
@@ -247,19 +253,22 @@ Public Class cEwENetworkAnalysisPlugin
 
     End Sub
 
-    Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation() As String _
+        Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
     End Property
 
-    Public ReadOnly Property ControlTooltipText() As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText() As String _
+        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
             Return ""
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState() As eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState() As eCoreExecutionState _
+        Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.EcopathCompleted
         End Get
