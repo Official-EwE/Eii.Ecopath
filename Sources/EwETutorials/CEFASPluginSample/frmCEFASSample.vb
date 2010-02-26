@@ -64,4 +64,9 @@
         Me.UpdateInterface()
     End Sub
 
+    Friend Sub onEcosimRunStarted()
+        'new run has started clear the results list
+        Me.lstTimesteps.Items.Clear()
+    End Sub
+
 End Class

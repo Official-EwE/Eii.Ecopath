@@ -9,8 +9,7 @@ Public Class cCEFASPluginPoint
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IEcosimSubTimestepsPlugin
     Implements EwEPlugin.IEcosimRunCompletedPlugin
-
-
+    Implements EwEPlugin.IEcosimRunInitializedPlugin
 
 #Region " Private Variables "
     Private m_core As EwECore.cCore
@@ -21,9 +20,6 @@ Public Class cCEFASPluginPoint
     Private m_EcopathDS As cEcopathDataStructures
     Private m_EcosimDS As cEcosimDatastructures
     Private m_EcospaceDS As cEcospaceDataStructures
-
-    Private sumIncrease As Single
-
 #End Region
 
 #Region "Plugin Requirements"
@@ -163,9 +159,21 @@ Public Class cCEFASPluginPoint
 
 #Region "Timestep and RunCompleted plugin points"
 
+    ''' <summary>
+    ''' Plugin Point called when Ecosim has started a new run
+    ''' </summary>
+    ''' <param name="EcosimDatastructures"></param>
+    ''' <remarks></remarks>
+    Public Sub EcosimRunInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+        'tell the interface a new run has started
+        If Me.HasInterface(Me.m_CEFASForm) Then
+            Me.m_CEFASForm.onEcosimRunStarted()
+        End If
+    End Sub
+
 
     ''' <summary>
-    ''' Plugin Point called when Ecosim has completed a time step
+    ''' Plugin Point called when Ecosim has completed a monthly time step
     ''' </summary>
     Private Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer, ByVal Ecosimresults As Object) Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
@@ -259,12 +267,12 @@ Public Class cCEFASPluginPoint
     Public Sub EcosimSubTimeStepBegin(ByRef BiomassAtTimestep() As Single, ByVal TimeInYears As Single, ByVal DeltaT As Single, ByVal SubTimestepIndex As Integer, ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimSubTimestepsPlugin.EcosimSubTimeStepBegin
 
         Try
-
+            Dim simdata As cEcosimDatastructures = DirectCast(EcosimDatastructures, cEcosimDatastructures)
             'Any changes made to BiomassAtTimestep(ngroups) will be use for the next times step
             For igrp As Integer = 1 To Me.EcosimDS.nGroups
-                If Me.EcopathDS.PP(igrp) > 0 Then
+                If Me.EcopathDS.PP(igrp) = 1 Then
                     'increase biomass of primary producers by some fixed amount per year
-                    BiomassAtTimestep(igrp) += Me.EcopathDS.B(igrp) * 0.5F * DeltaT
+                    BiomassAtTimestep(igrp) = Me.EcopathDS.B(igrp) + Me.EcopathDS.B(igrp) * 0.1F * (Int(TimeInYears) + 1)
                 End If
             Next
 
@@ -302,5 +310,5 @@ Public Class cCEFASPluginPoint
 
 #End Region
 
-  
+
 End Class
