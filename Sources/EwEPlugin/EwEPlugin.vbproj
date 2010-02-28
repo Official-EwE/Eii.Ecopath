@@ -92,6 +92,7 @@
     <Compile Include="Plugin templates\Ecosim\IEcosimRecruitmentPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimBeginTimestepPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimSubTimestepsPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceCalcCostOfSailingPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceBeginTimestepPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceEndTimestepPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceLayerExchangePlugin.vb" />

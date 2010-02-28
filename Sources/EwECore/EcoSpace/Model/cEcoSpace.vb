@@ -4956,6 +4956,14 @@ exitline:
     'End Sub
 
     Public Sub CalculateCostOfSailing()
+
+        If (Me.m_pluginManager IsNot Nothing) Then
+            If Me.m_pluginManager.EcospaceCalculateCostOfSailing(Me.m_Data, Me.m_Data.Depth, Me.m_Data.Port, Me.m_Data.Sail) Then
+                ' Done, overruled
+                Return
+            End If
+        End If
+
         Dim i As Integer
         Dim ix As Integer
         Dim iy As Integer
