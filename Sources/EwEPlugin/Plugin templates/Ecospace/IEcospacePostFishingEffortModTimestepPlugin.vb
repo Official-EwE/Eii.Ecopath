@@ -1,14 +1,9 @@
-'==============================================================================
-'
-' $Log: IEcospacePostFishingEffortModTimestepPlugin.vb,v $
-' Revision 1.1  2008/09/26 07:31:07  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2008/09/04 06:42:48  sherman
-' Added IEcospacePostFishingEffortModTimestepPlugin
-'
-'==============================================================================
-
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Interface for extending the Ecospace fishing effort logic. Plug-ins of this
+''' type are invoked as soon as Ecospace fishing effort has been calculated.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Interface IEcospacePostFishingEffortModTimestepPlugin
     Inherits IPlugin
 

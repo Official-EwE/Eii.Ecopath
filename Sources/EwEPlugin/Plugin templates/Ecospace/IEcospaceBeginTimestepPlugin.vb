@@ -1,18 +1,13 @@
-'==============================================================================
-'
-' $Log: IEcospaceBeginTimestepPlugin.vb,v $
-' Revision 1.1  2008/09/26 07:31:07  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/06/27 02:33:15  jeroens
-' Added header
-'
-'==============================================================================
-
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Interface for extending the Ecospace begin time step logic. Plug-ins of this
+''' type are invoked as soon as the EwE Core is about to begin its calculatios
+''' of an Ecospace time step.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Interface IEcospaceBeginTimestepPlugin
     Inherits IPlugin
 
     Sub EcospaceBeginTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer)
-
 
 End Interface

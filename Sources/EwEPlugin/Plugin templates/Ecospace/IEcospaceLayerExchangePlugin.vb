@@ -1,19 +1,8 @@
-'==============================================================================
-'
-' $Log: IEcospaceLayerExchangePlugin.vb,v $
-' Revision 1.1  2008/10/28 02:45:19  jeroens
-' Initial version
-'
-'==============================================================================
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Interface to allow plug-ins to access the content of individual Ecospace layers
 ''' during Ecospace execution.
 ''' </summary>
-''' <remarks>
-''' All layer objects exposed in the 
-''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Interface IEcospaceLayerExchangePlugin
     Inherits IPlugin
