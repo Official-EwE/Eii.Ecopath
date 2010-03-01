@@ -247,7 +247,9 @@ Public Class frmEwE
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnLoad(ByVal e As EventArgs)
         MyBase.OnLoad(e)
-        Me.UIContext.FormPositionSettings.Apply(Me)
+        If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) Then
+            Me.UIContext.FormPositionSettings.Apply(Me)
+        End If
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -256,7 +258,9 @@ Public Class frmEwE
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
-        Me.UIContext.FormPositionSettings.Store(Me)
+        If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) Then
+            Me.UIContext.FormPositionSettings.Store(Me)
+        End If
         Me.CoreComponents = Nothing
         MyBase.OnFormClosed(e)
     End Sub
