@@ -809,6 +809,7 @@ Namespace Ecosim
                     For irk4 As Integer = 1 To Me.m_Data.StepsPerMonth
 
                         If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimSubTimestepBegin(BB, t, DeltaT, irk4, m_Data)
+                        'System.Console.WriteLine("t = " & t.ToString & ", Grp 50 = " & BB(50).ToString)
                         'update stanza groups on the last iteration
                         Dim UpdateStanza As Boolean = (irk4 = Me.m_Data.StepsPerMonth)
                         rk4(BB, nvar, t, DeltaT, UpdateStanza)
@@ -817,6 +818,8 @@ Namespace Ecosim
                         If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimSubTimestepEnd(BB, t, DeltaT, irk4, m_Data)
 
                     Next irk4
+
+
 
                     ' cLog.WriteArrayToFile("b EwE6.csv", BB, itime.ToString)
 
@@ -1186,8 +1189,8 @@ Namespace Ecosim
 
             'only update biomass for stanza groups and Ftime() on the last sub timestep
             If UpdateStanzaGroups Then
-                'monthly averaged value are temporary
-                'SplitUpdate(,,) updates Biomass in the last argument BtoUpdate
+
+                'SplitUpdate(,,) updates Biomass of the current timestep via the last B(ngroups) argument
                 SplitUpdate(Me.BBAvg, Me.LossAvg, B)
 
                 For i = 1 To nGroups 'N
