@@ -272,7 +272,7 @@ Public Class cCEFASPluginPoint
             For igrp As Integer = 1 To Me.EcosimDS.nGroups
                 If Me.EcopathDS.PP(igrp) = 1 Then
                     'increase biomass of primary producers by some fixed amount per year
-                    BiomassAtTimestep(igrp) = Me.EcopathDS.B(igrp) + Me.EcopathDS.B(igrp) * 0.1F * (Int(TimeInYears) + 1)
+                    BiomassAtTimestep(igrp) = Me.EcopathDS.B(igrp) + Me.EcopathDS.B(igrp) * 0.1F * (TimeInYears + 1)
                 End If
             Next
 
