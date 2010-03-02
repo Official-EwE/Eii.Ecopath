@@ -290,6 +290,10 @@ Namespace MSE
 
 
         Public Function ValidateRun() As Boolean
+
+            ' Should this method not use Feedback messages where the user can opt to
+            ' cancel the run if data is going to get affected too much?
+
             Dim bOK As Boolean = True
             'If using Quota regulations and any type of effort
             'make sure there is at least one type of Quota Option set
@@ -360,7 +364,8 @@ Namespace MSE
                 For iflt As Integer = 0 To Me.m_core.nFleets - 1
                     Dim effShp As cForcingFunction
                     effShp = Me.m_core.FishingEffortShapeManager.Item(iflt)
-                    If effShp.Mean < 10 Then
+                    ' JS 02Mar10: Only consider fleets with quota options set
+                    If (effShp.Mean < 10) And (m_core.m_QuotaData.QuotaType(iflt) <> eQuotaTypes.NotUsed) Then
                         fleets = fleets & "'" & effShp.Name & "', "
                     End If
                 Next
