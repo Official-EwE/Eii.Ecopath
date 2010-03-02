@@ -134,25 +134,25 @@
     <value>False</value>
   </metadata>
   <data name="m_tssFile1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 6</value>
+    <value>216, 6</value>
   </data>
   <metadata name="m_tssFile2.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
   <data name="m_tssFile2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 6</value>
+    <value>216, 6</value>
   </data>
   <metadata name="m_tssFile3.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
   <data name="m_tssFile3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 6</value>
+    <value>216, 6</value>
   </data>
   <metadata name="m_tssFile4.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
   <data name="m_tssFile4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 6</value>
+    <value>216, 6</value>
   </data>
   <metadata name="m_tssView1.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -397,7 +397,7 @@
     <value>&amp;Options...</value>
   </data>
   <data name="m_tsmiFileExit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="m_tsmiFileExit.Text" xml:space="preserve">
     <value>E&amp;xit</value>
@@ -406,7 +406,7 @@
     <value>Ctrl+N</value>
   </data>
   <data name="m_tsmiFileNew.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="m_tsmiFileNew.Text" xml:space="preserve">
     <value>&amp;New Model...</value>
@@ -418,13 +418,13 @@
     <value>Ctrl+O</value>
   </data>
   <data name="m_tsmiFileOpen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="m_tsmiFileOpen.Text" xml:space="preserve">
     <value>&amp;Open Model...</value>
   </data>
   <data name="m_tsmiFileClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="m_tsmiFileClose.Text" xml:space="preserve">
     <value>&amp;Close Model</value>
@@ -433,22 +433,22 @@
     <value>Ctrl+S</value>
   </data>
   <data name="m_tsmiFileSave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="m_tsmiFileSave.Text" xml:space="preserve">
     <value>&amp;Save Model</value>
   </data>
   <data name="m_tsmiFileSaveAs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="m_tsmiFileSaveAs.Text" xml:space="preserve">
     <value>Save Model &amp;As...</value>
   </data>
   <data name="m_tsmiFileCompact.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="m_tsmiFileCompact.Text" xml:space="preserve">
-    <value>&amp;Compact...</value>
+    <value>&amp;Compact Model Database...</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tsmiNone.Enabled" type="System.Boolean, mscorlib">
@@ -461,7 +461,7 @@
     <value>(none)</value>
   </data>
   <data name="m_tsmiFileRecent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="m_tsmiFileRecent.Text" xml:space="preserve">
     <value>&amp;Recent Models</value>
@@ -785,7 +785,7 @@
     <value>m_ssMain</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
-    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.7.214, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.7.302, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -5760,9 +5760,6 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAHAADAAwAAwAMAAMADAACAAQAAgAEAAAABAAAAAAAAAAAAAAAB
         AACAAQAAgAEAAMADAADABwAA8A8AAPw/AAA=
 </value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Ecopath with Ecosim 6</value>
