@@ -57,6 +57,36 @@ Namespace Database
             Database
         End Enum
 
+        Private Class cCell
+            Private m_x As Integer
+            Private m_y As Integer
+            Private m_value As Object
+            Public Sub New(ByVal x As Integer, ByVal y As Integer)
+                Me.m_x = x
+                Me.m_y = y
+            End Sub
+            Public Property Value() As Object
+                Get
+                    Return Me.m_value
+                End Get
+                Set(ByVal value As Object)
+                    Me.m_value = value
+                End Set
+            End Property
+
+            Public ReadOnly Property X() As Integer
+                Get
+                    Return Me.m_x
+                End Get
+            End Property
+
+            Public ReadOnly Property Y() As Integer
+                Get
+                    Return Me.m_y
+                End Get
+            End Property
+
+        End Class
         ''' <summary>EWE5 NULL value.</summary>
         Private Const cEWE5_NULL As Integer = -90
 
@@ -3638,7 +3668,7 @@ Namespace Database
             Dim nRows As Integer = 0
             Dim nCols As Integer = 0
 
-            Dim lptPort As New List(Of Drawing.Point)
+            Dim lPortCells As New List(Of cCell)
 
             ' Generate an Ecospace fleet entry for every Ecopath fleet
             Dim dtEcopathFleets As Dictionary(Of String, Integer) = Me.m_adtKeys(CInt(eDataTypes.FleetInput))
@@ -3706,7 +3736,7 @@ Namespace Database
                                     For iCol As Integer = 1 To nCols
                                         If (iCell < astrPort.Length) Then
                                             If (astrPort(iCell) = "1") Then
-                                                lptPort.Add(New Drawing.Point(iCol, iRow))
+                                                lPortCells.Add(New cCell(iCol, iRow))
                                             End If
                                             iCell += 1
                                         End If
@@ -3722,7 +3752,7 @@ Namespace Database
                                     If readerSub IsNot Nothing Then
                                         While readerSub.Read()
                                             If CInt(Me.FixValue(readerSub, "Port", "0")) = 1 Then
-                                                lptPort.Add(New Drawing.Point(Math.Min(nRows, CInt(reader("InCol"))), Math.Min(nCols, CInt(reader("InRow")))))
+                                                lPortCells.Add(New cCell(Math.Min(nRows, CInt(reader("InCol"))), Math.Min(nCols, CInt(reader("InRow")))))
                                             End If
                                         End While
                                         Me.m_dbEwE5.ReleaseReader(readerSub)
@@ -3734,13 +3764,13 @@ Namespace Database
                                 End Try
                             End If
 
-                            For Each pt As Drawing.Point In lptPort
+                            For Each cell As cCell In lPortCells
 
                                 drow = writerFishMap.NewRow()
                                 drow("ScenarioID") = iScenarioID
                                 drow("FleetID") = iFleetID
-                                drow("InRow") = pt.Y
-                                drow("InCol") = pt.X
+                                drow("InRow") = cell.Y
+                                drow("InCol") = cell.X
                                 drow("PortID") = 1
                                 Try
                                     writerFishMap.AddRow(drow)
@@ -3748,7 +3778,9 @@ Namespace Database
                                     ' NOP: data is a duplicate, simply ignore it
                                 End Try
 
-                            Next pt
+                            Next cell
+                            ' Erase port cells for next fleet
+                            lPortCells.Clear()
 
                             ' Write GearHab flag field to proper table combining (ScenarioID, FleetID, HabitatID)
                             strFlags = CStr(Me.FixValue(reader, "GearHab", ""))
