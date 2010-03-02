@@ -5008,6 +5008,9 @@ Public Class cCore
             Return True
         End If
 
+        ' Restore active scenario ID
+        Me.m_EcoPathData.ActiveEcosimScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID)
+
         ' Report failure
         Me.SendEcosimSaveStateMessage(Me.m_EcoPathData.EcosimScenarioName(Me.m_EcoPathData.ActiveEcosimScenario), False, _
                 My.Resources.CoreMessages.GENERIC_SAVE_RESOLUTION)
@@ -5060,9 +5063,13 @@ Public Class cCore
             Return True
         End If
 
+        ' Restore active scenario ID
+        Me.m_EcoPathData.ActiveEcosimScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID)
+
         ' Report failure
         Me.SendEcosimSaveStateMessage(strName, False)
         Return False
+
     End Function
 
     ''' <summary>
@@ -9308,6 +9315,9 @@ Public Class cCore
             Return True
         End If
 
+        ' Restore active scenario ID
+        Me.m_EcoPathData.ActiveEcotracerScenario = Array.IndexOf(Me.m_EcoPathData.EcotracerScenarioDBID, iScenarioID)
+
         ' Report failure
         SendEcotracerSaveStateMessage(Me.m_EcoPathData.EcotracerScenarioName(Me.ActiveEcotracerScenarioIndex), False, _
                 My.Resources.CoreMessages.GENERIC_SAVE_RESOLUTION)
@@ -9360,9 +9370,13 @@ Public Class cCore
             Return True
         End If
 
-        '' Report failure
-        'Me.SendEcotracerSaveStateMessage(strName, False)
+        ' Restore active scenario ID
+        Me.m_EcoPathData.ActiveEcotracerScenario = Array.IndexOf(Me.m_EcoPathData.EcotracerScenarioDBID, iScenarioID)
+
+        ' Report failure
+        Me.SendEcotracerSaveStateMessage(strName, False)
         Return False
+
     End Function
 
     ''' <summary>
