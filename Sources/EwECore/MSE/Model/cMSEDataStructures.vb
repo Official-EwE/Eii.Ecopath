@@ -159,7 +159,7 @@ Public Class cMSEDataStructures
                    ByVal ESdata As cEcosimDatastructures, _
                    ByVal QuotaData As cQuotaDataStructures)
         Me.NTrials = 10 'default number of trials
-        Me.EffortMode = eMSEEffortMode.PredictUseQuota
+        Me.EffortMode = eMSEEffortMode.TrackUseQuota
         Me.StopRun = False
         Me.m_EPData = EPdata
         Me.m_ESData = ESdata
