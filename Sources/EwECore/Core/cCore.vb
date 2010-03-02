@@ -5329,8 +5329,8 @@ Public Class cCore
 
                 'see EwE5 CalculateSimSpaceResults
                 m_EcoSimData.getSummaryCostByCatch(iFlt, sVal, endVal)
-                fleet.CostStart = sVal * (m_EcoPathData.cost(iFlt, 2) + m_EcoPathData.cost(iFlt, 3)) + m_EcoPathData.cost(iFlt, 1)
-                fleet.CostEnd = endVal * (m_EcoPathData.cost(iFlt, 2) + m_EcoPathData.cost(iFlt, 3)) + m_EcoPathData.cost(iFlt, 1)
+                fleet.CostStart = sVal * (m_EcoPathData.cost(iFlt, eCostIndex.CUPE) + m_EcoPathData.cost(iFlt, eCostIndex.Sail)) + m_EcoPathData.cost(iFlt, eCostIndex.Fixed)
+                fleet.CostEnd = endVal * (m_EcoPathData.cost(iFlt, eCostIndex.CUPE) + m_EcoPathData.cost(iFlt, eCostIndex.Sail)) + m_EcoPathData.cost(iFlt, eCostIndex.Fixed)
 
                 fleet.Effort = 0.0F
                 If sVal <> 0 Then

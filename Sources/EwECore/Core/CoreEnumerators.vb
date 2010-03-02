@@ -411,9 +411,9 @@ End Enum
 ''' ---------------------------------------------------------------------------
 Friend Enum eCostIndex
     Profit = 0
-    Fixed
-    CUPE
-    Sail
+    Fixed = 1
+    CUPE = 2
+    Sail = 3
 End Enum
 
 #End Region

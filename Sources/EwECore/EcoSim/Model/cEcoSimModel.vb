@@ -4087,7 +4087,7 @@ Namespace Ecosim
                     ' TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * m_EPData.PropLanded(ig, i)
                     TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * Me.m_Quota.PropLandedTime(ig, i)
                 Next
-                TotCost = m_Data.FishRateGear(ig, t) * (m_EPData.cost(ig, 2) + m_EPData.cost(ig, 3))
+                TotCost = m_Data.FishRateGear(ig, t) * (m_EPData.cost(ig, eCostIndex.CUPE) + m_EPData.cost(ig, eCostIndex.Sail))
                 CurrentProfit(ig) = TotIncome - TotCost
                 'If CurrentProfit(ig) <> CurrentProfit(ig) Then Stop
                 If CurrentProfit(ig) < 0 Then CurrentProfit(ig) = 0

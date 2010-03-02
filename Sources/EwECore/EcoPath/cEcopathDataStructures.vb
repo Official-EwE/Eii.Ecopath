@@ -798,8 +798,8 @@ Public Class cEcopathDataStructures
         Fixed = 0
         Variab = 0
         For Gear = 1 To NumFleet
-            Fixed = Fixed + cost(Gear, 1)
-            Variab = Variab + cost(Gear, 2) + cost(Gear, 3)
+            Fixed = Fixed + cost(Gear, eCostIndex.Fixed)
+            Variab = Variab + cost(Gear, eCostIndex.CUPE) + cost(Gear, eCostIndex.Sail)
         Next
 
     End Sub

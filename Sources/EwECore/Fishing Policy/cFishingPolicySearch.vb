@@ -1587,7 +1587,7 @@ endline:    ' '
                 SumGro = 0
                 nch = 0
                 For i = 1 To m_searchData.NumFleets
-                    tcost = (epdata.cost(i, 2) + epdata.cost(i, 3)) * Math.Exp(X(i)) + CostToI(i) + 0.0000000001
+                    tcost = (epdata.cost(i, eCostIndex.CUPE) + epdata.cost(i, eCostIndex.Sail)) * Math.Exp(X(i)) + CostToI(i) + 0.0000000001
                     tincome = BaseIncome(i) + PropToPlaintiff * PaidToJ(i) + 0.0000000001
 
                     Profitability(i) = (tincome - tcost) / tincome - m_searchData.TargetProfitability(i)

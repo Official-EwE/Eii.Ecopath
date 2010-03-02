@@ -3057,7 +3057,7 @@ exitline:
             TotAttract = 0.0000000001
 
             'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
-            If m_EPdata.cost(ig, 2) + m_EPdata.cost(ig, 3) = 0 Then
+            If m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail) = 0 Then
                 EffortCost = 0
                 SailCost = 1
                 If NoSailing = False Then
@@ -3066,8 +3066,8 @@ exitline:
                     NoSailing = True
                 End If
             Else
-                EffortCost = m_EPdata.cost(ig, 2) / (m_EPdata.cost(ig, 1) + m_EPdata.cost(ig, 2) + m_EPdata.cost(ig, 3))
-                SailCost = m_EPdata.cost(ig, 3) / (m_EPdata.cost(ig, 1) + m_EPdata.cost(ig, 2) + m_EPdata.cost(ig, 3))
+                EffortCost = m_EPdata.cost(ig, eCostIndex.CUPE) / (m_EPdata.cost(ig, eCostIndex.Fixed) + m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail))
+                SailCost = m_EPdata.cost(ig, eCostIndex.Sail) / (m_EPdata.cost(ig, eCostIndex.Fixed) + m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail))
             End If
 
             For i = 1 To m_Data.InRow
