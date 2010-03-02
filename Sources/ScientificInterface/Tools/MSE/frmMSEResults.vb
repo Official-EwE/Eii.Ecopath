@@ -24,6 +24,8 @@ Public Class frmMSEResults
         Me.rbFleet.Tag = ScientificInterface.gridRiskResults.eGridType.Fleet
         Me.rbGroup.Tag = ScientificInterface.gridRiskResults.eGridType.Group
 
+        Me.Grid.UIContext = Me.UIContext
+
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE}
 
         AddHandler Me.m_EventSource.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged

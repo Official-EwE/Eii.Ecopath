@@ -39,6 +39,7 @@ Public Class gridRiskResults
 
     Public Overloads Sub Update()
         MyBase.Update()
+        If Me.UIContext Is Nothing Then Return
         Try
             Me.InitStyle()
             Me.FillData()
