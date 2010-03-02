@@ -6282,8 +6282,6 @@ Public Class cDBDataSource
 
         iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(iScenario))
 
-        bSucces = Me.m_db.BeginTransaction()
-
         Try
 
             writer = Me.m_db.GetWriter("EcospaceScenario")
@@ -6335,12 +6333,6 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.SaveEcospaceFleets(idm)
         bSucces = bSucces And Me.SaveEcospaceBasemap(idm)
         bSucces = bSucces And Me.SaveEcospaceWeightLayers(idm)
-
-        If bSucces Then
-            bSucces = Me.m_db.CommitTransaction(True)
-        Else
-            Me.m_db.RollbackTransaction()
-        End If
 
         If bSucces Then
             ' Clear changed admin

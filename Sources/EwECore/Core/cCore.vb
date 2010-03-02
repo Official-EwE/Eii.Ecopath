@@ -7326,6 +7326,9 @@ Public Class cCore
             Return True
         End If
 
+        ' Restore previous active scenario ID on save failure
+        Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
+
         ' Report failure
         Me.SendEcospaceSaveStateMessage(Me.m_EcoPathData.EcospaceScenarioName(Me.ActiveEcospaceScenarioIndex), False, _
                 My.Resources.CoreMessages.GENERIC_SAVE_RESOLUTION)
@@ -7377,6 +7380,9 @@ Public Class cCore
             Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcoSpaceScenario)
             Return True
         End If
+
+        ' Restore previous active scenario ID on save failure
+        Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
 
         ' Report failure
         Me.SendEcospaceSaveStateMessage(strName, False)
