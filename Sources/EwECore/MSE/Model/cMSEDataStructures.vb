@@ -292,7 +292,7 @@ Public Class cMSEDataStructures
         Next
 
         For iFlt As Integer = 1 To nFleets
-            Qgrow(iFlt) = 0.1
+            Qgrow(iFlt) = 0.03
             CVFest(iFlt) = 0.3
         Next iFlt
 
