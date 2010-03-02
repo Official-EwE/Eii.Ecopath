@@ -56,6 +56,10 @@ Namespace Ecosim
 
             MyBase.OnLoad(e)
 
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
+            Dim cmd As cCommand = Nothing
             Dim group As cCoreGroupBase = Nothing
 
             Me.m_parms = Me.UIContext.Core.EcoSimModelParameters()
@@ -85,12 +89,19 @@ Namespace Ecosim
             Me.UpdateControls()
             Me.UpdateColors()
 
+            cmd = cmdh.GetCommand("ExportEcosimBiomassToCSV")
+            cmd.AddControl(Me.m_btnSaveData)
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
             AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
+            Dim cmd As cCommand = cmdh.GetCommand("ExportEcosimBiomassToCSV")
+            cmd.RemoveControl(Me.m_btnSaveData)
 
             Me.CoreComponents = Nothing
             Me.m_lbGroups.Detach()
@@ -128,47 +139,6 @@ Namespace Ecosim
 
         End Sub
 
-        ''' <summary>
-        ''' Event handler for closing the form
-        ''' </summary>
-        Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
-        End Sub
-
-        ''' <summary>
-        ''' Event handler for saving the value to .csv file
-        ''' </summary>
-        Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSaveData.Click
-
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
-            Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
-            Dim bSaveAnnual As Boolean = False 'Save each time steps
-            Dim writer As New cEcosimResultWriter(Me.UIContext.Core)
-
-            cmd.Invoke("", My.Resources.ECOSIM_PROMPT_SAVEDESTINATION)
-
-            If (cmd.Result <> Windows.Forms.DialogResult.OK) Then Return
-            If (String.IsNullOrEmpty(cmd.Directory)) Then Return
-
-            Select Case MsgBox(My.Resources.ECOSIM_PROMPT_SAVEANNUAL, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                Case MsgBoxResult.Yes
-                    bSaveAnnual = True
-                Case MsgBoxResult.No
-                    bSaveAnnual = False
-                Case MsgBoxResult.Cancel
-                    Return
-            End Select
-
-            writer.WriteResults(cmd.Directory, bSaveAnnual, Me.m_lbGroups.SelectedIndex + 1)
-
-        End Sub
-
-        Private Sub btnTimeSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
-            Dim cmd As cCommand = cmdh.GetCommand("LoadTimeSeries")
-            If (cmd IsNot Nothing) Then cmd.Invoke()
-        End Sub
 
         Private Sub btnShowAllFits_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnShowAllFits.Click
             Dim showAllFitsDlg As New frmShowAllFits

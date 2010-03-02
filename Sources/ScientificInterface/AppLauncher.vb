@@ -1025,6 +1025,7 @@ Public Class AppLauncher
         cmdh.Add(Me.m_cmdEstimateVs)
 
         Me.m_cmdExportBiomassToCSV = New cCommand("ExportEcosimBiomassToCSV")
+        Me.m_cmdExportBiomassToCSV.AddControl(Me.m_tsmiExportBiomassToCSV)
         cmdh.Add(Me.m_cmdExportBiomassToCSV)
 
         ' Listen to application Idle events to update command states
@@ -3006,15 +3007,32 @@ Public Class AppLauncher
     End Sub
 
     Private Sub OnExportBiomassToCSV(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnInvoke
+
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
-        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+        Dim cmdOD As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+        Dim bSaveAnnual As Boolean = False 'Save each time steps
+        Dim writer As New cEcosimResultWriter(Me.UIContext.Core)
 
-        cmdFS.Invoke(String.Format("EwE6_{0}_Biomass.csv", Me.Core.EwEModel.Name), "", My.Resources.FILEFILTER_CSV, 1)
+        cmdOD.Invoke("", My.Resources.ECOSIM_PROMPT_SAVEDESTINATION)
 
-        If cmdFS.Result = DialogResult.OK Then
-            ' Save the Ecosim model result to .csv files
-            Me.Core.dumpEcosimModelResults(cmdFS.FileName)
-        End If
+        If (cmdOD.Result <> Windows.Forms.DialogResult.OK) Then Return
+        If (String.IsNullOrEmpty(cmdOD.Directory)) Then Return
+
+        Select Case MsgBox(My.Resources.ECOSIM_PROMPT_SAVEANNUAL, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
+            Case MsgBoxResult.Yes
+                bSaveAnnual = True
+            Case MsgBoxResult.No
+                bSaveAnnual = False
+            Case MsgBoxResult.Cancel
+                Return
+        End Select
+
+        writer.WriteResults(cmdOD.Directory, bSaveAnnual)
+
+    End Sub
+
+    Private Sub OnExportBiomassToCSVs(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimRan
     End Sub
 
     Private Sub OnEstimateVsInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
@@ -3026,10 +3044,6 @@ Public Class AppLauncher
     Private Sub OnEstimateVsUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdEstimateVs.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded()
-    End Sub
-
-    Private Sub OnExportBiomassToCSVs(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcosimRan
     End Sub
 
 #End Region ' Ecosim commands
