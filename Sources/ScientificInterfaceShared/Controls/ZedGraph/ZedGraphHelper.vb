@@ -457,11 +457,9 @@ Namespace Controls
                                     ' are performed whether this is indeed the case
 
                                     If .CurveList.Count > 0 Then
-                                        Dim liOffset As LineItem = DirectCast(.CurveList(0), LineItem)
-                                        For iPt As Integer = 0 To li.Points.Count - 1
-                                            li(iPt).Y += liOffset.Points(iPt).Y
-                                        Next
+                                        Me.SumLines(DirectCast(.CurveList(0), LineItem), li)
                                     End If
+
                                     ' Set cumulative colour style
                                     li.Line.Fill = New Fill(li.Color)
                                     li.Line.Fill.IsVisible = True
@@ -1196,6 +1194,18 @@ Namespace Controls
             Next
             Return -1
         End Function
+
+        ''' <summary>
+        ''' Add an offset line to a target line
+        ''' </summary>
+        ''' <param name="liOffset"></param>
+        ''' <param name="lTarget"></param>
+        ''' <remarks></remarks>
+        Protected Overridable Sub SumLines(ByVal liOffset As LineItem, ByVal lTarget As LineItem)
+            For iPt As Integer = 0 To lTarget.Points.Count - 1
+                lTarget(iPt).Y += liOffset.Points(iPt).Y
+            Next
+        End Sub
 
 #Region " Cursor "
 
