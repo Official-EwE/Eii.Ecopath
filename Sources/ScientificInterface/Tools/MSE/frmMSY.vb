@@ -11,6 +11,8 @@ Public Class frmMSY
     Private Sub frmMSY_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.m_core = cCore.GetInstance
         m_mse = Me.m_core.MSEManager
+        Me.rbValue.Checked = True
+
     End Sub
 
 
@@ -19,10 +21,15 @@ Public Class frmMSY
         Try
 
             'Hardwire run state parameters...for now
-            Me.m_mse.ModelParameters.MSYEvaluateValue = True
+            If rbValue.Checked Then
+                Me.m_mse.ModelParameters.MSYEvaluateValue = True
+            Else
+                Me.m_mse.ModelParameters.MSYEvaluateValue = False
+            End If
             Me.m_mse.ModelParameters.MSYRunSilent = False
             Me.m_mse.ModelParameters.MSYStartTimeIndex = 2
 
+          
             'get the number of fleets for the progress updates
             m_nFleets = Me.m_core.nFleets
             ReDim MSY(m_core.nFleets)

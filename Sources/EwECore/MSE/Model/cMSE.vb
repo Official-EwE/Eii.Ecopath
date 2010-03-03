@@ -1169,6 +1169,8 @@ Namespace MSE
 
             'next is a vc temp fix for debugging
             'Data.MSYStartTimeIndex = 649
+            Dim FinestEffortStep As Double = 0.01
+            
 
             Try
 
@@ -1291,8 +1293,9 @@ Namespace MSE
                             End If
 
                             lastValue = CurValue
+
                             If tryEffort > 0 And CheckTangent = False Then
-                                If Math.Abs(1 - lastEffort / tryEffort) < 0.01 Then Done = True
+                                If Math.Abs(1 - lastEffort / tryEffort) < FinestEffortStep Then Done = True
                             End If
                             lastEffort = tryEffort
 

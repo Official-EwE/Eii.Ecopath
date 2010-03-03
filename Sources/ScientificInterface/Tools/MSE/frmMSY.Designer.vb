@@ -33,6 +33,9 @@ Partial Class frmMSY
         Me.lbEffort = New System.Windows.Forms.Label
         Me.txtMSYresults = New System.Windows.Forms.TextBox
         Me.btFleetTradeoffs = New System.Windows.Forms.Button
+        Me.rbValue = New System.Windows.Forms.RadioButton
+        Me.rbCatch = New System.Windows.Forms.RadioButton
+        Me.lblMSY = New System.Windows.Forms.Label
         Me.SuspendLayout()
         '
         'btRunMSY
@@ -91,6 +94,7 @@ Partial Class frmMSY
         '
         'btFleetTradeoffs
         '
+        Me.btFleetTradeoffs.Enabled = False
         Me.btFleetTradeoffs.Location = New System.Drawing.Point(268, 12)
         Me.btFleetTradeoffs.Name = "btFleetTradeoffs"
         Me.btFleetTradeoffs.Size = New System.Drawing.Size(101, 26)
@@ -98,11 +102,46 @@ Partial Class frmMSY
         Me.btFleetTradeoffs.Text = "Fleet tradeoffs"
         Me.btFleetTradeoffs.UseVisualStyleBackColor = True
         '
+        'rbValue
+        '
+        Me.rbValue.AutoSize = True
+        Me.rbValue.Location = New System.Drawing.Point(15, 65)
+        Me.rbValue.Name = "rbValue"
+        Me.rbValue.Size = New System.Drawing.Size(124, 17)
+        Me.rbValue.TabIndex = 7
+        Me.rbValue.TabStop = True
+        Me.rbValue.Text = "MSY based on value"
+        Me.rbValue.UseVisualStyleBackColor = True
+        '
+        'rbCatch
+        '
+        Me.rbCatch.AutoSize = True
+        Me.rbCatch.Location = New System.Drawing.Point(145, 65)
+        Me.rbCatch.Name = "rbCatch"
+        Me.rbCatch.Size = New System.Drawing.Size(125, 17)
+        Me.rbCatch.TabIndex = 8
+        Me.rbCatch.TabStop = True
+        Me.rbCatch.Text = "MSY based on catch"
+        Me.rbCatch.UseVisualStyleBackColor = True
+        '
+        'lblMSY
+        '
+        Me.lblMSY.AutoSize = True
+        Me.lblMSY.Location = New System.Drawing.Point(12, 41)
+        Me.lblMSY.Name = "lblMSY"
+        Me.lblMSY.Size = New System.Drawing.Size(380, 13)
+        Me.lblMSY.TabIndex = 9
+        Me.lblMSY.Text = "MSY is estimated fleet by fleet. Results are transferred to 'target fishing morta" & _
+            "lity'"
+        '
         'frmMSY
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1022, 655)
+        Me.Controls.Add(Me.lblMSY)
+        Me.Controls.Add(Me.rbCatch)
+        Me.Controls.Add(Me.rbValue)
         Me.Controls.Add(Me.btFleetTradeoffs)
         Me.Controls.Add(Me.txtMSYresults)
         Me.Controls.Add(Me.lbEffort)
@@ -124,4 +163,7 @@ Partial Class frmMSY
     Friend WithEvents lbEffort As System.Windows.Forms.Label
     Friend WithEvents txtMSYresults As System.Windows.Forms.TextBox
     Friend WithEvents btFleetTradeoffs As System.Windows.Forms.Button
+    Friend WithEvents rbValue As System.Windows.Forms.RadioButton
+    Friend WithEvents rbCatch As System.Windows.Forms.RadioButton
+    Friend WithEvents lblMSY As System.Windows.Forms.Label
 End Class

@@ -142,6 +142,7 @@ Public Class cMSEDataStructures
     ''' <remarks></remarks>
     Public MSYEvaluateValue As Boolean
 
+
 #End Region
 
 #Region "Private data"
