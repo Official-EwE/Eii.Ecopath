@@ -518,6 +518,15 @@ Public Class frmEwEGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Parameterless constructor.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub New()
+        MyBase.New()
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Default constructor.
     ''' </summary>
     ''' <param name="grid">Grid to attach to this form.</param>
@@ -527,11 +536,13 @@ Public Class frmEwEGrid
 
         MyBase.New()
 
-        Debug.Assert(grid IsNot Nothing)
-
-        Me.m_grid = grid
-        Me.m_grid.Dock = DockStyle.Fill
-        Me.Controls.Add(m_grid)
+        ' Store grid
+        Me.Grid = grid
+        ' Grid added via constructor - perform special make-up
+        ' .. fill
+        Me.Grid.Dock = DockStyle.Fill
+        ' .. add to controls
+        Me.Controls.Add(Me.Grid)
 
     End Sub
 
@@ -541,7 +552,34 @@ Public Class frmEwEGrid
         End Get
         Set(ByVal value As cUIContext)
             MyBase.UIContext = value
-            Me.m_grid.UIContext = value
+            If (Me.Grid IsNot Nothing) Then
+                Me.Grid.UIContext = value
+            End If
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get a reference to the Grid
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    <CLSCompliant(False)> _
+    Public Property Grid() As EwEGrid
+        Get
+            Return m_grid
+        End Get
+        Set(ByVal grid As EwEGrid)
+
+            If (Me.m_grid IsNot Nothing) Then
+                Me.m_grid.UIContext = Nothing
+            End If
+
+            Me.m_grid = grid
+
+            If (Me.m_grid IsNot Nothing) Then
+                Me.m_grid.UIContext = Me.UIContext
+            End If
+
         End Set
     End Property
 
@@ -590,15 +628,13 @@ Public Class frmEwEGrid
 
         MyBase.OnLoad(e)
 
-        ' Designer crap
-        If (Me.m_grid Is Nothing) Then Return
+        ' Sanity check
+        If (Me.Grid Is Nothing Or Me.DesignMode = True) Then Return
 
-        ' Use a quick edit handler on all grids
         ' JS 05Sep09: QEbar was Input grid only. Now, CSV interaction is available for all grids
         Me.SetQuickEditHandler(True)
 
-        ' Connect to message sources
-        Me.CoreComponents = Me.m_grid.MessageSources
+        Me.CoreComponents = Me.Grid.MessageSources
 
     End Sub
 
@@ -614,10 +650,7 @@ Public Class frmEwEGrid
         ' Clear any message source links
         Me.CoreComponents = Nothing
         ' Kill the grid
-        If (Me.m_grid IsNot Nothing) Then
-            Me.m_grid.Dispose()
-            Me.m_grid = Nothing
-        End If
+        Me.Grid = Nothing
 
         MyBase.OnFormClosed(e)
     End Sub
@@ -625,18 +658,6 @@ Public Class frmEwEGrid
 #End Region ' Form overrides
 
 #Region " Internals "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get a reference to the Grid
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Protected ReadOnly Property Grid() As EwEGrid
-        Get
-            Return m_grid
-        End Get
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
