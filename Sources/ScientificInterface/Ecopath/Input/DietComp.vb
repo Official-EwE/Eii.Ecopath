@@ -15,12 +15,13 @@ Namespace Ecopath.Input
     Public Class DietComp
 
         Public Sub New()
-            MyBase.New(New DietCompositionEwEGrid)
+            MyBase.New()
             Me.InitializeComponent()
+            Me.Grid = Me.m_grid
         End Sub
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-            plDietCompGrid.Controls.Add(Me.Grid)
+            MyBase.OnLoad(e)
         End Sub
 
         Private Sub tsSumtoOneBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _

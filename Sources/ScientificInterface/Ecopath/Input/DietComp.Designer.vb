@@ -26,7 +26,7 @@ Namespace Ecopath.Input
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DietComp))
             Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
             Me.tsSumtoOneBtn = New System.Windows.Forms.ToolStripButton
-            Me.plDietCompGrid = New System.Windows.Forms.Panel
+            Me.m_grid = New ScientificInterface.Ecopath.Input.DietCompositionEwEGrid
             Me.ToolStrip1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -42,27 +42,48 @@ Namespace Ecopath.Input
             resources.ApplyResources(Me.tsSumtoOneBtn, "tsSumtoOneBtn")
             Me.tsSumtoOneBtn.Name = "tsSumtoOneBtn"
             '
-            'plDietCompGrid
+            'm_grid
             '
-            resources.ApplyResources(Me.plDietCompGrid, "plDietCompGrid")
-            Me.plDietCompGrid.Name = "plDietCompGrid"
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+            Me.m_grid.CustomSort = False
+            resources.ApplyResources(Me.m_grid, "m_grid")
+            Me.m_grid.FixedColumnWidths = False
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
+            Me.m_grid.Name = "m_grid"
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TrackPropertySelection = True
+            Me.m_grid.UIContext = Nothing
             '
             'DietComp
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.plDietCompGrid)
+            Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.ToolStrip1)
             Me.Name = "DietComp"
+            Me.TabText = "DietComp"
             Me.ToolStrip1.ResumeLayout(False)
             Me.ToolStrip1.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
-        Friend WithEvents plDietCompGrid As System.Windows.Forms.Panel
-        Friend WithEvents tsSumtoOneBtn As System.Windows.Forms.ToolStripButton
+        Private WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
+        Private WithEvents m_grid As DietCompositionEwEGrid
+        Private WithEvents tsSumtoOneBtn As System.Windows.Forms.ToolStripButton
     End Class
 
 End Namespace
