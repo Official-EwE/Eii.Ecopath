@@ -32,17 +32,37 @@ Namespace Controls
                                               Optional ByVal legendPos As ZedGraph.LegendPos = ZedGraph.LegendPos.TopCenter, _
                                               Optional ByVal iPane As Integer = 1) As ZedGraph.GraphPane
 
-            Dim gp As GraphPane = MyBase.ConfigurePane(strTitle, "", Nothing, "", Nothing, bShowLegend, legendPos, iPane)
+            Return Me.ConfigurePane(strTitle, "", "", bShowLegend, legendPos, iPane)
 
-            gp.XAxis.Cross = 0
-            gp.YAxis.Cross = 0
+        End Function
 
-            gp.XAxis.MajorTic.IsAllTics = True
-            gp.XAxis.MinorTic.IsAllTics = True
-            gp.YAxis.MajorTic.IsAllTics = True
-            gp.YAxis.MinorTic.IsAllTics = True
-            gp.XAxis.Scale.IsVisible = True
-            gp.YAxis.Scale.IsVisible = True
+        Public Shadows Function ConfigurePane(ByVal strTitle As String, _
+                                              ByVal strXAxisLabel As String, _
+                                              ByVal strYAxisLabel As String, _
+                                              ByVal bShowLegend As Boolean, _
+                                              Optional ByVal legendPos As ZedGraph.LegendPos = ZedGraph.LegendPos.TopCenter, _
+                                              Optional ByVal iPane As Integer = 1) As ZedGraph.GraphPane
+
+            Dim gp As GraphPane = MyBase.ConfigurePane(strTitle, strXAxisLabel, Nothing, strYAxisLabel, Nothing, bShowLegend, legendPos, iPane)
+
+            ' Use secundary axis pair to render the kite center
+            With gp
+                .X2Axis.Cross = 0
+                .X2Axis.IsVisible = True
+                .X2Axis.Scale.IsVisible = False
+                .X2Axis.MinorTic.IsAllTics = False
+                .X2Axis.MinorTic.IsOpposite = False
+                .X2Axis.MajorTic.IsOpposite = False
+
+                .Y2Axis.Cross = 0
+                .Y2Axis.IsVisible = True
+                .Y2Axis.Scale.IsVisible = False
+                .Y2Axis.MinorTic.IsAllTics = False
+                .Y2Axis.MinorTic.IsOpposite = False
+                .Y2Axis.MajorTic.IsOpposite = False
+            End With
+
+            Me.SetScaleCircles(iPane)
 
             Return gp
 
@@ -62,7 +82,31 @@ Namespace Controls
         Public Overridable Sub SetScaleCircles(Optional ByVal iPane As Integer = -1)
 
             ' Render the simulated polar decorations:
+            ' Use secundary axis pair to render the kite center
             Dim gp As GraphPane = Me.GetPane(iPane)
+
+            ' Calc absolute max
+            gp.XAxis.Scale.MaxAuto = True
+            gp.XAxis.Scale.MinAuto = True
+            gp.YAxis.Scale.MaxAuto = True
+            gp.YAxis.Scale.MinAuto = True
+            gp.AxisChange()
+
+            Dim dMaxX As Double = Math.Max(gp.XAxis.Scale.Max, gp.XAxis.Scale.Min)
+            Dim dMaxY As Double = Math.Max(gp.YAxis.Scale.Max, gp.YAxis.Scale.Min)
+
+            If dMaxX = 0.0# Then dMaxX = 1.0#
+            If dMaxY = 0.0# Then dMaxY = 1.0#
+
+            gp.XAxis.Scale.Max = Math.Max(dMaxX, dMaxY)
+            gp.X2Axis.Scale.Max = Math.Max(dMaxX, dMaxY)
+            gp.XAxis.Scale.Min = -Math.Max(dMaxX, dMaxY)
+            gp.X2Axis.Scale.Min = -Math.Max(dMaxX, dMaxY)
+            gp.YAxis.Scale.Max = Math.Max(dMaxX, dMaxY)
+            gp.Y2Axis.Scale.Max = Math.Max(dMaxX, dMaxY)
+            gp.YAxis.Scale.Min = -Math.Max(dMaxX, dMaxY)
+            gp.Y2Axis.Scale.Min = -Math.Max(dMaxX, dMaxY)
+
             Dim dTickSize As Double = gp.XAxis.Scale.MajorStep
             Dim iNumScaleCircles As Integer = CInt(Math.Floor(gp.XAxis.Scale.Max / dTickSize))
             Dim rpl As RadarPointList = Nothing
@@ -81,8 +125,8 @@ Namespace Controls
                 circle.Line.IsSmooth = True
                 circle.Line.SmoothTension = 0.6F
                 circle.Line.Style = DashStyle.Custom
-                circle.Line.DashOff = 2
-                circle.Line.DashOn = 4
+                circle.Line.DashOff = 4
+                circle.Line.DashOn = 1
 
                 Me.m_lScaleCircles.Add(circle)
                 gp.CurveList.Insert(0, circle)
@@ -115,13 +159,13 @@ Namespace Controls
             For i As Integer = 0 To asValues.Length - 1
                 rpl.Add(asValues(i), 1.0#)
             Next
-            Return New LineItem(strName, rpl, clr, SymbolType.None)
+            Return New LineItem(strName, rpl, clr, SymbolType.Circle)
 
         End Function
 
         Public Shadows Sub PlotLines(ByVal lines() As ZedGraph.LineItem, Optional ByVal iPane As Integer = 1)
             Me.ClearScaleCircles(iPane)
-            MyBase.PlotLines(lines, iPane, True, True, False)
+            MyBase.PlotLines(lines, iPane, True, True, True)
             Me.SetScaleCircles(iPane)
         End Sub
 
