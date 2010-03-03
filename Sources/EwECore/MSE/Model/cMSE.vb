@@ -2018,6 +2018,7 @@ Namespace MSE
             Dim strm As StreamWriter
             Try
 
+                Exit Sub
 
                 'no need to set time just use default: m_core.EcoSimModelParameters.NumberYears = NumberOfYears + 25
                 'this is required to set the base effort values :
