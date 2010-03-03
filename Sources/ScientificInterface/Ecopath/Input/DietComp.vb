@@ -20,10 +20,6 @@ Namespace Ecopath.Input
             Me.Grid = Me.m_grid
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-            MyBase.OnLoad(e)
-        End Sub
-
         Private Sub tsSumtoOneBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles tsSumtoOneBtn.Click
             Me.UIContext.Core.NormalizeDietInput()
