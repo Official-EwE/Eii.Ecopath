@@ -1158,6 +1158,7 @@
     <Compile Include="Ecosim\Output\ucSuitabilityPlot.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Ecosim\Tools\Fishing policy search\cFPSKiteDiagramHelper.vb" />
     <Compile Include="Ecosim\Tools\Fit to time series\gridFitToTimeSeriesGroup.vb">
       <SubType>Component</SubType>
     </Compile>
