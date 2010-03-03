@@ -30,7 +30,10 @@ Namespace Ecosim
         Private m_lstOptEnabled As New List(Of cControlEnabler)
         ''' <summary>Results to be plotted</summary>
         Private m_lptsResults() As ResultPoints
-        Private m_zghResults As cZedGraphHelper
+
+        Private m_zghResults As cZedGraphHelper = Nothing
+        Private m_zghKite As cFPSKiteDiagramHelper = Nothing
+
         Private m_bInUpdate As Boolean = False
 
         Public Sub New()
@@ -87,6 +90,22 @@ Namespace Ecosim
 
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkIncludeCCosts, eOptimizeApproachTypes.FleetValues))
 
+            ' Config result graph
+            Me.m_zghResults = New cZedGraphHelper()
+            Me.m_zghResults.Attach(Me.UIContext, Me.m_graphResults)
+            Me.m_zghResults.ShowCursor = False
+            Me.m_zghResults.ConfigurePane("Results", "Iteration", "Values", False)
+            ' JS 03Mar10: disabled result cursor
+            'AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
+
+            ' Config kite graph
+            Me.m_zghKite = New cFPSKiteDiagramHelper()
+            Me.m_zghKite.Attach(Me.UIContext, Me.m_graphKite)
+            Me.m_zghKite.ConfigurePane("Kite", _
+                                       My.Resources.HEADER_MANDATED_REBUILDING & " - " & My.Resources.HEADER_NET_ECONOMIC_VALUE, _
+                                       My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT & " - " & My.Resources.HEADER_ECOSYSTEM_STRUCTURE, _
+                                       False)
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries}
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
@@ -104,8 +123,15 @@ Namespace Ecosim
             RemoveHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
             Me.m_propBaseYear = Nothing
 
+            ' Clean up result graph
+            ' JS 03Mar10: disabled result cursor
+            'RemoveHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
             Me.m_zghResults.Detach()
             Me.m_zghResults = Nothing
+
+            ' Clean up kite graph
+            Me.m_zghKite.Detach()
+            Me.m_zghKite = Nothing
 
             Me.CoreComponents = Nothing
             MyBase.OnFormClosed(e)
@@ -155,14 +181,8 @@ Namespace Ecosim
                     InitMaxFVParams()
             End Select
 
-            ' Plot graph
-            Me.InitResultsPlot()
-
             ' Controls
             Me.UpdateControls()
-
-            ''set the enabled state of the Use Economic data checkbox
-            'Me.updateEconomicDataAvailable()
 
             Me.btnSearch.Enabled = True
             Me.btnStop.Enabled = False
@@ -444,8 +464,8 @@ Namespace Ecosim
 
                 m_gridSystemObjectives.InsertOneIterResult(results, m_manager.nSearchBlocks, m_blocks.ParmBlockCodes)
 
-                UpdateResultsGraph(results)
-
+                Me.UpdateResultsGraph(results)
+                Me.UpdateKiteDiagram(results)
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -467,11 +487,9 @@ Namespace Ecosim
 
             If Me.m_bInUpdate Then Return
 
-            'If (cf And cProperty.eChangeFlags.Value) = cProperty.eChangeFlags.Value Then
             Me.m_bInUpdate = True
             Me.m_nudBaseYear.Value = CInt(prop.GetValue()) + Me.Core.EcosimFirstYear
             Me.m_bInUpdate = False
-            'End If
 
         End Sub
 
@@ -497,22 +515,14 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
-            Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
-        End Sub
+        ' JS 03Mar10: disabled result cursor
+        'Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+        '    Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
+        'End Sub
 
 #End Region ' Callbacks
 
 #Region " Graphing Region "
-
-        Private Sub InitResultsPlot()
-
-            Me.m_zghResults = New cZedGraphHelper()
-            Me.m_zghResults.Attach(Me.UIContext, Me.m_graphResults)
-            Me.m_zghResults.ShowCursor = False
-
-            AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
-        End Sub
 
         Private Sub ReInitResultsPlot(ByVal nSearchBlocks As Integer, ByVal pbc As ucParmBlockCodes)
             Dim zgcr As New ZedGraph.ColorSymbolRotator
@@ -578,28 +588,31 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub ShowIteration(ByVal iIteration As Integer)
-
-            Dim lResults As List(Of cObjectiveResult) = Nothing
-            Dim res As cObjectiveResult = Nothing
-
-
-            '' Get the results
-            'lResults = Me.m_manager.Results()
-
-
-            'iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
-
-            'If iIteration = -1 Then Return
-
-            '' Update indicators
-            'Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue, _
-            '                           res.objFuncMandatedValue, res.objFuncEcologicalValue, _
-            '                           res.objBiomassDiversity, res.objFuncAreaBorder, _
-            '                           res.objFuncTotal, res.PercentageClosed)
-
-
+        Private Sub UpdateKiteDiagram(ByVal results As cFPSSearchResults)
+            Me.m_zghKite.UpdateDiagram(results)
         End Sub
+
+        ' JS 03Mar10: disabled result cursor
+        'Private Sub ShowIteration(ByVal iIteration As Integer)
+
+        '    Dim lResults As List(Of cObjectiveResult) = Nothing
+        '    Dim res As cObjectiveResult = Nothing
+
+        '    '' Get the results
+        '    'lResults = Me.m_manager.Results()
+
+
+        '    'iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
+
+        '    'If iIteration = -1 Then Return
+
+        '    '' Update indicators
+        '    'Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue, _
+        '    '                           res.objFuncMandatedValue, res.objFuncEcologicalValue, _
+        '    '                           res.objBiomassDiversity, res.objFuncAreaBorder, _
+        '    '                           res.objFuncTotal, res.PercentageClosed)
+        'End Sub
+
 #End Region ' Graphing region
 
 #Region " Helper classes "

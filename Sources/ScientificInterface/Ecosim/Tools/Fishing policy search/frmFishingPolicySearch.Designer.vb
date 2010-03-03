@@ -65,7 +65,7 @@ Namespace Ecosim
             Me.m_tpPlots = New System.Windows.Forms.TabPage
             Me.m_splcPlotResults = New System.Windows.Forms.SplitContainer
             Me.m_graphResults = New ZedGraph.ZedGraphControl
-            Me.m_zgcKiteDiag = New ZedGraph.ZedGraphControl
+            Me.m_graphKite = New ZedGraph.ZedGraphControl
             Me.m_scTopBits.Panel1.SuspendLayout()
             Me.m_scTopBits.Panel2.SuspendLayout()
             Me.m_scTopBits.SuspendLayout()
@@ -492,6 +492,7 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridObjWeights.TabIndex = 0
             Me.m_gridObjWeights.TrackPropertySelection = True
+            Me.m_gridObjWeights.UIContext = Nothing
             '
             'm_scAarghArghAaargh
             '
@@ -542,6 +543,7 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridObjFleet.TabIndex = 0
             Me.m_gridObjFleet.TrackPropertySelection = True
+            Me.m_gridObjFleet.UIContext = Nothing
             '
             'm_gridObjGroup
             '
@@ -574,6 +576,7 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridObjGroup.TabIndex = 0
             Me.m_gridObjGroup.TrackPropertySelection = True
+            Me.m_gridObjGroup.UIContext = Nothing
             '
             'm_tabResultTable
             '
@@ -628,14 +631,13 @@ Namespace Ecosim
             '
             'm_splcPlotResults.Panel1
             '
-            Me.m_splcPlotResults.Panel1.Controls.Add(Me.m_graphResults)
+            Me.m_splcPlotResults.Panel1.Controls.Add(Me.m_graphKite)
             '
             'm_splcPlotResults.Panel2
             '
-            Me.m_splcPlotResults.Panel2.Controls.Add(Me.m_zgcKiteDiag)
-            Me.m_splcPlotResults.Panel2Collapsed = True
+            Me.m_splcPlotResults.Panel2.Controls.Add(Me.m_graphResults)
             Me.m_splcPlotResults.Size = New System.Drawing.Size(975, 266)
-            Me.m_splcPlotResults.SplitterDistance = 626
+            Me.m_splcPlotResults.SplitterDistance = 259
             Me.m_splcPlotResults.TabIndex = 10
             '
             'm_graphResults
@@ -651,24 +653,24 @@ Namespace Ecosim
             Me.m_graphResults.ScrollMinX = 0
             Me.m_graphResults.ScrollMinY = 0
             Me.m_graphResults.ScrollMinY2 = 0
-            Me.m_graphResults.Size = New System.Drawing.Size(975, 266)
+            Me.m_graphResults.Size = New System.Drawing.Size(712, 266)
             Me.m_graphResults.TabIndex = 8
             '
-            'm_zgcKiteDiag
+            'm_graphKite
             '
-            Me.m_zgcKiteDiag.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_zgcKiteDiag.IsAutoScrollRange = True
-            Me.m_zgcKiteDiag.Location = New System.Drawing.Point(0, 0)
-            Me.m_zgcKiteDiag.Name = "m_zgcKiteDiag"
-            Me.m_zgcKiteDiag.ScrollGrace = 0
-            Me.m_zgcKiteDiag.ScrollMaxX = 0
-            Me.m_zgcKiteDiag.ScrollMaxY = 0
-            Me.m_zgcKiteDiag.ScrollMaxY2 = 0
-            Me.m_zgcKiteDiag.ScrollMinX = 0
-            Me.m_zgcKiteDiag.ScrollMinY = 0
-            Me.m_zgcKiteDiag.ScrollMinY2 = 0
-            Me.m_zgcKiteDiag.Size = New System.Drawing.Size(96, 100)
-            Me.m_zgcKiteDiag.TabIndex = 9
+            Me.m_graphKite.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_graphKite.IsAutoScrollRange = True
+            Me.m_graphKite.Location = New System.Drawing.Point(0, 0)
+            Me.m_graphKite.Name = "m_graphKite"
+            Me.m_graphKite.ScrollGrace = 0
+            Me.m_graphKite.ScrollMaxX = 0
+            Me.m_graphKite.ScrollMaxY = 0
+            Me.m_graphKite.ScrollMaxY2 = 0
+            Me.m_graphKite.ScrollMinX = 0
+            Me.m_graphKite.ScrollMinY = 0
+            Me.m_graphKite.ScrollMinY2 = 0
+            Me.m_graphKite.Size = New System.Drawing.Size(259, 266)
+            Me.m_graphKite.TabIndex = 9
             '
             'frmFishingPolicySearch
             '
@@ -714,9 +716,8 @@ Namespace Ecosim
         Friend WithEvents m_lblSearchUsing As System.Windows.Forms.Label
         Friend WithEvents btnStop As System.Windows.Forms.Button
         Friend WithEvents btnSearch As System.Windows.Forms.Button
-        Private WithEvents m_zgcKiteDiag As ZedGraph.ZedGraphControl
+        Private WithEvents m_graphKite As ZedGraph.ZedGraphControl
         Private WithEvents m_graphResults As ZedGraph.ZedGraphControl
-        Friend WithEvents m_splcPlotResults As System.Windows.Forms.SplitContainer
         Private WithEvents m_tlpRunStop As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblOptmApproach As System.Windows.Forms.Label
         Private WithEvents m_lblInitUsing As System.Windows.Forms.Label
@@ -752,5 +753,6 @@ Namespace Ecosim
         Private WithEvents m_gridObjWeights As gridSearchObjectivesWeight
         Private WithEvents m_gridObjFleet As gridSearchObjectivesFleet
         Private WithEvents m_gridObjGroup As gridSearchObjectivesGroup
+        Private WithEvents m_splcPlotResults As System.Windows.Forms.SplitContainer
     End Class
 End Namespace
