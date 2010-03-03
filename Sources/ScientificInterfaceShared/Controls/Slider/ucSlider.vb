@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: ucSlider.vb,v $
-' Revision 1.2  2008/10/10 20:01:12  jeroens
-' Fixed drawing bug on non-zero min values
-'
-' Revision 1.1  2008/06/01 23:45:10  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.1  2007/11/02 14:29:22  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 Namespace Controls
@@ -107,12 +93,12 @@ Namespace Controls
 
         Private Sub ucSlider_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
             Me.Capture = True
+            Me.ProcessMousePos(e.Location)
         End Sub
 
         Private Sub ucSlider_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
             If (Me.Capture = False) Then Return
-            Dim sMouseX As Single = CSng(Math.Max(0, Math.Min(Me.Width - cKNOBSIZE - Me.Margin.Left - Me.Margin.Right, e.X - cKNOBSIZE / 2)))
-            Me.Value = Me.Minimum + CInt(sMouseX * Me.RenderScale())
+            Me.ProcessMousePos(e.Location)
         End Sub
 
         Private Sub ucSlider_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseUp
@@ -172,6 +158,14 @@ Namespace Controls
         End Sub
 
 #End Region ' Events
+
+#Region " Internals "
+
+        Private Sub ProcessMousePos(ByVal ptMouse As Point)
+            Dim sMouseX As Single = CSng(Math.Max(0, Math.Min(Me.Width - cKNOBSIZE - Me.Margin.Left - Me.Margin.Right, ptMouse.X - cKNOBSIZE / 2)))
+            Me.Value = Me.Minimum + CInt(sMouseX * Me.RenderScale())
+        End Sub
+#End Region ' Internals
 
     End Class
 
