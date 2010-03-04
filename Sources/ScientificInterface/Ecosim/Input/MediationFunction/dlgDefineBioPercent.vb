@@ -48,9 +48,12 @@ Namespace Ecosim
 
             ' Store medfn
             Me.m_medfn = medfn
-
-            ' Store UIC
             Me.m_uic = UIC
+
+            ' Pass UI context on
+            Me.m_graph.UIContext = Me.m_uic
+            Me.m_grid.UIContext = Me.m_uic
+
         End Sub
 
 #End Region ' Constructor
@@ -66,8 +69,6 @@ Namespace Ecosim
             MyBase.OnLoad(e)
 
             If (m_uic Is Nothing) Then Return
-
-            Me.m_graph.UIContext = Me.m_uic
 
             For iGroup As Integer = 1 To m_uic.Core.nGroups
 
