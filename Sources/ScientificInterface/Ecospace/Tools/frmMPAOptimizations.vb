@@ -418,7 +418,7 @@ Namespace Ecospace
                 ldataTmp = New cEcospaceLayerIntegerNxM(Me.UIContext.Core, _
                                     Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
-                layerTmp = New cLayer(ldataTmp, Nothing, Nothing)
+                layerTmp = New cLayer(Me.UIContext, ldataTmp, Nothing, Nothing)
                 ' Give the layer a savvy name
                 layerTmp.Name = String.Format("BestCount_{0}", iAreaClosed)
                 ' Add the layer to the stash to save
@@ -946,7 +946,7 @@ Namespace Ecospace
         Private Function AddBaseLayers(ByVal varName As eVarNameFlags) As cLayer()
 
             Dim strGroup As String = cLayerFactory.GetLayerGroup(varName)
-            Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.UIContext.Core, varName)
+            Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.UIContext, varName)
             Dim l As cLayer = Nothing
 
             ' Add group, and collapse and hide habitat layers
@@ -997,7 +997,7 @@ Namespace Ecospace
                         ' AND THAT THE BEST CELL SHOWS UP ON THE CURRENT CELL
 
                         ' Create best cell layer
-                        alayers = cLayerFactory.GetLayers(Me.UIContext.Core, eVarNameFlags.LayerMPASeedBest, datalayerTemp)
+                        alayers = cLayerFactory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPASeedBest, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
@@ -1006,7 +1006,7 @@ Namespace Ecospace
                         lRunStateLayers.AddRange(alayers)
 
                         ' Create current cell layer(s)
-                        alayers = cLayerFactory.GetLayers(Me.UIContext.Core, eVarNameFlags.LayerMPASeedCurrent, datalayerTemp)
+                        alayers = cLayerFactory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPASeedCurrent, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
@@ -1021,7 +1021,7 @@ Namespace Ecospace
                         strGroup = cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPARandom)
 
                         ' Create current cell layer(s)
-                        alayers = cLayerFactory.GetLayers(Me.UIContext.Core, eVarNameFlags.LayerMPARandom, datalayerTemp)
+                        alayers = cLayerFactory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPARandom, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True

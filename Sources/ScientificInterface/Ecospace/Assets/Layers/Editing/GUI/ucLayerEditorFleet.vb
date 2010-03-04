@@ -14,16 +14,13 @@ Namespace Ecospace.Basemap.Layers
             Me.InitializeComponent()
         End Sub
 
-        Private Sub OnFleetSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_cmbFleet.SelectedIndexChanged
-            Me.Editor.Fleet = Me.m_cmbFleet.SelectedIndex
-        End Sub
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
-        Private Sub DoLoad(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Load
+            If (Not Me.IsAttached) Then Return
 
             ' Initialize group combo 
-            Dim core As cCore = cCore.GetInstance()
+            Dim core As cCore = Me.UIContext.Core
             Dim fleet As cFleetInput = Nothing
 
             Me.m_cmbFleet.Items.Clear()
@@ -35,19 +32,20 @@ Namespace Ecospace.Basemap.Layers
                 Me.m_cmbFleet.Items.Add(fleet.Name)
             Next iGroup
 
-            Me.UpdateControls()
+            ' Update control
+            Me.m_cmbFleet.SelectedIndex = Me.FleetIndex
+
         End Sub
 
-        Public Overrides Sub UpdateControls()
-            MyBase.UpdateControls()
+        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+            ' Reset selection
+            MyBase.OnHandleDestroyed(e)
+        End Sub
 
-            If (Me.m_cmbFleet Is Nothing) Then Return
+        Public Overrides Sub UpdateContent()
+            MyBase.UpdateContent()
 
-            Try
-                Me.m_cmbFleet.SelectedIndex = CInt(Me.Editor.Fleet)
-            Catch ex As Exception
-
-            End Try
+            Me.m_cmbFleet.Enabled = Me.IsAttached
 
         End Sub
 
@@ -64,6 +62,25 @@ Namespace Ecospace.Basemap.Layers
                 MyBase.Editor = editor
             End Set
         End Property
+
+        Protected Property FleetIndex() As Integer
+            Get
+                If (Not Me.IsAttached) Then Return cCore.NULL_VALUE
+                Return Me.Editor.Fleet
+            End Get
+            Set(ByVal value As Integer)
+                If (Me.IsAttached) Then
+                    If (Me.Editor.Fleet <> value) Then
+                        Me.Editor.Fleet = value
+                    End If
+                End If
+            End Set
+        End Property
+
+        Private Sub OnFleetSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbFleet.SelectedIndexChanged
+            Me.FleetIndex = Me.m_cmbFleet.SelectedIndex
+        End Sub
 
     End Class
 

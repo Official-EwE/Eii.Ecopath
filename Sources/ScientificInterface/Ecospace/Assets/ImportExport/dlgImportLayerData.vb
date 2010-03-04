@@ -1,36 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: dlgImportLayerData.vb,v $
-' Revision 1.7  2009/05/28 12:37:19  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.6  2009/05/11 01:50:52  jeroens
-' Renamed command classes
-'
-' Revision 1.5  2009/03/23 02:43:03  jeroens
-' Renamed resources
-'
-' Revision 1.4  2008/11/12 00:38:14  jeroens
-' no message
-'
-' Revision 1.3  2008/11/10 23:12:26  jeroens
-' Uses status feedback
-'
-' Revision 1.2  2008/11/10 18:25:43  jeroens
-' Integrated grid
-'
-' Revision 1.1  2008/11/10 02:25:52  jeroens
-' Renamed
-'
-' Revision 1.2  2008/11/10 01:51:52  jeroens
-' Added .asc support
-'
-' Revision 1.1  2008/11/08 23:44:48  jeroens
-' Supports CSV and SHP
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 
@@ -271,7 +239,7 @@ Public Class gridMapLayerToAttribute
             IncompatibleEmpty
         End Enum
 
-        Private m_core As cCore = Nothing
+        Private m_uic As cUIContext = Nothing
         Private m_lLayers As New List(Of cLayer)
         Private m_bDataValid As Boolean = False
         Private m_data As cImportExportData = Nothing
@@ -280,8 +248,9 @@ Public Class gridMapLayerToAttribute
 
 #Region " Constructor "
 
-        Public Sub New()
+        Public Sub New(ByVal uic As cUIContext)
             Me.InitializeComponent()
+            Me.m_uic = uic
         End Sub
 
 #End Region ' Constructor
@@ -306,20 +275,22 @@ Public Class gridMapLayerToAttribute
 
 #Region " Events "
 
-        Private Sub DoLoad(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
-            Me.m_core = cCore.GetInstance()
+            If (Me.DesignMode = True) Then Return
+
+            Debug.Assert(Me.m_uic IsNot Nothing)
 
             If (Me.m_lLayers.Count = 0) Then
 
                 ' Add default layers
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerImportance))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerDepth))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerHabitat))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerMPA))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerRelPP))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerRelCin))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerImportance))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerDepth))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerHabitat))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerMPA))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelPP))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelCin))
 
             End If
 
@@ -420,7 +391,7 @@ Public Class gridMapLayerToAttribute
 
         Private Function ReadCSVFile(ByVal strFile As String) As eSpatialFileCompatibility
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim tr As TextReader = Nothing
             Dim strLine As String = ""
             Dim astrAttributes As String() = Nothing
@@ -477,7 +448,7 @@ Public Class gridMapLayerToAttribute
         ''' -----------------------------------------------------------------------
         Private Function ReadShapeFile(ByVal strFile As String) As eSpatialFileCompatibility
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim sfio As New ShapeFileIO()
             Dim lsd As New List(Of SpatialData)
             Dim sd As SpatialData = Nothing
@@ -516,7 +487,7 @@ Public Class gridMapLayerToAttribute
 
         Private Function ReadAscFile(ByVal strFile As String) As eSpatialFileCompatibility
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim sfio As New ASCIIFileIO()
             Dim rs As New Raster()
             Dim sd As SpatialData = Nothing
@@ -558,7 +529,7 @@ Public Class gridMapLayerToAttribute
 
         Private Function ValidateData() As eSpatialFileCompatibility
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             'Dim sd As SpatialData = Nothing
             Dim iInRow As Integer = 0
             Dim iInCol As Integer = 0
@@ -573,7 +544,7 @@ Public Class gridMapLayerToAttribute
         Private Function LoadMappedLayers() As Boolean
 
             Dim dtMappings As Dictionary(Of cLayer, String) = Me.m_grid.Mappings()
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim layer As cLayer = Nothing
             Dim strAttribute As String = ""
             Dim iRow As Integer = 0

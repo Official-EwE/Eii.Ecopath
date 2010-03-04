@@ -5,6 +5,7 @@ Imports EwECore
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports EwEUtils.Core
 
 #End Region ' Imports 
 
@@ -21,7 +22,11 @@ Namespace Ecospace.Basemap.Layers
 #Region " Construction "
 
         Public Sub New()
-            MyBase.New(GetType(ucLayerEditorFleet))
+            Me.New(GetType(ucLayerEditorFleet))
+        End Sub
+
+        Public Sub New(ByVal t As Type)
+            MyBase.New(t)
             Me.CellValue = 1
         End Sub
 
@@ -31,17 +36,16 @@ Namespace Ecospace.Basemap.Layers
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the index of the Ecopath group whose migration data
-        ''' is being edited.
+        ''' Get/set the index of the Ecopath fleet to filter by.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Fleet() As Integer
             Get
-                Dim layerCore As IEcospaceLayerFleet = DirectCast(Me.Layer.Data, IEcospaceLayerFleet)
+                Dim layerCore As ICoreFleetFilter = DirectCast(Me.Layer.Data, ICoreFleetFilter)
                 Return layerCore.Fleet
             End Get
             Set(ByVal value As Integer)
-                Dim layer As IEcospaceLayerFleet = DirectCast(Me.Layer.Data, IEcospaceLayerFleet)
+                Dim layer As ICoreFleetFilter = DirectCast(Me.Layer.Data, ICoreFleetFilter)
                 ' Will fleet index change?
                 If value <> layer.Fleet Then
                     ' #Yes: update fleet index in the underlying Ecospace layer

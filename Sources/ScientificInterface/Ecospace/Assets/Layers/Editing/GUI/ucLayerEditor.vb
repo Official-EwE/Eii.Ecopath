@@ -13,11 +13,13 @@ Namespace Ecospace.Basemap.Layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class ucLayerEditor
+        Implements IUIElement
 
 #Region " Private vars "
 
         ''' <summary>Underlying editor.</summary>
         Private m_editor As cLayerEditor = Nothing
+        Private m_uic As cUIContext = Nothing
 
 #End Region ' Private vars
 
@@ -31,6 +33,42 @@ Namespace Ecospace.Basemap.Layers
 #End Region ' Construction / destruction
 
 #Region " Public interfaces "
+
+        Public Sub Attach(ByVal uic As cUIContext, ByVal editor As cLayerEditor)
+            Me.UIContext = uic
+            Me.Editor = editor
+        End Sub
+
+        Public Sub Detach()
+            Me.UIContext = Nothing
+            Me.Editor = Nothing
+        End Sub
+
+        Public Overridable Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Protected Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="cLayerEditor">layer editor</see> that this
+        ''' GUI operates on.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable Property Editor() As cLayerEditor
+            Get
+                Return Me.m_editor
+            End Get
+            Protected Set(ByVal editor As cLayerEditor)
+                Me.m_editor = editor
+                Me.UpdateContent()
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -48,6 +86,36 @@ Namespace Ecospace.Basemap.Layers
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Sub EndEdit()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update the controls and caption of the editor.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable Sub UpdateContent()
+
+            Dim strLabel As String = ""
+            Dim img As Image = My.Resources.ProtectFormHS
+
+            If (Me.IsAttached = True) Then
+                ' Get label text
+                strLabel = Me.Editor.Layer.Name
+                ' Get layer image
+                If Me.Editor.IsReadOnly Then
+                    img = My.Resources.ProtectFormHS
+                Else
+                    If Me.Editor.IsEditable Then
+                        img = My.Resources.Editable
+                    Else
+                        img = My.Resources.NotEditable
+                    End If
+                End If
+            End If
+
+            Me.m_lbCaption.Text = strLabel
+            Me.m_lbImage.Image = img
+
         End Sub
 
 #End Region ' Public interfaces
@@ -85,43 +153,16 @@ Namespace Ecospace.Basemap.Layers
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Update the controls and caption of the editor.
+        ''' States whether the editor is correctly attached to a layer and
+        ''' a UI context.
         ''' </summary>
+        ''' <returns>True if connected.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub UpdateControls()
-            If Me.Editor.Layer IsNot Nothing Then
-                Me.m_lbCaption.Text = Me.Editor.Layer.Name
-
-                If Me.Editor.IsReadOnly Then
-                    Me.m_lbImage.Image = My.Resources.ProtectFormHS
-                Else
-                    If Me.Editor.IsEditable Then
-                        Me.m_lbImage.Image = My.Resources.Editable
-                    Else
-                        Me.m_lbImage.Image = My.Resources.NotEditable
-                    End If
-            End If
-            Else
-                Me.m_lbCaption.Text = ""
-                Me.m_lbImage.Image = My.Resources.ProtectFormHS
-            End If
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the <see cref="cLayerEditor">layer editor</see> that this
-        ''' GUI operates on.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Overridable Property Editor() As cLayerEditor
-            Get
-                Return Me.m_editor
-            End Get
-            Set(ByVal editor As cLayerEditor)
-                Me.m_editor = editor
-                Me.UpdateControls()
-            End Set
-        End Property
+        Protected Overridable Function IsAttached() As Boolean
+            If (Me.Editor Is Nothing) Then Return False
+            If (Me.Editor.Layer Is Nothing) Then Return False
+            Return (Me.UIContext IsNot Nothing)
+        End Function
 
 #End Region ' Internals
 

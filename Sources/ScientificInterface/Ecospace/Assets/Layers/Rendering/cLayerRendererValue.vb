@@ -1,15 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cLayerRendererValue.vb,v $
-' Revision 1.2  2009/05/28 12:37:17  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2008/11/04 04:41:35  jeroens
-' Split into separate files, moved
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore

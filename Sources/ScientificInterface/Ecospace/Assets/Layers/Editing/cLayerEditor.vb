@@ -38,6 +38,7 @@ Namespace Ecospace.Basemap.Layers
         Private m_typeGUI As Type = Nothing
         ''' <summary>An instantiated GUI, if any.</summary>
         Private m_gui As ucLayerEditor = Nothing
+        Private m_uic As cUIContext = Nothing
 
         ' === FEEDBACK SUPPORT ===
         Private m_iCursorSize As Integer = 1
@@ -51,13 +52,23 @@ Namespace Ecospace.Basemap.Layers
             Me.m_typeGUI = typeGUI
         End Sub
 
-        Public Sub Initialize(ByVal layer As cLayer)
+        Public Sub Initialize(ByVal uic As cUIContext, _
+                              ByVal layer As cLayer)
             Me.Layer = layer
+            Me.UIContext = uic
         End Sub
 
         Protected Overrides Sub Finalize()
-            MyBase.Finalize()
+
+            If (Me.m_gui IsNot Nothing) Then
+                Me.m_gui.Detach()
+            End If
+
             Me.Layer = Nothing
+            Me.UIContext = Nothing
+
+            MyBase.Finalize()
+
         End Sub
 
         Public Overridable Function Clone() As cLayerEditor
@@ -77,7 +88,7 @@ Namespace Ecospace.Basemap.Layers
 
         Private Sub OnLayerChanged(ByVal layer As cLayer, ByVal cf As cLayer.eChangeFlags)
             If Me.GUI IsNot Nothing Then
-                Me.GUI.UpdateControls()
+                Me.GUI.UpdateContent()
             End If
         End Sub
 
@@ -114,8 +125,22 @@ Namespace Ecospace.Basemap.Layers
         ''' Optional GUI to allow the user to parameterize the edit process.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetEditorControl() As ucLayerEditor
-            Return Me.GUI
+        Public Overridable Function CreateEditorControl() As ucLayerEditor
+
+            Debug.Assert(Me.m_gui Is Nothing)
+
+            Try
+                Dim obj As Object = Activator.CreateInstance(Me.m_typeGUI, New Object() {})
+                ' Sanity check
+                Debug.Assert(TypeOf obj Is ucLayerEditor)
+                ' Remember GUI
+                Me.m_gui = DirectCast(obj, ucLayerEditor)
+                Me.m_gui.Attach(Me.m_uic, Me)
+            Catch ex As Exception
+                Debug.Assert(False, "Failed to create layer editor interface")
+            End Try
+
+            Return Me.m_gui
         End Function
 
         ''' -------------------------------------------------------------------
@@ -123,8 +148,14 @@ Namespace Ecospace.Basemap.Layers
         ''' Optional GUI to allow the user to parameterize the edit process.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub ReleaseEditorControl()
+        Public Overridable Sub DestroyEditorControl()
+
+            Debug.Assert(Me.m_gui IsNot Nothing)
+
+            Me.m_gui.Detach()
+            Me.m_gui.Dispose()
             Me.m_gui = Nothing
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -297,6 +328,15 @@ Namespace Ecospace.Basemap.Layers
             End Set
         End Property
 
+        Public Property UIContext() As cUIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Protected Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get the editor user interface.
@@ -305,19 +345,6 @@ Namespace Ecospace.Basemap.Layers
         ''' user control.</returns>
         ''' -----------------------------------------------------------------------
         Protected Function GUI() As ucLayerEditor
-            ' Create editor GUI if not done
-            If (Me.m_gui Is Nothing) Then
-                Try
-                    Dim obj As Object = Activator.CreateInstance(Me.m_typeGUI, New Object() {})
-                    ' Sanity check
-                    Debug.Assert(TypeOf obj Is ucLayerEditor)
-                    ' Remember GUI
-                    Me.m_gui = DirectCast(obj, ucLayerEditor)
-                    Me.m_gui.Editor = Me
-                Catch ex As Exception
-                    Debug.Assert(False, "Failed to create layer editor interface")
-                End Try
-            End If
             Return Me.m_gui
         End Function
 

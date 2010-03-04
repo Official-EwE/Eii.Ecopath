@@ -24,6 +24,7 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucLayerEditorAdvection))
             Me.m_lblAngle = New System.Windows.Forms.Label
             Me.m_lblVelocity = New System.Windows.Forms.Label
             Me.m_nudAngle = New System.Windows.Forms.NumericUpDown
@@ -36,54 +37,35 @@
             '
             'm_lblAngle
             '
-            Me.m_lblAngle.AutoSize = True
-            Me.m_lblAngle.Location = New System.Drawing.Point(3, 28)
+            resources.ApplyResources(Me.m_lblAngle, "m_lblAngle")
             Me.m_lblAngle.Name = "m_lblAngle"
-            Me.m_lblAngle.Size = New System.Drawing.Size(37, 13)
-            Me.m_lblAngle.TabIndex = 0
-            Me.m_lblAngle.Text = "&Angle:"
             '
             'm_lblVelocity
             '
-            Me.m_lblVelocity.AutoSize = True
-            Me.m_lblVelocity.Location = New System.Drawing.Point(3, 54)
+            resources.ApplyResources(Me.m_lblVelocity, "m_lblVelocity")
             Me.m_lblVelocity.Name = "m_lblVelocity"
-            Me.m_lblVelocity.Size = New System.Drawing.Size(47, 13)
-            Me.m_lblVelocity.TabIndex = 2
-            Me.m_lblVelocity.Text = "&Velocity:"
             '
             'm_nudAngle
             '
-            Me.m_nudAngle.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudAngle.Location = New System.Drawing.Point(56, 26)
+            resources.ApplyResources(Me.m_nudAngle, "m_nudAngle")
             Me.m_nudAngle.Maximum = New Decimal(New Integer() {359, 0, 0, 0})
             Me.m_nudAngle.Name = "m_nudAngle"
-            Me.m_nudAngle.Size = New System.Drawing.Size(89, 20)
-            Me.m_nudAngle.TabIndex = 1
             '
             'm_nudVelocity
             '
-            Me.m_nudVelocity.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudVelocity.Location = New System.Drawing.Point(56, 52)
+            resources.ApplyResources(Me.m_nudVelocity, "m_nudVelocity")
             Me.m_nudVelocity.Name = "m_nudVelocity"
-            Me.m_nudVelocity.Size = New System.Drawing.Size(89, 20)
-            Me.m_nudVelocity.TabIndex = 3
             '
             'm_pbSample
             '
-            Me.m_pbSample.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_pbSample, "m_pbSample")
             Me.m_pbSample.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_pbSample.Location = New System.Drawing.Point(151, 26)
             Me.m_pbSample.Name = "m_pbSample"
-            Me.m_pbSample.Size = New System.Drawing.Size(46, 46)
-            Me.m_pbSample.TabIndex = 5
             Me.m_pbSample.TabStop = False
             '
             'ucLayerEditorAdvection
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_lblAngle)
             Me.Controls.Add(Me.m_nudVelocity)
@@ -91,7 +73,6 @@
             Me.Controls.Add(Me.m_lblVelocity)
             Me.Controls.Add(Me.m_pbSample)
             Me.Name = "ucLayerEditorAdvection"
-            Me.Size = New System.Drawing.Size(200, 76)
             Me.Controls.SetChildIndex(Me.m_pbSample, 0)
             Me.Controls.SetChildIndex(Me.m_lblVelocity, 0)
             Me.Controls.SetChildIndex(Me.m_nudAngle, 0)

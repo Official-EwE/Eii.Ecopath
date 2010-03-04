@@ -211,7 +211,7 @@ Namespace Ecospace.Basemap
             If ((cf And cProperty.eChangeFlags.Value) = cf) Then
                 If CBool(prop.GetValue()) Then
                     If (Me.m_layerRelCin Is Nothing) Then
-                        Me.m_layerRelCin = cLayerFactory.GetLayers(Me.Core, eVarNameFlags.LayerRelCin)(0)
+                        Me.m_layerRelCin = cLayerFactory.GetLayers(Me.UIContext, eVarNameFlags.LayerRelCin)(0)
                         Me.AddLayer(Me.m_layerRelCin, cLayerFactory.GetLayerGroup(eVarNameFlags.LayerRelCin))
                     End If
                 Else
@@ -264,7 +264,7 @@ Namespace Ecospace.Basemap
         ''' -------------------------------------------------------------------
         Private Sub AddData(ByVal varName As eVarNameFlags, Optional ByVal bClearGroup As Boolean = True)
 
-            Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.Core, varName)
+            Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.UIContext, varName)
             Dim strGroup As String = cLayerFactory.GetLayerGroup(varName)
 
             ' Define group
@@ -343,14 +343,14 @@ Namespace Ecospace.Basemap
                         Me.m_plEditor.Visible = False
                         Me.m_editorGUISelected = Nothing
                     End If
-                    Me.m_layerSelected.Editor.ReleaseEditorControl()
+                    Me.m_layerSelected.Editor.DestroyEditorControl()
                 End If
 
                 Me.m_layerSelected = layer
 
                 If (Me.m_layerSelected IsNot Nothing) Then
                     ' Add layer editor GUI
-                    Me.m_editorGUISelected = Me.m_layerSelected.Editor.GetEditorControl()
+                    Me.m_editorGUISelected = Me.m_layerSelected.Editor.CreateEditorControl()
                     If (Me.m_editorGUISelected IsNot Nothing) Then
                         Me.m_plEditor.Height = Me.m_editorGUISelected.Height
                         Me.m_editorGUISelected.Dock = DockStyle.Fill

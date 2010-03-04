@@ -1,15 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: ucLayerEditorAdvection.vb,v $
-' Revision 1.1  2008/11/04 04:40:33  jeroens
-' Split into separate files, moved
-'
-' Revision 1.1  2008/10/14 20:21:25  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 

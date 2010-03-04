@@ -39,7 +39,7 @@ Namespace Ecospace.Basemap.Layers
                     Me.CellValue = Layer.ValueSet
                 End If
                 ' Trigger GUI to update to the changes
-                Me.GUI.UpdateControls()
+                Me.GUI.UpdateContent()
             End If
 
         End Sub

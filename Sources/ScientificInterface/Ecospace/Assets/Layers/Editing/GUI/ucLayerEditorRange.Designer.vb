@@ -24,6 +24,7 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucLayerEditorRange))
             Me.m_lbValue = New System.Windows.Forms.Label
             Me.m_nudValue = New System.Windows.Forms.NumericUpDown
             CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -31,28 +32,21 @@
             '
             'm_lbValue
             '
-            Me.m_lbValue.AutoSize = True
-            Me.m_lbValue.Location = New System.Drawing.Point(3, 44)
+            resources.ApplyResources(Me.m_lbValue, "m_lbValue")
             Me.m_lbValue.Name = "m_lbValue"
-            Me.m_lbValue.Size = New System.Drawing.Size(37, 13)
-            Me.m_lbValue.TabIndex = 2
-            Me.m_lbValue.Text = "Value:"
             '
             'm_nudValue
             '
-            Me.m_nudValue.Location = New System.Drawing.Point(46, 42)
+            resources.ApplyResources(Me.m_nudValue, "m_nudValue")
             Me.m_nudValue.Name = "m_nudValue"
-            Me.m_nudValue.Size = New System.Drawing.Size(86, 20)
-            Me.m_nudValue.TabIndex = 3
             '
             'ucLayerEditorRange
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_nudValue)
             Me.Controls.Add(Me.m_lbValue)
             Me.Name = "ucLayerEditorRange"
-            Me.Size = New System.Drawing.Size(200, 65)
             Me.Controls.SetChildIndex(Me.m_lbValue, 0)
             Me.Controls.SetChildIndex(Me.m_nudValue, 0)
             CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).EndInit()

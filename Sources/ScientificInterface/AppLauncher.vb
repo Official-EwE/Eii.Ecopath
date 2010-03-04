@@ -2591,7 +2591,8 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub m_cmdImportLayerData_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdImportLayerData.OnInvoke
-        Dim dlg As New dlgImportLayerData()
+
+        Dim dlg As New dlgImportLayerData(Me.UIContext)
 
         If cmd.Tag IsNot Nothing Then
             Try
@@ -2601,6 +2602,7 @@ Public Class AppLauncher
             End Try
         End If
         dlg.ShowDialog()
+
     End Sub
 
     ''' <summary>
@@ -2617,7 +2619,8 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub m_cmdExportLayerData_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdExportLayerData.OnInvoke
-        Dim dlg As New dlgExportLayerData()
+
+        Dim dlg As New dlgExportLayerData(Me.UIContext)
         If cmd.Tag IsNot Nothing Then
             Try
                 dlg.Layers = DirectCast(cmd.Tag, cLayer())
@@ -2626,6 +2629,7 @@ Public Class AppLauncher
             End Try
         End If
         dlg.ShowDialog()
+
     End Sub
 
     ''' <summary>

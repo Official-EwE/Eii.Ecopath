@@ -1,15 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cLayerEditorMigration.vb,v $
-' Revision 1.2  2008/11/06 01:21:01  jeroens
-' Always start with month 1
-'
-' Revision 1.1  2008/11/04 04:40:16  jeroens
-' Split into separate files, moved
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore

@@ -12,11 +12,12 @@ Imports EwEUtils.Core
 Namespace Ecospace.Basemap.Layers
 
     ''' <summary>
-    ''' Administrative unit, maintains data for a single layer.
+    ''' Class that wraps a single <see cref="cEcospaceLayer">Ecospace data layer</see> for 
+    ''' manipulation in a User Interface.
     ''' </summary>
     ''' <remarks>
     ''' <para>
-    ''' Ok, the basemap layer thing has gotten so complex that a bit of an explanation would not hurt.
+    ''' Ok, the UI layer thing has gotten so complex that a bit of an explanation would not hurt.
     ''' </para>
     ''' <para>
     ''' The entire basemap chain consists of the following collaborating classes:
@@ -60,6 +61,13 @@ Namespace Ecospace.Basemap.Layers
     Public Class cLayer
         Implements IDisposable
 
+#Region " Private helper classes "
+
+        ''' ===================================================================
+        ''' <summary>
+        ''' Default editor class for layers without an editor.
+        ''' </summary>
+        ''' ===================================================================
         Private Class cEditorLocked
             Inherits cLayerEditor
 
@@ -77,38 +85,11 @@ Namespace Ecospace.Basemap.Layers
 
         End Class
 
-        ''' <summary>
-        ''' Enumerated type to indicate layer changes.
-        ''' </summary>
-        Public Enum eChangeFlags As Integer
-            ''' <summary>Value to indicate that a layers' map data has changed.</summary>
-            Map = 1
-            ''' <summary>Value to indicate that a layers' visual representation style has changed.</summary>
-            VisualStyle = 2
-            ''' <summary>Value to indicate that a layers' visible state has changed.</summary>
-            Visibility = 4
-            ''' <summary>Value to indicate that a layers' selected state has changed.</summary>
-            Selected = 8
-            ''' <summary>Value to indicate that one ore more of a layers' name, description (?) 
-            ''' and other descriptive values have changed.</summary>
-            Descriptive = 16
-            ''' <summary>Value to indicate that a layers' editable state has changed.</summary>
-            Editable = 32
-            ''' <summary>All possible flags.</summary>
-            All = &HFFFF
-
-        End Enum
-
-        ''' <summary>
-        ''' Layer change event
-        ''' </summary>
-        ''' <param name="layer"></param>
-        ''' <param name="updateType"></param>
-        Public Event LayerChanged(ByVal layer As cLayer, ByVal updateType As eChangeFlags)
+#End Region ' Private helper classes
 
 #Region " Private vars "
 
-        Private m_core As cCore = Nothing
+        Private m_uic As cUIContext = Nothing
         Private m_mh As cMessageHandler = Nothing
         Private m_bDisposed As Boolean = False
 
@@ -154,10 +135,11 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="data"></param>
         ''' <param name="renderer"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal data As cEcospaceLayer, _
-                ByVal renderer As cLayerRenderer, _
-                ByVal editor As cLayerEditor)
-            Me.New(data, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, Nothing, Nothing)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal data As cEcospaceLayer, _
+                       ByVal renderer As cLayerRenderer, _
+                       ByVal editor As cLayerEditor)
+            Me.New(uic, data, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, Nothing, Nothing)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -175,12 +157,13 @@ Namespace Ecospace.Basemap.Layers
         ''' </param>
         ''' <param name="varName">The name of the variable to associate data changes with</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal data As cEcospaceLayer, _
-                ByVal renderer As cLayerRenderer, _
-                ByVal editor As cLayerEditor, _
-                ByVal source As cCoreInputOutputBase, _
-                Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name)
-            Me.New(data, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, source, varName)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal data As cEcospaceLayer, _
+                       ByVal renderer As cLayerRenderer, _
+                       ByVal editor As cLayerEditor, _
+                       ByVal source As cCoreInputOutputBase, _
+                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name)
+            Me.New(uic, data, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, source, varName)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -193,12 +176,13 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="objValueClear"></param>
         ''' <remarks></remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal data As cEcospaceLayer, _
-                ByVal renderer As cLayerRenderer, _
-                ByVal editor As cLayerEditor, _
-                ByVal objValueSet As Single, _
-                ByVal objValueClear As Single)
-            Me.New(data, renderer, editor, objValueSet, objValueClear, Nothing, Nothing)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal data As cEcospaceLayer, _
+                       ByVal renderer As cLayerRenderer, _
+                       ByVal editor As cLayerEditor, _
+                       ByVal objValueSet As Single, _
+                       ByVal objValueClear As Single)
+            Me.New(uic, data, renderer, editor, objValueSet, objValueClear, Nothing, Nothing)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -219,17 +203,20 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="objValueClear"></param>
         ''' <remarks></remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal data As cEcospaceLayer, _
-                ByVal renderer As cLayerRenderer, _
-                ByVal editor As cLayerEditor, _
-                ByVal objValueSet As Single, _
-                ByVal objValueClear As Single, _
-                ByVal source As cCoreInputOutputBase, _
-                Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal data As cEcospaceLayer, _
+                       ByVal renderer As cLayerRenderer, _
+                       ByVal editor As cLayerEditor, _
+                       ByVal objValueSet As Single, _
+                       ByVal objValueClear As Single, _
+                       ByVal source As cCoreInputOutputBase, _
+                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name)
 
-            Me.m_core = cCore.GetInstance()
+            Debug.Assert(uic IsNot Nothing)
+
+            Me.m_uic = uic
             Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, AppLauncher.GetInstance().SyncObject)
-            Me.m_core.Messages.AddMessageHandler(Me.m_mh)
+            Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mh)
 
             ' Sanity checks
             Debug.Assert(Not Object.ReferenceEquals(data, Nothing))
@@ -244,7 +231,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_editor = editor
             Me.m_valueSet = objValueSet
             Me.m_valueClear = objValueClear
-            Me.m_propName = cPropertyManager.GetInstance().GetProperty(source, varName)
+            Me.m_propName = Me.m_uic.PropertyManager.GetProperty(source, varName)
 
             If (m_propName IsNot Nothing) Then
                 Me.m_valueType = m_propName.GetValueType()
@@ -252,7 +239,7 @@ Namespace Ecospace.Basemap.Layers
             End If
 
             ' Update editor
-            Me.m_editor.Initialize(Me)
+            Me.m_editor.Initialize(uic, Me)
 
         End Sub
 
@@ -262,9 +249,9 @@ Namespace Ecospace.Basemap.Layers
         ''' </summary>
         ''' <param name="layer">The layer to copy.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal layer As cLayer)
+        Public Sub New(ByVal uic As cUIContext, ByVal layer As cLayer)
 
-            Me.New(layer.Data, layer.Renderer.Clone(), layer.Editor.Clone(), _
+            Me.New(uic, layer.Data, layer.Renderer.Clone(), layer.Editor.Clone(), _
                    layer.ValueSet, layer.ValueClear, layer.Source, layer.VarName)
 
             Me.Name = layer.Name
@@ -280,11 +267,9 @@ Namespace Ecospace.Basemap.Layers
         Protected Overridable Sub Dispose(ByVal bDisposing As Boolean)
             If Not Me.m_bDisposed Then
                 If bDisposing Then
-                    If Me.m_core IsNot Nothing Then
-                        Me.m_core.Messages.RemoveMessageHandler(Me.m_mh)
-                        Me.m_core = Nothing
+                    If Me.m_uic IsNot Nothing Then
+                        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mh)
                     End If
-
                     If Me.m_propName IsNot Nothing Then
                         RemoveHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
                         Me.m_propName = Nothing
@@ -302,6 +287,39 @@ Namespace Ecospace.Basemap.Layers
         End Sub
 
 #End Region ' Construction / destruction
+
+#Region " Public definitions "
+
+        ''' <summary>
+        ''' Enumerated type to indicate layer changes.
+        ''' </summary>
+        Public Enum eChangeFlags As Integer
+            ''' <summary>Value to indicate that a layers' map data has changed.</summary>
+            Map = 1
+            ''' <summary>Value to indicate that a layers' visual representation style has changed.</summary>
+            VisualStyle = 2
+            ''' <summary>Value to indicate that a layers' visible state has changed.</summary>
+            Visibility = 4
+            ''' <summary>Value to indicate that a layers' selected state has changed.</summary>
+            Selected = 8
+            ''' <summary>Value to indicate that one ore more of a layers' name, description (?) 
+            ''' and other descriptive values have changed.</summary>
+            Descriptive = 16
+            ''' <summary>Value to indicate that a layers' editable state has changed.</summary>
+            Editable = 32
+            ''' <summary>All possible flags.</summary>
+            All = &HFFFF
+
+        End Enum
+
+        ''' <summary>
+        ''' Layer change event
+        ''' </summary>
+        ''' <param name="layer"></param>
+        ''' <param name="updateType"></param>
+        Public Event LayerChanged(ByVal layer As cLayer, ByVal updateType As eChangeFlags)
+
+#End Region ' Public definitions
 
 #Region " Public access "
 
@@ -327,7 +345,9 @@ Namespace Ecospace.Basemap.Layers
                     ' Is a core layer?
                     If Me.m_data.DataType <> eDataTypes.NotSet Then
                         ' #Yes: inform the core
-                        Me.m_core.onChanged(Me.m_data)
+                        If Me.m_uic IsNot Nothing Then
+                            Me.m_uic.Core.onChanged(Me.m_data)
+                        End If
                     Else
                         ' #No: Fire off property change to make other copies of non-core layers respond
                         If (Me.m_propName IsNot Nothing) Then
@@ -339,7 +359,9 @@ Namespace Ecospace.Basemap.Layers
 
                 If ((updateType And eChangeFlags.VisualStyle) = eChangeFlags.VisualStyle) Then
                     Me.m_renderer.Update()
-                    Me.m_core.VisualStyleChanged(Me.m_renderer.VisualStyle)
+                    If Me.m_uic IsNot Nothing Then
+                        Me.m_uic.Core.VisualStyleChanged(Me.m_renderer.VisualStyle)
+                    End If
                 End If
 
                 ' Inform the world last

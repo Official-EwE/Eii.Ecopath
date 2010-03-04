@@ -24,40 +24,31 @@
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucLayerEditorDefault))
             Me.m_ucSlider = New ScientificInterfaceShared.Controls.ucSlider
             Me.m_lblCursor = New System.Windows.Forms.Label
             Me.SuspendLayout()
             '
             'm_ucSlider
             '
-            Me.m_ucSlider.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_ucSlider.Location = New System.Drawing.Point(46, 19)
-            Me.m_ucSlider.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.m_ucSlider, "m_ucSlider")
             Me.m_ucSlider.Maximum = 6
             Me.m_ucSlider.Minimum = 1
             Me.m_ucSlider.Name = "m_ucSlider"
-            Me.m_ucSlider.Size = New System.Drawing.Size(154, 20)
-            Me.m_ucSlider.TabIndex = 1
             Me.m_ucSlider.Value = 1
             '
             'm_lblCursor
             '
-            Me.m_lblCursor.AutoSize = True
-            Me.m_lblCursor.Location = New System.Drawing.Point(1, 22)
+            resources.ApplyResources(Me.m_lblCursor, "m_lblCursor")
             Me.m_lblCursor.Name = "m_lblCursor"
-            Me.m_lblCursor.Size = New System.Drawing.Size(40, 13)
-            Me.m_lblCursor.TabIndex = 0
-            Me.m_lblCursor.Text = "&Cursor:"
             '
             'ucLayerEditorDefault
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_lblCursor)
             Me.Controls.Add(Me.m_ucSlider)
             Me.Name = "ucLayerEditorDefault"
-            Me.Size = New System.Drawing.Size(200, 42)
             Me.Controls.SetChildIndex(Me.m_ucSlider, 0)
             Me.Controls.SetChildIndex(Me.m_lblCursor, 0)
             Me.ResumeLayout(False)

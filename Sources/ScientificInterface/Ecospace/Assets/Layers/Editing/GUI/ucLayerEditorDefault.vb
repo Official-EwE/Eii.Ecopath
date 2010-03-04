@@ -1,24 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: ucLayerEditorDefault.vb,v $
-' Revision 1.2  2008/11/05 01:13:20  jeroens
-' Fixed crash
-'
-' Revision 1.1  2008/11/04 04:40:34  jeroens
-' Split into separate files, moved
-'
-' Revision 1.2  2008/10/15 17:03:57  jeroens
-' Reworking
-'
-' Revision 1.1  2008/10/14 20:21:25  jeroens
-' Initial version
-'
-' Revision 1.1  2008/10/10 20:08:09  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 
@@ -38,10 +18,11 @@ Namespace Ecospace.Basemap.Layers
             Me.InitializeComponent()
         End Sub
 
-        Public Overrides Sub UpdateControls()
-            MyBase.UpdateControls()
+        Public Overrides Sub UpdateContent()
+            MyBase.UpdateContent()
 
-            ' Sanity check
+            ' Sanity checks
+            If (Me.Editor Is Nothing) Then Return
             If (Me.m_ucSlider Is Nothing) Then Return
 
             Me.m_ucSlider.Value = Me.Editor.CursorSize

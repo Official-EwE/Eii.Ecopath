@@ -117,4 +117,229 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_lbMonth.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_lbMonth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 52</value>
+  </data>
+  <data name="m_lbMonth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 13</value>
+  </data>
+  <data name="m_lbMonth.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_lbMonth.Text" xml:space="preserve">
+    <value>&amp;Month:</value>
+  </data>
+  <data name="&gt;&gt;m_lbMonth.Name" xml:space="preserve">
+    <value>m_lbMonth</value>
+  </data>
+  <data name="&gt;&gt;m_lbMonth.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbMonth.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lbMonth.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_cmbMonth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_cmbMonth.Items" xml:space="preserve">
+    <value>January</value>
+  </data>
+  <data name="m_cmbMonth.Items1" xml:space="preserve">
+    <value>February</value>
+  </data>
+  <data name="m_cmbMonth.Items2" xml:space="preserve">
+    <value>March</value>
+  </data>
+  <data name="m_cmbMonth.Items3" xml:space="preserve">
+    <value>April</value>
+  </data>
+  <data name="m_cmbMonth.Items4" xml:space="preserve">
+    <value>May</value>
+  </data>
+  <data name="m_cmbMonth.Items5" xml:space="preserve">
+    <value>June</value>
+  </data>
+  <data name="m_cmbMonth.Items6" xml:space="preserve">
+    <value>July</value>
+  </data>
+  <data name="m_cmbMonth.Items7" xml:space="preserve">
+    <value>August</value>
+  </data>
+  <data name="m_cmbMonth.Items8" xml:space="preserve">
+    <value>September</value>
+  </data>
+  <data name="m_cmbMonth.Items9" xml:space="preserve">
+    <value>October</value>
+  </data>
+  <data name="m_cmbMonth.Items10" xml:space="preserve">
+    <value>November</value>
+  </data>
+  <data name="m_cmbMonth.Items11" xml:space="preserve">
+    <value>December</value>
+  </data>
+  <data name="m_cmbMonth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>49, 49</value>
+  </data>
+  <data name="m_cmbMonth.MaxDropDownItems" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_cmbMonth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 21</value>
+  </data>
+  <data name="m_cmbMonth.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMonth.Name" xml:space="preserve">
+    <value>m_cmbMonth</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMonth.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMonth.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMonth.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_chkAutoRotate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkAutoRotate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>49, 76</value>
+  </data>
+  <data name="m_chkAutoRotate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>110, 17</value>
+  </data>
+  <data name="m_chkAutoRotate.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_chkAutoRotate.Text" xml:space="preserve">
+    <value>&amp;Auto-rotate month</value>
+  </data>
+  <data name="&gt;&gt;m_chkAutoRotate.Name" xml:space="preserve">
+    <value>m_chkAutoRotate</value>
+  </data>
+  <data name="&gt;&gt;m_chkAutoRotate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkAutoRotate.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_chkAutoRotate.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lblGroup.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 24</value>
+  </data>
+  <data name="m_lblGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>39, 13</value>
+  </data>
+  <data name="m_lblGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblGroup.Text" xml:space="preserve">
+    <value>&amp;Group:</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroup.Name" xml:space="preserve">
+    <value>m_lblGroup</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroup.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_cmbGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_cmbGroup.Items" xml:space="preserve">
+    <value>January</value>
+  </data>
+  <data name="m_cmbGroup.Items1" xml:space="preserve">
+    <value>February</value>
+  </data>
+  <data name="m_cmbGroup.Items2" xml:space="preserve">
+    <value>March</value>
+  </data>
+  <data name="m_cmbGroup.Items3" xml:space="preserve">
+    <value>April</value>
+  </data>
+  <data name="m_cmbGroup.Items4" xml:space="preserve">
+    <value>May</value>
+  </data>
+  <data name="m_cmbGroup.Items5" xml:space="preserve">
+    <value>June</value>
+  </data>
+  <data name="m_cmbGroup.Items6" xml:space="preserve">
+    <value>July</value>
+  </data>
+  <data name="m_cmbGroup.Items7" xml:space="preserve">
+    <value>August</value>
+  </data>
+  <data name="m_cmbGroup.Items8" xml:space="preserve">
+    <value>September</value>
+  </data>
+  <data name="m_cmbGroup.Items9" xml:space="preserve">
+    <value>October</value>
+  </data>
+  <data name="m_cmbGroup.Items10" xml:space="preserve">
+    <value>November</value>
+  </data>
+  <data name="m_cmbGroup.Items11" xml:space="preserve">
+    <value>December</value>
+  </data>
+  <data name="m_cmbGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>49, 21</value>
+  </data>
+  <data name="m_cmbGroup.MaxDropDownItems" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_cmbGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 21</value>
+  </data>
+  <data name="m_cmbGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_cmbGroup.Name" xml:space="preserve">
+    <value>m_cmbGroup</value>
+  </data>
+  <data name="&gt;&gt;m_cmbGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cmbGroup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cmbGroup.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 97</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ucLayerEditorMigration</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditor, EwE6, Version=6.0.7.303, Culture=neutral, PublicKeyToken=null</value>
+  </data>
 </root>

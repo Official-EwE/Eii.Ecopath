@@ -10,7 +10,8 @@ Namespace Ecospace.Basemap.Layers
 
     ''' =======================================================================
     ''' <summary>
-    ''' 
+    ''' Factory for returning <see cref="cLayer">UI layer wrappers</see> for 
+    ''' <see cref="cEcospaceLayer">Ecospace basemap layer data.</see>
     ''' </summary>
     ''' =======================================================================
     Public Class cLayerFactory
@@ -22,13 +23,14 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>
         ''' Build layer(s) for a given core data layer name.
         ''' </summary>
-        ''' <param name="core"></param>
+        ''' <param name="uic">UI context to connect layer to.</param>
         ''' <param name="layerData"></param>
         ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Shared Function GetLayers(ByVal core As cCore, ByVal varName As eVarNameFlags, _
-                Optional ByVal layerData As cEcospaceLayer = Nothing) As cLayer()
+        Public Shared Function GetLayers(ByVal uic As cUIContext, _
+                                         ByVal varName As eVarNameFlags, _
+                                         Optional ByVal layerData As cEcospaceLayer = Nothing) As cLayer()
 
+            Dim core As cCore = uic.Core
             Dim bmd As cEcospaceBasemap = core.EcospaceBasemap
             Dim brushProvider As New cEwEBrushProvider
             Dim avs As cVisualStyle() = Nothing
@@ -57,7 +59,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererDepth(vs)
                     editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerDepth
-                    layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerDepth)
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerDepth)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_LAND
 
                     lLayers.Add(layer)
@@ -81,7 +83,7 @@ Namespace Ecospace.Basemap.Layers
                         renderer = New cLayerRendererBitmap(vs)
                         editor = New cLayerEditorTwoState()
                         If layerData Is Nothing Then layerData = bmd.LayerHabitat
-                        layer = New cLayer(layerData, renderer, editor, iHabitat, 0, hab, eVarNameFlags.Name)
+                        layer = New cLayer(uic, layerData, renderer, editor, iHabitat, 0, hab, eVarNameFlags.Name)
                         lLayers.Add(layer)
 
                     Next iHabitat
@@ -102,7 +104,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerRegion
-                    layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.Name)
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.Name)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_REGIONS
 
                     lLayers.Add(layer)
@@ -127,7 +129,7 @@ Namespace Ecospace.Basemap.Layers
                         renderer = New cLayerRendererHatch(vs)
                         editor = New cLayerEditorTwoState()
                         If layerData Is Nothing Then layerData = bmd.LayerMPA
-                        layer = New cLayer(layerData, renderer, editor, iMPA, 0, mpa, eVarNameFlags.Name)
+                        layer = New cLayer(uic, layerData, renderer, editor, iMPA, 0, mpa, eVarNameFlags.Name)
 
                         lLayers.Add(layer)
 
@@ -148,7 +150,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerRelPP
-                    layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerRelPP)
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerRelPP)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_RELPP
 
                     lLayers.Add(layer)
@@ -168,7 +170,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then layerData = bmd.LayerRelCin
-                    layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerRelCin)
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerRelCin)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_RELCIN
 
                     lLayers.Add(layer)
@@ -182,7 +184,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then layerData = bmd.LayerMPASeed
-                    layer = New cLayer(layerData, renderer, editor, 1, 0, bmd, eVarNameFlags.LayerMPASeed)
+                    layer = New cLayer(uic, layerData, renderer, editor, 1, 0, bmd, eVarNameFlags.LayerMPASeed)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_MPASEED
 
                     lLayers.Add(layer)
@@ -196,7 +198,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then Debug.Assert(False, "Cannot link to core data")
-                    layer = New cLayer(layerData, renderer, editor, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
+                    layer = New cLayer(uic, layerData, renderer, editor, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_SEEDCURRENT
                     layer.Editor.IsReadOnly = True
 
@@ -212,7 +214,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
 
-                    layer = New cLayer(layerData, renderer, editor, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
+                    layer = New cLayer(uic, layerData, renderer, editor, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_SEEDBEST
                     layer.Editor.IsReadOnly = True
 
@@ -227,7 +229,7 @@ Namespace Ecospace.Basemap.Layers
 
                         renderer = New cLayerRendererValue(vs)
                         editor = New cLayerEditorRange()
-                        layer = New cLayer(layerData, renderer, editor)
+                        layer = New cLayer(uic, layerData, renderer, editor)
                         layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_RANDOMBEST
                         layer.Editor.IsReadOnly = True
 
@@ -248,7 +250,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorMigration()
                     If layerData Is Nothing Then layerData = bmd.LayerMigration
-                    layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerMigration)
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMigration)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_MIGRATION
 
                     lLayers.Add(layer)
@@ -267,7 +269,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererArrow(vs)
                     editor = New cLayerEditorAdvection()
                     If layerData Is Nothing Then layerData = bmd.LayerMigration
-                    layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerMigration)
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMigration)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_MIGRATION
 
                     lLayers.Add(layer)
@@ -284,9 +286,9 @@ Namespace Ecospace.Basemap.Layers
                     End If
 
                     renderer = New cLayerRendererSymbol(vs)
-                    editor = New cLayerEditorFleet()
+                    editor = New cLayerEditorFleet(GetType(ucLayerEditorPort))
                     If layerData Is Nothing Then layerData = bmd.LayerPort
-                    layer = New cLayer(layerData, renderer, editor, 1.0!, 0.0!, bmd, eVarNameFlags.LayerPort)
+                    layer = New cLayer(uic, layerData, renderer, editor, 1.0!, 0.0!, bmd, eVarNameFlags.LayerPort)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_PORT
 
                     lLayers.Add(layer)
@@ -304,9 +306,9 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent as a solid colour
                     renderer = New cLayerRendererValue(vs)
-                    editor = New cLayerEditorFleet()
+                    editor = New cLayerEditorFleet(GetType(ucLayerEditorSailCost))
                     If layerData Is Nothing Then layerData = bmd.LayerSailingCost
-                    layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerSail)
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerSail)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_SAILINGCOST
 
                     lLayers.Add(layer)
@@ -329,7 +331,7 @@ Namespace Ecospace.Basemap.Layers
                         ' Create layer
                         renderer = New cLayerRendererValue(vs)
                         editor = New cLayerEditorTwoState()
-                        layer = New cLayer(bmd.LayerImportance(iLayer), renderer, editor, src, eVarNameFlags.Name)
+                        layer = New cLayer(uic, bmd.LayerImportance(iLayer), renderer, editor, src, eVarNameFlags.Name)
 
                         lLayers.Add(layer)
 

@@ -1,24 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: dlgExportLayerData.vb,v $
-' Revision 1.5  2009/05/28 12:37:18  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/05/15 14:12:12  jeroens
-' Obtained layers properly disposed
-'
-' Revision 1.3  2009/05/11 01:50:52  jeroens
-' Renamed command classes
-'
-' Revision 1.2  2008/11/12 00:40:21  jeroens
-' Built initial mappings
-'
-' Revision 1.1  2008/11/10 23:12:52  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 
@@ -202,7 +182,7 @@ Public Class gridExportMappings
 
 #Region " Private vars "
 
-        Private m_core As cCore = Nothing
+        Private m_uic As cUIContext = Nothing
         Private m_lLayers As New List(Of cLayer)
         Private m_bDataValid As Boolean = False
         Private m_data As cImportExportData = Nothing
@@ -211,8 +191,9 @@ Public Class gridExportMappings
 
 #Region " Constructor "
 
-        Public Sub New()
+        Public Sub New(ByVal uic As cUIContext)
             Me.InitializeComponent()
+            Me.m_uic = uic
         End Sub
 
 #End Region ' Constructor
@@ -241,17 +222,19 @@ Public Class gridExportMappings
 
             MyBase.OnLoad(e)
 
-            Me.m_core = cCore.GetInstance()
+            If (Me.DesignMode = True) Then Return
+
+            Debug.Assert(Me.m_uic IsNot Nothing)
 
             If (Me.m_lLayers.Count = 0) Then
 
                 ' Add default layers
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerImportance))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerDepth))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerHabitat))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerMPA))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerRelPP))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerRelCin))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerImportance))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerDepth))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerHabitat))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerMPA))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelPP))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelCin))
 
             End If
 
@@ -355,7 +338,7 @@ Public Class gridExportMappings
         ''' -----------------------------------------------------------------------
         Private Function WriteShapeFile(ByVal strFile As String) As Boolean
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim sfio As New ShapeFileIO()
             Dim lsd As New List(Of SpatialData)
             Dim sd As SpatialData = Nothing
@@ -392,7 +375,7 @@ Public Class gridExportMappings
 
         Private Function WriteAscFile(ByVal strFile As String) As Boolean
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim sfio As New ASCIIFileIO()
             Dim rs As New Raster()
             Dim sd As SpatialData = Nothing
@@ -435,7 +418,7 @@ Public Class gridExportMappings
         Private Function SaveMappedLayers() As Boolean
 
             Dim dtMappings As Dictionary(Of cLayer, String) = Me.m_grid.Mappings()
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim lstrAttributes As New List(Of String)
             Dim strAttribute As String = ""
             Dim strFile As String = Me.m_tbTarget.Text

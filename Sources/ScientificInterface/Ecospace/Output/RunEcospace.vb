@@ -43,7 +43,7 @@ Namespace Ecospace
         ''' <summary>Contaminants over Biomass.</summary>
         Private m_as2ConcOverB(,,) As Single
 
-        Private m_layerDepth As cEcospaceLayer
+        Private m_layerDepth As cEcospaceLayer = Nothing
 
         ''' <summary>The speed of the plotting. 1 is the slowest, 10 is the fastest.</summary>
         Private m_iPlotStepSize As Integer

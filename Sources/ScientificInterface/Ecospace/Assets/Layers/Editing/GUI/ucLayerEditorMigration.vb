@@ -1,24 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: ucLayerEditorMigration.vb,v $
-' Revision 1.2  2008/11/06 01:21:25  jeroens
-' UpdateControls made 'safe'
-'
-' Revision 1.1  2008/11/04 04:40:34  jeroens
-' Split into separate files, moved
-'
-' Revision 1.3  2008/10/15 23:57:33  jeroens
-' Implemented
-'
-' Revision 1.2  2008/10/15 17:03:58  jeroens
-' Reworking
-'
-' Revision 1.1  2008/10/14 20:21:25  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -50,11 +30,13 @@ Namespace Ecospace.Basemap.Layers
             End If
         End Sub
 
-        Private Sub DoLoad(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
 
             ' Initialize group combo 
-            Dim core As cCore = cCore.GetInstance()
+            Dim core As cCore = Me.UIContext.Core
             Dim group As cEcoPathGroupInput = Nothing
 
             Me.m_cmbGroup.Items.Clear()
@@ -65,11 +47,11 @@ Namespace Ecospace.Basemap.Layers
                 Me.m_cmbGroup.Items.Add(group.Name)
             Next iGroup
 
-            Me.UpdateControls()
+            Me.UpdateContent()
         End Sub
 
-        Public Overrides Sub UpdateControls()
-            MyBase.UpdateControls()
+        Public Overrides Sub UpdateContent()
+            MyBase.UpdateContent()
 
             If (Me.m_cmbGroup Is Nothing) Then Return
             If (Me.m_cmbMonth Is Nothing) Then Return

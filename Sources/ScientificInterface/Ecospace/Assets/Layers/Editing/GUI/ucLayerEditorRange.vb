@@ -1,21 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: ucLayerEditorRange.vb,v $
-' Revision 1.2  2009/05/28 12:37:53  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2008/11/04 04:40:34  jeroens
-' Split into separate files, moved
-'
-' Revision 1.2  2008/10/15 17:03:58  jeroens
-' Reworking
-'
-' Revision 1.1  2008/10/14 20:21:25  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports ScientificInterfaceShared.Style
@@ -31,12 +14,6 @@ Namespace Ecospace.Basemap.Layers
     ''' =======================================================================
     Public Class ucLayerEditorRange
 
-#Region " Private vars "
-
-        Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
-
-#End Region ' Private vars
-
 #Region " Construction "
 
         Public Sub New()
@@ -48,16 +25,17 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Overrides "
 
-        Public Overrides Sub UpdateControls()
-            MyBase.UpdateControls()
+        Public Overrides Sub UpdateContent()
+            MyBase.UpdateContent()
 
             ' Sanity check
             If (Me.m_nudValue Is Nothing) Then Return
+            If (Me.UIContext Is Nothing) Then Return
 
             If Me.Editor.Layer.ValueType Is GetType(Integer) Then
                 Me.m_nudValue.DecimalPlaces = 0
             Else
-                Me.m_nudValue.DecimalPlaces = Me.m_sg.NumDigits
+                Me.m_nudValue.DecimalPlaces = Me.UIContext.StyleGuide.NumDigits
             End If
         End Sub
 
@@ -74,20 +52,26 @@ Namespace Ecospace.Basemap.Layers
             End If
         End Sub
 
-        Private Sub DoLoad(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            REM Oh wow, REM still works?! I SOOO feel like 1982 right now!
-            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            Me.UpdateControls()
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            Me.UpdateContent()
         End Sub
 
-        Private Sub DoTrashMePlenty(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            Me.m_sg = Nothing
+        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            MyBase.OnHandleDestroyed(e)
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
             If ((cf And cStyleGuide.eChangeType.NumberFormatting) > 0) Then
-                Me.UpdateControls()
+                Me.UpdateContent()
             End If
         End Sub
 
