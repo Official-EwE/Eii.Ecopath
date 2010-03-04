@@ -34,8 +34,6 @@ Namespace Ecospace.Basemap.Layers
 
         Private m_brFore As Brush = Nothing
         Private m_ft As Font = Nothing
-        Private m_sValueMin As Single = Nothing
-        Private m_sValueMax As Single = Nothing
         Private m_bDrawAlways As Boolean = False
 
         Private m_colorRamp As New SAUPColorRamp
@@ -55,12 +53,10 @@ Namespace Ecospace.Basemap.Layers
             End Set
         End Property
 
-        Public Overrides Sub SetValueRange(ByVal sMin As Object, ByVal sMax As Object)
-            Me.m_sValueMin = CSng(sMin)
-            Me.m_sValueMax = CSng(sMax)
-        End Sub
+        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
+                                           ByVal rc As Rectangle, _
+                                           ByVal layer As cEcospaceLayer)
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, ByVal rc As Rectangle)
             If Me.m_brFore Is Nothing Then Me.Update()
 
             If Me.IsStyleValid Then
@@ -69,10 +65,17 @@ Namespace Ecospace.Basemap.Layers
             Else
                 Me.RenderError(g, rc)
             End If
+
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, ByVal rc As System.Drawing.Rectangle, ByVal value As Object, _
-                ByVal style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
+                                        ByVal rc As System.Drawing.Rectangle, _
+                                        ByVal layer As cEcospaceLayer, _
+                                        ByVal value As Object, _
+                                        ByVal style As cStyleGuide.eStyleFlags)
+
+            Dim sValMax As Single = layer.MaxValue
+            Dim sValMin As Single = layer.MinValue
 
             Try
                 If Me.m_brFore Is Nothing Then Me.Update()
@@ -84,17 +87,17 @@ Namespace Ecospace.Basemap.Layers
 
                     If (value IsNot Nothing) And (Me.m_ft IsNot Nothing) Then
                         Dim sValue As Single = CSng(value)
-                        Dim sValRange As Single = (Me.m_sValueMax - Me.m_sValueMin)
+                        Dim sValRange As Single = (sValMax - sValMin)
 
                         ' Has a range? draw background
                         If (sValRange > 0.0) Then
                             ' Calculate the cell color based on the cell value RELATIVE TO [sValueMin, sValueMax),
                             ' not (0, sValueMax)!!!
-                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue - Me.m_sValueMin, Me.m_sValueMax))
+                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue - sValMin, sValMax))
                                 g.FillRectangle(br, rc)
                             End Using
                         Else
-                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue, Me.m_sValueMax))
+                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue, sValMax))
                                 g.FillRectangle(br, rc)
                             End Using
                         End If

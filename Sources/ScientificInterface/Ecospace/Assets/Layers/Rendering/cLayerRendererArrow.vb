@@ -1,15 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cLayerRendererArrow.vb,v $
-' Revision 1.2  2009/05/28 12:37:15  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2008/11/04 04:41:34  jeroens
-' Split into separate files, moved
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -37,10 +26,12 @@ Namespace Ecospace.Basemap.Layers
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, ByVal rc As Rectangle)
+        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
+                                           ByVal rc As Rectangle, _
+                                           ByVal layer As cEcospaceLayer)
             If Me.IsStyleValid Then
                 'g.FillRectangle(Brushes.White, rc)
-                Me.RenderCell(g, rc, 45, cStyleGuide.eStyleFlags.OK)
+                Me.RenderCell(g, rc, layer, 45, cStyleGuide.eStyleFlags.OK)
             Else
                 Me.RenderError(g, rc)
             End If
@@ -57,8 +48,12 @@ Namespace Ecospace.Basemap.Layers
         ''' [0, 1] as the second index.</param>
         ''' <param name="style"></param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, ByVal rc As System.Drawing.Rectangle, _
-                                        ByVal value As Object, ByVal style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(ByVal g As Graphics, _
+                                        ByVal rc As Rectangle, _
+                                        ByVal layer As cEcospaceLayer, _
+                                        ByVal value As Object, _
+                                        ByVal style As cStyleGuide.eStyleFlags)
+
             Dim asValues As Single() = Nothing
             Dim sAngle As Single = 0
             Dim sScale As Single = 1.0

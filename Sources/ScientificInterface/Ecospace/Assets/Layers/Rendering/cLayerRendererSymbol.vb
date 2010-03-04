@@ -1,15 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cLayerRendererSymbol.vb,v $
-' Revision 1.2  2009/05/28 12:37:16  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2008/11/04 04:41:35  jeroens
-' Split into separate files, moved
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -36,7 +25,10 @@ Namespace Ecospace.Basemap.Layers
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, ByVal rc As Rectangle)
+        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
+                                           ByVal rc As Rectangle, _
+                                           ByVal layer As cEcospaceLayer)
+
             If Me.IsStyleValid() Then
                 rc.Inflate(CInt(-rc.Width * 0.75), CInt(-rc.Height * 0.75))
                 Using p As New Pen(Color.White, 3)
@@ -49,11 +41,15 @@ Namespace Ecospace.Basemap.Layers
             Else
                 Me.RenderError(g, rc)
             End If
+
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, ByVal rc As System.Drawing.Rectangle, _
-                                        ByVal value As Object, ByVal style As cStyleGuide.eStyleFlags)
-            Me.RenderPreview(g, rc)
+        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
+                                        ByVal rc As System.Drawing.Rectangle, _
+                                        ByVal layer As cEcospaceLayer, _
+                                        ByVal value As Object, _
+                                        ByVal style As cStyleGuide.eStyleFlags)
+            Me.RenderPreview(g, rc, layer)
         End Sub
 
         Protected Overrides Function IsStyleValid() As Boolean

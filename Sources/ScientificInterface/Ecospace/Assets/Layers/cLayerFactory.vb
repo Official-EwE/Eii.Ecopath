@@ -305,7 +305,6 @@ Namespace Ecospace.Basemap.Layers
                     ' Represent as a solid colour
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorFleet()
-                    editor.IsEditable = False
                     If layerData Is Nothing Then layerData = bmd.LayerSailingCost
                     layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerSail)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_SAILINGCOST

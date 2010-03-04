@@ -1,27 +1,3 @@
-'==============================================================================
-'
-' $Log: cLayerRenderer.vb,v $
-' Revision 1.2  2009/05/28 12:37:15  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2008/11/04 04:41:34  jeroens
-' Split into separate files, moved
-'
-' Revision 1.3  2008/11/02 22:13:11  jeroens
-' Added StringRenderer
-' Fixed crash on Clone
-'
-' Revision 1.2  2008/10/15 23:56:56  jeroens
-' Simplified ValueRenderer construction
-'
-' Revision 1.1  2008/10/10 18:03:21  jeroens
-' Renamed
-'
-' Revision 1.1  2008/09/26 07:31:58  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -140,7 +116,9 @@ Namespace Ecospace.Basemap.Layers
         ''' Provide brush for rendering sample panes.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public MustOverride Sub RenderPreview(ByVal g As Graphics, ByVal rc As Rectangle)
+        Public MustOverride Sub RenderPreview(ByVal g As Graphics, _
+                                              ByVal rc As Rectangle, _
+                                              ByVal layer As cEcospaceLayer)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -148,9 +126,14 @@ Namespace Ecospace.Basemap.Layers
         ''' </summary>
         ''' <param name="g">The graphics to render onto.</param>
         ''' <param name="rc">Device area to render cell onto.</param>
+        ''' <param name="layer">Layer to render from</param>
         ''' <param name="value">The value to render.</param>
         ''' -----------------------------------------------------------------------
-        Public MustOverride Sub RenderCell(ByVal g As Graphics, ByVal rc As Rectangle, ByVal value As Object, ByVal style As cStyleGuide.eStyleFlags)
+        Public MustOverride Sub RenderCell(ByVal g As Graphics, _
+                                           ByVal rc As Rectangle, _
+                                           ByVal layer As cEcospaceLayer, _
+                                           ByVal value As Object, _
+                                           ByVal style As cStyleGuide.eStyleFlags)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -165,17 +148,6 @@ Namespace Ecospace.Basemap.Layers
             g.FillRectangle(Brushes.White, rc)
             g.DrawLine(Pens.Red, rc.Left, rc.Top, rc.Right, rc.Bottom)
             g.DrawLine(Pens.Red, rc.Left, rc.Bottom, rc.Right, rc.Top)
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' The range of values in the underlying data has changed.
-        ''' </summary>
-        ''' <param name="objMin">Minimum value(s) in the layer.</param>
-        ''' <param name="objMax">Maximum value(s) in the layer.</param>
-        ''' -----------------------------------------------------------------------
-        Public Overridable Sub SetValueRange(ByVal objMin As Object, ByVal objMax As Object)
-            ' NOP
         End Sub
 
         Public Overridable Function Clone() As cLayerRenderer

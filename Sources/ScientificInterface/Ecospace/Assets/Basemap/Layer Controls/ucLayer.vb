@@ -256,7 +256,7 @@ Namespace Ecospace
             ' Draw preview
             ' - Render representation
             e.Graphics.FillRectangle(Brushes.White, rcPreview)
-            Me.m_layer.Renderer.RenderPreview(e.Graphics, rcPreview)
+            Me.m_layer.Renderer.RenderPreview(e.Graphics, rcPreview, Me.Layer.Data)
             ' - Render remarks indicator
             cRemarksIndicator.Paint(rcPreview, e.Graphics, prop.HasRemark())
             ' - Render border

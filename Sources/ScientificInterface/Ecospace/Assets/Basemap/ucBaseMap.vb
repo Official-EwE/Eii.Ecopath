@@ -394,7 +394,7 @@ Namespace Ecospace
                                     style = (style Or cStyleGuide.eStyleFlags.Highlight)
                                 End If
                                 ' Render cell
-                                l.Renderer.RenderCell(g, rcScreen, l.Value(ptCell.Y, ptCell.X), style)
+                                l.Renderer.RenderCell(g, rcScreen, l.Data, l.Value(ptCell.Y, ptCell.X), style)
                             End If
                         End If
 

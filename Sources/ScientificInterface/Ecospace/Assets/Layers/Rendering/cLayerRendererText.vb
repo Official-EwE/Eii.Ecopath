@@ -1,15 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cLayerRendererText.vb,v $
-' Revision 1.2  2009/05/28 12:37:16  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2008/11/04 04:41:35  jeroens
-' Split into separate files, moved
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -40,10 +29,10 @@ Namespace Ecospace.Basemap.Layers
                     cVisualStyle.eVisualStyleTypes.Gradient)
         End Sub
 
-        Public Overrides Sub SetValueRange(ByVal sMin As Object, ByVal sMax As Object)
-        End Sub
+        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
+                                           ByVal rc As Rectangle, _
+                                           ByVal layer As cEcospaceLayer)
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, ByVal rc As Rectangle)
             If Me.m_brFore Is Nothing Then Me.Update()
 
             If Me.IsStyleValid Then
@@ -52,10 +41,14 @@ Namespace Ecospace.Basemap.Layers
             Else
                 Me.RenderError(g, rc)
             End If
+
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, ByVal rc As System.Drawing.Rectangle, ByVal value As Object, _
-                ByVal style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
+                                        ByVal rc As System.Drawing.Rectangle, _
+                                        ByVal layer As cEcospaceLayer, _
+                                        ByVal value As Object, _
+                                        ByVal style As cStyleGuide.eStyleFlags)
 
             Try
                 If Me.m_brFore Is Nothing Then Me.Update()

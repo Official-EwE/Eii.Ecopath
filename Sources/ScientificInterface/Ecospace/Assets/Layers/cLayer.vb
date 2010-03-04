@@ -254,11 +254,6 @@ Namespace Ecospace.Basemap.Layers
             ' Update editor
             Me.m_editor.Initialize(Me)
 
-            If Me.m_renderer IsNot Nothing Then
-                ' Update renderer
-                Me.m_renderer.SetValueRange(Me.m_data.MinValue, Me.m_data.MaxValue)
-            End If
-
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -327,7 +322,7 @@ Namespace Ecospace.Basemap.Layers
                 ' Map has changed via user drawing
                 If ((updateType And eChangeFlags.Map) = eChangeFlags.Map) Then
                     ' Update visuals
-                    Me.m_renderer.SetValueRange(Me.m_data.MinValue, Me.m_data.MaxValue)
+                    Me.m_data.Invalidate()
 
                     ' Is a core layer?
                     If Me.m_data.DataType <> eDataTypes.NotSet Then
