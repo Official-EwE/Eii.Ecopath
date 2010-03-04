@@ -4928,32 +4928,58 @@ exitline:
 
     End Sub
 
-    'Private Sub SetAllCoastsToPorts()
-    '    Dim i As Integer
-    '    Dim j As Integer
-    '    Dim k As Integer
-    '    Dim l As Integer
-    '    Dim inRow As Integer = m_Data.Inrow
-    '    Dim inCol As Integer = m_Data.InCol
-    '    ReDim Port(inRow, inCol)
+    Public Sub ClearPorts(ByVal iFleet As Integer)
 
-    '    For i = 1 To inRow
-    '        For j = 1 To inCol
-    '            'Check if there is a neighboring cell which is in water
-    '            If Me.EcoSpaceParameters.Depth(i, j) <= 0 Then    'it is a land cell
-    '                For k = i - 1 To i + 1 Step 2
-    '                    For l = j - 1 To j + 1 Step 2
-    '                        If k > 0 And k <= inRow And l > 0 And l <= inCol And Me.EcoSpaceParameters.Depth(k, l) > 0 Then
-    '                            'For Gear = 0 To NumGear
-    '                            m_Data.Port(i, j) = True
-    '                            'Next
-    '                        End If
-    '                    Next
-    '                Next
-    '            End If
-    '        Next
-    '    Next
-    'End Sub
+        Dim iStart As Integer = iFleet
+        Dim iEnd As Integer = iFleet
+        Dim inRow As Integer = m_Data.InRow
+        Dim inCol As Integer = m_Data.InCol
+        Dim i As Integer
+        Dim j As Integer
+
+        If iStart <= 0 Then iStart = 0 : iEnd = Me.EcoSpaceData.nFleets
+
+        For i = 1 To inRow
+            For j = 1 To inCol
+                For iFleet = iStart To iEnd
+                    m_Data.Port(iFleet, i, j) = False
+                Next iFleet
+            Next
+        Next
+
+    End Sub
+
+    Public Sub SetAllCoastsToPorts(ByVal iFleet As Integer)
+
+        Dim i As Integer
+        Dim j As Integer
+        Dim k As Integer
+        Dim l As Integer
+        Dim inRow As Integer = m_Data.InRow
+        Dim inCol As Integer = m_Data.InCol
+        Dim iStart As Integer = iFleet
+        Dim iEnd As Integer = iFleet
+
+        If iStart <= 0 Then iStart = 0 : iEnd = Me.EcoSpaceData.nFleets
+
+        For i = 1 To inRow
+            For j = 1 To inCol
+                'Check if there is a neighboring cell which is in water
+                If Me.EcoSpaceData.Depth(i, j) <= 0 Then    'it is a land cell
+                    For k = i - 1 To i + 1 Step 2
+                        For l = j - 1 To j + 1 Step 2
+                            If k > 0 And k <= inRow And l > 0 And l <= inCol And Me.EcoSpaceData.Depth(k, l) > 0 Then
+                                For iFleet = iStart To iEnd
+                                    m_Data.Port(iFleet, i, j) = True
+                                Next iFleet
+                            End If
+                        Next
+                    Next
+                End If
+            Next
+        Next
+
+    End Sub
 
     Public Sub CalculateCostOfSailing()
 
