@@ -23,20 +23,20 @@ Namespace Ecosim
     ''' -----------------------------------------------------------------------
     Public Class frmMediationFunction
 
-#Region "Private variables"
+#Region " Private variables "
 
         ''' <summary>Controller for shape-related GUI components in this form.</summary>
         Private m_shapeguihandler As cShapeGUIHandler = Nothing
 
-#End Region
+#End Region '  Private variables
 
-#Region "Constructors"
+#Region " Constructors "
 
         Public Sub New()
             Me.InitializeComponent()
         End Sub
 
-#End Region
+#End Region ' Constructors
 
 #Region " Overrides "
 
