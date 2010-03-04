@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: defBioPercent.vb,v $
-' Revision 1.3  2009/02/26 06:41:25  jeroens
-' Fixed crash on opening twice
-'
-' Revision 1.2  2008/12/15 16:02:24  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:37  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.14  2008/09/19 14:14:38  jeroens
-' Fixed issue 496
-'
-' Revision 1.13  2007/11/15 15:04:26  jeroens
-' * Fixed bug 339
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -88,7 +68,7 @@ Namespace Ecosim
 #Region " Private variables "
 
         ''' <summary>Core ref.</summary>
-        Private m_core As cCore = Nothing
+        Private m_uic As cUIContext
         ''' <summary>The med function being edited.</summary>
         Private m_medfn As cMediationFunction = Nothing
         ''' <summary>Selected object.</summary>
@@ -104,7 +84,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="medfn"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal medfn As cMediationFunction)
+        Public Sub New(ByVal UIC As cUIContext, ByVal medfn As cMediationFunction)
 
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
@@ -114,9 +94,9 @@ Namespace Ecosim
 
             ' Store medfn
             Me.m_medfn = medfn
-            ' Get the only core reference
-            Me.m_core = cCore.GetInstance()
 
+            ' Store UIC
+            Me.m_uic = UIC
         End Sub
 
 #End Region ' Constructor
@@ -128,11 +108,16 @@ Namespace Ecosim
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub defBioPercent_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
-            For iGroup As Integer = 1 To m_core.nGroups
+            If (m_uic Is Nothing) Then Return
 
-                Dim grp As cEcoPathGroupInput = m_core.EcoPathGroupInputs(iGroup)
+            Me.m_bp.UIContext = Me.m_uic
+
+            For iGroup As Integer = 1 To m_uic.Core.nGroups
+
+                Dim grp As cEcoPathGroupInput = m_uic.Core.EcoPathGroupInputs(iGroup)
 
                 For j As Integer = 0 To m_medfn.CountGroup - 1
                     Dim medGrp As cMediatingGroup = m_medfn.Group(j)
@@ -143,9 +128,9 @@ Namespace Ecosim
                 Next
             Next
 
-            For iFleet As Integer = 1 To m_core.nFleets
-                Dim iIndex As Integer = m_core.nGroups + iFleet
-                Dim flt As cFleetInput = m_core.FleetInputs(iFleet)
+            For iFleet As Integer = 1 To m_uic.Core.nFleets
+                Dim iIndex As Integer = m_uic.Core.nGroups + iFleet
+                Dim flt As cFleetInput = m_uic.Core.FleetInputs(iFleet)
 
                 For j As Integer = 0 To m_medfn.CountFleet - 1
                     Dim medFlt As cMediatingFleet = m_medfn.Fleet(j)
@@ -156,7 +141,7 @@ Namespace Ecosim
                 Next
             Next
 
-            Me.UpdateAvailableGroupsAndFleets(m_core.EcoPathGroupInputs(1))
+            Me.UpdateAvailableGroupsAndFleets(m_uic.Core.EcoPathGroupInputs(1))
             Me.UpdateGraph()
 
         End Sub
@@ -272,16 +257,16 @@ Namespace Ecosim
 
             Me.m_lbAvailableGroupsFleets.Items.Clear()
 
-            For iIndex = 1 To m_core.nGroups
-                obj = m_core.EcoPathGroupInputs(iIndex)
+            For iIndex = 1 To m_uic.Core.nGroups
+                obj = m_uic.Core.EcoPathGroupInputs(iIndex)
                 If (Me.m_grid.Find(obj) = False) Then
                     Me.m_lbAvailableGroupsFleets.Items.Add(New ListBoxItem(obj))
                     If Object.ReferenceEquals(obj, objSelected) Then iSelectedIndex = m_lbAvailableGroupsFleets.Items.Count - 1
                 End If
             Next
 
-            For iIndex = 1 To m_core.nFleets
-                obj = m_core.FleetInputs(iIndex)
+            For iIndex = 1 To m_uic.Core.nFleets
+                obj = m_uic.Core.FleetInputs(iIndex)
                 If (Me.m_grid.Find(obj) = False) Then
                     Me.m_lbAvailableGroupsFleets.Items.Add(New ListBoxItem(obj))
                     If Object.ReferenceEquals(obj, objSelected) Then iSelectedIndex = m_lbAvailableGroupsFleets.Items.Count - 1

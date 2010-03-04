@@ -47,6 +47,7 @@ Namespace Ecosim
             Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
                 MyBase.UIContext = value
                 Me.m_bioPercent.UIContext = value
+                'Me.
             End Set
         End Property
 
@@ -63,6 +64,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+            If (Me.UIContext Is Nothing) Then Return
             Me.m_shapeguihandler = New cMediationShapeGUIHandler(Me.UIContext, _
                   Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
                   Me.m_sketchPad, Me.m_sketchPadToolbar, _

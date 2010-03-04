@@ -251,7 +251,7 @@ Namespace Ecosim
             Select Case cmd
 
                 Case eShapeCommandTypes.DefineXAxis
-                    Dim dlgDefBP As New defBioPercent(DirectCast(Me.SelectedShape, cMediationFunction))
+                    Dim dlgDefBP As New defBioPercent(Me.UIContext, DirectCast(Me.SelectedShape, cMediationFunction))
                     If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
                         Me.BiomassPercent.LoadGraphData()
                     End If

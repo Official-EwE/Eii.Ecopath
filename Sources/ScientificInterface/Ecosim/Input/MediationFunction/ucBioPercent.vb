@@ -49,6 +49,7 @@ Namespace Ecosim
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
             Debug.Assert(Me.m_uic IsNot Nothing, "UI context required")
+            If Me.UIContext Is Nothing Then Return
             Me.InitGraphPane()
             Me.LoadGraphData()
         End Sub
