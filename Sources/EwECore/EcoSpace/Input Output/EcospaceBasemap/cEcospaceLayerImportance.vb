@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: cEcospaceLayerImportance.vb,v $
-' Revision 1.3  2009/05/06 12:33:00  jeroens
-' Added meaningful datatypes
-'
-' Revision 1.2  2009/01/16 18:30:23  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:21  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/08/13 17:37:08  jeroens
-' Renamed LayerImportanceWeight to ImportanceWeight
-'
-' Revision 1.2  2008/08/11 18:35:50  jeroens
-' Uses real Index, not a home-made version
-'
-' Revision 1.1  2008/08/11 02:00:35  jeroens
-' Simplified class names
-'
-' Revision 1.2  2008/08/09 00:06:59  jeroens
-' Simplified
-'
-'==============================================================================
-
 #Region " Imports directive "
 
 Option Strict On
@@ -32,11 +6,9 @@ Imports EwEUtils.Core
 
 #End Region ' Imports directive
 
-''' ===========================================================================
 ''' <summary>
-''' 
+''' Layer providing access to Ecospace importance data.
 ''' </summary>
-''' ===========================================================================
 Public Class cEcospaceLayerImportance
     Inherits cEcospaceLayerSingleNxM
 

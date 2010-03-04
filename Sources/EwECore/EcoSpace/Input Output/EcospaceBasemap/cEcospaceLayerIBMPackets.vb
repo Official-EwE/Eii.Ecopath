@@ -5,10 +5,9 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
+
 ''' <summary>
-''' Layer representing where stanza packets are located during an IBM search.
-''' Each layer represents the occurence of life stages for a single stanza
-''' configuration (or in core data terms: where 
+''' Layer providing access to Ecospace IBM packets data.
 ''' </summary>
 Public Class cEcospaceLayerIBMPackets
     Inherits cEcospaceLayerIntegerNxM

@@ -1,31 +1,14 @@
-﻿'==============================================================================
-'
-' $Log: cEcospaceLayerAdvection.vb,v $
-' Revision 1.3  2009/05/06 12:33:00  jeroens
-' Added meaningful datatypes
-'
-' Revision 1.2  2008/11/05 16:54:36  jeroens
-' At least it compiles
-'
-' Revision 1.1  2008/11/04 05:42:58  jeroens
-' New
-'
-'==============================================================================
-
-#Region " Imports directive "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
-#End Region ' Imports directive
+#End Region ' Imports 
 
-''' ===========================================================================
 ''' <summary>
-''' Layer for the Ecospace basemap, providing cell-based access to a 2 dimensional
-''' array of migration values.
+''' Layer providing access to Ecospace advection data.
 ''' </summary>
-''' ===========================================================================
 Public Class cEcospaceLayerAdvection
     Inherits cEcospaceLayerSingleNxM
 

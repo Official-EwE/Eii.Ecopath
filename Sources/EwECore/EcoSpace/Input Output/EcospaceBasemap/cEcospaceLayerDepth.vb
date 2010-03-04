@@ -1,18 +1,13 @@
-﻿'==============================================================================
-'
-' $Log: cEcospaceLayerDepth.vb,v $
-' Revision 1.1  2009/05/06 12:32:24  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwEUtils.Core
 
 #End Region ' Imports
 
+''' <summary>
+''' Layer providing access to Ecospace depth data.
+''' </summary>
 Public Class cEcospaceLayerDepth
     Inherits cEcospaceLayerIntegerNxM
 

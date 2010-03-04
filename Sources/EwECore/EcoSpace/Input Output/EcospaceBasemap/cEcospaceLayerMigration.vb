@@ -1,18 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cEcospaceLayerMigration.vb,v $
-' Revision 1.3  2009/05/05 15:09:29  jeroens
-' Removed cEcospaceBasemapLayer variables
-'
-' Revision 1.2  2008/11/14 21:43:29  jeroens
-' Fixed  crash on migration data outside range of the basemap
-'
-' Revision 1.1  2008/11/04 05:42:58  jeroens
-' New
-'
-'==============================================================================
-
-#Region " Imports directive "
+﻿#Region " Imports directive "
 
 Option Strict On
 Imports EwECore.ValueWrapper
@@ -20,12 +6,9 @@ Imports EwEUtils.Core
 
 #End Region ' Imports directive
 
-''' ===========================================================================
 ''' <summary>
-''' Layer for the Ecospace basemap, providing cell-based access to a 2 dimensional
-''' array of migration values.
+''' Layer providing access to Ecospace migration data.
 ''' </summary>
-''' ===========================================================================
 Public Class cEcospaceLayerMigration
     Inherits cEcospaceLayer
 

@@ -1,37 +1,14 @@
-'==============================================================================
-'
-' $Log: cEcospaceNxNLayer.vb,v $
-' Revision 1.5  2009/05/06 12:38:30  jeroens
-' Renamed classes for consistency reasons
-'
-' Revision 1.4  2009/05/05 15:09:30  jeroens
-' Removed cEcospaceBasemapLayer variables
-'
-' Revision 1.3  2008/11/04 05:42:31  jeroens
-' Moved migration layer to separate file
-'
-' Revision 1.2  2008/10/15 23:54:11  jeroens
-' Added cEcospaceMigrationLayer to uniquely wrap the migration data
-'
-' Revision 1.1  2008/09/26 07:30:21  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
-#End Region ' Imports directive
+#End Region ' Imports
 
-''' ===========================================================================
 ''' <summary>
-''' Layer for the Ecospace basemap, providing cell-based access to a 2 dimensional
-''' array of Integer values.
+''' Base layer providing access to Ecospace data as cells of integer values.
 ''' </summary>
-''' ===========================================================================
 Public Class cEcospaceLayerIntegerNxM
     Inherits cEcospaceLayer
 
@@ -128,14 +105,14 @@ Public Class cEcospaceLayerIntegerNxM
 
     Public Overrides ReadOnly Property MaxValue() As Single
         Get
-            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax() : Me.m_bInvalidateMinMax = False
+            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax()
             Return Me.m_iMaxValue
         End Get
     End Property
 
     Public Overrides ReadOnly Property MinValue() As Single
         Get
-            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax() : Me.m_bInvalidateMinMax = False
+            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax()
             Return Me.m_iMinValue
         End Get
     End Property
@@ -162,6 +139,7 @@ Public Class cEcospaceLayerIntegerNxM
                 End If
             Next iCol
         Next iRow
+        Me.m_bInvalidateMinMax = False
 
     End Sub
 
@@ -169,13 +147,10 @@ Public Class cEcospaceLayerIntegerNxM
 
 End Class
 
-
-''' ===========================================================================
 ''' <summary>
-''' Layer for the Ecospace basemap, providing cell-based access to a 2 dimensional
-''' array of Single values.
+''' Base layer providing access to Ecospace data as cells of single values.
 ''' </summary>
-''' ===========================================================================
+
 Public Class cEcospaceLayerSingleNxM
     Inherits cEcospaceLayer
 
@@ -268,14 +243,14 @@ Public Class cEcospaceLayerSingleNxM
 
     Public Overrides ReadOnly Property MaxValue() As Single
         Get
-            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax() : Me.m_bInvalidateMinMax = False
+            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax()
             Return Me.m_sMaxValue
         End Get
     End Property
 
     Public Overrides ReadOnly Property MinValue() As Single
         Get
-            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax() : Me.m_bInvalidateMinMax = False
+            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax()
             Return Me.m_sMinValue
         End Get
     End Property
@@ -303,6 +278,7 @@ Public Class cEcospaceLayerSingleNxM
                 End If
             Next iCol
         Next iRow
+        Me.m_bInvalidateMinMax = False
 
     End Sub
 

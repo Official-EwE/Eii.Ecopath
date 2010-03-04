@@ -5,9 +5,12 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
+''' <summary>
+''' Layer providing access to Ecospace sailing cost data.
+''' </summary>
 Public Class cEcospaceLayerSail
     Inherits cEcospaceLayerSingleNxM
-    Implements IEcospaceLayerFleet
+    Implements ICoreFleetFilter
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
         MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerSail)
@@ -24,7 +27,7 @@ Public Class cEcospaceLayerSail
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Fleet() As Integer _
-        Implements IEcospaceLayerFleet.Fleet
+        Implements ICoreFleetFilter.Fleet
         Get
             Return Me.m_iFleet
         End Get
