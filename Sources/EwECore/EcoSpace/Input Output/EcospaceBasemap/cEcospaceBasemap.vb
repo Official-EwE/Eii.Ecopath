@@ -1,10 +1,10 @@
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>

@@ -267,6 +267,7 @@
     <Compile Include="Database\Updates\cDBUpdate6_00_06_006.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_06_007.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_07_001.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_07_002.vb" />
     <Compile Include="DataSource\cDatasourceFactory.vb" />
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
@@ -292,7 +293,6 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerIBMPackets.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerPort.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerSail.vb" />
-    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\IEcospaceLayerFleet.vb" />
     <Compile Include="External data\cNetworkAnalysisDataSource.vb" />
     <Compile Include="External data\IExternalData.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptManager.vb" />

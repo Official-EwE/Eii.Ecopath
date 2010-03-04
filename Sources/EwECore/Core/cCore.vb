@@ -6579,10 +6579,43 @@ Public Class cCore
 
     End Function
 
-    Friend Sub InitSailingCost()
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Recalculate the Ecospace distance sailing cost map for all fleets.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub CalcEcospaceCostOfSailing()
 
         Me.m_Ecospace.CalculateCostOfSailing()
-        Me.m_EcospaceBasemap.LayerSailingCost.Invalidate()
+        Me.onChanged(Me.EcospaceBasemap.LayerSailingCost)
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Set all coastal cells to ports for a given fleet.
+    ''' </summary>
+    ''' <param name="iFleet">The fleet to set the ports for. If not provided,
+    ''' all coastal cells for all fleets are set to ports.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub SetEcospaceAllCoastToPort(Optional ByVal iFleet As Integer = cCore.NULL_VALUE)
+
+        Me.m_Ecospace.SetAllCoastsToPorts(iFleet)
+        Me.onChanged(Me.EcospaceBasemap.LayerPort)
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Clear port cells for a given fleet.
+    ''' </summary>
+    ''' <param name="iFleet">The fleet to clear the ports for. If not provided,
+    ''' all ports for all fleets are cleared.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub ClearEcospacePort(Optional ByVal iFleet As Integer = cCore.NULL_VALUE)
+
+        Me.m_Ecospace.ClearPorts(iFleet)
+        Me.onChanged(Me.EcospaceBasemap.LayerPort)
 
     End Sub
 
@@ -7266,8 +7299,6 @@ Public Class cCore
 
             InitEcospaceOutputs()
             InitEcotracerOutputs()
-
-            Me.InitSailingCost()
 
             SendEcospaceLoadMessage(iScenario)
 
@@ -10958,11 +10989,10 @@ Public Class cCore
                      eDataTypes.EcospaceLayerImportance, _
                      eDataTypes.EcospaceLayerRegion, _
                      eDataTypes.EcospaceLayerRelCin, _
-                     eDataTypes.EcospaceLayerRelPP
-                    Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
-
-                Case eDataTypes.EcospaceLayerPort
-                    Me.InitSailingCost()
+                     eDataTypes.EcospaceLayerRelPP, _
+                     eDataTypes.EcospaceLayerPort, _
+                     eDataTypes.EcospaceLayerSail
+                    DirectCast(obj, cEcospaceLayer).Invalidate()
                     Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
 
                 Case eDataTypes.EcospaceHabitat

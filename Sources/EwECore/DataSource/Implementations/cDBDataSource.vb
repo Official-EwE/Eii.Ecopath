@@ -7526,8 +7526,8 @@ Public Class cDBDataSource
                 iCol = CInt(reader("InCol"))
                 iPort = CInt(reader("PortID"))
 
-                ' Set Port 
                 ecospaceDS.Port(iFleet, iRow, iCol) = (iPort > 0)
+                ecospaceDS.Sail(iFleet, iRow, iCol) = CSng(Me.ReadSafe(reader, "SailCost", 0.0!))
 
             End While
 
@@ -7679,19 +7679,21 @@ Public Class cDBDataSource
             For iFleet = 1 To ecospaceDS.nFleets
                 For iRow = 1 To ecospaceDS.InRow
                     For iCol = 1 To ecospaceDS.InCol
+
+                        drow = writer.NewRow()
+                        drow("ScenarioID") = iScenarioID
+                        drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
+                        drow("InRow") = iRow
+                        drow("InCol") = iCol
+                        drow("SailCost") = ecospaceDS.Sail(iFleet, iRow, iCol)
                         If ecospaceDS.Port(iFleet, iRow, iCol) Then
-
-                            drow = writer.NewRow()
-                            drow("ScenarioID") = iScenarioID
-                            drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
-                            drow("InRow") = iRow
-                            drow("InCol") = iCol
                             drow("PortID") = iPortID
-                            writer.AddRow(drow)
-
                             iPortID += 1 ' Haha
-
+                        Else
+                            drow("PortID") = 0
                         End If
+                        writer.AddRow(drow)
+
                     Next iCol
                 Next iRow
             Next iFleet
