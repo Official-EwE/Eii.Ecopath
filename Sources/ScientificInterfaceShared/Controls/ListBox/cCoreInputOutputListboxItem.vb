@@ -48,7 +48,7 @@ Namespace Controls
         ''' Returns the wrapped core input/output object.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        Public ReadOnly Property Source() As cCoreInputOutputBase
+        Public Overridable ReadOnly Property Source() As cCoreInputOutputBase
             Get
                 Return Me.m_obj
             End Get

@@ -60,9 +60,8 @@ Namespace Controls
         ''' </summary>
         ''' ---------------------------------------------------------------------------
         Protected Class cFleetItem
+            Inherits cCoreInputOutputListboxItem
 
-            ''' <summary>Fleet to show.</summary>
-            Private m_fleet As cFleetInput = Nothing
             ''' <summary>A value to sort by.</summary>
             Private m_sValue As Single = 0.0
 
@@ -72,9 +71,8 @@ Namespace Controls
             ''' </summary>
             ''' <param name="fleet">Fleet to link to.</param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal fleet As cFleetInput, _
-                           Optional ByVal sSortValue As Single = 0.0!)
-                Me.m_fleet = fleet
+            Public Sub New(ByVal fleet As cFleetInput)
+                MyBase.New(fleet)
             End Sub
 
             ''' ---------------------------------------------------------------
@@ -84,7 +82,7 @@ Namespace Controls
             ''' <returns>The formatted item text.</returns>
             ''' ---------------------------------------------------------------
             Public Overrides Function ToString() As String
-                Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, Me.m_fleet.Index, Me.m_fleet.Name)
+                Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, Me.Source.Index, Me.Source.Name)
             End Function
 
             ''' ---------------------------------------------------------------
@@ -92,9 +90,9 @@ Namespace Controls
             ''' Get the fleet linked to the item.
             ''' </summary>
             ''' ---------------------------------------------------------------
-            Public ReadOnly Property Fleet() As cFleetInput
+            Public Shadows ReadOnly Property Source() As cFleetInput
                 Get
-                    Return Me.m_fleet
+                    Return DirectCast(MyBase.Source, cFleetInput)
                 End Get
             End Property
 
@@ -331,8 +329,8 @@ Namespace Controls
             Get
                 Dim gi As cFleetItem = Me.FleetItem(Me.SelectedIndex)
                 If (gi Is Nothing) Then Return -1
-                If (gi.Fleet Is Nothing) Then Return -1
-                Return gi.Fleet.Index
+                If (gi.Source Is Nothing) Then Return -1
+                Return gi.Source.Index
             End Get
             Set(ByVal iFleet As Integer)
                 If (Not Me.IsInitialized()) Then Return
@@ -354,7 +352,7 @@ Namespace Controls
             Get
                 Dim gi As cFleetItem = DirectCast(Me.SelectedItem, cFleetItem)
                 If gi Is Nothing Then Return Nothing
-                Return gi.Fleet
+                Return gi.Source
             End Get
             Set(ByVal fleet As cFleetInput)
                 If (Not Me.IsInitialized()) Then Return
@@ -382,7 +380,7 @@ Namespace Controls
                     item = Me.Items(i)
                     gi = Me.FleetItem(i)
                     If (gi IsNot Nothing) Then
-                        fleet = gi.Fleet
+                        fleet = gi.Source
                         If (fleet IsNot Nothing) Then
                             If (fleet.Index = iFleet) Then
                                 Return i
@@ -418,7 +416,7 @@ Namespace Controls
         Public ReadOnly Property GetFleetAt(ByVal iIndex As Integer) As cFleetInput
             Get
                 If (iIndex <= 0 Or iIndex >= Me.Items.Count) Then Return Nothing
-                Return DirectCast(Me.Items(iIndex), cFleetItem).Fleet
+                Return DirectCast(Me.Items(iIndex), cFleetItem).Source
             End Get
         End Property
 
@@ -437,8 +435,8 @@ Namespace Controls
                 Dim gi As cFleetItem = Me.FleetItem(iIndex)
 
                 If gi Is Nothing Then Return cCore.NULL_VALUE
-                If gi.Fleet Is Nothing Then Return cCore.NULL_VALUE
-                Return gi.Fleet.Index
+                If gi.Source Is Nothing Then Return cCore.NULL_VALUE
+                Return gi.Source.Index
 
             End Get
         End Property
@@ -551,9 +549,9 @@ Namespace Controls
                 ' Get item fleet
                 gi = DirectCast(item, cFleetListBox.cFleetItem)
                 ' Has a fleet attached?
-                If (gi.Fleet IsNot Nothing) Then
+                If (gi.Source IsNot Nothing) Then
                     ' #Yes: use dimmed colours
-                    clrFleet = Me.m_sg.FleetColor(Me.m_core, gi.Fleet.Index)
+                    clrFleet = Me.m_sg.FleetColor(Me.m_core, gi.Source.Index)
                     clrText = e.ForeColor
                 End If
             End If
@@ -643,8 +641,8 @@ Namespace Controls
             Dim fleet2 As cFleetInput = Nothing
 
             ' Get sortable items
-            If TypeOf (i1) Is cFleetItem Then gi1 = DirectCast(i1, cFleetItem) : fleet1 = gi1.Fleet
-            If TypeOf (i2) Is cFleetItem Then gi2 = DirectCast(i2, cFleetItem) : fleet2 = gi2.Fleet
+            If TypeOf (i1) Is cFleetItem Then gi1 = DirectCast(i1, cFleetItem) : fleet1 = gi1.Source
+            If TypeOf (i2) Is cFleetItem Then gi2 = DirectCast(i2, cFleetItem) : fleet2 = gi2.Source
 
             ' Weed out any incompatible item comparisons
             If (gi1 Is Nothing) Then

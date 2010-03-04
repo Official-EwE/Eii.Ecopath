@@ -77,9 +77,8 @@ Namespace Controls
         ''' </summary>
         ''' ---------------------------------------------------------------------------
         Protected Class cGroupItem
+            Inherits cCoreInputOutputListboxItem
 
-            ''' <summary>Group to show.</summary>
-            Private m_group As cEcoPathGroupInput = Nothing
             ''' <summary>A value to sort by.</summary>
             Private m_sValue As Single = 0.0
 
@@ -90,7 +89,7 @@ Namespace Controls
             ''' <param name="group">Group to link to.</param>
             ''' ---------------------------------------------------------------
             Public Sub New(ByVal group As cEcoPathGroupInput)
-                Me.m_group = group
+                MyBase.New(group)
             End Sub
 
             ''' ---------------------------------------------------------------
@@ -100,10 +99,10 @@ Namespace Controls
             ''' <returns>The formatted item text.</returns>
             ''' ---------------------------------------------------------------
             Public Overrides Function ToString() As String
-                If (Me.m_group IsNot Nothing) Then
+                If (Me.Source IsNot Nothing) Then
                     Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
-                                         Me.m_group.Index, _
-                                         Me.m_group.Name)
+                                         Me.Source.Index, _
+                                         Me.Source.Name)
                 End If
                 Return My.Resources.GENERIC_VALUE_ALL
             End Function
@@ -113,9 +112,9 @@ Namespace Controls
             ''' Gets the group linked to the item.
             ''' </summary>
             ''' ---------------------------------------------------------------
-            Public ReadOnly Property Group() As cEcoPathGroupInput
+            Public Shadows ReadOnly Property Source() As cEcoPathGroupInput
                 Get
-                    Return Me.m_group
+                    Return DirectCast(MyBase.Source, cEcoPathGroupInput)
                 End Get
             End Property
 
@@ -395,8 +394,8 @@ Namespace Controls
             Get
                 Dim gi As cGroupItem = Me.GroupItem(Me.SelectedIndex)
                 If (gi Is Nothing) Then Return -1
-                If (gi.Group Is Nothing) Then Return -1
-                Return gi.Group.Index
+                If (gi.Source Is Nothing) Then Return -1
+                Return gi.Source.Index
             End Get
             Set(ByVal iGroup As Integer)
                 If (Not Me.IsInitialized()) Then Return
@@ -418,7 +417,7 @@ Namespace Controls
             Get
                 Dim gi As cGroupItem = DirectCast(Me.SelectedItem, cGroupItem)
                 If gi Is Nothing Then Return Nothing
-                Return gi.Group
+                Return gi.Source
             End Get
             Set(ByVal group As cEcoPathGroupInput)
                 If (Not Me.IsInitialized()) Then Return
@@ -446,7 +445,7 @@ Namespace Controls
                     item = Me.Items(i)
                     gi = Me.GroupItem(i)
                     If (gi IsNot Nothing) Then
-                        group = gi.Group
+                        group = gi.Source
                         If (group IsNot Nothing) Then
                             If (group.Index = iGroup) Then
                                 Return i
@@ -482,7 +481,7 @@ Namespace Controls
         Public ReadOnly Property GetGroupAt(ByVal iIndex As Integer) As cCoreGroupBase
             Get
                 If (iIndex <= 0 Or iIndex >= Me.Items.Count) Then Return Nothing
-                Return DirectCast(Me.Items(iIndex), cGroupItem).Group
+                Return DirectCast(Me.Items(iIndex), cGroupItem).Source
             End Get
         End Property
 
@@ -501,8 +500,8 @@ Namespace Controls
                 Dim gi As cGroupItem = Me.GroupItem(iIndex)
 
                 If gi Is Nothing Then Return cCore.NULL_VALUE
-                If gi.Group Is Nothing Then Return cCore.NULL_VALUE
-                Return gi.Group.Index
+                If gi.Source Is Nothing Then Return cCore.NULL_VALUE
+                Return gi.Source.Index
 
             End Get
         End Property
@@ -635,11 +634,11 @@ Namespace Controls
                 ' Get item group
                 gi = DirectCast(item, cGroupListBox.cGroupItem)
                 ' Has a group attached?
-                If (gi.Group IsNot Nothing) Then
+                If (gi.Source IsNot Nothing) Then
                     ' #Yes: use dimmed colours
-                    clrLegend = Me.m_sg.GroupColor(Me.m_core, gi.Group.Index)
+                    clrLegend = Me.m_sg.GroupColor(Me.m_core, gi.Source.Index)
                     ' Allowed to display and colour group?
-                    If Me.m_sg.GroupVisible(gi.Group.Index) And gi.SortValue >= Me.SortThreshold Then
+                    If Me.m_sg.GroupVisible(gi.Source.Index) And gi.SortValue >= Me.SortThreshold Then
                         ' #Yes: display group in full color
                         clrText = e.ForeColor
                     Else
@@ -755,8 +754,8 @@ Namespace Controls
             Dim group2 As cCoreGroupBase = Nothing
 
             ' Get sortable items
-            If TypeOf (i1) Is cGroupItem Then gi1 = DirectCast(i1, cGroupItem) : group1 = gi1.Group
-            If TypeOf (i2) Is cGroupItem Then gi2 = DirectCast(i2, cGroupItem) : group2 = gi2.Group
+            If TypeOf (i1) Is cGroupItem Then gi1 = DirectCast(i1, cGroupItem) : group1 = gi1.Source
+            If TypeOf (i2) Is cGroupItem Then gi2 = DirectCast(i2, cGroupItem) : group2 = gi2.Source
 
             ' Weed out any incompatible item comparisons
             If (gi1 Is Nothing) Then
