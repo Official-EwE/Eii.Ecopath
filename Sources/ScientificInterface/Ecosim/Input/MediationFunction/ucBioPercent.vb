@@ -42,36 +42,37 @@ Namespace Ecosim
                 Return Me.m_uic
             End Get
             Set(ByVal value As cUIContext)
+
+                If m_uic IsNot Nothing Then
+                    Me.m_zgh.Detach()
+                    Me.m_zgh = Nothing
+                End If
+
                 Me.m_uic = value
+
+                If Me.m_uic IsNot Nothing Then
+                    Me.m_zgh = New cZedGraphHelper()
+                    Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph)
+                    Me.m_zgh.ConfigurePane("", My.Resources.ECOSIM_DEF_MED_X_AXIS, My.Resources.HEADER_RELATIVEWEIGHT, True)
+                    Me.LoadGraphData()
+                End If
             End Set
         End Property
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
-            Debug.Assert(Me.m_uic IsNot Nothing, "UI context required")
-            If Me.UIContext Is Nothing Then Return
-            Me.InitGraphPane()
-            Me.LoadGraphData()
         End Sub
 
         Protected Overrides Sub DestroyHandle()
-            Me.m_zgh.Detach()
+            Me.UIContext = Nothing
             MyBase.DestroyHandle()
         End Sub
-
-        Private Sub InitGraphPane()
-
-            Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph)
-            Me.m_zgh.ConfigurePane("", My.Resources.ECOSIM_DEF_MED_X_AXIS, My.Resources.HEADER_RELATIVEWEIGHT, True)
-
-        End Sub
-
 
         Public Sub LoadGraphData()
 
             ' Sanity checks
             If (Me.m_uic Is Nothing) Then Return
+            If (Me.m_medfn Is Nothing) Then Return
             If (Me.IsDisposed) Then Return
 
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
