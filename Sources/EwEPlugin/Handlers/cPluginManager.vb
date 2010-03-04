@@ -978,7 +978,8 @@ Public Class cPluginManager
         ' Invoke IEcospacePostFishingEffortModTimestepPlugin.EcospacePostFishingEffortModTimestep(EcospaceDataStructures, iTimeStep)
         Return Me.TryInvokeMethod(GetType(IEcospaceCalcCostOfSailingPlugin), _
                                   "CalculateCostOfSailing", _
-                                  New Object() {EcospaceDataStructures, Depth, Port, Sail})
+                                  New Object() {EcospaceDataStructures, Depth, Port, Sail}, _
+                                  eInvocationType.Exclusive)
 
     End Function
 
@@ -1528,10 +1529,12 @@ Public Class cPluginManager
         ''' point to succeed.
         ''' </summary>
         Any
+        ''' <summary>
         ''' Only the first encountered plug-in that implements a method will be
         ''' invoked, and the plug-in result will depend on the result of that
         ''' single invocation. Effectively, this means that this type of plug-in
         ''' point is invoked exclusively.
+        ''' </summary>
         Exclusive
     End Enum
 
