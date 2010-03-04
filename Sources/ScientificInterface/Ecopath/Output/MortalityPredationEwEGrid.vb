@@ -60,26 +60,22 @@ Namespace Ecopath.Output
             ''' <summary>PB value to monitor.</summary>
             Private m_propPB As cSingleProperty = Nothing
 
-            Public Sub New(ByVal pm As cPropertyManager, _
-                           ByVal source As cCoreInputOutputBase, _
-                           ByVal varname As eVarNameFlags, _
-                           Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
-                MyBase.New(pm, source, varname, sourceSec)
-
-                Me.PB = DirectCast(pm.GetProperty(source, eVarNameFlags.PBOutput, sourceSec), cSingleProperty)
-            End Sub
             ''' -----------------------------------------------------------------------
             ''' <summary>
             ''' Constructor.
             ''' </summary>
-            ''' <param name="prop">The property to assign to the cell.</param>
+            ''' <param name="pm">Property manager to obtain data from.</param>
+            ''' <param name="source">The source providing the property value.</param>
+            ''' <param name="varname">Source variable name.</param>
+            ''' <param name="sourceSec">Secundary index.</param>
             ''' -----------------------------------------------------------------------
-            Public Sub New(ByVal prop As cProperty)
-                ' Call baseclass constructor
-                MyBase.New(prop)
+            Public Sub New(ByVal pm As cPropertyManager, _
+                            ByVal source As cCoreInputOutputBase, _
+                            ByVal varname As eVarNameFlags, _
+                            Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
+                MyBase.New(pm, source, varname, sourceSec)
 
-                Dim pm As cPropertyManager = cPropertyManager.GetInstance()
-                Me.PB = DirectCast(pm.GetProperty(prop.Source, eVarNameFlags.PBOutput, prop.SourceSec), cSingleProperty)
+                Me.PB = DirectCast(pm.GetProperty(source, eVarNameFlags.PBOutput, sourceSec), cSingleProperty)
             End Sub
 
             Protected Overrides Sub Dispose(ByVal disposing As Boolean)
