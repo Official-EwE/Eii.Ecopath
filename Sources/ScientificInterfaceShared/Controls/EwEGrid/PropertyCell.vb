@@ -214,6 +214,21 @@ Namespace Controls.EwEGrid
 
 #End Region ' Updates (property)
 
+#Region " Restricted "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cProperty">property</see> that provides data.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Friend ReadOnly Property [Property]() As cProperty
+            Get
+                Return Me.m_property
+            End Get
+        End Property
+
+#End Region ' Restricted
+
     End Class
 
 End Namespace
