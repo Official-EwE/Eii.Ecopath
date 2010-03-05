@@ -514,6 +514,30 @@ Namespace Style
             Me.FireChangeEvent(eChangeType.Units)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a formatted unit string for a given unit type.
+        ''' </summary>
+        ''' <param name="unitType"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function GetUnitString(ByVal unitType As cStyleGuide.eUnitType) As String
+            Dim strUnitString As String = ""
+            Select Case unitType
+                Case cStyleGuide.eUnitType.Currency
+                    strUnitString = Me.CurrencyUnitText(Me.CurrencyUnit)
+                Case cStyleGuide.eUnitType.Time
+                    strUnitString = Me.TimeUnitText(Me.TimeUnit)
+                Case cStyleGuide.eUnitType.Monetary
+                    strUnitString = Me.MonetaryUnitText(Me.MonetaryUnit)
+                Case cStyleGuide.eUnitType.Nominal
+                    strUnitString = Me.NominalUnitText()
+                Case Else
+                    Debug.Assert(False)
+            End Select
+            Return strUnitString
+        End Function
+
 #Region " Currency units "
 
         ''' -------------------------------------------------------------------
