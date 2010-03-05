@@ -210,11 +210,13 @@ Namespace Ecopath.Input
             Me.Columns(1).Width = 120
             Me.Columns(1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
 
-            ci.Visible = (Me.Core.nStanzas > 0)
-
             For i As Integer = 2 To Me.ColumnsCount - 1
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
             Next
+
+            If Me.UIContext Is Nothing Then Return
+
+            ci.Visible = (Me.Core.nStanzas > 0)
 
         End Sub
 
