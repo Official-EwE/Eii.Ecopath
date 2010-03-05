@@ -70,7 +70,7 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
+            Dim core As cCore = Me.UIContext.Core
             Dim source As cCoreInputOutputBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
