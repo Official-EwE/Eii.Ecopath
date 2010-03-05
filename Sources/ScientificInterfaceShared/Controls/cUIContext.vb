@@ -6,6 +6,7 @@ Imports EwECore
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Properties
+Imports System.Threading
 
 #End Region ' Imports
 
@@ -33,6 +34,8 @@ Namespace Controls
         Private m_cmdhandler As cCommandHandler = Nothing
         ''' <summary>The form positions settings that a UI can interact with.</summary>
         Private m_formpos As cFormPositionSettings = Nothing
+        ''' <summary>UI thread sync object.</summary>
+        Private m_syncObj As SynchronizationContext = Nothing
 
 #End Region ' Privates vars
 
@@ -49,12 +52,16 @@ Namespace Controls
                        ByVal sg As cStyleGuide, _
                        ByVal propman As cPropertyManager, _
                        ByVal cmdhandler As cCommandHandler, _
-                       ByVal formpos As cFormPositionSettings)
+                       ByVal formpos As cFormPositionSettings, _
+                       ByVal syncObj As SynchronizationContext)
+
             Me.m_core = core
             Me.m_sg = sg
             Me.m_propman = propman
             Me.m_cmdhandler = cmdhandler
             Me.m_formpos = formpos
+            Me.m_syncObj = syncObj
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -115,6 +122,19 @@ Namespace Controls
                 Return Me.m_formpos
             End Get
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="SynchronizationContext">synchronization object</see> 
+        ''' that the user interface was created on.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property SyncObject() As SynchronizationContext
+            Get
+                Return Me.m_syncObj
+            End Get
+        End Property
+
     End Class
 
 End Namespace ' Controls

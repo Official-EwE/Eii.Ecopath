@@ -215,7 +215,7 @@ Namespace Ecospace.Basemap.Layers
             Debug.Assert(uic IsNot Nothing)
 
             Me.m_uic = uic
-            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, AppLauncher.GetInstance().SyncObject)
+            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
             Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mh)
 
             ' Sanity checks

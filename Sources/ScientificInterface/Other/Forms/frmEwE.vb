@@ -48,48 +48,35 @@ Public Class frmEwE
     ''' content whenever core data has been added or removed.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Private Class EwEFormRefresh
+    Private Class cEwEFormRefresh
 
-#Region " Internal admin "
+#Region " Private vars "
 
         ''' <summary>Administration of registered forms per message source type.</summary>
         Private m_dictSourceToForm As New Dictionary(Of eCoreComponentType, List(Of frmEwE))
         Private m_so As System.Threading.SynchronizationContext = Nothing
         Private m_core As cCore = Nothing
 
-#End Region ' Internal admin
+#End Region ' Private vars
 
-#Region " Singleton "
-
-        ''' <summary>The one instance of this class.</summary>
-        Private Shared __inst__ As EwEFormRefresh
+#Region " Constructor "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Private constructor to enforce singleton.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub New()
-            Me.m_so = AppLauncher.GetInstance().SyncObject
-            Me.m_core = cCore.GetInstance()
+        Public Sub New(ByVal uic As cUIContext)
 
+            ' Eek!
+            Debug.Assert(uic IsNot Nothing)
+
+            Me.m_so = uic.SyncObject
+            Me.m_core = uic.Core
             Me.Initialize()
         End Sub
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns the singleton instance of this class.
-        ''' </summary>
-        ''' <returns>The singleton instance of this class.</returns>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function GetInstance() As EwEFormRefresh
-            If EwEFormRefresh.__inst__ Is Nothing Then
-                EwEFormRefresh.__inst__ = New EwEFormRefresh()
-            End If
-            Return EwEFormRefresh.__inst__
-        End Function
-
-#End Region ' Singleton
+#End Region ' Constructor
 
 #Region " Public access "
 
@@ -215,6 +202,7 @@ Public Class frmEwE
 
 #Region " Private variables "
 
+    Private Shared s_refresh As cEwEFormRefresh = Nothing
     Private m_uic As cUIContext = Nothing
 
     ''' <summary>Core state that determines the enabled state of a form.</summary>
@@ -281,6 +269,7 @@ Public Class frmEwE
         End Get
         Set(ByVal value As cUIContext)
             Me.m_uic = value
+            If (frmEwE.s_refresh Is Nothing) Then frmEwE.s_refresh = New cEwEFormRefresh(Me.m_uic)
         End Set
     End Property
 
@@ -381,13 +370,12 @@ Public Class frmEwE
         End Get
 
         Set(ByVal value As eCoreComponentType())
-            Dim fr As EwEFormRefresh = EwEFormRefresh.GetInstance()
 
             ' Detach
             If Me.m_aMessageSources IsNot Nothing Then
                 For Each ms As eCoreComponentType In Me.m_aMessageSources
                     If ms <> eCoreComponentType.NotSet Then
-                        fr.UnregisterForm(Me, ms)
+                        frmEwE.s_refresh.UnregisterForm(Me, ms)
                     End If
                 Next
             End If
@@ -399,7 +387,7 @@ Public Class frmEwE
             If Me.m_aMessageSources IsNot Nothing Then
                 For Each ms As eCoreComponentType In Me.m_aMessageSources
                     If ms <> eCoreComponentType.NotSet Then
-                        fr.RegisterForm(Me, ms)
+                        frmEwE.s_refresh.RegisterForm(Me, ms)
                     End If
                 Next
             End If

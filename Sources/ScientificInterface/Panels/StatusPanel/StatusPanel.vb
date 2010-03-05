@@ -20,9 +20,15 @@ Imports WeifenLuo.WinFormsUI.Docking
 Public Class StatusPanel
     Implements IUIElement
 
+#Region " Private vars "
+
     Private m_msh As New cMessageStateHandler()
     Private m_il As New ImageList()
     Private m_uic As cUIContext = Nothing
+
+#End Region ' Private vars
+
+#Region " Constructor "
 
     Public Sub New(ByVal uic As cUIContext)
 
@@ -30,6 +36,17 @@ Public Class StatusPanel
 
         Me.UIContext = uic
         Me.TabText = My.Resources.HEADER_STATUS
+
+    End Sub
+
+#End Region ' Constructor
+
+#Region " Form overrides " '
+
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
+
+        If (Me.UIContext Is Nothing) Then Return
 
         ' Prepare image list
         m_il.Images.Add(New Icon(SystemIcons.Information, 40, 40))
@@ -47,10 +64,15 @@ Public Class StatusPanel
 
     End Sub
 
-    Private Sub OnDisposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
         ' Stop listening to core messages
         Me.ConfigMessageHandlers(False)
+        MyBase.OnFormClosing(e)
     End Sub
+
+#End Region ' Form overrides
+
+#Region " Public interfaces "
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -63,6 +85,8 @@ Public Class StatusPanel
         Me.tvStatus.Nodes.Clear()
         Me.m_msh.Clear(eCoreComponentType.Core)
     End Sub
+
+#End Region
 
 #Region " IUIElement implementation "
 
@@ -90,7 +114,7 @@ Public Class StatusPanel
         If (src = eCoreComponentType.NotSet) Then Return
 
         If bSet Then
-            mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, AppLauncher.GetInstance().SyncObject)
+            mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, Me.UIContext.SyncObject)
             Me.m_dtMessageHanders(src) = mh
             core.Messages.AddMessageHandler(mh)
         Else

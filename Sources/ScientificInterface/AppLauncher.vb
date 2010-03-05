@@ -218,12 +218,6 @@ Public Class AppLauncher
         End Get
     End Property
 
-    Public ReadOnly Property SyncObject() As System.Threading.SynchronizationContext
-        Get
-            Return Me.m_SyncObj
-        End Get
-    End Property
-
 #End Region ' Properties
 
 #Region " Public interfaces "
@@ -1066,7 +1060,8 @@ Public Class AppLauncher
                                       cStyleGuide.GetInstance(), _
                                       New cPropertyManager(core), _
                                       cCommandHandler.GetInstance(), _
-                                      New cFormPositionSettings())
+                                      New cFormPositionSettings(), _
+                                      Me.m_SyncObj)
 
         ' Config state monitor
         Me.Core.StateMonitor.SyncObject = Me
