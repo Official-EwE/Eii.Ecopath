@@ -257,6 +257,8 @@ Namespace Ecospace.Basemap.Layers
                 Me.m_tbRemarks.Text = "Remarks not supported for this layer"
                 Me.m_tbRemarks.Enabled = False
             End If
+
+            ' Do not use display text; user may want to edit this
             Me.m_fpName.Value = m_layerWork.Name
 
             Me.m_ucEditVisualStyle = ucEditVisualStyle.GetEditor(vs, Me.m_layerWork.Renderer.VisualStyleFlags)

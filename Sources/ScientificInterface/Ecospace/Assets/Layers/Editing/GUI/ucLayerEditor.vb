@@ -99,7 +99,7 @@ Namespace Ecospace.Basemap.Layers
             Dim img As Image = My.Resources.ProtectFormHS
 
             If (Me.IsAttached = True) Then
-                ' Get label text
+                ' Get label text (could use diplay text?)
                 strLabel = Me.Editor.Layer.Name
                 ' Get layer image
                 If Me.Editor.IsReadOnly Then

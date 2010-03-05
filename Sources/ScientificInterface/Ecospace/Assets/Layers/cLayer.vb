@@ -61,6 +61,11 @@ Namespace Ecospace.Basemap.Layers
     Public Class cLayer
         Implements IDisposable
 
+        ' ToDo_JS: build different name strategies, similar to property row header cells
+        '          1. Via fixed string
+        '          2. Via a property
+        '          3. Add support for units
+
 #Region " Private helper classes "
 
         ''' ===================================================================
@@ -119,6 +124,9 @@ Namespace Ecospace.Basemap.Layers
         ''' <see cref="cVisualStyle">Visual Styles</see> to layers, a hidden property is used.
         ''' </remarks>
         Private m_propName As cProperty = Nothing
+
+        Private m_aUnitTypes() As cStyleGuide.eUnitType = Nothing
+        Private m_strUnitMask As String = ""
 
         ' --- shared defaults ---
 
@@ -322,6 +330,36 @@ Namespace Ecospace.Basemap.Layers
 #End Region ' Public definitions
 
 #Region " Public access "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Instructs the layer to incorporate units the layer name display.
+        ''' </summary>
+        ''' <param name="strUnitMask">The format mask to apply. This mask must
+        ''' contain a '{0}' field to place the layer name value, and a '{1}' field
+        ''' to place the unit value.</param>
+        ''' <param name="unitType">Definition of the unit to place in the layer
+        ''' display text.</param>
+        ''' -----------------------------------------------------------------------
+        Public Sub SetUnitMask(ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Instructs the layer to incorporate units the layer name display.
+        ''' </summary>
+        ''' <param name="strUnitMask">The format mask to apply. This mask must
+        ''' contain a '{0}' field to place the layer name value, and placeholder
+        ''' fields for the units. The unit fields must be numbered '{1}', '{2}'
+        ''' etc. Units will be placed in the placeholder fields in the order that
+        ''' they are defined in <paramref name="aUnitTypes">aUnitTypes</paramref>.</param>
+        ''' <param name="aUnitTypes">Definitions of units to place in the layer
+        ''' display text.</param>
+        ''' -----------------------------------------------------------------------
+        Public Sub SetUnitMask(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+            Me.SetUnitHeader(strUnitMask, aUnitTypes)
+        End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -615,6 +653,48 @@ Namespace Ecospace.Basemap.Layers
         End Sub
 
 #End Region ' Events
+
+#Region " Internals "
+
+        Protected Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+            Me.m_strUnitMask = strUnitMask
+            Me.m_aUnitTypes = aUnitTypes
+        End Sub
+
+        Public Overridable ReadOnly Property DisplayText() As String
+            Get
+                Dim strDisplayText As String = ""
+
+                If (m_aUnitTypes Is Nothing) Or (String.IsNullOrEmpty(Me.m_strUnitMask)) Then
+                    strDisplayText = Me.Name
+                Else
+                    Try
+                        Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+
+                        Select Case m_aUnitTypes.Length
+                            Case 0
+                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Name)
+                            Case 1
+                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Name, _
+                                                               sg.GetUnitString(m_aUnitTypes(0)))
+                            Case 2
+                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Name, _
+                                                               sg.GetUnitString(m_aUnitTypes(0)), _
+                                                               sg.GetUnitString(m_aUnitTypes(1)))
+                            Case Else
+                                Debug.Assert(False)
+                        End Select
+                    Catch ex As Exception
+                        Debug.Assert(False, "Failed to apply format mask, please check")
+                        strDisplayText = Me.Name
+                    End Try
+                End If
+                Return strDisplayText
+            End Get
+        End Property
+
+
+#End Region ' Internals
 
     End Class ' Layer
 

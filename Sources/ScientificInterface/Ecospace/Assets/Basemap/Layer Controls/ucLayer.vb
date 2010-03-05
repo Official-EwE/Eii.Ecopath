@@ -255,9 +255,9 @@ Namespace Ecospace
             fmt.LineAlignment = StringAlignment.Center
             fmt.Alignment = StringAlignment.Near
             If Me.m_layer.IsSelected Then
-                e.Graphics.DrawString(Me.Layer.Name, Me.Font, SystemBrushes.HighlightText, rcLabel, fmt)
+                e.Graphics.DrawString(Me.Layer.DisplayText, Me.Font, SystemBrushes.HighlightText, rcLabel, fmt)
             Else
-                e.Graphics.DrawString(Me.Layer.Name, Me.Font, SystemBrushes.ControlText, rcLabel, fmt)
+                e.Graphics.DrawString(Me.Layer.DisplayText, Me.Font, SystemBrushes.ControlText, rcLabel, fmt)
             End If
 
             ' Draw preview

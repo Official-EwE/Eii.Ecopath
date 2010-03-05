@@ -69,7 +69,7 @@ Public Class gridExportMappings
 
                     If value IsNot Nothing Then
                         For Each l As cLayer In value
-                            Me.m_dtLayerMapping(l) = l.Name.Trim().Replace(" ", "")
+                            Me.m_dtLayerMapping(l) = l.DisplayText.Trim().Replace(" ", "")
                         Next
                     End If
 
