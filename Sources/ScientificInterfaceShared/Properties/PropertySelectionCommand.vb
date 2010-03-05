@@ -71,15 +71,14 @@ Namespace Properties
         ''' <param name="sourceSec">The <see cref="cCoreInputOutputBase">cCoreInputOutput</see> 
         ''' object that acts as secundary index to the selection.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal source As cCoreInputOutputBase, ByVal varName As eVarNameFlags, _
-                Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
+        Public Overloads Sub Invoke(ByVal pm As cPropertyManager, _
+                                    ByVal source As cCoreInputOutputBase, _
+                                    ByVal varName As eVarNameFlags, _
+                                    Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
 
-            Dim pm As cPropertyManager = Nothing
             Dim prop As cProperty = Nothing
 
             If Not Object.ReferenceEquals(source, Nothing) Then
-                ' Get propman
-                pm = cPropertyManager.GetInstance()
                 ' Get property
                 prop = pm.GetProperty(source, varName, sourceSec)
             End If

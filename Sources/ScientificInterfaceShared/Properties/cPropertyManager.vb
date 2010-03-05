@@ -17,6 +17,8 @@ Namespace Properties
     ''' -----------------------------------------------------------------------
     Public Class cPropertyManager
 
+#Region " Private vars "
+
         ''' <summary>Message handler synchronizer.</summary>
         Private m_SyncObj As System.Threading.SynchronizationContext = Nothing
 
@@ -29,13 +31,24 @@ Namespace Properties
         Private m_htEcosim As New Dictionary(Of String, cProperty)
         Private m_htEcospace As New Dictionary(Of String, cProperty)
         Private m_htEcotracer As New Dictionary(Of String, cProperty)
+        ''' <summary>Attached Me.m_core.</summary>
+        Private m_core As cCore = Nothing
+
+#End Region ' Private vars
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub New()
+        Public Sub New(ByVal core As cCore)
+
+            'Sanity checks
+            Debug.Assert(core IsNot Nothing)
+
+            ' Store Me.m_core ref
+            Me.m_core = core
+
             ' Create No Data property
             Me.m_propNoData = New cStringProperty("")
             Me.m_propNoData.SetStyle(cStyleGuide.eStyleFlags.ErrorEncountered Or cStyleGuide.eStyleFlags.NotEditable)
@@ -45,9 +58,9 @@ Namespace Properties
             'if there is no current context then create a new one on this thread. 
             If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
 
-
-            ' Start listening to core messages
+            ' Start listening to Me.m_core messages
             Me.InitializeMessageHandlers()
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -80,25 +93,6 @@ Namespace Properties
             End Select
 
         End Sub
-
-#Region " Singleton "
-
-        ''' <summary>Singleton instance</summary>
-        Private Shared __inst__ As cPropertyManager = Nothing
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Singleton access
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Shared Function GetInstance() As cPropertyManager
-            If (cPropertyManager.__inst__ Is Nothing) Then
-                cPropertyManager.__inst__ = New cPropertyManager()
-            End If
-            Return cPropertyManager.__inst__
-        End Function
-
-#End Region ' Singleton
 
 #Region " Config "
 
@@ -133,7 +127,7 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns a property for specific core data
+        ''' Returns a property for specific Me.m_core data
         ''' </summary>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> instance to generate the property for</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">Variable Name</see> within the indicated Source to generate the property for</param>
@@ -209,6 +203,8 @@ Namespace Properties
             ht(strID) = prop
             ' Make sure property is up to date
             prop.Refresh()
+            ' Attach myself
+            prop.PropertyManager = Me
 
             Return prop
         End Function
@@ -234,31 +230,30 @@ Namespace Properties
             If (vs.iArrayIndex >= 0 And vs.CoreDataObjectSecundary Is Nothing) Then
                 ' #No: oops!
 
-                ' Try to figure out the type of the secundary index via core counters
+                ' Try to figure out the type of the secundary index via Me.m_core counters
                 Dim io As cCoreInputOutputBase = DirectCast(source, cCoreInputOutputBase)
                 Dim va As ValueWrapper.cValueArray = DirectCast(io.ValueDescriptor(vs.VarName), ValueWrapper.cValueArray)
-                Dim core As cCore = cCore.GetInstance()
 
                 If va IsNot Nothing Then
                     Select Case va.CoreCounterType
                         Case eCoreCounterTypes.nGroups, eCoreCounterTypes.nDetritus, eCoreCounterTypes.nLivingGroups
-                            sourceSec = core.EcoPathGroupInputs(vs.iArrayIndex)
+                            sourceSec = Me.m_core.EcoPathGroupInputs(vs.iArrayIndex)
                         Case eCoreCounterTypes.nFleets
-                            sourceSec = core.FleetInputs(vs.iArrayIndex)
+                            sourceSec = Me.m_core.FleetInputs(vs.iArrayIndex)
                         Case eCoreCounterTypes.nHabitats
-                            sourceSec = core.EcospaceHabitats(vs.iArrayIndex)
+                            sourceSec = Me.m_core.EcospaceHabitats(vs.iArrayIndex)
                             'Case eCoreCounterTypes.nRegions
-                            '    sourceSec = core.EcospaceRegions(vs.iArrayIndex)
+                            '    sourceSec = Me.m_core.EcospaceRegions(vs.iArrayIndex)
                         Case eCoreCounterTypes.nMPAs
-                            sourceSec = core.EcospaceMPAs(vs.iArrayIndex)
+                            sourceSec = Me.m_core.EcospaceMPAs(vs.iArrayIndex)
                         Case eCoreCounterTypes.nMonths, _
                              eCoreCounterTypes.nEcosimYears, eCoreCounterTypes.nEcosimTimeSteps, _
                              eCoreCounterTypes.nEcospaceYears, eCoreCounterTypes.nEcospaceTimeSteps
                             sourceSec = Nothing
                         Case eCoreCounterTypes.nStanzasForStanzaGroup
-                            sourceSec = core.StanzaGroups(vs.iArrayIndex)
+                            sourceSec = Me.m_core.StanzaGroups(vs.iArrayIndex)
                         Case Else
-                            Debug.Assert(False, String.Format("Core counter type {0} not supported in property manager", va.CoreCounterType))
+                            Debug.Assert(False, String.Format("Me.m_core counter type {0} not supported in property manager", va.CoreCounterType))
                     End Select
                 Else
                     ' Hmm?
@@ -275,9 +270,9 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Extract all properties from a core message
+        ''' Extract all properties from a Me.m_core message
         ''' </summary>
-        ''' <param name="Message">Core message to analyze</param>
+        ''' <param name="Message">Me.m_core message to analyze</param>
         ''' <returns>A strong-typed cProperty list</returns>
         ''' -------------------------------------------------------------------
         Public Function ExtractProperties(ByRef Message As cMessage) As List(Of cProperty)
@@ -307,7 +302,7 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Refresh the core values of all properties
+        ''' Refresh the Me.m_core values of all properties
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub Refresh(ByVal msgSource As eCoreComponentType)
@@ -371,26 +366,24 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Hook up to core messages
+        ''' Hook up to Me.m_core messages
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub InitializeMessageHandlers()
 
-            Dim core As cCore = cCore.GetInstance()
-
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_SyncObj))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_SyncObj))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecotracer, eMessageType.Any, Me.m_SyncObj))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.MSE, eMessageType.Any, Me.m_SyncObj))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.FishingPolicySearch, eMessageType.Any, Me.m_SyncObj))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimFitToTimeSeries, eMessageType.Any, Me.m_SyncObj))
+            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
+            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_SyncObj))
+            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_SyncObj))
+            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecotracer, eMessageType.Any, Me.m_SyncObj))
+            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.MSE, eMessageType.Any, Me.m_SyncObj))
+            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.FishingPolicySearch, eMessageType.Any, Me.m_SyncObj))
+            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimFitToTimeSeries, eMessageType.Any, Me.m_SyncObj))
 
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Standard Core messages handler where all property updates are triggered
+        ''' Standard Me.m_core messages handler where all property updates are triggered
         ''' </summary>
         ''' <param name="msg">An arriving message</param>
         ''' -------------------------------------------------------------------

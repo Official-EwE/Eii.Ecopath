@@ -58,6 +58,8 @@ Namespace Properties
         Private m_iSecIndexOffset As Integer = 0
         ''' <summary>Buffered remark value.</summary>
         Private m_strRemark As String = ""
+        ''' <summary>Property manager that provided this property.</summary>
+        Private m_pm As cPropertyManager = Nothing
 
 #End Region ' Private parts
 
@@ -240,6 +242,21 @@ Namespace Properties
                 End If
                 Return Nothing
             End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="cPropertyManager">property manager </see>
+        ''' that spawned this property.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property PropertyManager() As cPropertyManager
+            Get
+                Return Me.m_pm
+            End Get
+            Friend Set(ByVal pm As cPropertyManager)
+                Me.m_pm = pm
+            End Set
         End Property
 
 #End Region '  Properties
