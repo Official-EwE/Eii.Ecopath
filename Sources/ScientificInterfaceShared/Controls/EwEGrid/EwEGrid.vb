@@ -461,7 +461,6 @@ Namespace Controls.EwEGrid
                                   SourceGrid2.ContextMenuStyle.AutoSize
 
             Me.Dock = Me.DefaultDockStyle()
-            Me.AutoStretchColumnsToFitWidth = True
             Me.AutoStretchRowsToFitHeight = False
 
             ' JS 05aug07: this flag controls whether selections can be made with cell nav keys and [ctrl] and/or [shift]
@@ -552,6 +551,7 @@ Namespace Controls.EwEGrid
                             Me.Columns(i).Width = 80
                         Next
                         Me.Rows(0).Height = 45
+                        Me.AutoStretchColumnsToFitWidth = False
                     Else
                         For i As Integer = 2 To Me.ColumnsCount - 1
                             Me.Columns(i).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
