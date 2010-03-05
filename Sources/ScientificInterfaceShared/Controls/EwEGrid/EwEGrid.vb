@@ -256,16 +256,32 @@ Namespace Controls.EwEGrid
 
 #Region " Variables "
 
+        ''' <summary>The UI context for this grid.</summary>
         Private m_uic As cUIContext = Nothing
+
+        ''' <summary>Position event handler for trapping top-left cell clicks.</summary>
+        Private m_pehTLCell As SourceGrid2.PositionEventHandler = Nothing
+        ''' <summary>Cell click behaviour model.</summary>
         Private m_ceCellClick As New BehaviorModels.CustomEvents
+
+        ''' <summary>Position event handler for trapping row header clicks.</summary>
+        Private m_pehRowHeader As SourceGrid2.PositionEventHandler = Nothing
+        ''' <summary>Row click behaviour model.</summary>
         Private m_ceRowSelect As New BehaviorModels.CustomEvents
+
+        ''' <summary>Position event handler for trapping column header clicks.</summary>
+        Private m_pehColHeader As SourceGrid2.PositionEventHandler = Nothing
+        ''' <summary>Column click behaviour model.</summary>
         Private m_ceColSelect As New BehaviorModels.CustomEvents
-        Private m_bFixedColumnWidths As Boolean = True
+
+        ''' <summary>Flag stating if this grid should track and distribute property selections.</summary>
         Private m_bTrackPropertySelection As Boolean = False
+
+        ''' <summary>List of selected properties in the grid, if any.</summary>
         Private m_lpropertySelected As New List(Of cProperty)
-        Private m_peh1 As SourceGrid2.PositionEventHandler = Nothing
-        Private m_peh2 As SourceGrid2.PositionEventHandler = Nothing
-        Private m_peh3 As SourceGrid2.PositionEventHandler = Nothing
+
+        ''' <summary>Flag stating to use fixed col widths and heights.</summary>
+        Private m_bFixedColumnWidths As Boolean = True
 
 #End Region ' Variables
 
@@ -274,12 +290,12 @@ Namespace Controls.EwEGrid
         Public Sub New()
             MyBase.New()
 
-            Me.m_peh1 = New SourceGrid2.PositionEventHandler(AddressOf bm_tlCellClick)
-            AddHandler m_ceCellClick.Click, Me.m_peh1
-            Me.m_peh2 = New SourceGrid2.PositionEventHandler(AddressOf bm_rowSelectClick)
-            AddHandler m_ceRowSelect.Click, Me.m_peh2
-            Me.m_peh3 = New SourceGrid2.PositionEventHandler(AddressOf bm_colSelectClick)
-            AddHandler m_ceColSelect.Click, Me.m_peh3
+            Me.m_pehTLCell = New SourceGrid2.PositionEventHandler(AddressOf bm_tlCellClick)
+            AddHandler m_ceCellClick.Click, Me.m_pehTLCell
+            Me.m_pehRowHeader = New SourceGrid2.PositionEventHandler(AddressOf bm_rowSelectClick)
+            AddHandler m_ceRowSelect.Click, Me.m_pehRowHeader
+            Me.m_pehColHeader = New SourceGrid2.PositionEventHandler(AddressOf bm_colSelectClick)
+            AddHandler m_ceColSelect.Click, Me.m_pehColHeader
 
             AddHandler Me.Selection.ClipboardCopy, AddressOf OnClipboardCopy
             AddHandler Me.Selection.ClipboardCut, AddressOf OnClipboardCut
@@ -292,14 +308,14 @@ Namespace Controls.EwEGrid
         Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
             Me.ClearData()
 
-            If Me.m_peh1 IsNot Nothing Then
+            If Me.m_pehTLCell IsNot Nothing Then
 
-                RemoveHandler m_ceCellClick.Click, Me.m_peh1
-                Me.m_peh1 = Nothing
-                RemoveHandler m_ceRowSelect.Click, Me.m_peh2
-                Me.m_peh2 = Nothing
-                RemoveHandler m_ceColSelect.Click, Me.m_peh3
-                Me.m_peh3 = Nothing
+                RemoveHandler m_ceCellClick.Click, Me.m_pehTLCell
+                Me.m_pehTLCell = Nothing
+                RemoveHandler m_ceRowSelect.Click, Me.m_pehRowHeader
+                Me.m_pehRowHeader = Nothing
+                RemoveHandler m_ceColSelect.Click, Me.m_pehColHeader
+                Me.m_pehColHeader = Nothing
 
                 RemoveHandler Me.Selection.ClipboardCopy, AddressOf OnClipboardCopy
                 RemoveHandler Me.Selection.ClipboardCut, AddressOf OnClipboardCut
@@ -872,8 +888,8 @@ Namespace Controls.EwEGrid
         Private Sub OnSelectionChange(ByVal sender As Object, ByVal e As SourceGrid2.SelectionChangeEventArgs)
 
             Dim cmdh As cCommandHandler = Me.ComandHandler
-            Dim cmd As cCommand = cmdh.GetCommand(PropertySelectionCommand.COMMAND_NAME)
-            Dim sc As PropertySelectionCommand = Nothing
+            Dim cmd As cCommand = cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME)
+            Dim sc As cPropertySelectionCommand = Nothing
             Dim c As SourceGrid2.Cells.ICell = Nothing
 
             Me.m_lpropertySelected.Clear()
@@ -891,8 +907,8 @@ Namespace Controls.EwEGrid
             Next
 
             If cmd IsNot Nothing Then
-                If (TypeOf cmd Is PropertySelectionCommand) Then
-                    sc = DirectCast(cmd, PropertySelectionCommand)
+                If (TypeOf cmd Is cPropertySelectionCommand) Then
+                    sc = DirectCast(cmd, cPropertySelectionCommand)
                     sc.Invoke(Me.m_lpropertySelected)
                 End If
             End If
