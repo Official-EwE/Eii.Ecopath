@@ -1061,9 +1061,10 @@ Public Class AppLauncher
 
     Private Sub InitCoreParams()
 
-        Me.UIContext = New cUIContext(cCore.GetInstance(), _
+        Dim core As cCore = cCore.GetInstance()
+        Me.UIContext = New cUIContext(core, _
                                       cStyleGuide.GetInstance(), _
-                                      cPropertyManager.GetInstance(), _
+                                      New cPropertyManager(core), _
                                       cCommandHandler.GetInstance(), _
                                       New cFormPositionSettings())
 
@@ -1089,7 +1090,7 @@ Public Class AppLauncher
         Me.m_coreController = New cCoreController(Me.Core.StateMonitor, Me.Core.StateManager)
 
         ' Initialize style guide updater
-        Me.m_styleguideupdater = New StyleGuideUpdater(Me.Core, Me.StyleGuide)
+        Me.m_styleguideupdater = New StyleGuideUpdater(Me.UIContext)
         Me.m_styleguideupdater.Load()
 
     End Sub

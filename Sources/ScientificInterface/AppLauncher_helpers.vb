@@ -162,8 +162,9 @@ Partial Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Private Class StyleGuideUpdater
 
-        Private m_core As cCore = Nothing
-        Private m_sg As cStyleGuide = Nothing
+#Region " Private vars "
+
+        Private m_uic As cUIContext = Nothing
         Private m_bIsEcopathLoaded As Boolean = False
 
         Private m_sm As cCoreStateMonitor = Nothing
@@ -176,11 +177,15 @@ Partial Public Class AppLauncher
         Private m_propUnitMonetary As cIntegerProperty = Nothing
         Private m_propUnitMonetaryText As cStringProperty = Nothing
 
-        Public Sub New(ByVal core As cCore, ByVal sg As cStyleGuide)
+#End Region ' Private vars
 
-            Me.m_core = core
-            Me.m_sm = core.StateMonitor
-            Me.m_sg = sg
+        Public Sub New(ByVal uic As cUIContext)
+
+            ' Sanity check
+            Debug.Assert(uic IsNot Nothing)
+
+            Me.m_uic = uic
+            Me.m_sm = Me.m_uic.Core.StateMonitor
 
             AddHandler m_sm.CoreExecutionStateEvent, AddressOf OnCoreStateEvent
 
@@ -193,31 +198,43 @@ Partial Public Class AppLauncher
             End If
         End Sub
 
+        Private ReadOnly Property Core() As cCore
+            Get
+                Return Me.m_uic.Core
+            End Get
+        End Property
+
+        Private ReadOnly Property StyleGuide() As cStyleGuide
+            Get
+                Return Me.m_uic.StyleGuide
+            End Get
+        End Property
+
         Private Sub Update()
 
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim pm As cPropertyManager = Me.m_uic.PropertyManager
 
-            Me.m_sg.SuspendEvents()
+            Me.StyleGuide.SuspendEvents()
 
             If Me.m_bIsEcopathLoaded Then
 
-                Me.m_propGroupDigits = pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.GroupDigits)
-                Me.m_propNumDigits = pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.NumDigits)
+                Me.m_propGroupDigits = pm.GetProperty(core.EwEModel, eVarNameFlags.GroupDigits)
+                Me.m_propNumDigits = pm.GetProperty(core.EwEModel, eVarNameFlags.NumDigits)
                 AddHandler Me.m_propGroupDigits.PropertyChanged, AddressOf OnNumberFormatChanged
                 AddHandler Me.m_propNumDigits.PropertyChanged, AddressOf OnNumberFormatChanged
 
-                Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
-                Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
+                Me.m_propUnitCurrency = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
+                Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
                 AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnCurrencyUnitChanged
                 AddHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf OnCurrencyUnitChanged
 
-                Me.m_propUnitTime = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitTime), cIntegerProperty)
-                Me.m_propUnitTimeText = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
+                Me.m_propUnitTime = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitTime), cIntegerProperty)
+                Me.m_propUnitTimeText = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
                 AddHandler Me.m_propUnitTime.PropertyChanged, AddressOf OnTimeUnitChanged
                 AddHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf OnTimeUnitChanged
 
-                Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitMonetary), cIntegerProperty)
-                Me.m_propUnitMonetaryText = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitMonetaryCustomText), cStringProperty)
+                Me.m_propUnitMonetary = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitMonetary), cIntegerProperty)
+                Me.m_propUnitMonetaryText = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitMonetaryCustomText), cStringProperty)
                 AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnMonetaryUnitChanged
                 AddHandler Me.m_propUnitMonetaryText.PropertyChanged, AddressOf OnMonetaryUnitChanged
 
@@ -250,107 +267,122 @@ Partial Public Class AppLauncher
 
             End If
 
-            Me.m_sg.ResetVisibleFlags(False)
-            Me.m_sg.ResumeEvents()
+            Me.StyleGuide.ResetVisibleFlags(False)
+            Me.StyleGuide.ResumeEvents()
 
         End Sub
 
         Private Sub OnCurrencyUnitChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
-            Me.m_sg.SuspendEvents()
-            Me.m_sg.CurrencyUnit = DirectCast(Me.m_propUnitCurrency.GetValue(), eUnitCurrencyType)
-            Me.m_sg.CustomCurrencyUnitText = CStr(Me.m_propUnitCurrencyText.GetValue())
-            Me.m_sg.ResumeEvents()
+            With Me.StyleGuide
+                .SuspendEvents()
+                .CurrencyUnit = DirectCast(Me.m_propUnitCurrency.GetValue(), eUnitCurrencyType)
+                .CustomCurrencyUnitText = CStr(Me.m_propUnitCurrencyText.GetValue())
+                .ResumeEvents()
+            End With
         End Sub
 
         Private Sub OnTimeUnitChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
-            Me.m_sg.SuspendEvents()
-            Me.m_sg.TimeUnit = DirectCast(Me.m_propUnitTime.GetValue(), eUnitTimeType)
-            Me.m_sg.CustomTimeUnitText = CStr(Me.m_propUnitTimeText.GetValue())
-            Me.m_sg.ResumeEvents()
+            With Me.StyleGuide
+                .SuspendEvents()
+                .TimeUnit = DirectCast(Me.m_propUnitTime.GetValue(), eUnitTimeType)
+                .CustomTimeUnitText = CStr(Me.m_propUnitTimeText.GetValue())
+                .ResumeEvents()
+            End With
         End Sub
 
         Private Sub OnMonetaryUnitChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
-            Me.m_sg.SuspendEvents()
-            Me.m_sg.MonetaryUnit = DirectCast(Me.m_propUnitMonetary.GetValue(), eUnitMonetaryType)
-            Me.m_sg.CustomMonetaryUnitText = CStr(Me.m_propUnitMonetaryText.GetValue())
-            Me.m_sg.ResumeEvents()
+            With Me.StyleGuide
+                .SuspendEvents()
+                .MonetaryUnit = DirectCast(Me.m_propUnitMonetary.GetValue(), eUnitMonetaryType)
+                .CustomMonetaryUnitText = CStr(Me.m_propUnitMonetaryText.GetValue())
+                .ResumeEvents()
+            End With
         End Sub
 
         Private Sub OnNumberFormatChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
-            Me.m_sg.SuspendEvents()
-            Me.m_sg.NumDigits = CInt(Me.m_propNumDigits.GetValue())
-            Me.m_sg.GroupDigits = CBool(Me.m_propGroupDigits.GetValue())
-            Me.m_sg.ResumeEvents()
+            With Me.StyleGuide
+                .SuspendEvents()
+                .NumDigits = CInt(Me.m_propNumDigits.GetValue())
+                .GroupDigits = CBool(Me.m_propGroupDigits.GetValue())
+                .ResumeEvents()
+            End With
         End Sub
 
         Public Sub Load()
 
-            Me.m_sg.SuspendEvents()
+            With Me.StyleGuide
 
-            Me.m_sg.LoadDefaultApplicationColors()
+                .SuspendEvents()
+                .LoadDefaultApplicationColors()
 
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT) = My.Settings.ColorDefaultText
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND) = My.Settings.ColorDefaultBackground
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_TEXT) = My.Settings.ColorNameText
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND) = My.Settings.ColorNameBackground
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT) = My.Settings.ColorFailedResultText
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT) = My.Settings.ColorFailedValidationText
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT) = My.Settings.ColorErrorText
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.COMPUTED_TEXT) = My.Settings.ColorComputedValuesText
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT) = My.Settings.ColorESPressureText
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PROFIT_TEXT) = My.Settings.ColorESProfitsText
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.TOTALCATCH_TEXT) = My.Settings.ColorESTotalCatchText
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.TROPHICLINK_TEXT) = My.Settings.ColorTrophicLinkText
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND) = My.Settings.ColorRemarksBackground
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.SUM_BACKGROUND) = My.Settings.ColorSumBackground
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND) = My.Settings.ColorReadOnlyBackground
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.CHECKED_BACKGROUND) = My.Settings.ColorCheckedBackground
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND) = My.Settings.ColorMissingParamBackground
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND) = My.Settings.ColorImageBackground
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND) = My.Settings.ColorPlotsBackground
-            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND) = My.Settings.ColorMapBackground
+                .ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT) = My.Settings.ColorDefaultText
+                .ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND) = My.Settings.ColorDefaultBackground
+                .ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_TEXT) = My.Settings.ColorNameText
+                .ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND) = My.Settings.ColorNameBackground
+                .ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT) = My.Settings.ColorFailedResultText
+                .ApplicationColor(cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT) = My.Settings.ColorFailedValidationText
+                .ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT) = My.Settings.ColorErrorText
+                .ApplicationColor(cStyleGuide.eApplicationColorType.COMPUTED_TEXT) = My.Settings.ColorComputedValuesText
+                .ApplicationColor(cStyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT) = My.Settings.ColorESPressureText
+                .ApplicationColor(cStyleGuide.eApplicationColorType.PROFIT_TEXT) = My.Settings.ColorESProfitsText
+                .ApplicationColor(cStyleGuide.eApplicationColorType.TOTALCATCH_TEXT) = My.Settings.ColorESTotalCatchText
+                .ApplicationColor(cStyleGuide.eApplicationColorType.TROPHICLINK_TEXT) = My.Settings.ColorTrophicLinkText
+                .ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND) = My.Settings.ColorRemarksBackground
+                .ApplicationColor(cStyleGuide.eApplicationColorType.SUM_BACKGROUND) = My.Settings.ColorSumBackground
+                .ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND) = My.Settings.ColorReadOnlyBackground
+                .ApplicationColor(cStyleGuide.eApplicationColorType.CHECKED_BACKGROUND) = My.Settings.ColorCheckedBackground
+                .ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND) = My.Settings.ColorMissingParamBackground
+                .ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND) = My.Settings.ColorImageBackground
+                .ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND) = My.Settings.ColorPlotsBackground
+                .ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND) = My.Settings.ColorMapBackground
 
-            Me.m_sg.ThumbnailSize = My.Settings.ThumbnailSize
-            ' Fix: do not allow disabling of legend viz
-            If (My.Settings.ShowLegends = TriState.False) Then My.Settings.ShowLegends = TriState.UseDefault
-            Me.m_sg.ShowLegends = My.Settings.ShowLegends
-            Me.m_sg.UseTransparentBackgrounds = My.Settings.UseTransparentBackgrounds
+                .ThumbnailSize = My.Settings.ThumbnailSize
+                ' Fix: do not allow disabling of legend viz
+                If (My.Settings.ShowLegends = TriState.False) Then My.Settings.ShowLegends = TriState.UseDefault
+                .ShowLegends = My.Settings.ShowLegends
+                .UseTransparentBackgrounds = My.Settings.UseTransparentBackgrounds
+
+            End With
 
             Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
             Me.StringToFontSetting(My.Settings.FontSubtitle, cStyleGuide.eApplicationFontType.SubTitle)
             Me.StringToFontSetting(My.Settings.FontLegend, cStyleGuide.eApplicationFontType.Legend)
             Me.StringToFontSetting(My.Settings.FontScale, cStyleGuide.eApplicationFontType.Scale)
 
-            Me.m_sg.ResumeEvents()
+            Me.StyleGuide.ResumeEvents()
 
         End Sub
 
         Public Sub Save()
 
-            My.Settings.ColorDefaultText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
-            My.Settings.ColorDefaultBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND)
-            My.Settings.ColorNameText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_TEXT)
-            My.Settings.ColorNameBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND)
-            My.Settings.ColorFailedResultText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT)
-            My.Settings.ColorFailedValidationText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT)
-            My.Settings.ColorErrorText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
-            My.Settings.ColorComputedValuesText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.COMPUTED_TEXT)
-            My.Settings.ColorESPressureText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT)
-            My.Settings.ColorESProfitsText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PROFIT_TEXT)
-            My.Settings.ColorESTotalCatchText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.TOTALCATCH_TEXT)
-            My.Settings.ColorTrophicLinkText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.TROPHICLINK_TEXT)
-            My.Settings.ColorRemarksBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
-            My.Settings.ColorSumBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.SUM_BACKGROUND)
-            My.Settings.ColorReadOnlyBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND)
-            My.Settings.ColorCheckedBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.CHECKED_BACKGROUND)
-            My.Settings.ColorMissingParamBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
-            My.Settings.ColorImageBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
-            My.Settings.ColorPlotsBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
-            My.Settings.ColorMapBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
+            With Me.StyleGuide
 
-            My.Settings.ThumbnailSize = Me.m_sg.ThumbnailSize
-            My.Settings.ShowLegends = Me.m_sg.ShowLegends
-            My.Settings.UseTransparentBackgrounds = Me.m_sg.UseTransparentBackgrounds
+                My.Settings.ColorDefaultText = .ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+                My.Settings.ColorDefaultBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND)
+                My.Settings.ColorNameText = .ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_TEXT)
+                My.Settings.ColorNameBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND)
+                My.Settings.ColorFailedResultText = .ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT)
+                My.Settings.ColorFailedValidationText = .ApplicationColor(cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT)
+                My.Settings.ColorErrorText = .ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
+                My.Settings.ColorComputedValuesText = .ApplicationColor(cStyleGuide.eApplicationColorType.COMPUTED_TEXT)
+                My.Settings.ColorESPressureText = .ApplicationColor(cStyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT)
+                My.Settings.ColorESProfitsText = .ApplicationColor(cStyleGuide.eApplicationColorType.PROFIT_TEXT)
+                My.Settings.ColorESTotalCatchText = .ApplicationColor(cStyleGuide.eApplicationColorType.TOTALCATCH_TEXT)
+                My.Settings.ColorTrophicLinkText = .ApplicationColor(cStyleGuide.eApplicationColorType.TROPHICLINK_TEXT)
+                My.Settings.ColorRemarksBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
+                My.Settings.ColorSumBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.SUM_BACKGROUND)
+                My.Settings.ColorReadOnlyBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND)
+                My.Settings.ColorCheckedBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.CHECKED_BACKGROUND)
+                My.Settings.ColorMissingParamBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
+                My.Settings.ColorImageBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
+                My.Settings.ColorPlotsBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
+                My.Settings.ColorMapBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
+
+                My.Settings.ThumbnailSize = .ThumbnailSize
+                My.Settings.ShowLegends = .ShowLegends
+                My.Settings.UseTransparentBackgrounds = .UseTransparentBackgrounds
+
+            End With
 
             My.Settings.FontTitle = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Title)
             My.Settings.FontSubtitle = Me.FontSettingToString(cStyleGuide.eApplicationFontType.SubTitle)
@@ -358,6 +390,7 @@ Partial Public Class AppLauncher
             My.Settings.FontScale = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Scale)
 
             My.Settings.Save()
+
         End Sub
 
         Private Sub StringToFontSetting(ByVal strSetting As String, ByVal ft As cStyleGuide.eApplicationFontType)
@@ -365,23 +398,23 @@ Partial Public Class AppLauncher
             Dim astrBits As String() = strSetting.Split(","c)
             If astrBits.Length >= 1 Then
                 Try
-                    Me.m_sg.FontFamilyName(ft) = astrBits(0)
+                    Me.StyleGuide.FontFamilyName(ft) = astrBits(0)
                 Catch ex As Exception
-                    Me.m_sg.FontFamilyName(ft) = ""
+                    Me.StyleGuide.FontFamilyName(ft) = ""
                 End Try
             End If
             If astrBits.Length >= 2 Then
                 Try
-                    Me.m_sg.FontStyle(ft) = DirectCast(CInt(astrBits(1)), FontStyle)
+                    Me.StyleGuide.FontStyle(ft) = DirectCast(CInt(astrBits(1)), FontStyle)
                 Catch ex As Exception
-                    Me.m_sg.FontStyle(ft) = FontStyle.Regular
+                    Me.StyleGuide.FontStyle(ft) = FontStyle.Regular
                 End Try
             End If
             If astrBits.Length >= 3 Then
                 Try
-                    Me.m_sg.FontSize(ft) = Single.Parse(astrBits(2))
+                    Me.StyleGuide.FontSize(ft) = Single.Parse(astrBits(2))
                 Catch ex As Exception
-                    Me.m_sg.FontSize(ft) = 0.0!
+                    Me.StyleGuide.FontSize(ft) = 0.0!
                 End Try
             End If
         End Sub
@@ -389,11 +422,11 @@ Partial Public Class AppLauncher
         Private Function FontSettingToString(ByVal ft As cStyleGuide.eApplicationFontType) As String
 
             Dim sb As New StringBuilder()
-            sb.Append(Me.m_sg.FontFamilyName(ft))
+            sb.Append(Me.StyleGuide.FontFamilyName(ft))
             sb.Append(",")
-            sb.Append(CInt(Me.m_sg.FontStyle(ft)))
+            sb.Append(CInt(Me.StyleGuide.FontStyle(ft)))
             sb.Append(",")
-            sb.Append(Me.m_sg.FontSize(ft))
+            sb.Append(Me.StyleGuide.FontSize(ft))
             Return sb.ToString()
 
         End Function
