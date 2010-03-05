@@ -29,7 +29,6 @@ Public Class gridFitToTimeSeries
         Me(0, eColumnTypes.TimeSeriesName) = New EwEColumnHeaderCell(My.Resources.HEADER_TIMESERIES)
         Me(0, eColumnTypes.TimeSeriesWeight) = New EwEColumnHeaderCell(My.Resources.HEADER_WEIGHT)
 
-        Me.AutoStretchColumnsToFitWidth = True
         ' Fixed "Editor not attached to the grid" crash: cannot edit a fixed column, duh!
         Me.FixedColumns = 1
         Me.FixedColumnWidths = False

@@ -32,6 +32,9 @@ Namespace Ecospace
             'Call base class InitStyle method. 
             MyBase.InitStyle()
 
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
+
             Dim source As cCoreInputOutputBase = Nothing
 
             'Define grid dimensions

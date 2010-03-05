@@ -1,59 +1,3 @@
-'==============================================================================
-'
-' $Log: FisheryOutputQuantityEwEGrid.vb,v $
-' Revision 1.4  2009/05/21 19:27:11  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:08  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:53:40  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:32  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.12  2008/06/02 00:01:26  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.11  2008/05/29 22:22:40  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.10  2008/04/07 02:31:06  jeroens
-' Cleaning up resources
-'
-' Revision 1.9  2008/02/13 16:44:29  jeroens
-' Renamed resources
-'
-' Revision 1.8  2008/01/31 17:08:15  jeroens
-' Made fleet column headers live updating
-'
-' Revision 1.7  2007/10/10 02:59:11  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.6  2007/07/05 19:34:32  joeh
-' Create columns dynamically
-'
-' Revision 1.5  2007/07/04 19:14:02  joeh
-' Implement Total Catch and Trophic Level
-'
-' Revision 1.4  2007/06/05 02:45:49  jeroens
-' * Renamed cMultiOperation Add ->Sum
-'
-' Revision 1.3  2007/05/05 00:47:25  joeh
-' no message
-'
-' Revision 1.2  2007/05/04 18:15:30  joeh
-' Change FleetOuput to FleetInput
-'
-' Revision 1.1  2007/05/04 17:38:54  joeh
-' Change FisheryOutputQualityEwEGrid.vb to FisheryOutputQuantityEwEGrid.vb
-'
-' Revision 1.4  2007/04/29 03:45:10  jeroens
-' * Connected to EwEGridRefresh
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -80,6 +24,9 @@ Namespace Ecopath.Output
             Dim source As cCoreInputOutputBase = Nothing
 
             MyBase.InitStyle()
+
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
 
             'Define grid dimensions
             Me.Redim(1, Core.nFleets + 3)

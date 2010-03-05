@@ -33,6 +33,9 @@ Namespace Ecosim
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
+
             Me.Redim(Me.Core.nLivingGroups + 1, 7)
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)

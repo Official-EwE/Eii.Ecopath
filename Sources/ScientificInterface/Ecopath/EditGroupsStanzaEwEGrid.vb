@@ -690,9 +690,6 @@ Public Class EditGroupsStanzaEwEGrid
         'Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.Selection.EnableMultiSelection = False
 
-        ' JS 15Apr07: there will be no context menu item until we have a better idea
-        Me.ContextMenu = Nothing
-
         ' Redim columns
         Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 

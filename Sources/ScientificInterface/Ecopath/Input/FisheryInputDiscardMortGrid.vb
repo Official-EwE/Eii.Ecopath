@@ -23,9 +23,13 @@ Namespace Ecopath.Input
         End Sub
 
         Protected Overrides Sub InitStyle()
+
             MyBase.InitStyle()
 
             Dim src As cCoreInputOutputBase = Nothing
+
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
 
             Me.Redim(1, 2 + Core.nFleets)
 
@@ -41,6 +45,7 @@ Namespace Ecopath.Input
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
+
         End Sub
 
         Protected Overrides Sub FillData()

@@ -29,6 +29,9 @@ Namespace Ecotracer
 
             MyBase.InitStyle()
 
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
+
             Dim core As cCore = Me.UIContext.Core
             Dim source As cCoreGroupBase = Nothing
 

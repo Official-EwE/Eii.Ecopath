@@ -254,7 +254,9 @@ Public Class gridLayerData
 
         MyBase.InitStyle()
 
-        If Me.m_layer Is Nothing Then Return
+        ' Test for UI context to prevent core from being accessed
+        If (Me.UIContext Is Nothing) Then Return
+        If (Me.m_layer Is Nothing) Then Return
 
         ' Grab the data
         data = Me.m_layer.Data

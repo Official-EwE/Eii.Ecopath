@@ -20,8 +20,8 @@ Public Class gridFishingWeights
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        ' UI context may not have been set
-        If Me.Core Is Nothing Then Return
+        ' Test for UI context to prevent core from being accessed
+        If (Me.UIContext Is Nothing) Then Return
 
         Dim src As cCoreInputOutputBase = Nothing
 

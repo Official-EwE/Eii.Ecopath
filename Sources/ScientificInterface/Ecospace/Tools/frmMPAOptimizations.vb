@@ -106,12 +106,6 @@ Namespace Ecospace
 
         ''' <summary>The one and only control that provides the layers interface.</summary>
         Private m_ucLayers As ucLayersControl = Nothing
-        ''' <summary>Grid that allows configuration of objective weights (shared with Ecosim FPS)</summary>
-        Private m_gridSOObjectives As gridSearchObjectivesWeight = Nothing
-        ''' <summary>Grid that allows configuration of fleet opt params (shared with Ecosim FPS)</summary>
-        Private m_gridSOFleet As gridSearchObjectivesFleet = Nothing
-        ''' <summary>Grid that allows configuration of group opt params (shared with Ecosim FPS)</summary>
-        Private m_gridSOGroup As gridSearchObjectivesGroup = Nothing
 
         ''' <summary>Progress graph helper.</summary>
         Private m_zghProgress As cZedGraphHelper = Nothing
@@ -160,19 +154,16 @@ Namespace Ecospace
             Me.m_ucLayers = New ucLayersControl(Me.UIContext)
             m_plLayers.Controls.Add(Me.m_ucLayers)
 
-            ' Add objective grids
-            Me.m_gridSOObjectives = New gridSearchObjectivesWeight()
-            Me.m_gridSOObjectives.ShowMPAOptParams = True
-            Me.m_gridSOObjectives.Manager = Me.m_manager
-            Me.m_plObjectives.Controls.Add(Me.m_gridSOObjectives)
+            ' Configure objective grids
+            Me.m_gridObjectives.ShowMPAOptParams = True
+            Me.m_gridObjectives.Manager = Me.m_manager
+            Me.m_gridObjectives.UIContext = Me.UIContext
 
-            Me.m_gridSOFleet = New gridSearchObjectivesFleet()
-            Me.m_gridSOFleet.Manager = Me.m_manager
-            Me.m_plFleet.Controls.Add(Me.m_gridSOFleet)
+            Me.m_gridFleet.Manager = Me.m_manager
+            Me.m_gridFleet.UIContext = Me.UIContext
 
-            Me.m_gridSOGroup = New gridSearchObjectivesGroup()
-            Me.m_gridSOGroup.Manager = Me.m_manager
-            Me.m_plGroup.Controls.Add(Me.m_gridSOGroup)
+            Me.m_gridGroup.Manager = Me.m_manager
+            Me.m_gridGroup.UIContext = Me.UIContext
 
             Me.m_propSearchType = New cIntegerProperty(MPAOpt, eVarNameFlags.MPAOptSearchType)
             AddHandler Me.m_propSearchType.PropertyChanged, AddressOf OnSearchTypeChanged
@@ -340,8 +331,8 @@ Namespace Ecospace
             End Try
         End Sub
 
-        Private Sub OnNewSearch(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_bntNewSearch.Click
+        Private Sub OnReset(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_bntReset.Click
 
             Me.RunMode = eFormModeTypes.Prepare
 
@@ -1528,9 +1519,9 @@ Namespace Ecospace
             Me.m_fpIterations.Enabled = (bIsPreparing And bIsRandom)
             Me.m_fpMPA.Enabled = bIsPreparing
 
-            Me.m_gridSOObjectives.Enabled = (bIsPreparing)
-            Me.m_gridSOFleet.Enabled = (bIsPreparing)
-            Me.m_gridSOGroup.Enabled = (bIsPreparing)
+            Me.m_gridObjectives.Enabled = (bIsPreparing)
+            Me.m_gridFleet.Enabled = (bIsPreparing)
+            Me.m_gridGroup.Enabled = (bIsPreparing)
 
             ' Results
             Me.m_graphResults.Enabled = bIsResults
@@ -1541,7 +1532,7 @@ Namespace Ecospace
             ' Update run control buttons
             Me.m_btnRun.Enabled = bIsPreparing
             Me.m_btnStop.Enabled = bIsRunning
-            Me.m_bntNewSearch.Enabled = bIsResults
+            Me.m_bntReset.Enabled = bIsResults
             Me.m_btnConvertToMpa.Enabled = bIsResults
             Me.m_btnSave.Enabled = (bIsResults And bIsRandom)
 

@@ -191,7 +191,6 @@ Namespace Ecosim
             Me(0, eColumnTypes.Weight) = New EwEColumnHeaderCell(My.Resources.HEADER_RELATIVEWEIGHT)
 
             Me.FixedColumns = 2
-            Me.Dock = DockStyle.Fill
 
         End Sub
 

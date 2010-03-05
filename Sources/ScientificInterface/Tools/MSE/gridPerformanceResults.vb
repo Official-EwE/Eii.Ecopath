@@ -30,6 +30,7 @@ Public Class gridPerformanceResults
     End Sub
 
     Protected Overrides Sub FillData()
+
         Try
             ' ToDo: localize this method
 

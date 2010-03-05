@@ -1,3 +1,5 @@
+Imports ScientificInterface.Ecosim
+
 Namespace Ecospace
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -82,18 +84,18 @@ Namespace Ecospace
             Me.m_tabParameters = New System.Windows.Forms.TabPage
             Me.m_tlpObjectives = New System.Windows.Forms.TableLayoutPanel
             Me.m_lblObjectives = New System.Windows.Forms.Label
-            Me.m_plGroup = New System.Windows.Forms.Panel
-            Me.m_plFleet = New System.Windows.Forms.Panel
-            Me.m_plObjectives = New System.Windows.Forms.Panel
+            Me.m_gridGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup
+            Me.m_gridFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet
+            Me.m_gridObjectives = New ScientificInterface.Ecosim.gridSearchObjectivesWeight
             Me.m_lbFleet = New System.Windows.Forms.Label
             Me.m_lblGroup = New System.Windows.Forms.Label
             Me.lblParam = New System.Windows.Forms.Label
             Me.m_tabMap = New System.Windows.Forms.TabPage
             Me.m_lblMap = New System.Windows.Forms.Label
             Me.m_scContent = New System.Windows.Forms.SplitContainer
-            Me.m_bntNewSearch = New System.Windows.Forms.Button
             Me.PictureBox1 = New System.Windows.Forms.PictureBox
             Me.PictureBox2 = New System.Windows.Forms.PictureBox
+            Me.m_bntReset = New System.Windows.Forms.Button
             Me.m_tlbLayers.SuspendLayout()
             Me.m_tsMap.SuspendLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -127,9 +129,9 @@ Namespace Ecospace
             'm_btnRun
             '
             Me.m_btnRun.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnRun.Location = New System.Drawing.Point(521, 23)
+            Me.m_btnRun.Location = New System.Drawing.Point(634, 23)
             Me.m_btnRun.Name = "m_btnRun"
-            Me.m_btnRun.Size = New System.Drawing.Size(96, 23)
+            Me.m_btnRun.Size = New System.Drawing.Size(60, 23)
             Me.m_btnRun.TabIndex = 3
             Me.m_btnRun.Text = "&Run"
             Me.m_btnRun.UseVisualStyleBackColor = True
@@ -138,9 +140,9 @@ Namespace Ecospace
             '
             Me.m_btnStop.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnStop.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.m_btnStop.Location = New System.Drawing.Point(623, 23)
+            Me.m_btnStop.Location = New System.Drawing.Point(700, 23)
             Me.m_btnStop.Name = "m_btnStop"
-            Me.m_btnStop.Size = New System.Drawing.Size(96, 23)
+            Me.m_btnStop.Size = New System.Drawing.Size(60, 23)
             Me.m_btnStop.TabIndex = 4
             Me.m_btnStop.Text = "&Stop"
             Me.m_btnStop.UseVisualStyleBackColor = True
@@ -430,7 +432,7 @@ Namespace Ecospace
                         Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.m_gridProgress.AutoSizeMinHeight = 10
             Me.m_gridProgress.AutoSizeMinWidth = 10
-            Me.m_gridProgress.AutoStretchColumnsToFitWidth = False
+            Me.m_gridProgress.AutoStretchColumnsToFitWidth = True
             Me.m_gridProgress.AutoStretchRowsToFitHeight = False
             Me.m_gridProgress.BackColor = System.Drawing.Color.White
             Me.m_gridProgress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -454,6 +456,8 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridProgress.TabIndex = 0
+            Me.m_gridProgress.TrackPropertySelection = True
+            Me.m_gridProgress.UIContext = Nothing
             '
             'm_tpResults
             '
@@ -485,7 +489,7 @@ Namespace Ecospace
             'm_btnSave
             '
             Me.m_btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            Me.m_btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup
             Me.m_btnSave.Location = New System.Drawing.Point(506, 3)
             Me.m_btnSave.Name = "m_btnSave"
             Me.m_btnSave.Size = New System.Drawing.Size(99, 23)
@@ -517,7 +521,7 @@ Namespace Ecospace
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_gridResults.AutoSizeMinHeight = 10
             Me.m_gridResults.AutoSizeMinWidth = 10
-            Me.m_gridResults.AutoStretchColumnsToFitWidth = False
+            Me.m_gridResults.AutoStretchColumnsToFitWidth = True
             Me.m_gridResults.AutoStretchRowsToFitHeight = False
             Me.m_gridResults.BackColor = System.Drawing.Color.White
             Me.m_gridResults.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -541,6 +545,8 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridResults.TabIndex = 8
+            Me.m_gridResults.TrackPropertySelection = True
+            Me.m_gridResults.UIContext = Nothing
             '
             'm_graphResults
             '
@@ -563,7 +569,7 @@ Namespace Ecospace
             'm_btnResetMPAs
             '
             Me.m_btnResetMPAs.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnResetMPAs.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            Me.m_btnResetMPAs.FlatStyle = System.Windows.Forms.FlatStyle.Popup
             Me.m_btnResetMPAs.Location = New System.Drawing.Point(722, 3)
             Me.m_btnResetMPAs.Name = "m_btnResetMPAs"
             Me.m_btnResetMPAs.Size = New System.Drawing.Size(96, 23)
@@ -574,7 +580,7 @@ Namespace Ecospace
             'm_btnConvertToMpa
             '
             Me.m_btnConvertToMpa.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnConvertToMpa.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            Me.m_btnConvertToMpa.FlatStyle = System.Windows.Forms.FlatStyle.Popup
             Me.m_btnConvertToMpa.Location = New System.Drawing.Point(611, 3)
             Me.m_btnConvertToMpa.Name = "m_btnConvertToMpa"
             Me.m_btnConvertToMpa.Size = New System.Drawing.Size(105, 23)
@@ -836,9 +842,9 @@ Namespace Ecospace
             Me.m_tlpObjectives.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 6.0!))
             Me.m_tlpObjectives.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.85714!))
             Me.m_tlpObjectives.Controls.Add(Me.m_lblObjectives, 0, 0)
-            Me.m_tlpObjectives.Controls.Add(Me.m_plGroup, 4, 1)
-            Me.m_tlpObjectives.Controls.Add(Me.m_plFleet, 2, 1)
-            Me.m_tlpObjectives.Controls.Add(Me.m_plObjectives, 0, 1)
+            Me.m_tlpObjectives.Controls.Add(Me.m_gridGroup, 4, 1)
+            Me.m_tlpObjectives.Controls.Add(Me.m_gridFleet, 2, 1)
+            Me.m_tlpObjectives.Controls.Add(Me.m_gridObjectives, 0, 1)
             Me.m_tlpObjectives.Controls.Add(Me.m_lbFleet, 2, 0)
             Me.m_tlpObjectives.Controls.Add(Me.m_lblGroup, 4, 0)
             Me.m_tlpObjectives.Location = New System.Drawing.Point(3, 121)
@@ -862,29 +868,107 @@ Namespace Ecospace
             Me.m_lblObjectives.Text = "Objectives"
             Me.m_lblObjectives.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'm_plGroup
+            'm_gridGroup
             '
-            Me.m_plGroup.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plGroup.Location = New System.Drawing.Point(475, 21)
-            Me.m_plGroup.Name = "m_plGroup"
-            Me.m_plGroup.Size = New System.Drawing.Size(339, 338)
-            Me.m_plGroup.TabIndex = 5
+            Me.m_gridGroup.AutoSizeMinHeight = 10
+            Me.m_gridGroup.AutoSizeMinWidth = 10
+            Me.m_gridGroup.AutoStretchColumnsToFitWidth = True
+            Me.m_gridGroup.AutoStretchRowsToFitHeight = False
+            Me.m_gridGroup.BackColor = System.Drawing.Color.White
+            Me.m_gridGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridGroup.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridGroup.CustomSort = False
+            Me.m_gridGroup.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_gridGroup.FixedColumnWidths = False
+            Me.m_gridGroup.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridGroup.GridToolTipActive = True
+            Me.m_gridGroup.Location = New System.Drawing.Point(475, 21)
+            Me.m_gridGroup.Manager = Nothing
+            Me.m_gridGroup.Name = "m_gridGroup"
+            Me.m_gridGroup.Size = New System.Drawing.Size(339, 338)
+            Me.m_gridGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridGroup.TabIndex = 5
+            Me.m_gridGroup.TrackPropertySelection = True
+            Me.m_gridGroup.UIContext = Nothing
             '
-            'm_plFleet
+            'm_gridFleet
             '
-            Me.m_plFleet.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plFleet.Location = New System.Drawing.Point(239, 21)
-            Me.m_plFleet.Name = "m_plFleet"
-            Me.m_plFleet.Size = New System.Drawing.Size(224, 338)
-            Me.m_plFleet.TabIndex = 4
+            Me.m_gridFleet.AutoSizeMinHeight = 10
+            Me.m_gridFleet.AutoSizeMinWidth = 10
+            Me.m_gridFleet.AutoStretchColumnsToFitWidth = True
+            Me.m_gridFleet.AutoStretchRowsToFitHeight = False
+            Me.m_gridFleet.BackColor = System.Drawing.Color.White
+            Me.m_gridFleet.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridFleet.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridFleet.CustomSort = False
+            Me.m_gridFleet.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_gridFleet.FixedColumnWidths = False
+            Me.m_gridFleet.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridFleet.GridToolTipActive = True
+            Me.m_gridFleet.IsMaximizeByFleetValue = False
+            Me.m_gridFleet.Location = New System.Drawing.Point(239, 21)
+            Me.m_gridFleet.Manager = Nothing
+            Me.m_gridFleet.Name = "m_gridFleet"
+            Me.m_gridFleet.Size = New System.Drawing.Size(224, 338)
+            Me.m_gridFleet.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridFleet.TabIndex = 4
+            Me.m_gridFleet.TrackPropertySelection = True
+            Me.m_gridFleet.UIContext = Nothing
             '
-            'm_plObjectives
+            'm_gridObjectives
             '
-            Me.m_plObjectives.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plObjectives.Location = New System.Drawing.Point(3, 21)
-            Me.m_plObjectives.Name = "m_plObjectives"
-            Me.m_plObjectives.Size = New System.Drawing.Size(224, 338)
-            Me.m_plObjectives.TabIndex = 3
+            Me.m_gridObjectives.AutoSizeMinHeight = 10
+            Me.m_gridObjectives.AutoSizeMinWidth = 10
+            Me.m_gridObjectives.AutoStretchColumnsToFitWidth = True
+            Me.m_gridObjectives.AutoStretchRowsToFitHeight = False
+            Me.m_gridObjectives.BackColor = System.Drawing.Color.White
+            Me.m_gridObjectives.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridObjectives.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridObjectives.CustomSort = False
+            Me.m_gridObjectives.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_gridObjectives.FixedColumnWidths = False
+            Me.m_gridObjectives.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridObjectives.GridToolTipActive = True
+            Me.m_gridObjectives.Location = New System.Drawing.Point(3, 21)
+            Me.m_gridObjectives.Manager = Nothing
+            Me.m_gridObjectives.Name = "m_gridObjectives"
+            Me.m_gridObjectives.ShowMaxPortUtil = False
+            Me.m_gridObjectives.ShowMPAOptParams = False
+            Me.m_gridObjectives.Size = New System.Drawing.Size(224, 338)
+            Me.m_gridObjectives.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridObjectives.TabIndex = 3
+            Me.m_gridObjectives.TrackPropertySelection = True
+            Me.m_gridObjectives.UIContext = Nothing
             '
             'm_lbFleet
             '
@@ -974,22 +1058,12 @@ Namespace Ecospace
             Me.m_scContent.SplitterDistance = 509
             Me.m_scContent.TabIndex = 6
             '
-            'm_bntNewSearch
-            '
-            Me.m_bntNewSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_bntNewSearch.Location = New System.Drawing.Point(725, 23)
-            Me.m_bntNewSearch.Name = "m_bntNewSearch"
-            Me.m_bntNewSearch.Size = New System.Drawing.Size(96, 23)
-            Me.m_bntNewSearch.TabIndex = 5
-            Me.m_bntNewSearch.Text = "&New search"
-            Me.m_bntNewSearch.UseVisualStyleBackColor = True
-            '
             'PictureBox1
             '
             Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.PictureBox1.BackColor = System.Drawing.Color.White
             Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-            Me.PictureBox1.Location = New System.Drawing.Point(321, 22)
+            Me.PictureBox1.Location = New System.Drawing.Point(424, 21)
             Me.PictureBox1.Name = "PictureBox1"
             Me.PictureBox1.Size = New System.Drawing.Size(137, 27)
             Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -1001,12 +1075,22 @@ Namespace Ecospace
             Me.PictureBox2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.PictureBox2.BackColor = System.Drawing.Color.White
             Me.PictureBox2.Image = Global.ScientificInterface.My.Resources.Resources.Lenfest_Logo_50px
-            Me.PictureBox2.Location = New System.Drawing.Point(452, 22)
+            Me.PictureBox2.Location = New System.Drawing.Point(567, 22)
             Me.PictureBox2.Name = "PictureBox2"
             Me.PictureBox2.Size = New System.Drawing.Size(61, 26)
             Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
             Me.PictureBox2.TabIndex = 8
             Me.PictureBox2.TabStop = False
+            '
+            'm_bntReset
+            '
+            Me.m_bntReset.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_bntReset.Location = New System.Drawing.Point(766, 23)
+            Me.m_bntReset.Name = "m_bntReset"
+            Me.m_bntReset.Size = New System.Drawing.Size(60, 23)
+            Me.m_bntReset.TabIndex = 5
+            Me.m_bntReset.Text = "&Reset"
+            Me.m_bntReset.UseVisualStyleBackColor = True
             '
             'frmMPAOptimizations
             '
@@ -1017,7 +1101,7 @@ Namespace Ecospace
             Me.AutoScrollMinSize = New System.Drawing.Size(600, 800)
             Me.CancelButton = Me.m_btnStop
             Me.ClientSize = New System.Drawing.Size(827, 830)
-            Me.Controls.Add(Me.m_bntNewSearch)
+            Me.Controls.Add(Me.m_bntReset)
             Me.Controls.Add(Me.m_btnRun)
             Me.Controls.Add(Me.m_btnStop)
             Me.Controls.Add(Me.m_scContent)
@@ -1112,7 +1196,7 @@ Namespace Ecospace
         Private WithEvents m_tabParameters As System.Windows.Forms.TabPage
         Private WithEvents m_tabMap As System.Windows.Forms.TabPage
         Private WithEvents m_tcConfiguration As System.Windows.Forms.TabControl
-        Private WithEvents m_plGroup As System.Windows.Forms.Panel
+        Private WithEvents m_gridGroup As gridSearchObjectivesGroup
         Private WithEvents m_lblMinArea As System.Windows.Forms.Label
         Private WithEvents m_lblMaxArea As System.Windows.Forms.Label
         Private WithEvents m_nudMinArea As System.Windows.Forms.NumericUpDown
@@ -1123,22 +1207,22 @@ Namespace Ecospace
         Private WithEvents m_lblObjectives As System.Windows.Forms.Label
         Private WithEvents m_lbFleet As System.Windows.Forms.Label
         Private WithEvents m_lblGroup As System.Windows.Forms.Label
-        Private WithEvents m_plFleet As System.Windows.Forms.Panel
-        Private WithEvents m_plObjectives As System.Windows.Forms.Panel
+        Private WithEvents m_gridFleet As gridSearchObjectivesFleet
+        Private WithEvents m_gridObjectives As gridSearchObjectivesWeight
         Private WithEvents lblParam As System.Windows.Forms.Label
-        Friend WithEvents m_btnSave As System.Windows.Forms.Button
+        Private WithEvents m_btnSave As System.Windows.Forms.Button
         Private WithEvents m_lblAreaClosed As System.Windows.Forms.Label
         Private WithEvents m_nudBaseYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblBaseYear As System.Windows.Forms.Label
-        Friend WithEvents m_cmbAreaClosed As System.Windows.Forms.ComboBox
+        Private WithEvents m_cmbAreaClosed As System.Windows.Forms.ComboBox
         Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
         Private WithEvents m_lblMap As System.Windows.Forms.Label
-        Private WithEvents m_bntNewSearch As System.Windows.Forms.Button
         Private WithEvents m_lblDiscRate As System.Windows.Forms.Label
         Private WithEvents m_nudDiscRate As System.Windows.Forms.NumericUpDown
         Private WithEvents m_nudGenDiscRate As System.Windows.Forms.NumericUpDown
-        Friend WithEvents m_lblGenDiscRate As System.Windows.Forms.Label
-        Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-        Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
+        Private WithEvents m_lblGenDiscRate As System.Windows.Forms.Label
+        Private WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+        Private WithEvents PictureBox2 As System.Windows.Forms.PictureBox
+        Private WithEvents m_bntReset As System.Windows.Forms.Button
     End Class
 End Namespace

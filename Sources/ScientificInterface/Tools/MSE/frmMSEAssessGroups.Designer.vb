@@ -63,8 +63,6 @@ Partial Class frmMSEAssessGroups
         '
         Me.GridBioCV1.AutoSizeMinHeight = 10
         Me.GridBioCV1.AutoSizeMinWidth = 10
-        Me.GridBioCV1.AutoStretchColumnsToFitWidth = False
-        Me.GridBioCV1.AutoStretchRowsToFitHeight = False
         Me.GridBioCV1.BackColor = System.Drawing.Color.White
         Me.GridBioCV1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.GridBioCV1.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _

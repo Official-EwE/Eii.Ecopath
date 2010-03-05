@@ -63,8 +63,6 @@ Partial Class frmMSEAssessFleets
         '
         Me.GridFishingCV1.AutoSizeMinHeight = 10
         Me.GridFishingCV1.AutoSizeMinWidth = 10
-        Me.GridFishingCV1.AutoStretchColumnsToFitWidth = False
-        Me.GridFishingCV1.AutoStretchRowsToFitHeight = False
         Me.GridFishingCV1.BackColor = System.Drawing.Color.White
         Me.GridFishingCV1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.GridFishingCV1.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _

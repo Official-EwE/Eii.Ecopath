@@ -58,8 +58,6 @@ Partial Class frmMSEResults
         '
         Me.Grid.AutoSizeMinHeight = 10
         Me.Grid.AutoSizeMinWidth = 10
-        Me.Grid.AutoStretchColumnsToFitWidth = False
-        Me.Grid.AutoStretchRowsToFitHeight = False
         Me.Grid.BackColor = System.Drawing.Color.White
         Me.Grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _

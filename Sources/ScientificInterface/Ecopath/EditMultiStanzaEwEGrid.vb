@@ -76,7 +76,6 @@ Public Class EditMultiStanzaEwEGrid
         Me(0, eColumnTypes.QBInput) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
 
         Me.FixedColumnWidths = False
-        Me.AutoStretchColumnsToFitWidth = True
     End Sub
 
     Protected Overrides Sub FillData()

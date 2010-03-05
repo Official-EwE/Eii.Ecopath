@@ -88,7 +88,6 @@ Public Class gridWeightTS
 
         MyBase.InitStyle()
 
-        Me.Dock = DockStyle.Fill
         Me.FixedColumns = 1
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)

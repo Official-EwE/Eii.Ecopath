@@ -73,7 +73,8 @@ Namespace Ecopath.Output
 
             MyBase.InitStyle()
 
-            If Me.UIContext Is Nothing Then Return
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
 
             Dim source As cCoreGroupBase = Nothing
 

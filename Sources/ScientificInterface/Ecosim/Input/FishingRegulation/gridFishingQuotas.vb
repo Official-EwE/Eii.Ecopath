@@ -28,7 +28,8 @@ Namespace Ecosim
 
             Dim src As cCoreInputOutputBase = Nothing
 
-            If Me.UIContext Is Nothing Then Return
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
 
             Me.Redim(1, 2 + core.nFleets)
 

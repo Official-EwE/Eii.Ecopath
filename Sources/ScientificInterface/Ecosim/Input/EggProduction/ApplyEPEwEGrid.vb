@@ -133,8 +133,6 @@ Namespace Ecosim
 
             MyBase.InitStyle()
 
-            Me.Dock = DockStyle.Fill
-
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")

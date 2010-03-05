@@ -409,17 +409,36 @@ Namespace Controls.EwEGrid
         Protected Overrides Sub InitLayout()
             MyBase.InitLayout()
 
-            If (Me.UIContext Is Nothing) Then Return
-
             Me.SuspendLayoutGrid()
-            Me.ClearData()
-            Me.InitStyle()
 
-            'If (Me.UIContext IsNot Nothing) Then
-            Me.FillData()
-            'End If
+            Try
+                ' Clear grid of any remaining data
+                Me.ClearData()
+            Catch ex As Exception
+                Debug.Assert(False, "Exception " & ex.Message & " in ClearData")
+            End Try
 
-            Me.FinishStyle()
+            Try
+                ' Style the grid
+                Me.InitStyle()
+            Catch ex As Exception
+                Debug.Assert(False, "Exception " & ex.Message & " in InitStyle: check if grid is using a missing UI context")
+            End Try
+
+            If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) Then
+                Try
+                    Me.FillData()
+                Catch ex As Exception
+                    Debug.Assert(False, "Exception " & ex.Message & " in FillData")
+                End Try
+            End If
+
+            Try
+                Me.FinishStyle()
+            Catch ex As Exception
+                Debug.Assert(False, "Exception " & ex.Message & " in FinishStyle")
+            End Try
+
             Me.ResumeLayoutGrid()
 
         End Sub
@@ -442,6 +461,8 @@ Namespace Controls.EwEGrid
                                   SourceGrid2.ContextMenuStyle.AutoSize
 
             Me.Dock = Me.DefaultDockStyle()
+            Me.AutoStretchColumnsToFitWidth = True
+            Me.AutoStretchRowsToFitHeight = False
 
             ' JS 05aug07: this flag controls whether selections can be made with cell nav keys and [ctrl] and/or [shift]
             '             It does not seem to work well though; when set to True it is impossible to select a range w
@@ -593,6 +614,7 @@ Namespace Controls.EwEGrid
         ''' <summary>
         ''' Properly releases all EwE cells in the grid.
         ''' </summary>
+        ''' <note_js>Method does not require UI context to be present.</note_js>
         ''' -------------------------------------------------------------------
         Protected Overridable Sub ClearData()
             For iRow As Integer = 0 To Me.RowsCount - 1

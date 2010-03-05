@@ -24,6 +24,9 @@ Namespace Ecopath.Output
             MyBase.InitStyle()
             Dim source As cCoreGroupBase = Nothing
 
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
+
             Me.Redim(core.nGroups + 1, 2)
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_PREYPREDATOR)

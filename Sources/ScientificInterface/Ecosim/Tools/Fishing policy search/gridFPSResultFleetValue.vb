@@ -34,6 +34,10 @@ Namespace Ecosim
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
+
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
+
             Me.Redim(m_Core.nFleets + 1, m_Core.nFleets + 3)
             Me(0, 0) = New EwEColumnHeaderCell(My.Resources.FPS_FV_RESULT_COL0)
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_INCOME)

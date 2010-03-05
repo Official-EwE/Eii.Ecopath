@@ -23,9 +23,10 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub InitStyle()
 
-            If Me.UIContext Is Nothing Then Return
-
             Dim source As cCoreInputOutputBase = Nothing
+
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
 
             MyBase.InitStyle()
 

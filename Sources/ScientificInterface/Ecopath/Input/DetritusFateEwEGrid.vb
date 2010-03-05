@@ -29,10 +29,12 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
+
             Dim source As cCoreInputOutputBase = Nothing
 
             'Define grid dimensions
-            'Me.Redim(core.nGroups + 1, 3 + core.nDetritusGroups)
             Me.Redim(Core.nGroups + 1, 4 + Core.nDetritusGroups)
 
             'Header cell (0,0) Source \ fate

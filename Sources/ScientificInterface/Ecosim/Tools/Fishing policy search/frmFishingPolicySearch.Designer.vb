@@ -463,8 +463,6 @@ Namespace Ecosim
             '
             Me.m_gridObjWeights.AutoSizeMinHeight = 10
             Me.m_gridObjWeights.AutoSizeMinWidth = 10
-            Me.m_gridObjWeights.AutoStretchColumnsToFitWidth = False
-            Me.m_gridObjWeights.AutoStretchRowsToFitHeight = False
             Me.m_gridObjWeights.BackColor = System.Drawing.Color.White
             Me.m_gridObjWeights.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridObjWeights.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -515,8 +513,6 @@ Namespace Ecosim
             '
             Me.m_gridObjFleet.AutoSizeMinHeight = 10
             Me.m_gridObjFleet.AutoSizeMinWidth = 10
-            Me.m_gridObjFleet.AutoStretchColumnsToFitWidth = False
-            Me.m_gridObjFleet.AutoStretchRowsToFitHeight = False
             Me.m_gridObjFleet.BackColor = System.Drawing.Color.White
             Me.m_gridObjFleet.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridObjFleet.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -549,8 +545,6 @@ Namespace Ecosim
             '
             Me.m_gridObjGroup.AutoSizeMinHeight = 10
             Me.m_gridObjGroup.AutoSizeMinWidth = 10
-            Me.m_gridObjGroup.AutoStretchColumnsToFitWidth = False
-            Me.m_gridObjGroup.AutoStretchRowsToFitHeight = False
             Me.m_gridObjGroup.BackColor = System.Drawing.Color.White
             Me.m_gridObjGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridObjGroup.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _

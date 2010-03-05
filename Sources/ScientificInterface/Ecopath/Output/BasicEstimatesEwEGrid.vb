@@ -164,7 +164,9 @@ Namespace Ecopath.Output
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
             Next
 
-            ci.Visible = (core.nStanzas > 0)
+            If (Me.Core Is Nothing) Then Return
+
+            ci.Visible = (Me.Core.nStanzas > 0)
 
         End Sub
 

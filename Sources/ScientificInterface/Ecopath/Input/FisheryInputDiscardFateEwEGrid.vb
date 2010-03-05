@@ -29,6 +29,9 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
+
             Dim source As cCoreInputOutputBase = Nothing
 
             Me.Redim(Core.nFleets + 1, Core.nDetritusGroups + 4)

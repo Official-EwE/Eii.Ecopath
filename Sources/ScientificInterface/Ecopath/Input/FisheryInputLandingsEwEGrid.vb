@@ -30,6 +30,9 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
+            ' Test for UI context to prevent core from being accessed
+            If (Me.UIContext Is Nothing) Then Return
+
             'Define grid dimensions
             Me.Redim(Core.nGroups + 2, Core.nFleets + 3)
 

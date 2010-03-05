@@ -110,7 +110,6 @@ Public Class gridMapLayerToAttribute
 
                 Me.Columns(eColumnTypes.ColumnLayer).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
                 Me.Columns(eColumnTypes.ColumnAttribute).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
-                Me.AutoStretchColumnsToFitWidth = True
                 Me.FixedColumns = 1
 
             End Sub
@@ -703,8 +702,6 @@ Public Class gridMapLayerToAttribute
             Me.m_grid.Attributes = New String() {" "}
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
-            Me.m_grid.AutoStretchColumnsToFitWidth = False
-            Me.m_grid.AutoStretchRowsToFitHeight = False
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _

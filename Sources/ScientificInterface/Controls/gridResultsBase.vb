@@ -18,7 +18,6 @@ Namespace Controls
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
-            Me.Dock = DockStyle.Fill
         End Sub
 
         Protected Sub InitCells(ByVal iRow As Integer, ByRef astrNames() As String, ByVal asCalc() As Integer)
@@ -97,9 +96,6 @@ Namespace Controls
                 'do nothing??
             End Try
         End Sub
-
-
-
 
         Protected Sub InitTotalArray(ByRef asValueTotal() As Single)
             'The array for storing total values

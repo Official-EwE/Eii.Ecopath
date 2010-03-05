@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: gridMPAOptimizations.vb,v $
-' Revision 1.6  2009/05/28 12:37:37  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.5  2008/12/15 15:55:36  jeroens
-' no message
-'
-' Revision 1.4  2008/11/19 14:35:29  jeroens
-' Resources!
-'
-' Revision 1.3  2008/11/14 00:29:11  jeroens
-' Added more indicators
-'
-' Revision 1.2  2008/11/12 21:39:05  jeroens
-' Revamping
-'
-' Revision 1.1  2008/09/26 07:32:03  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -38,7 +15,7 @@ Public Class gridMPAOptimizations
     : Inherits EwEGrid
 
     Public Enum eColumnTypes As Byte
-        Variable
+        Variable = 0
         Value
     End Enum
 
