@@ -1,63 +1,17 @@
-'==============================================================================
-'
-' $Log: frmEcotracerParameters.vb,v $
-' Revision 1.5  2009/05/11 01:50:56  jeroens
-' Renamed command classes
-'
-' Revision 1.4  2009/03/19 16:02:27  jeroens
-' Added FormatProvider.Release
-'
-' Revision 1.3  2009/02/05 17:48:40  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.2  2009/01/16 18:30:39  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:32:04  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.11  2008/08/10 01:43:08  jeroens
-' Renamed PropertyFormatProvider
-'
-' Revision 1.10  2008/06/02 00:01:35  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.9  2008/05/29 22:22:55  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.8  2008/03/18 17:25:55  jeroens
-' Ecotracer command handles property juggling
-'
-' Revision 1.7  2008/03/17 14:46:32  jeroens
-' Tracer run mode controlled via command
-'
-' Revision 1.6  2008/03/03 16:08:18  joeb
-' Started Implementation of Ecospace output
-'
-' Revision 1.5  2008/01/08 19:07:28  jeroens
-' Contracing flags now on all parameter pages
-'
-' Revision 1.4  2008/01/08 11:24:25  jeroens
-' Merged input parms and group grid in one screen
-'
-' Revision 1.3  2008/01/03 17:40:41  joeb
-' Renamed excretion rate column
-'
-' Revision 1.2  2007/12/21 15:37:11  jeroens
-' * Connected to core messages
-'
-' Revision 1.1  2007/12/05 03:54:04  jeroens
-' * Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
 
+#End Region ' Imports
+
 Namespace Ecotracer
 
+    ''' <summary>
+    ''' Form class, implements the Ecotracer generic parameters user interface.
+    ''' </summary>
     Public Class frmEcotracerParameters
 
 #Region "Private data"
@@ -83,14 +37,18 @@ Namespace Ecotracer
 
 #Region " Events "
 
-        Private Sub frmEcotracerParameters_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
 
             Dim scenarioDef As cEcotracerScenario = m_core.EcotracerScenarios(m_core.ActiveEcotracerScenarioIndex)
+            Dim pm As cPropertyManager = Me.PropertyManager
 
-            Me.m_fpScenarioName = New cPropertyFormatProvider(Me.m_tbName, scenarioDef, eVarNameFlags.Name)
-            Me.m_fpScenarioDescription = New cPropertyFormatProvider(Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
-            Me.m_fpAuthor = New cPropertyFormatProvider(Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
-            Me.m_fpContact = New cPropertyFormatProvider(Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
+            Me.m_fpScenarioName = New cPropertyFormatProvider(pm, Me.m_tbName, scenarioDef, eVarNameFlags.Name)
+            Me.m_fpScenarioDescription = New cPropertyFormatProvider(pm, Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
+            Me.m_fpAuthor = New cPropertyFormatProvider(pm, Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
+            Me.m_fpContact = New cPropertyFormatProvider(pm, Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
 
             ' Try this
             Me.ConnectToEcosim(True)

@@ -65,12 +65,16 @@ Namespace Ecosim
 
             MyBase.OnLoad(e)
 
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim pm As cPropertyManager = Me.PropertyManager
+
             rbGear.Checked = True
 
             'summary
-            Me.m_fpStartSum = New cPropertyFormatProvider(Me.txtSumStart, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumStart)
-            Me.m_fpEndSum = New cPropertyFormatProvider(Me.txtSumEnd, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumEnd)
-            Me.m_fpNumSteps = New cPropertyFormatProvider(Me.udNumTimeSteps, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumNTimeSteps)
+            Me.m_fpStartSum = New cPropertyFormatProvider(pm, Me.txtSumStart, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumStart)
+            Me.m_fpEndSum = New cPropertyFormatProvider(pm, Me.txtSumEnd, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumEnd)
+            Me.m_fpNumSteps = New cPropertyFormatProvider(pm, Me.udNumTimeSteps, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumNTimeSteps)
 
             cbGears.Items.Clear()
             Dim efo As cEcosimFleetOutput = Nothing

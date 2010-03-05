@@ -19,7 +19,6 @@ Namespace Ecopath.Output
 
         ' -- Core connection
         Private m_coreStateMonitor As cCoreStateMonitor = Nothing
-        Private m_core As cCore = Nothing
 
         ' -- To make life easier and a more fun place to be
         Private m_zgh As cZedGraphHelper = Nothing
@@ -51,11 +50,15 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
+
             Dim parms As cPSDParameters = Nothing
             Dim cmdh As cCommandHandler = Me.CommandHandler
+            Dim pm As cPropertyManager = Me.UIContext.PropertyManager
 
-            Me.m_core = cCore.GetInstance()
-            Me.m_coreStateMonitor = Me.m_core.StateMonitor
+            Me.m_coreStateMonitor = Me.UIContext.Core.StateMonitor
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph)
 
@@ -67,10 +70,10 @@ Namespace Ecopath.Output
             End If
 
             ' Connect format providers
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.m_tstbxNoOfPointsPSD.Control, parms, eVarNameFlags.PSDNumWeightClasses)
-            Me.m_fpMinWeight = New cPropertyFormatProvider(Me.m_tstbxMinWeight.Control, parms, eVarNameFlags.PSDFirstWeightClass)
-            Me.m_fpNoOfPointsMovAvg = New cPropertyFormatProvider(Me.m_tstbxNoOfPointsMovAvg.Control, parms, eVarNameFlags.NumPtsMovAvg)
+            parms = Me.UIContext.Core.ParticleSizeDistributionParameters
+            Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(pm, Me.m_tstbxNoOfPointsPSD.Control, parms, eVarNameFlags.PSDNumWeightClasses)
+            Me.m_fpMinWeight = New cPropertyFormatProvider(pm, Me.m_tstbxMinWeight.Control, parms, eVarNameFlags.PSDFirstWeightClass)
+            Me.m_fpNoOfPointsMovAvg = New cPropertyFormatProvider(pm, Me.m_tstbxNoOfPointsMovAvg.Control, parms, eVarNameFlags.NumPtsMovAvg)
 
             ' Connect to core state monitor events
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
@@ -87,7 +90,7 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
 
             ' Detach format providers
             Me.m_fpNoOfPointsPSD.Release()
@@ -128,7 +131,7 @@ Namespace Ecopath.Output
         Private Sub MenuItmLorenzen_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_tsmiLorenzen.Click
 
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
 
             ' Make sure one checkbox is checked exclusively
             Me.m_tsmiLorenzen.Checked = True
@@ -149,7 +152,7 @@ Namespace Ecopath.Output
             ' Grab PSD settings from the GUI and stick them in the core
             Me.UpdateVariables()
             ' Run Ecopath
-            Me.m_core.RunEcoPath()
+            Me.UIContext.Core.RunEcoPath()
 
         End Sub
 
@@ -215,7 +218,7 @@ Namespace Ecopath.Output
         Private Function InitializePane() As GraphPane
 
             Dim pane As GraphPane = Me.m_zedgraph.GraphPane
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
 
             pane.CurveList.Clear()
 
@@ -232,7 +235,7 @@ Namespace Ecopath.Output
             'pane.YAxis.Title.FontSpec.Size = 14
 
             pane.XAxis.Scale.Min = Int(Math.Log10(parms.FirstWeightClass))
-            pane.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (Me.m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
+            pane.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (Me.UIContext.Core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
             pane.YAxis.Scale.Min = 0
 
             pane.YAxis.Cross = 0
@@ -246,7 +249,7 @@ Namespace Ecopath.Output
 
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
-            Dim sSystemPSD(m_core.nWeightClasses) As Single
+            Dim sSystemPSD(Me.UIContext.Core.nWeightClasses) As Single
             Dim sSlope As Single
             Dim sSlopeStdErr As Single
             Dim sIntercept As Single
@@ -255,7 +258,7 @@ Namespace Ecopath.Output
             Dim sLowWtClass As Single
             Dim sHighWtClass As Single
             Dim iSampleSize As Integer
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim strLabel As String = ""
 
@@ -268,7 +271,7 @@ Namespace Ecopath.Output
             Me.FindRegression(sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation, _
                               sLowWtClass, sHighWtClass, iSampleSize, sSystemPSD)
 
-            For iWtClass As Integer = 1 To m_core.nWeightClasses
+            For iWtClass As Integer = 1 To Me.UIContext.Core.nWeightClasses
                 If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                     sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
@@ -339,7 +342,7 @@ Namespace Ecopath.Output
             '           the actual core PSD computations.
 
             Dim grpInput As cEcoPathGroupInput = Nothing
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             'Mortality type
@@ -355,8 +358,8 @@ Namespace Ecopath.Output
             End If
 
             'Group included in PSD 
-            For iGroup As Integer = 1 To Me.m_core.nLivingGroups
-                grpInput = m_core.EcoPathGroupInputs(iGroup)
+            For iGroup As Integer = 1 To Me.UIContext.Core.nLivingGroups
+                grpInput = Me.UIContext.Core.EcoPathGroupInputs(iGroup)
                 parms.GroupIncluded(iGroup) = sg.GroupVisible(iGroup)
             Next
 
@@ -374,7 +377,7 @@ Namespace Ecopath.Output
         ''' -------------------------------------------------------------------
         Private Sub UpdateToolstrip()
 
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
             Dim grpInput As cEcoPathGroupInput = Nothing
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
@@ -421,14 +424,14 @@ Namespace Ecopath.Output
 
         Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
 
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
-            For iGroup As Integer = 1 To m_core.nLivingGroups
+            For iGroup As Integer = 1 To Me.UIContext.Core.nLivingGroups
                 If parms.GroupIncluded(iGroup) Then
-                    grpOutput = m_core.EcoPathGroupOutputs(iGroup)
-                    For iWtClass As Integer = 1 To m_core.nWeightClasses
+                    grpOutput = Me.UIContext.Core.EcoPathGroupOutputs(iGroup)
+                    For iWtClass As Integer = 1 To Me.UIContext.Core.nWeightClasses
                         sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
                     Next
                 End If
@@ -458,9 +461,9 @@ Namespace Ecopath.Output
             Dim dXStdDev As Double
             Dim dYStdDev As Double
             Dim dEstStdErr As Double
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
 
-            For iWtClass As Integer = 1 To m_core.nWeightClasses
+            For iWtClass As Integer = 1 To Me.UIContext.Core.nWeightClasses
                 If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                     sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
@@ -484,7 +487,7 @@ Namespace Ecopath.Output
             dXMean = dSumX / iNum
             dYMean = dSumY / iNum
 
-            For iWtClass As Integer = 1 To m_core.nWeightClasses
+            For iWtClass As Integer = 1 To Me.UIContext.Core.nWeightClasses
                 If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                     sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 

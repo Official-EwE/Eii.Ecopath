@@ -52,7 +52,7 @@ Namespace Ecopath.Output
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim prop As cProperty = Nothing
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim pm As cPropertyManager = Me.PropertyManager
             Dim cell As PropertyCell = Nothing
             Dim columnIndex As Integer = 2
 

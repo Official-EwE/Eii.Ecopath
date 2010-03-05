@@ -318,7 +318,7 @@ Public Class StatusPanel
 
         If Not Object.ReferenceEquals(tn.Tag, Nothing) Then
             If TypeOf (tn.Tag) Is cVariableStatus Then
-                prop = cPropertyManager.GetInstance().ExtractProperty(DirectCast(tn.Tag, cVariableStatus))
+                prop = Me.UIContext.PropertyManager.ExtractProperty(DirectCast(tn.Tag, cVariableStatus))
                 If Not Object.ReferenceEquals(prop, Nothing) Then
                     lp.Add(prop)
                 End If
