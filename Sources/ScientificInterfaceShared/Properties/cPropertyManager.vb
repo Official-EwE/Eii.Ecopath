@@ -36,6 +36,8 @@ Namespace Properties
 
 #End Region ' Private vars
 
+#Region " Construction "
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor
@@ -62,6 +64,10 @@ Namespace Properties
             Me.InitializeMessageHandlers()
 
         End Sub
+
+#End Region ' Construction
+
+#Region " Config "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -94,16 +100,11 @@ Namespace Properties
 
         End Sub
 
-#Region " Config "
-
-        'Public Property SyncObject() As System.Threading.SynchronizationContext
-        '    Get
-        '        Return Me.m_SyncObj
-        '    End Get
-        '    Set(ByVal value As System.Threading.SynchronizationContext)
-        '        Me.m_SyncObj = value
-        '    End Set
-        'End Property
+        Public ReadOnly Property Core() As cCore
+            Get
+                Return Me.m_core
+            End Get
+        End Property
 
 #End Region ' Config
 

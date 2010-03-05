@@ -1,25 +1,12 @@
-'==============================================================================
-'
-' $Log: cProperty.vb,v $
-' Revision 1.4  2009/05/28 12:37:04  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.3  2009/04/04 22:48:20  jeroens
-' Hm
-'
-' Revision 1.2  2009/04/02 13:22:09  jeroens
-' Separated derived classes out of cProperty.vb
-'
-' Revision 1.1  2008/09/26 07:31:22  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -590,11 +577,14 @@ Namespace Properties
         Protected Overridable Property Remark() As String
             Get
                 If String.IsNullOrEmpty(Me.ID) Then Return ""
-                Return cCore.GetInstance().Remark(Me.ID)
+                If Me.m_pm Is Nothing Then Return ""
+                Return Me.m_pm.Core.Remark(Me.ID)
             End Get
             Set(ByVal strRemark As String)
                 If Not String.IsNullOrEmpty(Me.ID) Then
-                    cCore.GetInstance().Remark(Me.ID) = strRemark
+                    If Me.m_pm IsNot Nothing Then
+                        Me.m_pm.Core.Remark(Me.ID) = strRemark
+                    End If
                     Me.m_strRemark = strRemark
                 End If
             End Set
