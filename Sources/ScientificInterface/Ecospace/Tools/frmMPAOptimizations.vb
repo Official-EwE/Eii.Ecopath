@@ -141,7 +141,6 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim pm As cPropertyManager = Me.PropertyManager
             Dim SpaceOpt As cCoreInputOutputBase = Me.UIContext.Core.EcospaceModelParameters
             Dim MPAOpt As cMPAOptParameters = Nothing
 
@@ -169,19 +168,19 @@ Namespace Ecospace
             AddHandler Me.m_propSearchType.PropertyChanged, AddressOf OnSearchTypeChanged
 
             ' Connect to controls
-            Me.m_fpStartYear = New cPropertyFormatProvider(pm, Me.m_nudStartYear, MPAOpt, eVarNameFlags.MPAOptStartYear)
-            Me.m_fpEndYear = New cPropertyFormatProvider(pm, Me.m_nudEndYear, MPAOpt, eVarNameFlags.MPAOptEndYear)
-            Me.m_fpBaseYear = New cPropertyFormatProvider(pm, Me.m_nudBaseYear, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
+            Me.m_fpStartYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudStartYear, MPAOpt, eVarNameFlags.MPAOptStartYear)
+            Me.m_fpEndYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudEndYear, MPAOpt, eVarNameFlags.MPAOptEndYear)
+            Me.m_fpBaseYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudBaseYear, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
             'Me.m_fpStartYear.Value = Math.Max(CSng(Me.m_fpStartYear.Value), 3)
             'Me.m_fpEndYear.Value = Math.Max(CSng(Me.m_fpEndYear.Value), 5)
 
-            Me.m_fpMinArea = New cPropertyFormatProvider(pm, Me.m_nudMinArea, MPAOpt, eVarNameFlags.MPAOptMinArea)
-            Me.m_fpMaxArea = New cPropertyFormatProvider(pm, Me.m_nudMaxArea, MPAOpt, eVarNameFlags.MPAOptMaxArea)
-            Me.m_fpStepSize = New cPropertyFormatProvider(pm, Me.m_nudStep, MPAOpt, eVarNameFlags.MPAOptStepSize)
-            Me.m_fpIterations = New cPropertyFormatProvider(pm, Me.m_nudIterations, MPAOpt, eVarNameFlags.MPAOptIterations)
-            Me.m_fpBestPercentile = New cEwEFormatProvider(Me.m_nudBestPercentile, GetType(Single))
-            Me.m_fpDiscRate = New cPropertyFormatProvider(pm, Me.m_nudDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
-            Me.m_fpGenDiscRate = New cPropertyFormatProvider(pm, Me.m_nudGenDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
+            Me.m_fpMinArea = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMinArea, MPAOpt, eVarNameFlags.MPAOptMinArea)
+            Me.m_fpMaxArea = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxArea, MPAOpt, eVarNameFlags.MPAOptMaxArea)
+            Me.m_fpStepSize = New cPropertyFormatProvider(Me.UIContext, Me.m_nudStep, MPAOpt, eVarNameFlags.MPAOptStepSize)
+            Me.m_fpIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudIterations, MPAOpt, eVarNameFlags.MPAOptIterations)
+            Me.m_fpBestPercentile = New cEwEFormatProvider(Me.UIContext, Me.m_nudBestPercentile, GetType(Single))
+            Me.m_fpDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_nudDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
+            Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_nudGenDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
@@ -781,7 +780,7 @@ Namespace Ecospace
 
             ' Connect MPA optimization property to MPA control
             If Me.m_fpMPA IsNot Nothing Then Me.m_fpMPA.Release()
-            Me.m_fpMPA = New cPropertyFormatProvider(Me.PropertyManager, Me.m_cmbMPA, MPAOpt, eVarNameFlags.iMPAOptToUse, Nothing, alMPAs.ToArray)
+            Me.m_fpMPA = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbMPA, MPAOpt, eVarNameFlags.iMPAOptToUse, Nothing, alMPAs.ToArray)
 
             ' Only one MPA available?
             If alMPAs.Count = 1 Then

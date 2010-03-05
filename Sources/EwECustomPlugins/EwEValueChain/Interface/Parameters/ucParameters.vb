@@ -59,9 +59,11 @@ Public Class ucParameters
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_fpFMin = New cEwEFormatProvider(Me.m_nudEffortMin, GetType(Single))
-        Me.m_fpFMax = New cEwEFormatProvider(Me.m_nudEffortMax, GetType(Single))
-        Me.m_fpIncr = New cEwEFormatProvider(Me.m_nudEffortIncr, GetType(Single))
+        Debug.Assert(Me.m_uic IsNot Nothing)
+
+        Me.m_fpFMin = New cEwEFormatProvider(Me.m_uic, Me.m_nudEffortMin, GetType(Single))
+        Me.m_fpFMax = New cEwEFormatProvider(Me.m_uic, Me.m_nudEffortMax, GetType(Single))
+        Me.m_fpIncr = New cEwEFormatProvider(Me.m_uic, Me.m_nudEffortIncr, GetType(Single))
 
         ' Init check boxes
         Try
@@ -249,7 +251,7 @@ Public Class ucParameters
 
             If (Me.m_fpBaseYear Is Nothing) Then
                 ' Create Ecosim dependent format provider(s)
-                Me.m_fpBaseYear = New cPropertyFormatProvider(Me.m_uic.PropertyManager, _
+                Me.m_fpBaseYear = New cPropertyFormatProvider(Me.m_uic, _
                                                               Me.m_nudBaseYear, _
                                                               Me.m_uic.Core.SearchObjective.ObjectiveParameters, _
                                                               eVarNameFlags.SearchBaseYear)

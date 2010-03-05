@@ -48,8 +48,6 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim pm As cPropertyManager = Me.PropertyManager
-
             'Initialize Fishing Policy Manager
             Me.m_manager = Me.Core.FishingPolicyManager
             Me.m_manager.Connect(AddressOf Me.RunStartedHandler, AddressOf Me.RunCompletedHandler, _
@@ -76,10 +74,10 @@ Namespace Ecosim
             Me.m_gridFleetValue = New gridFPSResultFleetValue()
             Me.m_gridFleetValue.UIContext = Me.UIContext
 
-            Me.m_fpDiscRate = New cPropertyFormatProvider(pm, Me.m_txtDiscountRate, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
-            Me.m_fpGenDiscRate = New cPropertyFormatProvider(pm, Me.m_txtDiscountRate, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
+            Me.m_fpDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_txtDiscountRate, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
+            Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_txtDiscountRate, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
-            Me.m_fpUsePlugin = New cPropertyFormatProvider(pm, Me.m_chkUsePlugin, Me.Core.FishingPolicyManager.ModelParameters, eVarNameFlags.FPSUseEconomicPlugin)
+            Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUsePlugin, Me.Core.FishingPolicyManager.ModelParameters, eVarNameFlags.FPSUseEconomicPlugin)
 
             Me.m_propBaseYear = Me.PropertyManager.GetProperty(Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
             AddHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged

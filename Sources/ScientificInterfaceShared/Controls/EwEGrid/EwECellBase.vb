@@ -25,8 +25,10 @@ Namespace Controls.EwEGrid
         Inherits Cell
         Implements IDisposable
 
+#Region " Private helper class "
+
         ' JS 26Jan08: experimental new behaviour for EwECells: trap enter key
-        Class CatchEnterPressBehaviour
+        Class cCatchEnterPressBehaviour
             Inherits BehaviorModels.Common
 
             Public Overrides Sub OnKeyUp(ByVal e As SourceGrid2.PositionKeyEventArgs)
@@ -37,6 +39,8 @@ Namespace Controls.EwEGrid
             End Sub
 
         End Class
+
+#End Region ' Private helper class
 
 #Region " Construction and destruction"
 
@@ -52,13 +56,14 @@ Namespace Controls.EwEGrid
 
         Public Sub New(ByVal objVal As Object, ByRef t As Type)
             MyBase.New(Nothing, t)
+
             ' Set shared visualizer
             Me.VisualModel = g_visualizer
             ' Configure data model
             Me.DataModel.AllowNull = True
 
             ' Catch ENTER presses
-            Me.m_bmCatchEnter = New CatchEnterPressBehaviour()
+            Me.m_bmCatchEnter = New cCatchEnterPressBehaviour()
             Me.Behaviors.Add(Me.m_bmCatchEnter)
 
             ' Only resize width, not height of cells

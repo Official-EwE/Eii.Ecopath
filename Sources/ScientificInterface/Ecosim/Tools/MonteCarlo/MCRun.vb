@@ -63,6 +63,7 @@ Namespace Ecosim
 #Region " Events "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -77,22 +78,22 @@ Namespace Ecosim
             Me.m_mcmanager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
             Me.m_mcmanager.SyncObject = Me
 
-            Me.m_fpNumTrials = New cEwEFormatProvider(Me.nudNumTrials, GetType(Integer))
+            Me.m_fpNumTrials = New cEwEFormatProvider(Me.UIContext, Me.nudNumTrials, GetType(Integer))
             Me.m_fpNumTrials.Value = m_mcmanager.nTrials
 
-            Me.m_fpTrial = New cEwEFormatProvider(Me.lblValueTrial, GetType(Integer))
+            Me.m_fpTrial = New cEwEFormatProvider(Me.UIContext, Me.lblValueTrial, GetType(Integer))
             Me.m_fpTrial.Value = 0
 
-            Me.m_fpERun = New cEwEFormatProvider(Me.lblValueERun, GetType(Integer))
+            Me.m_fpERun = New cEwEFormatProvider(Me.UIContext, Me.lblValueERun, GetType(Integer))
             Me.m_fpERun.Value = 0
 
-            Me.m_fpSSorg = New cEwEFormatProvider(Me.lblValueSSOrg, GetType(Single))
+            Me.m_fpSSorg = New cEwEFormatProvider(Me.UIContext, Me.lblValueSSOrg, GetType(Single))
             Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
 
-            Me.m_fpSS = New cEwEFormatProvider(Me.lblValueSS, GetType(Single))
+            Me.m_fpSS = New cEwEFormatProvider(Me.UIContext, Me.lblValueSS, GetType(Single))
             Me.m_fpSS.Value = 0.0!
 
-            Me.m_fpSSBest = New cEwEFormatProvider(Me.lblValueSSBest, GetType(Single))
+            Me.m_fpSSBest = New cEwEFormatProvider(Me.UIContext, Me.lblValueSSBest, GetType(Single))
             Me.m_fpSSBest.Value = 0.0!
 
             Me.m_mcmanager.bShowPlot = cbShowBioTraj.Checked

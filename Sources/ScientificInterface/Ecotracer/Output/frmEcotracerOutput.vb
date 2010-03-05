@@ -38,13 +38,9 @@ Public Class frmEcotracerOutput
 #Region " Private vars "
 
     ''' <summary></summary>
-    Private m_core As cCore = Nothing
-    ''' <summary></summary>
     Private m_zgh As cZedGraphHelper = Nothing
     ''' <summary></summary>
     Private m_curDisplayMode As eDisplayModeTypes = eDisplayModeTypes.NotInitialized
-    ''' <summary></summary>
-    Private m_sg As cStyleGuide = Nothing
 
     ''' <summary></summary>
     Private m_asScaling() As Single
@@ -59,40 +55,42 @@ Public Class frmEcotracerOutput
 
 #Region " Events "
 
-    Private Sub frmEcotracerOutput_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
 
-        'build the IDisplayModeHelper and populate the interface
-        Me.RefreshData()
+        If (Me.UIContext Is Nothing) Then Return
 
-    End Sub
-
-    Private Sub frmEcotracerOutput_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-        Me.m_core = cCore.GetInstance()
-        Me.m_sg = cStyleGuide.GetInstance()
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_zgc)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
-        AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+        AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
     End Sub
 
-    Private Sub frmEcotracerOutput_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-        Me.m_sg = Nothing
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        MyBase.OnFormClosed(e)
+
+        RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         Me.m_zgh.Detach()
         Me.m_zgh = Nothing
 
-        Me.m_core = Nothing
     End Sub
 
-    Private Sub lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbGroups.SelectedIndexChanged
+    Protected Overrides Sub OnActivated(ByVal e As System.EventArgs)
+        MyBase.OnActivated(e)
+        Me.RefreshData()
+    End Sub
+
+    Private Sub lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles lbGroups.SelectedIndexChanged
         PlotGroup()
     End Sub
 
-    Private Sub lbGroups_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lbGroups.MouseMove
+    Private Sub lbGroups_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Handles lbGroups.MouseMove
+
         Dim iHover As Integer = lbGroups.IndexFromPoint(e.Location)
         Dim bDraw As Boolean = True
 
@@ -111,7 +109,8 @@ Public Class frmEcotracerOutput
         End If
     End Sub
 
-    Private Sub lbGroups_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lbGroups.MouseLeave
+    Private Sub lbGroups_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles lbGroups.MouseLeave
         PlotGroup()
     End Sub
 
@@ -124,15 +123,15 @@ Public Class frmEcotracerOutput
         End If
     End Sub
 
-
-    Private Sub btRunSim_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btRunSim.Click
+    Private Sub btRunSim_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles btRunSim.Click
 
         Try
             'An Ecosim scenario was loaded when this form was loaded
             'so there is no need to check
-            m_core.EcoSimModelParameters.ContaminantTracing = True
+            Me.Core.EcoSimModelParameters.ContaminantTracing = True
             Me.startModelRun()
-            m_core.RunEcoSim(AddressOf Me.ecosimCallback)
+            Me.Core.RunEcoSim(AddressOf Me.EcosimCallback)
             Me.RefreshGraph()
 
         Catch ex As Exception
@@ -141,12 +140,12 @@ Public Class frmEcotracerOutput
 
     End Sub
 
-    Private Sub btRunSpace_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btRunSpace.Click
+    Private Sub btRunSpace_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles btRunSpace.Click
 
         Try
-
             'No Ecospace scenario has been load
-            If Me.m_core.StateMonitor.HasEcospaceLoaded = False Then
+            If Me.Core.StateMonitor.HasEcospaceLoaded = False Then
                 'Ask the user for a Ecospace scenario via the command
                 Dim cmd As cCommand = Me.CommandHandler.GetCommand("LoadEcospaceScenario")
                 Debug.Assert(cmd IsNot Nothing, Me.ToString & ".btRunSpace_Click() LoadEcospaceScenario Command could not be found.")
@@ -154,10 +153,10 @@ Public Class frmEcotracerOutput
             End If
 
             'Make sure the scenario loaded successfully before trying to run Ecospace
-            If Me.m_core.StateMonitor.HasEcospaceLoaded Then
-                m_core.EcospaceModelParameters.ContaminantTracing = True
+            If Me.Core.StateMonitor.HasEcospaceLoaded Then
+                Me.Core.EcospaceModelParameters.ContaminantTracing = True
                 Me.startModelRun()
-                m_core.RunEcoSpace(AddressOf Me.EcospaceCallback)
+                Me.Core.RunEcoSpace(AddressOf Me.EcospaceCallback)
                 Me.RefreshGraph()
             End If
 
@@ -167,10 +166,11 @@ Public Class frmEcotracerOutput
 
     End Sub
 
+    Private Sub rbConc_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles rbConc.CheckedChanged
 
-    Private Sub rbConc_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbConc.CheckedChanged
+        If m_DisplayHelper Is Nothing Then Return
 
-        If m_DisplayHelper Is Nothing Then Exit Sub
         Dim rb As RadioButton = DirectCast(sender, RadioButton)
         If rb.Checked Then
             Me.m_plottype = ePlotTypes.Conc
@@ -180,9 +180,10 @@ Public Class frmEcotracerOutput
 
     End Sub
 
-    Private Sub rbCB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbCB.CheckedChanged
+    Private Sub rbCB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles rbCB.CheckedChanged
 
-        If m_DisplayHelper Is Nothing Then Exit Sub
+        If m_DisplayHelper Is Nothing Then Return
 
         Dim rb As RadioButton = DirectCast(sender, RadioButton)
         If rb.Checked Then
@@ -193,17 +194,19 @@ Public Class frmEcotracerOutput
 
     End Sub
 
-
-    Private Sub cmbRegions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbRegions.SelectedIndexChanged
+    Private Sub cmbRegions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cmbRegions.SelectedIndexChanged
         Me.RefreshGraph()
     End Sub
 
-    Private Sub ckSorted_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ckSorted.Click
+    Private Sub ckSorted_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles ckSorted.Click
         Me.RefreshData()
     End Sub
 
-    Private Sub OnDisplayGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnShowHideGroups.Click
-        Dim cmd As cCommand = Me.CommandHandler.GetCommand("DisplayGroups")
+    Private Sub OnDisplayGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnShowHideGroups.Click
+        Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         Debug.Assert(cmd IsNot Nothing, Me.ToString & ".OnDisplayGroups() DisplayGroups Command could not be found.")
         cmd.Invoke()
     End Sub
@@ -245,14 +248,14 @@ Public Class frmEcotracerOutput
         dmode = eDisplayModeTypes.NoResults
 
         'Ecosim selected
-        If m_core.EcoSimModelParameters.ContaminantTracing Then
+        If Me.Core.EcoSimModelParameters.ContaminantTracing Then
             dmode = eDisplayModeTypes.Ecosim
         End If
 
         'Ecospace
         'this is nested because EcospaceModelParameters will be Null if an Ecospace scenario has not been loaded
-        If m_core.StateMonitor.HasEcospaceLoaded Then
-            If m_core.EcospaceModelParameters.ContaminantTracing Then
+        If Me.Core.StateMonitor.HasEcospaceLoaded Then
+            If Me.Core.EcospaceModelParameters.ContaminantTracing Then
                 dmode = eDisplayModeTypes.Ecospace
             End If
         End If
@@ -322,8 +325,8 @@ Public Class frmEcotracerOutput
         Me.m_zgc.GraphPane.YAxis.Title.Text = m_DisplayHelper.YAxisLabel
 
         'scale of graph
-        Me.m_zgc.GraphPane.XAxis.Scale.Min = CDbl(Me.m_core.EcosimFirstYear)
-        Me.m_zgc.GraphPane.XAxis.Scale.Max = CDbl(Me.m_core.EcosimFirstYear + m_DisplayHelper.nYears)
+        Me.m_zgc.GraphPane.XAxis.Scale.Min = CDbl(Me.Core.EcosimFirstYear)
+        Me.m_zgc.GraphPane.XAxis.Scale.Max = CDbl(Me.Core.EcosimFirstYear + m_DisplayHelper.nYears)
 
         'plot the data
         Me.PlotGroup()
@@ -389,12 +392,12 @@ Public Class frmEcotracerOutput
         If Me.m_DisplayHelper.EnabledForSpace Then
             'only populate the region list if space is enabled
             Me.cmbRegions.Items.Add("Undefined area")
-            For irgn As Integer = 1 To m_core.nRegions
-                Me.cmbRegions.Items.Add("region " & irgn) ' m_core.EcospaceRegions(irgn).Name)
+            For irgn As Integer = 1 To Me.Core.nRegions
+                Me.cmbRegions.Items.Add("region " & irgn) ' Me.Core.EcospaceRegions(irgn).Name)
             Next
             Me.cmbRegions.Items.Add("All Regions")
 
-            Me.cmbRegions.SelectedIndex = m_core.nRegions + 1
+            Me.cmbRegions.SelectedIndex = Me.Core.nRegions + 1
         End If
 
     End Sub
@@ -403,7 +406,7 @@ Public Class frmEcotracerOutput
     Private Sub CalcSortOrder()
         Dim maxVal As Single, iSort As Integer, gMax As Single
         Dim GrpTaken() As Boolean
-        Dim ngrps As Integer = m_core.nGroups
+        Dim ngrps As Integer = Me.Core.nGroups
 
         ReDim Me.m_sortOrder(ngrps)
         ReDim GrpTaken(ngrps)
@@ -447,11 +450,11 @@ Public Class frmEcotracerOutput
         'Add "All groups" at the top
         lbGroups.Items.Add(0)
 
-        'For i As Integer = 0 To m_core.nGroups - 1
+        'For i As Integer = 0 To Me.Core.nGroups - 1
         '    lbGroups.Items.Add(i + 1)
         'Next
 
-        For i As Integer = 1 To m_core.nGroups
+        For i As Integer = 1 To Me.Core.nGroups
             lbGroups.Items.Add(Me.m_sortOrder(i))
         Next
 
@@ -475,14 +478,14 @@ Public Class frmEcotracerOutput
             iGroup = CInt(s.Items(e.Index))
 
             ' Sanity check
-            If iGroup <= Me.m_core.nGroups Then
+            If iGroup <= Me.Core.nGroups Then
                 If iGroup = 0 Then
                     strItemText = My.Resources.HEADER_ENVIRONMENT
                     clr = Color.Black
                 Else
-                    Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
+                    Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
                     strItemText = group.Name
-                    clr = cStyleGuide.GetInstance().GroupColor(Me.m_core, iGroup)
+                    clr = cStyleGuide.GetInstance().GroupColor(Me.Core, iGroup)
                 End If
             Else
                 strItemText = "" ' Deleted
@@ -547,18 +550,18 @@ Public Class frmEcotracerOutput
             'build a new IDisplayModeHelper object
             Select Case newDisplayMode
                 Case eDisplayModeTypes.NoResults
-                    Return New cNoResultsDisplayHelper(m_core)
+                    Return New cNoResultsDisplayHelper(Me.UIContext)
                 Case eDisplayModeTypes.Ecosim
-                    Return New cEcoSimDisplayHelper(m_core)
+                    Return New cEcoSimDisplayHelper(Me.UIContext)
                 Case eDisplayModeTypes.Ecospace
-                    Return New cEcoSpaceDisplayHelper(m_core)
+                    Return New cEcoSpaceDisplayHelper(Me.UIContext)
             End Select
 
             'something went wrong
             'the arg DisplayMode was not valid return the cNoResultsDisplayHelper object 
             'this will let the interface run without data
             Debug.Assert(False, "DisplayHelperFactory() Invalid DisplayMode")
-            Return New cNoResultsDisplayHelper(m_core)
+            Return New cNoResultsDisplayHelper(Me.UIContext)
 
         Else
             'return the current IDisplayModeHelper object
@@ -568,28 +571,6 @@ Public Class frmEcotracerOutput
         End If
 
     End Function
-
-    'Private Sub CalculateScaling()
-
-    '    Dim sMax As Single
-    '    ReDim m_asScaling(Me.m_core.nGroups + 1)
-
-    '    For iGroup As Integer = 0 To Me.m_core.nGroups ' + 1
-
-    '        sMax = Me.m_DisplayHelper.GetGroupMax(iGroup)
-
-    '        'scaling maybe .00013
-    '        If sMax < 1 Then
-    '            For K As Integer = 0 To 10
-    '                If sMax * 10 ^ K > 1 Then m_asScaling(iGroup) = K : Exit For
-    '            Next
-    '        Else    '>=1
-    '            For K As Integer = -10 To 0
-    '                If sMax * 10 ^ K > 1 Then m_asScaling(iGroup) = K : Exit For
-    '            Next
-    '        End If
-    '    Next
-    'End Sub
 
 #End Region ' Helper methods
 
@@ -612,6 +593,7 @@ Public Class frmEcotracerOutput
 #Region "Interface definition"
 
     Private Interface IDisplayModeHelper
+        Inherits IUIElement
 
         ''' <summary>
         ''' Get the line(s) to draw on the graph
@@ -626,15 +608,14 @@ Public Class frmEcotracerOutput
         ''' Max value of the current lines
         ''' </summary>
         Function Max() As Single
-
         ''' <summary>
         ''' Update the object base on the current core run state
         ''' </summary>
         Sub Refresh()
 
-        ''' <summary>
-        ''' Title of the Graph
-        ''' </summary>
+        ReadOnly Property Core() As cCore
+
+        ''' <summary>Title of the Graph.</summary>
         ReadOnly Property Title() As String
 
         ReadOnly Property XAxisLabel() As String
@@ -677,12 +658,27 @@ Public Class frmEcotracerOutput
     Private Class cNoResultsDisplayHelper
         Implements IDisplayModeHelper
 
-        Private m_core As cCore
-
-        Sub New(ByRef theCore As cCore)
-            m_core = theCore
+        Sub New(ByVal uic As cUIContext)
+            ' Sanity check
+            Debug.Assert(uic IsNot Nothing)
         End Sub
 
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Nothing
+            End Get
+            Set(ByVal value As cUIContext)
+                ' NOP
+            End Set
+        End Property
+
+        ReadOnly Property Core() As cCore _
+            Implements IDisplayModeHelper.Core
+            Get
+                Return Nothing
+            End Get
+        End Property
 
         Public Function GetGroupLines(ByVal iGroup As Integer) As System.Collections.Generic.List(Of ZedGraph.LineItem) Implements IDisplayModeHelper.GetGroupLines
             Debug.Assert(False, Me.ToString & ".GetGroupLines() Warning this should not be called!")
@@ -694,11 +690,8 @@ Public Class frmEcotracerOutput
             Return Nothing
         End Function
 
-
         Public Function GetGroupMax(ByVal iGroup As Integer) As Single Implements IDisplayModeHelper.GetGroupMax
-
             Return 0.0
-
         End Function
 
         Public ReadOnly Property Enabled() As Boolean Implements IDisplayModeHelper.Enabled
@@ -765,6 +758,7 @@ Public Class frmEcotracerOutput
                 Return False
             End Get
         End Property
+
     End Class
 
 #End Region
@@ -774,22 +768,40 @@ Public Class frmEcotracerOutput
     Private Class cEcoSimDisplayHelper
         Implements IDisplayModeHelper
 
-        Private m_core As cCore
+        Private m_uic As cUIContext = Nothing
         Private m_bEnabled As Boolean
         Private m_plottype As ePlotTypes
         Private m_Ymax As Single
 
-        Sub New(ByRef theCore As cCore)
-            m_core = theCore
-            m_bEnabled = False
+        Sub New(ByRef uic As cUIContext)
+            ' Sanity check
+            Debug.Assert(uic IsNot Nothing)
+            Me.UIContext = uic
+            Me.m_bEnabled = False
         End Sub
 
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
+
+        ReadOnly Property Core() As cCore _
+            Implements IDisplayModeHelper.Core
+            Get
+                Return Me.UIContext.Core
+            End Get
+        End Property
 
         Private Function buildLine(ByVal iGroup As Integer) As LineItem
 
             If iGroup < 0 Then Return Nothing ' Safety first
 
-            Dim td As cEcotracerGroupOutput = Me.m_core.EcotracerGroupResults
+            Dim td As cEcotracerGroupOutput = Me.Core.EcotracerGroupResults
             Dim SimBio As cEcosimGroupOutput
             Dim vList As New PointPairList()
             Dim strLabel As String = My.Resources.HEADER_ENVIRONMENT
@@ -798,19 +810,19 @@ Public Class frmEcotracerOutput
             Dim dx As Double
 
             If iGroup > 0 Then
-                Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
+                Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
                 strLabel = group.Name
-                clrLine = cStyleGuide.GetInstance().GroupColor(Me.m_core, iGroup)
+                clrLine = Me.m_uic.StyleGuide.GroupColor(Me.Core, iGroup)
             End If
 
             'decide the plot type outside the loop 
             'so that there does not have to be an "If Me.m_plottype = ePlotTypes.CB And iGroup > 0 Then" inside the loop
             If Me.m_plottype = ePlotTypes.CB And iGroup > 0 Then
 
-                SimBio = Me.m_core.EcoSimGroupOutputs(iGroup)
+                SimBio = Me.Core.EcoSimGroupOutputs(iGroup)
 
-                For iTimeStep As Integer = 1 To Me.m_core.nEcosimTimeSteps
-                    dx = Me.m_core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
+                For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
+                    dx = Me.Core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
                     yVal = CDbl(td.Concentration(iGroup, iTimeStep) / SimBio.Biomass(iTimeStep))
                     Me.m_Ymax = CSng(Math.Max(m_Ymax, yVal))
                     vList.Add(dx, yVal)
@@ -818,8 +830,8 @@ Public Class frmEcotracerOutput
 
             Else
 
-                For iTimeStep As Integer = 1 To Me.m_core.nEcosimTimeSteps
-                    dx = Me.m_core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
+                For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
+                    dx = Me.Core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
                     yVal = CDbl(td.Concentration(iGroup, iTimeStep))
                     Me.m_Ymax = CSng(Math.Max(m_Ymax, yVal))
                     vList.Add(dx, yVal)
@@ -864,15 +876,15 @@ Public Class frmEcotracerOutput
                 'in that case use Concentration(group,time)
                 If Me.m_plottype = ePlotTypes.CB And iGroup > 0 Then
 
-                    Dim grpbio As cEcosimGroupOutput = Me.m_core.EcoSimGroupOutputs(iGroup)
-                    For iTimeStep As Integer = 1 To Me.m_core.nEcosimTimeSteps
-                        smax = Math.Max(Me.m_core.EcotracerGroupResults.Concentration(iGroup, iTimeStep) / grpbio.Biomass(iTimeStep), smax)
+                    Dim grpbio As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+                    For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
+                        smax = Math.Max(Me.Core.EcotracerGroupResults.Concentration(iGroup, iTimeStep) / grpbio.Biomass(iTimeStep), smax)
                     Next
 
                 Else
 
-                    For iTimeStep As Integer = 1 To Me.m_core.nEcosimTimeSteps
-                        smax = Math.Max(Me.m_core.EcotracerGroupResults.Concentration(iGroup, iTimeStep), smax)
+                    For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
+                        smax = Math.Max(Me.Core.EcotracerGroupResults.Concentration(iGroup, iTimeStep), smax)
                     Next
 
                 End If
@@ -915,7 +927,7 @@ Public Class frmEcotracerOutput
             Me.m_bEnabled = False
 
             'make sure Ecosim is the selected model and it has run
-            If m_core.EcoSimModelParameters.ContaminantTracing And m_core.StateMonitor.HasEcosimRan Then
+            If Me.Core.EcoSimModelParameters.ContaminantTracing And Me.Core.StateMonitor.HasEcosimRan Then
                 Me.m_bEnabled = True
             End If
 
@@ -924,7 +936,7 @@ Public Class frmEcotracerOutput
 
         Public ReadOnly Property nYears() As Integer Implements IDisplayModeHelper.nYears
             Get
-                Return m_core.nEcosimYears
+                Return Me.Core.nEcosimYears
             End Get
         End Property
 
@@ -988,7 +1000,7 @@ Public Class frmEcotracerOutput
     Private Class cEcoSpaceDisplayHelper
         Implements IDisplayModeHelper
 
-        Private m_core As cCore
+        Private m_uic As cUIContext = Nothing
         Private m_bEnabled As Boolean
         Private m_plottype As ePlotTypes
         Private m_iRegion As Integer
@@ -997,24 +1009,42 @@ Public Class frmEcotracerOutput
         Private m_rgn2 As Integer
         Private m_Ymax As Single
 
-        Sub New(ByRef theCore As cCore)
-            m_core = theCore
+        Sub New(ByVal uic As cUIContext)
+            ' Sanity check
+            Debug.Assert(uic IsNot Nothing)
+            Me.UIContext = uic
         End Sub
 
+        Private Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
+
+        Private ReadOnly Property Core() As cCore _
+            Implements IDisplayModeHelper.Core
+            Get
+                Return Me.UIContext.Core
+            End Get
+        End Property
 
         Public Function GetGroupMax(ByVal iGroup As Integer) As Single Implements IDisplayModeHelper.GetGroupMax
             Dim smax As Single
 
             If Me.m_plottype = ePlotTypes.Conc Then
-                For ireg As Integer = 0 To Me.m_core.nRegions
-                    For iTimeStep As Integer = 1 To Me.m_core.nEcosimTimeSteps
-                        smax = Math.Max(Me.m_core.EcotracerRegionGroupResults.Concentration(ireg, iGroup, iTimeStep), smax)
+                For ireg As Integer = 0 To Me.UIContext.Core.nRegions
+                    For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
+                        smax = Math.Max(Me.Core.EcotracerRegionGroupResults.Concentration(ireg, iGroup, iTimeStep), smax)
                     Next iTimeStep
                 Next ireg
             Else
-                For ireg As Integer = 0 To Me.m_core.nRegions
-                    For iTimeStep As Integer = 1 To Me.m_core.nEcosimTimeSteps
-                        smax = Math.Max(Me.m_core.EcotracerRegionGroupResults.CB(ireg, iGroup, iTimeStep), smax)
+                For ireg As Integer = 0 To Me.Core.nRegions
+                    For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
+                        smax = Math.Max(Me.Core.EcotracerRegionGroupResults.CB(ireg, iGroup, iTimeStep), smax)
                     Next iTimeStep
                 Next ireg
             End If
@@ -1054,9 +1084,8 @@ Public Class frmEcotracerOutput
 
         End Function
 
-
         Private Function buildLine(ByVal iGroup As Integer, ByVal iregion As Integer) As LineItem
-            Dim td As cEcotracerRegionGroupOutput = Me.m_core.EcotracerRegionGroupResults
+            Dim td As cEcotracerRegionGroupOutput = Me.Core.EcotracerRegionGroupResults
             Dim vList As PointPairList
             Dim lstLines As New List(Of LineItem)
             Dim strLabel As String
@@ -1069,16 +1098,16 @@ Public Class frmEcotracerOutput
             Dim dx As Double
             Dim ntsYear As Single
 
-            ntsYear = m_core.EcospaceModelParameters.NumberOfTimeStepsPerYear
+            ntsYear = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
 
             'build the label group and region name
             If iGroup > 0 Then
-                name = Me.m_core.EcoPathGroupInputs(iGroup).Name
-                clrLine = cStyleGuide.GetInstance().GroupColor(Me.m_core, iGroup)
+                name = Me.Core.EcoPathGroupInputs(iGroup).Name
+                clrLine = cStyleGuide.GetInstance().GroupColor(Me.Core, iGroup)
             End If
 
             'If iregion > 0 Then
-            '    rgName = m_core.EcospaceRegions(iregion).Name
+            '    rgName = Me.Core.EcospaceRegions(iregion).Name
             'End If
 
             strLabel = name & ", " & rgName
@@ -1089,8 +1118,8 @@ Public Class frmEcotracerOutput
 
             vList = New PointPairList()
 
-            For iTimeStep As Integer = 1 To Me.m_core.nEcospaceTimeSteps
-                dx = Me.m_core.EcosimFirstYear + (iTimeStep / ntsYear)
+            For iTimeStep As Integer = 1 To Me.Core.nEcospaceTimeSteps
+                dx = Me.Core.EcosimFirstYear + (iTimeStep / ntsYear)
                 yVal = td.GetVariable(varName, iregion, iGroup, iTimeStep)
                 Me.m_Ymax = CSng(Math.Max(m_Ymax, yVal))
 
@@ -1098,7 +1127,7 @@ Public Class frmEcotracerOutput
             Next iTimeStep
 
             'line symbol and line size
-            linesize = m_core.nRegions * 2 - iregion
+            linesize = Me.Core.nRegions * 2 - iregion
             If iregion = 0 Then
                 grpSym = SymbolType.None
             Else
@@ -1169,8 +1198,8 @@ Public Class frmEcotracerOutput
 
             'make sure Ecospace run before checking the EcospaceModelParameters object
             'if Ecospace has not loaded EcospaceModelParameters will be NULL
-            If m_core.StateMonitor.HasEcospaceRan Then
-                If m_core.EcospaceModelParameters.ContaminantTracing Then
+            If Me.Core.StateMonitor.HasEcospaceRan Then
+                If Me.Core.EcospaceModelParameters.ContaminantTracing Then
                     Me.m_bEnabled = True
                 End If
             End If
@@ -1179,7 +1208,7 @@ Public Class frmEcotracerOutput
 
         Public ReadOnly Property nYears() As Integer Implements IDisplayModeHelper.nYears
             Get
-                Return m_core.nEcospaceYears
+                Return Me.Core.nEcospaceYears
             End Get
         End Property
 
@@ -1200,17 +1229,17 @@ Public Class frmEcotracerOutput
             Set(ByVal value As Integer)
 
                 'bounds checking
-                'm_core.nRegions + 1 is all Regions
-                If value < 0 Or value > m_core.nRegions + 1 Then
+                'Me.Core.nRegions + 1 is all Regions
+                If value < 0 Or value > Me.Core.nRegions + 1 Then
                     Exit Property
                 End If
 
                 Me.m_rgn1 = value
                 Me.m_rgn2 = value
 
-                If value > m_core.nRegions Then
+                If value > Me.Core.nRegions Then
                     Me.m_rgn1 = 0
-                    Me.m_rgn2 = m_core.nRegions
+                    Me.m_rgn2 = Me.Core.nRegions
                 End If
 
             End Set
@@ -1251,6 +1280,7 @@ Public Class frmEcotracerOutput
                 Return True
             End Get
         End Property
+
     End Class
 
 #End Region
@@ -1258,258 +1288,3 @@ Public Class frmEcotracerOutput
 #End Region
 
 End Class
-
-
-
-
-
-
-#If 0 Then ' Ye olde code
-
-' Plotting Ecosim data
-Private Sub PlotGrp(Grp As Integer)
-On Local Error Resume Next
-Dim i As Integer
-Dim j As Integer
-Dim Cnt As Integer
-Dim Start As Integer
-Dim Title As String
-Dim NSeries As Integer
-    'poolshow = grp
-'    Label2.Caption = IIf(grp <= NumGroups + 1, "Conc. scale: 10^" & Format(-Scaling(grp), "0"), "All groups")
-    'Title = "Tracer concentrations"
-    Screen.MousePointer = vbHourglass
-    frmTracePlot.Refresh
-    If Grp <= NumGroups + 1 Then
-
-        ' JS: plot Single group
-
-        Label2.Caption = "Conc. scale: 10^" & Format(-Scaling(Grp), "0")
-        'Call a function to count the number of timeseries; add 1 for displaying the conc for the group:
-        NSeries = NoOfTimeSeries(8, Grp) + NoOfTimeSeries(9, Grp) + 1
-        lblSS.Visible = IIf(NSeries > 1, True, False)
-        lblW.Visible = False
-
-        cmdPredObs.Visible = lblSS.Visible
-        If NSeries = 1 Then 'there are no time series data for this group
-            NSeries = 0
-            ReDim GrpData(Ntimes)   ' / 12)
-            For i = 1 To Ntimes ' / 12
-                GrpData(i) = TracerConc(Grp, i) * 10 ^ Scaling(Grp)
-            Next
-            PlotSingleSeries JGraph1(0), GrpData(), Title
-        Else    'there are time series data, so multiple series plotting
-            ReDim GrpData(NSeries, Ntimes)  ' / 12)
-            ReDim StyleType(NSeries) As Integer
-            'Style Types 0 = Line, 2 = Circles, 1 = Histogram
-            'The estimated biomass:
-            For i = 1 To Ntimes     '/ 12
-                GrpData(0, i) = TracerConc(Grp, i) * 10 ^ Scaling(Grp)
-            Next
-            StyleType(0) = 0
-            'Then plot the time series that there may be
-            Cnt = 0
-            For i = 1 To NdatType
-                If DatPool(i) = Grp Then
-                    If DatType(i) = 8 Or DatType(i) = 9 Then
-                        Cnt = Cnt + 1
-                        StyleType(Cnt) = 2  'Circle
-                        For j = 1 To Ntimes     '/ 12
-                            If j Mod 12 = 1 Then
-                                If CInt(j / 12) <= NdatYear Then
-                                    GrpData(Cnt, j) = DatVal(CInt(j / 12) + 1, i) * 10 ^ Scaling(Grp)
-                                    lblW.Visible = lblSS.Visible
-                                    lblW.AutoSize = True
-                                    lblW.Caption = "Time series weight = " + Format(WtType(i), GenNum)
-                                End If
-                                'GrpData(Cnt, j) = DatVal(j, i)  '(CInt(j / 12) + 1, i)
-                                If DatType(i) = 8 And teDatq(i) > 0 Then GrpData(Cnt, j) = GrpData(Cnt, j) / teDatq(i)
-                                If GrpData(Cnt, j) <= 0 Then GrpData(Cnt, j) = -100
-                            Else
-                                GrpData(Cnt, j) = -100
-                            End If
-                        Next
-                    End If
-                End If
-            Next
-            Title = " "
-            PlotMultipleTimeSeries JGraph1(0), GrpData(), Title
-        End If
-    Else
-
-        ' JS: plot a range
-
-        Start = 10 * (Grp - NumGroups - 2)
-        With frmTracePlot
-            For i = 1 To 10 'IIf(NumGroups <= 10, NumGroups, 10)
-                If Start + i > NumGroups Then Exit For
-                .CurrentX = JGraph1(0).Left + JGraph1(0).Width + 10
-                .CurrentY = JGraph1(0).Top + 1500 + i * 240
-                .ForeColor = PoolColor(Sort(i + Start))
-                frmTracePlot.Print Specie(Sort(i + Start))
-            Next
-        End With
-        Label2.Caption = "Conc. scale: 10^" & Format(-Scaling(Sort(1 + Start)), "0")
-        Title = CStr(Start)
-        PlotMultipleSeries JGraph1(0), TracerConc(), Title
-    End If
-    Screen.MousePointer = vbDefault
-End Sub
-
-Private Sub PlotMultipleSeries(graph As JGraph, Ydata() As Single, Title As String)
-On Local Error Resume Next
-'Calling Arguments are:
-    'graph is the jgraph control
-    'ydata(N, XX) is a 2 dimensional array of N series, and XX datapoints
-Dim i As Integer, j As Integer, iclr As Long
-Dim XX As Integer, X As Integer, NSeries As Integer, xN As Integer
-Dim y1 As Integer, St As Integer, Lab As Integer
-    NSeries = UBound(Ydata, 1)
-    xN = LBound(Ydata, 1) + 1
-    XX = UBound(Ydata, 2) - 1
-    X = LBound(Ydata, 2)
-    X = IIf(X = 0, 1, X)
-    graph.ClearAllData
-    graph.BackColor = SimBackColor
-    graph.NumSets = NSeries
-    graph.AutoScale = True
-    graph.YAxis = 0.0001
-    graph.YOrigin = 0
-    graph.XAxis = XX
-    graph.UseTextLabels = True
-    Dim Start As Integer
-    Start = CInt(Title)
-    Title = ""
-    If Title <> "" Then graph.Caption = Title
-    'Style Types 0 = Line, 1 = Circles, 2 = Histogram
-    If NSeries < 11 Then
-        For j = xN To NSeries    'Loop over series
-            iclr = IIf(j > 0 And j <= NumGroups, PoolColor(j), QBColor(0))
-            graph.SetStyle j, 0, 2, iclr  ', poolcolor(poolshow)   'iclr
-            'graph.SetStyleEx j, StyleType(j), IIf(StyleType(j) = 0, 2, 4), poolcolor(poolshow), poolcolor(poolshow)   'iclr
-            For i = X To XX
-                graph.AddDataToSet j, Ydata(j, i)  'Ydata(j, i)
-            Next i
-            graph.DrawDataAutoScale
-        Next j
-    Else
-        For j = 1 To 10
-            If Start + j > NumGroups Then Exit For
-            iclr = PoolColor(Sort(j + Start))
-            graph.SetStyle j, 0, 2, iclr  ', poolcolor(poolshow)   'iclr
-            For i = X To XX
-                graph.AddDataToSet j, Ydata(Sort(j + Start), i)
-                graph.DrawDataAutoScale
-            Next i
-        Next j
-    End If
-    y1 = FirstYear Mod 100
-    St = Ntimes / graph.XTicks / 12
-    For j = 0 To graph.XTicks 'XX step st
-        Lab = (y1 + j * St) Mod 100
-        graph.XLabelString "'" + CStr(Lab), j
-    Next
-
-End Sub
-
-Private Sub PlotMultipleTimeSeries(graph As JGraph, Ydata() As Single, Title As String)
-On Local Error Resume Next
-'Calling Arguments are:
-    'graph is the jgraph control
-    'ydata(N, XX) is a 2 dimensional array of N series, and XX datapoints
-Dim i As Integer, j As Integer, iclr As Long, ii As Integer
-Dim XX As Integer, X As Integer, NSeries As Integer, xN As Integer
-Dim y1 As Integer, St As Integer, Lab As Integer
-    graph.Visible = False
-    NSeries = UBound(Ydata, 1)
-    xN = LBound(Ydata, 1)
-
-    i = UBound(Ydata, 2) / 12 '=Ntimes / 12 '= number of years
-    j = i \ 10
-    If i Mod (j + 1) > 0 Then
-        graph.XTicks = i \ (j + 1) + 1
-    Else
-        graph.XTicks = i \ (j + 1)
-    End If
-    XX = 12 * graph.XTicks * (j + 1)
-    If XX > i * 12 Then XX = i * 12
-    X = LBound(Ydata, 2)
-    X = IIf(X = 0, 1, X)
-    graph.ClearAllData
-    graph.BackColor = SimBackColor
-    graph.NumSets = NSeries
-    graph.AutoScale = True
-    graph.YAxis = 1E-20
-    'graph.YOrigin = 0
-    graph.XAxis = XX
-    graph.UseTextLabels = True
-    If Title <> "" Then graph.Caption = Title
-    'Style Types 0 = Line, 1 = Circles, 2 = Histogram
-    For j = xN To NSeries    'Loop over series
-        'iclr = IIf(j > 0, QBColor(1 + j), poolcolor(poolshow))
-            Select Case j
-            Case 0
-                iclr = QBColor(0)   'poolcolor(poolshow)
-            Case 1
-                iclr = QBColor(9)   'blue
-            Case 2
-                iclr = QBColor(12)   'red
-            Case 3
-                iclr = QBColor(10)   'red
-            Case 4
-                iclr = QBColor(11)   'red
-            Case Else
-                iclr = QBColor(7 + IIf(j < 9, j, 8))
-            End Select
-        graph.SetStyle j, StyleType(j), IIf(StyleType(j) = 0, 2, 4), iclr  ', poolcolor(poolshow)   'iclr
-        For i = X To XX
-            graph.AddDataToSet j, Ydata(j, i)
-            graph.DrawDataAutoScale
-        Next i
-    Next j
-
-    y1 = FirstYear Mod 100
-
-    If graph.XTicks > 0 Then St = Ntimes / graph.XTicks / 12
-    For j = 0 To graph.XTicks 'XX step st
-        Lab = (y1 + j * St) Mod 100
-        graph.XLabelString "'" + CStr(Lab), j
-    Next
-    graph.Visible = True
-End Sub
-
-Private Sub PlotSingleSeries(graph As JGraph, Ydata() As Single, Title As String)
-On Local Error Resume Next
-Dim i As Integer    ', iclr As Long
-Dim j As Integer
-Dim XX As Integer
-'This routine plots as single dimension array
-Dim y1 As Integer, St As Integer, Lab As Integer
-
-    XX = UBound(Ydata)
-    'iclr = QBColor(4)
-    graph.ClearAllData
-    graph.NumSets = 1
-    graph.YAxis = IIf(Title = "Feeding time", 2.001, 0.00000001)
-    graph.AutoScale = True
-    graph.XAxis = XX
-    graph.BackColor = SimBackColor
-    graph.UseTextLabels = True
-    If Title <> "" Then graph.Caption = Title
-    'Style Types 0 = Line, 1 = Circles, 2 = Histogram
-    graph.SetStyle 0, 0, 2, QBColor(0)  ' poolcolor(poolshow)    'iclr
-    For i = 1 To XX
-        graph.AddData Ydata(i)
-        graph.DrawDataAutoScale
-    Next i
-
-    y1 = FirstYear Mod 100
-    If graph.XTicks > 0 Then St = Ntimes / graph.XTicks / 12
-    For j = 0 To graph.XTicks 'XX step st
-        Lab = (y1 + j * St) Mod 100
-        graph.XLabelString "'" + CStr(Lab), j
-    Next
-
-End Sub
-
-#End If

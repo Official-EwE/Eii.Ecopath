@@ -74,44 +74,38 @@ Namespace Ecopath.Controls.FlowDiagram
             ''' </summary>
             ''' <param name="g"></param>
             ''' <param name="ptf"></param>
+            ''' <param name="font"></param>
+            ''' <param name="clrFont"></param>
             ''' <param name="strGroupName"></param>
-            ''' <param name="sBiomass"></param>
+            ''' <param name="strBiomass"></param>
             '''--------------------------------------------------------------------
-            Public Sub DrawLabel(ByRef g As Graphics, _
+            Public Sub DrawLabel(ByVal g As Graphics, _
                                  ByVal ptf As PointF, _
+                                 ByVal font As Font, _
+                                 ByVal clrFont As Color, _
                                  ByVal strGroupName As String, _
-                                 Optional ByVal sBiomass As Single = 0.0)
+                                 Optional ByVal strBiomass As String = "")
 
-                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+                Using br As New SolidBrush(clrFont)
 
-                Using ft As Font = sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
-                    Using br As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
+                    ' Draw group name
+                    g.DrawString(strGroupName, font, br, ptf.X, ptf.Y)
 
-                        ' Draw group name
-                        g.DrawString(strGroupName, ft, br, ptf.X, ptf.Y)
+                    ' Draw the biomass string
+                    If (Not String.IsNullOrEmpty(strBiomass)) Then
+                        g.DrawString(String.Format(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, strBiomass), _
+                                     font, br, _
+                                     ptf.X, ptf.Y + CInt(font.Size * 1.5))
+                    End If
 
-                        ' Draw the biomass string
-                        If (sBiomass > 0.0) Then
-                            g.DrawString(String.Format(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, sg.FormatNumber(sBiomass)), _
-                                         ft, br, _
-                                         ptf.X, ptf.Y + CInt(ft.Size * 1.5))
-                        End If
-
-                    End Using
                 End Using
 
             End Sub
 
-            Public Function CalcLabelSize(ByVal g As Graphics, ByVal strGroupName As String) As SizeF
-
-                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-                Dim szLabel As SizeF = Nothing
-
-                Using font As Font = sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
-                    szLabel = g.MeasureString(strGroupName, font)
-                End Using
-                Return szLabel
-
+            Public Function CalcLabelSize(ByVal g As Graphics, _
+                                          ByVal font As Font, _
+                                          ByVal strGroupName As String) As SizeF
+                Return g.MeasureString(strGroupName, font)
             End Function
 
         End Class
@@ -236,6 +230,8 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Public Sub New(ByVal data As cFlowDiagramData)
 
+            Debug.Assert(data IsNot Nothing)
+
             Me.m_data = data
 
             ReDim Me.m_sAngle(Me.m_data.NumGroups)
@@ -288,11 +284,11 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim strGroupName As String = Me.m_data.GroupName(iGroup)
             Dim sBiomass As Single = Me.m_data.Biomass(iGroup)
             Dim sBiomassMax As Single = Me.m_data.BiomassMax
-            Dim sBiomassLabel As Single = cCore.NULL_VALUE
+            Dim strBiomassLabel As String = ""
             Dim clrNode As Color
 
-            If Me.m_bIsNodeDrawBiomass Then
-                sBiomassLabel = sBiomass
+            If Me.m_bIsNodeDrawBiomass And sBiomass > 0.0! Then
+                strBiomassLabel = Me.m_data.UIContext.StyleGuide.FormatNumber(sBiomass, cStyleGuide.eStyleFlags.OK)
             End If
 
             Select Case m_colorusagetype
@@ -309,10 +305,14 @@ Namespace Ecopath.Controls.FlowDiagram
                                Me.NodeType, _
                                Me.CalcNodeSize(sBiomass, sBiomassMax), _
                                clrNode)
+
+
             Me.m_node.DrawLabel(g, _
                                 Me.LabelLocation(iGroup, rc), _
+                                Me.m_data.RenderFont, _
+                                Me.m_data.TextColor, _
                                 strGroupName, _
-                                sBiomassLabel)
+                                strBiomassLabel)
 
         End Sub
 
@@ -330,7 +330,7 @@ Namespace Ecopath.Controls.FlowDiagram
             If sDiet <= 0 Then Return
 
             If bHighlight Then
-                clrLine = cStyleGuide.GetInstance().ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                clrLine = Me.m_data.HighlightColor
             Else
                 Select Case Me.m_colorusagetype
                     Case eColorUsageTypes.Flow
@@ -651,12 +651,15 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Function
 
-        Public Function IsLabelAtPoint(ByVal rc As Rectangle, ByVal ptfTest As PointF, _
-                                       ByVal i As Integer, ByVal strGroupName As String, _
-                                       ByVal g As Graphics) As Boolean
+        Public Function IsLabelAtPoint(ByVal rc As Rectangle, _
+                                       ByVal ptfTest As PointF, _
+                                       ByVal i As Integer, _
+                                       ByVal strGroupName As String, _
+                                       ByVal g As Graphics, _
+                                       ByVal font As Font) As Boolean
 
             Dim ptfLabelLocation As PointF = Me.LabelLocation(i, rc)
-            Dim szfLabel As SizeF = Me.m_node.CalcLabelSize(g, strGroupName)
+            Dim szfLabel As SizeF = Me.m_node.CalcLabelSize(g, font, strGroupName)
             Dim rcf As New RectangleF(ptfLabelLocation, szfLabel)
 
             Return rcf.Contains(ptfTest)

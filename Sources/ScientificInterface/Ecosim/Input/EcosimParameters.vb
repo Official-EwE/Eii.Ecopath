@@ -51,15 +51,15 @@ Namespace Ecosim
             Dim ecosimModelParams As cEcoSimModelParameters = Core.EcoSimModelParameters()
             Dim pm As cPropertyManager = Me.PropertyManager
 
-            Me.m_fpNumYears = New cPropertyFormatProvider(pm, Me.m_nudNumberYears, ecosimModelParams, eVarNameFlags.EcoSimNYears)
-            Me.m_fpNutBaseFreeProp = New cPropertyFormatProvider(pm, Me.m_nudNutBaseFreeProp, ecosimModelParams, eVarNameFlags.NutBaseFreeProp)
+            Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumberYears, ecosimModelParams, eVarNameFlags.EcoSimNYears)
+            Me.m_fpNutBaseFreeProp = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNutBaseFreeProp, ecosimModelParams, eVarNameFlags.NutBaseFreeProp)
 
-            Me.m_fpNutrientForceNumber = New cPropertyFormatProvider(pm, Me.m_cmbNutForcing, ecosimModelParams, eVarNameFlags.NutForceFunctionNumber)
-            Me.m_fpSalinityForceNumber = New cPropertyFormatProvider(pm, Me.m_cmbSalinityForcing, ecosimModelParams, eVarNameFlags.SalinityForceFunctionNumber)
-            Me.m_fpTempForceNumber = New cPropertyFormatProvider(pm, Me.cmbTempLoading, ecosimModelParams, eVarNameFlags.TemperatureForceFunctionNumber)
-            Me.m_fpPredictEffort = New cPropertyFormatProvider(pm, Me.m_chkPredictEffort, ecosimModelParams, eVarNameFlags.PredictEffort)
-            Me.m_fpRelaxation = New cPropertyFormatProvider(pm, Me.m_nudRelaxation, ecosimModelParams, eVarNameFlags.Relaxation)
-            Me.m_fpUseVarPQ = New cPropertyFormatProvider(pm, Me.m_chkUseVarPQ, ecosimModelParams, eVarNameFlags.UseVarPQ)
+            Me.m_fpNutrientForceNumber = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbNutForcing, ecosimModelParams, eVarNameFlags.NutForceFunctionNumber)
+            Me.m_fpSalinityForceNumber = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbSalinityForcing, ecosimModelParams, eVarNameFlags.SalinityForceFunctionNumber)
+            Me.m_fpTempForceNumber = New cPropertyFormatProvider(Me.UIContext, Me.cmbTempLoading, ecosimModelParams, eVarNameFlags.TemperatureForceFunctionNumber)
+            Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPredictEffort, ecosimModelParams, eVarNameFlags.PredictEffort)
+            Me.m_fpRelaxation = New cPropertyFormatProvider(Me.UIContext, Me.m_nudRelaxation, ecosimModelParams, eVarNameFlags.Relaxation)
+            Me.m_fpUseVarPQ = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUseVarPQ, ecosimModelParams, eVarNameFlags.UseVarPQ)
 
             Me.m_propConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
             AddHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
@@ -165,7 +165,6 @@ Namespace Ecosim
         Private Sub RebuildScenarioFormatProviders()
 
             Dim scenarioDef As cEcoSimScenario = Nothing
-            Dim pm As cPropertyManager = Me.UIContext.PropertyManager
 
             If (Me.Core.ActiveEcosimScenarioIndex > 0) Then
                 scenarioDef = Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex)
@@ -177,10 +176,10 @@ Namespace Ecosim
             If Me.m_fpContact IsNot Nothing Then Me.m_fpContact.Release()
 
             If (scenarioDef IsNot Nothing) Then
-                Me.m_fpScenarioName = New cPropertyFormatProvider(pm, Me.m_tbName, scenarioDef, eVarNameFlags.Name)
-                Me.m_fpScenarioDescription = New cPropertyFormatProvider(pm, Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
-                Me.m_fpAuthor = New cPropertyFormatProvider(pm, Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
-                Me.m_fpContact = New cPropertyFormatProvider(pm, Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
+                Me.m_fpScenarioName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbName, scenarioDef, eVarNameFlags.Name)
+                Me.m_fpScenarioDescription = New cPropertyFormatProvider(Me.UIContext, Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
+                Me.m_fpAuthor = New cPropertyFormatProvider(Me.UIContext, Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
+                Me.m_fpContact = New cPropertyFormatProvider(Me.UIContext, Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
             End If
 
         End Sub

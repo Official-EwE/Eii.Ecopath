@@ -46,15 +46,15 @@ Public Class frmModelDescription
         Dim pm As cPropertyManager = Me.UIContext.PropertyManager
         Dim appl As AppLauncher = AppLauncher.GetInstance()
 
-        Me.m_fpName = New cPropertyFormatProvider(pm, Me.m_tbName, eweModel, eVarNameFlags.Name)
-        Me.m_fpDescription = New cPropertyFormatProvider(pm, Me.m_tbDescription, eweModel, eVarNameFlags.Description)
-        Me.m_fpAuthor = New cPropertyFormatProvider(pm, Me.m_tbAuthor, eweModel, eVarNameFlags.Author)
-        Me.m_fpContact = New cPropertyFormatProvider(pm, Me.m_tbContact, eweModel, eVarNameFlags.Contact)
-        Me.m_fpArea = New cPropertyFormatProvider(pm, Me.m_tbArea, eweModel, eVarNameFlags.Area)
-        Me.m_fpNumDigits = New cPropertyFormatProvider(pm, Me.m_udNumDigits, eweModel, eVarNameFlags.NumDigits)
-        Me.m_fpGroupDigits = New cPropertyFormatProvider(pm, Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
+        Me.m_fpName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbName, eweModel, eVarNameFlags.Name)
+        Me.m_fpDescription = New cPropertyFormatProvider(Me.UIContext, Me.m_tbDescription, eweModel, eVarNameFlags.Description)
+        Me.m_fpAuthor = New cPropertyFormatProvider(Me.UIContext, Me.m_tbAuthor, eweModel, eVarNameFlags.Author)
+        Me.m_fpContact = New cPropertyFormatProvider(Me.UIContext, Me.m_tbContact, eweModel, eVarNameFlags.Contact)
+        Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, Me.m_tbArea, eweModel, eVarNameFlags.Area)
+        Me.m_fpNumDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_udNumDigits, eweModel, eVarNameFlags.NumDigits)
+        Me.m_fpGroupDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
 
-        Me.m_fpPSD = New cPropertyFormatProvider(pm, Me.m_chkPSD, psdParms, eVarNameFlags.PSDEnabled)
+        Me.m_fpPSD = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPSD, psdParms, eVarNameFlags.PSDEnabled)
 
         Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
         AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnUnitCurrencyChanged

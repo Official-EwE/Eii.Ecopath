@@ -54,7 +54,6 @@ Namespace Controls.EwEGrid
 
 #Region " Internals "
 
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Overidden to draw background using EwE color styles

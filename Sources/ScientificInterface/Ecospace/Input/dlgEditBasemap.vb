@@ -40,19 +40,19 @@ Public Class dlgEditBasemap
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_fpInCol = New cEwEFormatProvider(Me.nudColCount, GetType(Integer), Me.m_basemap.GetVariableMetadata(eVarNameFlags.InCol))
+        Me.m_fpInCol = New cEwEFormatProvider(Me.m_uic, Me.nudColCount, GetType(Integer), Me.m_basemap.GetVariableMetadata(eVarNameFlags.InCol))
         Me.m_fpInCol.Value = Me.m_basemap.InCol
 
-        Me.m_fpInRow = New cEwEFormatProvider(Me.nudRowCount, GetType(Integer), Me.m_basemap.GetVariableMetadata(eVarNameFlags.InRow))
+        Me.m_fpInRow = New cEwEFormatProvider(Me.m_uic, Me.nudRowCount, GetType(Integer), Me.m_basemap.GetVariableMetadata(eVarNameFlags.InRow))
         Me.m_fpInRow.Value = Me.m_basemap.InRow
 
-        Me.m_fpLat = New cEwEFormatProvider(Me.nudLatTL, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.Latitude))
+        Me.m_fpLat = New cEwEFormatProvider(Me.m_uic, Me.nudLatTL, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.Latitude))
         Me.m_fpLat.Value = Me.m_basemap.Latitude
 
-        Me.m_fpLon = New cEwEFormatProvider(Me.nudLonTL, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.Longitude))
+        Me.m_fpLon = New cEwEFormatProvider(Me.m_uic, Me.nudLonTL, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.Longitude))
         Me.m_fpLon.Value = Me.m_basemap.Longitude
 
-        Me.m_fpCellLength = New cEwEFormatProvider(Me.nudCellLength, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.CellLength))
+        Me.m_fpCellLength = New cEwEFormatProvider(Me.m_uic, Me.nudCellLength, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.CellLength))
         Me.m_fpCellLength.Value = Me.m_basemap.CellLength
 
         Me.UpdateControls()

@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: cEwEFormatProvider.vb,v $
-' Revision 1.5  2009/05/28 12:37:12  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/05/26 19:37:50  jeroens
-' Fixed combo box background style
-'
-' Revision 1.3  2009/04/27 03:53:02  jeroens
-' Fixed issue 616
-'
-' Revision 1.2  2009/04/04 14:08:12  jeroens
-' Type cast BEFORE checking for value changes in SetValue
-'
-' Revision 1.1  2009/03/19 16:00:32  jeroens
-' Split files
-'
-' Revision 1.2  2008/12/15 15:33:21  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:20  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -55,7 +29,7 @@ Namespace Controls
         ''' for a given Windows control.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Class ControlWrapperFactory
+        Private Class cControlWrapperFactory
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -68,10 +42,11 @@ Namespace Controls
             ''' <returns>A <see cref="IControlWrapper">IControlWrapper</see> instance if succesful,
             ''' or nothing if an error occurred.</returns>
             ''' -----------------------------------------------------------------------
-            Shared Function GetControlWrapper(ByVal ctrl As Control, _
-                    ByVal provider As cEwEFormatProvider, _
-                    Optional ByVal aItems As Object() = Nothing, _
-                    Optional ByVal metadata As cVariableMetaData = Nothing) As IControlWrapper
+            Shared Function GetControlWrapper(ByVal uic As cUIContext, _
+                                              ByVal ctrl As Control, _
+                                              ByVal provider As cEwEFormatProvider, _
+                                              Optional ByVal aItems As Object() = Nothing, _
+                                              Optional ByVal metadata As cVariableMetaData = Nothing) As IControlWrapper
 
                 Dim wrapper As IControlWrapper = Nothing
 
@@ -91,6 +66,8 @@ Namespace Controls
                 ' Development time sanity check
                 Debug.Assert(wrapper IsNot Nothing, String.Format("ControlWrapperFactory: control {0} not supported", ctrl.GetType().ToString()))
 
+                ' Pass on UI context
+                wrapper.UIContext = uic
                 ' Try to wrap
                 If Not wrapper.Wrap(ctrl, provider, aItems, metadata) Then wrapper = Nothing
                 ' Return result
@@ -144,6 +121,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Interface IControlWrapper
+            Inherits IUIElement
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -197,6 +175,8 @@ Namespace Controls
 
 #Region " Private variables "
 
+            ''' <summary>UI context for this wrapper.</summary>
+            Private m_uic As cUIContext = Nothing
             ''' <summary>The wrapped text box</summary>
             Private m_tb As TextBox = Nothing
             ''' <summary>The EwEFormatProvider that implements value and colour
@@ -206,6 +186,21 @@ Namespace Controls
 #End Region ' Private variables 
 
 #Region " Implementation "
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the UI context for this wrapper.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Property UIContext() As cUIContext _
+                Implements IUIElement.UIContext
+                Get
+                    Return Me.m_uic
+                End Get
+                Set(ByVal value As cUIContext)
+                    Me.m_uic = value
+                End Set
+            End Property
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -271,7 +266,7 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
-                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
                 Dim objValue As Object = Me.m_provider.Value
                 Dim objValueType As Object = Me.m_provider.ValueType
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
@@ -359,6 +354,8 @@ Namespace Controls
 
 #Region " Private variables "
 
+            ''' <summary>UI context for this wrapper.</summary>
+            Private m_uic As cUIContext = Nothing
             ''' <summary></summary>
             Private m_ud As NumericUpDown = Nothing
             ''' <summary></summary>
@@ -369,6 +366,21 @@ Namespace Controls
 #End Region ' Private variables 
 
 #Region " Implementation "
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the UI context for this wrapper.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Property UIContext() As cUIContext _
+                Implements IUIElement.UIContext
+                Get
+                    Return Me.m_uic
+                End Get
+                Set(ByVal value As cUIContext)
+                    Me.m_uic = value
+                End Set
+            End Property
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -405,7 +417,7 @@ Namespace Controls
                     AddHandler Me.m_ud.Validated, AddressOf OnSaveValue
                     AddHandler Me.m_ud.LostFocus, AddressOf OnSaveValue
 
-                    Me.m_sg = cStyleGuide.GetInstance()
+                    Me.m_sg = Me.m_uic.StyleGuide
                     AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
                     ' Store ref to provider
@@ -550,6 +562,8 @@ Namespace Controls
 
 #Region " Private variables "
 
+            ''' <summary>UI context for this wrapper.</summary>
+            Private m_uic As cUIContext = Nothing
             ''' <summary>The wrapped combo box.</summary>
             Private m_cmb As ComboBox = Nothing
             ''' <summary></summary>
@@ -561,6 +575,21 @@ Namespace Controls
 #End Region ' Private variables 
 
 #Region " Implementation "
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the UI context for this wrapper.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Property UIContext() As cUIContext _
+                Implements IUIElement.UIContext
+                Get
+                    Return Me.m_uic
+                End Get
+                Set(ByVal value As cUIContext)
+                    Me.m_uic = value
+                End Set
+            End Property
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -626,7 +655,7 @@ Namespace Controls
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
                 Dim objValue As Object = Me.m_provider.Value
-                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
@@ -740,6 +769,8 @@ Namespace Controls
 
 #Region " Private variables "
 
+            ''' <summary>UI context for this wrapper.</summary>
+            Private m_uic As cUIContext = Nothing
             ''' <summary>The wrapped check box.</summary>
             Private m_cb As CheckBox = Nothing
             ''' <summary></summary>
@@ -748,6 +779,21 @@ Namespace Controls
 #End Region ' Private variables 
 
 #Region " Implementation "
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the UI context for this wrapper.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Property UIContext() As cUIContext _
+                Implements IUIElement.UIContext
+                Get
+                    Return Me.m_uic
+                End Get
+                Set(ByVal value As cUIContext)
+                    Me.m_uic = value
+                End Set
+            End Property
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -807,7 +853,7 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
-                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
                 Dim objValue As Object = Me.m_provider.Value
                 Dim objValueType As Object = Me.m_provider.ValueType
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
@@ -877,6 +923,8 @@ Namespace Controls
 
 #Region " Private variables "
 
+            ''' <summary>UI context for this wrapper.</summary>
+            Private m_uic As cUIContext = Nothing
             ''' <summary>The wrapped label control.</summary>
             Private m_lb As Label = Nothing
             ''' <summary>The EwEFormatProvider that implements value and colour
@@ -886,6 +934,21 @@ Namespace Controls
 #End Region ' Private variables 
 
 #Region " Implementation "
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the UI context for this wrapper.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Property UIContext() As cUIContext _
+                Implements IUIElement.UIContext
+                Get
+                    Return Me.m_uic
+                End Get
+                Set(ByVal value As cUIContext)
+                    Me.m_uic = value
+                End Set
+            End Property
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -930,7 +993,7 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
-                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
                 Dim objValue As Object = Me.m_provider.Value
                 Dim objValueType As Object = Me.m_provider.ValueType
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
@@ -987,18 +1050,20 @@ Namespace Controls
 
 #Region " Private vars "
 
+        ''' <summary>The UI context serving this provider.</summary>
+        Private m_uic As cUIContext = Nothing
         ''' <summary>Value of the control.</summary>
         Private m_objValue As Object = Nothing
         ''' <summary><see cref="Type">Type</see> of the Value.</summary>
         Private m_tValue As Type = Nothing
         ''' <summary>EwE <see cref="cStyleGuide.eStyleFlags">Style</see> of the control.</summary>
         Private m_style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-        ''' <summary>Reference to the global <see cref="cStyleGuide">cStyleGuide</see>.</summary>
-        Private m_sg As cStyleGuide = Nothing
         ''' <summary>The wrapper that interacts with the control</summary>
         Private m_ctrlWrapper As IControlWrapper = Nothing
 
 #End Region ' Private vars
+
+#Region " Constructor "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1009,15 +1074,25 @@ Namespace Controls
         ''' <param name="aItems"></param>
         ''' <param name="metadata"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal ctrl As Control, ByVal tValue As Type, Optional ByVal aItems As Object() = Nothing, Optional ByVal metadata As cVariableMetaData = Nothing)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal ctrl As Control, _
+                       ByVal tValue As Type, _
+                       Optional ByVal aItems As Object() = Nothing, _
+                       Optional ByVal metadata As cVariableMetaData = Nothing)
+
+            ' Sanity checks
+            Debug.Assert(uic IsNot Nothing)
+            Debug.Assert(ctrl IsNot Nothing)
 
             ' Store value type
             Me.m_tValue = tValue
             ' Get wrapper
-            Me.m_ctrlWrapper = ControlWrapperFactory.GetControlWrapper(ctrl, Me, aItems, metadata)
+            Me.m_ctrlWrapper = cControlWrapperFactory.GetControlWrapper(uic, ctrl, Me, aItems, metadata)
             ' Connect to style guide
-            Me.m_sg = cStyleGuide.GetInstance()
-            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            Me.m_uic = uic
+            ' Respond to styleguide changes
+            AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -1028,9 +1103,16 @@ Namespace Controls
         ''' <param name="tValue"></param>
         ''' <param name="metadata"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal ctrl As Control, ByVal tValue As Type, ByVal metadata As cVariableMetaData)
-            Me.New(ctrl, tValue, Nothing, metadata)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal ctrl As Control, _
+                       ByVal tValue As Type, _
+                       ByVal metadata As cVariableMetaData)
+            Me.New(uic, ctrl, tValue, Nothing, metadata)
         End Sub
+
+#End Region ' Constructor
+
+#Region " Release "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1043,11 +1125,13 @@ Namespace Controls
                 Me.m_ctrlWrapper = Nothing
             End If
 
-            If Me.m_sg IsNot Nothing Then
-                RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-                Me.m_sg = Nothing
+            If Me.m_uic IsNot Nothing Then
+                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                Me.m_uic = Nothing
             End If
         End Sub
+
+#End Region ' Release
 
 #Region " Value "
 

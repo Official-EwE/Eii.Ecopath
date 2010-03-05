@@ -79,7 +79,6 @@ Namespace Controls.EwEGrid
         Public Overrides ReadOnly Property DisplayText() As String
             Get
                 Dim strDisplayText As String = ""
-                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
                 If m_aUnitTypes Is Nothing Then
                     strDisplayText = MyBase.DisplayText
@@ -89,11 +88,11 @@ Namespace Controls.EwEGrid
                             strDisplayText = MyBase.DisplayText
                         Case 1
                             strDisplayText = String.Format(Me.m_strUnitMask, _
-                                                           sg.GetUnitString(m_aUnitTypes(0)))
+                                                           Me.m_sg.GetUnitString(m_aUnitTypes(0)))
                         Case 2
                             strDisplayText = String.Format(Me.m_strUnitMask, _
-                                                           sg.GetUnitString(m_aUnitTypes(0)), _
-                                                           sg.GetUnitString(m_aUnitTypes(1)))
+                                                           Me.m_sg.GetUnitString(m_aUnitTypes(0)), _
+                                                           Me.m_sg.GetUnitString(m_aUnitTypes(1)))
                         Case Else
                             Debug.Assert(False)
                     End Select

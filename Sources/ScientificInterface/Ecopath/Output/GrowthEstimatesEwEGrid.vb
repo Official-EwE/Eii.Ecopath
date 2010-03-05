@@ -138,13 +138,13 @@ Namespace Ecopath.Output
         End Sub
 
         Private Function IsGroupSelected() As Boolean()
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim bGroupSelected(Core.nLivingGroups) As Boolean
 
+            Dim bGroupSelected(Core.nLivingGroups) As Boolean
             For i As Integer = 1 To Core.nLivingGroups
-                bGroupSelected(i) = sg.GroupVisible(i)
+                bGroupSelected(i) = StyleGuide.GroupVisible(i)
             Next
             Return bGroupSelected
+
         End Function
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType

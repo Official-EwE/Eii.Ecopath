@@ -22,12 +22,12 @@ Namespace Core
         EcopathCompleted
         ''' <summary>Ecopath PSD model run is completed.</summary>
         PSDCompleted
+        ''' <summary>Ecotracer scenario data has been loaded.</summary>
+        EcotracerLoaded
         ''' <summary>Ecosim scenario data has been loaded.</summary>
         EcosimLoaded
         ''' <summary>Ecosim scenario has been initialized.</summary>
         EcosimInitialized
-        ''' <summary>Ecotracer scenario data has been loaded.</summary>
-        EcotracerLoaded
         ''' <summary>Ecosim scenario is running.</summary>
         EcosimRunning
         ''' <summary>Ecosim scenario run is completed.</summary>

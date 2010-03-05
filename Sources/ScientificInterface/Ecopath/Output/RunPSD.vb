@@ -71,9 +71,9 @@ Namespace Ecopath.Output
 
             ' Connect format providers
             parms = Me.UIContext.Core.ParticleSizeDistributionParameters
-            Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(pm, Me.m_tstbxNoOfPointsPSD.Control, parms, eVarNameFlags.PSDNumWeightClasses)
-            Me.m_fpMinWeight = New cPropertyFormatProvider(pm, Me.m_tstbxMinWeight.Control, parms, eVarNameFlags.PSDFirstWeightClass)
-            Me.m_fpNoOfPointsMovAvg = New cPropertyFormatProvider(pm, Me.m_tstbxNoOfPointsMovAvg.Control, parms, eVarNameFlags.NumPtsMovAvg)
+            Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.UIContext, Me.m_tstbxNoOfPointsPSD.Control, parms, eVarNameFlags.PSDNumWeightClasses)
+            Me.m_fpMinWeight = New cPropertyFormatProvider(Me.UIContext, Me.m_tstbxMinWeight.Control, parms, eVarNameFlags.PSDFirstWeightClass)
+            Me.m_fpNoOfPointsMovAvg = New cPropertyFormatProvider(Me.UIContext, Me.m_tstbxNoOfPointsMovAvg.Control, parms, eVarNameFlags.NumPtsMovAvg)
 
             ' Connect to core state monitor events
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
@@ -259,7 +259,7 @@ Namespace Ecopath.Output
             Dim sHighWtClass As Single
             Dim iSampleSize As Integer
             Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim sg As cStyleGuide = Me.StyleGuide
             Dim strLabel As String = ""
 
             Me.InitLists(resultLists, 2)
@@ -343,7 +343,7 @@ Namespace Ecopath.Output
 
             Dim grpInput As cEcoPathGroupInput = Nothing
             Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim sg As cStyleGuide = Me.StyleGuide
 
             'Mortality type
             If m_tsmiGroupPB.Checked Then
@@ -379,7 +379,7 @@ Namespace Ecopath.Output
 
             Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
             Dim grpInput As cEcoPathGroupInput = Nothing
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim sg As cStyleGuide = Me.StyleGuide
 
             'Mortality type
             Select Case parms.MortalityType

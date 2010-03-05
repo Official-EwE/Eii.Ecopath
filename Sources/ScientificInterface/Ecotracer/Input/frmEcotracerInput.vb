@@ -44,13 +44,12 @@ Namespace Ecotracer
             Debug.Assert(Me.UIContext IsNot Nothing)
 
             Dim ecotracerModelParams As cEcotracerModelParameters = Me.UIContext.Core.EcotracerModelParameters()
-            Dim pm As cPropertyManager = Me.PropertyManager
 
-            Me.m_fpInflowForceNumberEnv = New cPropertyFormatProvider(pm, Me.cmbEnvInflowFF, ecotracerModelParams, eVarNameFlags.ConForceNumber)
-            Me.m_fpCZeroEnv = New cPropertyFormatProvider(pm, Me.m_tbCZeroEnv, ecotracerModelParams, eVarNameFlags.CZero)
-            Me.m_fpCDecayEnv = New cPropertyFormatProvider(pm, Me.m_tbCDecayRateEnv, ecotracerModelParams, eVarNameFlags.CDecay)
-            Me.m_fpCInflowEnv = New cPropertyFormatProvider(pm, Me.m_tbCInflowEnv, ecotracerModelParams, eVarNameFlags.CInflow)
-            Me.m_fpCOutflowEnv = New cPropertyFormatProvider(pm, Me.m_tbCLossEnv, ecotracerModelParams, eVarNameFlags.COutflow)
+            Me.m_fpInflowForceNumberEnv = New cPropertyFormatProvider(Me.UIContext, Me.cmbEnvInflowFF, ecotracerModelParams, eVarNameFlags.ConForceNumber)
+            Me.m_fpCZeroEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCZeroEnv, ecotracerModelParams, eVarNameFlags.CZero)
+            Me.m_fpCDecayEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCDecayRateEnv, ecotracerModelParams, eVarNameFlags.CDecay)
+            Me.m_fpCInflowEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCInflowEnv, ecotracerModelParams, eVarNameFlags.CInflow)
+            Me.m_fpCOutflowEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCLossEnv, ecotracerModelParams, eVarNameFlags.COutflow)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
             Me.UpdateFFFormatProviders()

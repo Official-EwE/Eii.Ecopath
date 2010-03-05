@@ -143,18 +143,18 @@ Namespace Ecospace
             Me.UpdateControls()
 
             ' Hmm, connecting one control to two live properties - this could be dangerous
-            Me.m_fpNumThreads = New cPropertyFormatProvider(pm, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSolverThreads)
-            Me.m_fpNumThreads2 = New cPropertyFormatProvider(pm, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)
-            Me.m_fpNumPackets = New cPropertyFormatProvider(pm, Me.m_tbNumPackets, ecospaceModelParams, eVarNameFlags.PacketsMultiplier)
+            Me.m_fpNumThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSolverThreads)
+            Me.m_fpNumThreads2 = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)
+            Me.m_fpNumPackets = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumPackets, ecospaceModelParams, eVarNameFlags.PacketsMultiplier)
 
             ' Model
-            Me.m_fpTotalTime = New cPropertyFormatProvider(pm, Me.m_tbTotalTime, ecospaceModelParams, eVarNameFlags.TotalTime)
-            Me.m_fpNumTSpYear = New cPropertyFormatProvider(pm, Me.m_tbNumTimeStepsPerYear, ecospaceModelParams, eVarNameFlags.NumTimeStepsPerYear)
-            Me.m_fpTolerance = New cPropertyFormatProvider(pm, Me.m_tbTolerance, ecospaceModelParams, eVarNameFlags.Tolerance)
-            Me.m_fpSOR = New cPropertyFormatProvider(pm, Me.m_tbSOR, ecospaceModelParams, eVarNameFlags.SOR)
-            Me.m_fpMaxIterations = New cPropertyFormatProvider(pm, Me.m_nudMaxIterations, ecospaceModelParams, eVarNameFlags.MaxIterations)
-            Me.m_fpPredictEffort = New cPropertyFormatProvider(pm, Me.m_cbPredictEffort, ecospaceModelParams, eVarNameFlags.PredictEffort)
-            Me.m_fpUseExact = New cPropertyFormatProvider(pm, Me.m_cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
+            Me.m_fpTotalTime = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTotalTime, ecospaceModelParams, eVarNameFlags.TotalTime)
+            Me.m_fpNumTSpYear = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumTimeStepsPerYear, ecospaceModelParams, eVarNameFlags.NumTimeStepsPerYear)
+            Me.m_fpTolerance = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTolerance, ecospaceModelParams, eVarNameFlags.Tolerance)
+            Me.m_fpSOR = New cPropertyFormatProvider(Me.UIContext, Me.m_tbSOR, ecospaceModelParams, eVarNameFlags.SOR)
+            Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, ecospaceModelParams, eVarNameFlags.MaxIterations)
+            Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_cbPredictEffort, ecospaceModelParams, eVarNameFlags.PredictEffort)
+            Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
             Me.UpdateScenarioFormatProviders()
 
         End Sub
@@ -320,13 +320,13 @@ Namespace Ecospace
         Private Sub UpdateScenarioFormatProviders()
 
             Dim scenarioDef As cEcospaceScenario = m_core.EcospaceScenarios(m_core.ActiveEcospaceScenarioIndex)
-            Dim pm As cPropertyManager = Me.PropertyManager
 
             ' Connect controls to core data
-            Me.m_fpScenarioName = New cPropertyFormatProvider(pm, Me.m_tbName, scenarioDef, eVarNameFlags.Name)
-            Me.m_fpScenarioDescription = New cPropertyFormatProvider(pm, Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
-            Me.m_fpAuthor = New cPropertyFormatProvider(pm, Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
-            Me.m_fpContact = New cPropertyFormatProvider(pm, Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
+            Me.m_fpScenarioName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbName, scenarioDef, eVarNameFlags.Name)
+            Me.m_fpScenarioDescription = New cPropertyFormatProvider(Me.UIContext, Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
+            Me.m_fpAuthor = New cPropertyFormatProvider(Me.UIContext, Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
+            Me.m_fpContact = New cPropertyFormatProvider(Me.UIContext, Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
+
         End Sub
 
 #End Region ' Internals

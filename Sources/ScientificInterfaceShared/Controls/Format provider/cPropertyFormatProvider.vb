@@ -34,7 +34,7 @@ Namespace Controls
         ''' <param name="varName"></param>
         ''' <param name="sourceSec"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager, _
+        Public Sub New(ByVal uic As cUIContext, _
                        ByVal ctrl As Control, _
                        ByVal source As cCoreInputOutputBase, _
                        ByVal varName As eVarNameFlags, _
@@ -42,7 +42,7 @@ Namespace Controls
                        Optional ByVal aItems As Object() = Nothing)
 
             ' Get underlying cProperty for these values
-            Me.New(ctrl, pm.GetProperty(source, varName, sourceSec), aItems)
+            Me.New(uic, ctrl, uic.PropertyManager.GetProperty(source, varName, sourceSec), aItems)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -52,11 +52,12 @@ Namespace Controls
         ''' <param name="ctrl"></param>
         ''' <param name="prop"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal ctrl As Control, _
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal ctrl As Control, _
                        ByVal prop As cProperty, _
                        Optional ByVal aItems As Object() = Nothing)
 
-            MyBase.New(ctrl, prop.GetValueType(), aItems, prop.GetVariableMetadata())
+            MyBase.New(uic, ctrl, prop.GetValueType(), aItems, prop.GetVariableMetadata())
 
             ' Store relevant bits
             Me.m_prop = prop
@@ -173,7 +174,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Event handler, called when the wrapped control receives focus. Handled to fire 
-        ''' an application-wide <see cref="PropertySelectionCommand">PropertySelectionCommand</see>.
+        ''' an application-wide <see cref="cPropertySelectionCommand">PropertySelectionCommand</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub OnGotFocus(ByVal sender As Object, ByVal e As System.EventArgs)

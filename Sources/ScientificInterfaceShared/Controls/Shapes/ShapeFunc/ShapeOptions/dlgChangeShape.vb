@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: dlgChangeShape.vb,v $
-' Revision 1.4  2009/03/19 16:02:25  jeroens
-' Added FormatProvider.Release
-'
-' Revision 1.3  2009/02/26 21:41:56  jeroens
-' Fixed hyperbolic / sigmoid confusion
-'
-' Revision 1.2  2009/02/26 06:33:51  sherman
-' Enabled Y-end for all shapes.
-'
-' Revision 1.1  2008/12/15 15:36:38  jeroens
-' Moved from ScInt
-'
-' Revision 1.1  2008/09/26 07:31:42  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -41,6 +21,7 @@ Namespace Controls
 
 #Region " Private vars "
 
+        Private m_uic As cUIContext = Nothing
         ''' <summary></summary>
         Private m_shape As cForcingFunction = Nothing
         ''' <summary>Copy of the original shape to work on.</summary>
@@ -60,17 +41,18 @@ Namespace Controls
 
 #Region " Constructor "
 
-        Public Sub New(ByRef shape As cForcingFunction)
+        Public Sub New(ByVal uic As cUIContext, ByVal shape As cForcingFunction)
 
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
 
-            ' This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            ' Sanity check
+            ' Sanity checks
+            Debug.Assert(uic IsNot Nothing)
             Debug.Assert(shape IsNot Nothing)
 
             ' Init
+            Me.m_uic = uic
             Me.m_shape = shape
             Me.m_asDataWork = shape.ShapeData
 
@@ -85,16 +67,16 @@ Namespace Controls
 
             Me.CenterToParent()
 
-            Me.m_fpYZero = New cEwEFormatProvider(Me.m_txbYZero, GetType(Single))
+            Me.m_fpYZero = New cEwEFormatProvider(Me.m_uic, Me.m_txbYZero, GetType(Single))
             Me.m_fpYZero.Value = Math.Max(0, Me.m_shape.YZero)
 
-            Me.m_fpYBase = New cEwEFormatProvider(Me.m_txbYBase, GetType(Single))
+            Me.m_fpYBase = New cEwEFormatProvider(Me.m_uic, Me.m_txbYBase, GetType(Single))
             Me.m_fpYBase.Value = CSng(IIf(Me.m_shape.YBase <= 0, 0.5!, Me.m_shape.YBase))
 
-            Me.m_fpYEnd = New cEwEFormatProvider(Me.m_txbYEnd, GetType(Single))
+            Me.m_fpYEnd = New cEwEFormatProvider(Me.m_uic, Me.m_txbYEnd, GetType(Single))
             Me.m_fpYEnd.Value = CSng(IIf(Me.m_shape.YEnd <= 0, 1.0!, Me.m_shape.YEnd))
 
-            Me.m_fpSteep = New cEwEFormatProvider(Me.m_txbSteep, GetType(Single))
+            Me.m_fpSteep = New cEwEFormatProvider(Me.m_uic, Me.m_txbSteep, GetType(Single))
             Me.m_fpSteep.Value = CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
 
             Me.m_lbShape.SelectedIndex = Me.m_shape.ShapeFunctionType

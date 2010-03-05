@@ -67,20 +67,18 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim pm As cPropertyManager = Me.PropertyManager
-
+            Dim fleet As cEcosimFleetOutput = Nothing
             rbGear.Checked = True
 
             'summary
-            Me.m_fpStartSum = New cPropertyFormatProvider(pm, Me.txtSumStart, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumStart)
-            Me.m_fpEndSum = New cPropertyFormatProvider(pm, Me.txtSumEnd, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumEnd)
-            Me.m_fpNumSteps = New cPropertyFormatProvider(pm, Me.udNumTimeSteps, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumNTimeSteps)
+            Me.m_fpStartSum = New cPropertyFormatProvider(Me.UIContext, Me.txtSumStart, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumStart)
+            Me.m_fpEndSum = New cPropertyFormatProvider(Me.UIContext, Me.txtSumEnd, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumEnd)
+            Me.m_fpNumSteps = New cPropertyFormatProvider(Me.UIContext, Me.udNumTimeSteps, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumNTimeSteps)
 
             cbGears.Items.Clear()
-            Dim efo As cEcosimFleetOutput = Nothing
             For i As Integer = 0 To m_Core.nFleets 'includes the 'combined fleets' object
-                efo = m_Core.EcosimFleetOutput(i)
-                cbGears.Items.Add(efo.Name)
+                fleet = m_Core.EcosimFleetOutput(i)
+                cbGears.Items.Add(fleet.Name)
             Next
             cbGears.SelectedIndex = 0
 

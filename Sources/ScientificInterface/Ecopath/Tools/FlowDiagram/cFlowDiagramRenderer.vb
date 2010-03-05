@@ -76,6 +76,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Public Sub ProcessMouseMove(ByVal g As Graphics, ByVal rc As Rectangle, ByVal pt As PointF)
 
             Dim iNode As Integer = 0
+            Dim ft As Font = Me.m_data.UIContext.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
 
             ' Dragging?
             Select Case Me.m_dragMode
@@ -85,7 +86,7 @@ Namespace Ecopath.Controls.FlowDiagram
                     ' Not dragging: determine which node to highlight
                     Me.HighlightNode = 0
 
-                    iNode = Me.GetLabelAtPoint(rc, pt, g)
+                    iNode = Me.GetLabelAtPoint(rc, pt, g, ft)
                     If iNode > 0 Then
                         Me.HighlightNode = iNode
                     Else
@@ -126,14 +127,18 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' <param name="rc"></param>
         ''' <param name="pt"></param>
         ''' <param name="g">Graphics to measure label dimensions with.</param>
+        ''' <param name="font">Font to measure label dimension with.</param>
         ''' <returns></returns>
-        Private Function GetLabelAtPoint(ByVal rc As Rectangle, ByVal pt As PointF, ByVal g As Graphics) As Integer
+        Private Function GetLabelAtPoint(ByVal rc As Rectangle, _
+                                         ByVal pt As PointF, _
+                                         ByVal g As Graphics, _
+                                         ByVal font As Font) As Integer
 
             Dim iGroup As Integer = 1
             Dim iLabelAtPoint As Integer = 0
 
             While (iGroup <= Me.m_data.NumGroups) And (iLabelAtPoint = 0)
-                If Me.m_tree.IsLabelAtPoint(rc, pt, iGroup, Me.m_data.GroupName(iGroup), g) Then
+                If Me.m_tree.IsLabelAtPoint(rc, pt, iGroup, Me.m_data.GroupName(iGroup), g, font) Then
                     iLabelAtPoint = iGroup
                 End If
                 iGroup += 1
@@ -188,11 +193,12 @@ Namespace Ecopath.Controls.FlowDiagram
             ' Find the node under the cursor
             Dim iLabel As Integer = 0
             Dim iNode As Integer = 0
+            Dim ft As Font = Me.m_data.RenderFont
 
             Me.HighlightNode = 0
             Me.m_ptDragOffset = pt
 
-            iLabel = Me.GetLabelAtPoint(rc, pt, g)
+            iLabel = Me.GetLabelAtPoint(rc, pt, g, ft)
             If iLabel > 0 Then
                 Me.HighlightNode = iLabel
                 Me.m_dragMode = eDragMode.Label

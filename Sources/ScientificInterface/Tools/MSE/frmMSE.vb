@@ -108,17 +108,15 @@ Public Class frmMSE
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Dim pm As cPropertyManager = Me.PropertyManager
-
         Me.m_MSE = Me.UIContext.Core.MSEManager
 
-        Me.m_fpNTrials = New cPropertyFormatProvider(pm, Me.txNTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
-        Me.m_fpUsePlugin = New cPropertyFormatProvider(pm, Me.ckPlugin, Me.m_MSE.ModelParameters, eVarNameFlags.MSEUseEconomicPlugin)
-        Me.m_fpSave = New cPropertyFormatProvider(pm, Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
+        Me.m_fpNTrials = New cPropertyFormatProvider(Me.UIContext, Me.txNTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
+        Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.UIContext, Me.ckPlugin, Me.m_MSE.ModelParameters, eVarNameFlags.MSEUseEconomicPlugin)
+        Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
 
-        Me.m_fpForecast = New cPropertyFormatProvider(pm, Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
-        Me.m_fpSBPower = New cPropertyFormatProvider(pm, Me.txSBPower, Me.m_MSE.ModelParameters, eVarNameFlags.MSEAssessPower)
-        Me.m_fpKalman = New cPropertyFormatProvider(pm, Me.txKalmanGain, Me.m_MSE.ModelParameters, eVarNameFlags.MSEKalmanGain)
+        Me.m_fpForecast = New cPropertyFormatProvider(Me.UIContext, Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
+        Me.m_fpSBPower = New cPropertyFormatProvider(Me.UIContext, Me.txSBPower, Me.m_MSE.ModelParameters, eVarNameFlags.MSEAssessPower)
+        Me.m_fpKalman = New cPropertyFormatProvider(Me.UIContext, Me.txKalmanGain, Me.m_MSE.ModelParameters, eVarNameFlags.MSEKalmanGain)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
 

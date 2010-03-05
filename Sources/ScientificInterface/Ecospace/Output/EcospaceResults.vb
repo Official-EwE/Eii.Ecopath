@@ -38,11 +38,10 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
-            Dim pm As cPropertyManager = Me.PropertyManager
 
-            Me.m_fpSumStartTime = New cPropertyFormatProvider(pm, Me.m_tbSumStartTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeStart)
-            Me.m_fpSumEndTime = New cPropertyFormatProvider(pm, Me.m_tbSumEndTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeEnd)
-            Me.m_fpSumLength = New cPropertyFormatProvider(pm, Me.m_nudSumLength, ecospaceModelParams, eVarNameFlags.EcospaceNumberSummaryTimeSteps)
+            Me.m_fpSumStartTime = New cPropertyFormatProvider(Me.UIContext, Me.m_tbSumStartTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeStart)
+            Me.m_fpSumEndTime = New cPropertyFormatProvider(Me.UIContext, Me.m_tbSumEndTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeEnd)
+            Me.m_fpSumLength = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSumLength, ecospaceModelParams, eVarNameFlags.EcospaceNumberSummaryTimeSteps)
 
             'Initialize the results grid
             Me.m_GridGear = New cGridEcospaceResultsGear
@@ -56,7 +55,6 @@ Namespace Ecospace
             Me.m_plResultsGrid.Controls.Add(m_GridGear)
             Me.m_plResultsGrid.Controls.Add(m_GridGroup)
             Me.m_plResultsGrid.Controls.Add(m_GridRegion)
-
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 

@@ -882,7 +882,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Seclection change event handler; implemented to fire a 
-        ''' <see cref="PropertySelectionCommand">PropertySelectCommand</see>.
+        ''' <see cref="cPropertySelectionCommand">property select command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub OnSelectionChange(ByVal sender As Object, ByVal e As SourceGrid2.SelectionChangeEventArgs)

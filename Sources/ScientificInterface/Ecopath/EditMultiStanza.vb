@@ -55,7 +55,7 @@ Namespace Ecopath
             For iIndex As Integer = 0 To Me.m_uic.Core.nStanzas - 1
                 lItems.Add(Me.m_uic.Core.StanzaGroups(iIndex))
             Next
-            Me.m_fpStanza = New cEwEFormatProvider(Me.m_cmbStanzaGroups, GetType(Integer), lItems.ToArray())
+            Me.m_fpStanza = New cEwEFormatProvider(Me.m_uic, Me.m_cmbStanzaGroups, GetType(Integer), lItems.ToArray())
 
             ' Find stanza for initial group
             If Me.m_groupInitial IsNot Nothing Then
@@ -66,10 +66,10 @@ Namespace Ecopath
             Me.m_grid.StanzaGroup = DirectCast(Me.m_fpStanza.Items(CInt(Me.m_fpStanza.Value)), cStanzaGroup)
             Me.m_grid.UIContext = Me.m_uic
 
-            Me.m_fpK = New cEwEFormatProvider(Me.m_txtK, GetType(Single))
-            Me.m_fpRecPwr = New cEwEFormatProvider(Me.m_txtRecPwr, GetType(Single))
-            Me.m_fpBab = New cEwEFormatProvider(Me.m_txtBAB, GetType(Single))
-            Me.m_fpWmatWinf = New cEwEFormatProvider(Me.m_txtWmatWinf, GetType(Single))
+            Me.m_fpK = New cEwEFormatProvider(Me.m_uic, Me.m_txtK, GetType(Single))
+            Me.m_fpRecPwr = New cEwEFormatProvider(Me.m_uic, Me.m_txtRecPwr, GetType(Single))
+            Me.m_fpBab = New cEwEFormatProvider(Me.m_uic, Me.m_txtBAB, GetType(Single))
+            Me.m_fpWmatWinf = New cEwEFormatProvider(Me.m_uic, Me.m_txtWmatWinf, GetType(Single))
 
             ' Gather forcing functions
             lItems.Clear()
@@ -81,7 +81,7 @@ Namespace Ecopath
             Else
                 lItems.Add(My.Resources.PROMPT_ECOSIM_REQUIRED)
             End If
-            Me.m_fpFF = New cEwEFormatProvider(Me.m_cmbFF, GetType(Integer), lItems.ToArray)
+            Me.m_fpFF = New cEwEFormatProvider(Me.m_uic, Me.m_cmbFF, GetType(Integer), lItems.ToArray)
             If bEcosimLoaded Then
                 Me.m_fpFF.Style = cStyleGuide.eStyleFlags.OK
             Else

@@ -79,17 +79,18 @@ Namespace Controls.EwEGrid
         End Property
 
         Private Function GetUnitString(ByVal unitType As cStyleGuide.eUnitType) As String
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+
             Dim strUnitString As String = ""
+
             Select Case unitType
                 Case cStyleGuide.eUnitType.Currency
-                    strUnitString = sg.CurrencyUnitText(sg.CurrencyUnit)
+                    strUnitString = Me.m_sg.CurrencyUnitText(Me.m_sg.CurrencyUnit)
                 Case cStyleGuide.eUnitType.Time
-                    strUnitString = sg.TimeUnitText(sg.TimeUnit)
+                    strUnitString = Me.m_sg.TimeUnitText(Me.m_sg.TimeUnit)
                 Case cStyleGuide.eUnitType.Monetary
-                    strUnitString = sg.MonetaryUnitText(sg.MonetaryUnit)
+                    strUnitString = Me.m_sg.MonetaryUnitText(Me.m_sg.MonetaryUnit)
                 Case cStyleGuide.eUnitType.Nominal
-                    strUnitString = sg.NominalUnitText()
+                    strUnitString = Me.m_sg.NominalUnitText()
                 Case Else
                     Debug.Assert(False)
             End Select

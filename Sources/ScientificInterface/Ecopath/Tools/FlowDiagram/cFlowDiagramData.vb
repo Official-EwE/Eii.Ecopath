@@ -4,18 +4,47 @@ Imports EwECore
 Namespace Ecopath.Controls.FlowDiagram
 
     Public Class cFlowDiagramData
+        Implements IUIElement
 
         Private m_uic As cUIContext = Nothing
 
 #Region " Constructor "
 
         Public Sub New(ByVal uic As cUIContext)
-            Me.m_uic = uic
+            Me.UIContext = uic
         End Sub
 
 #End Region ' Constructor
 
 #Region " Properties "
+
+        Friend Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Private Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
+
+        Public ReadOnly Property RenderFont() As Font
+            Get
+                Return Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
+            End Get
+        End Property
+
+        Public ReadOnly Property TextColor() As Color
+            Get
+                Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+            End Get
+        End Property
+
+        Public ReadOnly Property HighlightColor() As Color
+            Get
+                Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+            End Get
+        End Property
 
         Public ReadOnly Property NumGroups() As Integer
             Get

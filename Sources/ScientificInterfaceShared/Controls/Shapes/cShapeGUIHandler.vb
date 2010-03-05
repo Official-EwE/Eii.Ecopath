@@ -348,7 +348,7 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Sub ShapeOptions()
-            Dim dlg As New dlgGraphDisplayOptions(Me.m_sketchPad)
+            Dim dlg As New dlgGraphDisplayOptions(Me.UIContext, Me.m_sketchPad)
             dlg.ShowDialog()
         End Sub
 
@@ -1374,7 +1374,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub ChangeFFShape()
-            Dim dlg As New dlgChangeShape(DirectCast(Me.SelectedShape, cForcingFunction))
+            Dim dlg As New dlgChangeShape(Me.UIContext, DirectCast(Me.SelectedShape, cForcingFunction))
             dlg.ShowDialog()
         End Sub
 

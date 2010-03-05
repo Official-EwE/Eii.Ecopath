@@ -233,9 +233,9 @@ Namespace Ecospace.Basemap.Layers
             Me.m_lblDescription.Visible = False
             Me.m_tbDescription.Visible = False
 
-            Me.m_fpName = New cEwEFormatProvider(Me.m_tbNameValue, GetType(String))
-            Me.m_fpWeight = New cEwEFormatProvider(Me.m_nudWeight, GetType(Single))
-            Me.m_fpDescription = New cEwEFormatProvider(Me.m_tbNameValue, GetType(String))
+            Me.m_fpName = New cEwEFormatProvider(Me.m_uic, Me.m_tbNameValue, GetType(String))
+            Me.m_fpWeight = New cEwEFormatProvider(Me.m_uic, Me.m_nudWeight, GetType(Single))
+            Me.m_fpDescription = New cEwEFormatProvider(Me.m_uic, Me.m_tbNameValue, GetType(String))
 
             If (Me.HasUniqueSource()) Then
                 Me.m_fpName.Enabled = True

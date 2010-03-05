@@ -43,12 +43,11 @@ Namespace Ecotracer
             If (Me.UIContext Is Nothing) Then Return
 
             Dim scenarioDef As cEcotracerScenario = m_core.EcotracerScenarios(m_core.ActiveEcotracerScenarioIndex)
-            Dim pm As cPropertyManager = Me.PropertyManager
 
-            Me.m_fpScenarioName = New cPropertyFormatProvider(pm, Me.m_tbName, scenarioDef, eVarNameFlags.Name)
-            Me.m_fpScenarioDescription = New cPropertyFormatProvider(pm, Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
-            Me.m_fpAuthor = New cPropertyFormatProvider(pm, Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
-            Me.m_fpContact = New cPropertyFormatProvider(pm, Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
+            Me.m_fpScenarioName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbName, scenarioDef, eVarNameFlags.Name)
+            Me.m_fpScenarioDescription = New cPropertyFormatProvider(Me.UIContext, Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
+            Me.m_fpAuthor = New cPropertyFormatProvider(Me.UIContext, Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
+            Me.m_fpContact = New cPropertyFormatProvider(Me.UIContext, Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
 
             ' Try this
             Me.ConnectToEcosim(True)
