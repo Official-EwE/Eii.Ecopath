@@ -29,15 +29,16 @@ Namespace Ecospace.Basemap.Layers
 
         Public Overrides Sub StartEdit(ByVal ptClick As Point)
 
+            ' Clicked on data cell?
+            If Object.Equals(Layer.Value(ptClick.Y, ptClick.X), Layer.ValueSet) Then
+                ' #Yes: start clearing values
+                Me.CellValue = Layer.ValueClear
+            Else
+                ' #No: start setting values
+                Me.CellValue = Layer.ValueSet
+            End If
+
             If Me.GUI IsNot Nothing Then
-                ' Clicked on data cell?
-                If Object.Equals(Layer.Value(ptClick.Y, ptClick.X), Layer.ValueSet) Then
-                    ' #Yes: start clearing values
-                    Me.CellValue = Layer.ValueClear
-                Else
-                    ' #No: start setting values
-                    Me.CellValue = Layer.ValueSet
-                End If
                 ' Trigger GUI to update to the changes
                 Me.GUI.UpdateContent()
             End If
