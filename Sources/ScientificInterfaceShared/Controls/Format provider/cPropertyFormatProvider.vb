@@ -1,18 +1,4 @@
-﻿' =============================================================================
-'
-' $Log: cPropertyFormatProvider.vb,v $
-' Revision 1.3  2009/05/28 12:37:13  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.2  2009/05/11 01:50:49  jeroens
-' Renamed command classes
-'
-' Revision 1.1  2009/03/19 16:00:33  jeroens
-' Split files
-'
-' =============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -48,13 +34,15 @@ Namespace Controls
         ''' <param name="varName"></param>
         ''' <param name="sourceSec"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal ctrl As Control, _
+        Public Sub New(ByVal pm As cPropertyManager, _
+                       ByVal ctrl As Control, _
                        ByVal source As cCoreInputOutputBase, _
-                       ByVal varName As eVarNameFlags, Optional ByVal sourceSec As cCoreInputOutputBase = Nothing, _
+                       ByVal varName As eVarNameFlags, _
+                       Optional ByVal sourceSec As cCoreInputOutputBase = Nothing, _
                        Optional ByVal aItems As Object() = Nothing)
 
             ' Get underlying cProperty for these values
-            Me.New(ctrl, cPropertyManager.GetInstance().GetProperty(source, varName, sourceSec), aItems)
+            Me.New(ctrl, pm.GetProperty(source, varName, sourceSec), aItems)
         End Sub
 
         ''' -----------------------------------------------------------------------

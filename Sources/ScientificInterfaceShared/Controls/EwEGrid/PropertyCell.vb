@@ -85,6 +85,10 @@ Namespace Controls.EwEGrid
 
         End Sub
 
+        Protected Overrides Sub Finalize()
+            MyBase.Finalize()
+        End Sub
+
 #End Region ' Construction 
 
 #Region " Data (property)"
@@ -210,9 +214,6 @@ Namespace Controls.EwEGrid
 
 #End Region ' Updates (property)
 
-        Protected Overrides Sub Finalize()
-            MyBase.Finalize()
-        End Sub
     End Class
 
 End Namespace

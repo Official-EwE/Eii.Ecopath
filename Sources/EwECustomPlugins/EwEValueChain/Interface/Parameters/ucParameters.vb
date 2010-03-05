@@ -18,7 +18,7 @@ Public Class ucParameters
     Implements IDisposable
 
     ''' <summary>The core currently linked to.</summary>
-    Private m_core As cCore = Nothing
+    Private m_uic As cUIContext = Nothing
     ''' <summary>The value chain parameters that this page operates on.</summary>
     Private m_params As cParameters = Nothing
     ''' <summary>Smartibits</summary>
@@ -36,14 +36,14 @@ Public Class ucParameters
     ''' Constructor.
     ''' </summary>
     ''' <param name="data">The data to paramterize.</param>
-    ''' <param name="core">Core providing EwE data.</param>
+    ''' <param name="uic">UI context of EwE GUI.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal data As cData, ByVal core As cCore)
+    Public Sub New(ByVal data As cData, ByVal uic As cUIContext)
 
         Me.InitializeComponent()
 
         Me.m_params = data.Parameters
-        Me.m_core = core
+        Me.m_uic = uic
 
     End Sub
 
@@ -66,8 +66,8 @@ Public Class ucParameters
         ' Init check boxes
         Try
 
-            For iFleet As Integer = 1 To Me.m_core.nFleets
-                Me.m_clbFleets.Items.Add(Me.m_core.FleetInputs(iFleet).Name)
+            For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
+                Me.m_clbFleets.Items.Add(Me.m_uic.Core.FleetInputs(iFleet).Name)
             Next iFleet
 
         Catch ex As Exception
@@ -78,12 +78,12 @@ Public Class ucParameters
         Me.UpdateControlValues()
 
         ' Start listening to core state changes
-        AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+        AddHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
         ' Start listening to parameter changes
         AddHandler Me.m_params.OnChanged, AddressOf OnParametersChanged
 
         ' Force core state dependent initialization
-        Me.OnCoreStateChanged(Me.m_core.StateMonitor)
+        Me.OnCoreStateChanged(Me.m_uic.Core.StateMonitor)
 
     End Sub
 
@@ -96,7 +96,7 @@ Public Class ucParameters
         MyBase.OnHandleDestroyed(e)
 
         ' Stop listening to core state changes
-        RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+        RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
         ' Stop listening to parameter changes
         RemoveHandler Me.m_params.OnChanged, AddressOf OnParametersChanged
 
@@ -249,8 +249,10 @@ Public Class ucParameters
 
             If (Me.m_fpBaseYear Is Nothing) Then
                 ' Create Ecosim dependent format provider(s)
-                Me.m_fpBaseYear = New cPropertyFormatProvider(Me.m_nudBaseYear, _
-                                            Me.m_core.SearchObjective.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
+                Me.m_fpBaseYear = New cPropertyFormatProvider(Me.m_uic.PropertyManager, _
+                                                              Me.m_nudBaseYear, _
+                                                              Me.m_uic.Core.SearchObjective.ObjectiveParameters, _
+                                                              eVarNameFlags.SearchBaseYear)
             End If
 
         Else

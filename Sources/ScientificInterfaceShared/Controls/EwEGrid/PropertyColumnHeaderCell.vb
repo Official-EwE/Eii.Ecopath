@@ -53,7 +53,8 @@ Namespace Controls.EwEGrid
             Me.VisualModel = g_visualizer
 
             If (prop.VarName <> eVarNameFlags.Name) Then
-                Me.m_propTooltip = cPropertyManager.GetInstance().GetProperty(prop.Source, eVarNameFlags.Name, prop.SourceSec)
+                Dim pm As cPropertyManager = prop.PropertyManager
+                Me.m_propTooltip = pm.GetProperty(prop.Source, eVarNameFlags.Name, prop.SourceSec)
                 AddHandler Me.m_propTooltip.PropertyChanged, AddressOf OnPropertyChanged
                 Me.UpdateTooltip()
             End If

@@ -52,7 +52,7 @@ Public Class frmMain
 
         Select Case e.Node.Name
             Case "ndParameters"
-                Me.ShowForm(New ucParameters(Me.m_plugin.Data, Me.m_plugin.Core))
+                Me.ShowForm(New ucParameters(Me.m_plugin.Data, Me.m_plugin.Context))
             Case "ndProducer"
                 Me.ShowForm(New ucUnitGrid(Me.m_plugin.Data, cUnitFactory.eUnitType.Producer))
             Case "ndProcessing"
