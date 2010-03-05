@@ -272,8 +272,8 @@ Namespace Ecospace
         Private Sub FireSelectionCommand(ByVal layer As cLayer)
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
-            Dim cmd As cCommand = cmdh.GetCommand(PropertySelectionCommand.COMMAND_NAME)
-            Dim sc As PropertySelectionCommand = Nothing
+            Dim cmd As cCommand = cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME)
+            Dim sc As cPropertySelectionCommand = Nothing
             Dim pm As cPropertyManager = Me.m_uic.PropertyManager
             Dim prop As cProperty = Nothing
 
@@ -282,8 +282,8 @@ Namespace Ecospace
             End If
 
             If cmd IsNot Nothing Then
-                If (TypeOf cmd Is PropertySelectionCommand) Then
-                    sc = DirectCast(cmd, PropertySelectionCommand)
+                If (TypeOf cmd Is cPropertySelectionCommand) Then
+                    sc = DirectCast(cmd, cPropertySelectionCommand)
                     sc.Invoke(prop)
                 End If
             End If

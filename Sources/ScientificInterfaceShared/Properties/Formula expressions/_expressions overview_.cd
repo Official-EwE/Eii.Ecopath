@@ -33,7 +33,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ScientificInterfaceShared.Properties.cExpression" Collapsed="true">
-    <Position X="11" Y="2.75" Width="1.5" />
+    <Position X="11" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEAAAAAAIAAAAAAAAAAAAAIAAAAAAAEAAAAAAAAAAAA=</HashCode>
       <FileName>Properties\Formula expressions\cExpression.vb</FileName>
@@ -64,7 +64,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ScientificInterfaceShared.Properties.cFormulaProperty" Collapsed="true">
-    <Position X="11" Y="0.75" Width="1.5" />
+    <Position X="14.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAADAAAAAA=</HashCode>
       <FileName>Properties\cFormulaProperty.vb</FileName>
@@ -72,6 +72,13 @@
     <ShowAsAssociation>
       <Field Name="m_formula" />
     </ShowAsAssociation>
+  </Class>
+  <Class Name="ScientificInterfaceShared.Properties.cSingleProperty" Collapsed="true">
+    <Position X="14.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAQAAAAAAAAAAAAABgEgAAAAABA=</HashCode>
+      <FileName>Properties\cSingleProperty.vb</FileName>
+    </TypeIdentifier>
   </Class>
   <Font Name="Tahoma" Size="8.25" />
 </ClassDiagram>

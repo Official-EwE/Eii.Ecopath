@@ -108,7 +108,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdLoadWeightTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdPluginGUICommand As PluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
-    Private WithEvents m_cmdPropertySelection As PropertySelectionCommand = Nothing
+    Private WithEvents m_cmdPropertySelection As cPropertySelectionCommand = Nothing
     Private WithEvents m_cmdDisplayGroups As cDisplayGroupsCommand = Nothing
     Private WithEvents m_cmdEnableEcotracer As cCommand = Nothing
     Private WithEvents m_cmdEstimateVs As cCommand = Nothing
@@ -1005,7 +1005,7 @@ Public Class AppLauncher
         cmdh.Add(Me.m_cmdPluginGUICommand)
 
         ' Create the one and only selection command
-        Me.m_cmdPropertySelection = New PropertySelectionCommand()
+        Me.m_cmdPropertySelection = New cPropertySelectionCommand()
         cmdh.Add(Me.m_cmdPropertySelection)
 
         Me.m_cmdDisplayGroups = New cDisplayGroupsCommand()

@@ -13,7 +13,7 @@ Public Class RemarkPanel
 
     Private m_uic As cUIContext = Nothing
     ''' <summary>The property selection command to listen to.</summary>
-    Private m_cmd As PropertySelectionCommand = Nothing
+    Private m_cmd As cPropertySelectionCommand = Nothing
     ''' <summary>The currently selected property.</summary>
     Private m_aprop() As cProperty = Nothing
     ''' <summary>State monitor to observe.</summary>
@@ -32,7 +32,7 @@ Public Class RemarkPanel
         Me.m_uic = uic
 
         ' Create property selection command
-        Me.m_cmd = DirectCast(Me.m_uic.CommandHander.GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
+        Me.m_cmd = DirectCast(Me.m_uic.CommandHander.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
         AddHandler Me.m_cmd.OnInvoke, AddressOf OnInvoke
 
         ' Hook up to core state monitor

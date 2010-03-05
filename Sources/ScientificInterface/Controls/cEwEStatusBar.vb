@@ -16,7 +16,7 @@ Public Class cEwEStatusBar
     Private m_uic As cUIContext = Nothing
 
     ''' <summary>The property selection command to listen to.</summary>
-    Private WithEvents m_cmd As PropertySelectionCommand = Nothing
+    Private WithEvents m_cmd As cPropertySelectionCommand = Nothing
     ''' <summary>Selected properties.</summary>
     Private m_aprop As cProperty() = Nothing
 
@@ -46,7 +46,7 @@ Public Class cEwEStatusBar
         Dim an As AssemblyName = Assembly.GetExecutingAssembly().GetName()
 
         Me.m_uic = uic
-        Me.m_cmd = DirectCast(Me.m_uic.CommandHander.GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
+        Me.m_cmd = DirectCast(Me.m_uic.CommandHander.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
         Me.m_csm = Me.m_uic.Core.StateMonitor
         Me.m_tslVersion.Text = an.Version.ToString()
 

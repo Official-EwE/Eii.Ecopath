@@ -1,37 +1,12 @@
-'==============================================================================
-'
-' $Log: PropertySelectionCommand.vb,v $
-' Revision 1.2  2009/05/11 01:51:00  jeroens
-' Renamed command classes
-'
-' Revision 1.1  2008/09/26 07:31:21  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2008/06/01 23:45:45  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.2  2008/05/29 22:22:51  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.1  2007/07/03 07:18:42  jeroens
-' * Renamed
-'
-' Revision 1.2  2007/07/01 05:18:26  jeroens
-' * Command distributes a list of properties
-'
-' Revision 1.1  2006/10/03 03:24:28  jeroens
-' * Renamed from SelectionCommand
-'
-' Revision 1.1  2006/10/02 02:59:45  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -41,7 +16,7 @@ Namespace Properties
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     <CLSCompliant(False)> _
-    Public Class PropertySelectionCommand
+    Public Class cPropertySelectionCommand
         Inherits cCommand
 
         ''' <summary>Public available name for this command</summary>
