@@ -51,8 +51,10 @@ Namespace Ecospace
         'This method init the cells, its visual and data models. 
         Protected Overrides Sub FillData()
 
+            If (Me.UIContext Is Nothing) Then Return
+
             'This method init the cells, its visual and data models. 
-            Dim core As cCore = cCore.GetInstance()
+            Dim core As cCore = Me.Core
 
             Dim aName(core.nFleets) As String
             For i As Integer = 1 To core.nFleets
@@ -69,7 +71,9 @@ Namespace Ecospace
 
         Private Sub UpdateData()
 
-            Dim core As cCore = cCore.GetInstance()
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim core As cCore = Me.Core
             Dim source As cEcospaceFleetOutput = Nothing
 
             Dim totalValue(0 To 11) As Single

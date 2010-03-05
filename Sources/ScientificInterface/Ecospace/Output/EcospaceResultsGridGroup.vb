@@ -14,7 +14,6 @@ Namespace Ecospace
     Public Class cGridEcospaceResultsGroup
         : Inherits gridResultsBase
 
-        Private m_sg As cStyleGuide = Nothing
         Private m_iFleetSelected As Integer
         Private m_iNumVisibleGroups As Integer
 
@@ -23,9 +22,22 @@ Namespace Ecospace
 
             Me.m_iNumVisibleGroups = 0
 
-            Me.m_sg = cStyleGuide.GetInstance()
-            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
+
+        Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+                If value IsNot Nothing Then
+                    RemoveHandler value.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+                MyBase.UIContext = value
+                If value IsNot Nothing Then
+                    AddHandler value.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+            End Set
+        End Property
 
         Public Property SelFleetIndex() As Integer
             Get
@@ -69,8 +81,10 @@ Namespace Ecospace
 
         Protected Overrides Sub FillData()
 
+            If Me.UIContext Is Nothing Then Return
+
             'This method init the cells, its visual and data models. 
-            Dim core As cCore = cCore.GetInstance()
+            Dim core As cCore = Me.Core
             Dim aCalc() As Integer = {4, 7, 10}
 
             Dim lName As New List(Of String)
@@ -78,7 +92,7 @@ Namespace Ecospace
 
             Me.m_iNumVisibleGroups = 0
             For iGroup As Integer = 1 To core.nGroups
-                If Me.m_sg.GroupVisible(iGroup) Then
+                If Me.StyleGuide.GroupVisible(iGroup) Then
                     lName.Add(core.EcospaceGroupOutput(iGroup).Name)
                     m_iNumVisibleGroups += 1
                 End If
@@ -93,7 +107,9 @@ Namespace Ecospace
 
         Private Sub UpdateData()
 
-            Dim core As cCore = cCore.GetInstance()
+            If Me.UIContext Is Nothing Then Return
+
+            Dim core As cCore = Me.UIContext.Core
             Dim source As cEcospaceGroupOutput = Nothing
             Dim irow As Integer
             Dim totalValue(0 To 10) As Single
@@ -102,7 +118,7 @@ Namespace Ecospace
             For iGroup As Integer = 1 To core.nGroups
 
                 'Only display selected groups
-                If Me.m_sg.GroupVisible(iGroup) Then
+                If Me.StyleGuide.GroupVisible(iGroup) Then
                     irow += 1
                     source = core.EcospaceGroupOutput(iGroup)
 
@@ -161,9 +177,9 @@ Namespace Ecospace
             End If
         End Sub
 
-        Private Sub OnDisposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Disposed
-            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+            Me.UIContext = Nothing
+            MyBase.OnHandleDestroyed(e)
         End Sub
 
 #End Region ' Events

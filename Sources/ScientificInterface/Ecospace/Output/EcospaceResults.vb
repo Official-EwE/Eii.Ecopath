@@ -1,44 +1,3 @@
-'==============================================================================
-'
-' $Log: EcospaceResults.vb,v $
-' Revision 1.11  2009/03/19 16:02:27  jeroens
-' Added FormatProvider.Release
-'
-' Revision 1.10  2009/02/05 17:48:39  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.9  2009/01/16 18:37:09  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.8  2009/01/16 17:17:50  joeb
-' Removed unused variable
-'
-' Revision 1.7  2009/01/15 22:39:56  joeb
-' Moved Ecospace start and end summary periods from Parameters form to Results form
-'
-' Revision 1.6  2009/01/13 21:32:47  joeb
-' Still making changes from merge of Summary into Output objects
-'
-' Revision 1.5  2009/01/13 21:18:17  joeb
-' Merged Ecospace summary objects into Ecospace Output objects
-'
-' Revision 1.4  2009/01/12 22:59:49  joeb
-' Fixed bugs 574 and 569
-'
-' Revision 1.3  2008/12/15 15:52:26  jeroens
-' no message
-'
-' Revision 1.2  2008/11/20 15:19:24  jeroens
-' Renamed classes
-'
-' Revision 1.1  2008/09/26 07:32:01  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.11  2008/06/25 00:26:22  sherman
-' Moved Ecospace Results into Node... still has refresh issues
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -53,8 +12,7 @@ Namespace Ecospace
 
     Public Class cFormEcospaceResults
 
-        ' The core reference
-        Private m_Core As cCore = Nothing
+#Region " Private vars "
 
         ' Results grid
         Private m_GridGear As cGridEcospaceResultsGear = Nothing
@@ -66,15 +24,25 @@ Namespace Ecospace
         Private m_fpSumEndTime As cEwEFormatProvider = Nothing
         Private m_fpSumLength As cEwEFormatProvider = Nothing
 
+#End Region ' Private vars
 
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
+            Me.InitializeComponent()
 
-            ' Add any initialization after the InitializeComponent() call.
-            ' Get the only core reference
-            m_Core = cCore.GetInstance()
+        End Sub
+
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
+            Dim pm As cPropertyManager = Me.PropertyManager
+
+            Me.m_fpSumStartTime = New cPropertyFormatProvider(pm, Me.tbSumStartTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeStart)
+            Me.m_fpSumEndTime = New cPropertyFormatProvider(pm, Me.tbSumEndTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeEnd)
+            Me.m_fpSumLength = New cPropertyFormatProvider(pm, Me.udSumLength, ecospaceModelParams, eVarNameFlags.EcospaceNumberSummaryTimeSteps)
 
             'Initialize the results grid
             m_GridGear = New cGridEcospaceResultsGear
@@ -86,32 +54,21 @@ Namespace Ecospace
             plResultsGrid.Controls.Add(m_GridGroup)
             plResultsGrid.Controls.Add(m_GridRegion)
 
+            m_GridGear.UIContext = Me.UIContext
+            m_GridGroup.UIContext = Me.UIContext
+            m_GridRegion.UIContext = Me.UIContext
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
-        End Sub
+            Me.PopulateResults()
 
-        Private Sub cFormEcospaceResults_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Disposed
-            Me.m_fpSumStartTime.Release()
-            Me.m_fpSumEndTime.Release()
-            Me.m_fpSumLength.Release()
-        End Sub
-
-        Private Sub EcospaceResults_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles MyBase.Load
-
-            Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_Core.EcospaceModelParameters()
-
-            Me.m_fpSumStartTime = New cPropertyFormatProvider(Me.tbSumStartTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeStart)
-            Me.m_fpSumEndTime = New cPropertyFormatProvider(Me.tbSumEndTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeEnd)
-            Me.m_fpSumLength = New cPropertyFormatProvider(Me.udSumLength, ecospaceModelParams, eVarNameFlags.EcospaceNumberSummaryTimeSteps)
-
-            PopulateResults()
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             Me.CoreComponents = Nothing
+            Me.m_fpSumStartTime.Release()
+            Me.m_fpSumEndTime.Release()
+            Me.m_fpSumLength.Release()
             MyBase.OnFormClosed(e)
         End Sub
 
@@ -122,16 +79,16 @@ Namespace Ecospace
             cbGears.Items.Clear()
 
             Dim efo As cEcospaceFleetOutput = Nothing
-            For i As Integer = 0 To m_Core.nFleets
-                efo = m_Core.EcospaceFleetOutput(i)
+            For i As Integer = 0 To Me.Core.nFleets
+                efo = Me.Core.EcospaceFleetOutput(i)
                 cbGears.Items.Add(efo.Name)
             Next
             cbGears.SelectedIndex = 0
 
             cbRegions.Items.Clear()
             Dim ero As cEcospaceRegionOutput = Nothing
-            For i As Integer = 0 To m_Core.nRegions
-                ero = m_Core.EcospaceRegionOutput(i)
+            For i As Integer = 0 To Me.Core.nRegions
+                ero = Me.Core.EcospaceRegionOutput(i)
                 cbRegions.Items.Add(ero.Name)
             Next
             cbRegions.SelectedIndex = 0

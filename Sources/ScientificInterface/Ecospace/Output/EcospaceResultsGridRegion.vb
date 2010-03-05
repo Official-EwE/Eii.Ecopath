@@ -52,8 +52,9 @@ Namespace Ecospace
 
         Protected Overrides Sub FillData()
 
-            'This method init the cells, its visual and data models. 
-            Dim core As cCore = cCore.GetInstance()
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim core As cCore = Me.Core
 
             Dim aName(core.nGroups) As String
             For i As Integer = 1 To core.nGroups
@@ -77,7 +78,9 @@ Namespace Ecospace
 
         Private Sub UpdateData()
 
-            Dim core As cCore = cCore.GetInstance()
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim core As cCore = Me.Core
             Try
 
                 Dim source As cEcospaceRegionOutput = core.EcospaceRegionOutput(Me.SelRegionIndex)
