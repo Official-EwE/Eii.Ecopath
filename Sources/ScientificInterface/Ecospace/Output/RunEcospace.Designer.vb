@@ -222,7 +222,6 @@ Namespace Ecospace
             'm_btnDisplayGroups
             '
             resources.ApplyResources(Me.m_btnDisplayGroups, "m_btnDisplayGroups")
-            Me.m_btnDisplayGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
             Me.m_btnDisplayGroups.Name = "m_btnDisplayGroups"
             Me.m_btnDisplayGroups.UseVisualStyleBackColor = True
             '

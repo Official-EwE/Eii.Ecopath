@@ -26,9 +26,6 @@ Namespace Ecospace
 
 #Region " Variables "
 
-        ''' <summary>The core reference.</summary>
-        Private m_core As cCore = Nothing
-
         ''' <summary>The previous number of timesteps UI has drawn.</summary>
         Private m_iTimeStepPrev As Integer
         ''' <summary>The current number of timesteps available to draw.</summary>
@@ -88,23 +85,6 @@ Namespace Ecospace
 
             Me.InitializeComponent()
 
-            Me.InitCoreParams()
-            Me.InitUIParams()
-            Me.InitMapPlot()
-            Me.InitDrawingThreads()
-
-        End Sub
-
-        Public Sub New(ByRef text As String)
-
-            'Call the default constructor
-            Me.New()
-
-            'Define the text of the content
-            Me.Text = text
-            'Define the tab text of the content
-            Me.TabText = text
-
         End Sub
 
 #End Region ' Construction and Destruction
@@ -113,20 +93,17 @@ Namespace Ecospace
 
         Private Sub InitCoreParams()
 
-            ' Get the core reference
-            Me.m_core = cCore.GetInstance()
-
             'Get the basemap
-            Me.m_layerDepth = Me.m_core.EcospaceBasemap.LayerDepth
+            Me.m_layerDepth = Me.Core.EcospaceBasemap.LayerDepth
 
             'Redim relative biomass results array
-            ReDim Me.m_as2RelBiomassResults(Me.m_core.nGroups, Me.m_core.nEcospaceTimeSteps)
+            ReDim Me.m_as2RelBiomassResults(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps)
 
             'Redim base biomass base result array
-            ReDim Me.m_asBaseBiomassResults(Me.m_core.nGroups)
+            ReDim Me.m_asBaseBiomassResults(Me.Core.nGroups)
 
             'get the ecospace stats object from the core
-            Me.m_spaceStats = Me.m_core.EcospaceStats
+            Me.m_spaceStats = Me.Core.EcospaceStats
 
         End Sub
 
@@ -140,8 +117,8 @@ Namespace Ecospace
 
             'Load group combo box
             Me.m_cbDisplayGroup.Items.Clear()
-            For i As Integer = 1 To Me.m_core.nGroups
-                Me.m_cbDisplayGroup.Items.Add(Me.m_core.EcospaceGroups(i).Name)
+            For i As Integer = 1 To Me.Core.nGroups
+                Me.m_cbDisplayGroup.Items.Add(Me.Core.EcospaceGroups(i).Name)
             Next
             Me.m_cbDisplayGroup.SelectedIndex = 0
             Me.m_iGroupToShow = 0
@@ -155,12 +132,12 @@ Namespace Ecospace
             'Hack warning: For initialization the map dimensions are set to the value supplied by the core's EcoSpaceBaseMap
             'the actual size of the map must be set from the EcoSpace Timestep results(See EcospaceTimeStepDelegate())
             'this should not be call once Ecospace has been run because the map dims can be out of sync
-            Me.m_iInCol = Me.m_core.EcospaceBasemap.InCol
-            Me.m_iInRow = Me.m_core.EcospaceBasemap.InRow
-            'm_Core.nGroups --> updated to nLivingGroups? Non - hidden groups? Check EwE5
+            Me.m_iInCol = Me.Core.EcospaceBasemap.InCol
+            Me.m_iInRow = Me.Core.EcospaceBasemap.InRow
+            'Core.nGroups --> updated to nLivingGroups? Non - hidden groups? Check EwE5
 
-            Me.CalcMapDimension(Me.m_core.nGroups, Me.m_iNumGroupPlotsVert, Me.m_iNumGroupPlotsHorz)
-            Me.CalcMapDimension(Me.m_core.nFleets, Me.m_iNumFleetPlotsVert, Me.m_iNumFleetPlotsHorz)
+            Me.CalcMapDimension(Me.Core.nGroups, Me.m_iNumGroupPlotsVert, Me.m_iNumGroupPlotsHorz)
+            Me.CalcMapDimension(Me.Core.nFleets, Me.m_iNumFleetPlotsVert, Me.m_iNumFleetPlotsHorz)
 
         End Sub
 
@@ -177,9 +154,9 @@ Namespace Ecospace
             Dim drawer As cMapDrawer
             Dim nThreads As Integer = Environment.ProcessorCount
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.m_core.nGroups)
+            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.Core.nGroups)
 
-            Me.m_nMapsPerThread = (Me.m_core.nGroups + nThreads - 1) \ nThreads
+            Me.m_nMapsPerThread = (Me.Core.nGroups + nThreads - 1) \ nThreads
             If Me.m_drawers Is Nothing Then
                 Me.m_drawers = New List(Of cMapDrawer)
             Else
@@ -189,7 +166,7 @@ Namespace Ecospace
             Me.InitOutputBitmaps()
 
             For i As Integer = 1 To nThreads
-                drawer = New cMapDrawer(i, Me.m_core)
+                drawer = New cMapDrawer(i, Me.Core)
                 drawer.Graphics = Graphics.FromImage(Me.m_bmpBiomassMap)
                 drawer.GroupColors = lColors
 
@@ -222,11 +199,19 @@ Namespace Ecospace
 #Region " Events "
 
         Protected Overrides Sub OnLoad(ByVal e As EventArgs)
+            MyBase.OnLoad(e)
+
+            If Me.UIContext Is Nothing Then Return
+
+            Me.InitCoreParams()
+            Me.InitUIParams()
+            Me.InitMapPlot()
+            Me.InitDrawingThreads()
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdDisplayGroups As cCommand = Nothing
             Dim pm As cPropertyManager = Me.PropertyManager
-            Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
+            Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
             Me.m_lblProgress.Text = ""
 
@@ -238,16 +223,16 @@ Namespace Ecospace
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             ' Start tracking core state monitor for Ecospace run states
-            AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
-
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
+            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
 
             Me.m_zgh = New cEcospaceZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_zgPlotLarge)
             Me.m_zgh.ShowPointValue = True
 
-            cmdDisplayGroups = cmdh.GetCommand("DisplayGroups")
+            cmdDisplayGroups = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
             If (cmdDisplayGroups IsNot Nothing) Then cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups)
+
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
             Me.UpdateStyleColors()
             Me.UpdateControls()
@@ -257,15 +242,15 @@ Namespace Ecospace
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmdDisplayGroups As cCommand = cmdh.GetCommand("DisplayGroups")
+            Dim cmdDisplayGroups As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
             If (cmdDisplayGroups IsNot Nothing) Then cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups)
 
-            Me.m_core.StopEcospace()
+            Me.Core.StopEcospace()
 
             Me.m_zgh.Detach()
 
             ' Stop tracking core state monitor for Ecospace run states
-            RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
 
             RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
             Me.m_sg = Nothing
@@ -321,7 +306,7 @@ Namespace Ecospace
 #Region " Biomass graph "
 
         Private Sub UpdateBiomassPlot()
-            For iGroup As Integer = 1 To m_core.nGroups
+            For iGroup As Integer = 1 To Core.nGroups
                 For iTimeStep As Integer = Me.m_iTimeStepPrev To Me.m_iTimeStepCur - 1
                     Me.m_zgh.AddValue(iGroup, Me.m_iTimeStepCur, Me.m_as2RelBiomassResults(iGroup, iTimeStep + 1))
                 Next
@@ -384,23 +369,37 @@ Namespace Ecospace
 
 #Region " Map plot "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Plot the biomass map via multiple threads.
+        ''' </summary>
+        ''' <param name="g"></param>
+        ''' -------------------------------------------------------------------
         Private Sub PlotBiomassMapThreaded(ByRef g As Graphics)
-
-            Dim drawer As cMapDrawer = Nothing
 
             ' Sanity check
             If Me.m_dataTimeStep Is Nothing Then Return
 
-            Dim sTSpy As Single = Me.m_core.EcospaceModelParameters.NumberOfTimeStepsPerYear
+            Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
             Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
+            Dim drawer As cMapDrawer = Nothing
+            Dim iNumVisGroups As Integer = 0
+            Dim lVisGroups As New List(Of Integer)
 
-            Console.WriteLine("Step {0} = year {1}, month {2} at {3}", Me.m_iTimeStepCur, iYear, iMonth, Me.m_core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+            For iGroup As Integer = 1 To Me.Core.nGroups
+                If Me.StyleGuide.GroupVisible(iGroup) Then
+                    lVisGroups.Add(iGroup)
+                    iNumVisGroups += 1
+                End If
+            Next
+
+            'Console.WriteLine("Step {0} = year {1}, month {2} at {3}", Me.m_iTimeStepCur, iYear, iMonth, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
 
             If Me.m_iTimeStepCur = 1 Then
                 'caution: hack)
-                Me.m_iNumGroupPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(Me.m_core.nGroups) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
-                Me.m_iNumGroupPlotsVert = CInt(Math.Ceiling(Me.m_core.nGroups / Me.m_iNumGroupPlotsHorz))
+                Me.m_iNumGroupPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVisGroups) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
+                Me.m_iNumGroupPlotsVert = CInt(Math.Ceiling(iNumVisGroups / Me.m_iNumGroupPlotsHorz))
             End If
 
             ' Clear background
@@ -419,8 +418,8 @@ Namespace Ecospace
 
                     For i As Integer = 0 To m_iNumGroupPlotsVert - 1
                         For j As Integer = 0 To m_iNumGroupPlotsHorz - 1
-                            Dim iGroup As Integer = i * m_iNumGroupPlotsHorz + j
-                            If iGroup < m_core.nGroups Then
+                            Dim iRect As Integer = i * m_iNumGroupPlotsHorz + j
+                            If iRect < Core.nGroups Then
                                 Dim origin As PointF = New PointF((m_iInCol + 1) * j + 1, i * (m_iInRow + 1) + 1)
                                 Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
                                                                         CInt(origin.Y * yScale), _
@@ -431,14 +430,16 @@ Namespace Ecospace
                             End If
                         Next
                     Next
-                    Dim ifirst As Integer = 1
+
+                    Dim ifirst As Integer = 0
                     Dim ilast As Integer = 0
+
                     For Each drawer In m_drawers
                         If drawer.AllowedToRun Then
                             'init the drawer to the latest values
                             drawer.OriginList = originList
                             drawer.RectList = rectList
-                            drawer.Font = Me.Font
+                            drawer.Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
 
                             If Me.m_rbDisplayRelBiomass.Checked Then
                                 drawer.Map = Me.m_dataTimeStep.BiomassMap
@@ -455,10 +456,12 @@ Namespace Ecospace
                             drawer.InRow = Me.m_iInRow
                             drawer.Month = iMonth
 
-                            ilast = Math.Min(ifirst + Me.m_nMapsPerThread - 1, Me.m_core.nGroups)
+                            ilast = Math.Min(ifirst + Me.m_nMapsPerThread - 1, iNumVisGroups - 1)
 
-                            drawer.GroupFirst = ifirst
-                            drawer.GroupLast = ilast
+                            drawer.ClearGroups()
+                            For i As Integer = ifirst To ilast
+                                drawer.AddGroup(lVisGroups(i), i)
+                            Next
                             drawer.ShowMPA = Me.m_bShowMPA
 
                             drawer.SignalState.Reset()
@@ -482,7 +485,7 @@ Namespace Ecospace
             ElseIf (Me.m_showGroupMode = eShowGroupType.ShowSingle) Then
 
                 Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-                Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.m_core.nGroups)
+                Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.Core.nGroups)
 
                 'Show one group at a time
                 If (Me.m_iGroupToShow > 0) Then
@@ -491,7 +494,7 @@ Namespace Ecospace
                                                           m_pbMap.Width - 20, _
                                                           m_pbMap.Height - 20)
 
-                    drawer = New cMapDrawer(0, Me.m_core)
+                    drawer = New cMapDrawer(0, Me.Core)
                     With drawer
                         If Me.m_rbDisplayRelBiomass.Checked Then
                             .Map = Me.m_dataTimeStep.BiomassMap
@@ -533,7 +536,7 @@ Namespace Ecospace
                 For i As Integer = 0 To m_iNumFleetPlotsVert - 1
                     For j As Integer = 0 To m_iNumFleetPlotsHorz - 1
                         Dim cur As Integer = i * m_iNumFleetPlotsHorz + j
-                        If cur < m_core.nFleets Then
+                        If cur < Core.nFleets Then
                             Dim origin As PointF = New PointF((m_iInCol + 1) * j + 1, i * (m_iInRow + 1) + 1)
                             Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
                                                                     CInt(origin.Y * yScale), _
@@ -586,7 +589,7 @@ Namespace Ecospace
             g.DrawRectangle(Pens.Black, rcPos)
 
             'Display the group name
-            Dim fltName As String = m_core.EcospaceFleets(iFleet + 1).Name
+            Dim fltName As String = Core.EcospaceFleets(iFleet + 1).Name
             g.DrawString(fltName, Me.Font, Brushes.Black, rcPos)
 
         End Sub
@@ -599,10 +602,10 @@ Namespace Ecospace
 
             Dim g As Graphics = e.Graphics
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.m_core.nGroups)
-            Dim sHeight As Single = CSng(Me.m_pbColors.Height / Me.m_core.nGroups)
+            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.Core.nGroups)
+            Dim sHeight As Single = CSng(Me.m_pbColors.Height / Me.Core.nGroups)
             Dim brTmp As SolidBrush = Nothing
-            For i As Integer = 1 To Me.m_core.nGroups
+            For i As Integer = 1 To Me.Core.nGroups
                 brTmp = New SolidBrush(lColors(i))
                 g.FillRectangle(brTmp, 0, m_pbColors.Height - sHeight * i, m_pbColors.Width, sHeight)
                 brTmp.Dispose()
@@ -615,8 +618,8 @@ Namespace Ecospace
 #Region " Events "
 
         Private Sub ClearResults()
-            For i As Integer = 1 To Me.m_core.nGroups - 1
-                For j As Integer = 1 To Me.m_core.nEcospaceTimeSteps - 1
+            For i As Integer = 1 To Me.Core.nGroups - 1
+                For j As Integer = 1 To Me.Core.nEcospaceTimeSteps - 1
                     Me.m_as2RelBiomassResults(i, j) = 0
                 Next j
                 Me.m_asBaseBiomassResults(i) = 0
@@ -624,9 +627,9 @@ Namespace Ecospace
 
             ' Reset plot drawer if overlay is not needed
             If Me.m_bOverlay = False Then
-                Me.m_zgh.Reset(Me.m_core.nGroups, Me.m_core.nEcospaceTimeSteps)
+                Me.m_zgh.Reset(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps)
             Else
-                Me.m_zgh.Overlay(Me.m_core.nGroups)
+                Me.m_zgh.Overlay(Me.Core.nGroups)
             End If
             Me.RefreshPlot()
             Me.RefreshMap()
@@ -637,7 +640,7 @@ Namespace Ecospace
             Me.ClearResults()
 
             Me.m_iTimeStepCur = 0
-            Me.m_core.RunEcoSpace(AddressOf onEcospaceTimeStep)
+            Me.Core.RunEcoSpace(AddressOf onEcospaceTimeStep)
             Me.m_cbOverlay.Enabled = True
 
         End Sub
@@ -645,7 +648,7 @@ Namespace Ecospace
         Private Sub m_btnStop_Click(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_btnStop.Click
 
-            Me.m_core.StopEcospace()
+            Me.Core.StopEcospace()
 
             ' Controls wil be updated via Core state monitor events
             'Me.UpdateControls()
@@ -721,12 +724,12 @@ Namespace Ecospace
         ''' <remarks></remarks>
         Private Sub onEcospaceTimeStep(ByRef TimeStepData As cEcospaceTimestep)
 
-            Dim parms As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
             ' Biomass plotting
             ' For each time step, we get the Biomass from the core and store it into our array
             ' The following algorithm was extracted from EwE5. Biomass Log plotting, the value between 0.1 to 10. 
-            For groupIndex As Integer = 1 To m_core.nGroups
+            For groupIndex As Integer = 1 To Core.nGroups
                 If TimeStepData.iTimeStep = 1 Then
                     m_asBaseBiomassResults(groupIndex) = TimeStepData.RelativeBiomass(groupIndex)
                     m_as2RelBiomassResults(groupIndex, 1) = 0
@@ -747,22 +750,22 @@ Namespace Ecospace
             m_iTimeStepCur = TimeStepData.iTimeStep
 
             'Update the running simulation years progress label.
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.UseDefault, CSng(Me.m_iTimeStepCur / Me.m_core.nEcospaceTimeSteps))
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.UseDefault, CSng(Me.m_iTimeStepCur / Me.Core.nEcospaceTimeSteps))
 
             ' Update local time
             Me.m_lblProgress.Text = String.Format(My.Resources.STATUS_ECOSPACE_PROGRESS, _
                                                   Me.m_sg.FormatNumber(Me.m_iTimeStepCur / parms.NumberOfTimeStepsPerYear), _
-                                                  Me.m_core.nEcospaceYears)
+                                                  Me.Core.nEcospaceYears)
 
             ' Store time step data
             Me.m_dataTimeStep = TimeStepData
 
             ' Calc C/B
             If (TimeStepData.ContaminantMap IsNot Nothing) Then
-                ReDim Me.m_as2ConcOverB(TimeStepData.inRows, TimeStepData.inCols, Me.m_core.nGroups)
+                ReDim Me.m_as2ConcOverB(TimeStepData.inRows, TimeStepData.inCols, Me.Core.nGroups)
                 For iRow As Integer = 1 To TimeStepData.inRows
                     For iCol As Integer = 1 To TimeStepData.inCols
-                        For iGroup As Integer = 1 To Me.m_core.nGroups
+                        For iGroup As Integer = 1 To Me.Core.nGroups
                             Dim sB As Single = TimeStepData.BiomassMap(iRow, iCol, iGroup)
                             If (sB > 0) Then
                                 Me.m_as2ConcOverB(iRow, iCol, iGroup) = TimeStepData.ContaminantMap(iRow, iCol, iGroup) / sB
@@ -778,8 +781,8 @@ Namespace Ecospace
                 m_iInRow = TimeStepData.inRows
                 m_iInCol = TimeStepData.inCols
 
-                CalcMapDimension(m_core.nGroups, m_iNumGroupPlotsVert, m_iNumGroupPlotsHorz)
-                CalcMapDimension(m_core.nFleets, m_iNumFleetPlotsVert, m_iNumFleetPlotsHorz)
+                CalcMapDimension(Core.nGroups, m_iNumGroupPlotsVert, m_iNumGroupPlotsHorz)
+                CalcMapDimension(Core.nFleets, m_iNumFleetPlotsVert, m_iNumFleetPlotsHorz)
             End If
 
 
@@ -828,7 +831,7 @@ Namespace Ecospace
                     Me.InitUIParams()
 
                 Case eMessageType.DataModified
-                    If Not Me.m_core.StateMonitor.HasEcospaceRan Then
+                    If Not Me.Core.StateMonitor.HasEcospaceRan Then
                         Me.ClearResults()
                     End If
 
@@ -848,12 +851,12 @@ Namespace Ecospace
         Private Sub UpdateControls()
 
             ' Sanity check
-            If Me.m_core Is Nothing Then Return
+            If Me.Core Is Nothing Then Return
             If Me.m_bInUpdate = True Then Return
 
             Me.m_bInUpdate = True
 
-            Dim csm As cCoreStateMonitor = Me.m_core.StateMonitor
+            Dim csm As cCoreStateMonitor = Me.Core.StateMonitor
             ' Enable run and stop buttons based on Ecospace run state
             Me.m_btnRun.Enabled = (csm.HasEcospaceLoaded = True) And (csm.IsEcospaceRunning = False)
             Me.m_btnStop.Enabled = (csm.HasEcospaceLoaded = True) And (csm.IsEcospaceRunning = True)
@@ -874,7 +877,7 @@ Namespace Ecospace
             End Select
 
             Me.m_cbOverlay.Checked = Me.m_bOverlay
-            Me.m_cbOverlay.Enabled = Me.m_core.StateMonitor.IsEcospaceRunning
+            Me.m_cbOverlay.Enabled = Me.Core.StateMonitor.IsEcospaceRunning
 
             Me.m_cbMPA.Checked = Me.m_bShowMPA
 
@@ -898,9 +901,9 @@ Namespace Ecospace
 
             Try
 
-                For isp As Integer = 0 To Me.m_core.nStanzas - 1
+                For isp As Integer = 0 To Me.Core.nStanzas - 1
 
-                    stanza = Me.m_core.StanzaGroups(isp)
+                    stanza = Me.Core.StanzaGroups(isp)
                     For ist As Integer = 1 To stanza.NStanzas
 
                         iGrp = stanza.iGroups(ist)
@@ -917,7 +920,7 @@ Namespace Ecospace
                             mapBuff.Append(vbCrLf)
                         Next irow
 
-                        System.Console.WriteLine(Me.m_core.EcoPathGroupInputs(iGrp).Name)
+                        System.Console.WriteLine(Me.Core.EcoPathGroupInputs(iGrp).Name)
                         System.Console.WriteLine(mapBuff.ToString)
                         mapBuff = Nothing
 

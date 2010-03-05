@@ -1,3 +1,5 @@
+#Region " Imports "
+
 Option Strict On
 Option Explicit On
 
@@ -7,7 +9,18 @@ Imports EwECore
 Imports System.Drawing
 Imports ScientificInterface.Other
 
+#End Region ' Imports
+
+''' <summary>
+''' Helper class for rendering data for a series of groups onto a
+''' graphics area.
+''' </summary>
+''' <remarks>
+''' Need to write explanation on parms, usage
+''' </remarks>
 Public Class cMapDrawer
+
+#Region " Private vars "
 
     Public SignalState As New ManualResetEvent(True)
 
@@ -15,8 +28,8 @@ Public Class cMapDrawer
     Private m_mapIBMPackets(,,) As Boolean
     Private m_core As cCore = Nothing
 
-    Private m_iGroupFirst As Integer
-    Private m_iGroupLast As Integer
+    Private m_lGroups As New List(Of Integer)
+    Private m_lLocations As New List(Of Integer)
     Private m_iInCol As Integer
     Private m_iInRow As Integer
     Private m_iMonth As Integer
@@ -35,11 +48,17 @@ Public Class cMapDrawer
     Private m_lptOrigin As List(Of PointF)
     Private m_lrc As List(Of Rectangle)
 
+#End Region ' Private vars
+
+#Region " Constructor "
+
     Public Sub New(ByVal iThreadID As Integer, ByVal core As cCore)
-        Me.m_bAllowedToRun = True
         Me.m_threadID = iThreadID
         Me.m_core = core
+        Me.m_bAllowedToRun = True
     End Sub
+
+#End Region ' Constructor
 
 #Region " Public properties "
 
@@ -133,7 +152,11 @@ Public Class cMapDrawer
         End Set
     End Property
 
-    ' ToDo: use styleguide font here
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the font to render labels with.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property Font() As Font
         Get
             Return Me.m_font
@@ -143,6 +166,11 @@ Public Class cMapDrawer
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the graphics to render onto.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property Graphics() As Graphics
         Get
             Return Me.m_graphics
@@ -152,33 +180,45 @@ Public Class cMapDrawer
         End Set
     End Property
 
-    Public Property GroupFirst() As Integer
-        Get
-            Return Me.m_iGroupFirst
-        End Get
-        Set(ByVal value As Integer)
-            Me.m_iGroupFirst = value
-        End Set
-    End Property
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Clear all groups associated with this map drawer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub ClearGroups()
+        Me.m_lGroups.Clear()
+        Me.m_lLocations.Clear()
+    End Sub
 
-    Public Property GroupLast() As Integer
-        Get
-            Return Me.m_iGroupLast
-        End Get
-        Set(ByVal value As Integer)
-            Me.m_iGroupLast = value
-        End Set
-    End Property
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Add a group to draw to this rendering drawer.
+    ''' </summary>
+    ''' <param name="iGroup">The group to add.</param>
+    ''' <param name="iLocation">The location to show this group at.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub AddGroup(ByVal iGroup As Integer, ByVal iLocation As Integer)
+        If Not Me.m_lGroups.Contains(iGroup) Then
+            Me.m_lGroups.Add(iGroup)
+            Me.m_lLocations.Add(iLocation)
+        End If
+    End Sub
 
 #End Region ' Public properties
+
+#Region " Public access "
 
     Public Sub Draw(ByVal obParam As Object)
         m_bAllowedToRun = False
         Try
             Dim i As Integer
+            Dim iGroup As Integer
+            Dim iLocation As Integer
             'SignalState.Reset()
-            For i = m_iGroupFirst To m_iGroupLast
-                DrawBiomassBaseMap(i, m_lrc(i - 1))
+            For i = 0 To Me.m_lGroups.Count - 1
+                iGroup = Me.m_lGroups(i)
+                iLocation = Me.m_lLocations(i)
+                DrawBiomassBaseMap(iGroup, m_lrc(iLocation))
             Next
 
             m_bAllowedToRun = True
@@ -283,5 +323,7 @@ Public Class cMapDrawer
         Dim grpName As String = m_core.EcospaceGroups(iGroup).Name
         m_graphics.DrawString(grpName, m_font, Brushes.Black, rcPos)
     End Sub
+
+#End Region ' Public access
 
 End Class
