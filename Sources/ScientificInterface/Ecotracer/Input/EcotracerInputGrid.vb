@@ -29,7 +29,7 @@ Namespace Ecotracer
 
             MyBase.InitStyle()
 
-            Dim core As cCore = cCore.GetInstance()
+            Dim core As cCore = Me.UIContext.Core
             Dim source As cCoreGroupBase = Nothing
 
             ' Define grid dimensions
@@ -52,25 +52,12 @@ Namespace Ecotracer
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
+            Dim core As cCore = Me.UIContext.Core
             Dim group As cEcotracerGroupInput = Nothing
             Dim iRow As Integer = -1
-            'Dim c As EwECell = Nothing
 
             ' Remove existing rows
             Me.RowsCount = 1
-
-            'iRow = Me.AddRow()
-            'Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell("")
-            'Me(iRow, eColumnTypes.GroupName) = New EwERowHeaderCell(My.Resources.HEADER_ENVIRONMENT)
-            'Me(iRow, eColumnTypes.ConcEnv) = New PropertyCell(parms, eVarNameFlags.CZero)
-            'Me(iRow, eColumnTypes.ConcImmBiomass) = New PropertyCell(parms, eVarNameFlags.CInflow)
-            'Me(iRow, eColumnTypes.DirectAbsorptionRate) = New PropertyCell(parms, eVarNameFlags.COutflow)
-            'Me(iRow, eColumnTypes.DecayRate) = New PropertyCell(parms, eVarNameFlags.CDecay)
-
-            'c = New EwECell(0, GetType(Single))
-            'c.Style = StyleGuide.eStyleFlags.NotEditable
-            'Me(iRow, eColumnTypes.ExcretionRate) = c
 
             ' Create rows for all groups
             For iGroup As Integer = 1 To core.nGroups
