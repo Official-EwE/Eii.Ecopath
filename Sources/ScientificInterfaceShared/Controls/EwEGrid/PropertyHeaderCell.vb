@@ -173,14 +173,18 @@ Namespace Controls.EwEGrid
                     strDisplayText = MyBase.DisplayText
                 Else
                     Try
+                        Dim sg As cStyleGuide = Me.Property.PropertyManager.StyleGuide
 
                         Select Case m_aUnitTypes.Length
                             Case 0
                                 strDisplayText = String.Format(Me.m_strUnitMask, Me.Value)
                             Case 1
-                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Value, GetUnitString(m_aUnitTypes(0)))
+                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Value, _
+                                                               sg.GetUnitString(m_aUnitTypes(0)))
                             Case 2
-                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Value, GetUnitString(m_aUnitTypes(0)), GetUnitString(m_aUnitTypes(1)))
+                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Value, _
+                                                               sg.GetUnitString(m_aUnitTypes(0)), _
+                                                               sg.GetUnitString(m_aUnitTypes(1)))
                             Case Else
                                 Debug.Assert(False)
                         End Select
@@ -192,24 +196,6 @@ Namespace Controls.EwEGrid
                 Return strDisplayText
             End Get
         End Property
-
-        Private Function GetUnitString(ByVal unitType As cStyleGuide.eUnitType) As String
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim strUnitString As String = ""
-            Select Case unitType
-                Case cStyleGuide.eUnitType.Currency
-                    strUnitString = sg.CurrencyUnitText(sg.CurrencyUnit)
-                Case cStyleGuide.eUnitType.Time
-                    strUnitString = sg.TimeUnitText(sg.TimeUnit)
-                Case cStyleGuide.eUnitType.Monetary
-                    strUnitString = sg.MonetaryUnitText(sg.MonetaryUnit)
-                Case cStyleGuide.eUnitType.Nominal
-                    strUnitString = sg.NominalUnitText()
-                Case Else
-                    Debug.Assert(False)
-            End Select
-            Return strUnitString
-        End Function
 
 #End Region ' Unit header text
 
