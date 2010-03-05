@@ -1,35 +1,3 @@
-'==============================================================================
-'
-' $Log: ucDefBioPercentGrid.vb,v $
-' Revision 1.2  2009/05/28 12:37:52  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2008/09/26 07:31:38  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.7  2008/09/19 14:14:38  jeroens
-' Fixed issue 496
-'
-' Revision 1.6  2008/08/11 16:13:59  jeroens
-' Generalized EndEditHandler
-'
-' Revision 1.5  2008/08/02 03:04:21  jeroens
-' Renamed resources
-'
-' Revision 1.4  2008/06/02 00:01:42  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.3  2008/04/07 02:31:22  jeroens
-' Cleaning up resources
-'
-' Revision 1.2  2007/11/15 15:10:10  jeroens
-' * Woops
-'
-' Revision 1.1  2007/11/15 15:01:00  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwECore
@@ -46,8 +14,6 @@ Namespace Ecosim
     Public Class ucDefBioPercentGrid
         Inherits EwEGrid
 
-        ''' <summary></summary>
-        Private m_core As cCore = Nothing
         ''' <summary></summary>
         Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
 
@@ -67,10 +33,7 @@ Namespace Ecosim
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Sub New()
-
             MyBase.New()
-            Me.m_core = cCore.GetInstance()
-
         End Sub
 
 #Region " Public interfaces "
