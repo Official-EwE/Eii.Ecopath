@@ -26,7 +26,6 @@ Namespace Ecosim
         Public Sub New()
 
             MyBase.New()
-            m_Core = cCore.GetInstance
             m_FPManager = m_Core.FishingPolicyManager
 
         End Sub

@@ -99,7 +99,6 @@ Namespace Ecosim
 
         Friend Sub UpdateData()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim source As cEcosimGroupOutput = Nothing
             Dim irow As Integer
@@ -107,12 +106,12 @@ Namespace Ecosim
             Dim asTotal(0 To 10) As Single
             Me.InitTotalArray(asTotal)
 
-            For iGroup As Integer = 1 To core.nGroups
+            For iGroup As Integer = 1 To Me.UIContext.Core.nGroups
 
                 'Only display selected groups
                 If sg.GroupVisible(iGroup) Then
                     irow += 1
-                    source = core.EcoSimGroupOutputs(iGroup)
+                    source = Me.UIContext.Core.EcoSimGroupOutputs(iGroup)
 
                     'clear all fleet cells
                     For icell As Integer = 5 To 10

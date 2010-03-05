@@ -573,17 +573,16 @@ Public Class dlgManageTimeSeries
 
     Private Sub ImportDataset()
 
-        Dim core As cCore = cCore.GetInstance()
         Dim ds As cTimeSeriesDataset = Nothing
         Dim clf As cCore.eBatchChangeLevelFlags = cCore.eBatchChangeLevelFlags.TimeSeries
         Dim bSucces As Boolean = True
 
-        If Not core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return
+        If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return
 
         ' Create new dataset if it will contain one of more TS
         For Each ts As cTimeSeriesImport In Me.m_tr
             If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) <> cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing) Then
-                bSucces = core.AppendTimeSeriesDataset(Me.DatasetName, Me.m_tbImportDescription.Text, _
+                bSucces = Me.m_uic.Core.AppendTimeSeriesDataset(Me.DatasetName, Me.m_tbImportDescription.Text, _
                         Me.m_tbImportAuthor.Text, Me.m_tbImportContact.Text, Me.m_tr.FirstYear, Me.m_tr.NumYears)
                 Exit For
             End If
@@ -613,7 +612,7 @@ Public Class dlgManageTimeSeries
                         End Select
                     End If
 
-                    If core.ImportEcosimTimeSeries(ts, core.ActiveTimeSeriesDatasetIndex) Then
+                    If Me.m_uic.Core.ImportEcosimTimeSeries(ts, Me.m_uic.Core.ActiveTimeSeriesDatasetIndex) Then
                         Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
 
                             Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing
@@ -635,7 +634,7 @@ Public Class dlgManageTimeSeries
         End If
 
         ' Release appropriate level
-        core.ReleaseBatchLock(clf, bSucces)
+        Me.m_uic.Core.ReleaseBatchLock(clf, bSucces)
 
         ' Need to apply on load?
         If (bSucces And Me.m_cbImportEnableOnImport.Checked) Then

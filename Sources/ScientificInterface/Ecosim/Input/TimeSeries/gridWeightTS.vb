@@ -1,32 +1,3 @@
-'==============================================================================
-'
-' $Log: gridWeightTS.vb,v $
-' Revision 1.2  2008/12/15 15:55:36  jeroens
-' no message
-'
-' Revision 1.1  2008/09/23 16:07:54  jeroens
-' Renamed
-'
-' Revision 1.6  2008/07/29 13:06:46  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.5  2008/07/01 19:13:10  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.4  2008/07/01 14:16:12  jeroens
-' IsStatic works properly
-'
-' Revision 1.3  2008/06/02 00:01:43  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.2  2008/05/13 02:06:11  jeroens
-' Woops! Fixed TS apply crash
-'
-' Revision 1.1  2008/05/11 04:05:48  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -44,11 +15,8 @@ Public Class gridWeightTS
         Weight
     End Enum
 
-    Private m_core As cCore = Nothing
-
     Public Sub New()
         MyBase.New()
-        Me.m_core = cCore.GetInstance()
         Me.FixedColumnWidths = False
     End Sub
 
@@ -81,7 +49,7 @@ Public Class gridWeightTS
             ' Weight
             ts.WtType = CSng(Me(iRow, CInt(eColumnTypes.Weight)).Value)
         Next
-        Me.m_core.UpdateTimeSeries()
+        Me.UIContext.Core.UpdateTimeSeries()
     End Function
 
     Protected Overrides Sub InitStyle()
@@ -105,10 +73,10 @@ Public Class gridWeightTS
 
         cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
 
-        For iDS As Integer = 1 To Me.m_core.nTimeSeriesDatasets
+        For iDS As Integer = 1 To Me.UIContext.Core.nTimeSeriesDatasets
 
             ' Get dataset
-            ds = Me.m_core.TimeSeriesDataset(iDS)
+            ds = Me.UIContext.Core.TimeSeriesDataset(iDS)
             ' Is this dataset loaded?
             If ds.IsLoaded() Then
 
@@ -122,11 +90,11 @@ Public Class gridWeightTS
 
                         ' #Yes: incorporate it in the dialog so it can be applied
                         If TypeOf ts Is cGroupTimeSeries Then
-                            strTarget = Me.m_core.EcoPathGroupInputs(DirectCast(ts, cGroupTimeSeries).GroupIndex).Name
+                            strTarget = Me.UIContext.Core.EcoPathGroupInputs(DirectCast(ts, cGroupTimeSeries).GroupIndex).Name
                         End If
 
                         If TypeOf ts Is cFleetTimeSeries Then
-                            strTarget = Me.m_core.FleetInputs(DirectCast(ts, cFleetTimeSeries).FleetIndex).Name
+                            strTarget = Me.UIContext.Core.FleetInputs(DirectCast(ts, cFleetTimeSeries).FleetIndex).Name
                         End If
 
                         ' #Yes: create new ts item
