@@ -40,27 +40,28 @@ Namespace Ecospace
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
             Dim pm As cPropertyManager = Me.PropertyManager
 
-            Me.m_fpSumStartTime = New cPropertyFormatProvider(pm, Me.tbSumStartTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeStart)
-            Me.m_fpSumEndTime = New cPropertyFormatProvider(pm, Me.tbSumEndTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeEnd)
-            Me.m_fpSumLength = New cPropertyFormatProvider(pm, Me.udSumLength, ecospaceModelParams, eVarNameFlags.EcospaceNumberSummaryTimeSteps)
+            Me.m_fpSumStartTime = New cPropertyFormatProvider(pm, Me.m_tbSumStartTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeStart)
+            Me.m_fpSumEndTime = New cPropertyFormatProvider(pm, Me.m_tbSumEndTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeEnd)
+            Me.m_fpSumLength = New cPropertyFormatProvider(pm, Me.m_nudSumLength, ecospaceModelParams, eVarNameFlags.EcospaceNumberSummaryTimeSteps)
 
             'Initialize the results grid
-            m_GridGear = New cGridEcospaceResultsGear
-            m_GridGroup = New cGridEcospaceResultsGroup
-            m_GridRegion = New cGridEcospaceResultsRegion
+            Me.m_GridGear = New cGridEcospaceResultsGear
+            Me.m_GridGear.UIContext = Me.UIContext
+            Me.m_GridGroup = New cGridEcospaceResultsGroup
+            Me.m_GridGroup.UIContext = Me.UIContext
+            Me.m_GridRegion = New cGridEcospaceResultsRegion
+            Me.m_GridRegion.UIContext = Me.UIContext
 
             ' Add the result grids. 
-            plResultsGrid.Controls.Add(m_GridGear)
-            plResultsGrid.Controls.Add(m_GridGroup)
-            plResultsGrid.Controls.Add(m_GridRegion)
+            Me.m_plResultsGrid.Controls.Add(m_GridGear)
+            Me.m_plResultsGrid.Controls.Add(m_GridGroup)
+            Me.m_plResultsGrid.Controls.Add(m_GridRegion)
 
-            m_GridGear.UIContext = Me.UIContext
-            m_GridGroup.UIContext = Me.UIContext
-            m_GridRegion.UIContext = Me.UIContext
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
             Me.PopulateResults()
+            Me.UpdateControls()
 
         End Sub
 
@@ -74,69 +75,63 @@ Namespace Ecospace
 
         ''' <summary> Repopulates the variables on demand. </summary>
         Private Sub PopulateResults()
-            rbGear.Checked = True
+            m_rbFleet.Checked = True
 
-            cbGears.Items.Clear()
+            m_cmbGears.Items.Clear()
 
-            Dim efo As cEcospaceFleetOutput = Nothing
+            Dim fleet As cEcospaceFleetOutput = Nothing
             For i As Integer = 0 To Me.Core.nFleets
-                efo = Me.Core.EcospaceFleetOutput(i)
-                cbGears.Items.Add(efo.Name)
+                fleet = Me.Core.EcospaceFleetOutput(i)
+                m_cmbGears.Items.Add(fleet.Name)
             Next
-            cbGears.SelectedIndex = 0
+            m_cmbGears.SelectedIndex = 0
 
-            cbRegions.Items.Clear()
-            Dim ero As cEcospaceRegionOutput = Nothing
+            m_cmbRegions.Items.Clear()
+            Dim region As cEcospaceRegionOutput = Nothing
             For i As Integer = 0 To Me.Core.nRegions
-                ero = Me.Core.EcospaceRegionOutput(i)
-                cbRegions.Items.Add(ero.Name)
+                region = Me.Core.EcospaceRegionOutput(i)
+                m_cmbRegions.Items.Add(region.Name)
             Next
-            cbRegions.SelectedIndex = 0
+            m_cmbRegions.SelectedIndex = 0
 
         End Sub
 
-        Private Sub rbResults_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbGear.CheckedChanged, rbGroup.CheckedChanged, rbRegion.CheckedChanged
+        Private Sub rbResults_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_rbFleet.CheckedChanged, m_rbGroup.CheckedChanged, m_rbRegion.CheckedChanged
 
-            If rbGear.Checked Then
-                'Display gear results
-                m_GridGear.Visible = True : m_GridRegion.Visible = False : m_GridGroup.Visible = False
-                Me.cbGears.Enabled = False
-                Me.cbRegions.Enabled = False
-
-            ElseIf rbGroup.Checked Then
-                'Display group results
-                m_GridGear.Visible = False : m_GridRegion.Visible = False : m_GridGroup.Visible = True
-                Me.cbGears.Enabled = True
-                Me.cbRegions.Enabled = False
-
-            ElseIf rbRegion.Checked Then
-                'Display region results
-                m_GridGear.Visible = False : m_GridRegion.Visible = True : m_GridGroup.Visible = False
-                Me.cbGears.Enabled = False
-                Me.cbRegions.Enabled = True
-            End If
+            Me.UpdateControls()
 
         End Sub
 
-        Private Sub cbGears_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGears.SelectedIndexChanged
+        Private Sub OnSelectGear(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbGears.SelectedIndexChanged
+
             'fleets are zero based so the zero index is ok
-            m_GridGroup.SelFleetIndex = cbGears.SelectedIndex
+            m_GridGroup.SelFleetIndex = m_cmbGears.SelectedIndex
             m_GridGroup.RefreshContent()
 
         End Sub
 
-        Private Sub cbRegions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbRegions.SelectedIndexChanged
+        Private Sub OnSelectRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbRegions.SelectedIndexChanged
 
             'regions are zero based so the zero index is ok
-            m_GridRegion.SelRegionIndex = cbRegions.SelectedIndex
+            m_GridRegion.SelRegionIndex = m_cmbRegions.SelectedIndex
             m_GridRegion.RefreshContent()
 
         End Sub
 
-        'Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        '    Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        '    Me.Close()
-        'End Sub
+        Private Sub UpdateControls()
+
+            ' Show grids
+            Me.m_GridGear.Visible = Me.m_rbFleet.Checked
+            Me.m_GridGroup.Visible = Me.m_rbGroup.Checked
+            Me.m_GridRegion.Visible = Me.m_rbRegion.Checked
+
+            Me.m_cmbGears.Enabled = Me.m_rbGroup.Checked
+            Me.m_cmbRegions.Enabled = Me.m_rbRegion.Checked
+
+        End Sub
 
         ''' <summary>
         ''' Message handler for core Ecosim Datachanged message
