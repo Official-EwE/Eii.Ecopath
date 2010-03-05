@@ -1056,9 +1056,10 @@ Public Class AppLauncher
     Private Sub InitCoreParams()
 
         Dim core As cCore = cCore.GetInstance()
-        Me.UIContext = New cUIContext(core, _
-                                      cStyleGuide.GetInstance(), _
-                                      New cPropertyManager(core), _
+        Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+        Dim pm As cPropertyManager = New cPropertyManager(core, sg, Me.m_SyncObj)
+
+        Me.UIContext = New cUIContext(core, sg, pm, _
                                       cCommandHandler.GetInstance(), _
                                       New cFormPositionSettings(), _
                                       Me.m_SyncObj)

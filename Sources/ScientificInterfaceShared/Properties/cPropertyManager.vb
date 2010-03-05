@@ -5,6 +5,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
 Imports System.ComponentModel
+Imports System.Threading
 
 #End Region ' Imports
 
@@ -19,8 +20,12 @@ Namespace Properties
 
 #Region " Private vars "
 
+        ''' <summary>Attached core.</summary>
+        Private m_core As cCore = Nothing
+        ''' <summary>Attached style guide.</summary>
+        Private m_sg As cStyleGuide = Nothing
         ''' <summary>Message handler synchronizer.</summary>
-        Private m_SyncObj As System.Threading.SynchronizationContext = Nothing
+        Private m_SyncObj As SynchronizationContext = Nothing
 
         ''' <summary>Error property</summary>
         Private m_propNoData As cStringProperty = Nothing
@@ -31,8 +36,6 @@ Namespace Properties
         Private m_htEcosim As New Dictionary(Of String, cProperty)
         Private m_htEcospace As New Dictionary(Of String, cProperty)
         Private m_htEcotracer As New Dictionary(Of String, cProperty)
-        ''' <summary>Attached Me.m_core.</summary>
-        Private m_core As cCore = Nothing
 
 #End Region ' Private vars
 
@@ -42,23 +45,25 @@ Namespace Properties
         ''' <summary>
         ''' Constructor
         ''' </summary>
+        ''' <param name="core">Core instance providing property data.</param>
+        ''' <param name="sg">Styleguide instance providing formatting information.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore)
+        Public Sub New(ByVal core As cCore, _
+                       ByVal sg As cStyleGuide, _
+                       ByVal so As SynchronizationContext)
 
             'Sanity checks
             Debug.Assert(core IsNot Nothing)
 
-            ' Store Me.m_core ref
+            ' Store important refs
             Me.m_core = core
+            Me.m_sg = sg
+            Me.m_SyncObj = so
 
             ' Create No Data property
             Me.m_propNoData = New cStringProperty("")
             Me.m_propNoData.SetStyle(cStyleGuide.eStyleFlags.ErrorEncountered Or cStyleGuide.eStyleFlags.NotEditable)
             Me.m_propNoData.SetValue(My.Resources.GENERIC_TEXT_NODATA)
-
-            Me.m_SyncObj = System.Threading.SynchronizationContext.Current
-            'if there is no current context then create a new one on this thread. 
-            If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
 
             ' Start listening to Me.m_core messages
             Me.InitializeMessageHandlers()
@@ -100,9 +105,15 @@ Namespace Properties
 
         End Sub
 
-        Public ReadOnly Property Core() As cCore
+        Friend ReadOnly Property Core() As cCore
             Get
                 Return Me.m_core
+            End Get
+        End Property
+
+        Friend ReadOnly Property StyleGuide() As cStyleGuide
+            Get
+                Return Me.m_sg
             End Get
         End Property
 
