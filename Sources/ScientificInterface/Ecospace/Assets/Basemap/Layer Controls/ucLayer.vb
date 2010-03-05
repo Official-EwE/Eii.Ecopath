@@ -11,7 +11,12 @@ Imports ScientificInterface.Ecospace.Basemap.Layers
 
 Namespace Ecospace
 
+    ''' <summary>
+    ''' User control to interact with a single layer in a Ecospace layer stack.
+    ''' </summary>
     Partial Public Class ucLayer
+
+#Region " Private vars "
 
         Private m_uic As cUIContext = Nothing
         ''' <summary>Layer</summary>
@@ -27,6 +32,8 @@ Namespace Ecospace
         Protected Shared g_imgPen0 As Image = My.Resources.Editable
         Protected Shared g_imgPen1 As Image = My.Resources.NotEditable
         Protected Shared g_imgLock As Image = My.Resources.ProtectFormHS
+
+#End Region ' Private vars
 
 #Region " Constructor "
 
@@ -84,7 +91,7 @@ Namespace Ecospace
                 ' Just redraw whenever there is time
                 Me.Invalidate()
 
-                Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+                Dim pm As cPropertyManager = Me.m_uic.PropertyManager
                 Dim prop As cProperty = pm.GetProperty(Me.Layer.Source, eVarNameFlags.Name)
 
                 If prop IsNot Nothing Then
