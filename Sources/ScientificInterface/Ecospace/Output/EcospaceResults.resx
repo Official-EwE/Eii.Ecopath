@@ -123,10 +123,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_plResultsGrid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 111</value>
+    <value>15, 110</value>
   </data>
   <data name="m_plResultsGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>692, 415</value>
+    <value>692, 416</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_plResultsGrid.TabIndex" type="System.Int32, mscorlib">
@@ -268,10 +268,10 @@
     <value>12</value>
   </data>
   <data name="m_cmbRegions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>289, 83</value>
+    <value>339, 83</value>
   </data>
   <data name="m_cmbRegions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 21</value>
+    <value>175, 21</value>
   </data>
   <data name="m_cmbRegions.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -289,10 +289,10 @@
     <value>3</value>
   </data>
   <data name="m_cmbGears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>289, 56</value>
+    <value>339, 56</value>
   </data>
   <data name="m_cmbGears.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 21</value>
+    <value>175, 21</value>
   </data>
   <data name="m_cmbGears.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -319,13 +319,13 @@
     <value>224, 57</value>
   </data>
   <data name="m_rbGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 17</value>
+    <value>109, 17</value>
   </data>
   <data name="m_rbGroup.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="m_rbGroup.Text" xml:space="preserve">
-    <value>&amp;Group</value>
+    <value>&amp;Group, landed by:</value>
   </data>
   <data name="&gt;&gt;m_rbGroup.Name" xml:space="preserve">
     <value>m_rbGroup</value>
@@ -349,13 +349,13 @@
     <value>224, 84</value>
   </data>
   <data name="m_rbRegion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 17</value>
+    <value>62, 17</value>
   </data>
   <data name="m_rbRegion.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
   <data name="m_rbRegion.Text" xml:space="preserve">
-    <value>&amp;Region</value>
+    <value>&amp;Region:</value>
   </data>
   <data name="&gt;&gt;m_rbRegion.Name" xml:space="preserve">
     <value>m_rbRegion</value>

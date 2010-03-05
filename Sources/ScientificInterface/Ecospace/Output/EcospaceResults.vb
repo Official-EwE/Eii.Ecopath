@@ -60,7 +60,7 @@ Namespace Ecospace
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
-            Me.PopulateResults()
+            Me.FillFilterCombos()
             Me.UpdateControls()
 
         End Sub
@@ -73,24 +73,25 @@ Namespace Ecospace
             MyBase.OnFormClosed(e)
         End Sub
 
-        ''' <summary> Repopulates the variables on demand. </summary>
-        Private Sub PopulateResults()
+        ''' <summary>
+        ''' Populate gear, region combo boxes.
+        ''' </summary>
+        Private Sub FillFilterCombos()
             m_rbFleet.Checked = True
 
-            m_cmbGears.Items.Clear()
-
+            Me.m_cmbGears.Items.Clear()
             Dim fleet As cEcospaceFleetOutput = Nothing
             For i As Integer = 0 To Me.Core.nFleets
                 fleet = Me.Core.EcospaceFleetOutput(i)
-                m_cmbGears.Items.Add(fleet.Name)
+                Me.m_cmbGears.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, fleet.Name))
             Next
-            m_cmbGears.SelectedIndex = 0
+            Me.m_cmbGears.SelectedIndex = 0
 
             m_cmbRegions.Items.Clear()
             Dim region As cEcospaceRegionOutput = Nothing
             For i As Integer = 0 To Me.Core.nRegions
                 region = Me.Core.EcospaceRegionOutput(i)
-                m_cmbRegions.Items.Add(region.Name)
+                m_cmbRegions.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, region.Name))
             Next
             m_cmbRegions.SelectedIndex = 0
 
