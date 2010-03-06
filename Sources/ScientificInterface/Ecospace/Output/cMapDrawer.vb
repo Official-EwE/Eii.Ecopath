@@ -38,9 +38,10 @@ Public Class cMapDrawer
 
     Private m_graphics As Graphics
     Private m_font As System.Drawing.Font
-
-    Private m_iFirst As Integer
-    Private m_iLast As Integer
+    Private m_bShowLabel As Boolean = True
+    Private m_bInvertLabelColor As Boolean = False
+    Private m_labelposHorz As StringAlignment = StringAlignment.Near
+    Private m_labelposVert As StringAlignment = StringAlignment.Near
 
     Private m_threadID As Integer
     Public m_bAllowedToRun As Boolean
@@ -204,6 +205,46 @@ Public Class cMapDrawer
         End If
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether labels should be shown.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property ShowLabels() As Boolean
+        Get
+            Return Me.m_bShowLabel
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bShowLabel = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether labels should be rendered with inverse colors.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property InvertLabelColors() As Boolean
+        Get
+            Return Me.m_bInvertLabelColor
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bInvertLabelColor = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Set the position of labels
+    ''' </summary>
+    ''' <param name="horz">Horizontal label alignment.</param>
+    ''' <param name="vert">Vertical label alignment.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub SetLabelPosition(ByVal horz As StringAlignment, ByVal vert As StringAlignment)
+        Me.m_labelposHorz = horz
+        Me.m_labelposVert = vert
+    End Sub
+
 #End Region ' Public properties
 
 #Region " Public access "
@@ -319,9 +360,20 @@ Public Class cMapDrawer
         'Draw the black frame of base map
         m_graphics.DrawRectangle(Pens.Black, rcPos)
 
-        'Display the group name
-        Dim grpName As String = m_core.EcospaceGroups(iGroup).Name
-        m_graphics.DrawString(grpName, m_font, Brushes.Black, rcPos)
+        If Me.m_bShowLabel Then
+            'Display the group name
+            Dim grpName As String = m_core.EcospaceGroups(iGroup).Name
+            Dim br As Brush = Brushes.Black
+            Dim fmt As New StringFormat()
+
+            fmt.Alignment = Me.m_labelposHorz
+            fmt.LineAlignment = Me.m_labelposVert
+
+            If Me.m_bInvertLabelColor Then br = Brushes.White
+
+            Me.m_graphics.DrawString(grpName, m_font, br, rcPos, fmt)
+        End If
+
     End Sub
 
 #End Region ' Public access

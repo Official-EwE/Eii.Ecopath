@@ -19,7 +19,7 @@ Namespace Other
 #Region " Private variables "
 
         ''' <summary></summary>
-        Private m_core As cCore = cCore.GetInstance()
+        Private m_uic As cUIContext = Nothing
         ''' <summary></summary>
         Private m_ucAppColors As ucAppColors
         ''' <summary></summary>
@@ -35,12 +35,13 @@ Namespace Other
 
 #Region " Constructor "
 
-        Public Sub New()
+        Public Sub New(ByVal uic As cUIContext)
 
             cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
 
             Me.InitializeComponent()
 
+            Me.m_uic = uic
             Me.m_tvOptions.ExpandAll()
 
             Me.m_ucAppColors = New ucAppColors()
@@ -52,7 +53,7 @@ Namespace Other
             Me.m_ucAppPlugins = New ucAppPlugins()
             Me.m_ucAppPlugins.Dock = DockStyle.Fill
 
-            Me.m_ucAppGraphsCharts = New ucAppGraphs()
+            Me.m_ucAppGraphsCharts = New ucAppGraphs(uic)
             Me.m_ucAppGraphsCharts.Dock = DockStyle.Fill
 
             Me.SelectPage("")

@@ -124,10 +124,8 @@ Namespace Other
 
 #Region " Variables "
 
-        ''' <summary>Only ref to core.</summary>
-        Private m_core As cCore = Nothing
-        ''' <summary>Only ref to styleguide.</summary>
-        Private m_sg As cStyleGuide = Nothing
+        ''' <summary>UI context to operate onto.</summary>
+        Private m_uic As cUIContext = Nothing
         ''' <summary>Prevent loops.</summary>
         Private m_bInUpdate As Boolean = False
 
@@ -135,14 +133,13 @@ Namespace Other
 
 #Region " Constructors "
 
-        Public Sub New()
+        Public Sub New(ByVal uic As cUIContext)
 
             Me.InitializeComponent()
 
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
 
-            Me.m_core = cCore.GetInstance()
-            Me.m_sg = cStyleGuide.GetInstance()
+            Me.m_uic = uic
 
             ' Invisible init
             Me.FillFontFamiliesComboBox()
@@ -160,9 +157,11 @@ Namespace Other
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-            Me.m_nudThumbnailSize.Value = CDec(Math.Max(Me.m_nudThumbnailSize.Minimum, Math.Min(Me.m_nudThumbnailSize.Maximum, Me.m_sg.ThumbnailSize)))
+            MyBase.OnLoad(e)
 
-            Select Case Me.m_sg.ShowLegends
+            Me.m_nudThumbnailSize.Value = CDec(Math.Max(Me.m_nudThumbnailSize.Minimum, Math.Min(Me.m_nudThumbnailSize.Maximum, Me.m_uic.StyleGuide.ThumbnailSize)))
+
+            Select Case Me.m_uic.StyleGuide.ShowLegends
                 Case TriState.UseDefault, TriState.False
                     Me.m_rbLegendSelective.Checked = True
                 Case TriState.True
@@ -200,9 +199,9 @@ Namespace Other
         Private Sub OnResetFonts(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnResetFonts.Click
 
-            Me.m_sg.LoadDefaultApplicationFonts()
+            Me.m_uic.StyleGuide.LoadDefaultApplicationFonts()
             Me.FillFontTypesListBox()
-            Me.m_sg.FontsChanged()
+            Me.m_uic.StyleGuide.FontsChanged()
 
         End Sub
 
@@ -256,7 +255,7 @@ Namespace Other
             Handles m_nudFontSize.ValueChanged
 
             ' Hackerdihack - NUD controls send events from InitializeComponent
-            If Me.m_core Is Nothing Then Return
+            If Me.m_uic Is Nothing Then Return
 
             If Me.m_bInUpdate Then Return
             Me.SelectedFontSize = Me.SelectedFontSize
@@ -269,7 +268,7 @@ Namespace Other
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Save thumbnail size back to the style guide.
+        ''' Save graph settings back to the style guide.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub Save()
@@ -283,21 +282,22 @@ Namespace Other
                 '    tsShowLegends = TriState.False
             End If
 
-            Me.m_sg.SuspendEvents()
+            Me.m_uic.StyleGuide.SuspendEvents()
 
             ' Update thumbnails, legend settings
-            Me.m_sg.ThumbnailSize = CInt(Me.m_nudThumbnailSize.Value)
-            Me.m_sg.ShowLegends = tsShowLegends
+            Me.m_uic.StyleGuide.ThumbnailSize = CInt(Me.m_nudThumbnailSize.Value)
+            Me.m_uic.StyleGuide.ShowLegends = tsShowLegends
 
             ' Update fonts
             For i As Integer = 0 To Me.m_lbFontTypes.Items.Count - 1
                 fti = DirectCast(Me.m_lbFontTypes.Items(i), cFontTypeItem)
-                Me.m_sg.FontFamilyName(fti.FontType) = fti.FontFamilyName
-                Me.m_sg.FontStyle(fti.FontType) = fti.FontStyle
-                Me.m_sg.FontSize(fti.FontType) = fti.FontSize
+                Me.m_uic.StyleGuide.FontFamilyName(fti.FontType) = fti.FontFamilyName
+                Me.m_uic.StyleGuide.FontStyle(fti.FontType) = fti.FontStyle
+                Me.m_uic.StyleGuide.FontSize(fti.FontType) = fti.FontSize
             Next
 
-            Me.m_sg.ResumeEvents()
+            Me.m_uic.StyleGuide.ResumeEvents()
+            Me.m_uic.StyleGuide.FontsChanged()
 
         End Sub
 
@@ -317,7 +317,7 @@ Namespace Other
         End Sub
 
         Private Sub AddFontTypeItem(ByVal strText As String, ByVal ft As cStyleGuide.eApplicationFontType)
-            Me.m_lbFontTypes.Items.Add(New cFontTypeItem(strText, ft, Me.m_sg))
+            Me.m_lbFontTypes.Items.Add(New cFontTypeItem(strText, ft, Me.m_uic.StyleGuide))
         End Sub
 
         Private Property SelectedFontType() As cFontTypeItem

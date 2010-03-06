@@ -28,7 +28,7 @@ Namespace Ecospace
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunEcospace))
             Me.m_btnRun = New System.Windows.Forms.Button
-            Me.m_cbDisplayGroup = New System.Windows.Forms.ComboBox
+            Me.m_cmbDisplayGroup = New System.Windows.Forms.ComboBox
             Me.m_rbShowSingle = New System.Windows.Forms.RadioButton
             Me.m_rbShowNonHidden = New System.Windows.Forms.RadioButton
             Me.m_rbShowAll = New System.Windows.Forms.RadioButton
@@ -39,6 +39,11 @@ Namespace Ecospace
             Me.m_lblHigh = New System.Windows.Forms.Label
             Me.m_lblLow = New System.Windows.Forms.Label
             Me.m_scMain = New System.Windows.Forms.SplitContainer
+            Me.m_plLabelOptions = New System.Windows.Forms.Panel
+            Me.m_cbInvertColor = New System.Windows.Forms.CheckBox
+            Me.m_cmbLabelPos = New System.Windows.Forms.ComboBox
+            Me.m_cbShowLabels = New System.Windows.Forms.CheckBox
+            Me.m_lblLabelOptions = New System.Windows.Forms.Label
             Me.m_lblProgress = New System.Windows.Forms.Label
             Me.m_plDistribution = New System.Windows.Forms.Panel
             Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton
@@ -60,6 +65,7 @@ Namespace Ecospace
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
+            Me.m_plLabelOptions.SuspendLayout()
             Me.m_plDistribution.SuspendLayout()
             Me.m_plDisplayOptions.SuspendLayout()
             Me.m_tlpRun.SuspendLayout()
@@ -74,12 +80,12 @@ Namespace Ecospace
             Me.m_btnRun.Name = "m_btnRun"
             Me.m_btnRun.UseVisualStyleBackColor = True
             '
-            'm_cbDisplayGroup
+            'm_cmbDisplayGroup
             '
-            resources.ApplyResources(Me.m_cbDisplayGroup, "m_cbDisplayGroup")
-            Me.m_cbDisplayGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cbDisplayGroup.FormattingEnabled = True
-            Me.m_cbDisplayGroup.Name = "m_cbDisplayGroup"
+            resources.ApplyResources(Me.m_cmbDisplayGroup, "m_cmbDisplayGroup")
+            Me.m_cmbDisplayGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbDisplayGroup.FormattingEnabled = True
+            Me.m_cmbDisplayGroup.Name = "m_cmbDisplayGroup"
             '
             'm_rbShowSingle
             '
@@ -149,6 +155,7 @@ Namespace Ecospace
             '
             'm_scMain.Panel1
             '
+            Me.m_scMain.Panel1.Controls.Add(Me.m_plLabelOptions)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblProgress)
             Me.m_scMain.Panel1.Controls.Add(Me.m_plDistribution)
             Me.m_scMain.Panel1.Controls.Add(Me.m_plDisplayOptions)
@@ -157,6 +164,44 @@ Namespace Ecospace
             'm_scMain.Panel2
             '
             Me.m_scMain.Panel2.Controls.Add(Me.m_tcOutputs)
+            '
+            'm_plLabelOptions
+            '
+            resources.ApplyResources(Me.m_plLabelOptions, "m_plLabelOptions")
+            Me.m_plLabelOptions.Controls.Add(Me.m_cbInvertColor)
+            Me.m_plLabelOptions.Controls.Add(Me.m_cmbLabelPos)
+            Me.m_plLabelOptions.Controls.Add(Me.m_cbShowLabels)
+            Me.m_plLabelOptions.Controls.Add(Me.m_lblLabelOptions)
+            Me.m_plLabelOptions.Name = "m_plLabelOptions"
+            '
+            'm_cbInvertColor
+            '
+            resources.ApplyResources(Me.m_cbInvertColor, "m_cbInvertColor")
+            Me.m_cbInvertColor.Name = "m_cbInvertColor"
+            Me.m_cbInvertColor.UseVisualStyleBackColor = True
+            '
+            'm_cmbLabelPos
+            '
+            resources.ApplyResources(Me.m_cmbLabelPos, "m_cmbLabelPos")
+            Me.m_cmbLabelPos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbLabelPos.FormattingEnabled = True
+            Me.m_cmbLabelPos.Items.AddRange(New Object() {resources.GetString("m_cmbLabelPos.Items"), resources.GetString("m_cmbLabelPos.Items1"), resources.GetString("m_cmbLabelPos.Items2"), resources.GetString("m_cmbLabelPos.Items3"), resources.GetString("m_cmbLabelPos.Items4"), resources.GetString("m_cmbLabelPos.Items5"), resources.GetString("m_cmbLabelPos.Items6"), resources.GetString("m_cmbLabelPos.Items7"), resources.GetString("m_cmbLabelPos.Items8")})
+            Me.m_cmbLabelPos.Name = "m_cmbLabelPos"
+            '
+            'm_cbShowLabels
+            '
+            resources.ApplyResources(Me.m_cbShowLabels, "m_cbShowLabels")
+            Me.m_cbShowLabels.Checked = True
+            Me.m_cbShowLabels.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbShowLabels.Name = "m_cbShowLabels"
+            Me.m_cbShowLabels.UseVisualStyleBackColor = True
+            '
+            'm_lblLabelOptions
+            '
+            resources.ApplyResources(Me.m_lblLabelOptions, "m_lblLabelOptions")
+            Me.m_lblLabelOptions.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblLabelOptions.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblLabelOptions.Name = "m_lblLabelOptions"
             '
             'm_lblProgress
             '
@@ -216,7 +261,7 @@ Namespace Ecospace
             Me.m_plDisplayOptions.Controls.Add(Me.m_cbOverlay)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowSingle)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_cbDisplayGroup)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_cmbDisplayGroup)
             Me.m_plDisplayOptions.Name = "m_plDisplayOptions"
             '
             'm_btnDisplayGroups
@@ -235,6 +280,8 @@ Namespace Ecospace
             'm_cbMPA
             '
             resources.ApplyResources(Me.m_cbMPA, "m_cbMPA")
+            Me.m_cbMPA.Checked = True
+            Me.m_cbMPA.CheckState = System.Windows.Forms.CheckState.Checked
             Me.m_cbMPA.Name = "m_cbMPA"
             Me.m_cbMPA.UseVisualStyleBackColor = True
             '
@@ -295,6 +342,8 @@ Namespace Ecospace
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
+            Me.m_plLabelOptions.ResumeLayout(False)
+            Me.m_plLabelOptions.PerformLayout()
             Me.m_plDistribution.ResumeLayout(False)
             Me.m_plDistribution.PerformLayout()
             Me.m_plDisplayOptions.ResumeLayout(False)
@@ -307,7 +356,7 @@ Namespace Ecospace
 
         End Sub
         Private WithEvents m_btnRun As System.Windows.Forms.Button
-        Private WithEvents m_cbDisplayGroup As System.Windows.Forms.ComboBox
+        Private WithEvents m_cmbDisplayGroup As System.Windows.Forms.ComboBox
         Private WithEvents m_rbShowSingle As System.Windows.Forms.RadioButton
         Private WithEvents m_rbShowNonHidden As System.Windows.Forms.RadioButton
         Private WithEvents m_rbShowAll As System.Windows.Forms.RadioButton
@@ -334,6 +383,11 @@ Namespace Ecospace
         Private WithEvents m_rbDisplayCoverB As System.Windows.Forms.RadioButton
         Private WithEvents m_cbMPA As System.Windows.Forms.CheckBox
         Private WithEvents m_lblProgress As System.Windows.Forms.Label
+        Private WithEvents m_lblLabelOptions As System.Windows.Forms.Label
+        Private WithEvents m_cmbLabelPos As System.Windows.Forms.ComboBox
+        Private WithEvents m_cbShowLabels As System.Windows.Forms.CheckBox
+        Private WithEvents m_plLabelOptions As System.Windows.Forms.Panel
+        Private WithEvents m_cbInvertColor As System.Windows.Forms.CheckBox
 
  
     End Class

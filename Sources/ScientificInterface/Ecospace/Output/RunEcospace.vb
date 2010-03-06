@@ -13,9 +13,8 @@ Imports EwEUtils.Core
 Namespace Ecospace
 
     ''' <summary>
-    ''' The Run Ecospace UI class
+    ''' Form, implementing the Ecospace Run interface.
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class RunEcospace
 
         Public Enum eShowGroupType
@@ -63,6 +62,10 @@ Namespace Ecospace
 
         Private m_bOverlay As Boolean = False
         Private m_bShowMPA As Boolean = True
+        Private m_bShowLabels As Boolean = True
+        Private m_bInvertLabelColor As Boolean = False
+        Private m_labelposHorz As StringAlignment = StringAlignment.Near
+        Private m_labelposVert As StringAlignment = StringAlignment.Near
 
         Private m_bpConTracing As cBooleanProperty = Nothing
 
@@ -117,22 +120,24 @@ Namespace Ecospace
             Me.m_iPlotStepSize = 1
 
             'Load group combo box
-            Me.m_cbDisplayGroup.Items.Clear()
+            Me.m_cmbDisplayGroup.Items.Clear()
             For i As Integer = 1 To Me.Core.nGroups
-                Me.m_cbDisplayGroup.Items.Add(Me.Core.EcospaceGroups(i).Name)
+                Me.m_cmbDisplayGroup.Items.Add(Me.Core.EcospaceGroups(i).Name)
             Next
-            Me.m_cbDisplayGroup.SelectedIndex = 0
+            Me.m_cmbDisplayGroup.SelectedIndex = 0
             Me.m_iGroupToShow = 0
 
         End Sub
 
+        ''' <summary>
+        ''' Initialization of BioMapPlot
+        ''' </summary>
         Private Sub InitMapPlot()
 
-            ' Initialization of BioMapPlot
+            'Hack warning: For initialization the map dimensions are set to the value supplied by the core base map.
+            'The actual size of the map must be set from the EcoSpace Timestep results(See EcospaceTimeStepDelegate())
+            'This should not be called once Ecospace has been run because the map dims can be out of sync!
 
-            'Hack warning: For initialization the map dimensions are set to the value supplied by the core's EcoSpaceBaseMap
-            'the actual size of the map must be set from the EcoSpace Timestep results(See EcospaceTimeStepDelegate())
-            'this should not be call once Ecospace has been run because the map dims can be out of sync
             Me.m_iInCol = Me.Core.EcospaceBasemap.InCol
             Me.m_iInRow = Me.Core.EcospaceBasemap.InRow
             'Core.nGroups --> updated to nLivingGroups? Non - hidden groups? Check EwE5
@@ -235,6 +240,8 @@ Namespace Ecospace
                 Me.m_cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups)
                 AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
             End If
+
+            Me.m_cmbLabelPos.SelectedIndex = 0
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
@@ -459,6 +466,9 @@ Namespace Ecospace
                             drawer.OriginList = originList
                             drawer.RectList = rectList
                             drawer.Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+                            drawer.ShowLabels = Me.m_bShowLabels
+                            drawer.InvertLabelColors = Me.m_bInvertLabelColor
+                            drawer.SetLabelPosition(Me.m_labelposHorz, Me.m_labelposVert)
 
                             If Me.m_rbDisplayRelBiomass.Checked Then
                                 drawer.Map = Me.m_dataTimeStep.BiomassMap
@@ -514,6 +524,10 @@ Namespace Ecospace
                                                           m_pbMap.Height - 20)
 
                     drawer = New cMapDrawer(0, Me.Core)
+                    drawer.ShowLabels = Me.m_bShowLabels
+                    drawer.InvertLabelColors = Me.m_bInvertLabelColor
+                    drawer.SetLabelPosition(Me.m_labelposHorz, Me.m_labelposVert)
+
                     With drawer
                         If Me.m_rbDisplayRelBiomass.Checked Then
                             .Map = Me.m_dataTimeStep.BiomassMap
@@ -592,7 +606,7 @@ Namespace Ecospace
                         tmpBrush = New SolidBrush(lColors(CInt(icc)))
                     Else
                         ' #Land
-                        tmpBrush = New SolidBrush(Color.Black)
+                        tmpBrush = New SolidBrush(Color.Gray)
                     End If
 
                     Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
@@ -608,8 +622,19 @@ Namespace Ecospace
             g.DrawRectangle(Pens.Black, rcPos)
 
             'Display the group name
-            Dim fltName As String = Core.EcospaceFleets(iFleet + 1).Name
-            g.DrawString(fltName, Me.Font, Brushes.Black, rcPos)
+            If Me.m_bShowLabels Then
+                Dim fltName As String = Core.EcospaceFleets(iFleet + 1).Name
+                Dim br As Brush = Brushes.Black
+                Dim fmt As New StringFormat()
+
+                fmt.Alignment = Me.m_labelposHorz
+                fmt.LineAlignment = Me.m_labelposVert
+
+                If Me.m_bInvertLabelColor Then br = Brushes.White
+
+                g.DrawString(fltName, Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend), _
+                             br, rcPos, fmt)
+            End If
 
         End Sub
 
@@ -673,26 +698,37 @@ Namespace Ecospace
             'Me.UpdateControls()
         End Sub
 
+        Private Sub OnSelectDataChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_rbDisplayRelBiomass.CheckedChanged, _
+                    m_rbDisplayFishingEffort.CheckedChanged, _
+                    m_rbDisplayCoverB.CheckedChanged, _
+                    m_rbDisplayContaminantC.CheckedChanged
+
+            Me.RefreshPlot()
+            Me.RefreshMap()
+
+        End Sub
+
         Private Sub OnOverlay(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_cbOverlay.Click
             Me.m_bOverlay = m_cbOverlay.Checked
         End Sub
 
         Private Sub m_cbDisplayGroup_GotFocus(ByVal sender As Object, ByVal e As EventArgs) _
-                Handles m_cbDisplayGroup.GotFocus
+                Handles m_cmbDisplayGroup.GotFocus
 
             Me.m_showGroupMode = eShowGroupType.ShowSingle
-            Me.m_iGroupToShow = Me.m_cbDisplayGroup.SelectedIndex + 1
+            Me.m_iGroupToShow = Me.m_cmbDisplayGroup.SelectedIndex + 1
             Me.UpdateControls()
             Me.RefreshPlot()
             Me.RefreshMap()
         End Sub
 
         Private Sub cbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-                Handles m_cbDisplayGroup.SelectedIndexChanged
+                Handles m_cmbDisplayGroup.SelectedIndexChanged
 
             If (Me.m_showGroupMode = eShowGroupType.ShowSingle) Then
-                Me.m_iGroupToShow = Me.m_cbDisplayGroup.SelectedIndex + 1
+                Me.m_iGroupToShow = Me.m_cmbDisplayGroup.SelectedIndex + 1
                 Me.RefreshMap()
                 Me.RefreshPlot()
             End If
@@ -715,6 +751,34 @@ Namespace Ecospace
 
             Me.m_bShowMPA = m_cbMPA.Checked
             Me.UpdateControls()
+            Me.RefreshMap()
+
+        End Sub
+
+        Private Sub OnShowLabelsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbShowLabels.CheckedChanged
+
+            Me.m_bShowLabels = Me.m_cbShowLabels.Checked
+            Me.m_cbInvertColor.Enabled = Me.m_bShowLabels
+            Me.m_cmbLabelPos.Enabled = Me.m_bShowLabels
+            Me.RefreshMap()
+
+        End Sub
+
+        Private Sub OnInvertLabelsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbInvertColor.CheckedChanged
+
+            Me.m_bInvertLabelColor = Me.m_cbInvertColor.Checked
+            Me.RefreshMap()
+
+        End Sub
+
+        Private Sub OnChangeLabelPos(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbLabelPos.SelectedIndexChanged
+
+            Dim iSel As Integer = Math.Max(Math.Min(9, Me.m_cmbLabelPos.SelectedIndex), 0)
+            Me.m_labelposHorz = DirectCast(CInt(iSel Mod 3), StringAlignment)
+            Me.m_labelposVert = DirectCast(CInt(Math.Floor(iSel / 3)), StringAlignment)
             Me.RefreshMap()
 
         End Sub

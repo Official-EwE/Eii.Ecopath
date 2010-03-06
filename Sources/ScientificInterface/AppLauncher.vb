@@ -2747,12 +2747,14 @@ Public Class AppLauncher
 #End Region ' Main Menu - View
 
 #Region " Main Menu - Tools "
+
     ''' <summary>
     ''' Open the EwE6 option dialog
     ''' </summary>
-    Private Sub OptionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiOptions.Click
+    Private Sub OptionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsmiOptions.Click
 
-        Dim dlgOptions As New dlgOptions()
+        Dim dlgOptions As New dlgOptions(Me.UIContext)
         ' FG: Fixed a bug..Should not use Show instead of using ShowDialog and specify its owner so it will
         ' be displayed at the specified location Nov 15, 2006
         dlgOptions.ShowDialog(Me)
