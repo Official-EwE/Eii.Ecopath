@@ -118,127 +118,169 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SplitContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="SplitContainer1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_scMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SplitContainer1.Panel1.AutoScroll" type="System.Boolean, mscorlib">
+  <data name="m_scMain.Panel1.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="txbTBMargin.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_nudMarginTB.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="txbTBMargin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>94, 237</value>
+  <data name="m_nudMarginTB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>67, 238</value>
   </data>
-  <data name="txbTBMargin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 20</value>
+  <data name="m_nudMarginTB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 20</value>
   </data>
-  <data name="txbTBMargin.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+  <data name="m_nudMarginTB.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
   </data>
-  <data name="txbTBMargin.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Right</value>
+  <data name="&gt;&gt;m_nudMarginTB.Name" xml:space="preserve">
+    <value>m_nudMarginTB</value>
   </data>
-  <data name="&gt;&gt;txbTBMargin.Name" xml:space="preserve">
-    <value>txbTBMargin</value>
+  <data name="&gt;&gt;m_nudMarginTB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txbTBMargin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_nudMarginTB.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;txbTBMargin.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
-  </data>
-  <data name="&gt;&gt;txbTBMargin.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_nudMarginTB.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="txbLineWidth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_nudMarginLR.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="txbLineWidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>94, 160</value>
+  <data name="m_nudMarginLR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>67, 212</value>
   </data>
-  <data name="txbLineWidth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 20</value>
+  <data name="m_nudMarginLR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 20</value>
   </data>
-  <data name="txbLineWidth.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+  <data name="m_nudMarginLR.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
   </data>
-  <data name="txbLineWidth.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Right</value>
+  <data name="&gt;&gt;m_nudMarginLR.Name" xml:space="preserve">
+    <value>m_nudMarginLR</value>
   </data>
-  <data name="&gt;&gt;txbLineWidth.Name" xml:space="preserve">
-    <value>txbLineWidth</value>
+  <data name="&gt;&gt;m_nudMarginLR.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txbLineWidth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_nudMarginLR.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;txbLineWidth.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
-  </data>
-  <data name="&gt;&gt;txbLineWidth.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_nudMarginLR.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="txbLRMargin.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_nudDotSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="txbLRMargin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>94, 211</value>
+  <data name="m_nudDotSize.Location" type="System.Drawing.Point, System.Drawing">
+    <value>67, 186</value>
   </data>
-  <data name="txbLRMargin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 20</value>
+  <data name="m_nudDotSize.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 20</value>
   </data>
-  <data name="txbLRMargin.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+  <data name="m_nudDotSize.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
-  <data name="txbLRMargin.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Right</value>
+  <data name="&gt;&gt;m_nudDotSize.Name" xml:space="preserve">
+    <value>m_nudDotSize</value>
   </data>
-  <data name="&gt;&gt;txbLRMargin.Name" xml:space="preserve">
-    <value>txbLRMargin</value>
+  <data name="&gt;&gt;m_nudDotSize.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txbLRMargin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_nudDotSize.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;txbLRMargin.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
-  </data>
-  <data name="&gt;&gt;txbLRMargin.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_nudDotSize.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="cbScaleFP.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_nudLineWidth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudLineWidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>67, 160</value>
+  </data>
+  <data name="m_nudLineWidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 20</value>
+  </data>
+  <data name="m_nudLineWidth.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_nudLineWidth.Name" xml:space="preserve">
+    <value>m_nudLineWidth</value>
+  </data>
+  <data name="&gt;&gt;m_nudLineWidth.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudLineWidth.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_nudLineWidth.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_nudRowNum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudRowNum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>67, 134</value>
+  </data>
+  <data name="m_nudRowNum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 20</value>
+  </data>
+  <data name="m_nudRowNum.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowNum.Name" xml:space="preserve">
+    <value>m_nudRowNum</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowNum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowNum.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowNum.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_chkScaleForPrinter.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbScaleFP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 263</value>
+  <data name="m_chkScaleForPrinter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 264</value>
   </data>
-  <data name="cbScaleFP.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_chkScaleForPrinter.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 17</value>
   </data>
-  <data name="cbScaleFP.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+  <data name="m_chkScaleForPrinter.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
   </data>
-  <data name="cbScaleFP.Text" xml:space="preserve">
-    <value>Scale for printer</value>
+  <data name="m_chkScaleForPrinter.Text" xml:space="preserve">
+    <value>Scale &amp;for printer</value>
   </data>
-  <data name="&gt;&gt;cbScaleFP.Name" xml:space="preserve">
-    <value>cbScaleFP</value>
+  <data name="&gt;&gt;m_chkScaleForPrinter.Name" xml:space="preserve">
+    <value>m_chkScaleForPrinter</value>
   </data>
-  <data name="&gt;&gt;cbScaleFP.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_chkScaleForPrinter.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbScaleFP.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
+  <data name="&gt;&gt;m_chkScaleForPrinter.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;cbScaleFP.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;m_chkScaleForPrinter.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="m_clbOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="m_clbOptions.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="m_clbOptions.Items" xml:space="preserve">
     <value>Show biomass</value>
@@ -262,10 +304,10 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_clbOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 79</value>
+    <value>131, 83</value>
   </data>
   <data name="m_clbOptions.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_clbOptions.Name" xml:space="preserve">
     <value>m_clbOptions</value>
@@ -274,10 +316,10 @@
     <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_clbOptions.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
+    <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_clbOptions.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="lblTBMargin.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -289,10 +331,10 @@
     <value>58, 13</value>
   </data>
   <data name="lblTBMargin.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>11</value>
   </data>
   <data name="lblTBMargin.Text" xml:space="preserve">
-    <value>TB margin:</value>
+    <value>&amp;TB margin:</value>
   </data>
   <data name="&gt;&gt;lblTBMargin.Name" xml:space="preserve">
     <value>lblTBMargin</value>
@@ -301,64 +343,37 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblTBMargin.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
+    <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;lblTBMargin.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
-  <data name="txbDotSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="txbDotSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>94, 186</value>
-  </data>
-  <data name="txbDotSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 20</value>
-  </data>
-  <data name="txbDotSize.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="txbDotSize.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Right</value>
-  </data>
-  <data name="&gt;&gt;txbDotSize.Name" xml:space="preserve">
-    <value>txbDotSize</value>
-  </data>
-  <data name="&gt;&gt;txbDotSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txbDotSize.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
-  </data>
-  <data name="&gt;&gt;txbDotSize.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="lblLRMargin.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblMarginLR.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblLRMargin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 215</value>
+  <data name="m_lblMarginLR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 214</value>
   </data>
-  <data name="lblLRMargin.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblMarginLR.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
   </data>
-  <data name="lblLRMargin.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+  <data name="m_lblMarginLR.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
   </data>
-  <data name="lblLRMargin.Text" xml:space="preserve">
-    <value>LR margin:</value>
+  <data name="m_lblMarginLR.Text" xml:space="preserve">
+    <value>&amp;LR margin:</value>
   </data>
-  <data name="&gt;&gt;lblLRMargin.Name" xml:space="preserve">
-    <value>lblLRMargin</value>
+  <data name="&gt;&gt;m_lblMarginLR.Name" xml:space="preserve">
+    <value>m_lblMarginLR</value>
   </data>
-  <data name="&gt;&gt;lblLRMargin.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblMarginLR.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblLRMargin.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
+  <data name="&gt;&gt;m_lblMarginLR.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;lblLRMargin.ZOrder" xml:space="preserve">
-    <value>7</value>
+  <data name="&gt;&gt;m_lblMarginLR.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="m_lblDisplayOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -373,10 +388,10 @@
     <value>0, 0</value>
   </data>
   <data name="m_lblDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 18</value>
+    <value>129, 18</value>
   </data>
   <data name="m_lblDisplayOptions.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="m_lblDisplayOptions.Text" xml:space="preserve">
     <value>General options</value>
@@ -391,10 +406,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblDisplayOptions.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
+    <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lblDisplayOptions.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_lblGeneral.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -406,10 +421,10 @@
     <value>0, 109</value>
   </data>
   <data name="m_lblGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 18</value>
+    <value>129, 18</value>
   </data>
   <data name="m_lblGeneral.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_lblGeneral.Text" xml:space="preserve">
     <value>General options</value>
@@ -424,189 +439,132 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblGeneral.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
+    <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lblGeneral.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="btnClose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="btnClose.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-1, 783</value>
-  </data>
-  <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>126, 23</value>
-  </data>
-  <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="btnClose.Text" xml:space="preserve">
-    <value>&amp;Close</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
-    <value>btnClose</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
-  </data>
-  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="lblRowNum.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblRowNum.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblRowNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 135</value>
+  <data name="m_lblRowNum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 136</value>
   </data>
-  <data name="lblRowNum.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblRowNum.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 13</value>
   </data>
-  <data name="lblRowNum.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+  <data name="m_lblRowNum.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="lblRowNum.Text" xml:space="preserve">
-    <value>Plots/row:</value>
+  <data name="m_lblRowNum.Text" xml:space="preserve">
+    <value>&amp;Plots/row:</value>
   </data>
-  <data name="&gt;&gt;lblRowNum.Name" xml:space="preserve">
-    <value>lblRowNum</value>
+  <data name="&gt;&gt;m_lblRowNum.Name" xml:space="preserve">
+    <value>m_lblRowNum</value>
   </data>
-  <data name="&gt;&gt;lblRowNum.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblRowNum.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblRowNum.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
+  <data name="&gt;&gt;m_lblRowNum.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;lblRowNum.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblRowNum.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="lblLineWidth.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblLineWidth.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblLineWidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 163</value>
+  <data name="m_lblLineWidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 162</value>
   </data>
-  <data name="lblLineWidth.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblLineWidth.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
   </data>
-  <data name="lblLineWidth.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+  <data name="m_lblLineWidth.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="lblLineWidth.Text" xml:space="preserve">
-    <value>Line width:</value>
+  <data name="m_lblLineWidth.Text" xml:space="preserve">
+    <value>&amp;Line width:</value>
   </data>
-  <data name="&gt;&gt;lblLineWidth.Name" xml:space="preserve">
-    <value>lblLineWidth</value>
+  <data name="&gt;&gt;m_lblLineWidth.Name" xml:space="preserve">
+    <value>m_lblLineWidth</value>
   </data>
-  <data name="&gt;&gt;lblLineWidth.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblLineWidth.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblLineWidth.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
+  <data name="&gt;&gt;m_lblLineWidth.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;lblLineWidth.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblLineWidth.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="lblDotSize.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblDotSize.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblDotSize.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblDotSize.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 189</value>
   </data>
-  <data name="lblDotSize.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblDotSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 13</value>
   </data>
-  <data name="lblDotSize.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="lblDotSize.Text" xml:space="preserve">
-    <value>Dot size:</value>
-  </data>
-  <data name="&gt;&gt;lblDotSize.Name" xml:space="preserve">
-    <value>lblDotSize</value>
-  </data>
-  <data name="&gt;&gt;lblDotSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblDotSize.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
-  </data>
-  <data name="&gt;&gt;lblDotSize.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="txbPlotsPerRow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="txbPlotsPerRow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>94, 132</value>
-  </data>
-  <data name="txbPlotsPerRow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 20</value>
-  </data>
-  <data name="txbPlotsPerRow.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblDotSize.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="txbPlotsPerRow.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Right</value>
+  <data name="m_lblDotSize.Text" xml:space="preserve">
+    <value>&amp;Dot size:</value>
   </data>
-  <data name="&gt;&gt;txbPlotsPerRow.Name" xml:space="preserve">
-    <value>txbPlotsPerRow</value>
+  <data name="&gt;&gt;m_lblDotSize.Name" xml:space="preserve">
+    <value>m_lblDotSize</value>
   </data>
-  <data name="&gt;&gt;txbPlotsPerRow.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_lblDotSize.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txbPlotsPerRow.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
+  <data name="&gt;&gt;m_lblDotSize.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;txbPlotsPerRow.ZOrder" xml:space="preserve">
-    <value>14</value>
+  <data name="&gt;&gt;m_lblDotSize.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.Panel1.Name" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
+  <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.Panel1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_scMain.Panel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.Panel1.Parent" xml:space="preserve">
-    <value>SplitContainer1</value>
+  <data name="&gt;&gt;m_scMain.Panel1.Parent" xml:space="preserve">
+    <value>m_scMain</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.Panel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="SplitContainer1.Panel1MinSize" type="System.Int32, mscorlib">
+  <data name="m_scMain.Panel1MinSize" type="System.Int32, mscorlib">
     <value>127</value>
   </data>
-  <data name="SplitContainer1.Panel2.AutoScroll" type="System.Boolean, mscorlib">
+  <data name="m_scMain.Panel2.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="pbPlots.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbPlots.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="pbPlots.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbPlots.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="pbPlots.Size" type="System.Drawing.Size, System.Drawing">
-    <value>964, 781</value>
+  <data name="m_pbPlots.Size" type="System.Drawing.Size, System.Drawing">
+    <value>960, 781</value>
   </data>
-  <data name="pbPlots.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbPlots.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;pbPlots.Name" xml:space="preserve">
-    <value>pbPlots</value>
+  <data name="&gt;&gt;m_pbPlots.Name" xml:space="preserve">
+    <value>m_pbPlots</value>
   </data>
-  <data name="&gt;&gt;pbPlots.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbPlots.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;pbPlots.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_pbPlots.Parent" xml:space="preserve">
     <value>plPlots</value>
   </data>
-  <data name="&gt;&gt;pbPlots.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbPlots.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="plPlots.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -616,7 +574,7 @@
     <value>0, 25</value>
   </data>
   <data name="plPlots.Size" type="System.Drawing.Size, System.Drawing">
-    <value>964, 781</value>
+    <value>960, 781</value>
   </data>
   <data name="plPlots.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -628,42 +586,36 @@
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;plPlots.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel2</value>
+    <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;plPlots.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="tsCommands.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
-  <data name="tsBtnHSPlots.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
-        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
-        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
-        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
-        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
-        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
-        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
-        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
-        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
-        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="tsBtnHSPlots.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsmiOptions.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsBtnHSPlots.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 22</value>
+  <data name="m_tsmiOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 22</value>
   </data>
-  <data name="tsBtnHSPlots.Text" xml:space="preserve">
-    <value>&amp;Hide/Show plots</value>
+  <data name="m_tsmiOptions.Text" xml:space="preserve">
+    <value>Options</value>
   </data>
-  <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_sep1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
-  <data name="tsBtnSaveImage.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="m_tsmiChoosePlots.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsmiChoosePlots.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 22</value>
+  </data>
+  <data name="m_tsmiChoosePlots.Text" xml:space="preserve">
+    <value>&amp;Choose plots...</value>
+  </data>
+  <data name="m_tsbnScale.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
@@ -678,293 +630,122 @@
         s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="tsBtnSaveImage.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsbnScale.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsBtnSaveImage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 22</value>
-  </data>
-  <data name="tsBtnSaveImage.Text" xml:space="preserve">
-    <value>&amp;Save as image...</value>
-  </data>
-  <data name="ToolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="tsBtnSaveData.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
-        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
-        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
-        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
-        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
-        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
-        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
-        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
-        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
-        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="tsBtnSaveData.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsBtnSaveData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 22</value>
-  </data>
-  <data name="tsBtnSaveData.Text" xml:space="preserve">
-    <value>Save data to .&amp;csv...</value>
-  </data>
-  <data name="ToolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="tsBtnChangeYScale.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
-        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
-        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
-        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
-        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
-        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
-        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
-        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
-        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
-        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="tsBtnChangeYScale.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsBtnChangeYScale.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsbnScale.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 22</value>
   </data>
-  <data name="tsBtnChangeYScale.Text" xml:space="preserve">
+  <data name="m_tsbnScale.Text" xml:space="preserve">
     <value>Change &amp;Y scale...</value>
   </data>
-  <data name="ToolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_sep2.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
-  <data name="tsBtnPrint.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
-        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
-        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
-        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
-        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
-        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
-        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
-        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
-        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
-        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
-</value>
+  <data name="m_tsmiSaveAsImage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>182, 22</value>
   </data>
-  <data name="tsBtnPrint.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsmiSaveAsImage.Text" xml:space="preserve">
+    <value>Save as &amp;image...</value>
+  </data>
+  <data name="m_tsmiSaveAsCSV.Size" type="System.Drawing.Size, System.Drawing">
+    <value>182, 22</value>
+  </data>
+  <data name="m_tsmiSaveAsCSV.Text" xml:space="preserve">
+    <value>Save data to .&amp;csv...</value>
+  </data>
+  <data name="m_tsddSave.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsBtnPrint.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 22</value>
-  </data>
-  <data name="tsBtnPrint.Text" xml:space="preserve">
-    <value>&amp;Print...</value>
-  </data>
-  <data name="ToolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="tsBtnPrintPreview.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
-        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
-        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
-        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
-        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
-        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
-        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
-        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
-        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
-        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="tsBtnPrintPreview.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsBtnPrintPreview.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsddSave.Size" type="System.Drawing.Size, System.Drawing">
     <value>86, 22</value>
   </data>
-  <data name="tsBtnPrintPreview.Text" xml:space="preserve">
+  <data name="m_tsddSave.Text" xml:space="preserve">
+    <value>&amp;Save plots</value>
+  </data>
+  <data name="m_tsmiPrint.Size" type="System.Drawing.Size, System.Drawing">
+    <value>160, 22</value>
+  </data>
+  <data name="m_tsmiPrint.Text" xml:space="preserve">
+    <value>P&amp;rint...</value>
+  </data>
+  <data name="m_tsmiPrintPreview.Size" type="System.Drawing.Size, System.Drawing">
+    <value>160, 22</value>
+  </data>
+  <data name="m_tsmiPrintPreview.Text" xml:space="preserve">
     <value>Print pre&amp;view...</value>
   </data>
-  <data name="tsCommands.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tsddPrint.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsddPrint.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 22</value>
+  </data>
+  <data name="m_tsddPrint.Text" xml:space="preserve">
+    <value>&amp;Print</value>
+  </data>
+  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tsCommands.Size" type="System.Drawing.Size, System.Drawing">
-    <value>964, 25</value>
+  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>960, 25</value>
   </data>
-  <data name="tsCommands.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="tsCommands.Text" xml:space="preserve">
+  <data name="m_tsMain.Text" xml:space="preserve">
     <value>tsCommands</value>
   </data>
-  <data name="&gt;&gt;tsCommands.Name" xml:space="preserve">
-    <value>tsCommands</value>
+  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
+    <value>m_tsMain</value>
   </data>
-  <data name="&gt;&gt;tsCommands.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsCommands.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel2</value>
+  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
+    <value>m_scMain.Panel2</value>
   </data>
-  <data name="&gt;&gt;tsCommands.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.Panel2.Name" xml:space="preserve">
-    <value>SplitContainer1.Panel2</value>
+  <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
+    <value>m_scMain.Panel2</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.Panel2.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_scMain.Panel2.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.Panel2.Parent" xml:space="preserve">
-    <value>SplitContainer1</value>
+  <data name="&gt;&gt;m_scMain.Panel2.Parent" xml:space="preserve">
+    <value>m_scMain</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.Panel2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_scMain.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="SplitContainer1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>1097, 808</value>
   </data>
-  <data name="SplitContainer1.SplitterDistance" type="System.Int32, mscorlib">
-    <value>127</value>
+  <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
+    <value>131</value>
   </data>
-  <data name="SplitContainer1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.Name" xml:space="preserve">
-    <value>SplitContainer1</value>
+  <data name="&gt;&gt;m_scMain.Name" xml:space="preserve">
+    <value>m_scMain</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_scMain.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;SplitContainer1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="epInput.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>133, 17</value>
-  </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1097, 808</value>
-  </data>
-  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterParent</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Show all fits</value>
-  </data>
-  <data name="&gt;&gt;tsBtnHSPlots.Name" xml:space="preserve">
-    <value>tsBtnHSPlots</value>
-  </data>
-  <data name="&gt;&gt;tsBtnHSPlots.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
-    <value>ToolStripSeparator1</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsBtnSaveImage.Name" xml:space="preserve">
-    <value>tsBtnSaveImage</value>
-  </data>
-  <data name="&gt;&gt;tsBtnSaveImage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator2.Name" xml:space="preserve">
-    <value>ToolStripSeparator2</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsBtnSaveData.Name" xml:space="preserve">
-    <value>tsBtnSaveData</value>
-  </data>
-  <data name="&gt;&gt;tsBtnSaveData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator3.Name" xml:space="preserve">
-    <value>ToolStripSeparator3</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsBtnChangeYScale.Name" xml:space="preserve">
-    <value>tsBtnChangeYScale</value>
-  </data>
-  <data name="&gt;&gt;tsBtnChangeYScale.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator4.Name" xml:space="preserve">
-    <value>ToolStripSeparator4</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsBtnPrint.Name" xml:space="preserve">
-    <value>tsBtnPrint</value>
-  </data>
-  <data name="&gt;&gt;tsBtnPrint.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator5.Name" xml:space="preserve">
-    <value>ToolStripSeparator5</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsBtnPrintPreview.Name" xml:space="preserve">
-    <value>tsBtnPrintPreview</value>
-  </data>
-  <data name="&gt;&gt;tsBtnPrintPreview.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;epInput.Name" xml:space="preserve">
-    <value>epInput</value>
-  </data>
-  <data name="&gt;&gt;epInput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ErrorProvider, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pdAllFits.Name" xml:space="preserve">
-    <value>pdAllFits</value>
-  </data>
-  <data name="&gt;&gt;pdAllFits.Type" xml:space="preserve">
-    <value>System.Drawing.Printing.PrintDocument, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="&gt;&gt;PrintDialog1.Name" xml:space="preserve">
-    <value>PrintDialog1</value>
-  </data>
-  <data name="&gt;&gt;PrintDialog1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PrintDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmShowAllFits</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <metadata name="pdAllFits.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>223, 17</value>
+  <metadata name="m_printdocAllFits.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>96, 4</value>
   </metadata>
   <metadata name="dlgPV.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>316, 17</value>
+    <value>274, 5</value>
   </metadata>
   <data name="dlgPV.AutoScrollMargin" type="System.Drawing.Size, System.Drawing">
     <value>0, 0</value>
@@ -1160,7 +941,103 @@
   <data name="&gt;&gt;dlgPV.Type" xml:space="preserve">
     <value>System.Windows.Forms.PrintPreviewDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <metadata name="PrintDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>395, 17</value>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
   </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>46</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>1097, 808</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterParent</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Show all fits</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiOptions.Name" xml:space="preserve">
+    <value>m_tsmiOptions</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiOptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_sep1.Name" xml:space="preserve">
+    <value>m_sep1</value>
+  </data>
+  <data name="&gt;&gt;m_sep1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiChoosePlots.Name" xml:space="preserve">
+    <value>m_tsmiChoosePlots</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiChoosePlots.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnScale.Name" xml:space="preserve">
+    <value>m_tsbnScale</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnScale.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_sep2.Name" xml:space="preserve">
+    <value>m_sep2</value>
+  </data>
+  <data name="&gt;&gt;m_sep2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsddSave.Name" xml:space="preserve">
+    <value>m_tsddSave</value>
+  </data>
+  <data name="&gt;&gt;m_tsddSave.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiSaveAsImage.Name" xml:space="preserve">
+    <value>m_tsmiSaveAsImage</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiSaveAsImage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiSaveAsCSV.Name" xml:space="preserve">
+    <value>m_tsmiSaveAsCSV</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiSaveAsCSV.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsddPrint.Name" xml:space="preserve">
+    <value>m_tsddPrint</value>
+  </data>
+  <data name="&gt;&gt;m_tsddPrint.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiPrint.Name" xml:space="preserve">
+    <value>m_tsmiPrint</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiPrint.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiPrintPreview.Name" xml:space="preserve">
+    <value>m_tsmiPrintPreview</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiPrintPreview.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_printdocAllFits.Name" xml:space="preserve">
+    <value>m_printdocAllFits</value>
+  </data>
+  <data name="&gt;&gt;m_printdocAllFits.Type" xml:space="preserve">
+    <value>System.Drawing.Printing.PrintDocument, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>frmShowAllFits</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.306, Culture=neutral, PublicKeyToken=null</value>
+  </data>
 </root>

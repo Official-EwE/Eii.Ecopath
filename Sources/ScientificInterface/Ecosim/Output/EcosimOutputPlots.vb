@@ -17,7 +17,7 @@ Imports System.Text
 Namespace Ecosim
 
     ''' <summary>
-    ''' 
+    ''' Form, implementing the Ecosim output plots interface.
     ''' </summary>
     Public Class EcosimOutputPlots
 
@@ -137,12 +137,6 @@ Namespace Ecosim
             'Display pred and prey ranks
             Me.ShowGroup()
 
-        End Sub
-
-
-        Private Sub btnShowAllFits_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnShowAllFits.Click
-            Dim showAllFitsDlg As New frmShowAllFits
-            showAllFitsDlg.ShowDialog()
         End Sub
 
 #End Region ' Event handlers

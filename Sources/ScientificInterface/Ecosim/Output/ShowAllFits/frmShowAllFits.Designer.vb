@@ -2,7 +2,7 @@ Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmShowAllFits
-        Inherits System.Windows.Forms.Form
+        Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _
@@ -21,102 +21,123 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShowAllFits))
-            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.txbTBMargin = New System.Windows.Forms.TextBox
-            Me.txbLineWidth = New System.Windows.Forms.TextBox
-            Me.txbLRMargin = New System.Windows.Forms.TextBox
-            Me.cbScaleFP = New System.Windows.Forms.CheckBox
+            Me.m_scMain = New System.Windows.Forms.SplitContainer
+            Me.m_nudMarginTB = New System.Windows.Forms.NumericUpDown
+            Me.m_nudMarginLR = New System.Windows.Forms.NumericUpDown
+            Me.m_nudDotSize = New System.Windows.Forms.NumericUpDown
+            Me.m_nudLineWidth = New System.Windows.Forms.NumericUpDown
+            Me.m_nudRowNum = New System.Windows.Forms.NumericUpDown
+            Me.m_chkScaleForPrinter = New System.Windows.Forms.CheckBox
             Me.m_clbOptions = New System.Windows.Forms.CheckedListBox
             Me.lblTBMargin = New System.Windows.Forms.Label
-            Me.txbDotSize = New System.Windows.Forms.TextBox
-            Me.lblLRMargin = New System.Windows.Forms.Label
+            Me.m_lblMarginLR = New System.Windows.Forms.Label
             Me.m_lblDisplayOptions = New System.Windows.Forms.Label
             Me.m_lblGeneral = New System.Windows.Forms.Label
-            Me.btnClose = New System.Windows.Forms.Button
-            Me.lblRowNum = New System.Windows.Forms.Label
-            Me.lblLineWidth = New System.Windows.Forms.Label
-            Me.lblDotSize = New System.Windows.Forms.Label
-            Me.txbPlotsPerRow = New System.Windows.Forms.TextBox
+            Me.m_lblRowNum = New System.Windows.Forms.Label
+            Me.m_lblLineWidth = New System.Windows.Forms.Label
+            Me.m_lblDotSize = New System.Windows.Forms.Label
             Me.plPlots = New System.Windows.Forms.Panel
-            Me.pbPlots = New System.Windows.Forms.PictureBox
-            Me.tsCommands = New System.Windows.Forms.ToolStrip
-            Me.tsBtnHSPlots = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-            Me.tsBtnSaveImage = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-            Me.tsBtnSaveData = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-            Me.tsBtnChangeYScale = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
-            Me.tsBtnPrint = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
-            Me.tsBtnPrintPreview = New System.Windows.Forms.ToolStripButton
-            Me.epInput = New System.Windows.Forms.ErrorProvider(Me.components)
-            Me.pdAllFits = New System.Drawing.Printing.PrintDocument
+            Me.m_pbPlots = New System.Windows.Forms.PictureBox
+            Me.m_tsMain = New System.Windows.Forms.ToolStrip
+            Me.m_tsmiOptions = New System.Windows.Forms.ToolStripButton
+            Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tsmiChoosePlots = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbnScale = New System.Windows.Forms.ToolStripButton
+            Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tsddSave = New System.Windows.Forms.ToolStripDropDownButton
+            Me.m_tsmiSaveAsImage = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiSaveAsCSV = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsddPrint = New System.Windows.Forms.ToolStripDropDownButton
+            Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiPrintPreview = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_printdocAllFits = New System.Drawing.Printing.PrintDocument
             Me.dlgPV = New System.Windows.Forms.PrintPreviewDialog
-            Me.PrintDialog1 = New System.Windows.Forms.PrintDialog
-            Me.SplitContainer1.Panel1.SuspendLayout()
-            Me.SplitContainer1.Panel2.SuspendLayout()
-            Me.SplitContainer1.SuspendLayout()
+            Me.m_scMain.Panel1.SuspendLayout()
+            Me.m_scMain.Panel2.SuspendLayout()
+            Me.m_scMain.SuspendLayout()
+            CType(Me.m_nudMarginTB, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudMarginLR, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudDotSize, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudLineWidth, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudRowNum, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.plPlots.SuspendLayout()
-            CType(Me.pbPlots, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.tsCommands.SuspendLayout()
-            CType(Me.epInput, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbPlots, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
             '
-            'SplitContainer1
+            'm_scMain
             '
-            Me.SplitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            resources.ApplyResources(Me.SplitContainer1, "SplitContainer1")
-            Me.SplitContainer1.Name = "SplitContainer1"
+            Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            resources.ApplyResources(Me.m_scMain, "m_scMain")
+            Me.m_scMain.Name = "m_scMain"
             '
-            'SplitContainer1.Panel1
+            'm_scMain.Panel1
             '
-            resources.ApplyResources(Me.SplitContainer1.Panel1, "SplitContainer1.Panel1")
-            Me.SplitContainer1.Panel1.Controls.Add(Me.txbTBMargin)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.txbLineWidth)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.txbLRMargin)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.cbScaleFP)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.m_clbOptions)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.lblTBMargin)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.txbDotSize)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.lblLRMargin)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.m_lblDisplayOptions)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.m_lblGeneral)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.btnClose)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.lblRowNum)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.lblLineWidth)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.lblDotSize)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.txbPlotsPerRow)
+            resources.ApplyResources(Me.m_scMain.Panel1, "m_scMain.Panel1")
+            Me.m_scMain.Panel1.Controls.Add(Me.m_nudMarginTB)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_nudMarginLR)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_nudDotSize)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_nudLineWidth)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_nudRowNum)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_chkScaleForPrinter)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_clbOptions)
+            Me.m_scMain.Panel1.Controls.Add(Me.lblTBMargin)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblMarginLR)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblDisplayOptions)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblGeneral)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblRowNum)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblLineWidth)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblDotSize)
             '
-            'SplitContainer1.Panel2
+            'm_scMain.Panel2
             '
-            resources.ApplyResources(Me.SplitContainer1.Panel2, "SplitContainer1.Panel2")
-            Me.SplitContainer1.Panel2.Controls.Add(Me.plPlots)
-            Me.SplitContainer1.Panel2.Controls.Add(Me.tsCommands)
+            resources.ApplyResources(Me.m_scMain.Panel2, "m_scMain.Panel2")
+            Me.m_scMain.Panel2.Controls.Add(Me.plPlots)
+            Me.m_scMain.Panel2.Controls.Add(Me.m_tsMain)
             '
-            'txbTBMargin
+            'm_nudMarginTB
             '
-            resources.ApplyResources(Me.txbTBMargin, "txbTBMargin")
-            Me.txbTBMargin.Name = "txbTBMargin"
+            resources.ApplyResources(Me.m_nudMarginTB, "m_nudMarginTB")
+            Me.m_nudMarginTB.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_nudMarginTB.Name = "m_nudMarginTB"
             '
-            'txbLineWidth
+            'm_nudMarginLR
             '
-            resources.ApplyResources(Me.txbLineWidth, "txbLineWidth")
-            Me.txbLineWidth.Name = "txbLineWidth"
+            resources.ApplyResources(Me.m_nudMarginLR, "m_nudMarginLR")
+            Me.m_nudMarginLR.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_nudMarginLR.Name = "m_nudMarginLR"
             '
-            'txbLRMargin
+            'm_nudDotSize
             '
-            resources.ApplyResources(Me.txbLRMargin, "txbLRMargin")
-            Me.txbLRMargin.Name = "txbLRMargin"
+            resources.ApplyResources(Me.m_nudDotSize, "m_nudDotSize")
+            Me.m_nudDotSize.DecimalPlaces = 2
+            Me.m_nudDotSize.Name = "m_nudDotSize"
+            Me.m_nudDotSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
-            'cbScaleFP
+            'm_nudLineWidth
             '
-            resources.ApplyResources(Me.cbScaleFP, "cbScaleFP")
-            Me.cbScaleFP.Name = "cbScaleFP"
-            Me.cbScaleFP.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_nudLineWidth, "m_nudLineWidth")
+            Me.m_nudLineWidth.DecimalPlaces = 1
+            Me.m_nudLineWidth.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
+            Me.m_nudLineWidth.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
+            Me.m_nudLineWidth.Minimum = New Decimal(New Integer() {1, 0, 0, 131072})
+            Me.m_nudLineWidth.Name = "m_nudLineWidth"
+            Me.m_nudLineWidth.Value = New Decimal(New Integer() {1, 0, 0, 131072})
+            '
+            'm_nudRowNum
+            '
+            resources.ApplyResources(Me.m_nudRowNum, "m_nudRowNum")
+            Me.m_nudRowNum.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_nudRowNum.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudRowNum.Name = "m_nudRowNum"
+            Me.m_nudRowNum.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            '
+            'm_chkScaleForPrinter
+            '
+            resources.ApplyResources(Me.m_chkScaleForPrinter, "m_chkScaleForPrinter")
+            Me.m_chkScaleForPrinter.Name = "m_chkScaleForPrinter"
+            Me.m_chkScaleForPrinter.UseVisualStyleBackColor = True
             '
             'm_clbOptions
             '
@@ -131,15 +152,10 @@ Namespace Ecosim
             resources.ApplyResources(Me.lblTBMargin, "lblTBMargin")
             Me.lblTBMargin.Name = "lblTBMargin"
             '
-            'txbDotSize
+            'm_lblMarginLR
             '
-            resources.ApplyResources(Me.txbDotSize, "txbDotSize")
-            Me.txbDotSize.Name = "txbDotSize"
-            '
-            'lblLRMargin
-            '
-            resources.ApplyResources(Me.lblLRMargin, "lblLRMargin")
-            Me.lblLRMargin.Name = "lblLRMargin"
+            resources.ApplyResources(Me.m_lblMarginLR, "m_lblMarginLR")
+            Me.m_lblMarginLR.Name = "m_lblMarginLR"
             '
             'm_lblDisplayOptions
             '
@@ -155,120 +171,112 @@ Namespace Ecosim
             Me.m_lblGeneral.ForeColor = System.Drawing.SystemColors.Window
             Me.m_lblGeneral.Name = "m_lblGeneral"
             '
-            'btnClose
+            'm_lblRowNum
             '
-            resources.ApplyResources(Me.btnClose, "btnClose")
-            Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.btnClose.Name = "btnClose"
-            Me.btnClose.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_lblRowNum, "m_lblRowNum")
+            Me.m_lblRowNum.Name = "m_lblRowNum"
             '
-            'lblRowNum
+            'm_lblLineWidth
             '
-            resources.ApplyResources(Me.lblRowNum, "lblRowNum")
-            Me.lblRowNum.Name = "lblRowNum"
+            resources.ApplyResources(Me.m_lblLineWidth, "m_lblLineWidth")
+            Me.m_lblLineWidth.Name = "m_lblLineWidth"
             '
-            'lblLineWidth
+            'm_lblDotSize
             '
-            resources.ApplyResources(Me.lblLineWidth, "lblLineWidth")
-            Me.lblLineWidth.Name = "lblLineWidth"
-            '
-            'lblDotSize
-            '
-            resources.ApplyResources(Me.lblDotSize, "lblDotSize")
-            Me.lblDotSize.Name = "lblDotSize"
-            '
-            'txbPlotsPerRow
-            '
-            resources.ApplyResources(Me.txbPlotsPerRow, "txbPlotsPerRow")
-            Me.txbPlotsPerRow.Name = "txbPlotsPerRow"
+            resources.ApplyResources(Me.m_lblDotSize, "m_lblDotSize")
+            Me.m_lblDotSize.Name = "m_lblDotSize"
             '
             'plPlots
             '
             Me.plPlots.BackColor = System.Drawing.SystemColors.Control
-            Me.plPlots.Controls.Add(Me.pbPlots)
+            Me.plPlots.Controls.Add(Me.m_pbPlots)
             resources.ApplyResources(Me.plPlots, "plPlots")
             Me.plPlots.Name = "plPlots"
             '
-            'pbPlots
+            'm_pbPlots
             '
-            Me.pbPlots.BackColor = System.Drawing.Color.White
-            resources.ApplyResources(Me.pbPlots, "pbPlots")
-            Me.pbPlots.Name = "pbPlots"
-            Me.pbPlots.TabStop = False
+            Me.m_pbPlots.BackColor = System.Drawing.Color.White
+            resources.ApplyResources(Me.m_pbPlots, "m_pbPlots")
+            Me.m_pbPlots.Name = "m_pbPlots"
+            Me.m_pbPlots.TabStop = False
             '
-            'tsCommands
+            'm_tsMain
             '
-            Me.tsCommands.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsBtnHSPlots, Me.ToolStripSeparator1, Me.tsBtnSaveImage, Me.ToolStripSeparator2, Me.tsBtnSaveData, Me.ToolStripSeparator3, Me.tsBtnChangeYScale, Me.ToolStripSeparator4, Me.tsBtnPrint, Me.ToolStripSeparator5, Me.tsBtnPrintPreview})
-            resources.ApplyResources(Me.tsCommands, "tsCommands")
-            Me.tsCommands.Name = "tsCommands"
-            Me.tsCommands.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiOptions, Me.m_sep1, Me.m_tsmiChoosePlots, Me.m_tsbnScale, Me.m_sep2, Me.m_tsddSave, Me.m_tsddPrint})
+            resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+            Me.m_tsMain.Name = "m_tsMain"
             '
-            'tsBtnHSPlots
+            'm_tsmiOptions
             '
-            Me.tsBtnHSPlots.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsBtnHSPlots, "tsBtnHSPlots")
-            Me.tsBtnHSPlots.Name = "tsBtnHSPlots"
+            Me.m_tsmiOptions.Checked = True
+            Me.m_tsmiOptions.CheckOnClick = True
+            Me.m_tsmiOptions.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_tsmiOptions.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
+            resources.ApplyResources(Me.m_tsmiOptions, "m_tsmiOptions")
+            Me.m_tsmiOptions.Name = "m_tsmiOptions"
             '
-            'ToolStripSeparator1
+            'm_sep1
             '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            Me.m_sep1.Name = "m_sep1"
+            resources.ApplyResources(Me.m_sep1, "m_sep1")
             '
-            'tsBtnSaveImage
+            'm_tsmiChoosePlots
             '
-            Me.tsBtnSaveImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsBtnSaveImage, "tsBtnSaveImage")
-            Me.tsBtnSaveImage.Name = "tsBtnSaveImage"
+            Me.m_tsmiChoosePlots.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
+            resources.ApplyResources(Me.m_tsmiChoosePlots, "m_tsmiChoosePlots")
+            Me.m_tsmiChoosePlots.Name = "m_tsmiChoosePlots"
             '
-            'ToolStripSeparator2
+            'm_tsbnScale
             '
-            Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-            resources.ApplyResources(Me.ToolStripSeparator2, "ToolStripSeparator2")
+            Me.m_tsbnScale.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnScale, "m_tsbnScale")
+            Me.m_tsbnScale.Name = "m_tsbnScale"
             '
-            'tsBtnSaveData
+            'm_sep2
             '
-            Me.tsBtnSaveData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsBtnSaveData, "tsBtnSaveData")
-            Me.tsBtnSaveData.Name = "tsBtnSaveData"
+            Me.m_sep2.Name = "m_sep2"
+            resources.ApplyResources(Me.m_sep2, "m_sep2")
             '
-            'ToolStripSeparator3
+            'm_tsddSave
             '
-            Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-            resources.ApplyResources(Me.ToolStripSeparator3, "ToolStripSeparator3")
+            Me.m_tsddSave.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSaveAsImage, Me.m_tsmiSaveAsCSV})
+            Me.m_tsddSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
+            resources.ApplyResources(Me.m_tsddSave, "m_tsddSave")
+            Me.m_tsddSave.Name = "m_tsddSave"
             '
-            'tsBtnChangeYScale
+            'm_tsmiSaveAsImage
             '
-            Me.tsBtnChangeYScale.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsBtnChangeYScale, "tsBtnChangeYScale")
-            Me.tsBtnChangeYScale.Name = "tsBtnChangeYScale"
+            Me.m_tsmiSaveAsImage.Image = Global.ScientificInterface.My.Resources.Resources.InsertPictureHS
+            Me.m_tsmiSaveAsImage.Name = "m_tsmiSaveAsImage"
+            resources.ApplyResources(Me.m_tsmiSaveAsImage, "m_tsmiSaveAsImage")
             '
-            'ToolStripSeparator4
+            'm_tsmiSaveAsCSV
             '
-            Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-            resources.ApplyResources(Me.ToolStripSeparator4, "ToolStripSeparator4")
+            Me.m_tsmiSaveAsCSV.Image = Global.ScientificInterface.My.Resources.Resources.ExportXMLHS
+            Me.m_tsmiSaveAsCSV.Name = "m_tsmiSaveAsCSV"
+            resources.ApplyResources(Me.m_tsmiSaveAsCSV, "m_tsmiSaveAsCSV")
             '
-            'tsBtnPrint
+            'm_tsddPrint
             '
-            Me.tsBtnPrint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsBtnPrint, "tsBtnPrint")
-            Me.tsBtnPrint.Name = "tsBtnPrint"
+            Me.m_tsddPrint.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiPrint, Me.m_tsmiPrintPreview})
+            Me.m_tsddPrint.Image = Global.ScientificInterface.My.Resources.Resources.PrintHS
+            resources.ApplyResources(Me.m_tsddPrint, "m_tsddPrint")
+            Me.m_tsddPrint.Name = "m_tsddPrint"
             '
-            'ToolStripSeparator5
+            'm_tsmiPrint
             '
-            Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-            resources.ApplyResources(Me.ToolStripSeparator5, "ToolStripSeparator5")
+            Me.m_tsmiPrint.Image = Global.ScientificInterface.My.Resources.Resources.PrintHS
+            Me.m_tsmiPrint.Name = "m_tsmiPrint"
+            resources.ApplyResources(Me.m_tsmiPrint, "m_tsmiPrint")
             '
-            'tsBtnPrintPreview
+            'm_tsmiPrintPreview
             '
-            Me.tsBtnPrintPreview.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsBtnPrintPreview, "tsBtnPrintPreview")
-            Me.tsBtnPrintPreview.Name = "tsBtnPrintPreview"
+            Me.m_tsmiPrintPreview.Image = Global.ScientificInterface.My.Resources.Resources.PrintPreviewHS
+            Me.m_tsmiPrintPreview.Name = "m_tsmiPrintPreview"
+            resources.ApplyResources(Me.m_tsmiPrintPreview, "m_tsmiPrintPreview")
             '
-            'epInput
-            '
-            Me.epInput.ContainerControl = Me
-            '
-            'pdAllFits
+            'm_printdocAllFits
             '
             '
             'dlgPV
@@ -276,67 +284,62 @@ Namespace Ecosim
             resources.ApplyResources(Me.dlgPV, "dlgPV")
             Me.dlgPV.Name = "dlgPV"
             '
-            'PrintDialog1
-            '
-            Me.PrintDialog1.UseEXDialog = True
-            '
             'frmShowAllFits
             '
-            Me.AcceptButton = Me.btnClose
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.CancelButton = Me.btnClose
-            Me.Controls.Add(Me.SplitContainer1)
+            Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmShowAllFits"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
-            Me.SplitContainer1.Panel1.ResumeLayout(False)
-            Me.SplitContainer1.Panel1.PerformLayout()
-            Me.SplitContainer1.Panel2.ResumeLayout(False)
-            Me.SplitContainer1.Panel2.PerformLayout()
-            Me.SplitContainer1.ResumeLayout(False)
+            Me.m_scMain.Panel1.ResumeLayout(False)
+            Me.m_scMain.Panel1.PerformLayout()
+            Me.m_scMain.Panel2.ResumeLayout(False)
+            Me.m_scMain.Panel2.PerformLayout()
+            Me.m_scMain.ResumeLayout(False)
+            CType(Me.m_nudMarginTB, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudMarginLR, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudDotSize, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudLineWidth, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudRowNum, System.ComponentModel.ISupportInitialize).EndInit()
             Me.plPlots.ResumeLayout(False)
-            CType(Me.pbPlots, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.tsCommands.ResumeLayout(False)
-            Me.tsCommands.PerformLayout()
-            CType(Me.epInput, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbPlots, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tsMain.ResumeLayout(False)
+            Me.m_tsMain.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents lblTBMargin As System.Windows.Forms.Label
-        Friend WithEvents lblLRMargin As System.Windows.Forms.Label
-        Friend WithEvents lblDotSize As System.Windows.Forms.Label
-        Friend WithEvents lblLineWidth As System.Windows.Forms.Label
-        Friend WithEvents txbPlotsPerRow As System.Windows.Forms.TextBox
-        Friend WithEvents tsCommands As System.Windows.Forms.ToolStrip
-        Friend WithEvents cbScaleFP As System.Windows.Forms.CheckBox
-        Friend WithEvents tsBtnHSPlots As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents tsBtnSaveImage As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents tsBtnSaveData As System.Windows.Forms.ToolStripButton
-        Friend WithEvents lblRowNum As System.Windows.Forms.Label
-        Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
-        Friend WithEvents plPlots As System.Windows.Forms.Panel
-        Friend WithEvents txbLineWidth As System.Windows.Forms.TextBox
-        Friend WithEvents txbTBMargin As System.Windows.Forms.TextBox
-        Friend WithEvents txbLRMargin As System.Windows.Forms.TextBox
-        Friend WithEvents txbDotSize As System.Windows.Forms.TextBox
-        Friend WithEvents epInput As System.Windows.Forms.ErrorProvider
-        Friend WithEvents pbPlots As System.Windows.Forms.PictureBox
-        Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents tsBtnChangeYScale As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents tsBtnPrint As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents tsBtnPrintPreview As System.Windows.Forms.ToolStripButton
-        Friend WithEvents pdAllFits As System.Drawing.Printing.PrintDocument
-        Friend WithEvents dlgPV As System.Windows.Forms.PrintPreviewDialog
-        Friend WithEvents PrintDialog1 As System.Windows.Forms.PrintDialog
+        Private WithEvents lblTBMargin As System.Windows.Forms.Label
+        Private WithEvents m_lblMarginLR As System.Windows.Forms.Label
+        Private WithEvents m_lblDotSize As System.Windows.Forms.Label
+        Private WithEvents m_lblLineWidth As System.Windows.Forms.Label
+        Private WithEvents plPlots As System.Windows.Forms.Panel
+        Private WithEvents m_sep2 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_printdocAllFits As System.Drawing.Printing.PrintDocument
+        Private WithEvents dlgPV As System.Windows.Forms.PrintPreviewDialog
         Private WithEvents m_lblDisplayOptions As System.Windows.Forms.Label
         Private WithEvents m_clbOptions As System.Windows.Forms.CheckedListBox
         Private WithEvents m_lblGeneral As System.Windows.Forms.Label
-        Private WithEvents btnClose As System.Windows.Forms.Button
+        Private WithEvents m_pbPlots As System.Windows.Forms.PictureBox
+        Private WithEvents m_nudRowNum As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_nudLineWidth As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsmiChoosePlots As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnScale As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_nudDotSize As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblRowNum As System.Windows.Forms.Label
+        Private WithEvents m_nudMarginLR As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_nudMarginTB As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_chkScaleForPrinter As System.Windows.Forms.CheckBox
+        Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
+        Private WithEvents m_tsddSave As System.Windows.Forms.ToolStripDropDownButton
+        Private WithEvents m_tsmiSaveAsImage As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiSaveAsCSV As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsddPrint As System.Windows.Forms.ToolStripDropDownButton
+        Private WithEvents m_tsmiPrint As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiPrintPreview As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiOptions As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
     End Class
 
 End Namespace

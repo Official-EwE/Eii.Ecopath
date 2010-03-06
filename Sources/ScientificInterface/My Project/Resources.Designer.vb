@@ -140,13 +140,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property bell() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("bell", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Collapsed() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Collapsed", resourceCulture)
@@ -154,23 +147,9 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property color_wheel() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("color_wheel", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property CommentHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("CommentHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property CommentHS1() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CommentHS1", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -1469,13 +1448,6 @@ Namespace My.Resources
         Friend ReadOnly Property ExportXMLHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ExportXMLHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property ExportXMLHS1() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ExportXMLHS1", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -4602,6 +4574,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property InsertPictureHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("InsertPictureHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to The number entered is not valid.
         '''</summary>
@@ -5114,6 +5093,20 @@ Namespace My.Resources
         Friend ReadOnly Property pluginicon() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("pluginicon", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property PrintHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PrintHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property PrintPreviewHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PrintPreviewHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

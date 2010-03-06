@@ -16,14 +16,16 @@ Namespace Ecosim
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Form implementing the Ecosim Show All Fits interface.
     ''' </summary>
+    ''' <remarks>
+    ''' Why are we not using ZedGraph here?!
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Class frmShowAllFits
 
 #Region " Private vars "
 
-        Private m_core As cCore
         Private m_sDotSize As Single
         Private m_sLineWidth As Single
         Private m_sLRMargin As Single
@@ -43,28 +45,38 @@ Namespace Ecosim
 
         Private m_lShownPlotsType As New List(Of eTimeSeriesType)
 
-        Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
-
 #End Region ' Private vars
 
         Public Sub New()
 
             Me.InitializeComponent()
 
-            Me.m_core = cCore.GetInstance()
-            Me.m_NTimes = m_core.nEcosimTimeSteps
+        End Sub
 
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            Me.m_NTimes = Me.Core.nEcosimTimeSteps
             Me.SetDefaultParams()
             Me.GatherPlotData()
             Me.CalcPlotParams()
 
-            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleguideChanged
+            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
 
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleguideChanged
+            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
+            Me.CoreComponents = Nothing
             MyBase.OnFormClosed(e)
+        End Sub
+
+        Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+            MyBase.OnResize(e)
+            Me.m_pbPlots.Invalidate()
         End Sub
 
 #Region " Rendering "
@@ -81,8 +93,8 @@ Namespace Ecosim
             Dim iRow, iCol As Integer
             Dim sPosX, sPosY As Single
             Dim data() As Single
-            Dim ftTitle As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Title)
-            Dim ftScale As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Scale)
+            Dim ftCaption As Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
+            Dim ftScale As Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
 
             For i As Integer = 0 To Me.m_lPlots.Count - 1
 
@@ -105,12 +117,12 @@ Namespace Ecosim
                     ' ===============
                     If Me.m_bListWeight Then
                         strTitle = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, plot.TimeSeries.Name, _
-                            Me.m_sg.FormatNumber(plot.TimeSeries.WtType))
+                            Me.StyleGuide.FormatNumber(plot.TimeSeries.WtType))
                     Else
                         strTitle = plot.TimeSeries.Name
                     End If
 
-                    g.DrawString(strTitle, ftTitle, Brushes.Black, sPosX + szPosName.Width, sPosY + szPosName.Height)
+                    g.DrawString(strTitle, ftCaption, Brushes.Black, sPosX + szPosName.Width, sPosY + szPosName.Height)
 
                     ' Test axis for extreme values
                     If (Not Single.IsNaN(plot.YMax)) Then
@@ -161,7 +173,7 @@ Namespace Ecosim
                         g.Clip = New Region(New Rectangle(0, 0, iWidth, iHeight))
 
                     Else
-                        Using p As New Pen(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT))
+                        Using p As New Pen(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT))
                             g.DrawLine(p, sPosX, sPosY, sPosX + pzPosGraph.Width, sPosY + pzPosGraph.Height)
                             g.DrawLine(p, sPosX, sPosY + pzPosGraph.Height, sPosX + pzPosGraph.Width, sPosY)
                         End Using
@@ -184,22 +196,22 @@ Namespace Ecosim
                 For i As Integer = 0 To iEnd
                     Dim yPos As Single = ptfTL.Y + CInt(Math.Ceiling(iPlot / m_iCol)) * pzPosGraph.Height + toDeviceSize(New SizeF(0, 0.005F + m_sTBMargin), iWidth, iHeight).Height
                     For t As Integer = 0 To 3
-                        g.DrawString((Me.m_core.EcosimFirstYear + t * stepYear).ToString, ftScale, Brushes.Black, ptfTL.X + i * pzPosGraph.Width + (t * pzPosGraph.Width / 4), yPos)
+                        g.DrawString((Me.Core.EcosimFirstYear + t * stepYear).ToString, ftScale, Brushes.Black, ptfTL.X + i * pzPosGraph.Width + (t * pzPosGraph.Width / 4), yPos)
                     Next
 
                 Next
             End If
 
-            ftTitle.Dispose()
+            ftCaption.Dispose()
             ftScale.Dispose()
 
         End Sub
 
         Private Function GenerateImage() As System.Drawing.Image
 
-            Dim img As Image = New Bitmap(pbPlots.Width, pbPlots.Height)
+            Dim img As Image = New Bitmap(m_pbPlots.Width, m_pbPlots.Height)
             Dim bg As Graphics = Graphics.FromImage(img)
-            bg.Clear(pbPlots.BackColor)
+            bg.Clear(m_pbPlots.BackColor)
             DrawPlots(bg, img.Width, img.Height)
 
             Return img
@@ -216,30 +228,30 @@ Namespace Ecosim
         Private Sub SetDefaultParams()
 
             ' Defaults
-            m_sDotSize = 0.02 * 300
+            m_sDotSize = 6
             m_sLineWidth = 1
             m_sLRMargin = 0.1
             m_sTBMargin = 0.1
             m_iCol = 3
 
             ' Update controls
-            txbPlotsPerRow.Text = m_iCol.ToString
-            txbDotSize.Text = (m_sDotSize / 300.0F).ToString
-            txbLineWidth.Text = m_sLineWidth.ToString
-            txbLRMargin.Text = m_sLRMargin.ToString
-            txbTBMargin.Text = m_sTBMargin.ToString
+            Me.m_nudRowNum.Value = Me.m_iCol
+            Me.m_nudDotSize.Value = CDec(Me.m_sDotSize)
+            Me.m_nudLineWidth.Value = CDec(Me.m_sLineWidth)
+            Me.m_nudMarginLR.Value = CDec(Me.m_sLRMargin)
+            Me.m_nudMarginTB.Value = CDec(Me.m_sTBMargin)
 
             ' Defaults
-            m_bShowYear = True
-            m_bListWeight = True
+            Me.m_bShowYear = True
+            Me.m_bListWeight = True
 
             ' Select all options
-            For i As Integer = 0 To m_clbOptions.Items.Count - 1
-                m_clbOptions.SetItemChecked(i, True)
+            For i As Integer = 0 To Me.m_clbOptions.Items.Count - 1
+                Me.m_clbOptions.SetItemChecked(i, True)
             Next
 
             ' Another default
-            cbScaleFP.Checked = False
+            m_chkScaleForPrinter.Checked = False
 
             ' Hmm
             SetPlotsType()
@@ -247,9 +259,9 @@ Namespace Ecosim
 
         Private Sub GatherPlotData()
 
-            For iTS As Integer = 1 To m_core.nTimeSeries
+            For iTS As Integer = 1 To Me.Core.nTimeSeries
 
-                Dim ts As cTimeSeries = m_core.EcosimTimeSeries(iTS)
+                Dim ts As cTimeSeries = Me.Core.EcosimTimeSeries(iTS)
                 Dim asSimData As Single() = Nothing
 
                 If m_lShownPlotsType.Contains(ts.TimeSeriesType) Then
@@ -259,10 +271,10 @@ Namespace Ecosim
                         Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
                         Dim iGroup As Integer = gts.GroupIndex
 
-                        ReDim asSimData(m_core.nEcosimTimeSteps)
+                        ReDim asSimData(Me.Core.nEcosimTimeSteps)
 
-                        Dim grpOutput As cEcosimGroupOutput = m_core.EcoSimGroupOutputs(iGroup)
-                        For iTime As Integer = 1 To m_core.nEcosimTimeSteps
+                        Dim grpOutput As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+                        For iTime As Integer = 1 To Me.Core.nEcosimTimeSteps
                             Select Case gts.TimeSeriesType
 
                                 Case eTimeSeriesType.Catches, _
@@ -294,32 +306,22 @@ Namespace Ecosim
 
         Private Sub CalcPlotParams()
 
-            m_nNumPlots = RefreshTimeSeriesListbox()
+            Me.m_nNumPlots = Me.RefreshTimeSeriesListbox()
             'm_NumPlots = 15
 
-            ' ToDo_JS: use EwEFormatProvider
-            Try
-                m_iCol = CInt(txbPlotsPerRow.Text)
-                If m_iCol <= 0 Then m_iCol = 3
-            Catch ex As Exception
-                m_iCol = 3
-            End Try
-            m_sPlotWidth = 8.0F / m_iCol
+            Me.m_iCol = CInt(Me.m_nudRowNum.Value)
+            If Me.m_iCol <= 0 Then Me.m_iCol = 3
+            Me.m_sPlotWidth = 8.0F / Me.m_iCol
 
-            m_iRow = CInt(Math.Ceiling(m_nNumPlots / m_iCol))
-            If cbScaleFP.Checked Then
-                If m_iRow <= 10 Then m_iRow = 10
+            Me.m_iRow = CInt(Math.Ceiling(Me.m_nNumPlots / Me.m_iCol))
+            If Me.m_chkScaleForPrinter.Checked Then
+                If Me.m_iRow <= 10 Then Me.m_iRow = 10
             End If
-            m_sPlotHeight = 0.99F
-
-            Try
-                m_sLRMargin = CSng(txbLRMargin.Text)
-                m_sTBMargin = CSng(txbTBMargin.Text)
-                m_sDotSize = CSng(txbDotSize.Text) * 300.0F
-                m_sLineWidth = CSng(txbLineWidth.Text)
-            Catch ex As Exception
-
-            End Try
+            Me.m_sPlotHeight = 0.99F
+            Me.m_sLRMargin = CSng(Me.m_nudMarginLR.Value)
+            Me.m_sTBMargin = CSng(Me.m_nudMarginTB.Value)
+            Me.m_sDotSize = CSng(Me.m_nudDotSize.Value)
+            Me.m_sLineWidth = CSng(Me.m_nudLineWidth.Value)
 
         End Sub
 
@@ -430,192 +432,26 @@ Namespace Ecosim
 
         End Function
 
-        Private Sub InvalidNumEntered(ByRef txb As TextBox, ByVal e As System.ComponentModel.CancelEventArgs)
-
-            Try
-                'If the user enters the non-positive number, we remind the user with an red icon. 
-                If CSng(txb.Text) <= 0 Then
-                    Me.epInput.SetError(txb, My.Resources.INVALID_NUMBER_ENTERED)
-                    e.Cancel = True
-                Else
-                    Me.epInput.SetError(txb, "")
-                End If
-            Catch ex As Exception
-                Me.epInput.SetError(txb, My.Resources.INVALID_NUMBER_ENTERED)
-                e.Cancel = True
-            End Try
-
-        End Sub
-
-#End Region ' Internal mucky bits
-
-#Region " Event handlers "
-
-        Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
-        End Sub
-
-        ''' <summary>
-        ''' HS = Hide / Show
-        ''' </summary>
-        Private Sub tsBtnHSPlots_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnHSPlots.Click
-
-            Dim dlg As New dlgSelectAllFitsPlots(Me.m_lPlots)
-            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-                Me.CalcPlotParams()
-                Me.pbPlots.Invalidate()
-            End If
-
-        End Sub
-
-        Private Sub txbNum_Validated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txbPlotsPerRow.Validated, txbTBMargin.Validated, txbLRMargin.Validated, txbLineWidth.Validated, txbDotSize.Validated
+        Private Sub RecalcPlot()
             CalcPlotParams()
-            pbPlots.Invalidate()
+            m_pbPlots.Invalidate()
         End Sub
 
-        Private Sub txbPlotsPerRow_Validating(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles txbPlotsPerRow.Validating
-            Try
-                'If the user enters the non-positive number, we remind the user with an red icon. 
-                If CInt(txbPlotsPerRow.Text) <= 0 Then
-                    Me.epInput.SetError(Me.txbPlotsPerRow, My.Resources.INVALID_NUMBER_ENTERED)
-                    e.Cancel = True
-                Else
-                    Me.epInput.SetError(Me.txbPlotsPerRow, "")
-                End If
-            Catch ex As Exception
-                Me.epInput.SetError(Me.txbPlotsPerRow, My.Resources.INVALID_NUMBER_ENTERED)
-                e.Cancel = True
-            End Try
+#Region " Printing "
+
+        Private Sub pdAllFits_PrintPage(ByVal sender As System.Object, ByVal e As System.Drawing.Printing.PrintPageEventArgs) _
+            Handles m_printdocAllFits.PrintPage
+            Dim g As Graphics = e.Graphics
+            DrawPlots(g, e.MarginBounds.Width, e.MarginBounds.Height)
         End Sub
 
-        Private Sub txbLineWidth_Validating(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles txbLineWidth.Validating
-            InvalidNumEntered(txbLineWidth, e)
-        End Sub
-
-        Private Sub txbDotSize_Validating(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles txbDotSize.Validating
-            InvalidNumEntered(txbDotSize, e)
-        End Sub
-
-        Private Sub txbLRMargin_Validating(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles txbLRMargin.Validating
-            InvalidNumEntered(txbLRMargin, e)
-        End Sub
-
-        Private Sub txbTBMargin_Validating(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles txbTBMargin.Validating
-            InvalidNumEntered(txbTBMargin, e)
-        End Sub
-
-        Private Sub cbScaleFP_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbScaleFP.CheckedChanged
-            CalcPlotParams()
-            pbPlots.Invalidate()
-        End Sub
-
-        Private Sub tsBtnSaveImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnSaveImage.Click
-
-            Dim img As Image = Nothing
-            Dim imgFormat As System.Drawing.Imaging.ImageFormat = System.Drawing.Imaging.ImageFormat.Bmp
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
-            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-
-            cmdFS.Invoke(My.Resources.FILEFILTER_IMAGE)
-            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
-
-                Select Case cmdFS.FilterIndex
-                    Case 1
-                        imgFormat = System.Drawing.Imaging.ImageFormat.Bmp
-                    Case 2
-                        imgFormat = System.Drawing.Imaging.ImageFormat.Jpeg
-                    Case 3
-                        imgFormat = System.Drawing.Imaging.ImageFormat.Gif
-                    Case 4
-                        imgFormat = System.Drawing.Imaging.ImageFormat.Png
-                    Case 5
-                        imgFormat = System.Drawing.Imaging.ImageFormat.Tiff
-                    Case Else
-                        Debug.Assert(False)
-                End Select
-                img = Me.GenerateImage()
-                img.Save(cmdFS.FileName, imgFormat)
-            End If
-
-        End Sub
-
-        Private Sub clbOptions_ItemCheck(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) _
-            Handles m_clbOptions.ItemCheck
-
-            If e.Index <= 2 Then
-                If e.Index = 0 Then
-                    If e.NewValue = CheckState.Checked Then
-                        m_lShownPlotsType.AddRange(New eTimeSeriesType() {eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs, eTimeSeriesType.BiomassForcing})
-                    ElseIf e.NewValue = CheckState.Unchecked Then
-                        m_lShownPlotsType.Remove(eTimeSeriesType.BiomassRel)
-                        m_lShownPlotsType.Remove(eTimeSeriesType.BiomassAbs)
-                        m_lShownPlotsType.Remove(eTimeSeriesType.BiomassForcing)
-                    End If
-                ElseIf e.Index = 1 Then
-                    If e.NewValue = CheckState.Checked Then
-                        m_lShownPlotsType.Add(eTimeSeriesType.TotalMortality)
-                    ElseIf e.NewValue = CheckState.Unchecked Then
-                        m_lShownPlotsType.Remove(eTimeSeriesType.TotalMortality)
-                    End If
-                ElseIf e.Index = 2 Then
-                    If e.NewValue = CheckState.Checked Then
-                        m_lShownPlotsType.Add(eTimeSeriesType.Catches)
-                        m_lShownPlotsType.Add(eTimeSeriesType.CatchesForcing)
-                    ElseIf e.NewValue = CheckState.Unchecked Then
-                        m_lShownPlotsType.Remove(eTimeSeriesType.Catches)
-                        m_lShownPlotsType.Remove(eTimeSeriesType.CatchesForcing)
-                    End If
-                End If
-                CalcPlotParams()
-            End If
-
-            If e.Index = 3 Then
-                If e.NewValue = CheckState.Checked Then
-                    m_bListWeight = True
-                ElseIf e.NewValue = CheckState.Unchecked Then
-                    m_bListWeight = False
-                End If
-            End If
-
-            If e.Index = 4 Then
-                If e.NewValue = CheckState.Checked Then
-                    m_bShowYear = True
-                ElseIf e.NewValue = CheckState.Unchecked Then
-                    m_bShowYear = False
-                End If
-            End If
-
-            pbPlots.Invalidate()
-
-        End Sub
-
-        Private Sub pbPlots_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pbPlots.Paint
-            DrawPlots(e.Graphics, pbPlots.Width, pbPlots.Height)
-        End Sub
-
-        Private Sub tsBtnChangeYScale_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnChangeYScale.Click
-
-            Dim dlgChYScale As New dlgChangeYScale(Me.m_lPlots)
-            If (dlgChYScale.ShowDialog = Windows.Forms.DialogResult.OK) Then
-                pbPlots.Invalidate()
-            End If
-
-        End Sub
-
-        Private Sub OnStyleguideChanged(ByVal changeType As cStyleGuide.eChangeType)
-            ' Redraw
-            Me.Invalidate()
-        End Sub
-
-#End Region ' Event handlers
+#End Region ' Printing
 
 #Region " Saving "
 
-        Private Sub tsBtnSaveData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnSaveData.Click
+        Private Sub SaveToCSV(ByVal strpath As String)
 
             Dim strFileName As String = String.Empty
-            Dim strPath As String = SelectDestFolder()
             Dim strTargetPath As String = ""
             Dim ts As cTimeSeries = Nothing
 
@@ -640,8 +476,8 @@ Namespace Ecosim
 
                     sw.Write("Year")
                     sw.Write(",")
-                    For j As Integer = 1 To m_core.nTimeSeries
-                        ts = m_core.EcosimTimeSeries(j)
+                    For j As Integer = 1 To Me.Core.nTimeSeries
+                        ts = Me.Core.EcosimTimeSeries(j)
                         Select Case i
                             Case 1
                                 If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
@@ -663,8 +499,8 @@ Namespace Ecosim
                     sw.WriteLine()
 
                     Dim iPt As Integer = CInt(Math.Floor(cCore.N_MONTHS / 2))
-                    For k As Integer = 1 To m_core.nEcosimTimeSteps \ 12
-                        sw.Write((Me.m_core.EcosimFirstYear + k - 1).ToString)
+                    For k As Integer = 1 To Me.Core.nEcosimTimeSteps \ 12
+                        sw.Write((Me.Core.EcosimFirstYear + k - 1).ToString)
                         sw.Write(",")
                         For j As Integer = 0 To Me.m_lPlots.Count - 1
                             Dim plot As ShowAllFitsPlotData = Me.m_lPlots(i)
@@ -733,59 +569,215 @@ Namespace Ecosim
 
             ' Notify user
             ' ToDo_JS: globalize this
-            Me.m_core.Messages.SendMessage(New cMessage(String.Format("All fits data are saved to: {0}", strPath), _
+            Me.Core.Messages.SendMessage(New cMessage(String.Format("All fits data are saved to: {0}", strPath), _
                     eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
 
         End Sub
 
-        Private Function SelectDestFolder() As String
-
-            Dim fbDlg As New FolderBrowserDialog
-
-            fbDlg.SelectedPath = My.Settings.LastSelectedDirectory
-            fbDlg.ShowNewFolderButton = True
-            fbDlg.Description = My.Resources.PROMPT_FOLDER_SELECTION
-
-            If fbDlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Return fbDlg.SelectedPath
-            Else
-                Return String.Empty
-            End If
-
-        End Function
-
 #End Region ' Saving
 
-#Region " Printing "
+#End Region ' Internal mucky bits
 
-        Private Sub tsBtnPrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnPrint.Click
+#Region " Event handlers "
 
-            PrintDialog1.Document = pdAllFits
-            If PrintDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                pdAllFits.DocumentName = "Show all fits"
-                pdAllFits.Print()
+        Private Sub OnSaveAsCSVClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiSaveAsCSV.Click
+
+            Dim dlg As New FolderBrowserDialog()
+
+            dlg.SelectedPath = My.Settings.LastSelectedDirectory
+            dlg.ShowNewFolderButton = True
+            dlg.Description = My.Resources.PROMPT_FOLDER_SELECTION
+
+            If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                Me.SaveToCSV(dlg.SelectedPath)
             End If
 
         End Sub
 
-        Private Sub tsBtnPrintPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnPrintPreview.Click
+        Private Sub OnSaveAsImage(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiSaveAsImage.Click
+
+            Dim img As Image = Nothing
+            Dim imgFormat As System.Drawing.Imaging.ImageFormat = System.Drawing.Imaging.ImageFormat.Bmp
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+
+            cmdFS.Invoke(My.Resources.FILEFILTER_IMAGE)
+            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
+
+                Select Case cmdFS.FilterIndex
+                    Case 1
+                        imgFormat = System.Drawing.Imaging.ImageFormat.Bmp
+                    Case 2
+                        imgFormat = System.Drawing.Imaging.ImageFormat.Jpeg
+                    Case 3
+                        imgFormat = System.Drawing.Imaging.ImageFormat.Gif
+                    Case 4
+                        imgFormat = System.Drawing.Imaging.ImageFormat.Png
+                    Case 5
+                        imgFormat = System.Drawing.Imaging.ImageFormat.Tiff
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+                img = Me.GenerateImage()
+                img.Save(cmdFS.FileName, imgFormat)
+            End If
+        End Sub
+
+        Private Sub OnPrintClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiPrint.Click
+
+            Dim dlgPrint As New PrintDialog()
+            dlgPrint.UseEXDialog = True
+
+            dlgPrint.Document = m_printdocAllFits
+            If dlgPrint.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                ' ToDo: globalize this
+                m_printdocAllFits.DocumentName = "Show all fits"
+                m_printdocAllFits.Print()
+            End If
+
+        End Sub
+
+        Private Sub OnPrintPreviewClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiPrintPreview.Click
+
+            Dim dlg As New PrintPreviewDialog()
+            Dim msg As cMessage = Nothing
+
+            dlg.Document = Me.m_printdocAllFits
+
             Try
-                dlgPV.Document = pdAllFits
                 dlgPV.ShowDialog()
             Catch ex As Exception
-                Throw New Exception("Not able to preview: " & ex.ToString)
+                msg = New cMessage("Unable to preview: " & ex.ToString, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
+                Me.Core.Messages.SendMessage(msg)
             End Try
 
         End Sub
 
-        Private Sub pdAllFits_PrintPage(ByVal sender As System.Object, ByVal e As System.Drawing.Printing.PrintPageEventArgs) Handles pdAllFits.PrintPage
+        Private Sub OnDotSizeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudDotSize.ValueChanged
+            Me.RecalcPlot()
+        End Sub
 
-            Dim g As Graphics = e.Graphics
-            DrawPlots(g, e.MarginBounds.Width, e.MarginBounds.Height)
+        Private Sub OnLineWidthChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudLineWidth.ValueChanged
+            Me.RecalcPlot()
+        End Sub
+
+        Private Sub OnRowNumChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudRowNum.ValueChanged
+            Me.RecalcPlot()
+        End Sub
+
+        Private Sub OnMarginLRChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudMarginLR.ValueChanged
+            Me.RecalcPlot()
+        End Sub
+
+        Private Sub OnMarginTBChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudMarginTB.ValueChanged
+            Me.RecalcPlot()
+        End Sub
+
+        ''' <summary>
+        ''' HS = Hide / Show
+        ''' </summary>
+        Private Sub tsBtnHSPlots_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiChoosePlots.Click
+
+            Dim dlg As New dlgSelectAllFitsPlots(Me.m_lPlots)
+            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                Me.RecalcPlot()
+            End If
 
         End Sub
 
-#End Region ' Printing
+        Private Sub OnScaleForPrinterChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_chkScaleForPrinter.CheckedChanged
+            Me.RecalcPlot()
+        End Sub
+
+        Private Sub clbOptions_ItemCheck(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) _
+            Handles m_clbOptions.ItemCheck
+
+            If e.Index <= 2 Then
+                If e.Index = 0 Then
+                    If e.NewValue = CheckState.Checked Then
+                        m_lShownPlotsType.AddRange(New eTimeSeriesType() {eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs, eTimeSeriesType.BiomassForcing})
+                    ElseIf e.NewValue = CheckState.Unchecked Then
+                        m_lShownPlotsType.Remove(eTimeSeriesType.BiomassRel)
+                        m_lShownPlotsType.Remove(eTimeSeriesType.BiomassAbs)
+                        m_lShownPlotsType.Remove(eTimeSeriesType.BiomassForcing)
+                    End If
+                ElseIf e.Index = 1 Then
+                    If e.NewValue = CheckState.Checked Then
+                        m_lShownPlotsType.Add(eTimeSeriesType.TotalMortality)
+                    ElseIf e.NewValue = CheckState.Unchecked Then
+                        m_lShownPlotsType.Remove(eTimeSeriesType.TotalMortality)
+                    End If
+                ElseIf e.Index = 2 Then
+                    If e.NewValue = CheckState.Checked Then
+                        m_lShownPlotsType.Add(eTimeSeriesType.Catches)
+                        m_lShownPlotsType.Add(eTimeSeriesType.CatchesForcing)
+                    ElseIf e.NewValue = CheckState.Unchecked Then
+                        m_lShownPlotsType.Remove(eTimeSeriesType.Catches)
+                        m_lShownPlotsType.Remove(eTimeSeriesType.CatchesForcing)
+                    End If
+                End If
+                CalcPlotParams()
+            End If
+
+            If e.Index = 3 Then
+                If e.NewValue = CheckState.Checked Then
+                    m_bListWeight = True
+                ElseIf e.NewValue = CheckState.Unchecked Then
+                    m_bListWeight = False
+                End If
+            End If
+
+            If e.Index = 4 Then
+                If e.NewValue = CheckState.Checked Then
+                    m_bShowYear = True
+                ElseIf e.NewValue = CheckState.Unchecked Then
+                    m_bShowYear = False
+                End If
+            End If
+
+            Me.m_pbPlots.Invalidate()
+
+        End Sub
+
+        Private Sub OnPaintPlots(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+            Handles m_pbPlots.Paint
+
+            Me.DrawPlots(e.Graphics, m_pbPlots.Width, m_pbPlots.Height)
+
+        End Sub
+
+        Private Sub tsBtnChangeYScale_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnScale.Click
+
+            Dim dlgChYScale As New dlgChangeYScale(Me.m_lPlots)
+            If (dlgChYScale.ShowDialog = Windows.Forms.DialogResult.OK) Then
+                m_pbPlots.Invalidate()
+            End If
+
+        End Sub
+
+        Private Sub OnStyleguideChanged(ByVal changeType As cStyleGuide.eChangeType)
+            ' Redraw
+            Me.Invalidate()
+        End Sub
+
+        Private Sub OnToggleOptions(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiOptions.Click
+            Me.m_scMain.Panel1Collapsed = (Me.m_tsmiOptions.Checked = False)
+        End Sub
+
+#End Region ' Event handlers
 
     End Class
 

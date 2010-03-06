@@ -144,39 +144,6 @@
   <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_btnShowAllFits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_btnShowAllFits.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnShowAllFits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>99, 0</value>
-  </data>
-  <data name="m_btnShowAllFits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 0, 0</value>
-  </data>
-  <data name="m_btnShowAllFits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 26</value>
-  </data>
-  <data name="m_btnShowAllFits.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_btnShowAllFits.Text" xml:space="preserve">
-    <value>Show all &amp;fits</value>
-  </data>
-  <data name="&gt;&gt;m_btnShowAllFits.Name" xml:space="preserve">
-    <value>m_btnShowAllFits</value>
-  </data>
-  <data name="&gt;&gt;m_btnShowAllFits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnShowAllFits.Parent" xml:space="preserve">
-    <value>m_tlbControllers</value>
-  </data>
-  <data name="&gt;&gt;m_btnShowAllFits.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_lbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -199,7 +166,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.7.123, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.7.306, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_plGroups</value>
@@ -211,13 +178,13 @@
     <value>Fill</value>
   </data>
   <data name="m_btnSaveData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>99, 0</value>
   </data>
   <data name="m_btnSaveData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 3, 0</value>
+    <value>3, 0, 0, 0</value>
   </data>
   <data name="m_btnSaveData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 26</value>
+    <value>94, 26</value>
   </data>
   <data name="m_btnSaveData.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -259,7 +226,7 @@
     <value>m_lbPredators</value>
   </data>
   <data name="&gt;&gt;m_lbPredators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.7.123, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.7.306, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lbPredators.Parent" xml:space="preserve">
     <value>m_plPredators</value>
@@ -289,7 +256,7 @@
     <value>m_lbPrey</value>
   </data>
   <data name="&gt;&gt;m_lbPrey.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.7.123, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.7.306, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lbPrey.Parent" xml:space="preserve">
     <value>m_plPrey</value>
@@ -355,7 +322,7 @@
     <value>0</value>
   </data>
   <data name="m_tlbControllers.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnSaveData" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnShowAllFits" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnSaveData" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_lblGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -445,7 +412,7 @@
     <value>m_lbFleets</value>
   </data>
   <data name="&gt;&gt;m_lbFleets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cFleetListBox, ScientificInterfaceShared, Version=6.0.7.123, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.cFleetListBox, ScientificInterfaceShared, Version=6.0.7.306, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lbFleets.Parent" xml:space="preserve">
     <value>m_plFleets</value>
@@ -742,6 +709,6 @@
     <value>EcosimOutputPlots</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.123, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.306, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

@@ -26,7 +26,6 @@ Namespace Ecosim
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimOutputPlots))
             Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.m_btnShowAllFits = New System.Windows.Forms.Button
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
             Me.m_btnSaveData = New System.Windows.Forms.Button
             Me.m_lbPredators = New ScientificInterfaceShared.Controls.cGroupListBox
@@ -66,12 +65,6 @@ Namespace Ecosim
             Me.m_graph.ScrollMinX = 0
             Me.m_graph.ScrollMinY = 0
             Me.m_graph.ScrollMinY2 = 0
-            '
-            'm_btnShowAllFits
-            '
-            resources.ApplyResources(Me.m_btnShowAllFits, "m_btnShowAllFits")
-            Me.m_btnShowAllFits.Name = "m_btnShowAllFits"
-            Me.m_btnShowAllFits.UseVisualStyleBackColor = True
             '
             'm_lbGroups
             '
@@ -150,8 +143,7 @@ Namespace Ecosim
             'm_tlbControllers
             '
             resources.ApplyResources(Me.m_tlbControllers, "m_tlbControllers")
-            Me.m_tlbControllers.Controls.Add(Me.m_btnSaveData, 0, 0)
-            Me.m_tlbControllers.Controls.Add(Me.m_btnShowAllFits, 1, 0)
+            Me.m_tlbControllers.Controls.Add(Me.m_btnSaveData, 1, 0)
             Me.m_tlbControllers.Name = "m_tlbControllers"
             '
             'm_plGroups
@@ -242,7 +234,6 @@ Namespace Ecosim
 
         End Sub
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
-        Private WithEvents m_btnShowAllFits As System.Windows.Forms.Button
         Private WithEvents m_lbGroups As cGroupListBox
         Private WithEvents m_btnSaveData As System.Windows.Forms.Button
         Private WithEvents m_lbPredators As cGroupListBox

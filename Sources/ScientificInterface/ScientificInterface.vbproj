@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F24972EB-7291-497E-B4D7-9C2EACBE8E62}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -1469,19 +1469,20 @@
     <None Include="Resources\glyph_blue8.PNG" />
     <None Include="Resources\glyph_blue9.PNG" />
     <None Include="Resources\Importance.png" />
+    <None Include="Resources\InsertPictureHS.png" />
     <Content Include="Resources\Lenfest Logo_50px.jpg" />
     <None Include="Resources\NavForward.png" />
     <None Include="Resources\NotEditable.png" />
     <None Include="Resources\ProtectFormHS.png" />
     <None Include="Resources\mgel_logo2.gif" />
     <None Include="Resources\pluginicon.png" />
+    <None Include="Resources\PrintPreviewHS.png" />
+    <None Include="Resources\PrintHS.png" />
     <Content Include="Resources\sautxt_50px.jpg" />
     <None Include="Resources\Seed.PNG" />
     <Content Include="Resources\Sponsors.jpg" />
-    <None Include="Resources\WarningHS1.png" />
     <None Include="Resources\ZoomInHS.png" />
     <None Include="Resources\ZoomOutHS.png" />
-    <None Include="Resources\vb6tovb7.bmp" />
     <None Include="Resources\WarningHS.png" />
     <None Include="Resources\ZoomHS.png" />
     <None Include="Resources\modules.rtf" />
