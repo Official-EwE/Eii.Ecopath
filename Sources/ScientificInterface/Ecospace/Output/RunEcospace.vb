@@ -72,10 +72,11 @@ Namespace Ecospace
         Private m_iGroupToShow As Integer = 0
         Private m_zgh As cEcospaceZedGraphHelper = Nothing
 
-        'Legend colors for the Effort map
-        Private m_nEffortBins As Single = 100 'number of legend bins is arbitrary
-        'Exposing m_sMaxEffort to the interface would allow the user to set the Effort legend sensitivity
-        Private m_sMaxEffort As Single = 5 '
+        ''' <summary>number of legend bins is arbitrary</summary>
+        Private m_nEffortBins As Single = 100
+        ''' <summary>Exposing m_sMaxEffort to the interface would allow the user to set the Effort legend sensitivity.</summary>
+        Private m_sMaxEffort As Single = 5
+        Private m_cmdDisplayGroups As cCommand = Nothing
 
 #End Region ' Variables
 
@@ -210,7 +211,6 @@ Namespace Ecospace
             Me.InitDrawingThreads()
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmdDisplayGroups As cCommand = Nothing
             Dim pm As cPropertyManager = Me.PropertyManager
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
@@ -230,8 +230,11 @@ Namespace Ecospace
             Me.m_zgh.Attach(Me.UIContext, Me.m_zgPlotLarge)
             Me.m_zgh.ShowPointValue = True
 
-            cmdDisplayGroups = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-            If (cmdDisplayGroups IsNot Nothing) Then cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups)
+            Me.m_cmdDisplayGroups = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            If (Me.m_cmdDisplayGroups IsNot Nothing) Then
+                Me.m_cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups)
+                AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
+            End If
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
@@ -242,9 +245,11 @@ Namespace Ecospace
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmdDisplayGroups As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-            If (cmdDisplayGroups IsNot Nothing) Then cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups)
+            If (Me.m_cmdDisplayGroups IsNot Nothing) Then
+                Me.m_cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups)
+                RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
+                Me.m_cmdDisplayGroups = Nothing
+            End If
 
             Me.Core.StopEcospace()
 
@@ -297,9 +302,21 @@ Namespace Ecospace
             End If
         End Sub
 
-        Private Sub pbMapPlot_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) _
+        Private Sub OnPaintMap(ByVal sender As Object, ByVal e As PaintEventArgs) _
             Handles m_pbMap.Paint
             Me.PlotMap(e.Graphics)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Display groups command has been invoked: entirely invalidate the map plot.
+        ''' This is rather hack but necessary, since this form is entirely responsible
+        ''' for rendering of the map picture box.
+        ''' </summary>
+        ''' <param name="cmd"></param>
+        ''' -------------------------------------------------------------------
+        Private Sub OnDisplayGroupsInvoked(ByVal cmd As cCommand)
+            Me.RefreshMap()
         End Sub
 
 #End Region ' Events 
@@ -395,13 +412,14 @@ Namespace Ecospace
                 End If
             Next
 
+            ' JS05Mar10: disabled console output to keep moving fast
             'Console.WriteLine("Step {0} = year {1}, month {2} at {3}", Me.m_iTimeStepCur, iYear, iMonth, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
 
-            If Me.m_iTimeStepCur = 1 Then
-                'caution: hack)
-                Me.m_iNumGroupPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVisGroups) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
-                Me.m_iNumGroupPlotsVert = CInt(Math.Ceiling(iNumVisGroups / Me.m_iNumGroupPlotsHorz))
-            End If
+            ' JS05Mar10: reassess map layout whenever refreshing
+            'If Me.m_iTimeStepCur = 1 Then
+            Me.m_iNumGroupPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVisGroups) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
+            Me.m_iNumGroupPlotsVert = CInt(Math.Ceiling(iNumVisGroups / Me.m_iNumGroupPlotsHorz))
+            'End If
 
             ' Clear background
             Me.InitOutputBitmaps()
@@ -703,19 +721,6 @@ Namespace Ecospace
 
 #End Region ' Events
 
-        Private Sub RefreshPlot()
-
-            If (Me.m_zgh IsNot Nothing) Then
-
-                Me.m_zgh.GroupShowMode = Me.m_showGroupMode
-                Me.m_zgh.GroupToShow = Me.m_iGroupToShow
-                Me.m_zgh.UpdateCurveVisibility()
-                Me.m_zgh.Redraw()
-
-            End If
-
-        End Sub
-
 #Region " Ecospace Events/Delegates "
 
         ''' <summary>
@@ -888,6 +893,19 @@ Namespace Ecospace
 
         Private Sub RefreshMap()
             Me.m_pbMap.Refresh()
+        End Sub
+
+        Private Sub RefreshPlot()
+
+            If (Me.m_zgh IsNot Nothing) Then
+
+                Me.m_zgh.GroupShowMode = Me.m_showGroupMode
+                Me.m_zgh.GroupToShow = Me.m_iGroupToShow
+                Me.m_zgh.UpdateCurveVisibility()
+                Me.m_zgh.Redraw()
+
+            End If
+
         End Sub
 
         ''' <summary>
