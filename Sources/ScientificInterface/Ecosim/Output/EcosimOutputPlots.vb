@@ -86,7 +86,6 @@ Namespace Ecosim
 
             Me.m_lbGroups.SelectedIndex = 0
 
-            Me.UpdateControls()
             Me.UpdateColors()
 
             cmd = cmdh.GetCommand("ExportEcosimBiomassToCSV")
@@ -140,16 +139,6 @@ Namespace Ecosim
         End Sub
 
 #End Region ' Event handlers
-
-#Region " Overrides "
-
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-            If (msg.Source = eCoreComponentType.TimeSeries) Then
-                Me.UpdateControls()
-            End If
-        End Sub
-
-#End Region ' Overrides
 
 #Region " Helper methods "
 
@@ -521,10 +510,6 @@ Namespace Ecosim
             For Each p As GraphPane In Me.m_paneMaster.PaneList
                 p.Chart.Fill = New Fill(Me.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
             Next
-        End Sub
-
-        Private Sub UpdateControls()
-            Me.m_btnShowAllFits.Enabled = Me.UIContext.Core.HasAppliedTimeSeries()
         End Sub
 
 #End Region ' Helper methods
