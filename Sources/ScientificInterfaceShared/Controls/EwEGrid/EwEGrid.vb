@@ -425,6 +425,10 @@ Namespace Controls.EwEGrid
         Protected Overrides Sub InitLayout()
             MyBase.InitLayout()
 
+            Dim bIsUIContent As Boolean = (Me.UIContext IsNot Nothing)
+            Dim bIsDesigning As Boolean = (Me.DesignMode = True)
+            Dim bIsLife As Boolean = bIsUIContent And Not bIsDesigning
+
             Me.SuspendLayoutGrid()
 
             Try
@@ -435,13 +439,15 @@ Namespace Controls.EwEGrid
             End Try
 
             Try
-                ' Style the grid
-                Me.InitStyle()
+                ' Style the grid only when designing OR fully live
+                If bIsDesigning Or bIsLife Then
+                    Me.InitStyle()
+                End If
             Catch ex As Exception
                 Debug.Assert(False, "Exception " & ex.Message & " in InitStyle: check if grid is using a missing UI context")
             End Try
 
-            If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) Then
+            If (bIsLife) Then
                 Try
                     Me.FillData()
                 Catch ex As Exception
@@ -450,7 +456,10 @@ Namespace Controls.EwEGrid
             End If
 
             Try
-                Me.FinishStyle()
+                ' Style the grid only when designing OR fully live
+                If bIsDesigning Or bIsLife Then
+                    Me.FinishStyle()
+                End If
             Catch ex As Exception
                 Debug.Assert(False, "Exception " & ex.Message & " in FinishStyle")
             End Try
@@ -615,7 +624,6 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub RefreshContent()
-            ' For now, redo entire grid (ouch)
             Me.InitLayout()
         End Sub
 

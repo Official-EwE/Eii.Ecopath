@@ -24,6 +24,7 @@ Namespace Controls.EwEGrid
     Public MustInherit Class EwECellBase
         Inherits Cell
         Implements IDisposable
+        Implements IUIElement
 
 #Region " Private helper class "
 
@@ -46,9 +47,8 @@ Namespace Controls.EwEGrid
 
         ''' <summary>Default visualizer for EwECells</summary>
         Private Shared g_visualizer As New EwECellVisualizer()
-
-        ''' <summary>StyleGuide instance for subscribing to events</summary>
-        Protected m_sg As cStyleGuide = cStyleGuide.GetInstance()
+        ''' <summary>UI context to operate onto.</summary>
+        Private m_uic As cUIContext = Nothing
         ''' <summary>Behaviour model to catch [ENTER] key presses.</summary>
         Private m_bmCatchEnter As BehaviorModels.IBehaviorModel = Nothing
         ''' <summary>Behaviour model to catch cell resize events.</summary>
@@ -70,7 +70,6 @@ Namespace Controls.EwEGrid
             Me.m_bmResize = New SourceGrid2.BehaviorModels.Resize(CellResizeMode.Width)
             Me.Behaviors.Add(Me.m_bmResize)
 
-            AddHandler Me.m_sg.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
         End Sub
 
         Private m_bIsThrashed As Boolean = False
@@ -80,9 +79,7 @@ Namespace Controls.EwEGrid
             If Not Me.m_bIsThrashed Then
                 If bThrashing Then
 
-                    ' Release style guide event handler
-                    RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
-                    Me.m_sg = Nothing
+                    Me.UIContext = Nothing
 
                     ' Remove all bahaviour models
                     Me.Behaviors.Remove(m_bmCatchEnter)
@@ -242,7 +239,10 @@ Namespace Controls.EwEGrid
                         ' #Yes: return empty cell
                         Return ""
                     End If
-                    Return Me.m_sg.FormatNumber(sValue, Me.Style, Me.m_iNumDigits)
+
+                    If (Me.StyleGuide Is Nothing) Then Return "#.#!"
+
+                    Return Me.StyleGuide.FormatNumber(sValue, Me.Style, Me.m_iNumDigits)
                 End If
 
                 ' Is this a double?
@@ -259,7 +259,10 @@ Namespace Controls.EwEGrid
                         ' #Yes: return empty cell
                         Return ""
                     End If
-                    Return Me.m_sg.FormatNumber(dValue, Me.Style, Me.m_iNumDigits)
+
+                    If (Me.StyleGuide Is Nothing) Then Return "#.##"
+
+                    Return Me.StyleGuide.FormatNumber(dValue, Me.Style, Me.m_iNumDigits)
                 End If
 
                 ' Is this an integer?
@@ -318,6 +321,79 @@ Namespace Controls.EwEGrid
         End Sub
 
 #End Region ' Updated (StyleGuide)
+
+#Region " UIContext connection "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Connect a cell to a grid. Overridden to hook up to an existing 
+        ''' <see cref="cUIContext">UI context</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Sub OnAddToGrid(ByVal e As System.EventArgs)
+            MyBase.OnAddToGrid(e)
+            If TypeOf Me.Grid Is IUIElement Then
+                Me.UIContext = DirectCast(Me.Grid, IUIElement).UIContext
+            End If
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Remove a cell from a grid. Overridden to disconnect from the current
+        ''' <see cref="cUIContext">UI context</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Sub OnRemoveToGrid(ByVal e As System.EventArgs)
+            MyBase.OnRemoveToGrid(e)
+            Me.UIContext = Nothing
+        End Sub
+
+        Protected ReadOnly Property Core() As cCore
+            Get
+                If (Me.UIContext Is Nothing) Then Return Nothing
+                Return Me.UIContext.Core
+            End Get
+        End Property
+
+        Protected ReadOnly Property PropertyManager() As cPropertyManager
+            Get
+                If (Me.UIContext Is Nothing) Then Return Nothing
+                Return Me.UIContext.PropertyManager
+            End Get
+        End Property
+
+        Protected ReadOnly Property StyleGuide() As cStyleGuide
+            Get
+                If (Me.UIContext Is Nothing) Then Return Nothing
+                Return Me.UIContext.StyleGuide
+            End Get
+        End Property
+
+        Protected Overridable Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+
+                If (Me.m_uic IsNot Nothing) Then
+                    ' Clean up
+                    ' Release style guide event handler
+                    RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+                End If
+
+                Me.m_uic = value
+
+                If (Me.m_uic IsNot Nothing) Then
+                    ' Release style guide event handler
+                    AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+                End If
+
+            End Set
+
+        End Property
+
+#End Region ' UIContext connection
 
     End Class
 

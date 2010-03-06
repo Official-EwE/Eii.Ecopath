@@ -79,22 +79,33 @@ Namespace Controls.EwEGrid
         Public Overrides ReadOnly Property DisplayText() As String
             Get
                 Dim strDisplayText As String = ""
+                Dim strUnit1 As String = "u1"
+                Dim strUnit2 As String = "u2"
 
                 If m_aUnitTypes Is Nothing Then
                     strDisplayText = MyBase.DisplayText
                 Else
                     Select Case m_aUnitTypes.Length
+
                         Case 0
                             strDisplayText = MyBase.DisplayText
+
                         Case 1
-                            strDisplayText = String.Format(Me.m_strUnitMask, _
-                                                           Me.m_sg.GetUnitString(m_aUnitTypes(0)))
+                            If Me.StyleGuide IsNot Nothing Then
+                                strUnit1 = Me.StyleGuide.GetUnitString(m_aUnitTypes(0))
+                            End If
+                            strDisplayText = String.Format(Me.m_strUnitMask, strUnit1)
+
                         Case 2
-                            strDisplayText = String.Format(Me.m_strUnitMask, _
-                                                           Me.m_sg.GetUnitString(m_aUnitTypes(0)), _
-                                                           Me.m_sg.GetUnitString(m_aUnitTypes(1)))
+                            If Me.StyleGuide IsNot Nothing Then
+                                strUnit1 = Me.StyleGuide.GetUnitString(m_aUnitTypes(0))
+                                strUnit2 = Me.StyleGuide.GetUnitString(m_aUnitTypes(1))
+                            End If
+                            strDisplayText = String.Format(Me.m_strUnitMask, strUnit1, strUnit2)
+
                         Case Else
                             Debug.Assert(False)
+
                     End Select
                 End If
                 Return strDisplayText
