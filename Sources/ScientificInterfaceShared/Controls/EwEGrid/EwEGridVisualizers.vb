@@ -69,6 +69,7 @@ Namespace Controls.EwEGrid
             Dim eStyle As cStyleGuide.eStyleFlags = 0
             Dim clrBack As Color = Me.BackColor
             Dim clrFore As Color = Nothing ' Not used here
+            Dim sg As cStyleGuide = Me.StyleGuide(p_Cell)
 
             ' Rendering a cell with an associated property?
             If (TypeOf p_Cell Is EwECellBase) Then
@@ -78,10 +79,12 @@ Namespace Controls.EwEGrid
                 ' Get its style
                 eStyle = cell.Style()
                 ' Get SG colours for this style
-                ' ! Note that when obtaining the background color the remarks style is excluded. This
-                ' ! style will not be not reflected via the background colour but instead via a 
-                ' ! dedicated indicator (see below)
-                cStyleGuide.GetInstance().GetStyleColors(eStyle And (Not cStyleGuide.eStyleFlags.Remarks), clrFore, clrBack)
+                If (sg IsNot Nothing) Then
+                    ' ! Note that when obtaining the background color the remarks style is excluded. This
+                    ' ! style will not be not reflected via the background colour but instead via a 
+                    ' ! dedicated indicator (see below)
+                    sg.GetStyleColors(eStyle And (Not cStyleGuide.eStyleFlags.Remarks), clrFore, clrBack)
+                End If
             End If
 
             ' Does cell have focus?
@@ -106,9 +109,9 @@ Namespace Controls.EwEGrid
             End If
 
             ' Need to draw remarks indicator?
-            If ((eStyle And cStyleGuide.eStyleFlags.Remarks) > 0) Then
+            If ((eStyle And cStyleGuide.eStyleFlags.Remarks) > 0) And (sg IsNot Nothing) Then
                 ' #Yes: draw remarks indicator
-                cRemarksIndicator.Paint(p_ClientRectangle, e.Graphics, True)
+                cRemarksIndicator.Paint(sg, p_ClientRectangle, e.Graphics, True)
             End If
 
         End Sub
@@ -131,6 +134,7 @@ Namespace Controls.EwEGrid
             Dim rcBorder As RectangleBorder = Me.Border
             Dim fontCell As Font = Me.GetCellFont()
             Dim rcClient As New Rectangle(p_ClientRectangle.X, p_ClientRectangle.Y, p_ClientRectangle.Width, p_ClientRectangle.Height)
+            Dim sg As cStyleGuide = Me.StyleGuide(p_Cell)
 
             ' Rendering a cell with an associated property?
             If (TypeOf p_Cell Is EwECellBase) Then
@@ -139,8 +143,10 @@ Namespace Controls.EwEGrid
                 Dim cell As EwECellBase = DirectCast(p_Cell, EwECellBase)
                 ' Get its style
                 eStyle = cell.Style()
-                ' Get SG colours for this style
-                cStyleGuide.GetInstance().GetStyleColors(eStyle, clrFore, clrBack)
+                If (sg IsNot Nothing) Then
+                    ' Get SG colours for this style
+                    sg.GetStyleColors(eStyle, clrFore, clrBack)
+                End If
             End If
 
             ' Does cell have focus?
@@ -173,9 +179,13 @@ Namespace Controls.EwEGrid
         ''' Overidden to draw cell border using EwE color styles
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub DrawCell_Border(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, ByVal p_CellPosition As SourceGrid2.Position, ByVal e As System.Windows.Forms.PaintEventArgs, ByVal p_ClientRectangle As System.Drawing.Rectangle, ByVal p_Status As SourceGrid2.DrawCellStatus)
+        Protected Overrides Sub DrawCell_Border(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
+                                                ByVal p_CellPosition As SourceGrid2.Position, _
+                                                ByVal e As System.Windows.Forms.PaintEventArgs, _
+                                                ByVal p_ClientRectangle As System.Drawing.Rectangle, _
+                                                ByVal p_Status As SourceGrid2.DrawCellStatus)
 
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim sg As cStyleGuide = Me.StyleGuide(p_Cell)
             Dim eStyle As cStyleGuide.eStyleFlags = 0
             Dim clrFore As Color = Me.ForeColor
             Dim rcBorder As RectangleBorder = Me.Border
@@ -200,7 +210,7 @@ Namespace Controls.EwEGrid
             End If
 
             ' Need to render highlightboder?
-            If ((eStyle And cStyleGuide.eStyleFlags.Highlight) > 0) Then
+            If ((eStyle And cStyleGuide.eStyleFlags.Highlight) > 0) And (sg IsNot Nothing) Then
                 ' #Yes: render highlight border
                 rcBorder = New RectangleBorder( _
                     New Border(sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), Me.m_nHighlightBorderWidth))
@@ -221,6 +231,24 @@ Namespace Controls.EwEGrid
                 rcBorder.Bottom.Width, _
                 ButtonBorderStyle.Solid)
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Borrow style guide from parent cell, if possible.
+        ''' </summary>
+        ''' <param name="p_Cell"></param>
+        ''' -------------------------------------------------------------------
+        Protected ReadOnly Property StyleGuide(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide
+            Get
+                If (TypeOf p_Cell Is IUIElement) Then
+                    Dim uic As cUIContext = DirectCast(p_Cell, IUIElement).UIContext
+                    If (uic IsNot Nothing) Then
+                        Return uic.StyleGuide
+                    End If
+                End If
+                Return Nothing
+            End Get
+        End Property
 
 #End Region ' Internals
 
