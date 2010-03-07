@@ -17,39 +17,36 @@ Imports EwEUtils.Database.cEwEDatabase
 Public Class ucLinkDefault
 
     Private WithEvents m_linkDefault As cLinkDefault = Nothing
-    Private WithEvents m_sg As cStyleGuide = Nothing
 
     Public Sub New()
         Me.InitializeComponent()
-        ' Hook up to SG
-        Me.m_sg = cStyleGuide.GetInstance()
     End Sub
 
     Private Sub ucLink_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles Me.Disposed
         Me.LinkDefault(Nothing)
-        Me.m_sg = Nothing
     End Sub
 
     Public Sub LinkDefault(ByVal link As cLinkDefault)
         Me.m_linkDefault = link
     End Sub
 
-    Private Sub ucLink_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
-        Handles Me.Paint
-        If Me.Selected Then
-            cArrowIndicator.DrawArrow(e.Graphics, _
-                Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), _
-                Me.ClientRectangle, 180, 1.0)
-        Else
-            cArrowIndicator.DrawArrow(e.Graphics, _
-                Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT), _
-                Me.ClientRectangle, 180, 1.0)
+    Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        MyBase.OnPaint(e)
+
+        Dim clr As Color = Color.Black
+        If Me.UIContext IsNot Nothing Then
+            If Me.Selected Then
+                clr = Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+            Else
+                clr = Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+            End If
         End If
+        cArrowIndicator.DrawArrow(e.Graphics, clr, Me.ClientRectangle, 180, 1.0)
+
     End Sub
 
-    Private Sub OnStyleguideChanged(ByVal changeFlags As cStyleGuide.eChangeType) _
-        Handles m_sg.StyleGuideChanged
+    Protected Overrides Sub OnStyleguideChanged(ByVal changeFlags As cStyleGuide.eChangeType) 
         If ((changeFlags And cStyleGuide.eChangeType.Colours) > 0) Then
             Me.Invalidate(True)
         End If

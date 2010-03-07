@@ -8,6 +8,7 @@ Imports System.Reflection
 Imports System.ComponentModel
 Imports System.Windows.Forms
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -20,6 +21,7 @@ Imports EwEUtils.Utilities
 Public Class ucUnitGrid
     : Inherits EwEGrid
 
+    Private m_uic As cUIContext = Nothing
     Private m_data As cData = Nothing
     Private m_unitType As cUnitFactory.eUnitType = cUnitFactory.eUnitType.Producer
     Private m_lUnits As List(Of cUnit) = Nothing
@@ -34,8 +36,11 @@ Public Class ucUnitGrid
     ''' <param name="data"></param>
     ''' <param name="unitType"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal data As cData, ByVal unitType As cUnitFactory.eUnitType)
+    Public Sub New(ByVal uic As cUIContext, _
+                   ByVal data As cData, _
+                   ByVal unitType As cUnitFactory.eUnitType)
 
+        Me.m_uic = uic
         Me.m_data = data
         Me.m_unitType = unitType
 

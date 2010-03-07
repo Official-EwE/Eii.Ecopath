@@ -4,6 +4,7 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwEUtils.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -39,12 +40,14 @@ Public Class ucDefaults
     Private m_dtDefaults As New Dictionary(Of cOOPStorable, ucDefault)
     Private m_bInUpdate As Boolean = False
     Private m_objSelected As cOOPStorable = Nothing
+    Private m_uic As cUIContext = Nothing
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal data As cData)
+    Public Sub New(ByVal uic As cUIContext, ByVal data As cData)
         Me.InitializeComponent()
 
+        Me.m_uic = uic
         Me.m_data = data
 
         ' Init defaults
@@ -93,12 +96,14 @@ Public Class ucDefaults
         Me.m_dtDefaults.Add(obj, c)
         c.ObjDefault = obj
         c.Text = strTitle
+        c.UIContext = Me.m_uic
         AddHandler c.Click, AddressOf OnClickControl
 
         Me.m_cbDefault.Items.Add(New cOOPStorableComboItem(obj, strTitle))
     End Sub
 
     Private Sub RemoveControl(ByVal c As ucDefault)
+        c.UIContext = Nothing
         Me.m_dtDefaults.Remove(c.ObjDefault)
         RemoveHandler c.Click, AddressOf OnClickControl
 

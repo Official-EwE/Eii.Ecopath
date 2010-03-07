@@ -3,6 +3,7 @@
 Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -13,16 +14,20 @@ Imports System.Windows.Forms
 ''' ===========================================================================
 Public Class ucEditFlow
 
+    Private m_uic As cUIContext = Nothing
     Private m_data As cData = Nothing
     Private m_diagram As cFlowDiagram = Nothing
 
-    Public Sub New(ByVal data As cData, ByVal diagram As cFlowDiagram)
+    Public Sub New(ByVal uic As cUIContext, _
+                   ByVal data As cData, _
+                   ByVal diagram As cFlowDiagram)
 
         Me.InitializeComponent()
 
         Debug.Assert(data IsNot Nothing)
         Debug.Assert(diagram IsNot Nothing, "Cannot created diagram editor without a valid diagram")
 
+        Me.m_uic = uic
         Me.Data = data
         Me.Diagram = diagram
         Me.UpdateControls()
@@ -234,7 +239,7 @@ Public Class ucEditFlow
         Set(ByVal value As cFlowDiagram)
             If Object.ReferenceEquals(value, Me.m_diagram) Then Return
             Me.m_diagram = value
-            Me.m_plFlow.Init(Me.m_data, Me.m_diagram, Me.m_pgDetails)
+            Me.m_plFlow.Init(Me.m_uic, Me.m_data, Me.m_diagram, Me.m_pgDetails)
         End Set
     End Property
 

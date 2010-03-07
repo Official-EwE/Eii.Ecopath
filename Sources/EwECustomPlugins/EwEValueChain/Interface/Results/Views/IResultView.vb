@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports System.Collections.Generic
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -15,6 +16,8 @@ Public Interface IResultView
     ''' <param name="lUnits"></param>
     ''' <param name="result"></param>
     ''' -----------------------------------------------------------------------
-    Sub ShowResults(ByVal iFleet As Integer, ByVal lUnits As List(Of cUnit), ByVal result As cResults)
+    Sub ShowResults(ByVal iFleet As Integer, _
+                    ByVal lUnits As List(Of cUnit), _
+                    ByVal result As cResults)
 
 End Interface

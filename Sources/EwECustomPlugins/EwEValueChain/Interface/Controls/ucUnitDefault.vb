@@ -4,28 +4,23 @@ Imports ScientificInterfaceShared.Style
 
 Public Class ucUnitDefault
 
-    Private WithEvents m_sg As cStyleGuide = Nothing
-
-    Private Sub ucUnitDefault_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
         Me.BorderStyle = Windows.Forms.BorderStyle.None
-        ' Hook up to SG
-        Me.m_sg = cStyleGuide.GetInstance()
     End Sub
 
-    Private Sub ucUnitDefault_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        Me.m_sg = Nothing
-    End Sub
-
-    Private Sub OnStyleguideChanged(ByVal changeFlags As cStyleGuide.eChangeType) _
-            Handles m_sg.StyleGuideChanged
+    Protected Overrides Sub OnStyleguideChanged(ByVal changeFlags As cStyleGuide.eChangeType)
         If ((changeFlags And cStyleGuide.eChangeType.Colours) > 0) Then
             Me.Invalidate(True)
         End If
     End Sub
 
-    Private Sub ucUnitDefault_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
+    Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        MyBase.OnPaint(e)
+
         Dim fmt As New StringFormat()
         Dim rc As New Rectangle(Me.ClientRectangle.X, Me.ClientRectangle.Y, Me.ClientRectangle.Width, Me.ClientRectangle.Height)
+        Dim clr As Color = Color.Black
 
         rc.Width -= 1
         rc.Height -= 1
@@ -35,15 +30,18 @@ Public Class ucUnitDefault
         e.Graphics.FillRectangle(Brushes.White, rc)
         e.Graphics.DrawString(Me.Text, SystemFonts.DefaultFont, Brushes.Black, rc, fmt)
 
-        If Me.Selected Then
-            Using p As New Pen(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT))
-                e.Graphics.DrawRectangle(p, rc)
-            End Using
-        Else
-            Using p As New Pen(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
-                e.Graphics.DrawRectangle(p, rc)
-            End Using
+        If (Me.UIContext IsNot Nothing) Then
+            If Me.Selected Then
+                clr = Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+            Else
+                clr = Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+            End If
         End If
+
+        Using p As New Pen(clr)
+            e.Graphics.DrawRectangle(p, rc)
+        End Using
+
     End Sub
 
 End Class

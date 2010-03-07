@@ -6,6 +6,7 @@ Imports EwECore.Database
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -54,21 +55,21 @@ Public Class frmMain
             Case "ndParameters"
                 Me.ShowForm(New ucParameters(Me.m_plugin.Data, Me.m_plugin.Context))
             Case "ndProducer"
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Data, cUnitFactory.eUnitType.Producer))
+                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Producer))
             Case "ndProcessing"
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Data, cUnitFactory.eUnitType.Processing))
+                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Processing))
             Case "ndDistribution"
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Data, cUnitFactory.eUnitType.Distribution))
+                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Distribution))
             Case "ndMarket"
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Data, cUnitFactory.eUnitType.Market))
+                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Market))
             Case "ndConsumer"
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Data, cUnitFactory.eUnitType.Consumer))
+                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Consumer))
             Case "ndFlow"
-                Me.ShowForm(New ucEditFlow(Me.m_plugin.Data, Me.m_plugin.Data.FlowDiagram(0)))
+                Me.ShowForm(New ucEditFlow(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Data.FlowDiagram(0)))
             Case "ndDefaults"
-                Me.ShowForm(New ucDefaults(Me.m_plugin.Data))
+                Me.ShowForm(New ucDefaults(Me.m_plugin.Context, Me.m_plugin.Data))
             Case "ndRun"
-                Me.ShowForm(New ucResults(Me.m_plugin.Data, Me.m_plugin.Model, Me.m_plugin.Results, Me.m_plugin.Context))
+                Me.ShowForm(New ucResults(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Model, Me.m_plugin.Results))
         End Select
 
     End Sub
@@ -79,6 +80,10 @@ Public Class frmMain
         Dim ctrl As Control = Nothing
 
         pl.SuspendLayout()
+
+        If TypeOf f Is IUIElement Then
+            DirectCast(f, IUIElement).UIContext = Me.m_plugin.Context
+        End If
 
         f.Dock = DockStyle.Fill
         While pl.Controls.Count > 0

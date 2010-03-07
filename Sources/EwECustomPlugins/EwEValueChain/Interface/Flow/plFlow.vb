@@ -6,6 +6,7 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -34,8 +35,8 @@ Public Class plFlow
     Private m_editMode As eEditMode = eEditMode.Move
     ''' <summary>PropertyGrid</summary>
     Private m_pg As PropertyGrid = Nothing
-    ''' <summary>Style guide</summary>
-    Private m_sg As cStyleGuide = Nothing
+    ''' <summary>UI Context</summary>
+    Private m_uic As cUIContext = Nothing
 
     ''' <summary>Fleet to filter for in the flow, if any.</summary>
     Private m_fleetFilter As cFleetInput = Nothing
@@ -101,11 +102,9 @@ Public Class plFlow
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         Me.SetStyle(ControlStyles.UserPaint, True)
 
-        Me.m_sg = cStyleGuide.GetInstance()
-        AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleguideChanged
     End Sub
 
-#Region " Public interfaces "
+#Region " Public bits "
 
 #Region " Scale "
 
@@ -149,8 +148,10 @@ Public Class plFlow
     ''' <param name="fd">The <see cref="cFlowDiagram">data</see> to connect the flow to.</param>
     ''' <param name="pg">The <see cref="PropertyGrid">PropertyGrid</see> that will reflect unit values.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Init(ByVal data As cData, _
-                    ByVal fd As cFlowDiagram, ByVal pg As PropertyGrid)
+    Public Sub Init(ByVal uic As cUIContext, _
+                    ByVal data As cData, _
+                    ByVal fd As cFlowDiagram, _
+                    ByVal pg As PropertyGrid)
 
         If (Not Me.m_data Is Nothing) Then
             ' Init only once!
@@ -158,10 +159,18 @@ Public Class plFlow
             Return
         End If
 
+        Debug.Assert(uic IsNot Nothing)
+        Debug.Assert(data IsNot Nothing)
+
         ' Store references
         Me.m_data = data
         Me.m_diagram = fd
         Me.m_pg = pg
+        Me.m_uic = uic
+
+        If Me.m_uic IsNot Nothing Then
+            AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
+        End If
 
         ' Load the layout of the flow (this will re-position created units to their saved positions)
         Me.RebuildFlow()
@@ -201,7 +210,7 @@ Public Class plFlow
     ''' -----------------------------------------------------------------------
     Public Sub Arrange()
 
-        Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * m_sGridMarginRatio * 0.5), CInt(Me.m_iCellHeight * m_sGridMarginRatio * 0.5))
+        Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5), CInt(Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
         Dim uc As plUnitControl = Nothing
         Dim iUnitColumn As Integer = 0
         Dim aiUnitCount([Enum].GetValues(GetType(cUnitFactory.eUnitType)).Length) As Integer
@@ -344,16 +353,18 @@ Public Class plFlow
 
 #Region " Event handling "
 
-    Private Sub plFlow_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles Me.Disposed
+    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+        MyBase.OnHandleDestroyed(e)
 
         Me.ClearFlow()
 
-        RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleguideChanged
-        Me.m_sg = Nothing
+        If Me.m_uic IsNot Nothing Then
+            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
+        End If
 
         Me.m_pg = Nothing
         Me.m_data = Nothing
+        Me.m_uic = Nothing
         Me.m_dtControls = Nothing
         Me.m_dtLinks = Nothing
         Me.m_bmpClickDetection.Dispose()
@@ -397,8 +408,10 @@ Public Class plFlow
     ''' Paint the panel and all unit connectors
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub DoPaint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
-        Handles Me.Paint
+    Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        MyBase.OnPaint(e)
+
+        If (Me.m_uic Is Nothing) Then Return
 
         Dim g As Graphics = Graphics.FromImage(Me.m_bmpClickDetection)
         Dim ctrlSource As plUnitControl = Nothing
@@ -435,13 +448,13 @@ Public Class plFlow
 
                 ' Paint link on visible canvas
                 If Object.ReferenceEquals(Me.Selection, c) Then
-                    clrFore = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                    clrFore = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
                 ElseIf Object.ReferenceEquals(Hover, ctrlSource.Unit) Or _
                        Object.ReferenceEquals(Hover, ctrlTarget.Unit) Or _
                        Object.ReferenceEquals(Hover, c.Link) Then
                     clrFore = Color.RoyalBlue
                 Else
-                    Me.m_sg.GetStyleColors(c.Link.Style, clrFore, clrBack)
+                    Me.m_uic.StyleGuide.GetStyleColors(c.Link.Style, clrFore, clrBack)
                 End If
                 PaintLink(e.Graphics, ctrlSource.Center, ctrlTarget.Center, clrFore, c.Link.BiomassRatio, c.Link.External)
 
@@ -702,7 +715,7 @@ Public Class plFlow
                 ' #Yes: store it
                 Me.m_data.AddFlowPosition(fp)
             End If
-   
+
             fp.AllowEvents = False
             fp.Xpos = (10 + m_iNumControls * 10)
             fp.Ypos = fp.Xpos
@@ -712,7 +725,7 @@ Public Class plFlow
 
         End If
 
-        Dim uc As New plUnitControl(fp)
+        Dim uc As New plUnitControl(Me.m_uic, fp)
 
         uc.ZoomFactor = Me.ZoomFactor
 
@@ -1149,11 +1162,11 @@ Public Class plFlow
 
         g.FillRectangle(SystemBrushes.Window, rc)
         If bSelected Then
-            Using p As New Pen(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT))
+            Using p As New Pen(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT))
                 g.DrawRectangle(p, rc)
             End Using
         Else
-            Using p As New Pen(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
+            Using p As New Pen(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
                 g.DrawRectangle(Pens.Black, rc)
             End Using
         End If

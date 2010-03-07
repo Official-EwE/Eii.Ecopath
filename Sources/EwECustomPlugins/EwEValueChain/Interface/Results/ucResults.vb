@@ -86,10 +86,14 @@ Public Class ucResults
 
 #Region " Constructor "
 
-    Public Sub New(ByVal data As cData, ByVal model As cModel, ByVal result As cResults, ByVal uic As cUIContext)
+    Public Sub New(ByVal uic As cUIContext, _
+                   ByVal data As cData, _
+                   ByVal model As cModel, _
+                   ByVal result As cResults)
 
         Me.InitializeComponent()
 
+        Me.m_uic = uic
         Me.m_data = data
         Me.m_model = model
         Me.m_result = result
@@ -336,7 +340,7 @@ Public Class ucResults
 
         Me.m_bInitializing = True
 
-        Me.m_plFlow.Init(Me.m_data, Nothing, Nothing)
+        Me.m_plFlow.Init(Me.m_uic, Me.m_data, Nothing, Nothing)
 
         ' Populate fleet combo
         Me.m_tscmbFleets.Items.Clear()
@@ -423,7 +427,7 @@ Public Class ucResults
         Select Case viewMode
 
             Case eViewModeType.Ecopath
-                ctrl = New ucEcopathTable()
+                ctrl = New gridEcopathResult(Me.m_uic)
 
             Case eViewModeType.Ecosim
                 ctrl = New ucEcosimGraph(Me.m_data, Me.m_uic)

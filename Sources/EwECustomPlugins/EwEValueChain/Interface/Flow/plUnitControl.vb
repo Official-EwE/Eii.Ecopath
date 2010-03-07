@@ -6,6 +6,7 @@ Imports System.Drawing
 Imports System.Reflection
 Imports EwEUtils.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -20,18 +21,16 @@ Public Class plUnitControl
 #Region " Private vars "
 
     Private components As System.ComponentModel.IContainer = Nothing
+    Private m_uic As cUIContext = Nothing
     Private m_fp As cFlowPosition = Nothing
     Private m_bInUpdate As Boolean = False
     Private m_sScale As Single = 1.0
-
-    ''' <summary>Style guide</summary>
-    Private m_sg As cStyleGuide = Nothing
 
 #End Region ' Private vars
 
 #Region " Constructors "
 
-    Public Sub New(ByVal fp As cFlowPosition)
+    Public Sub New(ByVal uic As cUIContext, ByVal fp As cFlowPosition)
 
         Debug.Assert(fp IsNot Nothing)
 
@@ -41,14 +40,14 @@ Public Class plUnitControl
 
         Me.m_fp = fp
         Me.Name = Me.m_fp.Unit.Name
-        Me.m_sg = cStyleGuide.GetInstance()
+        Me.m_uic = uic
 
         ' Auto-repos
         Me.OnPositionChanged(Me.m_fp)
 
         AddHandler Me.m_fp.OnChanged, AddressOf OnPositionChanged
         AddHandler Me.m_fp.Unit.OnChanged, AddressOf OnDataChanged
-        AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleguideChanged
+        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
 
     End Sub
 
@@ -80,10 +79,10 @@ Public Class plUnitControl
 
             RemoveHandler Me.m_fp.OnChanged, AddressOf OnPositionChanged
             RemoveHandler Me.m_fp.Unit.OnChanged, AddressOf OnDataChanged
-            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleguideChanged
+            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
 
             Me.m_fp = Nothing
-            Me.m_sg = Nothing
+            Me.m_uic = Nothing
 
         End If
 
@@ -100,7 +99,7 @@ Public Class plUnitControl
     ''' -----------------------------------------------------------------------
     Private Sub UnitControl_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
         Handles Me.MouseDown
-        Debug.Assert(Me.FlowPanel isnot Nothing)
+        Debug.Assert(Me.FlowPanel IsNot Nothing)
         Me.FlowPanel.OnUnitMouseDown(Me)
     End Sub
 
@@ -169,13 +168,13 @@ Public Class plUnitControl
         rc.Height -= 1
 
         ' Get style colors
-        Me.m_sg.GetStyleColors(Me.Unit.Style, clrText, clrBackground)
+        Me.m_uic.StyleGuide.GetStyleColors(Me.Unit.Style, clrText, clrBackground)
 
         'Determine border color
         If Me.Selected Then
-            clrBorder = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+            clrBorder = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
         Else
-            clrBorder = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+            clrBorder = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
         End If
 
         ' Paint background
@@ -210,7 +209,7 @@ Public Class plUnitControl
 
         ' Paint text
         Using br As New SolidBrush(clrText)
-            Using ft As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Scale)
+            Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
                 e.Graphics.DrawString(Me.Unit.Name, ft, br, rc)
             End Using
         End Using

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E87E552B-C82F-4984-9249-631DAC727633}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -171,6 +171,9 @@
     <Compile Include="Interface\Results\ucResults.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Interface\Results\Views\gridEcopathResult.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Interface\Results\Views\IGraphView.vb" />
     <Compile Include="Interface\Results\Views\IResultView.vb" />
     <Compile Include="Interface\Results\Views\ucEquilibriumGraph.vb">
@@ -178,9 +181,6 @@
     </Compile>
     <Compile Include="Interface\Results\Views\ucEcosimGraph.vb">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Interface\Results\Views\ucEcopathTable.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Model\cComputeLandingsProportions.vb" />
     <Compile Include="Model\cModel.vb" />
@@ -243,10 +243,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\Results\ucResults.resx">
       <DependentUpon>ucResults.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Interface\Results\Views\ucEcopathTable.resx">
-      <DependentUpon>ucEcopathTable.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Data\Flow elements\Flow elements overview.cd" />
