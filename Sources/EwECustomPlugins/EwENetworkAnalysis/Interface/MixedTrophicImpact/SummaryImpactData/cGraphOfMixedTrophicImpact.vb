@@ -46,7 +46,7 @@ Public Class cGraphOfMixedTrophicImpact
         Dim ZeroString As String
         Dim NoDisplay As Integer
         Dim EnUSLocale As New CultureInfo("en-US")
-        Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+        Dim sg As cStyleGuide = Me.StyleGuide
         Dim bShowItem As Boolean = True
 
         'Write data to file
