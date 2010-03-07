@@ -70,7 +70,6 @@ Public Class cModel
         Dim iNumSteps As Integer = CInt(((sMax - sMin) / sStep) * data.Parameters.EquilibriumFleetsToVary.Count)
         Dim iStep As Integer = 0
         Dim fleet As cFleetInput = Nothing
-        Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
         Me.PreserveFishingEffort(data)
 
@@ -87,7 +86,7 @@ Public Class cModel
 
                     ' Update status text
                     cApplicationStatusNotifier.SetStatusText(String.Format("Running value chain equilibrium fleet {0}, effort {1}", _
-                                                    fleet.Name, sg.FormatNumber(sEffort)), _
+                                                    fleet.Name, Math.Round(sEffort, 2)), _
                                       TriState.UseDefault, CSng(iStep / iNumSteps))
                     ' Set effort
                     Me.SetFishingEffort(data, iFleet, sEffort)
