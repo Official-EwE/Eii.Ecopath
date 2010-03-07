@@ -121,7 +121,6 @@ Public Class cNetworkManager
     Public Function RunMainNetwork() As Boolean
 
         Dim bSucces As Boolean = True
-        Dim sg As cStyleGuide = cStyleGuide.GetInstance()
         Dim abGroupsToShow(Me.Core.nGroups) As Boolean
 
         Debug.Assert(m_econetwork IsNot Nothing)
