@@ -43,9 +43,6 @@ Public Class cLindemanSpine
     ''' <summary>Custom toolstrip items for selecting Trophic Levels</summary>
     Private m_ltsmiTL As New List(Of ToolStripMenuItem)
 
-    Private m_sg As cStyleGuide = Nothing
-
-
     Public Sub New()
         '
     End Sub
@@ -69,11 +66,8 @@ Public Class cLindemanSpine
         Me.Plot.Controls.Add(Me.m_plGraph)
         Me.Plot.AutoScroll = True
 
-        Me.m_sg = cStyleGuide.GetInstance()
-
         AddHandler Me.m_plGraph.Paint, AddressOf PaintUC
         AddHandler Me.m_plGraph.Resize, AddressOf ResizeUC
-        AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         Return bSucces
 
@@ -83,13 +77,11 @@ Public Class cLindemanSpine
 
         RemoveHandler Me.m_plGraph.Paint, AddressOf PaintUC
         RemoveHandler Me.m_plGraph.Resize, AddressOf ResizeUC
-        RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         Me.Plot.Controls.Remove(Me.m_plGraph)
 
         Me.m_plGraph = Nothing
         Me.m_graph = Nothing
-        Me.m_sg = Nothing
 
         Me.RemoveToolstripItems()
 
