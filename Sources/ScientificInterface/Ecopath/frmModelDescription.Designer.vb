@@ -523,10 +523,12 @@ Partial Class frmModelDescription
         Me.m_cmbMonetaryUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbMonetaryUnit.FormattingEnabled = True
         Me.m_cmbMonetaryUnit.Location = New System.Drawing.Point(93, 18)
+        Me.m_cmbMonetaryUnit.MaxDropDownItems = 16
         Me.m_cmbMonetaryUnit.Name = "m_cmbMonetaryUnit"
         Me.m_cmbMonetaryUnit.Size = New System.Drawing.Size(191, 21)
         Me.m_cmbMonetaryUnit.Sorted = True
         Me.m_cmbMonetaryUnit.TabIndex = 1
+        Me.m_cmbMonetaryUnit.UIContext = Nothing
         Me.m_cmbMonetaryUnit.Unit = EwEUtils.Core.eUnitMonetaryType.Custom
         '
         'm_gbNumFormatting

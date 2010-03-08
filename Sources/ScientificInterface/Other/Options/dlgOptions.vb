@@ -10,10 +10,11 @@ Imports EwEUtils.Core
 
 Namespace Other
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' The class for setting EwE6 application scope settings
+    ''' Dialog; implements the shell for the Options interface.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Public Class dlgOptions
 
 #Region " Private variables "
@@ -44,13 +45,13 @@ Namespace Other
             Me.m_uic = uic
             Me.m_tvOptions.ExpandAll()
 
-            Me.m_ucAppColors = New ucAppColors()
+            Me.m_ucAppColors = New ucAppColors(uic)
             Me.m_ucAppColors.Dock = DockStyle.Fill
 
-            Me.m_ucAppGeneral = New ucAppGeneral()
+            Me.m_ucAppGeneral = New ucAppGeneral(uic)
             Me.m_ucAppGeneral.Dock = DockStyle.Fill
 
-            Me.m_ucAppPlugins = New ucAppPlugins()
+            Me.m_ucAppPlugins = New ucAppPlugins(uic)
             Me.m_ucAppPlugins.Dock = DockStyle.Fill
 
             Me.m_ucAppGraphsCharts = New ucAppGraphs(uic)

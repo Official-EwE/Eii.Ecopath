@@ -14,6 +14,12 @@ Public Class ucAppPluginDetails
 
     Private m_pa As cPluginAssembly = Nothing
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' User control; implements the Options > Plug-in settings interface for
+    ''' showing details on a plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Sub New(ByVal pi As IPlugin, ByVal pa As cPluginAssembly)
 
         Me.InitializeComponent()

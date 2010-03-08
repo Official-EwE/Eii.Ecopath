@@ -99,7 +99,7 @@ Namespace Ecosim
 
         Friend Sub UpdateData()
 
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim sg As cStyleGuide = Me.StyleGuide
             Dim source As cEcosimGroupOutput = Nothing
             Dim irow As Integer
 

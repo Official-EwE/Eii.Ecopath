@@ -25,8 +25,6 @@ Namespace Style
 
 #Region " Private bits "
 
-        ''' <summary>Singleton instance</summary>
-        Private Shared _inst_ As cStyleGuide = New cStyleGuide()
         ''' <summary>Admin: Monetary unit name lookup table.</summary>
         Private m_dtMonetaryUnitNames As New Dictionary(Of eUnitMonetaryType, String)
 
@@ -100,10 +98,7 @@ Namespace Style
         ''' </summary>
         ''' <remarks>Singleton enforced: constructor is only accessible locally</remarks>
         ''' -----------------------------------------------------------------------
-        Private Sub New()
-
-            ' Register one and only instance
-            cStyleGuide._inst_ = Me
+        Public Sub New()
 
             ' Control how colour ramp delivers its colours
             Me.m_colorrampGroups.ColorOffsetStart = c_sRampOffsetStart
@@ -116,21 +111,6 @@ Namespace Style
         End Sub
 
 #End Region ' Private bits
-
-#Region " Singleton "
-
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Singleton: Retrieves the one and only instance of the StyleGuide
-        ''' </summary>
-        ''' <remarks>Use this method to obtain a reference to the StyleGuide</remarks>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function GetInstance() As cStyleGuide
-            Return cStyleGuide._inst_
-        End Function
-
-#End Region ' Singleton
 
 #Region " Public Methods "
 

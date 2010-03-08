@@ -24,7 +24,7 @@ Partial Class Basemap
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Basemap))
-            Me.plBasemap = New ScientificInterface.Ecospace.ucZoomBaseMap
+            Me.m_zoomContainer = New ScientificInterface.Ecospace.ucZoomBaseMap
             Me.plLayers = New System.Windows.Forms.Panel
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
@@ -42,12 +42,12 @@ Partial Class Basemap
             Me.tsEditBasemapThingies.SuspendLayout()
             Me.SuspendLayout()
             '
-            'plBasemap
+            'm_zoomContainer
             '
-            Me.plBasemap.BackColor = System.Drawing.SystemColors.ButtonShadow
-            resources.ApplyResources(Me.plBasemap, "plBasemap")
-            Me.plBasemap.Name = "plBasemap"
-            Me.plBasemap.PositionMode = ScientificInterface.Ecospace.ucZoomBaseMap.ePositionModeTypes.Center
+            Me.m_zoomContainer.BackColor = System.Drawing.SystemColors.ButtonShadow
+            resources.ApplyResources(Me.m_zoomContainer, "m_zoomContainer")
+            Me.m_zoomContainer.Name = "m_zoomContainer"
+            Me.m_zoomContainer.PositionMode = ScientificInterface.Ecospace.ucZoomBaseMap.ePositionModeTypes.Center
             '
             'plLayers
             '
@@ -62,7 +62,7 @@ Partial Class Basemap
             '
             'SplitContainer1.Panel1
             '
-            Me.SplitContainer1.Panel1.Controls.Add(Me.plBasemap)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.m_zoomContainer)
             '
             'SplitContainer1.Panel2
             '
@@ -127,6 +127,7 @@ Partial Class Basemap
             Me.Name = "Basemap"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
+            Me.TabText = "Define habitats"
             Me.SplitContainer1.Panel1.ResumeLayout(False)
             Me.SplitContainer1.Panel2.ResumeLayout(False)
             Me.SplitContainer1.ResumeLayout(False)
@@ -137,7 +138,6 @@ Partial Class Basemap
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents plBasemap As ucZoomBaseMap
         Friend WithEvents plLayers As System.Windows.Forms.Panel
         Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
@@ -148,6 +148,7 @@ Partial Class Basemap
         Friend WithEvents tsbEditRegion As System.Windows.Forms.ToolStripButton
         Friend WithEvents tsbEditMPA As System.Windows.Forms.ToolStripButton
         Friend WithEvents m_plEditor As System.Windows.Forms.Panel
+        Private WithEvents m_zoomContainer As ScientificInterface.Ecospace.ucZoomBaseMap
 
     End Class
 

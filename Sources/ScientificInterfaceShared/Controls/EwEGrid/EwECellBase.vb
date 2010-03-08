@@ -369,12 +369,12 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
-        Protected Overridable Property UIContext() As cUIContext _
+        Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Protected Set(ByVal value As cUIContext)
 
                 If (Me.m_uic IsNot Nothing) Then
                     ' Clean up

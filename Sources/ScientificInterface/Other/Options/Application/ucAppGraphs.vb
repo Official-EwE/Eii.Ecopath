@@ -11,7 +11,7 @@ Namespace Other
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' GUI via which users configure display of graphs.
+    ''' User control; implements the Options > Graph settings interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class ucAppGraphs

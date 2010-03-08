@@ -78,7 +78,8 @@ Namespace Controls
         ''' <param name="drawMode">The <see cref="eSketchDrawModeTypes">mode</see> to render the shape with.</param>
         ''' <param name="sYMax">The max Y value to scale the shape to.</param>
         ''' -------------------------------------------------------------------
-        Public Shared Sub DrawShape(ByVal shape As cShapeData, _
+        Public Shared Sub DrawShape(ByVal uic As cUIContext, _
+                                ByVal shape As cShapeData, _
                                 ByVal rcImage As Rectangle, _
                                 ByVal g As Graphics, _
                                 ByVal clr As Color, _
@@ -93,7 +94,8 @@ Namespace Controls
             If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax
             If (sYMark = cCore.NULL_VALUE) Then sYMark = CSng(IIf(shape.DataType = eDataTypes.Mediation, 0.5!, 1.0!))
 
-            ShapeImage.DrawShapeDirect(shape.ShapeData, shape.XMax, shape.IsSeasonal, _
+            ShapeImage.DrawShapeDirect(uic, _
+                    shape.ShapeData, shape.XMax, shape.IsSeasonal, _
                     rcImage, g, clr, _
                     drawMode, _
                     sYMax, _
@@ -101,7 +103,8 @@ Namespace Controls
 
         End Sub
 
-        Public Shared Sub DrawShapeDirect(ByVal asData As Single(), ByVal nPoints As Integer, ByVal bIsSeasonal As Boolean, _
+        Public Shared Sub DrawShapeDirect(ByVal uic As cUIContext, _
+                                ByVal asData As Single(), ByVal nPoints As Integer, ByVal bIsSeasonal As Boolean, _
                                 ByVal rcImage As Rectangle, _
                                 ByVal g As Graphics, _
                                 ByVal clr As Color, _
@@ -112,7 +115,7 @@ Namespace Controls
                                 Optional ByVal strYMarkLabel As String = "", _
                                 Optional ByVal strXMarkLabel As String = "")
 
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim sg As cStyleGuide = uic.StyleGuide
             Dim brShape As New SolidBrush(clr)
             Dim pnShape As New Pen(clr, 1)
             Dim pnMark As New Pen(Color.Blue, 1)
@@ -304,12 +307,13 @@ Namespace Controls
         ''' should be displayed in the lower left corner of the shape
         ''' (or lower right, depending on locale reading order).</param>
         ''' -------------------------------------------------------------------
-        Public Shared Function IconImage(ByVal shape As cShapeData, _
+        Public Shared Function IconImage(ByVal uic As cUIContext, _
+                ByVal shape As cShapeData, _
                 ByVal clr As Color, _
                 Optional ByVal sYMax As Single = cCore.NULL_VALUE, _
                 Optional ByVal bShowWarning As Boolean = False) As System.Drawing.Image
 
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim sg As cStyleGuide = uic.StyleGuide
             Dim ci As CultureInfo = Nothing
             Dim dm As eSketchDrawModeTypes = eSketchDrawModeTypes.Line
             Dim bmp As New Bitmap(sg.ThumbnailSize, sg.ThumbnailSize)
@@ -320,7 +324,7 @@ Namespace Controls
             If TypeOf shape Is cTimeSeries Then dm = eSketchDrawModeTypes.LineSelective : sYMax = shape.YMax
 
             Try
-                DrawShape(shape, New Rectangle(New Point(0, 0), bmp.Size), g, clr, dm, sYMax, cCore.NULL_VALUE)
+                DrawShape(uic, shape, New Rectangle(New Point(0, 0), bmp.Size), g, clr, dm, sYMax, cCore.NULL_VALUE)
             Catch ex As Exception
                 ' Draw error image
                 g.FillRectangle(Brushes.White, New Rectangle(New Point(0, 0), bmp.Size))

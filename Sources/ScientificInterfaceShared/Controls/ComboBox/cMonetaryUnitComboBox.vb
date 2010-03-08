@@ -1,19 +1,3 @@
-'==============================================================================
-'
-' $Log: cMonetaryUnitComboBox.vb,v $
-' Revision 1.2  2009/05/28 12:37:17  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/02/24 03:47:36  jeroens
-' Renamed
-'
-' Revision 1.2  2008/12/15 15:37:27  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:15  sherman
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -27,11 +11,11 @@ Namespace Controls
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Combo box that allows the user to select a 
-    ''' <see cref="eUnitMonetaryType">onetary unit</see>.
+    ''' Combo box that allows the user to select a <see cref="eUnitMonetaryType">Monetary unit</see>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cMonetaryUnitComboBox
+        Implements IUIElement
 
 #Region " Helper classes "
 
@@ -59,14 +43,33 @@ Namespace Controls
 
 #End Region ' Helper classes
 
+#Region " Private vars "
+
+        Private m_uic As cUIContext = Nothing
+
+#End Region ' Private vars
+
         Public Sub New()
             Me.InitializeComponent()
-            Me.Populate()
+            Me.DropDownStyle = ComboBoxStyle.DropDownList
         End Sub
+
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
+                Me.Populate()
+            End Set
+        End Property
 
         Private Sub Populate()
 
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            If Me.m_uic Is Nothing Then Return
+
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Dim strLabel As String = ""
 
             Me.SuspendLayout()
@@ -79,7 +82,6 @@ Namespace Controls
                 End If
             Next
             Me.Sorted = True
-            Me.DropDownStyle = ComboBoxStyle.DropDownList
             Me.ResumeLayout()
 
         End Sub
@@ -102,6 +104,7 @@ Namespace Controls
                 Next
             End Set
         End Property
+
     End Class
 
 End Namespace

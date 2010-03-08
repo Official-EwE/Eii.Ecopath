@@ -2045,7 +2045,7 @@ Public Class EditGroupsStanzaEwEGrid
                     Next
                 End If
             Next
-            If bColorsChanged Then cStyleGuide.GetInstance().ColorsChanged()
+            If bColorsChanged Then Me.StyleGuide.ColorsChanged()
         End If
 
         cApplicationStatusNotifier.SetStatusText("", TriState.False)

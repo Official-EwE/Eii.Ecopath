@@ -66,6 +66,8 @@ Namespace Controls.EwEGrid
                 ByVal p_ClientRectangle As System.Drawing.Rectangle, _
                 ByVal p_Status As SourceGrid2.DrawCellStatus)
 
+            If p_Cell Is Nothing Then Return
+
             Dim eStyle As cStyleGuide.eStyleFlags = 0
             Dim clrBack As Color = Me.BackColor
             Dim clrFore As Color = Nothing ' Not used here
@@ -128,6 +130,8 @@ Namespace Controls.EwEGrid
                 ByVal p_ClientRectangle As System.Drawing.Rectangle, _
                 ByVal p_Status As SourceGrid2.DrawCellStatus)
 
+            If p_Cell Is Nothing Then Return
+
             Dim eStyle As cStyleGuide.eStyleFlags = 0
             Dim clrFore As Color = Me.ForeColor
             Dim clrBack As Color = Nothing ' Not used here
@@ -184,6 +188,8 @@ Namespace Controls.EwEGrid
                                                 ByVal e As System.Windows.Forms.PaintEventArgs, _
                                                 ByVal p_ClientRectangle As System.Drawing.Rectangle, _
                                                 ByVal p_Status As SourceGrid2.DrawCellStatus)
+
+            If p_Cell Is Nothing Then Return
 
             Dim sg As cStyleGuide = Me.StyleGuide(p_Cell)
             Dim eStyle As cStyleGuide.eStyleFlags = 0

@@ -92,6 +92,7 @@ Namespace Ecospace.Basemap.Layers
             ' Hook up preview Layer to user control
             Me.m_ucZoomControl = New ucZoomBaseMap()
             Me.m_ucZoomControl.Dock = DockStyle.Fill
+            Me.m_ucZoomControl.UIContext = Me.m_uic
 
             Me.m_ucPreview = Me.m_ucZoomControl.Map()
             Me.m_ucPreview.Basemap = Me.m_uic.Core.EcospaceBasemap

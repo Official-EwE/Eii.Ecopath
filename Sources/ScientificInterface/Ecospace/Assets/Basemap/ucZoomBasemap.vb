@@ -1,41 +1,3 @@
-'==============================================================================
-'
-' $Log: ucZoomBasemap.vb,v $
-' Revision 1.4  2009/05/11 01:51:04  jeroens
-' Renamed command classes
-'
-' Revision 1.3  2008/11/12 00:44:13  jeroens
-' Fixed 'save as' file filter
-'
-' Revision 1.2  2008/11/08 23:50:42  jeroens
-' Renamed file commands
-'
-' Revision 1.1  2008/11/04 04:39:21  jeroens
-' Moved
-'
-' Revision 1.1  2008/09/26 07:32:01  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.6  2008/09/09 14:44:56  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.5  2008/07/24 18:07:05  jeroens
-' ToValidFileName can be told to preserve path chars
-'
-' Revision 1.4  2008/05/07 20:17:35  jeroens
-' Added SaveToBitmap
-'
-' Revision 1.3  2008/03/23 17:48:42  jeroens
-' Renamed zoom control map interface
-'
-' Revision 1.2  2008/01/16 15:23:50  jeroens
-' Added init order crash prevention
-'
-' Revision 1.1  2008/01/06 09:13:09  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -54,6 +16,7 @@ Namespace Ecospace
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class ucZoomBaseMap
+        Implements IUIElement
 
 #Region " Public enums "
 
@@ -87,6 +50,7 @@ Namespace Ecospace
 
 #Region " Private vars "
 
+        Private m_uic As cUIContext = Nothing
         ''' <summary>Current <see cref="ePositionModeTypes">mode</see> to position the map.</summary>
         Private m_positionMode As ePositionModeTypes = ePositionModeTypes.Center
         ''' <summary>Predefined zoom levels.</summary>
@@ -105,6 +69,16 @@ Namespace Ecospace
 #End Region ' Constructor
 
 #Region " Public access "
+
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
 
         Public ReadOnly Property Map() As ucBaseMap
             Get
@@ -159,7 +133,10 @@ Namespace Ecospace
 
 #Region " Form events "
 
-        Private Sub ucZoomControl_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
 
             ' Populate zoom combo
             Me.m_tscbZoomPercent.Items.Clear()
@@ -172,17 +149,22 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub ucZoomBaseMap_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+        Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+            MyBase.OnResize(e)
+
             Me.SetZoomLevel()
         End Sub
 
-        Private Sub m_tsbSaveImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbSaveImage.Click
+        Private Sub m_tsbSaveImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbSaveImage.Click
+
+            If (Me.UIContext Is Nothing) Then Return
 
             Dim format As ImageFormat = ImageFormat.Bmp
-            Dim core As cCore = cCore.GetInstance()
+            Dim core As cCore = Me.UIContext.Core
             Dim model As cEwEModel = core.EwEModel
             Dim scenario As cEcospaceScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex)
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(FileUtilities.ToValidFileName(String.Format("{0}_{1}", model.Name, scenario.Name), False), "", My.Resources.FILEFILTER_IMAGE)

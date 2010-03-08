@@ -41,6 +41,8 @@ Public Class frmModelDescription
 
         MyBase.OnLoad(e)
 
+        If Me.UIContext Is Nothing Then Return
+
         Dim eweModel As cEwEModel = Me.UIContext.Core.EwEModel()
         Dim psdParms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters()
         Dim pm As cPropertyManager = Me.UIContext.PropertyManager
@@ -72,6 +74,7 @@ Public Class frmModelDescription
         AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
 
         Me.m_txbPath.Text = appl.SelectedFileName()
+        Me.m_cmbMonetaryUnit.UIContext = Me.UIContext
 
         ' Listen to shapes data added or removed messages
         Me.CoreComponents = Nothing
@@ -97,6 +100,9 @@ Public Class frmModelDescription
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        MyBase.OnFormClosed(e)
+        If Me.UIContext Is Nothing Then Return
 
         Me.m_fpArea.Release()
         Me.m_fpAuthor.Release()
@@ -128,7 +134,6 @@ Public Class frmModelDescription
         RemoveHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
         Me.m_propUnitMonetary = Nothing
 
-        MyBase.OnFormClosed(e)
     End Sub
 
     Private Sub m_csm_CoreDataStateEvent(ByVal coreStateMonitor As EwECore.cCoreStateMonitor)
@@ -143,7 +148,7 @@ Public Class frmModelDescription
 #Region " Currency "
 
     Private Sub PatchCurrencyUnitRadioButtonText(ByVal rb As RadioButton, ByVal uct As eUnitCurrencyType)
-        rb.Text = String.Format(rb.Text, cStyleGuide.GetInstance().CurrencyUnitText(uct))
+        rb.Text = String.Format(rb.Text, Me.StyleGuide.CurrencyUnitText(uct))
     End Sub
 
     Private Sub OnUnitCurrencyRadioChanged(ByVal sender As Object, ByVal eventargs As EventArgs) _

@@ -244,7 +244,7 @@ Namespace Ecosim
             Dim pane As GraphPane = sender.MasterPane.FindChartRect(ptMouse)
             Dim x, y As Double
             Dim item As CurveItem = Nothing
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
             If Not pane Is Nothing Then
 

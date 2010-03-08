@@ -69,8 +69,6 @@ Namespace Ecospace
 
         Private m_bpConTracing As cBooleanProperty = Nothing
 
-        ''' <summary>Styleguide to listen to.</summary>
-        Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
         Private m_showGroupMode As eShowGroupType = eShowGroupType.ShowAll
         Private m_iGroupToShow As Integer = 0
         Private m_zgh As cEcospaceZedGraphHelper = Nothing
@@ -198,7 +196,7 @@ Namespace Ecospace
         End Sub
 
         Private Sub UpdateStyleColors()
-            Me.m_pbMap.BackColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
+            Me.m_pbMap.BackColor = Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
         End Sub
 
 #End Region ' Initialization and Updating
@@ -226,7 +224,7 @@ Namespace Ecospace
             AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
 
             ' Start tracking styleguide changes for colour feedback
-            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             ' Start tracking core state monitor for Ecospace run states
             AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
@@ -264,9 +262,8 @@ Namespace Ecospace
 
             ' Stop tracking core state monitor for Ecospace run states
             RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
-
-            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            Me.m_sg = Nothing
+            ' Stop tracking style guide changes
+            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             RemoveHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
             Me.m_bpConTracing = Nothing
@@ -824,7 +821,7 @@ Namespace Ecospace
 
             ' Update local time
             Me.m_lblProgress.Text = String.Format(My.Resources.STATUS_ECOSPACE_PROGRESS, _
-                                                  Me.m_sg.FormatNumber(Me.m_iTimeStepCur / parms.NumberOfTimeStepsPerYear), _
+                                                  Me.StyleGuide.FormatNumber(Me.m_iTimeStepCur / parms.NumberOfTimeStepsPerYear), _
                                                   Me.Core.nEcospaceYears)
 
             ' Store time step data

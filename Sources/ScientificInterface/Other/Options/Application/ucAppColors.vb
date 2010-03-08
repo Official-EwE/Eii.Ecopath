@@ -11,8 +11,7 @@ Namespace Other
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' GUI via which users configure which colours the application must use
-    ''' to provide standard feedback.
+    ''' User control; implements the Options > Color settings interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class ucAppColors
@@ -127,27 +126,20 @@ Namespace Other
 
 #Region " Variables "
 
-        ''' <summary>Only ref to core</summary>
-        Private m_Core As cCore = Nothing
-        ''' <summary>Only ref to styleguide</summary>
-        Private m_sg As cStyleGuide = Nothing
-        'List of known colours
+        ''' <summary>Only ref to core.</summary>
+        Private m_uic As cUIContext = Nothing
+        ''' <summary>List of known colours.</summary>
         Private m_lciKnownColors As New List(Of cKnownColorItem)
 
 #End Region ' Variables
 
 #Region " Constructors "
 
-        Public Sub New()
+        Public Sub New(ByVal uic As cUIContext)
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
-            m_Core = cCore.GetInstance()
-            m_sg = cStyleGuide.GetInstance()
-
-            InitKnownColors()
+            Me.m_uic = uic
+            Me.InitializeComponent()
+            Me.InitKnownColors()
 
         End Sub
 
@@ -164,7 +156,7 @@ Namespace Other
         Private Sub InitKnownColors()
 
             Dim astrNames() As String = [Enum].GetNames(GetType(KnownColor))
-            Dim kcColor As KnownColor
+            Dim kcColor As KnownColor = Nothing
 
             m_lciKnownColors.Clear()
 
@@ -240,7 +232,7 @@ Namespace Other
 
         Private Sub AddColorTypeItem(ByVal strName As String, ByVal ctFore As cStyleGuide.eApplicationColorType, _
                 Optional ByVal ctBack As cStyleGuide.eApplicationColorType = cStyleGuide.eApplicationColorType.NotSet)
-            Me.lbItems.Items.Add(New cColorItem(strName, ctFore, ctBack, Me.m_sg))
+            Me.lbItems.Items.Add(New cColorItem(strName, ctFore, ctBack, Me.m_uic.StyleGuide))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -511,18 +503,18 @@ Namespace Other
 
             'Update the selection in combobox
             If (item.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet) Then
-                UpdateColorComboboxItem(Me.cbItemForeground, Me.m_sg.ApplicationColor(item.ForeColorType))
-                Me.m_lblExample.ForeColor = Me.m_sg.ApplicationColor(item.ForeColorType)
+                UpdateColorComboboxItem(Me.cbItemForeground, Me.m_uic.StyleGuide.ApplicationColor(item.ForeColorType))
+                Me.m_lblExample.ForeColor = Me.m_uic.StyleGuide.ApplicationColor(item.ForeColorType)
             Else
                 ' Hiding text w Color.Transparent does not work; show text in background colour instead
-                Me.m_lblExample.ForeColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+                Me.m_lblExample.ForeColor = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
             End If
 
             If (item.BackColorType <> cStyleGuide.eApplicationColorType.NotSet) Then
-                UpdateColorComboboxItem(Me.cbItemBackground, Me.m_sg.ApplicationColor(item.BackColorType))
-                Me.m_lblExample.BackColor = Me.m_sg.ApplicationColor(item.BackColorType)
+                UpdateColorComboboxItem(Me.cbItemBackground, Me.m_uic.StyleGuide.ApplicationColor(item.BackColorType))
+                Me.m_lblExample.BackColor = Me.m_uic.StyleGuide.ApplicationColor(item.BackColorType)
             Else
-                Me.m_lblExample.BackColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND)
+                Me.m_lblExample.BackColor = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND)
             End If
 
             ' Update name and description
@@ -603,7 +595,7 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Private Sub btnUseDefault_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUseDefault.Click
 
-            Me.m_sg.LoadDefaultApplicationColors()
+            Me.m_uic.StyleGuide.LoadDefaultApplicationColors()
             Me.SetTypeColor()
 
         End Sub
@@ -652,19 +644,19 @@ Namespace Other
             Dim ci As cColorItem = Nothing
 
             ' Apply colors to the style guide
-            Me.m_sg.SuspendEvents()
+            Me.m_uic.StyleGuide.SuspendEvents()
 
             For i As Integer = 0 To Me.lbItems.Items.Count - 1
                 ci = DirectCast(Me.lbItems.Items(i), cColorItem)
                 If ci.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet Then
-                    Me.m_sg.ApplicationColor(ci.ForeColorType) = ci.ForeColor
+                    Me.m_uic.StyleGuide.ApplicationColor(ci.ForeColorType) = ci.ForeColor
                 End If
                 If ci.BackColorType <> cStyleGuide.eApplicationColorType.NotSet Then
-                    Me.m_sg.ApplicationColor(ci.BackColorType) = ci.BackColor
+                    Me.m_uic.StyleGuide.ApplicationColor(ci.BackColorType) = ci.BackColor
                 End If
             Next
 
-            Me.m_sg.ResumeEvents()
+            Me.m_uic.StyleGuide.ResumeEvents()
 
         End Sub
 

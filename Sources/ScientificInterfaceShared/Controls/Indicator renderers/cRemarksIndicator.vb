@@ -70,14 +70,17 @@ Namespace Controls
         ''' <summary>
         ''' Renders a remarks indicator onto a given canvas
         ''' </summary>
+        ''' <param name="sg">Style guide to paint with.</param>
         ''' <param name="rcClip">Clip boundary to fit the remarks indicator in</param>
         ''' <param name="g">The canvas to render onto</param>
         ''' <param name="bHasRemarks">States whether the indicator is rendered as having remarks (true) or
         ''' as ready for receiving remarks (false)</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Paint(ByVal rcClip As Rectangle, ByVal g As Graphics, ByVal bHasRemarks As Boolean)
+        Public Shared Sub Paint(ByVal sg As cStyleGuide, _
+                                ByVal rcClip As Rectangle, _
+                                ByVal g As Graphics, _
+                                ByVal bHasRemarks As Boolean)
 
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim pt() As Point = GetPoints(rcClip)
             Dim clrFill As Color = Nothing
 

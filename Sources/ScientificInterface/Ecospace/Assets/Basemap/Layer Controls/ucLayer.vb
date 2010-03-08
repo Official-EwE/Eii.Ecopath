@@ -265,7 +265,7 @@ Namespace Ecospace
             e.Graphics.FillRectangle(Brushes.White, rcPreview)
             Me.m_layer.Renderer.RenderPreview(e.Graphics, rcPreview, Me.Layer.Data)
             ' - Render remarks indicator
-            cRemarksIndicator.Paint(rcPreview, e.Graphics, prop.HasRemark())
+            cRemarksIndicator.Paint(Me.m_uic.StyleGuide, rcPreview, e.Graphics, prop.HasRemark())
             ' - Render border
             ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken, _
                 Border3DSide.Bottom Or Border3DSide.Left Or Border3DSide.Top Or Border3DSide.Right)

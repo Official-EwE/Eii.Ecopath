@@ -10,11 +10,16 @@ Imports WeifenLuo.WinFormsUI
 
 Namespace Other
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' User control; implements the Options > General settings interface
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class ucAppGeneral
 
 #Region " Constructors "
 
-        Public Sub New()
+        Public Sub New(ByVal uic As cUIContext)
             Me.InitializeComponent()
         End Sub
 
@@ -23,6 +28,7 @@ Namespace Other
 #Region " Overrides "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
             Dim strPath As String = My.Settings.ContentLayoutSaveDirectory
 

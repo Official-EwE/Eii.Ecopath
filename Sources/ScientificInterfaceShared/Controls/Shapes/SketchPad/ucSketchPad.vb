@@ -492,7 +492,7 @@ Namespace Controls
                                 ByVal sYMax As Single)
 
             ' Draw default
-            ShapeImage.DrawShape(shape, rcImage, g, clr, drawMode, sYMax, _
+            ShapeImage.DrawShape(Me.UIContext, shape, rcImage, g, clr, drawMode, sYMax, _
                                  Me.YMarkValue, Me.XMarkValue, Me.YMarkLabel, Me.XMarkLabel)
 
         End Sub

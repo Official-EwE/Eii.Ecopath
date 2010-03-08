@@ -197,7 +197,6 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Private m_data As cFlowDiagramData = Nothing
         Private m_colorramp As New SAUPColorRamp()
-        Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
         Private m_iNumTrophicLevels As Integer = 6
         Private m_sAngle() As Single            '' To store where the angle is relative to 0
         Private m_asLabelOffsetX() As Single
@@ -255,12 +254,12 @@ Namespace Ecopath.Controls.FlowDiagram
 
             Dim iUnitHeight As Integer = CInt(rc.Height / Me.m_iNumTrophicLevels)
 
-            Using brBack As New SolidBrush(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND))
+            Using brBack As New SolidBrush(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND))
                 g.FillRectangle(brBack, rc)
             End Using
 
-            Using brText As New SolidBrush(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
-                Using font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Scale)
+            Using brText As New SolidBrush(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
+                Using font As Font = Me.m_data.UIContext.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
                     For i As Integer = 1 To m_iNumTrophicLevels - 1
                         g.DrawString((m_iNumTrophicLevels - i).ToString, font, brText, 20, i * iUnitHeight)
                         g.DrawLine(Pens.LightGray, 20, i * iUnitHeight, rc.Width - 20, i * iUnitHeight)
@@ -360,9 +359,9 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim sValInc As Single = 0
             Dim iIconHeight As Integer = CInt((iYSize * 0.7) / iNumIntervals)
             Dim ptIconTL As Point = New Point(CInt(iXSize * 0.1 + ptTopLeft.X), CInt(iYSize * 0.3 + ptTopLeft.Y))
-            Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Legend)
-            Dim pen As New Pen(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
-            Dim brush As New SolidBrush(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
+            Dim font As Font = Me.m_data.UIContext.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+            Dim pen As New Pen(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
+            Dim brush As New SolidBrush(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
             Dim brLegend As Brush = Nothing
 
             g.DrawRectangle(pen, New Rectangle(ptTopLeft, New Size(iXSize, iYSize)))
@@ -376,7 +375,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 g.FillRectangle(brLegend, New Rectangle(ptIconTL, New Size(CInt(iXSize * 0.2), iIconHeight)))
                 brLegend.Dispose()
 
-                g.DrawString(String.Format(My.Resources.HEADER_LESSTHAN, Me.m_sg.FormatNumber(Me.GetNiceNumber(sValInc))), _
+                g.DrawString(String.Format(My.Resources.HEADER_LESSTHAN, Me.m_data.UIContext.StyleGuide.FormatNumber(Me.GetNiceNumber(sValInc))), _
                              font, brush, _
                              New Point(CInt(ptIconTL.X + iXSize * 0.3), ptIconTL.Y))
                 ptIconTL.Y += iIconHeight

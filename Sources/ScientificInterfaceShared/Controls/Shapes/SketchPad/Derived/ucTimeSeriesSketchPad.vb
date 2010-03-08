@@ -14,6 +14,12 @@ Imports ScientificInterfaceShared.Definitions
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' User control, implements a control for viewing (not sketchng) Ecosim
+    ''' time series shapes.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class ucTimeSeriesSketchPad
         Implements IUIElement
 

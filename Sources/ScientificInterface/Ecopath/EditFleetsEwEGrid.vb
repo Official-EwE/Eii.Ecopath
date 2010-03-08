@@ -1000,7 +1000,7 @@ Imports ScientificInterface.Other
                     End If
                 End If
             Next
-            If bColorsChanged Then cStyleGuide.GetInstance().ColorsChanged()
+            If bColorsChanged Then Me.StyleGuide.ColorsChanged()
         End If
 
         Return bSuccess

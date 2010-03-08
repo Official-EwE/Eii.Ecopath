@@ -13,6 +13,11 @@ Imports ScientificInterfaceShared.Definitions
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' User control, implements a control for sketching Ecosim mediation shapes.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class ucMediationSketchPad
 
         Public Sub New()
@@ -42,7 +47,7 @@ Namespace Controls
             Dim iYStep As Integer = 0
             Dim iYPos As Integer = 0
             Dim sYScale As Single = 1
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
 

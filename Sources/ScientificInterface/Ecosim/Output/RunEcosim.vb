@@ -32,14 +32,12 @@ Namespace Ecosim
 
 #Region " Variables "
 
-        Private m_coreStateMonitor As cCoreStateMonitor = Nothing
-        Private m_core As cCore = Nothing
         Private m_shapeGUIHandler As cForcingShapeGUIHandler = Nothing
         Private m_params As cEcoSimModelParameters = Nothing
         Private m_iTimeSteps As Integer = 0
         Private m_sChangeTrackSize As Single = 0.1!
         Private m_zgp As cEcosimOutputPlotHelper = Nothing
-        Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
+
         ''' <summary>
         ''' True when this interface is running ecosim. False otherwise
         ''' </summary>
@@ -64,14 +62,7 @@ Namespace Ecosim
 
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
-            Me.m_core = cCore.GetInstance()
-            Me.m_coreStateMonitor = Me.m_core.StateMonitor
-            Me.m_params = m_core.EcoSimModelParameters()
-            Me.m_simStats = Me.m_core.EcosimStats
+            Me.InitializeComponent()
 
         End Sub
 
@@ -80,16 +71,20 @@ Namespace Ecosim
 #Region " Framework overrides "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = Nothing
 
-            If cmdh Is Nothing Then Return
+            Me.m_params = Core.EcoSimModelParameters()
+            Me.m_simStats = Me.Core.EcosimStats
 
-            Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.m_core, Me.tscbTarget)
+            Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.Core, Me.tscbTarget)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
 
-            Me.m_lbGroups.Attach(Me.m_core, Me.m_sg)
+            Me.m_lbGroups.Attach(Me.Core, Me.StyleGuide)
 
             Me.m_zgp = New cEcosimOutputPlotHelper()
             Me.m_zgp.Attach(Me.UIContext, Me.m_graph)
@@ -102,8 +97,8 @@ Namespace Ecosim
             Me.m_zgp.ShowPointValue = True
 
             ' Set the axis
-            Me.m_graph.GraphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
-            Me.m_graph.GraphPane.XAxis.Scale.Max = m_core.EcoSimModelParameters.NumberYears + m_core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Min = Core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Max = Core.EcoSimModelParameters.NumberYears + Core.EcosimFirstYear
             Me.m_graph.AxisChange()
 
             AddHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
@@ -117,17 +112,19 @@ Namespace Ecosim
             End If
 
             ' Track core monitor changes
-            AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             Me.PopulateGraph()
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             ' Unplug
             Me.IsExploring = False
+
+            If Me.UIContext Is Nothing Then Return
 
             ' Show/Hide Groups
             Dim cmdh As cCommandHandler = Me.CommandHandler
@@ -138,7 +135,6 @@ Namespace Ecosim
 
             Me.m_lbGroups.Detach()
 
-            Me.m_coreStateMonitor = Nothing
             Me.CoreComponents = Nothing
 
             MyBase.OnFormClosed(e)
@@ -183,11 +179,11 @@ Namespace Ecosim
             Handles btnRunOrStop.Click
 
             If Not Me.m_bEcosimRunning Then
-                Me.m_iTimeSteps = Me.m_core.nEcosimTimeSteps
+                Me.m_iTimeSteps = Me.Core.nEcosimTimeSteps
                 Me.m_graph.Refresh()
-                Me.m_core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
+                Me.Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
             Else
-                Me.m_core.StopEcoSim()
+                Me.Core.StopEcoSim()
             End If
 
         End Sub
@@ -335,7 +331,7 @@ Namespace Ecosim
                     ' Hmm, this logic fails when time series are loaded; in that case
                     ' the X value is corrected by the Ecosim year. Let's hack around this
                     ' for now.
-                    Me.SortGroupsAtTimestep(CInt(Math.Round((sPos - Me.m_core.EcosimFirstYear) * cCore.N_MONTHS)))
+                    Me.SortGroupsAtTimestep(CInt(Math.Round((sPos - Me.Core.EcosimFirstYear) * cCore.N_MONTHS)))
                 Catch ex As Exception
 
                 End Try
@@ -357,11 +353,11 @@ Namespace Ecosim
             ' Could be that we're closing
             If (Me.IsDisposed) Then Return
 
-            Dim bEcosimRunning As Boolean = m_coreStateMonitor.IsEcosimRunning
-            Dim bHasEcosimResults As Boolean = m_coreStateMonitor.HasEcosimRan
+            Dim bEcosimRunning As Boolean = Core.StateMonitor.IsEcosimRunning
+            Dim bHasEcosimResults As Boolean = Core.StateMonitor.HasEcosimRan
 
             ' Does not have ecosim results?
-            If (Not m_coreStateMonitor.HasEcopathRan) Then
+            If (Not Core.StateMonitor.HasEcopathRan) Then
                 ' #Yes: clear run results
                 Me.ResetGraph()
             End If
@@ -396,7 +392,7 @@ Namespace Ecosim
 
                         'jb if Ecosim was not run by this interface ignore this message
                         If (Me.m_iTimeSteps > 0) Then
-                            Me.tslblSSValue.Text = cStyleGuide.GetInstance().FormatNumber(Me.m_core.EcosimStats.SS)
+                            Me.tslblSSValue.Text = Me.StyleGuide.FormatNumber(Me.Core.EcosimStats.SS)
                             Me.m_iTimeSteps = 0
                         End If
 
@@ -406,7 +402,7 @@ Namespace Ecosim
                     Case eMessageType.EcosimNYearsChanged
 
                         'set the xaxis this is the number of time steps the model will run for
-                        'm_ucBPlots.Plot.XAxis = m_Core.nEcosimTimeSteps
+                        'm_ucBPlots.Plot.XAxis = Core.nEcosimTimeSteps
                         'now what..... hope it draws right next time!
                         'm_ucBPlots.Plot.GenerateOutputImage()
 
@@ -514,14 +510,14 @@ Namespace Ecosim
             Dim ts As cTimeSeries = Nothing
 
             ' JS 16May08: bypassed shape handler (which may be 0) to do a mass change
-            Me.m_core.FishingEffortShapeManager.ResetToDefaults()
-            Me.m_core.FishMortShapeManager.ResetToDefaults()
+            Me.Core.FishingEffortShapeManager.ResetToDefaults()
+            Me.Core.FishMortShapeManager.ResetToDefaults()
 
             ' JS 16Apr09: also disable time series
-            For iTS As Integer = 1 To Me.m_core.nTimeSeries
-                Me.m_core.EcosimTimeSeries(iTS).Enabled = False
+            For iTS As Integer = 1 To Me.Core.nTimeSeries
+                Me.Core.EcosimTimeSeries(iTS).Enabled = False
             Next
-            Me.m_core.UpdateTimeSeries()
+            Me.Core.UpdateTimeSeries()
 
         End Sub
 
@@ -671,7 +667,7 @@ Namespace Ecosim
             ' Safety checks
             If (Me.m_zgp Is Nothing) Then Return
             If (Not Me.m_zgp.isReady) Then Return
-            If (Not Me.m_core.StateMonitor.HasEcosimRan) Then Return
+            If (Not Me.Core.StateMonitor.HasEcosimRan) Then Return
 
             ' Clear curves out of current run, if applicable
             Me.m_zgp.ResetRun()
@@ -704,9 +700,9 @@ Namespace Ecosim
                     ' Yes: Create data list
                     pplData = New PointPairList
                     pplData.Add(0, 1) ' Brute force to make 0 TS 1
-                    src = Me.m_core.EcoSimGroupOutputs(iGroup)
+                    src = Me.Core.EcoSimGroupOutputs(iGroup)
 
-                    For iTimeStep As Integer = 1 To m_core.nEcosimTimeSteps
+                    For iTimeStep As Integer = 1 To Core.nEcosimTimeSteps
 
                         dValue = CDbl(Me.GetDataPoint(iGroup, iTimeStep))
 
@@ -716,7 +712,7 @@ Namespace Ecosim
                         ' Should datapoint be displayed?
                         If bIncludeDataPoint Then
                             ' #Yes: display it
-                            pplData.Add(CDbl(iTimeStep / cCore.N_MONTHS) + m_core.EcosimFirstYear, dValue)
+                            pplData.Add(CDbl(iTimeStep / cCore.N_MONTHS) + Core.EcosimFirstYear, dValue)
                         End If
 
                     Next iTimeStep
@@ -728,8 +724,8 @@ Namespace Ecosim
 
             Next iGroupItem
 
-            Me.m_graph.GraphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
-            Me.m_graph.GraphPane.XAxis.Scale.Max = m_core.EcoSimModelParameters.NumberYears + m_core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Min = Core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Max = Core.EcoSimModelParameters.NumberYears + Core.EcosimFirstYear
 
             ' Draw timeseries 
             Me.PopulateGraphTimeSeries()
@@ -762,9 +758,9 @@ Namespace Ecosim
             If (Me.IsCumulativePlot) Then Return
 
             ' For all time series
-            For iTS As Integer = 1 To m_core.nTimeSeries
+            For iTS As Integer = 1 To Core.nTimeSeries
                 ' Get TS
-                ts = m_core.EcosimTimeSeries(iTS)
+                ts = Core.EcosimTimeSeries(iTS)
                 ' Is ts usable?
                 If ((ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or _
                     (ts.TimeSeriesType = eTimeSeriesType.BiomassAbs)) And _
@@ -774,7 +770,7 @@ Namespace Ecosim
                     Debug.Assert(TypeOf ts Is cGroupTimeSeries, "Relative Biomass TS should be cGroupTimeSeries object, check for import")
 
                     gts = DirectCast(ts, cGroupTimeSeries)
-                    group = Me.m_core.EcoPathGroupInputs(gts.GroupIndex)
+                    group = Me.Core.EcoPathGroupInputs(gts.GroupIndex)
                     ppl = New PointPairList()
 
                     'Scaling values for relative and actual observed biomass values (reference data)
@@ -786,13 +782,13 @@ Namespace Ecosim
                     Else
                         EDataQ = gts.eDataQ
                     End If
-                    StartBio = m_core.StartBiomass(gts.GroupIndex)
+                    StartBio = Core.StartBiomass(gts.GroupIndex)
 
-                    For iYear As Integer = 1 To m_core.EcoSimModelParameters.NumberYears
+                    For iYear As Integer = 1 To Core.EcoSimModelParameters.NumberYears
                         If iYear < gts.ShapeData().Length Then
                             If gts.ShapeData(iYear) > 0 Then
                                 ' Minus 1 because it should start with the first year
-                                ppl.Add(iYear + m_core.EcosimFirstYear - 1, (gts.ShapeData()(iYear) / EDataQ) / StartBio)
+                                ppl.Add(iYear + Core.EcosimFirstYear - 1, (gts.ShapeData()(iYear) / EDataQ) / StartBio)
                             End If
                         End If
                     Next
@@ -807,7 +803,7 @@ Namespace Ecosim
         End Sub
 
         Private Function GetDataPoint(ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
-            Dim src As cEcosimGroupOutput = Me.m_core.EcoSimGroupOutputs(iGroup)
+            Dim src As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
             ' Get data point value
             Select Case Me.PlotDataType
                 Case ePlotData.Biomass
@@ -875,7 +871,7 @@ Namespace Ecosim
             Dim shape As cShapeData = Nothing
 
             ' Mortality shapes are 0-base indexed, groups are 1-base indexed
-            shape = m_core.FishMortShapeManager.Item(item.Index - 1)
+            shape = Core.FishMortShapeManager.Item(item.Index - 1)
 
             Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.UIContext, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.SelectedShape = shape
@@ -907,7 +903,7 @@ Namespace Ecosim
 
             ' Configure run/stop button
             Me.btnRunOrStop.Text = CStr(IIf(Me.m_bEcosimRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
-            Me.btnRunOrStop.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
+            Me.btnRunOrStop.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
             ' Reflect change immediately
             Me.btnRunOrStop.Update()
 

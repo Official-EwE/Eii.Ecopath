@@ -87,7 +87,8 @@ Namespace Ecospace.Basemap
             Dim source As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
             ' Initalize m_ucBasemap
-            Me.m_ucBasemap = Me.plBasemap.Map()
+            Me.m_ucBasemap = Me.m_zoomContainer.Map()
+            Me.m_zoomContainer.UIContext = Me.UIContext
 
             ' Add LayersControl
             Me.m_ucLayers = New ucLayersControl(Me.UIContext)

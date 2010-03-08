@@ -160,7 +160,7 @@ Namespace Ecosim
                         ' Create image
                         bmp = New Bitmap(rcItem.Width, rcItem.Height)
                         Using g As Graphics = Graphics.FromImage(bmp)
-                            ShapeImage.DrawShape(shapeFunc, rcItem, g, Color.Red, eSketchDrawModeTypes.Fill, Math.Max(2.0!, shapeFunc.YMax))
+                            ShapeImage.DrawShape(Me.UIContext, shapeFunc, rcItem, g, Color.Red, eSketchDrawModeTypes.Fill, Math.Max(2.0!, shapeFunc.YMax))
                             largeImageList.Images.Add(bmp)
                         End Using
 

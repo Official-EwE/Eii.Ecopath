@@ -15,7 +15,7 @@ Namespace Other
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    '''
+    ''' User control; implements the Options > Plug-in options interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class ucAppPlugins
@@ -65,6 +65,15 @@ Namespace Other
 
 #End Region ' Private variables
 
+#Region " Constructor "
+
+        Public Sub New(ByVal uic As cUIContext)
+            Me.InitializeComponent()
+            Me.m_pm = uic.Core.PluginManager
+        End Sub
+
+#End Region ' Constructor
+
 #Region " Public interfaces "
 
         Public Sub Save()
@@ -88,15 +97,14 @@ Namespace Other
 
 #Region " Events "
 
-        Private Sub ucAppPlugins_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
             Dim collPA As ICollection(Of cPluginAssembly) = Nothing
             Dim pa As cPluginAssembly = Nothing
             Dim tnPA As TreeNode = Nothing
             Dim p As IPlugin = Nothing
             Dim tnP As TreeNode = Nothing
-
-            Me.m_pm = cCore.GetInstance().PluginManager
 
             If (Me.m_pm Is Nothing) Then Return
 
@@ -140,8 +148,8 @@ Namespace Other
 
         End Sub
 
-        Private Sub ucAppPlugins_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Disposed
+        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+            MyBase.OnHandleDestroyed(e)
 
             For Each pa As cPluginAssembly In Me.m_dictPluginAssemblyInfo.Keys
                 ' Stop listening to plugin assembly

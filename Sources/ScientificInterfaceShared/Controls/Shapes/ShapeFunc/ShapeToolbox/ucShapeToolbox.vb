@@ -124,7 +124,7 @@ Namespace Controls
                     bShowWarning = Not DirectCast(shape, cTimeSeries).CanEnable
                 End If
 
-                Me.lvShapes.LargeImageList.Images(iThumbnailIndex) = ShapeImage.IconImage(shape, Me.m_clr, cCore.NULL_VALUE, bShowWarning)
+                Me.lvShapes.LargeImageList.Images(iThumbnailIndex) = ShapeImage.IconImage(Me.m_uic, shape, Me.m_clr, cCore.NULL_VALUE, bShowWarning)
                 Me.lvShapes.Refresh()
             End If
 
@@ -328,7 +328,7 @@ Namespace Controls
                         End If
                     End If
 
-                    largeImageList.Images.Add(ShapeImage.IconImage(shape, Me.m_clr, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning))
+                    largeImageList.Images.Add(ShapeImage.IconImage(Me.UIContext, shape, Me.m_clr, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning))
 
                     item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, shape.Index, shape.Name))
                     item.ImageIndex = i

@@ -1056,7 +1056,7 @@ Public Class AppLauncher
     Private Sub InitCoreParams()
 
         Dim core As cCore = cCore.GetInstance()
-        Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+        Dim sg As cStyleGuide = New cStyleGuide()
         Dim pm As cPropertyManager = New cPropertyManager(core, sg, Me.m_SyncObj)
 
         Me.UIContext = New cUIContext(core, sg, pm, _
@@ -2570,16 +2570,19 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEditFleets">Edit Fleets command</see>.
     ''' </summary>
-    Private Sub OnUpdateEditFleets(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditFleets.OnUpdate
+    Private Sub OnUpdateEditFleets(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdEditFleets.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
     End Sub
 
-    Private Sub OnDisplayGroups(ByVal cmd As cCommand) Handles m_cmdDisplayGroups.OnInvoke
-        Dim dlg As New dlgDisplayGroups(m_cmdDisplayGroups.ShowGroups, m_cmdDisplayGroups.ShowTotals)
+    Private Sub OnDisplayGroups(ByVal cmd As cCommand) _
+        Handles m_cmdDisplayGroups.OnInvoke
+        Dim dlg As New dlgDisplayGroups(Me.UIContext, m_cmdDisplayGroups.ShowGroups, m_cmdDisplayGroups.ShowTotals)
         dlg.ShowDialog()
     End Sub
 
-    Private Sub OnUpdateDisplayGroups(ByVal cmd As cCommand) Handles m_cmdDisplayGroups.OnUpdate
+    Private Sub OnUpdateDisplayGroups(ByVal cmd As cCommand) _
+        Handles m_cmdDisplayGroups.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
     End Sub
 

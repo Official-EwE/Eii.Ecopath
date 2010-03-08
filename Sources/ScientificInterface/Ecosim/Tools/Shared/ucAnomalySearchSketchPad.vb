@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: ucAnomalySearchSketchPad.vb,v $
-' Revision 1.2  2008/12/15 15:56:02  jeroens
-' no message
-'
-' Revision 1.1  2008/11/19 14:42:22  jeroens
-' Moved and renamed
-'
-' Revision 1.1  2008/09/26 07:31:54  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/08/05 15:38:26  jeroens
-' TS year limit grayed out
-'
-' Revision 1.2  2008/06/02 00:01:40  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.1  2007/11/11 16:49:18  jeroens
-' Initial verision
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -103,12 +80,12 @@ Namespace Ecosim
 #Region " Internal implementation "
 
         Protected Overrides Sub DrawShape(ByVal shape As EwECore.cShapeData, _
-                 ByVal rcImage As System.Drawing.Rectangle, _
-                 ByVal g As System.Drawing.Graphics, _
-                 ByVal clr As System.Drawing.Color, _
-                 ByVal bDrawLabels As Boolean, _
-                 ByVal drawMode As eSketchDrawModeTypes, _
-                 ByVal sYMax As Single)
+                                          ByVal rcImage As System.Drawing.Rectangle, _
+                                          ByVal g As System.Drawing.Graphics, _
+                                          ByVal clr As System.Drawing.Color, _
+                                          ByVal bDrawLabels As Boolean, _
+                                          ByVal drawMode As eSketchDrawModeTypes, _
+                                          ByVal sYMax As Single)
 
             Dim iYear1 As Integer = 0
             Dim iYear2 As Integer = 0

@@ -11,7 +11,7 @@ Imports EwEUtils.Core
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' 
+''' Form class, implementing the Ecotracer (contaminant tracing) output interface.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class frmEcotracerOutput
@@ -83,34 +83,8 @@ Public Class frmEcotracerOutput
         Me.RefreshData()
     End Sub
 
-    Private Sub lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles lbGroups.SelectedIndexChanged
-        PlotGroup()
-    End Sub
-
-    Private Sub lbGroups_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
-        Handles lbGroups.MouseMove
-
-        Dim iHover As Integer = lbGroups.IndexFromPoint(e.Location)
-        Dim bDraw As Boolean = True
-
-        ' Brutal to check all the index... has to be a way to short cut this.
-        For Each i As Integer In lbGroups.SelectedIndices
-            If i = iHover Then
-                bDraw = False
-            End If
-        Next
-
-        ' Yes, now you can draw me, yes -1 means nothing hovering
-        If bDraw And iHover <> -1 Then
-            PlotGroup(iHover)
-        Else
-            PlotGroup()
-        End If
-    End Sub
-
-    Private Sub lbGroups_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles lbGroups.MouseLeave
+    Private Sub m_lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_lbGroups.SelectedIndexChanged, m_lbGroups.SelectedIndexChanged
         PlotGroup()
     End Sub
 
@@ -119,12 +93,12 @@ Public Class frmEcotracerOutput
             ' Respond to group colour changes
             Me.PlotGroup()
             ' Invalidate group list box
-            Me.lbGroups.Invalidate()
+            Me.m_lbGroups.Invalidate()
         End If
     End Sub
 
     Private Sub btRunSim_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles btRunSim.Click
+        Handles m_btnRunSim.Click
 
         Try
             'An Ecosim scenario was loaded when this form was loaded
@@ -141,7 +115,7 @@ Public Class frmEcotracerOutput
     End Sub
 
     Private Sub btRunSpace_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles btRunSpace.Click
+        Handles m_btnRunSpace.Click
 
         Try
             'No Ecospace scenario has been load
@@ -167,7 +141,7 @@ Public Class frmEcotracerOutput
     End Sub
 
     Private Sub rbConc_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles rbConc.CheckedChanged
+        Handles m_rbConc.CheckedChanged
 
         If m_DisplayHelper Is Nothing Then Return
 
@@ -181,7 +155,7 @@ Public Class frmEcotracerOutput
     End Sub
 
     Private Sub rbCB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles rbCB.CheckedChanged
+        Handles m_rbCB.CheckedChanged
 
         If m_DisplayHelper Is Nothing Then Return
 
@@ -195,12 +169,12 @@ Public Class frmEcotracerOutput
     End Sub
 
     Private Sub cmbRegions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles cmbRegions.SelectedIndexChanged
+        Handles m_cmbRegions.SelectedIndexChanged
         Me.RefreshGraph()
     End Sub
 
     Private Sub ckSorted_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles ckSorted.Click
+        Handles m_chkSortGroups.Click
         Me.RefreshData()
     End Sub
 
@@ -215,16 +189,20 @@ Public Class frmEcotracerOutput
 
 #Region " Internal bits "
 
+    Private m_iProgress As Integer = 0
+
     ''' <summary>
     ''' Start a model run Ecosim or Ecospace
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub startModelRun()
 
+        Me.m_iProgress = 0
+
         'clear out the progress bar
-        Me.pbProgress.Value = 0
-        Me.pbProgress.Maximum = Me.m_DisplayHelper.nYears
-        Me.pbProgress.Step = 1
+        cApplicationStatusNotifier.SetStatusText("Running Ecotracer...", _
+                                                 TriState.UseDefault, _
+                                                 CSng(Me.m_iProgress / Me.m_DisplayHelper.nYears))
 
     End Sub
 
@@ -234,11 +212,13 @@ Public Class frmEcotracerOutput
     ''' <remarks></remarks>
     Private Sub UpdateProgess()
 
-        Try
-            Me.pbProgress.PerformStep()
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".UpdateProgess() Error.")
-        End Try
+        Me.m_iProgress += 1
+
+        If (Me.m_iProgress < Me.m_DisplayHelper.nYears) Then
+            cApplicationStatusNotifier.SetStatusText("Running Ecotracer...", TriState.UseDefault, CSng(Me.m_iProgress / Me.m_DisplayHelper.nYears))
+        Else
+            cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault)
+        End If
 
     End Sub
 
@@ -296,8 +276,8 @@ Public Class frmEcotracerOutput
         ' Config controls based on the display helper
         Me.m_zgc.GraphPane.Title.Text = m_DisplayHelper.Title
         Me.m_zgc.Enabled = m_DisplayHelper.Enabled
-        Me.lbGroups.Enabled = m_DisplayHelper.Enabled
-        Me.cmbRegions.Enabled = m_DisplayHelper.EnabledForSpace
+        Me.m_lbGroups.Enabled = m_DisplayHelper.Enabled
+        Me.m_cmbRegions.Enabled = m_DisplayHelper.EnabledForSpace
 
         'This is kind of crude. Reset the progress bar to zero
         startModelRun()
@@ -316,7 +296,7 @@ Public Class frmEcotracerOutput
         'plot type
         Me.m_DisplayHelper.PlotType = Me.m_plottype
         'region to display 
-        Me.m_DisplayHelper.RegionIndex = Me.cmbRegions.SelectedIndex
+        Me.m_DisplayHelper.RegionIndex = Me.m_cmbRegions.SelectedIndex
 
         'Now get data from the display helper
         'Text for graph
@@ -346,7 +326,7 @@ Public Class frmEcotracerOutput
         ' ToDo_JS: validate tracer run status. This needs extending the core state monitor
         Try
 
-            If iGroupSelected = cCore.NULL_VALUE And lbGroups.SelectedIndices.Count = 0 Then
+            If iGroupSelected = cCore.NULL_VALUE And m_lbGroups.SelectedIndices.Count = 0 Then
                 'nothing to draw
                 Exit Sub
             End If
@@ -356,7 +336,7 @@ Public Class frmEcotracerOutput
 
                 ' If not forcing to draw a single item draw all selected
                 If iGroupSelected = cCore.NULL_VALUE Then
-                    lines = Me.m_DisplayHelper.GetGroupLines(lbGroups.SelectedItems)
+                    lines = Me.m_DisplayHelper.GetGroupLines(m_lbGroups.SelectedItems)
                 Else
                     ' Forced to draw a single item
                     lines = Me.m_DisplayHelper.GetGroupLines(Me.m_sortOrder(iGroupSelected))
@@ -387,17 +367,17 @@ Public Class frmEcotracerOutput
 
     Private Sub UpdateRegions()
 
-        Me.cmbRegions.Items.Clear()
+        Me.m_cmbRegions.Items.Clear()
 
         If Me.m_DisplayHelper.EnabledForSpace Then
             'only populate the region list if space is enabled
-            Me.cmbRegions.Items.Add("Undefined area")
+            Me.m_cmbRegions.Items.Add("Undefined area")
             For irgn As Integer = 1 To Me.Core.nRegions
-                Me.cmbRegions.Items.Add("region " & irgn) ' Me.Core.EcospaceRegions(irgn).Name)
+                Me.m_cmbRegions.Items.Add("region " & irgn) ' Me.Core.EcospaceRegions(irgn).Name)
             Next
-            Me.cmbRegions.Items.Add("All Regions")
+            Me.m_cmbRegions.Items.Add("All Regions")
 
-            Me.cmbRegions.SelectedIndex = Me.Core.nRegions + 1
+            Me.m_cmbRegions.SelectedIndex = Me.Core.nRegions + 1
         End If
 
     End Sub
@@ -412,7 +392,7 @@ Public Class frmEcotracerOutput
         ReDim GrpTaken(ngrps)
 
         'get the sorted checked state
-        Me.m_bSorted = Me.ckSorted.Checked
+        Me.m_bSorted = Me.m_chkSortGroups.Checked
 
         If m_bSorted Then
             'sort into m_sortOrder() according to Max of group from the current displayhelper
@@ -445,23 +425,20 @@ Public Class frmEcotracerOutput
 
     Private Sub UpdateGroups()
 
-        lbGroups.Items.Clear()
+        m_lbGroups.Items.Clear()
 
         'Add "All groups" at the top
-        lbGroups.Items.Add(0)
-
-        'For i As Integer = 0 To Me.Core.nGroups - 1
-        '    lbGroups.Items.Add(i + 1)
-        'Next
-
+        m_lbGroups.Items.Add(0)
         For i As Integer = 1 To Me.Core.nGroups
-            lbGroups.Items.Add(Me.m_sortOrder(i))
+            m_lbGroups.Items.Add(Me.m_sortOrder(i))
         Next
 
 
     End Sub
 
-    Private Sub lbGroups_DrawItem(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) Handles lbGroups.DrawItem
+    Private Sub m_lbGroups_DrawItem(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) _
+        Handles m_lbGroups.DrawItem
+
         ' get the sender of this event
         Dim s As ListBox = CType(sender, ListBox)
         Dim iGroup As Integer = 0
@@ -485,7 +462,7 @@ Public Class frmEcotracerOutput
                 Else
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
                     strItemText = group.Name
-                    clr = cStyleGuide.GetInstance().GroupColor(Me.Core, iGroup)
+                    clr = Me.StyleGuide.GroupColor(Me.Core, iGroup)
                 End If
             Else
                 strItemText = "" ' Deleted
@@ -614,6 +591,7 @@ Public Class frmEcotracerOutput
         Sub Refresh()
 
         ReadOnly Property Core() As cCore
+        ReadOnly Property StyleGuide() As cStyleGuide
 
         ''' <summary>Title of the Graph.</summary>
         ReadOnly Property Title() As String
@@ -673,8 +651,15 @@ Public Class frmEcotracerOutput
             End Set
         End Property
 
-        ReadOnly Property Core() As cCore _
+        Public ReadOnly Property Core() As cCore _
             Implements IDisplayModeHelper.Core
+            Get
+                Return Nothing
+            End Get
+        End Property
+
+        Public ReadOnly Property StyleGuide() As cStyleGuide _
+            Implements IDisplayModeHelper.StyleGuide
             Get
                 Return Nothing
             End Get
@@ -794,6 +779,13 @@ Public Class frmEcotracerOutput
             Implements IDisplayModeHelper.Core
             Get
                 Return Me.UIContext.Core
+            End Get
+        End Property
+
+        Public ReadOnly Property StyleGuide() As cStyleGuide _
+            Implements IDisplayModeHelper.StyleGuide
+            Get
+                Return Me.UIContext.StyleGuide
             End Get
         End Property
 
@@ -1032,6 +1024,13 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
+        Public ReadOnly Property StyleGuide() As cStyleGuide _
+            Implements IDisplayModeHelper.StyleGuide
+            Get
+                Return Me.m_uic.StyleGuide
+            End Get
+        End Property
+
         Public Function GetGroupMax(ByVal iGroup As Integer) As Single Implements IDisplayModeHelper.GetGroupMax
             Dim smax As Single
 
@@ -1103,7 +1102,7 @@ Public Class frmEcotracerOutput
             'build the label group and region name
             If iGroup > 0 Then
                 name = Me.Core.EcoPathGroupInputs(iGroup).Name
-                clrLine = cStyleGuide.GetInstance().GroupColor(Me.Core, iGroup)
+                clrLine = Me.StyleGuide.GroupColor(Me.Core, iGroup)
             End If
 
             'If iregion > 0 Then
