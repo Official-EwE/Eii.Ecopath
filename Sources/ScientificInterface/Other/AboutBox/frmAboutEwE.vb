@@ -17,11 +17,19 @@ Namespace Other
     ''' =======================================================================
     Public Class frmAboutEwE
 
-        Private Sub AboutEwE_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private m_uic As cUIContext = Nothing
+
+        Public Sub New(ByVal uic As cUIContext)
+            Me.InitializeComponent()
+            Me.m_uic = m_uic
+        End Sub
+
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
             Dim an As AssemblyName = Assembly.GetExecutingAssembly().GetName()
             Dim strTitle As String = My.Application.Info.Title
-            Dim grid As New AboutEwEGrid()
+            Dim grid As New AboutEwEGrid(Me.m_uic)
 
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
@@ -41,7 +49,8 @@ Namespace Other
 
         End Sub
 
-        Private Sub OKButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OKButton.Click
+        Private Sub OKButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles OKButton.Click
             Me.Close()
         End Sub
 

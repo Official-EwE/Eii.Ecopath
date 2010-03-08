@@ -16,7 +16,6 @@ Namespace Ecotracer
 
 #Region "Private data"
 
-        Private m_core As cCore = Nothing
         Private m_fpScenarioName As cEwEFormatProvider = Nothing
         Private m_fpScenarioDescription As cEwEFormatProvider = Nothing
         Private m_fpAuthor As cEwEFormatProvider = Nothing
@@ -30,7 +29,6 @@ Namespace Ecotracer
 
         Public Sub New()
             InitializeComponent()
-            Me.m_core = cCore.GetInstance()
         End Sub
 
 #End Region
@@ -42,7 +40,7 @@ Namespace Ecotracer
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim scenarioDef As cEcotracerScenario = m_core.EcotracerScenarios(m_core.ActiveEcotracerScenarioIndex)
+            Dim scenarioDef As cEcotracerScenario = Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex)
 
             Me.m_fpScenarioName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbName, scenarioDef, eVarNameFlags.Name)
             Me.m_fpScenarioDescription = New cPropertyFormatProvider(Me.UIContext, Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
@@ -100,10 +98,10 @@ Namespace Ecotracer
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             If msg.Source = eCoreComponentType.EcoSim Then
-                Me.ConnectToEcosim(Me.m_core.ActiveEcosimScenarioIndex > 0)
+                Me.ConnectToEcosim(Me.Core.ActiveEcosimScenarioIndex > 0)
             End If
             If msg.Source = eCoreComponentType.EcoSpace Then
-                Me.ConnectToEcospace(Me.m_core.ActiveEcospaceScenarioIndex > 0)
+                Me.ConnectToEcospace(Me.Core.ActiveEcospaceScenarioIndex > 0)
             End If
         End Sub
 
@@ -139,10 +137,10 @@ Namespace Ecotracer
 
                 ' Already connected? Abort
                 If (Me.IsConnectedToEcosim() = True) Then Return
-                If (Me.m_core.ActiveEcosimScenarioIndex <= 0) Then Return
+                If (Me.Core.ActiveEcosimScenarioIndex <= 0) Then Return
 
                 Dim pm As cPropertyManager = Me.PropertyManager
-                Dim ecosimModelParams As cEcoSimModelParameters = m_core.EcoSimModelParameters()
+                Dim ecosimModelParams As cEcoSimModelParameters = Me.Core.EcoSimModelParameters()
 
                 Me.m_propEcosimConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
                 AddHandler Me.m_propEcosimConTracing.PropertyChanged, AddressOf OnConTracingChanged
@@ -165,10 +163,10 @@ Namespace Ecotracer
 
                 ' Already connected? Abort
                 If Me.IsConnectedToEcospace() Then Return
-                If (Me.m_core.ActiveEcospaceScenarioIndex <= 0) Then Return
+                If (Me.Core.ActiveEcospaceScenarioIndex <= 0) Then Return
 
                 Dim pm As cPropertyManager = Me.PropertyManager
-                Dim ecospaceModelParams As cEcospaceModelParameters = m_core.EcospaceModelParameters()
+                Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
                 Me.m_propEcospaceConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
                 AddHandler Me.m_propEcospaceConTracing.PropertyChanged, AddressOf OnConTracingChanged

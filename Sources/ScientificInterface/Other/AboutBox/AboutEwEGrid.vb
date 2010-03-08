@@ -1,21 +1,7 @@
-'==============================================================================
-'
-' $Log: AboutEwEGrid.vb,v $
-' Revision 1.3  2008/12/15 15:58:24  jeroens
-' no message
-'
-' Revision 1.2  2008/11/27 19:45:51  jeroens
-' Renamed ApplicationComponents interfaces to more properly reflect their function
-'
-' Revision 1.1  2008/09/26 07:32:07  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
+Imports EwEuic.Core
 Imports EwEPlugin
 Imports System.Reflection
 Imports SourceGrid2
@@ -31,20 +17,17 @@ Imports SourceGrid2
 Public Class AboutEwEGrid
     Inherits SourceGrid2.Grid
 
-    Public Sub New()
+    Public Sub New(ByVal uic As cUIContext)
 
-        Dim core As cCore = Nothing
         Dim ac As ApplicationComponents = Nothing
         Dim pm As cPluginManager = Nothing
         Dim aanLoaded As AssemblyName() = Nothing
         Dim aanPlugins As AssemblyName() = Nothing
 
-        core = cCore.GetInstance()
-
-        If (core Is Nothing) Then Return
+        If (uic Is Nothing) Then Return
 
         ac = AppLauncher.GetInstance().ApplicationComponents()
-        pm = core.PluginManager()
+        pm = uic.Core.PluginManager()
         aanLoaded = ac.RequiredComponents()
         aanPlugins = pm.PluginAssemblyNames()
 

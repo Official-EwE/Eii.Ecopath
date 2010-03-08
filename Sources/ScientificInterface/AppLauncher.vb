@@ -2776,10 +2776,11 @@ Public Class AppLauncher
     ''' Command handler; invokes the About... dialog.
     ''' </summary>
     Private Sub m_cmdHelpAbout_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdHelpAbout.OnInvoke
-        Dim dlgAbout As New frmAboutEwE
 
+        Dim dlgAbout As New frmAboutEwE(Me.UIContext)
         Me.m_Help.HelpTopic(dlgAbout) = ""
         dlgAbout.ShowDialog(Me)
+
     End Sub
 
     ''' <summary>

@@ -45,8 +45,6 @@ Namespace Ecospace
 
 #Region " Private vars "
 
-        Private m_core As cCore = Nothing
-
         ' Scenario generics
         Private m_fpScenarioName As cEwEFormatProvider = Nothing
         Private m_fpScenarioDescription As cEwEFormatProvider = Nothing
@@ -85,7 +83,6 @@ Namespace Ecospace
         Private Sub EcospaceParameters_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Load
 
-            Me.m_core = cCore.GetInstance()
             Me.InitContent()
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
         End Sub
@@ -119,7 +116,7 @@ Namespace Ecospace
 
         Private Sub InitContent()
 
-            Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
+            Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
             Dim pm As cPropertyManager = Me.PropertyManager
 
             ' Start listening to props
@@ -289,7 +286,7 @@ Namespace Ecospace
                 If (cmd IsNot Nothing) Then
                     cmd.Tag = eTracerRunModeTypes.RunSpace
                     cmd.Invoke()
-                    If (Me.m_core.ActiveEcotracerScenarioIndex <= 0) Then
+                    If (Me.Core.ActiveEcotracerScenarioIndex <= 0) Then
                         Me.m_cbContaminantTracing.Checked = False
                     End If
                 End If
@@ -319,7 +316,7 @@ Namespace Ecospace
 
         Private Sub UpdateScenarioFormatProviders()
 
-            Dim scenarioDef As cEcospaceScenario = m_core.EcospaceScenarios(m_core.ActiveEcospaceScenarioIndex)
+            Dim scenarioDef As cEcospaceScenario = Core.EcospaceScenarios(Core.ActiveEcospaceScenarioIndex)
 
             ' Connect controls to core data
             Me.m_fpScenarioName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbName, scenarioDef, eVarNameFlags.Name)
