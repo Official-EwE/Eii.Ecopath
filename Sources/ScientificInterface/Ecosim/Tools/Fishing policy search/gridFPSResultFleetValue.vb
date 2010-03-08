@@ -20,15 +20,23 @@ Namespace Ecosim
      Public Class gridFPSResultFleetValue
         : Inherits EwEGrid
 
-        Private m_Core As cCore
         Private m_FPManager As cFishingPolicyManager
 
         Public Sub New()
-
             MyBase.New()
-            m_FPManager = m_Core.FishingPolicyManager
-
         End Sub
+
+        Public Overrides Property UIContext() As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As cUIContext)
+                MyBase.UIContext = value
+                If value IsNot Nothing Then
+                    Me.m_FPManager = Core.FishingPolicyManager
+                End If
+            End Set
+        End Property
 
         Protected Overrides Sub InitStyle()
 
@@ -37,13 +45,13 @@ Namespace Ecosim
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.Redim(m_Core.nFleets + 1, m_Core.nFleets + 3)
+            Me.Redim(Core.nFleets + 1, Core.nFleets + 3)
             Me(0, 0) = New EwEColumnHeaderCell(My.Resources.FPS_FV_RESULT_COL0)
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_INCOME)
             Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_PROFIT)
 
-            For i As Integer = 1 To m_Core.nFleets
-                Dim fltName As String = m_Core.FleetInputs(i).Name
+            For i As Integer = 1 To Core.nFleets
+                Dim fltName As String = Core.FleetInputs(i).Name
                 Me(i, 0) = New EwERowHeaderCell(fltName)
                 Me(0, i + 2) = New EwEColumnHeaderCell(fltName)
             Next
@@ -56,11 +64,14 @@ Namespace Ecosim
 
         Public Sub InsertOneIterResult(ByRef results As cFPSSearchResults)
 
-            For i As Integer = 1 To m_Core.nFleets
+            Debug.Assert(Me.m_FPManager IsNot Nothing)
+            Debug.Assert(Me.UIContext IsNot Nothing)
+
+            For i As Integer = 1 To Core.nFleets
                 Me(i, 1) = New Cell(results.Income(i).ToString)
                 Me(i, 2) = New Cell(results.Profitability(i).ToString)
 
-                For j As Integer = 1 To m_Core.nFleets
+                For j As Integer = 1 To Core.nFleets
                     Me(i, j + 2) = New Cell(results.CompensationMatrix(i, j).ToString)
                 Next
             Next
