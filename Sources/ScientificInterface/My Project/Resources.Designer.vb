@@ -6034,7 +6034,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Your system does not have to proper drivers installed to read the file format of model &apos;{0}&apos;. Visit http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&amp;displaylang=en to download the required Microsoft ACCDB drivers.
+        '''  Looks up a localized string similar to Your system does not have to proper drivers installed to read the file format of model &apos;{0}&apos;. Install the &apos;2007 Office System Driver: Data Connectivity Components&apos; from the Microsoft website to use Access 2007 (ACCDB) databases..
         '''</summary>
         Friend ReadOnly Property STATUS_MODEL_ACCESS_OS() As String
             Get

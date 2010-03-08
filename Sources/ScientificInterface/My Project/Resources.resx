@@ -1878,7 +1878,7 @@
     <value>Group</value>
   </data>
   <data name="STATUS_MODEL_ACCESS_OS" xml:space="preserve">
-    <value>Your system does not have to proper drivers installed to read the file format of model '{0}'. Visit http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&amp;displaylang=en to download the required Microsoft ACCDB drivers</value>
+    <value>Your system does not have to proper drivers installed to read the file format of model '{0}'. Install the '2007 Office System Driver: Data Connectivity Components' from the Microsoft website to use Access 2007 (ACCDB) databases.</value>
   </data>
   <data name="arrow_right" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
