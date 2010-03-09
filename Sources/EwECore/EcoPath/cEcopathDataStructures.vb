@@ -11,9 +11,11 @@ Public Class cEcopathDataStructures
 
     Public bInitialized As Boolean = False
 
-    ' Public NGroups As Integer 
+    ''' <summary>Group names.</summary>
+    ''' <remarks>In EwE5, group names were used to identify groups. In EwE6 this 
+    ''' is done via <see cref="GroupDBID">unique IDs</see></remarks>
     Public GroupName() As String ' was Specie()
-    'Database ID - uniquely identifies the group. Access restricted to the Core only.
+    ''' <summary>Group Database ID - uniquely identifies a group.</summary>
     Friend GroupDBID() As Integer
 
     ''' <summary>Number of Ecosim scenarios available in a loaded model.</summary>
@@ -119,9 +121,13 @@ Public Class cEcopathDataStructures
     Public NumDetrit As Integer
     ''' <summary>Total number of fleets.</summary>
     Public NumFleet As Integer
+    ''' <summary>Index of current selected currency units.</summary>
     Public currUnitIndex As Integer = eUnitCurrencyType.WetWeight
+    ''' <summary>User-provided name for time units.</summary>
     Public TimeUnitName As String
+    ''' <summary>Index of current selected time unit.</summary>
     Public TimeUnitIndex As Integer
+    ''' <summary>Flag stating whether diets have been modified since the last time Ecopath has ran.</summary>
     Public DietsModified As Boolean
     Public PProd As Single
 
@@ -129,9 +135,7 @@ Public Class cEcopathDataStructures
 
     Public Ex() As Single
 
-    ''' <summary>
-    ''' Sum of Landings + discards for this group
-    ''' </summary>
+    ''' <summary>Sum of group landings + discards.</summary>
     ''' <remarks>Computed in Catch_calculations()</remarks>
     Public fCatch() As Single 'was called Catch but this causes a naming conflict with Try Catch blocks
     ''' <summary>User input matrix for Diet composition(pred, prey) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
@@ -153,16 +157,14 @@ Public Class cEcopathDataStructures
     Public Resp() As Single
     Public PP() As Single           'TM Trophic Mode
     Public det(,) As Single '(50, 50)  
-    Public DCDet(,) As Single                 'Diet Composition of Detritus  for fishery
+    ''' <summary>Diet Composition of Detritus  for fishery.</summary>
+    Public DCDet(,) As Single
     Public DetEaten() As Single                 ' For multiple detritus
     Public DetPassedOn() As Single              ' For multiple detritus
     Public DetPassedProp() As Single              ' For multiple detritus
     Public FlowToDet() As Single
     Public InputToDet() As Single
-    'JS 08Jan09: SumDC was a global scratch variable, changed to local scope
-    'Public SumDC() As Single
 
-    Public Unit As String
     ''' <summary>Migration into the area covered by the model (t/km²/year)</summary>
     ''' <remarks>Note that migration is not the same as import, refer to the manual for details.</remarks>
     Public Immig() As Single
@@ -1072,7 +1074,6 @@ Public Class cEcopathDataStructures
             'JS 08Jan09: SumDC was a global scratch variable, changed to local scope
             'SumDC.CopyTo(dest.SumDC, 0)
 
-            dest.Unit = Unit
             Immig.CopyTo(dest.Immig, 0)
             Emigration.CopyTo(dest.Emigration, 0)
             Emig.CopyTo(dest.Emig, 0)    'relative to biomass, used in Ecosim
