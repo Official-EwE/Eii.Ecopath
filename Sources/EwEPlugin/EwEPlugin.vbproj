@@ -106,7 +106,6 @@
     <Compile Include="Plugin templates\GUI\IAutolaunchPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IDockStatePlugin.vb" />
     <Compile Include="Plugin templates\GUI\INavigationTreeItemPlugin.vb" />
-    <Compile Include="Plugin templates\GUI\IToolbarItemPlugin.vb" />
     <Compile Include="Handlers\cPluginAssembly.vb" />
     <Compile Include="Handlers\cPluginException.vb" />
     <Compile Include="Handlers\cPluginManager.vb" />
