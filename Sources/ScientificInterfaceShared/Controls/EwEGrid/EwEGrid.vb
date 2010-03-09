@@ -305,8 +305,10 @@ Namespace Controls.EwEGrid
             Me.TrackPropertySelection = True
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
-            Me.ClearData()
+        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+            MyBase.OnHandleDestroyed(e)
+
+            Me.UIContext = Nothing
 
             If Me.m_pehTLCell IsNot Nothing Then
 
@@ -327,10 +329,9 @@ Namespace Controls.EwEGrid
 
             End If
 
-            MyBase.Dispose(bDisposing)
         End Sub
 
-#End Region ' Constructor
+#End Region ' Constructor / destructor
 
 #Region " IUIElement implementation "
 
@@ -345,8 +346,20 @@ Namespace Controls.EwEGrid
                 Return Me.m_uic
             End Get
             Set(ByVal value As cUIContext)
+
+                ' Clean-up
+                If (Me.m_uic IsNot Nothing) Then
+                    Me.ClearData()
+                End If
+
+                ' Store UIC
                 Me.m_uic = value
-                Me.RefreshContent()
+
+                ' Refresh when setting
+                If (Me.m_uic IsNot Nothing) Then
+                    Me.RefreshContent()
+                End If
+
             End Set
         End Property
 
