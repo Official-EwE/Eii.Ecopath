@@ -409,6 +409,8 @@ Namespace Ecosim
 
             Dim ptPredPrey As New Point(0, 0)
             Dim strToolTip As String = ""
+            Dim strPred As String = ""
+            Dim strPrey As String = ""
 
             ' Get hover info, if any
             If (ptHover <> Nothing) Then
@@ -418,16 +420,20 @@ Namespace Ecosim
             If ptPredPrey.X > Me.m_uic.Core.nGroups Then Return
             If ptPredPrey.Y > Me.m_uic.Core.nGroups Then Return
 
+            If ptPredPrey.X > 0 Then strPred = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+                                                             ptPredPrey.X, _
+                                                             Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.X).Name)
+            If ptPredPrey.Y > 0 Then strPrey = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+                                                             ptPredPrey.Y, _
+                                                             Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.Y).Name)
             ' Format tooltip
             If (ptPredPrey.X <> 0) Or (ptPredPrey.Y <> 0) Then
                 If (ptPredPrey.X = 0) Then
-                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREY, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.Y).Name)
+                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREY, strPrey)
                 ElseIf (ptPredPrey.Y = 0) Then
-                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREDATOR, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.X).Name)
+                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREDATOR, strPred)
                 Else
-                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREDPREY, _
-                        Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.X).Name, _
-                        Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.Y).Name)
+                    strToolTip = String.Format(My.Resources.GENERIC_TOOLTIP_PREDPREY, strPred, strPrey)
                 End If
             End If
 
