@@ -697,6 +697,7 @@ Namespace Controls
 
             If Not Me.Editable Then Return
             If Not Me.Capture Then Return
+            If Me.UIContext Is Nothing Then Return
 
             Dim bLeftBtnDown As Boolean = (e.Button = MouseButtons.Left)
             'Dim bRightButtonDown As Boolean = (e.Button = MouseButtons.Right)
