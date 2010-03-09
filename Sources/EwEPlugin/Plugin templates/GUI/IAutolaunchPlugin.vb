@@ -6,7 +6,7 @@ Option Strict On
 
 ''' ===========================================================================
 ''' <summary>
-''' Plug-in that should auto-launch when a consuming GUI is loaded
+''' Plug-in that should automatically launch its User Interface when loaded.
 ''' </summary>
 ''' ===========================================================================
 Public Interface IAutolaunchPlugin
