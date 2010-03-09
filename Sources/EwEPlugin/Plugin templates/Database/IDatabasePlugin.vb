@@ -1,21 +1,10 @@
-'==============================================================================
-'
-' $Log: IDatabasePlugin.vb,v $
-' Revision 1.2  2009/03/01 19:38:00  jeroens
-' Commented
-'
-' Revision 1.1  2009/02/25 07:15:02  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 Namespace Data
 
     ''' =======================================================================
     ''' <summary>
-    ''' Plug-in point to allow plug-ins to track database movements of EwE.
+    ''' Plug-in point to allow plug-ins to track database operations with EwE.
     ''' </summary>
     ''' =======================================================================
     Public Interface IDatabasePlugin
