@@ -417,15 +417,15 @@ Namespace Ecosim
                 ptPredPrey = Me.PointToPredPrey(ptHover)
             End If
 
+            ' Sanity checks
             If ptPredPrey.X > Me.m_uic.Core.nGroups Then Return
+            If ptPredPrey.X < 0 Then Return
             If ptPredPrey.Y > Me.m_uic.Core.nGroups Then Return
+            If ptPredPrey.Y < 0 Then Return
 
-            If ptPredPrey.X > 0 Then strPred = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
-                                                             ptPredPrey.X, _
-                                                             Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.X).Name)
-            If ptPredPrey.Y > 0 Then strPrey = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
-                                                             ptPredPrey.Y, _
-                                                             Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.Y).Name)
+            If ptPredPrey.X > 0 Then strPred = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, ptPredPrey.X, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.X).Name)
+            If ptPredPrey.Y > 0 Then strPrey = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, ptPredPrey.Y, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.Y).Name)
+
             ' Format tooltip
             If (ptPredPrey.X <> 0) Or (ptPredPrey.Y <> 0) Then
                 If (ptPredPrey.X = 0) Then
