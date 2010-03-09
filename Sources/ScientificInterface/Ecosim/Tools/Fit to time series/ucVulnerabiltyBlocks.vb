@@ -130,12 +130,18 @@ Namespace Ecosim
 
 #Region " Events "
 
+        Protected Overrides Sub OnMouseHover(ByVal e As System.EventArgs)
+            MyBase.OnMouseHover(e)
+            Me.ProcessMouseHover(Me.PointToClient(Cursor.Position))
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Start drawing
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub pbxVulnerabilityBlockMatrix_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
+        Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
+            MyBase.OnMouseDown(e)
 
             If (Me.m_uic Is Nothing) Then Return
 
@@ -153,7 +159,8 @@ Namespace Ecosim
         ''' Process a draw step or hover information.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub pbxVulnerabilityBlockMatrix_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
+        Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
+            MyBase.OnMouseMove(e)
 
             ' Process mouse hover info
             Me.ProcessMouseHover(e.Location)
@@ -170,7 +177,8 @@ Namespace Ecosim
         ''' Stop drawing.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ucVulnerabiltyBlocks_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseUp
+        Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
+            MyBase.OnMouseUp(e)
 
             If Not Me.Capture Then Return
             Me.Capture = False
@@ -183,7 +191,8 @@ Namespace Ecosim
         ''' Paint the control
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ucVulnerabiltyBlocks_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
+        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+            MyBase.OnPaint(e)
 
             ' Possible performance boost:
             ' - Render onto bitmap, render ichanged cells only (like basemap)
@@ -260,7 +269,8 @@ Namespace Ecosim
         ''' Invalidate control when resized.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ucVulnerabiltyBlocks_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.SizeChanged
+        Protected Overrides Sub OnSizeChanged(ByVal e As System.EventArgs)
+            MyBase.OnSizeChanged(e)
             Me.Invalidate()
         End Sub
 
@@ -405,6 +415,9 @@ Namespace Ecosim
                 ptPredPrey = Me.PointToPredPrey(ptHover)
             End If
 
+            If ptPredPrey.X > Me.m_uic.Core.nGroups Then Return
+            If ptPredPrey.Y > Me.m_uic.Core.nGroups Then Return
+
             ' Format tooltip
             If (ptPredPrey.X <> 0) Or (ptPredPrey.Y <> 0) Then
                 If (ptPredPrey.X = 0) Then
@@ -418,8 +431,8 @@ Namespace Ecosim
                 End If
             End If
 
-            '' Show or hide tooltip
-            'Me.m_ttHover.Show(strToolTip, Me)
+            ' Show or hide tooltip
+            cToolTipShared.GetInstance().SetToolTip(Me, strToolTip)
 
         End Sub
 
