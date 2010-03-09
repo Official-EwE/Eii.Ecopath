@@ -164,6 +164,9 @@ Namespace Ecospace
             Me.m_gridGroup.Manager = Me.m_manager
             Me.m_gridGroup.UIContext = Me.UIContext
 
+            Me.m_gridProgress.UIContext = Me.UIContext
+            Me.m_gridResults.UIContext = Me.UIContext
+
             Me.m_propSearchType = New cIntegerProperty(MPAOpt, eVarNameFlags.MPAOptSearchType)
             AddHandler Me.m_propSearchType.PropertyChanged, AddressOf OnSearchTypeChanged
 
