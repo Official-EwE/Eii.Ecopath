@@ -436,9 +436,9 @@ Namespace Ecosim
                 ts = Me.Core.EcosimTimeSeries(iTS)
                 If (TypeOf (ts) Is cGroupTimeSeries) And (ts.Enabled = True) Then
                     gts = DirectCast(ts, cGroupTimeSeries)
-                    'If (gts.TimeSeriesType = eTimeSeriesType.BiomassAbs) Or _
-                    '   (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or _
-                    If (gts.TimeSeriesType = eTimeSeriesType.Catches) Then
+                    If (gts.TimeSeriesType = eTimeSeriesType.BiomassAbs) Or _
+                       (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or _
+                       (gts.TimeSeriesType = eTimeSeriesType.Catches) Then
 
                         abUseBlock(gts.GroupIndex) = True
                         nBlocks += 1
