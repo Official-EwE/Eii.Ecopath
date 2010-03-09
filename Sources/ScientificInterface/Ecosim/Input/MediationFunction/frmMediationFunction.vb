@@ -47,7 +47,6 @@ Namespace Ecosim
             Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
                 MyBase.UIContext = value
                 Me.m_bioPercent.UIContext = value
-                'Me.
             End Set
         End Property
 
@@ -79,7 +78,7 @@ Namespace Ecosim
         ''' <see cref="eCoreComponentType">message sources</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
             Me.CoreComponents = Nothing
             MyBase.OnFormClosed(e)
         End Sub

@@ -1,49 +1,15 @@
-'==============================================================================
-'
-' $Log: MediationGUIHandler.vb,v $
-' Revision 1.9  2009/06/19 22:04:11  jeroens
-' Fixed typo
-'
-' Revision 1.8  2009/06/19 04:10:29  jeroens
-' YMarkValue aligned to shape / XBase intersection, no longer to YBase
-'
-' Revision 1.7  2009/04/12 21:20:52  jeroens
-' Custom -> DefineXAxis (issue 611)
-'
-' Revision 1.6  2009/03/24 20:28:35  jeroens
-' Uses mediation tool bar
-'
-' Revision 1.5  2009/03/20 17:55:41  jeroens
-' Shape controls are multiple selection
-'
-' Revision 1.4  2009/03/19 16:13:42  jeroens
-' X mark can be suppressed
-'
-' Revision 1.3  2009/03/02 01:58:07  jeroens
-' Connected XMarkValue, YMarkValue
-'
-' Revision 1.2  2009/02/12 15:32:20  jeroens
-' Can add labels to XMark, YMark lines
-'
-' Revision 1.1  2008/12/15 19:49:12  jeroens
-' Split off
-'
-' Revision 1.2  2008/11/08 23:51:05  jeroens
-' Renamed file commands
-'
-' Revision 1.1  2008/09/26 07:31:41  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
 Imports EwECore
 Imports ScientificInterface.Other
-Imports EwEUtils.Commands
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Commands
+Imports EwEUtils.Utilities
+
+#End Region ' Imports
 
 Namespace Ecosim
 
@@ -85,6 +51,10 @@ Namespace Ecosim
             Me.SketchPad.ShowXMark = True
             Me.BiomassPercent = bp
             Me.BiomassPercentToolbar = bpt
+
+            ' Manually update selection
+            Me.BiomassPercent.Shape = Me.SelectedShape
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -203,9 +173,7 @@ Namespace Ecosim
                     If (value.Length = 1) Then shapeSelected = value(0)
                 End If
 
-                If (Me.BiomassPercent IsNot Nothing) Then Me.BiomassPercent.Shape = shapeSelected
-
-                If Me.SketchPad IsNot Nothing Then
+                If (Me.SketchPad IsNot Nothing) Then
                     If (shapeSelected Is Nothing) Then
                         Me.SketchPad.XMarkValue = cCore.NULL_VALUE
                         Me.SketchPad.YMarkValue = cCore.NULL_VALUE
@@ -216,7 +184,13 @@ Namespace Ecosim
                     End If
                 End If
 
-                If (Me.BiomassPercentToolbar IsNot Nothing) Then Me.BiomassPercentToolbar.Refresh()
+                If (Me.BiomassPercentToolbar IsNot Nothing) Then
+                    Me.BiomassPercentToolbar.Refresh()
+                End If
+
+                If (Me.BiomassPercent IsNot Nothing) Then
+                    Me.BiomassPercent.Shape = shapeSelected
+                End If
 
             End Set
         End Property
