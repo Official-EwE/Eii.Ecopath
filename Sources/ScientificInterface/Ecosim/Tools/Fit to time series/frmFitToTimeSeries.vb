@@ -28,7 +28,8 @@ Namespace Ecosim
         Private m_SensitivityByPredatorResults As cSensitivityToVulResults = Nothing
         Private m_cmdTSWeights As cCommand = Nothing
         Private m_shapeSelected As cShapeData = Nothing
-        Private m_bInUpdate As Boolean = True
+        Private m_bIsRunning As Boolean = False
+        Private m_bInUpdate As Boolean = False
 
 #End Region 'Private variables
 
@@ -141,6 +142,7 @@ Namespace Ecosim
             End If
 
             Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
+            Me.m_bIsRunning = Me.m_F2TSManager.IsRunning()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.PPIManager}
             Me.UpdateControls()
@@ -485,6 +487,8 @@ Namespace Ecosim
                 Me.m_dlgSensOfSS.OnRunStarted(runType, nSteps)
             End If
 
+            Me.m_bIsRunning = True
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -535,6 +539,7 @@ Namespace Ecosim
             If (Me.m_dlgSensOfSS IsNot Nothing) Then
                 Me.m_dlgSensOfSS.OnRunStopped(runType)
             End If
+            Me.m_bIsRunning = False
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -583,8 +588,10 @@ Namespace Ecosim
             If (Me.m_F2TSManager Is Nothing) Then Return
             If (Me.m_sketchPad Is Nothing) Then Return
 
+            If Me.m_bInUpdate Then Return
+            Me.m_bInUpdate = True
+
             Dim bInputsValid As Boolean = Me.Core.HasAppliedTimeSeries()
-            Dim bIsRunning As Boolean = Me.m_F2TSManager.IsRunning()
 
             If Me.m_cbAnomalySearch.Checked Then
                 bInputsValid = bInputsValid And _
@@ -595,8 +602,8 @@ Namespace Ecosim
             End If
 
             ' Search button enabled when ts loaded and not running
-            Me.m_btnStop.Enabled = bIsRunning
-            Me.m_btnSearch.Enabled = (Not bIsRunning) And bInputsValid
+            Me.m_btnStop.Enabled = Me.m_bIsRunning
+            Me.m_btnSearch.Enabled = (Not Me.m_bIsRunning) And bInputsValid
 
             'constrain the number of years to the number of years in the time series data
             If Me.m_nudLastYear.Value > Me.m_F2TSManager.nTimeSeriesYears Then
@@ -605,6 +612,8 @@ Namespace Ecosim
 
             Me.m_nudFirstYear.Maximum = Me.m_F2TSManager.nTimeSeriesYears
             Me.m_nudLastYear.Maximum = Me.m_F2TSManager.nTimeSeriesYears
+
+            Me.m_bInUpdate = False
 
         End Sub
 
