@@ -673,6 +673,8 @@ Namespace Controls
         Private Sub SketchPad_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
             Handles MyBase.Paint
 
+            If Me.UIContext Is Nothing Then Return
+
             Dim sYMax As Single = Me.YAxisMaxValue
             ' Avoid division by zero
             If (sYMax <= 0.0!) Then sYMax = 1.0!
