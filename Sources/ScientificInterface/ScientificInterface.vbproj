@@ -191,12 +191,6 @@
     <Compile Include="Ecopath\Input\DietComp.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\MediationFunction\ucBioPercent.Designer.vb">
-      <DependentUpon>ucBioPercent.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\MediationFunction\ucDefBioPercentGrid.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Ecospace\Assets\Basemap\ucZoomBasemap.designer.vb">
       <DependentUpon>ucZoomBasemap.vb</DependentUpon>
     </Compile>
@@ -296,9 +290,6 @@
     </Compile>
     <Compile Include="Ecosim\Input\ForcingFunction\frmForcingFunction.vb">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\MediationFunction\ucBioPercent.vb">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\MediationFunction\frmMediationFunction.Designer.vb">
       <DependentUpon>frmMediationFunction.vb</DependentUpon>
@@ -894,17 +885,6 @@
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\MediationFunction\dlgDefineBioPercent.resx">
-      <DependentUpon>dlgDefineBioPercent.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\MediationFunction\ucBioPercent.resx">
-      <DependentUpon>ucBioPercent.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\MediationFunction\ucBioPercentToolbar.resx">
-      <DependentUpon>ucBioPercentToolbar.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\Vulnerabilities\dlgEstimateVs.resx">
       <DependentUpon>dlgEstimateVs.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1120,19 +1100,6 @@
     </Compile>
     <Compile Include="Ecosim\Input\FishingRegulation\gridTFMpolicy.vb">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\MediationFunction\dlgDefineBioPercent.Designer.vb">
-      <DependentUpon>dlgDefineBioPercent.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\MediationFunction\dlgDefineBioPercent.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\MediationFunction\MediationGUIHandler.vb" />
-    <Compile Include="Ecosim\Input\MediationFunction\ucBioPercentToolbar.Designer.vb">
-      <DependentUpon>ucBioPercentToolbar.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\MediationFunction\ucBioPercentToolbar.vb">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\TimeSeries\dlgManageTimeSeries.Designer.vb">
       <DependentUpon>dlgManageTimeSeries.vb</DependentUpon>

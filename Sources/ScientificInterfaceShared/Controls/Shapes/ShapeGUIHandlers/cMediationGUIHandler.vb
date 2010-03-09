@@ -11,7 +11,7 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Namespace Ecosim
+Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

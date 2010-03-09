@@ -421,15 +421,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Mediating group.
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_DEF_MED_X_AXIS() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_DEF_MED_X_AXIS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to New dataset.
         '''</summary>
         Friend ReadOnly Property ECOSIM_DEFAULT_NEWDATASET() As String
@@ -444,15 +435,6 @@ Namespace My.Resources
         Friend ReadOnly Property ECOSIM_DEFAULT_NEWEGGPRODSHAPE() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWEGGPRODSHAPE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Mediation shape {0}.
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_DEFAULT_NEWMEDIATIONSHAPE() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWMEDIATIONSHAPE", resourceCulture)
             End Get
         End Property
         

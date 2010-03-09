@@ -32,8 +32,8 @@ Namespace Ecosim
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
             Me.m_tlpBiopercent = New System.Windows.Forms.TableLayoutPanel
-            Me.m_biopercenttoolbar = New ScientificInterface.Ecosim.ucBioPercentToolbar
-            Me.m_bioPercent = New ScientificInterface.Ecosim.ucBioPercent
+            Me.m_biopercenttoolbar = New ucBioPercentToolbar
+            Me.m_bioPercent = New ucBioPercent
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
             Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
@@ -181,18 +181,18 @@ Namespace Ecosim
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents plSketchPad As System.Windows.Forms.Panel
-        Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
-        Friend WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
-        Friend WithEvents tlpSketchPad As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents m_sketchPadToolbar As ucSketchPadToolbar
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents m_shapeToolBox As ucShapeToolbox
-        Friend WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
-        Friend WithEvents m_sketchPad As ucMediationSketchPad
-        Private WithEvents m_bioPercent As ScientificInterface.Ecosim.ucBioPercent
-        Private WithEvents m_biopercenttoolbar As ScientificInterface.Ecosim.ucBioPercentToolbar
-        Friend WithEvents m_tlpBiopercent As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents plSketchPad As System.Windows.Forms.Panel
+        Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
+        Private WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
+        Private WithEvents tlpSketchPad As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_sketchPadToolbar As ucSketchPadToolbar
+        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_shapeToolBox As ucShapeToolbox
+        Private WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
+        Private WithEvents m_sketchPad As ucMediationSketchPad
+        Private WithEvents m_bioPercent As ucBioPercent
+        Private WithEvents m_biopercenttoolbar As ucBioPercentToolbar
+        Private WithEvents m_tlpBiopercent As System.Windows.Forms.TableLayoutPanel
 
     End Class
 End Namespace

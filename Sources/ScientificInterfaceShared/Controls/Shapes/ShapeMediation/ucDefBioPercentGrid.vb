@@ -1,9 +1,16 @@
+#Region " Imports "
+
 Option Strict On
 
 Imports EwECore
 Imports SourceGrid2
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports ScientificInterfaceShared.Style
 
-Namespace Ecosim
+#End Region ' Imports
+
+Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -12,7 +19,7 @@ Namespace Ecosim
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
     Public Class ucDefBioPercentGrid
-        Inherits EwEGrid
+        Inherits EwEGrid.EwEGrid
 
         ''' <summary></summary>
         Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)

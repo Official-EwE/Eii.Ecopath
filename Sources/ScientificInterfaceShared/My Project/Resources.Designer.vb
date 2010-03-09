@@ -60,6 +60,20 @@ Namespace My.Resources
             End Set
         End Property
         
+        Friend ReadOnly Property arrow_left() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("arrow_left", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property arrow_right() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("arrow_right", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to &amp;Cancel.
         '''</summary>
@@ -86,6 +100,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Mediating group.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_DEF_MED_X_AXIS() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_DEF_MED_X_AXIS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Egg production shape {0}.
         '''</summary>
         Friend ReadOnly Property ECOSIM_DEFAULT_NEWEGGPRODSHAPE() As String
@@ -100,6 +123,15 @@ Namespace My.Resources
         Friend ReadOnly Property ECOSIM_DEFAULT_NEWFORCINGSHAPE() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWFORCINGSHAPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mediation shape {0}.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_DEFAULT_NEWMEDIATIONSHAPE() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWMEDIATIONSHAPE", resourceCulture)
             End Get
         End Property
         
@@ -289,6 +321,33 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_MONTH() As String
             Get
                 Return ResourceManager.GetString("HEADER_MONTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Name.
+        '''</summary>
+        Friend ReadOnly Property HEADER_NAME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Relative weight.
+        '''</summary>
+        Friend ReadOnly Property HEADER_RELATIVEWEIGHT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_RELATIVEWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Rel. weight.
+        '''</summary>
+        Friend ReadOnly Property HEADER_RELATIVEWEIGHT_ABBR() As String
+            Get
+                Return ResourceManager.GetString("HEADER_RELATIVEWEIGHT_ABBR", resourceCulture)
             End Get
         End Property
         

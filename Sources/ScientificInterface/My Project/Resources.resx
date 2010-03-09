@@ -548,9 +548,6 @@
     <value>About {0}</value>
     <comment>{0}: Application name</comment>
   </data>
-  <data name="HEADER_RELATIVEWEIGHT_ABBR" xml:space="preserve">
-    <value>Rel. weight</value>
-  </data>
   <data name="STATUS_MODEL_SAVE_404" xml:space="preserve">
     <value>Unable to save your model to location '{0}'.</value>
   </data>
@@ -1830,9 +1827,6 @@
   <data name="GENERIC_VALUE_ALL" xml:space="preserve">
     <value>(All)</value>
   </data>
-  <data name="HEADER_RELATIVEWEIGHT" xml:space="preserve">
-    <value>Relative weight</value>
-  </data>
   <data name="HEADER_EFFORTRELATEDCOST" xml:space="preserve">
     <value>Effort related cost (%)</value>
   </data>
@@ -1981,10 +1975,6 @@
   </data>
   <data name="HEADER_GE" xml:space="preserve">
     <value>Production / consumption</value>
-  </data>
-  <data name="ECOSIM_DEFAULT_NEWMEDIATIONSHAPE" xml:space="preserve">
-    <value>Mediation shape {0}</value>
-    <comment>The default name for a new Ecosim mediation shape. {0}: autonumber</comment>
   </data>
   <data name="ECOSIM_APPLYFF_CELLFORMAT" xml:space="preserve">
     <value>{0}{1}</value>
@@ -2369,9 +2359,6 @@
   <data name="PSD_YAXISLABEL_PERYEAR" xml:space="preserve">
     <value>/year</value>
   </data>
-  <data name="ECOSIM_DEF_MED_X_AXIS" xml:space="preserve">
-    <value>Mediating group</value>
-  </data>
   <data name="HEADER_MAXRELPB" xml:space="preserve">
     <value>Max rel. P/B</value>
   </data>
@@ -2569,5 +2556,11 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="InsertPictureHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\InsertPictureHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HEADER_RELATIVEWEIGHT" xml:space="preserve">
+    <value>Relative weight</value>
+  </data>
+  <data name="HEADER_RELATIVEWEIGHT_ABBR" xml:space="preserve">
+    <value>Rel. weight</value>
   </data>
 </root>

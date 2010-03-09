@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: ucBioPercentToolbar.vb,v $
-' Revision 1.2  2009/04/12 21:20:53  jeroens
-' Custom -> DefineXAxis (issue 611)
-'
-' Revision 1.1  2009/03/24 20:23:58  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -21,7 +10,7 @@ Imports System.ComponentModel
 
 #End Region ' Imports
 
-Namespace Ecosim
+Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

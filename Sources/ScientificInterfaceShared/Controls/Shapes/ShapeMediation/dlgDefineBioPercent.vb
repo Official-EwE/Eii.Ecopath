@@ -9,7 +9,7 @@ Imports ZedGraph
 
 #End Region
 
-Namespace Ecosim
+Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

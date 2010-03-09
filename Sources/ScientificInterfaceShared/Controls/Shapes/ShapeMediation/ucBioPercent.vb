@@ -6,11 +6,16 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterface.Other
 Imports ZedGraph
+Imports ScientificInterfaceShared.Style
 
 #End Region
 
-Namespace Ecosim
+Namespace Controls
 
+    ''' <summary>
+    ''' User control for showing the percentages for mediation effects, per group.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Class ucBioPercent
         Implements IUIElement
 
@@ -21,7 +26,7 @@ Namespace Ecosim
 
         Public Sub New()
 
-            me.InitializeComponent()
+            Me.InitializeComponent()
             Me.m_RdmColor = New ColorSymbolRotator
 
         End Sub

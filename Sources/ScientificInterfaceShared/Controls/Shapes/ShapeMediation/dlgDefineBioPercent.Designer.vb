@@ -1,4 +1,4 @@
-Namespace Ecosim
+Namespace Controls
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class dlgDefineBioPercent
@@ -32,8 +32,8 @@ Namespace Ecosim
             Me.m_lblAvailable = New System.Windows.Forms.Label
             Me.m_lblAssigned = New System.Windows.Forms.Label
             Me.m_splitter = New System.Windows.Forms.SplitContainer
-            Me.m_grid = New ScientificInterface.Ecosim.ucDefBioPercentGrid
-            Me.m_graph = New ScientificInterface.Ecosim.ucBioPercent
+            Me.m_grid = New ucDefBioPercentGrid
+            Me.m_graph = New ucBioPercent
             CType(Me.epBP, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_splitter.Panel1.SuspendLayout()
             Me.m_splitter.Panel2.SuspendLayout()
@@ -59,14 +59,14 @@ Namespace Ecosim
             '
             'm_btnAdd
             '
-            Me.m_btnAdd.Image = Global.ScientificInterface.My.Resources.Resources.arrow_right
+            Me.m_btnAdd.Image = My.Resources.Resources.arrow_right
             resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
             Me.m_btnAdd.Name = "m_btnAdd"
             Me.m_btnAdd.UseVisualStyleBackColor = True
             '
             'm_btnRemove
             '
-            Me.m_btnRemove.Image = Global.ScientificInterface.My.Resources.Resources.arrow_left
+            Me.m_btnRemove.Image = My.Resources.Resources.arrow_left
             resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
             Me.m_btnRemove.Name = "m_btnRemove"
             Me.m_btnRemove.UseVisualStyleBackColor = True
@@ -157,17 +157,17 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents m_btnOK As System.Windows.Forms.Button
-        Friend WithEvents m_btnCancel As System.Windows.Forms.Button
-        Friend WithEvents epBP As System.Windows.Forms.ErrorProvider
-        Friend WithEvents m_lblAvailable As System.Windows.Forms.Label
-        Friend WithEvents m_lblAssigned As System.Windows.Forms.Label
-        Private WithEvents m_graph As ScientificInterface.Ecosim.ucBioPercent
+        Private WithEvents m_btnOK As System.Windows.Forms.Button
+        Private WithEvents m_btnCancel As System.Windows.Forms.Button
+        Private WithEvents epBP As System.Windows.Forms.ErrorProvider
+        Private WithEvents m_lblAvailable As System.Windows.Forms.Label
+        Private WithEvents m_lblAssigned As System.Windows.Forms.Label
+        Private WithEvents m_graph As ucBioPercent
         Private WithEvents m_lbAvailableGroupsFleets As System.Windows.Forms.ListBox
         Private WithEvents m_btnAdd As System.Windows.Forms.Button
         Private WithEvents m_btnRemove As System.Windows.Forms.Button
         Private WithEvents m_splitter As System.Windows.Forms.SplitContainer
-        Private WithEvents m_grid As ScientificInterface.Ecosim.ucDefBioPercentGrid
+        Private WithEvents m_grid As ucDefBioPercentGrid
 
     End Class
 

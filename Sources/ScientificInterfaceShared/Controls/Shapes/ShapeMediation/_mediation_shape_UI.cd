@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ScientificInterfaceShared.Controls.dlgDefineBioPercent" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIACQBoADYAEAAAIACEBkACAAIABABAIIEhIAAEAAI=</HashCode>
+      <FileName>Controls\Shapes\ShapeMediation\dlgDefineBioPercent.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_grid" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ScientificInterfaceShared.Controls.ucBioPercent" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAACIAAAAAAECAAAACAAAAAABBAAAAAAAIgDA=</HashCode>
+      <FileName>Controls\Shapes\ShapeMediation\ucBioPercent.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ScientificInterfaceShared.Controls.ucBioPercentToolbar" Collapsed="true">
+    <Position X="0.5" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAYACBIAAAAAACEAEACAAAAAAABAgAEAAAAACA=</HashCode>
+      <FileName>Controls\Shapes\ShapeMediation\ucBioPercentToolbar.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScientificInterfaceShared.Controls.ucDefBioPercentGrid" Collapsed="true">
+    <Position X="7.75" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAKAAUQAAAAAAAAAAAAABAAAAAAIABAOABEACAAAAAA=</HashCode>
+      <FileName>Controls\Shapes\ShapeMediation\ucDefBioPercentGrid.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScientificInterfaceShared.Controls.cMediationShapeGUIHandler" Collapsed="true">
+    <Position X="4" Y="2.25" Width="2.5" />
+    <AssociationLine Name="BiomassPercent" Type="ScientificInterfaceShared.Controls.ucBioPercent" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.25" Y="2.88" />
+        <Point X="5.25" Y="3.562" />
+        <Point X="2.25" Y="3.562" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAIAQAAAIAAAAAQAAAAABACAAAEAAQkAACggA=</HashCode>
+      <FileName>Controls\Shapes\ShapeGUIHandlers\cMediationGUIHandler.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="BiomassPercent" />
+      <Property Name="BiomassPercentToolbar" />
+      <Property Name="SelectedShapes" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ScientificInterfaceShared.Controls.cForcingShapeGUIHandler" Collapsed="true">
+    <Position X="4.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ooAEBCABAERABAJACAAEAAAAQAYACAAAEEAQgAAAglA=</HashCode>
+      <FileName>Controls\Shapes\ShapeGUIHandlers\cForcingFunctionShapeGUIHandler.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EwECore.cShapeData" Collapsed="true">
+    <Position X="7.75" Y="2.25" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

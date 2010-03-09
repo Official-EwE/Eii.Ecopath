@@ -1,0 +1,582 @@
+﻿#Region " Imports "
+
+Option Strict On
+Imports EwECore
+Imports ScientificInterfaceShared.Definitions
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+
+#End Region ' Imports
+
+Namespace Controls
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
+    ''' handling generic <see cref="cForcingFunction">forcing functions</see>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    <CLSCompliant(True)> _
+    Public Class cForcingShapeGUIHandler
+        : Inherits cShapeGUIHandler
+
+        ''' <summary>Flag to prevent update / response loops.</summary>
+        Private m_bInUpdate As Boolean = False
+        ''' <summary>The FF to distribute.</summary>
+        Private m_lShapes As New List(Of cShapeData)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor, initializes a new instance of this handler.
+        ''' </summary>
+        ''' <param name="uic"><see cref="cUIContext">UI contextual</see> information.</param>
+        ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
+        ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
+        ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
+        ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal stb As ucShapeToolbox, _
+                       ByVal stbtb As ucShapeToolboxToolbar, _
+                       ByVal sp As ucSketchPad, _
+                       ByVal sptb As ucSketchPadToolbar)
+
+            MyBase.New(uic, stb, stbtb, sp, sptb)
+            Me.UpdateShapeList()
+
+        End Sub
+
+#Region " Forcing overrides "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Specifies the shapes manager that delivers the data for this handler.
+        ''' </summary>
+        ''' <returns>The shapes manager that delivers the data for this handler.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function ShapeManager() As cBaseShapeManager
+            Return Me.Core.ForcingShapeManager()
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the name for a new forcing function.
+        ''' </summary>
+        ''' <returns>The name for a new forcing function.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function NewShapeNameMask() As String
+            Return My.Resources.ECOSIM_DEFAULT_NEWFORCINGSHAPE
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Reset a shape to a particular value.
+        ''' </summary>
+        ''' <param name="ashapes">The <see cref="cShapeData">shape</see> to affect.</param>
+        ''' <param name="sDefaultValue">The value to set.</param>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub ResetShapes(ByVal ashapes As cShapeData(), _
+                Optional ByVal sDefaultValue As Single = 1.0!)
+
+            Dim sm As cBaseShapeManager = Nothing
+            Dim shape As cShapeData = Nothing
+            Dim lShapes As List(Of cShapeData) = Nothing
+
+            If (ashapes Is Nothing) Then
+                sm = Me.ShapeManager
+                lShapes = New List(Of cShapeData)
+                For Each shape In sm
+                    lShapes.Add(shape)
+                Next
+                ashapes = lShapes.ToArray()
+            End If
+
+            For iShape As Integer = 0 To ashapes.Length - 1
+                shape = ashapes(iShape)
+                If shape IsNot Nothing Then
+                    shape.LockUpdates()
+                    For i As Integer = 0 To shape.XMax ' - 1'jb why the minus one
+                        shape.ShapeData(i) = sDefaultValue
+                    Next i
+
+                    ' Cheat: update every shape, but only force an update NOTIFICATION
+                    ' on the very last shape
+                    If iShape < (ashapes.Length - 1) Then
+                        shape.Update()
+                    End If
+                    shape.UnlockUpdates(iShape = (ashapes.Length - 1))
+                End If
+            Next
+
+            Me.SelectedShapes = Me.SelectedShapes
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Reset all shapes.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub ResetAllShapes()
+            Me.ResetShapes(Nothing)
+        End Sub
+
+#End Region ' Forcing overrides
+
+#Region " Baseclass overrides "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Public interface to ask whether a given command is supported by this handler.
+        ''' Overridden to weed out non-forcing function commands.
+        ''' </summary>
+        ''' <param name="cmd">The command to test.</param>
+        ''' <returns>True if command is supported.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function SupportCommand(ByVal cmd As eShapeCommandTypes) As Boolean
+
+            ' A 101 things you can do with a Forcing shape
+            Select Case cmd
+                Case eShapeCommandTypes.Add
+                    Return True
+                Case eShapeCommandTypes.ChangeShape
+                    Return True
+                Case eShapeCommandTypes.Duplicate
+                    Return True
+                Case eShapeCommandTypes.Modify
+                    Return True
+                Case eShapeCommandTypes.DisplayOptions
+                    Return True
+                Case eShapeCommandTypes.Remove
+                    Return True
+                Case eShapeCommandTypes.Reset, eShapeCommandTypes.ResetAll
+                    Return True
+                Case eShapeCommandTypes.SaveAsImage
+                    Return True
+                Case eShapeCommandTypes.Seasonal
+                    Return True
+                Case Else
+                    Return False
+            End Select
+            Return False
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Public interface to query the enables state of a given command by this handler.
+        ''' Overridden to enable forcing function commands.
+        ''' </summary>
+        ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
+        ''' <returns>True if enabled.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+
+            Dim bHasSelection As Boolean = (Me.SelectedShapes IsNot Nothing)
+            Dim bHasSingleSelection As Boolean = (Me.SelectedShape IsNot Nothing)
+
+            Select Case cmd
+
+                Case eShapeCommandTypes.Add, _
+                     eShapeCommandTypes.ResetAll
+                    Return True
+
+                Case eShapeCommandTypes.Duplicate, _
+                     eShapeCommandTypes.Remove, _
+                     eShapeCommandTypes.Reset
+                    Return bHasSelection
+
+                Case eShapeCommandTypes.ChangeShape, _
+                     eShapeCommandTypes.Modify, _
+                     eShapeCommandTypes.DisplayOptions, _
+                     eShapeCommandTypes.SaveAsImage, _
+                     eShapeCommandTypes.Seasonal
+                    Return bHasSingleSelection
+
+            End Select
+            Return False
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Public interface to execute a given command by this handler. 
+        ''' Overridden to implement forcing function commands.
+        ''' </summary>
+        ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
+        ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shape</see> to apply the command to.</param>
+        ''' <param name="data">Optional data to accompany the command.</param>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub ExecuteCommand(ByVal cmd As eShapeCommandTypes, _
+                 Optional ByVal ashapes As EwECore.cShapeData() = Nothing, Optional ByVal data As Object = Nothing)
+
+            If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
+
+            Select Case cmd
+                Case eShapeCommandTypes.Add
+                    Me.AddFF()
+
+                Case eShapeCommandTypes.ChangeShape
+                    Me.ChangeFFShape()
+
+                Case eShapeCommandTypes.Duplicate
+                    Me.DuplicateFF(ashapes)
+
+                Case eShapeCommandTypes.Modify
+                    Me.ModifyFF(ashapes(0))
+
+                Case eShapeCommandTypes.DisplayOptions
+                    Me.ShapeOptions()
+
+                Case eShapeCommandTypes.Remove
+                    Me.RemoveFF(ashapes)
+
+                Case eShapeCommandTypes.Reset
+                    Me.ResetShapes(ashapes)
+
+                Case eShapeCommandTypes.ResetAll
+                    Me.ResetAllShapes()
+
+                Case eShapeCommandTypes.SaveAsImage
+                    Me.SaveAsImage(ashapes(0), Me.SketchPad)
+
+                Case eShapeCommandTypes.Seasonal
+                    Me.SetSeasonal(ashapes(0), CBool(data))
+
+                Case Else
+                    'Debug.Assert(False, String.Format("Command {0} not supported", cmd))
+            End Select
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Overridden this to make controls respond to any kind of change in 
+        ''' forcing functions data.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub Refresh()
+            If Me.m_bInUpdate Then Return
+            Me.UpdateShapeList(Me.SelectedShapes)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Overridden to respond to a local change in the current selected forcing function.
+        ''' The forcing function is still being modified; once modifications are complete
+        ''' <see cref="OnShapeFinalized">OnShapeFinalized</see> is called.
+        ''' </summary>
+        ''' <param name="shape">The forcing function that has changed.</param>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub OnShapeChanged(ByVal shape As EwECore.cShapeData)
+            If Me.m_bInUpdate Then Return
+            If shape IsNot Nothing Then
+                Me.m_bInUpdate = True
+                Me.UpdateFF(shape)
+                Me.m_bInUpdate = False
+            End If
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Overridden to respond to a final change in the current selected forcing function.
+        ''' </summary>
+        ''' <param name="shape">The forcing function that has changed.</param>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
+            If Me.m_bInUpdate Then Return
+            If shape IsNot Nothing Then
+                Me.m_bInUpdate = True
+                Me.CommitFF(shape)
+                Me.m_bInUpdate = False
+            End If
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Cascade a newly selected forcing function to the managed controls.
+        ''' </summary>
+        ''' <param name="shape">The newly selected shape.</param>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub OnShapeSelected(ByVal shape As EwECore.cShapeData())
+            If Me.m_bInUpdate Then Return
+            Me.m_bInUpdate = True
+            Me.SelectedShapes = shape
+            Me.m_bInUpdate = False
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the colour for rendering forcing functions.
+        ''' </summary>
+        ''' <returns>The color for rendering forcing functions.</returns>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Function Color() As System.Drawing.Color
+            Return Color.FromArgb(255, 236, 55, 12)
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the default sketch mode for forcing functions.
+        ''' </summary>
+        ''' <returns>The default sketch mode for forcing functions.</returns>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Function SketchDrawMode() As eSketchDrawModeTypes
+            Return eSketchDrawModeTypes.Fill
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the lower limit for the sketch pad Y-axis when displaying 
+        ''' forcing functions.
+        ''' </summary>
+        ''' <returns>The lower limit for the sketch pad Y-axis when displaying 
+        ''' forcing functions.</returns>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Function MinYScale() As Single
+            Return 2.0!
+        End Function
+
+#End Region ' Baseclass overrides
+
+#Region " Internal implementation "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Implementation of the <see cref="eShapeCommandTypes.Add">Add</see> commmand.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub AddFF()
+            Me.CreateShape(Me.GetNewShapeName())
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Implementation of the <see cref="eShapeCommandTypes.ChangeShape">Change Shape</see> commmand.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub ChangeFFShape()
+            Dim dlg As New dlgChangeShape(Me.UIContext, DirectCast(Me.SelectedShape, cForcingFunction))
+            dlg.ShowDialog()
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Implementation of the <see cref="eShapeCommandTypes.Duplicate">Duplicate</see> commmand.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub DuplicateFF(ByVal ashapes As cShapeData())
+
+            ' Sanity check
+            Debug.Assert(ashapes IsNot Nothing, "Need valid FF")
+
+            Dim fsm As cBaseShapeManager = Me.ShapeManager
+            Dim lffNew As New List(Of cForcingFunction)
+
+            For Each shape As cShapeData In ashapes
+                Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
+                If ff IsNot Nothing Then
+                    ff = fsm.CreateNewShape(Me.GetNewShapeName(), ff.ShapeData, ff.YZero, ff.YBase, ff.YEnd, ff.Steep, ff.ShapeFunctionType)
+                    If ff IsNot Nothing Then
+                        lffNew.Add(ff)
+                    End If
+                End If
+            Next
+
+            Me.UpdateShapeList(lffNew.ToArray())
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Implementation of the <see cref="eShapeCommandTypes.Modify">Modify</see> commmand.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub ModifyFF(ByVal shape As cShapeData)
+
+            ' Sanity check
+            Debug.Assert(shape IsNot Nothing, "Need valid FF")
+            Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
+
+            Dim dlg As New frmShapeValue(Me.UIContext, shape)
+            dlg.ShowDialog()
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Implementation of the <see cref="eShapeCommandTypes.Remove">Remove</see> commmand.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub RemoveFF(ByVal ashapes As cShapeData())
+
+            Dim fms As cFeedbackMessage = Nothing
+            Dim strMessage As String = ""
+            Dim bSucces As Boolean = True
+
+            ' Sanity check
+            Debug.Assert(ashapes IsNot Nothing, "Need valid FF")
+
+            ' Ask for permission to perform irreversible action
+            If ashapes.Length = 1 Then
+                strMessage = String.Format(My.Resources.PROMPT_SHAPE_DELETE, ashapes(0).Name)
+            Else
+                strMessage = String.Format(My.Resources.PROMPT_SHAPE_DELETE_MULTIPLE, ashapes.Length)
+            End If
+            fms = New cFeedbackMessage(strMessage, _
+                                       eCoreComponentType.ShapesManager, _
+                                       eMessageImportance.Warning, _
+                                       cFeedbackMessage.eReplyStyle.YES_NO, _
+                                       eDataTypes.Forcing, cFeedbackMessage.eReply.YES)
+            Me.Core.Messages.SendMessage(fms, True)
+            If fms.Reply = cFeedbackMessage.eReply.NO Then Return
+
+            Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
+            For Each shape As cShapeData In ashapes
+                Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
+                bSucces = bSucces And ShapeManager.Remove(DirectCast(shape, cForcingFunction))
+            Next
+            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSucces)
+
+            ' Refresh
+            Me.UpdateShapeList()
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method; reflect on-going modifications in the selected forcing function.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub UpdateFF(ByVal shape As cShapeData)
+            If (Me.ShapeToolBox IsNot Nothing) Then
+                Me.ShapeToolBox.UpdateThumbnail(shape)
+            End If
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method; commit modifications of the selected forcing function to 
+        ''' <see cref="ShapeManager">underlying manager</see>.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub CommitFF(ByVal shape As cShapeData)
+
+            If shape IsNot Nothing Then
+
+                Me.m_bInUpdate = True
+                shape.Update()
+                Me.m_bInUpdate = False
+
+            End If
+
+        End Sub
+
+#End Region ' Internal implementation 
+
+#Region " Helper methods "
+
+        ' ToDo_JS: Obtain this constant from Core or Ecosim model?
+        Private Const SIMU_YEAR_DEFAULT As Integer = 100
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Init the forcing shape params like newly added shape names, reset sketchpad, etc.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Function GetNewShapeName() As String
+
+            Dim lstrFFNames As New List(Of String)
+            Dim strNewFFName As String = ""
+            Dim iNextShapeNumber As Integer = 0
+
+            ' Collect all current shape names
+            For Each s As cShapeData In Me.m_lShapes
+                lstrFFNames.Add(s.Name)
+            Next
+
+            ' Concoct a new name based on the numbered strings that are found
+            iNextShapeNumber = cStringUtils.GetNextNumber(lstrFFNames.ToArray(), Me.NewShapeNameMask)
+            Return String.Format(Me.NewShapeNameMask, iNextShapeNumber)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Herlper method; create a new forcing function.
+        ''' </summary>
+        ''' <param name="strName">Name of the new forcing function.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub CreateShape(ByVal strName As String)
+            ' Create new shape
+            Dim shapeNew As cForcingFunction = ShapeManager.CreateNewShape(strName, Nothing)
+            ' Validate
+            If Object.ReferenceEquals(shapeNew, Nothing) Then Return
+            ' Update 
+            Me.UpdateShapeList(New cShapeData() {shapeNew})
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method; updates the list of forcing functions.
+        ''' </summary>
+        ''' <param name="ashapeSelect">Forcing functions to select.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub UpdateShapeList(Optional ByVal ashapeSelect As cShapeData() = Nothing)
+
+            Dim bHasSelection As Boolean = False
+            Dim bHasShapes As Boolean = False
+
+            Me.m_lShapes = Me.GetShapeList()
+
+            If ashapeSelect IsNot Nothing Then
+                bHasSelection = (ashapeSelect.Length > 0)
+            End If
+            bHasShapes = (Me.m_lShapes.Count > 0)
+
+            If (bHasShapes And Not bHasSelection) Then
+                ashapeSelect = New cShapeData() {Me.m_lShapes(0)}
+            End If
+
+            If (Me.ShapeToolBox IsNot Nothing) Then
+                Me.ShapeToolBox.SetShapes(Me.m_lShapes, ashapeSelect)
+            Else
+                Me.SelectedShapes = ashapeSelect
+            End If
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Overridable method to filter out specific forcing functions.
+        ''' </summary>
+        ''' <param name="shape">Forcing function to evaluate.</param>
+        ''' <returns>True if forcing function should be included in the list.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function IncludeShape(ByVal shape As cShapeData) As Boolean
+            Return True
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Extract a list of shapes from the manager, calling 
+        ''' <see cref="IncludeShape">IncludeShape</see> to determine if a shape
+        ''' should be included in the list.
+        ''' </summary>
+        ''' <returns>A list of shapes to use.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function GetShapeList() As List(Of cShapeData)
+            Dim lShapes As New List(Of cShapeData)
+            Dim shape As cShapeData = Nothing
+
+            For i As Integer = 0 To Me.ShapeManager.Count - 1
+                shape = Me.ShapeManager.Item(i)
+                If Me.IncludeShape(shape) Then
+                    lShapes.Add(shape)
+                End If
+            Next
+            Return lShapes
+        End Function
+
+#End Region ' Helper methods
+
+    End Class
+
+End Namespace ' Controls
