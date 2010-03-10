@@ -473,6 +473,27 @@ Public Enum eTimeSeriesType As Integer
     NotSet = cCore.NULL_VALUE
 End Enum
 
+''' -----------------------------------------------------------------------
+''' <summary>
+''' Enumerated type, defining aliases for <see cref="eTimeSeriesType">time series types</see>.
+''' </summary>
+''' -----------------------------------------------------------------------
+Public Enum eTimeSeriesAliases As Integer
+    BRel = 0
+    BAbs = 1
+    BForced = -1
+    Forcing = 2
+    Effort = 3
+    Z = 4
+    F = 5
+    FConst = -5
+    C = 6
+    [Catch] = 6
+    CForced = -6
+    WAvg = 7
+    ConcRel = 8
+    ConcAbs = 9
+End Enum
 #End Region ' Time series types
 
 #Region " PSD mortality types "
