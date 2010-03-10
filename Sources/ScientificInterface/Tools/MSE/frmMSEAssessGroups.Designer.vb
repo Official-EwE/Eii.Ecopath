@@ -40,12 +40,13 @@ Partial Class frmMSEAssessGroups
         'SplitContainer1.Panel1
         '
         Me.SplitContainer1.Panel1.Controls.Add(Me.m_blocks)
+        Me.SplitContainer1.Panel1Collapsed = True
         '
         'SplitContainer1.Panel2
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.GridBioCV1)
         Me.SplitContainer1.Size = New System.Drawing.Size(652, 483)
-        Me.SplitContainer1.SplitterDistance = 217
+        Me.SplitContainer1.SplitterDistance = 184
         Me.SplitContainer1.TabIndex = 0
         '
         'm_blocks
@@ -55,7 +56,7 @@ Partial Class frmMSEAssessGroups
         Me.m_blocks.Location = New System.Drawing.Point(0, 0)
         Me.m_blocks.Margin = New System.Windows.Forms.Padding(0)
         Me.m_blocks.Name = "m_blocks"
-        Me.m_blocks.Size = New System.Drawing.Size(652, 217)
+        Me.m_blocks.Size = New System.Drawing.Size(652, 184)
         Me.m_blocks.TabIndex = 0
         Me.m_blocks.UIContext = Nothing
         '
@@ -63,6 +64,8 @@ Partial Class frmMSEAssessGroups
         '
         Me.GridBioCV1.AutoSizeMinHeight = 10
         Me.GridBioCV1.AutoSizeMinWidth = 10
+        Me.GridBioCV1.AutoStretchColumnsToFitWidth = False
+        Me.GridBioCV1.AutoStretchRowsToFitHeight = False
         Me.GridBioCV1.BackColor = System.Drawing.Color.White
         Me.GridBioCV1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.GridBioCV1.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -75,7 +78,7 @@ Partial Class frmMSEAssessGroups
         Me.GridBioCV1.GridToolTipActive = True
         Me.GridBioCV1.Location = New System.Drawing.Point(0, 0)
         Me.GridBioCV1.Name = "GridBioCV1"
-        Me.GridBioCV1.Size = New System.Drawing.Size(652, 262)
+        Me.GridBioCV1.Size = New System.Drawing.Size(652, 483)
         Me.GridBioCV1.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                     Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                     Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -87,6 +90,7 @@ Partial Class frmMSEAssessGroups
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.GridBioCV1.TabIndex = 0
         Me.GridBioCV1.TrackPropertySelection = True
+        Me.GridBioCV1.UIContext = Nothing
         '
         'frmMSEAssessGroups
         '

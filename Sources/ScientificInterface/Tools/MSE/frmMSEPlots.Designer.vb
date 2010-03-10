@@ -27,7 +27,7 @@ Partial Class frmMSEPlots
         Me.components = New System.ComponentModel.Container
         Me.ZedGraph = New ZedGraph.ZedGraphControl
         Me.Panel1 = New System.Windows.Forms.Panel
-        Me.btShowHideGroups = New System.Windows.Forms.Button
+        Me.btShowHide = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
         Me.rbEffort = New System.Windows.Forms.RadioButton
         Me.rbFleetValue = New System.Windows.Forms.RadioButton
@@ -62,7 +62,7 @@ Partial Class frmMSEPlots
         '
         Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Panel1.Controls.Add(Me.btShowHideGroups)
+        Me.Panel1.Controls.Add(Me.btShowHide)
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Controls.Add(Me.rbEffort)
         Me.Panel1.Controls.Add(Me.rbFleetValue)
@@ -73,15 +73,15 @@ Partial Class frmMSEPlots
         Me.Panel1.Size = New System.Drawing.Size(654, 65)
         Me.Panel1.TabIndex = 5
         '
-        'btShowHideGroups
+        'btShowHide
         '
-        Me.btShowHideGroups.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btShowHideGroups.Location = New System.Drawing.Point(188, 24)
-        Me.btShowHideGroups.Name = "btShowHideGroups"
-        Me.btShowHideGroups.Size = New System.Drawing.Size(120, 23)
-        Me.btShowHideGroups.TabIndex = 7
-        Me.btShowHideGroups.Text = "Show/hide groups"
-        Me.btShowHideGroups.UseVisualStyleBackColor = True
+        Me.btShowHide.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.btShowHide.Location = New System.Drawing.Point(188, 24)
+        Me.btShowHide.Name = "btShowHide"
+        Me.btShowHide.Size = New System.Drawing.Size(120, 23)
+        Me.btShowHide.TabIndex = 7
+        Me.btShowHide.Text = "Show/hide items..."
+        Me.btShowHide.UseVisualStyleBackColor = True
         '
         'Label1
         '
@@ -216,5 +216,5 @@ Partial Class frmMSEPlots
     Friend WithEvents rbHisto As System.Windows.Forms.RadioButton
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lbType As System.Windows.Forms.Label
-    Private WithEvents btShowHideGroups As System.Windows.Forms.Button
+    Private WithEvents btShowHide As System.Windows.Forms.Button
 End Class

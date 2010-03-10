@@ -48,10 +48,10 @@ Public Class frmMSEPlots
         ' Display Groups
         Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
-            cmd.AddControl(Me.btShowHideGroups)
+            cmd.AddControl(Me.btShowHide)
         End If
 
-        AddHandler cmd.OnInvoke, AddressOf Me.OnShowHideGroups
+        AddHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
 
         Me.rbHisto.Tag = ePlotTypes.Histogram
         Me.rbValues.Tag = ePlotTypes.Values
@@ -81,10 +81,10 @@ Public Class frmMSEPlots
         ' Show/Hide Groups
         Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
-            cmd.RemoveControl(Me.btShowHideGroups)
+            cmd.RemoveControl(Me.btShowHide)
         End If
 
-        RemoveHandler cmd.OnInvoke, AddressOf Me.OnShowHideGroups
+        RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
 
     End Sub
 
@@ -96,11 +96,11 @@ Public Class frmMSEPlots
         Me.DrawPlots()
     End Sub
 
-    Private Sub PlotGroupData(ByVal lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), ByVal PlotType As ePlotTypes, ByVal DataType As ePlotData)
+    Private Sub PlotGroupData(ByVal lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), _
+                              ByVal PlotType As ePlotTypes, ByVal DataType As ePlotData)
         Dim data As New List(Of cCoreGroupBase)
 
         Try
-
             For Each stat As cMSEStats In lstStatObjects
                 If Me.UIContext.StyleGuide.GroupVisible(stat.Index) Then
                     data.Add(stat)
@@ -113,20 +113,21 @@ Public Class frmMSEPlots
             Me.m_plotter.Draw()
 
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".AddGroupDataToPlots() Exception: " & ex.Message)
+            Debug.Assert(False, Me.ToString & ".PlotGroupData() Exception: " & ex.Message)
         End Try
 
     End Sub
 
 
-    Private Sub PlotFleetData(ByVal lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), ByVal PlotType As ePlotTypes, ByVal DataType As ePlotData)
+    Private Sub PlotFleetData(ByVal lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), _
+                              ByVal PlotType As ePlotTypes, ByVal DataType As ePlotData)
         Dim data As New List(Of cCoreGroupBase)
 
         Try
-            'There is no fleet filtering 
-            'all the fleet data gets added to the plots
             For Each stat As cMSEStats In lstStatObjects
-                data.Add(stat)
+                If Me.UIContext.StyleGuide.FleetVisible(stat.Index) Then
+                    data.Add(stat)
+                End If
             Next
 
             Me.m_plotter.PlotType = PlotType
@@ -135,7 +136,7 @@ Public Class frmMSEPlots
             Me.m_plotter.Draw()
 
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".AddGroupDataToPlots() Exception: " & ex.Message)
+            Debug.Assert(False, Me.ToString & ".PlotFleetData() Exception: " & ex.Message)
         End Try
 
     End Sub
@@ -205,8 +206,8 @@ Public Class frmMSEPlots
     End Sub
 
     Private Sub updateControls()
-        Me.btShowHideGroups.Visible = (Me.m_curPlotData <> ePlotData.FleetValue) And _
-                                      (Me.m_curPlotData <> ePlotData.Effort)
+        'Me.btShowHideGroups.Visible = (Me.m_curPlotData <> ePlotData.FleetValue) And _
+        '                              (Me.m_curPlotData <> ePlotData.Effort)
     End Sub
 
 #Region "Core interactions"

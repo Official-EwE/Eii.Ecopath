@@ -109,7 +109,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdPluginGUICommand As PluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As cPropertySelectionCommand = Nothing
-    Private WithEvents m_cmdDisplayGroups As cDisplayGroupsCommand = Nothing
+    Private WithEvents m_cmdShowHideItems As cDisplayGroupsCommand = Nothing
     Private WithEvents m_cmdEnableEcotracer As cCommand = Nothing
     Private WithEvents m_cmdEstimateVs As cCommand = Nothing
     ' ToDo_JS: Discontinue, move to Ecosim UI
@@ -1008,8 +1008,9 @@ Public Class AppLauncher
         Me.m_cmdPropertySelection = New cPropertySelectionCommand()
         cmdh.Add(Me.m_cmdPropertySelection)
 
-        Me.m_cmdDisplayGroups = New cDisplayGroupsCommand()
-        cmdh.Add(Me.m_cmdDisplayGroups)
+        Me.m_cmdShowHideItems = New cDisplayGroupsCommand()
+        Me.m_cmdShowHideItems.AddControl(Me.m_tsmiViewItems)
+        cmdh.Add(Me.m_cmdShowHideItems)
 
         Me.m_cmdEnableEcotracer = New cCommand("EnableEcotracer")
         cmdh.Add(Me.m_cmdEnableEcotracer)
@@ -2575,14 +2576,14 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
     End Sub
 
-    Private Sub OnDisplayGroups(ByVal cmd As cCommand) _
-        Handles m_cmdDisplayGroups.OnInvoke
-        Dim dlg As New dlgDisplayGroups(Me.UIContext, m_cmdDisplayGroups.ShowGroups, m_cmdDisplayGroups.ShowTotals)
+    Private Sub OnDisplayShowHideItems(ByVal cmd As cCommand) _
+        Handles m_cmdShowHideItems.OnInvoke
+        Dim dlg As New dlgShowHideItems(Me.UIContext, m_cmdShowHideItems.ShowGroups, m_cmdShowHideItems.ShowTotals)
         dlg.ShowDialog()
     End Sub
 
-    Private Sub OnUpdateDisplayGroups(ByVal cmd As cCommand) _
-        Handles m_cmdDisplayGroups.OnUpdate
+    Private Sub OnUpdateShowHideItems(ByVal cmd As cCommand) _
+        Handles m_cmdShowHideItems.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
     End Sub
 

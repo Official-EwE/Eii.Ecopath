@@ -136,7 +136,7 @@ Friend Class cMSEPlotter
         Try
             Dim npanes As Integer = Me.nVisGroups
             If Me.m_dataType = ePlotData.Effort Or Me.m_dataType = ePlotData.FleetValue Then
-                npanes = Me.m_uic.Core.nFleets
+                npanes = Me.nVisFleets
             End If
             Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, npanes)
 
@@ -364,14 +364,16 @@ Friend Class cMSEPlotter
                 Dim flt As cFleetInput
                 For iflt As Integer = 1 To Me.m_uic.Core.nFleets
                     flt = Me.m_uic.Core.FleetInputs(iflt)
-                    ipane += 1
-                    Me.m_zgh.ConfigurePane(flt.Name, _
-                                           Me.XLabel, _
-                                           CDbl(Me.m_uic.Core.EcosimFirstYear), _
-                                           CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
-                                           Me.YLabel, 0, 0, _
-                                           False, LegendPos.Top, ipane)
-                    Me.m_zgh.AutoscalePane(ipane) = True
+                    If Me.m_uic.StyleGuide.FleetVisible(flt.Index) Then
+                        ipane += 1
+                        Me.m_zgh.ConfigurePane(flt.Name, _
+                                               Me.XLabel, _
+                                               CDbl(Me.m_uic.Core.EcosimFirstYear), _
+                                               CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
+                                               Me.YLabel, 0, 0, _
+                                               False, LegendPos.Top, ipane)
+                        Me.m_zgh.AutoscalePane(ipane) = True
+                    End If
                 Next
 
         End Select
@@ -689,6 +691,16 @@ Friend Class cMSEPlotter
         Dim n As Integer
         For igrp As Integer = 1 To Me.m_uic.Core.nGroups
             If Me.m_uic.StyleGuide.GroupVisible(igrp) Then
+                n += 1
+            End If
+        Next
+        Return n
+    End Function
+
+    Private Function nVisFleets() As Integer
+        Dim n As Integer
+        For igrp As Integer = 1 To Me.m_uic.Core.nFleets
+            If Me.m_uic.StyleGuide.FleetVisible(igrp) Then
                 n += 1
             End If
         Next

@@ -17,10 +17,14 @@ Public Class frmMSEAssessGroups
         End Get
         Set(ByVal value As cUIContext)
             MyBase.UIContext = value
-            Me.GridBioCV1.UIContext = value
-            Me.m_blocks.UIContext = value
-            Me.m_blocks.ParmBlockCodes.NumBlocks = Me.UIContext.Core.nFleets
-            Me.m_blocks.ParmBlockCodes.SelectedBlock = 1
+
+            If (Me.UIContext IsNot Nothing) Then
+                Me.GridBioCV1.UIContext = value
+                Me.m_blocks.UIContext = value
+                Me.m_blocks.ParmBlockCodes.NumBlocks = Me.UIContext.Core.nFleets
+                Me.m_blocks.ParmBlockCodes.SelectedBlock = 1
+            End If
+
         End Set
     End Property
 

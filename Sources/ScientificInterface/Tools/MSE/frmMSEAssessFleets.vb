@@ -17,10 +17,14 @@ Public Class frmMSEAssessFleets
         End Get
         Set(ByVal value As cUIContext)
             MyBase.UIContext = value
-            Me.GridFishingCV1.UIContext = value
-            Me.m_blocks.UIContext = value
-            Me.m_blocks.ParmBlockCodes.NumBlocks = Me.UIContext.Core.nFleets
-            Me.m_blocks.ParmBlockCodes.SelectedBlock = 1
+
+            If (value IsNot Nothing) Then
+                Me.GridFishingCV1.UIContext = value
+                Me.m_blocks.UIContext = value
+                Me.m_blocks.ParmBlockCodes.NumBlocks = Me.UIContext.Core.nFleets
+                Me.m_blocks.ParmBlockCodes.SelectedBlock = 1
+            End If
+
         End Set
     End Property
 

@@ -27,7 +27,6 @@ Partial Class frmMSE
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Me.btRun = New System.Windows.Forms.Button
-        Me.prgProgress = New System.Windows.Forms.ProgressBar
         Me.txNTrials = New System.Windows.Forms.TextBox
         Me.Label1 = New System.Windows.Forms.Label
         Me.lbRun = New System.Windows.Forms.Label
@@ -62,23 +61,14 @@ Partial Class frmMSE
         '
         'btRun
         '
-        Me.btRun.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btRun.Location = New System.Drawing.Point(8, 52)
+        Me.btRun.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.btRun.Location = New System.Drawing.Point(11, 52)
         Me.btRun.Margin = New System.Windows.Forms.Padding(0)
         Me.btRun.Name = "btRun"
         Me.btRun.Size = New System.Drawing.Size(146, 22)
         Me.btRun.TabIndex = 0
         Me.btRun.Text = "&Run"
         Me.btRun.UseVisualStyleBackColor = True
-        '
-        'prgProgress
-        '
-        Me.prgProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.prgProgress.Location = New System.Drawing.Point(8, 156)
-        Me.prgProgress.Name = "prgProgress"
-        Me.prgProgress.Size = New System.Drawing.Size(1066, 16)
-        Me.prgProgress.TabIndex = 1
         '
         'txNTrials
         '
@@ -129,10 +119,10 @@ Partial Class frmMSE
         Me.Label3.BackColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label3.Location = New System.Drawing.Point(8, 175)
+        Me.Label3.Location = New System.Drawing.Point(8, 143)
         Me.Label3.Name = "Label3"
         Me.Label3.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label3.Size = New System.Drawing.Size(1066, 22)
+        Me.Label3.Size = New System.Drawing.Size(889, 22)
         Me.Label3.TabIndex = 9
         Me.Label3.Text = "Outputs"
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -145,7 +135,7 @@ Partial Class frmMSE
         Me.pnlRegOpt.Controls.Add(Me.Label7)
         Me.pnlRegOpt.Location = New System.Drawing.Point(169, 0)
         Me.pnlRegOpt.Name = "pnlRegOpt"
-        Me.pnlRegOpt.Size = New System.Drawing.Size(311, 124)
+        Me.pnlRegOpt.Size = New System.Drawing.Size(311, 137)
         Me.pnlRegOpt.TabIndex = 24
         '
         'rbTrackUseQuota
@@ -210,7 +200,7 @@ Partial Class frmMSE
         '
         'txSBPower
         '
-        Me.txSBPower.Location = New System.Drawing.Point(139, 105)
+        Me.txSBPower.Location = New System.Drawing.Point(154, 106)
         Me.txSBPower.Name = "txSBPower"
         Me.txSBPower.Size = New System.Drawing.Size(48, 20)
         Me.txSBPower.TabIndex = 25
@@ -227,7 +217,7 @@ Partial Class frmMSE
         'rbExact
         '
         Me.rbExact.AutoSize = True
-        Me.rbExact.Location = New System.Drawing.Point(3, 83)
+        Me.rbExact.Location = New System.Drawing.Point(6, 83)
         Me.rbExact.Name = "rbExact"
         Me.rbExact.Size = New System.Drawing.Size(128, 17)
         Me.rbExact.TabIndex = 23
@@ -238,7 +228,7 @@ Partial Class frmMSE
         'rbDirectExp
         '
         Me.rbDirectExp.AutoSize = True
-        Me.rbDirectExp.Location = New System.Drawing.Point(3, 55)
+        Me.rbDirectExp.Location = New System.Drawing.Point(6, 55)
         Me.rbDirectExp.Name = "rbDirectExp"
         Me.rbDirectExp.Size = New System.Drawing.Size(130, 17)
         Me.rbDirectExp.TabIndex = 22
@@ -249,7 +239,7 @@ Partial Class frmMSE
         '
         Me.rbCatchEstBio.AutoSize = True
         Me.rbCatchEstBio.Checked = True
-        Me.rbCatchEstBio.Location = New System.Drawing.Point(3, 26)
+        Me.rbCatchEstBio.Location = New System.Drawing.Point(6, 26)
         Me.rbCatchEstBio.Name = "rbCatchEstBio"
         Me.rbCatchEstBio.Size = New System.Drawing.Size(144, 17)
         Me.rbCatchEstBio.TabIndex = 21
@@ -259,8 +249,8 @@ Partial Class frmMSE
         '
         'btStop
         '
-        Me.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btStop.Location = New System.Drawing.Point(8, 80)
+        Me.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.btStop.Location = New System.Drawing.Point(11, 80)
         Me.btStop.Name = "btStop"
         Me.btStop.Size = New System.Drawing.Size(146, 22)
         Me.btStop.TabIndex = 26
@@ -272,7 +262,7 @@ Partial Class frmMSE
         Me.zdGraph.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.zdGraph.Location = New System.Drawing.Point(8, 207)
+        Me.zdGraph.Location = New System.Drawing.Point(8, 171)
         Me.zdGraph.Margin = New System.Windows.Forms.Padding(0)
         Me.zdGraph.Name = "zdGraph"
         Me.zdGraph.ScrollGrace = 0
@@ -282,17 +272,17 @@ Partial Class frmMSE
         Me.zdGraph.ScrollMinX = 0
         Me.zdGraph.ScrollMinY = 0
         Me.zdGraph.ScrollMinY2 = 0
-        Me.zdGraph.Size = New System.Drawing.Size(1066, 560)
+        Me.zdGraph.Size = New System.Drawing.Size(889, 596)
         Me.zdGraph.TabIndex = 27
         '
         'btShowHide
         '
-        Me.btShowHide.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btShowHide.Location = New System.Drawing.Point(11, 112)
+        Me.btShowHide.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.btShowHide.Location = New System.Drawing.Point(12, 108)
         Me.btShowHide.Name = "btShowHide"
-        Me.btShowHide.Size = New System.Drawing.Size(142, 25)
+        Me.btShowHide.Size = New System.Drawing.Size(145, 25)
         Me.btShowHide.TabIndex = 32
-        Me.btShowHide.Text = "Show hide groups"
+        Me.btShowHide.Text = "Show/hide items..."
         Me.btShowHide.UseVisualStyleBackColor = True
         '
         'pnlRunOpt
@@ -306,12 +296,12 @@ Partial Class frmMSE
         Me.pnlRunOpt.Controls.Add(Me.Label2)
         Me.pnlRunOpt.Location = New System.Drawing.Point(492, 0)
         Me.pnlRunOpt.Name = "pnlRunOpt"
-        Me.pnlRunOpt.Size = New System.Drawing.Size(185, 150)
+        Me.pnlRunOpt.Size = New System.Drawing.Size(185, 137)
         Me.pnlRunOpt.TabIndex = 33
         '
         'txKalmanGain
         '
-        Me.txKalmanGain.Location = New System.Drawing.Point(121, 104)
+        Me.txKalmanGain.Location = New System.Drawing.Point(134, 106)
         Me.txKalmanGain.Name = "txKalmanGain"
         Me.txKalmanGain.Size = New System.Drawing.Size(48, 20)
         Me.txKalmanGain.TabIndex = 38
@@ -329,7 +319,7 @@ Partial Class frmMSE
         '
         Me.ckSave.AutoSize = True
         Me.ckSave.Enabled = False
-        Me.ckSave.Location = New System.Drawing.Point(3, 56)
+        Me.ckSave.Location = New System.Drawing.Point(6, 56)
         Me.ckSave.Name = "ckSave"
         Me.ckSave.Size = New System.Drawing.Size(84, 17)
         Me.ckSave.TabIndex = 36
@@ -347,7 +337,7 @@ Partial Class frmMSE
         '
         'txForecast
         '
-        Me.txForecast.Location = New System.Drawing.Point(121, 79)
+        Me.txForecast.Location = New System.Drawing.Point(134, 82)
         Me.txForecast.Name = "txForecast"
         Me.txForecast.Size = New System.Drawing.Size(48, 20)
         Me.txForecast.TabIndex = 34
@@ -355,7 +345,8 @@ Partial Class frmMSE
         'ckPlugin
         '
         Me.ckPlugin.AutoSize = True
-        Me.ckPlugin.Location = New System.Drawing.Point(3, 26)
+        Me.ckPlugin.Enabled = False
+        Me.ckPlugin.Location = New System.Drawing.Point(6, 27)
         Me.ckPlugin.Name = "ckPlugin"
         Me.ckPlugin.Size = New System.Drawing.Size(149, 17)
         Me.ckPlugin.TabIndex = 33
@@ -370,7 +361,7 @@ Partial Class frmMSE
         Me.Label2.Location = New System.Drawing.Point(0, 0)
         Me.Label2.Name = "Label2"
         Me.Label2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label2.Size = New System.Drawing.Size(181, 21)
+        Me.Label2.Size = New System.Drawing.Size(185, 21)
         Me.Label2.TabIndex = 32
         Me.Label2.Text = "Model run options"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -379,7 +370,7 @@ Partial Class frmMSE
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1083, 776)
+        Me.ClientSize = New System.Drawing.Size(906, 776)
         Me.Controls.Add(Me.pnlRunOpt)
         Me.Controls.Add(Me.btShowHide)
         Me.Controls.Add(Me.zdGraph)
@@ -388,7 +379,6 @@ Partial Class frmMSE
         Me.Controls.Add(Me.lbRun)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txNTrials)
-        Me.Controls.Add(Me.prgProgress)
         Me.Controls.Add(Me.btRun)
         Me.Controls.Add(Me.pnlRegOpt)
         Me.Controls.Add(Me.pnlFTracking)
@@ -408,7 +398,6 @@ Partial Class frmMSE
     Friend WithEvents lbRun As System.Windows.Forms.Label
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Private WithEvents btRun As System.Windows.Forms.Button
-    Private WithEvents prgProgress As System.Windows.Forms.ProgressBar
     Private WithEvents txNTrials As System.Windows.Forms.TextBox
     Private WithEvents Label1 As System.Windows.Forms.Label
     Private WithEvents Label3 As System.Windows.Forms.Label

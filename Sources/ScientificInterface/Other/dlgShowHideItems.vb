@@ -11,10 +11,10 @@ Namespace Ecosim
 
     ''' =======================================================================
     ''' <summary>
-    ''' Dialog class, implements the generic show/hide groups interface.
+    ''' Dialog class, implements the generic show/hide items interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class dlgDisplayGroups
+    Public Class dlgShowHideItems
 
 #Region " Private variables "
 
@@ -57,13 +57,14 @@ Namespace Ecosim
             MyBase.OnLoad(e)
 
             Dim group As cEcoPathGroupInput = Nothing
+            Dim fleet As cFleetInput = Nothing
 
             Me.m_clbGroups.Items.Clear()
-
             If Me.m_bShowGroups Then
                 For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
                     group = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
-                    Me.m_clbGroups.Items.Add(group.Name, Me.m_uic.StyleGuide.GroupVisible(iGroup))
+                    Me.m_clbGroups.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, iGroup, group.Name), _
+                                             Me.m_uic.StyleGuide.GroupVisible(iGroup))
                 Next
             End If
 
@@ -71,6 +72,13 @@ Namespace Ecosim
                 Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALCATCH, Me.m_uic.StyleGuide.TotalCatchVisible)
                 Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALLENGTH, Me.m_uic.StyleGuide.TotalValueVisible)
             End If
+
+            Me.m_clbFleets.Items.Clear()
+            For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
+                fleet = Me.m_uic.Core.FleetInputs(iFleet)
+                Me.m_clbFleets.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, iFleet, fleet.Name), _
+                                         Me.m_uic.StyleGuide.FleetVisible(iFleet))
+            Next
 
         End Sub
 
@@ -97,6 +105,10 @@ Namespace Ecosim
                 Me.m_uic.StyleGuide.TotalValueVisible = Me.m_clbGroups.GetItemChecked(iIndex + 1)
             End If
 
+            For iFleet As Integer = 1 To Me.m_uic.Core.nGroups
+                Me.m_uic.StyleGuide.FleetVisible(iFleet) = Me.m_clbFleets.GetItemChecked(iFleet - 1)
+            Next
+
             Me.m_uic.StyleGuide.ResumeEvents()
 
             ' And done
@@ -111,8 +123,8 @@ Namespace Ecosim
             Me.Close()
         End Sub
 
-        Private Sub OnSelectAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnAll.Click
+        Private Sub OnSelectAllGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnAllGroups.Click
 
             ' Check all items
             Me.m_clbGroups.SuspendLayout()
@@ -123,8 +135,8 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectNone(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnNone.Click
+        Private Sub OnSelectNoneGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnNoneGroups.Click
 
             ' Uncheck all items
             Me.m_clbGroups.SuspendLayout()
@@ -135,8 +147,8 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectDefault(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnDefault.Click
+        Private Sub OnSelectDefaultGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnDefaultGroups.Click
 
             ' Check all groups, uncheck summary items
             Me.m_clbGroups.SuspendLayout()
@@ -157,6 +169,31 @@ Namespace Ecosim
             End If
 
             Me.m_clbGroups.ResumeLayout()
+
+        End Sub
+
+
+        Private Sub OnSelectAllFleets(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnAllFleets.Click
+
+            ' Check all items
+            Me.m_clbFleets.SuspendLayout()
+            For iItem As Integer = 0 To Me.m_clbFleets.Items.Count - 1
+                Me.m_clbFleets.SetItemChecked(iItem, True)
+            Next
+            Me.m_clbFleets.ResumeLayout()
+
+        End Sub
+
+        Private Sub OnSelectNoneFleets(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnNoneFleets.Click
+
+            ' Uncheck all items
+            Me.m_clbFleets.SuspendLayout()
+            For iItem As Integer = 0 To Me.m_clbFleets.Items.Count - 1
+                Me.m_clbFleets.SetItemChecked(iItem, False)
+            Next
+            Me.m_clbFleets.ResumeLayout()
 
         End Sub
 

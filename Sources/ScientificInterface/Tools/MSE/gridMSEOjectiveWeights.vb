@@ -29,8 +29,10 @@ Public Class gridMSEOjectiveWeights
             Return MyBase.UIContext
         End Get
         Set(ByVal value As cUIContext)
+            If value IsNot Nothing Then
+                Me.Manager = value.Core.FishingPolicyManager
+            End If
             MyBase.UIContext = value
-            Me.Manager = cCore.GetInstance.FishingPolicyManager
         End Set
     End Property
 

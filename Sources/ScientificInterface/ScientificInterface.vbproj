@@ -315,10 +315,10 @@
     <Compile Include="Ecosim\Output\EcosimResultsGridGroup.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Other\dlgDisplayGroups.Designer.vb">
-      <DependentUpon>dlgDisplayGroups.vb</DependentUpon>
+    <Compile Include="Other\dlgShowHideItems.Designer.vb">
+      <DependentUpon>dlgShowHideItems.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\dlgDisplayGroups.vb">
+    <Compile Include="Other\dlgShowHideItems.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\SRplot.Designer.vb">
@@ -748,9 +748,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>EcosimResults.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\dlgDisplayGroups.resx">
+    <EmbeddedResource Include="Other\dlgShowHideItems.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>dlgDisplayGroups.vb</DependentUpon>
+      <DependentUpon>dlgShowHideItems.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Output\SRplot.resx">
       <SubType>Designer</SubType>

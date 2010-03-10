@@ -1,25 +1,4 @@
-﻿
-'==============================================================================
-'
-' $Log: frmMSE.vb,v $
-' Revision 1.6  2009/07/03 23:41:36  joeb
-' MSE interface changes
-'
-' Revision 1.5  2009/06/08 17:17:11  joeb
-' More MSE layout
-'
-' Revision 1.4  2009/06/08 16:49:08  joeb
-' More MSE interface
-'
-' Revision 1.3  2009/06/05 20:20:31  joeb
-' MSE
-'
-' Revision 1.2  2009/06/05 19:01:50  joeb
-' Added MSE node to navigation tree
-'
-'
-'=============================================================================
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -34,7 +13,6 @@ Imports EwEUtils.Commands
 Imports ZedGraph
 
 #End Region
-
 
 Public Class frmMSE
 
@@ -94,7 +72,7 @@ Public Class frmMSE
             cmd.RemoveControl(Me.btShowHide)
         End If
 
-        RemoveHandler cmd.OnInvoke, AddressOf Me.OnShowHideGroups
+        RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         RemoveHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
 
         Me.CoreComponents = Nothing
@@ -143,7 +121,7 @@ Public Class frmMSE
             cmd.AddControl(Me.btShowHide)
         End If
 
-        AddHandler cmd.OnInvoke, AddressOf Me.OnShowHideGroups
+        AddHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         AddHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
 
         Me.m_paneMaster = Me.zdGraph.MasterPane
@@ -209,8 +187,8 @@ Public Class frmMSE
 
             Me.m_MSE.ValidateRun()
 
-            Me.prgProgress.Maximum = Me.m_MSE.ModelParameters.NTrials
-            Me.prgProgress.Value = 0
+            cApplicationStatusNotifier.SetStatusText("Initializing MSE...")
+
             'init the graphs for a new run
             Me.m_plotter.Clear()
 
@@ -225,7 +203,7 @@ Public Class frmMSE
 
     Private Sub onMSECompleted()
 
-        Me.prgProgress.Value = 0
+        cApplicationStatusNotifier.SetStatusText("")
         Me.m_MSE.Disconnect()
 
     End Sub
@@ -258,11 +236,8 @@ Public Class frmMSE
     End Sub
 
     Private Sub onMSEProgress()
-        Try
-            Me.prgProgress.Value = Me.m_MSE.Output.TrialNumber
-        Catch ex As Exception
-
-        End Try
+        Dim sProgress As Single = CSng(Me.m_MSE.Output.TrialNumber / Me.m_MSE.ModelParameters.NTrials)
+        cApplicationStatusNotifier.SetStatusText("Running MSE...", TriState.UseDefault, sProgress)
     End Sub
 
 #End Region

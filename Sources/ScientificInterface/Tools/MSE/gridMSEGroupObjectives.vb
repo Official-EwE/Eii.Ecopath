@@ -28,8 +28,10 @@ Public Class gridMSEGroupObjectives
             Return MyBase.UIContext
         End Get
         Set(ByVal value As cUIContext)
+            If (value IsNot Nothing) Then
+                Me.Manager = value.Core.FishingPolicyManager
+            End If
             MyBase.UIContext = value
-            Me.Manager = value.Core.FishingPolicyManager
         End Set
     End Property
 

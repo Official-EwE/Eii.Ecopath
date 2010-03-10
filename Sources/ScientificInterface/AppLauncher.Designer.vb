@@ -77,6 +77,8 @@
         Me.m_tsmiViewRemarks = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewModelBar = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewStatusBar = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.m_tsmiViewItems = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuEcopath = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcopathEditGroups = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcopathEditMultiStanza = New System.Windows.Forms.ToolStripMenuItem
@@ -393,7 +395,7 @@
         '
         'MenuView
         '
-        Me.MenuView.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewStartPage, Me.m_tsmiViewNavigation, Me.m_tsmiViewStatus, Me.m_tsmiViewRemarks, m_tssView1, Me.m_tsmiViewModelBar, Me.m_tsmiViewStatusBar})
+        Me.MenuView.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewStartPage, Me.m_tsmiViewNavigation, Me.m_tsmiViewStatus, Me.m_tsmiViewRemarks, m_tssView1, Me.m_tsmiViewModelBar, Me.m_tsmiViewStatusBar, Me.ToolStripSeparator1, Me.m_tsmiViewItems})
         Me.MenuView.Name = "MenuView"
         resources.ApplyResources(Me.MenuView, "MenuView")
         '
@@ -429,6 +431,16 @@
         Me.m_tsmiViewStatusBar.CheckState = System.Windows.Forms.CheckState.Checked
         Me.m_tsmiViewStatusBar.Name = "m_tsmiViewStatusBar"
         resources.ApplyResources(Me.m_tsmiViewStatusBar, "m_tsmiViewStatusBar")
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+        '
+        'm_tsmiViewItems
+        '
+        Me.m_tsmiViewItems.Name = "m_tsmiViewItems"
+        resources.ApplyResources(Me.m_tsmiViewItems, "m_tsmiViewItems")
         '
         'MenuEcopath
         '
@@ -689,6 +701,8 @@
     Friend WithEvents m_ssMain As ScientificInterface.cEwEStatusBar
     Private WithEvents m_tsmiEcosimEstimateVs As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiTimeSeriesExport As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsmiViewItems As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 
