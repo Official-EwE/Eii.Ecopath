@@ -457,6 +457,22 @@ Namespace Database
 
 #End Region ' Class cEwEDbWriter
 
+#Region " Private vars and consts"
+
+        ''' <summary>Current database version.</summary>
+        Private m_sVersion As Single = 0.0
+
+        ''' <summary>Oldest EwE5 version number supported</summary>
+        Private Const cDBVERSION_EWE5_MIN As Single = 1.67
+        ''' <summary>Newest EwE5 version number supported</summary>
+        Private Const cDBVERSION_EWE5_MAX As Single = 1.73
+        ''' <summary>Current EwE6 version number supported</summary>
+        Private Const cDBVERSION_EWE6 As Single = 6.0
+        ''' <summary>Next unsupported EwE version number.</summary>
+        Private Const cDBVERSION_FUTURE As Single = 7.0
+
+#End Region ' Private vars and consts
+
 #Region " Open and close "
 
         ''' -------------------------------------------------------------------
@@ -515,6 +531,47 @@ Namespace Database
                 Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
 #End Region ' Open and close
+
+#Region " Compatibility "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Enumberated type, used to indicate database compatibility modes
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Enum eCompatibilityTypes As Integer
+            ''' <summary>Combatibility unknown. Most likely the accessed file is not an EwE database.</summary>
+            Unknown = 0
+            ''' <summary>EwE5 database that is too old, and is not supported.</summary>
+            EwE5TooOld
+            ''' <summary>EwE5 database that is supported.</summary>
+            EwE5Supported
+            ''' <summary>EwE5 database that is too new, and is not supported.</summary>
+            EwE5TooNew
+            ''' <summary>EwE6 database that is supported.</summary>
+            EwE6
+            ''' <summary>EwEX database that is of a newer format and is not supported.</summary>
+            UnknownFuture
+        End Enum
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States the level of compatibility with the EwE code.
+        ''' </summary>
+        ''' <returns>A <see cref="eCompatibilityTypes">database compatibility</see>
+        ''' indicator.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Compatibility() As eCompatibilityTypes
+            Dim sVersion As Single = Me.GetVersion()
+            If (sVersion = 0.0!) Then Return eCompatibilityTypes.Unknown
+            If (sVersion < cDBVERSION_EWE5_MIN) Then Return eCompatibilityTypes.EwE5TooOld
+            If (sVersion <= cDBVERSION_EWE5_MAX) Then Return eCompatibilityTypes.EwE5Supported
+            If (sVersion < cDBVERSION_EWE6) Then Return eCompatibilityTypes.EwE5TooNew
+            If (sVersion < cDBVERSION_FUTURE) Then Return eCompatibilityTypes.EwE6
+            Return eCompatibilityTypes.UnknownFuture
+        End Function
+
+#End Region ' Compatibility
 
 #Region " Maintenance "
 
@@ -1102,27 +1159,59 @@ Namespace Database
 
             Private m_list As New List(Of cOOPStorable)
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Add an <see cref="cOOPStorable">object</see> to the list.
+            ''' </summary>
+            ''' <param name="item">The <see cref="cOOPStorable">object</see> to add.</param>
+            ''' -------------------------------------------------------------------
             Public Sub Add(ByVal item As cOOPStorable) _
                 Implements ICollection(Of cOOPStorable).Add
                 Debug.Assert(Not Me.Contains(item), "Item already present in list")
                 Me.m_list.Add(item)
             End Sub
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Clear the list.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
             Public Sub Clear() _
                 Implements ICollection(Of cOOPStorable).Clear
                 Me.m_list.Clear()
             End Sub
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' States whether the list contains a given <see cref="cOOPStorable">object</see>.
+            ''' </summary>
+            ''' <param name="item">The <see cref="cOOPStorable">object</see> to find.</param>
+            ''' <returns>True if the list contains this <see cref="cOOPStorable">object</see>.</returns>
+            ''' -------------------------------------------------------------------
             Public Function Contains(ByVal item As cOOPStorable) As Boolean _
                 Implements ICollection(Of cOOPStorable).Contains
                 Return Me.m_list.Contains(item)
             End Function
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Copy the list to an array, starting at a given array index.
+            ''' </summary>
+            ''' <param name="array">The array to copy <see cref="cOOPStorable">object</see> into.</param>
+            ''' <param name="arrayIndex">Index of the list item to start copying from.</param>
+            ''' <remarks>Please make sure the receiving array is big enough 
+            ''' to hold the list items.</remarks>
+            ''' -------------------------------------------------------------------
             Public Sub CopyTo(ByVal array() As cOOPStorable, ByVal arrayIndex As Integer) _
                 Implements ICollection(Of cOOPStorable).CopyTo
-                Me.m_list.CopyTo(array)
+                Me.m_list.CopyTo(array, arrayIndex)
             End Sub
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the number of <see cref="cOOPStorable">objects</see> in the list.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
             <Browsable(False)> _
             Public ReadOnly Property Count() As Integer _
                 Implements ICollection(Of cOOPStorable).Count
@@ -1131,6 +1220,11 @@ Namespace Database
                 End Get
             End Property
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get whether the list can be modified.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
             <Browsable(False)> _
             Public ReadOnly Property IsReadOnly() As Boolean _
                 Implements ICollection(Of cOOPStorable).IsReadOnly
@@ -1139,28 +1233,62 @@ Namespace Database
                 End Get
             End Property
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Remove an <see cref="cOOPStorable">object</see> from the list.
+            ''' </summary>
+            ''' <param name="item">The <see cref="cOOPStorable">object</see> to remove.</param>
+            ''' <returns>True if successful.</returns>
+            ''' -------------------------------------------------------------------
             Public Function Remove(ByVal item As cOOPStorable) As Boolean _
                 Implements ICollection(Of cOOPStorable).Remove
                 ' ToDo: remember this to actively erase item from DB?
                 Me.m_list.Remove(item)
             End Function
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Returns an enumerator for cartwheeling though this list.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
             Public Function GetEnumerator() As IEnumerator(Of cOOPStorable) _
                 Implements IEnumerable(Of cOOPStorable).GetEnumerator
                 Return Me.m_list.GetEnumerator()
             End Function
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Returns the list index of a given <see cref="cOOPStorable">object</see>.
+            ''' </summary>
+            ''' <param name="item">The <see cref="cOOPStorable">object</see> to locate.</param>
+            ''' <returns>An integer value representing the index of the 
+            ''' <see cref="cOOPStorable">object</see> in the list, or -1 if this item
+            ''' was not found.</returns>
+            ''' -------------------------------------------------------------------
             Public Function IndexOf(ByVal item As cOOPStorable) As Integer _
                 Implements IList(Of cOOPStorable).IndexOf
                 Return Me.m_list.IndexOf(item)
             End Function
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Insert an <see cref="cOOPStorable">object</see> at a given position in the list.
+            ''' </summary>
+            ''' <param name="index">The list position to insert the item at.</param>
+            ''' <param name="item">The <see cref="cOOPStorable">object</see> to insert.</param>
+            ''' -------------------------------------------------------------------
             Public Sub Insert(ByVal index As Integer, ByVal item As cOOPStorable) _
                 Implements IList(Of cOOPStorable).Insert
                 Debug.Assert(Not Me.Contains(item), "Item already present in list")
                 Me.m_list.Insert(index, item)
             End Sub
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get the <see cref="cOOPStorable">object</see> at a given position in the list.
+            ''' </summary>
+            ''' <param name="index">The list index of the <see cref="cOOPStorable">object</see> to retrieve.</param>
+            ''' -------------------------------------------------------------------
             <Browsable(False)> _
             Default Public Property Item(ByVal index As Integer) As cOOPStorable _
                 Implements IList(Of cOOPStorable).Item
@@ -1172,11 +1300,22 @@ Namespace Database
                 End Set
             End Property
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Remove an <see cref="cOOPStorable">object</see> at a given position in the list.
+            ''' </summary>
+            ''' <param name="index">The position of the <see cref="cOOPStorable">object</see> to remove.</param>
+            ''' -------------------------------------------------------------------
             Public Sub RemoveAt(ByVal index As Integer) _
                 Implements IList(Of cOOPStorable).RemoveAt
                 Me.m_list.RemoveAt(index)
             End Sub
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Neh
+            ''' </summary>
+            ''' -------------------------------------------------------------------
             Private Function GetEnumaarghAarghAargh() As System.Collections.IEnumerator _
                 Implements System.Collections.IEnumerable.GetEnumerator
                 Return Nothing
@@ -2770,59 +2909,6 @@ Namespace Database
 
 #Region " EwE versioning "
 
-#Region " Internals "
-
-        ''' <summary>Current database version.</summary>
-        Private m_sVersion As Single = 0.0
-
-        ''' <summary>Oldest EwE5 version number supported</summary>
-        Private Const cDBVERSION_EWE5_MIN As Single = 1.67
-        ''' <summary>Newest EwE5 version number supported</summary>
-        Private Const cDBVERSION_EWE5_MAX As Single = 1.73
-        ''' <summary>Current EwE6 version number supported</summary>
-        Private Const cDBVERSION_EWE6 As Single = 6.0
-        ''' <summary>Next unsupported EwE version number.</summary>
-        Private Const cDBVERSION_FUTURE As Single = 7.0
-
-#End Region ' Internals
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Enumberated type, used to indicate database compatibility modes
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Enum eCompatibilityTypes As Integer
-            ''' <summary>Combatibility unknown. Most likely the accessed file is not an EwE database.</summary>
-            Unknown = 0
-            ''' <summary>EwE5 database that is too old, and is not supported.</summary>
-            EwE5TooOld
-            ''' <summary>EwE5 database that is supported.</summary>
-            EwE5Supported
-            ''' <summary>EwE5 database that is too new, and is not supported.</summary>
-            EwE5TooNew
-            ''' <summary>EwE6 database that is supported.</summary>
-            EwE6
-            ''' <summary>EwEX database that is of a newer format and is not supported.</summary>
-            UnknownFuture
-        End Enum
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' States the level of compatibility with the EwE code.
-        ''' </summary>
-        ''' <returns>A <see cref="eCompatibilityTypes">database compatibility</see>
-        ''' indicator.</returns>
-        ''' -------------------------------------------------------------------
-        Public Function Compatibility() As eCompatibilityTypes
-            Dim sVersion As Single = Me.GetVersion()
-            If (sVersion = 0.0!) Then Return eCompatibilityTypes.Unknown
-            If (sVersion < cDBVERSION_EWE5_MIN) Then Return eCompatibilityTypes.EwE5TooOld
-            If (sVersion <= cDBVERSION_EWE5_MAX) Then Return eCompatibilityTypes.EwE5Supported
-            If (sVersion < cDBVERSION_EWE6) Then Return eCompatibilityTypes.EwE5TooNew
-            If (sVersion < cDBVERSION_FUTURE) Then Return eCompatibilityTypes.EwE6
-            Return eCompatibilityTypes.UnknownFuture
-        End Function
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns the current version of the connected EwE database.
@@ -2907,16 +2993,6 @@ Namespace Database
         End Function
 
 #End Region ' EwE versioning
-
-#Region " Driver information "
-
-        ' get the database/server details and display them
-        'Dim dt As DataTable = conn.GetSchema("DataSourceInformation")
-        'output-label.Text = String.Format("{0} (version {1})", _
-        '            dt.Rows(0)("DataSourceProductName").ToString(), _
-        '            dt.Rows(0)("DataSourceProductVersion").ToString())
-
-#End Region ' Driver information
 
     End Class
 
