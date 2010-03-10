@@ -529,7 +529,7 @@ Partial Class frmModelDescription
         Me.m_cmbMonetaryUnit.Sorted = True
         Me.m_cmbMonetaryUnit.TabIndex = 1
         Me.m_cmbMonetaryUnit.UIContext = Nothing
-        Me.m_cmbMonetaryUnit.Unit = EwEUtils.Core.eUnitMonetaryType.Custom
+        Me.m_cmbMonetaryUnit.Unit = EwEUtils.Core.eUnitMonetaryType.NotSet
         '
         'm_gbNumFormatting
         '
