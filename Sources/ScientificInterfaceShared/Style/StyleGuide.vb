@@ -1388,7 +1388,7 @@ Namespace Style
             Next
 
             For Each unit As eUnitMonetaryType In [Enum].GetValues(GetType(eUnitMonetaryType))
-                If unit <> eUnitMonetaryType.Custom Then
+                If unit <> eUnitMonetaryType.NotSet Then
                     Me.m_dtMonetaryUnitNames(unit) = dtNames(unit.ToString())
                 End If
             Next
