@@ -10,13 +10,13 @@ Imports EwEUtils.Database
 
 Namespace Database
 
-    ''' -----------------------------------------------------------------------
+    ''' =======================================================================
     ''' <summary>
     ''' Utility class to update a database across minor versions within one major version.
     ''' </summary>
-    ''' -----------------------------------------------------------------------
+    ''' =======================================================================
     <CLSCompliant(False)> _
-    Public Class cDatabaseUpdater
+    Friend Class cDatabaseUpdater
 
 #Region " Private bits "
 
@@ -279,8 +279,8 @@ Namespace Database
 
             Me.m_core.Messages.SendMessage(msg)
 
-
         End Sub
+
 #End Region ' Internals
 
     End Class
