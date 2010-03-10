@@ -16,7 +16,7 @@ Imports EwEUtils.Core
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_05_001
+Friend Class cDBUpdate6_00_05_001
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -49,7 +49,7 @@ Public Class cDBUpdate6_00_05_001
         End Get
     End Property
 
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean 
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
         Return Me.UpdatePedigree(db) And _
                Me.AddPSD(db) And _

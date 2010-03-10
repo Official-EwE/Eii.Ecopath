@@ -1,19 +1,4 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_05_005.vb,v $
-' Revision 1.3  2009/06/28 01:33:29  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.2  2009/03/27 20:48:16  jeroens
-' IncludePSD no longer stored in DB
-'
-' Revision 1.1  2009/03/18 15:22:25  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
@@ -30,7 +15,7 @@ Imports EwEUtils.Core
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_05_005
+Friend Class cDBUpdate6_00_05_005
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -62,7 +47,7 @@ Public Class cDBUpdate6_00_05_005
         End Get
     End Property
 
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean 
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
         Return Me.AddPSDParameters(db)
 

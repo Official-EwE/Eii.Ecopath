@@ -1,19 +1,4 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_06_001.vb,v $
-' Revision 1.3  2009/06/28 01:33:29  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.2  2009/04/07 17:27:18  jeroens
-' Fixed exsiting t0 defaults
-'
-' Revision 1.1  2009/04/02 20:58:17  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
@@ -29,7 +14,7 @@ Imports EwEUtils.Core
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_06_001
+Friend Class cDBUpdate6_00_06_001
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------

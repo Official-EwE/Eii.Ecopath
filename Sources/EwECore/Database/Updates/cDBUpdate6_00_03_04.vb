@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_03_04.vb,v $
-' Revision 1.2  2009/06/28 01:33:26  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.1  2008/09/26 07:30:15  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/02/11 03:20:23  jeroens
-' Fixed CLS compliancy
-'
-' Revision 1.4  2007/11/26 19:03:52  jeroens
-' * Updated XML comments
-'
-' Revision 1.3  2007/11/24 17:51:38  jeroens
-' * Fixed desciptions, name
-'
-' Revision 1.2  2007/10/31 14:15:09  jeroens
-' * Fixed descriptions
-'
-' Revision 1.1  2007/10/30 18:31:46  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwEPlugin
@@ -40,7 +14,7 @@ Imports System.Data
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_03_04
+Friend Class cDBUpdate6_00_03_04
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -50,7 +24,7 @@ Public Class cDBUpdate6_00_03_04
     ''' <param name="db">Database to modify.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean 
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 

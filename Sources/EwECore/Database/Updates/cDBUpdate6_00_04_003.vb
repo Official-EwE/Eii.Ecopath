@@ -1,26 +1,4 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_04_003.vb,v $
-' Revision 1.2  2009/06/28 01:33:28  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.1  2008/09/26 07:30:16  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/07/10 19:11:46  jeroens
-' Stopped adding unnecessary columns
-' Fixed bug in remove column statement
-'
-' Revision 1.2  2008/06/08 20:44:35  jeroens
-' Removed EcopathGroup.vbK
-'
-' Revision 1.1  2008/05/26 20:31:57  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
@@ -35,7 +13,7 @@ Imports System.Data
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_04_0003
+Friend Class cDBUpdate6_00_04_0003
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -45,7 +23,7 @@ Public Class cDBUpdate6_00_04_0003
     ''' <param name="db">Database to modify.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean 
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim bSucces As Boolean = True

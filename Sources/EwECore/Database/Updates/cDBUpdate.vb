@@ -10,7 +10,7 @@ Imports System.Xml
 ''' Database update base class.
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public MustInherit Class cDBUpdate
+Friend MustInherit Class cDBUpdate
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -23,7 +23,7 @@ Public MustInherit Class cDBUpdate
     ''' update is ran regardless of version number.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property UpdateVersion() As Single 
+    Public MustOverride ReadOnly Property UpdateVersion() As Single
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -31,7 +31,7 @@ Public MustInherit Class cDBUpdate
     ''' the database.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property UpdateDescription() As String 
+    Public MustOverride ReadOnly Property UpdateDescription() As String
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Apply the actual update
@@ -39,6 +39,6 @@ Public MustInherit Class cDBUpdate
     ''' <param name="db"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public MustOverride Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean 
+    Public MustOverride Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
 End Class

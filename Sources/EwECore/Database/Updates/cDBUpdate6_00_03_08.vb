@@ -1,35 +1,4 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_03_08.vb,v $
-' Revision 1.2  2009/06/28 01:33:27  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.1  2008/09/26 07:30:15  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.6  2008/02/11 03:20:24  jeroens
-' Fixed CLS compliancy
-'
-' Revision 1.5  2008/01/21 14:53:27  jeroens
-' Removed staza work-around; this has become part of the datasource
-'
-' Revision 1.4  2008/01/20 14:47:40  jeroens
-' Removed empty stanza groups.
-'
-' Revision 1.3  2008/01/15 12:13:16  jeroens
-' Added Ecospace group defaults correction
-'
-' Revision 1.2  2008/01/11 09:57:45  jeroens
-' LastSaved date changed to Single to include time
-' Added Quotes table
-'
-' Revision 1.1  2008/01/08 23:21:19  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
@@ -46,7 +15,7 @@ Imports System.Data
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_03_08
+Friend Class cDBUpdate6_00_03_08
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------

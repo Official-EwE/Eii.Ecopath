@@ -15,7 +15,7 @@ Imports EwEUtils.Core
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_06_004
+Friend Class cDBUpdate6_00_06_004
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -43,7 +43,7 @@ Public Class cDBUpdate6_00_06_004
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Simplified port table layout." & vbNewline & "Added GroupDigits setting"
+            Return "Simplified port table layout." & vbNewLine & "Added GroupDigits setting"
         End Get
     End Property
 

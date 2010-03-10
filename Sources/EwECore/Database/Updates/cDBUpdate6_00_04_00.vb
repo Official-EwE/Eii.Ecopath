@@ -15,7 +15,7 @@ Imports System.Data
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_04_00
+Friend Class cDBUpdate6_00_04_00
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -25,7 +25,7 @@ Public Class cDBUpdate6_00_04_00
     ''' <param name="db">Database to modify.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean 
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing

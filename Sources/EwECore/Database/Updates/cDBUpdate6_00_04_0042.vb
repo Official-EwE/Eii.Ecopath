@@ -1,25 +1,4 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_04_0042.vb,v $
-' Revision 1.3  2009/06/28 01:33:28  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.2  2009/03/18 15:21:43  jeroens
-' Cleaned up
-'
-' Revision 1.1  2008/09/26 07:30:16  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.8  2008/07/23 18:14:24  jeroens
-' Fixed custom monetary unit field
-'
-' Revision 1.7  2008/07/23 16:56:40  jeroens
-' Release
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
@@ -37,7 +16,7 @@ Imports EwEUtils.Core
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_04_00042
+Friend Class cDBUpdate6_00_04_00042
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------

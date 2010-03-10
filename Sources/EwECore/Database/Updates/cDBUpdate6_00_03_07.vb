@@ -1,28 +1,4 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_03_07.vb,v $
-' Revision 1.2  2009/06/28 01:33:27  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.1  2008/09/26 07:30:15  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2008/02/11 03:20:24  jeroens
-' Fixed CLS compliancy
-'
-' Revision 1.3  2007/12/17 14:38:00  jeroens
-' * Fixed bug 328
-'
-' Revision 1.2  2007/12/07 21:05:24  jeroens
-' Added tracer concentration forcing shape
-'
-' Revision 1.1  2007/12/06 21:26:49  jeroens
-' Initial version, preparing for next release
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
@@ -39,7 +15,7 @@ Imports System.Data
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_03_07
+Friend Class cDBUpdate6_00_03_07
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -49,7 +25,7 @@ Public Class cDBUpdate6_00_03_07
     ''' <param name="db">Database to modify.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean 
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 

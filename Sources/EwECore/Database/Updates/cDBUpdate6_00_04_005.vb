@@ -1,5 +1,4 @@
 Option Strict On
-
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
@@ -16,7 +15,7 @@ Imports EwEUtils.Core
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_04_0005
+Friend Class cDBUpdate6_00_04_0005
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------

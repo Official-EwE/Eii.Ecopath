@@ -1,31 +1,4 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_04_022.vb,v $
-' Revision 1.7  2009/06/28 01:33:29  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.6  2008/10/07 19:19:15  jeroens
-' Proportion of discards mortality is moved to Ecopath in preparation for pending change
-'
-' Revision 1.5  2008/10/07 00:38:46  jeroens
-' Ecosim prey/pred ff table flipped
-'
-' Revision 1.4  2008/10/06 17:21:54  jeroens
-' Fixed flip
-'
-' Revision 1.3  2008/10/06 16:33:13  jeroens
-' Flipped Vulnerabilities matrix in database
-'
-' Revision 1.2  2008/10/03 19:04:14  jeroens
-' Argh, slightly revised Quota table layout
-'
-' Revision 1.1  2008/10/03 18:13:53  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
@@ -43,7 +16,7 @@ Imports EwEUtils.Core
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_04_022
+Friend Class cDBUpdate6_00_04_022
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -77,7 +50,7 @@ Public Class cDBUpdate6_00_04_022
         End Get
     End Property
 
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean 
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
         Return Me.AddDiscardMortality(db) And _
                Me.UpdateEcosimFleets(db) And _

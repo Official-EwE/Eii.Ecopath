@@ -1,44 +1,3 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_03_06.vb,v $
-' Revision 1.2  2009/06/28 01:33:26  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.1  2008/09/26 07:30:15  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.10  2008/07/17 16:45:23  jeroens
-' Added Tracer description
-'
-' Revision 1.9  2008/02/11 03:20:23  jeroens
-' Fixed CLS compliancy
-'
-' Revision 1.8  2007/12/06 21:26:06  jeroens
-' Stripped down to sync w release version
-'
-' Revision 1.7  2007/12/05 02:35:12  jeroens
-' + Added ConForcingNumber to EcotracerScenario
-'
-' Revision 1.6  2007/12/04 02:25:12  jeroens
-' * Added ecosim salinity vars
-'
-' Revision 1.5  2007/11/26 19:03:53  jeroens
-' * Updated XML comments
-'
-' Revision 1.4  2007/11/26 02:08:57  jeroens
-' + Added CExcretionRate
-'
-' Revision 1.3  2007/11/25 02:13:27  jeroens
-' * GroupID -> EcopathGroupID; is more explicit
-'
-' Revision 1.2  2007/11/25 00:43:56  jeroens
-' * One'd think we'd need a scenario name
-'
-' Revision 1.1  2007/11/24 18:57:38  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwEPlugin
@@ -56,7 +15,7 @@ Imports System.Data
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_03_06
+Friend Class cDBUpdate6_00_03_06
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -66,7 +25,7 @@ Public Class cDBUpdate6_00_03_06
     ''' <param name="db">Database to modify.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean 
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 

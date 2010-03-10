@@ -1,16 +1,4 @@
-'==============================================================================
-'
-' $Log: cDBUpdate6_00_04_002.vb,v $
-' Revision 1.2  2009/06/28 01:33:28  jeroens
-' Inherited from cDBUpdate
-'
-' Revision 1.1  2008/04/07 22:33:30  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
@@ -25,7 +13,7 @@ Imports System.Data
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Public Class cDBUpdate6_00_04_0002
+Friend Class cDBUpdate6_00_04_0002
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -35,7 +23,7 @@ Public Class cDBUpdate6_00_04_0002
     ''' <param name="db">Database to modify.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean 
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim bSucces As Boolean = True
