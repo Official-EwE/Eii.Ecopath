@@ -477,9 +477,9 @@ Namespace Core
         ''' <summary>Ecospace cell MPA assignments</summary>
         LayerMPA
         LayerMPAPM
-        ''' <summary>Ecospace cell RelPP assignments</summary>
+        ''' <summary>Ecospace cell relative primary production</summary>
         LayerRelPP
-        ''' <summary>Ecospace cell RelCin assignments</summary>
+        ''' <summary>Ecospace cell relative level of contaminants</summary>
         LayerRelCin
         ''' <summary>Ecospace cell region assignments</summary>
         LayerRegion
@@ -1411,99 +1411,187 @@ Namespace Core
         EcospaceTimestepResults = 24
 
         ''' <summary>
-        ''' 
+        ''' Data belongs to Ecospace calculated values for a single group.
         ''' </summary>
         EcospaceGroupOuput = 25
 
+        ''' <summary>
+        ''' Data belongs to Ecospace calculated values for a single fleet.
+        ''' </summary>
         EcospaceFleetOuput = 26
 
+        ''' <summary>
+        ''' Data belongs to Ecospace calculated values for a single region.
+        ''' </summary>
         EcospaceRegionResults = 27
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        NetworkFlowOutput = 28
+        '''' <summary>
+        '''' Data belongs to Network Analysis.
+        '''' </summary>
+        'NetworkFlowOutput = 28
 
         ''' <summary>
-        ''' Data belongs to a cGroupTimeSeries instance.
+        ''' Data belongs to a time series that applies to groups.
         ''' </summary>
         GroupTimeSeries = 29
 
         ''' <summary>
-        ''' Data belongs to a cFleetTimeSeries instance.
+        ''' Data belongs to a time series that applies to fleets.
         ''' </summary>
         FleetTimeSeries = 30
 
         ''' <summary>
-        ''' Data belongs to a Time Series Dataset instance.
+        ''' Data belongs to a Time Series data set.
         ''' </summary>
         TimeSeriesDataset = 31
 
         ''' <summary>
-        ''' Ecosim Monte Carlo
+        ''' Data belongs to a Ecosim Monte Carlo model parameters.
         ''' </summary>
-        ''' <remarks></remarks>
         MonteCarlo = 32
 
         ''' <summary>
-        ''' Data belongs to an Ecosim group output.
+        ''' Data belongs to values calculated by Ecosim for a single group.
         ''' </summary>
         EcoSimGroupOutput = 33
+
+        ''' <summary>
+        ''' Data belongs to values calculated by Ecosim for a single fleet.
+        ''' </summary>
         EcosimFleetOutput = 34
 
+        ''' <summary>
+        ''' Data belongs to Ecosim Fit To Time Series model parameters.
+        ''' </summary>
         FitToTimeSeries = 35
 
         ''' <summary>
-        ''' Data belongs to an Ecotracer scenario
+        ''' Data belongs to an Ecotracer scenario.
         ''' </summary>
         EcotracerScenario = 36
 
         ''' <summary>
-        ''' Data belongs to Ecotracer model parameters
+        ''' Data belongs to Ecotracer model parameters.
         ''' </summary>
         EcotracerModelParameters = 37
 
         ''' <summary>
-        ''' Data belongs to an Ecotracer input group
+        ''' Data belongs to an Ecotracer input group.
         ''' </summary>
         EcotracerGroupInput = 38
+
+        ''' <summary>
+        ''' Data belongs to an Ecotracer Ecosim results for a single group.
+        ''' </summary>
         EcotracerSimOutput = 39
+
+        ''' <summary>
+        ''' Data belongs to an Ecotracer Ecospace results for a single group.
+        ''' </summary>
         EcotracerSpaceOutput = 40
 
-        ''' <summary>Search Objectives </summary>
-        '''<remarks>Search Objectives form the base for the shared search interface ISearchObjective used by Fishing Policy, Ecoseed and MSE </remarks>
+        ''' <summary>
+        ''' Data belongs to a search objectives manager.
+        ''' </summary>
+        ''' <remarks>
+        ''' Search Objectives form the base for the shared search interface 
+        ''' ISearchObjective used by Fishing Policy, Ecoseed, MSE and possibly
+        ''' other searches. This system is flexible and be extended.
+        ''' </remarks>
         SearchObjectiveManager = 41
-        SearchObjectiveParameters = 42 ' Don't panic
+
+        ''' <summary>
+        ''' Data belongs to search objectives generic parameters.
+        ''' </summary>
+        ''' <remarks>Don't panic.</remarks>
+        SearchObjectiveParameters = 42
+
+        ''' <summary>
+        ''' Data belongs to search objectives parameters for a single fleet.
+        ''' </summary>
         SearchObjectiveFleetInput = 43
+
+        ''' <summary>
+        ''' Data belongs to search objective weights.
+        ''' </summary>
         SearchObjectiveWeights = 44
+
+        ''' <summary>
+        ''' Data belongs to search objectives parameters for a single group.
+        ''' </summary>
         SearchObjectiveGroupInput = 45
 
-        ''' <summary> Fishing Policy (implements ISearchObjective) </summary>
-        ''' <remarks>The Fishing Policy uses SearchObjectivexxxx data types as well </remarks>
+        ''' <summary> 
+        ''' Data belongs to the Fishing Policy search manager.
+        ''' </summary>
+        ''' <remarks>
+        ''' Note that the Fishing Policy manager may use the SearchObjectivexxxx data types as well.
+        ''' </remarks>
         FishingPolicyManager = 46
+
+        ''' <summary>
+        ''' Data belongs to fishing policy search generic parameters.
+        ''' </summary>
         FishingPolicyParameters = 47
+
+        ''' <summary>
+        ''' Data belongs to fishing policy search search blocks settings.
+        ''' </summary>
         FishingPolicySearchBlocks = 48
 
-        ''' <summary> Ecoseed manager (implements ISearchObjective)  </summary>
+        ''' <summary> 
+        ''' Data belongs to the MPA optimizations/Ecoseed search manager.
+        ''' </summary>
         MPAOptManager = 49
-        'EcoSeedInput
+
+        ''' <summary>
+        ''' Data belongs to the MPA optimizations/Ecoseed results.
+        ''' </summary>
         MPAOptOuput = 50
+
+        ''' <summary> 
+        ''' Data belongs to the MPA optimizations/Ecoseed generic parameters.
+        ''' </summary>
         MPAOptParameters = 51
 
-        ''' <summary> Management Strategy Evaluator (implements ISearchObjective)  </summary>
+        ''' <summary> 
+        ''' Data belons to the Management Strategy Evaluator.
+        ''' </summary>
         MSEManager = 52
+
+        ''' <summary>
+        ''' Data belongs to Management Strategy Evaluator parameters for a single fleet.
+        ''' </summary>
         MSEFleetInput = 53
+
+        ''' <summary>
+        ''' Data belongs to Management Strategy Evaluator parameters for a single group.
+        ''' </summary>
         MSEGroupInput = 54
+
+        ''' <summary>
+        ''' Data belongs to Management Strategy Evaluator generic results.
+        ''' </summary>
         MSEOutput = 55
+
+        ''' <summary>
+        ''' Data belongs to Management Strategy Evaluator generic parameters.
+        ''' </summary>
         MSEParameters = 56
 
-        ''' <summary>Pedigree</summary>
+        ''' <summary>
+        ''' Data belongs to a single Pedigree level.
+        ''' </summary>
         PedigreeLevel = 57
 
-        ''' <summary>Data types for the Game</summary>    
+        ''' <summary>
+        ''' Data belongs to the EwE game engine data.
+        ''' </summary>    
         GameData = 58
 
-        ''' <summary>Data types for Ecosim fisheries regulation</summary>    
+        ''' <summary>
+        ''' Data belongs to the Ecosim fisheries regulation engine.
+        ''' </summary>    
         EcosimFisheriesRegulation = 59
 
         ''' <summary>
@@ -1521,31 +1609,107 @@ Namespace Core
         ''' </summary>
         EcospaceStatistics = 62
 
+        ''' <summary>
+        ''' Data belongs to Particle Size Distribution generic parameters.
+        ''' </summary>
         ParticleSizeDistribution = 63
 
+        ''' <summary>
+        ''' Data belongs to the Ecospace Depth layer.
+        ''' </summary>
         EcospaceLayerDepth = 64
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace Marine Protected Areas layer.
+        ''' </summary>
         EcospaceLayerMPA = 65
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace MPA seed layer.
+        ''' </summary>
+        ''' <remarks>
+        ''' MPA seeds are used in the MPA optimizations/Ecoseed searches.
+        ''' </remarks>
         EcospaceLayerMPASeed = 66
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace Habitat layer.
+        ''' </summary>
         EcospaceLayerHabitat = 67
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace Regions layer.
+        ''' </summary>
         EcospaceLayerRegion = 68
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace relative primary production layer.
+        ''' </summary>
         EcospaceLayerRelPP = 69
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace relative contaminant layer.
+        ''' </summary>
         EcospaceLayerRelCin = 70
+
+        ''' <summary>
+        ''' Data belongs to Management Strategy Evaluation results for a single group.
+        ''' </summary>
         MSEGroupOutputs = 71
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace layer representing the spread and quantities
+        ''' of Individual Based Model packets.
+        ''' </summary>
         EcospaceLayerIBMPackets = 72
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace layer representing fishing ports.
+        ''' </summary>
         EcospaceLayerPort = 73
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace layer representing cost of sailing.
+        ''' </summary>
         EcospaceLayerSail = 74
 
+        ''' <summary>
+        ''' Data belongs to Ecosim input data for single group.
+        ''' </summary>
         EcosimFleetInput = 75
+
+        ''' <summary>
+        ''' Data belongs to Ecosim results for single group.
+        ''' </summary>
         EcosimOutput = 76
 
+        ''' <summary>
+        ''' Data belongs to Management Strategy Evaluation results for a single fleet.
+        ''' </summary>
         MSEFleetOutputs = 76
+
+        ''' <summary>
+        ''' Data belongs to Management Strategy Evaluation biomass statistical results.
+        ''' </summary>
         MSEBiomassStats = 77
+
+        ''' <summary>
+        ''' Data belongs to Management Strategy Evaluation statistical results on catches by group.
+        ''' </summary>
         MSECatchByGroupStats = 78
+
+        ''' <summary>
+        ''' Data belongs to Management Strategy Evaluation statistical results on catches by fleet.
+        ''' </summary>
         MSECatchByFleetStats = 79
+
+        ''' <summary>
+        ''' Data belongs to Management Strategy Evaluation statistical results on fishing effort.
+        ''' </summary>
         MSEEffortStats = 80
 
         ''' <summary>
-        ''' Data belongs to an external source.
+        ''' Data belongs to an external, unspecified source.
         ''' </summary>
         External = 777
 
@@ -1630,18 +1794,19 @@ Namespace Core
         ''' <summary>Number of weight classes in the particle size distribution</summary>
         nWeightClasses
 
-        ''' <summary> Number of forcing function that are for Salinity </summary>
-        '''  <remarks>At this time this is only used by the Decision Support Tool(game) </remarks>
+        ''' <summary>Number of forcing function that are for Salinity.</summary>
+        ''' <remarks>At this time this is only used by the Decision Support Tool(game).</remarks>
         nSalinityForcingFunctions
-        ''' <summary> Number of forcing function that are for Salinity </summary>
-        '''  <remarks>At this time this is only used by the Decision Support Tool(game) </remarks>
+
+        ''' <summary>Number of forcing function that are for Salinity.</summary>
+        ''' <remarks>At this time this is only used by the Decision Support Tool(game).</remarks>
         nNutrientForcingFunctions
-        ''' <summary> Number of forcing function that are for Salinity </summary>
-        '''  <remarks>At this time this is only used by the Decision Support Tool(game) </remarks>
+        ''' <summary>Number of forcing function that are for Salinity.</summary>
+        ''' <remarks>At this time this is only used by the Decision Support Tool(game).</remarks>
         nTempForcingFunctions
 
-        ''' <summary> Number of forcing function that are for Primary Producer </summary>
-        '''  <remarks>At this time this is only used by the Decision Support Tool(game) </remarks>
+        ''' <summary> Number of forcing function that are for Primary Producer.</summary>
+        ''' <remarks>At this time this is only used by the Decision Support Tool(game).</remarks>
         nPPForcingFunctions
 
         ''' <summary>The number of iterations running in the game.</summary>
@@ -1653,190 +1818,379 @@ Namespace Core
 
 #Region " System units "
 
+    ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Order is important!
+    ''' Enumerated types providing currency types.
     ''' </summary>
+    ''' ---------------------------------------------------------------------------
     Public Enum eUnitCurrencyType As Integer
+        ''' <summary>Unit currency type not set.</summary>
         NotSet = 0
+        ''' <summary>Currency expressed in j/m².</summary>
         Joules = 1
+        ''' <summary>Currency expressed in kcal/m².</summary>
         Calorie = 2
+        ''' <summary>Currency expressed in g/m².</summary>
         Carbon = 3
+        ''' <summary>Currency expressed in dry weight (g/m²).</summary>
         DryWeight = 4
+        ''' <summary>Currency expressed in wet weight (t/km²).</summary>
         WetWeight = 5
+        ''' <summary>Custom currency unit.</summary>
         CustomEnergy = 6
+        ''' <summary>Currency expressed in mg n/m².</summary>
         Nitrogen = 7
+        ''' <summary>Currency expressed in mg p/m².</summary>
         Phosporous = 8
+        ''' <summary>Custom currency unit.</summary>
         CustomNutrient = 9
     End Enum
 
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type listing time units.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
     Public Enum eUnitTimeType As Integer
+        ''' <summary>User has specified a custom time unit.</summary>
         Custom = 0
+        ''' <summary>Time expressed in years.</summary>
         Year
+        ''' <summary>Time expressed in days.</summary>
         Day
     End Enum
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumrated type containing the world's 3-letter ISO currency codes.
+    ''' </summary>
+    ''' <remarks>
+    ''' This list was last updated in 2010.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Enum eUnitMonetaryType As Integer
-        Custom = 0
-        AED '   UAE Dirham
-        AFN ' 	Afghanistan Afghani
-        ALL ' 	Albanian Lek
-        AMD ' 	Armenian Dram
-        ANG ' 	Antillean Guilder
-        AOR ' 	Angolan New Kwanza
-        ARS ' 	Argentinian Peso
-        AUD ' 	Australian Dollar
-        AWG ' 	Aruban Florin
-        AZM ' 	Azerbaijan Manat
-        BAM ' 	Bosnian Konvertibilna Marka
-        BBD ' 	Barbadian Dollar
-        BDT ' 	Bangladesh Taka
-        BGN ' 	Bulgarian New Lev
-        BHD ' 	Bahraini Dinar
-        BIF ' 	Burundian Franc
-        BMD ' 	Bermudan Dollar
-        BND ' 	Brunei Dollar
-        BOB ' 	Bolivian Boliviano
-        BRL ' 	Brazilian Real
-        BSD ' 	Bahamas Dollar
-        BTN ' 	Bhutan Ngultrum
-        BWP ' 	Botswana Pula
-        BYB ' 	Belarussian Ruble
-        BZD ' 	Belizean Dollar
-        CAD ' 	Canadian Dollar
-        CDF ' 	Congolese Franc
-        CHF ' 	Swiss Franc
-        CLP ' 	Chilean Peso
-        CNY ' 	Chinese Yuan Renminbi
-        COP ' 	Colombian Peso
-        CRC ' 	Costa Rican Colon
-        CUP ' 	Cuban Peso
-        CVE ' 	Cape Verdean Escudo
-        CZK ' 	Czech Koruna
-        DJF ' 	Djiboutian Franc
-        DKK ' 	Danish Krone
-        DOP ' 	Dominican Republic Peso
-        DZD ' 	Algerian Dinar
-        ECS ' 	Ecuador Sucre
-        EEK ' 	Estonian Kroon
-        EGP ' 	Eqyptian Pound
-        ETB ' 	Ethiopian Birr
-        EUR ' 	Euro
-        FJD ' 	Fijian Dollar
-        FKP ' 	Falkland Islands Pound
-        FRF ' 	French Franc
-        GBP ' 	UK Pound Sterling
-        GEL ' 	Georgian Lari
-        GHC ' 	Ghana Cedi
-        GIP ' 	Gibraltarian Pound
-        GMD ' 	Gambian Dalasi
-        GNF ' 	Guinean Franc
-        GTQ ' 	Guatemalan Quetzal
-        GYD ' 	Guyanese Dollar
-        HKD ' 	Hong Kong Dollar
-        HNL ' 	Honduran Lempira
-        HRK ' 	Croatian Kuna
-        HTG ' 	Haitian Gourde
-        HUF ' 	Hungarian Forint
-        IDR ' 	Indonesian Rupiah
-        ILS ' 	Israeli New Sheqel
-        INR ' 	Indian Rupee
-        IQD ' 	Iraqi Dinar
-        IRR ' 	Iranian Rial
-        ISK ' 	Iceland Krona
-        JMD ' 	Jamaican Dollar
-        JOD ' 	Jordanian Dinar
-        JPY ' 	Japanese Yen
-        KES ' 	Kenyan Shilling
-        KGS ' 	Kyrgyzstan Som
-        KHR ' 	Cambodian Riel
-        KMF ' 	Comoran Franc
-        KPW ' 	Korean PR Won (N.Korea)
-        KRW ' 	Korean Republic Won (S.Korea)
-        KWD ' 	Kuwaiti Dinar
-        KYD ' 	Caymanian Dollar
-        KZT ' 	Kazakhstan Tenge
-        LAK ' 	Laos Kip
-        LBP ' 	Lebanese Pound
-        LKR ' 	Sri Lanka Rupee
-        LRD ' 	Liberian Dollar
-        LSL ' 	Lesothian Loti
-        LTL ' 	Lithuanian Litas
-        LVL ' 	Latvian Lat
-        LYD ' 	Libyan Dinar
-        MAD ' 	Moroccan Dirham
-        MDL ' 	Moldovan Leu
-        MGF ' 	Malagasy Franc
-        MKD ' 	Macedonian Denar
-        MMK ' 	Myanmar Kyat
-        MNT ' 	Mongolian Tugrik
-        MOP ' 	Macau Pataca
-        MRO ' 	Mauritanian Ougiya
-        MUR ' 	Mauritian Rupee
-        MVR ' 	Maldivian Rufiyaa
-        MWK ' 	Malawi Kwacha
-        MXN ' 	Mexican New Peso
-        MYR ' 	Malaysian Ringgit
-        MZM ' 	Mozambique Metical
-        NAD ' 	Namibia Dollar
-        NGN ' 	Nigerian Naira
-        NIO ' 	Nicaraguan Crdoba
-        NOK ' 	Norwegian Krone
-        NPR ' 	Nepalese Rupee
-        NZD ' 	New Zealand Dollar
-        OMR ' 	Omani Rial
-        PAB ' 	Panamanian Balboa
-        PEN ' 	Peruvian New Sol
-        PGK ' 	Papua New Guinea Kina
-        PHP ' 	Philippine Piso
-        PKR ' 	Pakistani Rupee
-        PLN ' 	Polish New Zloty
-        PYG ' 	Paraguayan Guaran
-        QAR ' 	Qatari Riyal
-        ROL ' 	Romanian Leu
-        RSD ' 	Serbian Dinar
-        RUB ' 	Russian Rouble
-        RWF ' 	Rwandan Franc
-        SAR ' 	Saudi Riyal
-        SBD ' 	Solomon Islands Dollar
-        SCR ' 	Seychelles Rupee
-        SDD ' 	Sudanese Dinar
-        SEK ' 	Swedish Krona
-        SGD ' 	Singaporean Dollar
-        SHP ' 	Saint Helena Pound
-        SKK ' 	Slovak Koruna
-        SLL ' 	Sierra Leone Leone
-        SOS ' 	Somali Shilling
-        SRG ' 	Surinamese Guilder
-        STD ' 	Sáo Tome & Principe Dobra
-        SVC ' 	Salvadoran Colon
-        SYP ' 	Syrian Pound
-        SZL ' 	Swaziland Lilangeni
-        THB ' 	Thai Baht
-        TJR ' 	Tajikistan Ruble
-        TMM ' 	Turkmenistan Manat
-        TND ' 	Tunisian Dinar
-        TOP ' 	Tonga Pa'anga
-        [TRY] ' New Turkish Lira
-        TTD ' 	Trinidadian Dollar
-        TWD ' 	Taiwanese Yuan
-        TZS ' 	Tanzanian Shilling
-        UAH ' 	Ukraine Hryvnias
-        UGX ' 	Uganda New Shilling
-        USD ' 	U.S. Dollar
-        UYU ' 	Peso Uruguayo
-        UZS ' 	Uzbekistan Sum
-        VEB ' 	Venezuelan Bolvar
-        VND ' 	Vietnamese New Dng
-        VUV ' 	Vanuatu Vatu
-        WST ' 	Western Samoan Tala
-        XAF ' 	CFA Central Franc
-        XCD ' 	East Caribbean Dollar
-        XOF ' 	CFA West Franc
-        XPF ' 	French Polynesian CFA France (CFP)
-        YER ' 	Yemen Rial
-        ZAR ' 	South African Rand
-        ZMK ' 	Zambian Kwacha
-        ZWD ' 	Zimbabwean Dollar
+        ''' <summary>Currency type is not set.</summary>
+        NotSet = 0
+        ''' <summary>UAE Dirham</summary>
+        AED
+        ''' <summary>Afghanistan Afghani</summary>
+        AFN
+        ''' <summary>Albanian Lek</summary>
+        ALL
+        ''' <summary>Armenian Dram</summary>
+        AMD
+        ''' <summary>Antillean Guilder</summary>
+        ANG ' 	
+        ''' <summary>Angolan New Kwanza</summary>
+        AOR ' 	
+        ''' <summary>Argentinian Peso</summary>
+        ARS ' 	
+        ''' <summary>Australian Dollar</summary>
+        AUD ' 	
+        ''' <summary>Aruban Florin</summary>
+        AWG ' 	
+        ''' <summary>Azerbaijan Manat</summary>
+        AZM ' 	
+        ''' <summary>Bosnian Konvertibilna Marka</summary>
+        BAM ' 	
+        ''' <summary>Barbadian Dollar</summary>
+        BBD ' 	
+        ''' <summary>Bangladesh Taka</summary>
+        BDT ' 	
+        ''' <summary>Bulgarian New Lev</summary>
+        BGN ' 	
+        ''' <summary>Bahraini Dinar</summary>
+        BHD ' 	
+        ''' <summary>Burundian Franc</summary>
+        BIF ' 	
+        ''' <summary>Bermudan Dollar</summary>
+        BMD ' 	
+        ''' <summary>Brunei Dollar</summary>
+        BND ' 	
+        ''' <summary>Bolivian Boliviano</summary>
+        BOB ' 	
+        ''' <summary>Brazilian Real</summary>
+        BRL ' 	
+        ''' <summary>Bahamas Dollar</summary>
+        BSD ' 	
+        ''' <summary>Bhutan Ngultrum</summary>
+        BTN ' 	
+        ''' <summary>Botswana Pula</summary>
+        BWP ' 	
+        ''' <summary>Belarussian Ruble</summary>
+        BYB ' 	
+        ''' <summary>Belizean Dollar</summary>
+        BZD ' 	
+        ''' <summary>Canadian Dollar</summary>
+        CAD ' 	
+        ''' <summary>Congolese Franc</summary>
+        CDF ' 	
+        ''' <summary>Swiss Franc</summary>
+        CHF ' 	
+        ''' <summary>Chilean Peso</summary>
+        CLP ' 	
+        ''' <summary>Chinese Yuan Renminbi</summary>
+        CNY ' 	
+        ''' <summary>Colombian Peso</summary>
+        COP ' 	
+        ''' <summary>Costa Rican Colon</summary>
+        CRC ' 	
+        ''' <summary>Cuban Peso</summary>
+        CUP ' 	
+        ''' <summary>Cape Verdean Escudo</summary>
+        CVE ' 	
+        ''' <summary>Czech Koruna</summary>
+        CZK ' 	
+        ''' <summary>Djiboutian Franc</summary>
+        DJF ' 	
+        ''' <summary>Danish Krone</summary>
+        DKK ' 	
+        ''' <summary>Dominican Republic Peso</summary>
+        DOP ' 	
+        ''' <summary>Algerian Dinar</summary>
+        DZD ' 	
+        ''' <summary>Ecuador Sucre</summary>
+        ECS ' 	
+        ''' <summary>Estonian Kroon</summary>
+        EEK ' 	
+        ''' <summary>Eqyptian Pound</summary>
+        EGP ' 	
+        ''' <summary>Ethiopian Birr</summary>
+        ETB ' 	
+        ''' <summary>Euro</summary>
+        EUR ' 	
+        ''' <summary>Fijian Dollar</summary>
+        FJD ' 	
+        ''' <summary>Falkland Islands Pound</summary>
+        FKP ' 	
+        ''' <summary>French Franc</summary>
+        FRF ' 	
+        ''' <summary>UK Pound Sterling</summary>
+        GBP ' 	
+        ''' <summary>Georgian Lari</summary>
+        GEL ' 	
+        ''' <summary>Ghana Cedi</summary>
+        GHC ' 	
+        ''' <summary>Gibraltarian Pound</summary>
+        GIP ' 	
+        ''' <summary>Gambian Dalasi</summary>
+        GMD ' 	
+        ''' <summary>Guinean Franc</summary>
+        GNF ' 	
+        ''' <summary>Guatemalan Quetzal</summary>
+        GTQ ' 	
+        ''' <summary>Guyanese Dollar</summary>
+        GYD ' 	
+        ''' <summary>Hong Kong Dollar</summary>
+        HKD ' 	
+        ''' <summary>Honduran Lempira</summary>
+        HNL ' 	
+        ''' <summary>Croatian Kuna</summary>
+        HRK ' 	
+        ''' <summary>Haitian Gourde</summary>
+        HTG ' 	
+        ''' <summary>Hungarian Forint</summary>
+        HUF ' 	
+        ''' <summary>Indonesian Rupiah</summary>
+        IDR ' 	
+        ''' <summary>Israeli New Sheqel</summary>
+        ILS ' 	
+        ''' <summary>Indian Rupee</summary>
+        INR ' 	
+        ''' <summary>Iraqi Dinar</summary>
+        IQD ' 	
+        ''' <summary>Iranian Rial</summary>
+        IRR ' 	
+        ''' <summary>Iceland Krona</summary>
+        ISK ' 	
+        ''' <summary>Jamaican Dollar</summary>
+        JMD ' 	
+        ''' <summary>Jordanian Dinar</summary>
+        JOD ' 	
+        ''' <summary>Japanese Yen</summary>
+        JPY ' 	
+        ''' <summary>Kenyan Shilling</summary>
+        KES ' 	
+        ''' <summary>Kyrgyzstan Som</summary>
+        KGS ' 	
+        ''' <summary>Cambodian Riel</summary>
+        KHR ' 	
+        ''' <summary>Comoran Franc</summary>
+        KMF ' 	
+        ''' <summary>Korean PR Won (N.Korea)</summary>
+        KPW ' 	
+        ''' <summary>Korean Republic Won (S.Korea)</summary>
+        KRW ' 	
+        ''' <summary>Kuwaiti Dinar</summary>
+        KWD ' 	
+        ''' <summary>Caymanian Dollar</summary>
+        KYD ' 	
+        ''' <summary>Kazakhstan Tenge</summary>
+        KZT ' 	
+        ''' <summary>Laos Kip</summary>
+        LAK ' 	
+        ''' <summary>Lebanese Pound</summary>
+        LBP ' 	
+        ''' <summary>Sri Lanka Rupee</summary>
+        LKR ' 	
+        ''' <summary>Liberian Dollar</summary>
+        LRD ' 	
+        ''' <summary>Lesothian Loti</summary>
+        LSL ' 	
+        ''' <summary>Lithuanian Litas</summary>
+        LTL ' 	
+        ''' <summary>Latvian Lat</summary>
+        LVL ' 	
+        ''' <summary>Libyan Dinar</summary>
+        LYD ' 	
+        ''' <summary>Moroccan Dirham</summary>
+        MAD ' 	
+        ''' <summary>Moldovan Leu</summary>
+        MDL ' 	
+        ''' <summary>Malagasy Franc</summary>
+        MGF ' 	
+        ''' <summary>Macedonian Denar</summary>
+        MKD ' 	
+        ''' <summary>Myanmar Kyat</summary>
+        MMK ' 	
+        ''' <summary>Mongolian Tugrik</summary>
+        MNT ' 	
+        ''' <summary>Macau Pataca</summary>
+        MOP ' 	
+        ''' <summary>Mauritanian Ougiya</summary>
+        MRO ' 	
+        ''' <summary>Mauritian Rupee</summary>
+        MUR ' 	
+        ''' <summary>Maldivian Rufiyaa</summary>
+        MVR ' 	
+        ''' <summary>Malawi Kwacha</summary>
+        MWK ' 	
+        ''' <summary>Mexican New Peso</summary>
+        MXN ' 	
+        ''' <summary>Malaysian Ringgit</summary>
+        MYR ' 	
+        ''' <summary>Mozambique Metical</summary>
+        MZM ' 	
+        ''' <summary>Namibia Dollar</summary>
+        NAD ' 	
+        ''' <summary>Nigerian Naira</summary>
+        NGN ' 	
+        ''' <summary>Nicaraguan Crdoba</summary>
+        NIO ' 	
+        ''' <summary>Norwegian Krone</summary>
+        NOK ' 	
+        ''' <summary>Nepalese Rupee</summary>
+        NPR ' 	
+        ''' <summary>New Zealand Dollar</summary>
+        NZD ' 	
+        ''' <summary>Omani Rial</summary>
+        OMR ' 	
+        ''' <summary>Panamanian Balboa</summary>
+        PAB ' 	
+        ''' <summary>Peruvian New Sol</summary>
+        PEN ' 	
+        ''' <summary>Papua New Guinea Kina</summary>
+        PGK ' 	
+        ''' <summary>Philippine Piso</summary>
+        PHP ' 	
+        ''' <summary>Pakistani Rupee</summary>
+        PKR ' 	
+        ''' <summary>Polish New Zloty</summary>
+        PLN ' 	
+        ''' <summary>Paraguayan Guaran</summary>
+        PYG ' 	
+        ''' <summary>Qatari Riyal</summary>
+        QAR ' 	
+        ''' <summary>Romanian Leu</summary>
+        ROL ' 	
+        ''' <summary>Serbian Dinar</summary>
+        RSD ' 	
+        ''' <summary>Russian Rouble</summary>
+        RUB ' 	
+        ''' <summary>Rwandan Franc</summary>
+        RWF ' 	
+        ''' <summary>Saudi Riyal</summary>
+        SAR ' 	
+        ''' <summary>Solomon Islands Dollar</summary>
+        SBD ' 	
+        ''' <summary>Seychelles Rupee</summary>
+        SCR ' 	
+        ''' <summary>Sudanese Dinar</summary>
+        SDD ' 	
+        ''' <summary>Swedish Krona</summary>
+        SEK ' 	
+        ''' <summary>Singaporean Dollar</summary>
+        SGD ' 	
+        ''' <summary>Saint Helena Pound</summary>
+        SHP ' 	
+        ''' <summary>Slovak Koruna</summary>
+        SKK ' 	
+        ''' <summary>Sierra Leone Leone</summary>
+        SLL ' 	
+        ''' <summary>Somali Shilling</summary>
+        SOS ' 	
+        ''' <summary>Surinamese Guilder</summary>
+        SRG ' 	
+        ''' <summary>Sáo Tome and Principe Dobra</summary>
+        STD ' 	
+        ''' <summary>Salvadoran Colon</summary>
+        SVC ' 	
+        ''' <summary>Syrian Pound</summary>
+        SYP ' 	
+        ''' <summary>Swaziland Lilangeni</summary>
+        SZL ' 	
+        ''' <summary>Thai Baht</summary>
+        THB ' 	
+        ''' <summary>Tajikistan Ruble</summary>
+        TJR ' 	
+        ''' <summary>Turkmenistan Manat</summary>
+        TMM ' 	
+        ''' <summary>Tunisian Dinar</summary>
+        TND ' 	
+        ''' <summary>Tonga Pa'anga</summary>
+        TOP ' 	
+        ''' <summary>New Turkish Lira</summary>
+        [TRY] '
+        ''' <summary>Trinidadian Dollar</summary>
+        TTD ' 	
+        ''' <summary>Taiwanese Yuan</summary>
+        TWD ' 	
+        ''' <summary>Tanzanian Shilling</summary>
+        TZS ' 	
+        ''' <summary>Ukraine Hryvnias</summary>
+        UAH ' 	
+        ''' <summary>Uganda New Shilling</summary>
+        UGX ' 	
+        ''' <summary>U.S. Dollar</summary>
+        USD ' 	
+        ''' <summary>Peso Uruguayo</summary>
+        UYU ' 	
+        ''' <summary>Uzbekistan Sum</summary>
+        UZS ' 	
+        ''' <summary>Venezuelan Bolvar</summary>
+        VEB ' 	
+        ''' <summary>Vietnamese New Dng</summary>
+        VND ' 	
+        ''' <summary>Vanuatu Vatu</summary>
+        VUV ' 	
+        ''' <summary>Western Samoan Tala</summary>
+        WST ' 	
+        ''' <summary>CFA Central Franc</summary>
+        XAF ' 	
+        ''' <summary>East Caribbean Dollar</summary>
+        XCD ' 	
+        ''' <summary>CFA West Franc</summary>
+        XOF ' 	
+        ''' <summary>French Polynesian CFA France (CFP)</summary>
+        XPF ' 	
+        ''' <summary>Yemen Rial</summary>
+        YER ' 	
+        ''' <summary>South African Rand</summary>
+        ZAR ' 	
+        ''' <summary>Zambian Kwacha</summary>
+        ZMK ' 	
+        ''' <summary>Zimbabwean Dollar</summary>
+        ZWD ' 	
 
     End Enum
 
@@ -1846,10 +2200,15 @@ Namespace Core
 
     'enum values are hard coded so that they can be stored in the database 
     Public Enum eQuotaTypes
+        ''' <summary>Quota options are not used.</summary>
         NotUsed
+        ''' <summary>Quota options apply to effort.</summary>
         Effort
+        ''' <summary>Quota options apply to the weakest stock.</summary>
         Weakest
+        ''' <summary>Quota options apply to the strongest stock plus discards.</summary>
         Strongest
+        ''' <summary>Quota options apply to selective fishing.</summary>
         Selective
     End Enum
 
@@ -1912,6 +2271,7 @@ Namespace Core
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eSearchCriteriaResultTypes As Integer
+
         TotalValue = 1
         Employment = 2
         MandateReb = 3
@@ -1986,26 +2346,5 @@ Namespace Core
     End Enum
 
 #End Region ' Forcing application types
-
-#Region " Time series "
-
-    Public Enum eTimeSeriesAliases As Integer
-        BRel = 0
-        BAbs = 1
-        BForced = -1
-        Forcing = 2
-        Effort = 3
-        Z = 4
-        F = 5
-        FConst = -5
-        C = 6
-        [Catch] = 6
-        CForced = -6
-        WAvg = 7
-        ConcRel = 8
-        ConcAbs = 9
-    End Enum
-
-#End Region
 
 End Namespace ' Core
