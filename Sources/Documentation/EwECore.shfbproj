@@ -24,11 +24,12 @@
     <HtmlHelp1xCompilerPath>..\..\..\..\..\Program Files\HTML Help Workshop\</HtmlHelp1xCompilerPath>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwECore.dll" />
-<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwECore.xml" />
-<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEPlugin.dll" />
-<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEPlugin.xml" />
-<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEUtils.dll" />
-<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEUtils.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwECore.xml" />
+      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEPlugin.dll" />
+      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEPlugin.xml" />
+      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEUtils.dll" />
+      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEUtils.xml" />
+    </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True">EwE API Code Documentation</NamespaceSummaryItem>
       <NamespaceSummaryItem name="EwECore" isDocumented="True">Namespace containing all elements essential to the functioning of the EwE computing engine.</NamespaceSummaryItem>
@@ -59,6 +60,7 @@
     <FeedbackEMailLinkText>EwE development support</FeedbackEMailLinkText>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <IncludeFavorites>True</IncludeFavorites>
+    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->
