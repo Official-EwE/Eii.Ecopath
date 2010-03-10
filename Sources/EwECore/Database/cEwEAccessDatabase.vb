@@ -16,11 +16,19 @@ Imports EwEUtils.SystemUtilities
 
 Namespace Database
 
+    ''' =======================================================================
     ''' <summary>
-    ''' 
+    ''' Database class specialized for storing and writing EwE data to Microsoft 
+    ''' Access databases.
     ''' </summary>
+    ''' <remarks>
+    ''' This class wraps Microsoft Aaarghcess specifics such as connection
+    ''' strings, deals with deficiencies in the SQL implementation of Bill's 
+    ''' beast, and provids default field values from the Access DB schema.
+    ''' </remarks>
+    ''' =======================================================================
     Public Class cEwEAccessDatabase
-        : Inherits cEwEDatabase
+        Inherits cEwEDatabase
 
 #Region " Private vars "
 
