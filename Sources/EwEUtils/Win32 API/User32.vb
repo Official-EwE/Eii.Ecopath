@@ -9,8 +9,11 @@ Imports System.Runtime.InteropServices
 
 Namespace Win32Api
 
+    ''' <summary>
+    ''' Helper class providing access to a selection of user32.dll API calls.
+    ''' </summary>
     <CLSCompliant(False)> _
-    Public Class User32
+       Public Class User32
 
         ''' <summary>
         ''' The GetAsyncKeyState function determines whether a key is up or down 

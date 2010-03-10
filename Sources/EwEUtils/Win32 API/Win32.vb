@@ -9,12 +9,17 @@ Imports System.Runtime.InteropServices
 
 Namespace Win32Api
 
+    ''' <summary>
+    ''' Helper class providing Win32 structures and constants.
+    ''' </summary>
     <CLSCompliant(False)> _
-    Public Class Win32
+        Public Class Win32
 
 #Region " Enums "
 
-        ' Button control messages
+        ''' <summary>
+        ''' Win32 Button control message types.
+        ''' </summary>
         Enum BM As Integer
             BM_CLICK = &HF5
             BM_GETCHECK = &HF0
@@ -26,6 +31,9 @@ Namespace Win32Api
             BM_SETSTYLE = &HF4
         End Enum
 
+        ''' <summary>
+        ''' Win32 Button state types.
+        ''' </summary>
         Enum BST As Integer
             BST_UNCHECKED = &H0
             BST_CHECKED = &H1
@@ -34,7 +42,9 @@ Namespace Win32Api
             BST_FOCUS = &H8
         End Enum
 
-        ' Combo box messages
+        ''' <summary>
+        ''' Win32 Combo Box control message types.
+        ''' </summary>
         Enum CB As Integer
             CB_ADDSTRING = &H143
             CB_DELETESTRING = &H144
@@ -76,6 +86,9 @@ Namespace Win32Api
             CB_ERR = -1
         End Enum
 
+        ''' <summary>
+        ''' Win32 Edit control message types.
+        ''' </summary>
         Enum EM As Integer
             ' Edit box messages
             EM_CANUNDO = &HC6
@@ -119,7 +132,9 @@ Namespace Win32Api
             EM_UNDO = &HC7
         End Enum
 
-        ' Listbox messages
+        ''' <summary>
+        ''' Win32 Listbox control message types.
+        ''' </summary>
         Enum LB As Integer
             LB_ADDFILE = &H196
             LB_ADDSTRING = &H180
@@ -165,7 +180,9 @@ Namespace Win32Api
             LB_SETTOPINDEX = &H197
         End Enum
 
-        ' Windows messages
+        ''' <summary>
+        ''' Win32 Window message types.
+        ''' </summary>
         Enum WM As Integer
             WM_ACTIVATE = &H6
             WM_ACTIVATEAPP = &H1C
@@ -393,10 +410,16 @@ Namespace Win32Api
             WM_XBUTTONUP = &H20C
         End Enum
 
+        ''' <summary>
+        ''' Win32 Computer Based Training (CBT) application Windows hook types.
+        ''' </summary>
         Enum WH As Integer
             WH_CBT = &H5
         End Enum
 
+        ''' <summary>
+        ''' Win32 Computer Based Training (CBT) application hook event types
+        ''' </summary>
         Enum HCBT As Integer
             HCBT_MOVESIZE = &H0
             HCBT_MINMAX = &H1
@@ -410,7 +433,9 @@ Namespace Win32Api
             HCBT_SETFOCUS = &H9
         End Enum
 
-        ' Application desktop
+        ''' <summary>
+        ''' Win32 application bar control message types.
+        ''' </summary>
         Enum ABM As Integer
             ABM_ACTIVATE = &H6  ' lParam = TRUE/FALSE means activate/deactivate
             ABM_GETAUTOHIDEBAR = &H7
@@ -424,7 +449,9 @@ Namespace Win32Api
             ABM_WINDOWPOSCHANGED = &H9
         End Enum
 
-        'Default push button control 
+        ''' <summary>
+        ''' Win32 dev mode control message types.
+        ''' </summary>
         Enum DM As Integer
             DM_BITSPERPEL = &H40000
             DM_COLLATE = &H8000
@@ -464,7 +491,9 @@ Namespace Win32Api
             HDM_FIRST = &H1200
         End Enum
 
-        ' List view control
+        ''' <summary>
+        ''' Win32 list view control message types.
+        ''' </summary>
         Enum LVM As Integer
             LVM_FIRST = &H1000
             LVN_ITEMCHANGED = -101
@@ -487,7 +516,9 @@ Namespace Win32Api
             LVFI_NEARESTXY = 64
         End Enum
 
-        ' Status bar window
+        ''' <summary>
+        ''' Win32 Status bar control message types.
+        ''' </summary>
         Enum SB As Integer
             SB_CONST_ALPHA = &H1
             SB_GRAD_RECT = &H10
@@ -498,7 +529,9 @@ Namespace Win32Api
             SB_SIMPLEID = &HFF
         End Enum
 
-        ' Scroll bar control
+        ''' <summary>
+        ''' Win32 Scroll bar control message types.
+        ''' </summary>
         Enum SBM As Integer
             SBM_ENABLE_ARROWS = &HE4  ' Not in win3.1
             SBM_GETPOS = &HE1  ' Not in win3.1
@@ -528,7 +561,9 @@ Namespace Win32Api
             TCM_FIRST = &H1300
         End Enum
 
-        ' Window styles
+        ''' <summary>
+        ''' Win32 Window styles.
+        ''' </summary>
         Enum WS As Integer
             WS_OVERLAPPED = &H0L
             WS_POPUP = &H80000000

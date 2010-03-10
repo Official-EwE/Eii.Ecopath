@@ -8,6 +8,9 @@ Imports System.Runtime.InteropServices
 
 Namespace Win32Api
 
+    ''' <summary>
+    ''' Helper class providing access to a selection of comdlg32.dll API calls.
+    ''' </summary>
     Public Class ComDlg32
 
         Public Const OFN_ENABLEHOOK As Integer = 32
