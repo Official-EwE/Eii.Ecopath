@@ -10,11 +10,11 @@ Imports EwEUtils.Database
 
 Namespace DataSources
 
-    ''' -------------------------------------------------------------------
+    ''' =======================================================================
     ''' <summary>
     ''' Factory for creating data sources
     ''' </summary>
-    ''' -------------------------------------------------------------------
+    ''' =======================================================================
     Public Class cDataSourceFactory
 
         ''' -------------------------------------------------------------------
@@ -55,9 +55,10 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create a data source.
+        ''' Create a data source onto an existing <see cref="cEwEDatabase">EwE database</see>.
         ''' </summary>
         ''' <param name="db"><see cref="cEwEDatabase">cEwEDatabase</see> to create a datasource for.</param>
+        ''' <param name="ds">The newly created datasource.</param>
         ''' <returns>A <see cref="eStatusFlags">Status flag</see> that indicates the valid</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function Create(ByRef db As cEwEDatabase, ByRef ds As IEwEDataSource) As eStatusFlags
@@ -74,9 +75,9 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create a data source.
+        ''' Create a data source for a given <see cref="eDataSourceTypes">type of EwE datasource</see>.
         ''' </summary>
-        ''' <param name="dst"><see cref="eDataSourceTypes">Type of the datasource</see> to create.</param>
+        ''' <param name="dst"><see cref="eDataSourceTypes">Type of EwE datasource</see> to create.</param>
         ''' <returns>A <see cref="IEwEDataSource">IEwEDataSource</see> or 
         ''' Nothing if creation failed</returns>
         ''' -------------------------------------------------------------------
@@ -101,21 +102,36 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create a data source.
+        ''' Create a data source for a given file name.
         ''' </summary>
         ''' <param name="strFileName">The file to create the data source for.</param>
         ''' <returns>A <see cref="IEwEDataSource">IEwEDataSource</see> or 
         ''' Nothing if creation failed</returns>
+        ''' <remarks>The factory will attempt to decipher from the file name
+        ''' which <see cref="eDataSourceTypes">type of EwE datasource</see>
+        ''' is requred.</remarks>
         ''' -------------------------------------------------------------------
         Public Shared Function Create(ByVal strFileName As String) As IEwEDataSource
             Return Create(GetSupportedType(strFileName))
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the operating system supports a given type of EwE 
+        ''' <see cref="eDataSourceTypes">data source</see>.
+        ''' </summary>
+        ''' <param name="dst">The type of EwE <see cref="eDataSourceTypes">data source</see>
+        ''' to test.</param>
+        ''' <returns>True if the system appears to support the given type of
+        ''' data source. The check is implemented by the actual data sources. 
+        ''' Implementations can range from simple file checks to online driver 
+        ''' validations.</returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function IsOSSupported(ByVal dst As eDataSourceTypes) As Boolean
 
-            Dim db As IEwEDataSource = cDataSourceFactory.Create(dst)
-            If db Is Nothing Then Return False
-            Return db.IsOSSupported(dst)
+            Dim ds As IEwEDataSource = cDataSourceFactory.Create(dst)
+            If ds Is Nothing Then Return False
+            Return ds.IsOSSupported(dst)
 
         End Function
 

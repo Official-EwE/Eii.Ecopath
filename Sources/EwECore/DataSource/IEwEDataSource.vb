@@ -12,7 +12,7 @@ Imports EwEUtils.Core
 
 Namespace DataSources
 
-    ''' -----------------------------------------------------------------------
+    ''' =======================================================================
     ''' <summary>
     ''' Base interface for all EwE data access.
     ''' </summary>
@@ -22,7 +22,7 @@ Namespace DataSources
     ''' <para>See <see cref="cEIIDataSource">cEIIDataSource</see> for an example of
     ''' an EII file reading data source.</para>
     ''' </remarks>
-    ''' -----------------------------------------------------------------------
+    ''' =======================================================================
     Public Interface IEwEDataSource
 
 #Region " Generic "
@@ -168,11 +168,12 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether the local OS supports connecting to a datasource
-        ''' of a given type.
+        ''' States whether the operating system supports a given type of EwE 
+        ''' <see cref="eDataSourceTypes">data source</see>.
         ''' </summary>
-        ''' <param name="dst"></param>
-        ''' <returns></returns>
+        ''' <param name="dst">The type of EwE <see cref="eDataSourceTypes">data source</see>
+        ''' to test.</param>
+        ''' <returns>True if the system appears to support the type of EwE datas source.</returns>
         ''' -------------------------------------------------------------------
         Function IsOSSupported(ByVal dst As eDataSourceTypes) As Boolean
 

@@ -6,7 +6,7 @@ Imports EwEUtils.Core
 #End Region ' Imports
 
 ''' <summary>
-''' Layer providing access to Ecospace relative ??? data.
+''' Layer providing access to Ecospace relative contaminants data.
 ''' </summary>
 Public Class cEcospaceLayerRelCin
     Inherits cEcospaceLayerSingleNxM

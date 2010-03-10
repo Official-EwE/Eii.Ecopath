@@ -14,369 +14,371 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-''' ---------------------------------------------------------------------------
-''' <summary>
-''' <see cref="IEwEDataSource">EwE datasource</see> implementation for reading
-''' and writing Ecopath, Ecosim and Ecospace data from a database.
-''' </summary>
-''' ---------------------------------------------------------------------------
-<CLSCompliant(False)> _
-Public Class cDBDataSource
-    Implements IEwEDataSource
-    Implements IEcopathDataSource
-    Implements IEcosimDatasource
-    Implements IEcospaceDatasource
-    Implements IEcotracerDatasource
+Namespace DataSources
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' <see cref="IEwEDataSource">EwE datasource</see> implementation for reading
+    ''' and writing Ecopath, Ecosim and Ecospace data from a database.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    <CLSCompliant(False)> _
+    Public Class cDBDataSource
+        Implements IEwEDataSource
+        Implements IEcopathDataSource
+        Implements IEcosimDatasource
+        Implements IEcospaceDatasource
+        Implements IEcotracerDatasource
 
 #Region " Internal definitions "
 
-    ''' <summary>Core components stored with Ecopath.</summary>
-    Private Shared s_EcopathComponents() As eCoreComponentType = {eCoreComponentType.Core, eCoreComponentType.DataSource, eCoreComponentType.EcoPath}
-    ''' <summary>Core components stored with Ecosim.</summary>
-    Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries, eCoreComponentType.EcoSimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.PPIManager, eCoreComponentType.FishingPolicySearch, eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
-    ''' <summary>Core components stored with Ecospace.</summary>
-    Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.EcoSpace, eCoreComponentType.MPAOptimization}
-    ''' <summary>Core components stored with Ecotracer.</summary>
-    Private Shared s_EcotracerComponents() As eCoreComponentType = {eCoreComponentType.Ecotracer}
+        ''' <summary>Core components stored with Ecopath.</summary>
+        Private Shared s_EcopathComponents() As eCoreComponentType = {eCoreComponentType.Core, eCoreComponentType.DataSource, eCoreComponentType.EcoPath}
+        ''' <summary>Core components stored with Ecosim.</summary>
+        Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries, eCoreComponentType.EcoSimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.PPIManager, eCoreComponentType.FishingPolicySearch, eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
+        ''' <summary>Core components stored with Ecospace.</summary>
+        Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.EcoSpace, eCoreComponentType.MPAOptimization}
+        ''' <summary>Core components stored with Ecotracer.</summary>
+        Private Shared s_EcotracerComponents() As eCoreComponentType = {eCoreComponentType.Ecotracer}
 
 #End Region ' Internal definitions
 
 #Region " Private vars "
 
-    ''' <summary>The <see cref="cEwEDatabase">Database</see> connected to this datasource.</summary>
-    Private m_db As cEwEDatabase = Nothing
-    ''' <summary>The <see cref="cCore">core</see> connected to this datasource.</summary>
-    Private m_core As cCore = Nothing
-    ''' <summary>Datasource name</summary>
-    Private m_strName As String = ""
+        ''' <summary>The <see cref="cEwEDatabase">Database</see> connected to this datasource.</summary>
+        Private m_db As cEwEDatabase = Nothing
+        ''' <summary>The <see cref="cCore">core</see> connected to this datasource.</summary>
+        Private m_core As cCore = Nothing
+        ''' <summary>Datasource name</summary>
+        Private m_strName As String = ""
 
 #End Region ' Private vars
 
 #Region " Generic "
 
-    Public Sub New(ByRef db As cEwEDatabase)
+        Public Sub New(ByRef db As cEwEDatabase)
 
-        ' Pre
-        Debug.Assert(db IsNot Nothing)
-        ' Store ref to DB
-        Me.m_db = db
+            ' Pre
+            Debug.Assert(db IsNot Nothing)
+            ' Store ref to DB
+            Me.m_db = db
 
-    End Sub
+        End Sub
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' States whether the local OS supports connecting to a datasource
-    ''' of a given type.
-    ''' </summary>
-    ''' <param name="dst"></param>
-    ''' <returns></returns>
-    ''' -------------------------------------------------------------------
-    Public Function IsOSSupported(ByVal dst As eDataSourceTypes) As Boolean _
-        Implements DataSources.IEwEDataSource.IsOSSupported
-        Return Me.m_db.CanConnect(dst)
-    End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the local OS supports connecting to a datasource
+        ''' of a given type.
+        ''' </summary>
+        ''' <param name="dst"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function IsOSSupported(ByVal dst As eDataSourceTypes) As Boolean _
+            Implements DataSources.IEwEDataSource.IsOSSupported
+            Return Me.m_db.CanConnect(dst)
+        End Function
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Open an existing DB.
-    ''' </summary>
-    ''' <param name="strName">Name of the DB database to open.</param>
-    ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
-    ''' datastructures to read to, and write from.</param>
-    ''' <returns>True if opened successfully.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function Open(ByVal strName As String, ByVal core As cCore, _
-                         Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType _
-                         Implements DataSources.IEwEDataSource.Open
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Open an existing DB.
+        ''' </summary>
+        ''' <param name="strName">Name of the DB database to open.</param>
+        ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
+        ''' datastructures to read to, and write from.</param>
+        ''' <returns>True if opened successfully.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Open(ByVal strName As String, ByVal core As cCore, _
+                             Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType _
+                             Implements DataSources.IEwEDataSource.Open
 
-        ' Attempt to open existing
-        Dim atResult As eDatasourceAccessType = Me.m_db.Open(strName, datasourceType)
-        ' Any luck?
-        If atResult = eDatasourceAccessType.Success Then
-            ' Store core
-            Me.m_core = core
-            Me.m_strName = strName
-        End If
-        ' Report succes
-        Return atResult
-
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' States whether a datasource is already open.
-    ''' </summary>
-    ''' <returns>True if the datasource is open.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function IsOpen() As Boolean _
-             Implements IEwEDataSource.IsOpen
-        Return Me.m_db.IsConnected
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Create a new DB, overwriting an existing file.
-    ''' </summary>
-    ''' <param name="strName">Name of the datasource to create.</param>
-    ''' <param name="strModelName">Name to assign to the model.</param>
-    ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
-    ''' datastructures to read to, and write from.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As eDatasourceAccessType _
-             Implements DataSources.IEwEDataSource.Create
-
-        ' Create new db
-        Dim atResult As eDatasourceAccessType = Me.m_db.Create(strName, strModelName, True)
-
-        If atResult = eDatasourceAccessType.Success Then
-            atResult = Me.Open(strName, core)
-        End If
-
-        Return atResult
-
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Close the DB.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function Close() As Boolean _
-            Implements IEwEDataSource.Close
-
-        ' Clear changed admin
-        Me.ClearChanged()
-        ' Close current db
-        Me.m_db.Close()
-
-        ' Forget the core
-        Me.m_core = Nothing
-        Me.m_strName = ""
-        ' Clear version
-        Me.m_sVersion = cDATABASE_NOVERSION
-
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns whether the datasource is connected.
-    ''' </summary>
-    ''' <returns>True if connected.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function IsConnected() As Boolean
-        Return Me.m_db.IsConnected()
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the connection to the <see cref="cEwEDatabase">database</see>
-    ''' that this datasource operates on.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Public ReadOnly Property Connection() As Object _
-            Implements DataSources.IEwEDataSource.Connection
-        Get
-            Return Me.m_db
-        End Get
-    End Property
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns a string representation of the datasource.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Public Overrides Function ToString() As String _
-            Implements IEwEDataSource.ToString
-        If Me.m_db Is Nothing Then Return ""
-        Return Me.m_db.Name
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Switch an open datasource to a new database of the same type.
-    ''' </summary>
-    ''' <param name="strFileName">New FN to copy the DB to</param>
-    ''' <returns>True if succesful.</returns>
-    ''' <remarks>This will open the new database if succesful.</remarks>
-    ''' -------------------------------------------------------------------
-    Public Function SaveAs(ByVal strFileName As String, ByVal strModelName As String) As eDatasourceAccessType
-        Return Me.m_db.SaveAs(strFileName, strModelName, True)
-    End Function
-
-    ''' <summary>Unknown version.</summary>
-    Public Const cDATABASE_NOVERSION As Single = -1.0!
-    ''' <summary>Database version number.</summary>
-    Private m_sVersion As Single = cDATABASE_NOVERSION
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns the version of the datasource.
-    ''' </summary>
-    ''' <returns>A version number, or <see cref="cDATABASE_NOVERSION">cDATABASE_NOVERSION</see> 
-    ''' if the database is not connected.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function Version() As Single Implements IEwEDataSource.Version
-        If (Me.IsConnected = True) Then
-            If (Me.m_sVersion = -1.0!) Then
-                Me.m_sVersion = Me.m_db.GetVersion()
+            ' Attempt to open existing
+            Dim atResult As eDatasourceAccessType = Me.m_db.Open(strName, datasourceType)
+            ' Any luck?
+            If atResult = eDatasourceAccessType.Success Then
+                ' Store core
+                Me.m_core = core
+                Me.m_strName = strName
             End If
-            Return Me.m_sVersion
-        End If
-        Return cDATABASE_NOVERSION
-    End Function
+            ' Report succes
+            Return atResult
 
-    Public Function BeginTransaction() As Boolean _
-        Implements DataSources.IEwEDataSource.BeginTransaction
-        Return Me.m_db.BeginTransaction()
-    End Function
+        End Function
 
-    Public Function EndTransaction(ByVal bCommit As Boolean) As Boolean _
-        Implements DataSources.IEwEDataSource.EndTransaction
-        If bCommit Then
-            Return Me.m_db.CommitTransaction()
-        Else
-            Return Me.m_db.RollbackTransaction
-        End If
-    End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether a datasource is already open.
+        ''' </summary>
+        ''' <returns>True if the datasource is open.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function IsOpen() As Boolean _
+                 Implements IEwEDataSource.IsOpen
+            Return Me.m_db.IsConnected
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a new DB, overwriting an existing file.
+        ''' </summary>
+        ''' <param name="strName">Name of the datasource to create.</param>
+        ''' <param name="strModelName">Name to assign to the model.</param>
+        ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
+        ''' datastructures to read to, and write from.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As eDatasourceAccessType _
+                 Implements DataSources.IEwEDataSource.Create
+
+            ' Create new db
+            Dim atResult As eDatasourceAccessType = Me.m_db.Create(strName, strModelName, True)
+
+            If atResult = eDatasourceAccessType.Success Then
+                atResult = Me.Open(strName, core)
+            End If
+
+            Return atResult
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Close the DB.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Close() As Boolean _
+                Implements IEwEDataSource.Close
+
+            ' Clear changed admin
+            Me.ClearChanged()
+            ' Close current db
+            Me.m_db.Close()
+
+            ' Forget the core
+            Me.m_core = Nothing
+            Me.m_strName = ""
+            ' Clear version
+            Me.m_sVersion = cDATABASE_NOVERSION
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the datasource is connected.
+        ''' </summary>
+        ''' <returns>True if connected.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function IsConnected() As Boolean
+            Return Me.m_db.IsConnected()
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the connection to the <see cref="cEwEDatabase">database</see>
+        ''' that this datasource operates on.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Connection() As Object _
+                Implements DataSources.IEwEDataSource.Connection
+            Get
+                Return Me.m_db
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a string representation of the datasource.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function ToString() As String _
+                Implements IEwEDataSource.ToString
+            If Me.m_db Is Nothing Then Return ""
+            Return Me.m_db.Name
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Switch an open datasource to a new database of the same type.
+        ''' </summary>
+        ''' <param name="strFileName">New FN to copy the DB to</param>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>This will open the new database if succesful.</remarks>
+        ''' -------------------------------------------------------------------
+        Public Function SaveAs(ByVal strFileName As String, ByVal strModelName As String) As eDatasourceAccessType
+            Return Me.m_db.SaveAs(strFileName, strModelName, True)
+        End Function
+
+        ''' <summary>Unknown version.</summary>
+        Public Const cDATABASE_NOVERSION As Single = -1.0!
+        ''' <summary>Database version number.</summary>
+        Private m_sVersion As Single = cDATABASE_NOVERSION
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the version of the datasource.
+        ''' </summary>
+        ''' <returns>A version number, or <see cref="cDATABASE_NOVERSION">cDATABASE_NOVERSION</see> 
+        ''' if the database is not connected.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Version() As Single Implements IEwEDataSource.Version
+            If (Me.IsConnected = True) Then
+                If (Me.m_sVersion = -1.0!) Then
+                    Me.m_sVersion = Me.m_db.GetVersion()
+                End If
+                Return Me.m_sVersion
+            End If
+            Return cDATABASE_NOVERSION
+        End Function
+
+        Public Function BeginTransaction() As Boolean _
+            Implements DataSources.IEwEDataSource.BeginTransaction
+            Return Me.m_db.BeginTransaction()
+        End Function
+
+        Public Function EndTransaction(ByVal bCommit As Boolean) As Boolean _
+            Implements DataSources.IEwEDataSource.EndTransaction
+            If bCommit Then
+                Return Me.m_db.CommitTransaction()
+            Else
+                Return Me.m_db.RollbackTransaction
+            End If
+        End Function
 
 #Region " Helper methods "
 
-    'Private Function RunUpdates() As Boolean
+        'Private Function RunUpdates() As Boolean
 
-    '    If Me.m_core.PluginManager IsNot Nothing Then
+        '    If Me.m_core.PluginManager IsNot Nothing Then
 
-    '        ' Check if updates available
-    '        If Me.m_core.PluginManager.HasDatabaseUpdates(db, 6.0) Then
+        '        ' Check if updates available
+        '        If Me.m_core.PluginManager.HasDatabaseUpdates(db, 6.0) Then
 
-    '            Select Case MsgBox(My.Resources.PROMPT_IMPORT_UPDATEBACKUP, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
-    '                Case MsgBoxResult.Yes
-    '                    Try
-    '                        Dim strDir As String = Path.GetDirectoryName(strFileName)
-    '                        Dim strFile As String = Path.GetFileNameWithoutExtension(strFileName)
-    '                        Dim strExt As String = Path.GetExtension(strFileName)
+        '            Select Case MsgBox(My.Resources.PROMPT_IMPORT_UPDATEBACKUP, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
+        '                Case MsgBoxResult.Yes
+        '                    Try
+        '                        Dim strDir As String = Path.GetDirectoryName(strFileName)
+        '                        Dim strFile As String = Path.GetFileNameWithoutExtension(strFileName)
+        '                        Dim strExt As String = Path.GetExtension(strFileName)
 
-    '                        strFile = FileUtilities.ToValidFileName(String.Format("{0}_backup_{1}", strFile, Date.Now), False)
+        '                        strFile = FileUtilities.ToValidFileName(String.Format("{0}_backup_{1}", strFile, Date.Now), False)
 
-    '                        ' Create backup copy
-    '                        File.Copy(strFileName, Path.Combine(strDir, strFile + strExt), True)
-    '                    Catch ex As Exception
-    '                        Me.m_core.Messages.SendMessage( _
-    '                            New cMessage(String.Format(My.Resources.PROMPT_BACKUPFAILED, strFileName, ex.Message), _
-    '                                         eMessageType.DataImport, _
-    '                                         eCoreComponentType.Core, _
-    '                                         eMessageImportance.Warning))
-    '                        Return False
-    '                    End Try
-    '                    ' Fall through
+        '                        ' Create backup copy
+        '                        File.Copy(strFileName, Path.Combine(strDir, strFile + strExt), True)
+        '                    Catch ex As Exception
+        '                        Me.m_core.Messages.SendMessage( _
+        '                            New cMessage(String.Format(My.Resources.PROMPT_BACKUPFAILED, strFileName, ex.Message), _
+        '                                         eMessageType.DataImport, _
+        '                                         eCoreComponentType.Core, _
+        '                                         eMessageImportance.Warning))
+        '                        Return False
+        '                    End Try
+        '                    ' Fall through
 
-    '                Case MsgBoxResult.No
-    '                    ' Update existing copy
-    '                    ' Fall through 
+        '                Case MsgBoxResult.No
+        '                    ' Update existing copy
+        '                    ' Fall through 
 
-    '                Case MsgBoxResult.Cancel
-    '                    ' Leave DB alone, don't open
-    '                    Return False
+        '                Case MsgBoxResult.Cancel
+        '                    ' Leave DB alone, don't open
+        '                    Return False
 
-    '            End Select
+        '            End Select
 
-    '            ' Run all available updates on the new EwE6 database
-    '            Dim dbUpd As New cDatabaseUpdater(6.0)
-    '            dbUpd.UpdateDatabase(db, Me.m_core.PluginManager)
-    '            dbUpd = Nothing
+        '            ' Run all available updates on the new EwE6 database
+        '            Dim dbUpd As New cDatabaseUpdater(6.0)
+        '            dbUpd.UpdateDatabase(db, Me.m_core.PluginManager)
+        '            dbUpd = Nothing
 
-    '        End If
-    '    End If
+        '        End If
+        '    End If
 
-    'End Function
+        'End Function
 
-    Private Overloads Function CopyEcopathTo(ByVal ds As DataSources.IEcopathDataSource) As Boolean Implements DataSources.IEcopathDataSource.CopyTo
-        Return False
-    End Function
+        Private Overloads Function CopyEcopathTo(ByVal ds As DataSources.IEcopathDataSource) As Boolean Implements DataSources.IEcopathDataSource.CopyTo
+            Return False
+        End Function
 
-    Private Overloads Function CopyEcosimTo(ByVal ds As DataSources.IEcosimDatasource) As Boolean Implements DataSources.IEcosimDatasource.CopyTo
-        Return False
-    End Function
+        Private Overloads Function CopyEcosimTo(ByVal ds As DataSources.IEcosimDatasource) As Boolean Implements DataSources.IEcosimDatasource.CopyTo
+            Return False
+        End Function
 
-    Private Overloads Function CopyEcospaceTo(ByVal ds As DataSources.IEcospaceDatasource) As Boolean Implements DataSources.IEcospaceDatasource.CopyTo
-        Return False
-    End Function
+        Private Overloads Function CopyEcospaceTo(ByVal ds As DataSources.IEcospaceDatasource) As Boolean Implements DataSources.IEcospaceDatasource.CopyTo
+            Return False
+        End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' <para>Helper method, splits a string of numbers into an array of strings,
-    ''' each string representing a number. This method assumes that numbers are
-    ''' separated by a ASCII character 32, a single space.</para>
-    ''' </summary>
-    ''' <param name="strNumberString">A comma-seoarated string of numbers to split.</param>
-    ''' <returns>
-    ''' An array of strings, each representing a number in the string.
-    ''' </returns>
-    ''' <remarks>
-    ''' <para>This method tries to resolve number formatting issues, introduced
-    ''' in models written by systems with different locale settings.</para>
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Private Function SplitNumberString(ByRef strNumberString As String) As String()
-        Dim charSeparators() As Char = {" "c}
-        If strNumberString.IndexOf(CChar(",")) > -1 Then strNumberString = strNumberString.Replace(CChar(","), CChar("."))
-        Return strNumberString.Trim().Split(charSeparators, StringSplitOptions.RemoveEmptyEntries)
-    End Function
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' <para>Helper method, splits a string of numbers into an array of strings,
+        ''' each string representing a number. This method assumes that numbers are
+        ''' separated by a ASCII character 32, a single space.</para>
+        ''' </summary>
+        ''' <param name="strNumberString">A comma-seoarated string of numbers to split.</param>
+        ''' <returns>
+        ''' An array of strings, each representing a number in the string.
+        ''' </returns>
+        ''' <remarks>
+        ''' <para>This method tries to resolve number formatting issues, introduced
+        ''' in models written by systems with different locale settings.</para>
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Private Function SplitNumberString(ByRef strNumberString As String) As String()
+            Dim charSeparators() As Char = {" "c}
+            If strNumberString.IndexOf(CChar(",")) > -1 Then strNumberString = strNumberString.Replace(CChar(","), CChar("."))
+            Return strNumberString.Trim().Split(charSeparators, StringSplitOptions.RemoveEmptyEntries)
+        End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Helper method, reads data from a column that may not exist. In that case,
-    ''' an optional default value is returned
-    ''' </summary>
-    ''' <param name="reader">The <see cref="IDataReader">IDataReader</see> to read from.</param>
-    ''' <param name="strField">The name of the DB field (column) to read.</param>
-    ''' <param name="objValueDefault">A default value to return if the field could not be read.</param>
-    ''' <returns>The value of the requested column, or the provided default if an error occurred.</returns>
-    ''' -----------------------------------------------------------------------
-    Private Function ReadSafe(ByVal reader As IDataReader, ByVal strField As String, Optional ByVal objValueDefault As Object = Nothing) As Object
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, reads data from a column that may not exist. In that case,
+        ''' an optional default value is returned
+        ''' </summary>
+        ''' <param name="reader">The <see cref="IDataReader">IDataReader</see> to read from.</param>
+        ''' <param name="strField">The name of the DB field (column) to read.</param>
+        ''' <param name="objValueDefault">A default value to return if the field could not be read.</param>
+        ''' <returns>The value of the requested column, or the provided default if an error occurred.</returns>
+        ''' -----------------------------------------------------------------------
+        Private Function ReadSafe(ByVal reader As IDataReader, ByVal strField As String, Optional ByVal objValueDefault As Object = Nothing) As Object
 
-        Dim objResult As Object = Nothing
+            Dim objResult As Object = Nothing
 
-        If reader Is Nothing Then Return objValueDefault
+            If reader Is Nothing Then Return objValueDefault
 
-        Try
-            objResult = reader.Item(strField)
-        Catch ex As InvalidOperationException
-            Console.WriteLine("DB: field '{0}' has no value, returning provided default '{1}'", strField, objValueDefault)
-        Catch ex As IndexOutOfRangeException
-            Console.WriteLine("DB: field '{0}' not found in table, returning provided default '{1}'", strField, objValueDefault)
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-            Console.WriteLine("DB: Exception {2} occurred while accessing field '{0}', returning provided default '{1}'", strField, objValueDefault, ex.ToString)
-        End Try
+            Try
+                objResult = reader.Item(strField)
+            Catch ex As InvalidOperationException
+                Console.WriteLine("DB: field '{0}' has no value, returning provided default '{1}'", strField, objValueDefault)
+            Catch ex As IndexOutOfRangeException
+                Console.WriteLine("DB: field '{0}' not found in table, returning provided default '{1}'", strField, objValueDefault)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                Console.WriteLine("DB: Exception {2} occurred while accessing field '{0}', returning provided default '{1}'", strField, objValueDefault, ex.ToString)
+            End Try
 
-        If (Object.ReferenceEquals(objResult, Nothing)) Then
-            objResult = objValueDefault
-        End If
-
-        If (Convert.IsDBNull(objResult)) Then
-            objResult = objValueDefault
-        End If
-
-        Return objResult
-    End Function
-
-    Private Function BuildWhereClause(ByVal strVariable As String, ByVal astrValues() As String) As String
-
-        Debug.Assert(Not astrValues Is Nothing)
-        Debug.Assert(Not astrValues.Length = 0)
-
-        Dim sbFilter As New StringBuilder
-        For iValue As Integer = 0 To astrValues.Length - 1
-            If iValue > 0 Then
-                sbFilter.Append(" OR ")
+            If (Object.ReferenceEquals(objResult, Nothing)) Then
+                objResult = objValueDefault
             End If
-            sbFilter.Append(String.Format("({0}='{1}')", strVariable, astrValues(iValue)))
-        Next
-        Return sbFilter.ToString()
 
-    End Function
+            If (Convert.IsDBNull(objResult)) Then
+                objResult = objValueDefault
+            End If
+
+            Return objResult
+        End Function
+
+        Private Function BuildWhereClause(ByVal strVariable As String, ByVal astrValues() As String) As String
+
+            Debug.Assert(Not astrValues Is Nothing)
+            Debug.Assert(Not astrValues.Length = 0)
+
+            Dim sbFilter As New StringBuilder
+            For iValue As Integer = 0 To astrValues.Length - 1
+                If iValue > 0 Then
+                    sbFilter.Append(" OR ")
+                End If
+                sbFilter.Append(String.Format("({0}='{1}')", strVariable, astrValues(iValue)))
+            Next
+            Return sbFilter.ToString()
+
+        End Function
 
 #End Region ' Helper methods
 
@@ -384,867 +386,910 @@ Public Class cDBDataSource
 
 #Region " Change management "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' States whether the datasource has unsaved changes that do not relate
-    ''' to any of the supported sub-models.
-    ''' </summary>
-    ''' <returns>True if the datasource has pending changes.</returns>
-    ''' -------------------------------------------------------------------
-    Friend Function IsChanged() As Boolean Implements DataSources.IEwEDataSource.IsModified
-        If Not Me.IsConnected() Then Return False
-        Return Me.IsChanged(Nothing)
-    End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the datasource has unsaved changes that do not relate
+        ''' to any of the supported sub-models.
+        ''' </summary>
+        ''' <returns>True if the datasource has pending changes.</returns>
+        ''' -------------------------------------------------------------------
+        Friend Function IsChanged() As Boolean Implements DataSources.IEwEDataSource.IsModified
+            If Not Me.IsConnected() Then Return False
+            Return Me.IsChanged(Nothing)
+        End Function
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Clears all changed information for either a given data type or for 
-    ''' the entire datasource.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Friend Sub ClearChanged() Implements IEwEDataSource.ClearChanged
-        Me.ClearChanged(Nothing)
-    End Sub
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Clears all changed information for either a given data type or for 
+        ''' the entire datasource.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Friend Sub ClearChanged() Implements IEwEDataSource.ClearChanged
+            Me.ClearChanged(Nothing)
+        End Sub
 
-    ''' <summary>Dictionary of changed core components.</summary>
-    Private m_dictChangedComponents As New Dictionary(Of eCoreComponentType, Boolean)
+        ''' <summary>Dictionary of changed core components.</summary>
+        Private m_dictChangedComponents As New Dictionary(Of eCoreComponentType, Boolean)
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Flag a core object as changed in the datasource.
-    ''' </summary>
-    ''' <param name="cc">The <see cref="eDataTypes">Type</see> of the object that changed.</param>
-    ''' -------------------------------------------------------------------
-    Public Sub SetChanged(ByVal cc As eCoreComponentType) _
-            Implements IEwEDataSource.SetChanged
-        Me.m_dictChangedComponents.Item(cc) = True
-    End Sub
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Flag a core object as changed in the datasource.
+        ''' </summary>
+        ''' <param name="cc">The <see cref="eDataTypes">Type</see> of the object that changed.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub SetChanged(ByVal cc As eCoreComponentType) _
+                Implements IEwEDataSource.SetChanged
+            Me.m_dictChangedComponents.Item(cc) = True
+        End Sub
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Helper method; states whether there are pending changes for a particular
-    ''' <see cref="eCoreComponentType">EwE component</see>.
-    ''' </summary>
-    ''' <param name="acomponents">The EwE components to check.</param>
-    ''' <returns>True if there are any pending changes for any datatype that
-    ''' belongs to this EwE component.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function IsChanged(ByVal acomponents As eCoreComponentType()) As Boolean
-        Dim bIsChanged As Boolean = False
-        If (acomponents Is Nothing) Then
-            Return (Me.m_dictChangedComponents.Count > 0)
-        Else
-            For Each component As eCoreComponentType In acomponents
-                bIsChanged = bIsChanged Or Me.m_dictChangedComponents.ContainsKey(component)
-            Next
-        End If
-        Return bIsChanged
-    End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method; states whether there are pending changes for a particular
+        ''' <see cref="eCoreComponentType">EwE component</see>.
+        ''' </summary>
+        ''' <param name="acomponents">The EwE components to check.</param>
+        ''' <returns>True if there are any pending changes for any datatype that
+        ''' belongs to this EwE component.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function IsChanged(ByVal acomponents As eCoreComponentType()) As Boolean
+            Dim bIsChanged As Boolean = False
+            If (acomponents Is Nothing) Then
+                Return (Me.m_dictChangedComponents.Count > 0)
+            Else
+                For Each component As eCoreComponentType In acomponents
+                    bIsChanged = bIsChanged Or Me.m_dictChangedComponents.ContainsKey(component)
+                Next
+            End If
+            Return bIsChanged
+        End Function
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Clears the changed administration for all datatypes that belong to
-    ''' a given <see cref="eCoreComponentType">EwE component</see>.
-    ''' </summary>
-    ''' <param name="acomponents">The EwE components to clear the changed
-    ''' adminsitration for.</param>
-    ''' -------------------------------------------------------------------
-    Private Sub ClearChanged(ByVal acomponents As eCoreComponentType())
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Clears the changed administration for all datatypes that belong to
+        ''' a given <see cref="eCoreComponentType">EwE component</see>.
+        ''' </summary>
+        ''' <param name="acomponents">The EwE components to clear the changed
+        ''' adminsitration for.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub ClearChanged(ByVal acomponents As eCoreComponentType())
 
-        If (acomponents Is Nothing) Then
-            Me.m_dictChangedComponents.Clear()
-        Else
-            For Each component As eCoreComponentType In acomponents
-                If Me.m_dictChangedComponents.ContainsKey(component) Then
-                    Me.m_dictChangedComponents.Remove(component)
-                End If
-            Next component
-        End If
-    End Sub
+            If (acomponents Is Nothing) Then
+                Me.m_dictChangedComponents.Clear()
+            Else
+                For Each component As eCoreComponentType In acomponents
+                    If Me.m_dictChangedComponents.ContainsKey(component) Then
+                        Me.m_dictChangedComponents.Remove(component)
+                    End If
+                Next component
+            End If
+        End Sub
 
 #End Region ' Change management
 
 #Region " Private helper bits "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Helper class, maintains a list of database ID mappings per datatype. Use this class
-    ''' when duplicating objects in the database. Via the mappings, newly created objects
-    ''' (with new DBID values) can be saved using content of their originals (with old
-    ''' DBID values)
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Class cIDMappings
-
-        ''' <summary>Array of ID mappings, per datatype.</summary>
-        Private m_dictMappings() As Dictionary(Of Integer, Integer)
-
-        Public Sub New()
-            Me.Initialize()
-        End Sub
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Initialize the ID mapper by allocating space for the lookup tables.
+        ''' Helper class, maintains a list of database ID mappings per datatype. Use this class
+        ''' when duplicating objects in the database. Via the mappings, newly created objects
+        ''' (with new DBID values) can be saved using content of their originals (with old
+        ''' DBID values)
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub Initialize()
-            ' Allocate space
-            Dim nNumDatatypes As Integer = System.Enum.GetValues(GetType(eDataTypes)).Length
-            ReDim Me.m_dictMappings(nNumDatatypes)
-            For i As Integer = 0 To nNumDatatypes
-                Me.m_dictMappings(i) = New Dictionary(Of Integer, Integer)
-            Next
-        End Sub
+        Private Class cIDMappings
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Add an ID mapping for a specific object.
-        ''' </summary>
-        ''' <param name="dt">The <see cref="eDataTypes">Data Type</see> of the object to map.</param>
-        ''' <param name="iIDOrg">The original database ID of the object. This is the value
-        ''' under which the object is stored in the current database, and how it is currently
-        ''' known in the core database ID arrays.</param>
-        ''' <param name="iIDNew">The mapped database ID of the object. This is the value that
-        ''' has been assigned by the datasource when creating a new instance of the object
-        ''' in the database.</param>
-        ''' -----------------------------------------------------------------------
-        Public Sub Add(ByVal dt As eDataTypes, ByVal iIDOrg As Integer, ByVal iIDNew As Integer)
-            ' Only add useful mappings, please!
-            If iIDOrg = iIDNew Then Return
+            ''' <summary>Array of ID mappings, per datatype.</summary>
+            Private m_dictMappings() As Dictionary(Of Integer, Integer)
 
-            Try
+            Public Sub New()
+                Me.Initialize()
+            End Sub
+
+            ''' -----------------------------------------------------------------------
+            ''' <summary>
+            ''' Initialize the ID mapper by allocating space for the lookup tables.
+            ''' </summary>
+            ''' -----------------------------------------------------------------------
+            Private Sub Initialize()
+                ' Allocate space
+                Dim nNumDatatypes As Integer = System.Enum.GetValues(GetType(eDataTypes)).Length
+                ReDim Me.m_dictMappings(nNumDatatypes)
+                For i As Integer = 0 To nNumDatatypes
+                    Me.m_dictMappings(i) = New Dictionary(Of Integer, Integer)
+                Next
+            End Sub
+
+            ''' -----------------------------------------------------------------------
+            ''' <summary>
+            ''' Add an ID mapping for a specific object.
+            ''' </summary>
+            ''' <param name="dt">The <see cref="eDataTypes">Data Type</see> of the object to map.</param>
+            ''' <param name="iIDOrg">The original database ID of the object. This is the value
+            ''' under which the object is stored in the current database, and how it is currently
+            ''' known in the core database ID arrays.</param>
+            ''' <param name="iIDNew">The mapped database ID of the object. This is the value that
+            ''' has been assigned by the datasource when creating a new instance of the object
+            ''' in the database.</param>
+            ''' -----------------------------------------------------------------------
+            Public Sub Add(ByVal dt As eDataTypes, ByVal iIDOrg As Integer, ByVal iIDNew As Integer)
+                ' Only add useful mappings, please!
+                If iIDOrg = iIDNew Then Return
+
+                Try
+                    Dim d As Dictionary(Of Integer, Integer) = Me.m_dictMappings(CInt(dt))
+
+                    ' Development-time sanity checks.
+                    Debug.Assert(d IsNot Nothing, String.Format("cIDMappings.Add: no dictionary for datatype {0} ({1}), something is very wrong!", dt.ToString, CInt(dt)))
+                    Debug.Assert(Not d.ContainsKey(iIDOrg), String.Format("cIDMappings: DBID {0} is already used to define a mapping", iIDOrg))
+                    Debug.Assert(Not d.ContainsValue(iIDNew), String.Format("cIDMappings: DBID {0} already mapped to", iIDNew))
+
+                    d.Add(iIDOrg, iIDNew)
+
+                Catch ex As Exception
+                    ' Development-time panic event.
+                    Debug.Assert(False, String.Format("cIDMappings.Add: ID Mapping failed '{0}'", ex.Message))
+                End Try
+            End Sub
+
+            ''' -----------------------------------------------------------------------
+            ''' <summary>
+            ''' Returns a mapped ID for a specific core object. If no mapping exists, the
+            ''' original ID is returned.
+            ''' </summary>
+            ''' <param name="dt">The <see cref="eDataTypes">Data Type</see> of the object
+            ''' to retrieve the mapping for.</param>
+            ''' <param name="iIDOrg">The original database ID of the object.</param>
+            ''' <returns>A mapped ID if present, or the original ID if no mapping was found.</returns>
+            ''' -----------------------------------------------------------------------
+            Public Function GetID(ByVal dt As eDataTypes, ByVal iIDOrg As Integer) As Integer
+                Try
+                    Dim d As Dictionary(Of Integer, Integer) = Me.m_dictMappings(CInt(dt))
+                    If d.ContainsKey(iIDOrg) Then
+                        Return d.Item(iIDOrg)
+                    End If
+                Catch ex As Exception
+                    ' Woops
+                End Try
+                Return iIDOrg
+            End Function
+
+            ''' -----------------------------------------------------------------------
+            ''' <summary>
+            ''' Returns whether a mapping exists for a core object.
+            ''' </summary>
+            ''' <param name="dt">The <see cref="eDataTypes">Data Type</see> of the object to
+            ''' test a mapping for.</param>
+            ''' <param name="iIDOrg">The original database ID of the object to test.</param>
+            ''' <returns>True if a mapping exists.</returns>
+            ''' -----------------------------------------------------------------------
+            Public Function HasMapping(ByVal dt As eDataTypes, ByVal iIDOrg As Integer) As Boolean
                 Dim d As Dictionary(Of Integer, Integer) = Me.m_dictMappings(CInt(dt))
+                Return d.ContainsKey(iIDOrg)
+            End Function
 
-                ' Development-time sanity checks.
-                Debug.Assert(d IsNot Nothing, String.Format("cIDMappings.Add: no dictionary for datatype {0} ({1}), something is very wrong!", dt.ToString, CInt(dt)))
-                Debug.Assert(Not d.ContainsKey(iIDOrg), String.Format("cIDMappings: DBID {0} is already used to define a mapping", iIDOrg))
-                Debug.Assert(Not d.ContainsValue(iIDNew), String.Format("cIDMappings: DBID {0} already mapped to", iIDNew))
+        End Class
 
-                d.Add(iIDOrg, iIDNew)
-
-            Catch ex As Exception
-                ' Development-time panic event.
-                Debug.Assert(False, String.Format("cIDMappings.Add: ID Mapping failed '{0}'", ex.Message))
-            End Try
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns a mapped ID for a specific core object. If no mapping exists, the
-        ''' original ID is returned.
-        ''' </summary>
-        ''' <param name="dt">The <see cref="eDataTypes">Data Type</see> of the object
-        ''' to retrieve the mapping for.</param>
-        ''' <param name="iIDOrg">The original database ID of the object.</param>
-        ''' <returns>A mapped ID if present, or the original ID if no mapping was found.</returns>
-        ''' -----------------------------------------------------------------------
-        Public Function GetID(ByVal dt As eDataTypes, ByVal iIDOrg As Integer) As Integer
-            Try
-                Dim d As Dictionary(Of Integer, Integer) = Me.m_dictMappings(CInt(dt))
-                If d.ContainsKey(iIDOrg) Then
-                    Return d.Item(iIDOrg)
-                End If
-            Catch ex As Exception
-                ' Woops
-            End Try
-            Return iIDOrg
+        Private Shared Function GetJulianDate() As Single
+            Return CSng(Date.Now().ToOADate())
         End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns whether a mapping exists for a core object.
-        ''' </summary>
-        ''' <param name="dt">The <see cref="eDataTypes">Data Type</see> of the object to
-        ''' test a mapping for.</param>
-        ''' <param name="iIDOrg">The original database ID of the object to test.</param>
-        ''' <returns>True if a mapping exists.</returns>
-        ''' -----------------------------------------------------------------------
-        Public Function HasMapping(ByVal dt As eDataTypes, ByVal iIDOrg As Integer) As Boolean
-            Dim d As Dictionary(Of Integer, Integer) = Me.m_dictMappings(CInt(dt))
-            Return d.ContainsKey(iIDOrg)
-        End Function
-
-    End Class
-
-    Private Shared Function GetJulianDate() As Single
-        Return CSng(Date.Now().ToOADate())
-    End Function
 
 #End Region ' Private helper bits
 
 #Region " Messages "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Logs a message
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Private Sub LogMessage(ByVal strMessage As String, _
-            Optional ByVal msgType As eMessageType = eMessageType.DataModified, _
-            Optional ByVal msgImportance As eMessageImportance = eMessageImportance.Information)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Logs a message to the application log.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub LogMessage(ByVal strMessage As String, _
+                Optional ByVal msgType As eMessageType = eMessageType.DataModified, _
+                Optional ByVal msgImportance As eMessageImportance = eMessageImportance.Information)
 
-        If (Me.m_core IsNot Nothing) Then
-            Me.m_core.m_publisher.AddMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance))
-        End If
-        Console.WriteLine(strMessage)
+            If (Me.m_core IsNot Nothing) Then
+                Me.m_core.m_publisher.AddMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance))
+            End If
+            'Console.WriteLine(strMessage)
 
-    End Sub
+        End Sub
 
 #End Region ' Messages
 
 #Region " Generic datasource "
 
-#Region " Cleanup "
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Compact the data in the datasource. Please ensure that this operation
+        ''' is possible via <see cref="CanCompact">CanCompact</see>.
+        ''' </summary>
+        ''' <param name="strTarget">The destination to compact the datasource to.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Function Compact(ByVal strTarget As String) As eDatasourceAccessType _
+            Implements DataSources.IEwEDataSource.Compact
+            Return Me.m_db.Compact(strTarget, strTarget)
+        End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Compact the data in the datasource. Please ensure that this operation
-    ''' is possible via <see cref="CanCompact">CanCompact</see>.
-    ''' </summary>
-    ''' <param name="strTarget">The destination to compact the datasource to.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function Compact(ByVal strTarget As String) As eDatasourceAccessType _
-        Implements DataSources.IEwEDataSource.Compact
-        Return Me.m_db.Compact(strTarget, strTarget)
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns whether the data underlying the datasource can be compacted.
-    ''' </summary>
-    ''' <param name="strTarget">The destination to test whether the datasource 
-    ''' can compact to.</param>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Public Function CanCompact(ByVal strTarget As String) As Boolean _
-        Implements IEwEDataSource.CanCompact
-        Return Me.m_db.CanCompact(strTarget, strTarget)
-    End Function
-
-#End Region ' Cleanup
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the data underlying the datasource can be compacted.
+        ''' </summary>
+        ''' <param name="strTarget">The destination to test whether the datasource 
+        ''' can compact to.</param>
+        ''' <returns></returns>
+        ''' -----------------------------------------------------------------------
+        Public Function CanCompact(ByVal strTarget As String) As Boolean _
+            Implements IEwEDataSource.CanCompact
+            Return Me.m_db.CanCompact(strTarget, strTarget)
+        End Function
 
 #End Region ' Generic datasource
 
 #Region " EwEModel "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Initiates a full load of an EwE model.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function LoadModel() As Boolean _
-         Implements IEcopathDataSource.LoadModel
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Initiates a full load of an EwE model.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function LoadModel() As Boolean _
+             Implements IEcopathDataSource.LoadModel
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim bSucces As Boolean = True
 
-        bSucces = Me.LoadModelInfo()
-        If bSucces = False Then Return False
+            bSucces = Me.LoadModelInfo()
+            If bSucces = False Then Return False
 
-        bSucces = bSucces And Me.LoadEcopathGroups()
-        bSucces = bSucces And Me.LoadEcopathFleetInfo()
-        bSucces = bSucces And Me.LoadParticleSizeDistribution()
-        bSucces = bSucces And Me.LoadAuxillaryData()
+            bSucces = bSucces And Me.LoadEcopathGroups()
+            bSucces = bSucces And Me.LoadEcopathFleetInfo()
+            bSucces = bSucces And Me.LoadParticleSizeDistribution()
+            bSucces = bSucces And Me.LoadAuxillaryData()
 
-        ecopathDS.bInitialized = bSucces
+            ecopathDS.bInitialized = bSucces
 
-        ecopathDS.onPostInitialization()
+            ecopathDS.onPostInitialization()
 
-        bSucces = bSucces And Me.LoadEcosimScenarioDefinitions()
-        bSucces = bSucces And Me.LoadEcospaceScenarioDefinitions()
-        bSucces = bSucces And Me.LoadEcotracerScenarioDefinitions()
-        bSucces = bSucces And Me.LoadTimeSeriesDatasets()
+            bSucces = bSucces And Me.LoadEcosimScenarioDefinitions()
+            bSucces = bSucces And Me.LoadEcospaceScenarioDefinitions()
+            bSucces = bSucces And Me.LoadEcotracerScenarioDefinitions()
+            bSucces = bSucces And Me.LoadTimeSeriesDatasets()
 
-        ' Clear changed admin
-        Me.ClearChanged(s_EcopathComponents)
-
-        Return bSucces
-
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Initiates a save of an EwE model
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function SaveModel() As Boolean _
-             Implements IEcopathDataSource.SaveModel
-
-        Dim bSucces As Boolean = Me.m_db.BeginTransaction()
-
-        ' Start saving
-        bSucces = Me.SaveModelInfo()
-        bSucces = bSucces And Me.SaveEcopathGroups()
-        bSucces = bSucces And Me.SaveEcopathFleetInfo()
-        bSucces = bSucces And Me.SaveParticleSizeDistribution()
-        bSucces = bSucces And Me.SaveAuxillaryData()
-        bSucces = bSucces And Me.SaveEcosimScenarioDefinitions()
-        bSucces = bSucces And Me.SaveEcospaceScenarioDefinitions()
-        bSucces = bSucces And Me.SaveEcotracerScenarioDefinitions()
-
-        If bSucces Then
-            bSucces = Me.m_db.CommitTransaction()
-        Else
-            Me.m_db.RollbackTransaction()
-        End If
-
-        ' Save succesful?
-        If bSucces Then
-            ' #Yes: Clear ecopath changed flags
+            ' Clear changed admin
             Me.ClearChanged(s_EcopathComponents)
-        End If
 
-        Return bSucces
+            Return bSucces
 
-    End Function
+        End Function
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Helper method, loads model info for the current model.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function LoadModelInfo() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Initiates a save of an EwE model
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function SaveModel() As Boolean _
+                 Implements IEcopathDataSource.SaveModel
 
-        Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathModel")
-        Dim bSucces As Boolean = True
+            Dim bSucces As Boolean = Me.m_db.BeginTransaction()
 
-        ' Crash prevention check
-        If Object.ReferenceEquals(reader, Nothing) Then
-            'Debug.Assert(False, "Failed to access table EcopathModel")
-            Return False
-        End If
+            ' Start saving
+            bSucces = Me.SaveModelInfo()
+            bSucces = bSucces And Me.SaveEcopathGroups()
+            bSucces = bSucces And Me.SaveEcopathFleetInfo()
+            bSucces = bSucces And Me.SaveParticleSizeDistribution()
+            bSucces = bSucces And Me.SaveAuxillaryData()
+            bSucces = bSucces And Me.SaveEcosimScenarioDefinitions()
+            bSucces = bSucces And Me.SaveEcospaceScenarioDefinitions()
+            bSucces = bSucces And Me.SaveEcotracerScenarioDefinitions()
 
-        Try
-            ' There is only one model in an EwE6 database
-            reader.Read()
-
-            Me.m_core.m_EwEModelDBID = CInt(reader("ModelID"))
-            Me.m_core.m_EwEModelName = CStr(reader("Name"))
-            Me.m_core.m_EwEModelDescription = CStr(reader("Description"))
-            Me.m_core.m_EwEModelAuthor = CStr(Me.ReadSafe(reader, "Author", ""))
-            Me.m_core.m_EwEModelContact = CStr(Me.ReadSafe(reader, "Contact", ""))
-            Me.m_core.m_EwEModelArea = CSng(Me.ReadSafe(reader, "Area", 1.0))
-            Me.m_core.m_EwEModelNumDigits = CInt(reader("NumDigits"))
-            Me.m_core.m_EwEModelGroupDigits = CBool(Me.ReadSafe(reader, "GroupDigits", False))
-            Me.m_core.m_EwEModelUnitCurrency = DirectCast(Me.ReadSafe(reader, "UnitCurrency", eUnitCurrencyType.WetWeight), eUnitCurrencyType)
-            Me.m_core.m_EwEModelUnitCurrencyCustom = CStr(Me.ReadSafe(reader, "UnitCurrencyCustom", ""))
-            Me.m_core.m_EwEModelUnitTime = DirectCast(Me.ReadSafe(reader, "UnitTime", eUnitTimeType.Year), eUnitTimeType)
-            Me.m_core.m_EwEModelUnitTimeCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
-            Me.m_core.m_EwEModelUnitMonetary = DirectCast(Me.ReadSafe(reader, "UnitMonetary", eUnitMonetaryType.EUR), eUnitMonetaryType)
-            'Me.m_core.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
-            Me.m_core.m_EwEModelLastSaved = CSng(Me.ReadSafe(reader, "LastSaved", 0))
-
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading EcopathModel", ex.Message))
-            bSucces = False
-        End Try
-
-        Me.m_db.ReleaseReader(reader)
-        reader = Nothing
-
-        Return bSucces
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Updates model info into the database.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Private Function SaveModelInfo() As Boolean
-
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim dt As DataTable = Nothing
-        Dim drow As DataRow = Nothing
-        Dim bNewRow As Boolean = False
-        Dim bSucces As Boolean = True
-
-        Try
-            ' This will no longer work because of tables linking to ModelID
-            'Me.m_db.Execute("DELETE * FROM EcopathModel")
-            writer = Me.m_db.GetWriter("EcopathModel")
-            dt = writer.GetDataTable()
-
-            drow = dt.Rows.Find(Me.m_core.m_EwEModelDBID)
-
-            bNewRow = (drow Is Nothing)
-            If bNewRow Then
-                drow = writer.NewRow()
+            If bSucces Then
+                bSucces = Me.m_db.CommitTransaction()
             Else
-                drow.BeginEdit()
+                Me.m_db.RollbackTransaction()
             End If
 
-            drow("Name") = Me.m_core.m_EwEModelName
-            drow("Description") = Me.m_core.m_EwEModelDescription
-            drow("Author") = Me.m_core.m_EwEModelAuthor
-            drow("Contact") = Me.m_core.m_EwEModelContact
-            drow("Area") = Me.m_core.m_EwEModelArea
-            drow("NumDigits") = Me.m_core.m_EwEModelNumDigits
-            drow("GroupDigits") = Me.m_core.m_EwEModelGroupDigits
-            drow("UnitCurrency") = Me.m_core.m_EwEModelUnitCurrency
-            drow("UnitCurrencyCustom") = Me.m_core.m_EwEModelUnitCurrencyCustom
-            drow("UnitTime") = Me.m_core.m_EwEModelUnitTime
-            drow("UnitTimeCustom") = Me.m_core.m_EwEModelUnitTimeCustom
-            drow("UnitMonetary") = Me.m_core.m_EwEModelUnitMonetary
-            drow("LastSaved") = cDBDataSource.GetJulianDate()
-
-            If bNewRow Then
-                writer.AddRow(drow)
-            Else
-                drow.EndEdit()
+            ' Save succesful?
+            If bSucces Then
+                ' #Yes: Clear ecopath changed flags
+                Me.ClearChanged(s_EcopathComponents)
             End If
 
-            writer.Commit()
+            Return bSucces
 
-        Catch ex As Exception
-            bSucces = False
-        End Try
+        End Function
 
-        ' Save changes
-        Me.m_db.ReleaseWriter(writer, True)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, loads model info for the current model.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function LoadModelInfo() As Boolean
 
-        Return bSucces
-    End Function
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathModel")
+            Dim bSucces As Boolean = True
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Load the list of available Ecosim scenarios.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' <remarks>
-    ''' Note that this will NOT load any actual Ecosim scenario. Scenario definitions 
-    ''' merely provide a preview of available Ecosim scenarios in the database.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Private Function LoadEcosimScenarioDefinitions() As Boolean
+            ' Crash prevention check
+            If Object.ReferenceEquals(reader, Nothing) Then
+                'Debug.Assert(False, "Failed to access table EcopathModel")
+                Return False
+            End If
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcosimScenario")
-        Dim iScenario As Integer = 1
-        Dim bSucces As Boolean = True
+            Try
+                ' There is only one model in an EwE6 database
+                reader.Read()
 
-        ecopathDS.NumEcosimScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcoSimScenario"))
-        ecopathDS.RedimEcosimScenarios()
+                Me.m_core.m_EwEModelDBID = CInt(reader("ModelID"))
+                Me.m_core.m_EwEModelName = CStr(reader("Name"))
+                Me.m_core.m_EwEModelDescription = CStr(reader("Description"))
+                Me.m_core.m_EwEModelAuthor = CStr(Me.ReadSafe(reader, "Author", ""))
+                Me.m_core.m_EwEModelContact = CStr(Me.ReadSafe(reader, "Contact", ""))
+                Me.m_core.m_EwEModelArea = CSng(Me.ReadSafe(reader, "Area", 1.0))
+                Me.m_core.m_EwEModelNumDigits = CInt(reader("NumDigits"))
+                Me.m_core.m_EwEModelGroupDigits = CBool(Me.ReadSafe(reader, "GroupDigits", False))
+                Me.m_core.m_EwEModelUnitCurrency = DirectCast(Me.ReadSafe(reader, "UnitCurrency", eUnitCurrencyType.WetWeight), eUnitCurrencyType)
+                Me.m_core.m_EwEModelUnitCurrencyCustom = CStr(Me.ReadSafe(reader, "UnitCurrencyCustom", ""))
+                Me.m_core.m_EwEModelUnitTime = DirectCast(Me.ReadSafe(reader, "UnitTime", eUnitTimeType.Year), eUnitTimeType)
+                Me.m_core.m_EwEModelUnitTimeCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
+                Me.m_core.m_EwEModelUnitMonetary = DirectCast(Me.ReadSafe(reader, "UnitMonetary", eUnitMonetaryType.EUR), eUnitMonetaryType)
+                'Me.m_core.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
+                Me.m_core.m_EwEModelLastSaved = CSng(Me.ReadSafe(reader, "LastSaved", 0))
 
-        If ecopathDS.NumEcosimScenarios = 0 Then Return bSucces
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading EcopathModel", ex.Message))
+                bSucces = False
+            End Try
 
-        Try
-            While reader.Read()
-                ecopathDS.EcosimScenarioDBID(iScenario) = CInt(reader("ScenarioID"))
-                ecopathDS.EcosimScenarioName(iScenario) = CStr(reader("ScenarioName"))
-                ecopathDS.EcosimScenarioDescription(iScenario) = CStr(reader("Description"))
-                ecopathDS.EcosimScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
-                ecopathDS.EcosimScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
-                ecopathDS.EcosimScenarioLastSaved(iScenario) = CSng(Me.ReadSafe(reader, "LastSaved", 0))
-                iScenario += 1
-            End While
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading ecosim scenario definition {1}", ex.Message, iScenario))
-            bSucces = False
-        End Try
+            Me.m_db.ReleaseReader(reader)
+            reader = Nothing
 
-        Me.m_db.ReleaseReader(reader)
-        reader = Nothing
+            Return bSucces
+        End Function
 
-        Return bSucces
-    End Function
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Updates model info into the database.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -----------------------------------------------------------------------
+        Private Function SaveModelInfo() As Boolean
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Saves the list of available Ecosim scenarios.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' <remarks>
-    ''' Note that this will NOT save any actual Ecosim scenario. Here, only the
-    ''' Ecosim scenario preview information is updated.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Private Function SaveEcosimScenarioDefinitions() As Boolean
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bNewRow As Boolean = False
+            Dim bSucces As Boolean = True
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim dt As DataTable = Nothing
-        Dim drow As DataRow = Nothing
-        Dim iScenario As Integer = 0
-        Dim bSucces As Boolean = True
+            Try
+                ' This will no longer work because of tables linking to ModelID
+                'Me.m_db.Execute("DELETE * FROM EcopathModel")
+                writer = Me.m_db.GetWriter("EcopathModel")
+                dt = writer.GetDataTable()
 
-        Try
-            writer = Me.m_db.GetWriter("EcosimScenario")
-            dt = writer.GetDataTable()
+                drow = dt.Rows.Find(Me.m_core.m_EwEModelDBID)
 
-            For iScenario = 1 To ecopathDS.NumEcosimScenarios
+                bNewRow = (drow Is Nothing)
+                If bNewRow Then
+                    drow = writer.NewRow()
+                Else
+                    drow.BeginEdit()
+                End If
 
-                drow = dt.Rows.Find(ecopathDS.EcosimScenarioDBID(iScenario))
-                Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for ecosim scenario ID {0}", ecopathDS.EcosimScenarioDBID(iScenario)))
+                drow("Name") = Me.m_core.m_EwEModelName
+                drow("Description") = Me.m_core.m_EwEModelDescription
+                drow("Author") = Me.m_core.m_EwEModelAuthor
+                drow("Contact") = Me.m_core.m_EwEModelContact
+                drow("Area") = Me.m_core.m_EwEModelArea
+                drow("NumDigits") = Me.m_core.m_EwEModelNumDigits
+                drow("GroupDigits") = Me.m_core.m_EwEModelGroupDigits
+                drow("UnitCurrency") = Me.m_core.m_EwEModelUnitCurrency
+                drow("UnitCurrencyCustom") = Me.m_core.m_EwEModelUnitCurrencyCustom
+                drow("UnitTime") = Me.m_core.m_EwEModelUnitTime
+                drow("UnitTimeCustom") = Me.m_core.m_EwEModelUnitTimeCustom
+                drow("UnitMonetary") = Me.m_core.m_EwEModelUnitMonetary
+                drow("LastSaved") = cDBDataSource.GetJulianDate()
 
-                drow.BeginEdit()
-                drow("ScenarioName") = ecopathDS.EcosimScenarioName(iScenario)
-                drow("Description") = ecopathDS.EcosimScenarioDescription(iScenario)
-                drow("Author") = ecopathDS.EcosimScenarioAuthor(iScenario)
-                drow("Contact") = ecopathDS.EcosimScenarioContact(iScenario)
-                drow("LastSaved") = ecopathDS.EcosimScenarioLastSaved(iScenario)
-                drow.EndEdit()
+                If bNewRow Then
+                    writer.AddRow(drow)
+                Else
+                    drow.EndEdit()
+                End If
 
-            Next
+                writer.Commit()
 
-        Catch ex As Exception
-            bSucces = False
-        End Try
+            Catch ex As Exception
+                bSucces = False
+            End Try
 
-        ' Save changes
-        Me.m_db.ReleaseWriter(writer, True)
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, True)
 
-        Return bSucces
-    End Function
+            Return bSucces
+        End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Load the list of available Ecospace scenarios.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' <remarks>
-    ''' Note that this will NOT load any actual Ecospace scenario. Scenario definitions 
-    ''' merely provide a preview of available Ecospace scenarios in the database.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Private Function LoadEcospaceScenarioDefinitions() As Boolean
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Load the list of available Ecosim scenarios.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' Note that this will NOT load any actual Ecosim scenario. Scenario definitions 
+        ''' merely provide a preview of available Ecosim scenarios in the database.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Private Function LoadEcosimScenarioDefinitions() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcospaceScenario")
-        Dim iScenario As Integer = 1
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcosimScenario")
+            Dim iScenario As Integer = 1
+            Dim bSucces As Boolean = True
 
-        ecopathDS.NumEcospaceScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcospaceScenario"))
-        ecopathDS.RedimEcospaceScenarios()
+            ecopathDS.NumEcosimScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcoSimScenario"))
+            ecopathDS.RedimEcosimScenarios()
 
-        If ecopathDS.NumEcospaceScenarios = 0 Then Return bSucces
+            If ecopathDS.NumEcosimScenarios = 0 Then Return bSucces
 
-        Try
-            While reader.Read()
-                ecopathDS.EcospaceScenarioDBID(iScenario) = CInt(reader("ScenarioID"))
-                ecopathDS.EcospaceScenarioName(iScenario) = CStr(reader("ScenarioName"))
-                ecopathDS.EcospaceScenarioDescription(iScenario) = CStr(reader("Description"))
-                ecopathDS.EcospaceScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
-                ecopathDS.EcospaceScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
-                ecopathDS.EcospaceScenarioLastSaved(iScenario) = CSng(Me.ReadSafe(reader, "LastSaved", 0))
-                iScenario += 1
-            End While
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
-            bSucces = False
-        End Try
+            Try
+                While reader.Read()
+                    ecopathDS.EcosimScenarioDBID(iScenario) = CInt(reader("ScenarioID"))
+                    ecopathDS.EcosimScenarioName(iScenario) = CStr(reader("ScenarioName"))
+                    ecopathDS.EcosimScenarioDescription(iScenario) = CStr(reader("Description"))
+                    ecopathDS.EcosimScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
+                    ecopathDS.EcosimScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
+                    ecopathDS.EcosimScenarioLastSaved(iScenario) = CSng(Me.ReadSafe(reader, "LastSaved", 0))
+                    iScenario += 1
+                End While
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading ecosim scenario definition {1}", ex.Message, iScenario))
+                bSucces = False
+            End Try
 
-        Me.m_db.ReleaseReader(reader)
+            Me.m_db.ReleaseReader(reader)
+            reader = Nothing
 
-        Return bSucces
-    End Function
+            Return bSucces
+        End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Saves the list of available Ecospace scenarios.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' <remarks>
-    ''' Note that this will NOT save any actual Ecospace scenario. Here, only the
-    ''' Ecospace scenario preview information is updated.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Private Function SaveEcospaceScenarioDefinitions() As Boolean
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Saves the list of available Ecosim scenarios.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' Note that this will NOT save any actual Ecosim scenario. Here, only the
+        ''' Ecosim scenario preview information is updated.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Private Function SaveEcosimScenarioDefinitions() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim dt As DataTable = Nothing
-        Dim drow As DataRow = Nothing
-        Dim iScenario As Integer = 0
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iScenario As Integer = 0
+            Dim bSucces As Boolean = True
 
-        Try
-            writer = Me.m_db.GetWriter("EcospaceScenario")
-            dt = writer.GetDataTable()
+            Try
+                writer = Me.m_db.GetWriter("EcosimScenario")
+                dt = writer.GetDataTable()
 
-            For iScenario = 1 To ecopathDS.NumEcospaceScenarios
+                For iScenario = 1 To ecopathDS.NumEcosimScenarios
 
-                drow = dt.Rows.Find(ecopathDS.EcospaceScenarioDBID(iScenario))
-                Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for ecospace scenario ID {0}", ecopathDS.EcospaceScenarioDBID(iScenario)))
+                    drow = dt.Rows.Find(ecopathDS.EcosimScenarioDBID(iScenario))
+                    Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for ecosim scenario ID {0}", ecopathDS.EcosimScenarioDBID(iScenario)))
 
-                drow.BeginEdit()
-                drow("ScenarioName") = ecopathDS.EcospaceScenarioName(iScenario)
-                drow("Description") = ecopathDS.EcospaceScenarioDescription(iScenario)
-                drow("Author") = ecopathDS.EcospaceScenarioAuthor(iScenario)
-                drow("Contact") = ecopathDS.EcospaceScenarioContact(iScenario)
-                drow("LastSaved") = ecopathDS.EcospaceScenarioLastSaved(iScenario)
-                drow.EndEdit()
+                    drow.BeginEdit()
+                    drow("ScenarioName") = ecopathDS.EcosimScenarioName(iScenario)
+                    drow("Description") = ecopathDS.EcosimScenarioDescription(iScenario)
+                    drow("Author") = ecopathDS.EcosimScenarioAuthor(iScenario)
+                    drow("Contact") = ecopathDS.EcosimScenarioContact(iScenario)
+                    drow("LastSaved") = ecopathDS.EcosimScenarioLastSaved(iScenario)
+                    drow.EndEdit()
 
-            Next
+                Next
 
-        Catch ex As Exception
-            bSucces = False
-        End Try
+            Catch ex As Exception
+                bSucces = False
+            End Try
 
-        ' Save changes
-        Me.m_db.ReleaseWriter(writer, True)
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, True)
 
-        Return bSucces
-    End Function
+            Return bSucces
+        End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Load the list of available Ecotracer scenarios.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' <remarks>
-    ''' Note that this will NOT load any actual Ecotracer scenario. Scenario definitions 
-    ''' merely provide a preview of available Ecotracer scenarios in the database.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Private Function LoadEcotracerScenarioDefinitions() As Boolean
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Load the list of available Ecospace scenarios.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' Note that this will NOT load any actual Ecospace scenario. Scenario definitions 
+        ''' merely provide a preview of available Ecospace scenarios in the database.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Private Function LoadEcospaceScenarioDefinitions() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcotracerScenario")
-        Dim iScenario As Integer = 1
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcospaceScenario")
+            Dim iScenario As Integer = 1
+            Dim bSucces As Boolean = True
 
-        ecopathDS.NumEcotracerScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcotracerScenario"))
-        ecopathDS.RedimEcotracerScenarios()
+            ecopathDS.NumEcospaceScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcospaceScenario"))
+            ecopathDS.RedimEcospaceScenarios()
 
-        If ecopathDS.NumEcotracerScenarios = 0 Then Return bSucces
+            If ecopathDS.NumEcospaceScenarios = 0 Then Return bSucces
 
-        Try
-            While reader.Read()
-                ecopathDS.EcotracerScenarioDBID(iScenario) = CInt(reader("ScenarioID"))
-                ecopathDS.EcotracerScenarioName(iScenario) = CStr(reader("ScenarioName"))
-                ecopathDS.EcotracerScenarioDescription(iScenario) = CStr(reader("Description"))
-                ecopathDS.EcotracerScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
-                ecopathDS.EcotracerScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
-                ecopathDS.EcotracerScenarioLastSaved(iScenario) = CSng(Me.ReadSafe(reader, "LastSaved", 0))
-                iScenario += 1
-            End While
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
-            bSucces = False
-        End Try
+            Try
+                While reader.Read()
+                    ecopathDS.EcospaceScenarioDBID(iScenario) = CInt(reader("ScenarioID"))
+                    ecopathDS.EcospaceScenarioName(iScenario) = CStr(reader("ScenarioName"))
+                    ecopathDS.EcospaceScenarioDescription(iScenario) = CStr(reader("Description"))
+                    ecopathDS.EcospaceScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
+                    ecopathDS.EcospaceScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
+                    ecopathDS.EcospaceScenarioLastSaved(iScenario) = CSng(Me.ReadSafe(reader, "LastSaved", 0))
+                    iScenario += 1
+                End While
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
+                bSucces = False
+            End Try
 
-        Me.m_db.ReleaseReader(reader)
+            Me.m_db.ReleaseReader(reader)
 
-        Return bSucces
-    End Function
+            Return bSucces
+        End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Saves the list of available Ecotracer scenarios.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' <remarks>
-    ''' Note that this will NOT save any actual Ecotracer scenario. Here, only the
-    ''' Ecotracer scenario preview information is updated.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Private Function SaveEcotracerScenarioDefinitions() As Boolean
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Saves the list of available Ecospace scenarios.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' Note that this will NOT save any actual Ecospace scenario. Here, only the
+        ''' Ecospace scenario preview information is updated.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Private Function SaveEcospaceScenarioDefinitions() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim dt As DataTable = Nothing
-        Dim drow As DataRow = Nothing
-        Dim iScenario As Integer = 0
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iScenario As Integer = 0
+            Dim bSucces As Boolean = True
 
-        Try
-            writer = Me.m_db.GetWriter("EcotracerScenario")
-            dt = writer.GetDataTable()
+            Try
+                writer = Me.m_db.GetWriter("EcospaceScenario")
+                dt = writer.GetDataTable()
 
-            For iScenario = 1 To ecopathDS.NumEcotracerScenarios
+                For iScenario = 1 To ecopathDS.NumEcospaceScenarios
 
-                drow = dt.Rows.Find(ecopathDS.EcotracerScenarioDBID(iScenario))
-                Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for ecotracer scenario ID {0}", ecopathDS.EcotracerScenarioDBID(iScenario)))
+                    drow = dt.Rows.Find(ecopathDS.EcospaceScenarioDBID(iScenario))
+                    Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for ecospace scenario ID {0}", ecopathDS.EcospaceScenarioDBID(iScenario)))
 
-                drow.BeginEdit()
-                drow("ScenarioName") = ecopathDS.EcotracerScenarioName(iScenario)
-                drow("Description") = ecopathDS.EcotracerScenarioDescription(iScenario)
-                drow("Author") = ecopathDS.EcotracerScenarioAuthor(iScenario)
-                drow("Contact") = ecopathDS.EcotracerScenarioContact(iScenario)
-                drow("LastSaved") = ecopathDS.EcotracerScenarioLastSaved(iScenario)
-                drow.EndEdit()
+                    drow.BeginEdit()
+                    drow("ScenarioName") = ecopathDS.EcospaceScenarioName(iScenario)
+                    drow("Description") = ecopathDS.EcospaceScenarioDescription(iScenario)
+                    drow("Author") = ecopathDS.EcospaceScenarioAuthor(iScenario)
+                    drow("Contact") = ecopathDS.EcospaceScenarioContact(iScenario)
+                    drow("LastSaved") = ecopathDS.EcospaceScenarioLastSaved(iScenario)
+                    drow.EndEdit()
 
-            Next
+                Next
 
-        Catch ex As Exception
-            bSucces = False
-        End Try
+            Catch ex As Exception
+                bSucces = False
+            End Try
 
-        ' Save changes
-        Me.m_db.ReleaseWriter(writer, True)
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, True)
 
-        Return bSucces
-    End Function
+            Return bSucces
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Load the list of available Ecotracer scenarios.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' Note that this will NOT load any actual Ecotracer scenario. Scenario definitions 
+        ''' merely provide a preview of available Ecotracer scenarios in the database.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Private Function LoadEcotracerScenarioDefinitions() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcotracerScenario")
+            Dim iScenario As Integer = 1
+            Dim bSucces As Boolean = True
+
+            ecopathDS.NumEcotracerScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcotracerScenario"))
+            ecopathDS.RedimEcotracerScenarios()
+
+            If ecopathDS.NumEcotracerScenarios = 0 Then Return bSucces
+
+            Try
+                While reader.Read()
+                    ecopathDS.EcotracerScenarioDBID(iScenario) = CInt(reader("ScenarioID"))
+                    ecopathDS.EcotracerScenarioName(iScenario) = CStr(reader("ScenarioName"))
+                    ecopathDS.EcotracerScenarioDescription(iScenario) = CStr(reader("Description"))
+                    ecopathDS.EcotracerScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
+                    ecopathDS.EcotracerScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
+                    ecopathDS.EcotracerScenarioLastSaved(iScenario) = CSng(Me.ReadSafe(reader, "LastSaved", 0))
+                    iScenario += 1
+                End While
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
+                bSucces = False
+            End Try
+
+            Me.m_db.ReleaseReader(reader)
+
+            Return bSucces
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Saves the list of available Ecotracer scenarios.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' Note that this will NOT save any actual Ecotracer scenario. Here, only the
+        ''' Ecotracer scenario preview information is updated.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Private Function SaveEcotracerScenarioDefinitions() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iScenario As Integer = 0
+            Dim bSucces As Boolean = True
+
+            Try
+                writer = Me.m_db.GetWriter("EcotracerScenario")
+                dt = writer.GetDataTable()
+
+                For iScenario = 1 To ecopathDS.NumEcotracerScenarios
+
+                    drow = dt.Rows.Find(ecopathDS.EcotracerScenarioDBID(iScenario))
+                    Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for ecotracer scenario ID {0}", ecopathDS.EcotracerScenarioDBID(iScenario)))
+
+                    drow.BeginEdit()
+                    drow("ScenarioName") = ecopathDS.EcotracerScenarioName(iScenario)
+                    drow("Description") = ecopathDS.EcotracerScenarioDescription(iScenario)
+                    drow("Author") = ecopathDS.EcotracerScenarioAuthor(iScenario)
+                    drow("Contact") = ecopathDS.EcotracerScenarioContact(iScenario)
+                    drow("LastSaved") = ecopathDS.EcotracerScenarioLastSaved(iScenario)
+                    drow.EndEdit()
+
+                Next
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, True)
+
+            Return bSucces
+        End Function
 
 #Region " Pedigree "
 
 #Region " Load "
 
-    Private Function LoadPedigreeLevels() As Boolean
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Load the pedigree level definitions.
+        ''' </summary>
+        ''' <returns>True if successful.</returns>
+        ''' -----------------------------------------------------------------------
+        Private Function LoadPedigreeLevels() As Boolean
 
-        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM Pedigree ORDER BY Sequence ASC")
-        Dim iLevel As Integer = 1
-        Dim bSucces As Boolean = True
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM Pedigree ORDER BY Sequence ASC")
+            Dim iLevel As Integer = 1
+            Dim bSucces As Boolean = True
 
-        ' Init data structure
-        ecopathDS.NumPedigreeLevels = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM Pedigree"))
+            ' Init data structure
+            ecopathDS.NumPedigreeLevels = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM Pedigree"))
 
-        ' Allocate space
-        ecopathDS.RedimPedigreeLevels()
+            ' Allocate space
+            ecopathDS.RedimPedigreeLevels()
 
-        While reader.Read()
+            While reader.Read()
 
-            Try
-                ecopathDS.PedigreeLevelDBID(iLevel) = CInt(reader("LevelID"))
-                ecopathDS.PedigreeLevelVarName(iLevel) = cin.GetVarName(CStr(reader("VarName")))
-                ecopathDS.PedigreeLevelIndexValue(iLevel) = CSng(reader("IndexValue"))
-                ecopathDS.PedigreeLevelConfidence(iLevel) = CSng(reader("Confidence"))
-                ecopathDS.PedigreeLevelDescription(iLevel) = CStr(reader("Description"))
+                Try
+                    ecopathDS.PedigreeLevelDBID(iLevel) = CInt(reader("LevelID"))
+                    ecopathDS.PedigreeLevelVarName(iLevel) = cin.GetVarName(CStr(reader("VarName")))
+                    ecopathDS.PedigreeLevelIndexValue(iLevel) = CSng(reader("IndexValue"))
+                    ecopathDS.PedigreeLevelConfidence(iLevel) = CSng(reader("Confidence"))
+                    ecopathDS.PedigreeLevelDescription(iLevel) = CStr(reader("Description"))
 
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading pedigree level {1}", ex.Message, iLevel))
-                bSucces = False
-            End Try
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while reading pedigree level {1}", ex.Message, iLevel))
+                    bSucces = False
+                End Try
 
-            iLevel += 1
+                iLevel += 1
 
-        End While
+            End While
 
-        ' Sanity check
-        Debug.Assert(iLevel - 1 = ecopathDS.NumPedigreeLevels)
+            ' Sanity check
+            Debug.Assert(iLevel - 1 = ecopathDS.NumPedigreeLevels)
 
-        Me.m_db.ReleaseReader(reader)
-        reader = Nothing
+            Me.m_db.ReleaseReader(reader)
+            reader = Nothing
 
-        Return bSucces
-    End Function
+            Return bSucces
+        End Function
 
 #End Region ' Load
 
 #Region " Save "
 
-    Public Function SavePedigreeLevels() As Boolean
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Save pedigree level definitions.
+        ''' </summary>
+        ''' <returns>True if successful.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Function SavePedigreeLevels() As Boolean
 
-        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim dt As DataTable = Nothing
-        Dim drow As DataRow = Nothing
-        Dim iLevel As Integer = 0
-        Dim bSucces As Boolean = True
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iLevel As Integer = 0
+            Dim bSucces As Boolean = True
 
-        Try
-            writer = Me.m_db.GetWriter("Pedigree")
-            dt = writer.GetDataTable()
+            Try
+                writer = Me.m_db.GetWriter("Pedigree")
+                dt = writer.GetDataTable()
 
-            For iLevel = 1 To ecopathDS.NumPedigreeLevels
+                For iLevel = 1 To ecopathDS.NumPedigreeLevels
 
-                ' Find existing row
-                drow = dt.Rows.Find(ecopathDS.PedigreeLevelDBID(iLevel))
-                Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for pedigree level {0}", ecopathDS.PedigreeLevelDBID(iLevel)))
+                    ' Find existing row
+                    drow = dt.Rows.Find(ecopathDS.PedigreeLevelDBID(iLevel))
+                    Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for pedigree level {0}", ecopathDS.PedigreeLevelDBID(iLevel)))
 
-                drow.BeginEdit()
-                drow("Sequence") = iLevel
-                drow("VarName") = CStr(cin.GetVarName(ecopathDS.PedigreeLevelVarName(iLevel)))
-                drow("IndexValue") = ecopathDS.PedigreeLevelIndexValue(iLevel)
-                drow("Confidence") = ecopathDS.PedigreeLevelConfidence(iLevel)
-                drow("Description") = ecopathDS.PedigreeLevelDescription(iLevel)
+                    drow.BeginEdit()
+                    drow("Sequence") = iLevel
+                    drow("VarName") = CStr(cin.GetVarName(ecopathDS.PedigreeLevelVarName(iLevel)))
+                    drow("IndexValue") = ecopathDS.PedigreeLevelIndexValue(iLevel)
+                    drow("Confidence") = ecopathDS.PedigreeLevelConfidence(iLevel)
+                    drow("Description") = ecopathDS.PedigreeLevelDescription(iLevel)
 
-                drow.EndEdit()
+                    drow.EndEdit()
 
-            Next iLevel
+                Next iLevel
 
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while saving pedigree level", ex.Message))
-            bSucces = False
-        End Try
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving pedigree level", ex.Message))
+                bSucces = False
+            End Try
 
-        ' Save changes
-        Me.m_db.ReleaseWriter(writer, True)
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, True)
 
-        Return bSucces
-    End Function
+            Return bSucces
+        End Function
 
 #End Region ' Save
 
 #Region " Modify "
 
-    Public Function AddPedigreeLevel(ByVal iPosition As Integer, ByVal varName As eVarNameFlags, ByVal sIndexValue As Single, ByVal sConfidence As Single, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean _
-            Implements IEcopathDataSource.AddPedigreeLevel
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Adds a pedigree level to the datasource.
+        ''' </summary>
+        ''' <param name="iPosition">The position of the new pedigree level in
+        ''' the level sequence.</param>
+        ''' <param name="varName"><see cref="eVarNameFlags">Variable name</see> 
+        ''' this pedigree level pertains to</param>
+        ''' <param name="sIndexValue">Value [0, 1] indicating...</param>
+        ''' <param name="sConfidence">Confidence interval for this pedigree level.</param>
+        ''' <param name="strDescription">Description to assign to new pedigree level.</param>
+        ''' <param name="iDBID">Database ID assigned to the new pedigree level.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function AddPedigreeLevel(ByVal iPosition As Integer, _
+                                         ByVal varName As eVarNameFlags, _
+                                         ByVal sIndexValue As Single, _
+                                         ByVal sConfidence As Single, _
+                                         ByVal strDescription As String, _
+                                         ByRef iDBID As Integer) As Boolean _
+                Implements IEcopathDataSource.AddPedigreeLevel
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim drow As DataRow = Nothing
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
 
-        Try
             Try
-                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(LevelID) FROM Pedigree")) + 1
-            Catch
-                iDBID = 1
+                Try
+                    iDBID = CInt(Me.m_db.GetValue("SELECT MAX(LevelID) FROM Pedigree")) + 1
+                Catch
+                    iDBID = 1
+                End Try
+
+                ' Start writing, protect sequence
+                writer = Me.m_db.GetWriter("Pedigree", "Sequence")
+
+                ' Get new row to add
+                drow = writer.NewRow()
+                drow("LevelID") = iDBID
+                drow("VarName") = CInt(varName)
+                drow("IndexValue") = sIndexValue
+                drow("Confidence") = sConfidence
+                drow("Description") = strDescription
+                drow("Sequence") = iPosition
+
+                ' Commit to db
+                writer.AddRow(drow)
+                Me.m_db.ReleaseWriter(writer, True)
+
+            Catch ex As Exception
+                bSucces = False
             End Try
 
-            ' Start writing, protect sequence
-            writer = Me.m_db.GetWriter("Pedigree", "Sequence")
+            bSucces = bSucces And Me.LoadPedigreeLevels()
 
-            ' Get new row to add
-            drow = writer.NewRow()
-            drow("LevelID") = iDBID
-            drow("VarName") = CInt(varName)
-            drow("IndexValue") = sIndexValue
-            drow("Confidence") = sConfidence
-            drow("Description") = strDescription
-            drow("Sequence") = iPosition
+            Return bSucces
 
-            ' Commit to db
-            writer.AddRow(drow)
-            Me.m_db.ReleaseWriter(writer, True)
+        End Function
 
-        Catch ex As Exception
-            bSucces = False
-        End Try
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Move a pedigree level to a different position in the level sequence.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the pedigree level to move.</param>
+        ''' <param name="iPosition">The new position of the pedigree level in the 
+        ''' level sequence.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function MovePedigreeLevel(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
+                Implements IEcopathDataSource.MovePedigreeLevel
 
-        bSucces = bSucces And Me.LoadPedigreeLevels()
+            Dim bSucces As Boolean = True
+            Try
+                Me.m_db.Execute(String.Format("UPDATE Pedigree SET Sequence={1} WHERE (LevelID={0})", iDBID, iPosition))
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while moving PedigreeLevel {1}", ex.Message, iDBID))
+                bSucces = False
+            End Try
+            Return bSucces
 
-        Return bSucces
+        End Function
 
-    End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Remove a pedigree level from the datasource.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the pedigree level to remove.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function RemovePedigreeLevel(ByVal iDBID As Integer) As Boolean _
+                  Implements IEcopathDataSource.RemovePedigreeLevel
 
-    Public Function MovePedigreeLevel(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
-            Implements IEcopathDataSource.MovePedigreeLevel
+            Dim bSucces As Boolean = True
+            Try
+                Me.m_db.Execute(String.Format("DELETE FROM Pedigree WHERE (LevelID={0})", iDBID))
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while removing PedigreeLevel {1}", ex.Message, iDBID))
+                bSucces = False
+            End Try
+            Return bSucces
 
-        Dim bSucces As Boolean = True
-        Try
-            Me.m_db.Execute(String.Format("UPDATE Pedigree SET Sequence={1} WHERE (LevelID={0})", iDBID, iPosition))
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while moving PedigreeLevel {1}", ex.Message, iDBID))
-            bSucces = False
-        End Try
-        Return bSucces
-
-    End Function
-
-    Public Function RemovePedigreeLevel(ByVal iDBID As Integer) As Boolean _
-            Implements IEcopathDataSource.RemovePedigreeLevel
-
-        Dim bSucces As Boolean = True
-        Try
-            Me.m_db.Execute(String.Format("DELETE FROM Pedigree WHERE (LevelID={0})", iDBID))
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while removing PedigreeLevel {1}", ex.Message, iDBID))
-            bSucces = False
-        End Try
-        Return bSucces
-
-    End Function
+        End Function
 
 #End Region ' Modify
 
@@ -1254,87 +1299,99 @@ Public Class cDBDataSource
 
 #Region " Load "
 
-    Private Function LoadParticleSizeDistribution() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load Particle Size Distribution data for Ecopath.
+        ''' </summary>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function LoadParticleSizeDistribution() As Boolean
 
-        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
-        Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathPSD")
-        Dim bSucces As Boolean = True
+            Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathPSD")
+            Dim bSucces As Boolean = True
 
-        If reader IsNot Nothing Then
+            If reader IsNot Nothing Then
 
-            reader.Read()
-            Try
+                reader.Read()
+                Try
 
-                psdDS.NAgeSteps = CInt(Me.ReadSafe(reader, "NumAgeSteps", 101))
-                psdDS.MortalityType = CType(CInt(Me.ReadSafe(reader, "MortalityType", 0)), ePSDMortalityTypes)
-                psdDS.NWeightClasses = CInt(Me.ReadSafe(reader, "NumWeightClasses", 25))
-                psdDS.FirstWeightClass = CSng(Me.ReadSafe(reader, "FirstWeightClass", 0.125))
-                psdDS.ClimateType = CType(CInt(Me.ReadSafe(reader, "ClimateType", eClimateTypes.Temperate)), eClimateTypes)
+                    psdDS.NAgeSteps = CInt(Me.ReadSafe(reader, "NumAgeSteps", 101))
+                    psdDS.MortalityType = CType(CInt(Me.ReadSafe(reader, "MortalityType", 0)), ePSDMortalityTypes)
+                    psdDS.NWeightClasses = CInt(Me.ReadSafe(reader, "NumWeightClasses", 25))
+                    psdDS.FirstWeightClass = CSng(Me.ReadSafe(reader, "FirstWeightClass", 0.125))
+                    psdDS.ClimateType = CType(CInt(Me.ReadSafe(reader, "ClimateType", eClimateTypes.Temperate)), eClimateTypes)
 
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
-                bSucces = False
-            End Try
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
+                    bSucces = False
+                End Try
 
-            Me.m_db.ReleaseReader(reader)
-            reader = Nothing
+                Me.m_db.ReleaseReader(reader)
+                reader = Nothing
 
-        End If
+            End If
 
-        Return bSucces
-    End Function
+            Return bSucces
+        End Function
 
 #End Region ' Load
 
 #Region " Save "
 
-    Public Function SaveParticleSizeDistribution() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Save Particle Size Distribution data for Ecopath.
+        ''' </summary>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function SaveParticleSizeDistribution() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim dt As DataTable = Nothing
-        Dim drow As DataRow = Nothing
-        Dim bNewRow As Boolean = False
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bNewRow As Boolean = False
+            Dim bSucces As Boolean = True
 
-        Try
-            writer = Me.m_db.GetWriter("EcopathPSD")
-            dt = writer.GetDataTable()
+            Try
+                writer = Me.m_db.GetWriter("EcopathPSD")
+                dt = writer.GetDataTable()
 
-            ' Find existing row
-            drow = dt.Rows.Find(Me.m_core.m_EwEModelDBID)
-            bNewRow = (drow Is Nothing)
+                ' Find existing row
+                drow = dt.Rows.Find(Me.m_core.m_EwEModelDBID)
+                bNewRow = (drow Is Nothing)
 
-            If bNewRow Then
-                drow = dt.NewRow()
-                drow("ModelID") = Me.m_core.m_EwEModelDBID
-            Else
-                drow.BeginEdit()
-            End If
+                If bNewRow Then
+                    drow = dt.NewRow()
+                    drow("ModelID") = Me.m_core.m_EwEModelDBID
+                Else
+                    drow.BeginEdit()
+                End If
 
-            drow("NumAgeSteps") = psdDS.NAgeSteps
-            drow("MortalityType") = psdDS.MortalityType
-            drow("NumWeightClasses") = psdDS.NWeightClasses
-            drow("FirstWeightClass") = psdDS.FirstWeightClass
-            drow("ClimateType") = psdDS.ClimateType
+                drow("NumAgeSteps") = psdDS.NAgeSteps
+                drow("MortalityType") = psdDS.MortalityType
+                drow("NumWeightClasses") = psdDS.NWeightClasses
+                drow("FirstWeightClass") = psdDS.FirstWeightClass
+                drow("ClimateType") = psdDS.ClimateType
 
-            If bNewRow Then
-                writer.AddRow(drow)
-            Else
-                drow.EndEdit()
-            End If
+                If bNewRow Then
+                    writer.AddRow(drow)
+                Else
+                    drow.EndEdit()
+                End If
 
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while saving PSD", ex.Message))
-            bSucces = False
-        End Try
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving PSD", ex.Message))
+                bSucces = False
+            End Try
 
-        ' Save changes
-        Me.m_db.ReleaseWriter(writer, True)
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, True)
 
-        Return bSucces
-    End Function
+            Return bSucces
+        End Function
 
 #End Region ' Save
 
@@ -1745,491 +1802,491 @@ Public Class cDBDataSource
 
 #Region " Load "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Loads Ecopath Group information.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function LoadEcopathGroups() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Loads Ecopath Group information.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function LoadEcopathGroups() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
-        Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroup ORDER BY Sequence ASC")
-        Dim iGroup As Integer = 1
-        Dim sTemp As Single = 0.0
-        Dim strTemp As String = ""
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroup ORDER BY Sequence ASC")
+            Dim iGroup As Integer = 1
+            Dim sTemp As Single = 0.0
+            Dim strTemp As String = ""
+            Dim bSucces As Boolean = True
 
-        ' Init data structure
-        ecopathDS.NumGroups = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup"))
-        psdDS.NumGroups = ecopathDS.NumGroups
+            ' Init data structure
+            ecopathDS.NumGroups = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup"))
+            psdDS.NumGroups = ecopathDS.NumGroups
 
-        ecopathDS.NumLiving = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup WHERE (TYPE <= 1)"))
-        psdDS.NumLiving = ecopathDS.NumLiving
+            ecopathDS.NumLiving = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup WHERE (TYPE <= 1)"))
+            psdDS.NumLiving = ecopathDS.NumLiving
 
-        ecopathDS.NumDetrit = ecopathDS.NumGroups - ecopathDS.NumLiving
-
-
-        ' Allocate space
-        If (Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables()) Then
-            ' It would be quite remarkable to fail here... log message?
-            Return False
-        End If
-
-        While reader.Read()
-
-            Try
-                ecopathDS.GroupDBID(iGroup) = CInt(reader("GroupID"))
-                ecopathDS.GroupName(iGroup) = CStr(reader("GroupName"))
-                ecopathDS.PP(iGroup) = CSng(reader("Type"))
-                ecopathDS.Area(iGroup) = CSng(reader("Area"))
-                ecopathDS.BH(iGroup) = ecopathDS.B(iGroup) / ecopathDS.Area(iGroup)
-                ecopathDS.BA(iGroup) = CSng(reader("BiomAcc"))
-                ' VERIFY_JS: Check default value for BiomAccRate. 0 is assumed
-                ecopathDS.BaBi(iGroup) = CSng(reader("BiomAccRate"))
-                ecopathDS.GS(iGroup) = CSng(reader("Unassim"))
-                ecopathDS.DtImp(iGroup) = CSng(reader("DtImports"))
-                ecopathDS.Ex(iGroup) = CSng(reader("Export"))
-                ecopathDS.fCatch(iGroup) = CSng(reader("Catch"))
-                ecopathDS.DCInput(iGroup, 0) = CSng(reader("ImpVar"))
-                ecopathDS.GroupIsFish(iGroup) = CBool(reader("GroupIsFish"))
-                ecopathDS.GroupIsInvert(iGroup) = CBool(reader("GroupIsInvert"))
-                ecopathDS.Shadow(iGroup) = CSng(reader("NonMarketValue"))
-                ecopathDS.Resp(iGroup) = CSng(reader("Respiration"))
-                ecopathDS.Immig(iGroup) = CSng(reader("Immigration"))
-                ecopathDS.Emigration(iGroup) = CSng(reader("Emigration"))
-                ecopathDS.Emig(iGroup) = CSng(Me.ReadSafe(reader, "EmigRate", 0.0!))
-
-                ' PSD
-                ecopathDS.vbK(iGroup) = CSng(Me.ReadSafe(reader, "VBK", -1))
-                psdDS.AinLWInput(iGroup) = CSng(reader("AinLW"))
-                psdDS.BinLWInput(iGroup) = CSng(reader("BinLW"))
-                psdDS.LooInput(iGroup) = CSng(reader("Loo"))
-                psdDS.WinfInput(iGroup) = CSng(reader("Winf"))
-                psdDS.t0Input(iGroup) = CSng(reader("t0"))
-                psdDS.TcatchInput(iGroup) = CSng(reader("Tcatch"))
-                psdDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
+            ecopathDS.NumDetrit = ecopathDS.NumGroups - ecopathDS.NumLiving
 
 
-                'variables with input output pairs
-                ecopathDS.EEinput(iGroup) = CSng(reader("EcoEfficiency"))
-                ecopathDS.PBinput(iGroup) = CSng(reader("ProdBiom"))
-                ecopathDS.QBinput(iGroup) = CSng(reader("ConsBiom"))
-                ecopathDS.GEinput(iGroup) = CSng(reader("ProdCons"))
-                ecopathDS.Binput(iGroup) = CSng(reader("Biomass"))
-                ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
+            ' Allocate space
+            If (Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables()) Then
+                ' It would be quite remarkable to fail here... log message?
+                Return False
+            End If
 
-                ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
+            While reader.Read()
 
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
-                bSucces = False
-            End Try
+                Try
+                    ecopathDS.GroupDBID(iGroup) = CInt(reader("GroupID"))
+                    ecopathDS.GroupName(iGroup) = CStr(reader("GroupName"))
+                    ecopathDS.PP(iGroup) = CSng(reader("Type"))
+                    ecopathDS.Area(iGroup) = CSng(reader("Area"))
+                    ecopathDS.BH(iGroup) = ecopathDS.B(iGroup) / ecopathDS.Area(iGroup)
+                    ecopathDS.BA(iGroup) = CSng(reader("BiomAcc"))
+                    ' VERIFY_JS: Check default value for BiomAccRate. 0 is assumed
+                    ecopathDS.BaBi(iGroup) = CSng(reader("BiomAccRate"))
+                    ecopathDS.GS(iGroup) = CSng(reader("Unassim"))
+                    ecopathDS.DtImp(iGroup) = CSng(reader("DtImports"))
+                    ecopathDS.Ex(iGroup) = CSng(reader("Export"))
+                    ecopathDS.fCatch(iGroup) = CSng(reader("Catch"))
+                    ecopathDS.DCInput(iGroup, 0) = CSng(reader("ImpVar"))
+                    ecopathDS.GroupIsFish(iGroup) = CBool(reader("GroupIsFish"))
+                    ecopathDS.GroupIsInvert(iGroup) = CBool(reader("GroupIsInvert"))
+                    ecopathDS.Shadow(iGroup) = CSng(reader("NonMarketValue"))
+                    ecopathDS.Resp(iGroup) = CSng(reader("Respiration"))
+                    ecopathDS.Immig(iGroup) = CSng(reader("Immigration"))
+                    ecopathDS.Emigration(iGroup) = CSng(reader("Emigration"))
+                    ecopathDS.Emig(iGroup) = CSng(Me.ReadSafe(reader, "EmigRate", 0.0!))
 
-            iGroup += 1
+                    ' PSD
+                    ecopathDS.vbK(iGroup) = CSng(Me.ReadSafe(reader, "VBK", -1))
+                    psdDS.AinLWInput(iGroup) = CSng(reader("AinLW"))
+                    psdDS.BinLWInput(iGroup) = CSng(reader("BinLW"))
+                    psdDS.LooInput(iGroup) = CSng(reader("Loo"))
+                    psdDS.WinfInput(iGroup) = CSng(reader("Winf"))
+                    psdDS.t0Input(iGroup) = CSng(reader("t0"))
+                    psdDS.TcatchInput(iGroup) = CSng(reader("Tcatch"))
+                    psdDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
 
-        End While
 
-        Debug.Assert(iGroup - 1 = ecopathDS.NumGroups)
+                    'variables with input output pairs
+                    ecopathDS.EEinput(iGroup) = CSng(reader("EcoEfficiency"))
+                    ecopathDS.PBinput(iGroup) = CSng(reader("ProdBiom"))
+                    ecopathDS.QBinput(iGroup) = CSng(reader("ConsBiom"))
+                    ecopathDS.GEinput(iGroup) = CSng(reader("ProdCons"))
+                    ecopathDS.Binput(iGroup) = CSng(reader("Biomass"))
+                    ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
 
-        Me.m_db.ReleaseReader(reader)
-        reader = Nothing
+                    ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
 
-        bSucces = bSucces And Me.LoadEcopathDietComp()
-        bSucces = bSucces And Me.LoadStanza()
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
+                    bSucces = False
+                End Try
 
-        Return bSucces
+                iGroup += 1
 
-    End Function
+            End While
+
+            Debug.Assert(iGroup - 1 = ecopathDS.NumGroups)
+
+            Me.m_db.ReleaseReader(reader)
+            reader = Nothing
+
+            bSucces = bSucces And Me.LoadEcopathDietComp()
+            bSucces = bSucces And Me.LoadStanza()
+
+            Return bSucces
+
+        End Function
 
 #End Region ' Load
 
 #Region " Save "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Update group info in the datasource.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function SaveEcopathGroups() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update group info in the datasource.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function SaveEcopathGroups() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim dt As DataTable = Nothing
-        Dim drow As DataRow = Nothing
-        Dim iGroup As Integer = 0
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iGroup As Integer = 0
+            Dim bSucces As Boolean = True
 
-        Try
-            writer = Me.m_db.GetWriter("EcopathGroup")
-            dt = writer.GetDataTable()
+            Try
+                writer = Me.m_db.GetWriter("EcopathGroup")
+                dt = writer.GetDataTable()
 
-            For iGroup = 1 To ecopathDS.NumGroups
+                For iGroup = 1 To ecopathDS.NumGroups
 
-                ' Find existing row
-                drow = dt.Rows.Find(ecopathDS.GroupDBID(iGroup))
-                Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for group {0}", ecopathDS.GroupDBID(iGroup)))
+                    ' Find existing row
+                    drow = dt.Rows.Find(ecopathDS.GroupDBID(iGroup))
+                    Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for group {0}", ecopathDS.GroupDBID(iGroup)))
 
-                drow.BeginEdit()
-                drow("GroupID") = ecopathDS.GroupDBID(iGroup)
-                drow("Sequence") = iGroup
-                drow("GroupName") = ecopathDS.GroupName(iGroup)
-                drow("Type") = ecopathDS.PP(iGroup)
-                drow("Area") = ecopathDS.Area(iGroup)
-                drow("BiomAcc") = ecopathDS.BA(iGroup)
-                drow("BiomAccRate") = ecopathDS.BaBi(iGroup)
-                drow("Unassim") = ecopathDS.GS(iGroup)
-                drow("DtImports") = ecopathDS.DtImp(iGroup)
-                drow("Export") = ecopathDS.Ex(iGroup)
-                drow("Catch") = ecopathDS.fCatch(iGroup)
-                drow("ImpVar") = ecopathDS.DCInput(iGroup, 0)
-                drow("GroupIsFish") = ecopathDS.GroupIsFish(iGroup)
-                drow("GroupIsInvert") = ecopathDS.GroupIsInvert(iGroup)
-                drow("NonMarketValue") = ecopathDS.Shadow(iGroup)
-                drow("Respiration") = ecopathDS.Resp(iGroup)
+                    drow.BeginEdit()
+                    drow("GroupID") = ecopathDS.GroupDBID(iGroup)
+                    drow("Sequence") = iGroup
+                    drow("GroupName") = ecopathDS.GroupName(iGroup)
+                    drow("Type") = ecopathDS.PP(iGroup)
+                    drow("Area") = ecopathDS.Area(iGroup)
+                    drow("BiomAcc") = ecopathDS.BA(iGroup)
+                    drow("BiomAccRate") = ecopathDS.BaBi(iGroup)
+                    drow("Unassim") = ecopathDS.GS(iGroup)
+                    drow("DtImports") = ecopathDS.DtImp(iGroup)
+                    drow("Export") = ecopathDS.Ex(iGroup)
+                    drow("Catch") = ecopathDS.fCatch(iGroup)
+                    drow("ImpVar") = ecopathDS.DCInput(iGroup, 0)
+                    drow("GroupIsFish") = ecopathDS.GroupIsFish(iGroup)
+                    drow("GroupIsInvert") = ecopathDS.GroupIsInvert(iGroup)
+                    drow("NonMarketValue") = ecopathDS.Shadow(iGroup)
+                    drow("Respiration") = ecopathDS.Resp(iGroup)
 
-                'variable with input/output pair only the input gets saved
-                drow("EcoEfficiency") = ecopathDS.EEinput(iGroup)
-                drow("ProdBiom") = ecopathDS.PBinput(iGroup)
-                drow("ConsBiom") = ecopathDS.QBinput(iGroup)
-                drow("ProdCons") = ecopathDS.GEinput(iGroup)
-                drow("Biomass") = ecopathDS.Binput(iGroup)
-                ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
+                    'variable with input/output pair only the input gets saved
+                    drow("EcoEfficiency") = ecopathDS.EEinput(iGroup)
+                    drow("ProdBiom") = ecopathDS.PBinput(iGroup)
+                    drow("ConsBiom") = ecopathDS.QBinput(iGroup)
+                    drow("ProdCons") = ecopathDS.GEinput(iGroup)
+                    drow("Biomass") = ecopathDS.Binput(iGroup)
+                    ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
 
-                drow("Immigration") = ecopathDS.Immig(iGroup)
-                drow("Emigration") = ecopathDS.Emigration(iGroup)
-                drow("EmigRate") = ecopathDS.Emig(iGroup)
-                drow("PoolColor") = String.Format("{0:x8}", ecopathDS.GroupColor(iGroup))
+                    drow("Immigration") = ecopathDS.Immig(iGroup)
+                    drow("Emigration") = ecopathDS.Emigration(iGroup)
+                    drow("EmigRate") = ecopathDS.Emig(iGroup)
+                    drow("PoolColor") = String.Format("{0:x8}", ecopathDS.GroupColor(iGroup))
 
-                'PSD
-                drow("VBK") = ecopathDS.vbK(iGroup)
-                drow("Tcatch") = psdDS.Tcatch(iGroup)
-                drow("AinLW") = psdDS.AinLWInput(iGroup)
-                drow("BinLW") = psdDS.BinLWInput(iGroup)
-                drow("Loo") = psdDS.LooInput(iGroup)
-                drow("Winf") = psdDS.WinfInput(iGroup)
-                drow("t0") = psdDS.t0Input(iGroup)
-                drow("Tmax") = psdDS.TmaxInput(iGroup)
+                    'PSD
+                    drow("VBK") = ecopathDS.vbK(iGroup)
+                    drow("Tcatch") = psdDS.Tcatch(iGroup)
+                    drow("AinLW") = psdDS.AinLWInput(iGroup)
+                    drow("BinLW") = psdDS.BinLWInput(iGroup)
+                    drow("Loo") = psdDS.LooInput(iGroup)
+                    drow("Winf") = psdDS.WinfInput(iGroup)
+                    drow("t0") = psdDS.t0Input(iGroup)
+                    drow("Tmax") = psdDS.TmaxInput(iGroup)
 
-                drow.EndEdit()
+                    drow.EndEdit()
 
-            Next iGroup
+                Next iGroup
 
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while saving EcopathGroup", ex.Message))
-            bSucces = False
-        End Try
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathGroup", ex.Message))
+                bSucces = False
+            End Try
 
-        ' Save changes
-        Me.m_db.ReleaseWriter(writer, True)
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, True)
 
-        bSucces = bSucces And Me.SaveEcopathDietComp()
-        bSucces = bSucces And Me.SaveStanza()
+            bSucces = bSucces And Me.SaveEcopathDietComp()
+            bSucces = bSucces And Me.SaveStanza()
 
-        Return bSucces
+            Return bSucces
 
-    End Function
+        End Function
 
 #End Region ' Save
 
 #Region " Modify "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Create a record for a new Ecopath group in the datasource.
-    ''' </summary>
-    ''' <param name="strGroupName">The name of the group to create.</param>
-    ''' <param name="sPP">The type of the new group; 0=consumer, 1=producer, 2=detritus, or a cons/prod ratio.</param>
-    ''' <param name="sVBK">The vbK value to pass to the group.</param>
-    ''' <param name="iPosition">The position of the new group in the group sequence.</param>
-    ''' <param name="iDBID">Database ID assigned to the new Group.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' <remarks>
-    ''' Note that this will not adjust the data arrays. Due to the complex organization of the
-    ''' core a full data reload is required after a group is created.
-    ''' </remarks>
-    ''' -------------------------------------------------------------------
-    Public Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal sVBK As Single, _
-                             ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
-            Implements IEcopathDataSource.AddGroup
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a record for a new Ecopath group in the datasource.
+        ''' </summary>
+        ''' <param name="strGroupName">The name of the group to create.</param>
+        ''' <param name="sPP">The type of the new group; 0=consumer, 1=producer, 2=detritus, or a cons/prod ratio.</param>
+        ''' <param name="sVBK">The vbK value to pass to the group.</param>
+        ''' <param name="iPosition">The position of the new group in the group sequence.</param>
+        ''' <param name="iDBID">Database ID assigned to the new Group.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' Note that this will not adjust the data arrays. Due to the complex organization of the
+        ''' core a full data reload is required after a group is created.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal sVBK As Single, _
+                                 ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
+                Implements IEcopathDataSource.AddGroup
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim drow As DataRow = Nothing
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
 
-        Try
             Try
-                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcopathGroup")) + 1
-            Catch
-                iDBID = 1
+                Try
+                    iDBID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcopathGroup")) + 1
+                Catch
+                    iDBID = 1
+                End Try
+
+                ' Start writing, protect sequence
+                writer = Me.m_db.GetWriter("EcopathGroup", "Sequence")
+
+                ' Get new row to add
+                drow = writer.NewRow()
+                ' Database will take care of defaults, only take care of the bare necessities
+                drow("GroupID") = iDBID
+                drow("GroupName") = strGroupName
+                drow("Type") = sPP
+                drow("vbK") = sVBK
+                drow("t0") = -9999 ' Fix default
+                drow("Sequence") = iPosition
+
+                ' Commit to db
+                writer.AddRow(drow)
+                Me.m_db.ReleaseWriter(writer, True)
+
+            Catch ex As Exception
+                bSucces = False
             End Try
 
-            ' Start writing, protect sequence
-            writer = Me.m_db.GetWriter("EcopathGroup", "Sequence")
+            ' Set initial diet data for this group
+            If sPP < 2 Then
+                Try
+                    ' Start writing
+                    writer = Me.m_db.GetWriter("EcopathDietComp")
 
-            ' Get new row to add
-            drow = writer.NewRow()
-            ' Database will take care of defaults, only take care of the bare necessities
-            drow("GroupID") = iDBID
-            drow("GroupName") = strGroupName
-            drow("Type") = sPP
-            drow("vbK") = sVBK
-            drow("t0") = -9999 ' Fix default
-            drow("Sequence") = iPosition
+                    ' For all detritus groups
+                    For iPrey As Integer = ecopathDS.NumLiving + 1 To ecopathDS.NumGroups
+                        ' Get new row to add
+                        drow = writer.NewRow()
+                        ' Database will take care of defaults, only take care of the bare necessities
+                        drow("PredID") = iDBID
+                        drow("PreyID") = ecopathDS.GroupDBID(iPrey)
+                        ' Commit to db
+                        writer.AddRow(drow)
+                    Next iPrey
 
-            ' Commit to db
-            writer.AddRow(drow)
-            Me.m_db.ReleaseWriter(writer, True)
+                    Me.m_db.ReleaseWriter(writer, True)
 
-        Catch ex As Exception
-            bSucces = False
-        End Try
+                Catch ex As Exception
+                    bSucces = False
+                End Try
+            End If
 
-        ' Set initial diet data for this group
-        If sPP < 2 Then
+            ' Create this group for each ecosim scenario
+            bSucces = bSucces And Me.AddEcosimGroupToAllScenarios(iDBID)
+            ' Create this group for each ecospace scenario
+            bSucces = bSucces And Me.AddEcospaceGroupToAllScenarios(iDBID, (sPP = 2.0))
+            ' Create this group for each ecotracer scenario
+            bSucces = bSucces And Me.AddEcotracerGroupToAllScenarios(iDBID)
+
+            Return bSucces
+
+        End Function
+
+        Private Function AddCatchDataForGroup(ByVal iGroupID As Integer) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim iFleetID As Integer = 0
+            Dim bSucces As Boolean = True
+
+            For iFleet As Integer = 1 To ecopathDS.NumFleet
+                iFleetID = ecopathDS.FleetDBID(iFleet)
+                bSucces = bSucces And Me.AddCatch(iGroupID, iFleetID)
+                bSucces = bSucces And Me.AddDiscardFate(iGroupID, iFleetID)
+            Next
+            Return bSucces
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Remove a group from the datasource.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the group to remove.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' Note that this will not adjust the data arrays. Due to the complex organization of the
+        ''' core a full data reload is required after a group is removed.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Function RemoveGroup(ByVal iDBID As Integer) As Boolean _
+                 Implements IEcopathDataSource.RemoveGroup
+
+            Dim bSucces As Boolean = True
+
             Try
-                ' Start writing
-                writer = Me.m_db.GetWriter("EcopathDietComp")
+                ' Remove all Ecosim groups related to this Ecopath group
+                Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcosimScenarioGroup WHERE EcopathGroupID={0}", iDBID))
+                If (reader IsNot Nothing) Then
+                    While reader.Read()
+                        bSucces = Me.RemoveEcosimGroup(CInt(reader("GroupID")))
+                    End While
+                End If
+                Me.m_db.ReleaseReader(reader)
 
-                ' For all detritus groups
-                For iPrey As Integer = ecopathDS.NumLiving + 1 To ecopathDS.NumGroups
-                    ' Get new row to add
-                    drow = writer.NewRow()
-                    ' Database will take care of defaults, only take care of the bare necessities
-                    drow("PredID") = iDBID
-                    drow("PreyID") = ecopathDS.GroupDBID(iPrey)
-                    ' Commit to db
-                    writer.AddRow(drow)
-                Next iPrey
+                ' Oh, now wait until we need to do this for Ecospace...
+
+                ' Now Ecosim is clean, delete the group from Ecopath
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iDBID))
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while removing group {1}", ex.Message, iDBID))
+                bSucces = False
+            End Try
+
+            Return bSucces
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Move an Ecopath group to a different position in the group sequence.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the group to move.</param>
+        ''' <param name="iPosition">The new position of the group in the group sequence.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' This method will directly modify the entry in the database
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Function MoveGroup(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
+                 Implements IEcopathDataSource.MoveGroup
+
+            Dim bSucces As Boolean = True
+            Try
+                Me.m_db.Execute(String.Format("UPDATE EcopathGroup SET Sequence={1} WHERE (GroupID={0})", iDBID, iPosition))
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while moving group {1}", ex.Message, iDBID))
+                bSucces = False
+            End Try
+            Return bSucces
+
+        End Function
+
+#End Region ' Modify
+
+#Region " DietComp "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Loads ecopath diet composition information.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function LoadEcopathDietComp() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Nothing
+            Dim iPred As Integer = 0
+            Dim iPrey As Integer = 0
+            Dim bSucces As Boolean = True
+
+            Try
+                reader = Me.m_db.GetReader("SELECT * FROM EcopathDietComp")
+                While reader.Read()
+
+                    iPred = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PredID")))
+                    iPrey = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PreyID")))
+
+                    Debug.Assert(iPred >= 0 And iPrey >= 0)
+
+                    ecopathDS.DCInput(iPred, iPrey) = CSng(reader("Diet"))
+                    If iPrey > ecopathDS.NumLiving Then
+                        ecopathDS.DF(iPred, iPrey - ecopathDS.NumLiving) = CSng(reader("DetritusFate"))
+                    End If
+
+                    ' 060528JS: ASSERT on "diet leftovers" from previous incarnations, including 041020VC fix for carbon groups
+                    ' The actual data fix is performed once during EwE5 import, and should not reoccur when running EwE6.
+                    If ecopathDS.PP(iPred) = 1 And ecopathDS.QB(iPred) <= 0 Then
+                        Debug.Assert(ecopathDS.DCInput(iPred, iPrey) = 0, _
+                            String.Format("Database corrupted on DCInput({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DCInput(iPred, iPrey)))
+                    End If
+
+                    ' VERIFY_JS: check mapping for MTI with JB
+                    ' ecopathDS.??(nPred, nPrey) = CSng(reader("MTI"))
+                    ' VERIFY_JS: check mapping for Electivity with JB
+                    ' ecopathDS.??(nPred, nPrey) = CSng(reader("Electivity"))
+                End While
+                Me.m_db.ReleaseReader(reader)
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading EcopathDietComp {1}, {2}", ex.Message, ecopathDS.GroupName(iPred), ecopathDS.GroupName(iPrey)))
+                bSucces = False
+            End Try
+
+            ' Read 'Import'
+            reader = Me.m_db.GetReader("SELECT * FROM EcopathGroup ORDER BY Sequence ASC")
+            iPred = 1
+            While reader.Read()
+                If CSng(reader("ImpVar")) > 0 Then ecopathDS.DCInput(iPred, 0) = CSng(reader("ImpVar"))
+                iPred += 1
+            End While
+            Me.m_db.ReleaseReader(reader)
+
+            Return True
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Writes the DietComp information to the database.
+        ''' </summary>
+        ''' <returns>True if succesful</returns>
+        ''' -------------------------------------------------------------------
+        Private Function SaveEcopathDietComp() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim idPred As Integer = 0
+            Dim iPred As Integer = 0
+            Dim idPrey As Integer = 0
+            Dim iPrey As Integer = 0
+
+            Dim bSucces As Boolean = True
+
+            Try
+                ' No incremental save for now
+                Me.m_db.Execute("DELETE * FROM EcopathDietComp")
+
+                writer = Me.m_db.GetWriter("EcopathDietComp")
+                ' DietComp is stored in EwE as an indexed list per predator
+                For iPred = 1 To ecopathDS.NumGroups
+
+                    ' Get DBID for predator to update
+                    idPred = ecopathDS.GroupDBID(iPred)
+
+                    For iPrey = 1 To ecopathDS.NumGroups
+
+                        ' Get DBID for prey to update
+                        idPrey = ecopathDS.GroupDBID(iPrey)
+
+                        drow = writer.NewRow()
+                        drow("PredID") = idPred
+                        drow("PreyID") = idPrey
+                        drow("Diet") = ecopathDS.DCInput(iPred, iPrey)
+                        If iPrey > ecopathDS.NumLiving Then
+                            drow("DetritusFate") = ecopathDS.DF(iPred, iPrey - ecopathDS.NumLiving)
+                        Else
+                            drow("DetritusFate") = 0
+                        End If
+
+                        ' VERIFY_JS: check mapping for MTI with JB
+                        ' drow("MTI") = ??
+                        ' VERIFY_JS: check mapping for Electivity with JB
+                        ' drow("Electivity") = ??
+
+                        writer.AddRow(drow)
+
+                    Next iPrey
+                Next iPred
 
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 bSucces = False
             End Try
-        End If
 
-        ' Create this group for each ecosim scenario
-        bSucces = bSucces And Me.AddEcosimGroupToAllScenarios(iDBID)
-        ' Create this group for each ecospace scenario
-        bSucces = bSucces And Me.AddEcospaceGroupToAllScenarios(iDBID, (sPP = 2.0))
-        ' Create this group for each ecotracer scenario
-        bSucces = bSucces And Me.AddEcotracerGroupToAllScenarios(iDBID)
-
-        Return bSucces
-
-    End Function
-
-    Private Function AddCatchDataForGroup(ByVal iGroupID As Integer) As Boolean
-
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim iFleetID As Integer = 0
-        Dim bSucces As Boolean = True
-
-        For iFleet As Integer = 1 To ecopathDS.NumFleet
-            iFleetID = ecopathDS.FleetDBID(iFleet)
-            bSucces = bSucces And Me.AddCatch(iGroupID, iFleetID)
-            bSucces = bSucces And Me.AddDiscardFate(iGroupID, iFleetID)
-        Next
-        Return bSucces
-
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Remove a group from the datasource.
-    ''' </summary>
-    ''' <param name="iDBID">Database ID of the group to remove.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' <remarks>
-    ''' Note that this will not adjust the data arrays. Due to the complex organization of the
-    ''' core a full data reload is required after a group is removed.
-    ''' </remarks>
-    ''' -------------------------------------------------------------------
-    Public Function RemoveGroup(ByVal iDBID As Integer) As Boolean _
-             Implements IEcopathDataSource.RemoveGroup
-
-        Dim bSucces As Boolean = True
-
-        Try
-            ' Remove all Ecosim groups related to this Ecopath group
-            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcosimScenarioGroup WHERE EcopathGroupID={0}", iDBID))
-            If (reader IsNot Nothing) Then
-                While reader.Read()
-                    bSucces = Me.RemoveEcosimGroup(CInt(reader("GroupID")))
-                End While
-            End If
-            Me.m_db.ReleaseReader(reader)
-
-            ' Oh, now wait until we need to do this for Ecospace...
-
-            ' Now Ecosim is clean, delete the group from Ecopath
-            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iDBID))
-
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while removing group {1}", ex.Message, iDBID))
-            bSucces = False
-        End Try
-
-        Return bSucces
-
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Move an Ecopath group to a different position in the group sequence.
-    ''' </summary>
-    ''' <param name="iDBID">Database ID of the group to move.</param>
-    ''' <param name="iPosition">The new position of the group in the group sequence.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' <remarks>
-    ''' This method will directly modify the entry in the database
-    ''' </remarks>
-    ''' -------------------------------------------------------------------
-    Function MoveGroup(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
-             Implements IEcopathDataSource.MoveGroup
-
-        Dim bSucces As Boolean = True
-        Try
-            Me.m_db.Execute(String.Format("UPDATE EcopathGroup SET Sequence={1} WHERE (GroupID={0})", iDBID, iPosition))
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while moving group {1}", ex.Message, iDBID))
-            bSucces = False
-        End Try
-        Return bSucces
-
-    End Function
-
-#End Region ' Modify
-
-#Region " DietComp "
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Loads ecopath diet composition information.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function LoadEcopathDietComp() As Boolean
-
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim reader As IDataReader = Nothing
-        Dim iPred As Integer = 0
-        Dim iPrey As Integer = 0
-        Dim bSucces As Boolean = True
-
-        Try
-            reader = Me.m_db.GetReader("SELECT * FROM EcopathDietComp")
-            While reader.Read()
-
-                iPred = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PredID")))
-                iPrey = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PreyID")))
-
-                Debug.Assert(iPred >= 0 And iPrey >= 0)
-
-                ecopathDS.DCInput(iPred, iPrey) = CSng(reader("Diet"))
-                If iPrey > ecopathDS.NumLiving Then
-                    ecopathDS.DF(iPred, iPrey - ecopathDS.NumLiving) = CSng(reader("DetritusFate"))
-                End If
-
-                ' 060528JS: ASSERT on "diet leftovers" from previous incarnations, including 041020VC fix for carbon groups
-                ' The actual data fix is performed once during EwE5 import, and should not reoccur when running EwE6.
-                If ecopathDS.PP(iPred) = 1 And ecopathDS.QB(iPred) <= 0 Then
-                    Debug.Assert(ecopathDS.DCInput(iPred, iPrey) = 0, _
-                        String.Format("Database corrupted on DCInput({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DCInput(iPred, iPrey)))
-                End If
-
-                ' VERIFY_JS: check mapping for MTI with JB
-                ' ecopathDS.??(nPred, nPrey) = CSng(reader("MTI"))
-                ' VERIFY_JS: check mapping for Electivity with JB
-                ' ecopathDS.??(nPred, nPrey) = CSng(reader("Electivity"))
-            End While
-            Me.m_db.ReleaseReader(reader)
-
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading EcopathDietComp {1}, {2}", ex.Message, ecopathDS.GroupName(iPred), ecopathDS.GroupName(iPrey)))
-            bSucces = False
-        End Try
-
-        ' Read 'Import'
-        reader = Me.m_db.GetReader("SELECT * FROM EcopathGroup ORDER BY Sequence ASC")
-        iPred = 1
-        While reader.Read()
-            If CSng(reader("ImpVar")) > 0 Then ecopathDS.DCInput(iPred, 0) = CSng(reader("ImpVar"))
-            iPred += 1
-        End While
-        Me.m_db.ReleaseReader(reader)
-
-        Return True
-
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Writes the DietComp information to the database.
-    ''' </summary>
-    ''' <returns>True if succesful</returns>
-    ''' -------------------------------------------------------------------
-    Private Function SaveEcopathDietComp() As Boolean
-
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim drow As DataRow = Nothing
-        Dim idPred As Integer = 0
-        Dim iPred As Integer = 0
-        Dim idPrey As Integer = 0
-        Dim iPrey As Integer = 0
-
-        Dim bSucces As Boolean = True
-
-        Try
-            ' No incremental save for now
-            Me.m_db.Execute("DELETE * FROM EcopathDietComp")
-
-            writer = Me.m_db.GetWriter("EcopathDietComp")
-            ' DietComp is stored in EwE as an indexed list per predator
-            For iPred = 1 To ecopathDS.NumGroups
-
-                ' Get DBID for predator to update
-                idPred = ecopathDS.GroupDBID(iPred)
-
-                For iPrey = 1 To ecopathDS.NumGroups
-
-                    ' Get DBID for prey to update
-                    idPrey = ecopathDS.GroupDBID(iPrey)
-
-                    drow = writer.NewRow()
-                    drow("PredID") = idPred
-                    drow("PreyID") = idPrey
-                    drow("Diet") = ecopathDS.DCInput(iPred, iPrey)
-                    If iPrey > ecopathDS.NumLiving Then
-                        drow("DetritusFate") = ecopathDS.DF(iPred, iPrey - ecopathDS.NumLiving)
-                    Else
-                        drow("DetritusFate") = 0
-                    End If
-
-                    ' VERIFY_JS: check mapping for MTI with JB
-                    ' drow("MTI") = ??
-                    ' VERIFY_JS: check mapping for Electivity with JB
-                    ' drow("Electivity") = ??
-
-                    writer.AddRow(drow)
-
-                Next iPrey
-            Next iPred
-
-            Me.m_db.ReleaseWriter(writer, True)
-
-        Catch ex As Exception
-            bSucces = False
-        End Try
-
-        Return bSucces
-    End Function
+            Return bSucces
+        End Function
 
 #End Region ' DietComp
 
@@ -2744,153 +2801,164 @@ Public Class cDBDataSource
 
 #Region " Datasets "
 
-    Private Function LoadTimeSeriesDatasets() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load all time series dataset definitions for Ecopath.
+        ''' </summary>
+        ''' <returns>True if successful.</returns>
+        ''' <remarks>Yeah, this is odd; time series can only be used with Ecosim
+        ''' but this logic just reads which time series will be available for Ecosim
+        ''' later on; it is convenient to know which data sets are provided with
+        ''' the model, just as it is convenient to know which scenarios are
+        ''' before they are loaded ;)</remarks>
+        ''' -------------------------------------------------------------------
+        Private Function LoadTimeSeriesDatasets() As Boolean
 
-        Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
-        Dim reader As IDataReader = Nothing
-        Dim iDataset As Integer = 1
-        Dim bSucces As Boolean = True
+            Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
+            Dim reader As IDataReader = Nothing
+            Dim iDataset As Integer = 1
+            Dim bSucces As Boolean = True
 
-        Try
-            tsDS.nDatasets = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcosimTimeSeriesDataset"))
-        Catch ex As Exception
-            tsDS.nDatasets = 0
-        End Try
-
-        tsDS.RedimTimeSeriesDatasets()
-
-        reader = Me.m_db.GetReader("SELECT * FROM EcosimTimeSeriesDataset")
-        If reader IsNot Nothing Then
             Try
-                While reader.Read()
-                    tsDS.iDatasetDBID(iDataset) = CInt(reader("DatasetID"))
-                    tsDS.strDatasetNames(iDataset) = CStr(reader("DatasetName"))
-                    tsDS.strDatasetDescription(iDataset) = CStr(Me.ReadSafe(reader, "Description", ""))
-                    tsDS.strDatasetAuthor(iDataset) = CStr(Me.ReadSafe(reader, "Author", ""))
-                    tsDS.strDatasetContact(iDataset) = CStr(Me.ReadSafe(reader, "Contact", ""))
-                    tsDS.nDatasetFirstYear(iDataset) = CInt(reader("FirstYear"))
-                    tsDS.nDatasetNumYears(iDataset) = CInt(reader("NumYears"))
-                    tsDS.nDatasetNumTimeSeries(iDataset) = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(reader("DatasetID")))))
-                    iDataset += 1
+                tsDS.nDatasets = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcosimTimeSeriesDataset"))
+            Catch ex As Exception
+                tsDS.nDatasets = 0
+            End Try
+
+            tsDS.RedimTimeSeriesDatasets()
+
+            reader = Me.m_db.GetReader("SELECT * FROM EcosimTimeSeriesDataset")
+            If reader IsNot Nothing Then
+                Try
+                    While reader.Read()
+                        tsDS.iDatasetDBID(iDataset) = CInt(reader("DatasetID"))
+                        tsDS.strDatasetNames(iDataset) = CStr(reader("DatasetName"))
+                        tsDS.strDatasetDescription(iDataset) = CStr(Me.ReadSafe(reader, "Description", ""))
+                        tsDS.strDatasetAuthor(iDataset) = CStr(Me.ReadSafe(reader, "Author", ""))
+                        tsDS.strDatasetContact(iDataset) = CStr(Me.ReadSafe(reader, "Contact", ""))
+                        tsDS.nDatasetFirstYear(iDataset) = CInt(reader("FirstYear"))
+                        tsDS.nDatasetNumYears(iDataset) = CInt(reader("NumYears"))
+                        tsDS.nDatasetNumTimeSeries(iDataset) = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(reader("DatasetID")))))
+                        iDataset += 1
+                    End While
+                Catch ex As Exception
+                    bSucces = False
+                End Try
+                Me.m_db.ReleaseReader(reader)
+            End If
+
+            Return bSucces
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Adds an time series dataset to the datasource.
+        ''' </summary>
+        ''' <param name="strDatasetName">Name to assign to new dataset.</param>
+        ''' <param name="strDescription">Description to assign to new dataset.</param>
+        ''' <param name="strAuthor">Author to assign to the new dataset.</param>
+        ''' <param name="strContact">Contact info to assign to the new dataset.</param>
+        ''' <param name="iFirstYear">First year of the dataset.</param>
+        ''' <param name="iNumYears">Number of years in the dataset.</param>
+        ''' <param name="iDatasetID">Database ID assigned to the new dataset.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function AppendTimeSeriesDataset(ByVal strDatasetName As String, ByVal strDescription As String, _
+                ByVal strAuthor As String, ByVal strContact As String, _
+                ByVal iFirstYear As Integer, ByVal iNumYears As Integer, _
+                ByRef iDatasetID As Integer) As Boolean Implements DataSources.IEcosimDatasource.AppendTimeSeriesDataset
+
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim idm As New cIDMappings()
+            Dim bSucces As Boolean = True
+
+            Try
+                ' Delete existing dataset with same name, if any
+                Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT DatasetID FROM EcosimTimeSeriesDataset WHERE DatasetName='{0}'", strDatasetName))
+                Dim lDatasetID As New List(Of Integer)
+                While reader.Read
+                    lDatasetID.Add(CInt(reader("DatasetID")))
                 End While
+                Me.m_db.ReleaseReader(reader)
+
+                ' Delete dataset(s)
+                For Each iDatasetIDTemp As Integer In lDatasetID
+                    bSucces = bSucces And Me.RemoveTimeSeriesDatasetID(iDatasetIDTemp)
+                Next
+
+                ' Still looking good?
+                If bSucces Then
+
+                    Try
+                        iDatasetID = CInt(Me.m_db.GetValue("SELECT MAX(DatasetID) FROM EcosimTimeSeriesDataset")) + 1
+                    Catch ex As InvalidCastException
+                        iDatasetID = 1
+                    End Try
+
+                    writer = Me.m_db.GetWriter("EcosimTimeSeriesDataset")
+
+                    drow = writer.NewRow()
+                    drow("DatasetID") = iDatasetID
+                    drow("DatasetName") = strDatasetName
+                    drow("Description") = strDescription
+                    drow("Author") = strAuthor
+                    drow("Contact") = strContact
+                    drow("FirstYear") = iFirstYear
+                    drow("NumYears") = iNumYears
+                    'drow("LastSaved") = cDBDataSource.GetJulianDate()
+                    writer.AddRow(drow)
+
+                    Me.m_db.ReleaseWriter(writer)
+
+                    ' Reload time series dataset
+                    If bSucces Then Me.LoadTimeSeriesDatasets()
+
+                End If
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while appending dataset {1}", ex.Message, strDatasetName))
+                bSucces = False
+            End Try
+
+            Return bSucces
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Removes all time series belonging to a specific dataset from the datasource.
+        ''' </summary>
+        ''' <param name="iDataset">Index of the dataset to remove.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function RemoveTimeSeriesDataset(ByVal iDataset As Integer) As Boolean _
+                Implements DataSources.IEcosimDatasource.RemoveTimeSeriesDataset
+            Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
+            Return Me.RemoveTimeSeriesDatasetID(tsDS.iDatasetDBID(iDataset))
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Removes all time series belonging to a specific dataset from the datasource.
+        ''' </summary>
+        ''' <param name="iDatasetID">Database ID of the dataset to remove.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function RemoveTimeSeriesDatasetID(ByVal iDatasetID As Integer) As Boolean
+
+            Dim bSucces As Boolean = True
+            Try
+                ' Cascading delete may fail due to 'weak' relations set by updates. Aargh, how I dislike Access!!!
+                ' Solution: manually delete all dataset links
+                Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeries WHERE (DatasetID={0})", iDatasetID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesDataset WHERE (DatasetID={0})", iDatasetID))
             Catch ex As Exception
                 bSucces = False
             End Try
-            Me.m_db.ReleaseReader(reader)
-        End If
+            Return bSucces
 
-        Return bSucces
-
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Adds an time series dataset to the datasource.
-    ''' </summary>
-    ''' <param name="strDatasetName">Name to assign to new dataset.</param>
-    ''' <param name="strDescription">Description to assign to new dataset.</param>
-    ''' <param name="strAuthor">Author to assign to the new dataset.</param>
-    ''' <param name="strContact">Contact info to assign to the new dataset.</param>
-    ''' <param name="iFirstYear">First year of the dataset.</param>
-    ''' <param name="iNumYears">Number of years in the dataset.</param>
-    ''' <param name="iDatasetID">Database ID assigned to the new dataset.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function AppendTimeSeriesDataset(ByVal strDatasetName As String, ByVal strDescription As String, _
-            ByVal strAuthor As String, ByVal strContact As String, _
-            ByVal iFirstYear As Integer, ByVal iNumYears As Integer, _
-            ByRef iDatasetID As Integer) As Boolean Implements DataSources.IEcosimDatasource.AppendTimeSeriesDataset
-
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim drow As DataRow = Nothing
-        Dim idm As New cIDMappings()
-        Dim bSucces As Boolean = True
-
-        Try
-            ' Delete existing dataset with same name, if any
-            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT DatasetID FROM EcosimTimeSeriesDataset WHERE DatasetName='{0}'", strDatasetName))
-            Dim lDatasetID As New List(Of Integer)
-            While reader.Read
-                lDatasetID.Add(CInt(reader("DatasetID")))
-            End While
-            Me.m_db.ReleaseReader(reader)
-
-            ' Delete dataset(s)
-            For Each iDatasetIDTemp As Integer In lDatasetID
-                bSucces = bSucces And Me.RemoveTimeSeriesDatasetID(iDatasetIDTemp)
-            Next
-
-            ' Still looking good?
-            If bSucces Then
-
-                Try
-                    iDatasetID = CInt(Me.m_db.GetValue("SELECT MAX(DatasetID) FROM EcosimTimeSeriesDataset")) + 1
-                Catch ex As InvalidCastException
-                    iDatasetID = 1
-                End Try
-
-                writer = Me.m_db.GetWriter("EcosimTimeSeriesDataset")
-
-                drow = writer.NewRow()
-                drow("DatasetID") = iDatasetID
-                drow("DatasetName") = strDatasetName
-                drow("Description") = strDescription
-                drow("Author") = strAuthor
-                drow("Contact") = strContact
-                drow("FirstYear") = iFirstYear
-                drow("NumYears") = iNumYears
-                'drow("LastSaved") = cDBDataSource.GetJulianDate()
-                writer.AddRow(drow)
-
-                Me.m_db.ReleaseWriter(writer)
-
-                ' Reload time series dataset
-                If bSucces Then Me.LoadTimeSeriesDatasets()
-
-            End If
-
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while appending dataset {1}", ex.Message, strDatasetName))
-            bSucces = False
-        End Try
-
-        Return bSucces
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Removes all time series belonging to a specific dataset from the datasource.
-    ''' </summary>
-    ''' <param name="iDataset">Index of the dataset to remove.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function RemoveTimeSeriesDataset(ByVal iDataset As Integer) As Boolean _
-            Implements DataSources.IEcosimDatasource.RemoveTimeSeriesDataset
-        Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
-        Return Me.RemoveTimeSeriesDatasetID(tsDS.iDatasetDBID(iDataset))
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Removes all time series belonging to a specific dataset from the datasource.
-    ''' </summary>
-    ''' <param name="iDatasetID">Database ID of the dataset to remove.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function RemoveTimeSeriesDatasetID(ByVal iDatasetID As Integer) As Boolean
-
-        Dim bSucces As Boolean = True
-        Try
-            ' Cascading delete may fail due to 'weak' relations set by updates. Aargh, how I dislike Access!!!
-            ' Solution: manually delete all dataset links
-            Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeries WHERE (DatasetID={0})", iDatasetID))
-            Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesDataset WHERE (DatasetID={0})", iDatasetID))
-        Catch ex As Exception
-            bSucces = False
-        End Try
-        Return bSucces
-
-    End Function
+        End Function
 
 #End Region ' Datasets
 
@@ -8974,3 +9042,5 @@ Public Class cDBDataSource
 #End Region ' Auxillary data
 
 End Class
+
+End Namespace
