@@ -556,7 +556,20 @@ Namespace Ecospace
 
         Private Sub PlotFishingEffortMap(ByRef g As Graphics)
 
+            Dim iNumVizFleets As Integer = 0
+            Dim lVizFleets As New List(Of Integer)
+
             If m_iTimeStepCur > 0 Then
+
+                For iFleet As Integer = 1 To Me.Core.nFleets
+                    If Me.StyleGuide.FleetVisible(iFleet) Then
+                        lVizFleets.Add(iFleet)
+                        iNumVizFleets += 1
+                    End If
+                Next
+
+                Me.m_iNumFleetPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVizFleets) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
+                Me.m_iNumFleetPlotsVert = CInt(Math.Ceiling(iNumVizFleets / Me.m_iNumFleetPlotsHorz))
 
                 Dim xScale As Double = m_iNumFleetPlotsHorz * (m_iInCol + 1) + 1
                 Dim yScale As Double = m_iNumFleetPlotsVert * (m_iInRow + 1) + 1
@@ -566,13 +579,17 @@ Namespace Ecospace
                 For i As Integer = 0 To m_iNumFleetPlotsVert - 1
                     For j As Integer = 0 To m_iNumFleetPlotsHorz - 1
                         Dim cur As Integer = i * m_iNumFleetPlotsHorz + j
-                        If cur < Core.nFleets Then
+                        If cur < iNumVizFleets Then
                             Dim origin As PointF = New PointF((m_iInCol + 1) * j + 1, i * (m_iInRow + 1) + 1)
                             Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
                                                                     CInt(origin.Y * yScale), _
                                                                     CInt(m_iInCol * xScale), _
                                                                     CInt(m_iInRow * yScale))
-                            DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, cur, rect, g)
+                            Try
+                                DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, lVizFleets(cur), rect, g)
+                            Catch ex As Exception
+
+                            End Try
                         End If
                     Next
                 Next
@@ -591,7 +608,7 @@ Namespace Ecospace
                 For j As Integer = 1 To m_iInCol
                     Dim icc As Single
 
-                    icc = baseMap(iFleet + 1, i, j) * cScaler
+                    icc = baseMap(iFleet, i, j) * cScaler
 
                     'Boundary check
                     icc = Math.Max(Math.Min(Me.m_nEffortBins, icc), 0)
@@ -620,7 +637,7 @@ Namespace Ecospace
 
             'Display the group name
             If Me.m_bShowLabels Then
-                Dim fltName As String = Core.EcospaceFleets(iFleet + 1).Name
+                Dim fltName As String = Core.EcospaceFleets(iFleet).Name
                 Dim br As Brush = Brushes.Black
                 Dim fmt As New StringFormat()
 
