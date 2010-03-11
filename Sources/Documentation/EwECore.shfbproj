@@ -24,47 +24,50 @@
     <HtmlHelp1xCompilerPath>..\..\..\..\..\Program Files\HTML Help Workshop\</HtmlHelp1xCompilerPath>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\EwECore\EwECore.vbproj" />
-<DocumentationSource sourceFile="..\EwEPlugin\EwEPlugin.vbproj" />
-<DocumentationSource sourceFile="..\EwEUtils\EwEUtils.vbproj" />
-<DocumentationSource sourceFile="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\EwEPlugin\EwEPlugin.vbproj" />
+      <DocumentationSource sourceFile="..\EwEUtils\EwEUtils.vbproj" />
+      <DocumentationSource sourceFile="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
+    </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True">EwE API Code Documentation</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore" isDocumented="True">Namespace containing all elements essential to the functioning of the EwE computing engine.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore.Auxiliary" isDocumented="True">Namespace containing loose-typed, auxillary elements for the EwE computational core.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore.Database" isDocumented="True">Namespace containing all elements required by the EwE core to databases.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwEPlugin" isDocumented="True">Namespace containing all elements required when implementing or accessing EwE plug-ins.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwEUtils" isDocumented="True">Namespace containing shared definitions and helper classes for EwE applications.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwEUtils.Commands" isDocumented="True">Namespace containing all elements required for EwE applications to fire and handle generic commands.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwEUtils.Core" isDocumented="True">Namspace containing EwE core utility classes and definitions.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwEUtils.Database" isDocumented="True">Namspace containing database utility classes and definitions.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwEUtils.Drawing" isDocumented="True">Namspace containing drawing and rendering utility classes and definitions.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwEUtils.NetUtilities" isDocumented="True">Namspace containing networking utility classes and definitions.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwEUtils.Utilities" isDocumented="True">Namespace with generic utility classes and definitions.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwEUtils.Win32Api" isDocumented="True">Namespace containing interfaces to the Win32 API.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore.Ecopath" isDocumented="True">Namespace containing all elements essential to the functioning of the Ecopath model.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore.Ecosim" isDocumented="True">Namespace containing all elements essential to the functioning of the Ecosim model.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore.FitToTimeSeries" isDocumented="True">Namespace containing fit to time series search logic.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore.MSE" isDocumented="True">Namespace containing elements for implementing Searches in the EwE computational core.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore.SearchObjectives" isDocumented="True">Namespace containing elements for implementing Searches in the EwE computational core.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore.DataSources" isDocumented="True">Namespace containing elements for creating data sources.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore.FishingPolicy" isDocumented="True">Namespace containing elements for managing fishing policy runs.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore.ValueWrapper" isDocumented="True">Namespace containing elements for wraping variables and associated data.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwEPlugin.Data" isDocumented="True">Namespace containing functionlity for accesssing plugin data</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwEUtils.SystemUtilities" isDocumented="True">Namespace containing elements for accessing assembly information.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="EwECore.EcoSeed" isDocumented="True">Namespace containing all elements essential to the functioning of Ecospace MPA optimizations and Ecoseed</NamespaceSummaryItem>
-<NamespaceSummaryItem name="ScientificInterfaceShared" isDocumented="True">Namespace containing all reusable components for implementing user interfaces in EwE6.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="ScientificInterfaceShared.Controls" isDocumented="True">Namespace containing all reusable controls for implementing user interfaces in EwE6.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="ScientificInterfaceShared.Controls.EwEGrid" isDocumented="True">Namespace containing all reusable components for implementing grids with pre-formatted grid cells in EwE6.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="ScientificInterfaceShared.Controls.Wizard" isDocumented="True">Namespace containing all components for implementing step-by-step wizards in EwE6.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="ScientificInterfaceShared.Definitions" isDocumented="True">Namespace containing common definitions for the EwE6 shared interface assembly.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="ScientificInterfaceShared.Properties" isDocumented="True">Namespace offering observer-pattern based data monitors or 'properties' to simplify the process of synchronizing data between interfaces and the EwE6 core.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="ScientificInterfaceShared.Style" isDocumented="True">Namespace containing style and style distribution logic for EwE6 interfaces.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="EwECore" isDocumented="True">Namespace containing all elements essential to the functioning of the EwE computing engine.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.Auxiliary" isDocumented="True">Namespace containing loose-typed, auxillary elements for the EwE computational core.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.Database" isDocumented="True">Namespace containing all elements required by the EwE core to databases.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEPlugin" isDocumented="True">Namespace containing all elements required when implementing or accessing EwE plug-ins.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils" isDocumented="True">Namespace containing shared definitions and helper classes for EwE applications.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Commands" isDocumented="True">Namespace containing all elements required for EwE applications to fire and handle generic commands.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Core" isDocumented="True">Namspace containing EwE core utility classes and definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Database" isDocumented="True">Namspace containing database utility classes and definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Drawing" isDocumented="True">Namspace containing drawing and rendering utility classes and definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.NetUtilities" isDocumented="True">Namspace containing networking utility classes and definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Utilities" isDocumented="True">Namespace with generic utility classes and definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Win32Api" isDocumented="True">Namespace containing interfaces to the Win32 API.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.Ecopath" isDocumented="True">Namespace containing all elements essential to the functioning of the Ecopath model.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.Ecosim" isDocumented="True">Namespace containing all elements essential to the functioning of the Ecosim model.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.FitToTimeSeries" isDocumented="True">Namespace containing fit to time series search logic.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.MSE" isDocumented="True">Namespace containing elements for implementing Searches in the EwE computational core.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.SearchObjectives" isDocumented="True">Namespace containing elements for implementing Searches in the EwE computational core.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.DataSources" isDocumented="True">Namespace containing elements for creating data sources.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.FishingPolicy" isDocumented="True">Namespace containing elements for managing fishing policy runs.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.ValueWrapper" isDocumented="True">Namespace containing elements for wraping variables and associated data.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEPlugin.Data" isDocumented="True">Namespace containing functionlity for accesssing plugin data</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.SystemUtilities" isDocumented="True">Namespace containing elements for accessing assembly information.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.EcoSeed" isDocumented="True">Namespace containing all elements essential to the functioning of Ecospace MPA optimizations and Ecoseed</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared" isDocumented="True">Namespace containing all reusable components for implementing user interfaces in EwE6.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Controls" isDocumented="True">Namespace containing all reusable controls for implementing user interfaces in EwE6.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Controls.EwEGrid" isDocumented="True">Namespace containing all reusable components for implementing grids with pre-formatted grid cells in EwE6.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Controls.Wizard" isDocumented="True">Namespace containing all components for implementing step-by-step wizards in EwE6.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Definitions" isDocumented="True">Namespace containing common definitions for the EwE6 shared interface assembly.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Properties" isDocumented="True">Namespace offering observer-pattern based data monitors or 'properties' to simplify the process of synchronizing data between interfaces and the EwE6 core.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Style" isDocumented="True">Namespace containing style and style distribution logic for EwE6 interfaces.</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <ProjectSummary>API documentation for the Ecopath with Ecosim version 6 scientific engine.</ProjectSummary>
     <FeedbackEMailAddress>ewedevteam%40gmail.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>EwE development support</FeedbackEMailLinkText>
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <IncludeFavorites>True</IncludeFavorites>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
+    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->
