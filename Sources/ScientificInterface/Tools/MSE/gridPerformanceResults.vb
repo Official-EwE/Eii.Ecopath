@@ -10,6 +10,11 @@ Imports EwECore.MSE
 
 #End Region
 
+
+''' <summary>
+''' Performance results grid from EwE5 
+''' </summary>
+''' <remarks>No longer used by EwE6</remarks>
 <CLSCompliant(False)> _
 Public Class gridPerformanceResults
     : Inherits EwEGrid

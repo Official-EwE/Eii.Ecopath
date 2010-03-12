@@ -15,6 +15,7 @@ Imports EwEUtils.Core
 ''' for the MSE, so it has a constructor with no arguments and can be created 
 ''' by the NavigationPanel.
 ''' </summary>
+'''<remarks>WARNING 8-march-2010 Objective weights are not being use by the MSE at this time. The grid has been left in place(for now) incase they are to be re-implemented </remarks>
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class gridMSEOjectiveWeights
