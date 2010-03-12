@@ -28,9 +28,14 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.MSEQIncrease, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEQIncrease))
             m_values.Add(val.varName, val)
 
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MSEFleetCV, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFleetCV))
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSEFleetCV, eStatusFlags.Null, eCoreCounterTypes.nEcosimYears, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFleetCV))
             m_values.Add(val.varName, val)
+
+
+            'meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            'val = New cValue(New Single, eVarNameFlags.MSEFleetCV, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFleetCV))
+            'm_values.Add(val.varName, val)
 
 
             meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
@@ -64,6 +69,28 @@ Namespace MSE
 
         End Sub
 
+        ''' <summary>
+        ''' Edit the CVs in batch mode no messages are sent out when BatchEdit = True when BatchEdit is toggled to False then the core is notified.
+        ''' </summary>
+        ''' <remarks>This turns off the AllowValidation flag which stops the object from calling core.OnValidate() vastly speeding up the editing</remarks>
+        Public Property BatchEdit() As Boolean
+            Get
+                Return Not Me.AllowValidation
+            End Get
+
+            Set(ByVal value As Boolean)
+
+                'if turning the BatchEdit On after it has been OFF tell the core that the values has been edited
+                'this will allow the core to update the underlying data and send out a datamodified message
+                If Me.BatchEdit = True And value = False Then
+                    Me.m_core.OnValidated(m_values.Item(eVarNameFlags.MSEFleetCV), Me)
+                End If
+                Me.AllowValidation = Not value
+
+            End Set
+
+        End Property
+
 
         ''' <summary>
         ''' MSE increase in catchability by group per year (multiplier)
@@ -79,15 +106,15 @@ Namespace MSE
         End Property
 
 
-        Public Property FleetCV() As Single
+        Public Property FleetCV(ByVal iTime As Integer) As Single
 
             Get
-                Return CType(GetVariable(eVarNameFlags.MSEFleetCV), Single)
+                Return CType(GetVariable(eVarNameFlags.MSEFleetCV, iTime), Single)
             End Get
 
             Set(ByVal value As Single)
 
-                SetVariable(eVarNameFlags.MSEFleetCV, value)
+                SetVariable(eVarNameFlags.MSEFleetCV, value, iTime)
 
             End Set
 
@@ -234,32 +261,39 @@ Namespace MSE
 
         Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
 
-            Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)
-            Dim value As cValue
+            For Each value As cValue In Me.m_values.Values
 
-            For Each keyvalue In m_values
                 Try
+                    Select Case value.varName
 
-                    value = keyvalue.Value
-                    If value.varName = eVarNameFlags.MSEFleetWeight Then
-                        For igrp As Integer = 1 To m_core.nLivingGroups
-                            If Me.m_core.m_EcoSimData.relQ(value.Index, igrp) > 0 Then
-                                value.Status(igrp) = eStatusFlags.OK
-                            Else
-                                value.Status(igrp) = eStatusFlags.NotEditable Or eStatusFlags.Null
-                            End If
-                        Next
+                        Case eVarNameFlags.MSEFleetWeight
 
-                    Else
-                        value.setStatusFlag()
-                    End If
+                            For igrp As Integer = 1 To m_core.nLivingGroups
+                                If Me.m_core.m_EcoSimData.relQ(value.Index, igrp) > 0 Then
+                                    value.Status(igrp) = eStatusFlags.OK
+                                Else
+                                    value.Status(igrp) = eStatusFlags.NotEditable Or eStatusFlags.Null
+                                End If
+                            Next
 
+                        Case eVarNameFlags.MSEFleetCV
+
+                            For i As Integer = 1 To Me.m_core.nEcosimYears
+                                value.setStatusFlag(i)
+                            Next
+
+                        Case Else
+
+                            value.setStatusFlag()
+
+                    End Select
 
                 Catch ex As Exception
                     Debug.Assert(False, ex.Message)
-                    Return False
+                    System.Console.WriteLine(Me.ToString & ".ResetStatusFlags() Exception " & value.varName.ToString)
                 End Try
-            Next keyvalue
+
+            Next value
 
             Return True
 

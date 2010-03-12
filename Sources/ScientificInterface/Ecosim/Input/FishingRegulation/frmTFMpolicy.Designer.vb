@@ -26,8 +26,8 @@
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Me.m_scMain = New System.Windows.Forms.SplitContainer
+            Me.m_graph = New ZedGraph.ZedGraphControl
             Me.m_grid = New ScientificInterface.Ecosim.gridTargetFishingMortalityPolicy
-            Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -53,10 +53,29 @@
             Me.m_scMain.SplitterDistance = 245
             Me.m_scMain.TabIndex = 1
             '
+            'm_graph
+            '
+            Me.m_graph.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_graph.EditModifierKeys = System.Windows.Forms.Keys.None
+            Me.m_graph.Location = New System.Drawing.Point(0, 0)
+            Me.m_graph.Name = "m_graph"
+            Me.m_graph.ScrollGrace = 0
+            Me.m_graph.ScrollMaxX = 0
+            Me.m_graph.ScrollMaxY = 0
+            Me.m_graph.ScrollMaxY2 = 0
+            Me.m_graph.ScrollMinX = 0
+            Me.m_graph.ScrollMinY = 0
+            Me.m_graph.ScrollMinY2 = 0
+            Me.m_graph.Size = New System.Drawing.Size(652, 241)
+            Me.m_graph.TabIndex = 0
+            Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
+            '
             'm_grid
             '
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -67,6 +86,7 @@
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.Group = Nothing
             Me.m_grid.Location = New System.Drawing.Point(0, 0)
             Me.m_grid.Name = "m_grid"
             Me.m_grid.Size = New System.Drawing.Size(652, 139)
@@ -80,29 +100,17 @@
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TabIndex = 0
+            Me.m_grid.TrackPropertySelection = True
+            Me.m_grid.UIContext = Nothing
             '
-            'UcSpeciesQuotaScetchPad1
-            '
-            Me.m_graph.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_graph.Location = New System.Drawing.Point(0, 0)
-            Me.m_graph.Name = "UcSpeciesQuotaScetchPad1"
-            Me.m_graph.ScrollGrace = 0
-            Me.m_graph.ScrollMaxX = 0
-            Me.m_graph.ScrollMaxY = 0
-            Me.m_graph.ScrollMaxY2 = 0
-            Me.m_graph.ScrollMinX = 0
-            Me.m_graph.ScrollMinY = 0
-            Me.m_graph.ScrollMinY2 = 0
-            Me.m_graph.Size = New System.Drawing.Size(652, 241)
-            Me.m_graph.TabIndex = 0
-            '
-            'frmSpeciesQuota
+            'frmTargetFishingMortalityPolicy
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(656, 392)
             Me.Controls.Add(Me.m_scMain)
-            Me.Name = "frmSpeciesQuota"
+            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Name = "frmTargetFishingMortalityPolicy"
             Me.Text = "frmSpeciesQuota"
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)

@@ -3050,6 +3050,8 @@ Namespace DataSources
         'jb added to redim time variables in ecosim data structures
         ecosimDS.RedimTime()
 
+        Me.m_core.m_MSEData.redimTime()
+
         ' Set active scenario
         ecopathDS.ActiveEcosimScenario = Array.IndexOf(ecopathDS.EcosimScenarioDBID, iDBID)
 

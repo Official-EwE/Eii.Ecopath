@@ -5786,10 +5786,15 @@ Public Class cCore
         'set the number of years the model will run for and resize and reload all the data
 
         Try
+            'number of years before setting to the new value
+            Dim orgNYears As Integer = m_EcoSimData.NumYears
 
             If newNumberOfYears = 0 Then Exit Sub
             'sets NumYears and NTimes and resize the underlying data to the new number of years
             m_EcoSimData.RedimTime(newNumberOfYears, m_TSData.NdatYear, bOverwriteNewData)
+
+            'redim the cv vars to the new timesteps
+            Me.m_MSEData.redimTime(orgNYears)
 
             'Reload the forcing data PoolForceBB(), PoolForceZ(), PoolForceCatch() and FishRateGear(), FishRateNo
             'forcing data needs to be the max of Reference data years and Ecosim Years
@@ -5809,6 +5814,7 @@ Public Class cCore
             manager.Load()
 
             Me.m_SearchManagers(eDataTypes.FishingPolicyManager).Load()
+            Me.m_SearchManagers(eDataTypes.MSEManager).Load()
 
             'Parameters
             Me.LoadEcoSimModelParameters()

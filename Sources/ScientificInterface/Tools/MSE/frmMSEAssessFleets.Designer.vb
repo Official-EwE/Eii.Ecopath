@@ -40,7 +40,6 @@ Partial Class frmMSEAssessFleets
         'SplitContainer1.Panel1
         '
         Me.SplitContainer1.Panel1.Controls.Add(Me.m_blocks)
-        Me.SplitContainer1.Panel1Collapsed = True
         '
         'SplitContainer1.Panel2
         '
@@ -64,8 +63,6 @@ Partial Class frmMSEAssessFleets
         '
         Me.GridFishingCV1.AutoSizeMinHeight = 10
         Me.GridFishingCV1.AutoSizeMinWidth = 10
-        Me.GridFishingCV1.AutoStretchColumnsToFitWidth = False
-        Me.GridFishingCV1.AutoStretchRowsToFitHeight = False
         Me.GridFishingCV1.BackColor = System.Drawing.Color.White
         Me.GridFishingCV1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.GridFishingCV1.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -78,7 +75,7 @@ Partial Class frmMSEAssessFleets
         Me.GridFishingCV1.GridToolTipActive = True
         Me.GridFishingCV1.Location = New System.Drawing.Point(0, 0)
         Me.GridFishingCV1.Name = "GridFishingCV1"
-        Me.GridFishingCV1.Size = New System.Drawing.Size(652, 483)
+        Me.GridFishingCV1.Size = New System.Drawing.Size(652, 262)
         Me.GridFishingCV1.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                     Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                     Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -90,7 +87,6 @@ Partial Class frmMSEAssessFleets
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.GridFishingCV1.TabIndex = 0
         Me.GridFishingCV1.TrackPropertySelection = True
-        Me.GridFishingCV1.UIContext = Nothing
         '
         'frmMSEAssessFleets
         '

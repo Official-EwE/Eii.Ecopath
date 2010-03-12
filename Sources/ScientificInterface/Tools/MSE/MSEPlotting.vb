@@ -248,7 +248,7 @@ Friend Class cMSEPlotter
     Private Sub plotRefLines()
         Dim ipane As Integer
 
-        'Reference lines are retrieved from MSEManager base on the type of data that is being plotted
+        'Reference lines are retrieved from MSEManager based on the type of data that is being plotted
         'this should mean the reference lines are always in sync with the current data
         For Each statobj As cCoreGroupBase In Me.m_Data
             ipane += 1

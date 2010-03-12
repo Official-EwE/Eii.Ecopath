@@ -236,7 +236,7 @@ Public Class cEcosimDatastructures
     ''' <summary>
     ''' Fishing mortality over time for each group.
     ''' </summary>
-    ''' <remarks>This is the user entered catch rates for each group. It's default value is Fish1() Catch/Biomass set in DefaultFishMortalityRates(). 
+    ''' <remarks>Fishing mortality by group-time. It's default value is Fish1() Catch/Biomass set in DefaultFishMortalityRates(). 
     ''' It is used as a forcing/driving value over time. It is used to compute FishTime() </remarks>
     Public FishRateNo(,) As Single
     Public FishRateNoDBID() As Integer

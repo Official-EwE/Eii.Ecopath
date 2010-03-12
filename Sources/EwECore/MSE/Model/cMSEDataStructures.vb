@@ -44,6 +44,8 @@ Public Class cMSEDataStructures
     Public BioRiskValue(,) As Single 'Lower and Upper boundry for Biomass risk
     Public CVbiomEst() As Single 'Biomass coefficient of variation
     Public CVFest() As Single 'Fishing effort coefficient of variation
+    Public CVBiomT(,) As Single 'groups,years
+    Public CVFT(,) As Single ' fleets,years
 
     Public VarQest() As Single 'Estimated variation in the estimation of fishing effort. Use in the first year of the simulation to vary effort. See Init
     Public KalGainQ() As Single
@@ -279,7 +281,7 @@ Public Class cMSEDataStructures
         'set default values
         For iGrp As Integer = 1 To NGroups
 
-            CVbiomEst(iGrp) = 0.2
+            ' CVbiomEst(iGrp) = 0.2
             GstockPred(iGrp) = 0.6
             KalmanGain(iGrp) = 0.65
             BioRiskValue(iGrp, 0) = 0.5 'lower
@@ -294,8 +296,59 @@ Public Class cMSEDataStructures
 
         For iFlt As Integer = 1 To nFleets
             Qgrow(iFlt) = 0.03
-            CVFest(iFlt) = 0.3
+            ' CVFest(iFlt) = 0.3
         Next iFlt
+
+    End Sub
+
+
+    Public Sub redimTime(Optional ByVal originalNumberOfYears As Integer = cCore.NULL_VALUE)
+
+        Try
+            'if time has changed then try to preserve the values
+            'if not or Preserve fails then set to defaults
+            Dim bFullRedim As Boolean = True
+            If CVBiomT IsNot Nothing Then
+
+                Try
+                    ReDim Preserve CVBiomT(NGroups, Me.nYears) 'groups,time
+                    ReDim Preserve CVFT(nFleets, Me.nYears)  ' fleets,time
+                    bFullRedim = False
+                Catch ex As Exception
+                    bFullRedim = True
+                End Try
+
+            End If
+
+            If bFullRedim Then
+                ReDim CVBiomT(NGroups, Me.nYears) 'groups,time
+                ReDim CVFT(nFleets, Me.nYears)  ' fleets,time
+            End If 'bFullRedim
+
+            Dim firstYear As Integer = 1
+            If (originalNumberOfYears <> cCore.NULL_VALUE) And (bFullRedim = False) Then
+                'number of years has changed 
+                'The original data was preserved just set defaults for the new values only
+                firstYear = originalNumberOfYears + 1
+            End If
+
+            'set default values
+            For iGrp As Integer = 1 To NGroups
+                For it As Integer = firstYear To Me.nYears
+                    Me.CVBiomT(iGrp, it) = 0.2
+                Next
+            Next
+
+            For iFlt As Integer = 1 To nFleets
+                For it As Integer = firstYear To Me.nYears
+                    Me.CVFT(iFlt, it) = 0.3
+                Next
+            Next iFlt
+
+        Catch ex As Exception
+
+        End Try
+
 
     End Sub
 
@@ -427,6 +480,12 @@ Public Class cMSEDataStructures
     Public ReadOnly Property nTimeSteps() As Integer
         Get
             Return Me.m_ESData.NTimes
+        End Get
+    End Property
+
+    Public ReadOnly Property nYears() As Integer
+        Get
+            Return Me.m_ESData.NumYears
         End Get
     End Property
 

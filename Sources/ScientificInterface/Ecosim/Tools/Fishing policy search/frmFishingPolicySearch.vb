@@ -13,6 +13,8 @@ Imports EwEUtils.Core
 
 Namespace Ecosim
 
+#Region "Form class for Fishing Policy Search form (frmFishingPolicySearch) "
+
     Public Class frmFishingPolicySearch
 
         Private m_manager As cFishingPolicyManager = Nothing
@@ -30,10 +32,7 @@ Namespace Ecosim
         Private m_lstOptEnabled As New List(Of cControlEnabler)
         ''' <summary>Results to be plotted</summary>
         Private m_lptsResults() As ResultPoints
-
-        Private m_zghResults As cZedGraphHelper = Nothing
-        Private m_zghKite As cFPSKiteDiagramHelper = Nothing
-
+        Private m_zghResults As cZedGraphHelper
         Private m_bInUpdate As Boolean = False
 
         Public Sub New()
@@ -54,7 +53,7 @@ Namespace Ecosim
                                 AddressOf Me.SearchProgressHandler, AddressOf Me.SearchCompletedHandler)
 
 
-            Me.m_blocks.ParmBlockCodes.NumBlocks = Me.Core.nGroups
+            'Me.m_blocks.ParmBlockCodes.NumBlocks = Me.Core.nGroups
 
             Me.m_gridObjWeights.UIContext = Me.UIContext
             Me.m_gridObjWeights.Manager = Me.Core.FishingPolicyManager
@@ -90,26 +89,14 @@ Namespace Ecosim
 
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkIncludeCCosts, eOptimizeApproachTypes.FleetValues))
 
-            ' Config result graph
-            Me.m_zghResults = New cZedGraphHelper()
-            Me.m_zghResults.Attach(Me.UIContext, Me.m_graphResults)
-            Me.m_zghResults.ShowCursor = False
-            Me.m_zghResults.ConfigurePane("Results", "Iteration", "Values", False)
-            ' JS 03Mar10: disabled result cursor
-            'AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
-
-            ' Config kite graph
-            Me.m_zghKite = New cFPSKiteDiagramHelper()
-            Me.m_zghKite.Attach(Me.UIContext, Me.m_graphKite)
-            Me.m_zghKite.ConfigurePane("Kite", _
-                                       My.Resources.HEADER_MANDATED_REBUILDING & " - " & My.Resources.HEADER_NET_ECONOMIC_VALUE, _
-                                       My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT & " - " & My.Resources.HEADER_ECOSYSTEM_STRUCTURE, _
-                                       False)
-
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries}
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
 
+            Me.m_blocks.Attach(New cFPSearchColorBlockDataSource(Me.UIContext), New ucParmBlockCodes())
+            Me.m_blocks.Invalidate()
+
+            '     Me.m_blocks.DataSource = New cFPSearchColorBlockDataSource(Me.UIContext)
             Me.m_blocks.ParmBlockCodes.NumBlocks = Me.Core.nFleets
             Me.m_blocks.ParmBlockCodes.SelectedBlock = 1
 
@@ -123,15 +110,8 @@ Namespace Ecosim
             RemoveHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
             Me.m_propBaseYear = Nothing
 
-            ' Clean up result graph
-            ' JS 03Mar10: disabled result cursor
-            'RemoveHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
             Me.m_zghResults.Detach()
             Me.m_zghResults = Nothing
-
-            ' Clean up kite graph
-            Me.m_zghKite.Detach()
-            Me.m_zghKite = Nothing
 
             Me.CoreComponents = Nothing
             MyBase.OnFormClosed(e)
@@ -181,8 +161,14 @@ Namespace Ecosim
                     InitMaxFVParams()
             End Select
 
+            ' Plot graph
+            Me.InitResultsPlot()
+
             ' Controls
             Me.UpdateControls()
+
+            ''set the enabled state of the Use Economic data checkbox
+            'Me.updateEconomicDataAvailable()
 
             Me.btnSearch.Enabled = True
             Me.btnStop.Enabled = False
@@ -340,7 +326,7 @@ Namespace Ecosim
             End If
 
             ' Init the Results plot
-            ReInitResultsPlot(m_manager.nSearchBlocks, m_blocks.ParmBlockCodes)
+            ReInitResultsPlot(m_manager.nSearchBlocks, DirectCast(m_blocks.ParmBlockCodes, ucParmBlockCodes))
 
             m_manager.Run(Me)
             Me.btnSearch.Enabled = False
@@ -438,7 +424,7 @@ Namespace Ecosim
             Try
                 If CInt(m_nudNumberOfRuns.Value) > 1 Then
                     Dim results As cFPSSearchResults = m_manager.SearchResults
-                    m_gridSystemObjectivesMulti.InsertOneIterResult(results, m_manager.nSearchBlocks, m_blocks.ParmBlockCodes)
+                    m_gridSystemObjectivesMulti.InsertOneIterResult(results, m_manager.nSearchBlocks, DirectCast(m_blocks.ParmBlockCodes, ucParmBlockCodes))
                 End If
             Catch ex As Exception
                 cLog.Write(ex)
@@ -462,10 +448,10 @@ Namespace Ecosim
                     m_gridFleetValue.InsertOneIterResult(results)
                 End If
 
-                m_gridSystemObjectives.InsertOneIterResult(results, m_manager.nSearchBlocks, m_blocks.ParmBlockCodes)
+                m_gridSystemObjectives.InsertOneIterResult(results, m_manager.nSearchBlocks, DirectCast(m_blocks.ParmBlockCodes, ucParmBlockCodes))
 
-                Me.UpdateResultsGraph(results)
-                Me.UpdateKiteDiagram(results)
+                UpdateResultsGraph(results)
+
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -487,9 +473,11 @@ Namespace Ecosim
 
             If Me.m_bInUpdate Then Return
 
+            'If (cf And cProperty.eChangeFlags.Value) = cProperty.eChangeFlags.Value Then
             Me.m_bInUpdate = True
             Me.m_nudBaseYear.Value = CInt(prop.GetValue()) + Me.Core.EcosimFirstYear
             Me.m_bInUpdate = False
+            'End If
 
         End Sub
 
@@ -515,14 +503,22 @@ Namespace Ecosim
 
         End Sub
 
-        ' JS 03Mar10: disabled result cursor
-        'Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
-        '    Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
-        'End Sub
+        Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+            Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
+        End Sub
 
 #End Region ' Callbacks
 
 #Region " Graphing Region "
+
+        Private Sub InitResultsPlot()
+
+            Me.m_zghResults = New cZedGraphHelper()
+            Me.m_zghResults.Attach(Me.UIContext, Me.m_graphResults)
+            Me.m_zghResults.ShowCursor = False
+
+            AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
+        End Sub
 
         Private Sub ReInitResultsPlot(ByVal nSearchBlocks As Integer, ByVal pbc As ucParmBlockCodes)
             Dim zgcr As New ZedGraph.ColorSymbolRotator
@@ -588,31 +584,28 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub UpdateKiteDiagram(ByVal results As cFPSSearchResults)
-            Me.m_zghKite.UpdateDiagram(results)
+        Private Sub ShowIteration(ByVal iIteration As Integer)
+
+            Dim lResults As List(Of cObjectiveResult) = Nothing
+            Dim res As cObjectiveResult = Nothing
+
+
+            '' Get the results
+            'lResults = Me.m_manager.Results()
+
+
+            'iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
+
+            'If iIteration = -1 Then Return
+
+            '' Update indicators
+            'Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue, _
+            '                           res.objFuncMandatedValue, res.objFuncEcologicalValue, _
+            '                           res.objBiomassDiversity, res.objFuncAreaBorder, _
+            '                           res.objFuncTotal, res.PercentageClosed)
+
+
         End Sub
-
-        ' JS 03Mar10: disabled result cursor
-        'Private Sub ShowIteration(ByVal iIteration As Integer)
-
-        '    Dim lResults As List(Of cObjectiveResult) = Nothing
-        '    Dim res As cObjectiveResult = Nothing
-
-        '    '' Get the results
-        '    'lResults = Me.m_manager.Results()
-
-
-        '    'iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
-
-        '    'If iIteration = -1 Then Return
-
-        '    '' Update indicators
-        '    'Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue, _
-        '    '                           res.objFuncMandatedValue, res.objFuncEcologicalValue, _
-        '    '                           res.objBiomassDiversity, res.objFuncAreaBorder, _
-        '    '                           res.objFuncTotal, res.PercentageClosed)
-        'End Sub
-
 #End Region ' Graphing region
 
 #Region " Helper classes "
@@ -682,5 +675,183 @@ Namespace Ecosim
 #End Region ' Helper classes
 
     End Class ' frmFishingPolicySearch
+
+#End Region
+
+#Region "DataSource implementation for ucPolicyColorBlocks"
+
+    Public Class cFPSearchColorBlockDataSource
+        Implements IPolicyColorBlockDataSource
+
+        Private m_uic As cUIContext
+
+        Private m_BlockCells(,) As Integer
+
+        Private m_blockCodes As IBlockSelector
+        Private m_iTotalBlocks As Integer
+
+        Public ReadOnly Property BlockCells() As Integer(,) Implements IPolicyColorBlockDataSource.BlockCells
+            Get
+                Return m_BlockCells
+            End Get
+        End Property
+
+
+        Public ReadOnly Property TotalBlocks() As Integer Implements IPolicyColorBlockDataSource.TotalBlocks
+            Get
+                Return Me.m_uic.Core.EcoSimModelParameters.NumberYears
+            End Get
+        End Property
+
+        Public Sub New(ByVal UIContext As cUIContext)
+            Me.m_uic = UIContext
+        End Sub
+
+        Public Sub Atatch(ByVal Blocks As IBlockSelector) Implements IPolicyColorBlockDataSource.Atatch
+            m_blockCodes = Blocks
+        End Sub
+
+        Public Sub Init() Implements IPolicyColorBlockDataSource.Init
+
+            m_iTotalBlocks = Me.m_uic.Core.EcoSimModelParameters.NumberYears
+
+            ReDim m_BlockCells(Me.m_uic.Core.nFleets, m_iTotalBlocks)
+            Dim fpFleetInput As cFishingPolicySearchBlock = Nothing
+
+            For i As Integer = 1 To m_BlockCells.GetLength(0) - 1
+                fpFleetInput = Me.m_uic.Core.FishingPolicyManager.SearchBlocks(i)
+                For j As Integer = 1 To m_BlockCells.GetLength(1) - 1
+                    m_BlockCells(i, j) = fpFleetInput.SearchBlocks(j)
+                Next
+            Next
+
+        End Sub
+
+        Public Sub FillBlock(ByVal iRow As Integer, ByVal iCol As Integer) Implements IPolicyColorBlockDataSource.FillBlock
+
+            ' Sanity checks
+            If (iCol <= Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters.BaseYear) Then Return
+
+            If (iRow < 1) Then Return
+            If (iRow > m_BlockCells.GetLength(0) - 1) Then Return
+
+            ' Fill single block
+            Me.m_uic.Core.FishingPolicyManager.SearchBlocks(iRow).SearchBlocks(iCol) = Me.m_blockCodes.SelectedBlock
+            Me.m_BlockCells(iRow, iCol) = Me.m_uic.Core.FishingPolicyManager.SearchBlocks(iRow).SearchBlocks(iCol)
+
+        End Sub
+
+        Public Sub SetSeqColorCodes(ByVal startYear As Integer, ByVal endYear As Integer, ByVal yearPerBlock As Integer) Implements IPolicyColorBlockDataSource.SetSeqColorCodes
+
+            ' If m_bIsFirstTimeLoaded Then Return
+            If startYear > endYear Or startYear <= 0 Or endYear <= 0 Then Return
+            If m_BlockCells Is Nothing Then Return
+            If endYear > m_BlockCells.GetLength(1) - 1 Then endYear = m_BlockCells.GetLength(1) - 1
+
+            Dim nColors As Integer = m_blockCodes.NumBlocks - 1
+            Dim yearSegment As Integer = CInt(Math.Ceiling(m_iTotalBlocks / yearPerBlock))
+            Dim totalClr As Integer = yearSegment * Me.m_uic.Core.nFleets
+
+            If totalClr > nColors Then
+                m_blockCodes.NumBlocks = totalClr + 1
+            End If
+
+            Dim cnt As Integer = 1
+            Dim stepSize As Integer = CInt(Math.Floor(m_blockCodes.NumBlocks / totalClr))
+
+            For i As Integer = 1 To m_BlockCells.GetLength(0) - 1
+                'Console.WriteLine("iColor = {0} selClr = {1}", cnt, selClr)
+
+                For j As Integer = 0 To yearSegment - 1
+                    cnt += stepSize
+                    For l As Integer = 1 To yearPerBlock
+                        Dim jIndex As Integer = j * yearPerBlock + l
+                        If jIndex <= endYear AndAlso jIndex >= startYear Then
+                            m_BlockCells(i, jIndex) = cnt
+                        End If
+                    Next
+                Next
+
+                ' Black out blocks
+                For j As Integer = 1 To startYear - 1
+                    m_BlockCells(i, j) = 0
+                Next
+                For j As Integer = endYear + 1 To m_BlockCells.GetLength(1) - 1
+                    m_BlockCells(i, j) = 0
+                Next
+            Next
+
+            For iflt As Integer = 1 To Me.m_uic.Core.nFleets
+                'the batch edit flag stops the searchblocks from sending out any messages
+                Me.m_uic.Core.FishingPolicyManager.SearchBlocks(iflt).BatchEdit = True
+                For iyr As Integer = 1 To Me.m_uic.Core.nEcosimYears
+                    If iyr <= Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters.BaseYear Then
+                        'clear all blocks less than the baseyear
+                        m_BlockCells(iflt, iyr) = 0
+                    End If
+                    Me.m_uic.Core.FishingPolicyManager.SearchBlocks(iflt).SearchBlocks(iyr) = m_BlockCells(iflt, iyr)
+                Next
+                Me.m_uic.Core.FishingPolicyManager.SearchBlocks(iflt).BatchEdit = False
+            Next iflt
+
+            'm_pbFishingBlocks.Invalidate()
+
+        End Sub
+
+        Public ReadOnly Property nRows() As Integer Implements IPolicyColorBlockDataSource.nRows
+            Get
+                Return Me.m_uic.Core.nFleets
+            End Get
+        End Property
+
+        Public ReadOnly Property RowLabel(ByVal iRow As Integer) As String Implements IPolicyColorBlockDataSource.RowLabel
+            Get
+                Try
+                    Return Me.m_uic.Core.FleetInputs(iRow).Name
+                Catch ex As Exception
+                    Debug.Assert(False, Me.ToString & ".RowLabel() Exception: " & ex.Message)
+                End Try
+                Return String.Empty
+            End Get
+        End Property
+
+        Public Property BatchEdit() As Boolean Implements IPolicyColorBlockDataSource.BatchEdit
+            Get
+                'no implementation of the group batch lock for FPS data
+            End Get
+            Set(ByVal value As Boolean)
+
+            End Set
+        End Property
+
+        Public Sub Update() Implements IPolicyColorBlockDataSource.Update
+
+            Try
+                For iflt As Integer = 1 To Me.m_uic.Core.nFleets
+                    'the batch edit flag stops the searchblocks from sending out any messages
+                    Me.m_uic.Core.FishingPolicyManager.SearchBlocks(iflt).BatchEdit = True
+                    For iyr As Integer = 1 To Me.m_uic.Core.nEcosimYears
+                        If iyr <= Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters.BaseYear Then
+                            'clear all blocks less than the baseyear
+                            m_BlockCells(iflt, iyr) = 0
+                        End If
+                        Me.m_uic.Core.FishingPolicyManager.SearchBlocks(iflt).SearchBlocks(iyr) = m_BlockCells(iflt, iyr)
+                    Next
+                    Me.m_uic.Core.FishingPolicyManager.SearchBlocks(iflt).BatchEdit = False
+                Next iflt
+
+            Catch ex As Exception
+                System.Console.WriteLine(ex.Message)
+            End Try
+        End Sub
+
+        Public ReadOnly Property isControlPanelVisible() As Boolean Implements IPolicyColorBlockDataSource.isControlPanelVisible
+            Get
+                Return True
+            End Get
+        End Property
+    End Class
+
+#End Region
 
 End Namespace

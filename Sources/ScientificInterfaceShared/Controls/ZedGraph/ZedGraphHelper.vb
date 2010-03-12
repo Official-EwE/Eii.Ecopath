@@ -616,6 +616,11 @@ Namespace Controls
                 Me.m_zgc.IsEnableHZoom = value
                 Me.m_zgc.IsEnableWheelZoom = value
                 Me.m_zgc.IsEnableZoom = value
+                If value Then
+                    Me.m_zgc.ZoomButtons = MouseButtons.Left
+                Else
+                    Me.m_zgc.ZoomButtons = MouseButtons.None
+                End If
             End Set
         End Property
 
@@ -623,6 +628,11 @@ Namespace Controls
             Set(ByVal value As Boolean)
                 Me.m_zgc.IsEnableVPan = value
                 Me.m_zgc.IsEnableHPan = value
+                If value Then
+                    Me.m_zgc.PanButtons = MouseButtons.Left
+                Else
+                    Me.m_zgc.EditButtons = MouseButtons.None
+                End If
             End Set
         End Property
 
@@ -630,6 +640,11 @@ Namespace Controls
             Set(ByVal value As Boolean)
                 Me.m_zgc.IsEnableHEdit = value
                 Me.m_zgc.IsEnableVEdit = value
+                If value Then
+                    Me.m_zgc.EditButtons = MouseButtons.Right
+                Else
+                    Me.m_zgc.EditButtons = MouseButtons.None
+                End If
             End Set
         End Property
 

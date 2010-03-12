@@ -748,6 +748,8 @@ Namespace Ecosim
                     'search routines vary FishYear() which is then used to set FishTime()
                     Me.setFishTime(itime, iyr)
 
+                    Me.m_MSE.setTime(itime, iyr)
+
                     If Me.m_search.SearchMode = eSearchModes.MSE And Me.m_MSE.Data.UseQuotaRegs Then
                         'Effort is being regulated by the Quota's
                         'Effort can be either predicted or tracked from the existing Ecosim value

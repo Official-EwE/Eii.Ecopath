@@ -366,10 +366,10 @@
     <Compile Include="Ecosim\Tools\Shared\ucParmBlockCodes.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\Fishing policy search\ucPolicyColorBlocks.Designer.vb">
+    <Compile Include="Ecosim\Tools\Shared\ucPolicyColorBlocks.Designer.vb">
       <DependentUpon>ucPolicyColorBlocks.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\Fishing policy search\ucPolicyColorBlocks.vb">
+    <Compile Include="Ecosim\Tools\Shared\ucPolicyColorBlocks.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Shared\ucAnomalySearchSketchPad.Designer.vb">
@@ -1343,15 +1343,6 @@
     <Compile Include="Tools\MSE\gridFixedEscapement.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridMSEGroupObjectives.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Tools\MSE\gridMSEOjectiveWeights.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Tools\MSE\gridPerformanceResults.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Tools\MSE\gridRiskResults.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1364,7 +1355,16 @@
     <Compile Include="Tools\MSE\gridRiskBounds.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Tools\MSE\gridSelectColorBlock.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Tools\MSE\MSEPlotting.vb" />
+    <Compile Include="Tools\MSE\ucCVBlockSelector.Designer.vb">
+      <DependentUpon>ucCVBlockSelector.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\MSE\ucCVBlockSelector.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <None Include="Resources\BreakpointHS.png" />
     <None Include="Resources\compareversionsHS.png" />
     <None Include="Resources\credits.rtf" />
@@ -1511,7 +1511,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>ucParmBlockCodes.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Tools\Fishing policy search\ucPolicyColorBlocks.resx">
+    <EmbeddedResource Include="Ecosim\Tools\Shared\ucPolicyColorBlocks.resx">
       <DependentUpon>ucPolicyColorBlocks.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1646,6 +1646,9 @@
     <EmbeddedResource Include="Tools\MSE\frmMSY.resx">
       <DependentUpon>frmMSY.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\MSE\ucCVBlockSelector.resx">
+      <DependentUpon>ucCVBlockSelector.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard\EwEScenarioDlg.resx">
       <DependentUpon>EwEScenarioDlg.vb</DependentUpon>

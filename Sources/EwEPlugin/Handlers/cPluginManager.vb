@@ -1572,27 +1572,27 @@ Public Class cPluginManager
         ' ---                                                               --- '
 #If DEBUG Then
 
-        Try
+        'Try
 
-            Dim mi As MethodInfo = typePlugin.GetMethod(strMethod)
-            If (mi Is Nothing) Then
-                Debug.Assert(False, String.Format("Method {0}::{1} does not exist", typePlugin, strMethod))
-                Return False
-            End If
+        '    Dim mi As MethodInfo = typePlugin.GetMethod(strMethod)
+        '    If (mi Is Nothing) Then
+        '        Debug.Assert(False, String.Format("Method {0}::{1} does not exist", typePlugin, strMethod))
+        '        Return False
+        '    End If
 
-            Dim api() As ParameterInfo = mi.GetParameters
-            If (api.Length <> aArgs.Length) Then
-                Debug.Assert(False, String.Format("Method {0}::{1} called with wrong number of parameters", typePlugin, strMethod))
-                Return False
-            End If
+        '    Dim api() As ParameterInfo = mi.GetParameters
+        '    If (api.Length <> aArgs.Length) Then
+        '        Debug.Assert(False, String.Format("Method {0}::{1} called with wrong number of parameters", typePlugin, strMethod))
+        '        Return False
+        '    End If
 
-        Catch ex As AmbiguousMatchException
-            ' Ok, more than one method found with this name. No need to validate
-            ' further, let invocaton do the rest
-        Catch ex As Exception
-            ' What?!
-            Debug.Assert(False, ex.Message)
-        End Try
+        'Catch ex As AmbiguousMatchException
+        '    ' Ok, more than one method found with this name. No need to validate
+        '    ' further, let invocaton do the rest
+        'Catch ex As Exception
+        '    ' What?!
+        '    Debug.Assert(False, ex.Message)
+        'End Try
 
         ' JS17oct09: skip parameter type validation for now, let invocation throw exceptions
         'For i As Integer = 0 To api.Length - 1

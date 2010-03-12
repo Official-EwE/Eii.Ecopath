@@ -486,12 +486,14 @@ Namespace MSE
                 'Group inputs
                 For Each mseGrp As cMSEGroupInput In Me.m_lstGroupInputs
                     mseGrp.AllowValidation = False
+
+                    mseGrp.Resize()
                     'convert the Database ID into a group index
                     iGroup = Array.IndexOf(coreData.GroupDBID, mseGrp.DBID)
 
                     mseGrp.Index = iGroup
                     mseGrp.Name = Me.m_core.m_EcoPathData.GroupName(iGroup)
-                    mseGrp.BiomassCV = Me.m_MSEdata.CVbiomEst(mseGrp.Index)
+
                     mseGrp.UpperRisk = Me.m_MSEdata.BioRiskValue(mseGrp.Index, 1)
                     mseGrp.LowerRisk = Me.m_MSEdata.BioRiskValue(mseGrp.Index, 0)
                     mseGrp.FixedEscapement = m_core.m_QuotaData.FixedEscapement(mseGrp.Index)
@@ -502,6 +504,11 @@ Namespace MSE
                     mseGrp.CatchRefLower = Me.m_MSEdata.CatchGroupBounds(mseGrp.Index).Lower
                     mseGrp.CatchRefUpper = Me.m_MSEdata.CatchGroupBounds(mseGrp.Index).Upper
 
+                    For it As Integer = 1 To Me.m_MSEdata.nYears
+                        mseGrp.BiomassCV(it) = Me.m_MSEdata.CVBiomT(mseGrp.Index, it)
+                    Next
+                    'mseGrp.BiomassCV = Me.m_MSEdata.CVbiomEst(mseGrp.Index)
+
                     mseGrp.ResetStatusFlags()
                     mseGrp.AllowValidation = True
                 Next
@@ -509,6 +516,7 @@ Namespace MSE
                 'Group outputs just the index outputs will be populated in LoadOutputs() at each iteration
                 For Each mseOutput As cMSEGroupOutput In Me.m_lstGroupOutputs
                     mseOutput.AllowValidation = False 'no validation of outputs
+                    mseOutput.Resize()
                     mseOutput.Index = Array.IndexOf(coreData.GroupDBID, mseOutput.DBID)
                     mseOutput.Name = Me.m_core.m_EcoPathData.GroupName(mseOutput.Index)
                 Next
@@ -541,13 +549,13 @@ Namespace MSE
                 'fleets
                 For Each mseFlt As cMSEFleetInput In Me.m_lstFleetInputs
                     mseFlt.AllowValidation = False
+                    mseFlt.Resize()
                     'convert the Database ID into a fleet index
                     iFleet = Array.IndexOf(coreData.FleetDBID, mseFlt.DBID)
 
                     mseFlt.Index = iFleet
                     mseFlt.Name = Me.m_core.m_EcoPathData.FleetName(iFleet)
                     mseFlt.QIncrease = Me.m_MSEdata.Qgrow(mseFlt.Index)
-                    mseFlt.FleetCV = Me.m_MSEdata.CVFest(mseFlt.Index)
                     mseFlt.MSYEvaluateFleet = Me.m_MSEdata.MSYEvaluateFleet(mseFlt.Index)
 
                     mseFlt.CatchRefLower = Me.m_MSEdata.CatchFleetBounds(mseFlt.Index).Lower
@@ -556,10 +564,14 @@ Namespace MSE
                     mseFlt.EffortRefLower = Me.m_MSEdata.EffortFleetBounds(mseFlt.Index).Lower
                     mseFlt.EffortRefUpper = Me.m_MSEdata.EffortFleetBounds(mseFlt.Index).Upper
 
-
                     For igrp As Integer = 1 To m_core.nLivingGroups
                         mseFlt.FleetWeight(igrp) = Me.m_MSEdata.Fweight(mseFlt.Index, igrp)
                     Next
+
+                    For it As Integer = 1 To Me.m_MSEdata.nYears
+                        mseFlt.FleetCV(it) = Me.m_MSEdata.CVFT(mseFlt.Index, it)
+                    Next
+
                     mseFlt.ResetStatusFlags()
                     mseFlt.AllowValidation = True
                 Next
@@ -613,7 +625,7 @@ Namespace MSE
                     Case eDataTypes.MSEGroupInput
 
                         For Each mseGrp As cMSEGroupInput In Me.m_lstGroupInputs
-                            Me.m_MSEdata.CVbiomEst(mseGrp.Index) = mseGrp.BiomassCV
+                            ' Me.m_MSEdata.CVbiomEst(mseGrp.Index) = mseGrp.BiomassCV
                             Me.m_core.m_QuotaData.FixedEscapement(mseGrp.Index) = mseGrp.FixedEscapement
 
                             Me.m_MSEdata.BioRiskValue(mseGrp.Index, 1) = mseGrp.UpperRisk
@@ -625,14 +637,17 @@ Namespace MSE
                             Me.m_MSEdata.CatchGroupBounds(mseGrp.Index).Lower = mseGrp.CatchRefLower
                             Me.m_MSEdata.CatchGroupBounds(mseGrp.Index).Upper = mseGrp.CatchRefUpper
 
+                            For it As Integer = 1 To Me.m_MSEdata.nYears
+                                Me.m_MSEdata.CVBiomT(mseGrp.Index, it) = mseGrp.BiomassCV(it)
+                            Next
+
                         Next
 
                     Case eDataTypes.MSEFleetInput
 
                         For Each mseFlt As cMSEFleetInput In Me.m_lstFleetInputs
                             Me.m_MSEdata.Qgrow(mseFlt.Index) = mseFlt.QIncrease
-                            Me.m_MSEdata.CVFest(mseFlt.Index) = mseFlt.FleetCV
-
+                            
                             Me.m_MSEdata.CatchFleetBounds(mseFlt.Index).Lower = mseFlt.CatchRefLower
                             Me.m_MSEdata.CatchFleetBounds(mseFlt.Index).Upper = mseFlt.CatchRefUpper
 
@@ -643,6 +658,11 @@ Namespace MSE
                             For igrp As Integer = 1 To m_core.nLivingGroups
                                 Me.m_MSEdata.Fweight(mseFlt.Index, igrp) = mseFlt.FleetWeight(igrp)
                             Next igrp
+
+                            For it As Integer = 1 To Me.m_MSEdata.nYears
+                                Me.m_MSEdata.CVFT(mseFlt.Index, it) = mseFlt.FleetCV(it)
+                            Next
+
                         Next mseFlt
 
                     Case eDataTypes.MSEParameters

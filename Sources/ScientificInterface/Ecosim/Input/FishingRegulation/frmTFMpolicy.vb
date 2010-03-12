@@ -12,7 +12,8 @@ Namespace Ecosim
 
     ''' =======================================================================
     ''' <summary>
-    ''' 
+    ''' Form, implementing the Ecosim Fishing policy mortality (a.k.a hockey stick) 
+    ''' interface.
     ''' </summary>
     ''' =======================================================================
     Public Class frmTargetFishingMortalityPolicy
@@ -38,8 +39,9 @@ Namespace Ecosim
 #Region " Events "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-
             MyBase.OnLoad(e)
+
+            If Me.UIContext Is Nothing Then Return
 
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
@@ -50,7 +52,6 @@ Namespace Ecosim
             Me.m_zgh.AllowEdit = True
 
             Me.m_grid.UIContext = Me.UIContext
-            ' Hahaha
             If (Core.nGroups > 0) Then
                 Me.m_grid.Group = Me.Core.EcoSimGroupInputs(1)
             End If
@@ -58,10 +59,13 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            ' Clean up
-            Me.Group = Nothing
-            Me.m_zgh.Detach()
-            Me.m_zgh = Nothing
+
+            If Me.m_zgh IsNot Nothing Then
+                Me.Group = Nothing
+                Me.m_zgh.Detach()
+                Me.m_zgh = Nothing
+            End If
+
             MyBase.OnFormClosed(e)
         End Sub
 
@@ -130,33 +134,34 @@ Namespace Ecosim
             Dim lLines As New List(Of LineItem)
 
             If (Me.m_group IsNot Nothing) Then
+                ' Group has data?
+                If (Me.m_group.GetStatus(eVarNameFlags.MSEBBase) And eStatusFlags.Null) = 0 Then
+                    ' #Yes: plot stick
 
-                ' Add points
-                lpts.Add(0, 0)
-                lpts.Add(Me.m_group.BLim, 0)
-                lpts.Add(Me.m_group.BBase, Me.m_group.FOpt) ' Point order?
-                lpts.Add(Me.m_group.BBase * 4, Me.m_group.FOpt) ' Max X value?
+                    ' Add points
+                    lpts.Add(0, 0)
+                    lpts.Add(Me.m_group.BLim, 0)
+                    lpts.Add(Me.m_group.BBase, Me.m_group.FOpt) ' Point order?
+                    lpts.Add(Me.m_group.BBase * 4, Me.m_group.FOpt) ' Max X value?
 
-                ' Add text items to the points
-                'text = new TextObj("Upgrade", 700F, 50.0F );
-                '// rotate the text 90 degrees
-                'text.FontSpec.Angle = 90;
-                '// Align the text such that the Right-Center is at (700, 50) in user scale coordinates
-                'text.Location.AlignH = AlignH.Right;
-                'text.Location.AlignV = AlignV.Center;
-                '// Disable the border and background fill options for the text
-                'text.FontSpec.Fill.IsVisible = false;
-                'text.FontSpec.Border.IsVisible = false;
-                'myPane.GraphObjList.Add( text );
+                    line = New LineItem(Me.m_group.Name, _
+                                        lpts, _
+                                        Me.StyleGuide.GroupColor(Me.Core, Me.m_group.Index), _
+                                        SymbolType.Circle)
+                    line.Line.Width = 2.0
 
-                line = New LineItem(Me.m_group.Name, lpts, Color.DarkOrange, SymbolType.Circle)
-                line.Line.Width = 2.0
+                    lLines.Add(line)
+                End If
+            End If
 
-                lLines.Add(line)
+            If lLines.Count > 0 Then
                 ' Plot graph, but rescale ONLY when not dragging
                 Me.m_zgh.PlotLines(lLines.ToArray, 1, (Me.m_dragtype = eDragType.None))
+                Me.m_graph.Cursor = Cursors.Default
             Else
+                ' Clear graph
                 Me.m_zgh.PlotLines(Nothing)
+                Me.m_graph.Cursor = Cursors.No
             End If
 
         End Sub
@@ -164,24 +169,6 @@ Namespace Ecosim
 #End Region ' Internals
 
 #Region " Dragging "
-
-        Private Sub HandleGraphKeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) _
-                Handles m_graph.KeyDown
-
-            If Control.ModifierKeys = Keys.Shift Then
-                Me.m_graph.Cursor = Cursors.Hand
-            End If
-
-        End Sub
-
-        Private Sub HandleGraphKeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) _
-                Handles m_graph.KeyUp
-
-            If Control.ModifierKeys = Keys.Shift Then
-                Me.m_graph.Cursor = Cursors.Default
-            End If
-
-        End Sub
 
         Private Function HandleGraphMouseDownEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
                 Handles m_graph.MouseDownEvent
@@ -191,17 +178,39 @@ Namespace Ecosim
             Dim curve As CurveItem = Nothing
             Dim iIndex As Integer = 0
 
-            ' Point-dragging is activated by an 'Shift' key and mousedown combination
-            If (Control.ModifierKeys = Keys.Shift) Then
-
-                ' Find the point that was clicked, and make sure the point list is editable
-                If (pane.FindNearestPoint(pt, curve, iIndex) And (TypeOf curve.Points Is PointPairList)) Then
-                    ' Set drag operation type
-                    Me.m_dragtype = DirectCast(iIndex, eDragType)
+            ' Find the point that was clicked, and make sure the point list is editable
+            If (pane.FindNearestPoint(pt, curve, iIndex)) Then
+                If (curve IsNot Nothing) Then
+                    If (TypeOf curve.Points Is PointPairList) Then
+                        ' Set drag operation type
+                        Me.m_dragtype = DirectCast(iIndex, eDragType)
+                    End If
                 End If
             End If
 
-            Return (Me.m_dragtype <> eDragType.None)
+            Return False
+
+        End Function
+
+        Private Function m_graph_MouseMoveEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+            Handles m_graph.MouseMoveEvent
+
+            Dim pane As GraphPane = sender.GraphPane
+            Dim pt As PointF = New PointF(e.X, e.Y)
+            Dim curve As CurveItem = Nothing
+            Dim iIndex As Integer = 0
+            Dim bIsNear As Boolean = False
+
+            ' Find the point that was clicked, and make sure the point list is editable
+            If (pane.FindNearestPoint(pt, curve, iIndex)) Then
+                bIsNear = (curve IsNot Nothing) 
+            End If
+
+            If bIsNear Then
+                Me.m_graph.Cursor = Cursors.Hand
+            Else
+                Me.m_graph.Cursor = Cursors.Default
+            End If
 
         End Function
 
@@ -229,6 +238,8 @@ Namespace Ecosim
                 End Select
 
             End If
+            Return True
+
         End Function
 
         Private Function HandleGraphMouseUpEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
@@ -236,6 +247,7 @@ Namespace Ecosim
 
             Me.m_dragtype = eDragType.None
             Me.m_zgh.RescaleAndRedraw()
+            Return True
 
         End Function
 

@@ -330,13 +330,13 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub m_VulnerabilityBlockCodeSelector_OnBlockSelected(ByVal sender As ucParmBlockCodes) _
+        Private Sub m_VulnerabilityBlockCodeSelector_OnBlockSelected(ByVal sender As IBlockSelector) _
             Handles m_vulnerabilityBlockCodeSelector.OnBlockSelected
             Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = sender.SelectedBlock
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_VulnerabilityBlockCodeSelector_OnNumBlocksChanged(ByVal sender As ucParmBlockCodes) _
+        Private Sub m_VulnerabilityBlockCodeSelector_OnNumBlocksChanged(ByVal sender As IBlockSelector) _
             Handles m_vulnerabilityBlockCodeSelector.OnNumBlocksChanged
             Me.m_vulnerabilityBlockMatrix.BlockColors = sender.BlockColors
             Me.UpdateControls()

@@ -27,8 +27,9 @@ Namespace MSE
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eCoreComponentType.MSE, Index, cCore.NULL_VALUE)
 
 
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MSEBioCV, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBioCV))
+            'MSEBioCV
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSEBioCV, eStatusFlags.Null, eCoreCounterTypes.nEcosimYears, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBioCV))
             m_values.Add(val.varName, val)
 
 
@@ -73,14 +74,36 @@ Namespace MSE
 
         End Sub
 
-
-        Public Property BiomassCV() As Single
+        ''' <summary>
+        ''' Edit the SearchBlocks in batch mode no messages are sent out when BatchEdit = True when BatchEdit is toggled to False then the core is notified.
+        ''' </summary>
+        ''' <remarks>This turns off the AllowValidation flag which stops the object from calling core.OnValidate() vastly speeding up the editing</remarks>
+        Public Property BatchEdit() As Boolean
             Get
-                Return CType(GetVariable(eVarNameFlags.MSEBioCV), Single)
+                Return Not Me.AllowValidation
+            End Get
+
+            Set(ByVal value As Boolean)
+
+                'if turning the BatchEdit On after it has been OFF tell the core that the values has been edited
+                'this will allow the core to update the underlying data and send out a datamodified message
+                If Me.BatchEdit = True And value = False Then
+                    Me.m_core.OnValidated(m_values.Item(eVarNameFlags.MSEBioCV), Me)
+                End If
+                Me.AllowValidation = Not value
+
+            End Set
+
+        End Property
+
+
+        Public Property BiomassCV(ByVal TimeIndex As Integer) As Single
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSEBioCV, TimeIndex), Single)
             End Get
 
             Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEBioCV, value)
+                SetVariable(eVarNameFlags.MSEBioCV, value, TimeIndex)
             End Set
         End Property
 

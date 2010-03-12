@@ -9,6 +9,51 @@ Imports ScientificInterface.Other
 
 Namespace Ecosim
 
+
+    Public Interface IBlockSelector
+        Inherits IUIElement
+
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event notifying that the number of blocks have changed.
+        ''' </summary>
+        ''' <param name="sender">
+        ''' The <see cref="ucParmBlockCodes">block code parameters control</see>
+        ''' that sent this event.
+        ''' </param>
+        ''' -------------------------------------------------------------------
+        Event OnNumBlocksChanged(ByVal sender As IBlockSelector)
+
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event notifying that selected block has changed.
+        ''' </summary>
+        ''' <param name="sender">
+        ''' The <see cref="ucParmBlockCodes">block code parameters control</see>
+        ''' that sent this event.
+        ''' </param>
+        ''' -------------------------------------------------------------------
+        Event OnBlockSelected(ByVal sender As IBlockSelector)
+
+        ''' <summary>
+        ''' Value of a cell (CV) has changed
+        ''' </summary>
+        Event onValueChanged(ByVal newValue As Single, ByVal Index As Integer)
+
+        Property NumBlocks() As Integer
+        Property SelectedBlock() As Integer
+        ReadOnly Property BlockColors() As Color()
+        ReadOnly Property BlockColor(ByVal iBlock As Integer) As Color
+        ReadOnly Property SelectedBlockColor() As Color
+
+        Function ValuetoBlock(ByVal cv As Single) As Integer
+        Function BlocktoValue(ByVal iBlock As Integer) As Single
+
+
+    End Interface
+
     ''' =======================================================================
     ''' <summary>
     ''' User control allowing the user to set a number of colour blocks
@@ -16,7 +61,8 @@ Namespace Ecosim
     ''' </summary>
     ''' =======================================================================
     Public Class ucParmBlockCodes
-        Implements IUIElement
+        Implements IBlockSelector
+
 
 #Region " Private variables "
 
@@ -69,7 +115,7 @@ Namespace Ecosim
         ''' Get/set the number of blocks.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property NumBlocks() As Integer
+        Public Property NumBlocks() As Integer Implements IBlockSelector.NumBlocks
             Get
                 Return Me.m_iNumBlocks
             End Get
@@ -97,7 +143,7 @@ Namespace Ecosim
         ''' Get/set the index of the current selected block in the control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property SelectedBlock() As Integer
+        Public Property SelectedBlock() As Integer Implements IBlockSelector.SelectedBlock
             Get
                 Return Me.m_iSelectedBlock
             End Get
@@ -117,7 +163,7 @@ Namespace Ecosim
         ''' Get the colors representing the blocks in this control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property BlockColors() As Color()
+        Public ReadOnly Property BlockColors() As Color() Implements IBlockSelector.BlockColors
             Get
                 Dim lcolors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.m_iNumBlocks - 1)
                 lcolors.Insert(0, Color.Black)
@@ -131,7 +177,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="iBlock">The index of the block to access the color for.</param>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property BlockColor(ByVal iBlock As Integer) As Color
+        Public ReadOnly Property BlockColor(ByVal iBlock As Integer) As Color Implements IBlockSelector.BlockColor
             Get
                 If iBlock >= 0 And iBlock <= Me.NumBlocks Then
                     Return Me.BlockColors(iBlock)
@@ -145,7 +191,7 @@ Namespace Ecosim
         ''' Get the color for the current selected block in the control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property SelectedBlockColor() As Color
+        Public ReadOnly Property SelectedBlockColor() As Color Implements IBlockSelector.SelectedBlockColor
             Get
                 Return Me.BlockColor(Me.m_iSelectedBlock)
             End Get
@@ -164,7 +210,7 @@ Namespace Ecosim
         ''' that sent this event.
         ''' </param>
         ''' -------------------------------------------------------------------
-        Public Event OnNumBlocksChanged(ByVal sender As ucParmBlockCodes)
+        Public Event OnNumBlocksChanged(ByVal sender As IBlockSelector) Implements IBlockSelector.OnNumBlocksChanged
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -175,7 +221,16 @@ Namespace Ecosim
         ''' that sent this event.
         ''' </param>
         ''' -------------------------------------------------------------------
-        Public Event OnBlockSelected(ByVal sender As ucParmBlockCodes)
+        Public Event OnBlockSelected(ByVal sender As IBlockSelector) Implements IBlockSelector.OnBlockSelected
+
+        ''' <summary>
+        ''' CV value has changed
+        ''' </summary>
+        ''' <param name="newValue"></param>
+        ''' <param name="Index"></param>
+        ''' <remarks>Not used for this implementation</remarks>
+        Public Event onValueChanged(ByVal newValue As Single, ByVal Index As Integer) Implements IBlockSelector.onValueChanged
+
 
 #End Region ' Public events
 
@@ -324,6 +379,14 @@ Namespace Ecosim
         End Property
 
 #End Region ' Internal implementation
+
+        Public Function BlocktoValue(ByVal iBlock As Integer) As Single Implements IBlockSelector.BlocktoValue
+
+        End Function
+
+        Public Function ValuetoBlock(ByVal cv As Single) As Integer Implements IBlockSelector.ValuetoBlock
+
+        End Function
 
     End Class
 

@@ -20,11 +20,11 @@ Public Class gridFishingCV
     Protected Overrides Sub InitStyle()
 
         MyBase.InitStyle()
-        Me.Redim(1, 4)
+        Me.Redim(1, 3)
         Me(0, 0) = New EwEColumnHeaderCell("")
         Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
-        Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CV)
-        Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_INCREASEQ)
+        Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_INCREASEQ)
+        'Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CV)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -43,10 +43,11 @@ Public Class gridFishingCV
 
                 Me(i, 0) = New EwERowHeaderCell(i)
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.Name)
-                Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSEFleetCV)
-                Me(i, 3) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSEQIncrease)
+                Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSEQIncrease)
+                ' Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSEFleetCV)
 
             Next
+
         Catch ex As Exception
             Debug.Assert(False)
         End Try
