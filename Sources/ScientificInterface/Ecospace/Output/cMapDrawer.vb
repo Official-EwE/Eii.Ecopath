@@ -259,7 +259,11 @@ Public Class cMapDrawer
             For i = 0 To Me.m_lGroups.Count - 1
                 iGroup = Me.m_lGroups(i)
                 iLocation = Me.m_lLocations(i)
-                DrawBiomassBaseMap(iGroup, m_lrc(iLocation))
+                Try
+                    DrawBiomassBaseMap(iGroup, m_lrc(iLocation))
+                Catch ex As Exception
+
+                End Try
             Next
 
             m_bAllowedToRun = True
