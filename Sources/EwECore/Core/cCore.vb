@@ -53,7 +53,7 @@ Public Class cCore
     ''' <summary>The NULL or 'no data' value for values maintained in the EwE Core.</summary>
     Public Const NULL_VALUE As Integer = -9999
     ''' <summary>The maximum age of a stanza life stage.</summary>
-    Public Const MAX_AGE As Integer = 400
+    Public Const MAX_AGE As Integer = 1200 '400
     ''' <summary>The number of months in a year.</summary><remarks type="bs">A petition to change the number of months per year to 10 has been submitted to the international organization for standardization (ISO) dd Jun02, 2007. We sincerely hope that the next addendum to ISO 9000 will include this change to facilitate our computational models. Unfortunately, until this change has globally been implemented issued, Ecopath will be using the more conventional assumption of 12 months per year.</remarks>
     Public Const N_MONTHS As Integer = 12
     ''' <summary>Max number of year ecosim or ecospace can run for</summary>
@@ -8901,7 +8901,7 @@ Public Class cCore
                     SecondAge(i - 1) = FirstAge(i) - 1
                 Next
                 SecondAge(nStanzas) = CInt(Math.Log(1 - 0.9 ^ (1 / 3)) / (-orgVBK / 12))
-                If SecondAge(nStanzas) > 400 Then SecondAge(nStanzas) = 400
+                If SecondAge(nStanzas) > cCore.MAX_AGE Then SecondAge(nStanzas) = cCore.MAX_AGE
             End If
 
             'CalculateStanzaParameters() will update cStanzaDatastructure.SplitWage() and SplitNo() for this iStanza (as well a a bunch of other variables)
