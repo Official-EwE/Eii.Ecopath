@@ -29,7 +29,7 @@ Namespace PreyToPredator
             Me.Grid.Visible = bSucces
 
             Me.Toolstrip.Visible = bSucces
-            Me.ToolstripShowGroupSelections(My.Resources.LBL_PATH_FROM)
+            Me.ToolstripShowGroupSelections(My.Resources.LBL_PATH_FROM, eGroupFilterTypes.All)
 
             Return bSucces
         End Function

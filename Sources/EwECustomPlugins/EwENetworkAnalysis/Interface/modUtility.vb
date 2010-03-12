@@ -15,7 +15,7 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Module modUtility
+Public Module modUtility
 
     Public Const DEFAULT_COL_WIDTH As Integer = 70
     Public Const ID_COL_WIDTH As Integer = 25
@@ -52,6 +52,16 @@ Module modUtility
         [Catch] = 0
         Flow = 1
         Biomass = 2
+    End Enum
+
+    ''' <summary>
+    ''' Enumerator, specifying which groups to show in group filters.
+    ''' </summary>
+    Public Enum eGroupFilterTypes As Byte
+        ''' <summary>Show living groups only</summary>
+        Living
+        ''' <summary>Show all groups</summary>
+        All
     End Enum
 
     ''' -----------------------------------------------------------------------

@@ -234,9 +234,15 @@ Public Class frmNetworkAnalysis
 
                     Me.tscmbSelection1.Items.Clear()
                     Me.tscmbSelection2.Items.Clear()
-                    For iGroup As Integer = 1 To Me.m_networkmanager.nLivingGroups
-                        Me.tscmbSelection1.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
-                        Me.tscmbSelection2.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
+                    For iGroup As Integer = 1 To Me.m_networkmanager.nGroups
+                        If (Me.m_contentmanager.GroupFilter1 = eGroupFilterTypes.Living) Or _
+                           (iGroup < Me.m_networkmanager.nLivingGroups) Then
+                            Me.tscmbSelection1.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
+                        End If
+                        If (Me.m_contentmanager.GroupFilter2 = eGroupFilterTypes.Living) Or _
+                           (iGroup < Me.m_networkmanager.nLivingGroups) Then
+                            Me.tscmbSelection2.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
+                        End If
                     Next
                     Me.m_toolstrip.Refresh()
 

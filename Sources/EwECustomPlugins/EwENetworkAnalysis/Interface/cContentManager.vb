@@ -33,6 +33,9 @@ Public MustInherit Class cContentManager
     ''' <summary></summary>
     Private m_uic As cUIContext = Nothing
 
+    Private m_groupfilter1 As eGroupFilterTypes = eGroupFilterTypes.Living
+    Private m_groupfilter2 As eGroupFilterTypes = eGroupFilterTypes.Living
+
 #End Region ' Private variables
 
 #Region " Attach / detach "
@@ -255,6 +258,18 @@ Public MustInherit Class cContentManager
         End Get
     End Property
 
+    Public ReadOnly Property GroupFilter1() As eGroupFilterTypes
+        Get
+            Return Me.m_groupfilter1
+        End Get
+    End Property
+
+    Public ReadOnly Property GroupFilter2() As eGroupFilterTypes
+        Get
+            Return Me.m_groupfilter2
+        End Get
+    End Property
+
 #End Region ' Properties
 
 #Region " Internals "
@@ -298,7 +313,9 @@ Public MustInherit Class cContentManager
     End Sub
 
     Protected Sub ToolstripShowGroupSelections(Optional ByVal strLabel1 As String = "", _
-                                               Optional ByVal strLabel2 As String = "")
+                                               Optional ByVal groupfilter1 As eGroupFilterTypes = eGroupFilterTypes.Living, _
+                                               Optional ByVal strLabel2 As String = "", _
+                                               Optional ByVal groupfilter2 As eGroupFilterTypes = eGroupFilterTypes.Living)
 
         Dim tslbl1 As ToolStripItem = Me.Toolstrip.Items("tslblSelection1")
         Dim tslbl2 As ToolStripItem = Me.Toolstrip.Items("tslblSelection2")
@@ -312,6 +329,9 @@ Public MustInherit Class cContentManager
         tslbl2.Text = strLabel2
         tslbl2.Visible = Not String.IsNullOrEmpty(strLabel2)
         tscmb2.Visible = Not String.IsNullOrEmpty(strLabel2)
+
+        Me.m_groupfilter1 = groupfilter1
+        Me.m_groupfilter2 = groupfilter2
 
     End Sub
 

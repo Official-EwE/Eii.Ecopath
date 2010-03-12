@@ -30,7 +30,8 @@ Namespace TL1ToPreyToConsumer
             Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
             Me.Grid.Visible = bSucces
             Me.Toolstrip.Visible = bSucces
-            Me.ToolstripShowGroupSelections(My.Resources.LBL_PATH_TO, My.Resources.LBL_PATH_VIA)
+            Me.ToolstripShowGroupSelections(My.Resources.LBL_PATH_TO, eGroupFilterTypes.All, _
+                                            My.Resources.LBL_PATH_VIA, eGroupFilterTypes.All)
             Return bSucces
 
         End Function
