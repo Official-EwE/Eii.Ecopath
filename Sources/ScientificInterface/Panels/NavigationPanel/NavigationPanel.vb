@@ -73,6 +73,7 @@ Public Class NavigationPanel
         m_nodeController.Add("ndKeyIndices", eCoreExecutionState.EcopathCompleted, GetType(KeyIndicesEwEGrid), "Key indices.htm")
         m_nodeController.Add("ndMortCoef", eCoreExecutionState.EcopathCompleted, GetType(MortalityCoefficientsEwEGrid), "Mortalities.htm")
         m_nodeController.Add("ndPredMort", eCoreExecutionState.EcopathCompleted, GetType(MortalityPredationEwEGrid), "Predation mortality.htm")
+        m_nodeController.Add("ndFleetFishingMortality", eCoreExecutionState.EcopathCompleted, GetType(FleetFishingMortalityGrid), "")
         m_nodeController.Add("ndConsumption", eCoreExecutionState.EcopathCompleted, GetType(ConsumptionEwEGrid), "Consumption.htm")
         m_nodeController.Add("ndRespiration", eCoreExecutionState.EcopathCompleted, GetType(RespirationEwEGrid), "Respiration.htm")
         m_nodeController.Add("ndPreyOverlap", eCoreExecutionState.EcopathCompleted, GetType(NicheOverlapPreyEwEGrid), "Niche overlap.htm")

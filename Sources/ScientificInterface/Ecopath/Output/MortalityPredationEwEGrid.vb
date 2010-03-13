@@ -1,31 +1,3 @@
-'==============================================================================
-'
-' $Log: MortalityPredationEwEGrid.vb,v $
-' Revision 1.7  2009/05/28 12:36:56  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.6  2009/05/21 19:27:13  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.5  2009/04/23 13:08:55  jeroens
-' Cell: fixed instability in UpdateStyle
-' Cell: style updated when either source proerpty changes
-' Cell: inherits dispose to clean up
-'
-' Revision 1.4  2009/03/11 19:31:51  jeroens
-' Minimal housekeeping
-'
-' Revision 1.3  2009/01/16 18:30:09  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:55:37  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:33  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
