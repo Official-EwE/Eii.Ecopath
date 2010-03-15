@@ -141,25 +141,24 @@ Partial Class frmMSE
         'rbTrackUseQuota
         '
         Me.rbTrackUseQuota.AutoSize = True
-        Me.rbTrackUseQuota.Location = New System.Drawing.Point(6, 55)
+        Me.rbTrackUseQuota.Checked = True
+        Me.rbTrackUseQuota.Location = New System.Drawing.Point(6, 26)
         Me.rbTrackUseQuota.Name = "rbTrackUseQuota"
-        Me.rbTrackUseQuota.Size = New System.Drawing.Size(190, 17)
+        Me.rbTrackUseQuota.Size = New System.Drawing.Size(192, 17)
         Me.rbTrackUseQuota.TabIndex = 26
         Me.rbTrackUseQuota.TabStop = True
-        Me.rbTrackUseQuota.Text = "Ecosim effort regulate using quotas"
+        Me.rbTrackUseQuota.Text = "Ecosim effort use regulatory options"
         Me.rbTrackUseQuota.UseVisualStyleBackColor = True
         '
         'rbPredictEffort
         '
         Me.rbPredictEffort.AutoSize = True
-        Me.rbPredictEffort.Checked = True
-        Me.rbPredictEffort.Location = New System.Drawing.Point(6, 26)
+        Me.rbPredictEffort.Location = New System.Drawing.Point(6, 55)
         Me.rbPredictEffort.Name = "rbPredictEffort"
         Me.rbPredictEffort.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.rbPredictEffort.Size = New System.Drawing.Size(286, 17)
+        Me.rbPredictEffort.Size = New System.Drawing.Size(191, 17)
         Me.rbPredictEffort.TabIndex = 25
-        Me.rbPredictEffort.TabStop = True
-        Me.rbPredictEffort.Text = "Predict effort (fleet size dynamics) regulate using quotas"
+        Me.rbPredictEffort.Text = "Predict effort use regulatory options"
         Me.rbPredictEffort.UseVisualStyleBackColor = True
         '
         'rbFTracking
@@ -167,9 +166,9 @@ Partial Class frmMSE
         Me.rbFTracking.AutoSize = True
         Me.rbFTracking.Location = New System.Drawing.Point(6, 83)
         Me.rbFTracking.Name = "rbFTracking"
-        Me.rbFTracking.Size = New System.Drawing.Size(253, 17)
+        Me.rbFTracking.Size = New System.Drawing.Size(284, 17)
         Me.rbFTracking.TabIndex = 24
-        Me.rbFTracking.Text = "No regulations evaluate current Ecosim scenario"
+        Me.rbFTracking.Text = "Ecosim effort no regulations (evaluate current scenario)"
         Me.rbFTracking.UseVisualStyleBackColor = True
         '
         'pnlFTracking
@@ -200,7 +199,7 @@ Partial Class frmMSE
         '
         'txSBPower
         '
-        Me.txSBPower.Location = New System.Drawing.Point(154, 106)
+        Me.txSBPower.Location = New System.Drawing.Point(154, 110)
         Me.txSBPower.Name = "txSBPower"
         Me.txSBPower.Size = New System.Drawing.Size(48, 20)
         Me.txSBPower.TabIndex = 25
@@ -208,7 +207,7 @@ Partial Class frmMSE
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(3, 109)
+        Me.Label6.Location = New System.Drawing.Point(3, 114)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(133, 13)
         Me.Label6.TabIndex = 24
@@ -301,7 +300,7 @@ Partial Class frmMSE
         '
         'txKalmanGain
         '
-        Me.txKalmanGain.Location = New System.Drawing.Point(134, 106)
+        Me.txKalmanGain.Location = New System.Drawing.Point(134, 110)
         Me.txKalmanGain.Name = "txKalmanGain"
         Me.txKalmanGain.Size = New System.Drawing.Size(48, 20)
         Me.txKalmanGain.TabIndex = 38
@@ -309,7 +308,7 @@ Partial Class frmMSE
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(3, 109)
+        Me.Label8.Location = New System.Drawing.Point(3, 114)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(68, 13)
         Me.Label8.TabIndex = 37
@@ -319,7 +318,7 @@ Partial Class frmMSE
         '
         Me.ckSave.AutoSize = True
         Me.ckSave.Enabled = False
-        Me.ckSave.Location = New System.Drawing.Point(6, 56)
+        Me.ckSave.Location = New System.Drawing.Point(3, 55)
         Me.ckSave.Name = "ckSave"
         Me.ckSave.Size = New System.Drawing.Size(84, 17)
         Me.ckSave.TabIndex = 36
@@ -337,7 +336,7 @@ Partial Class frmMSE
         '
         'txForecast
         '
-        Me.txForecast.Location = New System.Drawing.Point(134, 82)
+        Me.txForecast.Location = New System.Drawing.Point(134, 81)
         Me.txForecast.Name = "txForecast"
         Me.txForecast.Size = New System.Drawing.Size(48, 20)
         Me.txForecast.TabIndex = 34
@@ -346,7 +345,7 @@ Partial Class frmMSE
         '
         Me.ckPlugin.AutoSize = True
         Me.ckPlugin.Enabled = False
-        Me.ckPlugin.Location = New System.Drawing.Point(6, 27)
+        Me.ckPlugin.Location = New System.Drawing.Point(3, 26)
         Me.ckPlugin.Name = "ckPlugin"
         Me.ckPlugin.Size = New System.Drawing.Size(149, 17)
         Me.ckPlugin.TabIndex = 33
