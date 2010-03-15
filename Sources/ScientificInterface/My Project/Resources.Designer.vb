@@ -3800,7 +3800,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Strongest stock + discards quota.
+        '''  Looks up a localized string similar to Strongest stock quota.
         '''</summary>
         Friend ReadOnly Property HEADER_QUOTA_STRONGESTSTOCK() As String
             Get
@@ -3809,7 +3809,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Weakest stock quota.
+        '''  Looks up a localized string similar to Weakest stock quota + discards quota.
         '''</summary>
         Friend ReadOnly Property HEADER_QUOTA_WEAKESTSTOCK() As String
             Get

@@ -586,7 +586,7 @@
     <value>Contribution to PSD</value>
   </data>
   <data name="HEADER_QUOTA_WEAKESTSTOCK" xml:space="preserve">
-    <value>Weakest stock quota</value>
+    <value>Weakest stock quota + discards quota</value>
   </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_RELCIN" xml:space="preserve">
     <value>Relative contaminant</value>
@@ -2053,7 +2053,7 @@
     <comment>{0}: plug-in name</comment>
   </data>
   <data name="HEADER_QUOTA_STRONGESTSTOCK" xml:space="preserve">
-    <value>Strongest stock + discards quota</value>
+    <value>Strongest stock quota</value>
   </data>
   <data name="FIT2TS_PROGRESS_RUNSTEP" xml:space="preserve">
     <value>Iteration {0},  SS =  {1}</value>
