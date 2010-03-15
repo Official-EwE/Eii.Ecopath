@@ -105,11 +105,12 @@ Namespace Ecosim
                 Me.m_uic.StyleGuide.TotalValueVisible = Me.m_clbGroups.GetItemChecked(iIndex + 1)
             End If
 
-            For iFleet As Integer = 1 To Me.m_uic.Core.nGroups
+            For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
                 Me.m_uic.StyleGuide.FleetVisible(iFleet) = Me.m_clbFleets.GetItemChecked(iFleet - 1)
             Next
 
             Me.m_uic.StyleGuide.ResumeEvents()
+            Me.m_uic.StyleGuide.ItemVisibilityChanged()
 
             ' And done
             Me.DialogResult = System.Windows.Forms.DialogResult.OK

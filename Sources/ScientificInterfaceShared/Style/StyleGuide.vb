@@ -1336,6 +1336,17 @@ Namespace Style
             If bFireChangeEvent Then Me.FireChangeEvent(eChangeType.GroupVisibility Or eChangeType.FleetVisibility)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Broadcast a <see cref="eChangeType.GroupVisibility">group</see> and
+        ''' <see cref="eChangeType.FleetVisibility">fleet</see> visibility 
+        ''' changed event.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub ItemVisibilityChanged()
+            Me.FireChangeEvent(eChangeType.GroupVisibility Or eChangeType.FleetVisibility)
+        End Sub
+
 #End Region ' Item visibility
 
 #End Region ' Public access

@@ -113,6 +113,8 @@ Namespace Ecosim
 
             ' Track core monitor changes
             AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            ' Track styleguide changes
+            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             Me.PopulateGraph()
 
@@ -120,6 +122,7 @@ Namespace Ecosim
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             ' Unplug
             Me.IsExploring = False
@@ -168,6 +171,12 @@ Namespace Ecosim
                 Return True
             End Get
         End Property
+
+        Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+            If (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
+                Me.PopulateGraph()
+            End If
+        End Sub
 
 #End Region ' Framework overrides
 
