@@ -827,8 +827,6 @@ Namespace MSE
 
                 Next
 
-
-
             Catch ex As Exception
                 cLog.Write(ex)
                 Throw New ApplicationException(Me.ToString & ".AccessBioRisk() Error: " & ex.Message, ex)
@@ -902,7 +900,6 @@ Namespace MSE
                 End If
 
                 Debug.Assert(Me.m_data.EffortMode = eMSEEffortMode.Tracking, "MSE EffortMode incorrectly set!")
-
 
                 ReDim Fest(m_epdata.NumFleet, m_epdata.NumLiving), Best(m_epdata.NumLiving)
 
@@ -989,8 +986,6 @@ Namespace MSE
                         'QMult will need to be computed using Bestimate()
                         'F(igrp) = fTarget(igrp) / qmult(igrp)
 
-
-
                     Case eQuotaTypes.Weakest 'limit effort to weakest stock
 
                         For i = 1 To m_data.NGroups
@@ -1002,7 +997,6 @@ Namespace MSE
                                 End If
                             End If
                         Next i
-
 
                     Case eQuotaTypes.Strongest, eQuotaTypes.Selective 'limit effort to strongest stock but discard overages on weaker stocks
 
@@ -1025,10 +1019,12 @@ Namespace MSE
                                     'fishing mortality exceeds quota
                                     Me.m_quota.PropLandedTime(ig, i) = CSng(Me.m_quota.QuotaTime(ig, i) / (ci + 1.0E-20))
                                     If Me.m_quota.QuotaType(ig) = eQuotaTypes.Strongest Then
-                                        'QuotaType = Strongest
+                                        'QuotaType = Strongest 
+                                        'excess catch discarded and included in the fishing mortailtiy
                                         Me.m_quota.Propdiscardtime(ig, i) = (1 - Me.m_quota.PropLandedTime(ig, i)) * m_epdata.PropDiscardMort(ig, i)
                                     Else
-                                        'QuotaType = Selective
+                                        'QuotaType = Selective 
+                                        'excess catch is NOT included in fishing mortaility all discards survive
                                         Me.m_quota.Propdiscardtime(ig, i) = 0
                                     End If
 
