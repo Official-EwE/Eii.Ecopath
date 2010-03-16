@@ -641,6 +641,8 @@ Namespace Core
         EcosimYieldRel
 
         EcosimCatchGroupGear
+        ''' <summary> Fishing mortality by group fleet </summary>
+        EcosimFishingMortGroupGear
 
         EcosimTotalMort
         EcosimConsumpBiomass

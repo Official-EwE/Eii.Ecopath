@@ -589,16 +589,16 @@ Namespace Ecosim
             Dim t As Single
             Dim iyr As Integer, iyf As Integer
             Dim RelFopt() As Single, QGrowUsed() As Single
-            Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
-            Dim sumBio As Single, sumCatch As Single
-
             Dim Fgear() As Single
+            Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
 
             'QYear() Max catchability increase. Catchability increase over time due to improved fishing efficiency
             'Used to modify relQ()
             'Set to one for normal run has no effect on catchability (relQ)
             'For a managment strategy evalution MSE varied as a function of Qgrow (user input) in MSE.YearTimeStep()
             Dim QYear() As Single
+
+            'Dim sumBio As Single, sumCatch As Single' sum of biomass and catch for debugging only
 
             If m_Data.bTimestepOutput Then
                 Me.redimTime(NumberOfYears + ExtraTime, True)
@@ -858,14 +858,14 @@ Namespace Ecosim
                         Me.FireOnTimeStep(itime)
                     End If
 
-                    For igrp As Integer = 1 To Me.nGroups
-                        sumBio += BB(igrp)
-
-                        If m_Data.bTimestepOutput Then
-                            'zero fleet index hold sum of catch for all fleets
-                            sumCatch += m_Data.ResultsSumCatchByGroupGear(igrp, 0, itime)
-                        End If
-                    Next
+                    'jb this is just for degugging
+                    'For igrp As Integer = 1 To Me.nGroups
+                    '    sumBio += BB(igrp)
+                    '    If m_Data.bTimestepOutput Then
+                    '        'zero fleet index hold sum of catch for all fleets
+                    '        sumCatch += m_Data.ResultsSumCatchByGroupGear(igrp, 0, itime)
+                    '    End If
+                    'Next
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimEndTimeStep(BB, m_Data, itime, m_Results)
 
@@ -1681,6 +1681,7 @@ Namespace Ecosim
 
                                 bioCatch = BB(igrp) * m_Data.FishTime(igrp) * m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
                                 m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = bioCatch
+                                m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime) = bioCatch / BB(igrp)
                                 'sum all fleets into zero index
                                 m_Data.ResultsSumCatchByGroupGear(igrp, 0, iTime) = m_Data.ResultsSumCatchByGroupGear(igrp, 0, iTime) + bioCatch
 

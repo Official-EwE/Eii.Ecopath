@@ -388,6 +388,11 @@ Public Class cEcosimDatastructures
     Public ResultsSumCatchByGroupGear(,,) As Single ' groups,fleets,time
     Public ResultsSumCatchByGear(,) As Single ' fleets,time
 
+    ''' <summary>
+    ''' Fishing mortality by time
+    ''' </summary>
+    Public ResultsSumFMortByGroupGear(,,) As Single ' groups,fleets,time
+
     Public ResultsSumValueByGroupGear(,,) As Single
     Public ResultsSumValueByGear(,) As Single
     Public ResultsEffort(,) As Single
@@ -1061,6 +1066,7 @@ Public Class cEcosimDatastructures
 
         'fisheries data
         ReDim ResultsSumCatchByGroupGear(nGroups, nGear, nt) ' groups,fleets,time
+        ReDim ResultsSumFMortByGroupGear(nGroups, nGear, nt)
         ReDim ResultsSumCatchByGear(nGear, nt)
         ReDim ResultsSumValueByGroupGear(nGroups, nGear, nt)
         ReDim ResultsSumValueByGear(nGear, nt)
@@ -1091,6 +1097,7 @@ Public Class cEcosimDatastructures
         Erase ResultsSumValueByGear
         Erase ResultsEffort
         Erase Elect
+        Erase ResultsSumFMortByGroupGear
 
     End Sub
 

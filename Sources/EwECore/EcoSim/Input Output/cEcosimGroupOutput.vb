@@ -118,6 +118,8 @@ Public Class cEcosimGroupOutput
         m_coreData.Add(eVarNameFlags.EcosimElectivityTime, New c3DResultsWrapper(m_simData.Elect, Me.Index))
 
         m_coreData.Add(eVarNameFlags.EcosimCatchGroupGear, New c3DResultsWrapper(m_simData.ResultsSumCatchByGroupGear, Me.Index))
+        'Fishing Mortality by group/fleet
+        m_coreData.Add(eVarNameFlags.EcosimFishingMortGroupGear, New c3DResultsWrapper(m_simData.ResultsSumFMortByGroupGear, Me.Index))
 
 
     End Sub
@@ -271,6 +273,12 @@ Public Class cEcosimGroupOutput
             Return CSng(GetVariable(eVarNameFlags.EcosimCatchGroupGear, iFleetIndex, iTime))
         End Get
 
+    End Property
+
+    Public ReadOnly Property FishingMortByFleet(ByVal iFleetIndex As Integer, ByVal iTime As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimFishingMortGroupGear, iFleetIndex, iTime))
+        End Get
     End Property
 
     Public ReadOnly Property ConsumpBiomass(ByVal iTime As Integer) As Single
