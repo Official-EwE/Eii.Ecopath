@@ -113,14 +113,12 @@ Public Class cEcosimGroupOutput
         m_coreData.Add(eVarNameFlags.EcosimEcoSystemStruct, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.EcoSysStructure, Me.Index))
 
         ' EcosimEcoSystemStruct()
-
         'cEcosimDataStrucures.Elect(group,group,time) First Group is fixed
         m_coreData.Add(eVarNameFlags.EcosimElectivityTime, New c3DResultsWrapper(m_simData.Elect, Me.Index))
 
         m_coreData.Add(eVarNameFlags.EcosimCatchGroupGear, New c3DResultsWrapper(m_simData.ResultsSumCatchByGroupGear, Me.Index))
         'Fishing Mortality by group/fleet
         m_coreData.Add(eVarNameFlags.EcosimFishingMortGroupGear, New c3DResultsWrapper(m_simData.ResultsSumFMortByGroupGear, Me.Index))
-
 
     End Sub
 
@@ -188,7 +186,7 @@ Public Class cEcosimGroupOutput
     ''' <summary>
     ''' Is this igroup a predator of this group
     ''' </summary>
-    ''' <param name="iGroup"></param>
+    ''' <param name="iGroup">Group index of the predator</param>
     Public Property isPred(ByVal iGroup As Integer) As Boolean
 
         Get
@@ -202,9 +200,9 @@ Public Class cEcosimGroupOutput
     End Property
 
     ''' <summary>
-    ''' Does this group prey on this iGroup
+    '''  Is this igroup prey for this group
     ''' </summary>
-    ''' <param name="iGroup"></param>
+    ''' <param name="iGroup">Group index of the prey</param>
     Public Property isPrey(ByVal iGroup As Integer) As Boolean
 
         Get
@@ -217,6 +215,12 @@ Public Class cEcosimGroupOutput
 
     End Property
 
+
+    ''' <summary>
+    ''' Biomass by time
+    ''' </summary>
+    ''' <param name="iTime">Time index</param>
+    ''' <value>Single</value>
     Public ReadOnly Property Biomass(ByVal iTime As Integer) As Single
 
         Get
@@ -240,7 +244,12 @@ Public Class cEcosimGroupOutput
 
     End Property
 
-
+    ''' <summary>
+    ''' Biomass relative to the base biomass by time
+    ''' </summary>
+    ''' <param name="iTime">Time index</param>
+    ''' <value>Single</value>
+    ''' <remarks> B(t)/B(0)</remarks>
     Public ReadOnly Property BiomassRel(ByVal iTime As Integer) As Single
 
         Get
@@ -249,7 +258,11 @@ Public Class cEcosimGroupOutput
 
     End Property
 
-
+    ''' <summary>
+    ''' Total catch on this group by time
+    ''' </summary>
+    ''' <param name="iTime">Time index</param>
+    ''' <remarks>Sum of catch across all fleets for this group</remarks>
     Public ReadOnly Property Yield(ByVal iTime As Integer) As Single
 
         Get
@@ -258,7 +271,10 @@ Public Class cEcosimGroupOutput
 
     End Property
 
-
+    ''' <summary>
+    ''' Total catch relative to the Ecopath inputs catch on this group by time
+    ''' </summary>
+    ''' <param name="iTime">Time index</param>
     Public ReadOnly Property YieldRel(ByVal iTime As Integer) As Single
 
         Get
@@ -267,6 +283,11 @@ Public Class cEcosimGroupOutput
 
     End Property
 
+    ''' <summary>
+    ''' Catch by fleet for this group
+    ''' </summary>
+    ''' <param name="iFleetIndex">Fleet index</param>
+    ''' <param name="iTime">Time index</param>
     Public ReadOnly Property CatchByFleet(ByVal iFleetIndex As Integer, ByVal iTime As Integer) As Single
 
         Get
@@ -275,6 +296,13 @@ Public Class cEcosimGroupOutput
 
     End Property
 
+    ''' <summary>
+    ''' Fishing Mortality by Fleet
+    ''' </summary>
+    ''' <param name="iFleetIndex">Fleet inded</param>
+    ''' <param name="iTime">Time index</param>
+    ''' <value>Single</value>
+    ''' <returns>Fishing Mortality on this group caused by a fleet</returns>
     Public ReadOnly Property FishingMortByFleet(ByVal iFleetIndex As Integer, ByVal iTime As Integer) As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimFishingMortGroupGear, iFleetIndex, iTime))
@@ -315,6 +343,11 @@ Public Class cEcosimGroupOutput
 
     End Property
 
+    ''' <summary>
+    ''' Sum of all mortality for this group by time
+    ''' </summary>
+    ''' <param name="iTime">Time index</param>
+    ''' <remarks>Fishing mort + Predation mort + Natural mort</remarks>
     Public ReadOnly Property TotalMort(ByVal iTime As Integer) As Single
 
         Get
@@ -342,7 +375,6 @@ Public Class cEcosimGroupOutput
 
     End Property
 
-
     Public ReadOnly Property MortVPred(ByVal iTime As Integer) As Single
 
         Get
@@ -350,8 +382,6 @@ Public Class cEcosimGroupOutput
         End Get
 
     End Property
-
-
 
     Public ReadOnly Property MortVFishing(ByVal iTime As Integer) As Single
 
@@ -386,10 +416,6 @@ Public Class cEcosimGroupOutput
         End Get
 
     End Property
-
-  
-
-
 
 #End Region
 
