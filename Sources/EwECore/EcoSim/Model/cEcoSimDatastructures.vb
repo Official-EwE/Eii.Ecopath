@@ -230,7 +230,7 @@ Public Class cEcosimDatastructures
     ''' <summary>
     ''' Fishing mortality by Fleet, Group
     ''' </summary>
-    ''' <remarks> Array element nFleets + 1 will contain the sum across all groups and should be the same as Fish1()</remarks>
+    ''' <remarks> Array element FishMGear(nFleets + 1,iGroup) will contain the sum across all fleets and should be the same as Fish1()</remarks>
     Public FishMGear(,) As Single
 
     ''' <summary>
@@ -245,9 +245,10 @@ Public Class cEcosimDatastructures
     Friend GroupFishRateNoDBID() As Integer
 
     ''' <summary>
-    ''' Fishing rate multiplier. Zero removes all fishing, one sets fishing effort to Ecopath value, two would double the fishing mortality FishRateNo() for all groups fished by this fleet.
+    ''' Fishing Effort multiplier by Fleet, Time.
     ''' </summary>
-    ''' <remarks> used to scale the FishRateNo() for all the groups fished by a fleet</remarks>
+    ''' <remarks>Zero removes all fishing, one sets fishing effort to Ecopath value, two would double the fishing mortality for all groups fished by this fleet.
+    '''  Used to scale the FishRateNo() for all the groups fished by a fleet,</remarks>
     Public FishRateGear(,) As Single
     Public FishRateGearBasis() As Single
     Public FishRateGearDBID() As Integer
