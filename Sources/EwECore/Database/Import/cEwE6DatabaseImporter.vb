@@ -591,6 +591,9 @@ Namespace Database
             ' JS 061221: References do not need to be imported
             'Me.m_dbEwE6.ReleaseWriter(Me.m_writerReferences, True)
 
+            ' Set version
+            Me.m_dbEwE6.SetVersion(Me.m_dbEwE6.GetVersion(), "Imported from Ecopath 5")
+
             ' Now run all available updates on the new EwE6 database
             dbUpd = New cDatabaseUpdater(Me.m_core, 6.0!)
             dbUpd.UpdateDatabase(Me.m_dbEwE6)
