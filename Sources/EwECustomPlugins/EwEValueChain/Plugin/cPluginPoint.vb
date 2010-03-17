@@ -323,6 +323,11 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     Public Sub Close() _
         Implements EwEPlugin.Data.IDatabasePlugin.Close
+        If Me.HasInterface Then
+            Me.m_form.Close()
+            Me.m_form.Dispose()
+        End If
+        Me.m_form = Nothing
         Me.m_data.Close()
     End Sub
 
