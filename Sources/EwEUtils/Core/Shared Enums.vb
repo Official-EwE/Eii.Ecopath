@@ -2251,6 +2251,8 @@ Namespace Core
         Failed_OSUnsupported
         ''' <summary>An unknown error has occurred.</summary>
         Failed_Unknown
+        ''' <summary>No permissions to write to the database.</summary>
+        Failed_ReadOnly
         ''' <summary>Cannot switch from one type of database to another.</summary>
         Failed_TransferTypes
         ''' <summary>Cannot perform requested operation on this type of file.</summary>
