@@ -536,6 +536,9 @@ Public Class AppLauncher
                     eMessageImportance.Critical)
                 db = Nothing
 
+                ' Should not occur
+                'Case eDatasourceAccessType.Failed_ReadOnly 
+
             Case eDatasourceAccessType.Failed_OSUnsupported
                 msg = New cMessage(My.Resources.PROMPT_DRIVERERROR, _
                     eMessageType.Any, _
@@ -1401,6 +1404,10 @@ Public Class AppLauncher
                 Case eDatasourceAccessType.Failed_Unknown
                     msg = New cMessage(My.Resources.STATUS_MODEL_COMPACTING_FAILED, _
                                        eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
+                Case eDatasourceAccessType.Failed_ReadOnly
+                    msg = New cMessage(My.Resources.STATUS_MODEL_ACCESS_READONLY, _
+                                       eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
+
             End Select
             bSucces = False
         End If
@@ -1469,6 +1476,9 @@ Public Class AppLauncher
         Dim msg As cMessage = Nothing
 
         Select Case atResult
+            Case eDatasourceAccessType.Failed_ReadOnly
+                msg = New cMessage(String.Format(My.Resources.STATUS_MODEL_ACCESS_READONLY, strFileName), _
+                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
             Case eDatasourceAccessType.Failed_OSUnsupported
                 msg = New cMessage(String.Format(My.Resources.STATUS_MODEL_ACCESS_OS, strFileName), _
                                    eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
