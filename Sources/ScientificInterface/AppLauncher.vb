@@ -1380,7 +1380,7 @@ Public Class AppLauncher
             bSucces = Me.LoadEcopathModel(strFileName, eLoadSourceType.API)
             If bSucces Then
                 msg = New cMessage(My.Resources.STATUS_MODEL_COMPACT_SUCCESS, _
-                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
+                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Information)
             Else
                 msg = New cMessage(My.Resources.STATUS_MODEL_COMPACT_RELOADFAIL, _
                                    eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
