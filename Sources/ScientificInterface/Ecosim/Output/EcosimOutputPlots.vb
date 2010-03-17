@@ -36,6 +36,7 @@ Namespace Ecosim
             Prey
             Yield
             AvgWeightOrProdCons
+            FleetFishingMortality
         End Enum
 
 #End Region ' Variables
@@ -70,14 +71,15 @@ Namespace Ecosim
 
             Me.ConfigurePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
             Me.ConfigurePane(ePaneTypes.ConsumptionBiomass, My.Resources.HEADER_CONSUMPTIONBIOMASS)
-            Me.ConfigurePane(ePaneTypes.PredationMortality, My.Resources.ECOSIM_PLOT_CAPTION_PREDMORT)
+            Me.ConfigurePane(ePaneTypes.PredationMortality, My.Resources.HEADER_PREDMORT)
             Me.ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT)
             Me.ConfigurePane(ePaneTypes.FeedingTime, My.Resources.HEADER_FEEDINGTIME)
-            Me.ConfigurePane(ePaneTypes.Prey, My.Resources.ECOSIM_PLOT_CAPTION_PREYPERC)
+            Me.ConfigurePane(ePaneTypes.Prey, My.Resources.HEADER_PREY_PERCENTAGE)
             Me.ConfigurePane(ePaneTypes.Yield, My.Resources.HEADER_YIELD)
+            Me.ConfigurePane(ePaneTypes.FleetFishingMortality, My.Resources.HEADER_FISHINGMORTALITY)
             ' Need to test StanZaGroup..Sometimes displayed as Average weight
             ' update it in the actual rendering.
-            Me.ConfigurePane(ePaneTypes.AvgWeightOrProdCons, My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS)
+            Me.ConfigurePane(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_PRODCONS)
 
             Me.m_lbGroups.Attach(Me.UIContext.Core, Me.UIContext.StyleGuide)
             Me.m_lbPredators.Attach(Me.UIContext.Core, Me.UIContext.StyleGuide)
@@ -214,9 +216,11 @@ Namespace Ecosim
             If Not Me.UIContext.Core.StateMonitor.HasEcosimRan Then Return
 
             Dim applYieldFleet(Me.UIContext.Core.nFleets) As PointPairList
+            Dim applFishMortFleet(Me.UIContext.Core.nFleets) As PointPairList
 
             For i As Integer = 1 To Me.UIContext.Core.nFleets
                 applYieldFleet(i) = New PointPairList()
+                applFishMortFleet(i) = New PointPairList()
             Next
 
             For i As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
@@ -229,6 +233,7 @@ Namespace Ecosim
                 pplYield.Add(dXValue, groupSimOut.Yield(i))
                 For iFleet As Integer = 1 To Me.UIContext.Core.nFleets
                     applYieldFleet(iFleet).Add(dXValue, CSng(groupSimOut.CatchByFleet(iFleet, i)))
+                    applFishMortFleet(iFleet).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(iFleet, i)))
                 Next
                 If groupSimOut.isMultiStanza() Then
                     pplAvgWorProdCons.Add(dXValue, groupSimOut.AvgWeight(i))
@@ -253,9 +258,11 @@ Namespace Ecosim
             Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplFeedTime))
 
             For i As Integer = 1 To Me.UIContext.Core.nFleets
+
                 Dim fleet As cFleetInput = Me.UIContext.Core.FleetInputs(i)
+                Dim clr As Color = Me.UIContext.StyleGuide.FleetColor(Me.UIContext.Core, i)
+
                 If fleet.Landings(iGroup) > 0 Then
-                    Dim clr As Color = Me.UIContext.StyleGuide.FleetColor(Me.UIContext.Core, i)
                     Me.AddCurveToGraphPane(ePaneTypes.Yield, _
                                            Me.m_zgh.CreateLineItem(fleet.Name, _
                                                                    cZedGraphHelper.eCurveTypes.EcosimOutput, _
@@ -263,6 +270,12 @@ Namespace Ecosim
                                                                    applYieldFleet(i)), _
                                            True)
                 End If
+                Me.AddCurveToGraphPane(ePaneTypes.FleetFishingMortality, _
+                                       Me.m_zgh.CreateLineItem(fleet.Name, _
+                                                               cZedGraphHelper.eCurveTypes.EcosimOutput, _
+                                                               clr, _
+                                                               applFishMortFleet(i)), _
+                                       True)
             Next
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)
                 Me.AddCurveToGraphPane(ePaneTypes.Yield, li)
@@ -282,7 +295,7 @@ Namespace Ecosim
 
             Else
 
-                Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS)
+                Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_PRODCONS)
                 Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
 
             End If

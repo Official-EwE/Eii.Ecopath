@@ -583,33 +583,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Predation mortality.
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_PLOT_CAPTION_PREDMORT() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_PLOT_CAPTION_PREDMORT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Prey (%).
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_PLOT_CAPTION_PREYPERC() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_PLOT_CAPTION_PREYPERC", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Production / consumption.
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_PLOT_CAPTION_PRODCONS() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_PLOT_CAPTION_PRODCONS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to For all prey predator pairs.
         '''</summary>
         Friend ReadOnly Property ECOSIM_PROMPT_APPLY_SHAPES_ALL() As String
@@ -3053,6 +3026,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fleet\group.
+        '''</summary>
+        Friend ReadOnly Property HEADER_FLEET_GROUP() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FLEET_GROUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fleet name.
         '''</summary>
         Friend ReadOnly Property HEADER_FLEETNAME() As String
@@ -3710,6 +3692,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Predation mortality.
+        '''</summary>
+        Friend ReadOnly Property HEADER_PREDMORT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PREDMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to + Predat.mort. rate.
         '''</summary>
         Friend ReadOnly Property HEADER_PREDMORTRATE() As String
@@ -3719,11 +3710,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Prey (%).
+        '''</summary>
+        Friend ReadOnly Property HEADER_PREY_PERCENTAGE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PREY_PERCENTAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Prey \ predator.
         '''</summary>
         Friend ReadOnly Property HEADER_PREYPREDATOR() As String
             Get
                 Return ResourceManager.GetString("HEADER_PREYPREDATOR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Production / consumption.
+        '''</summary>
+        Friend ReadOnly Property HEADER_PRODCONS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PRODCONS", resourceCulture)
             End Get
         End Property
         

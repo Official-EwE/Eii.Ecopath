@@ -1135,7 +1135,7 @@
   <data name="ECOSIM_PROMPT_SAVEANNUAL" xml:space="preserve">
     <value>Save averaged annual values?</value>
   </data>
-  <data name="ECOSIM_PLOT_CAPTION_PREYPERC" xml:space="preserve">
+  <data name="HEADER_PREY_PERCENTAGE" xml:space="preserve">
     <value>Prey (%)</value>
   </data>
   <data name="HEADER_ECOSYSTEM_STRUCTURE_ABBR" xml:space="preserve">
@@ -1206,7 +1206,7 @@
   <data name="HEADER_SWITCHINGPOWER_VALRANGE" xml:space="preserve">
     <value>Switching power parameter [0,2]</value>
   </data>
-  <data name="ECOSIM_PLOT_CAPTION_PRODCONS" xml:space="preserve">
+  <data name="HEADER_PRODCONS" xml:space="preserve">
     <value>Production / consumption</value>
   </data>
   <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
@@ -2529,7 +2529,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>New model</value>
     <comment>The default name for a new Ecopath model</comment>
   </data>
-  <data name="ECOSIM_PLOT_CAPTION_PREDMORT" xml:space="preserve">
+  <data name="HEADER_PREDMORT" xml:space="preserve">
     <value>Predation mortality</value>
   </data>
   <data name="PrintPreviewHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -2565,5 +2565,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="STATUS_MODEL_ACCESS_READONLY" xml:space="preserve">
     <value>EwE6 will be unable to write to this model. Please check if you have correct permissions, or if the database is not read-only.</value>
+  </data>
+  <data name="HEADER_FLEET_GROUP" xml:space="preserve">
+    <value>Fleet\group</value>
   </data>
 </root>

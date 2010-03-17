@@ -33,7 +33,7 @@ Namespace Ecopath.Output
             Me.Redim(Core.nLivingGroups + 1, 2 + Core.nFleets)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell("Fleet\group")
+            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEET_GROUP)
 
             For iFleet As Integer = 1 To Core.nFleets
                 fleet = Core.FleetInputs(iFleet)
