@@ -135,21 +135,22 @@ Public Class cEcopathDataStructures
 
     Public Ex() As Single
 
-    ''' <summary>Sum of group landings + discards.</summary>
-    ''' <remarks>Computed in Catch_calculations()</remarks>
-    Public fCatch() As Single 'was called Catch but this causes a naming conflict with Try Catch blocks
-    ''' <summary>User input matrix for Diet composition(pred, prey) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
+    ''' <summary>Sum (per <see cref="NumGroups">NumGroups</see>) of landings + discards.</summary>
+    ''' <remarks>Computed in Catch_calculations(). was called Catch but this causes a naming conflict with Try Catch blocks</remarks>
+    Public fCatch() As Single '
+    ''' <summary>User input matrix for Diet composition(<see cref="NumGroups">Pred</see>, <see cref="NumGroups">Prey</see>) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
     ''' matrix of species consumption ratios.</summary>
     Public DCInput(,) As Single
-    ''' <summary>Diet composition(pred, prey) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
+    ''' <summary>Diet composition(per <see cref="NumGroups">pred</see>, <see cref="NumGroups">prey</see>) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
     ''' matrix of species consumption ratios.</summary>
     Public DC(,) As Single
-    ''' <summary>Detritus fate(<see cref="NumGroups">NumGroups</see>, <see cref="NumDetrit">NumDetrit</see>) (ratio)</summary>
+    ''' <summary>Detritus fate(per <see cref="NumGroups">NumGroups</see>, <see cref="NumDetrit">NumDetrit</see>) (ratio)</summary>
     ''' <remarks>Matrix describing where to direct surplus detritus.</remarks>
     Public DF(,) As Single
-    ''' <summary>Area(<see cref="NumGroups">NumGroups</see>)</summary>
+    ''' <summary>Area (<see cref="NumGroups">NumGroups</see>)</summary>
     ''' <remarks>Fraction of the Area where a group occurs.</remarks>
     Public Area() As Single
+    ''' <summary>Diet (<see cref="NumGroups">pred</see>, <see cref="NumGroups">prey</see>) change flags.</summary>
     Public DCChanged(,) As Boolean         'Diet composition
 
     Public BQB() As Single
