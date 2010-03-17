@@ -760,6 +760,9 @@ Public Class AppLauncher
 
         RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
+        ' Terminate forms
+        Me.CloseAllContents()
+
         MyBase.OnFormClosing(e)
 
     End Sub
