@@ -6025,6 +6025,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to EwE6 will be unable to write to this model. Please check if you have correct permissions, or if the database is not read-only..
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_ACCESS_READONLY() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_ACCESS_READONLY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Your database was compacted correctly, but EwE was not able to reload the database. Please contact EwE technical support.
         '''</summary>
         Friend ReadOnly Property STATUS_MODEL_COMPACT_RELOADFAIL() As String

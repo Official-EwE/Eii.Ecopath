@@ -2563,4 +2563,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_RELATIVEWEIGHT_ABBR" xml:space="preserve">
     <value>Rel. weight</value>
   </data>
+  <data name="STATUS_MODEL_ACCESS_READONLY" xml:space="preserve">
+    <value>EwE6 will be unable to write to this model. Please check if you have correct permissions, or if the database is not read-only.</value>
+  </data>
 </root>
