@@ -188,6 +188,11 @@ Namespace Database
             ' Does file exist?
             If Not File.Exists(strDatabase) Then Return eDatasourceAccessType.Failed_FileNotFound
 
+            ' Test read-only file attributes
+            If (File.GetAttributes(strDatabase) And FileAttributes.ReadOnly) = FileAttributes.ReadOnly Then
+                Return eDatasourceAccessType.Failed_ReadOnly
+            End If
+
             ' Need to auto-detect database type?
             If databaseType = eDataSourceTypes.NotSet Then
                 ' #Yes: auto-detect
