@@ -552,6 +552,9 @@ Namespace MSE
 
             CallBack(eCallBackTypes.RunCompleted)
 
+            'turn off the search
+            Me.m_Search.SearchMode = eSearchModes.NotInSearch
+
         End Sub
 
         Private Sub ComputeStats()
