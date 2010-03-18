@@ -13,6 +13,8 @@
     <OptionStrict>On</OptionStrict>
     <OldToolsVersion>2.0</OldToolsVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>ScientificInterfaceShared.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,7 +55,7 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, PublicKeyToken=7f98ec142b9ee40a, processorArchitecture=x86" />
     <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL" />
     <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87" />
     <Reference Include="System" />
@@ -62,7 +64,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.3729.14004, Culture=neutral, PublicKeyToken=de94e906589de6fe, processorArchitecture=x86" />
-    <Reference Include="ZedGraph, Version=5.1.4.13924, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="ZedGraph, Version=5.1.4.17508, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=x86" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -438,6 +440,7 @@
     <None Include="Properties\Formula expressions\_expressions overview_.cd" />
     <None Include="Properties\_properties overview_.cd" />
     <None Include="Resources\OptionsHS.png" />
+    <None Include="ScientificInterfaceShared.snk" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Includes\SAUPUtil.dll" />

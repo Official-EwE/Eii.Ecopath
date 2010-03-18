@@ -25,6 +25,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>EwECore.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -318,6 +320,7 @@
     <Compile Include="Search\SearchManager.vb" />
     <Compile Include="Shapes\TimeSeries\Writers\cTimeSeriesCSVWriter.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesDataset.vb" />
+    <None Include="EwECore.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
