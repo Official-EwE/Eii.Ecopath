@@ -1,7 +1,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEuic.Core
 Imports EwEPlugin
 Imports System.Reflection
 Imports SourceGrid2
