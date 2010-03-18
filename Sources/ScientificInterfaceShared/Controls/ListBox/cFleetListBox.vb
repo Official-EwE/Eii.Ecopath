@@ -6,6 +6,7 @@ Imports System.Drawing
 Imports EwECore
 Imports ScientificInterfaceShared.Style
 Imports System.ComponentModel
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -18,6 +19,7 @@ Namespace Controls
     ''' ---------------------------------------------------------------------------
     Public Class cFleetListBox
         Inherits ListBox
+        Implements IUIElement
 
 #Region " Public enums "
 
@@ -116,8 +118,7 @@ Namespace Controls
 
 #Region " Privates "
 
-        Private m_core As cCore = Nothing
-        Private m_sg As cStyleGuide = Nothing
+        Private m_uic As cUIContext = Nothing
         Private m_sortType As eSortType = eSortType.FleetIndexAsc
         Private m_sSortThreshold As Single = cCore.NULL_VALUE
         Private m_fleettrackingtype As eFleetTrackingType = eFleetTrackingType.AllFleets
@@ -135,41 +136,73 @@ Namespace Controls
             Me.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         End Sub
 
-        ''' ---------------------------------------------------------------
-        ''' <summary>
-        ''' Thrash me.
-        ''' </summary>
-        ''' <param name="bDisposing"></param>
-        ''' ---------------------------------------------------------------
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
-            MyBase.Dispose(bDisposing)
-            Me.Detach()
-        End Sub
+#Region " Interface "
+
+        Public Property UIContext() As cUIContext Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Private Set(ByVal uic As cUIContext)
+                If (Me.m_uic IsNot Nothing) Then
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+                Me.m_uic = uic
+                If (Me.m_uic IsNot Nothing) Then
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+            End Set
+        End Property
+
+#End Region ' Interface
 
 #Region " Attach / detach "
 
-        Public Sub Attach(ByVal core As cCore, ByVal sg As cStyleGuide)
+        Public Sub Attach(ByVal uic As cUIContext)
 
-            ' Connect
-            Me.m_core = core
-            Me.m_sg = sg
+            ' Sanity check
+            Debug.Assert(uic IsNot Nothing)
+            Debug.Assert(Not Me.IsInitialized())
 
-            AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            Me.UIContext = uic
             Me.Populate()
 
         End Sub
 
         Public Sub Detach()
+
             If (Me.IsInitialized()) Then
-                RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-                Me.m_sg = Nothing
-                Me.m_core = Nothing
+                Me.UIContext = Nothing
                 Me.Items.Clear()
             End If
 
         End Sub
 
 #End Region ' Attach / detach
+
+#Region " Overrides "
+
+        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+            Me.Detach()
+            MyBase.OnHandleDestroyed(e)
+        End Sub
+
+        Protected Overrides Sub OnMouseDoubleClick(ByVal e As MouseEventArgs)
+
+            If Not Me.IsInitialized() Then Return
+
+            Dim cmd As cCommand = Nothing
+            cmd = Me.m_uic.CommandHander.GetCommand("EditFleets")
+
+            If cmd Is Nothing Then
+                MyBase.OnMouseDoubleClick(e)
+            Else
+                cmd.Tag = Me.SelectedFleet
+                cmd.Invoke()
+            End If
+
+        End Sub
+
+#End Region ' Overrides
 
 #Region " Sorting "
 
@@ -334,7 +367,7 @@ Namespace Controls
             End Get
             Set(ByVal iFleet As Integer)
                 If (Not Me.IsInitialized()) Then Return
-                If (iFleet < 0 Or iFleet >= Me.m_core.nFleets) Then
+                If (iFleet < 0 Or iFleet >= Me.m_uic.Core.nFleets) Then
                     Me.SelectedIndex = -1
                     Return
                 End If
@@ -485,20 +518,20 @@ Namespace Controls
                 Case eFleetTrackingType.Manual
                     If aiFleets IsNot Nothing Then
                         For i As Integer = 0 To aiFleets.Length - 1
-                            Me.Items.Add(New cFleetItem(Me.m_core.FleetInputs(aiFleets(i))))
+                            Me.Items.Add(New cFleetItem(Me.m_uic.Core.FleetInputs(aiFleets(i))))
                         Next
                     End If
 
                 Case eFleetTrackingType.AllFleets
-                    iFleetStart = 0 : iFleetEnd = Me.m_core.nFleets
+                    iFleetStart = 0 : iFleetEnd = Me.m_uic.Core.nFleets
                     For i As Integer = iFleetStart To iFleetEnd
-                        Me.Items.Add(New cFleetItem(Me.m_core.FleetInputs(i)))
+                        Me.Items.Add(New cFleetItem(Me.m_uic.Core.FleetInputs(i)))
                     Next
 
                 Case eFleetTrackingType.Fleets
-                    iFleetStart = 1 : iFleetEnd = Me.m_core.nFleets
+                    iFleetStart = 1 : iFleetEnd = Me.m_uic.Core.nFleets
                     For i As Integer = iFleetStart To iFleetEnd
-                        Me.Items.Add(New cFleetItem(Me.m_core.FleetInputs(i)))
+                        Me.Items.Add(New cFleetItem(Me.m_uic.Core.FleetInputs(i)))
                     Next
 
                 Case Else
@@ -515,8 +548,7 @@ Namespace Controls
 #Region " Internals "
 
         Protected Function IsInitialized() As Boolean
-            Return (Me.m_core IsNot Nothing) And _
-                   (Me.m_sg IsNot Nothing)
+            Return (Me.m_uic IsNot Nothing)
         End Function
 
         Protected Function FleetItem(ByVal iIndex As Integer) As cFleetItem
@@ -551,7 +583,7 @@ Namespace Controls
                 ' Has a fleet attached?
                 If (gi.Source IsNot Nothing) Then
                     ' #Yes: use dimmed colours
-                    clrFleet = Me.m_sg.FleetColor(Me.m_core, gi.Source.Index)
+                    clrFleet = Me.m_uic.StyleGuide.FleetColor(Me.m_uic.Core, gi.Source.Index)
                     clrText = e.ForeColor
                 End If
             End If

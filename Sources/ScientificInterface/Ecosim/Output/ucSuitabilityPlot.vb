@@ -61,7 +61,7 @@ Public Class ucSuitabilityPlot
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
 
-        Me.m_lbGroups.Attach(Me.m_uic.Core, Me.m_uic.StyleGuide)
+        Me.m_lbGroups.Attach(Me.m_uic)
 
         Me.m_rbElectivity.Checked = True
 

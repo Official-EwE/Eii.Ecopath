@@ -6,6 +6,7 @@ Imports System.Drawing
 Imports EwECore
 Imports ScientificInterfaceShared.Style
 Imports System.ComponentModel
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -18,6 +19,7 @@ Namespace Controls
     ''' ---------------------------------------------------------------------------
     Public Class cGroupListBox
         Inherits ListBox
+        Implements IUIElement
 
 #Region " Public enums "
 
@@ -138,8 +140,7 @@ Namespace Controls
 
 #Region " Privates "
 
-        Private m_core As cCore = Nothing
-        Private m_sg As cStyleGuide = Nothing
+        Private m_uic As cUIContext = Nothing
         Private m_sortType As eSortType = eSortType.GroupIndexAsc
         Private m_sSortThreshold As Single = cCore.NULL_VALUE
         Private m_bShowAllItem As Boolean = True
@@ -156,38 +157,45 @@ Namespace Controls
         Public Sub New()
             MyBase.New()
             ' This box draws its own items
-            Me.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.DrawMode = DrawMode.OwnerDrawFixed
         End Sub
 
-        ''' ---------------------------------------------------------------
-        ''' <summary>
-        ''' Thrash me.
-        ''' </summary>
-        ''' <param name="bDisposing"></param>
-        ''' ---------------------------------------------------------------
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
-            Me.Detach()
-            MyBase.Dispose(bDisposing)
-        End Sub
+#Region " Interface "
+
+        Public Property UIContext() As cUIContext Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Private Set(ByVal uic As cUIContext)
+                If (Me.m_uic IsNot Nothing) Then
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+                Me.m_uic = uic
+                If (Me.m_uic IsNot Nothing) Then
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+            End Set
+        End Property
+
+#End Region ' Interface
 
 #Region " Attach / detach "
 
-        Public Sub Attach(ByVal core As cCore, ByVal sg As cStyleGuide)
+        Public Sub Attach(ByVal uic As cUIContext)
 
-            ' Connect
-            Me.m_core = core
-            Me.m_sg = sg
+            ' Sanity check
+            Debug.Assert(uic IsNot Nothing)
+            Debug.Assert(Not Me.IsInitialized())
 
-            AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            Me.UIContext = uic
             Me.Populate()
 
         End Sub
 
         Public Sub Detach()
+
             If (Me.IsInitialized()) Then
-                RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-                Me.m_sg = Nothing
-                Me.m_core = Nothing
+                Me.UIContext = Nothing
                 Me.Items.Clear()
             End If
 
@@ -348,6 +356,31 @@ Namespace Controls
 
 #End Region ' Behaviour
 
+#Region " Overrides "
+
+        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+            Me.Detach()
+            MyBase.OnHandleDestroyed(e)
+        End Sub
+
+        Protected Overrides Sub OnMouseDoubleClick(ByVal e As MouseEventArgs)
+
+            If Not Me.IsInitialized() Then Return
+
+            Dim cmd As cCommand = Nothing
+            cmd = Me.m_uic.CommandHander.GetCommand("EditGroups")
+
+            If cmd Is Nothing Then
+                MyBase.OnMouseDoubleClick(e)
+            Else
+                cmd.Tag = Me.SelectedGroup
+                cmd.Invoke()
+            End If
+
+        End Sub
+
+#End Region ' Overrides
+
 #Region " Group / index access "
 
         ''' -------------------------------------------------------------------
@@ -399,7 +432,7 @@ Namespace Controls
             End Get
             Set(ByVal iGroup As Integer)
                 If (Not Me.IsInitialized()) Then Return
-                If (iGroup < 1 Or iGroup >= Me.m_core.nGroups) Then
+                If (iGroup < 1 Or iGroup >= Me.m_uic.Core.nGroups) Then
                     Me.SelectedIndex = CInt(IIf(Me.m_bShowAllItem, 0, -1))
                     Return
                 End If
@@ -555,13 +588,13 @@ Namespace Controls
 
                 Case eGroupTrackingType.Manual, _
                      eGroupTrackingType.AllGroups
-                    iGroupStart = 1 : iGroupEnd = Me.m_core.nGroups
+                    iGroupStart = 1 : iGroupEnd = Me.m_uic.Core.nGroups
 
                 Case eGroupTrackingType.LivingGroups
-                    iGroupStart = 1 : iGroupEnd = Me.m_core.nLivingGroups
+                    iGroupStart = 1 : iGroupEnd = Me.m_uic.Core.nLivingGroups
 
                 Case eGroupTrackingType.DetritusGroups
-                    iGroupEnd = Me.m_core.nLivingGroups + 1 : iGroupEnd = Me.m_core.nGroups
+                    iGroupEnd = Me.m_uic.Core.nLivingGroups + 1 : iGroupEnd = Me.m_uic.Core.nGroups
 
                 Case Else
                     Debug.Assert(False, "inclusion type not supported")
@@ -581,12 +614,12 @@ Namespace Controls
                         Case eGroupDisplayStyleTypes.DisplayAsHidden
                             bIncludeGroup = True
                         Case eGroupDisplayStyleTypes.DisplayVisibleOnly
-                            bIncludeGroup = Me.m_sg.GroupVisible(i)
+                            bIncludeGroup = Me.m_uic.StyleGuide.GroupVisible(i)
                     End Select
                 End If
 
                 If (bIncludeGroup = True) Then
-                    Me.Items.Add(New cGroupItem(Me.m_core.EcoPathGroupInputs(i)))
+                    Me.Items.Add(New cGroupItem(Me.m_uic.Core.EcoPathGroupInputs(i)))
                 End If
             Next
 
@@ -599,8 +632,7 @@ Namespace Controls
 #Region " Internals "
 
         Protected Function IsInitialized() As Boolean
-            Return (Me.m_core IsNot Nothing) And _
-                   (Me.m_sg IsNot Nothing)
+            Return (Me.m_uic IsNot Nothing)
         End Function
 
         Protected Function GroupItem(ByVal iIndex As Integer) As cGroupItem
@@ -619,7 +651,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="e">Event parameters</param>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnDrawItem(ByVal e As System.Windows.Forms.DrawItemEventArgs)
+        Protected Overrides Sub OnDrawItem(ByVal e As DrawItemEventArgs)
 
             If (e.Index >= Me.Items.Count Or e.Index < 0) Then Return
 
@@ -636,9 +668,9 @@ Namespace Controls
                 ' Has a group attached?
                 If (gi.Source IsNot Nothing) Then
                     ' #Yes: use dimmed colours
-                    clrLegend = Me.m_sg.GroupColor(Me.m_core, gi.Source.Index)
+                    clrLegend = Me.m_uic.StyleGuide.GroupColor(Me.m_uic.Core, gi.Source.Index)
                     ' Allowed to display and colour group?
-                    If Me.m_sg.GroupVisible(gi.Source.Index) And gi.SortValue >= Me.SortThreshold Then
+                    If Me.m_uic.StyleGuide.GroupVisible(gi.Source.Index) And gi.SortValue >= Me.SortThreshold Then
                         ' #Yes: display group in full color
                         clrText = e.ForeColor
                     Else

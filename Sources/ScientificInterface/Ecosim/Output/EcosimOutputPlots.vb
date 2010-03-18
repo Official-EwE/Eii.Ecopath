@@ -81,10 +81,10 @@ Namespace Ecosim
             ' update it in the actual rendering.
             Me.ConfigurePane(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_PRODCONS)
 
-            Me.m_lbGroups.Attach(Me.UIContext.Core, Me.UIContext.StyleGuide)
-            Me.m_lbPredators.Attach(Me.UIContext.Core, Me.UIContext.StyleGuide)
-            Me.m_lbPrey.Attach(Me.UIContext.Core, Me.UIContext.StyleGuide)
-            Me.m_lbFleets.Attach(Me.UIContext.Core, Me.UIContext.StyleGuide)
+            Me.m_lbGroups.Attach(Me.UIContext)
+            Me.m_lbPredators.Attach(Me.UIContext)
+            Me.m_lbPrey.Attach(Me.UIContext)
+            Me.m_lbFleets.Attach(Me.UIContext)
 
             Me.m_lbGroups.SelectedIndex = 0
 

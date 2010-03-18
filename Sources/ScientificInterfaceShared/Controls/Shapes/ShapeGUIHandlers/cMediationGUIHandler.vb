@@ -3,7 +3,6 @@
 Option Strict On
 
 Imports EwECore
-Imports ScientificInterface.Other
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Commands

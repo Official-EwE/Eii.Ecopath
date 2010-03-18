@@ -17,7 +17,7 @@ Imports EwEUtils.Drawing
 ''' </summary>
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
-Public Class EditGroupsStanzaEwEGrid
+Public Class EditGroupsEwEGrid
     Inherits EwEGrid
 
 #Region " Private vars "
@@ -33,13 +33,13 @@ Public Class EditGroupsStanzaEwEGrid
     Private Const sVBK As Single = 0.3!
 
     ''' <summary>List of active groups.</summary>
-    Private m_lgiGroups As New List(Of GroupInfo)
+    Private m_lgiGroups As New List(Of cGroupInfo)
     ''' <summary>List of removed groups.</summary>
-    Private m_lgiGroupsRemoved As New List(Of GroupInfo)
+    Private m_lgiGroupsRemoved As New List(Of cGroupInfo)
     ''' <summary>List of active stanza configurations.</summary>
-    Private m_lsiStanza As New List(Of StanzaInfo)
+    Private m_lsiStanza As New List(Of cStanzaInfo)
     ''' <summary>List of removed stanza configurations.</summary>
-    Private m_lsiStanzaRemoved As New List(Of StanzaInfo)
+    Private m_lsiStanzaRemoved As New List(Of cStanzaInfo)
     ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
     ''' to trap cell edit events locally in this grid. These events are essential
     ''' for keeping the local group/stanza administration up to date.</summary>
@@ -77,14 +77,14 @@ Public Class EditGroupsStanzaEwEGrid
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Helper class for sorting GroupInfo objects by 
-    ''' <see cref="GroupInfo.StanzaAge">Stanza age</see>.
+    ''' <see cref="cGroupInfo.StanzaAge">Stanza age</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Class StanzaAgeComparer
-        Implements IComparer(Of GroupInfo)
+        Implements IComparer(Of cGroupInfo)
 
-        Public Function Compare(ByVal x As GroupInfo, ByVal y As GroupInfo) As Integer _
-                Implements System.Collections.Generic.IComparer(Of GroupInfo).Compare
+        Public Function Compare(ByVal x As cGroupInfo, ByVal y As cGroupInfo) As Integer _
+                Implements System.Collections.Generic.IComparer(Of cGroupInfo).Compare
             If x.StanzaAge < y.StanzaAge Then Return -1
             If x.StanzaAge = y.StanzaAge Then Return 0
             Return 1
@@ -100,12 +100,12 @@ Public Class EditGroupsStanzaEwEGrid
     ''' </summary>
     ''' <remarks>
     ''' This class can represent existing and new groups. If this class has its
-    ''' <see cref="GroupInfo.Group">Group</see> parameter set, a real live
+    ''' <see cref="cGroupInfo.Group">Group</see> parameter set, a real live
     ''' group is represented. If this parameter is not set, a new group is
     ''' represented.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Class GroupInfo
+    Private Class cGroupInfo
 
         ''' <summary><see cref="cEcoPathGroupInput">Group</see> associated with this group, if any.</summary>
         Private m_group As cEcoPathGroupInput = Nothing
@@ -116,7 +116,7 @@ Public Class EditGroupsStanzaEwEGrid
         ''' <summary>Group color.</summary>
         Private m_iColor As Integer = 0
         ''' <summary>Stanza configuration this group belongs to, if any.</summary>
-        Private m_stanza As StanzaInfo = Nothing
+        Private m_stanza As cStanzaInfo = Nothing
         ''' <summary>Age of this group within a stanza configuration.</summary>
         Private m_iStanzaAge As Integer = 0
         ''' <summary>Mortality of this group within a stanza configuration.</summary>
@@ -219,11 +219,11 @@ Public Class EditGroupsStanzaEwEGrid
         ''' if any. Set this property to Nothing to clear a stanza assigment.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Stanza() As StanzaInfo
+        Public Property Stanza() As cStanzaInfo
             Get
                 Return Me.m_stanza
             End Get
-            Set(ByVal value As StanzaInfo)
+            Set(ByVal value As cStanzaInfo)
                 Me.m_stanza = value
             End Set
         End Property
@@ -254,7 +254,7 @@ Public Class EditGroupsStanzaEwEGrid
         ''' </summary>
         ''' <remarks>
         ''' Although this value would be better placed in either 
-        ''' <see cref="StanzaInfo">StanzaInfo</see> or in a not yet existing
+        ''' <see cref="cStanzaInfo">StanzaInfo</see> or in a not yet existing
         ''' StanzaLifeStage wrapper, it has been opted to embed this value in
         ''' the group for ease of use in the group-based grid.
         ''' </remarks>
@@ -274,7 +274,7 @@ Public Class EditGroupsStanzaEwEGrid
         ''' </summary>
         ''' <remarks>
         ''' Although this value would be better placed in either 
-        ''' <see cref="StanzaInfo">StanzaInfo</see> or in a not yet existing
+        ''' <see cref="cStanzaInfo">StanzaInfo</see> or in a not yet existing
         ''' StanzaLifeStage wrapper, it has been opted to embed this value in
         ''' the group for ease of use in the group-based grid.
         ''' </remarks>
@@ -361,7 +361,7 @@ Public Class EditGroupsStanzaEwEGrid
             Get
                 If (Me.m_stanza Is Nothing) Then
                     If (Me.m_group Is Nothing) Then
-                        Return EditGroupsStanzaEwEGrid.sVBK
+                        Return EditGroupsEwEGrid.sVBK
                     Else
                         Return Me.m_group.VBK
                     End If
@@ -408,16 +408,16 @@ Public Class EditGroupsStanzaEwEGrid
     ''' in the EwE model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Class StanzaInfo
+    Private Class cStanzaInfo
 
         ''' <summary>Core stanza group, if any.</summary>
         Private m_sg As cStanzaGroup = Nothing
         ''' <summary>Name of this stanza configuration.</summary>
         Private m_strName As String = ""
         ''' <summary>List of groups in this stanza configuration.</summary>
-        Private m_alGroups As New List(Of GroupInfo)
+        Private m_alGroups As New List(Of cGroupInfo)
         ''' <summary>VBK value of a stanza group.</summary>
-        Private m_sVBK As Single = EditGroupsStanzaEwEGrid.sVBK
+        Private m_sVBK As Single = EditGroupsEwEGrid.sVBK
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -447,16 +447,16 @@ Public Class EditGroupsStanzaEwEGrid
         Public Sub New(ByVal strName As String)
             Me.m_sg = Nothing
             Me.m_strName = strName
-            Me.m_sVBK = EditGroupsStanzaEwEGrid.sVBK
+            Me.m_sVBK = EditGroupsEwEGrid.sVBK
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Adds a group to this administrative unit.
         ''' </summary>
-        ''' <param name="gi"><see cref="GroupInfo">Group</see> to add.</param>
+        ''' <param name="gi"><see cref="cGroupInfo">Group</see> to add.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddGroup(ByVal gi As GroupInfo)
+        Public Sub AddGroup(ByVal gi As cGroupInfo)
             Dim iPos As Integer = Me.FindGroups(gi)
             ' Group not in this SI yet
             Debug.Assert(iPos = -1)
@@ -472,9 +472,9 @@ Public Class EditGroupsStanzaEwEGrid
         ''' <summary>
         ''' Removes a group from this administrative unit.
         ''' </summary>
-        ''' <param name="gi"><see cref="GroupInfo">Group</see> to remove.</param>
+        ''' <param name="gi"><see cref="cGroupInfo">Group</see> to remove.</param>
         ''' -------------------------------------------------------------------
-        Public Sub RemoveGroup(ByVal gi As GroupInfo)
+        Public Sub RemoveGroup(ByVal gi As cGroupInfo)
             Dim iPos As Integer = Me.FindGroups(gi)
 
             Debug.Assert(iPos <> -1)
@@ -491,9 +491,9 @@ Public Class EditGroupsStanzaEwEGrid
         ''' <param name="giMove"></param>
         ''' <param name="iTo"></param>
         ''' -------------------------------------------------------------------
-        Public Sub MoveGroup(ByVal giMove As GroupInfo, ByVal iTo As Integer)
+        Public Sub MoveGroup(ByVal giMove As cGroupInfo, ByVal iTo As Integer)
 
-            Dim objTemp As GroupInfo = Nothing
+            Dim objTemp As cGroupInfo = Nothing
             Dim iFrom As Integer = Me.FindGroups(giMove)
 
             ' Found group?
@@ -511,7 +511,7 @@ Public Class EditGroupsStanzaEwEGrid
         ''' Returns the list of groups for this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Function GroupList() As List(Of GroupInfo)
+        Public Function GroupList() As List(Of cGroupInfo)
             Return Me.m_alGroups
         End Function
 
@@ -563,10 +563,10 @@ Public Class EditGroupsStanzaEwEGrid
         ''' <summary>
         ''' Finds the zero-based index of a group in this stanza configuration.
         ''' </summary>
-        ''' <param name="gi">The <see cref="GroupInfo">group</see> to find.</param>
+        ''' <param name="gi">The <see cref="cGroupInfo">group</see> to find.</param>
         ''' <returns>A zero-based index or -1 if the group was not found.</returns>
         ''' -------------------------------------------------------------------
-        Public Function FindGroups(ByVal gi As GroupInfo) As Integer
+        Public Function FindGroups(ByVal gi As cGroupInfo) As Integer
             For i As Integer = 0 To Me.m_alGroups.Count - 1
                 If Object.ReferenceEquals(Me.m_alGroups(i), gi) Then
                     Return i
@@ -583,7 +583,7 @@ Public Class EditGroupsStanzaEwEGrid
         ''' <returns>True if changed.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsChanged(ByVal core As cCore) As Boolean
-            Dim gi As GroupInfo = Nothing
+            Dim gi As cGroupInfo = Nothing
             Dim group As cEcoPathGroupInput = Nothing
 
             ' Not associated with an existing stanza group? Flag as changed.
@@ -730,9 +730,9 @@ Public Class EditGroupsStanzaEwEGrid
 
         ' Get the core reference
         Dim group As cEcoPathGroupInput = Nothing
-        Dim gi As GroupInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
         Dim stanza As cStanzaGroup = Nothing
-        Dim si As StanzaInfo = Nothing
+        Dim si As cStanzaInfo = Nothing
 
         ' Populate local administration from a snapshot of the live data
         Me.m_lgiGroups.Clear()
@@ -740,21 +740,21 @@ Public Class EditGroupsStanzaEwEGrid
         ' Make snapshot of group configuration
         For iGroup As Integer = 1 To Core.nGroups
             group = Core.EcoPathGroupInputs(iGroup)
-            gi = New GroupInfo(group)
+            gi = New cGroupInfo(group)
             Me.m_lgiGroups.Add(gi)
         Next
 
         ' Make snapshot of stanza configuration
         For iStanza As Integer = 0 To Core.nStanzas - 1
             stanza = Core.StanzaGroups(iStanza)
-            si = New StanzaInfo(stanza, Core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
+            si = New cStanzaInfo(stanza, Core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
             Me.m_lsiStanza.Add(si)
 
             ' Stanza group list is a one-based array
             For iGroup As Integer = 1 To stanza.NStanzas
                 ' ..while local groupinfo admin is a zero-based array. Whoohoo.
                 Dim isg As Integer = stanza.iGroups(iGroup)
-                gi = DirectCast(Me.m_lgiGroups(isg - iFIRSTGROUPROW), GroupInfo)
+                gi = DirectCast(Me.m_lgiGroups(isg - iFIRSTGROUPROW), cGroupInfo)
                 ' Copy start age
                 gi.StanzaAge = stanza.StartAge(iGroup)
                 gi.StanzaMortality = stanza.Mortality(iGroup)
@@ -763,7 +763,7 @@ Public Class EditGroupsStanzaEwEGrid
         Next
 
         ' This might have resulted in some cleaning-up
-        Dim aStanza As StanzaInfo() = Me.m_lsiStanza.ToArray()
+        Dim aStanza As cStanzaInfo() = Me.m_lsiStanza.ToArray()
         For iStanza As Integer = 0 To aStanza.Length - 1
             si = aStanza(iStanza)
             If si.NumGroups = 0 Then
@@ -820,8 +820,8 @@ Public Class EditGroupsStanzaEwEGrid
     ''' -----------------------------------------------------------------------
     Public Sub UpdateGrid()
 
-        Dim gi As GroupInfo = Nothing
-        Dim si As StanzaInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
+        Dim si As cStanzaInfo = Nothing
         Dim ri As RowInfo = Nothing
         Dim astrStanzaNames As String() = Me.GetStanzaNames()
         Dim cells() As Cells.ICellVirtual = Nothing
@@ -894,7 +894,7 @@ Public Class EditGroupsStanzaEwEGrid
     ''' -----------------------------------------------------------------------
     Private Sub UpdateRow(ByVal iRow As Integer)
 
-        Dim gi As GroupInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
         Dim ri As RowInfo = Nothing
         Dim ewec As EwECell = Nothing
         Dim pos As SourceGrid2.Position = Nothing
@@ -903,7 +903,7 @@ Public Class EditGroupsStanzaEwEGrid
 
         Me.AllowUpdates = False
 
-        gi = DirectCast(Me.m_lgiGroups(iRow - 1), GroupInfo)
+        gi = DirectCast(Me.m_lgiGroups(iRow - 1), cGroupInfo)
         ri = Me.Rows(iRow)
 
         ri.Tag = gi
@@ -1001,7 +1001,7 @@ Public Class EditGroupsStanzaEwEGrid
 
         Dim pos As SourceGrid2.Position = Nothing
         Dim aCells() As Cells.ICellVirtual = Nothing
-        Dim gi As GroupInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
         Dim ri As RowInfo = Nothing
         Dim bHasStanza As Boolean = False
         Dim bCanEditStanza As Boolean = False
@@ -1013,7 +1013,7 @@ Public Class EditGroupsStanzaEwEGrid
             cmb.DataModel.StandardValues = astrStanzaNames
         End If
 
-        gi = DirectCast(Me.m_lgiGroups(iRow - iFIRSTGROUPROW), GroupInfo)
+        gi = DirectCast(Me.m_lgiGroups(iRow - iFIRSTGROUPROW), cGroupInfo)
         ri = Me.Rows(iRow)
         aCells = ri.GetCells()
 
@@ -1068,8 +1068,8 @@ Public Class EditGroupsStanzaEwEGrid
 
         If Not Me.AllowUpdates Then Return True
 
-        Dim gi As GroupInfo = DirectCast(Me.m_lgiGroups(p.Row - 1), GroupInfo)
-        Dim si As StanzaInfo = DirectCast(gi.Stanza, StanzaInfo)
+        Dim gi As cGroupInfo = DirectCast(Me.m_lgiGroups(p.Row - 1), cGroupInfo)
+        Dim si As cStanzaInfo = DirectCast(gi.Stanza, cStanzaInfo)
 
         Select Case DirectCast(p.Column, eColumnTypes)
 
@@ -1141,8 +1141,8 @@ Public Class EditGroupsStanzaEwEGrid
 
         If Not Me.AllowUpdates Then Return True
 
-        Dim gi As GroupInfo = DirectCast(Me.m_lgiGroups(p.Row - 1), GroupInfo)
-        Dim si As StanzaInfo = DirectCast(gi.Stanza, StanzaInfo)
+        Dim gi As cGroupInfo = DirectCast(Me.m_lgiGroups(p.Row - 1), cGroupInfo)
+        Dim si As cStanzaInfo = DirectCast(gi.Stanza, cStanzaInfo)
 
         Select Case DirectCast(p.Column, eColumnTypes)
             Case eColumnTypes.GroupIndex
@@ -1184,7 +1184,7 @@ Public Class EditGroupsStanzaEwEGrid
                     si = Me.FindStanzaInfo(strStanzaName)
                     ' Existing group?
                     If (Object.ReferenceEquals(si, Nothing)) Then
-                        si = New StanzaInfo(strStanzaName)
+                        si = New cStanzaInfo(strStanzaName)
                         Me.m_lsiStanza.Add(si)
                     Else
                     End If
@@ -1231,15 +1231,15 @@ Public Class EditGroupsStanzaEwEGrid
         If iRow = -1 Then iRow = Me.SelectedRow
 
         Dim iGroup As Integer = iRow - iFIRSTGROUPROW
-        Dim gi As GroupInfo = Nothing
-        Dim si As StanzaInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
+        Dim si As cStanzaInfo = Nothing
         Dim strPrompt As String = ""
 
         ' Validate
         If iGroup < 0 Then Return
 
         ' Check if need to update a stanza configuration
-        gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
+        gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
         ' Toggle 'flagged for deletion' flag
         gi.FlaggedForDeletion = Not gi.FlaggedForDeletion
 
@@ -1288,18 +1288,18 @@ Public Class EditGroupsStanzaEwEGrid
         If Not IsGroupRow(iRow) Then Return False
 
         Dim iGroup As Integer = iRow - iFIRSTGROUPROW
-        Dim gi As GroupInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
         Dim strPrompt As String = ""
 
         ' Check if need to update a stanza configuration
-        gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
+        gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
         Return gi.FlaggedForDeletion
     End Function
 
     Public Sub InsertRow(Optional ByVal iRow As Integer = -1)
 
         Dim iGroup As Integer = -1
-        Dim gi As GroupInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
         Dim lstrGroupNames As New List(Of String)
 
         If iRow = -1 Then iRow = Math.Max(iFIRSTGROUPROW, Me.SelectedRow())
@@ -1316,7 +1316,7 @@ Public Class EditGroupsStanzaEwEGrid
         For i As Integer = 0 To Me.m_lgiGroups.Count - 1
             lstrGroupNames.Add(Me.m_lgiGroups(i).Name)
         Next i
-        gi = New GroupInfo( _
+        gi = New cGroupInfo( _
             String.Format(My.Resources.DEFAULT_NEWGROUP_NUM, cStringUtils.GetNextNumber(lstrGroupNames.ToArray, My.Resources.DEFAULT_NEWGROUP_NUM)))
         Me.m_lgiGroups.Insert(iGroup, gi)
 
@@ -1364,7 +1364,7 @@ Public Class EditGroupsStanzaEwEGrid
 
     Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
 
-        Dim objTemp As GroupInfo = Nothing
+        Dim objTemp As cGroupInfo = Nothing
         Dim iStep As Integer = 1
         Dim iFromGroup As Integer = iFromRow - iFIRSTGROUPROW
         Dim iToGroup As Integer = iToRow - iFIRSTGROUPROW
@@ -1398,12 +1398,12 @@ Public Class EditGroupsStanzaEwEGrid
     ''' </summary>
     Public Sub SetAlternatingGroupColors()
 
-        Dim lGroupLists As New List(Of List(Of GroupInfo))
-        Dim lGroups As List(Of GroupInfo)
+        Dim lGroupLists As New List(Of List(Of cGroupInfo))
+        Dim lGroups As List(Of cGroupInfo)
         Dim hsvGroup As HSV = Nothing
         Dim hsvLifeStage As HSV = Nothing
-        Dim si As StanzaInfo = Nothing
-        Dim gi As GroupInfo = Nothing
+        Dim si As cStanzaInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
         Dim bAdded(Me.m_lgiGroups.Count - 1) As Boolean
 
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
@@ -1413,7 +1413,7 @@ Public Class EditGroupsStanzaEwEGrid
                 bAdded(iGroup) = True
                 si = gi.Stanza
 
-                lGroups = New List(Of GroupInfo)
+                lGroups = New List(Of cGroupInfo)
                 If si IsNot Nothing Then
                     For iLifeStage As Integer = 1 To si.GroupList.Count - 1
                         bAdded(iLifeStage) = True
@@ -1456,7 +1456,7 @@ Public Class EditGroupsStanzaEwEGrid
 
     Public Sub SelectCustomColor(Optional ByVal iRow As Integer = -1)
 
-        Dim gi As GroupInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
         Dim dlgColor As ColorDialog = Nothing
 
         If iRow = -1 Then iRow = Me.SelectedRow
@@ -1478,19 +1478,34 @@ Public Class EditGroupsStanzaEwEGrid
 
 #Region " Admin "
 
+    Public Sub SelectGroup(ByVal group As cEcoPathGroupInput)
+
+        Dim gi As cGroupInfo = Nothing
+
+        If (group Is Nothing) Then Return
+
+        For iRow As Integer = iFIRSTGROUPROW To Me.RowsCount - 1
+            gi = DirectCast(Me.m_lgiGroups(iRow - iFIRSTGROUPROW), cGroupInfo)
+            If (Object.ReferenceEquals(gi.Group, group)) Then
+                Me.SelectRow(iRow)
+                Return
+            End If
+        Next iRow
+
+    End Sub
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Finds <see cref="StanzaInfo">StanzaInfo</see> with the given name in 
+    ''' Finds <see cref="cStanzaInfo">StanzaInfo</see> with the given name in 
     ''' the local admin.
     ''' </summary>
     ''' <param name="strName">The name of the Stanza to look for.</param>
     ''' <returns>A StanzaInfo instance or Nothing if this could not be found.</returns>
     ''' <remarks>The name search is case independent.</remarks>
     ''' -----------------------------------------------------------------------
-    Private Function FindStanzaInfo(ByVal strName As String) As StanzaInfo
-        Dim si As StanzaInfo = Nothing
+    Private Function FindStanzaInfo(ByVal strName As String) As cStanzaInfo
+        Dim si As cStanzaInfo = Nothing
         For i As Integer = 0 To Me.m_lsiStanza.Count - 1
-            si = DirectCast(Me.m_lsiStanza(i), StanzaInfo)
+            si = DirectCast(Me.m_lsiStanza(i), cStanzaInfo)
             If String.Compare(si.Name, strName, True) = 0 Then Return si
         Next
         Return Nothing
@@ -1504,11 +1519,11 @@ Public Class EditGroupsStanzaEwEGrid
     Private Function GetStanzaNames() As String()
 
         Dim astrStanzaNames(Me.m_lsiStanza.Count) As String
-        Dim si As StanzaInfo = Nothing
+        Dim si As cStanzaInfo = Nothing
 
         astrStanzaNames(0) = sNO_STANZA
         For i As Integer = 0 To Me.m_lsiStanza.Count - 1
-            si = DirectCast(Me.m_lsiStanza(i), StanzaInfo)
+            si = DirectCast(Me.m_lsiStanza(i), cStanzaInfo)
             astrStanzaNames(i + 1) = si.Name
         Next
         Return astrStanzaNames
@@ -1546,19 +1561,19 @@ Public Class EditGroupsStanzaEwEGrid
     ''' -----------------------------------------------------------------------
     Private Sub FixDetritusOrder()
         Dim iNextDetritusPos As Integer = Me.m_lgiGroups.Count - 1
-        Dim gi As GroupInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
 
         ' Move detritus groups automatically.
         ' First next position to place a detritus group
-        gi = DirectCast(Me.m_lgiGroups(iNextDetritusPos), GroupInfo)
+        gi = DirectCast(Me.m_lgiGroups(iNextDetritusPos), cGroupInfo)
         While gi.PP = ePrimaryProductionTypes.Detritus
             iNextDetritusPos -= 1
-            gi = DirectCast(Me.m_lgiGroups(iNextDetritusPos), GroupInfo)
+            gi = DirectCast(Me.m_lgiGroups(iNextDetritusPos), cGroupInfo)
         End While
 
         ' Now scan the list for other detritus groups to move
         For iGroup As Integer = iNextDetritusPos To 0 Step -1
-            gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
+            gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
             ' Is this a detritus group?
             If gi.PP = ePrimaryProductionTypes.Detritus Then
                 ' #Yes: move it to the end of the list
@@ -1587,17 +1602,17 @@ Public Class EditGroupsStanzaEwEGrid
 
     Public Sub SelectRow(ByVal iRow As Integer)
 
-        Dim r As SourceGrid2.Range = Me.Selection.Item(0)
+        ' Clear current selection
+        If Me.Selection IsNot Nothing Then
+            Dim r As SourceGrid2.Range = Me.Selection.GetRange()
+            If Not r.IsEmpty Then
+                Me.Selection.RemoveRange(r)
+            End If
 
-        If r.Start.Row = iRow Then Return
-
-        Me.Selection.AddRange(New SourceGrid2.Range(iRow, r.Start.Column, iRow, r.End.Column))
-        Me.Selection.RemoveRange(r)
-
-        ' Make sure selected row is visible
-        Me.ShowCell(New Position(iRow, 0))
-
-        Me.RaiseSelectionChangeEvent()
+            Me.Selection.AddRange(New SourceGrid2.Range(iRow, 0, iRow, Me.ColumnsCount - 1))
+            Me.ShowCell(New Position(iRow, 0))
+            Me.RaiseSelectionChangeEvent()
+        End If
 
     End Sub
 
@@ -1629,8 +1644,8 @@ Public Class EditGroupsStanzaEwEGrid
 
     Private Function ValidateStanzaAssignments() As Boolean
 
-        Dim si As StanzaInfo = Nothing
-        Dim gi As GroupInfo = Nothing
+        Dim si As cStanzaInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
         Dim bValid As Boolean = True
 
         For iStanza As Integer = 0 To Me.m_lsiStanza.Count - 1
@@ -1660,9 +1675,9 @@ Public Class EditGroupsStanzaEwEGrid
     ''' -----------------------------------------------------------------------
     Private Function ValidateStanzaAges() As Boolean
 
-        Dim si As StanzaInfo = Nothing
-        Dim gi As GroupInfo = Nothing
-        Dim giPrev As GroupInfo = Nothing
+        Dim si As cStanzaInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
+        Dim giPrev As cGroupInfo = Nothing
         Dim strPrompt As String = ""
 
         For iStanza As Integer = 0 To Me.m_lsiStanza.Count - 1
@@ -1718,12 +1733,12 @@ Public Class EditGroupsStanzaEwEGrid
 
         Dim nDetritus As Integer = 0
         Dim bAllDetritusAtEnd As Boolean = True
-        Dim gi As GroupInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
         Dim msg As cMessage = Nothing
 
         ' Check detritus config
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
-            gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
+            gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
             ' Is this a detritus group?
             If gi.PP = ePrimaryProductionTypes.Detritus Then
                 ' #Yes: count it
@@ -1761,11 +1776,11 @@ Public Class EditGroupsStanzaEwEGrid
         Return True
     End Function
 
-    Private Function IsNameUnique(ByVal strName As String, ByVal gi As GroupInfo) As Boolean
+    Private Function IsNameUnique(ByVal strName As String, ByVal gi As cGroupInfo) As Boolean
 
         ' Check if name is unique
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
-            Dim giTemp As GroupInfo = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
+            Dim giTemp As cGroupInfo = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
             ' Does name already exist?
             If (Not Object.ReferenceEquals(giTemp, gi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                 ' Report failure
@@ -1788,10 +1803,10 @@ Public Class EditGroupsStanzaEwEGrid
         Dim bConfigurationChanged As Boolean = False
         Dim bGroupsChanged As Boolean = False
         Dim bStanzaChanged As Boolean = False
-        Dim gi As GroupInfo = Nothing
+        Dim gi As cGroupInfo = Nothing
         Dim group As cEcoPathGroupInput = Nothing
         Dim iGroup As Integer = 0
-        Dim si As StanzaInfo = Nothing
+        Dim si As cStanzaInfo = Nothing
         Dim stanza As cStanzaGroup = Nothing
         Dim iStanza As Integer = 0
         Dim bSuccess As Boolean = True
@@ -1810,7 +1825,7 @@ Public Class EditGroupsStanzaEwEGrid
 
         ' Assess group changes
         For iGroup = 0 To Me.m_lgiGroups.Count - 1
-            gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
+            gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
             ' Check this group is newly added
             If gi.IsNew() Then
                 ' Yes, config has changed
@@ -1825,7 +1840,7 @@ Public Class EditGroupsStanzaEwEGrid
 
         ' Assess groups to remove
         For iGroup = 0 To Me.m_lgiGroupsRemoved.Count - 1
-            gi = DirectCast(Me.m_lgiGroupsRemoved(iGroup), GroupInfo)
+            gi = DirectCast(Me.m_lgiGroupsRemoved(iGroup), cGroupInfo)
             ' Only prompt for removal of pre-existing groups
             If (Not gi.IsNew()) Then
 
@@ -1851,7 +1866,7 @@ Public Class EditGroupsStanzaEwEGrid
 
         ' Assess stanza changes
         For iStanza = 0 To Me.m_lsiStanza.Count - 1
-            si = DirectCast(Me.m_lsiStanza(iStanza), StanzaInfo)
+            si = DirectCast(Me.m_lsiStanza(iStanza), cStanzaInfo)
             bConfigurationChanged = bConfigurationChanged Or si.IsNew()
             bConfigurationChanged = bConfigurationChanged Or si.IsChanged(Me.Core)
         Next iStanza
@@ -1860,7 +1875,7 @@ Public Class EditGroupsStanzaEwEGrid
         ' JS14Apr07: Stanza are deleted when groups no longer use them. There will be no delete confirmation prompt
         '            on Stanza groups.
         For iStanza = 0 To Me.m_lsiStanzaRemoved.Count - 1
-            si = DirectCast(Me.m_lsiStanzaRemoved(iStanza), StanzaInfo)
+            si = DirectCast(Me.m_lsiStanzaRemoved(iStanza), cStanzaInfo)
             bConfigurationChanged = bConfigurationChanged Or (Not si.IsNew())
         Next iStanza
 
@@ -1878,13 +1893,13 @@ Public Class EditGroupsStanzaEwEGrid
                 Return False
             End If
 
-            Dim htGroupID As New Dictionary(Of GroupInfo, Integer)
+            Dim htGroupID As New Dictionary(Of cGroupInfo, Integer)
             Dim iDBID As Integer = Nothing
 
             ' Add new groups
             iGroup = 0
             While (bSuccess = True) And (iGroup < Me.m_lgiGroups.Count)
-                gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
+                gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
                 If (gi.IsNew()) Then
                     Dim igt As Integer = iGroup + 1
                     bSuccess = bSuccess And Me.Core.AddGroup(gi.Name, gi.PP, gi.VBK, igt, iDBID)
@@ -1903,7 +1918,7 @@ Public Class EditGroupsStanzaEwEGrid
             End While
 
             ' Remove deleted (and confirmed) groups
-            Dim agi() As GroupInfo = Me.m_lgiGroupsRemoved.ToArray()
+            Dim agi() As cGroupInfo = Me.m_lgiGroupsRemoved.ToArray()
             iGroup = 0
             While (bSuccess = True) And (iGroup < agi.Length)
                 gi = agi(iGroup)
@@ -1920,7 +1935,7 @@ Public Class EditGroupsStanzaEwEGrid
             End While
 
             ' Remove deleted stanza configurations from internal admin
-            Dim asiRemove() As StanzaInfo = Me.m_lsiStanzaRemoved.ToArray()
+            Dim asiRemove() As cStanzaInfo = Me.m_lsiStanzaRemoved.ToArray()
             iStanza = 0
             While (bSuccess = True) And (iStanza < asiRemove.Length)
                 si = asiRemove(iStanza)
@@ -1939,7 +1954,7 @@ Public Class EditGroupsStanzaEwEGrid
             ' Add new stanza configurations
             iStanza = 0
             While (bSuccess = True) And (iStanza < Me.m_lsiStanza.Count)
-                si = DirectCast(Me.m_lsiStanza(iStanza), StanzaInfo)
+                si = DirectCast(Me.m_lsiStanza(iStanza), cStanzaInfo)
                 If (si.IsNew()) Then
                     Dim iStanzaID As Integer = -1
                     Dim aiGroupID() As Integer
@@ -1971,7 +1986,7 @@ Public Class EditGroupsStanzaEwEGrid
             ' Update modified stanza configurations
             iStanza = 0
             While (bSuccess = True) And (iStanza < Me.m_lsiStanza.Count)
-                si = DirectCast(Me.m_lsiStanza(iStanza), StanzaInfo)
+                si = DirectCast(Me.m_lsiStanza(iStanza), cStanzaInfo)
                 If (Not si.IsNew()) Then
                     If si.IsChanged(Me.Core) Then
                         Dim sg As cStanzaGroup = si.StanzaGroup
@@ -2020,7 +2035,7 @@ Public Class EditGroupsStanzaEwEGrid
         If (bSuccess And bGroupsChanged) Then
             Dim bColorsChanged As Boolean = False
             For iGroup = 0 To Me.m_lgiGroups.Count - 1
-                gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
+                gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
                 If gi.IsChanged() Then
                     ' Find groups by ID; the core has reloaded
                     For iGrpTmp As Integer = 1 To Me.Core.nGroups

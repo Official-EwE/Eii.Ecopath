@@ -13,16 +13,29 @@ Namespace Ecopath
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Interface to create and destroy groups, assign multi-stanza configurations
+    ''' Dialog class, implements the user interface to add/remove/reorder groups, 
+    ''' and change multi-stanza compositions, in the EwE Scientific Interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class EditGroups
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a new instance of this class.
+        ''' </summary>
+        ''' <param name="uic">The <see cref="cUIContext">UI context</see> to connect to.</param>
+        ''' <param name="group">A group to select, if any.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal uic As cUIContext, _
+                              Optional ByVal group As cEcoPathGroupInput = Nothing)
+
             Me.InitializeComponent()
+
             Me.m_grid.UIContext = uic
+            Me.m_grid.SelectGroup(group)
+
         End Sub
 
 #End Region ' Constructor

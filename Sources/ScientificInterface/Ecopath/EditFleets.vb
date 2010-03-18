@@ -11,20 +11,39 @@ Imports EwEUtils.Commands
 
 Namespace Ecopath
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Dialog class, implements the user interface to add/remove/reorder fleets 
+    ''' in the EwE Scientific Interface.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class EditFleets
 
-#Region "Constructors"
+#Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a new instance of this class.
+        ''' </summary>
+        ''' <param name="uic">The <see cref="cUIContext">UI context</see> to connect to.</param>
+        ''' <param name="fleet">A fleet to select, if any.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal uic As cUIContext, _
+                       Optional ByVal fleet As cFleetInput = Nothing)
+
             Me.InitializeComponent()
+
             Me.m_grid.UIContext = uic
+            Me.m_grid.SelectFleet(fleet)
+
         End Sub
 
 #End Region
 
-#Region "Event handlers "
+#Region " Event handlers "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
             Me.UpdateControls()
         End Sub
 

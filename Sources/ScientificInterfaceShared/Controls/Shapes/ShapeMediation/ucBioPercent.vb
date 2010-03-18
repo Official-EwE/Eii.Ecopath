@@ -4,7 +4,6 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports ScientificInterface.Other
 Imports ZedGraph
 Imports ScientificInterfaceShared.Style
 

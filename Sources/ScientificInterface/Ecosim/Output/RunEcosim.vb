@@ -84,7 +84,7 @@ Namespace Ecosim
             Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.Core, Me.tscbTarget)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
 
-            Me.m_lbGroups.Attach(Me.Core, Me.StyleGuide)
+            Me.m_lbGroups.Attach(Me.UIContext)
 
             Me.m_zgp = New cEcosimOutputPlotHelper()
             Me.m_zgp.Attach(Me.UIContext, Me.m_graph)

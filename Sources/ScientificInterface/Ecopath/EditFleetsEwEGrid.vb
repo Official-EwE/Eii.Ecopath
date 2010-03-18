@@ -547,6 +547,22 @@ Imports ScientificInterface.Other
 
 #Region " Row manipulation "
 
+    Public Sub SelectFleet(ByVal fleet As cFleetInput)
+
+        Dim fi As cFleetInfo = Nothing
+
+        If (fleet Is Nothing) Then Return
+
+        For iRow As Integer = iFIRSTFLEETROW To Me.RowsCount - 1
+            fi = DirectCast(Me.m_lfiFleets(iRow - iFIRSTFLEETROW), cFleetInfo)
+            If (Object.ReferenceEquals(fi.Fleet, fleet)) Then
+                Me.SelectRow(iRow)
+                Return
+            End If
+        Next iRow
+
+    End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Delete a row from the grid
@@ -770,7 +786,7 @@ Imports ScientificInterface.Other
 
 #Region " Selection extension "
 
-    Public Function SelectedRow() As Integer
+    Private Function SelectedRow() As Integer
 
         Dim iSelectedRow As Integer = -1
         Dim selection As SourceGrid2.Selection = Me.Selection
@@ -785,7 +801,7 @@ Imports ScientificInterface.Other
 
     End Function
 
-    Public Sub SelectRow(ByVal iRow As Integer)
+    Private Sub SelectRow(ByVal iRow As Integer)
 
         ' Clear current selection
         If Me.Selection IsNot Nothing Then
@@ -793,11 +809,13 @@ Imports ScientificInterface.Other
             If Not r.IsEmpty Then
                 Me.Selection.RemoveRange(r)
             End If
-        End If
-        Me.Selection.AddRange(New SourceGrid2.Range(iRow, 0, iRow, Me.ColumnsCount))
+            Me.Selection.AddRange(New SourceGrid2.Range(iRow, 0, iRow, Me.ColumnsCount - 1))
 
-        ' Make sure selected row is visible
-        Me.ShowCell(New Position(iRow, 0))
+            ' Make sure selected row is visible
+            Me.ShowCell(New Position(iRow, 0))
+            Me.RaiseSelectionChangeEvent()
+        End If
+
     End Sub
 
     Private Sub SelectRow(ByVal fi As cFleetInfo)

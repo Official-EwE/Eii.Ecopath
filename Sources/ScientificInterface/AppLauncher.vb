@@ -2542,9 +2542,14 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnEditGroups(ByVal cmd As cCommand) Handles m_cmdEditGroups.OnInvoke
 
-        Dim dlg As New EditGroups(Me.UIContext)
-        Me.m_Help.HelpTopic(dlg) = "Edit groups.htm"
-        dlg.ShowDialog(Me)
+        Try
+            Dim dlg As New EditGroups(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
+            Me.m_Help.HelpTopic(dlg) = "Edit groups.htm"
+            dlg.ShowDialog(Me)
+        Catch ex As Exception
+            ' Woops
+            Debug.Assert(False)
+        End Try
 
     End Sub
 
@@ -2576,9 +2581,14 @@ Public Class AppLauncher
     ''' Command handler; invokes the edit fleets interface
     ''' </summary>
     Private Sub OnEditFleets(ByVal cmd As cCommand) Handles m_cmdEditFleets.OnInvoke
-        Dim dlg As New EditFleets(Me.UIContext)
-        Me.m_Help.HelpTopic(dlg) = "Edit fleets.htm"
-        dlg.ShowDialog(Me)
+        Try
+            Dim dlg As New EditFleets(Me.UIContext, DirectCast(cmd.Tag, cFleetInput))
+            Me.m_Help.HelpTopic(dlg) = "Edit fleets.htm"
+            dlg.ShowDialog(Me)
+        Catch ex As Exception
+            ' Woops
+            Debug.Assert(False)
+        End Try
     End Sub
 
     ''' <summary>

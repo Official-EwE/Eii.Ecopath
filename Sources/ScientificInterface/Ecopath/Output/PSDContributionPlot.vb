@@ -37,7 +37,7 @@ Namespace Ecopath.Output
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.zgcZedGraphCntl)
 
-            Me.m_lbGroups.Attach(Me.Core, Me.StyleGuide)
+            Me.m_lbGroups.Attach(Me.UIContext)
             Me.m_lbGroups.SelectedIndex = 0
 
         End Sub

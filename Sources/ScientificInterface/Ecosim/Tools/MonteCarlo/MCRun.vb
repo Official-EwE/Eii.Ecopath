@@ -131,7 +131,7 @@ Namespace Ecosim
 
             Debug.Assert(Me.m_cmdLoadTS IsNot Nothing, "Command failed to load.")
 
-            Me.m_lbGroups.Attach(Me.Core, Me.StyleGuide)
+            Me.m_lbGroups.Attach(Me.UIContext)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
             Me.PopulateGroupBox()

@@ -22,7 +22,7 @@ Namespace Ecopath
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EditGroups))
-            Me.m_grid = New ScientificInterface.EditGroupsStanzaEwEGrid
+            Me.m_grid = New ScientificInterface.EditGroupsEwEGrid
             Me.m_btnInsert = New System.Windows.Forms.Button
             Me.m_btnMoveUp = New System.Windows.Forms.Button
             Me.m_btnMoveDown = New System.Windows.Forms.Button
@@ -179,7 +179,7 @@ Namespace Ecopath
 
         End Sub
 
-        Private WithEvents m_grid As EditGroupsStanzaEwEGrid
+        Private WithEvents m_grid As EditGroupsEwEGrid
         Private WithEvents m_btnInsert As System.Windows.Forms.Button
         Private WithEvents m_btnMoveUp As System.Windows.Forms.Button
         Private WithEvents m_btnMoveDown As System.Windows.Forms.Button
