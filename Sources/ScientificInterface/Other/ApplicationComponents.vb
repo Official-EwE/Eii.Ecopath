@@ -1,26 +1,10 @@
-'==============================================================================
-'
-' $Log: ApplicationComponents.vb,v $
-' Revision 1.2  2008/11/27 19:45:51  jeroens
-' Renamed ApplicationComponents interfaces to more properly reflect their function
-'
-' Revision 1.1  2008/09/26 07:32:07  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2007/10/20 22:55:56  jeroens
-' + Added ToString
-'
-' Revision 1.2  2007/09/27 18:21:54  jeroens
-' + Added EXE assembly
-'
-' Revision 1.1  2007/09/27 18:03:16  jeroens
-' Initial version, extracted from About dialog
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports System.Reflection
 Imports System.Text
+
+#End Region ' Imports
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
