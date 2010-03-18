@@ -38,7 +38,7 @@ Namespace Utilities
             Dim sbToken As New StringBuilder()
             ' Convert public token to string
             For i As Integer = 0 To 7
-                sbToken.Append(ChrW(an.GetPublicKeyToken(i)))
+                sbToken.Append(an.GetPublicKeyToken(i).ToString("000"))
             Next
             Return sbToken.ToString
         End Function
