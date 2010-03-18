@@ -34,6 +34,7 @@ Public Module modUtility
         Next
     End Sub
 
+    <CLSCompliant(False)> _
     Public Sub AddCurve(ByVal strName As String, ByVal CurveVar() As Single, ByVal Pane As GraphPane, _
       ByVal MyColor As Color, Optional ByVal Symbol As SymbolType = SymbolType.None)
         Dim List As PointPairList
