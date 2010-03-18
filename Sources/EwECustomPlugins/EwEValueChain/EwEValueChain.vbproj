@@ -16,6 +16,8 @@
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>On</OptionStrict>
     <OptionInfer>On</OptionInfer>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>My Project\EwEVC_publickey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -350,6 +352,7 @@
     <None Include="Resources\RelationshipsHS.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="My Project\EwEVC_publickey.snk" />
     <None Include="Resources\ThumbnailLoadingHS.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
