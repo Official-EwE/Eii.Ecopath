@@ -421,7 +421,9 @@ Namespace Controls.EwEGrid
         Public Event OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
 
         Protected Sub RaiseSelectionChangeEvent()
-            RaiseEvent OnSelectionChanged(Me.Selection.GetCells())
+            If Me.UIContext IsNot Nothing Then
+                RaiseEvent OnSelectionChanged(Me.Selection.GetCells())
+            End If
         End Sub
 
 #End Region ' EwE events
