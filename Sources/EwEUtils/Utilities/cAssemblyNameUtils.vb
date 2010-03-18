@@ -20,7 +20,8 @@ Namespace Utilities
         ''' <summary>
         ''' Returns the short name of an assembly.
         ''' </summary>
-        ''' <param name="an"></param>
+        ''' <param name="an">The <see cref="AssemblyName">AssemblyName</see> to return
+        ''' the name for.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function GetName(ByVal an As AssemblyName) As String
@@ -29,9 +30,10 @@ Namespace Utilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Extracts the public token of an assembly and returns it as a string.
+        ''' Extracts the public key token of an assembly and returns it as a string.
         ''' </summary>
-        ''' <param name="an"></param>
+        ''' <param name="an">The <see cref="AssemblyName">AssemblyName</see> to return
+        ''' the public key token for.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function GetToken(ByVal an As AssemblyName) As String
@@ -47,7 +49,8 @@ Namespace Utilities
         ''' <summary>
         ''' Extracts the version number of an assembly and returns it as a string.
         ''' </summary>
-        ''' <param name="an"></param>
+        ''' <param name="an">The <see cref="AssemblyName">AssemblyName</see> to return
+        ''' the version for.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function GetVersion(ByVal an As AssemblyName) As String
