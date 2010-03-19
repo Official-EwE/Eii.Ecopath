@@ -14,7 +14,7 @@ Imports EwEUtils.Utilities
 ''' Helper class to update a plug-in assembly from the EwE web service.
 ''' </summary>
 ''' ===========================================================================
-Friend Class cPluginUpdate
+Friend Class cAutoUpdate
 
 #Region " Private vars "
 
@@ -31,7 +31,7 @@ Friend Class cPluginUpdate
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor, initializes a new cPluginUpdate instance.
+    ''' Constructor, initializes a new cAutoUpdate instance.
     ''' </summary>
     ''' <param name="assemCore">The core assembly to download updates for.</param>
     ''' -----------------------------------------------------------------------
@@ -41,7 +41,7 @@ Friend Class cPluginUpdate
         Me.m_assemCore = assemCore
         Me.m_cookiejar = New CookieContainer()
         Me.m_service = New EwEAutoUpdateRef.UpdateService()
-        Me.m_service.CookieContainer = m_cookiejar
+        Me.m_service.CookieContainer = Me.m_cookiejar
 
     End Sub
 
@@ -65,17 +65,18 @@ Friend Class cPluginUpdate
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Download an update for a file.
     ''' </summary>
-    ''' <param name="assemPlugin"></param>
-    ''' <param name="strPluginFile"></param>
+    ''' <param name="strPluginFile">The file to update.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function DownloadUpdate(ByVal assemPlugin As AssemblyName, _
-                                   ByVal strPluginFile As String) As eUpdateResultTypes
+    Public Function DownloadUpdate(ByVal strPluginFile As String) As eUpdateResultTypes
 
+        Dim assemPlugin As AssemblyName = AssemblyName.GetAssemblyName(strPluginFile)
         Dim abPlugin() As Byte = Nothing
         Dim fsPlugin As FileStream = Nothing
+
+        If (assemPlugin Is Nothing) Then Return eUpdateResultTypes.Failed_Generic
 
         Try
 
