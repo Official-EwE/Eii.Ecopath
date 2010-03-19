@@ -60,6 +60,8 @@ Friend Class cAutoUpdate
         Failed_Generic
         ''' <summary>File was successfully updated.</summary>
         Failed_NoInternet
+        ''' <summary>File failed to download.</summary>
+        Failed_Download
         ''' <summary>File was successfully updated.</summary>
         Success_Updated
     End Enum
@@ -76,31 +78,38 @@ Friend Class cAutoUpdate
         Dim assemPlugin As AssemblyName = AssemblyName.GetAssemblyName(strPluginFile)
         Dim abPlugin() As Byte = Nothing
         Dim fsPlugin As FileStream = Nothing
+        Dim strTemp As String = Path.GetTempFileName()
 
         If (assemPlugin Is Nothing) Then Return eUpdateResultTypes.NoUpdateAvailable
 
         Try
-
-            If Me.m_service.CheckPluginUpdate(cAssemblyUtils.GetVersion(Me.m_assemCore), _
-                                              cAssemblyUtils.GetName(assemPlugin), _
-                                              cAssemblyUtils.GetToken(assemPlugin), _
-                                              cAssemblyUtils.GetVersion(assemPlugin)) Then
-
-                abPlugin = Me.m_service.DownloadPlugin()
-                fsPlugin = New FileStream(strPluginFile, FileMode.Create)
-                fsPlugin.Write(abPlugin, 0, abPlugin.Length)
-                fsPlugin.Close()
-                fsPlugin = Nothing
-
-            Else
+            If Not Me.m_service.CheckPluginUpdate(cAssemblyUtils.GetVersion(Me.m_assemCore), _
+                                                  cAssemblyUtils.GetName(assemPlugin), _
+                                                  cAssemblyUtils.GetToken(assemPlugin), _
+                                                  cAssemblyUtils.GetVersion(assemPlugin)) Then
                 Return eUpdateResultTypes.NoUpdateAvailable
             End If
-
         Catch ex As Exception
+            ' Unable to connect to server
+            Return eUpdateResultTypes.Failed_NoInternet
+        End Try
 
-            ' ToDo: catch different types of exceptions
-
+        Try
+            ' Download to a temp location
+            abPlugin = Me.m_service.DownloadPlugin()
+            fsPlugin = New FileStream(strTemp, FileMode.Create)
+            fsPlugin.Write(abPlugin, 0, abPlugin.Length)
+            fsPlugin.Close()
+            fsPlugin = Nothing
+        Catch ex As Exception
             ' Error downloading update
+            Return eUpdateResultTypes.Failed_Download
+        End Try
+
+        Try
+            ' Replace plug-in file
+            File.Copy(strTemp, strPluginFile, True)
+        Catch ex As Exception
             Return eUpdateResultTypes.Failed_Generic
         End Try
 
