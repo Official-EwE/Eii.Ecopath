@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://webservice.ecopath.org/EwEAutoUpdate.Web/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://webservice.ecopath.org/EwEAutoUpdate.Web/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
-    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+    <s:schema elementFormDefault="qualified" targetNamespace="http://webservice.ecopath.org/EwEAutoUpdate.Web/">
       <s:element name="CheckPluginUpdate">
         <s:complexType>
           <s:sequence>
@@ -29,6 +29,16 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="GetPluginHash">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetPluginHashResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPluginHashResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="CheckPluginUpdateSoapIn">
@@ -43,6 +53,12 @@
   <wsdl:message name="DownloadPluginSoapOut">
     <wsdl:part name="parameters" element="tns:DownloadPluginResponse" />
   </wsdl:message>
+  <wsdl:message name="GetPluginHashSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPluginHash" />
+  </wsdl:message>
+  <wsdl:message name="GetPluginHashSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPluginHashResponse" />
+  </wsdl:message>
   <wsdl:portType name="UpdateServiceSoap">
     <wsdl:operation name="CheckPluginUpdate">
       <wsdl:input message="tns:CheckPluginUpdateSoapIn" />
@@ -52,11 +68,15 @@
       <wsdl:input message="tns:DownloadPluginSoapIn" />
       <wsdl:output message="tns:DownloadPluginSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="GetPluginHash">
+      <wsdl:input message="tns:GetPluginHashSoapIn" />
+      <wsdl:output message="tns:GetPluginHashSoapOut" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="UpdateServiceSoap" type="tns:UpdateServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="CheckPluginUpdate">
-      <soap:operation soapAction="http://tempuri.org/CheckPluginUpdate" style="document" />
+      <soap:operation soapAction="http://webservice.ecopath.org/EwEAutoUpdate.Web/CheckPluginUpdate" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -65,7 +85,16 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="DownloadPlugin">
-      <soap:operation soapAction="http://tempuri.org/DownloadPlugin" style="document" />
+      <soap:operation soapAction="http://webservice.ecopath.org/EwEAutoUpdate.Web/DownloadPlugin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPluginHash">
+      <soap:operation soapAction="http://webservice.ecopath.org/EwEAutoUpdate.Web/GetPluginHash" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -77,7 +106,7 @@
   <wsdl:binding name="UpdateServiceSoap12" type="tns:UpdateServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="CheckPluginUpdate">
-      <soap12:operation soapAction="http://tempuri.org/CheckPluginUpdate" style="document" />
+      <soap12:operation soapAction="http://webservice.ecopath.org/EwEAutoUpdate.Web/CheckPluginUpdate" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -86,7 +115,16 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="DownloadPlugin">
-      <soap12:operation soapAction="http://tempuri.org/DownloadPlugin" style="document" />
+      <soap12:operation soapAction="http://webservice.ecopath.org/EwEAutoUpdate.Web/DownloadPlugin" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPluginHash">
+      <soap12:operation soapAction="http://webservice.ecopath.org/EwEAutoUpdate.Web/GetPluginHash" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
