@@ -51,19 +51,17 @@ Namespace MSE
         ' Histogram How does it bin the data from the extra years that is not displayed. If the data is not display the histogram can look wrong.
         ' Fishing effort figure out what happens to the effort for the extra years in the different modes the MSE runs in.
 
-        'ToDO_jb 7-Jan-2010 cMSE Discards are not sent to detritus properly by ecosim. DiscardMort needs to be setable as well 
-
         'ToDo_jb 18-Jan-2010 cMSE output files need to have header and maybe more outputs
 
         'ToDo_jb 18-Jan-2010 cMSE database save reference values. This should get done in conjunction with the MSE Trunk merge and release
 
         'ToDo_jb 18-Jan-2010 MSE looks like there may be a problem with Catch by fleet and catch by group these value should be the same but they aren't....
 
-        'ToDo_jb 25-Jan-2010 MSE needs to unload F timeseries
+        Private Enum eResultsData
+            GroupQuota
+            FleetQuota
+        End Enum
 
-        'ToDo_jb 26-Jan-2010 MSY F timeseries checks and unloads F timeseries inside the fleet loop this should happen once at the start
-
-        'ToDo_jb 26-Jan-2010 MSE MSY F timeseries checks and unloads F timeseries inside the fleet loop this should happen once at the start
 
 #Region "Private data"
 
@@ -104,6 +102,19 @@ Namespace MSE
         Private Const CATCH_DATA As String = "MSE_CatchByGroup_"
         Private Const EFFORT_DATA As String = "MSE_Effort_"
         Private Const FLEETCATCH_DATA As String = "MSE_CatchByFleet_"
+        Private Const QUOTAGROUP_DATA As String = "MSE_QuotaByGroup_"
+
+        ''' <summary>Dictionary of arrays that are use to store results that are gathered by the MSE.</summary>
+        ''' <remarks>Use to store results that are not computed by Ecosim.</remarks>
+        Private m_lstData As Dictionary(Of eResultsData, Single(,))
+
+        ''' <summary>Current time index(cumulative month) computed by Ecosim</summary>
+        ''' <remarks>set when Ecosim calls SetTime()</remarks>
+        Private m_curT As Integer
+
+        ''' <summary>Current year index computed by Ecosim</summary>
+        ''' <remarks>set when Ecosim calls SetTime()</remarks>
+        Private m_curYear As Integer
 
 #End Region
 
@@ -238,6 +249,8 @@ Namespace MSE
 
                 Me.InitOutputFiles()
 
+                Me.InitResults()
+
             Catch ex As Exception
                 cLog.Write(ex)
                 Throw New ApplicationException(Me.ToString & ".InitForRun() Error:" & ex.Message, ex)
@@ -255,6 +268,13 @@ Namespace MSE
                 ds.EnableData(New cEcosimRunType) = Me.m_orgUsePlugin
             End If
 
+            If Me.m_data.SaveOutput Then
+                If Me.m_lstData IsNot Nothing Then
+                    Me.m_lstData.Clear()
+                    Me.m_lstData = Nothing
+                End If
+            End If
+
         End Sub
 
         Private Function getOutputDirectory() As String
@@ -270,8 +290,9 @@ Namespace MSE
                 End If
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".getOutputDirectory() Exception: " & ex.Message)
-                Return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\")
             End Try
+
+            Return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\")
 
         End Function
 
@@ -294,6 +315,7 @@ Namespace MSE
                     Try
                         File.Delete(Me.buildFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
                         File.Delete(Me.buildFilename(CATCH_DATA, Me.m_epdata.GroupName(igrp)))
+                        File.Delete(Me.buildFilename(QUOTAGROUP_DATA, Me.m_epdata.GroupName(igrp)))
                     Catch ex As Exception
                         System.Console.WriteLine(ex.Message)
                     End Try
@@ -314,6 +336,7 @@ Namespace MSE
                     Me.WriteOutputHeader("Biomass", Me.m_epdata.GroupName(igrp), BIOMASS_DATA)
                     If Me.m_epdata.fCatch(igrp) > 0 Then
                         Me.WriteOutputHeader("Catch by Group", Me.m_epdata.GroupName(igrp), CATCH_DATA)
+                        Me.WriteOutputHeader("Quota by Group", Me.m_epdata.GroupName(igrp), QUOTAGROUP_DATA)
                     End If
                 Next
 
@@ -327,6 +350,31 @@ Namespace MSE
             End Try
 
         End Sub
+
+        Private Sub InitResults()
+            Try
+                If Not Me.m_data.SaveOutput Then Return
+
+                If Me.m_lstData IsNot Nothing Then
+                    Me.m_lstData.Clear()
+                    Me.m_lstData = Nothing
+                End If
+
+                Me.m_lstData = New Dictionary(Of eResultsData, Single(,))
+                Dim d(,) As Single
+                ReDim d(m_epdata.NumGroups, Me.m_esData.NTimes)
+                Me.m_lstData.Add(eResultsData.GroupQuota, d)
+
+                'redim will create a new array
+                ReDim d(m_epdata.NumFleet, Me.m_esData.NTimes)
+                Me.m_lstData.Add(eResultsData.FleetQuota, d)
+
+            Catch ex As Exception
+                System.Console.WriteLine(ex.Message)
+            End Try
+
+        End Sub
+
 
         Private Sub WriteOutputHeader(ByVal DataDescription As String, ByVal GroupFleet As String, ByVal DataFileName As String)
 
@@ -693,6 +741,29 @@ Namespace MSE
                         System.Console.WriteLine(Me.ToString & " Failed to write data to file " & buildFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)) & " Exception: " & ex.Message)
                     End Try
                 Next
+
+
+                'Quota by group
+                For igrp As Integer = 1 To Me.m_data.NGroups
+                    Try
+                        Dim data(,) As Single = Me.m_lstData.Item(eResultsData.GroupQuota)
+                        If Me.m_epdata.fCatch(igrp) > 0 Then
+                            buff = New System.Text.StringBuilder
+                            For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
+                                buff.Append(data(igrp, its).ToString & ", ")
+                            Next
+
+                            strm = New StreamWriter(buildFilename(QUOTAGROUP_DATA, Me.m_epdata.GroupName(igrp)), True)
+                            strm.WriteLine(buff)
+                            strm.Close()
+                            buff = Nothing
+                        End If
+                    Catch ex As Exception
+                        ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
+                        System.Console.WriteLine(Me.ToString & " Failed to write data to file " & buildFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)) & " Exception: " & ex.Message)
+                    End Try
+                Next
+
 
 
 
@@ -1118,8 +1189,47 @@ Namespace MSE
                 Next
             Next
 
+            Me.StoreQuotas(tQuota)
+
         End Sub
 
+
+        ''' <summary>
+        ''' Save the quota values to memory
+        ''' </summary>
+        ''' <param name="QuotaT">Quota array by group</param>
+        Private Sub StoreQuotas(ByVal QuotaT() As Single)
+            Dim igrp As Integer
+
+            If Not Me.m_data.SaveOutput Then Exit Sub
+
+            Try
+
+                Dim d(,) As Single = Me.m_lstData.Item(eResultsData.GroupQuota)
+                For igrp = 1 To Me.m_epdata.NumGroups
+                    For it As Integer = 1 To 12
+                        d(igrp, it + (Me.m_curYear - 1) * 12) = QuotaT(igrp)
+                    Next
+                Next
+
+                Dim sumb As Single
+                d = Me.m_lstData.Item(eResultsData.FleetQuota)
+                For iflt As Integer = 1 To Me.m_epdata.NumFleet
+                    sumb = 0
+                    For igrp = 1 To Me.m_epdata.NumGroups
+                        sumb += QuotaT(igrp) * Me.m_quota.Quotashare(iflt, igrp)
+                    Next
+                    For it As Integer = 1 To 12
+                        d(iflt, it + (Me.m_curYear - 1) * 12) = sumb
+                    Next
+
+                Next
+
+            Catch ex As Exception
+                System.Console.WriteLine(Me.ToString & ".saveQuotas() Exception" & ex.Message)
+            End Try
+
+        End Sub
 
         Private Function Normal2() As Single
             Dim R As Single
@@ -1938,6 +2048,9 @@ Namespace MSE
         Public Sub setTime(ByVal itime As Integer, ByVal iyr As Integer)
 
             If Me.m_Search.SearchMode <> eSearchModes.MSE Then Return
+
+            Me.m_curT = itime
+            Me.m_curYear = iyr
 
             'CVbiomEst(ngroups) and CVFest(nfleets) are the cv that are used to vary biomass and fishing mortality
             For igrp As Integer = 1 To Me.m_data.NGroups

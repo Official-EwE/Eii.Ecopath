@@ -55,6 +55,7 @@ Namespace MSE
         Private m_lstGroupCatchStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSECatchByGroupStats, 1)
         Private m_lstEffortStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEEffortStats, 1)
         Private m_lstFleetStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEEffortStats, 1)
+        'Private m_lstGroupQuotaStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEGroupQuotaStats, 1)
 
         Private m_output As cMSEOutput
         Private m_parameters As cMSEParameters
