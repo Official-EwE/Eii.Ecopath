@@ -244,7 +244,15 @@ Public Class cPluginManager
     ''' <summary>Dictionary of <see cref="cPluginAssembly">Plugin assemblies</see>.</summary>
     Private m_dictAssemblies As New Dictionary(Of String, cPluginAssembly)
 
-    Public Sub LoadPlugins()
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load plug-ins
+    ''' </summary>
+    ''' <param name="bCheckForUpdates">
+    ''' Flag stating if updates for plug-ins should be downloaded.
+    ''' </param>
+    ''' -----------------------------------------------------------------------
+    Public Sub LoadPlugins(Optional ByVal bCheckForUpdates As Boolean = False)
 
         Dim di As DirectoryInfo = Nothing
         Dim afi() As FileInfo = Nothing
@@ -258,6 +266,21 @@ Public Class cPluginManager
             di = New DirectoryInfo(strPluginPath)
             'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
             afi = di.GetFiles("*.dll")
+
+            If bCheckForUpdates Then
+
+                Dim ass As Assembly = Assembly.GetAssembly(Me.m_core.GetType())
+                Dim updater As New cAutoUpdate(ass.GetName)
+
+                For Each fi As FileInfo In afi
+                    Try
+                        updater.DownloadUpdate(fi.FullName)
+                    Catch ex As Exception
+                        ' Ignore this
+                    End Try
+                Next
+
+            End If
 
             For Each fi As FileInfo In afi
                 Try

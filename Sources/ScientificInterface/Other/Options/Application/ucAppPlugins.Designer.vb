@@ -30,6 +30,7 @@ Namespace Other
             Me.m_tvPlugins = New System.Windows.Forms.TreeView
             Me.m_ilPlugins = New System.Windows.Forms.ImageList(Me.components)
             Me.m_split = New System.Windows.Forms.SplitContainer
+            Me.m_cbDownloadUpdates = New System.Windows.Forms.CheckBox
             Me.m_split.Panel1.SuspendLayout()
             Me.m_split.SuspendLayout()
             Me.SuspendLayout()
@@ -58,7 +59,7 @@ Namespace Other
             Me.m_tvPlugins.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tvPlugins.Name = "m_tvPlugins"
             Me.m_tvPlugins.SelectedImageIndex = 0
-            Me.m_tvPlugins.Size = New System.Drawing.Size(134, 324)
+            Me.m_tvPlugins.Size = New System.Drawing.Size(134, 302)
             Me.m_tvPlugins.TabIndex = 2
             '
             'm_ilPlugins
@@ -76,21 +77,33 @@ Namespace Other
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_split.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_split.Location = New System.Drawing.Point(0, 25)
+            Me.m_split.Location = New System.Drawing.Point(0, 24)
             Me.m_split.Margin = New System.Windows.Forms.Padding(0)
             Me.m_split.Name = "m_split"
             '
             'm_split.Panel1
             '
             Me.m_split.Panel1.Controls.Add(Me.m_tvPlugins)
-            Me.m_split.Size = New System.Drawing.Size(414, 328)
+            Me.m_split.Size = New System.Drawing.Size(414, 306)
             Me.m_split.SplitterDistance = 138
             Me.m_split.TabIndex = 5
+            '
+            'm_cbDownloadUpdates
+            '
+            Me.m_cbDownloadUpdates.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_cbDownloadUpdates.AutoSize = True
+            Me.m_cbDownloadUpdates.Location = New System.Drawing.Point(3, 333)
+            Me.m_cbDownloadUpdates.Name = "m_cbDownloadUpdates"
+            Me.m_cbDownloadUpdates.Size = New System.Drawing.Size(219, 17)
+            Me.m_cbDownloadUpdates.TabIndex = 6
+            Me.m_cbDownloadUpdates.Text = "&Download updates for plug-ins at start-up"
+            Me.m_cbDownloadUpdates.UseVisualStyleBackColor = True
             '
             'ucAppPlugins
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_cbDownloadUpdates)
             Me.Controls.Add(Me.m_split)
             Me.Controls.Add(Me.lblTitle)
             Me.Margin = New System.Windows.Forms.Padding(0)
@@ -99,12 +112,14 @@ Namespace Other
             Me.m_split.Panel1.ResumeLayout(False)
             Me.m_split.ResumeLayout(False)
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Friend WithEvents lblTitle As System.Windows.Forms.Label
         Friend WithEvents m_tvPlugins As System.Windows.Forms.TreeView
         Friend WithEvents m_split As System.Windows.Forms.SplitContainer
         Private WithEvents m_ilPlugins As System.Windows.Forms.ImageList
+        Private WithEvents m_cbDownloadUpdates As System.Windows.Forms.CheckBox
 
     End Class
 

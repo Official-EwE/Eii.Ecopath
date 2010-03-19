@@ -1107,7 +1107,7 @@ Public Class AppLauncher
         Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
         Dim msg As cMessage = Nothing
 
-        Me.m_pluginManager.LoadPlugins()
+        Me.m_pluginManager.LoadPlugins(My.Settings.AutoUpdatePlugins)
 
         ' Set up settings for disabling plug-ins
         If alDisabledPlugins Is Nothing Then

@@ -87,6 +87,7 @@ Namespace Other
                 End If
             Next
             My.Settings.DisabledPlugins = alDisabledPlugins
+            My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
 
             ' Do not save settings; the master options dialog will take care of this
             'My.Settings.Save()
@@ -145,6 +146,8 @@ Namespace Other
                 Me.m_tvPlugins.SelectedNode = Me.m_tvPlugins.Nodes(0)
                 Me.UpdateDetails()
             End If
+
+            Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
 
         End Sub
 
