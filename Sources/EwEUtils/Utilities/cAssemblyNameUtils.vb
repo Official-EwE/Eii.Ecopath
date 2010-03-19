@@ -41,7 +41,7 @@ Namespace Utilities
             ' Convert public token to string
             Dim pt() As Byte = an.GetPublicKeyToken()
             For i As Integer = 0 To pt.GetLength(0) - 1
-                sbToken.Append(pt(i).ToString("000"))
+                sbToken.Append(String.Format("{0:x2}", pt(i)))
             Next
             Return sbToken.ToString
         End Function
