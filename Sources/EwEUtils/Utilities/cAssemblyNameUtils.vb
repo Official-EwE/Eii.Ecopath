@@ -39,8 +39,9 @@ Namespace Utilities
         Public Shared Function GetToken(ByVal an As AssemblyName) As String
             Dim sbToken As New StringBuilder()
             ' Convert public token to string
-            For i As Integer = 0 To 7
-                sbToken.Append(an.GetPublicKeyToken(i).ToString("000"))
+            Dim pt() As Byte = an.GetPublicKeyToken()
+            For i As Integer = 0 To pt.GetLength(0) - 1
+                sbToken.Append(pt(i).ToString("000"))
             Next
             Return sbToken.ToString
         End Function
