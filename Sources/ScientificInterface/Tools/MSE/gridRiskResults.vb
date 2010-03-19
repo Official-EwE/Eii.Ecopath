@@ -174,7 +174,7 @@ Public Class gridRiskResults
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
 
                 'set the cell to Null if there is no catch or discards for this group
-                If Me.m_type = eGridType.Group And columnIndex > 6 Then
+                If Me.m_type = eGridType.Group And columnIndex > 7 Then
                     Dim noCatch As Boolean = True
                     For iflt As Integer = 1 To Me.Core.nFleets
                         If Me.Core.FleetInputs(iflt).Landings(rowIndex) + Me.Core.FleetInputs(iflt).Discards(rowIndex) > 0 Then
