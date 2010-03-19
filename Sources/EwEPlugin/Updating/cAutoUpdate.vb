@@ -55,8 +55,9 @@ Friend Class cAutoUpdate
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eUpdateResultTypes As Integer
+        NoUpdateAvailable = 0
         ''' <summary>A generic, unspecified error occurred.</summary>
-        Failed_Generic = 0
+        Failed_Generic
         ''' <summary>File was successfully updated.</summary>
         Failed_NoInternet
         ''' <summary>File was successfully updated.</summary>
@@ -76,14 +77,14 @@ Friend Class cAutoUpdate
         Dim abPlugin() As Byte = Nothing
         Dim fsPlugin As FileStream = Nothing
 
-        If (assemPlugin Is Nothing) Then Return eUpdateResultTypes.Failed_Generic
+        If (assemPlugin Is Nothing) Then Return eUpdateResultTypes.NoUpdateAvailable
 
         Try
 
             If Me.m_service.CheckPluginUpdate(cAssemblyUtils.GetVersion(Me.m_assemCore), _
-                                                         cAssemblyUtils.GetName(assemPlugin), _
-                                                         cAssemblyUtils.GetToken(assemPlugin), _
-                                                         cAssemblyUtils.GetVersion(assemPlugin)) Then
+                                              cAssemblyUtils.GetName(assemPlugin), _
+                                              cAssemblyUtils.GetToken(assemPlugin), _
+                                              cAssemblyUtils.GetVersion(assemPlugin)) Then
 
                 abPlugin = Me.m_service.DownloadPlugin()
                 fsPlugin = New FileStream(strPluginFile, FileMode.Create)
@@ -91,6 +92,8 @@ Friend Class cAutoUpdate
                 fsPlugin.Close()
                 fsPlugin = Nothing
 
+            Else
+                Return eUpdateResultTypes.NoUpdateAvailable
             End If
 
         Catch ex As Exception
