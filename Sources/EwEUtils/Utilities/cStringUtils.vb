@@ -512,6 +512,24 @@ Namespace Utilities
             Return bIsEmailAddress
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a byte array to a string of hexadecimal numbers.
+        ''' </summary>
+        ''' <param name="bytes"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToHexString(ByVal bytes() As Byte) As String
+            Dim sbHex As New StringBuilder()
+            If (bytes IsNot Nothing) Then
+                ' Convert public token to string
+                For i As Integer = 0 To bytes.GetLength(0) - 1
+                    sbHex.Append(String.Format("{0:x2}", bytes(i)))
+                Next
+            End If
+            Return sbHex.ToString
+        End Function
+
     End Class
 
 End Namespace ' Utilities

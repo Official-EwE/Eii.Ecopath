@@ -37,13 +37,7 @@ Namespace Utilities
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function GetToken(ByVal an As AssemblyName) As String
-            Dim sbToken As New StringBuilder()
-            ' Convert public token to string
-            Dim pt() As Byte = an.GetPublicKeyToken()
-            For i As Integer = 0 To pt.GetLength(0) - 1
-                sbToken.Append(String.Format("{0:x2}", pt(i)))
-            Next
-            Return sbToken.ToString
+            Return cStringUtils.ToHexString(an.GetPublicKeyToken())
         End Function
 
         ''' -----------------------------------------------------------------------
