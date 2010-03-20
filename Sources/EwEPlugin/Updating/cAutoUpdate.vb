@@ -84,7 +84,7 @@ Friend Class cAutoUpdate
         Dim fsPlugin As FileStream = Nothing
         Dim strTemp As String = Path.GetTempFileName()
         Dim md5Hash As MD5 = MD5.Create()
-        Dim strHash As String = ""
+        Dim strHashLocal As String = ""
 
         Try
             assemPlugin = AssemblyName.GetAssemblyName(strPluginFile)
@@ -93,6 +93,11 @@ Friend Class cAutoUpdate
         End Try
 
         If (assemPlugin Is Nothing) Then
+            Return eUpdateResultTypes.Success_NoUpdateAvailable
+        End If
+
+        ' Perform local version check first
+        If assemPlugin.Version.CompareTo(m_assemCore.Version) >= 0 Then
             Return eUpdateResultTypes.Success_NoUpdateAvailable
         End If
 
@@ -122,11 +127,12 @@ Friend Class cAutoUpdate
 
         Try
             ' Calculate local checksum
-            strHash = md5Hash.ComputeHash(abPlugin).ToString()
+            strHashLocal = cStringUtils.ToHexString(md5Hash.ComputeHash(abPlugin))
+
             ' Does checksum match the service checksum?
-            If Not String.Compare(strHash, Me.m_service.GetPluginHash(), True) = 0 Then
-                ' #No: download failed
-                Return eUpdateResultTypes.Error_Download
+            If Not String.Compare(strHashLocal, Me.m_service.GetPluginHash(), True) = 0 Then
+                '' #No: download failed
+                'Return eUpdateResultTypes.Error_Download
             End If
         Catch ex As Exception
             ' Error downloading hash
