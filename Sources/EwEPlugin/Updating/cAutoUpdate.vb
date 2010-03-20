@@ -59,7 +59,7 @@ Friend Class cAutoUpdate
         ''' <summary>File was successfully updated.</summary>
         Success = 0
         ''' <summary>Update not available for a given assembly.</summary>
-        Error_NoUpdateAvailable
+        Success_NoUpdateAvailable
         ''' <summary>Update webservice could not be connected.</summary>
         Error_Connection
         ''' <summary>File failed to download.</summary>
@@ -79,21 +79,29 @@ Friend Class cAutoUpdate
     ''' -----------------------------------------------------------------------
     Public Function DownloadUpdate(ByVal strPluginFile As String) As eUpdateResultTypes
 
-        Dim assemPlugin As AssemblyName = AssemblyName.GetAssemblyName(strPluginFile)
+        Dim assemPlugin As AssemblyName = Nothing
         Dim abPlugin() As Byte = Nothing
         Dim fsPlugin As FileStream = Nothing
         Dim strTemp As String = Path.GetTempFileName()
         Dim md5Hash As MD5 = MD5.Create()
         Dim strHash As String = ""
 
-        If (assemPlugin Is Nothing) Then Return eUpdateResultTypes.Error_NoUpdateAvailable
+        Try
+            assemPlugin = AssemblyName.GetAssemblyName(strPluginFile)
+        Catch ex As Exception
+            assemPlugin = Nothing
+        End Try
+
+        If (assemPlugin Is Nothing) Then
+            Return eUpdateResultTypes.Success_NoUpdateAvailable
+        End If
 
         Try
             If Not Me.m_service.CheckPluginUpdate(cAssemblyUtils.GetVersion(Me.m_assemCore), _
                                                   cAssemblyUtils.GetName(assemPlugin), _
                                                   cAssemblyUtils.GetToken(assemPlugin), _
                                                   cAssemblyUtils.GetVersion(assemPlugin)) Then
-                Return eUpdateResultTypes.Error_NoUpdateAvailable
+                Return eUpdateResultTypes.Success_NoUpdateAvailable
             End If
         Catch ex As Exception
             ' Unable to connect to server
@@ -112,21 +120,35 @@ Friend Class cAutoUpdate
             Return eUpdateResultTypes.Error_Download
         End Try
 
-        ' Calculate local checksum
-        strHash = md5Hash.ComputeHash(abPlugin).ToString()
-        ' Check if this checksum matches the service checksum
-        If Not String.Compare(strHash, Me.m_service.GetPluginHash(), True) = 0 Then
-            ' Download failed
+        Try
+            ' Calculate local checksum
+            strHash = md5Hash.ComputeHash(abPlugin).ToString()
+            ' Does checksum match the service checksum?
+            If Not String.Compare(strHash, Me.m_service.GetPluginHash(), True) = 0 Then
+                ' #No: download failed
+                Return eUpdateResultTypes.Error_Download
+            End If
+        Catch ex As Exception
+            ' Error downloading hash
             Return eUpdateResultTypes.Error_Download
-        End If
+        End Try
 
         Try
             ' Replace plug-in file
             File.Copy(strTemp, strPluginFile, True)
         Catch ex As Exception
+            ' Unable to overwrite plug-in dll, maybe it's in use?
             Return eUpdateResultTypes.Error_Replace
         End Try
 
+        Try
+            ' Delete temp file
+            File.Delete(strTemp)
+        Catch ex As Exception
+            ' Hmm, ok, allow this
+        End Try
+
+        ' Yippee
         Return eUpdateResultTypes.Success
 
     End Function
