@@ -2569,4 +2569,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_FLEET_GROUP" xml:space="preserve">
     <value>Fleet\group</value>
   </data>
+  <data name="STATUS_UPDATE_CHECKING" xml:space="preserve">
+    <value>Checking '{0}' for updates...</value>
+    <comment>{0}: component name</comment>
+  </data>
 </root>

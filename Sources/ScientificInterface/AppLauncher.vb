@@ -690,6 +690,12 @@ Public Class AppLauncher
         ' Start controlling forms
         Me.m_FormStateHelper = New cEwEFormStateHelper(Me.Core.StateMonitor, Me.m_DockPanel)
 
+        ' Update plug-ins first, if required
+        If My.Settings.AutoUpdatePlugins Then
+            Dim frm As New frmUpdateComponents(Me.m_pluginManager)
+            frm.ShowDialog()
+        End If
+
         ' Load plugins once GUI has been created.
         Me.LoadPlugins()
         ' Auto-launch plugins
@@ -1068,7 +1074,7 @@ Public Class AppLauncher
         Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
         Dim msg As cMessage = Nothing
 
-        Me.m_pluginManager.LoadPlugins(My.Settings.AutoUpdatePlugins)
+        Me.m_pluginManager.LoadPlugins()
 
         ' Set up settings for disabling plug-ins
         If alDisabledPlugins Is Nothing Then

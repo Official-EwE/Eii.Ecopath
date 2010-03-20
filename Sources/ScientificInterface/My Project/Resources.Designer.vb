@@ -4695,18 +4695,8 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf440
-        '''{\fonttbl\f0\fswiss\fcharset77 ArialMT;\f1\fswiss\fcharset77 Arial-BoldMT;\f2\fswiss\fcharset77 Arial-ItalicMT;
-        '''}
-        '''{\colortbl;\red255\green255\blue255;}
-        '''{\info
-        '''{\title EwE6 was developed through funding from Lenfest Ocean Program with additional support from the Pew Charitable Trusts}
-        '''{\author LOFP}
-        '''{\*\company UBC Fisheries Centre}}\vieww9200\viewh8100\viewkind1\viewscale100
-        '''\deftab720
-        '''\pard\pardeftab720\ri0\ql\qnatural
-        '''
-        '''\f0\fs20 \cf0 Modules tha [rest of string was truncated]&quot;;.
+        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff31507\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang2057\deflangfe2057\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times Ne [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property modules() As String
             Get
@@ -6165,6 +6155,15 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_TIMESERIES_UPDATING() As String
             Get
                 Return ResourceManager.GetString("STATUS_TIMESERIES_UPDATING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Checking &apos;{0}&apos; for updates....
+        '''</summary>
+        Friend ReadOnly Property STATUS_UPDATE_CHECKING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_CHECKING", resourceCulture)
             End Get
         End Property
         

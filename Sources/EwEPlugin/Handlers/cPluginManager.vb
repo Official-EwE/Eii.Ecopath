@@ -239,6 +239,50 @@ Public Class cPluginManager
 
 #End Region ' Initialization 
 
+#Region " Updates "
+
+    Public Function UpdatePlugins() As Boolean
+
+        Dim di As DirectoryInfo = Nothing
+        Dim fi As FileInfo = Nothing
+        Dim afi() As FileInfo = Nothing
+
+        'Get the location of the plugin manager assembly
+        Dim pluginAssembly As Assembly = System.Reflection.Assembly.GetAssembly(GetType(cPluginManager))
+        Dim strPluginPath As String = Path.GetDirectoryName(pluginAssembly.Location)
+
+        Try
+
+            di = New DirectoryInfo(strPluginPath)
+            'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
+            afi = di.GetFiles("*.dll")
+
+            Dim ass As Assembly = Assembly.GetAssembly(Me.m_core.GetType())
+            Dim updater As New cAutoUpdate(ass.GetName)
+
+            For iFile As Integer = 0 To afi.Length - 1
+                fi = afi(iFile)
+                RaiseEvent AssemblyUpdating(Path.GetFileNameWithoutExtension(fi.FullName), CSng(iFile / afi.Length))
+                Try
+                    updater.DownloadUpdate(fi.FullName)
+                Catch ex As Exception
+                    ' Ignore this
+                End Try
+            Next
+            ' Done
+            RaiseEvent AssemblyUpdating("", 42.0!)
+
+        Catch ex As Exception
+            ' Kaboom
+            Return False
+        End Try
+
+        Return True
+
+    End Function
+
+#End Region ' Updates
+
 #Region " Public assembly management "
 
     ''' <summary>Dictionary of <see cref="cPluginAssembly">Plugin assemblies</see>.</summary>
@@ -248,11 +292,8 @@ Public Class cPluginManager
     ''' <summary>
     ''' Load plug-ins
     ''' </summary>
-    ''' <param name="bCheckForUpdates">
-    ''' Flag stating if updates for plug-ins should be downloaded.
-    ''' </param>
     ''' -----------------------------------------------------------------------
-    Public Sub LoadPlugins(Optional ByVal bCheckForUpdates As Boolean = False)
+    Public Sub LoadPlugins()
 
         Dim di As DirectoryInfo = Nothing
         Dim afi() As FileInfo = Nothing
@@ -266,21 +307,6 @@ Public Class cPluginManager
             di = New DirectoryInfo(strPluginPath)
             'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
             afi = di.GetFiles("*.dll")
-
-            If bCheckForUpdates Then
-
-                Dim ass As Assembly = Assembly.GetAssembly(Me.m_core.GetType())
-                Dim updater As New cAutoUpdate(ass.GetName)
-
-                For Each fi As FileInfo In afi
-                    Try
-                        updater.DownloadUpdate(fi.FullName)
-                    Catch ex As Exception
-                        ' Ignore this
-                    End Try
-                Next
-
-            End If
 
             For Each fi As FileInfo In afi
                 Try
@@ -486,6 +512,22 @@ Public Class cPluginManager
         Return True
 
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Assembly update in progress handler
+    ''' </summary>
+    ''' <param name="strName">The name of the plugin that is being updated.</param>
+    ''' <param name="sProgress">Update progress.</param>
+    ''' -----------------------------------------------------------------------
+    Public Delegate Sub AssemblyUpdatingHandler(ByVal strName As String, ByVal sProgress As Single)
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Assembly update in progress handler
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Event AssemblyUpdating As AssemblyUpdatingHandler
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
