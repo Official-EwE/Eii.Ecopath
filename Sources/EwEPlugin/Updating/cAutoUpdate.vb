@@ -6,6 +6,7 @@ Imports System.Net
 Imports System.IO
 Imports System.Reflection
 Imports EwEUtils.Utilities
+Imports System.Security.Cryptography
 
 #End Region ' Imports
 
@@ -55,15 +56,18 @@ Friend Class cAutoUpdate
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eUpdateResultTypes As Integer
-        NoUpdateAvailable = 0
-        ''' <summary>A generic, unspecified error occurred.</summary>
-        Failed_Generic
         ''' <summary>File was successfully updated.</summary>
-        Failed_NoInternet
+        Success = 0
+        ''' <summary>Update not available for a given assembly.</summary>
+        Error_NoUpdateAvailable
+        ''' <summary>Update webservice could not be connected.</summary>
+        Error_Connection
         ''' <summary>File failed to download.</summary>
-        Failed_Download
-        ''' <summary>File was successfully updated.</summary>
-        Success_Updated
+        Error_Download
+        ''' <summary>Failed to replace a plug-in on the system.</summary>
+        Error_Replace
+        ''' <summary>A generic, unspecified error occurred.</summary>
+        Error_Generic
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -79,19 +83,21 @@ Friend Class cAutoUpdate
         Dim abPlugin() As Byte = Nothing
         Dim fsPlugin As FileStream = Nothing
         Dim strTemp As String = Path.GetTempFileName()
+        Dim md5Hash As MD5 = MD5.Create()
+        Dim strHash As String = ""
 
-        If (assemPlugin Is Nothing) Then Return eUpdateResultTypes.NoUpdateAvailable
+        If (assemPlugin Is Nothing) Then Return eUpdateResultTypes.Error_NoUpdateAvailable
 
         Try
             If Not Me.m_service.CheckPluginUpdate(cAssemblyUtils.GetVersion(Me.m_assemCore), _
                                                   cAssemblyUtils.GetName(assemPlugin), _
                                                   cAssemblyUtils.GetToken(assemPlugin), _
                                                   cAssemblyUtils.GetVersion(assemPlugin)) Then
-                Return eUpdateResultTypes.NoUpdateAvailable
+                Return eUpdateResultTypes.Error_NoUpdateAvailable
             End If
         Catch ex As Exception
             ' Unable to connect to server
-            Return eUpdateResultTypes.Failed_NoInternet
+            Return eUpdateResultTypes.Error_Connection
         End Try
 
         Try
@@ -103,17 +109,25 @@ Friend Class cAutoUpdate
             fsPlugin = Nothing
         Catch ex As Exception
             ' Error downloading update
-            Return eUpdateResultTypes.Failed_Download
+            Return eUpdateResultTypes.Error_Download
         End Try
+
+        ' Calculate local checksum
+        strHash = md5Hash.ComputeHash(abPlugin).ToString()
+        ' Check if this checksum matches the service checksum
+        If Not String.Compare(strHash, Me.m_service.GetPluginHash(), True) = 0 Then
+            ' Download failed
+            Return eUpdateResultTypes.Error_Download
+        End If
 
         Try
             ' Replace plug-in file
             File.Copy(strTemp, strPluginFile, True)
         Catch ex As Exception
-            Return eUpdateResultTypes.Failed_Generic
+            Return eUpdateResultTypes.Error_Replace
         End Try
 
-        Return eUpdateResultTypes.Success_Updated
+        Return eUpdateResultTypes.Success
 
     End Function
 
