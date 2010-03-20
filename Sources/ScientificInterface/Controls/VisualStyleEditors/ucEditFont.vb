@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: ucEditFont.vb,v $
-' Revision 1.1  2008/09/26 07:31:25  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2008/01/01 19:51:17  jeroens
-' New and/or moved
-'
-'==============================================================================
-
 Imports EwECore
 
 Namespace Controls
@@ -17,7 +6,9 @@ Namespace Controls
 
 #Region " Constructor "
 
-        Public Sub New(ByVal vs As cVisualStyle, ByVal style As cVisualStyle.eVisualStyleTypes)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal vs As cVisualStyle, _
+                       ByVal style As cVisualStyle.eVisualStyleTypes)
             MyBase.New(vs, style)
             Me.InitializeComponent()
         End Sub

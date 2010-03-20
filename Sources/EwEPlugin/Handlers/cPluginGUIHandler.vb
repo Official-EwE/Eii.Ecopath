@@ -1,9 +1,13 @@
+#Region " Imports "
+
 Option Strict On
 Imports System
 Imports System.Windows.Forms
 Imports System.Diagnostics
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+
+#End Region ' Imports
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
@@ -17,11 +21,31 @@ Public MustInherit Class cPluginGUIHandler
 
     ''' <summary>The plugin manager that holds the plugins to manage.</summary>
     Private m_pm As cPluginManager = Nothing
+    ''' <summary>The command handler to interact with.</summary>
+    Private m_cmdh As cCommandHandler = Nothing
 
 #End Region ' Private parts
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Construct a new cPluginGUIHandler.
+    ''' </summary>
+    ''' <param name="pm"></param>
+    ''' <param name="cmdh"></param>
+    ''' -----------------------------------------------------------------------
+    Public Sub New(ByVal pm As cPluginManager, _
+                   ByVal cmdh As cCommandHandler)
+        Me.PluginManager = pm
+        Me.CommandHandler = cmdh
+    End Sub
+
 #Region " Plugin assembly handling "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="cPluginManager">plug-in manager</see> for this handler.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property PluginManager() As cPluginManager
         Get
             Return Me.m_pm
@@ -59,6 +83,21 @@ Public MustInherit Class cPluginGUIHandler
                 AddHandler m_pm.PluginEnabled, AddressOf EnablePlugin
             End If
 
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="cCommandHandler">command handler</see> for this 
+    ''' handler to use.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Property CommandHandler() As cCommandHandler
+        Get
+            Return Me.m_cmdh
+        End Get
+        Set(ByVal value As cCommandHandler)
+            Me.m_cmdh = value
         End Set
     End Property
 
@@ -143,8 +182,10 @@ Public MustInherit Class cPluginGUIHandler
         Dim cmd As cCommand = Nothing
         Dim pcmd As PluginGUICommand = Nothing
 
+        Debug.Assert(Me.m_cmdh IsNot Nothing)
+
         ' Try to get the reserved GUI command from the central command handler
-        cmd = cCommandHandler.GetInstance().GetCommand(PluginGUICommand.COMMAND_NAME)
+        cmd = Me.m_cmdh.GetCommand(PluginGUICommand.COMMAND_NAME)
         ' Got a result?
         If cmd IsNot Nothing Then
             ' #Yes: verify if correct class?

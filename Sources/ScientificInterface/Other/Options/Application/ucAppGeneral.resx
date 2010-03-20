@@ -121,6 +121,29 @@
   <data name="m_gpMRU.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_nudMRU.Location" type="System.Drawing.Point, System.Drawing">
+    <value>177, 20</value>
+  </data>
+  <data name="m_nudMRU.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 20</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_nudMRU.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_nudMRU.Name" xml:space="preserve">
+    <value>m_nudMRU</value>
+  </data>
+  <data name="&gt;&gt;m_nudMRU.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudMRU.Parent" xml:space="preserve">
+    <value>m_gpMRU</value>
+  </data>
+  <data name="&gt;&gt;m_nudMRU.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_btnClear.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -130,19 +153,17 @@
   <data name="m_btnClear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnClear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>264, 17</value>
+    <value>301, 17</value>
   </data>
   <data name="m_btnClear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 23</value>
+    <value>75, 23</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnClear.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="m_btnClear.Text" xml:space="preserve">
-    <value>&amp;Clear history</value>
+    <value>&amp;Clear</value>
   </data>
   <data name="&gt;&gt;m_btnClear.Name" xml:space="preserve">
     <value>m_btnClear</value>
@@ -154,30 +175,6 @@
     <value>m_gpMRU</value>
   </data>
   <data name="&gt;&gt;m_btnClear.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_txbMdbNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>178, 20</value>
-  </data>
-  <data name="m_txbMdbNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 20</value>
-  </data>
-  <data name="m_txbMdbNum.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_txbMdbNum.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Center</value>
-  </data>
-  <data name="&gt;&gt;m_txbMdbNum.Name" xml:space="preserve">
-    <value>m_txbMdbNum</value>
-  </data>
-  <data name="&gt;&gt;m_txbMdbNum.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_txbMdbNum.Parent" xml:space="preserve">
-    <value>m_gpMRU</value>
-  </data>
-  <data name="&gt;&gt;m_txbMdbNum.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="lblMDB.AutoSize" type="System.Boolean, mscorlib">
@@ -232,7 +229,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_gpMRU.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="lblTitle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -250,7 +247,7 @@
     <value>382, 18</value>
   </data>
   <data name="lblTitle.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
     <value>General options</value>
@@ -268,193 +265,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblTitle.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_cbSaveLayout.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbSaveLayout.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbSaveLayout.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 19</value>
-  </data>
-  <data name="m_cbSaveLayout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 17</value>
-  </data>
-  <data name="m_cbSaveLayout.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_cbSaveLayout.Text" xml:space="preserve">
-    <value>&amp;Save window layout</value>
-  </data>
-  <data name="&gt;&gt;m_cbSaveLayout.Name" xml:space="preserve">
-    <value>m_cbSaveLayout</value>
-  </data>
-  <data name="&gt;&gt;m_cbSaveLayout.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbSaveLayout.Parent" xml:space="preserve">
-    <value>m_gbLayout</value>
-  </data>
-  <data name="&gt;&gt;m_cbSaveLayout.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_lblPathPrompt.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblPathPrompt.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblPathPrompt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 43</value>
-  </data>
-  <data name="m_lblPathPrompt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 13</value>
-  </data>
-  <data name="m_lblPathPrompt.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_lblPathPrompt.Text" xml:space="preserve">
-    <value>Save &amp;layout file at:</value>
-  </data>
-  <data name="&gt;&gt;m_lblPathPrompt.Name" xml:space="preserve">
-    <value>m_lblPathPrompt</value>
-  </data>
-  <data name="&gt;&gt;m_lblPathPrompt.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPathPrompt.Parent" xml:space="preserve">
-    <value>m_gbLayout</value>
-  </data>
-  <data name="&gt;&gt;m_lblPathPrompt.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_txbSaveDirectory.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_txbSaveDirectory.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 62</value>
-  </data>
-  <data name="m_txbSaveDirectory.Size" type="System.Drawing.Size, System.Drawing">
-    <value>319, 20</value>
-  </data>
-  <data name="m_txbSaveDirectory.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_txbSaveDirectory.Name" xml:space="preserve">
-    <value>m_txbSaveDirectory</value>
-  </data>
-  <data name="&gt;&gt;m_txbSaveDirectory.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_txbSaveDirectory.Parent" xml:space="preserve">
-    <value>m_gbLayout</value>
-  </data>
-  <data name="&gt;&gt;m_txbSaveDirectory.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_btnSaveLocation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnSaveLocation.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="m_btnSaveLocation.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnSaveLocation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>340, 60</value>
-  </data>
-  <data name="m_btnSaveLocation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 23</value>
-  </data>
-  <data name="m_btnSaveLocation.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_btnSaveLocation.Text" xml:space="preserve">
-    <value>..</value>
-  </data>
-  <data name="&gt;&gt;m_btnSaveLocation.Name" xml:space="preserve">
-    <value>m_btnSaveLocation</value>
-  </data>
-  <data name="&gt;&gt;m_btnSaveLocation.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSaveLocation.Parent" xml:space="preserve">
-    <value>m_gbLayout</value>
-  </data>
-  <data name="&gt;&gt;m_btnSaveLocation.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_gbLayout.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_btnRemoveAll.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnRemoveAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="m_btnRemoveAll.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnRemoveAll.Location" type="System.Drawing.Point, System.Drawing">
-    <value>264, 15</value>
-  </data>
-  <data name="m_btnRemoveAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 23</value>
-  </data>
-  <data name="m_btnRemoveAll.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_btnRemoveAll.Text" xml:space="preserve">
-    <value>Re&amp;move layout files</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemoveAll.Name" xml:space="preserve">
-    <value>m_btnRemoveAll</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemoveAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemoveAll.Parent" xml:space="preserve">
-    <value>m_gbLayout</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemoveAll.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_gbLayout.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 90</value>
-  </data>
-  <data name="m_gbLayout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 91</value>
-  </data>
-  <data name="m_gbLayout.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_gbLayout.Text" xml:space="preserve">
-    <value>Window layout</value>
-  </data>
-  <data name="&gt;&gt;m_gbLayout.Name" xml:space="preserve">
-    <value>m_gbLayout</value>
-  </data>
-  <data name="&gt;&gt;m_gbLayout.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbLayout.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gbLayout.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_gpMsg.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_nudMaxNumMessages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>178, 19</value>
+    <value>177, 23</value>
   </data>
   <data name="m_nudMaxNumMessages.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 20</value>
+    <value>75, 20</value>
   </data>
   <data name="m_nudMaxNumMessages.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -478,16 +298,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblMaxNumMessages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 21</value>
+    <value>12, 25</value>
   </data>
   <data name="m_lblMaxNumMessages.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 13</value>
+    <value>154, 13</value>
   </data>
   <data name="m_lblMaxNumMessages.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_lblMaxNumMessages.Text" xml:space="preserve">
-    <value>Status panel message maximum:</value>
+    <value>&amp;Maximum number of messages:</value>
   </data>
   <data name="&gt;&gt;m_lblMaxNumMessages.Name" xml:space="preserve">
     <value>m_lblMaxNumMessages</value>
@@ -502,16 +322,16 @@
     <value>1</value>
   </data>
   <data name="m_gpMsg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 189</value>
+    <value>0, 89</value>
   </data>
   <data name="m_gpMsg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 48</value>
+    <value>382, 56</value>
   </data>
   <data name="m_gpMsg.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_gpMsg.Text" xml:space="preserve">
-    <value>Message display:</value>
+    <value>Status messages</value>
   </data>
   <data name="&gt;&gt;m_gpMsg.Name" xml:space="preserve">
     <value>m_gpMsg</value>

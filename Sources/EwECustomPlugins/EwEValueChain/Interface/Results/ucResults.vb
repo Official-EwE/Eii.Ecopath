@@ -98,7 +98,7 @@ Public Class ucResults
         Me.m_model = model
         Me.m_result = result
 
-        Dim cmdH As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdH As cCommandHandler = Me.m_uic.CommandHander
 
         ' Start listening for model events
         AddHandler Me.m_model.OnRunCompleted, AddressOf OnModelRunCompleted
@@ -143,10 +143,10 @@ Public Class ucResults
         Me.m_tscmbFleets.SelectedIndex = Math.Min(Me.m_tscmbFleets.Items.Count - 1, Math.Max(-1, ucResults.g_iLastFleet))
     End Sub
 
-    Private Sub ucResults_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles Me.Disposed
+    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+        MyBase.OnHandleDestroyed(e)
 
-        Dim cmdh As EwEUtils.Commands.cCommandHandler = EwEUtils.Commands.cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
 
         cmdh.Remove(Me.m_cmdRunEcopath)
         RemoveHandler Me.m_cmdRunEcopath.OnInvoke, AddressOf OnInvokeRunEcosim

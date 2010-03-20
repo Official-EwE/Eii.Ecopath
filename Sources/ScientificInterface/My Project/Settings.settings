@@ -5,29 +5,11 @@
     <Setting Name="LastSelectedDirectory" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">My.Computer.FileSystem.SpecialDirectories.MyDocuments</Value>
     </Setting>
-    <Setting Name="MdbRecentlyUsedCount" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)">6</Value>
-    </Setting>
-    <Setting Name="EiiRecentlyUsedCount" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)">6</Value>
-    </Setting>
     <Setting Name="MdbRecentlyUsedList" Roaming="true" Type="System.Collections.ArrayList" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfAnyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;anyType /&gt;
 &lt;/ArrayOfAnyType&gt;</Value>
-    </Setting>
-    <Setting Name="EiiRecentlyUsedList" Roaming="true" Type="System.Collections.ArrayList" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfAnyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;anyType /&gt;
-&lt;/ArrayOfAnyType&gt;</Value>
-    </Setting>
-    <Setting Name="SaveContentLayout" Roaming="true" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="ContentLayoutSaveDirectory" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="SettingLoaded" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -127,6 +109,9 @@
     </Setting>
     <Setting Name="AutoUpdatePlugins" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="MdbRecentlyUsedCount" Roaming="true" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">16</Value>
     </Setting>
   </Settings>
 </SettingsFile>

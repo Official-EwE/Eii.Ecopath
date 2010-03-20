@@ -1,17 +1,4 @@
-'==============================================================================
-'
-' $Log: ucEditVisualStyle.vb,v $
-' Revision 1.1  2008/09/26 07:31:25  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/06/02 00:01:47  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.1  2008/01/01 19:51:18  jeroens
-' New and/or moved
-'
-'==============================================================================
-
+Option Strict On
 Imports EwECore
 Imports System.Drawing
 Imports System.Windows.Forms
@@ -23,19 +10,21 @@ Namespace Controls
 
 #Region " Factory "
 
-        Public Shared Function GetEditor(ByVal vs As cVisualStyle, ByVal style As cVisualStyle.eVisualStyleTypes) As ucEditVisualStyle
+        Public Shared Function GetEditor(ByVal uic As cUIContext, _
+                                         ByVal vs As cVisualStyle, _
+                                         ByVal style As cVisualStyle.eVisualStyleTypes) As ucEditVisualStyle
             ' Sanity checks
             Debug.Assert(vs IsNot Nothing)
 
             If ((style And cVisualStyle.eVisualStyleTypes.Image) = cVisualStyle.eVisualStyleTypes.Image) Then
-                Return New ucEditImage(vs, style)
+                Return New ucEditImage(uic, vs, style)
             End If
 
             If ((style And cVisualStyle.eVisualStyleTypes.Font) = cVisualStyle.eVisualStyleTypes.Image) Then
-                Return New ucEditFont(vs, style)
+                Return New ucEditFont(uic, vs, style)
             End If
 
-            Return New ucEditHatch(vs, style)
+            Return New ucEditHatch(uic, vs, style)
 
         End Function
 
@@ -49,10 +38,6 @@ Namespace Controls
 #End Region ' Private vars
 
 #Region " Constructor "
-
-        Public Sub New()
-            MyBase.New()
-        End Sub
 
         Public Sub New(ByVal vs As cVisualStyle, ByVal style As cVisualStyle.eVisualStyleTypes)
             ' Sanity check

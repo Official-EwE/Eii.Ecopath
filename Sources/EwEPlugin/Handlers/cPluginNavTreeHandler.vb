@@ -1,7 +1,12 @@
+#Region " Imports "
+
 Option Strict On
 Imports System
 Imports System.Windows.Forms
 Imports Microsoft.VisualBasic
+Imports EwEUtils.Commands
+
+#End Region ' Imports
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
@@ -31,12 +36,12 @@ Public Class cPluginNavTreeHandler
     ''' <param name="pm"><see cref="cPluginManager">Plugin manager</see>
     ''' that holds the plugins to place in the control.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal tv As TreeView, ByRef pm As cPluginManager)
-        MyBase.new()
+    Public Sub New(ByVal tv As TreeView, _
+                   ByVal pm As cPluginManager, _
+                   ByVal cmdh As cCommandHandler)
+        MyBase.new(pm, cmdh)
         ' Remember tree view
         Me.m_tv = tv
-        ' Hook up to plug-ins
-        Me.PluginManager = pm
     End Sub
 
 #End Region ' Construction 
@@ -145,6 +150,8 @@ Public Class cPluginNavTreeHandler
 
 #End Region ' Tree item handling
 
+#Region " Tree node events "
+
     Private Sub tvNavigation_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
         Handles m_tv.AfterSelect
 
@@ -154,5 +161,7 @@ Public Class cPluginNavTreeHandler
         Me.RunPlugin(DirectCast(e.Node.Tag, INavigationTreeItemPlugin), sender, e)
 
     End Sub
+
+#End Region ' Tree node events
 
 End Class

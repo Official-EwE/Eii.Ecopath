@@ -30,32 +30,11 @@ Namespace Other
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Dim strPath As String = My.Settings.ContentLayoutSaveDirectory
-
             ' Disable button if there is nothing to clear
-            m_btnClear.Enabled = (My.Settings.MdbRecentlyUsedList.Count <= 1)
+            Me.m_btnClear.Enabled = (My.Settings.MdbRecentlyUsedList.Count <= 1)
 
-            ' Set up the content layout checkbox status
-            m_cbSaveLayout.Checked = (My.Settings.SaveContentLayout = True)
-
-            'Get the directory where the layout files are stored
-            If Not Directory.Exists(strPath) Then
-                strPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-            End If
-
-            My.Settings.ContentLayoutSaveDirectory = strPath
-
-            ' Get the directory name from setting and display it in the text box..
-            m_txbSaveDirectory.Text = strPath
-
-            ' Enable/disable the RemoveAll button
-            m_btnRemoveAll.Enabled = False
-            For Each f As String In Directory.GetFiles(strPath)
-                If f.EndsWith(".config") Then
-                    m_btnRemoveAll.Enabled = True
-                    Exit For
-                End If
-            Next
+            Me.m_nudMRU.Value = CInt(Math.Min(Me.m_nudMRU.Maximum, _
+                                     Math.Max(Me.m_nudMRU.Minimum, My.Settings.MdbRecentlyUsedCount)))
 
             Me.m_nudMaxNumMessages.Value = CInt(Math.Min(Me.m_nudMaxNumMessages.Maximum, _
                                                 Math.Max(Me.m_nudMaxNumMessages.Minimum, My.Settings.FeedbackMessageLogSize)))
@@ -64,13 +43,26 @@ Namespace Other
 
 #End Region ' Overrides
 
-#Region "Event handlers"
+#Region " Public access "
+
+        Public Sub Save()
+            My.Settings.MdbRecentlyUsedCount = CInt(Me.m_nudMRU.Value)
+            My.Settings.FeedbackMessageLogSize = CInt(Me.m_nudMaxNumMessages.Value)
+        End Sub
+
+#End Region ' Public access
+
+#Region " Event handlers "
 
         Private Sub btnClearMRU_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnClear.Click
             Me.ClearFileList(My.Settings.MdbRecentlyUsedList)
             Me.m_btnClear.Enabled = False
         End Sub
+
+#End Region ' Event handlers
+
+#Region " Internals "
 
         Private Sub ClearFileList(ByVal fileList As ArrayList)
 
@@ -87,47 +79,7 @@ Namespace Other
 
         End Sub
 
-        Public Sub Save()
-            My.Settings.SaveContentLayout = m_cbSaveLayout.Checked
-            My.Settings.ContentLayoutSaveDirectory = m_txbSaveDirectory.Text
-            My.Settings.FeedbackMessageLogSize = CInt(Me.m_nudMaxNumMessages.Value)
-        End Sub
-
-        Private Sub btnSaveLocation_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnSaveLocation.Click
-
-            Dim folderBrowerDlg As New FolderBrowserDialog()
-
-            folderBrowerDlg.Description = My.Resources.SELECT_DEFAULT_LAYOUT_DIRECTORY_MSG
-            folderBrowerDlg.ShowNewFolderButton = True
-            'folderBrowerDlg.RootFolder = Environment.SpecialFolder.Personal
-
-            Dim result As DialogResult = folderBrowerDlg.ShowDialog()
-
-            If result = DialogResult.OK Then
-                m_txbSaveDirectory.Text = folderBrowerDlg.SelectedPath
-            End If
-
-        End Sub
-
-        Private Sub btnRemoveAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnRemoveAll.Click
-
-            Dim dstr As String = My.Settings.ContentLayoutSaveDirectory
-
-            ' The directory is not a valid path
-            If Not Directory.Exists(dstr) Then Return
-
-            For Each f As String In Directory.GetFiles(dstr)
-                If f.EndsWith(".config") Then
-                    File.Delete(f)
-                End If
-            Next
-            m_btnRemoveAll.Enabled = False
-
-        End Sub
-
-#End Region
+#End Region ' Internals
 
     End Class
 

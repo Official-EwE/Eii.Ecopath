@@ -68,32 +68,6 @@ Partial Friend NotInheritable Class Settings
     
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("6"),  _
-     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
-    Public Property MdbRecentlyUsedCount() As String
-        Get
-            Return CType(Me("MdbRecentlyUsedCount"),String)
-        End Get
-        Set
-            Me("MdbRecentlyUsedCount") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("6"),  _
-     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
-    Public Property EiiRecentlyUsedCount() As String
-        Get
-            Return CType(Me("EiiRecentlyUsedCount"),String)
-        End Get
-        Set
-            Me("EiiRecentlyUsedCount") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("<?xml version=""1.0"" encoding=""utf-16""?>"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<ArrayOfAnyType xmlns:xsi=""http://www.w3"& _ 
         ".org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"  <"& _ 
         "anyType />"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"</ArrayOfAnyType>"),  _
@@ -104,47 +78,6 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("MdbRecentlyUsedList") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("<?xml version=""1.0"" encoding=""utf-16""?>"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<ArrayOfAnyType xmlns:xsi=""http://www.w3"& _ 
-        ".org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"  <"& _ 
-        "anyType />"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"</ArrayOfAnyType>"),  _
-     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
-    Public Property EiiRecentlyUsedList() As Global.System.Collections.ArrayList
-        Get
-            Return CType(Me("EiiRecentlyUsedList"),Global.System.Collections.ArrayList)
-        End Get
-        Set
-            Me("EiiRecentlyUsedList") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("False"),  _
-     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
-    Public Property SaveContentLayout() As Boolean
-        Get
-            Return CType(Me("SaveContentLayout"),Boolean)
-        End Get
-        Set
-            Me("SaveContentLayout") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute(""),  _
-     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
-    Public Property ContentLayoutSaveDirectory() As String
-        Get
-            Return CType(Me("ContentLayoutSaveDirectory"),String)
-        End Get
-        Set
-            Me("ContentLayoutSaveDirectory") = value
         End Set
     End Property
     
@@ -561,6 +494,19 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("AutoUpdatePlugins") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("16"),  _
+     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
+    Public Property MdbRecentlyUsedCount() As Integer
+        Get
+            Return CType(Me("MdbRecentlyUsedCount"),Integer)
+        End Get
+        Set
+            Me("MdbRecentlyUsedCount") = value
         End Set
     End Property
 End Class

@@ -1,7 +1,12 @@
+#Region " Imports "
+
 Option Strict On
 Imports System
 Imports System.Collections
 Imports System.Collections.Generic
+Imports EwEUtils.Commands
+
+#End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>
@@ -20,9 +25,8 @@ Public Class cPluginAutolaunchHandler
     ''' <param name="pm"><see cref="cPluginManager">Plugin manager</see>
     ''' that holds the plugins to launch.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef pm As cPluginManager)
-        MyBase.new()
-        Me.PluginManager = pm
+    Public Sub New(ByVal pm As cPluginManager, ByVal cmdh As cCommandHandler)
+        MyBase.New(pm, cmdh)
         Me.LaunchPlugins()
     End Sub
 

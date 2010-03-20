@@ -178,7 +178,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub OnGotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
             Dim dsc As cPropertySelectionCommand = DirectCast(cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
 
             If Object.ReferenceEquals(dsc, Nothing) Then Return

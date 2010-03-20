@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: ucEditHatch.vb,v $
-' Revision 1.1  2008/09/26 07:31:25  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/06/02 00:01:47  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.1  2008/01/01 19:51:18  jeroens
-' New and/or moved
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore
 Imports System.Drawing
@@ -24,6 +10,7 @@ Namespace Controls
 
 #Region " Private parts "
 
+        Private m_uic As cUIContext = Nothing
         Private m_hbs As HatchStyle = HatchStyle.DottedDiamond
         Private m_clrFore As Color = Color.Black
         Private m_clrBack As Color = Color.Transparent
@@ -45,12 +32,13 @@ Namespace Controls
 
 #Region " Constructor "
 
-        Public Sub New(ByVal vs As cVisualStyle, ByVal style As cVisualStyle.eVisualStyleTypes)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal vs As cVisualStyle, _
+                       ByVal style As cVisualStyle.eVisualStyleTypes)
             MyBase.New(vs, style)
 
             Me.InitializeComponent()
 
-            ' Add any initialization after the InitializeComponent() call.
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
             Me.SetStyle(ControlStyles.ResizeRedraw, True)

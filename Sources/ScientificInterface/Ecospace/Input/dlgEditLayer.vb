@@ -262,7 +262,7 @@ Namespace Ecospace.Basemap.Layers
             ' Do not use display text; user may want to edit this
             Me.m_fpName.Value = m_layerWork.Name
 
-            Me.m_ucEditVisualStyle = ucEditVisualStyle.GetEditor(vs, Me.m_layerWork.Renderer.VisualStyleFlags)
+            Me.m_ucEditVisualStyle = ucEditVisualStyle.GetEditor(Me.m_uic, vs, Me.m_layerWork.Renderer.VisualStyleFlags)
 
             If (Me.m_ucEditVisualStyle IsNot Nothing) Then
                 Me.m_ucEditVisualStyle.Dock = DockStyle.Fill

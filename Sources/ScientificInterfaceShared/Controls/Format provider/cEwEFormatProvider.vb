@@ -20,6 +20,7 @@ Namespace Controls
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cEwEFormatProvider
+        Implements IUIElement
 
 #Region " Private helper classes "
 
@@ -266,7 +267,7 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
-                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+                Dim sg As cStyleGuide = Me.UIContext.StyleGuide
                 Dim objValue As Object = Me.m_provider.Value
                 Dim objValueType As Object = Me.m_provider.ValueType
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
@@ -417,7 +418,7 @@ Namespace Controls
                     AddHandler Me.m_ud.Validated, AddressOf OnSaveValue
                     AddHandler Me.m_ud.LostFocus, AddressOf OnSaveValue
 
-                    Me.m_sg = Me.m_uic.StyleGuide
+                    Me.m_sg = Me.UIContext.StyleGuide
                     AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
                     ' Store ref to provider
@@ -655,7 +656,7 @@ Namespace Controls
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
                 Dim objValue As Object = Me.m_provider.Value
-                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+                Dim sg As cStyleGuide = Me.UIContext.StyleGuide
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
@@ -853,7 +854,7 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
-                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+                Dim sg As cStyleGuide = Me.UIContext.StyleGuide
                 Dim objValue As Object = Me.m_provider.Value
                 Dim objValueType As Object = Me.m_provider.ValueType
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
@@ -993,7 +994,7 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
-                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+                Dim sg As cStyleGuide = Me.UIContext.StyleGuide
                 Dim objValue As Object = Me.m_provider.Value
                 Dim objValueType As Object = Me.m_provider.ValueType
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
@@ -1089,9 +1090,9 @@ Namespace Controls
             ' Get wrapper
             Me.m_ctrlWrapper = cControlWrapperFactory.GetControlWrapper(uic, ctrl, Me, aItems, metadata)
             ' Connect to style guide
-            Me.m_uic = uic
+            Me.UIContext = uic
             ' Respond to styleguide changes
-            AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub
 
@@ -1125,13 +1126,26 @@ Namespace Controls
                 Me.m_ctrlWrapper = Nothing
             End If
 
-            If Me.m_uic IsNot Nothing Then
-                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-                Me.m_uic = Nothing
+            If Me.UIContext IsNot Nothing Then
+                RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                Me.UIContext = Nothing
             End If
         End Sub
 
 #End Region ' Release
+
+#Region " Interface "
+
+        Public Property UIContext() As cUIContext Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Private Set(ByVal uic As cUIContext)
+                Me.m_uic = uic
+            End Set
+        End Property
+
+#End Region ' Interface
 
 #Region " Value "
 

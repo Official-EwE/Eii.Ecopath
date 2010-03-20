@@ -410,36 +410,6 @@ Public Class AppLauncher
 
             ' Set core output path
             Me.Core.OutputPath = Path.GetDirectoryName(strFileName)
-            Dim strContentLayout As String = My.Settings.ContentLayoutSaveDirectory
-
-            ' Is the directory a valid path? 
-            If Directory.Exists(strContentLayout) Then
-
-                ' #Path is valid, proceed
-                Dim fi As New FileInfo(strFileName)
-                Dim strConfigFilePath As String = Path.Combine(strContentLayout, fi.Name.Replace(".", "_") + ".config")
-
-                ' Does config file exist?
-                If File.Exists(strConfigFilePath) Then
-                    ' Found config file, let's restore its layout setting
-                    m_DockPanel.SuspendLayout(True)
-                    Try
-                        CloseAllContents()
-                        m_DockPanel.LoadFromXml(strConfigFilePath, m_DeserializeDockContent)
-                    Catch ex As Exception
-                        'FG: Bug fix Mar 21, 2007
-                        'LoadFromXML method requires unintialized dock panel, but when the LoadFromXML
-                        'generates the exception and the exception is being caught, the closed
-                        'Dock panel needs to be reinitialized.
-                        InitDockPanelPositions()
-                        ' Operation is not sucessful, delete the file instead
-                        If File.Exists(strConfigFilePath) Then
-                            File.Delete(strConfigFilePath)
-                        End If
-                    End Try
-                    m_DockPanel.ResumeLayout(True, True)
-                End If
-            End If
 
             ' JS 08Aug07: Whatever happened, at least the default node needs to be visible.
             '             This also overcomes bug 133 (see bug description in ActivateForm). The Dock engine
@@ -517,17 +487,6 @@ Public Class AppLauncher
                 msg = New cMessage(String.Format(My.Resources.PROMPT_MODELCREATED, strFileName), _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, eMessageImportance.Information)
-
-                ' Hackety-hack: destroy any layout file for this model
-                Dim fi As New FileInfo(strFileName)
-                Dim strName As String = FileUtilities.ToValidFileName(CStr(fi.Name & ".config"), True)
-                Dim strConfigFile As String = Path.Combine(My.Settings.ContentLayoutSaveDirectory, strName)
-
-                Try
-                    If File.Exists(strConfigFile) Then File.Delete(strConfigFile)
-                Catch ex As Exception
-                    ' Woops
-                End Try
 
             Case eDatasourceAccessType.Failed_CannotSave
                 msg = New cMessage(String.Format(My.Resources.PROMPT_INVALIDTARGETPATH, strFileName), _
@@ -1066,7 +1025,9 @@ Public Class AppLauncher
         Dim sg As cStyleGuide = New cStyleGuide()
         Dim pm As cPropertyManager = New cPropertyManager(core, sg, Me.m_SyncObj)
 
-        Me.UIContext = New cUIContext(core, sg, pm, _
+        Me.UIContext = New cUIContext(core, _
+                                      sg, _
+                                      pm, _
                                       cCommandHandler.GetInstance(), _
                                       New cFormPositionSettings(), _
                                       Me.m_SyncObj)
@@ -1087,7 +1048,7 @@ Public Class AppLauncher
         Me.Core.PluginManager = Me.m_pluginManager
 
         ' Create plugin menu handler to position plugin menu items in the main menu from this form
-        Me.m_pluginMenuHandler = New cPluginMenuHandler(Me.MainMenuStrip, Me.m_pluginManager)
+        Me.m_pluginMenuHandler = New cPluginMenuHandler(Me.MainMenuStrip, Me.m_pluginManager, Me.UIContext.CommandHander)
 
         ' Initialize core controller
         Me.m_coreController = New cCoreController(Me.Core.StateMonitor, Me.Core.StateManager)
@@ -1099,7 +1060,7 @@ Public Class AppLauncher
     End Sub
 
     Private Sub AutolaunchPlugins()
-        Dim pl As New cPluginAutolaunchHandler(Me.m_pluginManager)
+        Dim pl As New cPluginAutolaunchHandler(Me.m_pluginManager, Me.UIContext.CommandHander)
     End Sub
 
     Private Sub LoadPlugins()
@@ -1339,10 +1300,9 @@ Public Class AppLauncher
                 Return False
             End If
 
+            ' Store last directory
             My.Settings.LastSelectedDirectory = Me.m_strLastSelectedPath
-            ' Save the current model layout
-            Me.SaveDockPanelLayout()
-            'Then close all open documents
+            ' Close all open documents
             Me.CloseAllDocuments()
 
             ' Reset components
@@ -1570,54 +1530,9 @@ Public Class AppLauncher
         My.Settings.LastSelectedDirectory = Me.m_strLastSelectedPath
 
         Me.m_uic.FormPositionSettings.Store(Me, False)
-
-        Me.SaveDockPanelLayout()
         Me.m_styleguideupdater.Save()
-
         My.Settings.FormPositions = Me.m_uic.FormPositionSettings.Setting
         My.Settings.Save()
-
-    End Sub
-
-    Private Sub SaveDockPanelLayout()
-
-        'If a model is open, then we save dockpanel Layout settings 
-        If Not String.IsNullOrEmpty(Me.SelectedFileName) Then
-
-            ' Get the config file path
-            Dim fi As New FileInfo(Me.SelectedFileName)
-            Dim name As String = fi.Name.Replace(".", "_") + ".config"
-
-            Dim dstr As String = My.Settings.ContentLayoutSaveDirectory
-
-            'Get the directory where the layout files are stored
-            If Not Directory.Exists(dstr) Then
-                dstr = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                My.Settings.ContentLayoutSaveDirectory = dstr
-            End If
-
-            Dim configFile As String = Path.Combine(dstr, name)
-
-            If My.Settings.SaveContentLayout Then
-
-                Try
-                    ' save the layout
-                    ' JS 03aug07: something needs to be done here to ensure that not a single form state is saved as hidden
-                    '             to fix bug 133 (http://www.ecopath.org/developers/bugtracker/view.php?id=133)
-                    m_DockPanel.SaveAsXml(configFile)
-                Catch ex As Exception
-                    ' Operation is not sucessful, delete the file instead
-                    If File.Exists(configFile) Then
-                        File.Delete(configFile)
-                    End If
-                End Try
-            Else
-                ' The user prefers not to save the model layout
-                If File.Exists(configFile) Then
-                    File.Delete(configFile)
-                End If
-            End If
-        End If
 
     End Sub
 

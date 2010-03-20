@@ -1,32 +1,3 @@
-'==============================================================================
-'
-' $Log: ucEditImage.vb,v $
-' Revision 1.4  2009/05/11 01:51:02  jeroens
-' Renamed command classes
-'
-' Revision 1.3  2009/04/21 19:42:32  jeroens
-' Localized
-'
-' Revision 1.2  2008/11/08 23:50:53  jeroens
-' Renamed file commands
-'
-' Revision 1.1  2008/09/26 07:31:25  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2008/09/09 14:44:56  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.3  2008/06/02 00:01:47  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.2  2008/01/08 20:07:21  jeroens
-' Fixed bug 368
-'
-' Revision 1.1  2008/01/01 19:51:18  jeroens
-' New and/or moved
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -42,10 +13,15 @@ Namespace Controls
 
     Public Class ucEditImage
 
+        Private m_uic As cUIContext = Nothing
+
 #Region " Constructor "
 
-        Public Sub New(ByVal vs As cVisualStyle, ByVal style As cVisualStyle.eVisualStyleTypes)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal vs As cVisualStyle, _
+                       ByVal style As cVisualStyle.eVisualStyleTypes)
             MyBase.New(vs, style)
+            Me.m_uic = uic
             Me.InitializeComponent()
         End Sub
 
@@ -53,8 +29,10 @@ Namespace Controls
 
 #Region " Events "
 
-        Private Sub ucEditImage_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Dim prov As New cEwEBrushProvider
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            Dim prov As New cEwEBrushProvider()
             Dim avs As cVisualStyle() = prov.GetVisualStyles(-1, cEwEBrushProvider.eBrushType.Glyphs)
 
             For Each vs As cVisualStyle In avs
@@ -69,7 +47,7 @@ Namespace Controls
         Private Sub btnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImport.Click
 
             Dim img As Image = Nothing
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
             cmdFO.Invoke(My.Resources.FILEFILTER_IMAGE)
@@ -92,7 +70,8 @@ Namespace Controls
             End If
         End Sub
 
-        Private Sub m_glyphSelect_OnSelectionChanged(ByVal sender As ucGlyphSelect, ByVal e As System.EventArgs) Handles m_glyphSelect.OnSelectionChanged
+        Private Sub m_glyphSelect_OnSelectionChanged(ByVal sender As ucGlyphSelect, ByVal e As System.EventArgs) _
+            Handles m_glyphSelect.OnSelectionChanged
             Me.FireStyleChangedEvent()
         End Sub
 
