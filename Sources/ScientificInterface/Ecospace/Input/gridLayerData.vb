@@ -229,8 +229,13 @@ Public Class gridLayerData
             Return MyBase.UIContext
         End Get
         Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+            If (Me.UIContext IsNot Nothing) Then
+                Me.m_basemap = Nothing
+            End If
             MyBase.UIContext = value
-            Me.m_basemap = value.Core.EcospaceBasemap
+            If (Me.UIContext IsNot Nothing) Then
+                Me.m_basemap = value.Core.EcospaceBasemap
+            End If
         End Set
     End Property
 
