@@ -23,7 +23,7 @@ Namespace Ecosim
 
         End Sub
 
-        Public Property SelFleetIndex() As Integer
+        Public Property SelectedFleetIndex() As Integer
             Get
                 Return Me.m_iFleetSelected
             End Get
@@ -80,7 +80,7 @@ Namespace Ecosim
             Dim lName As New List(Of String)
             lName.Add(String.Empty)
 
-            ' OMG, what is this?!
+            ' Indices of calculated columns
             Dim aCalc() As Integer = {4, 7, 10}
 
             Me.m_iNumVisibleGroups = 0
@@ -126,20 +126,20 @@ Namespace Ecosim
                         SetCellValue(irow, 4, CSng(source.BiomassEnd / source.BiomassStart), asTotal)
                     End If
 
-                    Dim fCS As Single = source.CatchStart(Me.SelFleetIndex)
+                    Dim fCS As Single = source.CatchStart(Me.SelectedFleetIndex)
                     If fCS > 0 Then SetCellValue(irow, 5, fCS, asTotal)
 
-                    Dim fCE As Single = source.CatchEnd(Me.SelFleetIndex)
+                    Dim fCE As Single = source.CatchEnd(Me.SelectedFleetIndex)
                     If fCE > 0 Then SetCellValue(irow, 6, fCE, asTotal)
 
                     If fCS > 0 And fCE > 0 Then
                         SetCellValue(irow, 7, CSng(fCE / fCS), asTotal)
                     End If
 
-                    Dim fVS As Single = source.ValueStart(Me.SelFleetIndex)
+                    Dim fVS As Single = source.ValueStart(Me.SelectedFleetIndex)
                     If fVS > 0 Then SetCellValue(irow, 8, fVS, asTotal)
 
-                    Dim fVE As Single = source.ValueEnd(Me.SelFleetIndex)
+                    Dim fVE As Single = source.ValueEnd(Me.SelectedFleetIndex)
                     If fVE > 0 Then SetCellValue(irow, 9, fVE, asTotal)
 
                     If fVS > 0 And fVE > 0 Then
