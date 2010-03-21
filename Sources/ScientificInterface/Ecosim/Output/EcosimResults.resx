@@ -314,9 +314,6 @@
   <data name="rbIndices.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="rbIndices.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="rbIndices.Location" type="System.Drawing.Point, System.Drawing">
     <value>208, 74</value>
   </data>
@@ -484,6 +481,6 @@
     <value>EcosimResults</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.1007, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.320, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>
