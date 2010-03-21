@@ -20,7 +20,14 @@ Namespace Controls
             MyBase.InitStyle()
         End Sub
 
-        Protected Sub InitCells(ByVal iRow As Integer, ByRef astrNames() As String, ByVal asCalc() As Integer)
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="iRow"></param>
+        ''' <param name="astrNames"></param>
+        ''' <param name="aiCalc">Array with column indices to render as computed.</param>
+        ''' <remarks></remarks>
+        Protected Sub InitCells(ByVal iRow As Integer, ByRef astrNames() As String, ByVal aiCalc() As Integer)
 
             Dim cell As EwECell = Nothing
             Dim cnt As Integer = Me.RowsCount - 1
@@ -38,8 +45,8 @@ Namespace Controls
                     cell.SuppressZero = True
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
 
-                    For i As Integer = 0 To asCalc.Length - 1
-                        If columnIndex = asCalc(i) Then
+                    For i As Integer = 0 To aiCalc.Length - 1
+                        If columnIndex = aiCalc(i) Then
                             cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed
                             Exit For
                         End If
@@ -61,8 +68,8 @@ Namespace Controls
                 cell.SuppressZero = True
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
 
-                For i As Integer = 0 To asCalc.Length - 1
-                    If columnIndex = asCalc(i) Then
+                For i As Integer = 0 To aiCalc.Length - 1
+                    If columnIndex = aiCalc(i) Then
                         cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed
                         Exit For
                     End If
