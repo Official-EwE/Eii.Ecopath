@@ -1030,7 +1030,7 @@ Namespace FitToTimeSeries
 
         Sub SetVblock(ByRef esData As cEcosimDatastructures)
             Dim i As Integer, j As Integer, ii As Integer
-
+            Dim iBlock As Integer
             For i = 1 To UBound(IsBlockEstimated)
                 IsBlockEstimated(i) = False
             Next
@@ -1038,9 +1038,10 @@ Namespace FitToTimeSeries
             For ii = 1 To esData.inlinks
                 i = esData.ilink(ii)
                 j = esData.jlink(ii)
-                If VblockCode(ii) > 0 Then
-                    VBlock(VblockCode(ii)) = esData.VulMult(i, j)
-                    IsBlockEstimated(VblockCode(ii)) = True
+                iBlock = VblockCode(ii)
+                If iBlock > 0 And iBlock < VBlock.Length Then
+                    VBlock(iBlock) = esData.VulMult(i, j)
+                    IsBlockEstimated(iBlock) = True
                 End If
             Next
 
