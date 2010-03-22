@@ -2046,7 +2046,6 @@ Namespace Database
                             iShapeID = Me.HashKey(eDataTypes.FishingEffort, CStr(reader("gearName")), eDataTypes.EcoSimScenario, iScenarioID)
                         Catch ex As Exception
                         End Try
-                        Me.m_dbEwE5.ReleaseReader(reader)
                     End If
 
                     ' Not imported yet? Signal that import is needed after the fleet has been defined
@@ -2076,6 +2075,8 @@ Namespace Database
                         Me.HashKey(eDataTypes.FishingEffort, strFleet, eDataTypes.EcoSimScenario, iScenarioID) = iShapeID
                         Me.m_iNextShapeID += 1
                     End If
+
+                    Me.m_dbEwE5.ReleaseReader(reader)
 
                 Next strFleet
             Next strScenario
