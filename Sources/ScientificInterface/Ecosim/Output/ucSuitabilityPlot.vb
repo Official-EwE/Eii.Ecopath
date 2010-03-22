@@ -72,13 +72,22 @@ Public Class ucSuitabilityPlot
 
     End Sub
 
-    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-        MyBase.OnHandleDestroyed(e)
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
 
-        Me.m_zgh.Detach()
-        Me.m_zgh = Nothing
+        Try
+            If Me.m_zgh IsNot Nothing Then
+                Me.m_zgh.Detach()
+                Me.m_zgh = Nothing
 
-        RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            End If
+
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
 
     End Sub
 

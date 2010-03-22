@@ -6,37 +6,56 @@ Option Strict On
 Imports EwECore
 Imports SourceGrid2
 Imports EwEUtils.Core
+Imports SourceGrid2.BehaviorModels
 
 #End Region
 
 Namespace Ecospace
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid control, implements the Ecospace interface to assign species to habitats.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class gridAssignHabits
         : Inherits EwEGrid
 
-        ''' <summary>Checkbox cell interaction.</summary>
-        Private m_ah As New BehaviorModels.CustomEvents
+#Region " Privates "
 
+        ''' <summary>Checkbox cell interaction.</summary>
+        Private m_ah As CustomEvents = Nothing
         Private m_delegatePositionEvent As SourceGrid2.PositionEventHandler = Nothing
+
+#End Region ' Privates
+
+#Region " Construction / destruction "
 
         Public Sub New()
 
             MyBase.New()
 
             Me.m_delegatePositionEvent = New SourceGrid2.PositionEventHandler(AddressOf m_ahValueChanged)
+
+            Me.m_ah = New CustomEvents()
             AddHandler m_ah.ValueChanged, m_delegatePositionEvent
 
             Me.FixedColumnWidths = False
 
         End Sub
 
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-            ' Clean up
-            RemoveHandler m_ah.ValueChanged, m_delegatePositionEvent
-            Me.m_delegatePositionEvent = Nothing
-            MyBase.OnHandleDestroyed(e)
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+
+            If (m_ah IsNot Nothing) Then
+                RemoveHandler m_ah.ValueChanged, m_delegatePositionEvent
+                Me.m_ah = Nothing
+                Me.m_delegatePositionEvent = Nothing
+            End If
+
+            MyBase.Dispose(disposing)
         End Sub
+
+#End Region ' Construction / destruction
 
 #Region " Grid Overriden methods "
 

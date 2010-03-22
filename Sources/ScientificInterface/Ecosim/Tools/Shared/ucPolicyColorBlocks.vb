@@ -51,9 +51,16 @@ Namespace Ecosim
 #Region "Public Methods and Properties"
 
         Public Sub New()
-            InitializeComponent()
+            Me.InitializeComponent()
         End Sub
 
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Me.Detach()
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+            MyBase.Dispose(disposing)
+        End Sub
 
         ''' <summary>
         ''' Attach a data source <see cref="IPolicyColorBlockDataSource">IPolicyColorBlockDataSource</see> and a block selector control <see cref="IBlockSelector">IBlockSelector</see> to the main PolicyColorBlock control 
@@ -62,6 +69,9 @@ Namespace Ecosim
         ''' <param name="BlockCodes">Implementation of IBlockSelector</param>
         ''' <remarks>PolicyColorBlocks can be attached to different data sources and block selectors</remarks>
         Public Sub Attach(ByVal DataSource As IPolicyColorBlockDataSource, ByVal BlockCodes As IBlockSelector)
+
+            If Me.m_bInit Then Me.Detach()
+
             Me.m_DataSource = DataSource
             Me.m_blockCodes = BlockCodes
             Me.m_blockCodes.UIContext = Me.UIContext
@@ -86,8 +96,37 @@ Namespace Ecosim
                 System.Console.WriteLine(Me.ToString & ".Attach() Exception: " & ex.Message)
             End Try
 
-            m_bInit = True
-            Me.Init()
+            Me.m_DataSource.Attach(Me.m_blockCodes)
+
+            Me.m_PropBaseYear = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear), cIntegerProperty)
+            AddHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
+
+            Me.m_PropEcosimNYears = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears), cIntegerProperty)
+            AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
+
+            Me.m_bInit = True
+            Me.UpdateControls()
+
+        End Sub
+
+        Public Sub Detach()
+
+            If (Me.m_bInit) Then
+
+                RemoveHandler Me.m_blockCodes.onValueChanged, AddressOf Me.onCVValuesChanged
+
+                If (Me.m_PropBaseYear IsNot Nothing) Then
+                    RemoveHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
+                    Me.m_PropBaseYear = Nothing
+
+                    RemoveHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
+                    Me.m_PropEcosimNYears = Nothing
+
+                End If
+                Me.m_DataSource = Nothing
+                Me.m_blockCodes = Nothing
+            End If
+            Me.UIContext = Nothing
 
         End Sub
 
@@ -128,36 +167,7 @@ Namespace Ecosim
 
 #End Region
 
-#Region " Overloads "
-
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-            MyBase.OnLoad(e)
-
-        End Sub
-
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-            MyBase.OnHandleDestroyed(e)
-
-            Try
-
-                RemoveHandler Me.m_blockCodes.onValueChanged, AddressOf Me.onCVValuesChanged
-
-                If (Me.m_PropBaseYear IsNot Nothing) Then
-                    RemoveHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
-                    Me.m_PropBaseYear = Nothing
-
-                    RemoveHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
-                    Me.m_PropEcosimNYears = Nothing
-                End If
-            Catch ex As Exception
-                System.Console.WriteLine(ex.Message)
-            End Try
-
-        End Sub
-
-#End Region ' Overloads
-
-#Region " Events handlers"
+#Region " Events handlers "
 
         Private Sub btnSetEveryGear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnSetGear.Click
@@ -247,14 +257,14 @@ Namespace Ecosim
 
         End Sub
 
-#End Region ' Events
+#End Region ' Events handlers
 
 #Region " Callbacks "
 
         Private Sub OnPropChanged(ByVal p As cProperty, ByVal cf As cProperty.eChangeFlags)
 
             'right now if anything changed just reload
-            Me.updateControls()
+            Me.UpdateControls()
             Me.m_pbFishingBlocks.Invalidate()
 
         End Sub
@@ -279,21 +289,7 @@ Namespace Ecosim
 
 #Region "Private methods"
 
-        Private Sub Init()
-
-            Me.m_DataSource.Atatch(Me.m_blockCodes)
-            Me.updateControls()
-
-            Me.m_PropBaseYear = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear), cIntegerProperty)
-            AddHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
-
-            Me.m_PropEcosimNYears = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears), cIntegerProperty)
-            AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
-
-        End Sub
-
-
-        Private Sub updateControls()
+        Private Sub UpdateControls()
 
             Me.m_DataSource.Init()
 
@@ -496,7 +492,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="Blocks">implementation of IBlockSelector</param>
         ''' <remarks>The data source need to listen to the Block selector and set the number of blocks and cv values</remarks>
-        Sub Atatch(ByVal Blocks As IBlockSelector)
+        Sub Attach(ByVal Blocks As IBlockSelector)
 
         ''' <summary>
         ''' Init the data source

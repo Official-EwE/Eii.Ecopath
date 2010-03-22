@@ -39,7 +39,7 @@ Public Class NavigationPanel
     Private m_ntPluginHandler As cPluginNavTreeHandler = Nothing
     Private m_tnSelected As TreeNode = Nothing
 
-#Region " Constructors "
+#Region " Construction / destruction "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -64,7 +64,27 @@ Public Class NavigationPanel
 
     End Sub
 
-#End Region ' Constructors
+    Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged
+
+        If bDisposing Then
+
+            Me.m_nodeController.Detach()
+            Me.m_nodeController = Nothing
+
+            Me.m_ntPluginHandler = Nothing
+            Me.m_pluginManager = Nothing
+            Me.m_uic = Nothing
+
+            If components IsNot Nothing Then
+                components.Dispose()
+            End If
+        End If
+        MyBase.Dispose(bDisposing)
+
+    End Sub
+
+#End Region ' Construction / destruction
 
 #Region " Form overrides "
 
@@ -208,20 +228,6 @@ Public Class NavigationPanel
         End If
 
         AddHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged
-
-    End Sub
-
-    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-        MyBase.OnHandleDestroyed(e)
-
-        RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged
-
-        Me.m_nodeController.Detach()
-        Me.m_nodeController = Nothing
-
-        Me.m_ntPluginHandler = Nothing
-        Me.m_pluginManager = Nothing
-        Me.m_uic = Nothing
 
     End Sub
 

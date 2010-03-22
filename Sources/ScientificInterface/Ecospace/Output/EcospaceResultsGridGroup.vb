@@ -10,6 +10,11 @@ Imports SourceGrid2.Cells.Real
 
 Namespace Ecospace
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid, reflects Ecospace results per group.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class cGridEcospaceResultsGroup
         : Inherits gridResultsBase
@@ -19,9 +24,14 @@ Namespace Ecospace
 
         Public Sub New()
             MyBase.New()
-
             Me.m_iNumVisibleGroups = 0
+        End Sub
 
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            If disposing Then
+                Me.UIContext = Nothing
+            End If
+            MyBase.Dispose(disposing)
         End Sub
 
         Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
@@ -175,11 +185,6 @@ Namespace Ecospace
             If (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
                 Me.RefreshContent()
             End If
-        End Sub
-
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-            Me.UIContext = Nothing
-            MyBase.OnHandleDestroyed(e)
         End Sub
 
 #End Region ' Events

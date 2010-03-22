@@ -66,7 +66,7 @@ Public Class cMSEGroupColorBlockDataSource
         Me.m_uic = UIContext
     End Sub
 
-    Public Sub Atatch(ByVal Blocks As IBlockSelector) Implements IPolicyColorBlockDataSource.Atatch
+    Public Sub Atatch(ByVal Blocks As IBlockSelector) Implements IPolicyColorBlockDataSource.Attach
 
         Debug.Assert(TypeOf Blocks Is ucCVBlockSelector, Me.ToString & ".Atatch() Blocks must be a ucCVBlockSelector!")
         Try

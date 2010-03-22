@@ -37,12 +37,16 @@ Namespace Ecosim
             AddHandler m_BehaviorClick.Click, AddressOf CellClick
         End Sub
 
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-            RemoveHandler m_RowColClick.Click, New SourceGrid2.PositionEventHandler(AddressOf bm_RowColClick)
-            RemoveHandler m_BehaviorClick.Click, AddressOf CellClick
-            Me.m_Cellfunc = Nothing
-            Me.m_BehaviorClick = Nothing
-            MyBase.OnHandleDestroyed(e)
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            MyBase.Dispose(disposing)
+
+            If Me.m_Cellfunc IsNot Nothing Then
+                RemoveHandler m_RowColClick.Click, New SourceGrid2.PositionEventHandler(AddressOf bm_RowColClick)
+                RemoveHandler m_BehaviorClick.Click, AddressOf CellClick
+                Me.m_Cellfunc = Nothing
+                Me.m_BehaviorClick = Nothing
+            End If
+
         End Sub
 
 #Region " Public access "

@@ -707,7 +707,7 @@ Namespace Ecosim
             Me.m_uic = UIContext
         End Sub
 
-        Public Sub Atatch(ByVal Blocks As IBlockSelector) Implements IPolicyColorBlockDataSource.Atatch
+        Public Sub Atatch(ByVal Blocks As IBlockSelector) Implements IPolicyColorBlockDataSource.Attach
             m_blockCodes = Blocks
         End Sub
 

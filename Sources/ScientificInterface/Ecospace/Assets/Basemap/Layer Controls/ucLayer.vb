@@ -35,11 +35,10 @@ Namespace Ecospace
 
 #End Region ' Private vars
 
-#Region " Constructor "
+#Region " Constructor / destructor "
 
         Public Sub New(ByVal uic As cUIContext, ByVal l As cLayer)
 
-            ' This call is required by the Windows Form Designer.
             Me.InitializeComponent()
 
             'Enable double buffering
@@ -57,7 +56,23 @@ Namespace Ecospace
 
         End Sub
 
-#End Region ' Constructor
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            If disposing Then
+
+                ' Remove from event handler
+                RemoveHandler m_layer.LayerChanged, AddressOf OnLayerChanged
+
+                Me.m_layer = Nothing
+                Me.m_lgParent = Nothing
+
+                If components IsNot Nothing Then
+                    components.Dispose()
+                End If
+            End If
+            MyBase.Dispose(disposing)
+        End Sub
+
+#End Region ' Constructor / destructor
 
 #Region " Properties "
 
@@ -196,15 +211,6 @@ Namespace Ecospace
 #End Region ' Internal implementation
 
 #Region " Events "
-
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-            ' Remove from event handler
-            RemoveHandler m_layer.LayerChanged, AddressOf OnLayerChanged
-
-            Me.m_layer = Nothing
-            Me.m_lgParent = Nothing
-            MyBase.OnHandleDestroyed(e)
-        End Sub
 
         Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
             MyBase.OnPaint(e)

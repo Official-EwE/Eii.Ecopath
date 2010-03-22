@@ -81,7 +81,7 @@ Public Class cMSEFishingColorBlockDataSource
     ''' </summary>
     ''' <param name="Blocks">ucCVBlockSelector implementation of IBlockSelector</param>
     ''' <remarks>When an IBlockSelector is attached the datasource will add CV's that missing from the IBlockSelector.  </remarks>
-    Public Sub Atatch(ByVal Blocks As IBlockSelector) Implements IPolicyColorBlockDataSource.Atatch
+    Public Sub Atatch(ByVal Blocks As IBlockSelector) Implements IPolicyColorBlockDataSource.Attach
 
         Debug.Assert(TypeOf Blocks Is ucCVBlockSelector, Me.ToString & ".Atatch() Blocks must be a ucCVBlockSelector!")
         Try
