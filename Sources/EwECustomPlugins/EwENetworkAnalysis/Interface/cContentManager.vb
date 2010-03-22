@@ -177,6 +177,18 @@ Public MustInherit Class cContentManager
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Flag stating whether the data being displayed is based on Ecosim.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Overridable ReadOnly Property UsesEcosim() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
 #End Region ' Overrides
 
 #Region " Properties "
@@ -295,7 +307,12 @@ Public MustInherit Class cContentManager
 
         ' Hide toolstrip items
         For Each tsi As ToolStripItem In Me.Toolstrip.Items
-            tsi.Visible = False
+            Select Case tsi.Name
+                'Case "tsmiRun"
+                '    tsi.Visible = True
+                Case Else
+                    tsi.Visible = False
+            End Select
         Next
 
     End Sub

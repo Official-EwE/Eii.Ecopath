@@ -1,11 +1,16 @@
+#Region " Imports "
+
 Option Strict On
 Option Explicit On
 
-Imports System.Windows.Forms
 Imports System.IO
+Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Commands
 Imports ScientificInterfaceShared
+Imports EwEUtils.Commands
+Imports EwECore
+
+#End Region ' Imports
 
 Public Class frmNetworkAnalysis
 
@@ -20,7 +25,7 @@ Public Class frmNetworkAnalysis
     Private m_bInUpdate As Boolean = False
     ''' <summary></summary>
     Private m_cmdDisplayGroups As cDisplayGroupsCommand = Nothing
-
+    ''' <summary>UI context for UI to use.</summary>
     Private m_uic As cUIContext = Nothing
 
     Public Sub New(ByVal strText As String, ByVal networkmanager As cNetworkManager, ByVal uic As cUIContext)
@@ -62,6 +67,8 @@ Public Class frmNetworkAnalysis
             AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnPostInvokeDisplayGroups
         End If
 
+        AddHandler Me.m_networkmanager.OnRunStateChanged, AddressOf OnRunStateChanged
+
     End Sub
 
     Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
@@ -73,11 +80,198 @@ Public Class frmNetworkAnalysis
             Me.m_cmdDisplayGroups = Nothing
         End If
 
+        RemoveHandler Me.m_networkmanager.OnRunStateChanged, AddressOf OnRunStateChanged
+
         MyBase.OnFormClosing(e)
     End Sub
 
     Private Sub tvNetworkAnalysis_AfterSelect(ByVal sender As System.Object, ByVal e As TreeViewEventArgs) _
         Handles tvNetworkAnalysis.AfterSelect
+
+        Me.UpdateContent()
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Re-run Network Analysis bit.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub m_tsbnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles tsmiRun.Click
+        ' Shazaam
+        Me.UpdateContent()
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic save-to-csv command handler. Invokes the EwE6 File Save interface
+    ''' and informs the current control manager to save to the selected file.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles tsbtnOutputIndicesCSV.Click
+
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdDOC As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+        Dim strFileName As String = ""
+        Dim bAnnual As Boolean = False
+
+        If (Me.m_contentmanager Is Nothing) Then Return
+        If (cmdDOC Is Nothing) Then Return
+
+        If (Me.m_contentmanager.IsDataOverTime) Then
+            Select Case MsgBox(My.Resources.PROMPT_SAVE_ANNUAL_AVERAGES, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
+
+                Case MsgBoxResult.Yes
+                    bAnnual = True
+
+                Case MsgBoxResult.No
+                    bAnnual = False
+
+                Case Else
+                    Return
+
+            End Select
+        End If
+
+        cmdDOC.Invoke("", My.Resources.PROMPT_SAVE_DESTINATION)
+
+        If (cmdDOC.Result = DialogResult.OK) Then
+            Try
+                Dim writer As New cResultWriter(Me.m_networkmanager)
+                writer.WriteCurrentResults(cmdDOC.Directory, bAnnual)
+            Catch ex As Exception
+                ' Woops
+            End Try
+        End If
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic save-to-emf command handler. Invokes the EwE6 File Save interface
+    ''' and informs the current control manager to save to the selected file.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub tsbtnOutputGraphEMF_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles tsbtnOutputGraphEMF.Click
+
+        ' ToDo: localize this
+
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+        Dim bAnnual As Boolean = False
+
+        If (Me.m_contentmanager Is Nothing) Then Return
+        If (cmdFS Is Nothing) Then Return
+
+        cmdFS.Invoke(Me.m_contentmanager.Filename(bAnnual), _
+                     My.Resources.FILEFILTER_EMF, _
+                     1)
+
+        If (cmdFS.Result = DialogResult.OK) Then
+            Try
+                Me.m_contentmanager.SaveToEMF(cmdFS.FileName)
+            Catch ex As Exception
+                ' Woops
+            End Try
+        End If
+
+    End Sub
+
+    Private Sub tscmbSelection1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles tscmbSelection1.SelectedIndexChanged
+
+        Me.m_iSelectedGroup1 = tscmbSelection1.SelectedIndex + 1
+
+        If Me.m_bInUpdate Then Return
+
+        If Me.m_contentmanager IsNot Nothing Then
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
+            Try
+                Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+            Catch ex As Exception
+                ' Woops
+            End Try
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        End If
+
+    End Sub
+
+    Private Sub tscmbSelection2_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles tscmbSelection2.SelectedIndexChanged
+
+        Me.m_iSelectedGroup2 = tscmbSelection2.SelectedIndex + 1
+
+        If Me.m_bInUpdate Then Return
+
+        If Me.m_contentmanager IsNot Nothing Then
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
+            Try
+                Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+            Catch ex As Exception
+                ' Woops
+            End Try
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        End If
+
+    End Sub
+
+    Private Sub dgvNetworkAnalysis_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles m_datagrid.CellClick
+        If e.RowIndex > 0 And e.ColumnIndex > 0 Then
+            'highlight the cell
+            m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
+            m_datagrid.Rows(e.RowIndex).Cells(e.ColumnIndex).Selected = True
+        ElseIf e.RowIndex > 0 And e.ColumnIndex = 0 Then
+            'highlight the row
+            m_datagrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+            m_datagrid.Rows(e.RowIndex).Selected = True
+        ElseIf e.RowIndex = 0 And e.ColumnIndex > 0 Then
+            'highlight the column
+            m_datagrid.SelectionMode = DataGridViewSelectionMode.FullColumnSelect
+            m_datagrid.Columns(e.ColumnIndex).Selected = True
+        ElseIf e.RowIndex = 0 And e.ColumnIndex = 0 Then
+            'highlight the whole grid
+            m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
+            m_datagrid.SelectAll()
+        End If
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler, triggered before 'DisplayGroups' command has been invoked.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Sub OnPreInvokeDisplayGroups(ByVal cmd As cCommand)
+        Me.m_cmdDisplayGroups.ShowGroups = True
+        Me.m_cmdDisplayGroups.ShowTotals = False
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler, triggered after 'DisplayGroups' command has been invoked.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Sub OnPostInvokeDisplayGroups(ByVal cmd As cCommand)
+        If Me.m_contentmanager IsNot Nothing Then
+            Me.m_contentmanager.DisplayData()
+        End If
+    End Sub
+
+    Private Sub OnRunStateChanged()
+        Me.tsmiRun.Enabled = (Me.m_networkmanager.IsMainNetworkRun = False) Or _
+                             ((Me.m_networkmanager.IsEcosimNetworkRan = False) And (Me.m_contentmanager.UsesEcosim = True))
+    End Sub
+
+    Private Sub UpdateContent()
+
+        Dim node As TreeNode = Me.tvNetworkAnalysis.SelectedNode
+        Dim strNodeName As String = ""
+
+        If (node IsNot Nothing) Then
+            strNodeName = node.Name
+        End If
 
         Me.SuspendLayout()
 
@@ -89,7 +283,7 @@ Public Class frmNetworkAnalysis
         ' Make sure main network has ran
         Me.m_networkmanager.RunMainNetwork()
 
-        Select Case e.Node.Name
+        Select Case strNodeName
 
             Case "ndRelativeFlows"
                 Me.m_contentmanager = New cRelativeFlows()
@@ -281,163 +475,6 @@ Public Class frmNetworkAnalysis
 
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
         Me.ResumeLayout()
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic save-to-csv command handler. Invokes the EwE6 File Save interface
-    ''' and informs the current control manager to save to the selected file.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles tsbtnOutputIndicesCSV.Click
-
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
-        Dim cmdDOC As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
-        Dim strFileName As String = ""
-        Dim bAnnual As Boolean = False
-
-        If (Me.m_contentmanager Is Nothing) Then Return
-        If (cmdDOC Is Nothing) Then Return
-
-        If (Me.m_contentmanager.IsDataOverTime) Then
-            Select Case MsgBox(My.Resources.PROMPT_SAVE_ANNUAL_AVERAGES, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
-
-                Case MsgBoxResult.Yes
-                    bAnnual = True
-
-                Case MsgBoxResult.No
-                    bAnnual = False
-
-                Case Else
-                    Return
-
-            End Select
-        End If
-
-        cmdDOC.Invoke("", My.Resources.PROMPT_SAVE_DESTINATION)
-
-        If (cmdDOC.Result = DialogResult.OK) Then
-            Try
-                Dim writer As New cResultWriter(Me.m_networkmanager)
-                writer.WriteCurrentResults(cmdDOC.Directory, bAnnual)
-            Catch ex As Exception
-                ' Woops
-            End Try
-        End If
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic save-to-emf command handler. Invokes the EwE6 File Save interface
-    ''' and informs the current control manager to save to the selected file.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub tsbtnOutputGraphEMF_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles tsbtnOutputGraphEMF.Click
-
-        ' ToDo: localize this
-
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
-        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-        Dim bAnnual As Boolean = False
-
-        If (Me.m_contentmanager Is Nothing) Then Return
-        If (cmdFS Is Nothing) Then Return
-
-        cmdFS.Invoke(Me.m_contentmanager.Filename(bAnnual), _
-                     My.Resources.FILEFILTER_EMF, _
-                     1)
-
-        If (cmdFS.Result = DialogResult.OK) Then
-            Try
-                Me.m_contentmanager.SaveToEMF(cmdFS.FileName)
-            Catch ex As Exception
-                ' Woops
-            End Try
-        End If
-
-    End Sub
-
-    Private Sub tscmbSelection1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles tscmbSelection1.SelectedIndexChanged
-
-        Me.m_iSelectedGroup1 = tscmbSelection1.SelectedIndex + 1
-
-        If Me.m_bInUpdate Then Return
-
-        If Me.m_contentmanager IsNot Nothing Then
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
-            Try
-                Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
-            Catch ex As Exception
-                ' Woops
-            End Try
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
-        End If
-
-    End Sub
-
-    Private Sub tscmbSelection2_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles tscmbSelection2.SelectedIndexChanged
-
-        Me.m_iSelectedGroup2 = tscmbSelection2.SelectedIndex + 1
-
-        If Me.m_bInUpdate Then Return
-
-        If Me.m_contentmanager IsNot Nothing Then
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
-            Try
-                Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
-            Catch ex As Exception
-                ' Woops
-            End Try
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
-        End If
-
-    End Sub
-
-    Private Sub dgvNetworkAnalysis_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles m_datagrid.CellClick
-        If e.RowIndex > 0 And e.ColumnIndex > 0 Then
-            'highlight the cell
-            m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
-            m_datagrid.Rows(e.RowIndex).Cells(e.ColumnIndex).Selected = True
-        ElseIf e.RowIndex > 0 And e.ColumnIndex = 0 Then
-            'highlight the row
-            m_datagrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-            m_datagrid.Rows(e.RowIndex).Selected = True
-        ElseIf e.RowIndex = 0 And e.ColumnIndex > 0 Then
-            'highlight the column
-            m_datagrid.SelectionMode = DataGridViewSelectionMode.FullColumnSelect
-            m_datagrid.Columns(e.ColumnIndex).Selected = True
-        ElseIf e.RowIndex = 0 And e.ColumnIndex = 0 Then
-            'highlight the whole grid
-            m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
-            m_datagrid.SelectAll()
-        End If
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Event handler, triggered before 'DisplayGroups' command has been invoked.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Protected Overridable Sub OnPreInvokeDisplayGroups(ByVal cmd As cCommand)
-        Me.m_cmdDisplayGroups.ShowGroups = True
-        Me.m_cmdDisplayGroups.ShowTotals = False
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Event handler, triggered after 'DisplayGroups' command has been invoked.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Protected Overridable Sub OnPostInvokeDisplayGroups(ByVal cmd As cCommand)
-        If Me.m_contentmanager IsNot Nothing Then
-            Me.m_contentmanager.DisplayData()
-        End If
     End Sub
 
 End Class

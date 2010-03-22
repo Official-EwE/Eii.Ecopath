@@ -3648,7 +3648,10 @@ NextPivot:
             'EwE5 code for plotting trophic level of catch it Indicies plot
             'If Solving = False Then
             '    frmSim1.PlotTime.Line (told, OldTL)-(t, TLcatch - IIf(frmSim1.optTL, 0, 2)), QBColor(0)
-            TLCatchPlot(iTime) = esData.TLC(iTime) - 2 'subtract two from TLCatch for plotting I have no idea why
+
+            ' JS 21Mar2010: fixed issue 698
+            ' TLCatchPlot(iTime) = esData.TLC(iTime) - 2 'subtract two from TLCatch for plotting I have no idea why
+            TLCatchPlot(iTime) = esData.TLC(iTime)
 
             For igrp As Integer = 1 To m_epdata.NumGroups
                 TLSimPlot(igrp, iTime) = esData.TLSim(igrp)

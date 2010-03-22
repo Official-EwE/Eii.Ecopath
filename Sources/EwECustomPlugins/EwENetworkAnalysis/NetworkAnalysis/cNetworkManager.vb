@@ -105,6 +105,8 @@ Public Class cNetworkManager
 
 #Region " Public Methods for running models "
 
+    Public Event OnRunStateChanged()
+
 #Region " Main Network Analysis "
 
     ''' -----------------------------------------------------------------------
@@ -185,7 +187,10 @@ Public Class cNetworkManager
             Return m_bIsMainNetworkRun
         End Get
         Set(ByVal value As Boolean)
-            m_bIsMainNetworkRun = value
+            If (value <> Me.m_bIsMainNetworkRun) Then
+                Me.m_bIsMainNetworkRun = value
+                RaiseEvent OnRunStateChanged()
+            End If
         End Set
     End Property
     'End Change
@@ -622,7 +627,10 @@ Public Class cNetworkManager
             Return m_bIsEcosimNetworkRun
         End Get
         Set(ByVal value As Boolean)
-            m_bIsEcosimNetworkRun = value
+            If (value <> Me.m_bIsEcosimNetworkRun) Then
+                Me.m_bIsEcosimNetworkRun = value
+                RaiseEvent OnRunStateChanged()
+            End If
         End Set
     End Property
 

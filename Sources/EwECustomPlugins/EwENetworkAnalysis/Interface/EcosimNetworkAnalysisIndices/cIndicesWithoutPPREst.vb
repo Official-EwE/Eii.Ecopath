@@ -61,6 +61,12 @@ Public Class cIndicesWithoutPPREst
         End Get
     End Property
 
+    Public Overrides ReadOnly Property UsesEcosim() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     Public Overrides Sub DisplayData()
 
         Dim paneMaster As MasterPane = Me.Graph.MasterPane

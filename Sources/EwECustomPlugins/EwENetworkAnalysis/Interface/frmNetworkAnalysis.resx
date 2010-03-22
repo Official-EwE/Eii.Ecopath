@@ -141,7 +141,7 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="scNetworkAnalysis.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 37</value>
+    <value>7, 26</value>
   </data>
   <data name="tvNetworkAnalysis.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -537,7 +537,7 @@
     <value>0</value>
   </data>
   <data name="tvNetworkAnalysis.Size" type="System.Drawing.Size, System.Drawing">
-    <value>333, 467</value>
+    <value>279, 478</value>
   </data>
   <data name="tvNetworkAnalysis.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -579,7 +579,7 @@
     <value>m_graph</value>
   </data>
   <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.39486, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.17508, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
   </data>
   <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
     <value>scNetworkAnalysis.Panel2</value>
@@ -600,7 +600,7 @@
     <value>m_plot</value>
   </data>
   <data name="&gt;&gt;m_plot.Type" xml:space="preserve">
-    <value>EwENetworkAnalysis.ucPlot, EwENetworkAnalysis, Version=2.0.1.5, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwENetworkAnalysis.ucPlot, EwENetworkAnalysis, Version=6.0.7.320, Culture=neutral, PublicKeyToken=43ed0cfa9d8c0f9a</value>
   </data>
   <data name="&gt;&gt;m_plot.Parent" xml:space="preserve">
     <value>scNetworkAnalysis.Panel2</value>
@@ -689,6 +689,33 @@
   <metadata name="m_toolstrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
+  <data name="tsmiRun.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
+        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
+        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
+        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
+        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
+        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
+        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
+        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
+        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
+        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="tsmiRun.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsmiRun.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 22</value>
+  </data>
+  <data name="tsmiRun.Text" xml:space="preserve">
+    <value>&amp;Refresh</value>
+  </data>
+  <data name="tsmiRun.ToolTipText" xml:space="preserve">
+    <value>Refresh form when data has changed</value>
+  </data>
   <data name="tsmiDisplayGroups.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -783,7 +810,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_toolstrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>983, 25</value>
+    <value>824, 25</value>
   </data>
   <data name="m_toolstrip.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -813,10 +840,10 @@
     <value>1</value>
   </data>
   <data name="scNetworkAnalysis.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1320, 467</value>
+    <value>1107, 478</value>
   </data>
   <data name="scNetworkAnalysis.SplitterDistance" type="System.Int32, mscorlib">
-    <value>333</value>
+    <value>279</value>
   </data>
   <data name="scNetworkAnalysis.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -837,16 +864,16 @@
     <value>True</value>
   </data>
   <data name="lblNetworkAnalysis.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt, style=Bold</value>
+    <value>Microsoft Sans Serif, 9.75pt, style=Bold</value>
   </data>
   <data name="lblNetworkAnalysis.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lblNetworkAnalysis.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 9</value>
+    <value>4, 7</value>
   </data>
   <data name="lblNetworkAnalysis.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 20</value>
+    <value>177, 16</value>
   </data>
   <data name="lblNetworkAnalysis.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -876,7 +903,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1331, 510</value>
+    <value>1118, 510</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -3269,6 +3296,12 @@
   <data name="&gt;&gt;imglstNetworkAnalysis.Type" xml:space="preserve">
     <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;tsmiRun.Name" xml:space="preserve">
+    <value>tsmiRun</value>
+  </data>
+  <data name="&gt;&gt;tsmiRun.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;tsmiDisplayGroups.Name" xml:space="preserve">
     <value>tsmiDisplayGroups</value>
   </data>
@@ -3315,6 +3348,6 @@
     <value>frmNetworkAnalysis</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.3.3373.24277, Culture=neutral, PublicKeyToken=null</value>
+    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.3.3729.14004, Culture=neutral, PublicKeyToken=de94e906589de6fe</value>
   </data>
 </root>

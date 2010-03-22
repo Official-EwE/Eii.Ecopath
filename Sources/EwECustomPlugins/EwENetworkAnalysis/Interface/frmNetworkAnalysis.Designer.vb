@@ -35,6 +35,7 @@ Partial Class frmNetworkAnalysis
         Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.m_toolstrip = New System.Windows.Forms.ToolStrip
+        Me.tsmiRun = New System.Windows.Forms.ToolStripButton
         Me.tsmiDisplayGroups = New System.Windows.Forms.ToolStripButton
         Me.tslblSelection1 = New System.Windows.Forms.ToolStripLabel
         Me.tscmbSelection1 = New System.Windows.Forms.ToolStripComboBox
@@ -156,10 +157,15 @@ Partial Class frmNetworkAnalysis
         '
         'm_toolstrip
         '
-        Me.m_toolstrip.BackColor = System.Drawing.Color.DarkSeaGreen
-        Me.m_toolstrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiDisplayGroups, ts1, Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, ts2, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, ts3})
+        Me.m_toolstrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiRun, ts3, Me.tsmiDisplayGroups, ts1, Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, ts2, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF})
         resources.ApplyResources(Me.m_toolstrip, "m_toolstrip")
         Me.m_toolstrip.Name = "m_toolstrip"
+        '
+        'tsmiRun
+        '
+        Me.tsmiRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.tsmiRun, "tsmiRun")
+        Me.tsmiRun.Name = "tsmiRun"
         '
         'tsmiDisplayGroups
         '
@@ -192,7 +198,6 @@ Partial Class frmNetworkAnalysis
         '
         'tsbtnOutputIndicesCSV
         '
-        Me.tsbtnOutputIndicesCSV.BackColor = System.Drawing.Color.DarkSeaGreen
         Me.tsbtnOutputIndicesCSV.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.tsbtnOutputIndicesCSV, "tsbtnOutputIndicesCSV")
         Me.tsbtnOutputIndicesCSV.Name = "tsbtnOutputIndicesCSV"
@@ -233,7 +238,6 @@ Partial Class frmNetworkAnalysis
     End Sub
     Private WithEvents scNetworkAnalysis As System.Windows.Forms.SplitContainer
     Private WithEvents tvNetworkAnalysis As System.Windows.Forms.TreeView
-    Private WithEvents lblNetworkAnalysis As System.Windows.Forms.Label
     Private WithEvents imglstNetworkAnalysis As System.Windows.Forms.ImageList
     Private WithEvents tscmbSelection1 As System.Windows.Forms.ToolStripComboBox
     Private WithEvents tslblSelection2 As System.Windows.Forms.ToolStripLabel
@@ -248,4 +252,6 @@ Partial Class frmNetworkAnalysis
     Private WithEvents m_tlpInfo As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_plot As ucPlot
     Private WithEvents tsmiDisplayGroups As System.Windows.Forms.ToolStripButton
+    Private WithEvents lblNetworkAnalysis As System.Windows.Forms.Label
+    Private WithEvents tsmiRun As System.Windows.Forms.ToolStripButton
 End Class
