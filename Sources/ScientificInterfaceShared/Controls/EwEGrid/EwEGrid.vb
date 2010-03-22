@@ -305,8 +305,8 @@ Namespace Controls.EwEGrid
             Me.TrackPropertySelection = True
         End Sub
 
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-            MyBase.OnHandleDestroyed(e)
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            MyBase.Dispose(disposing)
 
             Me.UIContext = Nothing
 
