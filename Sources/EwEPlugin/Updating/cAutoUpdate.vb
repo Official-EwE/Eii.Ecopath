@@ -70,22 +70,8 @@ Friend Class cAutoUpdate
         Error_Generic
     End Enum
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Download an update for a file.
-    ''' </summary>
-    ''' <param name="strPluginFile">The file to update.</param>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Public Function DownloadUpdate(ByVal strPluginFile As String) As eUpdateResultTypes
-
+    Public Function HasUpdate(ByVal strPluginFile As String) As eUpdateResultTypes
         Dim assemPlugin As AssemblyName = Nothing
-        Dim abPlugin() As Byte = Nothing
-        Dim fsPlugin As FileStream = Nothing
-        Dim strTemp As String = Path.GetTempFileName()
-        Dim md5Hash As MD5 = MD5.Create()
-        Dim strHashLocal As String = ""
-
         Try
             assemPlugin = AssemblyName.GetAssemblyName(strPluginFile)
         Catch ex As Exception
@@ -102,16 +88,33 @@ Friend Class cAutoUpdate
         End If
 
         Try
-            If Not Me.m_service.CheckPluginUpdate(cAssemblyUtils.GetVersion(Me.m_assemCore), _
+            If Me.m_service.CheckPluginUpdate(cAssemblyUtils.GetVersion(Me.m_assemCore), _
                                                   cAssemblyUtils.GetName(assemPlugin), _
                                                   cAssemblyUtils.GetToken(assemPlugin), _
                                                   cAssemblyUtils.GetVersion(assemPlugin)) Then
-                Return eUpdateResultTypes.Success_NoUpdateAvailable
+                Return eUpdateResultTypes.Success
             End If
         Catch ex As Exception
             ' Unable to connect to server
-            Return eUpdateResultTypes.Error_Connection
         End Try
+        Return eUpdateResultTypes.Error_Connection
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Download an update for a file.
+    ''' </summary>
+    ''' <param name="strPluginFile">The file to update.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function DownloadUpdate(ByVal strPluginFile As String) As eUpdateResultTypes
+
+        Dim abPlugin() As Byte = Nothing
+        Dim fsPlugin As FileStream = Nothing
+        Dim strTemp As String = Path.GetTempFileName()
+        Dim md5Hash As MD5 = MD5.Create()
+        Dim strHashLocal As String = ""
 
         Try
             ' Download to a temp location
@@ -131,8 +134,8 @@ Friend Class cAutoUpdate
 
             ' Does checksum match the service checksum?
             If Not String.Compare(strHashLocal, Me.m_service.GetPluginHash(), True) = 0 Then
-                '' #No: download failed
-                'Return eUpdateResultTypes.Error_Download
+                ' #No: download failed
+                Return eUpdateResultTypes.Error_Download
             End If
         Catch ex As Exception
             ' Error downloading hash

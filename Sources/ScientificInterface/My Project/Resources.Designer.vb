@@ -6159,11 +6159,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Checking &apos;{0}&apos; for updates....
+        '''  Looks up a localized string similar to Checking for updated components....
         '''</summary>
         Friend ReadOnly Property STATUS_UPDATE_CHECKING() As String
             Get
                 Return ResourceManager.GetString("STATUS_UPDATE_CHECKING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Downloading update for &apos;{0}&apos;....
+        '''</summary>
+        Friend ReadOnly Property STATUS_UPDATE_DOWNLOADING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_DOWNLOADING", resourceCulture)
             End Get
         End Property
         

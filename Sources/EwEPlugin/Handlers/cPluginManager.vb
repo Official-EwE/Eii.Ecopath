@@ -246,6 +246,7 @@ Public Class cPluginManager
         Dim di As DirectoryInfo = Nothing
         Dim fi As FileInfo = Nothing
         Dim afi() As FileInfo = Nothing
+        Dim sProgress As Single = 0.0!
 
         'Get the location of the plugin manager assembly
         Dim pluginAssembly As Assembly = System.Reflection.Assembly.GetAssembly(GetType(cPluginManager))
@@ -261,16 +262,18 @@ Public Class cPluginManager
             Dim updater As New cAutoUpdate(ass.GetName)
 
             For iFile As Integer = 0 To afi.Length - 1
+
                 fi = afi(iFile)
-                RaiseEvent AssemblyUpdating(Path.GetFileNameWithoutExtension(fi.FullName), CSng(iFile / afi.Length))
-                Try
+                sProgress = CSng(iFile / afi.Length)
+
+                RaiseEvent AssemblyUpdating("", sProgress)
+                If updater.HasUpdate(fi.FullName) = cAutoUpdate.eUpdateResultTypes.Success Then
+                    RaiseEvent AssemblyUpdating(Path.GetFileNameWithoutExtension(fi.FullName), sProgress)
                     updater.DownloadUpdate(fi.FullName)
-                Catch ex As Exception
-                    ' Ignore this
-                End Try
+                End If
             Next
             ' Done
-            RaiseEvent AssemblyUpdating("", 42.0!)
+            RaiseEvent AssemblyUpdating("", 1.0!)
 
         Catch ex As Exception
             ' Kaboom

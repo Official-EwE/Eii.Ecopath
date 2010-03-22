@@ -135,11 +135,11 @@ Public Class frmUpdateComponents
     Private Sub UpdateControls(ByVal strName As String, ByVal sProgress As Single)
 
         If String.IsNullOrEmpty(strName) Then
-            Me.m_lblInfo.Text = My.Resources.STATUS_PLEASE_WAIT
+            Me.m_lblInfo.Text = My.Resources.STATUS_UPDATE_CHECKING
         Else
-            Me.m_lblInfo.Text = String.Format(My.Resources.STATUS_UPDATE_CHECKING, strName)
-            Me.m_pbProgress.Value = CInt(100 * sProgress)
+            Me.m_lblInfo.Text = String.Format(My.Resources.STATUS_UPDATE_DOWNLOADING, strName)
         End If
+        Me.m_pbProgress.Value = CInt(100 * sProgress)
 
     End Sub
 
