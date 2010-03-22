@@ -1,6 +1,8 @@
 Option Strict On
-Imports System.Data
 Imports System.IO
+Imports System.Data
+Imports System.Text
+Imports System.Drawing
 Imports EwEUtils.Database
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
@@ -92,7 +94,7 @@ Namespace Database
         ''' <summary>Shape counter.</summary>
         Private m_iNextShapeID As Integer = 1
 
-        Private m_sbLog As New Text.StringBuilder
+        Private m_sbLog As New StringBuilder
 
         Private m_lImportedForcingShapes As New List(Of cForcingShapeData)
 
@@ -687,7 +689,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="strMemo">Memo text to rebuild</param>
         ''' <param name="cSplitChar">Separator character that separates the 
-        ''' numbers in the memo text.</param>
+        ''' numbers in the memo </param>
         ''' <param name="nDefaultNumberLen">When interpreting a string without
         ''' separators, this value indicates the number of characters that each
         ''' number occupies in the memo string.</param>
@@ -701,7 +703,7 @@ Namespace Database
                 Optional ByVal nRepetition As Integer = 1) As String
 
             Dim astrMemoBits() As String
-            Dim sb As New Text.StringBuilder
+            Dim sb As New StringBuilder
 
             If strMemo.Length = 0 Then
                 Return strMemo
@@ -1192,7 +1194,7 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim nGroupID As Integer = 1
             Dim sTemp As Single = 0.0
-            Dim iTemp As Integer = 0
+            Dim clrTemp As Color
             Dim nSequence As Integer = 1 ' Renumber sequence field
 
             Dim nNumGroups As Integer = CInt(m_dbEwE5.GetValue(String.Format("SELECT COUNT(*) FROM [Group Info] WHERE modelName='{0}'", strModelName)))
@@ -1273,8 +1275,8 @@ Namespace Database
                 drow("GroupIsFish") = Me.FixValue(reader, "GroupIsFish")
                 drow("GroupIsInvert") = Me.FixValue(reader, "GroupIsInvert")
                 ' JS070412: Poolcolor converted to 8digit hexadecimal string
-                iTemp = CInt(Me.FixValue(reader, "PoolColor", &HFF000000)) ' Solid black
-                drow("Poolcolor") = String.Format("{0:x8}", iTemp)
+                clrTemp = Color.FromArgb(CInt(Me.FixValue(reader, "PoolColor", &H0)))
+                drow("Poolcolor") = String.Format("{0:x8}", &HFF000000 + ((clrTemp.R And &HFF) << 16) + ((clrTemp.G And &HFF) << 8) + (clrTemp.B And &HFF))
 
                 writer.AddRow(drow)
                 ' Commit to allow FK in Remark
@@ -3453,7 +3455,7 @@ Namespace Database
             Dim iScenarioID As Integer = 1
             Dim nMPAID As Integer = 1
             Dim strMPA As String = ""
-            Dim sbMPA As Text.StringBuilder = Nothing
+            Dim sbMPA As StringBuilder = Nothing
 
             reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace MPA] WHERE modelName='{0}'", strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
@@ -3473,7 +3475,7 @@ Namespace Database
                 ' the MPA is open for fishing, and 'C' that the MPA is closed for fishing.
                 ' Ewe6 uses a '1' when the MPA is open for fishing, and '0' when the MPA is closed.
                 strMPA = CStr(Me.FixValue(reader, "MPAMonth", ""))
-                sbMPA = New Text.StringBuilder()
+                sbMPA = New StringBuilder()
                 For i As Integer = 0 To Math.Min(strMPA.Length, 12) - 1
                     ' Closed for fishing: store as 0, open: store as 1
                     sbMPA.Append(CChar(IIf("Cc".IndexOf(strMPA(i)) >= 0, "0", "1")))
