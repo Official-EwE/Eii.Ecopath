@@ -156,7 +156,6 @@
     <Content Include="Images\EwEFDP.jpg" />
     <None Include="EwEFlowDiagram.snk" />
     <None Include="Images\EwEFDP.jpg" />
-    <None Include="My Project\EwEFD_publickey.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

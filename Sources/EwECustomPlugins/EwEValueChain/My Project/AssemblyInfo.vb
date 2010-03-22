@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Value Chain - an economic fisheries model for EwE6")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("ValueChainPlugin")> 
-<Assembly: AssemblyCopyright("Copyright © UBC Fisheries Centre 2009-2010")> 
+<Assembly: AssemblyCopyright("Copyright © 2009-2010")> 
 <Assembly: AssemblyTrademark("")> 
 <Assembly: CLSCompliant(True)> 
 

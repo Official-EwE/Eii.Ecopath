@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("University Of British Columbia")> 
 <Assembly: AssemblyProduct("EwEEcotroph")> 
-<Assembly: AssemblyCopyright("Copyright © University Of British Columbia 2007")> 
+<Assembly: AssemblyCopyright("Copyright © 2007 - 2010")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

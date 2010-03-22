@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Flow diagram plug-in for Ecopath with Ecosim version 6")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwEFlowDiagramPlugin")> 
-<Assembly: AssemblyCopyright("Copyright ©  2008 - 2010")> 
+<Assembly: AssemblyCopyright("Copyright © 2008 - 2010")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
