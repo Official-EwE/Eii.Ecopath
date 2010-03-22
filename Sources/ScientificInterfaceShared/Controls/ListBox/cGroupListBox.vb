@@ -149,9 +149,11 @@ Namespace Controls
 
 #End Region ' Privates
 
+#Region " Construction / destruction "
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Creates a new cGroupListBox
+        ''' Constructor, initializes a new instance of a cGroupListBox.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Sub New()
@@ -159,6 +161,18 @@ Namespace Controls
             ' This box draws its own items
             Me.DrawMode = DrawMode.OwnerDrawFixed
         End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Destroys a cGroupListBox.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Me.Detach()
+            MyBase.Dispose(disposing)
+        End Sub
+
+#End Region ' Construction / destruction
 
 #Region " Interface "
 
@@ -357,11 +371,6 @@ Namespace Controls
 #End Region ' Behaviour
 
 #Region " Overrides "
-
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-            Me.Detach()
-            MyBase.OnHandleDestroyed(e)
-        End Sub
 
         Protected Overrides Sub OnMouseDoubleClick(ByVal e As MouseEventArgs)
 

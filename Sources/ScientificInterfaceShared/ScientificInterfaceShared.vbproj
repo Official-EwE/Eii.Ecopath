@@ -145,9 +145,6 @@
     <Compile Include="Controls\ListBox\cGroupListBox.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ListBox\ListBoxEX.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\ListView\cSmoothListView.vb">
       <SubType>Component</SubType>
     </Compile>

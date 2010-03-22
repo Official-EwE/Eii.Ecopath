@@ -125,16 +125,30 @@ Namespace Controls
 
 #End Region ' Privates
 
+#Region " Construction / destruction "
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Creates a new cFleetListBox.
+        ''' Constructor, initializes a new instance of a cFleetListBox.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Sub New()
             MyBase.New()
             ' This box draws its own items
-            Me.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.DrawMode = DrawMode.OwnerDrawFixed
         End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Destroys a cFleetListBox.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Me.Detach()
+            MyBase.Dispose(disposing)
+        End Sub
+
+#End Region ' Construction / destruction
 
 #Region " Interface "
 
@@ -180,11 +194,6 @@ Namespace Controls
 #End Region ' Attach / detach
 
 #Region " Overrides "
-
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-            Me.Detach()
-            MyBase.OnHandleDestroyed(e)
-        End Sub
 
         Protected Overrides Sub OnMouseDoubleClick(ByVal e As MouseEventArgs)
 
