@@ -6,16 +6,22 @@ Option Explicit On
 Imports EwECore
 Imports EwEUtils.Core
 Imports SourceGrid2
+Imports SourceGrid2.BehaviorModels
 
 #End Region
 
 Namespace Ecospace
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Grid control, implements the Ecospace interface to set dispersal rates.
+    ''' </summary>
+    ''' =======================================================================
     <CLSCompliant(False)> _
-    Public Class DispersalEwEGrid
+     Public Class DispersalEwEGrid
         : Inherits EwEGrid
 
-        Private m_ah As New SourceGrid2.BehaviorModels.CustomEvents
+        Private m_ah As CustomEvents = Nothing
 
         Private Enum eColumnTypes As Integer
             Index = 0
@@ -31,15 +37,23 @@ Namespace Ecospace
             BarrierAvoidance
         End Enum
 
+#Region " Construction / destruction "
+
         Public Sub New()
             MyBase.New()
+            m_ah = New CustomEvents
             AddHandler m_ah.ValueChanged, New SourceGrid2.PositionEventHandler(AddressOf m_ahValueChanged)
         End Sub
 
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-            MyBase.OnHandleDestroyed(e)
-            Me.m_ah = Nothing
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            If (Me.m_ah IsNot Nothing) Then
+                RemoveHandler m_ah.ValueChanged, New SourceGrid2.PositionEventHandler(AddressOf m_ahValueChanged)
+                Me.m_ah = Nothing
+            End If
+            MyBase.Dispose(disposing)
         End Sub
+
+#End Region ' Construction / destruction
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
