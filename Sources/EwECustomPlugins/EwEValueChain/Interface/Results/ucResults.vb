@@ -126,6 +126,36 @@ Public Class ucResults
 
     End Sub
 
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing Then
+                Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+
+                cmdh.Remove(Me.m_cmdRunEcopath)
+                RemoveHandler Me.m_cmdRunEcopath.OnInvoke, AddressOf OnInvokeRunEcosim
+                RemoveHandler Me.m_cmdRunEcopath.OnUpdate, AddressOf OnUpdateRunEcosim
+                Me.m_cmdRunEcopath = Nothing
+
+                cmdh.Remove(Me.m_cmdRunEcosim)
+                RemoveHandler Me.m_cmdRunEcosim.OnInvoke, AddressOf OnInvokeRunEcosim
+                RemoveHandler Me.m_cmdRunEcosim.OnUpdate, AddressOf OnUpdateRunEcosim
+                Me.m_cmdRunEcosim = Nothing
+
+                cmdh.Remove(Me.m_cmdRunEqulibrium)
+                RemoveHandler Me.m_cmdRunEqulibrium.OnInvoke, AddressOf OnInvokeRunEquilibrium
+                RemoveHandler Me.m_cmdRunEqulibrium.OnUpdate, AddressOf OnUpdateRunEquilibrium
+                Me.m_cmdRunEcosim = Nothing
+
+                RemoveHandler Me.m_model.OnRunCompleted, AddressOf OnModelRunCompleted
+                If components IsNot Nothing Then
+                    components.Dispose()
+                End If
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
 #End Region ' Constructor
 
 #Region " Events "
@@ -141,30 +171,6 @@ Public Class ucResults
 
         ' Restore last selection
         Me.m_tscmbFleets.SelectedIndex = Math.Min(Me.m_tscmbFleets.Items.Count - 1, Math.Max(-1, ucResults.g_iLastFleet))
-    End Sub
-
-    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-        MyBase.OnHandleDestroyed(e)
-
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
-
-        cmdh.Remove(Me.m_cmdRunEcopath)
-        RemoveHandler Me.m_cmdRunEcopath.OnInvoke, AddressOf OnInvokeRunEcosim
-        RemoveHandler Me.m_cmdRunEcopath.OnUpdate, AddressOf OnUpdateRunEcosim
-        Me.m_cmdRunEcopath = Nothing
-
-        cmdh.Remove(Me.m_cmdRunEcosim)
-        RemoveHandler Me.m_cmdRunEcosim.OnInvoke, AddressOf OnInvokeRunEcosim
-        RemoveHandler Me.m_cmdRunEcosim.OnUpdate, AddressOf OnUpdateRunEcosim
-        Me.m_cmdRunEcosim = Nothing
-
-        cmdh.Remove(Me.m_cmdRunEqulibrium)
-        RemoveHandler Me.m_cmdRunEqulibrium.OnInvoke, AddressOf OnInvokeRunEquilibrium
-        RemoveHandler Me.m_cmdRunEqulibrium.OnUpdate, AddressOf OnUpdateRunEquilibrium
-        Me.m_cmdRunEcosim = Nothing
-
-        RemoveHandler Me.m_model.OnRunCompleted, AddressOf OnModelRunCompleted
-
     End Sub
 
     Private Sub OnFilterByFleet(ByVal sender As System.Object, ByVal e As System.EventArgs) _

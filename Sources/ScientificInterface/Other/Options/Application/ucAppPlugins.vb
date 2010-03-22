@@ -151,18 +151,25 @@ Namespace Other
 
         End Sub
 
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-            MyBase.OnHandleDestroyed(e)
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Try
+                If disposing Then
+                    For Each pa As cPluginAssembly In Me.m_dictPluginAssemblyInfo.Keys
+                        ' Stop listening to plugin assembly
+                        RemoveHandler pa.AssemblyEnabled, AddressOf OnHandlePluginAssemblyEnabled
+                        ' Restore enabled state
+                        pa.Enabled = Me.m_dictPluginAssemblyInfo(pa).Enabled
+                    Next
 
-            For Each pa As cPluginAssembly In Me.m_dictPluginAssemblyInfo.Keys
-                ' Stop listening to plugin assembly
-                RemoveHandler pa.AssemblyEnabled, AddressOf OnHandlePluginAssemblyEnabled
-                ' Restore enabled state
-                pa.Enabled = Me.m_dictPluginAssemblyInfo(pa).Enabled
-            Next
+                    Me.m_dictPluginAssemblyInfo.Clear()
 
-            Me.m_dictPluginAssemblyInfo.Clear()
-
+                    If components IsNot Nothing Then
+                        components.Dispose()
+                    End If
+                End If
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
         End Sub
 
         Private Sub m_tvPlugins_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles m_tvPlugins.AfterSelect

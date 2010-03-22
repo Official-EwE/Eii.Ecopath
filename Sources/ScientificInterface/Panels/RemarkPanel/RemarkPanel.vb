@@ -44,19 +44,23 @@ Public Class RemarkPanel
 
     End Sub
 
-    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-        MyBase.OnHandleDestroyed(e)
+    'Form overrides dispose to clean up the component list.
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        If disposing Then
+            ' Clean up
+            If Me.m_cmd IsNot Nothing Then
 
-        ' Clean up
-        If Me.m_cmd IsNot Nothing Then
+                RemoveHandler Me.m_cmd.OnInvoke, AddressOf OnInvoke
+                Me.m_cmd = Nothing
 
-            RemoveHandler Me.m_cmd.OnInvoke, AddressOf OnInvoke
-            Me.m_cmd = Nothing
-
-            RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
-            Me.m_sm = Nothing
+                RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
+                Me.m_sm = Nothing
+            End If
+            If components IsNot Nothing Then
+                components.Dispose()
+            End If
         End If
-
+        MyBase.Dispose(disposing)
     End Sub
 
 #Region " Command handling "

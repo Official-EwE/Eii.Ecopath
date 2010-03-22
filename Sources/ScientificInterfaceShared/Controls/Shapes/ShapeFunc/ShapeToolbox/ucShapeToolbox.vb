@@ -33,14 +33,40 @@ Namespace Controls
 
 #End Region ' Variables
 
-#Region " Constructors "
+#Region " Construction / destruction "
 
         Public Sub New()
             Me.InitializeComponent()
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         End Sub
 
-#End Region ' Constructors
+        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+
+            If (bDisposing) Then
+
+                Dim cmd As cCommand = Nothing
+
+                If (Me.m_uic IsNot Nothing) Then
+
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+                    cmd = Me.m_uic.CommandHander.GetCommand("WeightTimeSeries")
+                    If cmd IsNot Nothing Then
+                        cmd.RemoveControl(Me.ApplyToolStripMenuItem)
+                    End If
+
+                    Me.m_uic = Nothing
+                End If
+
+                If components IsNot Nothing Then
+                    components.Dispose()
+                End If
+            End If
+
+            MyBase.Dispose(bDisposing)
+        End Sub
+
+#End Region ' Construction / destruction
 
 #Region " Properties "
 
@@ -380,28 +406,6 @@ Namespace Controls
             Me.Selection = Nothing
             Me.UpdateThumbnails()
             Me.m_bInUpdate = False
-
-        End Sub
-
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-
-            Dim cmd As cCommand = Nothing
-
-            If (Me.m_uic IsNot Nothing) Then
-
-                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
-                'cmd = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
-                'If cmd IsNot Nothing Then
-                'End If
-
-                cmd = Me.m_uic.CommandHander.GetCommand("WeightTimeSeries")
-                If cmd IsNot Nothing Then
-                    cmd.RemoveControl(Me.ApplyToolStripMenuItem)
-                End If
-            End If
-
-            MyBase.OnHandleDestroyed(e)
 
         End Sub
 

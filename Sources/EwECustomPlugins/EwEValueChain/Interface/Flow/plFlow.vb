@@ -101,7 +101,26 @@ Public Class plFlow
         Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         Me.SetStyle(ControlStyles.UserPaint, True)
+    End Sub
 
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        If (disposing) Then
+            Me.ClearFlow()
+
+            If Me.m_uic IsNot Nothing Then
+                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
+            End If
+
+            Me.m_pg = Nothing
+            Me.m_data = Nothing
+            Me.m_uic = Nothing
+            Me.m_dtControls = Nothing
+            Me.m_dtLinks = Nothing
+            Me.m_bmpClickDetection.Dispose()
+            Me.m_bmpClickDetection = Nothing
+
+        End If
+        MyBase.Dispose(disposing)
     End Sub
 
 #Region " Public bits "
@@ -352,25 +371,6 @@ Public Class plFlow
 #End Region ' Public interfaces
 
 #Region " Event handling "
-
-    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-        MyBase.OnHandleDestroyed(e)
-
-        Me.ClearFlow()
-
-        If Me.m_uic IsNot Nothing Then
-            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
-        End If
-
-        Me.m_pg = Nothing
-        Me.m_data = Nothing
-        Me.m_uic = Nothing
-        Me.m_dtControls = Nothing
-        Me.m_dtLinks = Nothing
-        Me.m_bmpClickDetection.Dispose()
-        Me.m_bmpClickDetection = Nothing
-
-    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

@@ -9,19 +9,34 @@ Namespace Ecospace.Basemap.Layers
 
     ''' =======================================================================
     ''' <summary>
-    ''' 
+    ''' Layer editor interface for editing a layer that may contain a range of values.
     ''' </summary>
     ''' =======================================================================
     Public Class ucLayerEditorRange
 
-#Region " Construction "
+#Region " Construction / destruction "
 
         Public Sub New()
             MyBase.New()
             Me.InitializeComponent()
         End Sub
 
-#End Region ' Construction
+        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+            Try
+                If bDisposing Then
+                    If (Me.UIContext Is Nothing) Then Return
+
+                    RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    If components IsNot Nothing Then
+                        components.Dispose()
+                    End If
+                End If
+            Finally
+                MyBase.Dispose(bDisposing)
+            End Try
+        End Sub
+
+#End Region ' Construction / destruction
 
 #Region " Overrides "
 
@@ -59,14 +74,6 @@ Namespace Ecospace.Basemap.Layers
 
             AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             Me.UpdateContent()
-        End Sub
-
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-
-            If (Me.UIContext Is Nothing) Then Return
-
-            RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            MyBase.OnHandleDestroyed(e)
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)

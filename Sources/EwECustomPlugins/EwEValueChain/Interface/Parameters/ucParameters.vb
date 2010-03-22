@@ -47,6 +47,32 @@ Public Class ucParameters
 
     End Sub
 
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing Then
+
+                If (Me.m_uic IsNot Nothing) Then
+
+                    ' Stop listening to core state changes
+                    RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+                    ' Stop listening to parameter changes
+                    RemoveHandler Me.m_params.OnChanged, AddressOf OnParametersChanged
+
+                    ' Unplug Ecosim controls
+                    Me.ConfigureEcosimControls(False)
+                    Me.m_uic = Nothing
+
+                End If
+
+                If components IsNot Nothing Then
+                    components.Dispose()
+                End If
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
 #End Region ' Constructor
 
 #Region " Overrides "
@@ -86,33 +112,6 @@ Public Class ucParameters
 
         ' Force core state dependent initialization
         Me.OnCoreStateChanged(Me.m_uic.Core.StateMonitor)
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Unload me!
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-        MyBase.OnHandleDestroyed(e)
-
-        ' Stop listening to core state changes
-        RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
-        ' Stop listening to parameter changes
-        RemoveHandler Me.m_params.OnChanged, AddressOf OnParametersChanged
-
-        ' Unplug Ecosim controls
-        Me.ConfigureEcosimControls(False)
-
-        ' Default unloading
-        Try
-            If Disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-        Finally
-            MyBase.Dispose(Disposing)
-        End Try
 
     End Sub
 

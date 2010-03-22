@@ -37,11 +37,6 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-        Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
-            ' Reset selection
-            MyBase.OnHandleDestroyed(e)
-        End Sub
-
         Public Overrides Sub UpdateContent()
             MyBase.UpdateContent()
 

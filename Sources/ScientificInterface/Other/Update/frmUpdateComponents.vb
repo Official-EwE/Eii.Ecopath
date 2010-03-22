@@ -54,11 +54,13 @@ Public Class frmUpdateComponents
 
     End Sub
 
-    Protected Overrides Sub OnHandleDestroyed(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
         ' Stop listening to update events
         RemoveHandler Me.m_pm.AssemblyUpdating, AddressOf OnAssemblyUpdating
         ' Done
-        MyBase.OnHandleDestroyed(e)
+        MyBase.OnFormClosed(e)
+
     End Sub
 
     Protected Overrides Sub OnShown(ByVal e As System.EventArgs)
