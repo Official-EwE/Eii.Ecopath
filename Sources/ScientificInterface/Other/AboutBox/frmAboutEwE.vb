@@ -21,7 +21,7 @@ Namespace Other
 
         Public Sub New(ByVal uic As cUIContext)
             Me.InitializeComponent()
-            Me.m_uic = m_uic
+            Me.m_uic = uic
         End Sub
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
