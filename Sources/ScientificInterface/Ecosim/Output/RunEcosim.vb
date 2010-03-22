@@ -121,6 +121,7 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
             RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
@@ -137,6 +138,9 @@ Namespace Ecosim
             End If
 
             Me.m_lbGroups.Detach()
+
+            RemoveHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
+            Me.m_zgp.Detach()
 
             Me.CoreComponents = Nothing
 
