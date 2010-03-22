@@ -10,7 +10,8 @@ Imports ScientificInterface.Other
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' 
+''' Dialog, implementing the Ecosim - Fit to Time Series - Sensitivity of SS
+''' to Vulnerabilities search interface.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class dlgSensitivityOfSStoV
@@ -192,8 +193,8 @@ Public Class dlgSensitivityOfSStoV
 
         Console.WriteLine("Dlg: run started " & runType)
 
-        Me.m_pbSearch.Maximum = nSteps
-        Me.m_pbSearch.Visible = True
+        Me.m_progress.Maximum = nSteps
+        Me.m_progress.Visible = True
         Me.m_btnSearch.Enabled = False
 
     End Sub
@@ -222,7 +223,7 @@ Public Class dlgSensitivityOfSStoV
 
         End Select
 
-        Me.m_pbSearch.Value += 1
+        Me.m_progress.Value += 1
         Me.UpdateControls()
 
     End Sub
@@ -237,7 +238,7 @@ Public Class dlgSensitivityOfSStoV
 
         ' Sanity check
         Debug.Assert(runType = Me.m_runType)
-        Me.m_pbSearch.Visible = False
+        Me.m_progress.Visible = False
         Me.m_btnSearch.Enabled = True
 
         'write out the SS matrix that was collected in m_F2TSManager_OnRunStep
@@ -325,7 +326,7 @@ Public Class dlgSensitivityOfSStoV
 
         ' Reset controls
         Me.m_runResultType = eRunType.Idle
-        Me.m_pbSearch.Value = 0
+        Me.m_progress.Value = 0
 
         If (Me.m_rbSearchPredPrey.Checked) Then
             If (Me.m_F2TSManager.RunSensitivitySS2VByPredPrey() = False) Then

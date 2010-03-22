@@ -24,7 +24,7 @@ Partial Class dlgSensitivityOfSStoV
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSensitivityOfSStoV))
         Me.m_ucVulBlocks = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks
-        Me.m_pbSearch = New System.Windows.Forms.ProgressBar
+        Me.m_progress = New System.Windows.Forms.ProgressBar
         Me.m_btnSearch = New System.Windows.Forms.Button
         Me.m_rbSearchPredPrey = New System.Windows.Forms.RadioButton
         Me.m_rbSearchPred = New System.Windows.Forms.RadioButton
@@ -32,13 +32,9 @@ Partial Class dlgSensitivityOfSStoV
         Me.m_nudNumBlocks = New System.Windows.Forms.NumericUpDown
         Me.m_btnCancel = New System.Windows.Forms.Button
         Me.m_btnOk = New System.Windows.Forms.Button
-        Me.Panel1 = New System.Windows.Forms.Panel
         Me.m_lblSearch = New System.Windows.Forms.Label
-        Me.Panel2 = New System.Windows.Forms.Panel
         Me.m_lblTransfer = New System.Windows.Forms.Label
         CType(Me.m_nudNumBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Panel1.SuspendLayout()
-        Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_ucVulBlocks
@@ -50,11 +46,11 @@ Partial Class dlgSensitivityOfSStoV
         Me.m_ucVulBlocks.SelectedBlockNum = 0
         Me.m_ucVulBlocks.UIContext = Nothing
         '
-        'm_pbSearch
+        'm_progress
         '
-        resources.ApplyResources(Me.m_pbSearch, "m_pbSearch")
-        Me.m_pbSearch.Name = "m_pbSearch"
-        Me.m_pbSearch.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+        resources.ApplyResources(Me.m_progress, "m_progress")
+        Me.m_progress.Name = "m_progress"
+        Me.m_progress.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         '
         'm_btnSearch
         '
@@ -101,34 +97,17 @@ Partial Class dlgSensitivityOfSStoV
         Me.m_btnOk.Name = "m_btnOk"
         Me.m_btnOk.UseVisualStyleBackColor = True
         '
-        'Panel1
-        '
-        Me.Panel1.Controls.Add(Me.m_lblSearch)
-        Me.Panel1.Controls.Add(Me.m_rbSearchPred)
-        Me.Panel1.Controls.Add(Me.m_rbSearchPredPrey)
-        Me.Panel1.Controls.Add(Me.m_btnSearch)
-        resources.ApplyResources(Me.Panel1, "Panel1")
-        Me.Panel1.Name = "Panel1"
-        '
         'm_lblSearch
         '
-        resources.ApplyResources(Me.m_lblSearch, "m_lblSearch")
         Me.m_lblSearch.BackColor = System.Drawing.SystemColors.ControlDark
+        resources.ApplyResources(Me.m_lblSearch, "m_lblSearch")
         Me.m_lblSearch.ForeColor = System.Drawing.SystemColors.ControlLightLight
         Me.m_lblSearch.Name = "m_lblSearch"
         '
-        'Panel2
-        '
-        Me.Panel2.Controls.Add(Me.m_nudNumBlocks)
-        Me.Panel2.Controls.Add(Me.m_lblNumCategories)
-        Me.Panel2.Controls.Add(Me.m_lblTransfer)
-        resources.ApplyResources(Me.Panel2, "Panel2")
-        Me.Panel2.Name = "Panel2"
-        '
         'm_lblTransfer
         '
-        resources.ApplyResources(Me.m_lblTransfer, "m_lblTransfer")
         Me.m_lblTransfer.BackColor = System.Drawing.SystemColors.ControlDark
+        resources.ApplyResources(Me.m_lblTransfer, "m_lblTransfer")
         Me.m_lblTransfer.ForeColor = System.Drawing.SystemColors.ControlLightLight
         Me.m_lblTransfer.Name = "m_lblTransfer"
         '
@@ -138,10 +117,15 @@ Partial Class dlgSensitivityOfSStoV
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
-        Me.Controls.Add(Me.m_pbSearch)
+        Me.Controls.Add(Me.m_nudNumBlocks)
+        Me.Controls.Add(Me.m_lblNumCategories)
+        Me.Controls.Add(Me.m_btnSearch)
+        Me.Controls.Add(Me.m_rbSearchPredPrey)
+        Me.Controls.Add(Me.m_lblTransfer)
+        Me.Controls.Add(Me.m_rbSearchPred)
+        Me.Controls.Add(Me.m_lblSearch)
+        Me.Controls.Add(Me.m_progress)
         Me.Controls.Add(Me.m_ucVulBlocks)
-        Me.Controls.Add(Me.Panel2)
-        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOk)
         Me.MaximizeBox = False
@@ -151,11 +135,8 @@ Partial Class dlgSensitivityOfSStoV
         Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
         CType(Me.m_nudNumBlocks, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
-        Me.Panel2.ResumeLayout(False)
-        Me.Panel2.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents m_rbSearchPredPrey As System.Windows.Forms.RadioButton
@@ -163,12 +144,10 @@ Partial Class dlgSensitivityOfSStoV
     Friend WithEvents m_btnCancel As System.Windows.Forms.Button
     Friend WithEvents m_btnOk As System.Windows.Forms.Button
     Friend WithEvents m_nudNumBlocks As System.Windows.Forms.NumericUpDown
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Private WithEvents m_lblSearch As System.Windows.Forms.Label
-    Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Private WithEvents m_lblTransfer As System.Windows.Forms.Label
     Private WithEvents m_ucVulBlocks As ScientificInterface.Ecosim.ucVulnerabiltyBlocks
     Private WithEvents m_btnSearch As System.Windows.Forms.Button
-    Private WithEvents m_pbSearch As System.Windows.Forms.ProgressBar
+    Private WithEvents m_progress As System.Windows.Forms.ProgressBar
     Private WithEvents m_lblNumCategories As System.Windows.Forms.Label
 End Class

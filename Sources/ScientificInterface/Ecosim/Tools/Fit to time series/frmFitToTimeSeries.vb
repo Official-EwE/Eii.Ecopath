@@ -303,9 +303,15 @@ Namespace Ecosim
             Me.m_dlgSensOfSS = New dlgSensitivityOfSStoV(Me.UIContext, Me.m_F2TSManager)
             Me.m_dlgSensOfSS.NumBlocks = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
 
+            ' Init vulnerabiltiy blocks
+            For iPred As Integer = 1 To Me.Core.nGroups
+                For iPrey As Integer = 1 To Me.Core.nGroups
+                    Me.m_dlgSensOfSS.VulnerabilityBlocks(iPred, iPrey) = Me.m_vulnerabilityBlockMatrix.Vulblocks(iPred, iPrey)
+                Next iPrey
+            Next iPred
+
             m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
             m_F2TSManager.nBlockCodes = m_vulnerabilityBlockCodeSelector.NumBlocks
-
 
             If Me.m_dlgSensOfSS.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
 

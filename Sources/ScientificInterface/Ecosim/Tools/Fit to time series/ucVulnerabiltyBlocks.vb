@@ -211,7 +211,7 @@ Namespace Ecosim
                 End Using
 
                 ' Draw vulnerability blocks
-                For i As Integer = 0 To Me.m_uic.Core.nGroups
+                For i As Integer = 0 To Me.m_uic.Core.nLivingGroups
                     For j As Integer = 0 To Me.m_uic.Core.nGroups
                         If (i = 0 Or j = 0) Then
                             ' Draw row and/or column header cell
@@ -220,11 +220,7 @@ Namespace Ecosim
                             ' Draw content cell
                             If (ppi.isPredPrey(i, j)) Then
                                 iBlock = Me.m_a2iVulBlocks(i, j)
-                                'Fix bug 441 by JoeH
-                                'Change
-                                'If iBlock <= Me.m_lclrBlockCodes.Count Then
                                 If iBlock <= Me.m_acolors.Count - 1 Then
-                                    'End Change
                                     ' Render solid block
                                     Using tmpBrush As New SolidBrush(Me.m_acolors(iBlock))
                                         e.Graphics.FillRectangle(tmpBrush, i * szCell.Width, j * szCell.Height, szCell.Width, szCell.Height)
