@@ -169,7 +169,7 @@ Public Class cEwENetworkAnalysisPlugin
                 'Add
                 m_manager.IsMainNetworkRun = False
                 m_manager.IsRequiredPrimaryProdRun = False
-                m_manager.IsEcosimNetworkRan = False
+                m_manager.IsEcosimNetworkRun = False
                 'End Add
 
                 If Me.m_manager.RunWithEcopath Then

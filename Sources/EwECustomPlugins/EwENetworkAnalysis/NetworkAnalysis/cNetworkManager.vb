@@ -128,7 +128,7 @@ Public Class cNetworkManager
         Debug.Assert(m_econetwork IsNot Nothing)
 
         ' Optimization
-        If Me.m_bIsMainNetworkRun = True Then Return True
+        If Me.IsMainNetworkRun = True Then Return True
 
         m_runstate = eRunState.NetworkNeedsToRun
 
@@ -158,7 +158,7 @@ Public Class cNetworkManager
                 m_runstate = eRunState.NetworkHasRun
 
                 bSucces = True
-                m_bIsMainNetworkRun = True
+                Me.IsMainNetworkRun = True
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -184,7 +184,7 @@ Public Class cNetworkManager
     'End Function
     Public Property IsMainNetworkRun() As Boolean
         Get
-            Return m_bIsMainNetworkRun
+            Return Me.m_bIsMainNetworkRun
         End Get
         Set(ByVal value As Boolean)
             If (value <> Me.m_bIsMainNetworkRun) Then
@@ -441,10 +441,10 @@ Public Class cNetworkManager
                 Return False
             End If
 
-            If Me.m_bIsEcosimNetworkRun Then Return True
+            If Me.IsEcosimNetworkRun Then Return True
 
             cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_NETWORKANALYSIS, TriState.True)
-            Me.m_bIsEcosimNetworkRun = Me.Core.RunEcoSim()
+            Me.IsEcosimNetworkRun = Me.Core.RunEcoSim()
             cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         Catch ex As Exception
@@ -602,27 +602,25 @@ Public Class cNetworkManager
     End Property
 
     ''' <summary>
-    ''' Run the network analysis for Ecosim (Ecosim Indicies)
+    ''' Get/set whether the Network Analysis plug-in should run with Ecosim.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks>IndicesOn in EwE5. This is set implicitly by RunEcosimNetwork.
-    '''  If this flag is false the plugin will not responed to the EcosimEndTimeStep() plugin point.</remarks>
+    ''' <remarks>
+    ''' Was flag 'IndicesOn' in EwE5. If this flag is set to False, the plugin 
+    ''' will not respond to the EcosimEndTimeStep() plugin point.
+    ''' </remarks>
     Public Property UseEcosimNetwork() As Boolean
         Get
-            Return m_bUseEcosimNetwork
+            Return Me.m_bUseEcosimNetwork
         End Get
         Set(ByVal value As Boolean)
-            m_bUseEcosimNetwork = value
+            Me.m_bUseEcosimNetwork = value
         End Set
     End Property
 
     ''' <summary>
-    ''' Run whether network analysis for Ecosim has ran
+    ''' Get/set whether network analysis for Ecosim has ran.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    Public Property IsEcosimNetworkRan() As Boolean
+    Public Property IsEcosimNetworkRun() As Boolean
         Get
             Return m_bIsEcosimNetworkRun
         End Get
@@ -637,8 +635,7 @@ Public Class cNetworkManager
     ''' <summary>
     ''' Run the Required Primary Production routines for ecosim
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
+    ''' <returns>True </returns>
     ''' <remarks>This is very time consuming</remarks>
     Public Property EcosimPPROn() As Boolean
         Get
@@ -649,7 +646,7 @@ Public Class cNetworkManager
                 ' Update flag
                 Me.m_econetwork.PPRon = value
                 ' Void ecosim run
-                Me.m_bIsEcosimNetworkRun = False
+                Me.IsEcosimNetworkRun = False
             End If
         End Set
     End Property
@@ -2101,11 +2098,11 @@ Public Class cNetworkManager
         ' Invalidate results when core states dictate 
         ' Fixes bug 617
         If Not csm.HasEcopathRan Then
-            Me.m_bIsMainNetworkRun = False
+            Me.IsMainNetworkRun = False
         End If
 
         If Not csm.HasEcosimRan Then
-            Me.m_bIsEcosimNetworkRun = False
+            Me.IsEcosimNetworkRun = False
         End If
 
     End Sub

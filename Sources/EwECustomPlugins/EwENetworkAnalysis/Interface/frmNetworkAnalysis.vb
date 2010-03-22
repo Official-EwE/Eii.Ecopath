@@ -260,8 +260,13 @@ Public Class frmNetworkAnalysis
     End Sub
 
     Private Sub OnRunStateChanged()
+
+        If (Me.tsmiRun Is Nothing) Then Return
+        If (Me.m_contentmanager Is Nothing) Then Return
+        If (Me.m_networkmanager Is Nothing) Then Return
+
         Me.tsmiRun.Enabled = (Me.m_networkmanager.IsMainNetworkRun = False) Or _
-                             ((Me.m_networkmanager.IsEcosimNetworkRan = False) And (Me.m_contentmanager.UsesEcosim = True))
+                             ((Me.m_networkmanager.IsEcosimNetworkRun = False) And (Me.m_contentmanager.UsesEcosim = True))
     End Sub
 
     Private Sub UpdateContent()

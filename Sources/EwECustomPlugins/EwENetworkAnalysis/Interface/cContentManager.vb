@@ -308,8 +308,8 @@ Public MustInherit Class cContentManager
         ' Hide toolstrip items
         For Each tsi As ToolStripItem In Me.Toolstrip.Items
             Select Case tsi.Name
-                'Case "tsmiRun"
-                '    tsi.Visible = True
+                Case "tsmiRun"
+                    tsi.Visible = True
                 Case Else
                     tsi.Visible = False
             End Select
