@@ -1258,6 +1258,8 @@ Namespace Core
         TL
         ''' <summary>Fishing in-balance (FIB) index.</summary>
         FIB
+        KemptonsQ
+        TotalCatch
 
         'PM's for NA vars 
         TLCatchPM
