@@ -56,10 +56,10 @@ Friend Class cAutoUpdate
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eUpdateResultTypes As Integer
-        ''' <summary>File was successfully updated.</summary>
+        ''' <summary>Operation successful.</summary>
         Success = 0
         ''' <summary>Update not available for a given assembly.</summary>
-        Success_NoUpdateAvailable
+        Error_NoUpdateAvailable
         ''' <summary>Update webservice could not be connected.</summary>
         Error_Connection
         ''' <summary>File failed to download.</summary>
@@ -70,6 +70,34 @@ Friend Class cAutoUpdate
         Error_Generic
     End Enum
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, states if an update is available for a given assembly.
+    ''' </summary>
+    ''' <param name="strPluginFile">The file to check updates for.</param>
+    ''' <returns>
+    ''' <para>An <see cref="eUpdateResultTypes">update result indicator</see>,
+    ''' which are to be interpreted as follows:</para>
+    ''' <list type="bullet">
+    ''' <item>
+    ''' <term><see cref="eUpdateResultTypes.Success">Success</see></term>
+    ''' <description>An update is available.</description>
+    ''' </item>
+    ''' <item>
+    ''' <term><see cref="eUpdateResultTypes.Error_NoUpdateAvailable">Error_NoUpdateAvailable</see></term>
+    ''' <description>An update is not available.</description>
+    ''' </item>
+    ''' <item>
+    ''' <term><see cref="eUpdateResultTypes.Error_Connection">Error_Connection</see></term>
+    ''' <description>Connection to update server could not be established.</description>
+    ''' </item>
+    ''' <item>
+    ''' <term><see cref="eUpdateResultTypes.Error_Generic">Error_Generic</see></term>
+    ''' <description>Something else went wrong.</description>
+    ''' </item>
+    ''' </list>
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
     Public Function HasUpdate(ByVal strPluginFile As String) As eUpdateResultTypes
         Dim assemPlugin As AssemblyName = Nothing
         Try
@@ -79,12 +107,12 @@ Friend Class cAutoUpdate
         End Try
 
         If (assemPlugin Is Nothing) Then
-            Return eUpdateResultTypes.Success_NoUpdateAvailable
+            Return eUpdateResultTypes.Error_Generic
         End If
 
         ' Perform local version check first
         If assemPlugin.Version.CompareTo(m_assemCore.Version) >= 0 Then
-            Return eUpdateResultTypes.Success_NoUpdateAvailable
+            Return eUpdateResultTypes.Error_NoUpdateAvailable
         End If
 
         Try
@@ -106,7 +134,24 @@ Friend Class cAutoUpdate
     ''' Download an update for a file.
     ''' </summary>
     ''' <param name="strPluginFile">The file to update.</param>
-    ''' <returns></returns>
+    ''' <returns>
+    ''' <para>An <see cref="eUpdateResultTypes">update result indicator</see>,
+    ''' which are to be interpreted as follows:</para>
+    ''' <list type="bullet">
+    ''' <item>
+    ''' <term><see cref="eUpdateResultTypes.Success">Success</see></term>
+    ''' <description>Update was downloaded and copied succesfully.</description>
+    ''' </item>
+    ''' <item>
+    ''' <term><see cref="eUpdateResultTypes.Error_Download">Error_Download</see></term>
+    ''' <description>Failed to correctly download the update.</description>
+    ''' </item>
+    ''' <item>
+    ''' <term><see cref="eUpdateResultTypes.Error_Replace">Error_Replace</see></term>
+    ''' <description>Failed to replace local plug-in file with update.</description>
+    ''' </item>
+    ''' </list>
+    ''' </returns>
     ''' -----------------------------------------------------------------------
     Public Function DownloadUpdate(ByVal strPluginFile As String) As eUpdateResultTypes
 
