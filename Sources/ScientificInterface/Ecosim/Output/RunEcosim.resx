@@ -304,7 +304,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.0.7.221, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.0.7.322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>m_spContainer.Panel2</value>
@@ -346,13 +346,13 @@
     <value>Sum of Squares:</value>
   </data>
   <data name="m_tsmiBiomass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>123, 22</value>
   </data>
   <data name="m_tsmiBiomass.Text" xml:space="preserve">
     <value>&amp;Biomass</value>
   </data>
   <data name="m_tsmiCatch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>123, 22</value>
   </data>
   <data name="m_tsmiCatch.Text" xml:space="preserve">
     <value>&amp;Catch</value>
@@ -384,19 +384,19 @@
   <data name="m_tsddPlotType.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAphJREFUOE+dk2tI
-        02EUxhckFSIhEVpKBEGamaRmgrMv6+Yly8QMitRcSovK2LpA5S76n/ckcg4NKZKSTULQQStJNOd1zRGW
-        10zNcNmYa1Nba20+7V1N+1tf6sDDy/nw/Dic87wMxq+S1HVKUs6JR9z9P70SWWcVJZV9iIhlw20sLEk+
-        7RR+11+hFbIOqaCsztjUOYhlADgcJtjt0/hm7YVAELMIp4EEt6rVjc8GbeoB3R+AyrscKBQUtN1yF0Au
-        uJT8gMfGQ6dK0xJ/AkVl99A7PI2+UT0NUFB4FLZZNWymVmhUUlD8Q5Dzs7EwMQSoFEj1X70E6B83YGTS
-        SAPkU7GwGhpg/fQIL5tzUJaaANnVLPTl86Dln8fJDR5LgLEpE5RdOlyQ6MC5PQl28SjEwr2wTJXjy3sx
-        1Eo2ilP2w1aVh6/lN9DDS6UDPhrmwMx4Ar3JgXH9AtoGHKBuRmH+HQ9zw2fQVX8QRYl7MF/ChTnvLFSZ
-        CXSAcdaK7Um1YGU1IE3YDu4dLfKuhcH8JgnmV/vQIduBgrgIzFw/BT03Cc0pUXSAxfodAYdrkF9vRY7M
-        gnSqC7ncbTBpwvG5JwDtNT4Qs4IxxTmAyXQmnsYE0gF2xwL8WFJkV5uRWWFE/OUXEF7cDGOHL2ZUa6G6
-        7wGKuQVjx0Px9shWNDJ96AA4yzuyFMeKphEv0mE3uwkCji8MrSthaGGgrZqB3F0bMRTjj37WetSHeS6b
-        wO7Amp1iRF+ZQNAJJTYFx4Gf6b1oDgsNgihkHV5He+FxyCqXyBldySVBMprnXQBiJGpRacDP8ER85Aow
-        w/1QWaOAMNDLZXJLruxeAtQq2lwQu3MSUmQnZLHkOuTEJCckbCSxz3tGsGgmUSZj/I/cH+oHcqAba23B
-        aXUAAAAASUVORK5CYII=
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAplJREFUOE+dk2tI
+        02EUxhckFSIhEVpKBEGamaRmgrMv66Yuy8QMitRcSovK2LpA5Tb1P+9J5BwaUiQlm4SggyaSaM45XSph
+        eVumZrhszLWp2VqbT3tX0/7Wlzrw8HI+PD8O5zwvg/GrJHWdkuQLYp27/6dXIuusoqSyDxGxHLiNhSVJ
+        Z53C7/ortEKmlgrL6kzNnUNYAYDDYYbdPo1v1l4IhTFLcBpIeKda29g0ZNMO6v8AVN7nQqGg0NcldwHk
+        witJj/gcPHaqNDXhJzCn7AF6R6bRP2qgAQoKj8M2q4XN3IYelRSU4AjkgiwsTgwDKgVS/NcuAwbGjdBN
+        mmiAfCoWVmMDrJ+e4GVLNspS4iG7non+fD76BBdxepPHMmBsygylRo9LEj24dyfBKR6FWLQfC1Pl+PJe
+        DK2Sg+Lkg7BV5eFr+S1081PogI/GOTDTn8FgdmDcsIj2QQeo21GYf8fH3Mg5aOoPoyhhH+ZLeLDknYcq
+        I54OMM1asTOxFqzMBqSKOsC714e8G2GwvEmE5dUBqGW7UBAXgZmbZ2DgJaIlOYoOWLB+R8DRGuTXW5Et
+        W0AapUEubwfMPeH43B2AjhofiFnBmOIewmQaE00xgXSA3bEIP5YUWdUWZFSYwL76AqLLW2FS+2JGtR6q
+        hx6gmNswdjIUb49tRyPThw6As7wjS3GiaBrsHD32cpoh5PrC2LYaxlYG2qsZyN2zGcMx/hhgbUR9mOeK
+        CewOrNstRvS1CQSdUmJLcBwEGd5L5rDQIOSEbMDraC88DVnjEjmjK7kkSCbLvAtAjEStqh4I0j3BjlwF
+        ZrgfKmsUEAV6uUxuyZVdy4BaRbsLYndOQorshCyWXIecmOSEhI0k9nm3DktmEmUyxv/I/aF+AG9ZG2qm
+        U/K3AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="m_tsddPlotType.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -550,7 +550,7 @@
     <value>m_graph</value>
   </data>
   <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.32468, Culture=neutral, PublicKeyToken=null</value>
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.17508, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
   </data>
   <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
     <value>m_scGraph.Panel1</value>
@@ -715,7 +715,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.7.221, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.7.322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_scOptions.Panel2</value>
@@ -904,7 +904,7 @@
     <value>tscbTarget</value>
   </data>
   <data name="&gt;&gt;tscbTarget.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cCustomToolstripComboBox, ScientificInterfaceShared, Version=6.0.7.221, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.cCustomToolstripComboBox, ScientificInterfaceShared, Version=6.0.7.322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
     <value>ToolStripSeparator1</value>
@@ -1078,6 +1078,6 @@
     <value>RunEcosim</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.221, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.322, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>

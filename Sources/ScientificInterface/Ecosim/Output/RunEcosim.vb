@@ -16,21 +16,30 @@ Imports EwEUtils.Commands
 
 Namespace Ecosim
 
+    ''' =======================================================================
     ''' <summary>
-    ''' 
+    ''' Form, implementing the Run Ecosim interface.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' =======================================================================
     Public Class RunEcosim
 
+#Region " Variables "
+
+        ''' <summary>
+        ''' Enumerated type, indicating whether the user is viewing fleet or
+        ''' group related fishing shapes underneath the Ecosim plot.
+        ''' </summary>
         Private Enum eSelectionModeType
+            ''' <summary>User has not made any selection (yet).</summary>
             NotSet = 0
+            ''' <summary>User is viewing Fleet fishing shapes.</summary>
             Fleets
+            ''' <summary>User is viewing Group fishing shapes.</summary>
             Groups
         End Enum
 
         Private m_selectionMode As eSelectionModeType = eSelectionModeType.NotSet
-
-#Region " Variables "
+        Private m_ccb As cCustomComboBoxFleetGroupTree = Nothing
 
         Private m_shapeGUIHandler As cForcingShapeGUIHandler = Nothing
         Private m_params As cEcoSimModelParameters = Nothing
@@ -47,8 +56,6 @@ Namespace Ecosim
         Private m_simStats As cEcosimStats
 
         Private m_bInUpdate As Boolean = False
-
-        Private m_ccb As cCustomComboBoxFleetGroupTree = Nothing
 
         ' === plot data ==
         Private m_plotdata As ePlotData = ePlotData.Biomass
