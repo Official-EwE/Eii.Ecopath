@@ -23,13 +23,17 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShowAllFits))
             Me.m_scMain = New System.Windows.Forms.SplitContainer
+            Me.m_chkShowYear = New System.Windows.Forms.CheckBox
+            Me.m_chkShowWeight = New System.Windows.Forms.CheckBox
+            Me.m_chkShowCatch = New System.Windows.Forms.CheckBox
+            Me.m_chkShowZ = New System.Windows.Forms.CheckBox
+            Me.m_chkShowB = New System.Windows.Forms.CheckBox
             Me.m_nudMarginTB = New System.Windows.Forms.NumericUpDown
             Me.m_nudMarginLR = New System.Windows.Forms.NumericUpDown
             Me.m_nudDotSize = New System.Windows.Forms.NumericUpDown
             Me.m_nudLineWidth = New System.Windows.Forms.NumericUpDown
             Me.m_nudRowNum = New System.Windows.Forms.NumericUpDown
             Me.m_chkScaleForPrinter = New System.Windows.Forms.CheckBox
-            Me.m_clbOptions = New System.Windows.Forms.CheckedListBox
             Me.lblTBMargin = New System.Windows.Forms.Label
             Me.m_lblMarginLR = New System.Windows.Forms.Label
             Me.m_lblDisplayOptions = New System.Windows.Forms.Label
@@ -75,13 +79,17 @@ Namespace Ecosim
             'm_scMain.Panel1
             '
             resources.ApplyResources(Me.m_scMain.Panel1, "m_scMain.Panel1")
+            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowYear)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowWeight)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowCatch)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowZ)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowB)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudMarginTB)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudMarginLR)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudDotSize)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudLineWidth)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudRowNum)
             Me.m_scMain.Panel1.Controls.Add(Me.m_chkScaleForPrinter)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_clbOptions)
             Me.m_scMain.Panel1.Controls.Add(Me.lblTBMargin)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblMarginLR)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblDisplayOptions)
@@ -95,6 +103,46 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_scMain.Panel2, "m_scMain.Panel2")
             Me.m_scMain.Panel2.Controls.Add(Me.plPlots)
             Me.m_scMain.Panel2.Controls.Add(Me.m_tsMain)
+            '
+            'm_chkShowYear
+            '
+            resources.ApplyResources(Me.m_chkShowYear, "m_chkShowYear")
+            Me.m_chkShowYear.Checked = True
+            Me.m_chkShowYear.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowYear.Name = "m_chkShowYear"
+            Me.m_chkShowYear.UseVisualStyleBackColor = True
+            '
+            'm_chkShowWeight
+            '
+            resources.ApplyResources(Me.m_chkShowWeight, "m_chkShowWeight")
+            Me.m_chkShowWeight.Checked = True
+            Me.m_chkShowWeight.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowWeight.Name = "m_chkShowWeight"
+            Me.m_chkShowWeight.UseVisualStyleBackColor = True
+            '
+            'm_chkShowCatch
+            '
+            resources.ApplyResources(Me.m_chkShowCatch, "m_chkShowCatch")
+            Me.m_chkShowCatch.Checked = True
+            Me.m_chkShowCatch.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowCatch.Name = "m_chkShowCatch"
+            Me.m_chkShowCatch.UseVisualStyleBackColor = True
+            '
+            'm_chkShowZ
+            '
+            resources.ApplyResources(Me.m_chkShowZ, "m_chkShowZ")
+            Me.m_chkShowZ.Checked = True
+            Me.m_chkShowZ.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowZ.Name = "m_chkShowZ"
+            Me.m_chkShowZ.UseVisualStyleBackColor = True
+            '
+            'm_chkShowB
+            '
+            resources.ApplyResources(Me.m_chkShowB, "m_chkShowB")
+            Me.m_chkShowB.Checked = True
+            Me.m_chkShowB.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowB.Name = "m_chkShowB"
+            Me.m_chkShowB.UseVisualStyleBackColor = True
             '
             'm_nudMarginTB
             '
@@ -113,7 +161,7 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_nudDotSize, "m_nudDotSize")
             Me.m_nudDotSize.DecimalPlaces = 2
             Me.m_nudDotSize.Name = "m_nudDotSize"
-            Me.m_nudDotSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudDotSize.Value = New Decimal(New Integer() {3, 0, 0, 0})
             '
             'm_nudLineWidth
             '
@@ -138,14 +186,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_chkScaleForPrinter, "m_chkScaleForPrinter")
             Me.m_chkScaleForPrinter.Name = "m_chkScaleForPrinter"
             Me.m_chkScaleForPrinter.UseVisualStyleBackColor = True
-            '
-            'm_clbOptions
-            '
-            resources.ApplyResources(Me.m_clbOptions, "m_clbOptions")
-            Me.m_clbOptions.CheckOnClick = True
-            Me.m_clbOptions.FormattingEnabled = True
-            Me.m_clbOptions.Items.AddRange(New Object() {resources.GetString("m_clbOptions.Items"), resources.GetString("m_clbOptions.Items1"), resources.GetString("m_clbOptions.Items2"), resources.GetString("m_clbOptions.Items3"), resources.GetString("m_clbOptions.Items4")})
-            Me.m_clbOptions.Name = "m_clbOptions"
             '
             'lblTBMargin
             '
@@ -318,7 +358,6 @@ Namespace Ecosim
         Private WithEvents m_printdocAllFits As System.Drawing.Printing.PrintDocument
         Private WithEvents dlgPV As System.Windows.Forms.PrintPreviewDialog
         Private WithEvents m_lblDisplayOptions As System.Windows.Forms.Label
-        Private WithEvents m_clbOptions As System.Windows.Forms.CheckedListBox
         Private WithEvents m_lblGeneral As System.Windows.Forms.Label
         Private WithEvents m_pbPlots As System.Windows.Forms.PictureBox
         Private WithEvents m_nudRowNum As System.Windows.Forms.NumericUpDown
@@ -340,6 +379,11 @@ Namespace Ecosim
         Private WithEvents m_tsmiPrintPreview As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiOptions As System.Windows.Forms.ToolStripButton
         Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_chkShowYear As System.Windows.Forms.CheckBox
+        Private WithEvents m_chkShowWeight As System.Windows.Forms.CheckBox
+        Private WithEvents m_chkShowCatch As System.Windows.Forms.CheckBox
+        Private WithEvents m_chkShowZ As System.Windows.Forms.CheckBox
+        Private WithEvents m_chkShowB As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace

@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: dlgSelectTSPlots.vb,v $
-' Revision 1.2  2008/12/15 15:54:30  jeroens
-' no message
-'
-' Revision 1.1  2008/02/12 23:06:56  jeroens
-' Revised and debugged
-'
-' Revision 1.4  2007/09/24 17:57:54  sherman
-' Added header log
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -23,11 +9,17 @@ Imports EwECore
 
 Namespace Ecosim
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Dialog class, allows users to configure which plots to show in the Ecosim
+    ''' Show All Fits interface.
+    ''' </summary>
+    ''' =======================================================================
     Public Class dlgSelectAllFitsPlots
 
-        Private m_lplots As List(Of ShowAllFitsPlotData)
+        Private m_lplots As List(Of cShowAllFitsPlotData)
 
-        Public Sub New(ByVal lplots As List(Of ShowAllFitsPlotData))
+        Public Sub New(ByVal lplots As List(Of cShowAllFitsPlotData))
 
             InitializeComponent()
             Me.m_lplots = lplots
@@ -36,7 +28,7 @@ Namespace Ecosim
 
         Private Sub SelectTSPlots_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-            Dim plot As ShowAllFitsPlotData = Nothing
+            Dim plot As cShowAllFitsPlotData = Nothing
             Dim ts As cTimeSeries = Nothing
 
             clbAllPlots.Items.Clear()
@@ -68,7 +60,7 @@ Namespace Ecosim
 
         Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
-            Dim plot As ShowAllFitsPlotData = Nothing
+            Dim plot As cShowAllFitsPlotData = Nothing
 
             For i As Integer = 0 To Me.m_lplots.Count - 1
                 plot = Me.m_lplots(i)

@@ -5826,6 +5826,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Saving data, please wait....
+        '''</summary>
+        Friend ReadOnly Property STATUS_DATA_SAVING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_DATA_SAVING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Data failed to save to &apos;{0}&apos;: {1}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_DATA_SAVING_FAILURE() As String
+            Get
+                Return ResourceManager.GetString("STATUS_DATA_SAVING_FAILURE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Data successfully saved to &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property STATUS_DATA_SAVING_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_DATA_SAVING_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Removing existing Time Series dataset {0}.
         '''</summary>
         Friend ReadOnly Property STATUS_DATASET_REMOVING() As String

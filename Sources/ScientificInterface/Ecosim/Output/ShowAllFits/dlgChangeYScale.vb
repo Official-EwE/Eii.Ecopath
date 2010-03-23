@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: dlgChangeYScale.vb,v $
-' Revision 1.2  2008/12/15 15:54:29  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:50  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/05/16 02:14:35  jeroens
-' Fixed bug 447
-'
-' Revision 1.1  2008/02/12 23:06:56  jeroens
-' Revised and debugged
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -26,11 +9,17 @@ Imports EwECore
 
 Namespace Ecosim
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Dialog class, allows users to configure the Y-scale in the Ecosim
+    ''' Show All Fits interface.
+    ''' </summary>
+    ''' =======================================================================
     Public Class dlgChangeYScale
 
-        Private m_lplots As List(Of ShowAllFitsPlotData)
+        Private m_lplots As List(Of cShowAllFitsPlotData)
 
-        Public Sub New(ByVal lplots As List(Of ShowAllFitsPlotData))
+        Public Sub New(ByVal lplots As List(Of cShowAllFitsPlotData))
 
             InitializeComponent()
             Me.m_lplots = lplots
@@ -48,14 +37,14 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnReset(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnReset.Click
-            For Each plot As ShowAllFitsPlotData In Me.m_lplots
+            For Each plot As cShowAllFitsPlotData In Me.m_lplots
                 plot.YMax = plot.YMaxDefault
             Next
         End Sub
 
         Private Sub DoLoad(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-            Dim plot As ShowAllFitsPlotData = Nothing
+            Dim plot As cShowAllFitsPlotData = Nothing
             Dim ts As cTimeSeries = Nothing
 
             m_lbAllPlots.Items.Clear()
@@ -78,7 +67,7 @@ Namespace Ecosim
             Me.m_nudYScale.Value = 0
 
             If m_lbAllPlots.SelectedIndex >= 0 Then
-                Dim plot As ShowAllFitsPlotData = Me.m_lplots(m_lbAllPlots.SelectedIndex)
+                Dim plot As cShowAllFitsPlotData = Me.m_lplots(m_lbAllPlots.SelectedIndex)
 
                 If Single.IsNaN(plot.YMax) Then
                     Me.m_txbSelPlotName.Text = "<plot invalid>"
@@ -96,7 +85,7 @@ Namespace Ecosim
 
         Private Sub txbYScale_Validated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_nudYScale.Validated
             Try
-                Dim plot As ShowAllFitsPlotData = Me.m_lplots(m_lbAllPlots.SelectedIndex)
+                Dim plot As cShowAllFitsPlotData = Me.m_lplots(m_lbAllPlots.SelectedIndex)
                 plot.YMax = CSng(Me.m_nudYScale.Value)
             Catch ex As Exception
 

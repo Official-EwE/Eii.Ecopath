@@ -1,23 +1,17 @@
-'==============================================================================
-'
-' $Log: ShowAllFitsPlotData.vb,v $
-' Revision 1.1  2008/09/26 07:31:50  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2008/02/12 23:06:55  jeroens
-' Revised and debugged
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore
 
 Namespace Ecosim
 
-    Public Class ShowAllFitsPlotData
+    ''' =======================================================================
+    ''' <summary>
+    ''' Helper class, contains data for a single all fits data plot.
+    ''' </summary>
+    ''' =======================================================================
+    Public Class cShowAllFitsPlotData
 
         Private m_ts As cTimeSeries
-        Private m_asSimData As Single()
+        Private m_lSimData As New List(Of Single)
         Private m_sYScale As Single = 1.0
         Private m_sYScaleDefault As Single = 1.0
         Private m_sTSDataScale As Single = 1.0
@@ -28,9 +22,10 @@ Namespace Ecosim
 
             ' Sanity check(s)
             Debug.Assert(ts IsNot Nothing)
+            Debug.Assert(asSimData IsNot Nothing)
 
             Me.m_ts = ts
-            Me.m_asSimData = asSimData
+            Me.m_lSimData.AddRange(asSimData)
 
             Me.CalculateScale()
 
@@ -41,7 +36,7 @@ Namespace Ecosim
         End Function
 
         Public Function SimData() As Single()
-            Return Me.m_asSimData
+            Return Me.m_lSimData.ToArray
         End Function
 
         Public Property YMax() As Single
@@ -94,16 +89,15 @@ Namespace Ecosim
 
         Private Sub CalculateScale()
 
-            Dim asData As Single() = Nothing
+            Dim asData As Single() = Me.m_lSimData.ToArray
             Dim sMax As Single = 0
 
             ' Find data max across sim results
-            asData = Me.m_asSimData
-            If Not Object.ReferenceEquals(asData, Nothing) Then
-                For j As Integer = 1 To asData.Length - 1
-                    sMax = Math.Max(asData(j), sMax)
-                Next
-            End If
+            'If Not Object.ReferenceEquals(asData, Nothing) Then
+            For j As Integer = 1 To asData.Length - 1
+                sMax = Math.Max(asData(j), sMax)
+            Next
+            'End If
 
             Me.m_sTSDataScale = 1.0
 

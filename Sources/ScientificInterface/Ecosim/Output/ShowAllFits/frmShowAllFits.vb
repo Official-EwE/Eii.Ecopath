@@ -36,10 +36,8 @@ Namespace Ecosim
         Private m_sPlotWidth As Single
         Private m_sPlotHeight As Single
 
-        Private m_lPlots As New List(Of ShowAllFitsPlotData)
+        Private m_lPlots As New List(Of cShowAllFitsPlotData)
 
-        Private m_bShowYear As Boolean
-        Private m_bListWeight As Boolean
         Private m_nNumPlots As Integer
         Private m_NTimes As Integer
 
@@ -88,7 +86,7 @@ Namespace Ecosim
             Dim szPosName As SizeF = toDeviceSize(New SizeF(0.02F, 0.02F), iWidth, iHeight)
             Dim pzPosGraph As SizeF = toDeviceSize(New SizeF(m_sPlotWidth, m_sPlotHeight), iWidth, iHeight)
             Dim iPlot As Integer = 0
-            Dim plot As ShowAllFitsPlotData = Nothing
+            Dim plot As cShowAllFitsPlotData = Nothing
             Dim strTitle As String = ""
             Dim iRow, iCol As Integer
             Dim sPosX, sPosY As Single
@@ -115,7 +113,7 @@ Namespace Ecosim
                     ' ===============
                     ' Draw title
                     ' ===============
-                    If Me.m_bListWeight Then
+                    If Me.m_chkShowWeight.Checked Then
                         strTitle = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, plot.TimeSeries.Name, _
                             Me.StyleGuide.FormatNumber(plot.TimeSeries.WtType))
                     Else
@@ -184,7 +182,7 @@ Namespace Ecosim
                 End If
             Next i ' Next result
 
-            If m_bShowYear Then
+            If Me.m_chkShowYear.Checked Then
 
                 Dim stepYear As Integer = m_NTimes \ (cCore.N_MONTHS * 4)
                 'Dim fs As Single
@@ -228,7 +226,7 @@ Namespace Ecosim
         Private Sub SetDefaultParams()
 
             ' Defaults
-            m_sDotSize = 6
+            m_sDotSize = 3
             m_sLineWidth = 1
             m_sLRMargin = 0.1
             m_sTBMargin = 0.1
@@ -241,40 +239,35 @@ Namespace Ecosim
             Me.m_nudMarginLR.Value = CDec(Me.m_sLRMargin)
             Me.m_nudMarginTB.Value = CDec(Me.m_sTBMargin)
 
-            ' Defaults
-            Me.m_bShowYear = True
-            Me.m_bListWeight = True
-
-            ' Select all options
-            For i As Integer = 0 To Me.m_clbOptions.Items.Count - 1
-                Me.m_clbOptions.SetItemChecked(i, True)
-            Next
-
-            ' Another default
-            m_chkScaleForPrinter.Checked = False
-
             ' Hmm
-            SetPlotsType()
+            SetPlotTypes()
         End Sub
 
         Private Sub GatherPlotData()
 
+            Dim ts As cTimeSeries = Nothing
+            Dim asSimData(Me.Core.nEcosimTimeSteps) As Single
+            Dim plot As cShowAllFitsPlotData = Nothing
+            Dim gts As cGroupTimeSeries = Nothing
+            Dim iGroup As Integer = 0
+            Dim grpOutput As cEcosimGroupOutput = Nothing
+
             For iTS As Integer = 1 To Me.Core.nTimeSeries
 
-                Dim ts As cTimeSeries = Me.Core.EcosimTimeSeries(iTS)
-                Dim asSimData As Single() = Nothing
+                ts = Me.Core.EcosimTimeSeries(iTS)
 
                 If m_lShownPlotsType.Contains(ts.TimeSeriesType) Then
 
                     If TypeOf ts Is cGroupTimeSeries Then
 
-                        Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
-                        Dim iGroup As Integer = gts.GroupIndex
+                        gts = DirectCast(ts, cGroupTimeSeries)
+                        iGroup = gts.GroupIndex
+                        grpOutput = Me.Core.EcoSimGroupOutputs(iGroup)
 
-                        ReDim asSimData(Me.Core.nEcosimTimeSteps)
-
-                        Dim grpOutput As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
                         For iTime As Integer = 1 To Me.Core.nEcosimTimeSteps
+
+                            asSimData(iTime) = 0.0!
+
                             Select Case gts.TimeSeriesType
 
                                 Case eTimeSeriesType.Catches, _
@@ -298,7 +291,7 @@ Namespace Ecosim
                     End If
                 End If
 
-                Dim plot As New ShowAllFitsPlotData(ts, asSimData)
+                plot = New cShowAllFitsPlotData(ts, asSimData)
                 Me.m_lPlots.Add(plot)
             Next iTS
 
@@ -306,7 +299,7 @@ Namespace Ecosim
 
         Private Sub CalcPlotParams()
 
-            Me.m_nNumPlots = Me.RefreshTimeSeriesListbox()
+            Me.m_nNumPlots = Me.SetPlotVisibility()
             'm_NumPlots = 15
 
             Me.m_iCol = CInt(Me.m_nudRowNum.Value)
@@ -317,7 +310,13 @@ Namespace Ecosim
             If Me.m_chkScaleForPrinter.Checked Then
                 If Me.m_iRow <= 10 Then Me.m_iRow = 10
             End If
-            Me.m_sPlotHeight = 0.99F
+
+            If Me.m_chkShowYear.Checked Then
+                Me.m_sPlotHeight = 0.99F
+            Else
+                Me.m_sPlotHeight = 1.0F
+            End If
+
             Me.m_sLRMargin = CSng(Me.m_nudMarginLR.Value)
             Me.m_sTBMargin = CSng(Me.m_nudMarginTB.Value)
             Me.m_sDotSize = CSng(Me.m_nudDotSize.Value)
@@ -329,44 +328,44 @@ Namespace Ecosim
         ''' <summary>
         ''' Sets the type of plots to show, based on user preferences of what to view.
         ''' </summary>
-        ''' <remarks>
-        ''' JS 11feb08: this method is called from SetDefaultParams
-        ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub SetPlotsType()
+        Private Sub SetPlotTypes()
 
-            m_lShownPlotsType.Clear()
+            Me.m_lShownPlotsType.Clear()
 
-            For Each i As Integer In Me.m_clbOptions.CheckedIndices
-                If i = 0 Then
-                    m_lShownPlotsType.Add(eTimeSeriesType.BiomassForcing)
-                    m_lShownPlotsType.Add(eTimeSeriesType.BiomassRel)
-                    m_lShownPlotsType.Add(eTimeSeriesType.BiomassAbs)
-                ElseIf i = 1 Then
-                    m_lShownPlotsType.Add(eTimeSeriesType.TotalMortality)
-                ElseIf i = 2 Then
-                    m_lShownPlotsType.Add(eTimeSeriesType.Catches)
-                    m_lShownPlotsType.Add(eTimeSeriesType.CatchesForcing)
-                End If
-            Next
+            If Me.m_chkShowB.Checked Then
+                Me.m_lShownPlotsType.Add(eTimeSeriesType.BiomassForcing)
+                Me.m_lShownPlotsType.Add(eTimeSeriesType.BiomassRel)
+                Me.m_lShownPlotsType.Add(eTimeSeriesType.BiomassAbs)
+            End If
 
-            m_lShownPlotsType.Add(eTimeSeriesType.AverageWeight)
+            If Me.m_chkShowZ.Checked Then
+                m_lShownPlotsType.Add(eTimeSeriesType.TotalMortality)
+            End If
+
+            If Me.m_chkShowCatch.Checked Then
+                m_lShownPlotsType.Add(eTimeSeriesType.Catches)
+                m_lShownPlotsType.Add(eTimeSeriesType.CatchesForcing)
+            End If
+
+            Me.m_lShownPlotsType.Add(eTimeSeriesType.AverageWeight)
+
+            Me.UpdatePlots()
 
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Inadequately named method that toggles the visibility state of plots
-        ''' based on user preferences.
+        ''' Toggle the visibility state of plots based on user preferences.
         ''' </summary>
         ''' <returns>The number of visible plots</returns>
         ''' -------------------------------------------------------------------
-        Private Function RefreshTimeSeriesListbox() As Integer
+        Private Function SetPlotVisibility() As Integer
 
             Dim iNumVisiblePlots As Integer = 0
             Dim ts As cTimeSeries = Nothing
 
-            For Each plot As ShowAllFitsPlotData In Me.m_lPlots
+            For Each plot As cShowAllFitsPlotData In Me.m_lPlots
                 ' Assume the worst
                 plot.Visible = False
                 ' Get TS
@@ -390,6 +389,7 @@ Namespace Ecosim
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Helper method, transforms a model value (point) to a device value
         ''' </summary>
@@ -397,6 +397,7 @@ Namespace Ecosim
         ''' <param name="width"></param>
         ''' <param name="height"></param>
         ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Private Function toDevicePoint(ByVal p As PointF, ByVal width As Integer, ByVal height As Integer) As PointF
             ' JS 11feb08: what are these hard-coded values 8, 2, 1.02F, 2.02F?
             '    8    : originates from EwE5
@@ -411,6 +412,7 @@ Namespace Ecosim
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Helper method, transforms a model value (size) to a device value
         ''' </summary>
@@ -419,6 +421,7 @@ Namespace Ecosim
         ''' <param name="height"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        ''' -------------------------------------------------------------------
         Private Function toDeviceSize(ByVal s As SizeF, ByVal width As Integer, ByVal height As Integer) As SizeF
             ' JS 11feb08: what are these hard-coded values 8, 2, 1.02F, 2.02F?
             '    8    :
@@ -432,9 +435,14 @@ Namespace Ecosim
 
         End Function
 
-        Private Sub RecalcPlot()
-            CalcPlotParams()
-            m_pbPlots.Invalidate()
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update the plots by recalculating content and redrawing.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub UpdatePlots()
+            Me.CalcPlotParams()
+            Me.m_pbPlots.Invalidate()
         End Sub
 
 #Region " Printing "
@@ -449,63 +457,91 @@ Namespace Ecosim
 
 #Region " Saving "
 
-        Private Sub SaveToCSV(ByVal strpath As String)
+        Private Sub SaveToCSV(ByVal strPath As String)
 
             Dim strFileName As String = String.Empty
             Dim strTargetPath As String = ""
             Dim ts As cTimeSeries = Nothing
+            Dim plot As cShowAllFitsPlotData = Nothing
+            Dim sw As StreamWriter = Nothing
+            Dim msg As cMessage = Nothing
+            Dim bSucces As Boolean = True
 
             If String.IsNullOrEmpty(strPath) Then Return
 
-            ' ToDo_JS: Globalize this
-            cApplicationStatusNotifier.SetStatusText("Saving fitting data...", TriState.True)
+            msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_SUCCESS, strPath), _
+                               eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information)
+
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
 
             For i As Integer = 1 To 3
                 Select Case i
                     Case 1
-                        strFileName = "Allfit_Biomass.csv"
+                        strFileName = "EwE6_Allfit_Biomass.csv"
                     Case 2 'Mortality Data
-                        strFileName = "Allfit_Mortality.csv"
+                        strFileName = "EwE6_Allfit_Mortality.csv"
                     Case 3 'Catch Data
-                        strFileName = "Allfit_Catches.csv"
+                        strFileName = "EwE6_Allfit_Catches.csv"
                 End Select
 
                 strTargetPath = Path.Combine(strPath, strFileName)
 
-                Using sw As StreamWriter = New StreamWriter(strTargetPath, False)
+                Try
+                    sw = New StreamWriter(strTargetPath, False)
+                Catch ex As Exception
+                    ' Notify user
+                    msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
+                            eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                    bSucces = False
+                    sw = Nothing
+                End Try
 
-                    sw.Write("Year")
-                    sw.Write(",")
-                    For j As Integer = 1 To Me.Core.nTimeSeries
-                        ts = Me.Core.EcosimTimeSeries(j)
-                        Select Case i
-                            Case 1
-                                If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
-                                    sw.Write(ts.Name)
-                                    sw.Write(",")
-                                End If
-                            Case 2
-                                If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
-                                    sw.Write(String.Format("{0} Z", ts.Name))
-                                    sw.Write(",")
-                                End If
-                            Case 3
-                                If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
-                                    sw.Write(String.Format("{0} Yield", ts.Name))
-                                    sw.Write(",")
-                                End If
-                        End Select
-                    Next
-                    sw.WriteLine()
+                If (sw IsNot Nothing) Then
 
-                    Dim iPt As Integer = CInt(Math.Floor(cCore.N_MONTHS / 2))
-                    For k As Integer = 1 To Me.Core.nEcosimTimeSteps \ 12
-                        sw.Write((Me.Core.EcosimFirstYear + k - 1).ToString)
+                    Try
+
+                        sw.Write("Year")
                         sw.Write(",")
-                        For j As Integer = 0 To Me.m_lPlots.Count - 1
-                            Dim plot As ShowAllFitsPlotData = Me.m_lPlots(i)
-                            If Not plot.SimData Is Nothing Then
+                        For j As Integer = 1 To Me.Core.nTimeSeries
+
+                            plot = Me.m_lPlots(j - 1)
+                            ts = plot.TimeSeries
+
+                            Select Case i
+                                Case 1
+                                    If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
+                                        sw.Write("Predicted " & ts.Name)
+                                        sw.Write(",")
+                                        sw.Write("TS " & ts.Name)
+                                        sw.Write(",")
+                                    End If
+                                Case 2
+                                    If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
+                                        sw.Write(String.Format("Predicted {0} Z", ts.Name))
+                                        sw.Write(",")
+                                        sw.Write(String.Format("TS {0} Z", ts.Name))
+                                        sw.Write(",")
+                                    End If
+                                Case 3
+                                    If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
+                                        sw.Write(String.Format("Predicted {0} Yield", ts.Name))
+                                        sw.Write(",")
+                                        sw.Write(String.Format("TS {0} Yield", ts.Name))
+                                        sw.Write(",")
+                                    End If
+                            End Select
+                        Next
+                        sw.WriteLine()
+
+                        Dim iPt As Integer = CInt(Math.Floor(cCore.N_MONTHS / 2))
+                        For k As Integer = 1 To Me.Core.nEcosimTimeSteps \ 12
+                            sw.Write((Me.Core.EcosimFirstYear + k - 1).ToString)
+                            sw.Write(",")
+                            For j As Integer = 1 To Me.m_lPlots.Count
+
+                                plot = Me.m_lPlots(j - 1)
                                 ts = plot.TimeSeries
+
                                 Select Case i
                                     Case 1
                                         If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
@@ -552,25 +588,32 @@ Namespace Ecosim
                                             End If
                                         End If
                                 End Select
-                            End If
 
+                            Next
+                            iPt = iPt + cCore.N_MONTHS
+                            sw.WriteLine()
                         Next
-                        iPt = iPt + cCore.N_MONTHS
-                        sw.WriteLine()
-                    Next
+                    Catch ex As Exception
+                        msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
+                                           eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                        bSucces = False
+                    Finally
+                        sw.Close()
+                    End Try
 
-                    sw.Close()
+                End If
 
-                End Using
+                If bSucces = False Then
+                    Exit For
+                End If
+
             Next
 
             ' Clear status text
             cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
             ' Notify user
-            ' ToDo_JS: globalize this
-            Me.Core.Messages.SendMessage(New cMessage(String.Format("All fits data are saved to: {0}", strPath), _
-                    eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
+            Me.Core.Messages.SendMessage(msg)
 
         End Sub
 
@@ -657,29 +700,43 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub OnShowDataChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_chkShowB.CheckedChanged, _
+                    m_chkShowZ.CheckedChanged, _
+                    m_chkShowCatch.CheckedChanged
+            Me.SetPlotTypes()
+        End Sub
+
+        Private Sub OnShowDetailsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_chkShowWeight.CheckedChanged, _
+                    m_chkShowYear.CheckedChanged, _
+                    m_chkScaleForPrinter.CheckedChanged
+            Me.UpdatePlots()
+        End Sub
+
         Private Sub OnDotSizeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudDotSize.ValueChanged
-            Me.RecalcPlot()
+            Me.UpdatePlots()
         End Sub
 
         Private Sub OnLineWidthChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudLineWidth.ValueChanged
-            Me.RecalcPlot()
+            Me.UpdatePlots()
         End Sub
 
         Private Sub OnRowNumChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudRowNum.ValueChanged
-            Me.RecalcPlot()
+            Me.UpdatePlots()
         End Sub
 
         Private Sub OnMarginLRChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudMarginLR.ValueChanged
-            Me.RecalcPlot()
+            Me.UpdatePlots()
         End Sub
 
         Private Sub OnMarginTBChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudMarginTB.ValueChanged
-            Me.RecalcPlot()
+            Me.UpdatePlots()
         End Sub
 
         ''' <summary>
@@ -690,63 +747,8 @@ Namespace Ecosim
 
             Dim dlg As New dlgSelectAllFitsPlots(Me.m_lPlots)
             If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-                Me.RecalcPlot()
+                Me.UpdatePlots()
             End If
-
-        End Sub
-
-        Private Sub OnScaleForPrinterChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_chkScaleForPrinter.CheckedChanged
-            Me.RecalcPlot()
-        End Sub
-
-        Private Sub clbOptions_ItemCheck(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) _
-            Handles m_clbOptions.ItemCheck
-
-            If e.Index <= 2 Then
-                If e.Index = 0 Then
-                    If e.NewValue = CheckState.Checked Then
-                        m_lShownPlotsType.AddRange(New eTimeSeriesType() {eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs, eTimeSeriesType.BiomassForcing})
-                    ElseIf e.NewValue = CheckState.Unchecked Then
-                        m_lShownPlotsType.Remove(eTimeSeriesType.BiomassRel)
-                        m_lShownPlotsType.Remove(eTimeSeriesType.BiomassAbs)
-                        m_lShownPlotsType.Remove(eTimeSeriesType.BiomassForcing)
-                    End If
-                ElseIf e.Index = 1 Then
-                    If e.NewValue = CheckState.Checked Then
-                        m_lShownPlotsType.Add(eTimeSeriesType.TotalMortality)
-                    ElseIf e.NewValue = CheckState.Unchecked Then
-                        m_lShownPlotsType.Remove(eTimeSeriesType.TotalMortality)
-                    End If
-                ElseIf e.Index = 2 Then
-                    If e.NewValue = CheckState.Checked Then
-                        m_lShownPlotsType.Add(eTimeSeriesType.Catches)
-                        m_lShownPlotsType.Add(eTimeSeriesType.CatchesForcing)
-                    ElseIf e.NewValue = CheckState.Unchecked Then
-                        m_lShownPlotsType.Remove(eTimeSeriesType.Catches)
-                        m_lShownPlotsType.Remove(eTimeSeriesType.CatchesForcing)
-                    End If
-                End If
-                CalcPlotParams()
-            End If
-
-            If e.Index = 3 Then
-                If e.NewValue = CheckState.Checked Then
-                    m_bListWeight = True
-                ElseIf e.NewValue = CheckState.Unchecked Then
-                    m_bListWeight = False
-                End If
-            End If
-
-            If e.Index = 4 Then
-                If e.NewValue = CheckState.Checked Then
-                    m_bShowYear = True
-                ElseIf e.NewValue = CheckState.Unchecked Then
-                    m_bShowYear = False
-                End If
-            End If
-
-            Me.m_pbPlots.Invalidate()
 
         End Sub
 

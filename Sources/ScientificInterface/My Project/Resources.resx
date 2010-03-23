@@ -2577,4 +2577,15 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Downloading update for '{0}'...</value>
     <comment>{0}: component name</comment>
   </data>
+  <data name="STATUS_DATA_SAVING" xml:space="preserve">
+    <value>Saving data, please wait...</value>
+  </data>
+  <data name="STATUS_DATA_SAVING_FAILURE" xml:space="preserve">
+    <value>Data failed to save to '{0}': {1}</value>
+    <comment>{0}: save destination, {1}: reason</comment>
+  </data>
+  <data name="STATUS_DATA_SAVING_SUCCESS" xml:space="preserve">
+    <value>Data successfully saved to '{0}'</value>
+    <comment>{0}: save destination</comment>
+  </data>
 </root>
