@@ -109,18 +109,17 @@ Public Class StatusPanel
     Private Sub ConfigMessageHandler(ByVal src As eCoreComponentType, ByVal bSet As Boolean)
 
         Dim mh As cMessageHandler = Nothing
-        Dim core As cCore = cCore.GetInstance()
 
         If (src = eCoreComponentType.NotSet) Then Return
 
         If bSet Then
             mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, Me.UIContext.SyncObject)
             Me.m_dtMessageHanders(src) = mh
-            core.Messages.AddMessageHandler(mh)
+            Me.UIContext.Core.Messages.AddMessageHandler(mh)
         Else
             mh = Me.m_dtMessageHanders(src)
             Me.m_dtMessageHanders.Remove(src)
-            core.Messages.RemoveMessageHandler(mh)
+            Me.UIContext.Core.Messages.RemoveMessageHandler(mh)
             mh = Nothing
         End If
 
