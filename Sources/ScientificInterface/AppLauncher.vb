@@ -1007,7 +1007,7 @@ Public Class AppLauncher
         m_NavPanel = New NavigationPanel(Me.UIContext, Me.m_pluginManager)
         m_StatusPanel = New StatusPanel(Me.UIContext)
         m_RemarkPanel = New RemarkPanel(Me.UIContext)
-        m_StartPage = New WebBrowserDC()
+        m_StartPage = New WebBrowserDC(Me.UIContext)
 
         ' Add panels
         m_lstrProtectedPanelNames.Add(m_NavPanel.Name)
@@ -1678,7 +1678,7 @@ Public Class AppLauncher
             Case (GetType(RemarkPanel)).ToString
                 Return m_RemarkPanel
             Case (GetType(WebBrowserDC)).ToString
-                If (m_StartPage Is Nothing) Then m_StartPage = New WebBrowserDC()
+                If (m_StartPage Is Nothing) Then m_StartPage = New WebBrowserDC(Me.UIContext)
                 Return m_StartPage
 
             Case Else
@@ -2604,7 +2604,7 @@ Public Class AppLauncher
     Private Sub OnViewStartPage(ByVal cmd As cCommand) Handles m_cmdViewStartPanel.OnInvoke
         ' If m_startPage has been closed, create a new reference. 
         If m_StartPage.IsDisposed() Then
-            m_StartPage = New WebBrowserDC()
+            m_StartPage = New WebBrowserDC(Me.UIContext)
         End If
 
         If m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi Then
