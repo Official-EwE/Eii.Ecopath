@@ -6641,14 +6641,29 @@ Public Class cCore
 
         Debug.Assert(Me.m_StateMonitor.HasEcospaceLoaded, "RunEcospace() You must load an Ecospace scenario first.")
 
-        ' If Not m_StateMonitor.HasEcosimRan Then
+        If Me.m_StateMonitor.HasEcosimLoaded Then
+            If Not Me.m_StateMonitor.HasEcosimInitialized Then
+                'Ecosim is loaded but not initialized do a full initialization
+                If Me.m_EcoSim.Init(True) Then
+                    Me.StateMonitor.SetEcoSimInitialized()
+                Else
+                    'Failed to init Ecosim, post a message and return
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace failed to initialize Ecosim. Please try loading a different Ecosim scenario and re-running Ecospace.", _
+                                              eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+                    Return False
+                End If
+            End If
+        Else
+            'No Ecosim scenario loaded, post a message and return
+            Me.m_publisher.AddMessage(New cMessage("An Ecosim and Ecospace scenario must be loaded before Ecospace can be run.", _
+                                      eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+            Return False
+        End If
 
         Try
             Dim t As Double = Timer
             System.Console.WriteLine("----------cCore.RunEcospace() Start------------")
 
-            'ToDo_jb RunEcoSpace() Ecospace needs to check the statemonitor to see if there have been any changes to Ecopath or Ecosim variables
-            'then run anything it needs to in response
             If Me.m_StateMonitor.HasEcospaceLoaded Then
 
                 If checkHabitats() Then
