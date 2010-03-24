@@ -727,9 +727,13 @@ Public Class cCore
             If (Me.m_batchLockType = eBatchLockType.Restructure) Then
 
                 ' Determine level of reload
-                Dim iEcosimScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecosim, Me.m_EcoPathData.ActiveEcosimScenario, cCore.NULL_VALUE))
-                Dim iEcospaceScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecospace, Me.m_EcoPathData.ActiveEcospaceScenario, cCore.NULL_VALUE))
-                Dim iEcotracerScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecotracer, Me.m_EcoPathData.ActiveEcotracerScenario, cCore.NULL_VALUE))
+                ' JS 24 March 2010: Only reload a scenario when the batch release affected that particular level.
+                '                   In other words, adding or removing groups (batch level Ecopath) will NOT
+                '                   cause batch level Ecosim and higher to automatically reload because Ecopath 
+                '                   will most likely not run. This addresses issue #512
+                Dim iEcosimScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecosim, Me.m_EcoPathData.ActiveEcosimScenario, cCore.NULL_VALUE))
+                Dim iEcospaceScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecospace, Me.m_EcoPathData.ActiveEcospaceScenario, cCore.NULL_VALUE))
+                Dim iEcotracerScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecotracer, Me.m_EcoPathData.ActiveEcotracerScenario, cCore.NULL_VALUE))
                 Dim iDatasetToReload As Integer = 0
 
                 If (Me.m_batchChangeLevel <= eBatchChangeLevelFlags.TimeSeries) Then
@@ -4869,7 +4873,7 @@ Public Class cCore
             If Me.m_StateMonitor.HasEcopathRan() = False Then
                 'EcoPath will handle it's own messages if it fails
                 If Not RunEcoPath() Then
-                    Debug.Assert(False, Me.ToString & ".RunEcoSim() Failed to Run EcoPath.")
+                    'Debug.Assert(False, Me.ToString & ".RunEcoSim() Failed to Run EcoPath.")
                     cLog.Write(Me.ToString & ".RunEcoSim() Failed to Run EcoPath.")
                     Me.SendEcosimLoadStateMessage(strScenarioName, My.Resources.CoreMessages.ECOPATH_RUN_ERROR)
                     Return False
