@@ -4,6 +4,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -16,7 +17,9 @@ Public Class ShapeValueGrid
     Private m_shape As cShapeData = Nothing
     Private m_displayMode As frmShapeValue.eDisplayMode = frmShapeValue.eDisplayMode.Monthly
 
-    Public Sub SetValues(ByVal iNumValues As Integer, ByVal shape As cShapeData, ByVal displayMode As frmShapeValue.eDisplayMode)
+    Public Sub SetValues(ByVal iNumValues As Integer, _
+                         ByVal shape As cShapeData, _
+                         ByVal displayMode As frmShapeValue.eDisplayMode)
 
         Me.m_iNumValues = iNumValues
         Me.m_bSuppressZeroes = (TypeOf shape Is cTimeSeries)
@@ -94,9 +97,8 @@ Public Class ShapeValueGrid
 
     Protected Overrides Sub FillData()
 
-        Dim core As cCore = cCore.GetInstance()
         Dim cell As EwECell = Nothing
-        Dim iStartIndex As Integer = core.EcosimFirstYear
+        Dim iStartIndex As Integer = Me.Core.EcosimFirstYear
         Dim sValue As Single = 0.0!
 
         If iStartIndex > 0 Then iStartIndex -= 1
