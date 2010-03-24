@@ -33,7 +33,7 @@ Public Class cCatchByTrophicLevel
     Public Overrides Sub DisplayData()
 
         Dim strRowContent() As String
-        Dim core As cCore = cCore.GetInstance
+        Dim core As cCore = Me.UIContext.Core
         Dim bShowItem As Boolean = True
         Dim CatchGroupsShown() As Single
 

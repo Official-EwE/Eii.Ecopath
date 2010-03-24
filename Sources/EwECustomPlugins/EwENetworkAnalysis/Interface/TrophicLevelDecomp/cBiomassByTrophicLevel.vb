@@ -36,7 +36,7 @@ Public Class cBiomassByTrophicLevel
 
         Dim astrRowContent() As String
 
-        Dim core As cCore = cCore.GetInstance
+        Dim core As cCore = Me.UIContext.Core
         Dim bShowItem As Boolean = True
         Dim asBiomassGroupsShown() As Single
         Dim asMassDetritusShown() As Single
