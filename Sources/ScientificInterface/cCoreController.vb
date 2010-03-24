@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: EwECoreController.vb,v $
-' Revision 1.5  2008/12/15 15:52:11  jeroens
-' no message
-'
-' Revision 1.4  2008/11/20 19:15:15  jeroens
-' Added handling of *Initialized states
-'
-' Revision 1.3  2008/11/20 18:42:17  jeroens
-' CoreController uses cCoreStateManager
-'
-' Revision 1.2  2008/11/18 16:35:35  jeroens
-' Left ToDo
-'
-' Revision 1.1  2008/09/26 07:31:24  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -32,7 +12,8 @@ Imports ScientificInterface.Ecospace
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Helper class that tries to set the EwE core in a particular running state.
+''' Helper class that tries to make sure the interface correctly loads a particular
+''' scenario.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cCoreController

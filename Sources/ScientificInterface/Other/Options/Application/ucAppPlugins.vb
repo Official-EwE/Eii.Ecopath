@@ -19,6 +19,7 @@ Namespace Other
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class ucAppPlugins
+        Implements IUIElement
 
         Const cIMAGE_CORE As Integer = 0
         Const cIMAGE_ENABLED As Integer = 1
@@ -59,6 +60,8 @@ Namespace Other
 #Region " Private variables "
 
         ''' <summary></summary>
+        Private m_uic As cUIContext = Nothing
+        ''' <summary></summary>
         Private m_pm As cPluginManager = Nothing
         ''' <summary></summary>
         Private m_dictPluginAssemblyInfo As New Dictionary(Of cPluginAssembly, cPluginAssemblyInfo)
@@ -73,6 +76,20 @@ Namespace Other
         End Sub
 
 #End Region ' Constructor
+
+#Region " Interface implementation "
+
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Protected Set(ByVal uic As cUIContext)
+                Me.m_uic = uic
+            End Set
+        End Property
+
+#End Region ' Interface implementation
 
 #Region " Public interfaces "
 
@@ -211,7 +228,9 @@ Namespace Other
                 ctrl = New ucAppPluginAssemblyDetails(DirectCast(tn.Tag, cPluginAssembly))
             ElseIf (TypeOf tn.Tag Is IPlugin) Then
                 ' Hackerdihack
-                ctrl = New ucAppPluginDetails(DirectCast(tn.Tag, IPlugin), DirectCast(tn.Parent.Tag, cPluginAssembly))
+                ctrl = New ucAppPluginDetails(Me.UIContext, _
+                                              DirectCast(tn.Tag, IPlugin), _
+                                              DirectCast(tn.Parent.Tag, cPluginAssembly))
             End If
 
             Me.m_split.SuspendLayout()

@@ -11,8 +11,10 @@ Imports EwEUtils.Utilities
 #End Region ' Imports
 
 Public Class ucAppPluginDetails
+    Implements IUIElement
 
     Private m_pa As cPluginAssembly = Nothing
+    Private m_uic As cUIContext = Nothing
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -20,9 +22,13 @@ Public Class ucAppPluginDetails
     ''' showing details on a plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal pi As IPlugin, ByVal pa As cPluginAssembly)
+    Public Sub New(ByVal uic As cUIContext, _
+                   ByVal pi As IPlugin, _
+                   ByVal pa As cPluginAssembly)
 
         Me.InitializeComponent()
+
+        Me.UIContext = uic
 
         Me.m_tbName.Text = pi.Name
         Me.m_tbAuthor.Text = pi.Author
@@ -35,6 +41,16 @@ Public Class ucAppPluginDetails
         Me.m_cbEnabled.Enabled = (pa.AlwaysEnabled = False)
 
     End Sub
+
+    Public Property UIContext() As cUIContext _
+        Implements IUIElement.UIContext
+        Get
+            Return Me.m_uic
+        End Get
+        Protected Set(ByVal uic As cUIContext)
+            Me.m_uic = uic
+        End Set
+    End Property
 
     Private Sub OnCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_cbEnabled.CheckedChanged
@@ -59,10 +75,9 @@ Public Class ucAppPluginDetails
 
         Catch ex As Exception
 
-            Dim core As cCore = cCore.GetInstance()
             Dim msg As New cMessage(ex.Message, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
 
-            core.Messages.SendMessage(msg)
+            Me.UIContext.Core.Messages.SendMessage(msg)
 
         End Try
 

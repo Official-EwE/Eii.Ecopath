@@ -52,6 +52,7 @@ Namespace Wizard
     ''' </list>
     ''' </remarks>
     Public Class EwEScenarioDlg
+        Implements IUIElement
 
         ''' <summary>
         ''' <para>Enumerated type defining dialog interaction modes.</para>
@@ -144,11 +145,8 @@ Namespace Wizard
 
 #Region " Private vars "
 
-        ''' <summary>Ref to the core.</summary>
-        Protected m_core As cCore = cCore.GetInstance()
-        ''' <summary>Ref to the main window.</summary>
-        Private m_appl As AppLauncher = AppLauncher.GetInstance()
-
+        ''' <summary>UI context to connect to.</summary>
+        Private m_uic As cUIContext = Nothing
         ''' <summary>Dialog operation mode.</summary>
         Private m_mode As eDialogModeType = eDialogModeType.CreateScenario
         ''' <summary>Scenario that is selected in the dialog.</summary>
@@ -165,13 +163,16 @@ Namespace Wizard
         ''' <summary>
         ''' Constructor, initializes a new instance of this dialog.
         ''' </summary>
+        ''' <param name="uic">The UI context to connect to.</param>
         ''' <param name="mode"><see cref="eDialogModeType">Dialog interaction mode</see>.</param>
         ''' <param name="scenario">EwE scenario to save, if any.</param>
-        Public Sub New(ByVal mode As eDialogModeType, _
-                Optional ByVal scenario As cEwEScenario = Nothing)
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal mode As eDialogModeType, _
+                       Optional ByVal scenario As cEwEScenario = Nothing)
 
-            ' This call is required by the Windows Form Designer.
             Me.InitializeComponent()
+
+            Me.UIContext = uic
             Me.m_mode = mode
             Me.m_scenario = scenario
             Me.m_scenarioSource = scenario
@@ -181,13 +182,27 @@ Namespace Wizard
             ' Init create dialog
             Me.tbNameCreate.Text = Me.GetNewScenarioName()
             Me.tbDescriptionCreate.Text = String.Format(My.Resources.GENERIC_DEFAULT_DESCRIPTION, Date.Now().ToShortDateString(), Date.Now().ToShortTimeString())
-            Me.tbAuthorCreate.Text = m_core.EwEModel.Author
-            Me.tbContactCreate.Text = m_core.EwEModel.Contact
+            Me.tbAuthorCreate.Text = Me.UIContext.Core.EwEModel.Author
+            Me.tbContactCreate.Text = Me.UIContext.Core.EwEModel.Contact
 
             Me.Icon = Me.GetIcon()
         End Sub
 
 #End Region ' Constructor
+
+#Region " Interface implementation "
+
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Private Set(ByVal value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
+
+#End Region ' Interface implementation
 
 #Region " Overridables "
 
@@ -231,7 +246,7 @@ Namespace Wizard
 
         Private Sub InitControls()
 
-            Me.Text = Me.GetDialogCaption(Me.m_mode, m_core.EwEModel.Name)
+            Me.Text = Me.GetDialogCaption(Me.m_mode, Me.UIContext.Core.EwEModel.Name)
 
             Me.tsmCreate.Visible = (Me.m_mode = eDialogModeType.CreateScenario)
             Me.tsmLoad.Visible = (Me.m_mode = eDialogModeType.LoadScenario)

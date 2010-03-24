@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: EcosimScenarioDlg.vb,v $
-' Revision 1.2  2008/12/15 15:52:26  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:34  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -22,21 +11,27 @@ Imports ScientificInterface.Ecosim
 
 Namespace Ecosim
 
+    ''' =======================================================================
     ''' <summary>
     ''' Dialog implementing a <see cref="EwEScenarioDlg">EwEScenarioDlg</see> for
     ''' interacting with Ecosim scenarios.
     ''' </summary>
+    ''' =======================================================================
     Public Class EcosimScenarioDlg
         Inherits EwEScenarioDlg
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor, initializes a new instance of this dialog.
         ''' </summary>
+        ''' <param name="uic"></param>
         ''' <param name="mode"><see cref="eDialogModeType">Dialog interaction mode</see>.</param>
         ''' <param name="scenario"><see cref="cEcoSpaceScenario">Ecosim scenario</see> to save, if any.</param>
-        Public Sub New(ByVal mode As eDialogModeType, _
-                Optional ByVal scenario As cEcoSimScenario = Nothing)
-            MyBase.New(mode, scenario)
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal mode As eDialogModeType, _
+                       Optional ByVal scenario As cEcoSimScenario = Nothing)
+            MyBase.New(uic, mode, scenario)
         End Sub
 
         Protected Overrides Function GetIcon() As System.Drawing.Icon
@@ -46,8 +41,8 @@ Namespace Ecosim
         Protected Overrides Function GetAvailableScenarios() As List(Of cEwEScenario)
             Dim lscenarios As New List(Of cEwEScenario)
 
-            For iScenario As Integer = 1 To Me.m_core.EcosimScenarioCount
-                lscenarios.Add(Me.m_core.EcosimScenarios(iScenario))
+            For iScenario As Integer = 1 To Me.UIContext.Core.EcosimScenarioCount
+                lscenarios.Add(Me.UIContext.Core.EcosimScenarios(iScenario))
             Next
             Return lscenarios
         End Function
@@ -72,7 +67,7 @@ Namespace Ecosim
         End Function
 
         Protected Overrides Function DeleteScenario(ByVal scenario As EwECore.cEwEScenario) As Boolean
-            Return Me.m_core.RemoveEcosimScenario(scenario.Index)
+            Return Me.UIContext.Core.RemoveEcosimScenario(scenario.Index)
         End Function
 
     End Class

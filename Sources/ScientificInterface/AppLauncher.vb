@@ -1905,7 +1905,7 @@ Public Class AppLauncher
         ' No scenario found yet?
         If (es Is Nothing) Then
             ' #No scenario: invoke ecosim scenario selection dialog
-            dlg = New EcosimScenarioDlg(EcosimScenarioDlg.eDialogModeType.LoadScenario)
+            dlg = New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.LoadScenario)
             dlg.Scenario = Me.FindEcosimScenario(strName)
             If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
 
@@ -1967,7 +1967,7 @@ Public Class AppLauncher
         ' No scenario found yet?
         If (es Is Nothing) Then
             ' #No scenario: invoke ecospace scenario selection dialog
-            dlg = New EcospaceScenarioDlg(EcospaceScenarioDlg.eDialogModeType.LoadScenario)
+            dlg = New EcospaceScenarioDlg(Me.UIContext, EcospaceScenarioDlg.eDialogModeType.LoadScenario)
             dlg.Scenario = Me.FindEcospaceScenario(strName)
             If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
 
@@ -2036,7 +2036,7 @@ Public Class AppLauncher
         ' No scenario found yet?
         If (es Is Nothing) Then
             ' #No scenario: invoke ecotracer scenario selection dialog
-            dlg = New EcotracerScenarioDlg(EcotracerScenarioDlg.eDialogModeType.LoadScenario)
+            dlg = New EcotracerScenarioDlg(Me.UIContext, EcotracerScenarioDlg.eDialogModeType.LoadScenario)
             dlg.Scenario = Me.FindEcotracerScenario(strName)
             If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
 
@@ -2760,7 +2760,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnNewEcosimScenario(ByVal cmd As cCommand) Handles m_cmdNewEcosimScenario.OnInvoke
 
-        Dim dlg As New EcosimScenarioDlg(EcosimScenarioDlg.eDialogModeType.CreateScenario)
+        Dim dlg As New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.CreateScenario)
 
         If dlg.ShowDialog = Windows.Forms.DialogResult.OK Then
 
@@ -2820,7 +2820,7 @@ Public Class AppLauncher
 
     Private Sub OnSaveEcosimScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenarioAs.OnInvoke
 
-        Dim dlg As New EcosimScenarioDlg(EcosimScenarioDlg.eDialogModeType.SaveScenario, _
+        Dim dlg As New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.SaveScenario, _
                 Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex))
 
         If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -3002,8 +3002,10 @@ Public Class AppLauncher
 
 #Region " Ecospace scenario commands "
 
-    Private Sub OnNewEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdNewEcospaceScenario.OnInvoke
-        Dim dlg As New EcospaceScenarioDlg(EcospaceScenarioDlg.eDialogModeType.CreateScenario)
+    Private Sub OnNewEcospaceScenario(ByVal cmd As cCommand) _
+        Handles m_cmdNewEcospaceScenario.OnInvoke
+
+        Dim dlg As New EcospaceScenarioDlg(Me.UIContext, EcospaceScenarioDlg.eDialogModeType.CreateScenario)
 
         If dlg.ShowDialog = Windows.Forms.DialogResult.OK Then
 
@@ -3024,25 +3026,30 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub OnUpdateNewEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdNewEcospaceScenario.OnUpdate
+    Private Sub OnUpdateNewEcospaceScenario(ByVal cmd As cCommand) _
+        Handles m_cmdNewEcospaceScenario.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
     End Sub
 
-    Private Sub OnLoadEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcospaceScenario.OnInvoke
+    Private Sub OnLoadEcospaceScenario(ByVal cmd As cCommand) _
+        Handles m_cmdLoadEcospaceScenario.OnInvoke
         Me.CoreController.LoadEcospaceScenario()
     End Sub
 
-    Private Sub OnUpdateLoadEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcospaceScenario.OnUpdate
+    Private Sub OnUpdateLoadEcospaceScenario(ByVal cmd As cCommand) _
+        Handles m_cmdLoadEcospaceScenario.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; saves the current active Ecospace scenario under a new name.
     ''' </summary>
-    Private Sub OnSaveEcospaceScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenarioAS.OnInvoke
+    Private Sub OnSaveEcospaceScenarioAs(ByVal cmd As cCommand) _
+        Handles m_cmdSaveEcospaceScenarioAS.OnInvoke
 
-        Dim dlg As New EcospaceScenarioDlg(EcospaceScenarioDlg.eDialogModeType.SaveScenario, _
-                Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex))
+        Dim dlg As New EcospaceScenarioDlg(Me.UIContext, _
+                                           EcospaceScenarioDlg.eDialogModeType.SaveScenario, _
+                                           Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex))
         Dim scenarioTarget As cEcospaceScenario = Nothing
 
         If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -3253,14 +3260,15 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; creates a new Ecotracer scenario
     ''' </summary>
-    Private Sub OnNewEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdNewEcotracerScenario.OnInvoke
+    Private Sub OnNewEcotracerScenario(ByVal cmd As cCommand) _
+        Handles m_cmdNewEcotracerScenario.OnInvoke
 
         ' Prerequesite: Ecosim needs to be loaded
         Me.CoreController.LoadState(eCoreExecutionState.EcosimLoaded)
         ' Not succesful? abort
         If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return
 
-        Dim dlg As New EcotracerScenarioDlg(EcotracerScenarioDlg.eDialogModeType.CreateScenario)
+        Dim dlg As New EcotracerScenarioDlg(Me.UIContext, EcotracerScenarioDlg.eDialogModeType.CreateScenario)
 
         If dlg.ShowDialog = Windows.Forms.DialogResult.OK Then
 
@@ -3281,14 +3289,16 @@ Public Class AppLauncher
     ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdNewEcotracerScenario">New Ecotracer Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateNewEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdNewEcotracerScenario.OnUpdate
+    Private Sub OnUpdateNewEcotracerScenario(ByVal cmd As cCommand) _
+        Handles m_cmdNewEcotracerScenario.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; loads a new Ecotracer scenario
     ''' </summary>
-    Private Sub OnLoadEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcotracerScenario.OnInvoke
+    Private Sub OnLoadEcotracerScenario(ByVal cmd As cCommand) _
+        Handles m_cmdLoadEcotracerScenario.OnInvoke
         Me.LoadEcotracerScenario()
     End Sub
 
@@ -3296,11 +3306,13 @@ Public Class AppLauncher
     ''' Command update handler; takes care of enabling and disabling the 
     ''' <see cref="m_cmdLoadEcotracerScenario">Load Ecotracer Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateLoadEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcotracerScenario.OnUpdate
+    Private Sub OnUpdateLoadEcotracerScenario(ByVal cmd As cCommand) _
+        Handles m_cmdLoadEcotracerScenario.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
-    Private Sub OnSaveEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenario.OnInvoke
+    Private Sub OnSaveEcotracerScenario(ByVal cmd As cCommand) _
+        Handles m_cmdSaveEcotracerScenario.OnInvoke
         Dim strStatus As String = String.Format(My.Resources.STATUS_ECOTRACER_SAVING, Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex).Name)
         Me.SetStatusText(strStatus, TriState.True)
         Me.Core.SaveEcotracerScenario()
@@ -3310,14 +3322,17 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the 'save ecotracer scenario' command
     ''' </summary>
-    Private Sub OnUpdateSaveEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenario.OnUpdate
+    Private Sub OnUpdateSaveEcotracerScenario(ByVal cmd As cCommand) _
+        Handles m_cmdSaveEcotracerScenario.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.IsEcotracerModified
     End Sub
 
-    Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenarioAS.OnInvoke
+    Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) _
+        Handles m_cmdSaveEcotracerScenarioAS.OnInvoke
 
-        Dim dlg As New EcotracerScenarioDlg(EcotracerScenarioDlg.eDialogModeType.SaveScenario, _
-                Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex))
+        Dim dlg As New EcotracerScenarioDlg(Me.UIContext, _
+                                            EcotracerScenarioDlg.eDialogModeType.SaveScenario, _
+                                            Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex))
 
         If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
             ' Overwriting?
@@ -3348,11 +3363,13 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the 'save ecotracer scenario as' command
     ''' </summary>
-    Private Sub OnUpdateSaveEcotracerScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenarioAS.OnUpdate
+    Private Sub OnUpdateSaveEcotracerScenarioAs(ByVal cmd As cCommand) _
+        Handles m_cmdSaveEcotracerScenarioAS.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcotracerLoaded()
     End Sub
 
-    Private Sub OnEnableEcotracer(ByVal cmd As cCommand) Handles m_cmdEnableEcotracer.OnInvoke
+    Private Sub OnEnableEcotracer(ByVal cmd As cCommand) _
+        Handles m_cmdEnableEcotracer.OnInvoke
 
         Dim pm As cPropertyManager = Me.m_uic.PropertyManager
         Dim ecosimModelParams As cEcoSimModelParameters = Nothing
@@ -3404,7 +3421,8 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub OnUpdateEnableEcotracer(ByVal cmd As cCommand) Handles m_cmdEnableEcotracer.OnUpdate
+    Private Sub OnUpdateEnableEcotracer(ByVal cmd As cCommand) _
+        Handles m_cmdEnableEcotracer.OnUpdate
         cmd.Enabled = True
     End Sub
 
