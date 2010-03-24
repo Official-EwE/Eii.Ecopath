@@ -36,11 +36,20 @@ Public Class cData
     Private m_bChanged As Boolean = False
     Private m_bInitializing As Boolean = False
 
+    Private Shared s_inst As cData
+
     Public Sub New(ByVal core As cCore)
         MyBase.New(core)
+
+        cData.s_inst = Me
+
         Me.m_coreComponent = eCoreComponentType.External
         Me.m_dataType = eDataTypes.External
     End Sub
+
+    Public Shared Function GetInstance() As cData
+        Return cData.s_inst
+    End Function
 
     Public Sub Clear()
 

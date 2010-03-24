@@ -35,7 +35,7 @@ Public Class cProducerUnit
 
         Private Function GroupList() As List(Of cEcoPathGroupInput)
             Dim lGroups As New List(Of cEcoPathGroupInput)
-            Dim core As cCore = cCore.GetInstance()
+            Dim core As cCore = cData.GetInstance().Core
             For iGroup As Integer = 1 To core.nGroups
                 lGroups.Add(core.EcoPathGroupInputs(iGroup))
             Next
@@ -140,7 +140,7 @@ Public Class cProducerUnit
 
         Private Function FleetList() As List(Of cFleetInput)
             Dim lFleets As New List(Of cFleetInput)
-            Dim core As cCore = cCore.GetInstance()
+            Dim core As cCore = cData.GetInstance().Core
             For iFleet As Integer = 1 To core.nFleets
                 lFleets.Add(core.FleetInputs(iFleet))
             Next
