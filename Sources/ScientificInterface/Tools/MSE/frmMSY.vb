@@ -1,20 +1,28 @@
-﻿
+﻿#Region " Imports "
+
+Option Strict On
 Imports EwECore
 
+#End Region ' Imports
+
+''' ===========================================================================
+''' <summary>
+''' Form, implements the main MSY search interface.
+''' </summary>
+''' ===========================================================================
 Public Class frmMSY
 
     Private m_mse As MSE.cMSEManager
-    Private m_core As cCore
     Private m_nFleets As Integer
     Private MSY() As Single
 
-    Private Sub frmMSY_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.m_core = cCore.GetInstance
-        m_mse = Me.m_core.MSEManager
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
+
+        Me.m_mse = Me.UIContext.Core.MSEManager
         Me.rbValue.Checked = True
 
     End Sub
-
 
     Private Sub btRunMSY_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btRunMSY.Click
 
@@ -29,10 +37,10 @@ Public Class frmMSY
             Me.m_mse.ModelParameters.MSYRunSilent = False
             Me.m_mse.ModelParameters.MSYStartTimeIndex = 2
 
-          
+
             'get the number of fleets for the progress updates
-            m_nFleets = Me.m_core.nFleets
-            ReDim MSY(m_core.nFleets)
+            m_nFleets = Me.UIContext.Core.nFleets
+            ReDim MSY(Me.UIContext.Core.nFleets)
             Me.updateControls(True)
 
             'connect and disconnect every time we run the MSY
@@ -58,7 +66,7 @@ Public Class frmMSY
             Me.btStop.Enabled = False
             Dim iStr As String = "Fleet" & vbTab & "MSY Effort" & vbCrLf
 
-            For i As Integer = 1 To Me.m_core.nFleets
+            For i As Integer = 1 To Me.UIContext.Core.nFleets
                 iStr = iStr & i.ToString & vbTab & MSY(i).ToString & vbCrLf
             Next
             Me.txtMSYresults.Text = iStr
@@ -93,7 +101,7 @@ Public Class frmMSY
 
         Try
             'get the number of fleets for the progress updates
-            m_nFleets = Me.m_core.nFleets
+            m_nFleets = Me.UIContext.Core.nFleets
             'ReDim MSY(m_core.nFleets)
             'Me.updateControls(True)
 
