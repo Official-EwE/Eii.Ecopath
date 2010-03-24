@@ -979,12 +979,9 @@ Public Class AppLauncher
         Dim cmdh As cCommandHandler = New cCommandHandler()
         Dim pm As cPropertyManager = New cPropertyManager(core, sg, Me.m_SyncObj)
 
-        Me.UIContext = New cUIContext(core, _
-                                      sg, _
-                                      pm, _
-                                      cmdh, _
-                                      New cFormPositionSettings(), _
-                                      Me.m_SyncObj)
+        core.InitCore()
+
+        Me.UIContext = New cUIContext(core, sg, pm, cmdh, New cFormPositionSettings(), Me.m_SyncObj)
 
         ' Config state monitor
         Me.Core.StateMonitor.SyncObject = Me
