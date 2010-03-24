@@ -28,7 +28,7 @@ Public Class frmMSY
 
         Try
 
-            'Hardwire run state parameters...for now
+            ' Hard-wire run state parameters...for now
             If rbValue.Checked Then
                 Me.m_mse.ModelParameters.MSYEvaluateValue = True
             Else
@@ -36,7 +36,6 @@ Public Class frmMSY
             End If
             Me.m_mse.ModelParameters.MSYRunSilent = False
             Me.m_mse.ModelParameters.MSYStartTimeIndex = 2
-
 
             'get the number of fleets for the progress updates
             m_nFleets = Me.UIContext.Core.nFleets
@@ -58,6 +57,8 @@ Public Class frmMSY
 
     Private Sub updateControls(ByVal running As Boolean)
 
+        ' ToDo_JS: globalize this
+
         If running Then
             Me.btRunMSY.Enabled = False
             Me.btStop.Enabled = True
@@ -75,8 +76,8 @@ Public Class frmMSY
 
 
     Private Sub onMSYProgress(ByVal MSYProgress As MSE.cMSYProgressArgs)
-        ' Dim MSY(m_core.nFleets) As Single
 
+        ' ToDo_JS: globalize this
 
         Try
             Me.lbFleet.Text = "Fleet " & MSYProgress.FleetIndex.ToString & " of " & m_nFleets.ToString
@@ -92,18 +93,19 @@ Public Class frmMSY
 
     End Sub
 
-
-    Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btStop.Click
+    Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles btStop.Click
         Me.m_mse.ModelParameters.StopRun = True
     End Sub
 
-    Private Sub btFleetTradeoffs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btFleetTradeoffs.Click
+    Private Sub btFleetTradeoffs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles btFleetTradeoffs.Click
+
+        ' ToDo_JS: globalize this
 
         Try
             'get the number of fleets for the progress updates
             m_nFleets = Me.UIContext.Core.nFleets
-            'ReDim MSY(m_core.nFleets)
-            'Me.updateControls(True)
 
             'connect and disconnect every time we run the MSY
             Me.m_mse.Connect(Nothing, AddressOf Me.onMSYProgress)
@@ -116,9 +118,6 @@ Public Class frmMSY
 
         End Try
 
-        'Me.updateControls(False)
-
-
-
     End Sub
+
 End Class
