@@ -1027,7 +1027,7 @@ Public Class AppLauncher
 
     Private Sub InitCoreParams()
 
-        Dim core As cCore = cCore.GetInstance()
+        Dim core As cCore = New cCore()
         Dim sg As cStyleGuide = New cStyleGuide()
         Dim pm As cPropertyManager = New cPropertyManager(core, sg, Me.m_SyncObj)
 
