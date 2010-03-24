@@ -467,11 +467,6 @@ Namespace Ecosim
                 SetStartBiomass()     'Startbiomass must be set before SimFile is opened
                 RemoveImportFromEcosim()
 
-                'jb replaced EcoSimFileOpen() with SetDefaultParameters
-                'EcoSimFileOpen()
-                '   SetDefaultParameters()
-
-                'redimTime(True)
                 Calc_nvar()
 
                 CalcEatenOfBy()
