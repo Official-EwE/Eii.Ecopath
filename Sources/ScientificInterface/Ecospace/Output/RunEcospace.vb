@@ -908,21 +908,29 @@ Namespace Ecospace
         End Sub
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+            Dim bHasRunInit As Boolean
 
-            Select Case msg.Type
+            Try
 
-                Case eMessageType.EcosimNYearsChanged
-                    Me.InitUIParams()
+                For Each vStat As cVariableStatus In msg.Variables
 
-                Case eMessageType.DataModified
-                    If Not Me.Core.StateMonitor.HasEcospaceRan Then
-                        Me.ClearResults()
-                    End If
+                    Select Case vStat.VarName
 
-                Case eMessageType.ErrorEncountered
-                    'Console.WriteLine("Ecospace Error: " & msg.Message)
+                        Case eVarNameFlags.TotalTime, eVarNameFlags.NumTimeStepsPerYear, eVarNameFlags.EcoSimNYears
 
-            End Select
+                            If Not bHasRunInit Then
+                                Me.InitCoreParams()
+                                Me.InitUIParams()
+                                bHasRunInit = True
+                            End If
+
+                    End Select
+
+                Next
+
+            Catch ex As Exception
+                System.Console.WriteLine(Me.ToString & ".OnCoreMessage() Exception: " & ex.Message)
+            End Try
 
         End Sub
 

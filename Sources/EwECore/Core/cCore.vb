@@ -10502,6 +10502,10 @@ Public Class cCore
                     Case eVarNameFlags.EcoSimNYears
 
                         setEcosimRunLength(CInt(value.Value))
+
+                        'change the Ecospace summary periods to fit the new run length
+                        Me.m_EcoSpaceData.setDefaultSummaryPeriod()
+
                         'the length of the ecospace run will be changed as well
                         Me.LoadEcospaceModelParameters()
                         'jb 26/09/2008 EcoSimNYears is already in the variables list adding it again causes loops over variables to execute twice
