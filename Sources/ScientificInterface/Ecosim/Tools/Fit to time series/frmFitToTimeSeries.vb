@@ -132,7 +132,7 @@ Namespace Ecosim
 
             Me.m_shapeHandler = New AppliedFFGUIHandler(Me.UIContext, Me.m_shapeToolBox, Me.m_sketchPad)
 
-            Me.m_cmdTSWeights = Me.UIContext.CommandHander.GetCommand("WeightTimeSeries")
+            Me.m_cmdTSWeights = Me.UIContext.CommandHandler.GetCommand("WeightTimeSeries")
             If (Me.m_cmdTSWeights IsNot Nothing) Then
                 AddHandler Me.m_cmdTSWeights.OnUpdate, AddressOf OnUpdateTSCommand
             End If

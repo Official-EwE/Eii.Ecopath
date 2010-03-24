@@ -107,9 +107,6 @@ Public Class cEwENetworkAnalysisPlugin
                 Me.m_manager = New cNetworkManager
                 Me.m_manager.Init(m_core)
 
-                Me.m_remote = New cNetworkAnalysisRemote()
-                Me.m_remote.Attach(Me.m_manager)
-
                 Me.m_bInitOK = True
                 'System.Console.WriteLine(Me.ToString & ".Initialize() Successfull.")
             Else
@@ -283,6 +280,8 @@ Public Class cEwENetworkAnalysisPlugin
     Public Sub UIContext(ByVal uic As Object) _
         Implements EwEPlugin.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
+        Me.m_remote = New cNetworkAnalysisRemote()
+        Me.m_remote.Attach(Me.m_uic, Me.m_manager)
     End Sub
 
 #End Region ' GUI

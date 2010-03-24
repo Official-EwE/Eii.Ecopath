@@ -98,27 +98,24 @@ Public Class ucResults
         Me.m_model = model
         Me.m_result = result
 
-        Dim cmdH As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdH As cCommandHandler = Me.m_uic.CommandHandler
 
         ' Start listening for model events
         AddHandler Me.m_model.OnRunCompleted, AddressOf OnModelRunCompleted
 
         ' Set up commands
-        Me.m_cmdRunEcopath = New cCommand("VC_RunEcopath")
+        Me.m_cmdRunEcopath = New cCommand(cmdH, "VC_RunEcopath")
         Me.m_cmdRunEcopath.AddControl(Me.m_btnRunEcopath)
-        cmdH.Add(Me.m_cmdRunEcopath)
         AddHandler Me.m_cmdRunEcopath.OnInvoke, AddressOf OnInvokeRunEcopath
         AddHandler Me.m_cmdRunEcopath.OnUpdate, AddressOf OnUpdateRunEcopath
 
-        Me.m_cmdRunEcosim = New cCommand("VC_RunEcosim")
+        Me.m_cmdRunEcosim = New cCommand(cmdH, "VC_RunEcosim")
         Me.m_cmdRunEcosim.AddControl(Me.m_btnRunEcosim)
-        cmdH.Add(Me.m_cmdRunEcosim)
         AddHandler Me.m_cmdRunEcosim.OnInvoke, AddressOf OnInvokeRunEcosim
         AddHandler Me.m_cmdRunEcosim.OnUpdate, AddressOf OnUpdateRunEcosim
 
-        Me.m_cmdRunEqulibrium = New cCommand("VC_RunEqulibrium")
+        Me.m_cmdRunEqulibrium = New cCommand(cmdH, "VC_RunEqulibrium")
         Me.m_cmdRunEqulibrium.AddControl(Me.m_btnRunEquilibrium)
-        cmdH.Add(Me.m_cmdRunEqulibrium)
         AddHandler Me.m_cmdRunEqulibrium.OnInvoke, AddressOf OnInvokeRunEquilibrium
         AddHandler Me.m_cmdRunEqulibrium.OnUpdate, AddressOf OnUpdateRunEquilibrium
 
@@ -129,7 +126,7 @@ Public Class ucResults
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing Then
-                Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+                Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
 
                 cmdh.Remove(Me.m_cmdRunEcopath)
                 RemoveHandler Me.m_cmdRunEcopath.OnInvoke, AddressOf OnInvokeRunEcosim

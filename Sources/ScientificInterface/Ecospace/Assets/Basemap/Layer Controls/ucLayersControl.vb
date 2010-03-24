@@ -271,7 +271,7 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Private Sub FireSelectionCommand(ByVal layer As cLayer)
 
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME)
             Dim sc As cPropertySelectionCommand = Nothing
             Dim pm As cPropertyManager = Me.m_uic.PropertyManager

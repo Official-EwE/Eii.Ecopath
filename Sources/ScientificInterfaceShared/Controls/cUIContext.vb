@@ -105,7 +105,7 @@ Namespace Controls
         ''' UI can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property CommandHander() As cCommandHandler
+        Public ReadOnly Property CommandHandler() As cCommandHandler
             Get
                 Return m_cmdhandler
             End Get

@@ -59,7 +59,7 @@ Public Class frmNetworkAnalysis
         Me.m_tlpInfo.Visible = True
         Me.m_tlpInfo.Dock = DockStyle.Fill
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Me.m_cmdDisplayGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
             Me.m_cmdDisplayGroups.AddControl(Me.tsmiDisplayGroups)
@@ -112,7 +112,7 @@ Public Class frmNetworkAnalysis
     Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tsbtnOutputIndicesCSV.Click
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdDOC As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
         Dim strFileName As String = ""
         Dim bAnnual As Boolean = False
@@ -159,7 +159,7 @@ Public Class frmNetworkAnalysis
 
         ' ToDo: localize this
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
         Dim bAnnual As Boolean = False
 

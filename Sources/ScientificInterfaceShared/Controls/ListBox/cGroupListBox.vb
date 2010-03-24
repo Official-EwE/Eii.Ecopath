@@ -377,7 +377,7 @@ Namespace Controls
             If Not Me.IsInitialized() Then Return
 
             Dim cmd As cCommand = Nothing
-            cmd = Me.m_uic.CommandHander.GetCommand("EditGroups")
+            cmd = Me.m_uic.CommandHandler.GetCommand("EditGroups")
 
             If cmd Is Nothing Then
                 MyBase.OnMouseDoubleClick(e)

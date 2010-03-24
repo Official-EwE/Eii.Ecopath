@@ -1,6 +1,10 @@
+#Region " Imports "
+
 Option Strict On
 Imports System
 Imports System.Collections.Generic
+
+#End Region ' Imports
 
 Namespace Commands
 
@@ -13,25 +17,6 @@ Namespace Commands
     ''' -----------------------------------------------------------------------
     Public Class cCommandHandler
 
-#Region " Singleton "
-
-        ''' <summary>Singleton instance.</summary>
-        Private Shared s_inst As cCommandHandler
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Singleton instance access.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function GetInstance() As cCommandHandler
-            If cCommandHandler.s_inst Is Nothing Then
-                cCommandHandler.s_inst = New cCommandHandler
-            End If
-            Return cCommandHandler.s_inst
-        End Function
-
-#End Region ' Singleton
-
 #Region " Construction "
 
         ''' -----------------------------------------------------------------------
@@ -39,7 +24,7 @@ Namespace Commands
         ''' Constructor, initializes a new instance of this class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub New()
+        Public Sub New()
             ' Create storages
             Me.m_dictCommands = New Dictionary(Of String, cCommand)
             Me.m_dictHandlerTypes = New Dictionary(Of String, Type)
@@ -65,7 +50,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="c">The command to add.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub Add(ByVal c As cCommand)
+        Friend Sub Add(ByVal c As cCommand)
             Try
                 Me.m_dictCommands.Add(c.Name.ToLower(), c)
             Catch ex As Exception

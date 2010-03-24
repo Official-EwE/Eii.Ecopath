@@ -266,7 +266,7 @@ Namespace Controls
 
             Dim msg As cMessage = Nothing
             Dim strError As String = ""
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             If sp Is Nothing Then Return

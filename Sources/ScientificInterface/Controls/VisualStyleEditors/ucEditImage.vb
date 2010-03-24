@@ -47,7 +47,7 @@ Namespace Controls
         Private Sub btnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImport.Click
 
             Dim img As Image = Nothing
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
             cmdFO.Invoke(My.Resources.FILEFILTER_IMAGE)

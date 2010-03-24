@@ -200,7 +200,7 @@ Namespace Controls
             If Not Me.IsInitialized() Then Return
 
             Dim cmd As cCommand = Nothing
-            cmd = Me.m_uic.CommandHander.GetCommand("EditFleets")
+            cmd = Me.m_uic.CommandHandler.GetCommand("EditFleets")
 
             If cmd Is Nothing Then
                 MyBase.OnMouseDoubleClick(e)

@@ -723,7 +723,7 @@ Public Class AppLauncher
         Me.SaveMainFormSettings()
 
         ' Cleanup: disconnect command handler from idle event
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
 
         RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
@@ -745,254 +745,201 @@ Public Class AppLauncher
 
     Private Sub InitCommands()
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
 
         ' Create and configure File Open command
-        Me.m_cmdFileOpen = New cFileOpenCommand()
-        cmdh.Add(Me.m_cmdFileOpen)
+        Me.m_cmdFileOpen = New cFileOpenCommand(cmdh)
 
         ' Create and configure File Save command
-        Me.m_cmdFileSave = New cFileSaveCommand()
-        cmdh.Add(Me.m_cmdFileSave)
+        Me.m_cmdFileSave = New cFileSaveCommand(cmdh)
 
         ' Create and configure Directory Open command
-        Me.m_cmdDirectoryOpen = New cDirectoryOpenCommand()
-        cmdh.Add(Me.m_cmdDirectoryOpen)
+        Me.m_cmdDirectoryOpen = New cDirectoryOpenCommand(cmdh)
 
         ' Create and configure Execute command
-        Me.m_cmdExecute = New cExecuteCommand()
-        cmdh.Add(Me.m_cmdExecute)
+        Me.m_cmdExecute = New cExecuteCommand(cmdh)
 
         ' Create and configure new command
-        m_cmdNewModel = New cCommand("NewEcopathModel")
+        m_cmdNewModel = New cCommand(cmdh, "NewEcopathModel")
         m_cmdNewModel.AddControl(Me.m_tsmiFileNew)
-        cmdh.Add(Me.m_cmdNewModel)
 
         ' Create and configure open command
-        m_cmdLoadModel = New cCommand("LoadEcopathModel")
+        m_cmdLoadModel = New cCommand(cmdh, "LoadEcopathModel")
         m_cmdLoadModel.AddControl(Me.m_tsmiFileOpen)
         m_cmdLoadModel.AddControl(Me.m_tsbEcopath)
-        cmdh.Add(Me.m_cmdLoadModel)
 
         ' Create and configure save commands
-        m_cmdSaveModelAs = New cCommand("SaveModelAs")
+        m_cmdSaveModelAs = New cCommand(cmdh, "SaveModelAs")
         m_cmdSaveModelAs.AddControl(Me.m_tsmiFileSaveAs)
-        cmdh.Add(Me.m_cmdSaveModelAs)
 
-        m_cmdSave = New cCommand("SaveModel")
+        m_cmdSave = New cCommand(cmdh, "SaveModel")
         m_cmdSave.AddControl(Me.m_tsmiFileSave)
-        cmdh.Add(Me.m_cmdSave)
 
         ' Create and configure 'close model' command
-        m_cmdCloseModel = New cCommand("CloseModel")
+        m_cmdCloseModel = New cCommand(cmdh, "CloseModel")
         m_cmdCloseModel.AddControl(Me.m_tsmiFileClose)
-        cmdh.Add(Me.m_cmdCloseModel)
 
         ' Create and configure 'compact model' command
-        m_cmdCompactModel = New cCommand("CompactModel")
+        m_cmdCompactModel = New cCommand(cmdh, "CompactModel")
         m_cmdCompactModel.AddControl(Me.m_tsmiFileCompact)
-        cmdh.Add(Me.m_cmdCompactModel)
 
         ' Create and configure 'close document' command
-        m_cmdCloseDocument = New cCommand("CloseDocument")
+        m_cmdCloseDocument = New cCommand(cmdh, "CloseDocument")
         m_cmdCloseDocument.AddControl(Me.m_tsmiWindowsClose)
-        cmdh.Add(Me.m_cmdCloseDocument)
 
         ' Create and configure navigate command
-        m_cmdNavigate = New cNavigationCommand()
-        cmdh.Add(Me.m_cmdNavigate)
+        m_cmdNavigate = New cNavigationCommand(cmdh)
 
         ' Create and configure 'close all forms' command
-        m_cmdCloseAllForms = New cCommand("CloseAllForms")
+        m_cmdCloseAllForms = New cCommand(cmdh, "CloseAllForms")
         m_cmdCloseAllForms.AddControl(Me.m_tsmiWindowsCloseAll)
-        cmdh.Add(Me.m_cmdCloseAllForms)
 
         'Create and configure 'new ecosim scenario' command
-        m_cmdNewEcosimScenario = New cCommand("NewEcosimScenario")
+        m_cmdNewEcosimScenario = New cCommand(cmdh, "NewEcosimScenario")
         m_cmdNewEcosimScenario.AddControl(Me.m_tsmiEcosimNew)
-        cmdh.Add(Me.m_cmdNewEcosimScenario)
 
         'Create and configure 'load ecosim scenario' command
-        m_cmdLoadEcosimScenario = New cCommand("LoadEcosimScenario")
+        m_cmdLoadEcosimScenario = New cCommand(cmdh, "LoadEcosimScenario")
         m_cmdLoadEcosimScenario.AddControl(Me.m_tsmiEcosimLoad)
         m_cmdLoadEcosimScenario.AddControl(Me.m_tsbEcosim)
-        cmdh.Add(Me.m_cmdLoadEcosimScenario)
 
         'Create and configure 'save ecosim scenario' command
-        m_cmdSaveEcosimScenario = New cCommand("SaveEcosimScenario")
+        m_cmdSaveEcosimScenario = New cCommand(cmdh, "SaveEcosimScenario")
         m_cmdSaveEcosimScenario.AddControl(Me.m_tsmiEcosimSave)
-        cmdh.Add(Me.m_cmdSaveEcosimScenario)
 
         'Create and configure 'save ecosim scenario as' command
-        m_cmdSaveEcosimScenarioAs = New cCommand("SaveEcosimScenarioAs")
+        m_cmdSaveEcosimScenarioAs = New cCommand(cmdh, "SaveEcosimScenarioAs")
         m_cmdSaveEcosimScenarioAs.AddControl(Me.m_tsmiEcosimSaveAs)
-        cmdh.Add(Me.m_cmdSaveEcosimScenarioAs)
 
         'Create and configure 'new ecospace scenario' command
-        m_cmdNewEcospaceScenario = New cCommand("NewEcospaceScenario")
+        m_cmdNewEcospaceScenario = New cCommand(cmdh, "NewEcospaceScenario")
         m_cmdNewEcospaceScenario.AddControl(Me.m_tsmiEcospaceNew)
-        cmdh.Add(Me.m_cmdNewEcospaceScenario)
 
         'Create and configure 'load ecospace scenario' command
-        m_cmdLoadEcospaceScenario = New cCommand("LoadEcospaceScenario")
+        m_cmdLoadEcospaceScenario = New cCommand(cmdh, "LoadEcospaceScenario")
         m_cmdLoadEcospaceScenario.AddControl(Me.m_tsmiEcospaceLoad)
         m_cmdLoadEcospaceScenario.AddControl(Me.m_tsbEcospace)
-        cmdh.Add(Me.m_cmdLoadEcospaceScenario)
 
         'Create and configure 'save ecospace scenario' command
-        m_cmdSaveEcospaceScenario = New cCommand("SaveEcospaceScenario")
+        m_cmdSaveEcospaceScenario = New cCommand(cmdh, "SaveEcospaceScenario")
         m_cmdSaveEcospaceScenario.AddControl(Me.m_tsmiEcospaceSave)
-        cmdh.Add(Me.m_cmdSaveEcospaceScenario)
 
         'Create and configure 'save ecospace scenario as' command
-        m_cmdSaveEcospaceScenarioAS = New cCommand("SaveEcospaceScenarioAs")
+        m_cmdSaveEcospaceScenarioAS = New cCommand(cmdh, "SaveEcospaceScenarioAs")
         m_cmdSaveEcospaceScenarioAS.AddControl(Me.m_tsmiEcospaceSaveAs)
-        cmdh.Add(Me.m_cmdSaveEcospaceScenarioAS)
 
         'Create and configure 'new ecotracer scenario' command
-        Me.m_cmdNewEcotracerScenario = New cCommand("NewEcotracerScenario")
+        Me.m_cmdNewEcotracerScenario = New cCommand(cmdh, "NewEcotracerScenario")
         Me.m_cmdNewEcotracerScenario.AddControl(Me.m_tsmiEcotracerNew)
-        cmdh.Add(Me.m_cmdNewEcotracerScenario)
 
         'Create and configure 'load ecotracer scenario' command
-        m_cmdLoadEcotracerScenario = New cCommand("LoadEcotracerScenario")
+        m_cmdLoadEcotracerScenario = New cCommand(cmdh, "LoadEcotracerScenario")
         m_cmdLoadEcotracerScenario.AddControl(Me.m_tsmiEcotracerLoad)
-        cmdh.Add(Me.m_cmdLoadEcotracerScenario)
 
         'Create and configure 'save ecotracer scenario' command
-        m_cmdSaveEcotracerScenario = New cCommand("SaveEcotracerScenario")
+        m_cmdSaveEcotracerScenario = New cCommand(cmdh, "SaveEcotracerScenario")
         m_cmdSaveEcotracerScenario.AddControl(Me.m_tsmiEcotracerSave)
-        cmdh.Add(Me.m_cmdSaveEcotracerScenario)
 
         'Create and configure 'save ecotracer scenario as' command
-        m_cmdSaveEcotracerScenarioAS = New cCommand("SaveEcotracerScenarioAs")
+        m_cmdSaveEcotracerScenarioAS = New cCommand(cmdh, "SaveEcotracerScenarioAs")
         m_cmdSaveEcotracerScenarioAS.AddControl(Me.m_tsmiEcotracerSaveAs)
-        cmdh.Add(Me.m_cmdSaveEcotracerScenarioAS)
 
         'Create and configure 'view Navtree' command
-        Me.m_cmdViewNavPane = New cCommand("ViewNavPane")
+        Me.m_cmdViewNavPane = New cCommand(cmdh, "ViewNavPane")
         Me.m_cmdViewNavPane.AddControl(Me.m_tsmiViewNavigation)
-        cmdh.Add(Me.m_cmdViewNavPane)
 
         'Create and configure 'view start page' command
-        Me.m_cmdViewStartPanel = New cCommand("ViewStartPage")
+        Me.m_cmdViewStartPanel = New cCommand(cmdh, "ViewStartPage")
         Me.m_cmdViewStartPanel.AddControl(Me.m_tsmiViewStartPage)
-        cmdh.Add(Me.m_cmdViewStartPanel)
 
         'Create and configure 'view status pane' command
-        Me.m_cmdViewStatusPane = New cCommand("ViewStatusPane")
+        Me.m_cmdViewStatusPane = New cCommand(cmdh, "ViewStatusPane")
         Me.m_cmdViewStatusPane.AddControl(Me.m_tsmiViewStatus)
-        cmdh.Add(Me.m_cmdViewStatusPane)
 
         'Create and configure 'view properties pane' command
-        Me.m_cmdViewRemarkPane = New cCommand("ViewPropertiesPane")
+        Me.m_cmdViewRemarkPane = New cCommand(cmdh, "ViewPropertiesPane")
         Me.m_cmdViewRemarkPane.AddControl(Me.m_tsmiViewRemarks)
-        cmdh.Add(Me.m_cmdViewRemarkPane)
 
         'Create and configure 'view Buttonbar' command
-        Me.m_cmdViewModelBar = New cCommand("ViewButtonBar")
+        Me.m_cmdViewModelBar = New cCommand(cmdh, "ViewButtonBar")
         Me.m_cmdViewModelBar.AddControl(Me.m_tsmiViewModelBar)
-        cmdh.Add(Me.m_cmdViewModelBar)
 
         'Create and configure 'view statusbar' command
-        Me.m_cmdViewStatusbar = New cCommand("ViewStatusbar")
+        Me.m_cmdViewStatusbar = New cCommand(cmdh, "ViewStatusbar")
         Me.m_cmdViewStatusbar.AddControl(Me.m_tsmiViewStatusBar)
-        cmdh.Add(Me.m_cmdViewStatusbar)
 
         'Create and configure EditGroups command
-        Me.m_cmdEditGroups = New cCommand("EditGroups")
+        Me.m_cmdEditGroups = New cCommand(cmdh, "EditGroups")
         Me.m_cmdEditGroups.AddControl(Me.m_tsmiEcopathEditGroups)
-        cmdh.Add(Me.m_cmdEditGroups)
 
         'Create and configure EditMultiStanza cammand
-        Me.m_cmdEditMultiStanza = New cCommand("EditMultiStanza")
+        Me.m_cmdEditMultiStanza = New cCommand(cmdh, "EditMultiStanza")
         Me.m_cmdEditMultiStanza.AddControl(Me.m_tsmiEcopathEditMultiStanza)
-        cmdh.Add(Me.m_cmdEditMultiStanza)
 
         'Create and configure EditFleets command
-        Me.m_cmdEditFleets = New cCommand("EditFleets")
+        Me.m_cmdEditFleets = New cCommand(cmdh, "EditFleets")
         Me.m_cmdEditFleets.AddControl(Me.m_tsmiEcopathEditFleets)
-        cmdh.Add(Me.m_cmdEditFleets)
 
-        Me.m_cmdEditBasemap = New cCommand("EditBasemap")
+        Me.m_cmdEditBasemap = New cCommand(cmdh, "EditBasemap")
         Me.m_cmdEditBasemap.AddControl(Me.m_tsmiEcospaceEditMap)
-        cmdh.Add(Me.m_cmdEditBasemap)
 
-        Me.m_cmdEditHabitats = New cCommand("EditHabitats")
+        Me.m_cmdEditHabitats = New cCommand(cmdh, "EditHabitats")
         Me.m_cmdEditHabitats.AddControl(Me.m_tsmiEcospaceEditHabitats)
-        cmdh.Add(Me.m_cmdEditHabitats)
 
-        Me.m_cmdEditRegions = New cCommand("EditRegions")
+        Me.m_cmdEditRegions = New cCommand(cmdh, "EditRegions")
         Me.m_cmdEditRegions.AddControl(Me.m_tsmiEcospaceEditRegions)
-        cmdh.Add(Me.m_cmdEditRegions)
 
-        Me.m_cmdEditMPAs = New cCommand("EditMPAs")
+        Me.m_cmdEditMPAs = New cCommand(cmdh, "EditMPAs")
         Me.m_cmdEditMPAs.AddControl(Me.m_tsmiEcospaceEditMPAs)
-        cmdh.Add(Me.m_cmdEditMPAs)
 
-        Me.m_cmdEditImportanceLayers = New cCommand("EditImportanceLayers")
+        Me.m_cmdEditImportanceLayers = New cCommand(cmdh, "EditImportanceLayers")
         Me.m_cmdEditImportanceLayers.AddControl(Me.m_tsmiEcospaceEditImportanceLayers)
-        cmdh.Add(Me.m_cmdEditImportanceLayers)
 
-        Me.m_cmdImportLayerData = New cCommand("ImportLayerData")
+        Me.m_cmdImportLayerData = New cCommand(cmdh, "ImportLayerData")
         Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
-        cmdh.Add(Me.m_cmdImportLayerData)
 
-        Me.m_cmdExportLayerData = New cCommand("ExportLayerData")
-        cmdh.Add(Me.m_cmdExportLayerData)
+        Me.m_cmdExportLayerData = New cCommand(cmdh, "ExportLayerData")
 
         'Create and configure ImportTimeSeries command
-        Me.m_cmdImportTimeSeries = New cCommand("ImportTimeSeries")
+        Me.m_cmdImportTimeSeries = New cCommand(cmdh, "ImportTimeSeries")
         Me.m_cmdImportTimeSeries.AddControl(Me.m_tsmiTimeSeriesImport)
-        cmdh.Add(Me.m_cmdImportTimeSeries)
 
         'Create and configure LoadTimeSeries command
-        Me.m_cmdLoadTimeSeries = New cCommand("LoadTimeSeries")
+        Me.m_cmdLoadTimeSeries = New cCommand(cmdh, "LoadTimeSeries")
         Me.m_cmdLoadTimeSeries.AddControl(Me.m_tsmiTimeSeriesLoad)
-        cmdh.Add(Me.m_cmdLoadTimeSeries)
 
         'Create and configure WeightTimeSeries command
-        Me.m_cmdWeightTimeSeries = New cCommand("WeightTimeSeries")
+        Me.m_cmdWeightTimeSeries = New cCommand(cmdh, "WeightTimeSeries")
         Me.m_cmdWeightTimeSeries.AddControl(Me.m_tsmiTimeSeriesEditWeights)
-        cmdh.Add(Me.m_cmdWeightTimeSeries)
 
         'Create and configure LoadApplyTimeSeries command
-        Me.m_cmdLoadWeightTimeSeries = New cCommand("LoadWeightTimeSeries")
+        Me.m_cmdLoadWeightTimeSeries = New cCommand(cmdh, "LoadWeightTimeSeries")
         Me.m_cmdLoadWeightTimeSeries.AddControl(Me.m_tsmiTimeSeriesReloadLast)
-        cmdh.Add(Me.m_cmdLoadWeightTimeSeries)
 
         'Create and configure ExportTimeSeries command
-        Me.m_cmdExportTimeSeries = New cCommand("ExportTimeSeries")
+        Me.m_cmdExportTimeSeries = New cCommand(cmdh, "ExportTimeSeries")
         Me.m_cmdExportTimeSeries.AddControl(Me.m_tsmiTimeSeriesExport)
-        cmdh.Add(Me.m_cmdExportTimeSeries)
 
         'Create and configure Help>About command
-        Me.m_cmdHelpAbout = New cCommand("HelpAbout")
+        Me.m_cmdHelpAbout = New cCommand(cmdh, "HelpAbout")
         Me.m_cmdHelpAbout.AddControl(Me.m_tsmiHelpAbout)
-        cmdh.Add(Me.m_cmdHelpAbout)
 
         ' Create plugin gui command for GUI plugins to use
-        Me.m_cmdPluginGUICommand = New PluginGUICommand()
-        cmdh.Add(Me.m_cmdPluginGUICommand)
+        Me.m_cmdPluginGUICommand = New PluginGUICommand(cmdh)
 
         ' Create the one and only selection command
-        Me.m_cmdPropertySelection = New cPropertySelectionCommand()
-        cmdh.Add(Me.m_cmdPropertySelection)
+        Me.m_cmdPropertySelection = New cPropertySelectionCommand(cmdh)
 
-        Me.m_cmdShowHideItems = New cDisplayGroupsCommand()
+        Me.m_cmdShowHideItems = New cDisplayGroupsCommand(cmdh)
         Me.m_cmdShowHideItems.AddControl(Me.m_tsmiViewItems)
-        cmdh.Add(Me.m_cmdShowHideItems)
 
-        Me.m_cmdEnableEcotracer = New cCommand("EnableEcotracer")
-        cmdh.Add(Me.m_cmdEnableEcotracer)
+        Me.m_cmdEnableEcotracer = New cCommand(cmdh, "EnableEcotracer")
 
-        Me.m_cmdEstimateVs = New cCommand("EstimateVs")
+        Me.m_cmdEstimateVs = New cCommand(cmdh, "EstimateVs")
         Me.m_cmdEstimateVs.AddControl(Me.m_tsmiEcosimEstimateVs)
-        cmdh.Add(Me.m_cmdEstimateVs)
 
-        Me.m_cmdExportBiomassToCSV = New cCommand("ExportEcosimBiomassToCSV")
+        Me.m_cmdExportBiomassToCSV = New cCommand(cmdh, "ExportEcosimBiomassToCSV")
         Me.m_cmdExportBiomassToCSV.AddControl(Me.m_tsmiExportBiomassToCSV)
-        cmdh.Add(Me.m_cmdExportBiomassToCSV)
 
         ' Listen to application Idle events to update command states
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
@@ -1029,12 +976,13 @@ Public Class AppLauncher
 
         Dim core As cCore = New cCore()
         Dim sg As cStyleGuide = New cStyleGuide()
+        Dim cmdh As cCommandHandler = New cCommandHandler()
         Dim pm As cPropertyManager = New cPropertyManager(core, sg, Me.m_SyncObj)
 
         Me.UIContext = New cUIContext(core, _
                                       sg, _
                                       pm, _
-                                      cCommandHandler.GetInstance(), _
+                                      cmdh, _
                                       New cFormPositionSettings(), _
                                       Me.m_SyncObj)
 
@@ -1054,7 +1002,7 @@ Public Class AppLauncher
         Me.Core.PluginManager = Me.m_pluginManager
 
         ' Create plugin menu handler to position plugin menu items in the main menu from this form
-        Me.m_pluginMenuHandler = New cPluginMenuHandler(Me.MainMenuStrip, Me.m_pluginManager, Me.UIContext.CommandHander)
+        Me.m_pluginMenuHandler = New cPluginMenuHandler(Me.MainMenuStrip, Me.m_pluginManager, Me.UIContext.CommandHandler)
 
         ' Initialize core controller
         Me.m_coreController = New cCoreController(Me.Core.StateMonitor, Me.Core.StateManager)
@@ -1066,7 +1014,7 @@ Public Class AppLauncher
     End Sub
 
     Private Sub AutolaunchPlugins()
-        Dim pl As New cPluginAutolaunchHandler(Me.m_pluginManager, Me.UIContext.CommandHander)
+        Dim pl As New cPluginAutolaunchHandler(Me.m_pluginManager, Me.UIContext.CommandHandler)
     End Sub
 
     Private Sub LoadPlugins()
@@ -2129,7 +2077,7 @@ Public Class AppLauncher
     Private Sub OnNewFile(ByVal cmd As cCommand) Handles m_cmdNewModel.OnInvoke
 
         Dim db As cEwEDatabase = Nothing
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         cmdFS.Invoke(My.Resources.DEFAULT_NEWMODELNAME, "", My.Resources.FILEFILTER_MODEL_SAVE, 1)
@@ -2157,7 +2105,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnLoadModel(ByVal cmd As cCommand) Handles m_cmdLoadModel.OnInvoke
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         If cmd.Tag IsNot Nothing Then
@@ -2309,7 +2257,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnSaveModelAs(ByVal cmd As cCommand) Handles m_cmdSaveModelAs.OnInvoke
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         Dim strFileFilter As String = ""
@@ -2960,7 +2908,7 @@ Public Class AppLauncher
 
     Private Sub OnExportBiomassToCSV(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnInvoke
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdOD As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
         Dim bSaveAnnual As Boolean = False 'Save each time steps
         Dim writer As New cEcosimResultWriter(Me.UIContext.Core)

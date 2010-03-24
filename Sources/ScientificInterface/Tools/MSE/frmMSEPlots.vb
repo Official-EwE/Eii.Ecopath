@@ -46,7 +46,7 @@ Public Class frmMSEPlots
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE}
 
         ' Display Groups
-        Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
             cmd.AddControl(Me.btShowHide)
         End If
@@ -79,7 +79,7 @@ Public Class frmMSEPlots
         RemoveHandler Me.m_MSEEvents.onRunCompleted, AddressOf Me.onRunCompleted
 
         ' Show/Hide Groups
-        Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
             cmd.RemoveControl(Me.btShowHide)
         End If

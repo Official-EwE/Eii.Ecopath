@@ -180,7 +180,7 @@ Namespace Ecospace.Basemap.Layers
         Private Sub OnImportData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnDataImport.Click
 
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("ImportLayerData")
 
             If cmd IsNot Nothing Then
@@ -194,7 +194,7 @@ Namespace Ecospace.Basemap.Layers
         Private Sub OnExportData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnDataExport.Click
 
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("ExportLayerData")
 
             If cmd IsNot Nothing Then

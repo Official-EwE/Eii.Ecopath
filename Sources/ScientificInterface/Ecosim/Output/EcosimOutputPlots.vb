@@ -59,7 +59,7 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmd As cCommand = Nothing
             Dim group As cCoreGroupBase = Nothing
 
@@ -100,7 +100,7 @@ Namespace Ecosim
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("ExportEcosimBiomassToCSV")
             cmd.RemoveControl(Me.m_btnSaveData)
 

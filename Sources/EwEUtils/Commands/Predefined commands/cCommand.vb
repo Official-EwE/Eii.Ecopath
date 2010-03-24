@@ -20,6 +20,9 @@ Namespace Commands
     Public Class cCommand
 
 #Region " Private vars "
+
+        ''' <summary>Command handler to connect to.</summary>
+        Private m_cmdh As cCommandHandler = Nothing
         ''' <summary>Name of the command.</summary>
         Private m_strName As String = ""
         ''' <summary>Update lock flag to prevent involuntary loops.</summary>
@@ -43,13 +46,20 @@ Namespace Commands
         ''' </summary>
         ''' <param name="strName">The name to assign to the command.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal strName As String, Optional ByVal objTag As Object = Nothing)
+        Public Sub New(ByVal cmdh As cCommandHandler, _
+                       ByVal strName As String, _
+                       Optional ByVal objTag As Object = Nothing)
+
+            Me.m_cmdh = cmdh
             ' Store name
             Me.m_strName = strName
             ' Store tag
             Me.m_objTag = objTag
             ' Create storage for associated controls
             Me.m_dictControls = New Dictionary(Of Object, ControlHandler)
+
+            cmdh.Add(Me)
+
         End Sub
 
 #End Region ' Construction
@@ -75,7 +85,7 @@ Namespace Commands
         ''' ----------------------------------------------------------------------
         Public Sub AddControl(ByVal objGUI As Object)
             Try
-                Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+                Dim cmdh As cCommandHandler = Me.m_cmdh
                 Dim t As Type = cmdh.GetControlHandlerType(objGUI)
                 Dim objControlHandler As Object = Nothing
                 Dim objParms() As Object = {Me, objGUI}

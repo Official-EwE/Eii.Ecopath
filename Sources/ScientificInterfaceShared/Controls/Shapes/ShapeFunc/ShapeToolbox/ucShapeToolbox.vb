@@ -50,7 +50,7 @@ Namespace Controls
 
                     RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-                    cmd = Me.m_uic.CommandHander.GetCommand("WeightTimeSeries")
+                    cmd = Me.m_uic.CommandHandler.GetCommand("WeightTimeSeries")
                     If cmd IsNot Nothing Then
                         cmd.RemoveControl(Me.ApplyToolStripMenuItem)
                     End If
@@ -395,7 +395,7 @@ Namespace Controls
             '    cmd.AddControl(Me.
             'End If
 
-            cmd = Me.m_uic.CommandHander.GetCommand("WeightTimeSeries")
+            cmd = Me.m_uic.CommandHandler.GetCommand("WeightTimeSeries")
             If cmd IsNot Nothing Then
                 cmd.AddControl(Me.ApplyToolStripMenuItem)
             End If

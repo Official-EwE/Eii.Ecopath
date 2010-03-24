@@ -58,8 +58,8 @@ Namespace Commands
         ''' Constructor, initializes a new instance of the NavigationCommand class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Sub New()
-            MyBase.New(COMMAND_NAME)
+        Public Sub New(ByVal cmdh As cCommandHandler)
+            MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
         Public Sub New(ByVal strPageName As String, ByVal strPageID As String, _
@@ -67,7 +67,7 @@ Namespace Commands
                 ByVal typeClass As Type, _
                 Optional ByVal strHelpURL As String = "")
 
-            MyBase.New(COMMAND_NAME)
+            MyBase.New(Nothing, COMMAND_NAME)
 
             Me.m_strPageName = strPageName
             Me.m_strPageID = strPageID

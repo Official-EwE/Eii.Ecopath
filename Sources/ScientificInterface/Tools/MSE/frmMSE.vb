@@ -116,7 +116,7 @@ Public Class frmMSE
         m_dctEffortControls.Add(eMSEEffortMode.TrackUseQuota, Me.rbTrackUseQuota)
 
         ' Display Groups
-        Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
             cmd.AddControl(Me.btShowHide)
         End If

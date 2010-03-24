@@ -1,13 +1,10 @@
-﻿'==============================================================================
-'
-' $Log: cNetworkAnalysisRemote.vb,v $
-' Revision 1.1  2009/05/19 13:21:48  jeroens
-' Initial version
-'
-'==============================================================================
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Controls
+
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -16,11 +13,15 @@ Imports EwEUtils.Commands
 ''' ---------------------------------------------------------------------------
 Public Class cNetworkAnalysisRemote
 
+    Private m_uic As cUIContext = Nothing
     Private m_manager As cNetworkManager = Nothing
 
-    Public Sub Attach(ByVal manager As cNetworkManager)
+    Public Sub Attach(ByVal uic As cUIContext, _
+                      ByVal manager As cNetworkManager)
 
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Me.m_uic = uic
+
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmd As cCommand = cmdh.GetCommand(cExecuteCommand.COMMAND_NAME)
 
         If (cmd IsNot Nothing) Then
@@ -33,7 +34,7 @@ Public Class cNetworkAnalysisRemote
 
     Public Sub Detach()
 
-        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmd As cCommand = cmdh.GetCommand(cExecuteCommand.COMMAND_NAME)
 
         If (cmd IsNot Nothing) Then

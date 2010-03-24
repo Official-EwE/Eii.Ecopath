@@ -46,7 +46,7 @@ Public Class cEwEStatusBar
         Dim an As AssemblyName = Assembly.GetExecutingAssembly().GetName()
 
         Me.m_uic = uic
-        Me.m_cmd = DirectCast(Me.m_uic.CommandHander.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
+        Me.m_cmd = DirectCast(Me.m_uic.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
         Me.m_csm = Me.m_uic.Core.StateMonitor
         Me.m_tslVersion.Text = an.Version.ToString()
 

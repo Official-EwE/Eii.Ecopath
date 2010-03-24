@@ -30,8 +30,8 @@ Namespace Properties
         ''' Constructor, initializes and names an instance of this class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Sub New()
-            MyBase.New(COMMAND_NAME)
+        Public Sub New(ByVal cmdh As cCommandHandler)
+            MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
         ''' -----------------------------------------------------------------------

@@ -410,7 +410,7 @@ Namespace Controls.EwEGrid
         Public ReadOnly Property ComandHandler() As cCommandHandler
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
-                Return Me.UIContext.CommandHander
+                Return Me.UIContext.CommandHandler
             End Get
         End Property
 

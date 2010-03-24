@@ -295,7 +295,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub WeightTimeSeries()
-            Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand("WeightTimeSeries")
+            Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("WeightTimeSeries")
 
             If cmd IsNot Nothing Then
                 cmd.Invoke()
@@ -308,7 +308,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub LoadDatasets()
-            Dim cmd As cCommand = Me.UIContext.CommandHander.GetCommand("LoadTimeSeries")
+            Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("LoadTimeSeries")
 
             If cmd IsNot Nothing Then
                 cmd.Invoke()
@@ -370,7 +370,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Private Sub ImportTimeSeries()
             ' Launch via command!
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("ImportTimeSeries")
             If cmd IsNot Nothing Then cmd.Invoke()
         End Sub
@@ -382,7 +382,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Private Sub ExportTimeSeries()
             ' Launch via command!
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("ExportTimeSeries")
             If cmd IsNot Nothing Then cmd.Invoke()
         End Sub

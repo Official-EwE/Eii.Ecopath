@@ -93,7 +93,7 @@ Public Class NavigationPanel
 
         ' Put all the list here
         Me.m_nodeController = New cTreeViewNodeController()
-        Me.m_nodeController.Attach(Me.m_tvNavigation)
+        Me.m_nodeController.Attach(Me.m_uic, Me.m_tvNavigation)
 
         With Me.m_nodeController
 
@@ -224,7 +224,7 @@ Public Class NavigationPanel
 
         ' Integrate plug-ins
         If Me.m_pluginManager IsNot Nothing Then
-            Me.m_ntPluginHandler = New cPluginNavTreeHandler(Me.m_tvNavigation, Me.m_pluginManager, Me.m_uic.CommandHander)
+            Me.m_ntPluginHandler = New cPluginNavTreeHandler(Me.m_tvNavigation, Me.m_pluginManager, Me.m_uic.CommandHandler)
         End If
 
         AddHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged

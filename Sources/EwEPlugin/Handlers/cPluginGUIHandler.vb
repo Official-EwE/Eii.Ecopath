@@ -231,8 +231,8 @@ Public Class PluginGUICommand
     Private m_iDockState As Integer = 0 ' Unknown
     Private m_bHasRun As Boolean = False
 
-    Public Sub New()
-        MyBase.New(PluginGUICommand.COMMAND_NAME)
+    Public Sub New(ByVal cmdh As cCommandHandler)
+        MyBase.New(cmdh, PluginGUICommand.COMMAND_NAME)
     End Sub
 
     Friend Overloads Sub Invoke(ByVal ip As IGUIPlugin, ByVal sender As Object, ByVal e As EventArgs)

@@ -303,7 +303,7 @@ Public Class gridMapLayerToAttribute
             Handles m_btnBrowseInput.Click
 
             ' Browse via EwE6 open file dialog 
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim foc As cFileOpenCommand = TryCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
             Dim strFileFilter As String = My.Resources.FILEFILTER_LOAD_RASTER
             Dim sfc As eSpatialFileCompatibility = eSpatialFileCompatibility.Unreadable

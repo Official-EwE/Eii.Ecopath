@@ -259,7 +259,7 @@ Public Class gridExportMappings
             Handles m_btnBrowseTarget.Click
 
             ' Browse via EwE6 open file dialog 
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHander
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim fsc As cFileSaveCommand = TryCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim strFileFilter As String = My.Resources.FILEFILTER_CSV
 

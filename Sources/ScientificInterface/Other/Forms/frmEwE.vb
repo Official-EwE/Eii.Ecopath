@@ -320,7 +320,7 @@ Public Class frmEwE
     Public ReadOnly Property CommandHandler() As cCommandHandler
         Get
             If Me.UIContext Is Nothing Then Return Nothing
-            Return Me.UIContext.CommandHander
+            Return Me.UIContext.CommandHandler
         End Get
     End Property
 

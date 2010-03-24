@@ -114,13 +114,11 @@ Namespace Ecosim
             Me.m_gridPB.UIContext = Me.UIContext
             Me.m_gridBestFit.UIContext = Me.UIContext
 
-            Me.m_cmdRunMonteCarlo = New cCommand("RunMonteCarlo")
+            Me.m_cmdRunMonteCarlo = New cCommand(Me.CommandHandler, "RunMonteCarlo")
             Me.m_cmdRunMonteCarlo.AddControl(Me.btnRunTrials)
-            Me.CommandHandler.Add(Me.m_cmdRunMonteCarlo)
 
-            Me.m_cmdStopMonteCarlo = New cCommand("StopMonteCarlo")
+            Me.m_cmdStopMonteCarlo = New cCommand(Me.CommandHandler, "StopMonteCarlo")
             Me.m_cmdStopMonteCarlo.AddControl(Me.btnStop)
-            Me.CommandHandler.Add(Me.m_cmdStopMonteCarlo)
 
             ' Connect to ApplyTS command
             Me.m_cmdLoadTS = Me.CommandHandler.GetCommand("LoadTimeSeries")

@@ -164,7 +164,7 @@ Namespace Ecospace
             Dim core As cCore = Me.UIContext.Core
             Dim model As cEwEModel = core.EwEModel
             Dim scenario As cEcospaceScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex)
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHander
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(FileUtilities.ToValidFileName(String.Format("{0}_{1}", model.Name, scenario.Name), False), "", My.Resources.FILEFILTER_IMAGE)

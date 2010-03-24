@@ -45,24 +45,27 @@ Namespace Controls
     ''' ---------------------------------------------------------------------------
     Public Class cTreeViewNodeController
 
-        ''' <summary>List of added nodes</summary>
-        Private m_NodeInfoNodes As New List(Of cNodeInfo)
+        ''' <summary>UI context to connect to.</summary>
+        Private m_uic As cUIContext = Nothing
         ''' <summary>TreeView that is being controlled.</summary>
         ''' <remarks>M_TV? haha</remarks>
         Private m_tv As TreeView = Nothing
+        ''' <summary>List of added nodes</summary>
+        Private m_lNodeInfo As New List(Of cNodeInfo)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Connects an instance to a tree view.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Sub Attach(ByVal tv As TreeView)
+        Public Sub Attach(ByVal uic As cUIContext, ByVal tv As TreeView)
 
             Debug.Assert(Me.m_tv Is Nothing)
             Debug.Assert(tv IsNot Nothing)
 
-            ' Store ref
+            ' Store refs
             Me.m_tv = tv
+            Me.m_uic = uic
 
             AddHandler Me.m_tv.AfterSelect, AddressOf OnAfterSelect
             AddHandler Me.m_tv.AfterExpand, AddressOf OnAfterExpand
@@ -84,36 +87,40 @@ Namespace Controls
             RemoveHandler Me.m_tv.VisibleChanged, AddressOf OnVisibleChanged
 
             Me.m_tv = Nothing
+            Me.m_uic = Nothing
+
         End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Add node info to this controller.
         ''' </summary>
-        ''' <param name="p_treeNodeName"><see cref="TreeNode.Name">Name</see> of the tree node.</param>
-        ''' <param name="p_iExecutionState"><see cref="eCoreExecutionState">Core execution state flag</see>
+        ''' <param name="strTreeNodeName"><see cref="TreeNode.Name">Name</see> of the tree node.</param>
+        ''' <param name="execstate"><see cref="eCoreExecutionState">Core execution state flag</see>
         ''' indicating the state of the EwE Core this node should listen to.</param>
-        ''' <param name="p_classType">Class type of the Form to build when invoking this tree node from
+        ''' <param name="tClass">Class type of the Form to build when invoking this tree node from
         ''' the application navigation tree.</param>
-        ''' <param name="p_strHelpURL">Help URL for this node.</param>
+        ''' <param name="strHelpURL">Help URL for this node.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub Add(ByVal p_treeNodeName As String, ByVal p_iExecutionState As eCoreExecutionState, _
-                ByVal p_classType As Type, Optional ByVal p_strHelpURL As String = "")
-            m_NodeInfoNodes.Add(New cNodeInfo(p_treeNodeName, p_iExecutionState, p_classType, p_strHelpURL))
+        Public Sub Add(ByVal strTreeNodeName As String, _
+                       ByVal execstate As eCoreExecutionState, _
+                       ByVal tClass As Type, _
+                       Optional ByVal strHelpURL As String = "")
+            m_lNodeInfo.Add(New cNodeInfo(strTreeNodeName, execstate, tClass, strHelpURL))
         End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Searches added nodes for <see cref="cNodeInfo">NodeInfo</see> by a given node <see cref="cNodeInfo.NodeName">Name</see>.
         ''' </summary>
-        ''' <param name="p_treeNodeName">Name to find</param>
+        ''' <param name="strNodeName">Name to find</param>
         ''' <returns>The <see cref="cNodeInfo">NodeInfo</see> for the requested node
         ''' <see cref="cNodeInfo.NodeName">Name</see>, or Nothing if no such nodeInfo
         ''' was added.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function SearchNodeByName(ByVal p_treeNodeName As String) As cNodeInfo
-            For Each eachNode As cNodeInfo In m_NodeInfoNodes
-                If p_treeNodeName = eachNode.NodeName Then
+        Public Function SearchNodeByName(ByVal strNodeName As String) As cNodeInfo
+            For Each eachNode As cNodeInfo In m_lNodeInfo
+                If strNodeName = eachNode.NodeName Then
                     '' Load the selection
                     Return eachNode
                 End If
@@ -121,10 +128,10 @@ Namespace Controls
             Return Nothing
         End Function
 
-        Public Function SearchNodeByType(ByVal p_treeNodeType As String) As cNodeInfo
+        Public Function SearchNodeByType(ByVal strNodeType As String) As cNodeInfo
 
-            For Each nd As cNodeInfo In m_NodeInfoNodes
-                If p_treeNodeType = nd.Type.ToString Then
+            For Each nd As cNodeInfo In m_lNodeInfo
+                If strNodeType = nd.Type.ToString Then
                     Return nd
                 End If
             Next
@@ -179,7 +186,7 @@ Namespace Controls
             If (ni IsNot Nothing) Then
                 ' #Yes: launch form via central Navigate command
                 ' Get command handler
-                cmdH = cCommandHandler.GetInstance()
+                cmdH = Me.m_uic.CommandHandler
                 ' Get the navigation command
                 cmd = cmdH.GetCommand(cNavigationCommand.COMMAND_NAME)
                 ' Does this command exist?

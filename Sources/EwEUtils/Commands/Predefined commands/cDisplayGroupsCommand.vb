@@ -1,12 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cDisplayGroupsCommand.vb,v $
-' Revision 1.1  2009/06/06 01:34:29  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Imports EwEUtils.Commands
 
@@ -22,8 +14,8 @@ Namespace Commands
 
         Public Shared cCOMMAND_NAME As String = "~displaygroups"
 
-        Public Sub New()
-            MyBase.New(cDisplayGroupsCommand.cCOMMAND_NAME)
+        Public Sub New(ByVal cmdh As cCommandHandler)
+            MyBase.New(cmdh, cDisplayGroupsCommand.cCOMMAND_NAME)
         End Sub
 
         Public Overloads Sub Invoke(Optional ByVal bShowGroups As Boolean = True, Optional ByVal bShowTotals As Boolean = False)
