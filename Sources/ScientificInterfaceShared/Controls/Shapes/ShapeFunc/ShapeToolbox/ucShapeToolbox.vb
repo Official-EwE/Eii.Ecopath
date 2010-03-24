@@ -428,7 +428,7 @@ Namespace Controls
 
                     ' HACK!!!
                     If (m_bInUpdate = False) Then
-                        cCore.GetInstance().UpdateTimeSeries()
+                        Me.m_uic.Core.UpdateTimeSeries()
                     End If
                 End If
 
