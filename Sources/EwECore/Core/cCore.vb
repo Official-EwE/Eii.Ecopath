@@ -6648,14 +6648,14 @@ Public Class cCore
                     Me.StateMonitor.SetEcoSimInitialized()
                 Else
                     'Failed to init Ecosim, post a message and return
-                    Me.m_publisher.AddMessage(New cMessage("Ecospace failed to initialize Ecosim. Please try loading a different Ecosim scenario and re-running Ecospace.", _
+                    Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_SIM_INIT_FAILED, _
                                               eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
                     Return False
                 End If
             End If
         Else
             'No Ecosim scenario loaded, post a message and return
-            Me.m_publisher.AddMessage(New cMessage("An Ecosim and Ecospace scenario must be loaded before Ecospace can be run.", _
+            Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_NO_SIM_SCENARIO, _
                                       eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
             Return False
         End If
@@ -6680,13 +6680,13 @@ Public Class cCore
                     LoadEcospaceResults()
                     loadEcoTracerResults()
 
-                    Me.m_publisher.AddMessage(New cMessage("Ecospace has completed a model run.", _
+                    Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
                                   eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
 
                 End If 'If GroupsMissingHabitat() Then
 
             Else 'If Me.m_StateMonitor.HasEcospaceLoaded Then
-                Me.m_publisher.AddMessage(New cMessage("An Ecospace scenario must be loaded before Ecospace can be run.", _
+                Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_NO_SPACE_SCENARIO, _
                                           eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
             End If 'If Me.m_StateMonitor.HasEcospaceLoaded Then
 
@@ -6700,7 +6700,7 @@ Public Class cCore
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
-            Me.m_publisher.SendMessage(New cMessage("Run Ecospace Error: " & ex.Message, _
+            Me.m_publisher.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_ERROR & ex.Message, _
                                       eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
 
             Return False

@@ -873,4 +873,19 @@ System Error: {0}</value>
   <data name="F2TS_PROMPT_ITERATIONS" xml:space="preserve">
     <value>More Iterations?</value>
   </data>
+  <data name="ECOSPACE_NO_SIM_SCENARIO" xml:space="preserve">
+    <value>An Ecosim and Ecospace scenario must be loaded before Ecospace can be run.</value>
+  </data>
+  <data name="ECOSPACE_NO_SPACE_SCENARIO" xml:space="preserve">
+    <value>An Ecospace scenario must be loaded before Ecospace can be run.</value>
+  </data>
+  <data name="ECOSPACE_RUN_COMPLETED" xml:space="preserve">
+    <value>Ecospace has completed a model run.</value>
+  </data>
+  <data name="ECOSPACE_RUN_ERROR" xml:space="preserve">
+    <value>Run Ecospace Error: </value>
+  </data>
+  <data name="ECOSPACE_SIM_INIT_FAILED" xml:space="preserve">
+    <value>Ecospace failed to initialize Ecosim. Please try loading a different Ecosim scenario and re-running Ecospace.</value>
+  </data>
 </root>

@@ -789,6 +789,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to An Ecosim and Ecospace scenario must be loaded before Ecospace can be run..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_NO_SIM_SCENARIO() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_NO_SIM_SCENARIO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to An Ecospace scenario must be loaded before Ecospace can be run..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_NO_SPACE_SCENARIO() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_NO_SPACE_SCENARIO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace has completed a model run..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_RUN_COMPLETED() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_RUN_COMPLETED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run Ecospace Error: .
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_RUN_ERROR() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_RUN_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecospace scenario &apos;{0}&apos; failed to save. {1}.
         '''</summary>
         Friend Shared ReadOnly Property ECOSPACE_SAVE_FAILED() As String
@@ -803,6 +839,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ECOSPACE_SAVE_SUCCES() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_SAVE_SUCCES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace failed to initialize Ecosim. Please try loading a different Ecosim scenario and re-running Ecospace..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_SIM_INIT_FAILED() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_SIM_INIT_FAILED", resourceCulture)
             End Get
         End Property
         
