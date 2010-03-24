@@ -50,7 +50,7 @@ Public Class dlgManageTimeSeries
 
     Private m_gridEnableTS As gridWeightTS = Nothing
 
-    Private m_tr As cTimeSeriesTextReader = New cTimeSeriesCSVReader(cCore.GetInstance())
+    Private m_tr As cTimeSeriesTextReader = Nothing
     Private m_strImportFileName As String = String.Empty
     Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
 
@@ -59,6 +59,9 @@ Public Class dlgManageTimeSeries
         Me.InitializeComponent()
 
         Me.m_uic = uic
+
+        ' Create reader
+        Me.m_tr = New cTimeSeriesCSVReader(Me.m_uic.Core)
 
         ' -- Enable --
         ' Prepare grid
