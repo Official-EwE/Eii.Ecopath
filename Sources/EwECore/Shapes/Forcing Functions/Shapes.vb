@@ -342,8 +342,6 @@ Public Class cMediatingGroup
     ''' <remarks></remarks>
     Public Sub New(ByVal iGroup As Integer, ByVal theWeight As Single)
 
-        Debug.Assert(iGroup > 0 And iGroup <= cCore.GetInstance.nGroups, Me.ToString & ".iGroup out of bounds.")
-
         iGroupIndex = iGroup
         'weight does not have to one or zero it can be any value it 
         Weight = theWeight
@@ -381,9 +379,8 @@ Public Class cMediatingFleet
     ''' <param name="iFleet">Index to the EcoPath/EcoSim fleet.</param>
     ''' <param name="theWeight">Weight that is applied to this fleet [0-1]</param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal iFleet As Integer, ByVal theWeight As Single)
-
-        Debug.Assert(iFleet > 0 And iFleet <= cCore.GetInstance.nFleets, Me.ToString & ".iGroup out of bounds.")
+    Public Sub New(ByVal iFleet As Integer, _
+                   ByVal theWeight As Single)
 
         iFleetIndex = iFleet
         'weight does not have to one or zero it can be any value it 
