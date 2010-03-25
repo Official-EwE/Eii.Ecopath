@@ -260,7 +260,8 @@ Public MustInherit Class cShapeData
 
 #Region " ICoreInterface implementation "
 
-    Public Property DBID() As Integer Implements ICoreInterface.DBID
+    Public Property DBID() As Integer _
+        Implements ICoreInterface.DBID
         Get
             Return m_dbID
         End Get
@@ -269,22 +270,28 @@ Public MustInherit Class cShapeData
         End Set
     End Property
 
-    Public Function GetID() As String Implements ICoreInterface.GetID
+    Public Function GetID() As String _
+        Implements ICoreInterface.GetID
         Return cValueID.getDataTypeID(m_datatype, Me.DBID)
     End Function
 
-    Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
+    Public ReadOnly Property DataType() As eDataTypes _
+        Implements ICoreInterface.DataType
         Get
             Return m_datatype 'datatype is set in the constructor of each class
         End Get
     End Property
 
-    Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+    Public ReadOnly Property CoreComponent() As eCoreComponentType _
+        Implements ICoreInterface.CoreComponent
         Get
             Return m_coreComponent
         End Get
     End Property
 
+    ''' <summary>
+    ''' Get/set the index of the time series in a time series dataset.
+    ''' </summary>
     Public Property Index() As Integer Implements ICoreInterface.Index
         Get
             Return m_iEcoSimIndex
@@ -294,6 +301,9 @@ Public MustInherit Class cShapeData
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set the name of a time series.
+    ''' </summary>
     Public Property Name() As String Implements ICoreInterface.Name
         Get
             Return Me.m_strName
