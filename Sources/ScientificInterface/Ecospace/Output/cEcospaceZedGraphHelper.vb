@@ -41,7 +41,7 @@ Namespace Ecospace
 
             Me.m_pane.CurveList.Clear()
             For iGroup As Integer = 1 To nGroups
-                li = Me.CreateLineItem(cZedGraphHelper.eCurveTypes.EcosimOutput, iGroup, New PointPairList())
+                li = Me.CreateLineItem(eLineType.ModelData, iGroup, New PointPairList())
                 li.Tag = iGroup
                 Me.m_pane.CurveList.Add(li)
             Next

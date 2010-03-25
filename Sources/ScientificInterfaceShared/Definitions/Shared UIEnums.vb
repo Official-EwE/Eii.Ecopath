@@ -115,7 +115,8 @@ Namespace Definitions
     ''' Can't use eVarNameFlags because there is more than one type of data in a plot.</remarks>
     ''' -----------------------------------------------------------------------
     Public Enum ePlotData As Integer
-        Biomass = 0
+        NotSet = 0
+        Biomass
         GroupCatch
         FleetValue
         Effort
@@ -127,10 +128,12 @@ Namespace Definitions
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eLineType As Integer
-        ''' <summary>Line denotes a computed value.</summary>
-        Value = 0
-        ''' <summary>Line denotes a time series.</summary>
-        TimeSeries
+        ''' <summary>Line type is not set.</summary>
+        NotSet = 0
+        ''' <summary>Line denotes model data.</summary>
+        ModelData
+        ''' <summary>Line denotes reference data.</summary>
+        ReferenceData
     End Enum
 
 End Namespace

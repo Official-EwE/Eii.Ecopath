@@ -58,7 +58,7 @@ Namespace Ecosim
         Private m_bInUpdate As Boolean = False
 
         ' === plot data ==
-        Private m_plotdata As ePlotData = ePlotData.Biomass
+        Private m_varname As ePlotData = ePlotData.Biomass
         Private m_bIsAnnual As Boolean = False
         Private m_bIsCumulative As Boolean = False
         Private m_bIsExploring As Boolean = False
@@ -99,7 +99,7 @@ Namespace Ecosim
             Me.m_zgp.ConfigurePane(My.Resources.HEADER_RELATIVEBIOMASS, My.Resources.HEADER_YEAR, My.Resources.HEADER_RELATIVEBIOMASS, False)
             Me.m_zgp.ShowMultipleRuns = Me.m_tsmShowMultipleRuns.Selected
 
-            Me.m_zgp.AutoScaleOption = cZedGraphHelper.ScaleOptions.Both
+            Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.Both
             Me.m_zgp.YScaleMin = 0.0!
             Me.m_zgp.ShowPointValue = True
 
@@ -266,7 +266,7 @@ Namespace Ecosim
 
         Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiAutoscale.Click
-            Me.m_zgp.AutoScaleOption = cZedGraphHelper.ScaleOptions.MaxOnly
+            Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.MaxOnly
             Me.UpdateControls()
         End Sub
 
@@ -280,21 +280,21 @@ Namespace Ecosim
             Handles m_tsmiCustomScaleLabel.Click
             Double.TryParse(Me.m_tstbMax.Text, Me.m_zgp.YScaleMax)
             Double.TryParse(Me.m_tstbMin.Text, Me.m_zgp.YScaleMin)
-            Me.m_zgp.AutoScaleOption = cZedGraphHelper.ScaleOptions.None
+            Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.None
             Me.UpdateControls()
         End Sub
 
         Private Sub m_tstbxSetMax_LostFocus(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tstbMax.LostFocus
             Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgp.YScaleMax)
-            Me.m_zgp.AutoScaleOption = cZedGraphHelper.ScaleOptions.None
+            Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.None
             Me.UpdateControls()
         End Sub
 
         Private Sub m_tstbxSetMin_LostFocus(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tstbMin.LostFocus
             Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgp.YScaleMin)
-            Me.m_zgp.AutoScaleOption = cZedGraphHelper.ScaleOptions.None
+            Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.None
             Me.UpdateControls()
         End Sub
 
@@ -618,12 +618,12 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Property PlotDataType() As ePlotData
             Get
-                Return Me.m_plotdata
+                Return Me.m_varname
             End Get
             Set(ByVal value As ePlotData)
-                If (value = Me.m_plotdata) Then Return
+                If (value = Me.m_varname) Then Return
 
-                Me.m_plotdata = value
+                Me.m_varname = value
                 Me.m_bIsCumulative = False ' Switch to relative view
                 Me.UpdateControls()
                 Me.PopulateGraph()
@@ -724,7 +724,7 @@ Namespace Ecosim
 
                     For iTimeStep As Integer = 1 To Core.nEcosimTimeSteps
 
-                        dValue = CDbl(Me.GetDataPoint(iGroup, iTimeStep))
+                        dValue = CDbl(Me.GetEcosimValue(iGroup, iTimeStep))
 
                         ' Determine if datapoint should be displayed
                         bIncludeDataPoint = (Me.IsAnnualPlot = False) Or (iTimeStep Mod cCore.N_MONTHS = 0)
@@ -738,7 +738,7 @@ Namespace Ecosim
                     Next iTimeStep
 
                     ' Add line
-                    m_zgp.AddLine(src.Name, iGroup, eLineType.Value, Me.PlotDataType, pplData, Me.IsCumulativePlot)
+                    m_zgp.AddLine(src.Name, iGroup, eLineType.ModelData, Me.PlotDataType, pplData, Me.IsCumulativePlot)
 
                 End If
 
@@ -773,7 +773,7 @@ Namespace Ecosim
             Dim EDataQ As Single = 0.0!
 
             ' Only plot time series for biomass 
-            If (Me.PlotDataType <> ePlotData.Biomass) Then Return
+            If (Me.PlotDataType <> eVarNameFlags.Biomass) Then Return
             ' Only plot data when NOT showing cumulative data
             If (Me.IsCumulativePlot) Then Return
 
@@ -815,15 +815,25 @@ Namespace Ecosim
 
                     ' Add line to graph.
                     m_zgp.AddLine(String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, ts.Name, group.Name), _
-                                  gts.GroupIndex, eLineType.TimeSeries, Me.PlotDataType, ppl, False)
+                                  gts.GroupIndex, eLineType.ReferenceData, Me.PlotDataType, ppl, False)
 
                 End If
             Next iTS
 
         End Sub
 
-        Private Function GetDataPoint(ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get an Ecosim value for a given group and time step.
+        ''' </summary>
+        ''' <param name="iGroup"></param>
+        ''' <param name="iTimeStep"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function GetEcosimValue(ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+
             Dim src As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+
             ' Get data point value
             Select Case Me.PlotDataType
                 Case ePlotData.Biomass
@@ -831,7 +841,9 @@ Namespace Ecosim
                 Case ePlotData.GroupCatch
                     Return CSng(IIf(Me.IsCumulativePlot, src.Yield(iTimeStep), src.YieldRel(iTimeStep)))
             End Select
+
             Return cCore.NULL_VALUE
+
         End Function
 
         Private Sub SortGroupsAtTimestep(ByVal iTimeStep As Integer)
@@ -939,7 +951,7 @@ Namespace Ecosim
             Me.m_tsmiBiomass.Checked = (Me.PlotDataType = ePlotData.Biomass)
             Me.m_tsmiCatch.Checked = (Me.PlotDataType = ePlotData.GroupCatch)
 
-            Me.m_tsmiAutoscale.Checked = (Me.m_zgp.AutoScaleOption = cZedGraphHelper.ScaleOptions.MaxOnly)
+            Me.m_tsmiAutoscale.Checked = (Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.MaxOnly)
             Me.m_tsmiCustomScaleLabel.Checked = Not m_tsmiAutoscale.Checked
             Me.m_tstbMax.Text = CStr(Me.m_zgp.YScaleMax)
             Me.m_tstbMin.Text = CStr(Me.m_zgp.YScaleMin)

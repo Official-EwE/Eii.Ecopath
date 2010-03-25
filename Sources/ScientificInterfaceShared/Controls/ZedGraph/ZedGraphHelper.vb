@@ -13,6 +13,8 @@ Imports EwEUtils.Commands
 Imports System.Globalization
 Imports System.Threading
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Definitions
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -28,6 +30,48 @@ Namespace Controls
     ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class cZedGraphHelper
+
+        ''' <summary>
+        ''' ZedGraphHelper internal class, manages curve contextual information.
+        ''' </summary>
+        Protected Class cCurveInfo
+
+            Private m_iIndex As Integer = 0
+            Private m_lineType As eLineType = eLineType.ModelData
+            Private m_plotdataType As ePlotData = ePlotData.Biomass
+            Private m_bVisible As Boolean = True
+
+            Public Sub New(ByVal iIndex As Integer, _
+                           ByVal lineType As eLineType, _
+                           ByVal plotdataType As ePlotData)
+
+                Me.m_iIndex = iIndex
+                Me.m_lineType = lineType
+                Me.m_plotdataType = plotdataType
+            End Sub
+
+            Public ReadOnly Property Index() As Integer
+                Get
+                    Return Me.m_iIndex
+                End Get
+            End Property
+
+            Public ReadOnly Property LineType() As eLineType
+                Get
+                    Return Me.m_lineType
+                End Get
+            End Property
+
+            ''' <summary>
+            ''' Get the plot data type for a curve.
+            ''' </summary>
+            Public ReadOnly Property PlotDataType() As ePlotData
+                Get
+                    Return Me.m_plotdataType
+                End Get
+            End Property
+
+        End Class
 
 #Region " Private vars "
 
@@ -55,7 +99,7 @@ Namespace Controls
         Private m_bCumulative() As Boolean
 
         ''' <summary>To set the max and min auto options.</summary>
-        Public Enum ScaleOptions
+        Public Enum eScaleOptionTypes
             MaxOnly
             MinOnly
             Both
@@ -64,30 +108,21 @@ Namespace Controls
 
 #End Region ' Private vars
 
-#Region " Public enums "
-
-    Public Enum eCurveTypes As Integer
-        EcosimOutput
-        TimeSeries
-    End Enum
-
-#End Region ' Public enums
-
 #Region " Construction / destruction "
 
-    Public Sub New()
-    End Sub
+        Public Sub New()
+        End Sub
 
-    Protected Overrides Sub Finalize()
-        Me.Detach()
-        MyBase.Finalize()
-    End Sub
+        Protected Overrides Sub Finalize()
+            Me.Detach()
+            MyBase.Finalize()
+        End Sub
 
 #End Region ' Construction / destruction
 
 #Region " Selection "
 
-    Public Event OnCurveClicked(ByVal curve As CurveItem, ByVal iPoint As Integer)
+        Public Event OnCurveClicked(ByVal curve As CurveItem, ByVal iPoint As Integer)
 
 #End Region ' Selection
 
@@ -432,6 +467,7 @@ Namespace Controls
                 End If
 
                 Dim li As LineItem = Nothing
+                Dim linetype As eLineType = eLineType.NotSet
 
                 With Me.GetPane(iPane)
 
@@ -444,32 +480,53 @@ Namespace Controls
                             ' Just to make sure
                             If (li IsNot Nothing) Then
 
-                                ' Has no line titel?
+                                ' Has no line title?
                                 If String.IsNullOrEmpty(li.Label.Text) Then
                                     ' #Yes: use pane title to identify line
                                     li.Label.Text = .Title.Text
                                 End If
 
-                                If Me.IsPaneCumulative(iPane) Then
+                                Select Case Me.CurveType(li)
 
-                                    ' Note that this code assumes that every line added here has the 
-                                    ' exact number of points in the exact same X-axis order. No validations 
-                                    ' are performed whether this is indeed the case
+                                    Case eLineType.ModelData
 
-                                    If .CurveList.Count > 0 Then
-                                        Me.SumLines(DirectCast(.CurveList(0), LineItem), li)
-                                    End If
+                                        If Me.IsPaneCumulative(iPane) Then
 
-                                    ' Set cumulative colour style
-                                    li.Line.Fill = New Fill(li.Color)
-                                    li.Line.Fill.IsVisible = True
-                                    li.Line.Color = Color.SlateGray
-                                Else
-                                    li.Line.Fill.IsVisible = False
-                                End If
+                                            ' Note that this code assumes that every line added here has the 
+                                            ' exact number of points in the exact same X-axis order. No validations 
+                                            ' are performed whether this is indeed the case
 
-                                ' Add the curve
-                                .CurveList.Add(li)
+                                            ' ZedGraph renders curvelists last to first. Higher cumulative curves are
+                                            ' thus stored with increasing indices in the list
+                                            Dim iLastLine As Integer = Me.FindLastCurvePos(eLineType.ModelData, iPane)
+
+                                            If iLastLine > -1 Then
+                                                Me.SumLines(DirectCast(.CurveList(0), LineItem), li)
+                                            End If
+
+                                            ' Set cumulative colour style
+                                            li.Line.Fill = New Fill(li.Color)
+                                            li.Line.Fill.IsVisible = True
+                                            li.Line.Color = Color.SlateGray
+
+                                            ' Add the curve to the end 
+                                            .CurveList.Insert(iLastLine + 1, li)
+                                        Else
+                                            .CurveList.Add(li)
+                                        End If
+
+                                    Case eLineType.ReferenceData
+
+                                        ' Reference curves should be rendered on top of everything else.
+                                        ' Hence, reference curves are 
+                                        .CurveList.Insert(0, li)
+
+                                    Case eLineType.NotSet
+
+                                        ' Unknow data type: just append curve to end of the list
+                                        .CurveList.Add(li)
+
+                                End Select
                             Else
                                 Debug.Assert(False)
                             End If
@@ -536,6 +593,12 @@ Namespace Controls
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether Y values in a given pane should be auto-scaled.
+        ''' </summary>
+        ''' <param name="iPane"></param>
+        ''' -------------------------------------------------------------------
         Public Property AutoscalePane(Optional ByVal iPane As Integer = 1) As Boolean
             Get
                 With Me.GetPane(iPane).YAxis.Scale
@@ -544,43 +607,47 @@ Namespace Controls
             End Get
             Set(ByVal bAutoscale As Boolean)
                 With Me.GetPane(iPane).YAxis.Scale
-                    'If bAutoscale <> .MinAuto And bAutoscale <> .MaxAuto Then
                     .MinAuto = bAutoscale
                     .MaxAuto = bAutoscale
                     RescaleAndRedraw(iPane)
-                    'End If
                 End With
             End Set
         End Property
 
-        Public Property AutoScaleOption(Optional ByVal iPane As Integer = 1) As ScaleOptions
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the auto-scale behaviour of a pane Y axis.
+        ''' </summary>
+        ''' <param name="iPane"></param>
+        ''' -------------------------------------------------------------------
+        Public Property AutoScaleYOption(Optional ByVal iPane As Integer = 1) As eScaleOptionTypes
             Get
                 With Me.GetPane(iPane).YAxis.Scale
                     If .MinAuto And .MaxAuto Then
-                        Return ScaleOptions.Both
+                        Return eScaleOptionTypes.Both
                     ElseIf .MaxAuto And Not .MinAuto Then
-                        Return ScaleOptions.MaxOnly
+                        Return eScaleOptionTypes.MaxOnly
                     ElseIf Not .MaxAuto And .MinAuto Then
-                        Return ScaleOptions.MinOnly
+                        Return eScaleOptionTypes.MinOnly
                     ElseIf Not .MaxAuto And Not .MinAuto Then
-                        Return ScaleOptions.None
+                        Return eScaleOptionTypes.None
                     End If
-                    Return ScaleOptions.None
+                    Return eScaleOptionTypes.None
                 End With
             End Get
-            Set(ByVal value As ScaleOptions)
+            Set(ByVal value As eScaleOptionTypes)
                 With Me.GetPane(iPane).YAxis.Scale
                     Select Case value
-                        Case ScaleOptions.Both
+                        Case eScaleOptionTypes.Both
                             .MinAuto = True
                             .MaxAuto = True
-                        Case ScaleOptions.MaxOnly
+                        Case eScaleOptionTypes.MaxOnly
                             .MaxAuto = True
                             .MinAuto = False
-                        Case ScaleOptions.MinOnly
+                        Case eScaleOptionTypes.MinOnly
                             .MaxAuto = False
                             .MinAuto = True
-                        Case ScaleOptions.None
+                        Case eScaleOptionTypes.None
                             .MinAuto = False
                             .MaxAuto = False
                     End Select
@@ -648,10 +715,12 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set whether the values in a pane should be added cumulatively.
         ''' </summary>
         ''' <param name="iPane"></param>
+        ''' -------------------------------------------------------------------
         Public Property IsPaneCumulative(Optional ByVal iPane As Integer = 1) As Boolean
             Get
                 Return Me.m_bCumulative(iPane)
@@ -663,64 +732,192 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create an EwE-styled line
+        ''' Create an EwE-styled line.
         ''' </summary>
         ''' <param name="curveType"></param>
         ''' <param name="iGroup"></param>
         ''' <param name="ppl"></param>
+        ''' <param name="plotdataType"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function CreateLineItem(ByVal curveType As eCurveTypes, _
-                                        ByVal iGroup As Integer, _
-                                        ByVal ppl As PointPairList) As LineItem
+        Public Overridable Function CreateLineItem(ByVal curveType As eLineType, _
+                                                   ByVal iGroup As Integer, _
+                                                   ByVal ppl As PointPairList, _
+                                                   Optional ByVal plotdataType As ePlotData = ePlotData.Biomass) As LineItem
 
             Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
-            Return Me.CreateLineItem(group.Name, curveType, Me.StyleGuide.GroupColor(Me.Core, group.Index), ppl)
+            Return Me.CreateLineItem(group.Name, iGroup, curveType, Me.StyleGuide.GroupColor(Me.Core, group.Index), ppl, plotdataType)
 
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Create an EwE-styled line.
         ''' </summary>
         ''' <param name="strName"></param>
+        ''' <param name="iIndex"></param>
         ''' <param name="curveType"></param>
         ''' <param name="clr"></param>
         ''' <param name="ppl"></param>
+        ''' <param name="plotdataType"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function CreateLineItem(ByVal strName As String, _
-                                        ByVal curveType As eCurveTypes, _
-                                        ByVal clr As Color, _
-                                        ByVal ppl As PointPairList) As LineItem
+                                                   ByVal iIndex As Integer, _
+                                                   ByVal curveType As eLineType, _
+                                                   ByVal clr As Color, _
+                                                   ByVal ppl As PointPairList, _
+                                                   Optional ByVal plotdataType As ePlotData = ePlotData.Biomass) As LineItem
 
             Dim li As LineItem = Nothing
+            Dim info As cCurveInfo = New cCurveInfo(iIndex, curveType, plotdataType)
 
             Select Case curveType
 
-                Case eCurveTypes.TimeSeries
+                Case eLineType.ReferenceData
                     li = New ZedGraph.LineItem(strName, ppl, clr, SymbolType.Circle, 1)
 
-                    li.Line.Color = Color.Transparent
+                    li.Line.Color = Color.SlateGray
                     li.Line.IsVisible = False
 
-                    ' ToDo_JS: obtain symbol size from style guide
-                    li.Symbol.Border.Color = clr
+                    li.Line.Fill.Color = clr
+                    li.Line.Fill.IsVisible = False
 
+                    ' ToDo_JS: obtain symbol size from style guide
                     li.Symbol.Size = 4
-                    li.Symbol.Fill.Color = Color.Transparent
+                    li.Symbol.Border.Color = clr
                     li.Symbol.Border.IsVisible = True
+                    li.Symbol.Fill.Color = clr
                     li.Symbol.Fill.IsVisible = False
                     li.Symbol.IsVisible = True
 
-
-                Case eCurveTypes.EcosimOutput
+                Case eLineType.ModelData, _
+                     eLineType.NotSet
                     li = New ZedGraph.LineItem(strName, ppl, clr, SymbolType.None, 1)
 
             End Select
 
+            li.Tag = info
+
             Return li
 
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Find the next curve of a given <see cref="eLineType">type</see>.
+        ''' </summary>
+        ''' <param name="curvetype">The <see cref="eLineType">type</see> of the
+        ''' curve to locate.</param>
+        ''' <param name="iPane">Index of the graph pane to look into.</param>
+        ''' <param name="iStart">Search start index, 0 by default.</param>
+        ''' <returns>Index of the curve that matches the line type, or -1 if
+        ''' no such curve could be found.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function FindNextCurvePos(ByVal curvetype As eLineType, _
+                                         Optional ByVal iPane As Integer = 1, _
+                                         Optional ByVal iStart As Integer = 0) As Integer
+
+            Dim pane As GraphPane = Me.GetPane(iPane)
+            Dim ci As CurveItem = Nothing
+
+            If (pane Is Nothing) Then Return -1
+
+            For iCurve As Integer = iStart To pane.CurveList.Count - 1
+                ci = pane.CurveList(iCurve)
+                If Me.CurveType(ci) = curvetype Then Return iCurve
+            Next
+            Return -1
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Find the previous curve of a given <see cref="eLineType">type</see>.
+        ''' </summary>
+        ''' <param name="curvetype">The <see cref="eLineType">type</see> of the
+        ''' curve to locate.</param>
+        ''' <param name="iPane">Index of the graph pane to look into.</param>
+        ''' <param name="iStart">Search start index, provide -1 to start searching
+        ''' at the end of the curve list.</param>
+        ''' <returns>Index of the curve that matches the line type, or -1 if
+        ''' no such curve could be found.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function FindLastCurvePos(ByVal curvetype As eLineType, _
+                                          Optional ByVal iPane As Integer = 1, _
+                                          Optional ByVal iStart As Integer = -1) As Integer
+
+            Dim pane As GraphPane = Me.GetPane(iPane)
+            Dim ci As CurveItem = Nothing
+
+            If (pane Is Nothing) Then Return -1
+
+            ' Fix default
+            If (iStart = -1) Then iStart = pane.CurveList.Count
+
+            For iCurve As Integer = Math.Min(iStart, pane.CurveList.Count - 1) To 0 Step -1
+                ci = pane.CurveList(iCurve)
+                If Me.CurveType(ci) = curvetype Then Return iCurve
+            Next
+            Return -1
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the <see cref="eLineType">type</see> of a curve.
+        ''' </summary>
+        ''' <param name="ci">The curve to extract information for.</param>
+        ''' <returns>A <see cref="eLineType">type</see>, or NotSet if this 
+        ''' information could not be found.</returns>
+        ''' <remarks>
+        ''' Note that this information only works on curves created via 
+        ''' <see cref="CreateLineItem">CreateLineItem</see>.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Function CurveType(ByVal ci As CurveItem) As eLineType
+            Dim info As cCurveInfo = Me.CurveInfo(ci)
+            If (info Is Nothing) Then Return eLineType.NotSet
+            Return info.LineType
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the <see cref="eVarNameFlags">variable</see> associated with a curve.
+        ''' </summary>
+        ''' <param name="ci">The curve to extract information for.</param>
+        ''' <returns>A <see cref="eVarNameFlags">variable</see>, or NotSet if this 
+        ''' information could not be found.</returns>
+        ''' <remarks>
+        ''' Note that this information only works on curves created via 
+        ''' <see cref="CreateLineItem">CreateLineItem</see>.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Function CurvePlotDataType(ByVal ci As CurveItem) As ePlotData
+            Dim info As cCurveInfo = Me.CurveInfo(ci)
+            If (info Is Nothing) Then Return ePlotData.Biomass
+            Return info.PlotDataType
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the <see cref="cCurveInfo">curve info</see> for a curve.
+        ''' </summary>
+        ''' <param name="ci">The curve to extract information for.</param>
+        ''' <returns>
+        ''' A <see cref="cCurveInfo">curve info</see> instance, or Nothing if
+        ''' this information could not be found.
+        ''' </returns>
+        ''' <remarks>
+        ''' Note that this information only works on curves created via 
+        ''' <see cref="CreateLineItem">CreateLineItem</see>.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Protected Function CurveInfo(ByVal ci As CurveItem) As cCurveInfo
+            If (ci Is Nothing) Then Return Nothing
+            If (ci.Tag Is Nothing) Then Return Nothing
+            If Not (TypeOf ci.Tag Is cCurveInfo) Then Return Nothing
+            Return DirectCast(ci.Tag, cCurveInfo)
         End Function
 
 #Region " Tooltip "
@@ -793,7 +990,7 @@ Namespace Controls
             End Property
 
             Private Function GetUnitString(ByVal unitType As cStyleGuide.eUnitType) As String
-                Dim sg As cStyleGuide = Me.m_uic.styleguide
+                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
                 Dim strUnitString As String = ""
                 Select Case unitType
                     Case cStyleGuide.eUnitType.Currency
@@ -1099,6 +1296,8 @@ Namespace Controls
 
 #Region " Internal bits "
 
+#Region " Styling "
+
         Private Sub InitColors()
             For iPane As Integer = 1 To Me.m_nPanels
                 With Me.GetPane(iPane)
@@ -1194,6 +1393,10 @@ Namespace Controls
 
         End Sub
 
+#End Region ' Styling
+
+#Region " Mouse support "
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the graph pane located at a given point.
@@ -1210,17 +1413,28 @@ Namespace Controls
             Return -1
         End Function
 
+#End Region ' Mouse support
+
+#Region " Cumulative plot support "
+
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Add an offset line to a target line
         ''' </summary>
         ''' <param name="liOffset"></param>
         ''' <param name="lTarget"></param>
-        ''' <remarks></remarks>
+        ''' -------------------------------------------------------------------
         Protected Overridable Sub SumLines(ByVal liOffset As LineItem, ByVal lTarget As LineItem)
+
+            If (liOffset Is Nothing) Or (lTarget Is Nothing) Then Return
+
             For iPt As Integer = 0 To lTarget.Points.Count - 1
                 lTarget(iPt).Y += liOffset.Points(iPt).Y
             Next
+
         End Sub
+
+#End Region ' Cumulative plot support
 
 #Region " Cursor "
 

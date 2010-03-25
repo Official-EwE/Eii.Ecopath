@@ -4,6 +4,8 @@ Option Strict On
 Imports EwECore
 Imports ZedGraph
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Core
+
 #End Region ' Imports
 
 Namespace Controls
@@ -25,60 +27,6 @@ Namespace Controls
 #End Region ' Private vars
 
 #Region " Private helper classes "
-
-        Private Class cCurveType
-
-            Private m_strName As String = ""
-            Private m_iIndex As Integer = 0
-            Private m_iRun As Integer = 0
-            Private m_lineType As eLineType = eLineType.Value
-            Private m_dataType As ePlotData = ePlotData.Biomass
-            Private m_bVisible As Boolean = True
-
-            Public Sub New(ByVal strName As String, _
-                           ByVal iIndex As Integer, _
-                           ByVal iRun As Integer, _
-                           ByVal lineType As eLineType, _
-                           ByVal dataType As ePlotData)
-
-                Me.m_strName = strName
-                Me.m_iIndex = iIndex
-                Me.m_iRun = iRun
-                Me.m_lineType = lineType
-                Me.m_dataType = dataType
-            End Sub
-
-            Public ReadOnly Property Name() As String
-                Get
-                    Return Me.m_strName
-                End Get
-            End Property
-
-            Public ReadOnly Property Index() As Integer
-                Get
-                    Return Me.m_iIndex
-                End Get
-            End Property
-
-            Public ReadOnly Property Run() As Integer
-                Get
-                    Return Me.m_iRun
-                End Get
-            End Property
-
-            Public ReadOnly Property LineType() As eLineType
-                Get
-                    Return Me.m_lineType
-                End Get
-            End Property
-
-            Public ReadOnly Property DataType() As ePlotData
-                Get
-                    Return Me.m_dataType
-                End Get
-            End Property
-
-        End Class
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -190,45 +138,29 @@ Namespace Controls
         ''' </summary>
         ''' <param name="strLabel">Label of the line to add.</param>
         ''' <param name="iGroup">Index of the underlying group.</param>
+        ''' <param name="lineType"></param>
+        ''' <param name="varname"></param>
+        ''' <param name="list"></param>
+        ''' <param name="bCumulative"></param>
         ''' -------------------------------------------------------------------
         Public Sub AddLine(ByVal strLabel As String, _
                            ByVal iGroup As Integer, _
                            ByVal lineType As eLineType, _
-                           ByVal dataType As ePlotData, _
+                           ByVal plotDataType As ePlotData, _
                            ByVal list As PointPairList, _
                            ByVal bCumulative As Boolean)
 
             Dim crv As LineItem = Nothing
-            Dim crvType As cCurveType = New cCurveType(strLabel, iGroup, Me.m_lRuns.Count - 1, lineType, dataType)
 
-            Select Case crvType.LineType
+            Select Case lineType
 
-                'Case eLineType.CumulativeBiomass, eLineType.CumulativeSelectedBiomass, _
-                '  eLineType.CumulativeCatch, eLineType.CumulativeSelectedCatch
-                '    'crv = m_graphPane.AddCurve(name, list, Me.m_styGuide.GroupColor(Me.Core, index), SymbolType.None)
-                '    crv = m_graphPane.AddCurve(strLabel, list, Drawing.Color.LightSlateGray, SymbolType.None)
-                '    crv.Symbol.Type = SymbolType.None
-                '    crv.Line.Fill = New Fill(Me.StyleGuide.GroupColor(Me.Core, iGroup))
-                '    Me.m_runCurrent.m_curvelist.Add(crv)
-                '    crv.Tag = crvType
-
-                'Case eLineType.RelativeBiomass, eLineType.RelativeCatch
-                '    crv = m_graphPane.AddCurve(strLabel, list, Me.StyleGuide.GroupColor(Me.Core, iGroup), SymbolType.None)
-                '    crv.Symbol.Type = SymbolType.None
-                '    Me.m_runCurrent.m_curvelist.Add(crv)
-                '    crv.Tag = crvType
-
-                Case eLineType.TimeSeries
-                    crv = New LineItem(strLabel, list, Me.StyleGuide.GroupColor(Me.Core, iGroup), SymbolType.None)
-                    crv.Symbol.Type = SymbolType.Square
-                    crv.Line.Color = Color.Transparent
-                    crv.Tag = crvType
+                Case eLineType.ReferenceData
+                    crv = Me.CreateLineItem(eLineType.ReferenceData, iGroup, list, plotDataType)
                     Me.m_curvelistTimeSeries.Add(crv)
 
-                Case eLineType.Value
-                    crv = New LineItem(strLabel, list, Me.StyleGuide.GroupColor(Me.Core, iGroup), SymbolType.None)
-                    crv.Symbol.Type = SymbolType.None
-                    crv.Tag = crvType
+                Case eLineType.ModelData, _
+                     eLineType.NotSet
+                    crv = Me.CreateLineItem(eLineType.ModelData, iGroup, list, plotDataType)
                     Me.m_runCurrent.Lines.Add(crv)
 
             End Select
@@ -283,7 +215,6 @@ Namespace Controls
 
             Dim run As cRun = Nothing
             Dim crv As CurveItem = Nothing
-            Dim crvType As cCurveType = Nothing
 
             If iGroup <= 0 And iRun < 0 Then
                 ' Set set all to normal color
@@ -296,23 +227,7 @@ Namespace Controls
 
                     run = Me.m_lRuns.Item(iRunTest)
                     crv = run.Lines(iGroup - 1)
-                    crvType = DirectCast(crv.Tag, cCurveType)
-
-                    'If Me.IsPaneCumulative() Then
-                    '    Me.SetCurveColour(crv, True, False)
-                    '    'If needed, plot line of the group of next lower index without highlight but with white fill
-                    '    If iGroup >= 2 Then
-                    '        run = Me.m_lRuns(iRunTest)
-                    '        crv = run.Lines(iGroup - 2)
-                    '        Me.SetCurveColour(crv, True, False, True)
-                    '    End If
-                    '    'If needed, colour lines of the remaining groups
-                    '    If iGroup >= 3 Then
-                    '        Me.SetSomeToColors(iGroup - 3)
-                    '    End If
-                    'Else
-                    '    Me.SetCurveColour(crv, True, True)
-                    'End If
+                    
                     Me.SetCurveAppearance(crv, True, Me.IsPaneCumulative = False)
 
                 Next iRunTest
@@ -337,9 +252,11 @@ Namespace Controls
 
             ' Colour the time series for the group
             For Each crv In Me.m_curvelistTimeSeries
-                crvType = DirectCast(crv.Tag, cCurveType)
-                If (crvType.Index = iGroup) Then
-                    Me.SetCurveAppearance(crv, True, True)
+                Dim info As cCurveInfo = Me.CurveInfo(crv)
+                If (info IsNot Nothing) Then
+                    If (info.Index = iGroup) Then
+                        Me.SetCurveAppearance(crv, True, True)
+                    End If
                 End If
             Next
 
@@ -442,15 +359,12 @@ Namespace Controls
         Private Sub SetAllToColors(Optional ByVal bUseOriginalColor As Boolean = True)
 
             Dim crv As CurveItem = Nothing
-            Dim crvtype As cCurveType = Nothing
 
             ' Colour all run lines
             For Each run As cRun In Me.m_lRuns
                 For iCurve As Integer = run.Lines.Count - 1 To 0 Step -1
 
                     crv = run.Lines(iCurve)
-                    crvtype = DirectCast(crv.Tag, cCurveType)
-
                     If bUseOriginalColor Then
                         Me.SetCurveAppearance(crv, True, False)
                     Else
@@ -485,11 +399,13 @@ Namespace Controls
 
             ' Safety first
             If Not TypeOf (crv) Is LineItem Then Return
-            If Not TypeOf (crv.Tag) Is cCurveType Then Return
 
             Dim li As LineItem = DirectCast(crv, LineItem)
-            Dim curveType As cCurveType = DirectCast(crv.Tag, cCurveType)
-            Dim clrGroup As Color = Me.StyleGuide.GroupColor(Me.Core, curveType.Index)
+            Dim info As cCurveInfo = Me.CurveInfo(crv)
+
+            Debug.Assert(info IsNot Nothing)
+
+            Dim clrGroup As Color = Me.StyleGuide.GroupColor(Me.Core, info.Index)
 
             ' Alter color
             If bUseColor Then
@@ -512,8 +428,8 @@ Namespace Controls
             li.Line.Fill.IsVisible = (Me.IsPaneCumulative)
 
             ' Hide lines for time series
-            If curveType.LineType = eLineType.TimeSeries Then
-                li.Line.Color = Color.Transparent
+            If info.LineType = eLineType.ReferenceData Then
+                li.Line.IsVisible = False
             End If
 
             Me.SetCurveVisibility(crv)
@@ -524,13 +440,14 @@ Namespace Controls
 
             ' Safety first
             If Not TypeOf (crv) Is LineItem Then Return
-            If Not TypeOf (crv.Tag) Is cCurveType Then Return
 
             Dim line As LineItem = DirectCast(crv, LineItem)
-            Dim curveType As cCurveType = DirectCast(crv.Tag, cCurveType)
+            Dim info As cCurveInfo = Me.CurveInfo(crv)
+
+            Debug.Assert(info IsNot Nothing)
 
             ' After all that, just make sure it's shown
-            line.IsVisible = Me.StyleGuide.GroupVisible(curveType.Index)
+            line.IsVisible = Me.StyleGuide.GroupVisible(info.Index)
 
         End Sub
 

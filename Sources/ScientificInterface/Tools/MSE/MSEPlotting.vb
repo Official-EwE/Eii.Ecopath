@@ -531,8 +531,9 @@ Friend Class cMSEPlotter
                         ppl.Add(dx, values(iTime))
                     Next
 
-                    Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, ScientificInterfaceShared.Controls.cZedGraphHelper.eCurveTypes.EcosimOutput, _
-                                                                System.Drawing.Color.Gray, ppl)
+                    Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, cCore.NULL_VALUE, _
+                                                                   eLineType.ModelData, _
+                                                                   Color.Gray, ppl)
                     lstLines.Add(Line)
 
                 Next
@@ -572,8 +573,9 @@ Friend Class cMSEPlotter
                     ppl.Add(dx, data.Biomass(iTime))
                 Next
 
-                Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, ScientificInterfaceShared.Controls.cZedGraphHelper.eCurveTypes.EcosimOutput, _
-                                                            System.Drawing.Color.Gray, ppl)
+                Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, cCore.NULL_VALUE, _
+                                                               eLineType.ModelData, _
+                                                               Color.Gray, ppl)
                 lstLines.Add(Line)
 
                 Me.m_zgh.PlotLines(lstLines.ToArray, ipane, True, False)

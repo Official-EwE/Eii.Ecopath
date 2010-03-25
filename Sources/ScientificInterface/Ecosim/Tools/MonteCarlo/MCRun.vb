@@ -103,9 +103,9 @@ Namespace Ecosim
             Me.m_plothelper = New cEcosimOutputPlotHelper()
             Me.m_plothelper.Attach(Me.UIContext, Me.m_graph)
             Me.m_plothelper.ShowMultipleRuns = True
-            ' ToDo_JS: localize this
+
             Me.m_plothelper.ConfigurePane("Monte carlo trials", "Time", "Biomass", False)
-            Me.m_plothelper.AutoScaleOption() = cZedGraphHelper.ScaleOptions.Both
+            Me.m_plothelper.AutoScaleYOption() = cZedGraphHelper.eScaleOptionTypes.Both
 
             ' Configure grids
             Me.m_gridB.UIContext = Me.UIContext
@@ -166,13 +166,13 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub MCRun_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-            Me.m_mcmanager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
-        End Sub
+        'Private Sub MCRun_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
+        '    Me.m_mcmanager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
+        'End Sub
 
-        Private Sub MCRun_Deactivate(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Deactivate
-            Me.m_mcmanager.EcosimTimeStepHandler = Nothing
-        End Sub
+        'Private Sub MCRun_Deactivate(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Deactivate
+        '    Me.m_mcmanager.EcosimTimeStepHandler = Nothing
+        'End Sub
 
         Private Sub btnStop_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnStop.Click
             Me.m_mcmanager.StopRun()
@@ -400,8 +400,16 @@ Namespace Ecosim
         End Sub
 
         Private Sub UpdateGraphXAxis()
-            Me.m_graph.GraphPane.XAxis.Scale.Min = Me.Core.EcosimFirstYear
-            Me.m_graph.GraphPane.XAxis.Scale.Max = Me.Core.EcoSimModelParameters.NumberYears + Me.Core.EcosimFirstYear
+
+            Dim pane As GraphPane = Me.m_plothelper.GetPane(1)
+
+            With pane.XAxis.Scale
+                .Min = Me.Core.EcosimFirstYear
+                .Max = Me.Core.EcoSimModelParameters.NumberYears + Me.Core.EcosimFirstYear
+                .MaxAuto = False
+                .MinAuto = False
+            End With
+
             Me.m_graph.AxisChange()
         End Sub
 
@@ -474,14 +482,14 @@ Namespace Ecosim
                     Me.m_lpplIteration.Add(New PointPairList())
                 Next
 
-
                 Dim group As cEcoPathGroupInput = Nothing
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     ' Get the ecopath group
                     group = Me.Core.EcoPathGroupInputs(iGroup)
 
                     Me.m_plothelper.AddLine(group.Name, iGroup, _
-                                            eLineType.Value, ePlotData.Biomass, _
+                                            eLineType.ModelData, _
+                                            ePlotData.NotSet, _
                                             Me.m_lpplIteration(iGroup - 1), False)
 
                 Next iGroup
