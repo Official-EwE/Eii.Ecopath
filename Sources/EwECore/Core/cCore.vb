@@ -5804,6 +5804,8 @@ Public Class cCore
             Me.m_SearchData.redimTime(m_EcoSimData.NumYears)
 
             Me.m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
+            'changed the run length for ecospace reset the summary periods to defaults
+            Me.m_EcoSpaceData.setDefaultSummaryPeriod()
 
             'Now Update the interface objects
 
@@ -10501,9 +10503,6 @@ Public Class cCore
                     Case eVarNameFlags.EcoSimNYears
 
                         setEcosimRunLength(CInt(value.Value))
-
-                        'change the Ecospace summary periods to fit the new run length
-                        Me.m_EcoSpaceData.setDefaultSummaryPeriod()
 
                         'the length of the ecospace run will be changed as well
                         Me.LoadEcospaceModelParameters()
