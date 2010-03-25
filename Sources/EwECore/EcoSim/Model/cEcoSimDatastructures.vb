@@ -10,11 +10,6 @@ Imports EwEUtils.Core
 ''' </remarks>
 Public Class cEcosimDatastructures
 
-    ''' <summary>
-    ''' Number of Ecosim results variables stored in ResultsOverTime(N_TIME_RESULTS,groups,time)
-    ''' </summary>
-    ''' <remarks> Used in <see>cEcosimModel.dimResults() </see>to size ResultsOverTime()</remarks>
-    Public Const N_TIME_RESULTS As Integer = 14
     Public Const DEFAULT_N_FORCINGPOINTS As Integer = 1200 'min number of forcing point 100 years * FORCING_POINTS_PER_YEAR
     Public Const FORCING_POINTS_PER_YEAR As Integer = 12
 
@@ -37,6 +32,7 @@ Public Class cEcosimDatastructures
         MortVPred
         MortVFishing
         EcoSysStructure
+        TL
     End Enum
 
     Public Enum eEcosimPreyPredResults
@@ -382,8 +378,7 @@ Public Class cEcosimDatastructures
     ''' <summary>
     ''' Model results over time
     ''' </summary>
-    ''' <remarks></remarks>
-    Public ResultsOverTime(,,) As Single ' dim by number of varaiables, groups, time
+    Public ResultsOverTime(,,) As Single ' dim by number of variables, groups, time
     Public PredPreyResultsOverTime(,,,) As Single ' dim by number of pred/prey(2), groups, groups, time
     Public ResultsAvgByPreyPred(,,) As Single ' dim by  pred/prey(2), groups, groups
     Public ResultsSumCatchByGroupGear(,,) As Single ' groups,fleets,time
@@ -1058,10 +1053,7 @@ Public Class cEcosimDatastructures
 
         Dim nt As Integer = NumberOfYears * NumStepsPerYear
 
-        'VB Wierdness N_TIME_RESULTS is the actual number of results variables in ResultsOverTime(,,) but because of the way vb dims arrays
-        'N_TIME_RESULTS referes to the last element not the number of elements
-        'so ReDim ResultsOverTime(N_TIME_RESULTS,) will give N_TIME_RESULTS +1 elements in the array
-        ReDim ResultsOverTime(N_TIME_RESULTS - 1, nGroups, nt)
+        ReDim ResultsOverTime([Enum].GetValues(GetType(eEcosimResults)).Length - 1, nGroups, nt)
         ReDim PredPreyResultsOverTime(2, nGroups, nGroups, nt)
         ReDim ResultsAvgByPreyPred(1, nGroups, nGroups)
 

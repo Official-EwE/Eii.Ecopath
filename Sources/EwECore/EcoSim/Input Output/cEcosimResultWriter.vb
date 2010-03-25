@@ -11,7 +11,7 @@ Imports EwEUtils.Core
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Helper class to write Ecosim results to a CSV file.
+''' Helper class to write Ecosim results to a .csv file.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cEcosimResultWriter
@@ -22,13 +22,14 @@ Public Class cEcosimResultWriter
 
     Private Enum eResultTypes As Integer
         Biomass = 0
-        Mortality = 1
-        Yield = 2
-        ConsumptionBiomass = 3
-        FeedingTime = 4
-        AvgWeightOrProdCons = 5
-        PredationMortality = 6
-        Prey = 7
+        Mortality
+        Yield
+        ConsumptionBiomass
+        FeedingTime
+        AvgWeightOrProdCons
+        PredationMortality
+        Prey
+        TL
     End Enum
 
 #End Region ' Private vars
@@ -41,7 +42,7 @@ Public Class cEcosimResultWriter
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Save all available Ecosim results to a CSV file.
+    ''' Save all available Ecosim results to a .csv file.
     ''' </summary>
     ''' <param name="strPath">The path to write to. If not specified, output is
     ''' written to <see cref="cCore.OutputPath">the core output path</see>.</param>
@@ -110,8 +111,8 @@ Public Class cEcosimResultWriter
                                   Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As Boolean
 
         Dim strFileName As String = Me.GetOutputFileName(strPath, bSaveAnnual, resulttype)
-        Dim strModelDetails As String = GetModelDetails()
-        Dim astrGroupNames As String = GetAllGroupNames()
+        Dim strModelDetails As String = Me.GetModelDetails()
+        Dim astrGroupNames As String = Me.GetAllGroupNames()
         Dim grpOutput As cEcosimGroupOutput = Nothing
 
         Select Case resulttype
@@ -121,7 +122,8 @@ Public Class cEcosimResultWriter
                  eResultTypes.Yield, _
                  eResultTypes.ConsumptionBiomass, _
                  eResultTypes.FeedingTime, _
-                 eResultTypes.AvgWeightOrProdCons
+                 eResultTypes.AvgWeightOrProdCons, _
+                 eResultTypes.TL
 
                 Dim data(m_core.nGroups, m_core.nEcosimTimeSteps) As Single
                 For i As Integer = 1 To m_core.nGroups
@@ -144,6 +146,8 @@ Public Class cEcosimResultWriter
                                 Else
                                     data(i, j) = grpOutput.ProdConsump(j)
                                 End If
+                            Case eResultTypes.TL
+                                data(i, j) = grpOutput.TL(j)
                         End Select
                     Next
 
@@ -180,7 +184,7 @@ Public Class cEcosimResultWriter
                     End If
                 Next
 
-                strModelDetails = String.Format("{0},Prey:,{1}, Gives predation mortality rates for this group", strModelDetails, grpOutput.Name)
+                strModelDetails = String.Format("{0}, Prey:, {1}, (predation mortality rates)", strModelDetails, grpOutput.Name)
                 Return Me.SaveDataToFile(strFileName, bSaveAnnual, predData, strModelDetails, predNames.ToString)
 
             Case eResultTypes.Prey
@@ -212,7 +216,7 @@ Public Class cEcosimResultWriter
                     End If
                 Next
 
-                strModelDetails = String.Format("{0},Predator:,{1}, Shows diets as proportions", strModelDetails, grpOutput.Name)
+                strModelDetails = String.Format("{0}, predator:, {1}, (diets as proportions)", strModelDetails, grpOutput.Name)
                 Return Me.SaveDataToFile(strFileName, bSaveAnnual, preyData, strModelDetails, preyNames.ToString)
 
         End Select
@@ -230,40 +234,44 @@ Public Class cEcosimResultWriter
         If bSaveAnnual Then
             Select Case outputtype
                 Case eResultTypes.Biomass
-                    strFileName = "EwE6-Simplot_annual_biomass.csv"
+                    strFileName = "EwE6-Ecosim_annual_biomass.csv"
                 Case eResultTypes.Mortality
-                    strFileName = "EwE6-Simplot_annual_mortality.csv"
+                    strFileName = "EwE6-Ecosim_annual_mortality.csv"
                 Case eResultTypes.Yield
-                    strFileName = "EwE6-Simplot_annual_yield.csv"
+                    strFileName = "EwE6-Ecosim_annual_yield.csv"
                 Case eResultTypes.ConsumptionBiomass
-                    strFileName = "EwE6-Simplot_annual_cons_biom.csv"
+                    strFileName = "EwE6-Ecosim_annual_cons_biom.csv"
                 Case eResultTypes.FeedingTime
-                    strFileName = "EwE6-Simplot_annual_feedingtime.csv"
+                    strFileName = "EwE6-Ecosim_annual_feedingtime.csv"
                 Case eResultTypes.AvgWeightOrProdCons
-                    strFileName = "EwE6-Simplot_annual_weight.csv"
+                    strFileName = "EwE6-Ecosim_annual_weight.csv"
                 Case eResultTypes.PredationMortality
-                    strFileName = "EwE6-Simplot_annual_predation.csv"
+                    strFileName = "EwE6-Ecosim_annual_predation.csv"
                 Case eResultTypes.Prey
-                    strFileName = "EwE6-Simplot_annual_prey.csv"
+                    strFileName = "EwE6-Ecosim_annual_prey.csv"
+                Case eResultTypes.TL
+                    strFileName = "EwE6-Ecosim_annual_TL.csv"
             End Select
         Else
             Select Case outputtype
                 Case eResultTypes.Biomass
-                    strFileName = "EwE6-Simplot_biomass.csv"
+                    strFileName = "EwE6-Ecosim_biomass.csv"
                 Case eResultTypes.Mortality
-                    strFileName = "EwE6-Simplot_mortality.csv"
+                    strFileName = "EwE6-Ecosim_mortality.csv"
                 Case eResultTypes.Yield
-                    strFileName = "EwE6-Simplot_yield.csv"
+                    strFileName = "EwE6-Ecosim_yield.csv"
                 Case eResultTypes.ConsumptionBiomass
-                    strFileName = "EwE6-Simplot_cons_biom.csv"
+                    strFileName = "EwE6-Ecosim_cons_biom.csv"
                 Case eResultTypes.FeedingTime
-                    strFileName = "EwE6-Simplot_feedingtime.csv"
+                    strFileName = "EwE6-Ecosim_feedingtime.csv"
                 Case eResultTypes.AvgWeightOrProdCons
-                    strFileName = "EwE6-Simplot_weight.csv"
+                    strFileName = "EwE6-Ecosim_weight.csv"
                 Case eResultTypes.PredationMortality
-                    strFileName = "EwE6-Simplot_predation.csv"
+                    strFileName = "EwE6-Ecosim_predation.csv"
                 Case eResultTypes.Prey
-                    strFileName = "EwE6-Simplot_prey.csv"
+                    strFileName = "EwE6-Ecosim_prey.csv"
+                Case eResultTypes.TL
+                    strFileName = "EwE6-Ecosim_TL.csv"
             End Select
         End If
         Return Path.Combine(strPath, strFileName)
@@ -318,23 +326,32 @@ Public Class cEcosimResultWriter
 
     End Function
 
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' This saving format is based on EwE5 code
+    ''' Get default model details to report in output file.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Function GetModelDetails() As String
 
-        Dim str As New StringBuilder()
+        Dim sb As New StringBuilder()
 
-        str.Append(Me.m_core.DataSource.ToString)
-        str.Append(",")
+        ' File
+        sb.Append(Me.m_core.DataSource.ToString)
+        sb.Append(", ")
         'Add the model name
-        str.Append(Me.m_core.EwEModel.Name)
-        str.Append(",")
+        sb.Append(Me.m_core.EwEModel.Name)
+        sb.Append(", ")
         'Add the active scenario name
-        str.Append(Me.m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name)
+        sb.Append(Me.m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name)
 
-        Return str.ToString()
+        ' Append time series name to scenario, if any
+        If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
+            sb.Append(" (")
+            sb.Append(Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name)
+            sb.Append(" )")
+        End If
+
+        Return sb.ToString()
 
     End Function
 

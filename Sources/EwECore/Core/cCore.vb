@@ -5487,9 +5487,6 @@ Public Class cCore
             group.iStanza = getStanzaIndexForGroup(iGroup)
             group.PP = m_EcoPathData.PP(iGroup)
 
-            ' JS 11Jan09: Exposed former Network Analysis var
-            group.TL = m_EcoSimData.TLSim(iGroup)
-
             'Biomass
             m_EcoSimData.getSummaryBioForGroup(iGroup, sBio, EndBio)
             group.BiomassStart = sBio
@@ -6357,6 +6354,7 @@ Public Class cCore
 
 
 
+#If 0 Then
 
     ''' <summary>
     ''' Dump the values from the last model run into a file that has the same format as used by EwE5 file dump from the Plot interface
@@ -6409,8 +6407,9 @@ Public Class cCore
             Return False
         End Try
 
-
     End Function
+
+#End If
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

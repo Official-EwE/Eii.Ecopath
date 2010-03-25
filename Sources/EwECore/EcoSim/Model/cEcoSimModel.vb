@@ -1631,9 +1631,10 @@ Namespace Ecosim
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime) = BB(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.BiomassRel, igrp, iTime) = BB(igrp) / Me.m_Data.StartBiomass(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime) = BB(igrp) * m_Data.FishTime(igrp)
-
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FeedingTime, igrp, iTime) = m_Data.Ftime(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ConsumpBiomass, igrp, iTime) = m_Data.Eatenby(igrp) / BB(igrp)
+                    ' JS 25Mar10: preserve TL
+                    m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TL, igrp, iTime) = m_Data.TLSim(igrp)
 
                     If m_EPData.PP(igrp) < 1 Then
                         totMort = m_Data.loss(igrp) / BB(igrp)
@@ -4344,16 +4345,8 @@ Namespace Ecosim
             Dim i As Integer
             Dim fCatch As Single
             Dim totalTL As Single
-            'Static StartFIB As Single
-            'Static StartTL As Single
-            'Static StartCatch As Single
-            'Static MaxFactor As Single
-            'Static DecreaseMaxFactor As Boolean
 
             Try
-                ' js this was never used
-                '       BiomassFish = 0
-                '       BiomassInvert = 0
                 m_Data.CatchSim(TimeStep) = 0
                 If TimeStep = 0 Then
                     For i = 1 To m_EPData.NumGroups
@@ -4362,15 +4355,9 @@ Namespace Ecosim
                 End If
 
                 For i = 1 To m_EPData.NumGroups
-                    'jb all groups here
-                    '        If GrpsToShow(i) Then 'only visible groups
                     fCatch = m_Data.FishTime(i) * BB(i)
-                    ' js this was never used
-                    '        If m_epdata.GroupIsFish(i) Then BiomassFish = BiomassFish + BB(i)
-                    '        If m_epdata.GroupIsInvert(i) Then BiomassInvert = BiomassInvert + BB(i)
-                    m_Data.CatchSim(TimeStep) = m_Data.CatchSim(TimeStep) + fCatch
-                    totalTL = totalTL + m_Data.TLSim(i) * fCatch
-                    '      End If
+                    m_Data.CatchSim(TimeStep) += fCatch
+                    totalTL += m_Data.TLSim(i) * fCatch
                 Next
                 If m_Data.CatchSim(0) > 0 Then
                     m_Data.TLC(TimeStep) = totalTL / m_Data.CatchSim(TimeStep)
@@ -4378,28 +4365,15 @@ Namespace Ecosim
                     If TimeStep = 0 Then
                         'StartTL = TL
                         'StartCatch = CatchSim
-                        'If DecreaseMaxFactor Then MaxFactor = MaxFactor / 2
-                        'If MaxFactor < 1 Then MaxFactor = 10
                         m_Data.FIB(0) = 1
-                        'jb what the fuck is this
-                        ' TL = TLC(0) - IIf(frmSim1.optTL, 0, 2) '=1
                         m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(m_Data.StartBiomass, 0.25)
-                        'DecreaseMaxFactor = False
-                        'TLC(0) = 2
-                        'CatchSim(0) = 1
                     Else
-                        'TL = MaxFactor * (TLC(TimeStep) - TLC(1)) + 1
-                        'TL = m_Data.TLC(TimeStep)
-                        'If Abs(TL) > 2 Then DecreaseMaxFactor = True
-                        'If TL < 0.1 Then Stop
                         If TimeStep = 1 Then
                             m_Data.FIB(1) = 1 'CatchSim(1) * 10 ^ (TLC(1) - 1)
                         Else
                             m_Data.FIB(TimeStep) = CSng((m_Data.CatchSim(TimeStep) * 10 ^ (m_Data.TLC(TimeStep) - 1)) / (m_Data.CatchSim(1) * 10 ^ (m_Data.TLC(1) - 1)))
                         End If
                         m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(BB, 0.25)
-                        'Debug.Print TimeStep, CatchSim(TimeStep), FIB(TimeStep), TLC(TimeStep)
-                        'FIB = log[(Catch(y) · 10TL(y)-1) / (Catch(0) · 10TL(0)-1)]
                     End If
                 Else
                     ' JS 08Jan10: this looks like a bug; should this not set TLC?

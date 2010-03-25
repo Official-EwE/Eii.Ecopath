@@ -49,10 +49,6 @@ Public Class cEcosimGroupOutput
                               AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
 
-        ' TL
-        val = New cValue(0, eVarNameFlags.TL, eStatusFlags.OK, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
-
         'no validators
         val = New cValue(0, eVarNameFlags.EcosimGroupBiomassStart, eStatusFlags.OK, eValueTypes.Sng)
         m_values.Add(val.varName, val)
@@ -97,6 +93,7 @@ Public Class cEcosimGroupOutput
         m_coreData.Add(eVarNameFlags.EcosimTotalMort, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.TotalMort, Me.Index))
         m_coreData.Add(eVarNameFlags.EcosimAvgWeight, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.AvgWeight, Me.Index))
         m_coreData.Add(eVarNameFlags.EcosimProdConsump, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.ProdConsump, Me.Index))
+        m_coreData.Add(eVarNameFlags.TL, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.TL, Me.Index))
 
         m_coreData.Add(eVarNameFlags.EcosimMortVPred, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.MortVPred, Me.Index))
         m_coreData.Add(eVarNameFlags.EcosimMortVFishing, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.MortVFishing, Me.Index))
@@ -184,7 +181,7 @@ Public Class cEcosimGroupOutput
 #Region "Properties via dot operator"
 
     ''' <summary>
-    ''' Is this igroup a predator of this group
+    ''' Get whether this group is predated on by <paramref name="iGroup">group index</paramref>.
     ''' </summary>
     ''' <param name="iGroup">Group index of the predator</param>
     Public Property isPred(ByVal iGroup As Integer) As Boolean
@@ -200,7 +197,7 @@ Public Class cEcosimGroupOutput
     End Property
 
     ''' <summary>
-    '''  Is this igroup prey for this group
+    ''' Get whether this group predates on <paramref name="iGroup">group index</paramref>.
     ''' </summary>
     ''' <param name="iGroup">Group index of the prey</param>
     Public Property isPrey(ByVal iGroup As Integer) As Boolean
@@ -215,9 +212,8 @@ Public Class cEcosimGroupOutput
 
     End Property
 
-
     ''' <summary>
-    ''' Biomass by time
+    ''' Get the Biomass at a given time step.
     ''' </summary>
     ''' <param name="iTime">Time index</param>
     ''' <value>Single</value>
@@ -230,22 +226,18 @@ Public Class cEcosimGroupOutput
     End Property
 
     ''' <summary>
-    ''' Get/set the Trophic Level of a group in Ecosim.
+    ''' Get the Trophic Level of a group at a given time step.
     ''' </summary>
-    Public Property TL() As Single
+    Public ReadOnly Property TL(ByVal iTime As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.TL))
+            Return CSng(GetVariable(eVarNameFlags.TL, iTime))
         End Get
-
-        Friend Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.TL, value)
-        End Set
 
     End Property
 
     ''' <summary>
-    ''' Biomass relative to the base biomass by time
+    ''' Get the biomass relative to the base biomass at a given time step.
     ''' </summary>
     ''' <param name="iTime">Time index</param>
     ''' <value>Single</value>
@@ -259,7 +251,7 @@ Public Class cEcosimGroupOutput
     End Property
 
     ''' <summary>
-    ''' Total catch on this group by time
+    ''' Get the otal catch on this group at a given time step.
     ''' </summary>
     ''' <param name="iTime">Time index</param>
     ''' <remarks>Sum of catch across all fleets for this group</remarks>
@@ -272,7 +264,7 @@ Public Class cEcosimGroupOutput
     End Property
 
     ''' <summary>
-    ''' Total catch relative to the Ecopath inputs catch on this group by time
+    ''' Get the total catch relative to the Ecopath inputs catch on this group at a given time step.
     ''' </summary>
     ''' <param name="iTime">Time index</param>
     Public ReadOnly Property YieldRel(ByVal iTime As Integer) As Single
@@ -284,7 +276,7 @@ Public Class cEcosimGroupOutput
     End Property
 
     ''' <summary>
-    ''' Catch by fleet for this group
+    ''' Catch by fleet for this group at a given time step.
     ''' </summary>
     ''' <param name="iFleetIndex">Fleet index</param>
     ''' <param name="iTime">Time index</param>
@@ -297,7 +289,7 @@ Public Class cEcosimGroupOutput
     End Property
 
     ''' <summary>
-    ''' Fishing Mortality by Fleet
+    ''' Fishing Mortality by Fleet at a given time step.
     ''' </summary>
     ''' <param name="iFleetIndex">Fleet inded</param>
     ''' <param name="iTime">Time index</param>
@@ -309,6 +301,10 @@ Public Class cEcosimGroupOutput
         End Get
     End Property
 
+    ''' <summary>
+    ''' Get consumption over biomass at a given time step.
+    ''' </summary>
+    ''' <param name="iTime"></param>
     Public ReadOnly Property ConsumpBiomass(ByVal iTime As Integer) As Single
 
         Get
@@ -317,6 +313,10 @@ Public Class cEcosimGroupOutput
 
     End Property
 
+    ''' <summary>
+    ''' Get the feeding time at a given time step.
+    ''' </summary>
+    ''' <param name="iTime"></param>
     Public ReadOnly Property FeedingTime(ByVal iTime As Integer) As Single
 
         Get
@@ -325,6 +325,10 @@ Public Class cEcosimGroupOutput
 
     End Property
 
+    ''' <summary>
+    ''' Get the predation mortality at a given time step.
+    ''' </summary>
+    ''' <param name="iTime"></param>
     Public ReadOnly Property PredMort(ByVal iTime As Integer) As Single
 
         Get
@@ -332,8 +336,9 @@ Public Class cEcosimGroupOutput
         End Get
 
     End Property
+
     ''' <summary>
-    ''' Predation mort + fishing mort 
+    ''' Get the Predation mortality + fishing mortality at a given time step.
     ''' </summary>
     Public ReadOnly Property FishMort(ByVal iTime As Integer) As Single
 
@@ -344,7 +349,7 @@ Public Class cEcosimGroupOutput
     End Property
 
     ''' <summary>
-    ''' Sum of all mortality for this group by time
+    ''' Sum of all mortality for this group at a given time step.
     ''' </summary>
     ''' <param name="iTime">Time index</param>
     ''' <remarks>Fishing mort + Predation mort + Natural mort</remarks>
@@ -357,7 +362,7 @@ Public Class cEcosimGroupOutput
     End Property
 
     ''' <summary>
-    ''' Production / Consumption (Ecopath GE)
+    ''' Production / Consumption (Ecopath GE) at a given time step.
     ''' </summary>
     Public ReadOnly Property ProdConsump(ByVal iTime As Integer) As Single
 
@@ -398,8 +403,6 @@ Public Class cEcosimGroupOutput
         End Get
 
     End Property
-
-
 
     Public ReadOnly Property AvgPredConsumption(ByVal iGroup As Integer) As Single
 
