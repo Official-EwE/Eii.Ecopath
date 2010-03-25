@@ -164,19 +164,19 @@
     <value>False</value>
   </metadata>
   <data name="m_tssEcosim1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>255, 6</value>
+    <value>233, 6</value>
   </data>
   <metadata name="m_tssEcosim2.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
   <data name="m_tssEcosim2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>255, 6</value>
+    <value>233, 6</value>
   </data>
   <metadata name="m_tssEcosim3.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
   <data name="m_tssEcosim3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>255, 6</value>
+    <value>233, 6</value>
   </data>
   <metadata name="m_tssEcospace1.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -554,67 +554,61 @@
     <value>&amp;Ecopath</value>
   </data>
   <data name="m_tsmiEcosimNew.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="m_tsmiEcosimNew.Text" xml:space="preserve">
     <value>&amp;New Scenario...</value>
   </data>
   <data name="m_tsmiEcosimLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="m_tsmiEcosimLoad.Text" xml:space="preserve">
     <value>&amp;Load Scenario...</value>
   </data>
   <data name="m_tsmiEcosimSave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="m_tsmiEcosimSave.Text" xml:space="preserve">
     <value>&amp;Save Scenario</value>
   </data>
   <data name="m_tsmiEcosimSaveAs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="m_tsmiEcosimSaveAs.Text" xml:space="preserve">
     <value>Save Scenario &amp;As...</value>
   </data>
   <data name="m_tsmiTimeSeriesImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="m_tsmiTimeSeriesImport.Text" xml:space="preserve">
     <value>Import &amp;Time Series...</value>
   </data>
   <data name="m_tsmiTimeSeriesExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="m_tsmiTimeSeriesExport.Text" xml:space="preserve">
     <value>E&amp;xport time series to .csv file...</value>
   </data>
   <data name="m_tsmiTimeSeriesLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="m_tsmiTimeSeriesLoad.Text" xml:space="preserve">
     <value>L&amp;oad Time Series...</value>
   </data>
   <data name="m_tsmiTimeSeriesEditWeights.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="m_tsmiTimeSeriesEditWeights.Text" xml:space="preserve">
     <value>Edit Time Series &amp;Weights...</value>
   </data>
-  <data name="m_tsmiTimeSeriesReloadLast.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 22</value>
-  </data>
-  <data name="m_tsmiTimeSeriesReloadLast.Text" xml:space="preserve">
-    <value>&amp;Reload Last Time Series</value>
-  </data>
   <data name="m_tsmiExportBiomassToCSV.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="m_tsmiExportBiomassToCSV.Text" xml:space="preserve">
-    <value>&amp;Export biomass results to .csv file...</value>
+    <value>&amp;Export results to .csv file...</value>
   </data>
   <data name="m_tsmiEcosimEstimateVs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="m_tsmiEcosimEstimateVs.Text" xml:space="preserve">
     <value>Estimate &amp;vulnerabilties...</value>
@@ -794,7 +788,7 @@
     <value>m_ssMain</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
-    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.7.309, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.7.325, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -6191,12 +6185,6 @@
     <value>m_tsmiTimeSeriesEditWeights</value>
   </data>
   <data name="&gt;&gt;m_tsmiTimeSeriesEditWeights.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiTimeSeriesReloadLast.Name" xml:space="preserve">
-    <value>m_tsmiTimeSeriesReloadLast</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiTimeSeriesReloadLast.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiExportBiomassToCSV.Name" xml:space="preserve">

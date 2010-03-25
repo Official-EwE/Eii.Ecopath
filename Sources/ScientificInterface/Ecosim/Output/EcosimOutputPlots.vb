@@ -59,8 +59,6 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-            Dim cmd As cCommand = Nothing
             Dim group As cCoreGroupBase = Nothing
 
             Me.m_parms = Me.UIContext.Core.EcoSimModelParameters()
@@ -90,19 +88,12 @@ Namespace Ecosim
 
             Me.UpdateColors()
 
-            cmd = cmdh.GetCommand("ExportEcosimBiomassToCSV")
-            cmd.AddControl(Me.m_btnSaveData)
-
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
             AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-            Dim cmd As cCommand = cmdh.GetCommand("ExportEcosimBiomassToCSV")
-            cmd.RemoveControl(Me.m_btnSaveData)
 
             Me.CoreComponents = Nothing
             Me.m_lbGroups.Detach()
@@ -137,6 +128,16 @@ Namespace Ecosim
 
             'Display pred and prey ranks
             Me.ShowGroup()
+
+        End Sub
+
+        Private Sub OnSaveData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnSaveData.Click
+
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("ExportEcosimResultsToCSV")
+            cmd.Tag = Me.m_lbGroups.SelectedGroupIndex
+            cmd.Invoke()
+            cmd.Tag = cCore.NULL_VALUE
 
         End Sub
 

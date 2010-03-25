@@ -105,7 +105,6 @@ Public Class AppLauncher
     Private WithEvents m_cmdLoadTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdWeightTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdExportTimeSeries As cCommand = Nothing
-    Private WithEvents m_cmdLoadWeightTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdPluginGUICommand As PluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As cPropertySelectionCommand = Nothing
@@ -113,7 +112,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdEnableEcotracer As cCommand = Nothing
     Private WithEvents m_cmdEstimateVs As cCommand = Nothing
     ' ToDo_JS: Discontinue, move to Ecosim UI
-    Private WithEvents m_cmdExportBiomassToCSV As cCommand = Nothing
+    Private WithEvents m_cmdExportEcosimResultsToCSV As cCommand = Nothing
 
 #End Region ' Commands
 
@@ -912,10 +911,6 @@ Public Class AppLauncher
         Me.m_cmdWeightTimeSeries = New cCommand(cmdh, "WeightTimeSeries")
         Me.m_cmdWeightTimeSeries.AddControl(Me.m_tsmiTimeSeriesEditWeights)
 
-        'Create and configure LoadApplyTimeSeries command
-        Me.m_cmdLoadWeightTimeSeries = New cCommand(cmdh, "LoadWeightTimeSeries")
-        Me.m_cmdLoadWeightTimeSeries.AddControl(Me.m_tsmiTimeSeriesReloadLast)
-
         'Create and configure ExportTimeSeries command
         Me.m_cmdExportTimeSeries = New cCommand(cmdh, "ExportTimeSeries")
         Me.m_cmdExportTimeSeries.AddControl(Me.m_tsmiTimeSeriesExport)
@@ -938,8 +933,8 @@ Public Class AppLauncher
         Me.m_cmdEstimateVs = New cCommand(cmdh, "EstimateVs")
         Me.m_cmdEstimateVs.AddControl(Me.m_tsmiEcosimEstimateVs)
 
-        Me.m_cmdExportBiomassToCSV = New cCommand(cmdh, "ExportEcosimBiomassToCSV")
-        Me.m_cmdExportBiomassToCSV.AddControl(Me.m_tsmiExportBiomassToCSV)
+        Me.m_cmdExportEcosimResultsToCSV = New cCommand(cmdh, "ExportEcosimResultsToCSV")
+        Me.m_cmdExportEcosimResultsToCSV.AddControl(Me.m_tsmiExportBiomassToCSV)
 
         ' Listen to application Idle events to update command states
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
@@ -1872,12 +1867,14 @@ Public Class AppLauncher
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Load or reload an Ecospace scenario.
     ''' </summary>
     ''' <param name="bPersist">Flag indicating whether scenario should be obtained from persistent setting.</param>
     ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
     ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
     Friend Function LoadEcospaceScenario(ByVal bPersist As Boolean, _
             Optional ByVal bTryReuse As Boolean = False) As Boolean
 
@@ -2870,45 +2867,31 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; invokes the load time series dialog.
     ''' </summary>
-    Private Sub m_cmdLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadTimeSeries.OnInvoke
+    Private Sub m_cmdLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdLoadTimeSeries.OnInvoke
+
         Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Load)
+
     End Sub
 
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdLoadTimeSeries">Load TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadTimeSeries.OnUpdate
+    Private Sub m_cmdLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdLoadTimeSeries.OnUpdate
+
         cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded()
+
     End Sub
 
-    ''' <summary>
-    ''' Command handler; invokes the reload time series dialog.
-    ''' </summary>
-    Private Sub m_cmdReloadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadWeightTimeSeries.OnInvoke
-        Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
-        For iDS As Integer = 1 To Me.Core.nTimeSeriesDatasets
-            If (String.Compare(Me.Core.TimeSeriesDataset(iDS).Name, strDataset, False) = 0) Then
-                Me.Core.LoadTimeSeries(iDS, True)
-                Exit For
-            End If
-        Next
-    End Sub
-
-    ''' <summary>
-    ''' Command update handler; enables and disables the 
-    ''' <see cref="m_cmdLoadWeightTimeSeries">Load and weight TimeSeries command</see>.
-    ''' </summary>
-    Private Sub m_cmdLoadWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadWeightTimeSeries.OnUpdate
-        Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
-        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded() And (Not String.IsNullOrEmpty(strDataset))
-    End Sub
-
-    Private Sub OnExportBiomassToCSV(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnInvoke
+    Private Sub OnExportEcosimResultsToCSV(ByVal cmd As cCommand) _
+        Handles m_cmdExportEcosimResultsToCSV.OnInvoke
 
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdOD As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
-        Dim bSaveAnnual As Boolean = False 'Save each time steps
-        Dim writer As New cEcosimResultWriter(Me.UIContext.Core)
+        Dim iGroup As Integer = cCore.NULL_VALUE
+        Dim bSaveAnnual As Boolean = False
+        Dim writer As cEcosimResultWriter = Nothing
 
         cmdOD.Invoke("", My.Resources.ECOSIM_PROMPT_SAVEDESTINATION)
 
@@ -2924,11 +2907,21 @@ Public Class AppLauncher
                 Return
         End Select
 
-        writer.WriteResults(cmdOD.Directory, bSaveAnnual)
+        Try
+            If cmd.Tag IsNot Nothing Then
+                iGroup = CInt(cmd.Tag)
+            End If
+        Catch ex As Exception
+        End Try
+
+        writer = New cEcosimResultWriter(Me.UIContext.Core)
+        writer.WriteResults(cmdOD.Directory, bSaveAnnual, iGroup)
+        writer = Nothing
 
     End Sub
 
-    Private Sub OnExportBiomassToCSVs(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnUpdate
+    Private Sub OnExportEcosimResultsToCSVUpdate(ByVal cmd As cCommand) _
+        Handles m_cmdExportEcosimResultsToCSV.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcosimRan
     End Sub
 

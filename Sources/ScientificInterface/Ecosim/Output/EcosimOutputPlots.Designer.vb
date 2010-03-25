@@ -32,7 +32,6 @@ Namespace Ecosim
             Me.m_lbPrey = New ScientificInterfaceShared.Controls.cGroupListBox
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
-            Me.m_tlbControllers = New System.Windows.Forms.TableLayoutPanel
             Me.m_plGroups = New System.Windows.Forms.Panel
             Me.m_lblGroup = New System.Windows.Forms.Label
             Me.m_plFleets = New System.Windows.Forms.Panel
@@ -46,7 +45,6 @@ Namespace Ecosim
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
             Me.m_tlpMain.SuspendLayout()
-            Me.m_tlbControllers.SuspendLayout()
             Me.m_plGroups.SuspendLayout()
             Me.m_plFleets.SuspendLayout()
             Me.m_plPredators.SuspendLayout()
@@ -133,18 +131,12 @@ Namespace Ecosim
             'm_tlpMain
             '
             resources.ApplyResources(Me.m_tlpMain, "m_tlpMain")
-            Me.m_tlpMain.Controls.Add(Me.m_tlbControllers, 0, 4)
+            Me.m_tlpMain.Controls.Add(Me.m_btnSaveData, 0, 4)
             Me.m_tlpMain.Controls.Add(Me.m_plGroups, 0, 0)
             Me.m_tlpMain.Controls.Add(Me.m_plFleets, 0, 3)
             Me.m_tlpMain.Controls.Add(Me.m_plPredators, 0, 1)
             Me.m_tlpMain.Controls.Add(Me.m_plPrey, 0, 2)
             Me.m_tlpMain.Name = "m_tlpMain"
-            '
-            'm_tlbControllers
-            '
-            resources.ApplyResources(Me.m_tlbControllers, "m_tlbControllers")
-            Me.m_tlbControllers.Controls.Add(Me.m_btnSaveData, 1, 0)
-            Me.m_tlbControllers.Name = "m_tlbControllers"
             '
             'm_plGroups
             '
@@ -225,7 +217,6 @@ Namespace Ecosim
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
             Me.m_tlpMain.ResumeLayout(False)
-            Me.m_tlbControllers.ResumeLayout(False)
             Me.m_plGroups.ResumeLayout(False)
             Me.m_plFleets.ResumeLayout(False)
             Me.m_plPredators.ResumeLayout(False)
@@ -244,7 +235,6 @@ Namespace Ecosim
         Private WithEvents m_plFleets As System.Windows.Forms.Panel
         Private WithEvents m_plPredators As System.Windows.Forms.Panel
         Private WithEvents m_plPrey As System.Windows.Forms.Panel
-        Private WithEvents m_tlbControllers As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblGroup As System.Windows.Forms.Label
         Private WithEvents m_lblPredators As System.Windows.Forms.Label
         Private WithEvents m_lblPrey As System.Windows.Forms.Label

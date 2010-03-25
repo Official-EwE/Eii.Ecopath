@@ -92,7 +92,6 @@
         Me.m_tsmiTimeSeriesExport = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesLoad = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesEditWeights = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiTimeSeriesReloadLast = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiExportBiomassToCSV = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimEstimateVs = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuTools = New System.Windows.Forms.ToolStripMenuItem
@@ -468,7 +467,7 @@
         '
         'MenuEcosim
         '
-        Me.MenuEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesExport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights, Me.m_tsmiTimeSeriesReloadLast, m_tssEcosim3, Me.m_tsmiExportBiomassToCSV, Me.m_tsmiEcosimEstimateVs})
+        Me.MenuEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesExport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights, m_tssEcosim3, Me.m_tsmiExportBiomassToCSV, Me.m_tsmiEcosimEstimateVs})
         Me.MenuEcosim.Name = "MenuEcosim"
         resources.ApplyResources(Me.MenuEcosim, "MenuEcosim")
         '
@@ -516,12 +515,6 @@
         '
         Me.m_tsmiTimeSeriesEditWeights.Name = "m_tsmiTimeSeriesEditWeights"
         resources.ApplyResources(Me.m_tsmiTimeSeriesEditWeights, "m_tsmiTimeSeriesEditWeights")
-        '
-        'm_tsmiTimeSeriesReloadLast
-        '
-        Me.m_tsmiTimeSeriesReloadLast.Image = Global.ScientificInterface.My.Resources.Resources.NavForward
-        Me.m_tsmiTimeSeriesReloadLast.Name = "m_tsmiTimeSeriesReloadLast"
-        resources.ApplyResources(Me.m_tsmiTimeSeriesReloadLast, "m_tsmiTimeSeriesReloadLast")
         '
         'm_tsmiExportBiomassToCSV
         '
@@ -667,7 +660,6 @@
     Private WithEvents m_tsmiEcotracerSave As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcotracerSaveAs As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcotracerNew As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiTimeSeriesReloadLast As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbModel As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbEcosim As System.Windows.Forms.ToolStripSplitButton
