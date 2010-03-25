@@ -954,13 +954,12 @@ Namespace Ecospace
             If Me.m_bInUpdate = True Then Return
 
             Dim csm As cCoreStateMonitor = Me.Core.StateMonitor
-            Dim bIsRunning As Boolean = csm.IsEcospaceRunning
 
             Me.m_bInUpdate = True
 
             ' Enable run and stop buttons based on Ecospace run state
-            Me.m_btnRun.Enabled = (bIsRunning = False)
-            Me.m_btnStop.Enabled = (bIsRunning = True)
+            Me.m_btnRun.Enabled = (Me.m_bIsEcospaceRunning = False)
+            Me.m_btnStop.Enabled = (Me.m_bIsEcospaceRunning = True)
 
             ' Enable display options for non-fleet maps
             Me.m_plDisplayOptions.Enabled = (m_rbDisplayFishingEffort.Checked = False)
