@@ -56,9 +56,11 @@ Public Class dlgManageTimeSeries
 
     Public Sub New(ByVal uic As cUIContext, ByVal mode As eModeType)
 
-        Me.InitializeComponent()
+        Debug.Assert(uic IsNot Nothing)
 
         Me.m_uic = uic
+
+        Me.InitializeComponent()
 
         ' Create reader
         Me.m_tr = New cTimeSeriesCSVReader(Me.m_uic.Core)
