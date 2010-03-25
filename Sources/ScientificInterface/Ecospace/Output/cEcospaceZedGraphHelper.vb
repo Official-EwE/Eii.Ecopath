@@ -78,7 +78,7 @@ Namespace Ecospace
 
                     li = Me.m_pane.CurveList(iGroup - 1)
 
-                    Select Case Me.m_showGroupMode
+                    Select Case Me.GroupShowMode
                         Case RunEcospace.eShowGroupType.ShowAll
                             bShowGroup = True
                         Case RunEcospace.eShowGroupType.ShowNonHidden

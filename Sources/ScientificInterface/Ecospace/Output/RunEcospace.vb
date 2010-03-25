@@ -70,7 +70,7 @@ Namespace Ecospace
         Private m_bpConTracing As cBooleanProperty = Nothing
 
         Private m_showGroupMode As eShowGroupType = eShowGroupType.ShowAll
-        Private m_iGroupToShow As Integer = 0
+        Private m_iGroupToShow As Integer = 1
         Private m_zgh As cEcospaceZedGraphHelper = Nothing
 
         ''' <summary>number of legend bins is arbitrary</summary>
@@ -123,7 +123,7 @@ Namespace Ecospace
                 Me.m_cmbDisplayGroup.Items.Add(Me.Core.EcospaceGroups(i).Name)
             Next
             Me.m_cmbDisplayGroup.SelectedIndex = 0
-            Me.m_iGroupToShow = 0
+            Me.GroupToShow = 0
 
         End Sub
 
@@ -208,37 +208,27 @@ Namespace Ecospace
 
             If Me.UIContext Is Nothing Then Return
 
+            Dim pm As cPropertyManager = Me.PropertyManager
+            Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
+
+            Me.m_bpConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
+
             Me.InitCoreParams()
             Me.InitUIParams()
             Me.InitMapPlot()
             Me.InitDrawingThreads()
 
-            Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim pm As cPropertyManager = Me.PropertyManager
-            Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
-
             Me.m_lblProgress.Text = ""
-
-            'Start tracking ConcTracing setting
-            Me.m_bpConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
-            AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
-
-            ' Start tracking styleguide changes for colour feedback
-            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
-            ' Start tracking core state monitor for Ecospace run states
-            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
 
             Me.m_zgh = New cEcospaceZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_zgPlotLarge)
             Me.m_zgh.ShowPointValue = True
 
-            Me.m_cmdDisplayGroups = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            Me.m_cmdDisplayGroups = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
             If (Me.m_cmdDisplayGroups IsNot Nothing) Then
                 Me.m_cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups)
                 AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
             End If
-
             Me.m_cmbLabelPos.SelectedIndex = 0
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
@@ -246,9 +236,16 @@ Namespace Ecospace
             Me.UpdateStyleColors()
             Me.UpdateControls()
 
+            'Start tracking ConcTracing setting
+            AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
+            ' Start tracking styleguide changes for colour feedback
+            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            ' Start tracking core state monitor for Ecospace run states
+            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             If (Me.m_cmdDisplayGroups IsNot Nothing) Then
                 Me.m_cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups)
@@ -264,8 +261,9 @@ Namespace Ecospace
             RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
             ' Stop tracking style guide changes
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
+            ' Stop tracking ConcTracing setting
             RemoveHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
+
             Me.m_bpConTracing = Nothing
 
             Me.CoreComponents = Nothing
@@ -408,9 +406,20 @@ Namespace Ecospace
             Dim drawer As cMapDrawer = Nothing
             Dim iNumVisGroups As Integer = 0
             Dim lVisGroups As New List(Of Integer)
+            Dim bShowGroup As Boolean = False
 
             For iGroup As Integer = 1 To Me.Core.nGroups
-                If Me.StyleGuide.GroupVisible(iGroup) Then
+
+                Select Case Me.ShowGroupMode
+                    Case eShowGroupType.ShowAll
+                        bShowGroup = True
+                    Case eShowGroupType.ShowSingle
+                        bShowGroup = (iGroup = Me.GroupToShow)
+                    Case eShowGroupType.ShowNonHidden
+                        bShowGroup = Me.StyleGuide.GroupVisible(iGroup)
+                End Select
+
+                If bShowGroup Then
                     lVisGroups.Add(iGroup)
                     iNumVisGroups += 1
                 End If
@@ -419,16 +428,17 @@ Namespace Ecospace
             ' JS05Mar10: disabled console output to keep moving fast
             'Console.WriteLine("Step {0} = year {1}, month {2} at {3}", Me.m_iTimeStepCur, iYear, iMonth, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
 
-            ' JS05Mar10: reassess map layout whenever refreshing
-            'If Me.m_iTimeStepCur = 1 Then
-            Me.m_iNumGroupPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVisGroups) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
-            Me.m_iNumGroupPlotsVert = CInt(Math.Ceiling(iNumVisGroups / Me.m_iNumGroupPlotsHorz))
-            'End If
-
             ' Clear background
             Me.InitOutputBitmaps()
 
-            If Me.m_iTimeStepCur > 0 And (Me.m_showGroupMode <> eShowGroupType.ShowSingle) Then
+            If Me.m_iTimeStepCur > 0 And (Me.ShowGroupMode <> eShowGroupType.ShowSingle) Then
+
+                ' JS05Mar10: reassess map layout whenever refreshing
+                'If Me.m_iTimeStepCur = 1 Then
+                Me.m_iNumGroupPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVisGroups) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
+                Me.m_iNumGroupPlotsVert = CInt(Math.Ceiling(iNumVisGroups / Me.m_iNumGroupPlotsHorz))
+                'End If
+
                 Try
 
                     Dim originList As New List(Of PointF)
@@ -508,13 +518,16 @@ Namespace Ecospace
                     Debug.Assert(False, ex.Message)
                 End Try
 
-            ElseIf (Me.m_showGroupMode = eShowGroupType.ShowSingle) Then
+            ElseIf (Me.ShowGroupMode = eShowGroupType.ShowSingle) Then
 
                 Dim sg As cStyleGuide = Me.StyleGuide
                 Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.Core.nGroups)
 
+                Me.m_iNumGroupPlotsHorz = 1
+                Me.m_iNumFleetPlotsVert = 1
+
                 'Show one group at a time
-                If (Me.m_iGroupToShow > 0) Then
+                If (Me.GroupToShow > 0) Then
                     Dim rect As Rectangle = New Rectangle(m_pbMap.Top + 10, _
                                                           m_pbMap.Left + 10, _
                                                           m_pbMap.Width - 20, _
@@ -540,18 +553,22 @@ Namespace Ecospace
                         .Graphics = g
                         .ShowMPA = Me.m_bShowMPA
                     End With
-                    drawer.DrawBiomassBaseMap(Me.m_iGroupToShow, rect)
+                    drawer.DrawBiomassBaseMap(Me.GroupToShow, rect)
                 End If
             End If
 
         End Sub
 
         Private Sub PlotMap(ByVal g As Graphics)
-            If m_rbDisplayFishingEffort.Checked Then
-                PlotFishingEffortMap(g)
-            Else
-                PlotBiomassMapThreaded(g)
-            End If
+            Try
+                If m_rbDisplayFishingEffort.Checked Then
+                    PlotFishingEffortMap(g)
+                Else
+                    PlotBiomassMapThreaded(g)
+                End If
+            Catch ex As Exception
+                ' Whoah!
+            End Try
         End Sub
 
         Private Sub PlotFishingEffortMap(ByRef g As Graphics)
@@ -729,31 +746,21 @@ Namespace Ecospace
         End Sub
 
         Private Sub m_cbDisplayGroup_GotFocus(ByVal sender As Object, ByVal e As EventArgs) _
-                Handles m_cmbDisplayGroup.GotFocus
-
-            Me.m_showGroupMode = eShowGroupType.ShowSingle
-            Me.m_iGroupToShow = Me.m_cmbDisplayGroup.SelectedIndex + 1
-            Me.UpdateControls()
-            Me.RefreshPlot()
-            Me.RefreshMap()
+            Handles m_cmbDisplayGroup.GotFocus
+            Me.ShowGroupMode = eShowGroupType.ShowSingle
         End Sub
 
-        Private Sub cbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-                Handles m_cmbDisplayGroup.SelectedIndexChanged
-
-            If (Me.m_showGroupMode = eShowGroupType.ShowSingle) Then
-                Me.m_iGroupToShow = Me.m_cmbDisplayGroup.SelectedIndex + 1
-                Me.RefreshMap()
-                Me.RefreshPlot()
-            End If
+        Private Sub OnSelectGroupToShow(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_cmbDisplayGroup.SelectedIndexChanged
+            Me.GroupToShow = (Me.m_cmbDisplayGroup.SelectedIndex + 1)
         End Sub
 
         Private Sub rbDisplayOption_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
                 Handles m_rbShowAll.CheckedChanged, m_rbShowNonHidden.CheckedChanged, m_rbShowSingle.CheckedChanged
 
-            If Me.m_rbShowAll.Checked Then Me.m_showGroupMode = eShowGroupType.ShowAll
-            If Me.m_rbShowNonHidden.Checked Then Me.m_showGroupMode = eShowGroupType.ShowNonHidden
-            If Me.m_rbShowSingle.Checked Then Me.m_showGroupMode = eShowGroupType.ShowSingle
+            If Me.m_rbShowAll.Checked Then Me.ShowGroupMode = eShowGroupType.ShowAll
+            If Me.m_rbShowNonHidden.Checked Then Me.ShowGroupMode = eShowGroupType.ShowNonHidden
+            If Me.m_rbShowSingle.Checked Then Me.ShowGroupMode = eShowGroupType.ShowSingle
             Me.UpdateControls()
 
             Me.RefreshPlot()
@@ -938,6 +945,34 @@ Namespace Ecospace
 
 #Region " Internal implementation "
 
+        Private Property ShowGroupMode() As eShowGroupType
+            Get
+                Return Me.m_showGroupMode
+            End Get
+            Set(ByVal value As eShowGroupType)
+                If (value <> Me.m_showGroupMode) Then
+                    Me.m_showGroupMode = value
+                    Me.UpdateControls()
+                    Me.RefreshMap()
+                    Me.RefreshPlot()
+                End If
+            End Set
+        End Property
+
+        Private Property GroupToShow() As Integer
+            Get
+                Return Me.m_iGroupToShow
+            End Get
+            Set(ByVal value As Integer)
+                If (value <> Me.m_iGroupToShow) Then
+                    Me.m_iGroupToShow = value
+                    Me.RefreshMap()
+                    Me.RefreshPlot()
+                End If
+                Me.ShowGroupMode = eShowGroupType.ShowSingle
+            End Set
+        End Property
+
         Private m_bInUpdate As Boolean = False
 
         Private Sub UpdateControls()
@@ -946,12 +981,15 @@ Namespace Ecospace
             If Me.Core Is Nothing Then Return
             If Me.m_bInUpdate = True Then Return
 
+            Dim csm As cCoreStateMonitor = Me.Core.StateMonitor
+            Dim bIsRunning As Boolean = csm.IsEcospaceRunning
+
             Me.m_bInUpdate = True
 
-            Dim csm As cCoreStateMonitor = Me.Core.StateMonitor
             ' Enable run and stop buttons based on Ecospace run state
-            Me.m_btnRun.Enabled = (csm.HasEcospaceLoaded = True) And (csm.IsEcospaceRunning = False)
-            Me.m_btnStop.Enabled = (csm.HasEcospaceLoaded = True) And (csm.IsEcospaceRunning = True)
+            Me.m_btnRun.Enabled = (bIsRunning = False)
+            Me.m_btnStop.Enabled = (bIsRunning = True)
+
             ' Enable display options for non-fleet maps
             Me.m_plDisplayOptions.Enabled = (m_rbDisplayFishingEffort.Checked = False)
 
@@ -959,7 +997,7 @@ Namespace Ecospace
             Me.m_rbDisplayContaminantC.Enabled = CBool(Me.m_bpConTracing.GetValue())
             Me.m_rbDisplayCoverB.Enabled = CBool(Me.m_bpConTracing.GetValue())
 
-            Select Case Me.m_showGroupMode
+            Select Case Me.ShowGroupMode
                 Case eShowGroupType.ShowAll
                     Me.m_rbShowAll.Checked = True
                 Case eShowGroupType.ShowNonHidden
@@ -978,15 +1016,19 @@ Namespace Ecospace
         End Sub
 
         Private Sub RefreshMap()
+
+            If Me.Core Is Nothing Then Return
             Me.m_pbMap.Refresh()
+
         End Sub
 
         Private Sub RefreshPlot()
 
+            If Me.Core Is Nothing Then Return
             If (Me.m_zgh IsNot Nothing) Then
 
-                Me.m_zgh.GroupShowMode = Me.m_showGroupMode
-                Me.m_zgh.GroupToShow = Me.m_iGroupToShow
+                Me.m_zgh.GroupShowMode = Me.ShowGroupMode
+                Me.m_zgh.GroupToShow = Me.GroupToShow
                 Me.m_zgh.UpdateCurveVisibility()
                 Me.m_zgh.Redraw()
 
