@@ -120,10 +120,11 @@ Namespace Ecospace
             'Load group combo box
             Me.m_cmbDisplayGroup.Items.Clear()
             For i As Integer = 1 To Me.Core.nGroups
-                Me.m_cmbDisplayGroup.Items.Add(Me.Core.EcospaceGroups(i).Name)
-            Next
+                Me.m_cmbDisplayGroup.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+                                                             i, _
+                                                             Me.Core.EcospaceGroups(i).Name))
+            Next i
             Me.m_cmbDisplayGroup.SelectedIndex = 0
-            Me.GroupToShow = 0
 
         End Sub
 
@@ -232,6 +233,8 @@ Namespace Ecospace
             Me.m_cmbLabelPos.SelectedIndex = 0
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
+
+            Me.ShowGroupMode = eShowGroupType.ShowAll
 
             Me.UpdateStyleColors()
             Me.UpdateControls()
@@ -428,134 +431,103 @@ Namespace Ecospace
             ' JS05Mar10: disabled console output to keep moving fast
             'Console.WriteLine("Step {0} = year {1}, month {2} at {3}", Me.m_iTimeStepCur, iYear, iMonth, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
 
+            Select Case Me.ShowGroupMode
+
+                Case eShowGroupType.ShowAll, _
+                     eShowGroupType.ShowNonHidden
+
+                    ' Note that the user may have hidden all groups!
+                    Me.m_iNumGroupPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVisGroups) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
+                    Me.m_iNumGroupPlotsVert = CInt(Math.Ceiling(iNumVisGroups / Math.Max(1, Me.m_iNumGroupPlotsHorz)))
+
+                Case eShowGroupType.ShowSingle
+                    Me.m_iNumGroupPlotsHorz = 1
+                    Me.m_iNumGroupPlotsVert = 1
+
+            End Select
+
             ' Clear background
             Me.InitOutputBitmaps()
 
-            If Me.m_iTimeStepCur > 0 And (Me.ShowGroupMode <> eShowGroupType.ShowSingle) Then
+            Try
 
-                ' JS05Mar10: reassess map layout whenever refreshing
-                'If Me.m_iTimeStepCur = 1 Then
-                Me.m_iNumGroupPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVisGroups) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
-                Me.m_iNumGroupPlotsVert = CInt(Math.Ceiling(iNumVisGroups / Me.m_iNumGroupPlotsHorz))
-                'End If
+                Dim originList As New List(Of PointF)
+                Dim rectList As New List(Of Rectangle)
+                Dim xScale As Double = m_iNumGroupPlotsHorz * (m_iInCol + 1) + 1
+                Dim yScale As Double = m_iNumGroupPlotsVert * (m_iInRow + 1) + 1
 
-                Try
+                If xScale > 0 Then xScale = m_pbMap.Width / xScale
+                If yScale > 0 Then yScale = m_pbMap.Height / yScale
 
-                    Dim originList As New List(Of PointF)
-                    Dim rectList As New List(Of Rectangle)
-                    Dim xScale As Double = m_iNumGroupPlotsHorz * (m_iInCol + 1) + 1
-                    Dim yScale As Double = m_iNumGroupPlotsVert * (m_iInRow + 1) + 1
-
-                    If xScale > 0 Then xScale = m_pbMap.Width / xScale
-                    If yScale > 0 Then yScale = m_pbMap.Height / yScale
-
-                    For i As Integer = 0 To m_iNumGroupPlotsVert - 1
-                        For j As Integer = 0 To m_iNumGroupPlotsHorz - 1
-                            Dim iRect As Integer = i * m_iNumGroupPlotsHorz + j
-                            If iRect < Core.nGroups Then
-                                Dim origin As PointF = New PointF((m_iInCol + 1) * j + 1, i * (m_iInRow + 1) + 1)
-                                Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
-                                                                        CInt(origin.Y * yScale), _
-                                                                        CInt(m_iInCol * xScale), _
-                                                                        CInt(m_iInRow * yScale))
-                                originList.Add(origin)
-                                rectList.Add(rect)
-                            End If
-                        Next
-                    Next
-
-                    Dim ifirst As Integer = 0
-                    Dim ilast As Integer = 0
-
-                    For Each drawer In m_drawers
-                        If drawer.AllowedToRun Then
-                            'init the drawer to the latest values
-                            drawer.OriginList = originList
-                            drawer.RectList = rectList
-                            drawer.Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
-                            drawer.ShowLabels = Me.m_bShowLabels
-                            drawer.InvertLabelColors = Me.m_bInvertLabelColor
-                            drawer.SetLabelPosition(Me.m_labelposHorz, Me.m_labelposVert)
-
-                            If Me.m_rbDisplayRelBiomass.Checked Then
-                                drawer.Map = Me.m_dataTimeStep.BiomassMap
-                                drawer.MapIBMPackets = Me.m_dataTimeStep.IMBLocationsMap
-                            ElseIf Me.m_rbDisplayContaminantC.Checked Then
-                                drawer.Map = Me.m_dataTimeStep.ContaminantMap
-                                drawer.MapIBMPackets = Nothing
-                            ElseIf Me.m_rbDisplayCoverB.Checked Then
-                                drawer.Map = Me.m_as2ConcOverB
-                                drawer.MapIBMPackets = Nothing
-                            End If
-
-                            drawer.InCol = Me.m_iInCol
-                            drawer.InRow = Me.m_iInRow
-                            drawer.Month = iMonth
-
-                            ilast = Math.Min(ifirst + Me.m_nMapsPerThread - 1, iNumVisGroups - 1)
-
-                            drawer.ClearGroups()
-                            For i As Integer = ifirst To ilast
-                                drawer.AddGroup(lVisGroups(i), i)
-                            Next
-                            drawer.ShowMPA = Me.m_bShowMPA
-
-                            drawer.SignalState.Reset()
-
-                            drawer.AllowedToRun = False
-                            ThreadPool.QueueUserWorkItem(AddressOf drawer.Draw)
-
-                            ifirst += m_nMapsPerThread
+                For i As Integer = 0 To m_iNumGroupPlotsVert - 1
+                    For j As Integer = 0 To m_iNumGroupPlotsHorz - 1
+                        Dim iRect As Integer = i * m_iNumGroupPlotsHorz + j
+                        If iRect < Core.nGroups Then
+                            Dim origin As PointF = New PointF((m_iInCol + 1) * j + 1, i * (m_iInRow + 1) + 1)
+                            Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
+                                                                    CInt(origin.Y * yScale), _
+                                                                    CInt(m_iInCol * xScale), _
+                                                                    CInt(m_iInRow * yScale))
+                            originList.Add(origin)
+                            rectList.Add(rect)
                         End If
                     Next
+                Next
 
-                    For Each drawer In m_drawers
-                        drawer.SignalState.WaitOne()
-                    Next
+                Dim ifirst As Integer = 0
+                Dim ilast As Integer = 0
 
-                    g.DrawImage(m_bmpBiomassMap, 0, 0)
-                Catch ex As Exception
-                    Debug.Assert(False, ex.Message)
-                End Try
+                For Each drawer In m_drawers
 
-            ElseIf (Me.ShowGroupMode = eShowGroupType.ShowSingle) Then
+                    If drawer.AllowedToRun Then
+                        'init the drawer to the latest values
+                        drawer.OriginList = originList
+                        drawer.RectList = rectList
+                        drawer.Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+                        drawer.ShowLabels = Me.m_bShowLabels
+                        drawer.InvertLabelColors = Me.m_bInvertLabelColor
+                        drawer.SetLabelPosition(Me.m_labelposHorz, Me.m_labelposVert)
 
-                Dim sg As cStyleGuide = Me.StyleGuide
-                Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.Core.nGroups)
-
-                Me.m_iNumGroupPlotsHorz = 1
-                Me.m_iNumFleetPlotsVert = 1
-
-                'Show one group at a time
-                If (Me.GroupToShow > 0) Then
-                    Dim rect As Rectangle = New Rectangle(m_pbMap.Top + 10, _
-                                                          m_pbMap.Left + 10, _
-                                                          m_pbMap.Width - 20, _
-                                                          m_pbMap.Height - 20)
-
-                    drawer = New cMapDrawer(0, Me.Core)
-                    drawer.ShowLabels = Me.m_bShowLabels
-                    drawer.InvertLabelColors = Me.m_bInvertLabelColor
-                    drawer.SetLabelPosition(Me.m_labelposHorz, Me.m_labelposVert)
-
-                    With drawer
                         If Me.m_rbDisplayRelBiomass.Checked Then
-                            .Map = Me.m_dataTimeStep.BiomassMap
+                            drawer.Map = Me.m_dataTimeStep.BiomassMap
+                            drawer.MapIBMPackets = Me.m_dataTimeStep.IMBLocationsMap
                         ElseIf Me.m_rbDisplayContaminantC.Checked Then
-                            .Map = Me.m_dataTimeStep.ContaminantMap
+                            drawer.Map = Me.m_dataTimeStep.ContaminantMap
+                            drawer.MapIBMPackets = Nothing
                         ElseIf Me.m_rbDisplayCoverB.Checked Then
                             drawer.Map = Me.m_as2ConcOverB
+                            drawer.MapIBMPackets = Nothing
                         End If
-                        .InRow = Me.m_iInRow
-                        .InCol = Me.m_iInCol
-                        .GroupColors = lColors
-                        .Font = Me.Font
-                        .Graphics = g
-                        .ShowMPA = Me.m_bShowMPA
-                    End With
-                    drawer.DrawBiomassBaseMap(Me.GroupToShow, rect)
-                End If
-            End If
+
+                        drawer.InCol = Me.m_iInCol
+                        drawer.InRow = Me.m_iInRow
+                        drawer.Month = iMonth
+
+                        ilast = Math.Min(ifirst + Me.m_nMapsPerThread - 1, iNumVisGroups - 1)
+
+                        drawer.ClearGroups()
+                        For i As Integer = ifirst To ilast
+                            drawer.AddGroup(lVisGroups(i), i)
+                        Next
+                        drawer.ShowMPA = Me.m_bShowMPA
+
+                        drawer.SignalState.Reset()
+
+                        drawer.AllowedToRun = False
+                        ThreadPool.QueueUserWorkItem(AddressOf drawer.Draw)
+
+                        ifirst += m_nMapsPerThread
+                    End If
+                Next
+
+                For Each drawer In m_drawers
+                    drawer.SignalState.WaitOne()
+                Next
+
+                g.DrawImage(m_bmpBiomassMap, 0, 0)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
 
         End Sub
 
