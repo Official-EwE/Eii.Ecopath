@@ -60,6 +60,7 @@ Namespace Ecospace
         'jb added
         Private m_spaceStats As cEcospaceStats
 
+        Private m_bIsEcospaceRunning As Boolean = False
         Private m_bOverlay As Boolean = False
         Private m_bShowMPA As Boolean = True
         Private m_bShowLabels As Boolean = True
@@ -235,9 +236,7 @@ Namespace Ecospace
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
             Me.ShowGroupMode = eShowGroupType.ShowAll
-
-            Me.UpdateStyleColors()
-            Me.UpdateControls()
+            Me.m_bIsEcospaceRunning = Me.Core.StateMonitor.IsEcospaceRunning
 
             'Start tracking ConcTracing setting
             AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
@@ -245,6 +244,9 @@ Namespace Ecospace
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             ' Start tracking core state monitor for Ecospace run states
             AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+
+            Me.UpdateStyleColors()
+            Me.UpdateControls()
 
         End Sub
 
@@ -862,8 +864,6 @@ Namespace Ecospace
 #End Region ' Ecospace Delegates
 
 #Region " Overrides "
-
-        Private m_bIsEcospaceRunning As Boolean = False
 
         Private Sub OnCoreStateChanged(ByVal cms As cCoreStateMonitor)
 
