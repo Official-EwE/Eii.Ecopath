@@ -6,6 +6,7 @@ Imports System.Text
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -299,8 +300,8 @@ Public Class cEcosimResultWriter
                             For k As Integer = 1 To cCore.N_MONTHS
                                 sum(i) = sum(i) + data(i, (j - 1) * cCore.N_MONTHS + k)
                             Next
-                            sw.Write(sum(i) / cCore.N_MONTHS)
-                            sw.Write(",")
+                            sw.Write(cStringUtils.FormatSingle(sum(i) / cCore.N_MONTHS))
+                            sw.Write(", ")
                         Next
                         sw.WriteLine()
                     Next
@@ -309,8 +310,8 @@ Public Class cEcosimResultWriter
                     For j As Integer = 1 To data.GetLength(1) - 1
                         'For every group
                         For i As Integer = 1 To data.GetLength(0) - 1
-                            sw.Write(data(i, j))
-                            sw.Write(",")
+                            sw.Write(cStringUtils.FormatSingle(data(i, j)))
+                            sw.Write(", ")
                         Next
                         sw.WriteLine()
                     Next
