@@ -62,21 +62,6 @@ Namespace Commands
             MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
-        Public Sub New(ByVal strPageName As String, ByVal strPageID As String, _
-                ByVal coreExecutionState As eCoreExecutionState, _
-                ByVal typeClass As Type, _
-                Optional ByVal strHelpURL As String = "")
-
-            MyBase.New(Nothing, COMMAND_NAME)
-
-            Me.m_strPageName = strPageName
-            Me.m_strPageID = strPageID
-            Me.m_coreExecutionState = coreExecutionState
-            Me.m_typeClass = typeClass
-            Me.m_strHelpURL = strHelpURL
-
-        End Sub
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Invokes the command to make the EwE6 GUI navigate to user interface

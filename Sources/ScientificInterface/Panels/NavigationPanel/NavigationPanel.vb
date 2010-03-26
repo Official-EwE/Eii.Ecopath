@@ -266,26 +266,6 @@ Public Class NavigationPanel
 
     End Property
 
-    ''' <summary>
-    ''' Return a temporary navigation command for transferring information.
-    ''' </summary>
-    ''' <param name="ndType"></param>
-    ''' <returns></returns>
-    ''' <remarks>
-    ''' Firing this command will not result in navigation changes.
-    ''' </remarks>
-    Public Function GetTemporaryNavCommand(ByVal ndType As String) As cNavigationCommand
-
-        Dim ni As cNodeInfo = m_nodeController.SearchNodeByType(ndType)
-
-        If ni Is Nothing Then Return Nothing
-
-        Dim nodes() As TreeNode = Me.m_tvNavigation.Nodes.Find(ni.NodeName, True)
-        Debug.Assert(nodes.Length = 1)
-        Return New cNavigationCommand(nodes(0).Text, ni.NodeName, ni.ExecutionState, ni.Type)
-
-    End Function
-
     Public Sub Reset()
         For Each node As TreeNode In Me.m_tvNavigation.Nodes
             node.Collapse()

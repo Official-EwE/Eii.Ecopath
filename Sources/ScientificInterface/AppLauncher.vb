@@ -55,8 +55,6 @@ Public Class AppLauncher
     Private m_RemarkPanel As RemarkPanel = Nothing
     Private m_StartPage As WebBrowserDC = Nothing
     Private m_lstrProtectedPanelNames As New List(Of String)
-    Private m_DeserializeDockContent As DeserializeDockContent
-    Private m_Help As ApplicationHelp = Nothing
 
 #Region " Commands "
 
@@ -189,6 +187,12 @@ Public Class AppLauncher
     Public ReadOnly Property StyleGuide() As cStyleGuide
         Get
             Return Me.m_uic.StyleGuide
+        End Get
+    End Property
+
+    Public ReadOnly Property Help() As cHelp
+        Get
+            Return Me.m_uic.Help
         End Get
     End Property
 
@@ -674,7 +678,6 @@ Public Class AppLauncher
         Me.InitCommands()
         Me.InitPanels()
         Me.InitEventHandlers()
-        Me.InitHelp()
 
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
@@ -703,6 +706,8 @@ Public Class AppLauncher
         Me.ProcessCommandLine()
         Me.DefaultSettingLoadedEventHandler(Nothing, Nothing) ' Ugh!
         Me.UpdateModelControls()
+
+        Me.Help.HelpTopic(Me.m_StartPage) = "Ecopath with Ecosim 6 Getting started.htm"
 
     End Sub
 
@@ -943,8 +948,6 @@ Public Class AppLauncher
 
     Private Sub InitPanels()
 
-        m_DeserializeDockContent = New DeserializeDockContent(AddressOf GetContentFromPersistentString)
-
         ' Init panels
         m_NavPanel = New NavigationPanel(Me.UIContext, Me.m_pluginManager)
         m_StatusPanel = New StatusPanel(Me.UIContext)
@@ -969,14 +972,16 @@ Public Class AppLauncher
 
     Private Sub InitCoreParams()
 
-        Dim core As cCore = New cCore()
-        Dim sg As cStyleGuide = New cStyleGuide()
-        Dim cmdh As cCommandHandler = New cCommandHandler()
-        Dim pm As cPropertyManager = New cPropertyManager(core, sg, Me.m_SyncObj)
+        Dim core As New cCore()
+        Dim sg As New cStyleGuide()
+        Dim cmdh As New cCommandHandler()
+        Dim pm As New cPropertyManager(core, sg, Me.m_SyncObj)
+        Dim fps As New cFormPositionSettings()
+        Dim help As New cHelp(Me, "UserGuide\EwE6_userguide.chm", "User Interface.htm", "EWE_UsersGuide")
 
         core.InitCore()
 
-        Me.UIContext = New cUIContext(core, sg, pm, cmdh, New cFormPositionSettings(), Me.m_SyncObj)
+        Me.UIContext = New cUIContext(core, sg, pm, cmdh, fps, help, Me.m_SyncObj)
 
         ' Config state monitor
         Me.Core.StateMonitor.SyncObject = Me
@@ -1082,11 +1087,6 @@ Public Class AppLauncher
         AddHandler My.Settings.SettingsLoaded, AddressOf DefaultSettingLoadedEventHandler
         AddHandler m_DockPanel.ActiveDocumentChanged, AddressOf ActiveDocumentChangedEventHandler
 
-    End Sub
-
-    Private Sub InitHelp()
-        Me.m_Help = New ApplicationHelp(Me, "UserGuide\EwE6_userguide.chm", "User Interface.htm", "EWE_UsersGuide")
-        Me.m_Help.HelpTopic(Me.m_StartPage) = "Ecopath with Ecosim 6 Getting started.htm"
     End Sub
 
     ''' <summary>
@@ -1601,34 +1601,6 @@ Public Class AppLauncher
     Private Sub UpdateSelectedNode(ByVal strNodeName As String)
         Me.m_NavPanel.SelectedNodeName = strNodeName
     End Sub
-
-    ''' <summary>
-    ''' Callback for DockContent deserialization; used to properly resurrect
-    ''' forms from a settings file.
-    ''' </summary>
-    ''' <param name="persistString"></param>
-    ''' <returns></returns>
-    Private Function GetContentFromPersistentString(ByVal persistString As String) As IDockContent
-
-        Select Case persistString
-            Case (GetType(NavigationPanel)).ToString
-                Return m_NavPanel
-            Case (GetType(StatusPanel)).ToString
-                Return m_StatusPanel
-            Case (GetType(RemarkPanel)).ToString
-                Return m_RemarkPanel
-            Case (GetType(WebBrowserDC)).ToString
-                If (m_StartPage Is Nothing) Then m_StartPage = New WebBrowserDC(Me.UIContext)
-                Return m_StartPage
-
-            Case Else
-                Dim nd As cNavigationCommand = m_NavPanel.GetTemporaryNavCommand(persistString)
-                Return CreateDocument(nd)
-        End Select
-
-        Return Nothing
-
-    End Function
 
     Private Function CreateDocument(ByVal nc As cNavigationCommand) As IDockContent
 
@@ -2159,13 +2131,13 @@ Public Class AppLauncher
                         ' Show the form in the dock panel
                         DirectCast(frm, DockContent).Show(Me.m_DockPanel, DockState.Document)
                         ' Switch help
-                        Me.m_Help.HelpTopic(frm) = nc.HelpURL
+                        Me.Help.HelpTopic(frm) = nc.HelpURL
                     Else
                         ' Show form
                         frm.MdiParent = Me
                         frm.Show()
                         ' Switch help
-                        Me.m_Help.HelpTopic(frm) = nc.HelpURL
+                        Me.Help.HelpTopic(frm) = nc.HelpURL
                     End If
                 End If
             End If
@@ -2240,7 +2212,7 @@ Public Class AppLauncher
                     End If
                     ' Switch help
                     ' ToDo_JS: consider allowing plug-in provided help documents
-                    Me.m_Help.HelpTopic(pgcmd.Form) = ""
+                    Me.Help.HelpTopic(pgcmd.Form) = ""
                 End If
             End If
         End If
@@ -2407,7 +2379,7 @@ Public Class AppLauncher
 
         Try
             Dim dlg As New EditGroups(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
-            Me.m_Help.HelpTopic(dlg) = "Edit groups.htm"
+            Me.Help.HelpTopic(dlg) = "Edit groups.htm"
             dlg.ShowDialog(Me)
         Catch ex As Exception
             ' Woops
@@ -2428,7 +2400,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnEditMultiStanza(ByVal cmd As cCommand) Handles m_cmdEditMultiStanza.OnInvoke
         Dim dlg As New EditMultiStanza(Me.UIContext)
-        Me.m_Help.HelpTopic(dlg) = "Edit multi stanza.htm"
+        Me.Help.HelpTopic(dlg) = "Edit multi stanza.htm"
         dlg.ShowDialog(Me)
     End Sub
 
@@ -2446,7 +2418,7 @@ Public Class AppLauncher
     Private Sub OnEditFleets(ByVal cmd As cCommand) Handles m_cmdEditFleets.OnInvoke
         Try
             Dim dlg As New EditFleets(Me.UIContext, DirectCast(cmd.Tag, cFleetInput))
-            Me.m_Help.HelpTopic(dlg) = "Edit fleets.htm"
+            Me.Help.HelpTopic(dlg) = "Edit fleets.htm"
             dlg.ShowDialog(Me)
         Catch ex As Exception
             ' Woops
@@ -2665,7 +2637,7 @@ Public Class AppLauncher
     Private Sub m_cmdHelpAbout_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdHelpAbout.OnInvoke
 
         Dim dlgAbout As New frmAboutEwE(Me.UIContext)
-        Me.m_Help.HelpTopic(dlgAbout) = ""
+        Me.Help.HelpTopic(dlgAbout) = ""
         dlgAbout.ShowDialog(Me)
 
     End Sub
@@ -2678,15 +2650,15 @@ Public Class AppLauncher
     End Sub
 
     Private Sub ContentsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpContents.Click
-        Me.m_Help.ShowHelp(HelpNavigator.TableOfContents)
+        Me.Help.ShowHelp(HelpNavigator.TableOfContents)
     End Sub
 
     Private Sub IndexToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpIndex.Click
-        Me.m_Help.ShowHelp(HelpNavigator.KeywordIndex)
+        Me.Help.ShowHelp(HelpNavigator.KeywordIndex)
     End Sub
 
     Private Sub SearchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpSearch.Click
-        Me.m_Help.ShowHelp(HelpNavigator.Find)
+        Me.Help.ShowHelp(HelpNavigator.Find)
     End Sub
 
     Private Sub ReportBugMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpBugReport.Click
@@ -3070,7 +3042,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnEditEcospaceBasemap(ByVal cmd As cCommand) Handles m_cmdEditBasemap.OnInvoke
         Dim dlg As New dlgEditBasemap(Me.UIContext)
-        Me.m_Help.HelpTopic(dlg) = "Edit basemap.htm"
+        Me.Help.HelpTopic(dlg) = "Edit basemap.htm"
         dlg.ShowDialog(Me)
     End Sub
 
@@ -3086,7 +3058,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnEditEcospaceHabitats(ByVal cmd As cCommand) Handles m_cmdEditHabitats.OnInvoke
         Dim dlg As New dlgEditHabitats(Me.UIContext)
-        Me.m_Help.HelpTopic(dlg) = "Edit habitats.htm"
+        Me.Help.HelpTopic(dlg) = "Edit habitats.htm"
         dlg.ShowDialog(Me)
     End Sub
 
@@ -3443,7 +3415,7 @@ Public Class AppLauncher
         End If
 
         ' Update help
-        Me.m_Help.ActiveHelpControl = CType(m_DockPanel.ActiveDocument, Control)
+        Me.Help.ActiveHelpControl = CType(m_DockPanel.ActiveDocument, Control)
 
         Me.UpdateSelectedNode(strNodeName)
     End Sub

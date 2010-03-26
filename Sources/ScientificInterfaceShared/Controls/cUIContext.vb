@@ -34,6 +34,8 @@ Namespace Controls
         Private m_cmdhandler As cCommandHandler = Nothing
         ''' <summary>The form positions settings that a UI can interact with.</summary>
         Private m_formpos As cFormPositionSettings = Nothing
+        ''' <summary>Application help.</summary>
+        Private m_help As cHelp = Nothing
         ''' <summary>UI thread sync object.</summary>
         Private m_syncObj As SynchronizationContext = Nothing
 
@@ -53,6 +55,7 @@ Namespace Controls
                        ByVal propman As cPropertyManager, _
                        ByVal cmdhandler As cCommandHandler, _
                        ByVal formpos As cFormPositionSettings, _
+                       ByVal help As cHelp, _
                        ByVal syncObj As SynchronizationContext)
 
             Me.m_core = core
@@ -60,6 +63,7 @@ Namespace Controls
             Me.m_propman = propman
             Me.m_cmdhandler = cmdhandler
             Me.m_formpos = formpos
+            Me.m_help = help
             Me.m_syncObj = syncObj
 
         End Sub
@@ -120,6 +124,18 @@ Namespace Controls
         Public ReadOnly Property FormPositionSettings() As cFormPositionSettings
             Get
                 Return Me.m_formpos
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cHelp">application help</see> that a UI can 
+        ''' interact with.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Help() As cHelp
+            Get
+                Return Me.m_help
             End Get
         End Property
 

@@ -1,26 +1,14 @@
-'==============================================================================
-'
-' $Log: ApplicationHelp.vb,v $
-' Revision 1.1  2008/09/26 07:32:07  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2007/08/02 18:36:01  jeroens
-' * Removed useless helpprovider class, built it myself to implement search, index, TOC
-'
-' Revision 1.2  2007/08/02 02:57:40  jeroens
-' * Fixed help doc internal silly namepace issue; need to fix properly
-'
-' Revision 1.1  2007/03/25 13:15:51  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
-Imports System.Windows.Forms
 Imports System.IO
+Imports System.Windows.Forms
+Imports EwEUtils.Win32Api
 
-''' -----------------------------------------
+#End Region ' Imports
+
+''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Light-weight implementation of F1-driven application-wide help support.
 ''' </summary>
@@ -28,8 +16,8 @@ Imports System.IO
 ''' Note that this implementation does not support the use of multiple
 ''' help documents, which in case of EwE plugins might be desirable.
 ''' </remarks>
-''' -----------------------------------------
-Public Class ApplicationHelp
+''' ---------------------------------------------------------------------------
+Public Class cHelp
     Implements IMessageFilter
 
     ''' <summary>The owner of the app help.</summary>
@@ -45,16 +33,18 @@ Public Class ApplicationHelp
     ''' <summary>Dictionary of help topics.</summary>
     Private m_dtHelpTopics As New Dictionary(Of Control, String)
 
-    ''' -----------------------------------------
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Private constructor to enforce Singleton
     ''' </summary>
     ''' <param name="strHelpFile">Path to the help file to use.</param>
     ''' <param name="strDefaultHelpURL">Default help page URL.</param>
     ''' <param name="strHelpRoot">In-help subdirectory for help content pages.</param>
-    ''' -----------------------------------------
-    Public Sub New(ByVal ctlOwner As Control, ByVal strHelpFile As String, _
-            Optional ByVal strDefaultHelpURL As String = "", Optional ByVal strHelpRoot As String = "")
+    ''' -----------------------------------------------------------------------
+    Public Sub New(ByVal ctlOwner As Control, _
+                   ByVal strHelpFile As String, _
+                   Optional ByVal strDefaultHelpURL As String = "", _
+                   Optional ByVal strHelpRoot As String = "")
 
         ' Remember owner
         Me.m_ctlOwner = ctlOwner
@@ -66,17 +56,17 @@ Public Class ApplicationHelp
         Me.m_strHelpRoot = strHelpRoot
 
         ' Start listening for 'F1' key presses
-        System.Windows.Forms.Application.AddMessageFilter(Me)
+        Application.AddMessageFilter(Me)
 
     End Sub
 
-    ''' -----------------------------------------
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Set the help URL to display for a particular control.
     ''' </summary>
     ''' <param name="ctl">The control to set the help URL for.</param>
     ''' <remarks>Note that this method does NOT capture the help focus.</remarks>
-    ''' -----------------------------------------
+    ''' -----------------------------------------------------------------------
     Public Property HelpTopic(ByVal ctl As Control) As String
         Get
             If Me.m_dtHelpTopics.ContainsKey(ctl) Then Return Me.m_dtHelpTopics(ctl)
@@ -89,6 +79,11 @@ Public Class ApplicationHelp
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the control that is currently active for displaying help.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property ActiveHelpControl() As Control
         Get
             Return Me.m_ctlContext
@@ -98,6 +93,12 @@ Public Class ApplicationHelp
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Show help!
+    ''' </summary>
+    ''' <param name="navType"></param>
+    ''' -----------------------------------------------------------------------
     Public Sub ShowHelp(ByVal navType As HelpNavigator)
 
         Dim ctl As Control = Me.m_ctlContext
@@ -126,15 +127,25 @@ Public Class ApplicationHelp
 
     End Sub
 
-    Public Function PreFilterMessage(ByRef m As System.Windows.Forms.Message) As Boolean _
-            Implements System.Windows.Forms.IMessageFilter.PreFilterMessage
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="m"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Protected Function PreFilterMessage(ByRef message As Message) As Boolean _
+        Implements IMessageFilter.PreFilterMessage
 
-        Select Case m.Msg
-            Case &H100 ' WM_KEYDOWN
-                If CInt(m.WParam) = CInt(Keys.F1) Then
+        Select Case CInt(message.Msg)
+
+            Case Win32.WM.WM_KEYDOWN
+                If CInt(message.WParam) = CInt(Keys.F1) Then
                     Me.ShowHelp(HelpNavigator.Topic)
                 End If
+
         End Select
+
     End Function
 
 End Class
