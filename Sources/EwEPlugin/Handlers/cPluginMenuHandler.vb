@@ -137,8 +137,10 @@ Public Class cPluginMenuHandler
             iItem = 0
             bFound = False
             While iItem < tsic.Count And Not bFound
-                tsi = CType(tsic.Item(iItem), ToolStripMenuItem)
-                bFound = (String.Compare(Trim(tsi.Name), Trim(aLocations(iLocation)), False) = 0)
+                If (TypeOf tsic.Item(iItem) Is ToolStripMenuItem) Then
+                    tsi = DirectCast(tsic.Item(iItem), ToolStripMenuItem)
+                    bFound = (String.Compare(Trim(tsi.Name), Trim(aLocations(iLocation)), False) = 0)
+                End If
                 iItem += 1
             End While
             If bFound Then tsic = tsi.DropDownItems
