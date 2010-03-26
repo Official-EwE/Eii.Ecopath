@@ -10,8 +10,6 @@ Imports EwEUtils.Utilities
 
 Namespace Controls
 
-#Region " Base class "
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Common controller for all GUI components that implement a 
@@ -479,7 +477,5 @@ Namespace Controls
 #End Region ' Public access
 
     End Class
-
-#End Region ' Base class
 
 End Namespace
