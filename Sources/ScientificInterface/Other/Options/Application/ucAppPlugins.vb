@@ -137,7 +137,13 @@ Namespace Other
                 Me.m_dictPluginAssemblyInfo(pa) = New cPluginAssemblyInfo(pa)
 
                 For Each p In pa.Plugins(Nothing, True)
-                    tnP = New TreeNode(p.Name)
+
+                    ' Name plug-ins by rich text if possible
+                    If TypeOf p Is IGUIPlugin Then
+                        tnP = New TreeNode(DirectCast(p, IGUIPlugin).ControlText)
+                    Else
+                        tnP = New TreeNode(p.Name)
+                    End If
                     tnP.Tag = p
 
                     ' Determine (static) image
