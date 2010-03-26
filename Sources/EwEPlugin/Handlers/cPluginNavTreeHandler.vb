@@ -122,8 +122,15 @@ Public Class cPluginNavTreeHandler
         ipNavTree = DirectCast(ip, INavigationTreeItemPlugin)
         ' Get node location
         strLocation = ipNavTree.NavigationTreeItemLocation
-        ' Split locations by pipe char '|'
-        aLocations = strLocation.Split("|"c)
+        ' Split locations path
+        If strLocation.IndexOf("\") >= 0 Then
+            ' New style: split locations by path separator char '\'
+            aLocations = strLocation.Split("\"c)
+        Else
+            ' Old style: split locations by pipe char '|'
+            aLocations = strLocation.Split("|"c)
+        End If
+
         ' Already there?
         bFound = (String.IsNullOrEmpty(strLocation))
 

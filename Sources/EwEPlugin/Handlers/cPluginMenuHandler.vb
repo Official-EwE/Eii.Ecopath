@@ -122,7 +122,14 @@ Public Class cPluginMenuHandler
 
         ip = DirectCast(p_ip, IMenuItemPlugin)
         strLocation = ip.MenuItemLocation
-        aLocations = strLocation.Split("|"c)
+        ' Split locations path
+        If strLocation.IndexOf("\") >= 0 Then
+            ' New style: split locations by path separator char '\'
+            aLocations = strLocation.Split("\"c)
+        Else
+            ' Old style: split locations by pipe char '|'
+            aLocations = strLocation.Split("|"c)
+        End If
         bFound = String.IsNullOrEmpty(strLocation)
 
         ' Find named menu item for every level
