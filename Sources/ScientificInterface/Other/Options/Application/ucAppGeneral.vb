@@ -39,6 +39,9 @@ Namespace Other
             Me.m_nudMaxNumMessages.Value = CInt(Math.Min(Me.m_nudMaxNumMessages.Maximum, _
                                                 Math.Max(Me.m_nudMaxNumMessages.Minimum, My.Settings.FeedbackMessageLogSize)))
 
+            Me.m_cbCheckEwE6.Checked = False
+            Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
+
         End Sub
 
 #End Region ' Overrides
@@ -48,6 +51,7 @@ Namespace Other
         Public Sub Save()
             My.Settings.MdbRecentlyUsedCount = CInt(Me.m_nudMRU.Value)
             My.Settings.FeedbackMessageLogSize = CInt(Me.m_nudMaxNumMessages.Value)
+            My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
         End Sub
 
 #End Region ' Public access
