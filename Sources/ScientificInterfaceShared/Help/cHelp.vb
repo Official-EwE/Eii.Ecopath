@@ -20,6 +20,32 @@ Imports EwEUtils.Win32Api
 Public Class cHelp
     Implements IMessageFilter
 
+#Region " Private bits "
+
+    Private Class cHelpTopic
+
+        Private m_strTopic As String = ""
+        Private m_strAltURL As String = ""
+
+        Public Sub New(ByVal strTopic As String, ByVal strAltURL As String)
+            Me.m_strTopic = strTopic
+            Me.m_strAltURL = strAltURL
+        End Sub
+
+        Public ReadOnly Property Topic() As String
+            Get
+                Return Me.m_strTopic
+            End Get
+        End Property
+
+        Public ReadOnly Property AltURL() As String
+            Get
+                Return Me.m_strAltURL
+            End Get
+        End Property
+
+    End Class
+
     ''' <summary>The owner of the app help.</summary>
     Private m_ctlOwner As Control = Nothing
     ''' <summary>Local help file.</summary>
@@ -31,7 +57,9 @@ Public Class cHelp
     ''' <summary>Control that currently has the help focus.</summary>
     Private m_ctlContext As Control = Nothing
     ''' <summary>Dictionary of help topics.</summary>
-    Private m_dtHelpTopics As New Dictionary(Of Control, String)
+    Private m_dtHelpTopics As New Dictionary(Of Control, cHelpTopic)
+
+#End Region ' Private bits
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -65,17 +93,14 @@ Public Class cHelp
     ''' Set the help URL to display for a particular control.
     ''' </summary>
     ''' <param name="ctl">The control to set the help URL for.</param>
+    ''' <param name="strAltURL">Alternate master help file URL, if any.</param>
     ''' <remarks>Note that this method does NOT capture the help focus.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Property HelpTopic(ByVal ctl As Control) As String
-        Get
-            If Me.m_dtHelpTopics.ContainsKey(ctl) Then Return Me.m_dtHelpTopics(ctl)
-            Return Me.m_strDefaultHelpURL
-        End Get
-
+    Public WriteOnly Property HelpTopic(ByVal ctl As Control, _
+                                        Optional ByVal strAltURL As String = "") As String
         Set(ByVal strURL As String)
             If Me.m_dtHelpTopics.ContainsKey(ctl) Then Me.m_dtHelpTopics.Remove(ctl)
-            If Not String.IsNullOrEmpty(strURL) Then Me.m_dtHelpTopics.Add(ctl, strURL)
+            If Not String.IsNullOrEmpty(strURL) Then Me.m_dtHelpTopics.Add(ctl, New cHelpTopic(strURL, strAltURL))
         End Set
     End Property
 
@@ -102,6 +127,7 @@ Public Class cHelp
     Public Sub ShowHelp(ByVal navType As HelpNavigator)
 
         Dim ctl As Control = Me.m_ctlContext
+        Dim topic As cHelpTopic = Nothing
 
         If ctl Is Nothing Then ctl = Me.m_ctlOwner
 
@@ -109,7 +135,16 @@ Public Class cHelp
 
             Case HelpNavigator.Topic
                 If ctl Is Nothing Then Return
-                Help.ShowHelp(ctl, Me.m_strHelpFile, Path.Combine(Me.m_strHelpRoot, Me.HelpTopic(ctl)))
+                If Me.m_dtHelpTopics.ContainsKey(ctl) Then
+                    topic = Me.m_dtHelpTopics(ctl)
+                    If String.IsNullOrEmpty(topic.AltURL) Then
+                        Help.ShowHelp(ctl, Me.m_strHelpFile, Path.Combine(Me.m_strHelpRoot, topic.Topic))
+                    Else
+                        Help.ShowHelp(ctl, topic.AltURL, topic.Topic)
+                    End If
+                Else
+                    Help.ShowHelp(ctl, Me.m_strHelpFile, Path.Combine(Me.m_strHelpRoot, Me.m_strDefaultHelpURL))
+                End If
 
             Case HelpNavigator.Find
                 Help.ShowHelp(ctl, Me.m_strHelpFile, HelpNavigator.Find, ctl.Text)
