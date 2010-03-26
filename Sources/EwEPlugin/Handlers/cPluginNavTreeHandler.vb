@@ -5,20 +5,44 @@ Imports System
 Imports System.Windows.Forms
 Imports Microsoft.VisualBasic
 Imports EwEUtils.Commands
+Imports System.Collections.Generic
 
 #End Region ' Imports
 
-''' -----------------------------------------------------------------------
+''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' GUI utility class, handles the placement of
 ''' <see cref="INavigationTreeItemPlugin">INavigationTreeItemPlugin</see>-
 ''' derived plugins in a <see cref="TreeView">TreeView</see>.
 ''' </summary>
-''' -----------------------------------------------------------------------
+''' ---------------------------------------------------------------------------
 Public Class cPluginNavTreeHandler
     Inherits cPluginGUIHandler
 
 #Region " Private parts "
+
+#Region " Private helper class "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper class, sorts INavigationTreeItemPlugin instances by tree node
+    ''' name in ascending order.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Class NavTreePluginComparer
+        Implements IComparer(Of INavigationTreeItemPlugin)
+
+        Public Function Compare(ByVal x As INavigationTreeItemPlugin, _
+                                ByVal y As INavigationTreeItemPlugin) As Integer _
+                                Implements IComparer(Of INavigationTreeItemPlugin).Compare
+
+            Return String.Compare(x.NavigationTreeItemLocation, y.NavigationTreeItemLocation, True)
+
+        End Function
+
+    End Class
+
+#End Region ' Private helper class
 
     ''' <summary>The tree view to modify.</summary>
     Private WithEvents m_tv As TreeView = Nothing
@@ -47,6 +71,29 @@ Public Class cPluginNavTreeHandler
 #End Region ' Construction 
 
 #Region " Tree item handling "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Sort a list of navigation plug-ins by tree node position.
+    ''' </summary>
+    ''' <param name="aip">The plug-ins to sort.</param>
+    ''' <returns>A ham sandwich with a cork in it.</returns>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Function SortPlugins(ByVal aip() As IGUIPlugin) As IGUIPlugin()
+
+        Dim lPlugins As New List(Of INavigationTreeItemPlugin)
+
+        For Each ip As IGUIPlugin In aip
+            If TypeOf ip Is INavigationTreeItemPlugin Then
+                lPlugins.Add(DirectCast(ip, INavigationTreeItemPlugin))
+            End If
+        Next
+
+        lPlugins.Sort(New NavTreePluginComparer())
+
+        Return lPlugins.ToArray()
+
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

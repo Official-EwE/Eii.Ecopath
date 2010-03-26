@@ -1,9 +1,14 @@
+#Region " Imports "
+
 Option Strict On
 Imports System
 Imports System.Diagnostics
 Imports System.Windows.Forms
 Imports Microsoft.VisualBasic
 Imports EwEUtils.Commands
+Imports System.Collections.Generic
+
+#End Region ' Imports
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
@@ -15,6 +20,29 @@ Public Class cPluginMenuHandler
     Inherits cPluginGUIHandler
 
 #Region " Private parts "
+
+#Region " Private helper class "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper class, sorts IMenuItemPlugin instances by menu item name in 
+    ''' ascending order.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Class MenuItemPluginComparer
+        Implements IComparer(Of IMenuItemPlugin)
+
+        Public Function Compare(ByVal x As IMenuItemPlugin, _
+                                ByVal y As IMenuItemPlugin) As Integer _
+                                Implements IComparer(Of IMenuItemPlugin).Compare
+
+            Return String.Compare(x.MenuItemLocation, y.MenuItemLocation, True)
+
+        End Function
+
+    End Class
+
+#End Region ' Private helper class
 
     ''' <summary>The form holding the menu to modify.</summary>
     Private m_menu As MenuStrip = Nothing
@@ -44,6 +72,29 @@ Public Class cPluginMenuHandler
 #End Region ' Construction 
 
 #Region " Menu item handling "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Sort a list of menu item plug-ins by menu item name.
+    ''' </summary>
+    ''' <param name="aip">The plug-ins to sort.</param>
+    ''' <returns>An array of sorted plug-ins.</returns>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Function SortPlugins(ByVal aip() As IGUIPlugin) As IGUIPlugin()
+
+        Dim lPlugins As New List(Of IMenuItemPlugin)
+
+        For Each ip As IGUIPlugin In aip
+            If TypeOf ip Is IMenuItemPlugin Then
+                lPlugins.Add(DirectCast(ip, IMenuItemPlugin))
+            End If
+        Next
+
+        lPlugins.Sort(New MenuItemPluginComparer())
+
+        Return lPlugins.ToArray()
+
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

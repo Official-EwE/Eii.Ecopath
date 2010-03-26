@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\cPluginAutolaunchHandler.vb" />
+    <Compile Include="Handlers\cPluginGUICommand.vb" />
     <Compile Include="Handlers\cPluginGUIHandler.vb" />
     <Compile Include="Handlers\cPluginNavTreeHandler.vb" />
     <Compile Include="Plugin templates\Core\ICorePlugin.vb" />

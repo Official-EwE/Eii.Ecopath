@@ -6,6 +6,7 @@ Imports System.Windows.Forms
 Imports System.Diagnostics
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports System.Collections.Generic
 
 #End Region ' Imports
 
@@ -140,13 +141,34 @@ Public MustInherit Class cPluginGUIHandler
     ''' state.</param>
     ''' -----------------------------------------------------------------------
     Private Sub ActivateAssembly(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
+
         Dim ctrl As Control = Nothing
+        Dim lPlugins As New List(Of IGUIPlugin)
+        Dim aSorted() As IGUIPlugin = Nothing
+        Dim iStart, iEnd, iStep As Integer
+
+        ' Gather list of plug-ins
         For Each ip As IPlugin In pa.Plugins(GetType(IGUIPlugin), True)
-            ' Position the plugin
-            Me.PlacePlugin(DirectCast(ip, IGUIPlugin), bEnabled)
-            ' Update its enabled state
-            Me.m_pm.UpdatePluginEnabledStates(DirectCast(ip, IGUIPlugin))
+            lPlugins.Add(DirectCast(ip, IGUIPlugin))
         Next
+
+        ' Sort
+        aSorted = Me.SortPlugins(lPlugins.ToArray())
+
+        If bEnabled Then
+            iStart = 0 : iEnd = aSorted.Length - 1 : iStep = 1
+        Else
+            iStart = aSorted.Length - 1 : iEnd = 0 : iStep = -1
+        End If
+
+        ' Enable or disable in sorted order
+        For iPlugin As Integer = iStart To iEnd Step iStep
+            ' Position the plugin
+            Me.PlacePlugin(aSorted(iPlugin), bEnabled)
+            ' Update its enabled state
+            Me.m_pm.UpdatePluginEnabledStates(aSorted(iPlugin))
+        Next iPlugin
+
     End Sub
 
 #End Region ' Plugin assembly handling 
@@ -173,6 +195,22 @@ Public MustInherit Class cPluginGUIHandler
     ''' -----------------------------------------------------------------------
     Protected MustOverride Sub EnablePlugin(ByVal ip As IGUIPlugin, ByVal bEnable As Boolean)
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Sort all plug-ins in a plug-in assembly for proper ordering.
+    ''' </summary>
+    ''' <param name="aip">An array of plug-ins to sort.</param>
+    ''' <returns>An array of sorted plug-ins.</returns>
+    ''' <remarks>
+    ''' This method is useful when adding or removing a series of hierarchical 
+    ''' UI plug-ins with a hierarchical structure, such as menu items or navigation
+    ''' tree nodes.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Function SortPlugins(ByVal aip() As IGUIPlugin) As IGUIPlugin()
+        Return aip
+    End Function
+
 #End Region ' Plugin placement
 
 #Region " Plugin execution "
@@ -180,18 +218,18 @@ Public MustInherit Class cPluginGUIHandler
     Protected Sub RunPlugin(ByVal ip As IGUIPlugin, ByVal sender As Object, ByVal e As EventArgs)
 
         Dim cmd As cCommand = Nothing
-        Dim pcmd As PluginGUICommand = Nothing
+        Dim pcmd As cPluginGUICommand = Nothing
 
         Debug.Assert(Me.m_cmdh IsNot Nothing)
 
         ' Try to get the reserved GUI command from the central command handler
-        cmd = Me.m_cmdh.GetCommand(PluginGUICommand.COMMAND_NAME)
+        cmd = Me.m_cmdh.GetCommand(cPluginGUICommand.COMMAND_NAME)
         ' Got a result?
         If cmd IsNot Nothing Then
             ' #Yes: verify if correct class?
-            If TypeOf cmd Is PluginGUICommand Then
+            If TypeOf cmd Is cPluginGUICommand Then
                 ' #Yes: type-cast
-                pcmd = DirectCast(cmd, PluginGUICommand)
+                pcmd = DirectCast(cmd, cPluginGUICommand)
             End If
         End If
 
@@ -216,82 +254,3 @@ Public MustInherit Class cPluginGUIHandler
 #End Region ' Plugin execution
 
 End Class
-
-#Region " PluginGUICommand class "
-
-Public Class PluginGUICommand
-    Inherits cCommand
-
-    Public Shared COMMAND_NAME As String = "~launchguiplugin"
-
-    Private m_ip As IGUIPlugin = Nothing
-    Private m_sender As Object = Nothing
-    Private m_e As EventArgs = Nothing
-    Private m_form As Windows.Forms.Form = Nothing
-    Private m_iDockState As Integer = 0 ' Unknown
-    Private m_bHasRun As Boolean = False
-
-    Public Sub New(ByVal cmdh As cCommandHandler)
-        MyBase.New(cmdh, PluginGUICommand.COMMAND_NAME)
-    End Sub
-
-    Friend Overloads Sub Invoke(ByVal ip As IGUIPlugin, ByVal sender As Object, ByVal e As EventArgs)
-        Me.m_ip = ip
-        Me.m_sender = sender
-        Me.m_e = e
-        Me.m_bHasRun = False
-        Me.m_form = Nothing
-        ' Try to launch plugin via command structure first
-        MyBase.Invoke()
-        ' Try to run the plug-in manually
-        Me.RunPlugin()
-    End Sub
-
-    Public ReadOnly Property CoreExecutionState() As eCoreExecutionState
-        Get
-            If Me.m_ip Is Nothing Then Return eCoreExecutionState.Idle
-            Return Me.m_ip.EnabledState
-        End Get
-    End Property
-
-    Public Property Form() As Windows.Forms.Form
-        Get
-            Return Me.m_form
-        End Get
-        Friend Set(ByVal value As Windows.Forms.Form)
-            Me.m_form = value
-        End Set
-    End Property
-
-    Public Property DockState() As Integer
-        Get
-            Return Me.m_iDockState
-        End Get
-        Set(ByVal iDockState As Integer)
-            Me.m_iDockState = iDockState
-        End Set
-    End Property
-
-    Public Sub RunPlugin()
-
-        If Me.m_ip Is Nothing Then Return
-        If Me.m_bHasRun Then Return
-
-        ' Get dockstate, if possible
-        If TypeOf Me.m_ip Is IDockStatePlugin Then
-            Me.DockState = DirectCast(Me.m_ip, IDockStatePlugin).DockState
-        End If
-
-        Try
-            Me.m_ip.OnControlClick(Me.m_sender, Me.m_e, Me.m_form)
-        Catch ex As Exception
-            Debug.Assert(False, String.Format("Error {0} occurred while running plugin {1}", ex.Message, Me.m_ip.Name))
-        Finally
-            Me.m_bHasRun = True
-        End Try
-
-    End Sub
-
-End Class
-
-#End Region ' PluginGUICommand class
