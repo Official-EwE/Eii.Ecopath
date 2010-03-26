@@ -105,7 +105,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdLoadTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdWeightTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdExportTimeSeries As cCommand = Nothing
-    Private WithEvents m_cmdPluginGUICommand As PluginGUICommand = Nothing
+    Private WithEvents m_cmdPluginGUICommand As cPluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As cPropertySelectionCommand = Nothing
     Private WithEvents m_cmdShowHideItems As cDisplayGroupsCommand = Nothing
@@ -920,7 +920,7 @@ Public Class AppLauncher
         Me.m_cmdHelpAbout.AddControl(Me.m_tsmiHelpAbout)
 
         ' Create plugin gui command for GUI plugins to use
-        Me.m_cmdPluginGUICommand = New PluginGUICommand(cmdh)
+        Me.m_cmdPluginGUICommand = New cPluginGUICommand(cmdh)
 
         ' Create the one and only selection command
         Me.m_cmdPropertySelection = New cPropertySelectionCommand(cmdh)
@@ -2181,10 +2181,10 @@ Public Class AppLauncher
     Private Sub OnRunGUIPlugin(ByVal cmd As cCommand) Handles m_cmdPluginGUICommand.OnInvoke
 
         ' Sanity checks
-        If Not (TypeOf cmd Is PluginGUICommand) Then Return
+        If Not (TypeOf cmd Is cPluginGUICommand) Then Return
 
         ' Phew
-        Dim pgcmd As PluginGUICommand = DirectCast(cmd, PluginGUICommand)
+        Dim pgcmd As cPluginGUICommand = DirectCast(cmd, cPluginGUICommand)
         ' Check if core can be brought up to par
         If Me.CoreController.LoadState(pgcmd.CoreExecutionState) Then
             ' Invoke plugin. This code does not - and cannot - verify whether the plugin has already ran,
