@@ -690,10 +690,10 @@
     <Compile Include="Other\AboutBox\frmAboutEwE.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Other\WebPages\WebBrowserDC.Designer.vb">
-      <DependentUpon>WebBrowserDC.vb</DependentUpon>
+    <Compile Include="Other\Forms\frmWebBrowser.Designer.vb">
+      <DependentUpon>frmWebBrowser.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\WebPages\WebBrowserDC.vb">
+    <Compile Include="Other\Forms\frmWebBrowser.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Wizard\EwEScenarioDlg.Designer.vb">
@@ -815,9 +815,9 @@
       <DependentUpon>frmAboutEwE.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\WebPages\WebBrowserDC.resx">
+    <EmbeddedResource Include="Other\Forms\frmWebBrowser.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>WebBrowserDC.vb</DependentUpon>
+      <DependentUpon>frmWebBrowser.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -1486,6 +1486,7 @@
     <None Include="Resources\pluginicon.png" />
     <None Include="Resources\PrintPreviewHS.png" />
     <None Include="Resources\PrintHS.png" />
+    <None Include="Resources\NavBack.png" />
     <Content Include="Resources\sautxt_50px.jpg" />
     <None Include="Resources\Seed.PNG" />
     <Content Include="Resources\Sponsors.jpg" />
