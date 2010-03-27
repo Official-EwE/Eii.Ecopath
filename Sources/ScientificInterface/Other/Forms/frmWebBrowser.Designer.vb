@@ -27,11 +27,11 @@ Partial Class frmWebBrowser
         Me.m_browser = New System.Windows.Forms.WebBrowser
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
         Me.m_tsbnHome = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsbnBack = New System.Windows.Forms.ToolStripButton
         Me.m_tsbnForward = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsbnRefresh = New System.Windows.Forms.ToolStripButton
+        Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tlp.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -52,20 +52,16 @@ Partial Class frmWebBrowser
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnHome, Me.ToolStripSeparator2, Me.m_tsbnBack, Me.m_tsbnForward, Me.ToolStripSeparator1, Me.m_tsbnRefresh})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnHome, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_sep2, Me.m_tsbnRefresh})
         resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
         Me.ToolStrip1.Name = "ToolStrip1"
         '
         'm_tsbnHome
         '
+        Me.m_tsbnHome.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.m_tsbnHome.Image = Global.ScientificInterface.My.Resources.Resources.HomeHS
         resources.ApplyResources(Me.m_tsbnHome, "m_tsbnHome")
         Me.m_tsbnHome.Name = "m_tsbnHome"
-        '
-        'ToolStripSeparator2
-        '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        resources.ApplyResources(Me.ToolStripSeparator2, "ToolStripSeparator2")
         '
         'm_tsbnBack
         '
@@ -79,24 +75,28 @@ Partial Class frmWebBrowser
         resources.ApplyResources(Me.m_tsbnForward, "m_tsbnForward")
         Me.m_tsbnForward.Name = "m_tsbnForward"
         '
-        'ToolStripSeparator1
+        'm_sep2
         '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+        Me.m_sep2.Name = "m_sep2"
+        resources.ApplyResources(Me.m_sep2, "m_sep2")
         '
         'm_tsbnRefresh
         '
-        Me.m_tsbnRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.m_tsbnRefresh, "m_tsbnRefresh")
         Me.m_tsbnRefresh.Name = "m_tsbnRefresh"
         '
-        'WebBrowserDC
+        'm_sep1
+        '
+        Me.m_sep1.Name = "m_sep1"
+        resources.ApplyResources(Me.m_sep1, "m_sep1")
+        '
+        'frmWebBrowser
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_tlp)
         Me.HideOnClose = True
-        Me.Name = "WebBrowserDC"
+        Me.Name = "frmWebBrowser"
         Me.TabText = "Home"
         Me.m_tlp.ResumeLayout(False)
         Me.m_tlp.PerformLayout()
@@ -110,10 +110,10 @@ Partial Class frmWebBrowser
     Private WithEvents m_tsbnBack As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tlp As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_tsbnForward As System.Windows.Forms.ToolStripButton
-    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnRefresh As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnHome As System.Windows.Forms.ToolStripButton
-    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_sep2 As System.Windows.Forms.ToolStripSeparator
 
 
 End Class
