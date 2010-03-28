@@ -1,36 +1,4 @@
-'==============================================================================
-'
-' $Log: cVisualStyle.vb,v $
-' Revision 1.1  2008/09/26 07:30:09  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.8  2007/11/28 16:50:15  jeroens
-' + Added Gradient style
-'
-' Revision 1.7  2007/09/26 03:29:42  jeroens
-' + Added ID to retrace core data link from Visual Style
-'
-' Revision 1.6  2007/09/25 14:59:39  jeroens
-' + Added Clone()
-'
-' Revision 1.5  2007/09/25 03:23:54  jeroens
-' + Added visual style flags enum
-'
-' Revision 1.4  2007/09/25 03:18:50  jeroens
-' * VisualStyleReader capable of serializing cVisualStyle instances
-'
-' Revision 1.3  2007/09/24 21:20:53  jeroens
-' *** AAARGH! Hahaha!
-'
-' Revision 1.2  2007/09/24 18:53:26  jeroens
-' * Simplified
-'
-' Revision 1.1  2007/09/18 12:23:34  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports directive "
+#Region " Imports  "
 
 Option Strict On
 
@@ -40,14 +8,14 @@ Imports System.IO
 Imports System.Text
 Imports System.Runtime.Serialization.Formatters.Binary
 
-#End Region ' Imports directive
+#End Region ' Imports 
 
 <Serializable()> _
 Public Class cVisualStyle
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Helper class, stores custom visualization information for data entities.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eVisualStyleTypes As Integer
@@ -61,7 +29,7 @@ Public Class cVisualStyle
     End Enum
 
     Private m_strID As String = ""
-    Private m_hatchStyle As System.Drawing.Drawing2D.HatchStyle = Drawing2D.HatchStyle.DiagonalCross
+    Private m_hatchStyle As HatchStyle = Drawing2D.HatchStyle.DiagonalCross
     Private m_clrFore As Color = Color.Black
     Private m_clrBack As Color = Color.Transparent
     Private m_img As Image = Nothing
@@ -103,6 +71,11 @@ Public Class cVisualStyle
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the unique ID for a visual style.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Friend Property ID() As String
         Get
             Return Me.m_strID
@@ -114,7 +87,7 @@ Public Class cVisualStyle
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get/set the <see cref="Color">foreground colour</see> for a visual style, if any.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property ForeColour() As Color
@@ -128,7 +101,7 @@ Public Class cVisualStyle
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get/set the <see cref="Color">background colour</see> for a visual style, if any.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property BackColour() As Color
@@ -142,7 +115,7 @@ Public Class cVisualStyle
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get/set the image for a visual style, if any.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Image() As Image
@@ -156,21 +129,21 @@ Public Class cVisualStyle
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get/set the <see cref="HatchStyle">hatch style</see> for a visual style, if any.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property HatchStyle() As System.Drawing.Drawing2D.HatchStyle
+    Public Property HatchStyle() As HatchStyle
         Get
             Return Me.m_hatchStyle
         End Get
-        Set(ByVal value As System.Drawing.Drawing2D.HatchStyle)
+        Set(ByVal value As HatchStyle)
             Me.m_hatchStyle = value
         End Set
     End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get/set the <see cref="Font.Name">font name</see> for a visual style, if any.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property FontName() As String
@@ -184,7 +157,7 @@ Public Class cVisualStyle
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get/set the <see cref="Font.Size">font size</see> for a visual style, if any.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property FontSize() As Single
@@ -198,7 +171,7 @@ Public Class cVisualStyle
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get/set the <see cref="Font.Style">font style</see> for a visual style, if any.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property FontStyle() As FontStyle
@@ -212,8 +185,9 @@ Public Class cVisualStyle
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' States whether a style equals another.
     ''' </summary>
+    ''' <param name="obj">The visual style to compare to.</param>
     ''' -----------------------------------------------------------------------
     Public Overrides Function Equals(ByVal obj As Object) As Boolean
         If Not (TypeOf obj Is cVisualStyle) Then Return False
@@ -236,6 +210,11 @@ Public Class cVisualStyle
 
 End Class ' cVisualStyle
 
+''' ===========================================================================
+''' <summary>
+''' Helper class for serializing a visual style to text.
+''' </summary>
+''' ===========================================================================
 Friend Class cVisualStyleReader
 
     Public Shared Function StyleToString(ByVal vs As cVisualStyle) As String

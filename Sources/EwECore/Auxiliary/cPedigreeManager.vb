@@ -1,31 +1,11 @@
-'==============================================================================
-'
-' $Log: cPedigreeManager.vb,v $
-' Revision 1.3  2009/01/16 18:30:33  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/11/28 16:54:00  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.1  2008/09/26 07:30:09  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/07/21 18:46:47  jeroens
-' Loads correctly
-'
-' Revision 1.1  2008/07/21 14:12:35  jeroens
-' Initial version, under development
-'
-'==============================================================================
-
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports System.Collections.Generic
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Public Class cPedigreeLevel
     Inherits cCoreInputOutputBase

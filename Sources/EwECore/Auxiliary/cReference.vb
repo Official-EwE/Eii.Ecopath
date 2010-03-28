@@ -1,31 +1,18 @@
-'==============================================================================
-'
-' $Log: cReference.vb,v $
-' Revision 1.1  2008/09/26 07:30:09  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2007/06/11 02:18:18  jeroens
-' - Unused Reference logic blocked out by compiler directives
-'
-' Revision 1.2  2006/11/20 14:29:57  jeroens
-' + Updated to new reference var names
-' + Preparing for the real thing
-'
-' Revision 1.1  2006/10/10 15:23:00  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
-
 Imports EwECore.ValueWrapper
+
+#End Region ' Imports
 
 Namespace Auxiliary
 
 #If USE_REFERENCES Then
 
     ''' <summary>
-    ''' 
+    ''' Helper class to hold a reference to a publication. About to fall over the
+    ''' edge of the world, not really supported in EwE6 but also not really
+    ''' discarded yet.
     ''' </summary>
     Public Class cReference
         Inherits cCoreInputOutputBase
