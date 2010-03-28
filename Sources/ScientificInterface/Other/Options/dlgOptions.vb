@@ -69,11 +69,24 @@ Namespace Other
 
         Private Sub Apply()
 
+            Dim bRequiresRestart As Boolean = False
+            Dim bAutoUpdatePrev As Boolean = My.Settings.AutoUpdatePlugins
+
             Me.m_ucAppPlugins.Save()
             Me.m_ucAppColors.Save()
             Me.m_ucAppGraphsCharts.Save()
             Me.m_ucAppGeneral.Save()
             My.Settings.Save()
+
+            ' Check if user may need to restart
+            bRequiresRestart = (My.Settings.AutoUpdatePlugins = True) And (bAutoUpdatePrev = False)
+
+            ' Need to restart for changes to be effective?
+            If bRequiresRestart Then
+                ' #Yeah: notify user
+                ' ToDo: localize this
+                MsgBox("Some changes that you made will come in effect after the program has been restarted.", MsgBoxStyle.Information)
+            End If
 
         End Sub
 
