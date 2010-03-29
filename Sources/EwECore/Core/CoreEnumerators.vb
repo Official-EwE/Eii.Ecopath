@@ -37,7 +37,7 @@ Public Class cCoreEnumNamesIndex
     Private Sub New()
         ' Make indexes
         Me.IndexEnum(GetType(eVarNameFlags), Me.m_dictVarEnumToName, Me.m_dictVarNameToEnum)
-        Me.IndexEnum(GetType(eDataTypes), Me.m_dictDataTypeEnumToName, Me.m_dictVarNameToEnum)
+        Me.IndexEnum(GetType(eDataTypes), Me.m_dictDataTypeEnumToName, Me.m_dictDataTypeNameToEnum)
     End Sub
 
     ''' <summary>Index of eVarNameFlags enum names, by enum value.</summary>
