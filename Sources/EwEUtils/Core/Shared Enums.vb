@@ -1713,6 +1713,16 @@ Namespace Core
         MSEEffortStats = 80
 
         ''' <summary>
+        ''' Data belongs to the Ecospace Migration layer.
+        ''' </summary>
+        EcospaceLayerMigration = 81
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace Advection layer.
+        ''' </summary>
+        EcospaceLayerAdvection = 82
+
+        ''' <summary>
         ''' Data belongs to an external, unspecified source.
         ''' </summary>
         External = 777
