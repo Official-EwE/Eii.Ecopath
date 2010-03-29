@@ -1,28 +1,12 @@
-'==============================================================================
-'
-' $Log: cRemarksIndicator.vb,v $
-' Revision 1.2  2009/05/28 12:37:18  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2008/09/26 07:31:17  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2008/06/01 23:45:09  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.8  2008/05/07 01:39:04  jeroens
-' Fixed bugs 281, 378, 470
-'
-' Revision 1.7  2008/01/31 03:08:03  jeroens
-' Added header, *finally*
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports System.Globalization
 Imports System.Threading
 Imports System.Drawing
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Controls
 
