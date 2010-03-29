@@ -109,6 +109,20 @@ Public Class cCoreEnumNamesIndex
         Return Me.m_dictDataTypeEnumToName(e)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a eDataTypes enum value.
+    ''' </summary>
+    ''' <param name="strDataType">The string representation for a data type.</param>
+    ''' -----------------------------------------------------------------------
+    Public Function GetDataType(ByVal strDataType As String) As eDataTypes
+        If Me.m_dictDataTypeNameToEnum.ContainsKey(strDataType) Then
+            Return DirectCast(Me.m_dictDataTypeNameToEnum(strDataType), eDataTypes)
+        Else
+            Return eDataTypes.NotSet
+        End If
+    End Function
+
 End Class
 
 #End Region
