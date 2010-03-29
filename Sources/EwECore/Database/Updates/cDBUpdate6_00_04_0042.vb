@@ -3,6 +3,7 @@ Imports EwEPlugin
 Imports EwEUtils.Database
 Imports System.Data
 Imports EwEUtils.Core
+Imports EwECore.Auxiliary
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -83,6 +84,7 @@ Friend Class cDBUpdate6_00_04_00042
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
         Dim bSucces As Boolean = True
+        Dim key As cValueID = Nothing
 
         ' Just in case
         db.Execute("DROP TABLE Pedigree")
@@ -106,8 +108,11 @@ Friend Class cDBUpdate6_00_04_00042
                         iPedigree = CInt(readerPedigree("Pedigree" & i))
                         ' Correct to Ewe6 way of life
                         If (iPedigree < 0) Then iPedigree = cCore.NULL_VALUE
+
                         ' Concoct ID for remark entry that will hold pedigree data
-                        strValueID = cValueID.GenerateAbstract(eDataTypes.EcoPathGroupInput, CInt(readerPedigree("GroupID")), vnPedigree(i - 1))
+                        key = New cValueID(eDataTypes.EcoPathGroupInput, CInt(readerPedigree("GroupID")), vnPedigree(i - 1))
+                        strValueID = key.ToString()
+
                         ' Find remark row
                         drow = dt.Rows.Find(strValueID)
 

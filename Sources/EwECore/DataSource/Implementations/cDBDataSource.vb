@@ -8897,149 +8897,110 @@ Namespace DataSources
 
 #Region " Auxillary data "
 
-    Private Function LoadAuxillaryData() As Boolean
+        Private Function LoadAuxillaryData() As Boolean
 
-        Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM Remark")
-        Dim dataType As eDataTypes = eDataTypes.NotSet
-        Dim iDBID As Integer = -1
-        Dim bSucces As Boolean = True
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM Remark")
+            Dim strValueID As String = ""
+            Dim strRemark As String = ""
+            Dim strVisualStyle As String = ""
+            Dim key As cValueID = Nothing
+            Dim bSucces As Boolean = True
 
-        Try
-            While reader.Read()
-                If Not Convert.IsDBNull(reader("ModelID")) Then
-                    dataType = eDataTypes.EwEModel
-                    iDBID = CInt(reader("ModelID"))
-                End If
-                If Not Convert.IsDBNull(reader("EcopathGroupID")) Then
-                    dataType = eDataTypes.EcoPathGroupInput
-                    iDBID = CInt(reader("EcopathGroupID"))
-                End If
-                If Not Convert.IsDBNull(reader("EcosimGroupID")) Then
-                    dataType = eDataTypes.EcoSimGroupInput
-                    iDBID = CInt(reader("EcosimGroupID"))
-                End If
-                If Not Convert.IsDBNull(reader("StanzaID")) Then
-                    dataType = eDataTypes.Stanza
-                    iDBID = CInt(reader("StanzaID"))
-                End If
-                If Not Convert.IsDBNull(reader("FleetID")) Then
-                    dataType = eDataTypes.FleetInput
-                    iDBID = CInt(reader("FleetID"))
-                End If
-                If Not Convert.IsDBNull(reader("EcosimScenarioID")) Then
-                    dataType = eDataTypes.EcoSimScenario
-                    iDBID = CInt(reader("EcosimScenarioID"))
-                End If
-                If Not Convert.IsDBNull(reader("ShapeID")) Then
-                    dataType = eDataTypes.EggProd
-                    iDBID = CInt(reader("ShapeID"))
-                End If
-                If Not Convert.IsDBNull(reader("EcospaceScenarioID")) Then
-                    dataType = eDataTypes.EcoSpaceScenario
-                    iDBID = CInt(reader("EcospaceScenarioID"))
-                End If
-                'If Not Convert.IsDBNull(reader("EcospaceHabitatID")) Then
-                '    dataType = eDataTypes.EcospaceHabitat
-                '    iDBID = CInt(reader("EcospaceHabitatID"))
-                'End If
+            Try
+                While reader.Read()
 
-                Try
-                    If (Not Convert.IsDBNull(reader("Remark"))) Then
-                        Me.m_core.StoreRemark(CStr(reader("Remark")), CStr(reader("ValueID")))
+                    strValueID = CStr(reader("ValueID"))
+                    strRemark = CStr(Me.ReadSafe(reader, "Remark", ""))
+                    strVisualStyle = CStr(Me.ReadSafe(reader, "VisualStyle", ""))
+
+                    ' Convert key (needs to be done in a DB update)
+                    If (strValueID.IndexOf("_"c) > -1) And strValueID.IndexOf("-"c) > 0 Then
+                        strValueID = strValueID.Replace("_", ":")
+                        strValueID = strValueID.Replace("-", ":")
+                        strValueID = strValueID.Replace("(", ":")
+                        strValueID = strValueID.Replace(")", "")
                     End If
-                Catch ex As Exception
-                    ' All well
-                End Try
 
-                Try
-                    If (Not Convert.IsDBNull(reader("VisualStyle"))) Then
-                        Me.m_core.StoreVisualStyle(cVisualStyleReader.StringToStyle(CStr(reader("VisualStyle"))), CStr(reader("ValueID")))
-                    End If
-                Catch ex As Exception
-
-                End Try
-
-            End While
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading AuxillaryData", ex.Message))
-            bSucces = False
-        End Try
-
-        bSucces = bSucces And Me.LoadPedigreeLevels()
-
-        Me.m_db.ReleaseReader(reader)
-        Return bSucces
-
-    End Function
-
-    Private Function SaveAuxillaryData() As Boolean
-
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim drow As DataRow = Nothing
-        Dim ad As cAuxiliaryData = Nothing
-        Dim bSucces As Boolean = True
-
-        Try
-            Me.m_db.Execute("DELETE * FROM Remark")
-            writer = Me.m_db.GetWriter("Remark")
-
-            For Each strValueID As String In Me.m_core.m_dtAuxiliaryData.Keys
-                ' Get actual remark instance
-                ad = m_core.m_dtAuxiliaryData(strValueID)
-                ' Has anything to save?
-                If ((Not String.IsNullOrEmpty(ad.Remark)) Or _
-                    (Not Object.ReferenceEquals(ad.VisualStyle, Nothing)) Or _
-                    (ad.Pedigree >= 0)) Then
-
-                    ' Make row
-                    drow = writer.NewRow()
-                    drow("ValueID") = strValueID
-                    drow("Remark") = ad.Remark
-                    drow("Pedigree") = CInt(IIf(ad.Pedigree > 0, ad.Pedigree, cCore.NULL_VALUE))
+                    key = cValueID.FromString(strValueID)
 
                     Try
-                        If ad.VisualStyle IsNot Nothing Then
-                            drow("VisualStyle") = cVisualStyleReader.StyleToString(ad.VisualStyle)
-                        Else
-                            drow("VisualStyle") = ""
+                        If (Not String.IsNullOrEmpty(strRemark)) Then
+                            Me.m_core.StoreRemark(strRemark, key)
                         End If
                     Catch ex As Exception
+                        ' All well
                     End Try
 
-                    Select Case ad.DataType
-                        Case eDataTypes.EwEModel
-                            drow("ModelID") = ad.DBID
-                        Case eDataTypes.EcoPathGroupInput
-                            drow("EcopathGroupID") = ad.DBID
-                        Case eDataTypes.EcoSimGroupInput
-                            drow("EcosimGroupID") = ad.DBID
-                        Case eDataTypes.Stanza
-                            drow("StanzaID") = ad.DBID
-                        Case eDataTypes.FleetInput
-                            drow("FleetID") = ad.DBID
-                        Case eDataTypes.EcoSimScenario
-                            drow("EcosimScenarioID") = ad.DBID
-                        Case eDataTypes.EggProd, eDataTypes.Forcing, eDataTypes.Mediation, _
-                             eDataTypes.FishMort, eDataTypes.FishingEffort
-                            drow("ShapeID") = ad.DBID
-                        Case eDataTypes.EcoSpaceScenario
-                            drow("EcospaceScenarioID") = ad.DBID
-                    End Select
-                    writer.AddRow(drow)
-                End If
-            Next
-        Catch ex As Exception
-            bSucces = False
-        End Try
+                    Try
+                        If (Not String.IsNullOrEmpty(strVisualStyle)) Then
+                            Me.m_core.StoreVisualStyle(cVisualStyleReader.StringToStyle(strVisualStyle), key)
+                        End If
+                    Catch ex As Exception
+                        ' All well
+                    End Try
 
-        ' Save changes
-        Me.m_db.ReleaseWriter(writer, True)
+                End While
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading AuxillaryData", ex.Message))
+                bSucces = False
+            End Try
 
-        bSucces = bSucces And Me.SavePedigreeLevels()
+            bSucces = bSucces And Me.LoadPedigreeLevels()
 
-        Return bSucces
+            Me.m_db.ReleaseReader(reader)
+            Return bSucces
 
-    End Function
+        End Function
+
+        Private Function SaveAuxillaryData() As Boolean
+
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim ad As cAuxiliaryData = Nothing
+            Dim bSucces As Boolean = True
+
+            Try
+                Me.m_db.Execute("DELETE * FROM Remark")
+                writer = Me.m_db.GetWriter("Remark")
+
+                For Each strValueID As String In Me.m_core.m_dtAuxiliaryData.Keys
+                    ' Get actual remark instance
+                    ad = m_core.m_dtAuxiliaryData(strValueID)
+                    ' Has anything to save?
+                    If ((Not String.IsNullOrEmpty(ad.Remark)) Or _
+                        (Not Object.ReferenceEquals(ad.VisualStyle, Nothing)) Or _
+                        (ad.Pedigree >= 0)) Then
+
+                        ' Make row
+                        drow = writer.NewRow()
+                        drow("ValueID") = strValueID
+                        drow("Remark") = ad.Remark
+                        drow("Pedigree") = CInt(IIf(ad.Pedigree > 0, ad.Pedigree, cCore.NULL_VALUE))
+
+                        Try
+                            If ad.VisualStyle IsNot Nothing Then
+                                drow("VisualStyle") = cVisualStyleReader.StyleToString(ad.VisualStyle)
+                            Else
+                                drow("VisualStyle") = ""
+                            End If
+                        Catch ex As Exception
+                        End Try
+
+                        writer.AddRow(drow)
+                    End If
+                Next
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, True)
+
+            bSucces = bSucces And Me.SavePedigreeLevels()
+
+            Return bSucces
+
+        End Function
 
 #End Region ' Auxillary data
 

@@ -1,4 +1,10 @@
+#Region " Imports "
+
+Option Strict On
 Imports EwECore
+Imports EwECore.Auxiliary
+
+#End Region ' Imports
 
 Namespace Controls
 

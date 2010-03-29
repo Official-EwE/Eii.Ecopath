@@ -59,7 +59,7 @@ Namespace Ecopath.Input
             Dim source As cCoreInputOutputBase = Nothing
             Dim sourceSec As cCoreInputOutputBase = Nothing
 
-            Dim sum As New cSingleProperty("")
+            Dim sum As New cSingleProperty()
             sum.SetValue(1.0)
             sum.SetStyle(cStyleGuide.eStyleFlags.Sum Or cStyleGuide.eStyleFlags.NotEditable)
 

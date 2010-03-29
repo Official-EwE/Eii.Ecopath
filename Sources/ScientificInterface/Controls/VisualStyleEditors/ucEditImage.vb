@@ -6,6 +6,7 @@ Imports EwEUtils.Commands
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Reflection
+Imports EwECore.Auxiliary
 
 #End Region ' Imports
 

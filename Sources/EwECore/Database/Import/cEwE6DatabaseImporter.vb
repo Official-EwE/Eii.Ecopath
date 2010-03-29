@@ -1,3 +1,5 @@
+#Region " Imports "
+
 Option Strict On
 Imports System.IO
 Imports System.Data
@@ -6,6 +8,8 @@ Imports System.Drawing
 Imports EwEUtils.Database
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+
+#End Region ' EwECore
 
 Namespace Database
 
@@ -4200,11 +4204,12 @@ Namespace Database
             Dim strValueID As String = ""
             Dim drow As DataRow = Nothing
             Dim bNewRow As Boolean = True
+            Dim key As New cValueID(dataType, nID, varName, dataTypeSec, nIDSec)
 
             ' Sanity check
             Debug.Assert(dataType > eDataTypes.NotSet And nID > 0, "Auxillary data cannot be added without a valid object identifier")
 
-            strValueID = cValueID.GenerateAbstract(dataType, nID, varName, dataTypeSec, nIDSec)
+            strValueID = key.ToString()
             drow = Me.m_dtRemarks.Rows.Find(strValueID)
 
             If (drow Is Nothing) Then

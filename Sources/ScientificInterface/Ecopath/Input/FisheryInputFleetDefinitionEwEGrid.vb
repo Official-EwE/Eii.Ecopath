@@ -51,7 +51,7 @@ Namespace Ecopath.Input
             Dim propProfit As cFormulaProperty = Nothing
             Dim propSumAll As cFormulaProperty = Nothing
 
-            Dim propTotal As New cSingleProperty("")
+            Dim propTotal As New cSingleProperty()
             propTotal.SetValue(100.0)
             propTotal.SetStyle(cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
 

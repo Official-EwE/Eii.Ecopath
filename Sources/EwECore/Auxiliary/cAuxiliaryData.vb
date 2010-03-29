@@ -28,14 +28,7 @@ Namespace Auxiliary
 
 #Region " Private vars "
 
-        ''' <summary>Unique ID of the data.</summary>
-        Private m_strID As String = ""
-        ''' <summary><see cref="eDataTypes">data type</see> that soft-links this data 
-        ''' to an <see cref="ICoreInterface">ICoreInterface</see> instance.</summary>
-        Private m_dataType As eDataTypes = eDataTypes.NotSet
-        ''' <summary>Database ID that soft-links this datato an 
-        ''' <see cref="ICoreInterface">ICoreInterface</see> instance.</summary>
-        Private m_iDBID As Integer = -1
+        Private m_key As cValueID
         ''' <summary>Remark text for this data.</summary>
         Private m_strRemark As String = ""
         ''' <summary>Visual style for this data.</summary>
@@ -54,8 +47,7 @@ Namespace Auxiliary
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor, initializes a new instance of cAuxiliaryData that is 
-        ''' NOT soft-linked to any core object.
+        ''' Constructor, initializes a new instance of cAuxiliaryData.
         ''' </summary>
         ''' <param name="strID">Unique ID to assign to this cAuxillaryData instance.</param>
         ''' <remarks>
@@ -64,7 +56,7 @@ Namespace Auxiliary
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal strID As String)
-            Me.New(strID, eDataTypes.NotSet, -1)
+            Me.New(cValueID.FromString(strID))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -72,33 +64,9 @@ Namespace Auxiliary
         ''' Constructor, initializes a new instance of cAuxiliaryData that is soft-linked
         ''' to an <see cref="ICoreInterface">ICoreInterface</see>-derived object. 
         ''' </summary>
-        ''' <param name="strID">Unique ID to assign to this cAuxillaryData instance.</param>
-        ''' <param name="obj"><see cref="ICoreInterface">ICoreInterface</see>-derived
-        ''' instance to associate this data with.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strID As String, ByVal obj As ICoreInterface)
-            Me.New(strID, obj.DataType, obj.DBID)
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor, initializes a new instance of cAuxiliaryData that is soft-linked
-        ''' to the <see cref="ICoreInterface">ICoreInterface</see>-derived object identified
-        ''' by a <paramref name="dataType">data type</paramref> and a <paramref name="iDBID">database ID</paramref>.
-        ''' </summary>
-        ''' <param name="strID">Unique ID to assign to this cAuxillaryData instance.</param>
-        ''' <param name="dataType">The <see cref="eDataTypes">data type</see> that identifies the
-        ''' <see cref="ICoreInterface">ICoreInterface</see>-derived object to associate this data with.</param>
-        ''' <param name="iDBID">The database ID that identifies the
-        ''' <see cref="ICoreInterface">ICoreInterface</see>-derived object to associate this data with.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strID As String, ByVal dataType As eDataTypes, ByVal iDBID As Integer)
-            ' Sanity check
-            Debug.Assert(Not String.IsNullOrEmpty(strID))
-
-            Me.m_strID = strID
-            Me.m_dataType = dataType
-            Me.m_iDBID = iDBID
+        Private Sub New(ByVal key As cValueID)
+            Me.m_key = key
         End Sub
 
 #End Region ' Constructors
@@ -107,42 +75,23 @@ Namespace Auxiliary
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get the key for this data.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Friend ReadOnly Property Key() As cValueID
+            Get
+                Return Me.m_key
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Get the unique ID assigned to this data.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property ID() As String
             Get
-                Return Me.m_strID
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the <see cref="eDataTypes">data type</see> that, in conjunction 
-        ''' with <see cref="DBID">DBID</see>, identifies the 
-        ''' <see cref="ICoreInterface">ICoreInterface</see>-derived object that 
-        ''' this data is associated with.
-        ''' </summary>
-        ''' <remarks>This property will return 
-        ''' <see cref="eDataTypes.NotSet">eDataTypes.NotSet</see>.</remarks>
-        ''' if this data is not associated with any object
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property DataType() As eDataTypes
-            Get
-                Return Me.m_dataType
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the database ID that, in conjunction with <see cref="DataType">DataType</see>, 
-        ''' identifies the <see cref="ICoreInterface">ICoreInterface</see>
-        ''' -derived object that this data is associated with.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property DBID() As Integer
-            Get
-                Return Me.m_iDBID
+                Return Me.m_key.ToString
             End Get
         End Property
 
@@ -199,6 +148,14 @@ Namespace Auxiliary
             Set(ByVal value As cVisualStyle)
                 Me.m_visualStyle = value
             End Set
+        End Property
+
+        Public ReadOnly Property IsEmpty() As Boolean
+            Get
+                Return String.IsNullOrEmpty(Me.Remark) And _
+                       (Me.m_visualStyle Is Nothing) And _
+                       (Me.m_iPedigree = cCore.NULL_VALUE)
+            End Get
         End Property
 
 #End Region ' Public properties

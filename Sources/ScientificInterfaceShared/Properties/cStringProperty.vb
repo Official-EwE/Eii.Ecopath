@@ -1,22 +1,12 @@
-'==============================================================================
-'
-' $Log: cStringProperty.vb,v $
-' Revision 1.3  2009/05/28 12:37:06  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.2  2009/04/02 15:50:38  jeroens
-' Removed assert on set_Value
-'
-' Revision 1.1  2009/04/02 13:22:09  jeroens
-' Separated derived classes out of cProperty.vb
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -59,13 +49,11 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor, initializes the property
+        ''' Constructor, initializes a keyless property
         ''' </summary>
-        ''' <param name="id">The ID to assign to the property</param>
-        ''' <remarks>This Constructor is provided to allow for manual creation</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal id As String)
-            MyBase.New(id)
+        Public Sub New()
+            MyBase.New()
         End Sub
 
         ''' -------------------------------------------------------------------

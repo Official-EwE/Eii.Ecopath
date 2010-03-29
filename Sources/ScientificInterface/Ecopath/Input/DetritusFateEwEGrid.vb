@@ -95,7 +95,7 @@ Namespace Ecopath.Input
             Next
 
             ' Configure static SUM prop
-            propSum = New cSingleProperty("")
+            propSum = New cSingleProperty()
             propSum.SetValue(1.0)
             propSum.SetStyle(cStyleGuide.eStyleFlags.Sum Or cStyleGuide.eStyleFlags.NotEditable)
 

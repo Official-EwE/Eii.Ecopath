@@ -61,7 +61,7 @@ Namespace Properties
             Me.m_SyncObj = so
 
             ' Create No Data property
-            Me.m_propNoData = New cStringProperty("")
+            Me.m_propNoData = New cStringProperty()
             Me.m_propNoData.SetStyle(cStyleGuide.eStyleFlags.ErrorEncountered Or cStyleGuide.eStyleFlags.NotEditable)
             Me.m_propNoData.SetValue(My.Resources.GENERIC_TEXT_NODATA)
 
@@ -141,15 +141,17 @@ Namespace Properties
         ''' <summary>
         ''' Returns a property for specific Me.m_core data
         ''' </summary>
-        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> instance to generate the property for</param>
+        ''' <param name="src">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> instance to generate the property for</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">Variable Name</see> within the indicated Source to generate the property for</param>
-        ''' <param name="SourceSec">Optional <see cref="cCoreInputOutputBase">secundary cCoreInputOutputBase data source</see> in case the variable name indicates an indexed variable.</param>
+        ''' <param name="srcSec">Optional <see cref="cCoreInputOutputBase">secundary cCoreInputOutputBase data source</see> in case the variable name indicates an indexed variable.</param>
         ''' <param name="bAllowedToCreate">States that the property should be created if it does not exist</param>
         ''' <remarks>The property is generated if it does not exist yet</remarks>
         ''' -------------------------------------------------------------------
-        Public Function GetProperty(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, Optional ByVal SourceSec As cCoreInputOutputBase = Nothing, _
-                Optional ByVal bAllowedToCreate As Boolean = True, _
-                Optional ByVal iSecundaryIndexOffset As Integer = 0) As cProperty
+        Public Function GetProperty(ByVal src As cCoreInputOutputBase, _
+                                    ByVal varname As eVarNameFlags, _
+                                    Optional ByVal srcSec As cCoreInputOutputBase = Nothing, _
+                                    Optional ByVal bAllowedToCreate As Boolean = True, _
+                                    Optional ByVal iSecundaryIndexOffset As Integer = 0) As cProperty
 
             Dim strID As String = Nothing
             Dim prop As cProperty = Nothing
@@ -159,15 +161,16 @@ Namespace Properties
             Dim ht As Dictionary(Of String, cProperty) = Nothing
 
             ' Does not source exist?
-            If (Source Is Nothing) Then
+            If (src Is Nothing) Then
                 ' #Yes: return system wide 'No Data' property to prevent
                 ' code that expects a property from crashing.
                 Return Me.m_propNoData
             End If
 
             ' Get an ID for this property
-            strID = cValueID.Generate(Source, VarName, SourceSec)
-            Select Case Source.CoreComponent
+            Dim key As New cValueID(src, varname, srcSec)
+            strID = key.ToString()
+            Select Case src.CoreComponent
                 Case eCoreComponentType.EcoPath : ht = Me.m_htEcopath
                 Case eCoreComponentType.EcoSim : ht = Me.m_htEcosim
                 Case eCoreComponentType.EcoSpace : ht = Me.m_htEcospace
@@ -188,22 +191,22 @@ Namespace Properties
             End If
 
             ' Determine source data type
-            If SourceSec IsNot Nothing Then iIndex = SourceSec.Index - iSecundaryIndexOffset
+            If srcSec IsNot Nothing Then iIndex = srcSec.Index - iSecundaryIndexOffset
 
-            ValTest = Source.ValueDescriptor(VarName)
+            ValTest = src.ValueDescriptor(varname)
 
             If ValTest Is Nothing Then
-                Debug.Assert(False, String.Format("Source {0} does not support varname {1}", Source.Name, VarName.ToString()))
+                Debug.Assert(False, String.Format("Source {0} does not support varname {1}", src.Name, varname.ToString()))
             Else
                 Select Case ValTest.varType
                     Case ValueWrapper.eValueTypes.Bool, ValueWrapper.eValueTypes.BoolArray
-                        prop = New cBooleanProperty(Source, VarName, SourceSec, iSecundaryIndexOffset)
+                        prop = New cBooleanProperty(src, varname, srcSec, iSecundaryIndexOffset)
                     Case ValueWrapper.eValueTypes.Int, ValueWrapper.eValueTypes.IntArray
-                        prop = New cIntegerProperty(Source, VarName, SourceSec, iSecundaryIndexOffset)
+                        prop = New cIntegerProperty(src, varname, srcSec, iSecundaryIndexOffset)
                     Case ValueWrapper.eValueTypes.Sng, ValueWrapper.eValueTypes.SingleArray
-                        prop = New cSingleProperty(Source, VarName, SourceSec, iSecundaryIndexOffset)
+                        prop = New cSingleProperty(src, varname, srcSec, iSecundaryIndexOffset)
                     Case ValueWrapper.eValueTypes.Str
-                        prop = New cStringProperty(Source, VarName, SourceSec, iSecundaryIndexOffset)
+                        prop = New cStringProperty(src, varname, srcSec, iSecundaryIndexOffset)
                     Case Else
                         Debug.Assert(False, String.Format("Cannot generate property {0} for cValue type {1}", strID, ValTest.varType))
                 End Select
@@ -213,12 +216,13 @@ Namespace Properties
 
             ' Store property
             ht(strID) = prop
-            ' Make sure property is up to date
-            prop.Refresh()
             ' Attach myself
             prop.PropertyManager = Me
+            ' Make sure property is up to date
+            prop.Refresh()
 
             Return prop
+
         End Function
 
         ''' -------------------------------------------------------------------

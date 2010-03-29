@@ -351,9 +351,7 @@ Public Class cPredPreyInteraction
     End Property
 
     Public Function GetID() As String Implements ICoreInterface.GetID
-        'this will generate an ID that identifies this object by its Pred/Prey pair
-        'this is not guaranteed to be unique
-        Return cValueID.Generate(Me, m_manager.getKey(m_pred, m_prey))
+        Return cValueID.getDataTypeID(Me.DataType, CInt(m_pred * 1000 + m_prey))
     End Function
 
     Public Property Index() As Integer Implements ICoreInterface.Index

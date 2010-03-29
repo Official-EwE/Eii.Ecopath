@@ -9834,7 +9834,7 @@ Public Class cCore
     ''' <see cref="cValueID">value ID</see>.
     ''' </summary>
     ''' <param name="strValueID">The unique <see cref="cValueID">value ID</see>.</param>
-    ''' <returns>A cAuxillaryData instance.</returns>
+    ''' <returns>An cAuxillaryData instance.</returns>
     Private Function GetAuxiliaryData(ByVal strValueID As String) As cAuxiliaryData
         Dim ad As cAuxiliaryData = Nothing
 
@@ -9860,14 +9860,15 @@ Public Class cCore
     ''' <summary>
     ''' Get or set a remark text for a given <see cref="cValueID">value ID</see> in EwE.
     ''' </summary>
-    ''' <param name="strValueID">The EwE <see cref="cValueID">value ID</see> to get or set the remark text for.</param>
+    ''' <param name="key">The object key to access remarks for.</param>
     ''' -------------------------------------------------------------------
-    Public Property Remark(ByVal strValueID As String) As String
+    Public Property Remark(ByVal key As cValueID) As String
         Get
-            Return Me.GetAuxiliaryData(strValueID).Remark
+            If (key Is Nothing) Then Return ""
+            Return Me.GetAuxiliaryData(key.ToString).Remark
         End Get
         Set(ByVal strRemark As String)
-            If Me.StoreRemark(strRemark, strValueID) Then
+            If Me.StoreRemark(strRemark, key) Then
                 ' Flag changed
                 Me.AuxillaryDataChanged()
             End If
@@ -9878,17 +9879,26 @@ Public Class cCore
     ''' <summary>
     ''' Load a remark text for a given <see cref="cValueID">value ID</see> in EwE.
     ''' </summary>
-    ''' <param name="strValueID">The EwE <see cref="cValueID">value ID</see> to get or set the remark text for.</param>
+    ''' <param name="key">The object key to access remarks for.</param>
     ''' -------------------------------------------------------------------
-    Friend Function StoreRemark(ByVal strRemark As String, ByVal strValueID As String) As Boolean
+    Friend Function StoreRemark(ByVal strRemark As String, _
+                                ByVal key As cValueID) As Boolean
 
-        Dim ad As cAuxiliaryData = Me.GetAuxiliaryData(strValueID)
+        Dim strKey As String = key.ToString()
+        Dim ad As cAuxiliaryData = Me.GetAuxiliaryData(strKey)
         Dim bChanged As Boolean = False
 
         bChanged = (String.Compare(ad.Remark, strRemark) <> 0)
         ' Update remark
         ad.Remark = strRemark
+
+        ' House keeping
+        If ad.IsEmpty Then
+            Me.m_dtAuxiliaryData.Remove(strKey)
+        End If
+
         Return bChanged
+
     End Function
 
 #End Region ' Remarks
@@ -9899,14 +9909,16 @@ Public Class cCore
     ''' <summary>
     ''' Get or set a visual style for a given <see cref="cValueID">value ID</see> in EwE.
     ''' </summary>
-    ''' <param name="strValueID">The EwE <see cref="cValueID">value ID</see> to get or set the remark text for.</param>
+    ''' <param name="key">The object key to access remarks for.</param>
     ''' -------------------------------------------------------------------
-    Public Property VisualStyle(ByVal strValueID As String, Optional ByVal bInvalidateData As Boolean = True) As cVisualStyle
+    Public Property VisualStyle(ByVal key As cValueID, _
+                                Optional ByVal bInvalidateData As Boolean = True) As cVisualStyle
         Get
-            Return Me.GetAuxiliaryData(strValueID).VisualStyle
+            If (key Is Nothing) Then Return Nothing
+            Return Me.GetAuxiliaryData(key.ToString).VisualStyle
         End Get
         Set(ByVal visualStyle As cVisualStyle)
-            If Me.StoreVisualStyle(visualStyle, strValueID) Then
+            If Me.StoreVisualStyle(visualStyle, key) Then
                 ' Flag changed
                 If bInvalidateData Then Me.AuxillaryDataChanged()
             End If
@@ -9917,35 +9929,33 @@ Public Class cCore
     ''' <summary>
     ''' Load a remark text for a given <see cref="cValueID">value ID</see> in EwE.
     ''' </summary>
-    ''' <param name="strValueID">The EwE <see cref="cValueID">value ID</see> to get or set the remark text for.</param>
+    ''' <param name="key">The object key to access remarks for.</param>
     ''' <returns>True if the visual style assignment has changed the auxillary data.</returns>
     ''' -------------------------------------------------------------------
-    Friend Function StoreVisualStyle(ByVal visualStyle As cVisualStyle, ByVal strValueID As String) As Boolean
+    Friend Function StoreVisualStyle(ByVal visualStyle As cVisualStyle, _
+                                     ByVal key As cValueID) As Boolean
 
-        If String.IsNullOrEmpty(strValueID) Then Return False
+        If (key Is Nothing) Then Return False
 
-        Dim ad As cAuxiliaryData = Me.GetAuxiliaryData(strValueID)
-        Dim bChanged As Boolean = False
+        Dim strKey As String = key.ToString()
+        Dim ad As cAuxiliaryData = Me.GetAuxiliaryData(strKey)
 
-        If (visualStyle Is Nothing) And (ad.VisualStyle Is Nothing) Then Return False
-        If (visualStyle Is Nothing) Or (ad.VisualStyle Is Nothing) Then
-            bChanged = True
-        Else
-            bChanged = (visualStyle.Equals(ad.VisualStyle) = False)
+        If (visualStyle.Equals(ad.VisualStyle) = True) Then Return False
+
+        ' Store visual Style
+        ad.VisualStyle = visualStyle
+
+        ' House keeping
+        If ad.IsEmpty Then
+            Me.m_dtAuxiliaryData.Remove(strKey)
         End If
 
-        ' Update Visual Style
-        ad.VisualStyle = visualStyle
-        ' Assign ID
-        visualStyle.ID = strValueID
+        Return True
 
-        Return bChanged
     End Function
 
     Public Function VisualStyleChanged(ByVal visualStyle As cVisualStyle) As Boolean
-        If Not String.IsNullOrEmpty(visualStyle.ID) Then
-            Me.AuxillaryDataChanged()
-        End If
+        Me.AuxillaryDataChanged()
     End Function
 
 #End Region ' Visual styles

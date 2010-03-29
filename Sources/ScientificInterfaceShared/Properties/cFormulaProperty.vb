@@ -1,22 +1,12 @@
-'==============================================================================
-'
-' $Log: cFormulaProperty.vb,v $
-' Revision 1.3  2009/05/28 12:37:03  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.2  2009/04/02 13:22:26  jeroens
-' Separated expressions out of cFormulaProperty.vb
-'
-' Revision 1.1  2008/09/26 07:31:22  sherman
-' --== DELETED HISTORY ==--$
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
 Imports EwECore
 Imports System.Globalization
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -66,19 +56,8 @@ Namespace Properties
         ''' status of this <see cref="cProperty">Property</see>.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal formula As cExpression)
-            Me.New(String.Empty, formula)
-        End Sub
+            MyBase.New()
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor, initializes a new cFormulaProperty instance.
-        ''' </summary>
-        ''' <param name="strID">The ID to assign to this property.</param>
-        ''' <param name="formula">The formula that will feed the value and
-        ''' status of this <see cref="cProperty">Property</see>.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strID As String, ByVal formula As cExpression)
-            MyBase.New(strID)
             ' Sanity check
             Debug.Assert(formula IsNot Nothing, "Need valid formula")
             ' Store formula
@@ -87,6 +66,7 @@ Namespace Properties
             AddHandler m_formula.OnValueChanged, AddressOf OnFormulaChanged
             ' Initialize value
             Me.Calculate()
+
         End Sub
 
         ''' -------------------------------------------------------------------

@@ -1,8 +1,11 @@
+#Region " Imports "
+
 Option Strict On
 Imports EwECore
-Imports System.Drawing
-Imports System.Windows.Forms
+Imports EwECore.Auxiliary
 Imports System.Drawing.Drawing2D
+
+#End Region ' Imports
 
 Namespace Controls
 

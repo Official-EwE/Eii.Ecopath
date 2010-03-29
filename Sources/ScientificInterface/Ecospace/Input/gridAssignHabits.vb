@@ -135,8 +135,8 @@ Namespace Ecospace
                 ' Ecospace Area Sum cell
                 ' 1. Build formula that sums the total habitat area for this group
                 exFormula = SumHabAreaFormula(iGroup, exFormulas)
-                ' 2. Wrap formula in a property. This property is named to allow users to add remarks to it.
-                propFormula = New cFormulaProperty(cValueID.Generate(groupEcospace.getID, "SumHabArea"), exFormula)
+                ' 2. Wrap formula in a property
+                propFormula = New cFormulaProperty(exFormula)
                 ' 3. Apply formula to cell.
                 Me(iGroup, Me.Core.nHabitats + 2) = New PropertyCell(propFormula)
 
@@ -151,8 +151,8 @@ Namespace Ecospace
             For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
                 ' 1. Build formula that averages the total habitat of preferred areas for this habitat
                 exFormula = AvgHabAreaFormula(iHabitat, exFormulas)
-                ' 2. Wrap formula in a property. This property is named to allow users to add remarks to it.
-                propFormula = New cFormulaProperty(cValueID.Generate(groupEcospace.getID, "AvgHabArea"), exFormula)
+                ' 2. Wrap formula in a property
+                propFormula = New cFormulaProperty(exFormula)
                 ' 3. Apply formula to cell.
                 Me(Me.Core.nGroups + 1, iHabitat + 2) = New PropertyCell(propFormula)
             Next

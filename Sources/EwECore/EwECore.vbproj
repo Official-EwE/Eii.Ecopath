@@ -138,7 +138,6 @@
     <Compile Include="Monte Carlo\cMonteCarloManager.vb" />
     <Compile Include="MultiStanza\cStanzaGroup.vb" />
     <Compile Include="Core\cValue.vb" />
-    <Compile Include="Core\cValueID.vb" />
     <Compile Include="Core\cVariableMetaData.vb" />
     <Compile Include="Core\ICoreInputOutput.vb" />
     <Compile Include="Shapes\Forcing Functions\cPredPreyInteraction.vb" />
@@ -230,6 +229,9 @@
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerRegionGroupOutput.vb" />
     <Compile Include="Core\cCoreStateManager.vb" />
     <Compile Include="Core\cEwEScenario.vb" />
+    <Compile Include="Core\cValueID.vb">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Database\Compact\cCompactDAO.vb" />
     <Compile Include="Database\Compact\cCompactJRO.vb" />
     <Compile Include="Database\Compact\cDatabaseCompactFactory.vb" />

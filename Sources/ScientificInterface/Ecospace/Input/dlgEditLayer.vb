@@ -12,6 +12,7 @@ Imports SAUPUtil.SAUPData
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
+Imports EwECore.Auxiliary
 
 #End Region ' Imports
 

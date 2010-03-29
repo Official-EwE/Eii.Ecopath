@@ -1,24 +1,4 @@
-'==============================================================================
-'
-' $Log: cEwEBrushProvider.vb,v $
-' Revision 1.2  2008/11/26 02:57:03  jeroens
-' Colour logic does not need a legend
-'
-' Revision 1.1  2008/09/26 07:31:26  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2008/06/04 00:59:00  jeroens
-' Moved
-'
-' Revision 1.2  2008/05/07 19:16:35  jeroens
-' Added a whack of glyps
-'
-' Revision 1.1  2008/01/06 09:12:19  jeroens
-' Moved
-'
-'==============================================================================
-
-#Region "Imports Directives"
+#Region " Imports "
 
 Option Strict On
 
@@ -27,8 +7,9 @@ Imports SAUPUtil.SAUPData
 Imports SAUPUtil.SAUPData.Mapping
 Imports SAUPUtil.Misc.Colours
 Imports System.Drawing.Drawing2D
+Imports EwECore.Auxiliary
 
-#End Region
+#End Region ' Imports
 
 Namespace Controls
 
@@ -94,7 +75,8 @@ Namespace Controls
             Glyphs
         End Enum
 
-        Public Function GetVisualStyles(ByVal nBrushes As Integer, Optional ByVal brushType As eBrushType = cEwEBrushProvider.eBrushType.Color) As cVisualStyle()
+        Public Function GetVisualStyles(ByVal nBrushes As Integer, _
+                                        Optional ByVal brushType As eBrushType = cEwEBrushProvider.eBrushType.Color) As cVisualStyle()
             Dim avs As cVisualStyle() = Nothing
 
             Select Case brushType

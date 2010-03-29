@@ -6,6 +6,7 @@ Imports ScientificInterface.Other
 Imports SAUPUtil.Misc.Colours
 Imports System.Drawing.Drawing2D
 Imports System.Reflection
+Imports EwECore.Auxiliary
 
 #End Region 'Imports
 

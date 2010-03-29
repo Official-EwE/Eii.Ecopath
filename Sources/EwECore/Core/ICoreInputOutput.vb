@@ -1,6 +1,7 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwECore.Auxiliary
 
 #Region " Definition of interfaces "
 
@@ -296,12 +297,26 @@ Public MustInherit Class cCoreInputOutputBase
     Public Property Remark(Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name, _
                            Optional ByVal objSec As cCoreInputOutputBase = Nothing) As String
         Get
-            Dim strValueID As String = cValueID.Generate(Me, varName, objSec)
-            Return Me.m_core.Remark(strValueID)
+            Dim key As cValueID = Nothing
+
+            If (objSec Is Nothing) Then
+                key = New cValueID(Me.DataType, Me.DBID, varName)
+            Else
+                key = New cValueID(Me.DataType, Me.DBID, varName, objSec.DataType, objSec.DBID)
+            End If
+
+            Return Me.m_core.Remark(key)
         End Get
         Set(ByVal strRemark As String)
-            Dim strValueID As String = cValueID.Generate(Me, varName, objSec)
-            Me.m_core.Remark(strValueID) = strRemark
+            Dim key As cValueID = Nothing
+
+            If (objSec Is Nothing) Then
+                key = New cValueID(Me.DataType, Me.DBID, varName)
+            Else
+                key = New cValueID(Me.DataType, Me.DBID, varName, objSec.DataType, objSec.DBID)
+            End If
+
+            Me.m_core.Remark(key) = strRemark
         End Set
     End Property
 
@@ -647,11 +662,11 @@ Public MustInherit Class cCoreInputOutputBase
     ''' Applicaton layers built on top of the core will probably never need direct 
     ''' access to this property. To abstract its storage methods it seems best to
     ''' restrict access to this property to the Core assembly only.</remarks>
-    Friend Property DBID() As Integer Implements ICoreInterface.DBID
+    Property DBID() As Integer Implements ICoreInterface.DBID
         Get
             Return DirectCast(GetVariable(eVarNameFlags.DBID), Integer)
         End Get
-        Set(ByVal newValue As Integer)
+        Friend Set(ByVal newValue As Integer)
             SetVariable(eVarNameFlags.DBID, newValue)
         End Set
     End Property

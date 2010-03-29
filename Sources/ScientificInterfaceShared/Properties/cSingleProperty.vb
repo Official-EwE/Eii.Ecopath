@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: cSingleProperty.vb,v $
-' Revision 1.5  2009/05/28 12:37:05  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/04/04 14:07:25  jeroens
-' Value type conversion performed on SetValue to prevent type differences from resulting in premature core data changes
-'
-' Revision 1.3  2009/04/03 12:08:52  jeroens
-' Fixed crash on trying to access non-existing meta data
-'
-' Revision 1.2  2009/04/02 19:14:43  jeroens
-' Invalid values set vars to meta NULL
-'
-' Revision 1.1  2009/04/02 13:22:09  jeroens
-' Separated derived classes out of cProperty.vb
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -73,13 +53,11 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor, initializes the property.
+        ''' Constructor, initializes a keyless property.
         ''' </summary>
-        ''' <param name="id">The ID to assign to the property.</param>
-        ''' <remarks>This Constructor is provided to allow for manual creation.</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal id As String)
-            MyBase.New(id)
+        Public Sub New()
+            MyBase.New()
         End Sub
 
         ''' -------------------------------------------------------------------

@@ -31,8 +31,8 @@ Namespace Properties
 
 #Region " Private parts "
 
-        ''' <summary>ID of the property</summary>
-        Private m_strID As String = ""
+        Private m_key As cValueID = Nothing
+
         ''' <summary>cCoreInputOutputBase object that is the source of this property's data</summary>
         Private m_Source As cCoreInputOutputBase = Nothing
         ''' <summary>VarName within Source</summary>
@@ -54,12 +54,10 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor, initializes the property
+        ''' Constructor, initializes a keyless property.
         ''' </summary>
-        ''' <param name="id">Manually created ID to assign to the property. This id should be unique.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal id As String)
-            Me.m_strID = id
+        Public Sub New()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -83,18 +81,19 @@ Namespace Properties
         ''' object is used to correctly access the underlying array.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal src As EwECore.cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-                Optional ByVal srcSec As EwECore.cCoreInputOutputBase = Nothing, _
-                Optional ByVal iSecIndexOffset As Integer = 0)
+        Public Sub New(ByVal src As EwECore.cCoreInputOutputBase, _
+                       ByVal VarName As eVarNameFlags, _
+                       Optional ByVal srcSec As EwECore.cCoreInputOutputBase = Nothing, _
+                       Optional ByVal iSecIndexOffset As Integer = 0)
 
-            Me.m_strID = cValueID.Generate(DirectCast(src, cCoreInputOutputBase), VarName, srcSec)
+            Me.m_key = New cValueID(src, VarName, srcSec)
 
-            ' Store link to core
             Me.m_Source = src
             Me.m_VarName = VarName
             Me.m_SourceSec = srcSec
             Me.m_iSecIndex = cCore.NULL_VALUE
             Me.m_iSecIndexOffset = iSecIndexOffset
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -169,6 +168,12 @@ Namespace Properties
 
 #Region " Properties of this property (are you confused yet?)"
 
+        Public ReadOnly Property Key() As cValueID
+            Get
+                Return Me.m_key
+            End Get
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the ID for this property
@@ -176,7 +181,7 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Public ReadOnly Property ID() As String
             Get
-                Return Me.m_strID
+                Return Me.m_key.ToString()
             End Get
         End Property
 
@@ -576,14 +581,14 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Protected Overridable Property Remark() As String
             Get
-                If String.IsNullOrEmpty(Me.ID) Then Return ""
-                If Me.m_pm Is Nothing Then Return ""
-                Return Me.m_pm.Core.Remark(Me.ID)
+                If (Me.m_key Is Nothing) Then Return ""
+                If (Me.m_pm Is Nothing) Then Return ""
+                Return Me.m_pm.Core.Remark(Me.m_key)
             End Get
             Set(ByVal strRemark As String)
-                If Not String.IsNullOrEmpty(Me.ID) Then
-                    If Me.m_pm IsNot Nothing Then
-                        Me.m_pm.Core.Remark(Me.ID) = strRemark
+                If (Me.m_key IsNot Nothing) Then
+                    If (Me.m_pm IsNot Nothing) Then
+                        Me.m_pm.Core.Remark(Me.m_key) = strRemark
                     End If
                     Me.m_strRemark = strRemark
                 End If

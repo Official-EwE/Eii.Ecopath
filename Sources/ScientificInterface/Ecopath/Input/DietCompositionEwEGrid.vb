@@ -139,13 +139,13 @@ Namespace Ecopath.Input
                     ' Now create the formula property that will calculate the sum of all DietComp props
                     opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alPropSumAll.ToArray())
                     ' Create Sum property for the SUM row (all the way at the bottom)
-                    propSum = New cFormulaProperty(cValueID.Generate(source.getID, "DCSum"), opSumAll)
+                    propSum = New cFormulaProperty(opSumAll)
                     ' Define sum cell
                     Me(rowCnt - 2, columnIndex) = New PropertyCell(propSum)
 
                     ' Create 1-Sum property for the SUM row (all the way at the bottom)
                     op1MinusSumAll = New cBinaryOperation(cBinaryOperation.eOperatorType.Substract, 1, propSum)
-                    prop1MinusSum = New cFormulaProperty(cValueID.Generate(source.getID, "DCInvSum"), op1MinusSumAll)
+                    prop1MinusSum = New cFormulaProperty(op1MinusSumAll)
                     ' Define sum cell
                     Me(rowCnt - 1, columnIndex) = New PropertyCell(prop1MinusSum)
 

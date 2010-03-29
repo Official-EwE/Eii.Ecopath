@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: cBooleanProperty.vb,v $
-' Revision 1.4  2009/05/28 12:37:03  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.3  2009/04/04 14:07:26  jeroens
-' Value type conversion performed on SetValue to prevent type differences from resulting in premature core data changes
-'
-' Revision 1.2  2009/04/02 15:50:53  jeroens
-' Removed assert on set_Value
-'
-' Revision 1.1  2009/04/02 13:22:08  jeroens
-' Separated derived classes out of cProperty.vb
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -42,6 +25,15 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Constructor, initializes a keyless property.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub New()
+            MyBase.New()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Constructor, initializes the property
         ''' </summary>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see>
@@ -65,17 +57,6 @@ Namespace Properties
                 Optional ByVal SourceSec As EwECore.cCoreInputOutputBase = Nothing, _
                 Optional ByVal iSecIndexOffset As Integer = 0)
             MyBase.New(Source, VarName, SourceSec, iSecIndexOffset)
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor, initializes the property.
-        ''' </summary>
-        ''' <param name="id">The ID to assign to the property.</param>
-        ''' <remarks>This Constructor is provided to allow for manual creation.</remarks>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal id As String)
-            MyBase.New(id)
         End Sub
 
         ''' -------------------------------------------------------------------
