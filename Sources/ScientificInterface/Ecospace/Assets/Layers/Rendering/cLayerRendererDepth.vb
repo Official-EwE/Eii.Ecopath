@@ -38,7 +38,8 @@ Namespace Ecospace.Basemap.Layers
                                            ByVal layer As cEcospaceLayer)
 
             If Me.m_brFore Is Nothing Then Me.Update()
-            g.FillRectangle(Brushes.Black, rc)
+            g.FillRectangle(Brushes.Gray, rc)
+            g.DrawString("#", Me.m_ft, Me.m_brFore, rc)
         End Sub
 
         Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
@@ -54,7 +55,7 @@ Namespace Ecospace.Basemap.Layers
                 ' Is non-water cell?
                 If (sValue <= 0) Then
                     ' #Yes: draw in black
-                    g.FillRectangle(Brushes.Black, rc)
+                    g.FillRectangle(Brushes.Gray, rc)
                 Else
                     ' #No: only draw colours when highlighted
 

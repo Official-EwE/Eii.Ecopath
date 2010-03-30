@@ -36,7 +36,8 @@ Namespace Auxiliary
         Private m_img As Image = Nothing
         Private m_strFontName As String = "Arial"
         Private m_sFontSize As Single = 8.0!
-        Private m_eFontStyle As FontStyle = FontStyle.Regular
+        Private m_fontstyle As FontStyle = FontStyle.Regular
+        Private m_container As cAuxiliaryData = Nothing
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -80,7 +81,10 @@ Namespace Auxiliary
                 Return Me.m_clrFore
             End Get
             Set(ByVal value As Color)
-                Me.m_clrFore = value
+                If (value <> Me.m_clrFore) Then
+                    Me.m_clrFore = value
+                    Me.Update()
+                End If
             End Set
         End Property
 
@@ -94,7 +98,10 @@ Namespace Auxiliary
                 Return Me.m_clrBack
             End Get
             Set(ByVal value As Color)
-                Me.m_clrBack = value
+                If (value <> Me.m_clrBack) Then
+                    Me.m_clrBack = value
+                    Me.Update()
+                End If
             End Set
         End Property
 
@@ -108,7 +115,10 @@ Namespace Auxiliary
                 Return Me.m_img
             End Get
             Set(ByVal value As Image)
-                Me.m_img = value
+                If Not Equals(value, Me.m_img) Then
+                    Me.m_img = value
+                    Me.Update()
+                End If
             End Set
         End Property
 
@@ -122,7 +132,10 @@ Namespace Auxiliary
                 Return Me.m_hatchStyle
             End Get
             Set(ByVal value As HatchStyle)
-                Me.m_hatchStyle = value
+                If (value <> Me.m_hatchStyle) Then
+                    Me.m_hatchStyle = value
+                    Me.Update()
+                End If
             End Set
         End Property
 
@@ -136,7 +149,10 @@ Namespace Auxiliary
                 Return Me.m_strFontName
             End Get
             Set(ByVal value As String)
-                Me.m_strFontName = value
+                If (value <> Me.m_strFontName) Then
+                    Me.m_strFontName = value
+                    Me.Update()
+                End If
             End Set
         End Property
 
@@ -150,7 +166,10 @@ Namespace Auxiliary
                 Return Me.m_sFontSize
             End Get
             Set(ByVal value As Single)
-                Me.m_sFontSize = value
+                If (value <> Me.m_sFontSize) Then
+                    Me.m_sFontSize = value
+                    Me.Update()
+                End If
             End Set
         End Property
 
@@ -161,10 +180,13 @@ Namespace Auxiliary
         ''' -----------------------------------------------------------------------
         Public Property FontStyle() As FontStyle
             Get
-                Return Me.m_eFontStyle
+                Return Me.m_fontstyle
             End Get
             Set(ByVal value As FontStyle)
-                Me.m_eFontStyle = value
+                If (value <> Me.m_fontstyle) Then
+                    Me.m_fontstyle = value
+                    Me.Update()
+                End If
             End Set
         End Property
 
@@ -192,6 +214,31 @@ Namespace Auxiliary
             Return True
 
         End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the Auxillary data that contains this visual style.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Friend Property Container() As cAuxiliaryData
+            Get
+                Return Me.m_container
+            End Get
+            Set(ByVal value As cAuxiliaryData)
+                Me.m_container = value
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Update visual style content change to the core.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Sub Update()
+            If Me.m_container IsNot Nothing Then
+                Me.m_container.Update()
+            End If
+        End Sub
 
     End Class ' cVisualStyle
 

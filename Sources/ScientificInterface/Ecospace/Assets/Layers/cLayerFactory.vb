@@ -37,6 +37,7 @@ Namespace Ecospace.Basemap.Layers
             Dim bmd As cEcospaceBasemap = core.EcospaceBasemap
             Dim layer As cLayer = Nothing
             Dim key As cValueID = Nothing
+            Dim ad As cAuxiliaryData = Nothing
             Dim avs As cVisualStyle() = Nothing
             Dim renderer As cLayerRenderer = Nothing
             Dim editor As cLayerEditor = Nothing
@@ -47,15 +48,19 @@ Namespace Ecospace.Basemap.Layers
 
                 Case eVarNameFlags.LayerDepth
 
+                    ' Depth layer identified by basemap
                     key = New cValueID(eDataTypes.EcospaceLayerDepth, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
 
                     ' Get or create Visual Style
-                    vs = core.VisualStyle(key)
+                    vs = ad.VisualStyle
                     If vs Is Nothing Then
                         vs = New cVisualStyle()
                         vs.ForeColour = Color.Black
                         vs.BackColour = Color.Transparent
-                        core.VisualStyle(key) = vs
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
                     End If
 
                     ' Represent depth as a .. depth layer! Whoohoo!
@@ -75,12 +80,15 @@ Namespace Ecospace.Basemap.Layers
                         Dim hab As cEcospaceHabitat = core.EcospaceHabitats(iHabitat)
 
                         key = New cValueID(eDataTypes.EcospaceLayerHabitat, hab.DBID, eVarNameFlags.Name)
+                        ad = core.AuxillaryData(key)
 
                         ' Get or create Visual Style
-                        vs = core.VisualStyle(key)
+                        vs = ad.VisualStyle
                         If vs Is Nothing Then
                             vs = avs(iHabitat - 1)
-                            core.VisualStyle(key, False) = vs
+                            ad.AllowValidation = False
+                            ad.VisualStyle = vs
+                            ad.AllowValidation = True
                         End If
 
                         ' Create layer
@@ -96,14 +104,17 @@ Namespace Ecospace.Basemap.Layers
 
                     ' This is screwed-up: one key (and one layer) for all regions
                     key = New cValueID(eDataTypes.EcospaceLayerRegion, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
 
                     ' Get or create Visual Style
-                    vs = core.VisualStyle(key)
+                    vs = ad.VisualStyle
                     If vs Is Nothing Then
                         vs = New cVisualStyle()
                         vs.ForeColour = Color.Black
                         vs.BackColour = Color.Transparent
-                        core.VisualStyle(key) = vs
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
                     End If
 
                     ' Represent regions as a gradient
@@ -123,12 +134,15 @@ Namespace Ecospace.Basemap.Layers
 
                         Dim mpa As cEcospaceMPA = core.EcospaceMPAs(iMPA)
                         key = New cValueID(eDataTypes.EcospaceLayerMPA, bmd.DBID, eVarNameFlags.Name)
+                        ad = core.AuxillaryData(key)
 
                         ' Get or create Visual Style
-                        vs = core.VisualStyle(key)
+                        vs = ad.VisualStyle
                         If vs Is Nothing Then
                             vs = avs(iMPA)
-                            core.VisualStyle(key, False) = vs
+                            ad.AllowValidation = False
+                            ad.VisualStyle = vs
+                            ad.AllowValidation = True
                         End If
 
                         ' Create layer
@@ -144,13 +158,16 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerRelPP
 
                     key = New cValueID(eDataTypes.EcospaceLayerRelPP, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
 
                     ' Get or create Visual Style
-                    vs = core.VisualStyle(key)
+                    vs = ad.VisualStyle
                     If vs Is Nothing Then
                         vs = New cVisualStyle()
                         vs.ForeColour = Color.Black
-                        core.VisualStyle(key) = vs
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
                     End If
 
                     ' Represent as a solid colour
@@ -165,13 +182,16 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerRelCin
 
                     key = New cValueID(eDataTypes.EcospaceLayerRelCin, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
 
                     ' Get or create Visual Style
-                    vs = core.VisualStyle(key)
+                    vs = ad.VisualStyle
                     If vs Is Nothing Then
                         vs = New cVisualStyle()
                         vs.ForeColour = Color.Black
-                        core.VisualStyle(key) = vs
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
                     End If
 
                     ' Represent as a solid colour
@@ -247,13 +267,16 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerMigration
 
                     key = New cValueID(eDataTypes.EcospaceLayerMigration, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
 
                     ' Get or create Visual Style
-                    vs = core.VisualStyle(key)
+                    vs = ad.VisualStyle
                     If vs Is Nothing Then
                         vs = New cVisualStyle()
                         vs.ForeColour = Color.Black
-                        core.VisualStyle(key) = vs
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
                     End If
 
                     renderer = New cLayerRendererValue(vs)
@@ -267,13 +290,16 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerAdvection
 
                     key = New cValueID(eDataTypes.EcospaceLayerAdvection, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
 
                     ' Get or create Visual Style
-                    vs = core.VisualStyle(key)
+                    vs = ad.VisualStyle
                     If vs Is Nothing Then
                         vs = New cVisualStyle()
                         vs.ForeColour = Color.Black
-                        core.VisualStyle(key) = vs
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
                     End If
 
                     renderer = New cLayerRendererArrow(vs)
@@ -287,13 +313,16 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerPort
 
                     key = New cValueID(eDataTypes.EcospaceLayerPort, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
 
                     ' Get or create Visual Style
-                    vs = core.VisualStyle(key)
+                    vs = ad.VisualStyle
                     If vs Is Nothing Then
                         vs = New cVisualStyle()
                         vs.ForeColour = Color.BurlyWood
-                        core.VisualStyle(key) = vs
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
                     End If
 
                     renderer = New cLayerRendererSymbol(vs)
@@ -307,13 +336,16 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerSail
 
                     key = New cValueID(eDataTypes.EcospaceLayerSail, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
 
                     ' Get or create Visual Style
-                    vs = core.VisualStyle(key)
+                    vs = ad.VisualStyle
                     If vs Is Nothing Then
                         vs = New cVisualStyle()
                         vs.ForeColour = Color.Black
-                        core.VisualStyle(key) = vs
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
                     End If
 
                     ' Represent as a solid colour
@@ -331,13 +363,16 @@ Namespace Ecospace.Basemap.Layers
 
                         Dim src As cEcospaceLayerImportance = core.EcospaceBasemap.LayerImportance(iLayer)
                         key = New cValueID(eDataTypes.EcospaceLayerImportance, src.DBID, eVarNameFlags.Name)
+                        ad = core.AuxillaryData(key)
 
                         ' Get or create Visual Style
-                        vs = core.VisualStyle(key)
+                        vs = ad.VisualStyle
                         If vs Is Nothing Then
                             vs = New cVisualStyle()
                             vs.ForeColour = Color.Black
-                            core.VisualStyle(key) = vs
+                            ad.AllowValidation = False
+                            ad.VisualStyle = vs
+                            ad.AllowValidation = True
                         End If
 
                         ' Create layer

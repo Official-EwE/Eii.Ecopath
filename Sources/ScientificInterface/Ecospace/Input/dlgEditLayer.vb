@@ -78,6 +78,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_openType = opentype
 
             Me.m_layerWork = New cLayer(uic, layer) ' Work on a clone
+            Me.m_layerWork.AllowValidation = False
 
             Me.InitializeComponent()
 

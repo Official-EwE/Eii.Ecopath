@@ -112,6 +112,10 @@ Public Class cCore
     Private m_timeSeriesGroup As New cCoreInputOutputList(Of cTimeSeries)(eDataTypes.GroupTimeSeries, 1)
     Private m_timeSeriesFleet As New cCoreInputOutputList(Of cTimeSeries)(eDataTypes.FleetTimeSeries, 1)
 
+    ''' <summary>Auxillary data not stored in a list, needs to be quickly accessible via hash keys</summary>
+    ''' <remarks>Dictionary is 'friend' to be accessible to datasource.</remarks>
+    Friend m_dtAuxiliaryData As New Dictionary(Of String, cAuxiliaryData)
+
     ''' <summary>The central core message publisher.</summary>
     Friend m_publisher As New cMessagePublisher
     Friend m_validators As cValidatorManager = Nothing
@@ -121,7 +125,6 @@ Public Class cCore
     Friend m_Stanza As cStanzaDatastructures
     Friend m_FitToTimeSeriesData As cF2TSDataStructures
     Friend m_tracerData As cContaminantTracerDataStructures
-
 
 #Region "Private Initialization Flags"
 
@@ -2301,8 +2304,8 @@ Public Class cCore
 
         Try
 
-            ' Clear remarks
-            m_dtAuxiliaryData.Clear()
+            ' Clear auxillary data
+            Me.m_dtAuxiliaryData.Clear()
             ' Clear time series datasets
             Me.m_TSData.ClearTimeSeriesDatasets()
 
@@ -9826,162 +9829,56 @@ Public Class cCore
 
 #Region "Auxiliary data "
 
-    Friend m_dtAuxiliaryData As New Dictionary(Of String, cAuxiliaryData)
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set an<see cref="cAuxiliaryData">AuxillaryData</see> instance 
+    ''' for a given <see cref="cValueID">value ID</see>.
+    ''' </summary>
+    ''' <param name="key">The unique <see cref="cValueID">value ID</see>.</param>
+    ''' <returns>An cAuxillaryData instance.</returns>
+    ''' -------------------------------------------------------------------
+    Public Property AuxillaryData(ByVal key As cValueID) As cAuxiliaryData
+        Get
+            Return Me.AuxillaryData(key.ToString)
+        End Get
+        Friend Set(ByVal value As cAuxiliaryData)
+            Me.AuxillaryData(key.ToString) = value
+        End Set
+    End Property
 
+    ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Helper method; looks up - or creates when non-existing - an 
-    ''' <see cref="cAuxiliaryData">AuxillaryData</see> instance for a given 
-    ''' <see cref="cValueID">value ID</see>.
+    ''' <see cref="cAuxiliaryData">AuxillaryData</see> instance for a value.
     ''' </summary>
     ''' <param name="strValueID">The unique <see cref="cValueID">value ID</see>.</param>
     ''' <returns>An cAuxillaryData instance.</returns>
-    Private Function GetAuxiliaryData(ByVal strValueID As String) As cAuxiliaryData
-        Dim ad As cAuxiliaryData = Nothing
-
-        If (m_dtAuxiliaryData.ContainsKey(strValueID)) Then
-            ad = m_dtAuxiliaryData(strValueID)
-        Else
-            ad = New cAuxiliaryData(strValueID)
-            m_dtAuxiliaryData(strValueID) = ad
-        End If
-        Return ad
-    End Function
-
-    Private Sub AuxillaryDataChanged()
-        ' Notify datasource 
-        Me.DataSource.SetChanged(eCoreComponentType.EcoPath)
-        ' Update data state
-        Me.m_StateMonitor.UpdateDataState(DataSource)
-    End Sub
-
-#Region " Remarks "
-
     ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Get or set a remark text for a given <see cref="cValueID">value ID</see> in EwE.
-    ''' </summary>
-    ''' <param name="key">The object key to access remarks for.</param>
-    ''' -------------------------------------------------------------------
-    Public Property Remark(ByVal key As cValueID) As String
+    Public Property AuxillaryData(ByVal strValueID As String) As cAuxiliaryData
+
         Get
-            If (key Is Nothing) Then Return ""
-            Return Me.GetAuxiliaryData(key.ToString).Remark
+            If (String.IsNullOrEmpty(strValueID)) Then Return Nothing
+
+            Dim ad As cAuxiliaryData = Nothing
+            If (Not Me.m_dtAuxiliaryData.ContainsKey(strValueID)) Then
+                Me.AuxillaryData(strValueID) = New cAuxiliaryData(Me, strValueID)
+            End If
+            Return Me.m_dtAuxiliaryData(strValueID)
         End Get
-        Set(ByVal strRemark As String)
-            If Me.StoreRemark(strRemark, key) Then
-                ' Flag changed
-                Me.AuxillaryDataChanged()
+
+        Set(ByVal ad As cAuxiliaryData)
+            If (String.IsNullOrEmpty(strValueID)) Then Return
+
+            If (ad Is Nothing) Then
+                If (Me.m_dtAuxiliaryData.ContainsKey(strValueID)) Then
+                    Me.m_dtAuxiliaryData.Remove(strValueID)
+                End If
+            Else
+                Me.m_dtAuxiliaryData(strValueID) = ad
             End If
         End Set
+
     End Property
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Load a remark text for a given <see cref="cValueID">value ID</see> in EwE.
-    ''' </summary>
-    ''' <param name="key">The object key to access remarks for.</param>
-    ''' -------------------------------------------------------------------
-    Friend Function StoreRemark(ByVal strRemark As String, _
-                                ByVal key As cValueID) As Boolean
-
-        Dim strKey As String = key.ToString()
-        Dim ad As cAuxiliaryData = Me.GetAuxiliaryData(strKey)
-        Dim bChanged As Boolean = False
-
-        bChanged = (String.Compare(ad.Remark, strRemark) <> 0)
-        ' Update remark
-        ad.Remark = strRemark
-
-        ' House keeping
-        If ad.IsEmpty Then
-            Me.m_dtAuxiliaryData.Remove(strKey)
-        End If
-
-        Return bChanged
-
-    End Function
-
-#End Region ' Remarks
-
-#Region " Visual styles "
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Get or set a visual style for a given <see cref="cValueID">value ID</see> in EwE.
-    ''' </summary>
-    ''' <param name="key">The object key to access remarks for.</param>
-    ''' -------------------------------------------------------------------
-    Public Property VisualStyle(ByVal key As cValueID, _
-                                Optional ByVal bInvalidateData As Boolean = True) As cVisualStyle
-        Get
-            If (key Is Nothing) Then Return Nothing
-            Return Me.GetAuxiliaryData(key.ToString).VisualStyle
-        End Get
-        Set(ByVal visualStyle As cVisualStyle)
-            If Me.StoreVisualStyle(visualStyle, key) Then
-                ' Flag changed
-                If bInvalidateData Then Me.AuxillaryDataChanged()
-            End If
-        End Set
-    End Property
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Load a remark text for a given <see cref="cValueID">value ID</see> in EwE.
-    ''' </summary>
-    ''' <param name="key">The object key to access remarks for.</param>
-    ''' <returns>True if the visual style assignment has changed the auxillary data.</returns>
-    ''' -------------------------------------------------------------------
-    Friend Function StoreVisualStyle(ByVal visualStyle As cVisualStyle, _
-                                     ByVal key As cValueID) As Boolean
-
-        If (key Is Nothing) Then Return False
-
-        Dim strKey As String = key.ToString()
-        Dim ad As cAuxiliaryData = Me.GetAuxiliaryData(strKey)
-
-        If (visualStyle.Equals(ad.VisualStyle) = True) Then Return False
-
-        ' Store visual Style
-        ad.VisualStyle = visualStyle
-
-        ' House keeping
-        If ad.IsEmpty Then
-            Me.m_dtAuxiliaryData.Remove(strKey)
-        End If
-
-        Return True
-
-    End Function
-
-    Public Function VisualStyleChanged(ByVal visualStyle As cVisualStyle) As Boolean
-        Me.AuxillaryDataChanged()
-    End Function
-
-#End Region ' Visual styles
-
-#Region " References "
-
-#If USE_REFERENCES Then
-    Friend m_referenceDBID() As Integer
-    Friend m_references() As cReference
-    Friend m_NumReferences As Integer
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the list of <see cref="cReference">references</see> for a given <see cref="cValueID">value ID</see> in EwE.
-    ''' </summary>
-    ''' <param name="strValueID">The EwE <see cref="cValueID">value ID</see> to get or set <see cref="cReference">references</see> list for.</param>
-    ''' <param name="dataType"></param>
-    ''' <param name="iDBID"></param>
-    ''' -------------------------------------------------------------------
-    Friend Function References(ByVal strValueID As String, Optional ByVal dataType As eDataTypes = eDataTypes.NotSet, Optional ByVal iDBID As Integer = -1) As List(Of cReference)
-        ' ToDo_JS: Consider how to do this. Either expose list publicly or restrict access via cAuxillaryData methods such as AddReference, RemoveReference?
-        Return Me.GetAuxiliaryData(strValueID, dataType, iDBID).References
-    End Function
-#End If
-
-#End Region ' References
 
 #Region " Pedigree "
 
@@ -10004,45 +9901,6 @@ Public Class cCore
     Public Function GetPedigreeManager(ByVal varName As eVarNameFlags) As cPedigreeManager
         If Me.m_PedigreeManagers.ContainsKey(varName) Then Return Me.m_PedigreeManagers(varName)
         Return Nothing
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Get or set a pedigree for a given <see cref="cValueID">value ID</see> in EwE.
-    ''' </summary>
-    ''' <param name="strValueID">The EwE <see cref="cValueID">value ID</see> to get or set the pedigree for.</param>
-    ''' -------------------------------------------------------------------
-    Public Property Pedigree(ByVal strValueID As String) As Integer
-        Get
-            Return Me.GetAuxiliaryData(strValueID).Pedigree
-        End Get
-        Set(ByVal iPedigree As Integer)
-            If Me.StorePedigree(iPedigree, strValueID) Then
-                ' Flag changed
-                Me.AuxillaryDataChanged()
-            End If
-        End Set
-    End Property
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Load a remark text for a given <see cref="cValueID">value ID</see> in EwE.
-    ''' </summary>
-    ''' <param name="strValueID">The EwE <see cref="cValueID">value ID</see> to get or set the remark text for.</param>
-    ''' <returns>True if the visual style assignment has changed the auxillary data.</returns>
-    ''' -------------------------------------------------------------------
-    Friend Function StorePedigree(ByVal iPedigree As Integer, ByVal strValueID As String) As Boolean
-
-        Dim ad As cAuxiliaryData = Me.GetAuxiliaryData(strValueID)
-        Dim bChanged As Boolean = False
-
-        If (ad.Pedigree <> iPedigree) Then
-            ' Update Visual Style
-            ad.Pedigree = iPedigree
-            bChanged = True
-        End If
-        Return bChanged
-
     End Function
 
 #End Region ' Pedigree

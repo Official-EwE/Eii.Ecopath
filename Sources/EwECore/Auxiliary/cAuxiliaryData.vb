@@ -25,16 +25,20 @@ Namespace Auxiliary
     ''' </summary>
     ''' =======================================================================
     Public Class cAuxiliaryData
+        Inherits cCoreInputOutputBase
 
 #Region " Private vars "
 
-        Private m_key As cValueID
+        ''' <summary>Unique database ID</summary>
+        Private m_iDBID As Integer = 0
         ''' <summary>Remark text for this data.</summary>
         Private m_strRemark As String = ""
         ''' <summary>Visual style for this data.</summary>
         Private m_visualStyle As cVisualStyle = Nothing
         ''' <summary>Pedigree for this data.</summary>
-        Private m_iPedigree As Integer = 0
+        Private m_pedigreeLevel As cPedigreeLevel = Nothing
+        ''' <summary>Key to identify core variable this data refers to.</summary>
+        Private m_key As cValueID = Nothing
 
 #If USE_REFERENCES Then
         ''' <summary>List of <see cref="cReference">references</see> for this data.</summary>
@@ -49,14 +53,15 @@ Namespace Auxiliary
         ''' <summary>
         ''' Constructor, initializes a new instance of cAuxiliaryData.
         ''' </summary>
-        ''' <param name="strID">Unique ID to assign to this cAuxillaryData instance.</param>
+        ''' <param name="core"></param>
+        ''' <param name="strValueID">Unique ID to assign to this cAuxillaryData instance.</param>
         ''' <remarks>
         ''' <para>This constructor should be used when defining cAuxilaryData for derived 
         ''' values and values from objects that do not originate from the EwE core.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strID As String)
-            Me.New(cValueID.FromString(strID))
+        Sub New(ByVal core As cCore, ByVal strValueID As String)
+            Me.New(core, cValueID.FromString(strValueID))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -64,14 +69,35 @@ Namespace Auxiliary
         ''' Constructor, initializes a new instance of cAuxiliaryData that is soft-linked
         ''' to an <see cref="ICoreInterface">ICoreInterface</see>-derived object. 
         ''' </summary>
+        ''' <param name="core"></param>
+        ''' <param name="key"></param>
         ''' -------------------------------------------------------------------
-        Private Sub New(ByVal key As cValueID)
+        Sub New(ByVal core As cCore, ByVal key As cValueID)
+            MyBase.New(core)
+
             Me.m_key = key
+            Me.m_coreComponent = eCoreComponentType.Core
+            Me.m_dataType = eDataTypes.Auxillary
+
         End Sub
 
 #End Region ' Constructors
 
 #Region " Public properties "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether this object is all
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overloads Property AllowValidation() As Boolean
+            Get
+                Return MyBase.AllowValidation
+            End Get
+            Set(ByVal value As Boolean)
+                MyBase.AllowValidation = value
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -100,26 +126,32 @@ Namespace Auxiliary
         ''' Get or set the remark text for this data.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Remark() As String
+        Public Overloads Property Remark() As String
             Get
                 Return Me.m_strRemark
             End Get
             Set(ByVal value As String)
-                Me.m_strRemark = value
+                If (value <> m_strRemark) Then
+                    Me.m_strRemark = value
+                    Me.Update()
+                End If
             End Set
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the pedigree level ID for this data.
+        ''' Returns the pedigree level for this data.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Pedigree() As Integer
+        Public Property PedigreeLevel() As cPedigreeLevel
             Get
-                Return Me.m_iPedigree
+                Return Me.m_pedigreeLevel
             End Get
-            Set(ByVal value As Integer)
-                Me.m_iPedigree = value
+            Set(ByVal value As cPedigreeLevel)
+                If Not Object.ReferenceEquals(value, Me.PedigreeLevel) Then
+                    Me.m_pedigreeLevel = value
+                    Me.Update()
+                End If
             End Set
         End Property
 
@@ -146,17 +178,52 @@ Namespace Auxiliary
                 Return Me.m_visualStyle
             End Get
             Set(ByVal value As cVisualStyle)
+
+                If Object.ReferenceEquals(value, Me.VisualStyle) Then Return
+
+                If (Me.m_visualStyle IsNot Nothing) Then
+                    Me.m_visualStyle.Container = Nothing
+                End If
+
                 Me.m_visualStyle = value
+
+                If (Me.m_visualStyle IsNot Nothing) Then
+                    Me.m_visualStyle.Container = Me
+                End If
+
+                Me.Update()
+
             End Set
         End Property
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether an instance holds any data.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
         Public ReadOnly Property IsEmpty() As Boolean
             Get
                 Return String.IsNullOrEmpty(Me.Remark) And _
                        (Me.m_visualStyle Is Nothing) And _
-                       (Me.m_iPedigree = cCore.NULL_VALUE)
+                       (Me.m_pedigreeLevel Is Nothing)
             End Get
         End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Update auxillary data changes to the core.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Sub Update()
+
+            If Me.AllowValidation Then
+                ' Notify core, if provided
+                If (Me.m_core IsNot Nothing) Then
+                    Me.m_core.onChanged(Me, eMessageType.DataModified)
+                End If
+            End If
+
+        End Sub
 
 #End Region ' Public properties
 

@@ -288,7 +288,7 @@ Public MustInherit Class cCoreInputOutputBase
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the remark to attach to a variable in a core data object.
+    ''' Get/set a remark.
     ''' </summary>
     ''' <param name="varName">Variable name that a remark applies to.</param>
     ''' <param name="objSec">Secundary object within the given <paramref name="varName">variable</paramref>
@@ -298,25 +298,21 @@ Public MustInherit Class cCoreInputOutputBase
                            Optional ByVal objSec As cCoreInputOutputBase = Nothing) As String
         Get
             Dim key As cValueID = Nothing
-
             If (objSec Is Nothing) Then
                 key = New cValueID(Me.DataType, Me.DBID, varName)
             Else
                 key = New cValueID(Me.DataType, Me.DBID, varName, objSec.DataType, objSec.DBID)
             End If
-
-            Return Me.m_core.Remark(key)
+            Return Me.m_core.AuxillaryData(key).Remark
         End Get
         Set(ByVal strRemark As String)
             Dim key As cValueID = Nothing
-
             If (objSec Is Nothing) Then
                 key = New cValueID(Me.DataType, Me.DBID, varName)
             Else
                 key = New cValueID(Me.DataType, Me.DBID, varName, objSec.DataType, objSec.DBID)
             End If
-
-            Me.m_core.Remark(key) = strRemark
+            Me.m_core.AuxillaryData(key).Remark = strRemark
         End Set
     End Property
 

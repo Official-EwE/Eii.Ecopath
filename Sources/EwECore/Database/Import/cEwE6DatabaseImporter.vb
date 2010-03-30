@@ -66,15 +66,29 @@ Namespace Database
         ''' <summary>EWE5 NULL value.</summary>
         Private Const cEWE5_NULL As Integer = -90
 
-        ' Progress admin
+        ' == Progress admin ==
+
         ''' <summary>Attached core.</summary>
         Private m_core As cCore = Nothing
+        ''' <summary>Status log.</summary>
+        Private m_sbLog As New StringBuilder
         ''' <summary>Number of import steps to perform.</summary>
         Private m_nSteps As Integer = 0
         ''' <summary>Current import step counter.</summary>
         Private m_iStep As Integer = 0
 
-        ' Databases
+        ''' <summary>List of imported forcing shapes, used to check for duplicates.</summary>
+        Private m_lImportedForcingShapes As New List(Of cForcingShapeData)
+        ''' <summary>ID for next imported shape.</summary>
+        Private m_iNextShapeID As Integer = 1
+
+        ''' <summary>Dict (varname, List(of PedigreeLevelID))</summary>
+        Private m_dicPedigreeLevels As New Dictionary(Of eVarNameFlags, List(Of Integer))
+        ''' <summary>ID for next imported Auxillary data.</summary>
+        Private m_iNextAuxID As Integer = 1
+
+        ' == Databases ==
+
         ''' <summary>Source database in EwE5 format.</summary>
         Private m_dbEwE5 As cEwEDatabase ' Import from (read)
         ''' <summary>Target database in EwE6 format.</summary>
@@ -82,25 +96,12 @@ Namespace Database
         ''' <summary>Flag indicating the method used to attach to the source database.</summary>
         Private m_openType As eOpenType = eOpenType.NotSet
 
-        ' Tables that will receive information throughout the import process
-        ''' <summary>Continuous open writer for Remarks.</summary>
-        Private m_writerRemarks As cEwEDatabase.cEwEDbWriter = Nothing
-        Private m_dtRemarks As DataTable = Nothing
-
-        '''' <summary>Continuous open writer for References.</summary>
-        'Private m_writerReferences As cEwEDatabase.cEwEDbWriter = Nothing
+        ' == Tables that will receive information throughout the import process ==
 
         ''' <summary>Primary keys lookup table</summary>
         Private m_adtKeys() As Dictionary(Of String, Integer)
         ''' <summary>Dictionaries, per datatype, of EwE Poolcode index to EwE6 DatabaseID.</summary>
         Private m_adtIndexes() As Dictionary(Of Integer, Integer)
-
-        ''' <summary>Shape counter.</summary>
-        Private m_iNextShapeID As Integer = 1
-
-        Private m_sbLog As New StringBuilder
-
-        Private m_lImportedForcingShapes As New List(Of cForcingShapeData)
 
 #End Region ' Private bits 
 
@@ -115,6 +116,17 @@ Namespace Database
         Public Sub New(ByVal core As cCore)
             ' Store core ref
             Me.m_core = core
+
+            Me.m_lImportedForcingShapes.Clear()
+            Me.m_dicPedigreeLevels.Clear()
+            Me.m_iNextShapeID = 1
+            Me.m_iStep = 0
+
+            Me.m_dicPedigreeLevels(eVarNameFlags.Biomass) = New List(Of Integer)
+            Me.m_dicPedigreeLevels(eVarNameFlags.PBInput) = New List(Of Integer)
+            Me.m_dicPedigreeLevels(eVarNameFlags.QBInput) = New List(Of Integer)
+            Me.m_dicPedigreeLevels(eVarNameFlags.DietComp) = New List(Of Integer)
+            Me.m_dicPedigreeLevels(eVarNameFlags.Landings) = New List(Of Integer)
         End Sub
 
 #End Region ' Constructor
@@ -460,13 +472,6 @@ Namespace Database
 
             Me.m_dbEwE6 = dbEwE6
 
-            ' Open long-term writers
-            Me.m_writerRemarks = Me.m_dbEwE6.GetWriter("Remark")
-            Me.m_dtRemarks = Me.m_writerRemarks.GetDataTable()
-
-            ' JS 061221: References do not need to be imported 
-            ' Me.m_tlReferences = Me.m_dbEwE6.GetSequentialWriter("Reference")
-
             ' Start the actual import process.
             ' Note that VB6 function names are used here to make it easier to map to the old code.
 
@@ -591,11 +596,6 @@ Namespace Database
             'ImportPyramidMain(strModelName)
             'ImportPyramidSource(strModelName)
             'ImportSummaryStatistics(strModelName)
-
-            ' Save long-term writers
-            Me.m_dbEwE6.ReleaseWriter(Me.m_writerRemarks, True)
-            ' JS 061221: References do not need to be imported
-            'Me.m_dbEwE6.ReleaseWriter(Me.m_writerReferences, True)
 
             ' Set version
             Me.m_dbEwE6.SetVersion(Me.m_dbEwE6.GetVersion(), "Imported from Ecopath 5")
@@ -1686,11 +1686,13 @@ Namespace Database
         Private Sub ImportPedigree(ByVal strModelName As String)
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim lLevels As List(Of Integer) = Nothing
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim varName As eVarNameFlags = eVarNameFlags.NotSet
             Dim strDescription As String = ""
             Dim drow As DataRow = Nothing
+            Dim iSequence As Integer = 0
             Dim iLevelID As Integer = 0
 
             reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Pedigree]"))
@@ -1714,9 +1716,10 @@ Namespace Database
 
                     Try
                         drow = writer.NewRow()
+                        iSequence = CInt(Me.FixValue(reader, "Option", 0))
                         drow("LevelID") = iLevelID
                         drow("VarName") = cin.GetVarName(varName)
-                        drow("Sequence") = CInt(Me.FixValue(reader, "Option", 0))
+                        drow("Sequence") = iSequence
                         drow("IndexValue") = CSng(Me.FixValue(reader, "Value", 0.0!))
                         drow("Confidence") = CInt(Me.FixValue(reader, "Var", 0))
                         drow("Description") = strDescription
@@ -1724,6 +1727,12 @@ Namespace Database
                     Catch ex As Exception
 
                     End Try
+
+                    lLevels = Me.m_dicPedigreeLevels(varName)
+                    While lLevels.Count <= iSequence
+                        lLevels.Add(cCore.NULL_VALUE)
+                    End While
+                    lLevels(iSequence) = iLevelID
 
                     iLevelID += 1
 
@@ -4145,7 +4154,7 @@ Namespace Database
         ''' <summary>
         ''' Add a pedigree indicator to the Auxillary data table
         ''' </summary>
-        ''' <param name="objPedigree">Pedigree indicator, may be DBNull</param>
+        ''' <param name="iPedigree">Pedigree sequence number, may be cCore.NULL_VALUE</param>
         ''' <param name="dataType">The <see cref="eDataTypes">Core data type</see> 
         ''' representing the object to store the pedigree indicator for.</param>
         ''' <param name="nID">The database ID of <paramref name="dataType">dataType</paramref>
@@ -4156,23 +4165,19 @@ Namespace Database
         ''' representing the secundary object (or index) to store the pedigree indicator for.</param>
         ''' <param name="nIDSec">The database ID of <paramref name="dataTypeSec">dataTypeSec</paramref>.</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddPedigree(ByVal objPedigree As Object, _
-                 ByVal dataType As eDataTypes, ByVal nID As Integer, _
-                 ByVal varName As eVarNameFlags, _
-                 Optional ByVal dataTypeSec As eDataTypes = eDataTypes.NotSet, Optional ByVal nIDSec As Integer = -1)
+        Private Sub AddPedigree(ByVal iPedigree As Integer, _
+                                ByVal dataType As eDataTypes, _
+                                ByVal nID As Integer, _
+                                ByVal varName As eVarNameFlags, _
+                                Optional ByVal dataTypeSec As eDataTypes = eDataTypes.NotSet, _
+                                Optional ByVal nIDSec As Integer = -1)
 
-            Dim iPedigree As Integer = cCore.NULL_VALUE
-            ' No data? Abort
-            If (objPedigree Is Nothing) Then Return
-            ' No data? Abort
-            If Convert.IsDBNull(objPedigree) Then Return
-            ' Get actual value
-            iPedigree = CInt(objPedigree)
-            ' Valid?
-            If (iPedigree < 0) Then Return
-
+            ' Find pedigree levels for a variable
+            Dim lPedigreeLevelIDs As List(Of Integer) = Me.m_dicPedigreeLevels(varName)
+            ' Abort if invalid
+            If (iPedigree < 0 Or iPedigree >= lPedigreeLevelIDs.Count) Then Return
             ' Add
-            Me.AddAuxillaryData("", iPedigree, dataType, nID, varName, dataTypeSec, nIDSec)
+            Me.AddAuxillaryData("", lPedigreeLevelIDs(iPedigree), dataType, nID, varName, dataTypeSec, nIDSec)
 
         End Sub
 
@@ -4181,7 +4186,7 @@ Namespace Database
         ''' Add a record to the Auxillary data table
         ''' </summary>
         ''' <param name="strRemark">Remark text to add.</param>
-        ''' <param name="iPedigree">Pedigree indicator to add.</param>
+        ''' <param name="iPedigreeLevelID">Pedigree indicator to add.</param>
         ''' <param name="dataType">The <see cref="eDataTypes">Core data type</see> 
         ''' representing the object to store the remark for.</param>
         ''' <param name="nID">The database ID of <paramref name="dataType">dataType</paramref>
@@ -4196,81 +4201,71 @@ Namespace Database
         ''' core object instance, variable type an optional subgroup.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub AddAuxillaryData(ByVal strRemark As String, ByVal iPedigree As Integer, _
-            ByVal dataType As eDataTypes, ByVal nID As Integer, _
-            ByVal varName As eVarNameFlags, _
-            ByVal dataTypeSec As eDataTypes, ByVal nIDSec As Integer)
+        Private Sub AddAuxillaryData(ByVal strRemark As String, _
+                                     ByVal iPedigreeLevelID As Integer, _
+                                     ByVal dataType As eDataTypes, ByVal nID As Integer, _
+                                     ByVal varName As eVarNameFlags, _
+                                     ByVal dataTypeSec As eDataTypes, _
+                                     ByVal nIDSec As Integer)
 
-            Dim strValueID As String = ""
-            Dim drow As DataRow = Nothing
-            Dim bNewRow As Boolean = True
+            Dim writer As cEwEDatabase.cEwEDbWriter = Me.m_dbEwE6.GetWriter("Auxillary")
+            Dim dt As DataTable = Nothing
             Dim key As New cValueID(dataType, nID, varName, dataTypeSec, nIDSec)
+            Dim strValueID As String = key.ToString()
+            Dim drow As DataRow = Nothing
+            Dim iRow As Integer = 0
+            Dim bRowFound As Boolean = False
+
+            ' Both null? Abort!
+            If String.IsNullOrEmpty(strRemark) And (iPedigreeLevelID < 0) Then Return
 
             ' Sanity check
             Debug.Assert(dataType > eDataTypes.NotSet And nID > 0, "Auxillary data cannot be added without a valid object identifier")
 
-            strValueID = key.ToString()
-            drow = Me.m_dtRemarks.Rows.Find(strValueID)
+            ' Find existing row
+            dt = writer.GetDataTable()
+            While (iRow < dt.Rows.Count) And (Not bRowFound)
+                drow = dt.Rows(iRow)
+                bRowFound = (String.Compare(strValueID, CStr(drow("ValueID"))) = 0)
+                iRow += 1
+            End While
 
-            If (drow Is Nothing) Then
-
-                ' Both null? Abort!
-                If String.IsNullOrEmpty(strRemark) And (iPedigree < 0) Then Return
+            If (Not bRowFound) Then
 
                 ' Create new row
-                drow = Me.m_dtRemarks.NewRow()
+                drow = writer.NewRow()
+                drow("DBID") = Me.m_iNextAuxID
                 drow("ValueID") = strValueID
-                bNewRow = True
+                Me.m_iNextAuxID += 1
+
             Else
+
                 ' Try to complete values
                 If String.IsNullOrEmpty(strRemark) Then strRemark = CStr(drow("Remark"))
-                If (iPedigree < 0) Then iPedigree = CInt(drow("Pedigree"))
-
-                ' Both null? Abort!
-                If String.IsNullOrEmpty(strRemark) And (iPedigree < 0) Then Return
+                If (iPedigreeLevelID < 0) Then iPedigreeLevelID = CInt(drow("PedigreeLevelID"))
 
                 ' Start editing existing row
                 drow.BeginEdit()
-                bNewRow = False
+
             End If
 
             ' Store remark text
             drow("Remark") = strRemark
             ' Store pedigree
-            drow("Pedigree") = iPedigree
+            drow("PedigreeLevelID") = iPedigreeLevelID
+            ' The other thing...
+            drow("VisualStyle") = ""
 
-            ' Forge FK for cascading deletes 
-            Select Case dataType
-                Case eDataTypes.EwEModel
-                    drow("ModelID") = nID
-                Case eDataTypes.EcoPathGroupInput
-                    drow("EcopathGroupID") = nID
-                Case eDataTypes.EcoSimGroupInput
-                    drow("EcosimGroupID") = nID
-                Case eDataTypes.Stanza
-                    drow("StanzaID") = nID
-                Case eDataTypes.FleetInput
-                    drow("FleetID") = nID
-                Case eDataTypes.EcoSimScenario
-                    drow("EcosimScenarioID") = nID
-                Case eDataTypes.EggProd, eDataTypes.Forcing, eDataTypes.Mediation, _
-                     eDataTypes.FishMort, eDataTypes.FishingEffort
-                    drow("ShapeID") = nID
-                Case eDataTypes.EcoSpaceScenario
-                    drow("EcospaceScenarioID") = nID
-                Case eDataTypes.EcotracerScenario
-                    drow("EcotracerScenarioID") = nID
-                Case Else
-                    Debug.Assert(False, String.Format("Importer error: remark link to datatype {0} not implemented"), dataType.ToString())
-            End Select
-
-            If bNewRow Then
+            If Not bRowFound Then
                 ' Add new row 
-                Me.m_dtRemarks.Rows.Add(drow)
+                writer.AddRow(drow)
             Else
                 ' Update exsting row
                 drow.EndEdit()
             End If
+
+            writer.Commit()
+            Me.m_dbEwE6.ReleaseWriter(writer)
 
         End Sub
 

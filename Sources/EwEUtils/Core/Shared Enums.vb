@@ -1723,6 +1723,11 @@ Namespace Core
         EcospaceLayerAdvection = 82
 
         ''' <summary>
+        ''' Data belongs to Auxillary data.
+        ''' </summary>
+        Auxillary = 83
+
+        ''' <summary>
         ''' Data belongs to an external, unspecified source.
         ''' </summary>
         External = 777

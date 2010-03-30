@@ -336,7 +336,9 @@ Namespace DataSources
         ''' <param name="objValueDefault">A default value to return if the field could not be read.</param>
         ''' <returns>The value of the requested column, or the provided default if an error occurred.</returns>
         ''' -----------------------------------------------------------------------
-        Private Function ReadSafe(ByVal reader As IDataReader, ByVal strField As String, Optional ByVal objValueDefault As Object = Nothing) As Object
+        Private Function ReadSafe(ByVal reader As IDataReader, _
+                                  ByVal strField As String, _
+                                  Optional ByVal objValueDefault As Object = Nothing) As Object
 
             Dim objResult As Object = Nothing
 
@@ -8899,11 +8901,12 @@ Namespace DataSources
 
         Private Function LoadAuxillaryData() As Boolean
 
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM Remark")
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM Auxillary")
             Dim strValueID As String = ""
             Dim strRemark As String = ""
             Dim strVisualStyle As String = ""
-            Dim key As cValueID = Nothing
+            Dim iPedigreeLevelID As Integer = cCore.NULL_VALUE
+            Dim ad As cAuxiliaryData = Nothing
             Dim bSucces As Boolean = True
 
             Try
@@ -8912,34 +8915,20 @@ Namespace DataSources
                     strValueID = CStr(reader("ValueID"))
                     strRemark = CStr(Me.ReadSafe(reader, "Remark", ""))
                     strVisualStyle = CStr(Me.ReadSafe(reader, "VisualStyle", ""))
+                    iPedigreeLevelID = CInt(Me.ReadSafe(reader, "PedigreeLevelID", cCore.NULL_VALUE))
 
-                    ' Convert key (needs to be done in a DB update)
-                    If (strValueID.IndexOf("_"c) > -1) And strValueID.IndexOf("-"c) > 0 Then
-                        strValueID = strValueID.Replace("_", ":")
-                        strValueID = strValueID.Replace("-", ":")
-                        strValueID = strValueID.Replace("(", ":")
-                        strValueID = strValueID.Replace(")", "")
-                    End If
+                    ad = Me.m_core.AuxillaryData(strValueID)
+                    ad.AllowValidation = False
 
-                    key = cValueID.FromString(strValueID)
+                    ad.DBID = CInt(reader("DBID"))
+                    ad.Remark = strRemark
+                    ad.VisualStyle = cVisualStyleReader.StringToStyle(strVisualStyle)
+                    ad.PedigreeLevel = Nothing
 
-                    Try
-                        If (Not String.IsNullOrEmpty(strRemark)) Then
-                            Me.m_core.StoreRemark(strRemark, key)
-                        End If
-                    Catch ex As Exception
-                        ' All well
-                    End Try
-
-                    Try
-                        If (Not String.IsNullOrEmpty(strVisualStyle)) Then
-                            Me.m_core.StoreVisualStyle(cVisualStyleReader.StringToStyle(strVisualStyle), key)
-                        End If
-                    Catch ex As Exception
-                        ' All well
-                    End Try
+                    ad.AllowValidation = True
 
                 End While
+
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading AuxillaryData", ex.Message))
                 bSucces = False
@@ -8957,34 +8946,46 @@ Namespace DataSources
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim ad As cAuxiliaryData = Nothing
+            Dim iDBID As Integer = 0
             Dim bSucces As Boolean = True
 
             Try
-                Me.m_db.Execute("DELETE * FROM Remark")
-                writer = Me.m_db.GetWriter("Remark")
+                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(DBID) FROM Auxillary")) + 1
+            Catch ex As Exception
+                iDBID = 1
+            End Try
+
+            Try
+                Me.m_db.Execute("DELETE * FROM Auxillary")
+                writer = Me.m_db.GetWriter("Auxillary")
 
                 For Each strValueID As String In Me.m_core.m_dtAuxiliaryData.Keys
+
                     ' Get actual remark instance
                     ad = m_core.m_dtAuxiliaryData(strValueID)
                     ' Has anything to save?
-                    If ((Not String.IsNullOrEmpty(ad.Remark)) Or _
-                        (Not Object.ReferenceEquals(ad.VisualStyle, Nothing)) Or _
-                        (ad.Pedigree >= 0)) Then
+                    If (Not ad.IsEmpty()) Then
 
                         ' Make row
                         drow = writer.NewRow()
+
+                        If ad.DBID <= 0 Then ad.DBID = iDBID : iDBID += 1
+
+                        drow("DBID") = ad.DBID
                         drow("ValueID") = strValueID
                         drow("Remark") = ad.Remark
-                        drow("Pedigree") = CInt(IIf(ad.Pedigree > 0, ad.Pedigree, cCore.NULL_VALUE))
 
-                        Try
-                            If ad.VisualStyle IsNot Nothing Then
-                                drow("VisualStyle") = cVisualStyleReader.StyleToString(ad.VisualStyle)
-                            Else
-                                drow("VisualStyle") = ""
-                            End If
-                        Catch ex As Exception
-                        End Try
+                        If (ad.PedigreeLevel IsNot Nothing) Then
+                            drow("PedigreeLevelID") = ad.PedigreeLevel.DBID
+                        Else
+                            ' DBNULL
+                        End If
+
+                        If ad.VisualStyle IsNot Nothing Then
+                            drow("VisualStyle") = cVisualStyleReader.StyleToString(ad.VisualStyle)
+                        Else
+                            drow("VisualStyle") = ""
+                        End If
 
                         writer.AddRow(drow)
                     End If

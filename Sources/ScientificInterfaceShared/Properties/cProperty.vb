@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.Auxiliary
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
@@ -583,12 +584,12 @@ Namespace Properties
             Get
                 If (Me.m_key Is Nothing) Then Return ""
                 If (Me.m_pm Is Nothing) Then Return ""
-                Return Me.m_pm.Core.Remark(Me.m_key)
+                Return Me.m_pm.Core.AuxillaryData(Me.m_key).Remark
             End Get
             Set(ByVal strRemark As String)
                 If (Me.m_key IsNot Nothing) Then
                     If (Me.m_pm IsNot Nothing) Then
-                        Me.m_pm.Core.Remark(Me.m_key) = strRemark
+                        Me.m_pm.Core.AuxillaryData(Me.m_key).Remark = strRemark
                     End If
                     Me.m_strRemark = strRemark
                 End If

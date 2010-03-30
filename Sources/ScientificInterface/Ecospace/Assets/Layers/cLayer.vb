@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.Auxiliary
 Imports SAUPUtil.SAUPData
 Imports SAUPUtil.SAUPData.Mapping
 Imports SAUPUtil.Misc.Colours
@@ -107,6 +108,8 @@ Namespace Ecospace.Basemap.Layers
         Private m_valueClear As Single = cCore.NULL_VALUE
         Private m_renderer As cLayerRenderer = Nothing
         Private m_editor As cLayerEditor = Nothing
+
+        Private m_bAllowValidation As Boolean = True
 
         Private m_bSelected As Boolean = False
         Private m_bModified As Boolean = False
@@ -383,7 +386,7 @@ Namespace Ecospace.Basemap.Layers
                     ' Is a core layer?
                     If Me.m_data.DataType <> eDataTypes.NotSet Then
                         ' #Yes: inform the core
-                        If Me.m_uic IsNot Nothing Then
+                        If (Me.m_uic IsNot Nothing) And (Me.AllowValidation) Then
                             Me.m_uic.Core.onChanged(Me.m_data)
                         End If
                     Else
@@ -397,8 +400,8 @@ Namespace Ecospace.Basemap.Layers
 
                 If ((updateType And eChangeFlags.VisualStyle) = eChangeFlags.VisualStyle) Then
                     Me.m_renderer.Update()
-                    If Me.m_uic IsNot Nothing Then
-                        Me.m_uic.Core.VisualStyleChanged(Me.m_renderer.VisualStyle)
+                    If (Me.AllowValidation) Then
+                        Me.m_renderer.VisualStyle.Update()
                     End If
                 End If
 
@@ -591,6 +594,15 @@ Namespace Ecospace.Basemap.Layers
             Set(ByVal value As Boolean)
                 Me.m_bModified = value
                 Me.m_data.Invalidate()
+            End Set
+        End Property
+
+        Public Property AllowValidation() As Boolean
+            Get
+                Return Me.m_bAllowValidation
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bAllowValidation = value
             End Set
         End Property
 
