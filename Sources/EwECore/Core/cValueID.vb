@@ -19,6 +19,7 @@ Public Class cValueID
     Private m_strVarName As String = ""
     Private m_dtSec As eDataTypes = eDataTypes.NotSet
     Private m_iDBIDSec As Integer = cCore.NULL_VALUE
+    Private m_strCached As String = ""
 
     Private Shared s_cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
@@ -87,11 +88,14 @@ Public Class cValueID
     End Sub
 
     Public Overrides Function ToString() As String
-        If Me.m_dtSec = eDataTypes.NotSet Then
-            Return s_cni.GetDataTypeName(Me.m_dtPrim) & ":" & Me.m_iDBIDPrim & ":" & Me.m_strVarName
-        Else
-            Return s_cni.GetDataTypeName(Me.m_dtPrim) & ":" & Me.m_iDBIDPrim & ":" & Me.m_strVarName & ":" & s_cni.GetDataTypeName(Me.m_dtSec) & ":" & Me.m_iDBIDSec
+        If Me.m_strCached.Length = 0 Then
+            If Me.m_dtSec = eDataTypes.NotSet Then
+                Me.m_strCached = s_cni.GetDataTypeName(Me.m_dtPrim) & ":" & Me.m_iDBIDPrim & ":" & Me.m_strVarName
+            Else
+                Me.m_strCached = s_cni.GetDataTypeName(Me.m_dtPrim) & ":" & Me.m_iDBIDPrim & ":" & Me.m_strVarName & ":" & s_cni.GetDataTypeName(Me.m_dtSec) & ":" & Me.m_iDBIDSec
+            End If
         End If
+        Return Me.m_strCached
     End Function
 
     Public Property DataTypePrim() As eDataTypes
@@ -100,6 +104,7 @@ Public Class cValueID
         End Get
         Set(ByVal dt As eDataTypes)
             Me.m_dtPrim = dt
+            Me.m_strCached = ""
         End Set
     End Property
 
@@ -109,6 +114,7 @@ Public Class cValueID
         End Get
         Set(ByVal dt As eDataTypes)
             Me.m_dtSec = dt
+            Me.m_strCached = ""
         End Set
     End Property
 
@@ -118,6 +124,7 @@ Public Class cValueID
         End Get
         Set(ByVal iDBID As Integer)
             Me.m_iDBIDPrim = iDBID
+            Me.m_strCached = ""
         End Set
     End Property
 
@@ -127,6 +134,7 @@ Public Class cValueID
         End Get
         Set(ByVal iDBID As Integer)
             Me.m_iDBIDSec = iDBID
+            Me.m_strCached = ""
         End Set
     End Property
 
@@ -136,6 +144,7 @@ Public Class cValueID
         End Get
         Set(ByVal strVarName As String)
             Me.m_strVarName = strVarName
+            Me.m_strCached = ""
         End Set
     End Property
 
