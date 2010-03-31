@@ -255,6 +255,8 @@ Namespace Auxiliary
             Dim bf As New BinaryFormatter()
             Dim ms As New MemoryStream()
 
+            If (vs Is Nothing) Then Return ""
+
             ' Write object to mem stream
             bf.Serialize(ms, vs)
             strResult = System.Convert.ToBase64String(ms.ToArray(), Base64FormattingOptions.None)
