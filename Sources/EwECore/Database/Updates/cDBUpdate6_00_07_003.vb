@@ -72,7 +72,7 @@ Friend Class cDBUpdate6_00_07_003
                 strVisualStyle = ""
 
                 If Not Convert.IsDBNull(reader("Remark")) Then
-                    strRemark = CStr(reader("Remark"))
+                    strRemark = CStr(reader("Remark")).Replace("""", """""")
                 End If
                 If Not Convert.IsDBNull(reader("VisualStyle")) Then
                     strVisualStyle = CStr(reader("VisualStyle"))
