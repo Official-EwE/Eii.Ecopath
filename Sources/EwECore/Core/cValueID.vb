@@ -158,7 +158,7 @@ Public Class cValueID
                 Case 0 : key.m_dtPrim = s_cni.GetDataType(asBits(0))
                 Case 1 : key.m_iDBIDPrim = CInt(asBits(1))
                 Case 2 : key.m_strVarName = asBits(2)
-                Case 3 : key.m_iDBIDSec = CInt(asBits(3))
+                Case 3 : key.m_dtSec = s_cni.GetDataType(asBits(3))
                 Case 4 : key.m_iDBIDSec = CInt(asBits(4))
             End Select
         Next
