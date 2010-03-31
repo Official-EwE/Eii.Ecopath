@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwECore.ValueWrapper
 
 #End Region ' Imports
 
@@ -25,7 +26,7 @@ Namespace Auxiliary
     ''' </summary>
     ''' =======================================================================
     Public Class cAuxiliaryData
-        Inherits cCoreInputOutputBase
+        Implements ICoreInterface
 
 #Region " Private vars "
 
@@ -39,6 +40,8 @@ Namespace Auxiliary
         Private m_pedigreeLevel As cPedigreeLevel = Nothing
         ''' <summary>Key to identify core variable this data refers to.</summary>
         Private m_key As cValueID = Nothing
+        Private m_core As cCore = Nothing
+        Private m_bAllowValidation As Boolean = False
 
 #If USE_REFERENCES Then
         ''' <summary>List of <see cref="cReference">references</see> for this data.</summary>
@@ -73,11 +76,12 @@ Namespace Auxiliary
         ''' <param name="key"></param>
         ''' -------------------------------------------------------------------
         Sub New(ByVal core As cCore, ByVal key As cValueID)
-            MyBase.New(core)
+            MyBase.New()
 
             Me.m_key = key
-            Me.m_coreComponent = eCoreComponentType.Core
-            Me.m_dataType = eDataTypes.Auxillary
+            Me.m_core = core
+            Me.AllowValidation = False
+
             Me.AllowValidation = True
 
         End Sub
@@ -88,15 +92,15 @@ Namespace Auxiliary
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether this object is all
+        ''' Get/set whether this object is allowed to report data changes to the core.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overloads Property AllowValidation() As Boolean
             Get
-                Return MyBase.AllowValidation
+                Return Me.m_bAllowValidation
             End Get
             Set(ByVal value As Boolean)
-                MyBase.AllowValidation = value
+                Me.m_bAllowValidation = value
             End Set
         End Property
 
@@ -227,6 +231,78 @@ Namespace Auxiliary
         End Sub
 
 #End Region ' Public properties
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdoc cref="ICoreInterface.CoreComponent" />
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property CoreComponent() As eCoreComponentType _
+            Implements ICoreInterface.CoreComponent
+            Get
+                Return eCoreComponentType.Core
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdoc cref="ICoreInterface.CoreComponent" />
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property DataType() As eDataTypes _
+            Implements ICoreInterface.DataType
+            Get
+                Return eDataTypes.Auxillary
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdoc cref="ICoreInterface.CoreComponent" />
+        ''' -----------------------------------------------------------------------
+        Public Property DBID() As Integer Implements ICoreInterface.DBID
+            Get
+                Return Me.m_iDBID
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_iDBID = value
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdoc cref="ICoreInterface.CoreComponent" />
+        ''' -----------------------------------------------------------------------
+        Public Function GetID() As String _
+               Implements ICoreInterface.GetID
+            Return Me.Key.ToString
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the ordinal number in the core storage structures for a core 
+        ''' data entity.
+        ''' </summary>
+        ''' <remarks>
+        ''' Since AuxillaryData are indexed via HashTables this property is not used.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Property Index() As Integer _
+               Implements ICoreInterface.Index
+            Get
+                Return cCore.NULL_VALUE
+            End Get
+            Set(ByVal value As Integer)
+                ' NOP
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdoc cref="ICoreInterface.Name" />
+        ''' -----------------------------------------------------------------------
+        Public Property Name() As String _
+                Implements ICoreInterface.Name
+            Get
+                Return Me.Remark
+            End Get
+            Set(ByVal value As String)
+                Me.Remark = value
+            End Set
+        End Property
 
     End Class
 
