@@ -644,10 +644,10 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcopathGroups()
             bSucces = bSucces And Me.SaveEcopathFleetInfo()
             bSucces = bSucces And Me.SaveParticleSizeDistribution()
-            bSucces = bSucces And Me.SaveAuxillaryData()
             bSucces = bSucces And Me.SaveEcosimScenarioDefinitions()
             bSucces = bSucces And Me.SaveEcospaceScenarioDefinitions()
             bSucces = bSucces And Me.SaveEcotracerScenarioDefinitions()
+            bSucces = bSucces And Me.SaveAuxillaryData()
 
             If bSucces Then
                 bSucces = Me.m_db.CommitTransaction()
@@ -8980,9 +8980,13 @@ Namespace DataSources
                         ' Make row
                         drow = writer.NewRow()
 
-                        If ad.DBID <= 0 Then ad.DBID = iDBID : iDBID += 1
+                        If ad.DBID > 0 Then
+                            drow("DBID") = ad.DBID
+                        Else
+                            drow("DBID") = iDBID
+                            iDBID += 1
+                        End If
 
-                        drow("DBID") = ad.DBID
                         drow("ValueID") = strValueID
                         drow("Remark") = ad.Remark
                         drow("VisualStyle") = cVisualStyleReader.StyleToString(ad.VisualStyle)
