@@ -133,7 +133,7 @@ Namespace Ecospace.Basemap.Layers
                     For iMPA As Integer = 1 To core.nMPAs
 
                         Dim mpa As cEcospaceMPA = core.EcospaceMPAs(iMPA)
-                        key = New cValueID(eDataTypes.EcospaceLayerMPA, bmd.DBID, eVarNameFlags.Name)
+                        key = New cValueID(eDataTypes.EcospaceLayerMPA, mpa.DBID, eVarNameFlags.Name)
                         ad = core.AuxillaryData(key)
 
                         ' Get or create Visual Style
