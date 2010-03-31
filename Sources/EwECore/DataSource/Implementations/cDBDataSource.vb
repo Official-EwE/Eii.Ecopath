@@ -9039,7 +9039,11 @@ Namespace DataSources
                         Try
 
                             ' Make new key
-                            key = New cValueID(dt, idm.GetID(dt, iDBID), ad.Key.VarName, ad.Key.DataTypeSec, ad.Key.DBIDSec)
+                            key = ad.Key
+                            key = New cValueID(dt, idm.GetID(dt, iDBID), _
+                                               key.VarName, _
+                                               key.DataTypeSec, idm.GetID(key.DataTypeSec, ad.Key.DBIDSec))
+
                             ' Start new row
                             drow = writer.NewRow()
                             ' Config row
