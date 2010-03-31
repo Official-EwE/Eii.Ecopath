@@ -78,6 +78,7 @@ Namespace Auxiliary
             Me.m_key = key
             Me.m_coreComponent = eCoreComponentType.Core
             Me.m_dataType = eDataTypes.Auxillary
+            Me.AllowValidation = True
 
         End Sub
 
