@@ -58,6 +58,8 @@ Friend Class cDBUpdate6_00_07_003
         Dim bSucces As Boolean = False
 
         bSucces = db.Execute("CREATE TABLE Auxillary (DBID Integer, ValueID TEXT(70), Remark MEMO, VisualStyle MEMO, Pedigree INTEGER)")
+        bSucces = bSucces And db.Execute("ALTER TABLE Auxillary ADD PRIMARY KEY (DBID)")
+
         If bSucces Then
 
             While reader.Read
