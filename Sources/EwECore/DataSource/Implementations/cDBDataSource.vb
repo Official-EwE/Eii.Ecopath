@@ -229,13 +229,17 @@ Namespace DataSources
             Return cDATABASE_NOVERSION
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="IEwEDataSource.BeginTransaction" />
+        ''' -------------------------------------------------------------------
         Public Function BeginTransaction() As Boolean _
             Implements DataSources.IEwEDataSource.BeginTransaction
             Return Me.m_db.BeginTransaction()
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="IEwEDataSource.EndTransaction" />
+        ''' -------------------------------------------------------------------
         Public Function EndTransaction(ByVal bCommit As Boolean) As Boolean _
             Implements DataSources.IEwEDataSource.EndTransaction
             If bCommit Then
@@ -8980,13 +8984,9 @@ Namespace DataSources
                         ' Make row
                         drow = writer.NewRow()
 
-                        If ad.DBID > 0 Then
-                            drow("DBID") = ad.DBID
-                        Else
-                            drow("DBID") = iDBID
-                            iDBID += 1
-                        End If
+                        If ad.DBID <= 0 Then ad.DBID = iDBID : iDBID += 1
 
+                        drow("DBID") = ad.DBID
                         drow("ValueID") = strValueID
                         drow("Remark") = ad.Remark
                         drow("VisualStyle") = cVisualStyleReader.StyleToString(ad.VisualStyle)
