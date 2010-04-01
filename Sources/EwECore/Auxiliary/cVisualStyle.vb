@@ -37,6 +37,7 @@ Namespace Auxiliary
         Private m_strFontName As String = "Arial"
         Private m_sFontSize As Single = 8.0!
         Private m_fontstyle As FontStyle = FontStyle.Regular
+        <NonSerialized()> _
         Private m_container As cAuxiliaryData = Nothing
 
         ''' -----------------------------------------------------------------------
@@ -220,7 +221,7 @@ Namespace Auxiliary
         ''' Get/set the Auxillary data that contains this visual style.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Friend Property Container() As cAuxiliaryData
+         Friend Property Container() As cAuxiliaryData
             Get
                 Return Me.m_container
             End Get
