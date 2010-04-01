@@ -17,6 +17,9 @@ Namespace Ecospace
     ''' </summary>
     Public Class RunEcospace
 
+        ''' <summary>number of legend bins is arbitrary</summary>
+        Private Const cColourBins As Integer = 100
+
         Public Enum eShowGroupType
             ShowAll = 0
             ShowNonHidden
@@ -74,8 +77,6 @@ Namespace Ecospace
         Private m_iGroupToShow As Integer = 1
         Private m_zgh As cEcospaceZedGraphHelper = Nothing
 
-        ''' <summary>number of legend bins is arbitrary</summary>
-        Private m_nEffortBins As Single = 100
         ''' <summary>Exposing m_sMaxEffort to the interface would allow the user to set the Effort legend sensitivity.</summary>
         Private m_sMaxEffort As Single = 5
         Private m_cmdDisplayGroups As cCommand = Nothing
@@ -161,7 +162,7 @@ Namespace Ecospace
             Dim drawer As cMapDrawer
             Dim nThreads As Integer = Environment.ProcessorCount
             Dim sg As cStyleGuide = Me.StyleGuide
-            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(Me.Core.nGroups)
+            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(cColourBins)
 
             Me.m_nMapsPerThread = (Me.Core.nGroups + nThreads - 1) \ nThreads
             If Me.m_drawers Is Nothing Then
@@ -592,8 +593,8 @@ Namespace Ecospace
         Private Sub DrawFishingBaseMap(ByRef baseMap(,,) As Single, ByVal iFleet As Integer, ByVal rcPos As Rectangle, ByRef g As Graphics)
 
             Dim sg As cStyleGuide = Me.StyleGuide
-            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(CInt(Me.m_nEffortBins))
-            Dim cScaler As Single = Me.m_nEffortBins / Me.m_sMaxEffort
+            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(CInt(Me.cColourBins))
+            Dim cScaler As Single = Me.cColourBins / Me.m_sMaxEffort
 
             For i As Integer = 1 To m_iInRow
                 For j As Integer = 1 To m_iInCol
@@ -602,7 +603,7 @@ Namespace Ecospace
                     icc = baseMap(iFleet, i, j) * cScaler
 
                     'Boundary check
-                    icc = Math.Max(Math.Min(Me.m_nEffortBins, icc), 0)
+                    icc = Math.Max(Math.Min(Me.cColourBins, icc), 0)
 
                     Dim tmpBrush As SolidBrush = Nothing
                     'If it is water
