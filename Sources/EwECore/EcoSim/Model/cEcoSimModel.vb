@@ -2204,7 +2204,7 @@ Namespace Ecosim
                 Next
 
                 'Make the detritus calculations here:
-                SimDetritusMT(Biomass, m_Data.Eatenby, m_Data.Eatenof, m_Data.ToDetritus, m_Data.GroupDetritus)
+                SimDetritusMT(Biomass, m_Data.FishRateGear, m_Data.Eatenby, m_Data.Eatenof, m_Data.ToDetritus, m_Data.GroupDetritus)
 
                 For i = 1 To nGroups
 
@@ -2262,7 +2262,7 @@ Namespace Ecosim
         ''' <summary>
         ''' Thread safe version of SimDetritus
         ''' </summary>
-        Public Sub SimDetritusMT(ByVal Biomass() As Single, ByVal Eatenby() As Single, ByVal EatenOf() As Single, ByRef ToDetritus() As Single, ByRef DetritusByGroup() As Single)
+        Public Sub SimDetritusMT(ByVal Biomass() As Single, ByVal FishRateGear(,) As Single, ByVal Eatenby() As Single, ByVal EatenOf() As Single, ByRef ToDetritus() As Single, ByRef DetritusByGroup() As Single)
             ' Dim Surplus As Single
             Dim i As Integer, j As Integer, K As Integer
             Dim ToDet As Single, DetFlowN As Single
@@ -2285,7 +2285,7 @@ Namespace Ecosim
                             Else
                                 'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
                                 'discard mort is included in Propdiscardtime() by initialization and MSE 
-                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * Biomass(i) * m_Data.FishRateGear(K, 0) * m_Data.FishMGear(K, i) * Me.m_Quota.Propdiscardtime(K, i)
+                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_Data.FishMGear(K, i) * Me.m_Quota.Propdiscardtime(K, i)
                                 'DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishRateGear(K, 0) * m_Data.FishMGear(K, i) + Me.m_Quota.RegDiscard(K, i)
                             End If
                             ToDet = ToDet + DetFlowN
