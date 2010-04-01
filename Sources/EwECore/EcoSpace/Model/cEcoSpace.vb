@@ -2345,7 +2345,7 @@ Public Class cEcoSpace
         Next
 
         'Make the detritus calculations here:
-        m_Ecosim.SimDetritusMT(Biomass, m_SimData.Eatenby, m_SimData.Eatenof, ToDetritus, GrpDet)
+        m_Ecosim.SimDetritusMT(Biomass, m_SimData.FishRateGear, m_SimData.Eatenby, m_SimData.Eatenof, ToDetritus, GrpDet)
 
         For i = 1 To m_Data.NGroups
 
@@ -3077,7 +3077,7 @@ exitline:
                         (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(ig, m_Data.MPA(i, j)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(i, j))) _
                         And (m_Data.GearHab(ig, m_Data.HabType(i, j)) Or m_Data.GearHab(ig, 0)) Then
                         'If Depth(i, j) > 0 And MPA(i, j) = 0 And (PresentHabitat = GearHab(ig, PresentHabitat) Or GearHab(ig, PresentHabitat) = 0) Then
-                        'mpamonth(mpatype, month) is false if fishing is allowed, true if fishing prohib
+                        'mpamonth(mpatype, month) is false if closed, True if open.
                         Valt = 0
                         For isp = 1 To m_Data.NGroups
                             Valt = Valt + m_EPdata.Market(ig, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(ig, isp)
