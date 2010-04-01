@@ -4,6 +4,7 @@ Option Strict On
 Imports System.Text
 Imports System.Reflection
 Imports Microsoft.VisualBasic
+Imports System
 
 #End Region ' Imports
 
@@ -25,6 +26,7 @@ Namespace Utilities
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function GetName(ByVal an As AssemblyName) As String
+            If (an Is Nothing) Then Return String.Empty
             Return an.Name
         End Function
 
@@ -37,6 +39,7 @@ Namespace Utilities
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function GetToken(ByVal an As AssemblyName) As String
+            If (an Is Nothing) Then Return String.Empty
             Return cStringUtils.ToHexString(an.GetPublicKeyToken())
         End Function
 
@@ -49,7 +52,24 @@ Namespace Utilities
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function GetVersion(ByVal an As AssemblyName) As String
+            If (an Is Nothing) Then Return String.Empty
             Return an.Version.ToString()
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get an assembly name for a class type.
+        ''' </summary>
+        ''' <param name="tclass">The class to return the defining assembly name for.</param>
+        ''' <returns>An AssemblyName, or nothing if the class type could not be resolved.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function GetAssemblyName(ByVal tclass As Type) As AssemblyName
+
+            If (tclass Is Nothing) Then Return Nothing
+            Dim ass As Assembly = Assembly.GetAssembly(tclass)
+            If (ass Is Nothing) Then Return Nothing
+            Return ass.GetName()
+
         End Function
 
     End Class
