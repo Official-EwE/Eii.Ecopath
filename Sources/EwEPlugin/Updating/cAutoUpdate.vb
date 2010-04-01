@@ -5,8 +5,10 @@ Imports System
 Imports System.Net
 Imports System.IO
 Imports System.Reflection
+Imports System.Diagnostics
 Imports EwEUtils.Utilities
 Imports System.Security.Cryptography
+Imports System.Windows.Forms
 
 #End Region ' Imports
 
@@ -14,17 +16,34 @@ Imports System.Security.Cryptography
 ''' <summary>
 ''' Helper class to update a plug-in assembly from the EwE web service.
 ''' </summary>
+''' <remarks>
+''' <para>The cAutoUpdate class should be used as follows:</para>
+''' <code>
+''' 
+''' </code>
+''' </remarks>
 ''' ===========================================================================
 Friend Class cAutoUpdate
 
 #Region " Private vars "
 
-    ''' <summary>The core assembly to verify plug-in versions against.</summary>
-    Private m_assemCore As AssemblyName = Nothing
     ''' <summary>The update service.</summary>
     Private m_service As EwEAutoUpdateRef.UpdateService = Nothing
     ''' <summary>Update session cookies.</summary>
     Private m_cookiejar As CookieContainer = Nothing
+
+    ''' <summary>Attached file name.</summary>
+    Private m_strFile As String = ""
+
+    ''' <summary>Attached core version.</summary>
+    Private m_strCoreVersion As String = ""
+    ''' <summary>Attached plug-in version.</summary>
+    Private m_strPluginVersion As String = ""
+    ''' <summary>Attached plug-in short file name.</summary>
+    Private m_strPluginName As String = ""
+    ''' <summary>Attached plug-in public hash key token.</summary>
+    ''' <remarks>For strong-named assemblies only.</remarks>
+    Private m_strPluginToken As String = ""
 
 #End Region ' Private vars
 
@@ -34,12 +53,11 @@ Friend Class cAutoUpdate
     ''' <summary>
     ''' Constructor, initializes a new cAutoUpdate instance.
     ''' </summary>
-    ''' <param name="assemCore">The core assembly to download updates for.</param>
+    ''' <param name="core">The core assembly to download updates for.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal assemCore As AssemblyName)
+    Public Sub New(ByVal core As Object)
 
-        ' Store refs
-        Me.m_assemCore = assemCore
+        Me.m_strCoreVersion = Me.CoreVersion(core)
         Me.m_cookiejar = New CookieContainer()
         Me.m_service = New EwEAutoUpdateRef.UpdateService()
         Me.m_service.CookieContainer = Me.m_cookiejar
@@ -52,80 +70,115 @@ Friend Class cAutoUpdate
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Enumerated type stating update attempt results.
+    ''' Enumerated type stating update status results.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Enum eUpdateResultTypes As Integer
-        ''' <summary>Operation successful.</summary>
+    Public Enum eUpdateStatusTypes As Integer
+
+        ''' <summary>All good. Blue skies, happy children, money in the bank; the works.</summary>
         Success = 0
-        ''' <summary>Update not available for a given assembly.</summary>
-        Error_NoUpdateAvailable
+        ''' <summary>A migration is available.</summary>
+        Info_CanMigrate
+        ''' <summary>An update is available.</summary>
+        Info_CanUpdate
         ''' <summary>Update webservice could not be connected.</summary>
         Error_Connection
         ''' <summary>File failed to download.</summary>
         Error_Download
         ''' <summary>Failed to replace a plug-in on the system.</summary>
         Error_Replace
-        ''' <summary>A generic, unspecified error occurred.</summary>
-        Error_Generic
+        ''' <summary>The updater was not properly initialized.</summary>
+        Error_Initialized
+
     End Enum
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method, states if an update is available for a given assembly.
+    ''' Attach a file to the updater.
     ''' </summary>
-    ''' <param name="strPluginFile">The file to check updates for.</param>
-    ''' <returns>
-    ''' <para>An <see cref="eUpdateResultTypes">update result indicator</see>,
-    ''' which are to be interpreted as follows:</para>
-    ''' <list type="bullet">
-    ''' <item>
-    ''' <term><see cref="eUpdateResultTypes.Success">Success</see></term>
-    ''' <description>An update is available.</description>
-    ''' </item>
-    ''' <item>
-    ''' <term><see cref="eUpdateResultTypes.Error_NoUpdateAvailable">Error_NoUpdateAvailable</see></term>
-    ''' <description>An update is not available.</description>
-    ''' </item>
-    ''' <item>
-    ''' <term><see cref="eUpdateResultTypes.Error_Connection">Error_Connection</see></term>
-    ''' <description>Connection to update server could not be established.</description>
-    ''' </item>
-    ''' <item>
-    ''' <term><see cref="eUpdateResultTypes.Error_Generic">Error_Generic</see></term>
-    ''' <description>Something else went wrong.</description>
-    ''' </item>
-    ''' </list>
-    ''' </returns>
+    ''' <param name="strFile"></param>
+    ''' <returns>True if this is a valid assembly.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function HasUpdate(ByVal strPluginFile As String) As eUpdateResultTypes
+    Public Function AttachAssembly(ByVal strFile As String) As Boolean
+
         Dim assemPlugin As AssemblyName = Nothing
+
+        ' Reset
+        Me.m_strFile = ""
+
         Try
-            assemPlugin = AssemblyName.GetAssemblyName(strPluginFile)
+            assemPlugin = AssemblyName.GetAssemblyName(strFile)
         Catch ex As Exception
             assemPlugin = Nothing
         End Try
 
         If (assemPlugin Is Nothing) Then
-            Return eUpdateResultTypes.Error_Generic
-        End If
-
-        ' Perform local version check first
-        If assemPlugin.Version.CompareTo(m_assemCore.Version) >= 0 Then
-            Return eUpdateResultTypes.Error_NoUpdateAvailable
+            Return False
         End If
 
         Try
-            If Me.m_service.CheckPluginUpdate(cAssemblyUtils.GetVersion(Me.m_assemCore), _
-                                                  cAssemblyUtils.GetName(assemPlugin), _
-                                                  cAssemblyUtils.GetToken(assemPlugin), _
-                                                  cAssemblyUtils.GetVersion(assemPlugin)) Then
-                Return eUpdateResultTypes.Success
-            End If
-        Catch ex As Exception
-            ' Unable to connect to server
+            ' Grab details
+            Me.m_strPluginName = cAssemblyUtils.GetName(assemPlugin)
+            Me.m_strPluginToken = cAssemblyUtils.GetToken(assemPlugin)
+            Me.m_strPluginVersion = cAssemblyUtils.GetVersion(assemPlugin)
+        Catch e As Exception
+            Return False
         End Try
-        Return eUpdateResultTypes.Error_Connection
+
+        ' Remember file
+        Me.m_strFile = strFile
+
+        ' Ok
+        Return True
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Check for updates on the attached assembly.
+    ''' </summary>
+    ''' <para>An <see cref="eUpdateStatusTypes">update status</see>flag, which 
+    ''' is to be interpreted as follows:</para>
+    ''' <list type="table">
+    ''' <listheader><term>Flag</term><description>Description</description></listheader>
+    ''' <item>
+    ''' <term><see cref="eUpdateStatusTypes.Success">Success</see></term>
+    ''' <description>The file is in a proper state.</description>
+    ''' </item>
+    ''' <item>
+    ''' <term><see cref="eUpdateStatusTypes.Info_CanMigrate">Info_CanMigrate</see></term>
+    ''' <description>An migration from weak-named to strong-named is available.</description>
+    ''' </item>
+    ''' <item>
+    ''' <term><see cref="eUpdateStatusTypes.Info_CanUpdate">Info_CanUpdate</see></term>
+    ''' <description>An update is available.</description>
+    ''' </item>
+    ''' <item>
+    ''' <term><see cref="eUpdateStatusTypes.Error_Connection">Error_Connection</see></term>
+    ''' <description>Connection to update server could not be established.</description>
+    ''' </item>
+    ''' <item>
+    ''' <term><see cref="eUpdateStatusTypes.Error_Initialized">Error_Generic</see></term>
+    ''' <description>The updater was not properly initialized.</description>
+    ''' </item>
+    ''' </list>
+    ''' -----------------------------------------------------------------------
+    Public Function CheckForUpdate() As eUpdateStatusTypes
+
+        If String.IsNullOrEmpty(Me.m_strPluginName) Then
+            Return eUpdateStatusTypes.Error_Initialized
+        End If
+
+        ' Perform local version check first
+        If Me.m_strPluginVersion.CompareTo(Me.m_strCoreVersion) >= 0 Then
+            Return eUpdateStatusTypes.Success
+        End If
+
+        If String.IsNullOrEmpty(Me.m_strPluginToken) Then
+            Return Me.HasMigration()
+        Else
+            Return Me.HasUpdate()
+        End If
 
     End Function
 
@@ -133,33 +186,38 @@ Friend Class cAutoUpdate
     ''' <summary>
     ''' Download an update for a file.
     ''' </summary>
-    ''' <param name="strPluginFile">The file to update.</param>
     ''' <returns>
-    ''' <para>An <see cref="eUpdateResultTypes">update result indicator</see>,
+    ''' <para>An <see cref="eUpdateStatusTypes">update result indicator</see>,
     ''' which are to be interpreted as follows:</para>
-    ''' <list type="bullet">
+    ''' <list type="table">
+    ''' <listheader><term>Flag</term><description>Description</description></listheader>
     ''' <item>
-    ''' <term><see cref="eUpdateResultTypes.Success">Success</see></term>
+    ''' <term><see cref="eUpdateStatusTypes.Success">Success</see></term>
     ''' <description>Update was downloaded and copied succesfully.</description>
     ''' </item>
     ''' <item>
-    ''' <term><see cref="eUpdateResultTypes.Error_Download">Error_Download</see></term>
+    ''' <term><see cref="eUpdateStatusTypes.Error_Download">Error_Download</see></term>
     ''' <description>Failed to correctly download the update.</description>
     ''' </item>
     ''' <item>
-    ''' <term><see cref="eUpdateResultTypes.Error_Replace">Error_Replace</see></term>
-    ''' <description>Failed to replace local plug-in file with update.</description>
+    ''' <term><see cref="eUpdateStatusTypes.Error_Replace">Error_Replace</see></term>
+    ''' <description>Failed to replace the local plug-in file with the downloaded file.</description>
     ''' </item>
     ''' </list>
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Function DownloadUpdate(ByVal strPluginFile As String) As eUpdateResultTypes
+    Public Function DownloadUpdate() As eUpdateStatusTypes
 
         Dim abPlugin() As Byte = Nothing
         Dim fsPlugin As FileStream = Nothing
         Dim strTemp As String = Path.GetTempFileName()
         Dim md5Hash As MD5 = MD5.Create()
         Dim strHashLocal As String = ""
+
+
+        If String.IsNullOrEmpty(Me.m_strPluginName) Then
+            Return eUpdateStatusTypes.Error_Initialized
+        End If
 
         Try
             ' Download to a temp location
@@ -170,7 +228,7 @@ Friend Class cAutoUpdate
             fsPlugin = Nothing
         Catch ex As Exception
             ' Error downloading update
-            Return eUpdateResultTypes.Error_Download
+            Return eUpdateStatusTypes.Error_Download
         End Try
 
         Try
@@ -180,19 +238,19 @@ Friend Class cAutoUpdate
             ' Does checksum match the service checksum?
             If Not String.Compare(strHashLocal, Me.m_service.GetPluginHash(), True) = 0 Then
                 ' #No: download failed
-                Return eUpdateResultTypes.Error_Download
+                Return eUpdateStatusTypes.Error_Download
             End If
         Catch ex As Exception
             ' Error downloading hash
-            Return eUpdateResultTypes.Error_Download
+            Return eUpdateStatusTypes.Error_Download
         End Try
 
         Try
             ' Replace plug-in file
-            File.Copy(strTemp, strPluginFile, True)
+            File.Copy(strTemp, Me.m_strFile, True)
         Catch ex As Exception
             ' Unable to overwrite plug-in dll, maybe it's in use?
-            Return eUpdateResultTypes.Error_Replace
+            Return eUpdateStatusTypes.Error_Replace
         End Try
 
         Try
@@ -203,10 +261,84 @@ Friend Class cAutoUpdate
         End Try
 
         ' Yippee
-        Return eUpdateResultTypes.Success
+        Return eUpdateStatusTypes.Success
 
     End Function
 
 #End Region ' Public access
+
+#Region " Internals "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, get the version of the core assembly.
+    ''' </summary>
+    ''' <param name="core">The core object to query the assembly for.</param>
+    ''' -----------------------------------------------------------------------
+    Private ReadOnly Property CoreVersion(ByVal core As Object) As String
+        Get
+            Dim anCore As AssemblyName = cAssemblyUtils.GetAssemblyName(core.GetType())
+            Return cAssemblyUtils.GetVersion(anCore)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, states whether a migration is available for the attached 
+    ''' file.
+    ''' </summary>
+    ''' <returns>
+    ''' <see cref="eUpdateStatusTypes.Info_CanMigrate">Info_CanMigrate</see>
+    ''' if a migration is available, <see cref="eUpdateStatusTypes.Error_Connection">Error_Connection</see>
+    ''' otherwise.
+    ''' </returns>
+    ''' <remarks>
+    ''' Note that this check should only be performed on weak-named assemblies.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function HasMigration() As eUpdateStatusTypes
+
+        Debug.Assert(String.IsNullOrEmpty(Me.m_strPluginToken), "Assembly is not weak-named")
+
+        Try
+            Me.m_strPluginToken = Me.m_service.GetPluginMigrationToken(Me.m_strCoreVersion, Me.m_strPluginName, Me.m_strPluginVersion)
+
+            If Not String.IsNullOrEmpty(Me.m_strPluginToken) Then
+                Return eUpdateStatusTypes.Info_CanMigrate
+            End If
+
+        Catch ex As Exception
+            ' Unable to connect to server
+        End Try
+
+        Return eUpdateStatusTypes.Error_Connection
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, states if an update is available for a given assembly.
+    ''' </summary>
+    ''' <returns>
+    ''' <see cref="eUpdateStatusTypes.Success">Success</see>
+    ''' if a migration is available, <see cref="eUpdateStatusTypes.Error_Connection">Error_Connection</see>
+    ''' otherwise.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
+    Private Function HasUpdate() As eUpdateStatusTypes
+
+        Try
+            If Me.m_service.CheckPluginUpdate(Me.m_strCoreVersion, Me.m_strPluginName, Me.m_strPluginToken, Me.m_strPluginVersion) Then
+                Return eUpdateStatusTypes.Success
+            End If
+
+        Catch ex As Exception
+            ' Unable to connect to server
+        End Try
+        Return eUpdateStatusTypes.Error_Connection
+
+    End Function
+
+#End Region ' Internals
 
 End Class

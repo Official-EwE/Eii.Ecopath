@@ -241,37 +241,113 @@ Public Class cPluginManager
 
 #Region " Updates "
 
-    Public Function UpdatePlugins() As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Delegate to implement plug-in overwrite confirmation handling.
+    ''' </summary>
+    ''' <param name="strPlugin">The short name of the plug-in to overwrite.</param>
+    ''' <returns>True if the plug-in can be overwritten.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Delegate Function OnConfirmOverwrite(ByVal strPlugin As String) As Boolean
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Attempt to update all plug-in assemblies.
+    ''' </summary>
+    ''' <param name="dlgOverwrite"><see cref="OnConfirmOverwrite">Delegate</see> 
+    ''' for the calling process to implement an overwrite confirmation for possible 
+    ''' conflicts.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function UpdatePlugins(Optional ByVal dlgOverwrite As OnConfirmOverwrite = Nothing) As Boolean
+
+        Dim updater As cAutoUpdate = New cAutoUpdate(Me.m_core)
+        Dim pluginAssembly As Assembly = Nothing
+        Dim strPluginPath As String = ""
 
         Dim di As DirectoryInfo = Nothing
         Dim fi As FileInfo = Nothing
         Dim afi() As FileInfo = Nothing
-        Dim sProgress As Single = 0.0!
 
-        'Get the location of the plugin manager assembly
-        Dim pluginAssembly As Assembly = System.Reflection.Assembly.GetAssembly(GetType(cPluginManager))
-        Dim strPluginPath As String = Path.GetDirectoryName(pluginAssembly.Location)
+        Dim strPluginName As String = ""
+        Dim sProgress As Single = 0.0!
+        Dim bDownload As Boolean = True
 
         Try
 
+            ' Get plug-in assembly
+            pluginAssembly = Assembly.GetAssembly(GetType(cPluginManager))
+            ' Get location of plug-in assembly (which is where plug-ins are installed) ((win7 issues?!))
+            strPluginPath = Path.GetDirectoryName(pluginAssembly.Location)
+
+            ' Get inventory of all DLLs in the plug-in path
+            ' JB: Added "*.dll" to only get files that could contain a Plugin.
+            '     Other assembly types (exe, etc) may contain plugins but we won't go there.
             di = New DirectoryInfo(strPluginPath)
-            'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
             afi = di.GetFiles("*.dll")
 
-            Dim ass As Assembly = Assembly.GetAssembly(Me.m_core.GetType())
-            Dim updater As New cAutoUpdate(ass.GetName)
-
+            ' For each DLL
             For iFile As Integer = 0 To afi.Length - 1
 
+                ' Get file info
                 fi = afi(iFile)
+                ' Extract human legible plug-in name
+                strPluginName = Path.GetFileNameWithoutExtension(fi.FullName)
+                ' Calc progress
                 sProgress = CSng(iFile / afi.Length)
+                ' Think positive
+                bDownload = True
 
-                RaiseEvent AssemblyUpdating("", sProgress)
-                If updater.HasUpdate(fi.FullName) = cAutoUpdate.eUpdateResultTypes.Success Then
-                    RaiseEvent AssemblyUpdating(Path.GetFileNameWithoutExtension(fi.FullName), sProgress)
-                    updater.DownloadUpdate(fi.FullName)
+                ' Can updater attach to this file?
+                If updater.AttachAssembly(fi.FullName) Then
+
+                    ' #Yes: process file
+                    RaiseEvent AssemblyUpdating("", sProgress)
+
+                    ' Check for update type
+                    Select Case updater.CheckForUpdate()
+
+                        Case cAutoUpdate.eUpdateStatusTypes.Info_CanMigrate
+                            ' #Migration: not a simple update but a possibly risky migration.
+                            ' Can ask user for confirmation?
+                            If (dlgOverwrite IsNot Nothing) Then
+                                ' #Yes: Ask overwrite confirmation 
+                                bDownload = dlgOverwrite.Invoke(strPluginName)
+                            Else
+                                ' #No: Do not affect plug-in without confirmation
+                                bDownload = False
+                            End If
+
+                        Case cAutoUpdate.eUpdateStatusTypes.Info_CanUpdate
+                            ' #Update: ready to download
+                            bDownload = True
+
+                        Case cAutoUpdate.eUpdateStatusTypes.Error_Connection
+                            ' #No connection: abort process to save time
+                            Return False
+
+                        Case Else
+                            ' #Other status: either plug-in already up to date, or
+                            ' the plug-in cannot (or should not) be treated. 
+                            ' Move along folks, there's nothing to see here.
+                            bDownload = False
+
+                    End Select
+
+                    ' Need to download?
+                    If bDownload Then
+                        ' #Yes: go at it
+                        RaiseEvent AssemblyUpdating(strPluginName, sProgress)
+                        ' ToDo: handle update result
+                        updater.DownloadUpdate()
+                    Else
+                        ' #No: just reflect progress
+                        RaiseEvent AssemblyUpdating("", sProgress)
+                    End If
+
                 End If
             Next
+
             ' Done
             RaiseEvent AssemblyUpdating("", 1.0!)
 
