@@ -670,7 +670,7 @@ Public Class cSpaceSolver
             Next
 
             'Make the detritus calculations here:
-            m_Ecosim.SimDetritusMT(Biomass, Eatenby, Eatenof, ToDetritus, GroupDetritus)
+            m_Ecosim.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, Eatenof, ToDetritus, GroupDetritus)
 
             For i = 1 To m_Data.NGroups
 
