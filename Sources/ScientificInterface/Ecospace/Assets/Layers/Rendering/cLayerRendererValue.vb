@@ -67,6 +67,11 @@ Namespace Ecospace.Basemap.Layers
             Dim sValMax As Single = layer.MaxValue
             Dim sValMin As Single = layer.MinValue
 
+            If Not Me.Autoscale Then
+                sValMax = Me.ScaleMax
+                sValMin = Me.ScaleMin
+            End If
+
             Try
                 If Me.m_brFore Is Nothing Then Me.Update()
 
@@ -76,6 +81,7 @@ Namespace Ecospace.Basemap.Layers
                    (Me.m_bDrawAlways = True) Then
 
                     If (value IsNot Nothing) And (Me.m_ft IsNot Nothing) Then
+
                         Dim sValue As Single = CSng(value)
                         Dim sValRange As Single = (sValMax - sValMin)
 

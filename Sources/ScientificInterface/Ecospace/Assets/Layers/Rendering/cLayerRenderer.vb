@@ -33,6 +33,10 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>States whether the underlying layer is visible.</summary>
         Private m_bVisible As Boolean = True
 
+        Private m_bAutoScale As Boolean = True
+        Private m_sScaleMax As Single = 0.0
+        Private m_sScaleMin As Single = 0.0
+
 #End Region ' Private vars
 
 #Region " Construction / destruction "
@@ -172,6 +176,48 @@ Namespace Ecospace.Basemap.Layers
             End Get
             Set(ByVal value As Boolean)
                 Me.m_bVisible = value
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether this layer renderer auto-scales its values.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property Autoscale() As Boolean
+            Get
+                Return Me.m_bAutoScale
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bAutoScale = value
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the scale max value to render to.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property ScaleMax() As Single
+            Get
+                Return Me.m_sScaleMax
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sScaleMax = value
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the scale min value to render to.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property ScaleMin() As Single
+            Get
+                Return Me.m_sScaleMin
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sScaleMin = value
             End Set
         End Property
 
