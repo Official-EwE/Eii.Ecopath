@@ -509,6 +509,18 @@ Partial Friend NotInheritable Class Settings
             Me("MdbRecentlyUsedCount") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property SuppressedOverwritePrompts() As String
+        Get
+            Return CType(Me("SuppressedOverwritePrompts"),String)
+        End Get
+        Set
+            Me("SuppressedOverwritePrompts") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

@@ -144,37 +144,37 @@
   <data name="&gt;&gt;m_nudMRU.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_btnClear.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnClearMRU.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnClear.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="m_btnClearMRU.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="m_btnClear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnClearMRU.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnClear.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnClearMRU.Location" type="System.Drawing.Point, System.Drawing">
     <value>301, 17</value>
   </data>
-  <data name="m_btnClear.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnClearMRU.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="m_btnClear.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnClearMRU.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_btnClear.Text" xml:space="preserve">
+  <data name="m_btnClearMRU.Text" xml:space="preserve">
     <value>&amp;Clear</value>
   </data>
-  <data name="&gt;&gt;m_btnClear.Name" xml:space="preserve">
-    <value>m_btnClear</value>
+  <data name="&gt;&gt;m_btnClearMRU.Name" xml:space="preserve">
+    <value>m_btnClearMRU</value>
   </data>
-  <data name="&gt;&gt;m_btnClear.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnClearMRU.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnClear.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnClearMRU.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
   </data>
-  <data name="&gt;&gt;m_btnClear.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnClearMRU.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="lblMDB.AutoSize" type="System.Boolean, mscorlib">
@@ -208,7 +208,7 @@
     <value>2</value>
   </data>
   <data name="m_gpMRU.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 115</value>
+    <value>0, 130</value>
   </data>
   <data name="m_gpMRU.Size" type="System.Drawing.Size, System.Drawing">
     <value>382, 50</value>
@@ -270,6 +270,54 @@
   <data name="m_gpMsg.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.Name" xml:space="preserve">
+    <value>m_nudMaxNumMessages</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.Parent" xml:space="preserve">
+    <value>m_gpMsg</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.Name" xml:space="preserve">
+    <value>m_lblMaxNumMessages</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.Parent" xml:space="preserve">
+    <value>m_gpMsg</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_gpMsg.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 190</value>
+  </data>
+  <data name="m_gpMsg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>382, 56</value>
+  </data>
+  <data name="m_gpMsg.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_gpMsg.Text" xml:space="preserve">
+    <value>Status panel</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Name" xml:space="preserve">
+    <value>m_gpMsg</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_nudMaxNumMessages.Location" type="System.Drawing.Point, System.Drawing">
     <value>177, 23</value>
   </data>
@@ -321,32 +369,68 @@
   <data name="&gt;&gt;m_lblMaxNumMessages.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_gpMsg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 175</value>
-  </data>
-  <data name="m_gpMsg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 56</value>
-  </data>
-  <data name="m_gpMsg.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_gpMsg.Text" xml:space="preserve">
-    <value>Status panel</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Name" xml:space="preserve">
-    <value>m_gpMsg</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_gbStartup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lblResetOverwritePrompts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="m_lblResetOverwritePrompts.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblResetOverwritePrompts.Location" type="System.Drawing.Point, System.Drawing">
+    <value>50, 71</value>
+  </data>
+  <data name="m_lblResetOverwritePrompts.Size" type="System.Drawing.Size, System.Drawing">
+    <value>211, 13</value>
+  </data>
+  <data name="m_lblResetOverwritePrompts.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_lblResetOverwritePrompts.Text" xml:space="preserve">
+    <value>Clear &amp;suppressed plug-in overwrite prompts:</value>
+  </data>
+  <data name="&gt;&gt;m_lblResetOverwritePrompts.Name" xml:space="preserve">
+    <value>m_lblResetOverwritePrompts</value>
+  </data>
+  <data name="&gt;&gt;m_lblResetOverwritePrompts.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblResetOverwritePrompts.Parent" xml:space="preserve">
+    <value>m_gbStartup</value>
+  </data>
+  <data name="&gt;&gt;m_lblResetOverwritePrompts.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_btnResetOverwritePrompts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="m_btnResetOverwritePrompts.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="m_btnResetOverwritePrompts.Location" type="System.Drawing.Point, System.Drawing">
+    <value>301, 66</value>
+  </data>
+  <data name="m_btnResetOverwritePrompts.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnResetOverwritePrompts.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_btnResetOverwritePrompts.Text" xml:space="preserve">
+    <value>&amp;Clear</value>
+  </data>
+  <data name="&gt;&gt;m_btnResetOverwritePrompts.Name" xml:space="preserve">
+    <value>m_btnResetOverwritePrompts</value>
+  </data>
+  <data name="&gt;&gt;m_btnResetOverwritePrompts.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnResetOverwritePrompts.Parent" xml:space="preserve">
+    <value>m_gbStartup</value>
+  </data>
+  <data name="&gt;&gt;m_btnResetOverwritePrompts.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_cbCheckEwE6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -379,7 +463,7 @@
     <value>m_gbStartup</value>
   </data>
   <data name="&gt;&gt;m_cbCheckEwE6.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_cbDownloadUpdates.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -406,13 +490,13 @@
     <value>m_gbStartup</value>
   </data>
   <data name="&gt;&gt;m_cbDownloadUpdates.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_gbStartup.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 25</value>
   </data>
   <data name="m_gbStartup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 80</value>
+    <value>382, 95</value>
   </data>
   <data name="m_gbStartup.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>

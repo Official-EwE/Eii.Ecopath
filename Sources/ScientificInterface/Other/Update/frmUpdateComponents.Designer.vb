@@ -63,7 +63,6 @@ Partial Class frmUpdateComponents
         Me.Controls.Add(Me.m_lblInfo)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "frmUpdateComponents"
-        Me.TopMost = True
         Me.m_tlpButtons.ResumeLayout(False)
         Me.ResumeLayout(False)
 

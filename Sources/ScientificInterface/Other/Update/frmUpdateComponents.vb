@@ -150,6 +150,62 @@ Public Class frmUpdateComponents
     ''' -----------------------------------------------------------------------
     Private Delegate Sub CloseDelegate()
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Delegate to marshall an overwrite prompt request to the form.
+    ''' </summary>
+    ''' <param name="strPlugin">The plug-in to overwrite.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Private Delegate Function OverwritePromptDelegate(ByVal strPlugin As String) As Boolean
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, implements a plug-in overwrite prompt.
+    ''' </summary>
+    ''' <param name="strPlugin"></param>
+    ''' <returns>True if </returns>
+    ''' -----------------------------------------------------------------------
+    Private Function OverwritePrompt(ByVal strPlugin As String) As Boolean
+
+        Dim strPrompt As String = String.Format(My.Resources.PROMPT_UPDATE_MIGRATION, strPlugin)
+        Dim bCheck As Boolean = False
+        Dim bOverwrite As Boolean = False
+
+        If Not SuppressPrompt(strPlugin) Then
+            bOverwrite = cCustomMessageBox.Show(strPrompt, Me.Text, _
+                                                MessageBoxButtons.YesNo, MessageBoxIcon.Question, _
+                                                bCheck, My.Resources.PROMPT_UPDATE_MIGRATION_SUPPRESS) = Windows.Forms.DialogResult.Yes
+            SuppressPrompt(strPlugin) = bCheck
+        End If
+        Return bOverwrite
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether a plug-in overwrite prompt should be suppressed.
+    ''' </summary>
+    ''' <param name="strPlugin"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Private Property SuppressPrompt(ByVal strPlugin As String) As Boolean
+        Get
+            If String.IsNullOrEmpty(My.Settings.SuppressedOverwritePrompts) Then Return False
+            Dim astrSuppressed() As String = My.Settings.SuppressedOverwritePrompts.Split(","c)
+            For Each str As String In astrSuppressed
+                If (String.Compare(str.Trim, strPlugin.Trim, True) = 0) Then Return True
+            Next
+            Return False
+        End Get
+        Set(ByVal value As Boolean)
+            If Not Me.SuppressPrompt(strPlugin) Then
+                My.Settings.SuppressedOverwritePrompts &= (strPlugin & ",")
+            End If
+        End Set
+    End Property
+
 #End Region ' Internals
 
 #Region " Update thread "
@@ -161,10 +217,22 @@ Public Class frmUpdateComponents
     ''' -----------------------------------------------------------------------
     Private Sub UpdatePluginsThread()
         ' Run updates
-        Me.m_pm.UpdatePlugins()
+        Me.m_pm.UpdatePlugins(New cPluginManager.OnConfirmOverwrite(AddressOf OverwriteConfirmCallback))
         ' Done, close form
         Me.Invoke(New CloseDelegate(AddressOf Me.Close))
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Updater plugg-in overwrite callback.
+    ''' </summary>
+    ''' <param name="strPlugin">The plug-in to overwrite.</param>
+    ''' <returns>True if allowed to overwrite.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function OverwriteConfirmCallback(ByVal strPlugin As String) As Boolean
+        Return CBool(Me.Invoke(New OverwritePromptDelegate(AddressOf OverwritePrompt), New Object() {strPlugin}))
+    End Function
+
 
 #End Region ' Update thread
 

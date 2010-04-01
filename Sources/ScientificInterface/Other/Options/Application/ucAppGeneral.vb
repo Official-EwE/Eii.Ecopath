@@ -31,7 +31,7 @@ Namespace Other
             MyBase.OnLoad(e)
 
             ' Disable button if there is nothing to clear
-            Me.m_btnClear.Enabled = (My.Settings.MdbRecentlyUsedList.Count <= 1)
+            Me.m_btnClearMRU.Enabled = (My.Settings.MdbRecentlyUsedList.Count <= 1)
 
             Me.m_nudMRU.Value = CInt(Math.Min(Me.m_nudMRU.Maximum, _
                                      Math.Max(Me.m_nudMRU.Minimum, My.Settings.MdbRecentlyUsedCount)))
@@ -41,6 +41,8 @@ Namespace Other
 
             Me.m_cbCheckEwE6.Checked = False
             Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
+
+            Me.UpdateControls()
 
         End Sub
 
@@ -58,10 +60,17 @@ Namespace Other
 
 #Region " Event handlers "
 
+        Private Sub m_btnResetOverwritePrompts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnResetOverwritePrompts.Click
+            My.Settings.SuppressedOverwritePrompts = ""
+            Me.UpdateControls()
+        End Sub
+
         Private Sub btnClearMRU_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnClear.Click
+            Handles m_btnClearMRU.Click
             Me.ClearFileList(My.Settings.MdbRecentlyUsedList)
-            Me.m_btnClear.Enabled = False
+            Me.m_btnClearMRU.Enabled = False
+            Me.UpdateControls()
         End Sub
 
 #End Region ' Event handlers
@@ -74,12 +83,24 @@ Namespace Other
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = DialogResult.OK Then
                 ' Clear confirmed
                 fileList.Clear()
-
                 ' This is a temporary solution to avoid returning null reference.
                 fileList.Add(New System.Object)
-
-                'delete the configuration files in the folder
             End If
+
+        End Sub
+
+        Private Sub UpdateControls()
+
+            Dim bHasSuppressedPrompts As Boolean = (Not String.IsNullOrEmpty(My.Settings.SuppressedOverwritePrompts))
+            Dim bCanCheckExEUpdate As Boolean = False
+            Dim bHasMRU As Boolean = (My.Settings.MdbRecentlyUsedList.Count > 0)
+
+            Me.m_btnResetOverwritePrompts.Enabled = bHasSuppressedPrompts
+            Me.m_lblResetOverwritePrompts.Enabled = bHasSuppressedPrompts
+
+            Me.m_cbCheckEwE6.Enabled = bCanCheckExEUpdate
+
+            Me.m_btnClearMRU.Enabled = bHasMRU
 
         End Sub
 

@@ -5373,6 +5373,24 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to A newer Ecopath plug-in is available that may apply to &apos;{0}&apos; on your system, but copies cannot be authenticated. Do you want EwE6 to overwrite your local file?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_UPDATE_MIGRATION() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_UPDATE_MIGRATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Do not ask again for this file.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_UPDATE_MIGRATION_SUPPRESS() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_UPDATE_MIGRATION_SUPPRESS", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property ProtectFormHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ProtectFormHS", resourceCulture)

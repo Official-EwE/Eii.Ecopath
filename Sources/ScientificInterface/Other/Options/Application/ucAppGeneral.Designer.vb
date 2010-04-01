@@ -24,13 +24,15 @@ Partial Class ucAppGeneral
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucAppGeneral))
             Me.m_gpMRU = New System.Windows.Forms.GroupBox
             Me.m_nudMRU = New System.Windows.Forms.NumericUpDown
-            Me.m_btnClear = New System.Windows.Forms.Button
+            Me.m_btnClearMRU = New System.Windows.Forms.Button
             Me.lblMDB = New System.Windows.Forms.Label
             Me.lblTitle = New System.Windows.Forms.Label
             Me.m_gpMsg = New System.Windows.Forms.GroupBox
             Me.m_nudMaxNumMessages = New System.Windows.Forms.NumericUpDown
             Me.m_lblMaxNumMessages = New System.Windows.Forms.Label
             Me.m_gbStartup = New System.Windows.Forms.GroupBox
+            Me.m_lblResetOverwritePrompts = New System.Windows.Forms.Label
+            Me.m_btnResetOverwritePrompts = New System.Windows.Forms.Button
             Me.m_cbCheckEwE6 = New System.Windows.Forms.CheckBox
             Me.m_cbDownloadUpdates = New System.Windows.Forms.CheckBox
             Me.m_gpMRU.SuspendLayout()
@@ -44,7 +46,7 @@ Partial Class ucAppGeneral
             '
             resources.ApplyResources(Me.m_gpMRU, "m_gpMRU")
             Me.m_gpMRU.Controls.Add(Me.m_nudMRU)
-            Me.m_gpMRU.Controls.Add(Me.m_btnClear)
+            Me.m_gpMRU.Controls.Add(Me.m_btnClearMRU)
             Me.m_gpMRU.Controls.Add(Me.lblMDB)
             Me.m_gpMRU.Name = "m_gpMRU"
             Me.m_gpMRU.TabStop = False
@@ -55,11 +57,11 @@ Partial Class ucAppGeneral
             Me.m_nudMRU.Maximum = New Decimal(New Integer() {24, 0, 0, 0})
             Me.m_nudMRU.Name = "m_nudMRU"
             '
-            'm_btnClear
+            'm_btnClearMRU
             '
-            resources.ApplyResources(Me.m_btnClear, "m_btnClear")
-            Me.m_btnClear.Name = "m_btnClear"
-            Me.m_btnClear.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnClearMRU, "m_btnClearMRU")
+            Me.m_btnClearMRU.Name = "m_btnClearMRU"
+            Me.m_btnClearMRU.UseVisualStyleBackColor = True
             '
             'lblMDB
             '
@@ -97,10 +99,23 @@ Partial Class ucAppGeneral
             'm_gbStartup
             '
             resources.ApplyResources(Me.m_gbStartup, "m_gbStartup")
+            Me.m_gbStartup.Controls.Add(Me.m_lblResetOverwritePrompts)
+            Me.m_gbStartup.Controls.Add(Me.m_btnResetOverwritePrompts)
             Me.m_gbStartup.Controls.Add(Me.m_cbCheckEwE6)
             Me.m_gbStartup.Controls.Add(Me.m_cbDownloadUpdates)
             Me.m_gbStartup.Name = "m_gbStartup"
             Me.m_gbStartup.TabStop = False
+            '
+            'm_lblResetOverwritePrompts
+            '
+            resources.ApplyResources(Me.m_lblResetOverwritePrompts, "m_lblResetOverwritePrompts")
+            Me.m_lblResetOverwritePrompts.Name = "m_lblResetOverwritePrompts"
+            '
+            'm_btnResetOverwritePrompts
+            '
+            resources.ApplyResources(Me.m_btnResetOverwritePrompts, "m_btnResetOverwritePrompts")
+            Me.m_btnResetOverwritePrompts.Name = "m_btnResetOverwritePrompts"
+            Me.m_btnResetOverwritePrompts.UseVisualStyleBackColor = True
             '
             'm_cbCheckEwE6
             '
@@ -138,13 +153,15 @@ Partial Class ucAppGeneral
         Friend WithEvents lblTitle As System.Windows.Forms.Label
         Private WithEvents m_nudMaxNumMessages As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblMaxNumMessages As System.Windows.Forms.Label
-        Private WithEvents m_btnClear As System.Windows.Forms.Button
+        Private WithEvents m_btnClearMRU As System.Windows.Forms.Button
         Private WithEvents m_gpMRU As System.Windows.Forms.GroupBox
         Private WithEvents m_gpMsg As System.Windows.Forms.GroupBox
         Private WithEvents m_nudMRU As System.Windows.Forms.NumericUpDown
         Private WithEvents m_gbStartup As System.Windows.Forms.GroupBox
         Private WithEvents m_cbCheckEwE6 As System.Windows.Forms.CheckBox
         Private WithEvents m_cbDownloadUpdates As System.Windows.Forms.CheckBox
+        Private WithEvents m_lblResetOverwritePrompts As System.Windows.Forms.Label
+        Private WithEvents m_btnResetOverwritePrompts As System.Windows.Forms.Button
 
     End Class
 
