@@ -593,8 +593,8 @@ Namespace Ecospace
         Private Sub DrawFishingBaseMap(ByRef baseMap(,,) As Single, ByVal iFleet As Integer, ByVal rcPos As Rectangle, ByRef g As Graphics)
 
             Dim sg As cStyleGuide = Me.StyleGuide
-            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(CInt(Me.cColourBins))
-            Dim cScaler As Single = Me.cColourBins / Me.m_sMaxEffort
+            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(cColourBins)
+            Dim cScaler As Single = cColourBins / Me.m_sMaxEffort
 
             For i As Integer = 1 To m_iInRow
                 For j As Integer = 1 To m_iInCol
@@ -603,7 +603,7 @@ Namespace Ecospace
                     icc = baseMap(iFleet, i, j) * cScaler
 
                     'Boundary check
-                    icc = Math.Max(Math.Min(Me.cColourBins, icc), 0)
+                    icc = Math.Max(Math.Min(cColourBins, icc), 0)
 
                     Dim tmpBrush As SolidBrush = Nothing
                     'If it is water
