@@ -166,7 +166,7 @@ Public Class cHelp
     ''' <summary>
     ''' 
     ''' </summary>
-    ''' <param name="m"></param>
+    ''' <param name="message"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Protected Function PreFilterMessage(ByRef message As Message) As Boolean _
