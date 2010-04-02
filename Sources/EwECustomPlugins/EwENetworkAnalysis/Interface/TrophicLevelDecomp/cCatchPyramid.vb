@@ -97,7 +97,7 @@ Public Class cCatchPyramid
         Try
             'Execute the external application through the general function on EwEUtils
             Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
-            bSucces = SystemUtilities.AppExec("pyramid.exe", strOutputFile, "", "EwENetworkAnalysis")
+            bSucces = SystemUtilities.AppExec("pyramid.exe", strOutputFile83, "", "EwENetworkAnalysis")
         Catch ex As Exception
             bSucces = False
         End Try

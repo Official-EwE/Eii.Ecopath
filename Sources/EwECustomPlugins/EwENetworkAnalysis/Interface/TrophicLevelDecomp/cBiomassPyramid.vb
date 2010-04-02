@@ -117,9 +117,14 @@ Public Class cBiomassPyramid
         '    System.Windows.Forms.SendKeys.Send("%{F4}")
         'End If
 
-        'Execute the external application through the general function on EwEUtils
-        Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
-        If Not SystemUtilities.AppExec("pyramid.exe", strOutputFile, "", "EwENetworkAnalysis") Then
+        Try
+            Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
+            bSucces = SystemUtilities.AppExec("pyramid.exe", strOutputFile83, "", "EwENetworkAnalysis")
+        Catch ex As Exception
+
+        End Try
+
+        If Not bSucces Then
             Dim sb As New StringBuilder
             For Each str As String In SystemUtilities.ApplicationLaunchLocations
                 If sb.Length > 0 Then sb.Append(", ")
