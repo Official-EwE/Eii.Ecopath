@@ -3,7 +3,6 @@ Imports EwEPlugin
 Imports EwEUtils.Database
 Imports EwEUtils.Core
 Imports System.Data
-Imports OleDb
 Imports System.Data.OleDb
 
 ''' --------------------------------------------------------------------------
