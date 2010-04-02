@@ -773,7 +773,7 @@ Namespace Ecosim
             Dim EDataQ As Single = 0.0!
 
             ' Only plot time series for biomass 
-            If (Me.PlotDataType <> eVarNameFlags.Biomass) Then Return
+            If (Me.PlotDataType <> ePlotData.Biomass) Then Return
             ' Only plot data when NOT showing cumulative data
             If (Me.IsCumulativePlot) Then Return
 
