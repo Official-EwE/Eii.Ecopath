@@ -167,6 +167,9 @@ Namespace Ecospace
             Me.m_gridProgress.UIContext = Me.UIContext
             Me.m_gridResults.UIContext = Me.UIContext
 
+            ' Configure map
+            Me.m_ucZoom.UIContext = Me.UIContext
+
             Me.m_propSearchType = New cIntegerProperty(MPAOpt, eVarNameFlags.MPAOptSearchType)
             AddHandler Me.m_propSearchType.PropertyChanged, AddressOf OnSearchTypeChanged
 
@@ -1214,7 +1217,7 @@ Namespace Ecospace
 
             iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
 
-            If iIteration = -1 Then Return
+            If iIteration < lResults.Count Then Return
 
             res = lResults(iIteration)
             For iCell As Integer = 0 To res.Cells.Count - 1
