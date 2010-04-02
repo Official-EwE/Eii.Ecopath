@@ -10,6 +10,7 @@ Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SAUPUtil.SAUPData
 Imports SAUPUtil.SAUPFile
 Imports System.Collections.Generic
+Imports ZedGraph
 
 #End Region ' Import
 
@@ -110,12 +111,12 @@ Namespace Ecospace
         ''' <summary>Progress graph helper.</summary>
         Private m_zghProgress As cZedGraphHelper = Nothing
         ''' <summary>Progress graph data.</summary>
-        Private m_lptsProgress(5) As ResultPoints
+        Private m_aptsProgress(5) As ResultPoints
 
         ''' <summary>Results graph helper.</summary>
         Private m_zghResults As cZedGraphHelper = Nothing
         ''' <summary>Results graph data.</summary>
-        Private m_lptsResults(6) As ResultPoints
+        Private m_aptsResults(6) As ResultPoints
 
         ''' <summary>The mode that this form is in.</summary>
         Private m_mode As eFormModeTypes = eFormModeTypes.Prepare
@@ -436,29 +437,37 @@ Namespace Ecospace
 #Region " Search manager "
 
         Private Sub OnSeedCellCallback()
-            Me.HandleSeedCellCallback()
+            Try
+                Me.HandleSeedCellCallback()
+            Catch ex As Exception
+                ' Protect calling process from potential UI madness
+            End Try
         End Sub
 
         Private Sub OnSeedRunStateCallback(ByVal runstate As eRunStates)
 
-            Select Case runstate
+            Try
+                Select Case runstate
 
-                Case eRunStates.Initializing
-                    Me.RunMode = eFormModeTypes.Initializing
+                    Case eRunStates.Initializing
+                        Me.RunMode = eFormModeTypes.Initializing
 
-                Case eRunStates.Searching
-                    Me.RunMode = eFormModeTypes.Searching
+                    Case eRunStates.Searching
+                        Me.RunMode = eFormModeTypes.Searching
 
-                Case eRunStates.Completed
-                    Me.RunMode = eFormModeTypes.Results
+                    Case eRunStates.Completed
+                        Me.RunMode = eFormModeTypes.Results
 
-                Case eRunStates.NewCellSelected
-                    Me.HandleNewCellSelected()
+                    Case eRunStates.NewCellSelected
+                        Me.HandleNewCellSelected()
 
-                Case eRunStates.NewBestResultFound
-                    Me.HandleNewBestResultFound()
+                    Case eRunStates.NewBestResultFound
+                        Me.HandleNewBestResultFound()
 
-            End Select
+                End Select
+            Catch ex As Exception
+                ' Protect calling process from potential UI madness
+            End Try
 
         End Sub
 
@@ -522,32 +531,36 @@ Namespace Ecospace
 
             ' Flush first color to make sure that the two graps (progress and output) use the same colour scheme
             Dim clrFlush As Color = zgcr.NextColor
+            Dim gp As GraphPane = Nothing
+
+            For i As Integer = 0 To 5
+                Me.m_aptsProgress(i) = New ResultPoints()
+            Next
 
             Me.m_zghProgress = New cZedGraphHelper()
             Me.m_zghProgress.Attach(Me.UIContext, Me.m_graphProgress)
+            gp = Me.m_zghProgress.GetPane(1)
 
-            Me.m_graphProgress.GraphPane.Legend.Position = ZedGraph.LegendPos.Right
-            Me.m_graphProgress.GraphPane.Title.IsVisible = False
-            Me.m_graphProgress.GraphPane.XAxis.Title.Text = "" ' Config with form mode
-            Me.m_graphProgress.GraphPane.YAxis.Title.Text = "" ' Config with form mode
+            With gp
 
-            ' JS 19nov08: let graph figure out the ticks
-            '' Only show major ticks
-            'Me.m_graphProgress.GraphPane.XAxis.Scale.MajorStep = 5
-            'Me.m_graphProgress.GraphPane.XAxis.Scale.MinorStep = 1
+                .Legend.Position = ZedGraph.LegendPos.Right
+                .Title.IsVisible = False
+                .XAxis.Title.Text = "" ' Config with form mode
+                .YAxis.Title.Text = "" ' Config with form mode
 
-            Me.m_lptsProgress(0) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_NET_ECONOMIC_VALUE, Me.m_lptsProgress(0), zgcr.NextColor, ZedGraph.SymbolType.None)
-            Me.m_lptsProgress(1) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_lptsProgress(1), zgcr.NextColor, ZedGraph.SymbolType.None)
-            Me.m_lptsProgress(2) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_MANDATED_REBUILDING, Me.m_lptsProgress(2), zgcr.NextColor, ZedGraph.SymbolType.None)
-            Me.m_lptsProgress(3) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_lptsProgress(3), zgcr.NextColor, ZedGraph.SymbolType.None)
-            Me.m_lptsProgress(4) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_BIOMASS_DIVERSITY, Me.m_lptsProgress(4), zgcr.NextColor, ZedGraph.SymbolType.None)
-            Me.m_lptsProgress(5) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_BOUNDARYWEIGHT, Me.m_lptsProgress(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+                ' JS 19nov08: let graph figure out the ticks
+                '' Only show major ticks
+                'Me.m_graphProgress.GraphPane.XAxis.Scale.MajorStep = 5
+                'Me.m_graphProgress.GraphPane.XAxis.Scale.MinorStep = 1
+
+                .AddCurve(My.Resources.HEADER_NET_ECONOMIC_VALUE, Me.m_aptsProgress(0), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_aptsProgress(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.HEADER_MANDATED_REBUILDING, Me.m_aptsProgress(2), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_aptsProgress(3), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.HEADER_BIOMASS_DIVERSITY, Me.m_aptsProgress(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.HEADER_BOUNDARYWEIGHT, Me.m_aptsProgress(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            End With
 
             Me.m_zghProgress.AutoscalePane = True
 
@@ -556,46 +569,41 @@ Namespace Ecospace
         Private Sub InitOutputGraph()
 
             Dim zgcr As New ZedGraph.ColorSymbolRotator
+            Dim gp As GraphPane = Nothing
 
             Me.m_zghResults = New cZedGraphHelper()
             Me.m_zghResults.Attach(Me.UIContext, Me.m_graphResults)
             Me.m_zghResults.ShowCursor = True
 
-            AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
+            For i As Integer = 0 To 6
+                Me.m_aptsResults(i) = New ResultPoints()
+            Next
 
-            Me.m_graphResults.GraphPane.Legend.Position = ZedGraph.LegendPos.Right
-            Me.m_graphResults.GraphPane.Title.IsVisible = False
-            Me.m_graphResults.GraphPane.XAxis.Title.Text = "" ' Config with form mode
-            Me.m_graphResults.GraphPane.YAxis.Title.Text = "" ' Config with form mode
+            gp = Me.m_zghResults.GetPane(1)
+            With gp
 
-            ' JS 19nov08: let graph figure out the ticks
-            '' Only show major ticks
-            'Me.m_graphResults.GraphPane.XAxis.Scale.MajorStep = 5
-            'Me.m_graphResults.GraphPane.XAxis.Scale.MinorStep = 1
+                .Legend.Position = ZedGraph.LegendPos.Right
+                .Title.IsVisible = False
+                .Title.Text = "" ' Config with form mode
+                .Title.Text = "" ' Config with form mode
 
+                ' JS 19nov08: let graph figure out the ticks
+                '' Only show major ticks
+                'Me.m_graphResults.GraphPane.XAxis.Scale.MajorStep = 5
+                'Me.m_graphResults.GraphPane.XAxis.Scale.MinorStep = 1
 
-            Me.m_lptsResults(1) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_NET_ECONOMIC_VALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.HEADER_NET_ECONOMIC_VALUE, Me.m_aptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_aptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.HEADER_MANDATED_REBUILDING, Me.m_aptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_aptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.HEADER_BIOMASS_DIVERSITY, Me.m_aptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.HEADER_BOUNDARYWEIGHT, Me.m_aptsResults(6), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.SEARCH_LABEL_TOTAL_WEIGHTED, Me.m_aptsResults(0), zgcr.NextColor, ZedGraph.SymbolType.None)
 
-            Me.m_lptsResults(2) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
-
-            Me.m_lptsResults(3) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_MANDATED_REBUILDING, Me.m_lptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
-
-            Me.m_lptsResults(4) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
-
-            Me.m_lptsResults(5) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_BIOMASS_DIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
-
-            Me.m_lptsResults(6) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_BOUNDARYWEIGHT, Me.m_lptsResults(6), zgcr.NextColor, ZedGraph.SymbolType.None)
-
-            Me.m_lptsResults(0) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_TOTAL_WEIGHTED, Me.m_lptsResults(0), zgcr.NextColor, ZedGraph.SymbolType.None)
+            End With
 
             Me.m_zghResults.AutoscalePane = True
+            AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
 
         End Sub
 
@@ -1092,13 +1100,13 @@ Namespace Ecospace
 
             ' Show this in the graph
             Dim strPerc As String = CStr(Math.Round(sAreaPercentageClosed))
-            Dim iXMax As Integer = 0
+            Dim gp As GraphPane = Me.m_zghProgress.GetPane(1)
 
             ' All 0: do not log
             If (sEconomicValue + sSocialValue + sMandatedValue + sEcologicalValue + sBiomassDiversityValue) = 0.0 Then Return
 
-            For iResult As Integer = 0 To Me.m_lptsProgress.Length - 1
-                Dim rp As ResultPoints = Me.m_lptsProgress(iResult)
+            For iResult As Integer = 0 To Me.m_aptsProgress.Length - 1
+                Dim rp As ResultPoints = Me.m_aptsProgress(iResult)
                 Select Case iResult
                     Case 0 : rp.AddItem(sEconomicValue)
                     Case 1 : rp.AddItem(sSocialValue)
@@ -1107,10 +1115,8 @@ Namespace Ecospace
                     Case 4 : rp.AddItem(sBiomassDiversityValue)
                     Case 5 : rp.AddItem(sBoundaryWeightValue)
                 End Select
-                iXMax = Math.Max(iXMax, rp.Count)
             Next
 
-            Me.m_graphProgress.GraphPane.XAxis.Scale.Max = iXMax
             Me.m_zghProgress.RescaleAndRedraw()
 
             Me.m_gridProgress.LogResult(sEconomicValue, sSocialValue, _
@@ -1176,13 +1182,13 @@ Namespace Ecospace
                 ' Fill output graph
                 For iResult As Integer = 0 To lResults.Count - 1
                     Dim result As cObjectiveResult = lResults(iResult)
-                    Me.m_lptsResults(0).AddItem(result.objFuncTotal)
-                    Me.m_lptsResults(1).AddItem(result.objFuncEconomicValue)
-                    Me.m_lptsResults(2).AddItem(result.objFuncSocialValue)
-                    Me.m_lptsResults(3).AddItem(result.objFuncMandatedValue)
-                    Me.m_lptsResults(4).AddItem(result.objFuncEcologicalValue)
-                    Me.m_lptsResults(5).AddItem(result.objBiomassDiversity)
-                    Me.m_lptsResults(6).AddItem(result.objFuncAreaBorder)
+                    Me.m_aptsResults(0).AddItem(result.objFuncTotal)
+                    Me.m_aptsResults(1).AddItem(result.objFuncEconomicValue)
+                    Me.m_aptsResults(2).AddItem(result.objFuncSocialValue)
+                    Me.m_aptsResults(3).AddItem(result.objFuncMandatedValue)
+                    Me.m_aptsResults(4).AddItem(result.objFuncEcologicalValue)
+                    Me.m_aptsResults(5).AddItem(result.objBiomassDiversity)
+                    Me.m_aptsResults(6).AddItem(result.objFuncAreaBorder)
                 Next
                 Me.m_graphResults.GraphPane.XAxis.Scale.Max = lResults.Count - 1
 
@@ -1591,10 +1597,10 @@ Namespace Ecospace
 
         Private Sub ClearResults()
 
-            For Each rp As ResultPoints In Me.m_lptsProgress
+            For Each rp As ResultPoints In Me.m_aptsProgress
                 If rp IsNot Nothing Then rp.Clear()
             Next
-            For Each rp As ResultPoints In Me.m_lptsResults
+            For Each rp As ResultPoints In Me.m_aptsResults
                 If rp IsNot Nothing Then rp.Clear()
             Next
 
