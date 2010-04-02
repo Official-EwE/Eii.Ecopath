@@ -37,6 +37,8 @@ Namespace Ecospace
             Me.m_tsmiZoomReset = New System.Windows.Forms.ToolStripMenuItem
             Me.m_map = New ScientificInterface.Ecospace.ucBaseMap
             Me.m_tsZoom = New System.Windows.Forms.ToolStrip
+            Me.m_tsbSaveImage = New System.Windows.Forms.ToolStripButton
+            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsddbPosition = New System.Windows.Forms.ToolStripDropDownButton
             Me.m_tsmiViewCenter1 = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiViewStretch1 = New System.Windows.Forms.ToolStripMenuItem
@@ -47,8 +49,6 @@ Namespace Ecospace
             Me.m_tsbZoomReset = New System.Windows.Forms.ToolStripButton
             Me.m_sbHorz = New System.Windows.Forms.HScrollBar
             Me.m_sbVert = New System.Windows.Forms.VScrollBar
-            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsbSaveImage = New System.Windows.Forms.ToolStripButton
             Me.m_plZoom.SuspendLayout()
             Me.m_cmsZoom.SuspendLayout()
             Me.m_tsZoom.SuspendLayout()
@@ -140,6 +140,20 @@ Namespace Ecospace
             Me.m_tsZoom.TabIndex = 0
             Me.m_tsZoom.Text = "ToolStrip1"
             '
+            'm_tsbSaveImage
+            '
+            Me.m_tsbSaveImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbSaveImage.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
+            Me.m_tsbSaveImage.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbSaveImage.Name = "m_tsbSaveImage"
+            Me.m_tsbSaveImage.Size = New System.Drawing.Size(23, 22)
+            Me.m_tsbSaveImage.Text = "Save image"
+            '
+            'ToolStripSeparator3
+            '
+            Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+            Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
+            '
             'm_tsddbPosition
             '
             Me.m_tsddbPosition.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
@@ -153,13 +167,13 @@ Namespace Ecospace
             'm_tsmiViewCenter1
             '
             Me.m_tsmiViewCenter1.Name = "m_tsmiViewCenter1"
-            Me.m_tsmiViewCenter1.Size = New System.Drawing.Size(152, 22)
+            Me.m_tsmiViewCenter1.Size = New System.Drawing.Size(120, 22)
             Me.m_tsmiViewCenter1.Text = "Center"
             '
             'm_tsmiViewStretch1
             '
             Me.m_tsmiViewStretch1.Name = "m_tsmiViewStretch1"
-            Me.m_tsmiViewStretch1.Size = New System.Drawing.Size(152, 22)
+            Me.m_tsmiViewStretch1.Size = New System.Drawing.Size(120, 22)
             Me.m_tsmiViewStretch1.Text = "Stretch"
             '
             'ToolStripSeparator1
@@ -190,7 +204,6 @@ Namespace Ecospace
             Me.m_tscbZoomPercent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_tscbZoomPercent.Name = "m_tscbZoomPercent"
             Me.m_tscbZoomPercent.Size = New System.Drawing.Size(100, 25)
-            Me.m_tscbZoomPercent.Visible = False
             '
             'm_tsbZoomReset
             '
@@ -217,20 +230,6 @@ Namespace Ecospace
             Me.m_sbVert.Name = "m_sbVert"
             Me.m_sbVert.Size = New System.Drawing.Size(16, 319)
             Me.m_sbVert.TabIndex = 2
-            '
-            'ToolStripSeparator3
-            '
-            Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-            Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
-            '
-            'm_tsbSaveImage
-            '
-            Me.m_tsbSaveImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbSaveImage.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
-            Me.m_tsbSaveImage.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsbSaveImage.Name = "m_tsbSaveImage"
-            Me.m_tsbSaveImage.Size = New System.Drawing.Size(23, 22)
-            Me.m_tsbSaveImage.Text = "Save image"
             '
             'ucZoomBaseMap
             '

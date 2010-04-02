@@ -112,6 +112,7 @@ Namespace Ecospace
         ''' <param name="zoomType">The <see cref="eZoomTypes">Zoom level</see> to use.</param>
         ''' -----------------------------------------------------------------------
         Public Sub Zoom(ByVal zoomType As eZoomTypes)
+
             Select Case zoomType
                 Case eZoomTypes.ZoomIn
                     ' Increase zoom rate to next increment
@@ -123,8 +124,11 @@ Namespace Ecospace
                     ' Zoom to 100%
                     Me.m_iZoomLevelIndex = 3
             End Select
+
             ' Apply
-            If Me.m_tscbZoomPercent.Items.Count > Me.m_iZoomLevelIndex Then Me.m_tscbZoomPercent.SelectedIndex = Me.m_iZoomLevelIndex
+            If Me.m_tscbZoomPercent.Items.Count > Me.m_iZoomLevelIndex Then
+                Me.m_tscbZoomPercent.SelectedIndex = Me.m_iZoomLevelIndex
+            End If
         End Sub
 
 #End Region ' Public access
@@ -193,26 +197,37 @@ Namespace Ecospace
 
 #Region " Zoom controls "
 
-        Private Sub m_tsbZoomIn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbZoomIn.Click, m_tsmiZoomIn.Click
+        Private Sub m_tsbZoomIn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbZoomIn.Click, m_tsmiZoomIn.Click
             Me.Zoom(eZoomTypes.ZoomIn)
         End Sub
 
-        Private Sub m_tsbZoomOut_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbZoomOut.Click, m_tsmiZoomOut.Click
+        Private Sub m_tsbZoomOut_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbZoomOut.Click, m_tsmiZoomOut.Click
             Me.Zoom(eZoomTypes.ZoomOut)
         End Sub
 
-        Private Sub m_tsbReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbZoomReset.Click, m_tsmiZoomReset.Click
+        Private Sub m_tsbReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbZoomReset.Click, m_tsmiZoomReset.Click
             Me.Zoom(eZoomTypes.ZoomReset)
         End Sub
 
-        Private Sub m_tscbZoom_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tscbZoomPercent.SelectedIndexChanged
+        Private Sub m_tscbZoom_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tscbZoomPercent.SelectedIndexChanged
             Me.m_iZoomLevelIndex = Me.m_tscbZoomPercent.SelectedIndex
             Me.SetZoomLevel()
         End Sub
 
-        'Private Sub ucZoomControl_MouseWheel(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseWheel
-        '    If (e.Delta > 0) Then Me.Zoom(eZoomTypes.ZoomIn) Else Me.Zoom(eZoomTypes.ZoomOut)
-        'End Sub
+        Private Sub ucZoomControl_MouseWheel(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+            Handles Me.MouseWheel
+            If (Math.Abs(e.Delta) > 20) Then
+                If (e.Delta > 0) Then
+                    Me.Zoom(eZoomTypes.ZoomIn)
+                Else
+                    Me.Zoom(eZoomTypes.ZoomOut)
+                End If
+            End If
+        End Sub
 
 #End Region ' Zoom controls
 
