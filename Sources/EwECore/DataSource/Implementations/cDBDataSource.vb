@@ -7750,6 +7750,7 @@ Namespace DataSources
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim iPortID As Integer = 1
+            Dim iFleetID As Integer = 0
             Dim bSucces As Boolean = True
 
             iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
@@ -7760,12 +7761,16 @@ Namespace DataSources
                 writer = Me.m_db.GetWriter("EcospaceScenarioFleetMap")
 
                 For iFleet = 1 To ecospaceDS.nFleets
+
+                    iFleetID = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
+                    Debug.Assert(iFleetID <> 0)
+
                     For iRow = 1 To ecospaceDS.InRow
                         For iCol = 1 To ecospaceDS.InCol
 
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
-                            drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
+                            drow("FleetID") = iFleetID
                             drow("InRow") = iRow
                             drow("InCol") = iCol
                             drow("SailCost") = ecospaceDS.Sail(iFleet, iRow, iCol)

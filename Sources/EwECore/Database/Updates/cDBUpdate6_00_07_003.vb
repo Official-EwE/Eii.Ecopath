@@ -1,8 +1,10 @@
 ﻿Option Strict On
 Imports EwEPlugin
 Imports EwEUtils.Database
-Imports System.Data
 Imports EwEUtils.Core
+Imports System.Data
+Imports OleDb
+Imports System.Data.OleDb
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -47,6 +49,10 @@ Friend Class cDBUpdate6_00_07_003
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
+        Return Me.FixEcospaceFleetMapPK(db) And Me.UpdateAuxillaryData(db)
+    End Function
+
+    Private Function UpdateAuxillaryData(ByVal db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = db.GetReader("SELECT * FROM Remark")
         Dim iDBID As Integer = 1
@@ -101,6 +107,31 @@ Friend Class cDBUpdate6_00_07_003
             End If
 
         End If
+
+        Return bSucces
+
+    End Function
+
+    ''' <summary>
+    ''' Fix PK on EcospaceScenarioFleetMap
+    ''' </summary>
+    ''' <param name="db"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function FixEcospaceFleetMapPK(ByVal db As cEwEDatabase) As Boolean
+
+        Dim strPK As String = ""
+        Dim strSQL As String = ""
+        Dim bSucces As Boolean = True
+
+        strPK = db.GetPkKeyName("EcospaceScenarioFleetMap")
+        If Not String.IsNullOrEmpty(strPK) Then
+            strSQL = String.Format("DROP INDEX {0} ON EcospaceScenarioFleetMap", strPK)
+            bSucces = db.Execute(strSQL)
+        End If
+
+        strSQL = "ALTER TABLE EcospaceScenarioFleetMap ADD PRIMARY KEY (ScenarioID, FleetID, InRow, InCol)"
+        bSucces = bSucces And db.Execute(strSQL)
 
         Return bSucces
 
