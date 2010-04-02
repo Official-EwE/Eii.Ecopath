@@ -3,53 +3,43 @@
 Option Strict On
 Option Explicit On
 
-Imports System.IO
-Imports System.Text
-Imports System.Windows.Forms
-Imports System.Globalization
 Imports EwECore
-Imports EwEUtils.Core
+Imports System.IO
+Imports System.Globalization
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports EwEUtils.Win32Api
-Imports ZedGraph
-Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Content manager derived class to invoke the NA flow pyramid interface.
+''' </summary>
+''' ---------------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class cFlowPyramid
-    Inherits cContentManager
+    Inherits cPyramid
 
-    Public Sub New()
-        '
-    End Sub
-
-    Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                     ByVal datagrid As DataGridView, _
-                                     ByVal graph As ZedGraphControl, _
-                                     ByVal plot As ucPlot, _
-                                     ByVal toolstrip As ToolStrip, _
-                                     ByVal uic As cUIContext) As Boolean
-        Return MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdoc cref="cPyramid.PyramidType"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function PyramidType() As modUtility.ePyramidTypes
+        Return ePyramidTypes.Flow
     End Function
 
-    Public Overrides Sub DisplayData()
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdoc cref="cPyramid.WritePyramidFile"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function WritePyramidFile(ByVal core As cCore, _
+                                               ByVal sw As System.IO.StreamWriter, _
+                                               ByVal ci As CultureInfo) As Boolean
 
-        Dim model As cEwEModel = Me.NetworkManager.Core.EwEModel
-        Dim sw As StreamWriter = Nothing
-        Dim strOutputFile As String = ""
-        Dim strOutputFile83 As String = Space(255)
-        Dim strAnswer As String = ""
+        Dim mbr As MsgBoxResult = MsgBoxResult.Ignore
         Dim iMaxTL As Integer
         Dim iFlag As Integer
-        Dim ciEnUSLocale As New CultureInfo("en-US")
         Dim bShowItem As Boolean = True
         Dim bSucces As Boolean = True
 
-        ' Prepare directories
-        strOutputFile = modUtility.PyramidTempFile(model.Name, ePyramidTypes.Flow, ".txt")
-        sw = New StreamWriter(strOutputFile, False, New System.Text.UTF8Encoding())
         Try
 
             iFlag = 1
@@ -67,25 +57,24 @@ Public Class cFlowPyramid
             'Print #fnum, Trim(TimeUnitName)
             sw.WriteLine("t/km²/year")
 
-            sw.WriteLine(NetworkManager.TotalThroughput.ToString("00000000.000", ciEnUSLocale))
+            sw.WriteLine(NetworkManager.TotalThroughput.ToString("00000000.000", ci))
 
+            mbr = MsgBoxResult.Yes
             For i As Integer = 1 To NetworkManager.nGroups
                 bShowItem = Me.StyleGuide.GroupVisible(i)
                 If (bShowItem = False) Then 'There is at least one hidden
-                    strAnswer = CStr(MsgBox(My.Resources.PROMPT_DISPLAY_ALL_HIDDEN_GROUPS, MsgBoxStyle.YesNo, My.Resources.CAPTION))
+                    mbr = MsgBox(My.Resources.PROMPT_DISPLAY_ALL_HIDDEN_GROUPS, MsgBoxStyle.YesNo, My.Resources.CAPTION)
                     Exit For
-                Else
-                    strAnswer = CStr(vbYes)
                 End If
             Next
 
-            Select Case strAnswer
-                Case CStr(vbYes) 'all groups
+            Select Case mbr
+                Case MsgBoxResult.Yes 'all groups
                     For i As Integer = 1 To iMaxTL
                         Dim sngTemp As Single
                         sngTemp = CSng(IIf(Math.Abs(NetworkManager.PPThroughtput(i) + NetworkManager.DetThroughtput(i)) > 0.001, _
                             NetworkManager.PPThroughtput(i) + NetworkManager.DetThroughtput(i), 0))
-                        sw.Write(sngTemp.ToString("00000000.000", ciEnUSLocale))
+                        sw.Write(sngTemp.ToString("00000000.000", ci))
                         'the values from transfer eff table
                         Dim Tr1 As Single
                         Tr1 = NetworkManager.PPConsByPred(i) + NetworkManager.DetConsByPred(i)
@@ -107,13 +96,14 @@ Public Class cFlowPyramid
                             NetworkManager.TrEm1(i) = 0
                             sngTemp = 0
                         End If
-                        sw.WriteLine(sngTemp.ToString("00000000.000", ciEnUSLocale))
+                        sw.WriteLine(sngTemp.ToString("00000000.000", ci))
                     Next
-                Case CStr(vbNo) 'hidden groups only
+
+                Case MsgBoxResult.No 'hidden groups only
                     For i As Integer = 1 To iMaxTL
                         Dim sngTemp As Single
                         sngTemp = CSng(IIf(NetworkManager.ThroughtputShow(i) > 0.001, NetworkManager.ThroughtputShow(i), 0))
-                        sw.Write(sngTemp.ToString("00000000.000", ciEnUSLocale))
+                        sw.Write(sngTemp.ToString("00000000.000", ci))
                         'the values from transfer eff table
                         Dim Tr1 As Single
                         Tr1 = NetworkManager.PPConsByPred(i) + NetworkManager.DetConsByPred(i)
@@ -135,44 +125,16 @@ Public Class cFlowPyramid
                             NetworkManager.TrEm1(i) = 0
                             sngTemp = 0
                         End If
-                        sw.WriteLine(sngTemp.ToString("00000000.000", ciEnUSLocale))
+                        sw.WriteLine(sngTemp.ToString("00000000.000", ci))
                     Next
             End Select
 
         Catch ex As Exception
             bSucces = False
         End Try
-        sw.Close()
 
-        If Not bSucces Then Return
+        Return bSucces
 
-        ''Call pyramid.exe using the file written above
-        'If IsPlotActive("ECOPATH 3.0 - Pyramid") Then
-        '    AppActivate("ECOPATH 3.0 - Pyramid")
-        '    System.Windows.Forms.SendKeys.Send("%{F4}")
-        'End If
-
-        Try
-            'Execute the external application through the general function on EwEUtils
-            Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
-            bSucces = SystemUtilities.AppExec("pyramid.exe", strOutputFile83, "", "EwENetworkAnalysis")
-        Catch ex As Exception
-            bSucces = False
-        End Try
-
-        If Not bSucces Then
-            Dim sb As New StringBuilder
-            For Each str As String In SystemUtilities.ApplicationLaunchLocations
-                If sb.Length > 0 Then sb.Append(", ")
-                sb.Append(str)
-            Next
-            Dim msg As New cMessage(String.Format(My.Resources.PROMPT_APPLAUNCH_FAILED, "pyramid.exe", sb.ToString), _
-                                    eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
-            Me.NetworkManager.Core.Messages.SendMessage(msg)
-        End If
-
-        'File.Delete(strOutputFile)
-
-    End Sub
+    End Function
 
 End Class
