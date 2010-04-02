@@ -2980,7 +2980,7 @@ Public Class AppLauncher
                             My.Resources.SCENARIO_CONFIRMOVERWRITE_CAPTION, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
 
                         ' #Overwrite
-                        Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_SAVING, dlg.ScenarioName), TriState.True)
+                        Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_SAVING, dlg.ScenarioName), TriState.True)
                         Try
                             Me.Core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                         Catch ex As Exception
@@ -2994,7 +2994,7 @@ Public Class AppLauncher
                 End If
 
                 ' Add scenario
-                Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_CREATING, dlg.ScenarioName), TriState.True)
+                Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_CREATING, dlg.ScenarioName), TriState.True)
                 Try
                     Me.Core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                 Catch ex As Exception
