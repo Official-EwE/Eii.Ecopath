@@ -93,6 +93,11 @@ Namespace Controls
 
 #Region " Public Properties "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' ..exterminate.. exterminate..
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub Clear()
             Me.m_lRuns.Clear()
             Me.m_runCurrent = Nothing
@@ -138,10 +143,14 @@ Namespace Controls
         ''' </summary>
         ''' <param name="strLabel">Label of the line to add.</param>
         ''' <param name="iGroup">Index of the underlying group.</param>
-        ''' <param name="lineType"></param>
-        ''' <param name="varname"></param>
-        ''' <param name="list"></param>
-        ''' <param name="bCumulative"></param>
+        ''' <param name="lineType"><see cref="eLineType">Type of the line</see> 
+        ''' to add. This flag will be used to colour and style the line.</param>
+        ''' <param name="plotDataType"><see cref="ePlotData">Data type</see> of
+        ''' the line. This flag will be used to remember which data was used to
+        ''' fill the <paramref name="list">line data</paramref>.</param>
+        ''' <param name="list">Data for the line.</param>
+        ''' <param name="bCumulative">Flag stating whether the line needs to be
+        ''' plotted cumulative.</param>
         ''' -------------------------------------------------------------------
         Public Sub AddLine(ByVal strLabel As String, _
                            ByVal iGroup As Integer, _
@@ -170,6 +179,15 @@ Namespace Controls
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the value from the plot for a given group and run at a given time step.
+        ''' </summary>
+        ''' <param name="iGroup"></param>
+        ''' <param name="iRun"></param>
+        ''' <param name="iTimeStep"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Function GetValueAt(ByVal iGroup As Integer, _
                                    ByVal iRun As Integer, _
                                    ByVal iTimeStep As Integer) As Double
