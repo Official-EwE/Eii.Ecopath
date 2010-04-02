@@ -961,6 +961,45 @@ Namespace Database
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the name of a primary key of a table.
+        ''' </summary>
+        ''' <param name="strTable">The table name to obtain the primary key for.</param>
+        ''' <returns>A name, or an empty string when no primary key was found.</returns>
+        ''' <remarks>
+        ''' After http://www.koders.com/csharp/fidE6A0EFDE719732D025C3D41E95CC26214E50188C.aspx
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function GetPkKeyName(ByVal strTable As String) As String
+
+            Dim conn As IDbConnection = Me.GetConnection()
+            Dim dtKeys As DataTable = Nothing
+            Dim strPKKey As String = ""
+
+            ' Execute oledb variant
+            If (TypeOf conn Is OleDbConnection) Then
+
+                Dim cdb As OleDbConnection = DirectCast(conn, OleDbConnection)
+                ' Get PK keys schema information for entire DB
+                dtKeys = cdb.GetOleDbSchemaTable(OleDbSchemaGuid.Primary_Keys, New Object() {Nothing, Nothing, strTable})
+                ' Sanity checks, pk may not be defined
+                If (dtKeys.Rows.Count = 0) Then Return strPKKey
+                ' Return whatever was found
+                '   JS: could be that 'COLUMN_NAME' should be used here!!
+                strPKKey = CStr(dtKeys.Rows(0)("PK_NAME"))
+                'strPKKey = CStr(drKeys(0)("COLUMN_NAME"))
+            End If
+
+            If (TypeOf conn Is SqlConnection) Then
+                ' Not implemented yet
+
+            End If
+
+            Return strPKKey
+
+        End Function
+
 #End Region ' DB helper methods
 
 #Region " OOP "
