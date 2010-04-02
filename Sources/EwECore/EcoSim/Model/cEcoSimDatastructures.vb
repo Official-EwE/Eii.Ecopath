@@ -144,6 +144,7 @@ Public Class cEcosimDatastructures
 
     Public FlowType(,) As Single
     Public PoolForceCatch(,) As Single
+
     Public Eatenof() As Single
     Public Eatenby() As Single
 
@@ -263,12 +264,19 @@ Public Class cEcosimDatastructures
     Public Hden() As Single
 
     Public QBoutside() As Single
+
+    ''' <summary>
+    ''' Base rate of Detritus accumulation ([accumulated detritus biomass]/[biomass t=0]) calculated in <see cref="EwECore.Ecosim.cEcoSimModel.SimDetritusMT">SimDetritusMT</see>.
+    ''' </summary>
+    ''' <remarks>
+    ''' Calculated during the initialization of Ecosim by <see cref="EwECore.Ecosim.cEcoSimModel.Init">Init()</see> and <see cref="EwECore.Ecosim.cEcoSimModel.SetTimeSteps">SetTimeSteps()</see>. 
+    ''' Used by both Ecosim and Ecospace. When Ecospace initializes it calls Ecosim.Init() this sets DetritusOut() to the base Ecosim values. 
+    ''' This avoids any issues with setting the initial biomass or threading races. 
+    ''' </remarks>
     Public DetritusOut() As Single
     Public AssimEff() As Single
     Public SimGE() As Single
 
-    'varaibles that have been made avalible for other models
-    'this may change to put these varaibles into cEcoSimDataStructures
     Public StartBiomass() As Single
     Public pbbiomass() As Single
     Public loss() As Single
