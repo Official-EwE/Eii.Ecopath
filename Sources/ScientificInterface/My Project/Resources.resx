@@ -226,7 +226,7 @@
     <value>Vulnerability (v)</value>
   </data>
   <data name="FILEFILTER_MODEL_OPEN" xml:space="preserve">
-    <value>Ecopath model databases (*.mdb, *.accdb, *.EwEmdb, *.EwEaccdb)|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb</value>
+    <value>Ecopath model databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb|Ecopath 5 text files|*.eii</value>
   </data>
   <data name="PROMPT_INVALIDFILE" xml:space="preserve">
     <value>This type of file is not supported by EwE6</value>
@@ -407,7 +407,7 @@
     <comment>{0}: plug-in name</comment>
   </data>
   <data name="FILEFILTER_FLOWDIAGRAM" xml:space="preserve">
-    <value>FlowDiagram files (*.fd)|*.fd|All files (*.*)|*.*</value>
+    <value>FlowDiagram files|*.fd|All files (*.*)|*.*</value>
   </data>
   <data name="HEADER_EFFORTES" xml:space="preserve">
     <value>Effort (E/S)</value>
@@ -442,7 +442,7 @@
     <value>..\Resources\Expanded.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FILEFILTER_SAVE_MDB" xml:space="preserve">
-    <value>EwE 2003 format (*.ewemdb)|*.ewemdb</value>
+    <value>EwE database (Access 2003 format)|*.ewemdb</value>
   </data>
   <data name="MPA_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
     <value>Do you want to delete MPA from {0} to {1}? This action cannot be undone.</value>
@@ -472,7 +472,7 @@
     <value>Remove</value>
   </data>
   <data name="FILEFILTER_IMAGE_EMF" xml:space="preserve">
-    <value>Enhanced meta files (*.emf)|*.emf</value>
+    <value>Enhanced meta files|*.emf</value>
   </data>
   <data name="HEADER_NETMIGRATE" xml:space="preserve">
     <value>+ Net migration rate</value>
@@ -1041,7 +1041,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>For all prey predator pairs</value>
   </data>
   <data name="FILEFILTER_LOAD_RASTER" xml:space="preserve">
-    <value>Comma-separated text files (*.csv)|*.csv|ESRI ascii file (*.asc)|*.asc|ESRI shape file (*.shp)|*.shp|Spatial raster files (*.asc, *.csv, *.shp)|*.asc;*.csv;*.shp</value>
+    <value>Comma-separated text files|*.csv|ESRI ascii file|*.asc|ESRI shape file|*.shp|Spatial raster files|*.asc;*.csv;*.shp</value>
   </data>
   <data name="GENERIC_PROMPT_OVERWRITEFILE" xml:space="preserve">
     <value>File '{0}' already exists. Do you want to overwrite it?</value>
@@ -1079,7 +1079,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>..\Resources\NavForward.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FILEFILTER_TEXT" xml:space="preserve">
-    <value>Text files (*.txt)|*.txt</value>
+    <value>Text files|*.txt</value>
   </data>
   <data name="GENERIC_ITEMSTATUS_CREATEPENDING" xml:space="preserve">
     <value>To create</value>
@@ -1145,7 +1145,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>..\Resources\glyph_deep_lightblue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FILEFILTER_ASCFILE" xml:space="preserve">
-    <value>ESRI Asc files (*.asc)|*.asc</value>
+    <value>ESRI Asc files|*.asc</value>
   </data>
   <data name="LABEL_GROUP" xml:space="preserve">
     <value>&amp;Group:</value>
@@ -1231,7 +1231,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <comment>{0}: plug-in name</comment>
   </data>
   <data name="FILEFILTER_SAVE_RASTER" xml:space="preserve">
-    <value>Comma-separated text files (*.csv)|*.csv|ESRI ascii file (*.asc)|Spatial raster files (*.asc, *.csv)|*.asc;*.csv</value>
+    <value>Comma-separated text files|*.csv|ESRI Asc files|Spatial raster files|*.asc;*.csv</value>
   </data>
   <data name="ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY" xml:space="preserve">
     <value>Chesson's electivity</value>
@@ -1356,7 +1356,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Delete scenario</value>
   </data>
   <data name="FILEFILTER_CSV" xml:space="preserve">
-    <value>Comma-separated text files (*.csv)|*.csv</value>
+    <value>Comma-separated text files|*.csv</value>
   </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_SEEDBEST" xml:space="preserve">
     <value>Best cells</value>
@@ -1927,7 +1927,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>..\Resources\glyph_blue2.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FILEFILTER_MODEL_SAVE" xml:space="preserve">
-    <value>EwE 2003 format (*.EwEmdb)|*.EwEmdb|EwE 2007 format (*.EwEaccdb)|*.EwEaccdb</value>
+    <value>EwE database (Access 2003 format)|*.EwEmdb|EwE database (Access 2007 format)|*.EwEaccdb</value>
   </data>
   <data name="PROMPT_ERROR_IMPORT_INVALIDDB" xml:space="preserve">
     <value>The selected database does not appear to be a valid EwE5 or EwE6 database.</value>
@@ -2134,7 +2134,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Size class</value>
   </data>
   <data name="FILEFILTER_IMAGE" xml:space="preserve">
-    <value>Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff</value>
+    <value>Bitmap image|*.bmp|JPEG image|*.jpg;*.jpeg|GIF image|*.gif|PNG image|*.png|TIFF image|*.tif;*.tiff</value>
     <comment>| separated list of image filters. Order: bitmap, jpeg, gif, png, tiff</comment>
   </data>
   <data name="ECOSPACE_EDITLAYER_CONFIRMDELETE_PROMPT" xml:space="preserve">
@@ -2414,7 +2414,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <comment>{0}: MPA name</comment>
   </data>
   <data name="FILEFILTER_SAVE_ACCDB" xml:space="preserve">
-    <value>EwE 2007 format (*.eweaccdb)|*.eweaccdb</value>
+    <value>EwE database (Access 2007 format)|*.eweaccdb</value>
   </data>
   <data name="ECOTRACER_SCENARIO_LOAD_CAPTION" xml:space="preserve">
     <value>Load Ecotracer scenario - Ecopath model {0}</value>

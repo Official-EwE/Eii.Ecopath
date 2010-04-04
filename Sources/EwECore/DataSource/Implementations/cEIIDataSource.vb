@@ -14,8 +14,12 @@ Imports EwEUtils.Database
 ''' <summary>
 ''' Data access for an EwE5 .EII file
 ''' </summary>
+''' <remarks>
+''' Class is deliberately sabotaged; EII files need to be imported rather than
+''' loaded.
+''' </remarks>
 ''' ===========================================================================
-Public Class cEIIDataSource
+Public MustInherit Class cEIIDataSource
     Implements IEwEDataSource
     Implements IEcopathDataSource
     Implements IEcosimDatasource

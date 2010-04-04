@@ -86,8 +86,9 @@ Namespace DataSources
             Dim nResult As eStatusFlags = eStatusFlags.OK
 
             Select Case dst
-                Case eDataSourceTypes.EII
-                    Return New cEIIDataSource()
+                ' EII files need to be imported instead
+                'Case eDataSourceTypes.EII
+                '    Return New cEIIDataSource()
                 Case eDataSourceTypes.MDB, eDataSourceTypes.ACCDB
                     ' Create a DB datasource on a MS Access database
                     Return New cDBDataSource(New cEwEAccessDatabase())

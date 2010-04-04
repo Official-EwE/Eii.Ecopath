@@ -24,10 +24,17 @@ Namespace Import
 
 #End Region ' Private vars
 
-        Public Sub New(ByVal uic As cUIContext, ByVal db As cEwEDatabase)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="uic">UI context to connect to.</param>
+        ''' <param name="strEwE5File">File path to the database to import.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal uic As cUIContext, ByVal strEwE5File As String)
 
             Me.InitializeComponent()
-            Me.m_wizard = New cImportWizard(uic, db, Me, Me.m_plWizardContent, Me.m_navigator)
+            Me.m_wizard = New cImportWizard(uic, strEwE5File, Me, Me.m_plWizardContent, Me.m_navigator)
 
         End Sub
 

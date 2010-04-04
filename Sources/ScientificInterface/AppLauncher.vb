@@ -358,14 +358,10 @@ Public Class AppLauncher
             Return False
         End If
 
-        Select Case cDataSourceFactory.GetSupportedType(strFileName)
-            Case eDataSourceTypes.ACCDB, _
-                 eDataSourceTypes.MDB
-                If Not CovertToEwE6(strFileName) Then
-                    ' #No: EwE6 database? abort
-                    Return False
-                End If
-        End Select
+        If Not CovertToEwE6(strFileName) Then
+            ' #No: EwE6 database? abort
+            Return False
+        End If
 
         ' Abort if no new file name given
         If String.IsNullOrEmpty(strFileName) Then Return True
@@ -1427,63 +1423,80 @@ Public Class AppLauncher
     ''' To test if it is an EwE5 Access database, if it is, convert it using the 
     ''' database conversion wizard.
     ''' </summary>
-    ''' <param name="strFileName">File name of the Access database to convert.</param>
+    ''' <param name="strFileName">File name of the Access database to convert. If a
+    ''' conversion is necessary this parameter will receive the file name of the
+    ''' converted file.</param>
     ''' <returns>True if the database specified by <paramref name="fileName">filename</paramref>
     ''' is already an EwE6 database, or if the conversion was succesful.</returns>
-    ''' <remarks>Note that this method only works for Access databases.</remarks>
     ''' ---------------------------------------------------------------------------
     Private Function CovertToEwE6(ByRef strFileName As String) As Boolean
 
-        Dim sVersion As Single = 0.0!
-        Dim db As cEwEDatabase = Nothing
+        Dim dst As eDataSourceTypes = eDataSourceTypes.NotSet
+        Dim comp As cEwEDatabase.eCompatibilityTypes = cEwEDatabase.eCompatibilityTypes.Unknown
         Dim bSucces As Boolean = True
 
-        db = New cEwEAccessDatabase()
-        If db.Open(strFileName) = eDatasourceAccessType.Opened Then
+        ' Detect file type
+        dst = cDataSourceFactory.GetSupportedType(strFileName)
+        Select Case dst
 
-            Select Case db.Compatibility()
+            Case eDataSourceTypes.ACCDB, eDataSourceTypes.MDB
+                ' Is database, whoohoo
+                Dim db As New cEwEAccessDatabase()
+                If db.Open(strFileName) = eDatasourceAccessType.Opened Then
+                    comp = db.Compatibility
+                    db.Close()
+                End If
 
-                Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
-                    Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD)
+            Case eDataSourceTypes.EII
+                ' Is EII
+                comp = cEwEDatabase.eCompatibilityTypes.EwE5Supported
+
+            Case eDataSourceTypes.NotSet
+                ' ?Que?
+                Return False
+
+        End Select
+
+        Select Case comp
+
+            Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
+                Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD)
+                bSucces = False
+
+            Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
+                AddRecentFilesSetting(strFileName)
+
+                Dim dlg As New Import.dlgImportDatabase(Me.UIContext, strFileName)
+                If dlg.ShowDialog(Me) = DialogResult.OK Then
+                    ' Update file name
+                    strFileName = dlg.ImportedFileName
+                    ' Report succes
+                    bSucces = True
+                Else
                     bSucces = False
+                End If
 
-                Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
-                    AddRecentFilesSetting(strFileName)
+            Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
+                Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW)
+                bSucces = False
 
-                    Dim dlg As New Import.dlgImportDatabase(Me.UIContext, db)
-                    If dlg.ShowDialog(Me) = DialogResult.OK Then
-                        ' Update file name
-                        strFileName = dlg.ImportedFileName
-                        ' Report succes
-                        bSucces = True
-                    Else
-                        bSucces = False
-                    End If
+            Case cEwEDatabase.eCompatibilityTypes.EwE6
+                ' Moved to core
 
-                Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
-                    Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW)
-                    bSucces = False
+            Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
+                Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE7_OR_NEWER)
+                bSucces = False
 
-                Case cEwEDatabase.eCompatibilityTypes.EwE6
-                    ' Moved to core
+            Case cEwEDatabase.eCompatibilityTypes.Unknown
+                Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB)
+                bSucces = False
 
-                Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
-                    Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE7_OR_NEWER)
-                    bSucces = False
+            Case Else
+                ' Unsupported enum value?!
+                Debug.Assert(False)
+                bSucces = False
 
-                Case cEwEDatabase.eCompatibilityTypes.Unknown
-                    Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB)
-                    bSucces = False
-
-                Case Else
-                    ' Unsupported enum value?!
-                    Debug.Assert(False)
-                    bSucces = False
-
-            End Select
-
-            db.Close()
-        End If
+        End Select
 
         Return bSucces
 
@@ -2092,11 +2105,12 @@ Public Class AppLauncher
 
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+        Dim strFilter As String = My.Resources.FILEFILTER_MODEL_OPEN
 
         If cmd.Tag IsNot Nothing Then
-            cmdFO.Invoke(Path.GetFileName(CStr(cmd.Tag)), Path.GetDirectoryName(CStr(cmd.Tag)), My.Resources.FILEFILTER_MODEL_OPEN, 1)
+            cmdFO.Invoke(Path.GetFileName(CStr(cmd.Tag)), Path.GetDirectoryName(CStr(cmd.Tag)), strFilter, 1)
         Else
-            cmdFO.Invoke(My.Resources.FILEFILTER_MODEL_OPEN, 1)
+            cmdFO.Invoke(strFilter, 1)
         End If
 
         If (cmdFO.Result = DialogResult.OK) Then

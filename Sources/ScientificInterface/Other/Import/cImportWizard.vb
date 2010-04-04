@@ -26,8 +26,8 @@ Namespace Import
 
 #Region " Private bits "
 
-        ''' <summary>The actual EwE database importer.</summary>
-        Private m_dbImp As cEwE6DatabaseImporter = Nothing
+        ''' <summary>The actual importer.</summary>
+        Private m_dbImp As IEwE5ModelImporter = Nothing
         ''' <summary>A setting for each EwE5 model.</summary>
         Private m_lImportSettings As New List(Of cImportSettings)
         ''' <summary>Folder to place imported models into.</summary>
@@ -53,7 +53,7 @@ Namespace Import
 #Region " Privates vars "
 
             ''' <summary>EwE5 model info.</summary>
-            Private m_mi As cEwE6DatabaseImporter.cEwE5ModelInfo = Nothing
+            Private m_mi As cEwE5ModelInfo = Nothing
             ''' <summary>Flag stating whether this EwE5 model should be imported.</summary>
             Private m_bImport As Boolean = False
             ''' <summary>EwE6 name of the model to import into.</summary>
@@ -68,11 +68,11 @@ Namespace Import
             ''' Create a new import setting for an EwE5 model.
             ''' </summary>
             ''' <param name="mi">
-            ''' The <see cref="cEwE6DatabaseImporter.cEwE5ModelInfo">EwE5 model</see>
+            ''' The <see cref="cEwE5ModelInfo">EwE5 model</see>
             ''' to create import settings for.
             ''' </param>
             ''' -----------------------------------------------------------------------
-            Public Sub New(ByVal mi As cEwE6DatabaseImporter.cEwE5ModelInfo)
+            Public Sub New(ByVal mi As cEwE5ModelInfo)
                 Me.m_mi = mi
                 Me.m_bImport = False
                 Me.m_strEwE6Name = mi.Name
@@ -80,11 +80,11 @@ Namespace Import
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Get the <see cref="cEwE6DatabaseImporter.cEwE5ModelInfo">EwE5 model 
+            ''' Get the <see cref="cEwE5ModelInfo">EwE5 model 
             ''' information</see> associated with this import setting.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Public ReadOnly Property ModelInfo() As cEwE6DatabaseImporter.cEwE5ModelInfo
+            Public ReadOnly Property ModelInfo() As cEwE5ModelInfo
                 Get
                     Return Me.m_mi
                 End Get
@@ -154,13 +154,12 @@ Namespace Import
         ''' Construct a new import wizard.
         ''' </summary>
         ''' <param name="uic">The UI context to operate on.</param>
-        ''' <param name="db">The EwE5 database to import from.</param>
         ''' <param name="parent">The form hosting the wizard UI.</param>
         ''' <param name="content">The panel where this wizard can display its pages.</param>
         ''' <param name="nav">The navigation that controls this wizard.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
-                       ByRef db As cEwEDatabase, _
+                       ByVal strEwE5File As String, _
                        ByVal parent As Form, _
                        ByVal content As Panel, _
                        ByVal nav As IWizardNavigation)
@@ -168,18 +167,20 @@ Namespace Import
             MyBase.New(uic, parent, content, nav)
 
             ' Hook up with data
-            Me.m_dbImp = New cEwE6DatabaseImporter(core)
-            Me.m_dbImp.Attach(db)
+            Me.m_dbImp = cEwE5ModelImporterFactory.GetEwE5ModelImporter(Core, strEwE5File)
+            Me.m_dbImp.Open()
 
-            Me.m_strDatabase = db.Name
-            Me.m_strOutputFolder = Path.GetDirectoryName(db.Name)
+            Me.m_strDatabase = strEwE5File
+            Me.m_strOutputFolder = Path.GetDirectoryName(strEwE5File)
 
             ' Prepare import settings
-            For Each mi As cEwE6DatabaseImporter.cEwE5ModelInfo In Me.m_dbImp.GetModels
+            For Each mi As cEwE5ModelInfo In Me.m_dbImp.GetModels
                 Dim imp As New cImportSettings(mi)
                 imp.SelectedForImport = (Me.m_dbImp.GetModels.Count = 1)
                 Me.m_lImportSettings.Add(imp)
             Next
+
+            Me.m_dbImp.Close()
 
             ' Add pages
             Me.AddPage(GetType(ucImportPageWelcome))

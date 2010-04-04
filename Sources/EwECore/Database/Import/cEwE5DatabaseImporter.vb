@@ -48,20 +48,10 @@ Namespace Database
     ''' </code>
     ''' </example>
     ''' -----------------------------------------------------------------------
-    Public Class cEwE6DatabaseImporter
+    Public Class cDBImporter
+        Implements IEwE5ModelImporter
 
 #Region " Private bits "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Enum describing the method used to connect to an EwE5 source database.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Enum eOpenType
-            NotSet = 0
-            File
-            Database
-        End Enum
 
         ''' <summary>EWE5 NULL value.</summary>
         Private Const cEWE5_NULL As Integer = -90
@@ -89,12 +79,12 @@ Namespace Database
 
         ' == Databases ==
 
+        ''' <summary>Source database file name.</summary>
+        Private m_strEwE5File As String = ""
         ''' <summary>Source database in EwE5 format.</summary>
         Private m_dbEwE5 As cEwEDatabase ' Import from (read)
         ''' <summary>Target database in EwE6 format.</summary>
         Private m_dbEwE6 As cEwEDatabase ' Import to (write)
-        ''' <summary>Flag indicating the method used to attach to the source database.</summary>
-        Private m_openType As eOpenType = eOpenType.NotSet
 
         ' == Tables that will receive information throughout the import process ==
 
@@ -113,9 +103,10 @@ Namespace Database
         ''' </summary>
         ''' <param name="core">The Core to send messages through.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore)
-            ' Store core ref
+        Public Sub New(ByVal core As cCore, ByVal strEwE5File As String)
+
             Me.m_core = core
+            Me.m_strEwE5File = strEwE5File
 
             Me.m_lImportedForcingShapes.Clear()
             Me.m_dicPedigreeLevels.Clear()
@@ -127,6 +118,7 @@ Namespace Database
             Me.m_dicPedigreeLevels(eVarNameFlags.QBInput) = New List(Of Integer)
             Me.m_dicPedigreeLevels(eVarNameFlags.DietComp) = New List(Of Integer)
             Me.m_dicPedigreeLevels(eVarNameFlags.Landings) = New List(Of Integer)
+
         End Sub
 
 #End Region ' Constructor
@@ -181,233 +173,55 @@ Namespace Database
 
 #End Region ' Messages
 
-#Region " Initialization "
+#Region " Interface implementation "
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Connects the importer to an EwE5 source database. This database is
-        ''' indicated as a file path, and is assumed to be an MS Access database.
-        ''' </summary>
-        ''' <param name="strEwE5DBName">Path to the EwE5 MS Access database
-        ''' to import from.</param>
-        ''' <returns>True if succesful.</returns>
-        ''' <remarks>
-        ''' Any database connection established via the Open method must be 
-        ''' disconnected via the <see cref="Close">Close</see> method.
-        ''' </remarks>
+        ''' <inheritdoc cref="IEwE5ModelImporter.Open"/>
         ''' -------------------------------------------------------------------
-        Public Function Open(ByVal strEwE5DBName As String) As Boolean
+        Public Function Open() As Boolean _
+            Implements IEwE5ModelImporter.Open
+
             ' Pre
-            Debug.Assert(Not (Me.isOpen() Or Me.IsAttached()))
+            Debug.Assert(Not Me.IsOpen())
 
             ' Create db
             Dim db As New cEwEAccessDatabase()
-            If db.Open(strEwE5DBName) = eDatasourceAccessType.Opened Then
-                Me.m_openType = eOpenType.File
+            If db.Open(Me.m_strEwE5File) = eDatasourceAccessType.Opened Then
                 Me.m_dbEwE5 = db
             End If
 
-            Return Me.isOpen()
+            Return Me.IsOpen()
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Disconnects the importer from its EwE5 source database.
-        ''' </summary>
-        ''' <remarks>
-        ''' Any database connection established via the <see cref="Open">Open</see>
-        ''' method must be disconnected via the Close method.
-        ''' </remarks>
+        ''' <inheritdoc cref="IEwE5ModelImporter.Close"/>
         ''' -------------------------------------------------------------------
-        Public Sub Close()
+        Public Sub Close() _
+            Implements IEwE5ModelImporter.Close
+
             ' Pre
-            Debug.Assert(Me.isOpen())
+            Debug.Assert(Me.IsOpen())
 
             Me.m_dbEwE5.Close()
             Me.m_dbEwE5 = Nothing
-            Me.m_openType = eOpenType.NotSet
+
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' States whether the importer was connected to its source database 
-        ''' via the <see cref="Open">Open</see> method.
-        ''' </summary>
+        ''' <inheritdoc cref="IEwE5ModelImporter.IsOpen"/>
         ''' -------------------------------------------------------------------
-        Public Function isOpen() As Boolean
-            Return (Me.m_openType = eOpenType.File)
+        Public Function IsOpen() As Boolean _
+            Implements IEwE5ModelImporter.IsOpen
+
+            Return (Me.m_dbEwE5 IsNot Nothing)
+
         End Function
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Connects the importer to an EwE5 source database, which is passed in
-        ''' as a ready-to-use object.
-        ''' </summary>
-        ''' <param name="db">The EwE5 database to import from.</param>
-        ''' <returns>True if succesful.</returns>
-        ''' <remarks>
-        ''' Any database connection established via the Attach method must be 
-        ''' disconnected via the <see cref="Detach">Detach</see> method.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Function Attach(ByRef db As cEwEDatabase) As Boolean
-            ' Pre
-            Debug.Assert(Not (Me.isOpen() Or Me.IsAttached()))
-
-            If (db.GetConnection().State = ConnectionState.Open) Then
-                Me.m_openType = eOpenType.Database
-                Me.m_dbEwE5 = db
-            End If
-
-            Return Me.IsAttached()
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Disconnects the importer from its EwE5 source database.
-        ''' </summary>
-        ''' <remarks>
-        ''' Any database connection established via the <see cref="Attach">Attach</see>
-        ''' method must be disconnected via the Detach method.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Sub Detach()
-            ' Pre
-            Debug.Assert(Me.IsAttached())
-
-            Me.m_dbEwE5 = Nothing
-            Me.m_openType = eOpenType.NotSet
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' States whether the importer was connected to its source database 
-        ''' via the <see cref="Attach">Attach</see> method.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Function IsAttached() As Boolean
-            Return (Me.m_openType = eOpenType.Database)
-        End Function
-
-#End Region ' Initialization
-
-#Region " Information for the outside world "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper class, provides information of an EwE5 model found in the 
-        ''' source database.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Class cEwE5ModelInfo
-
-            Private m_strID As String = ""
-            Private m_strName As String = ""
-            Private m_strDescription As String = ""
-            Private m_nScenarios As Integer = 0
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' Constructor, initializes a new instance of this class.
-            ''' </summary>
-            ''' <param name="strID">EwE5 modelName for this model.</param>
-            ''' <param name="strName">EwE5 modelTitle for this model.</param>
-            ''' <param name="strDescription">EwE5 model Remarks for this model.</param>
-            ''' <param name="nScenarios">Number of EwE5 scenarios in this model.</param>
-            ''' ---------------------------------------------------------------
-            Public Sub New(ByVal strID As String, ByVal strName As String, ByVal strDescription As String, ByVal nScenarios As Integer)
-                Me.m_strID = strID
-                Me.m_strName = strName
-                Me.m_strDescription = strDescription
-                Me.m_nScenarios = nScenarios
-            End Sub
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' Gets the internal model ID (EwE5 field modelName) for this model.
-            ''' </summary>
-            ''' ---------------------------------------------------------------
-            Public ReadOnly Property ID() As String
-                Get
-                    Return Me.m_strID
-                End Get
-            End Property
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' Gets the human readable model name (EwE5 field modelTitle) for this model.
-            ''' </summary>
-            ''' ---------------------------------------------------------------
-            Public ReadOnly Property Name() As String
-                Get
-                    Return Me.m_strName
-                End Get
-            End Property
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' Gets the model description (EwE5 field Remarks) for this model.
-            ''' </summary>
-            ''' ---------------------------------------------------------------
-            Public ReadOnly Property Description() As String
-                Get
-                    Return Me.m_strDescription
-                End Get
-            End Property
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' Gets the number of scenarios in this model.
-            ''' </summary>
-            ''' ---------------------------------------------------------------
-            Public ReadOnly Property NumScenarios() As Integer
-                Get
-                    Return Me.m_nScenarios
-                End Get
-            End Property
-
-        End Class
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper method, returns the models that were found in the source database.
-        ''' </summary>
-        ''' <returns>A list of 
-        ''' <see cref="cEwE6DatabaseImporter.cEwE5ModelInfo">cEwE5ModelInfo</see>
-        ''' objects.</returns>
-        ''' -------------------------------------------------------------------
-        Public Function GetModels() As List(Of cEwE5ModelInfo)
-            ' Pre
-            Debug.Assert(Me.isOpen() Or Me.IsAttached())
-
-            Dim l As New List(Of cEwE5ModelInfo)
-            Dim mi As cEwE5ModelInfo = Nothing
-            Dim r As IDataReader = Me.m_dbEwE5.GetReader("SELECT Models.modelName, Models.modelTitle, Models.remarks, (SELECT COUNT(*) FROM [Ecosim] WHERE (Models.modelName = Ecosim.modelName)) as NumScenarios FROM [Models] GROUP BY Models.modelName, Models.modelTitle, Models.remarks")
-
-            If r Is Nothing Then Return Nothing
-
-            While r.Read()
-                mi = New cEwE5ModelInfo(CStr(r(0)), CStr(r(1)), _
-                    CStr(Me.FixValue(r, "remarks", My.Resources.CoreMessages.IMPORT_NO_DESCRIPTION)), CInt(r(3)))
-                l.Add(mi)
-            End While
-
-            Return l
-        End Function
-
-#End Region ' Information for the outside world 
-
-#Region " The import "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Imports and converts a model in an EwE5 database into a new EwE6 database.
-        ''' </summary>
-        ''' <param name="strModelName">Name of the model in the EwE5 database to import.</param>
-        ''' <param name="db">Database to import into.</param>
-        ''' <returns>True if succesful.</returns>
-        ''' -------------------------------------------------------------------
-        Public Function Import(ByVal strModelName As String, ByVal db As cEwEDatabase, ByRef strLogfileName As String) As Boolean
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdoc cref="IEwE5ModelImporter.Import"/>
+        ''' -----------------------------------------------------------------------
+        Public Function Import(ByVal strModelName As String, ByVal db As cEwEDatabase, ByVal strLogfileName As String) As Boolean _
+            Implements IEwE5ModelImporter.Import
 
             Dim bSucces As Boolean = True
 
@@ -450,6 +264,34 @@ Namespace Database
         End Function
 
         ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="IEwE5ModelImporter.GetModels"/>
+        ''' -------------------------------------------------------------------
+        Public Function GetModels() As cEwE5ModelInfo() _
+            Implements IEwE5ModelImporter.GetModels
+
+            ' Pre
+            Debug.Assert(Me.IsOpen())
+
+            Dim l As New List(Of cEwE5ModelInfo)
+            Dim mi As cEwE5ModelInfo = Nothing
+            Dim r As IDataReader = Me.m_dbEwE5.GetReader("SELECT Models.modelName, Models.modelTitle, Models.remarks, (SELECT COUNT(*) FROM [Ecosim] WHERE (Models.modelName = Ecosim.modelName)) as NumScenarios FROM [Models] GROUP BY Models.modelName, Models.modelTitle, Models.remarks")
+
+            If r Is Nothing Then Return Nothing
+
+            While r.Read()
+                mi = New cEwE5ModelInfo(CStr(r(0)), CStr(r(1)), _
+                    CStr(Me.FixValue(r, "remarks", My.Resources.CoreMessages.IMPORT_NO_DESCRIPTION)), CInt(r(3)))
+                l.Add(mi)
+            End While
+
+            Return l.ToArray()
+        End Function
+
+#End Region ' Interface implementation
+
+#Region " The import "
+
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Imports and converts a model in an EwE5 database into a provided EwE6 database.
         ''' </summary>
@@ -459,8 +301,9 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Protected Function Import(ByVal strModelName As String, ByVal dbEwE6 As cEwEDatabase) As Boolean
 
+            Me.Open()
+
             ' Pre
-            Debug.Assert(Me.isOpen() Or Me.IsAttached(), "Must Open() or Attach() to an EwE5 database first")
             Debug.Assert(dbEwE6 IsNot Nothing, "Needs a valid EwE6 database instance")
             Debug.Assert(dbEwE6.GetConnection().State = ConnectionState.Open, "EwE6 database must already be open")
 

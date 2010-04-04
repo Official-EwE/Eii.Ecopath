@@ -1429,7 +1429,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to ESRI Asc files (*.asc)|*.asc.
+        '''  Looks up a localized string similar to ESRI Asc files|*.asc.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_ASCFILE() As String
             Get
@@ -1438,7 +1438,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Comma-separated text files (*.csv)|*.csv.
+        '''  Looks up a localized string similar to Comma-separated text files|*.csv.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_CSV() As String
             Get
@@ -1447,7 +1447,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to FlowDiagram files (*.fd)|*.fd|All files (*.*)|*.*.
+        '''  Looks up a localized string similar to FlowDiagram files|*.fd|All files (*.*)|*.*.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_FLOWDIAGRAM() As String
             Get
@@ -1456,7 +1456,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff.
+        '''  Looks up a localized string similar to Bitmap image|*.bmp|JPEG image|*.jpg;*.jpeg|GIF image|*.gif|PNG image|*.png|TIFF image|*.tif;*.tiff.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_IMAGE() As String
             Get
@@ -1465,7 +1465,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Enhanced meta files (*.emf)|*.emf.
+        '''  Looks up a localized string similar to Enhanced meta files|*.emf.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_IMAGE_EMF() As String
             Get
@@ -1474,7 +1474,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Comma-separated text files (*.csv)|*.csv|ESRI ascii file (*.asc)|*.asc|ESRI shape file (*.shp)|*.shp|Spatial raster files (*.asc, *.csv, *.shp)|*.asc;*.csv;*.shp.
+        '''  Looks up a localized string similar to Comma-separated text files|*.csv|ESRI ascii file|*.asc|ESRI shape file|*.shp|Spatial raster files|*.asc;*.csv;*.shp.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_LOAD_RASTER() As String
             Get
@@ -1483,7 +1483,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath model databases (*.mdb, *.accdb, *.EwEmdb, *.EwEaccdb)|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb.
+        '''  Looks up a localized string similar to Ecopath model databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb|Ecopath 5 text files|*.eii.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_MODEL_OPEN() As String
             Get
@@ -1492,7 +1492,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EwE 2003 format (*.EwEmdb)|*.EwEmdb|EwE 2007 format (*.EwEaccdb)|*.EwEaccdb.
+        '''  Looks up a localized string similar to EwE database (Access 2003 format)|*.EwEmdb|EwE database (Access 2007 format)|*.EwEaccdb.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_MODEL_SAVE() As String
             Get
@@ -1501,7 +1501,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EwE 2007 format (*.eweaccdb)|*.eweaccdb.
+        '''  Looks up a localized string similar to EwE database (Access 2007 format)|*.eweaccdb.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_SAVE_ACCDB() As String
             Get
@@ -1510,7 +1510,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EwE 2003 format (*.ewemdb)|*.ewemdb.
+        '''  Looks up a localized string similar to EwE database (Access 2003 format)|*.ewemdb.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_SAVE_MDB() As String
             Get
@@ -1519,7 +1519,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Comma-separated text files (*.csv)|*.csv|ESRI ascii file (*.asc)|Spatial raster files (*.asc, *.csv)|*.asc;*.csv.
+        '''  Looks up a localized string similar to Comma-separated text files|*.csv|ESRI Asc files|Spatial raster files|*.asc;*.csv.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_SAVE_RASTER() As String
             Get
@@ -1528,7 +1528,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Text files (*.txt)|*.txt.
+        '''  Looks up a localized string similar to Text files|*.txt.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_TEXT() As String
             Get
