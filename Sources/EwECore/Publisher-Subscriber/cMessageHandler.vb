@@ -31,6 +31,10 @@ Public Class cMessageHandler
     Private m_corecomponent As eCoreComponentType
     Private m_msgtype As eMessageType
 
+#If DEBUG Then
+    Private m_strName As String = ""
+#End If
+
     ''' <summary>
     ''' Constructs a new cMessageHandler object that will send messages of a given type to the DelegateToCall argument.
     ''' </summary>
@@ -154,6 +158,16 @@ Public Class cMessageHandler
         Return m_DelegateNotifier
     End Function
 
+#If DEBUG Then
+    Public Property Name() As String
+        Get
+            Return Me.m_strName
+        End Get
+        Set(ByVal value As String)
+            Me.m_strName = value
+        End Set
+    End Property
+#End If
 
 End Class
 
