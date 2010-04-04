@@ -7474,7 +7474,7 @@ Public Class cCore
         ' Sanity check
         Debug.Assert(iScenario > 0 And iScenario < Me.m_EcoPathData.EcospaceScenarioDBID.Length)
 
-        Dim bNeedFullReload As Boolean = (iScenario = Me.m_EcoPathData.ActiveEcosimScenario)
+        Dim bNeedFullReload As Boolean = (iScenario = Me.m_EcoPathData.ActiveEcospaceScenario)
         Dim iScenarioDBID As Integer = Me.m_EcoPathData.EcospaceScenarioDBID(iScenario)
         Dim bSucces As Boolean = False And True And True And True And True ' Can't help trying
         Dim ds As IEcospaceDatasource = Nothing
@@ -7493,8 +7493,8 @@ Public Class cCore
             bSucces = Me.InitEcospaceScenarios()
             ' Was this the currently active scenario?
             If bNeedFullReload Then
-                ' #Yes: Must entirely re-initialize Ecosim
-                bSucces = Me.InitEcoSim()
+                ' #Yes: Must entirely re-initialize Ecospace
+                bSucces = Me.InitEcoSpace()
             End If
             Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcoSpaceScenario)
         End If
@@ -9457,7 +9457,7 @@ Public Class cCore
         ' Sanity check
         Debug.Assert(iScenario > 0 And iScenario < Me.m_EcoPathData.EcotracerScenarioDBID.Length)
 
-        Dim bNeedFullReload As Boolean = (iScenario = Me.m_EcoPathData.ActiveEcosimScenario)
+        Dim bNeedFullReload As Boolean = (iScenario = Me.m_EcoPathData.ActiveEcotracerScenario)
         Dim iScenarioDBID As Integer = Me.m_EcoPathData.EcotracerScenarioDBID(iScenario)
         Dim bSucces As Boolean = False And True And True And True And True ' Can't help trying
         Dim ds As IEcotracerDatasource = Nothing
@@ -9476,8 +9476,8 @@ Public Class cCore
             bSucces = Me.InitEcotracerScenarios()
             ' Was this the currently active scenario?
             If bNeedFullReload Then
-                ' #Yes: Must entirely re-initialize Ecosim
-                bSucces = Me.InitEcoSim()
+                ' #Yes: Must entirely re-initialize Ecotracer - somehow
+                'bSucces = Me.int()
             End If
             Me.DataAddedOrRemovedMessage("Ecotracer number of scenarios has changed.", eCoreComponentType.Ecotracer, eDataTypes.EcotracerScenario)
         End If
