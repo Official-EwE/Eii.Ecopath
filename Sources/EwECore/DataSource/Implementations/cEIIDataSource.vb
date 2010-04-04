@@ -197,7 +197,46 @@ Public Class cEIIDataSource
     Public Function LoadModel() As Boolean _
         Implements IEcopathDataSource.LoadModel
 
-        'read the contents of the eii file into an EcopathParamters object
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim i As Integer
+
+        If Me.LoadEII() Then
+
+            For i = 1 To ecopathDS.NumGroups
+                If ecopathDS.QB(i) = 0 And ecopathDS.PP(i) = 1 Then ecopathDS.GS(i) = 0
+                If ecopathDS.PP(i) = 2 Then ecopathDS.GS(i) = 0
+            Next i
+
+            ecopathDS.GS(ecopathDS.NumGroups) = 0
+
+            For i = 1 To ecopathDS.NumGroups
+                If ecopathDS.Area(i) <= 0 Or ecopathDS.Area(i) > 1 Then ecopathDS.Area(i) = 1
+                If ecopathDS.BH(i) <= 0 And ecopathDS.B(i) > 0 Then ecopathDS.BH(i) = ecopathDS.B(i) / ecopathDS.Area(i)
+            Next i
+
+            ecopathDS.bInitialized = True
+
+            Me.LoadStanza()
+            Me.LoadEcosimScenarioDefinitions()
+
+            ' Make sure that the core knows not to exect anything else
+            ecopathDS.RedimEcospaceScenarios()
+            ecopathDS.RedimEcotracerScenarios()
+
+            ' Invoke plugin point
+            If (Me.m_core.PluginManager IsNot Nothing) Then Me.m_core.PluginManager.LoadModel(Me)
+
+            Return True
+
+        End If
+
+        Return False
+
+    End Function
+
+    Private Function LoadEII() As Boolean
+
+        'read the contents of the eii file into an EcopathParameters object
         'this is written using vb file access instead of a filestream to keep it as close to the original vb code as possible
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
@@ -220,9 +259,8 @@ Public Class cEIIDataSource
         Try
             FileOpen(fnum, m_strFilename, OpenMode.Input)
         Catch ex As Exception
-            LoadModel = False
             cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. " + vbCrLf + m_strFilename + vbCrLf + "Error:" + ex.Message())
-            Exit Function
+            Return False
         End Try
 
         'fake model data
@@ -233,14 +271,14 @@ Public Class cEIIDataSource
 
         'read the file
         Try
-            Dim currencyBuff As Integer
-            Input(fnum, ecopathDS.NumGroups) : Input(fnum, ecopathDS.NumLiving) : Input(fnum, currencyBuff) : Input(fnum, ecopathDS.currUnitIndex)
-            Me.m_core.m_EwEModelUnitCurrency = DirectCast(currencyBuff, EwEUtils.Core.eUnitCurrencyType)
+            Input(fnum, ecopathDS.NumGroups)
+            Input(fnum, ecopathDS.NumLiving)
+            Input(fnum, Me.m_core.m_EwEModelUnitCurrencyCustom)
+            Input(fnum, ecopathDS.currUnitIndex)
 
             If Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables() Then
-                LoadModel = False
                 cLog.Write(Me.ToString + ".LoadModel(...) Failed to Re-Dimension group parameter arrays.")
-                Exit Function
+                Return False
             End If
 
             'groups
@@ -249,6 +287,8 @@ Public Class cEIIDataSource
                 Input(fnum, ecopathDS.Ex(K)) : Input(fnum, ecopathDS.fCatch(K)) : Input(fnum, ecopathDS.DC(K, 0))
                 Input(fnum, ecopathDS.Binput(K)) : Input(fnum, ecopathDS.PBinput(K)) : Input(fnum, ecopathDS.EEinput(K))
                 Input(fnum, ecopathDS.GEinput(K)) : Input(fnum, ecopathDS.QBinput(K))
+
+                ecopathDS.BHinput(K) = ecopathDS.Binput(K) / ecopathDS.Area(K)
 
                 ecopathDS.GroupDBID(K) = K
 
@@ -282,12 +322,14 @@ Public Class cEIIDataSource
             ReDim ecopathDS.DietChanged(1, 0)
             For K = 1 To ecopathDS.NumGroups
                 For j = 1 To ecopathDS.NumGroups
-                    Input(fnum, ecopathDS.DC(K, j))
-                    If ecopathDS.DC(K, j) > 0 Then
+                    Input(fnum, ecopathDS.DCInput(K, j))
+                    If ecopathDS.DCInput(K, j) > 0 Then
                         ecopathDS.DietWasChanged(K, j)
                     End If
                 Next j
             Next K
+
+            If EOF(fnum) Then Return True
 
             'jb totp read in original routine using a string will read the entire line
             Input(fnum, jnk)
@@ -311,11 +353,13 @@ Public Class cEIIDataSource
                 ecopathDS.TimeUnitName = tmpbuff.Trim
                 Select Case LCase(ecopathDS.TimeUnitName)
                     Case "year"
-                        ecopathDS.TimeUnitIndex = 1
+                        Me.m_core.m_EwEModelUnitTime = eUnitTimeType.Year
                     Case "day"
-                        ecopathDS.TimeUnitIndex = 2
+                        Me.m_core.m_EwEModelUnitTime = eUnitTimeType.Day
                     Case Else
-                        ecopathDS.TimeUnitIndex = 3
+                        Me.m_core.m_EwEModelUnitTime = eUnitTimeType.Custom
+                        Me.m_core.m_EwEModelUnitTimeCustom = ecopathDS.TimeUnitName
+
                 End Select
             End If
 
@@ -410,36 +454,11 @@ Public Class cEIIDataSource
 
         Catch ex As Exception 'catch any error during the reading of the data
             FileClose(fnum)
-            LoadModel = False
             'some kind of a reading error better find out what happend
             cLog.Write(Me.ToString + ".LoadEcopath() Error reading eii file. Error: " + ex.Message())
             Debug.Assert(False)
-            Exit Function
+            Return False
         End Try
-
-        For i = 1 To ecopathDS.NumGroups
-            If ecopathDS.QB(i) = 0 And ecopathDS.PP(i) = 1 Then ecopathDS.GS(i) = 0
-            If ecopathDS.PP(i) = 2 Then ecopathDS.GS(i) = 0
-        Next i
-
-        ecopathDS.GS(ecopathDS.NumGroups) = 0
-
-        For i = 1 To ecopathDS.NumGroups
-            If ecopathDS.Area(i) <= 0 Or ecopathDS.Area(i) > 1 Then ecopathDS.Area(i) = 1
-            If ecopathDS.BH(i) <= 0 And ecopathDS.B(i) > 0 Then ecopathDS.BH(i) = ecopathDS.B(i) / ecopathDS.Area(i)
-        Next i
-
-        ecopathDS.bInitialized = True
-
-        Me.LoadStanza()
-        Me.LoadEcosimScenarioDefinitions()
-
-        ' Make sure that the core knows not to exect anything else
-        ecopathDS.RedimEcospaceScenarios()
-        ecopathDS.RedimEcotracerScenarios()
-
-        ' Invoke plugin point
-        If (Me.m_core.PluginManager IsNot Nothing) Then Me.m_core.PluginManager.LoadModel(Me)
 
         Return True
 
