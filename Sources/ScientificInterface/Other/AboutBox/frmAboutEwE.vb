@@ -5,6 +5,7 @@ Imports System.Reflection
 Imports System.Deployment
 Imports System.Text
 Imports EwEUtils.Utilities
+Imports EwECore
 
 #End Region ' Imports 
 
@@ -27,7 +28,8 @@ Namespace Other
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Dim an As AssemblyName = Assembly.GetExecutingAssembly().GetName()
+            ' Report CORE assembly
+            Dim an As AssemblyName = Assembly.GetAssembly(GetType(cCore)).GetName
             Dim strTitle As String = My.Application.Info.Title
             Dim grid As New AboutEwEGrid(Me.m_uic)
 
