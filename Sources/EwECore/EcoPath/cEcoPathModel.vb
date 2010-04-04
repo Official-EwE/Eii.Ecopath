@@ -1929,6 +1929,7 @@ nextJ:
                             strMessage = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY, j, m_Data.GroupName(j))
                             ' Prepare message
                             msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
+                            msg.Suppressable = True
                             ' Send off
                             NotifyCore(msg)
                             ' Catch result
@@ -1942,6 +1943,7 @@ nextJ:
                                 strMessage = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PRODxEE, j, m_Data.GroupName(j), Only.ToString("0.000"))
                                 ' Prepare message
                                 msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
+                                msg.Suppressable = True
                                 ' Send off
                                 NotifyCore(msg)
                                 ' Catch result
@@ -1951,6 +1953,7 @@ nextJ:
                                 strMessage = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY, j, m_Data.GroupName(j), m_Data.B(j).ToString("0.000"))
                                 ' Prepare message
                                 msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
+                                msg.Suppressable = True
                                 ' Send off
                                 NotifyCore(msg)
                                 ' Catch result
