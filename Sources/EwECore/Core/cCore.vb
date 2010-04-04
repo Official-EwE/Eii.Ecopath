@@ -540,7 +540,7 @@ Public Class cCore
         Me.m_tracerData = New cContaminantTracerDataStructures
         Me.m_TSData = New cTimeSeriesDataStructures
         Me.m_MPAOptData = New cMPAOptDataStructures
-        Me.m_PSDData = New cPSDDatastructures
+        Me.m_PSDData = New cPSDDatastructures(Me.m_EcoPathData)
         Me.m_QuotaData = New cQuotaDataStructures(AddressOf Me.GetCoreCounter)
         Me.m_MSEData = New cMSEDataStructures(Me.m_EcoPathData, Me.m_EcoSimData, Me.m_QuotaData)
 

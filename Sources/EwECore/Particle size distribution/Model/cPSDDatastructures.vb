@@ -6,13 +6,10 @@ Imports EwEUtils.Core
 ''' </summary>
 Public Class cPSDDatastructures
 
+    Public EcopathDS As cEcopathDataStructures = Nothing
+
     ''' <summary>States whether PSD model is enabled.</summary>
     Public Enabled As Boolean = False
-
-    ''' <summary>Total number of groups (living and detritus)</summary>
-    Public NumGroups As Integer
-    ''' <summary>Total number of living groups.</summary>
-    Public NumLiving As Integer
 
     Public NAgeSteps As Integer = 101
     Public MortalityType As ePSDMortalityTypes = ePSDMortalityTypes.GroupZ
@@ -46,6 +43,22 @@ Public Class cPSDDatastructures
     Public EcopathBiomass(,) As Single
     Public LorenzenMortality(,) As Single
     Public PSD(,) As Single
+
+    Public Sub New(ByVal EcopathDS As cEcopathDataStructures)
+        Me.EcopathDS = EcopathDS
+    End Sub
+
+    Public ReadOnly Property NumGroups() As Integer
+        Get
+            Return Me.EcopathDS.NumGroups
+        End Get
+    End Property
+
+    Public ReadOnly Property NumLiving() As Integer
+        Get
+            Return Me.EcopathDS.NumLiving
+        End Get
+    End Property
 
     ''' <summary>
     ''' redimension array variables 
