@@ -106,6 +106,8 @@
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbModel = New System.Windows.Forms.ToolStripButton
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar
+        Me.m_tsmiEcosimDelete = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcospaceDelete = New System.Windows.Forms.ToolStripMenuItem
         m_tssModel1 = New System.Windows.Forms.ToolStripSeparator
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator
@@ -215,7 +217,7 @@
         '
         'MenuEcospace
         '
-        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, m_tssEcospace2, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceEditHabitats, Me.m_tsmiEcospaceEditMPAs, Me.m_tsmiEcospaceEditRegions, m_tssEcospace3, Me.m_tsmiEcospaceEditImportanceLayers, m_tssEcospace4, Me.m_tsmiEcospaceImportLayers})
+        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceEditHabitats, Me.m_tsmiEcospaceEditMPAs, Me.m_tsmiEcospaceEditRegions, m_tssEcospace3, Me.m_tsmiEcospaceEditImportanceLayers, m_tssEcospace4, Me.m_tsmiEcospaceImportLayers})
         MenuEcospace.Name = "MenuEcospace"
         resources.ApplyResources(MenuEcospace, "MenuEcospace")
         '
@@ -467,7 +469,7 @@
         '
         'MenuEcosim
         '
-        Me.MenuEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesExport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights, m_tssEcosim3, Me.m_tsmiExportBiomassToCSV, Me.m_tsmiEcosimEstimateVs})
+        Me.MenuEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, Me.m_tsmiEcosimDelete, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesExport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights, m_tssEcosim3, Me.m_tsmiExportBiomassToCSV, Me.m_tsmiEcosimEstimateVs})
         Me.MenuEcosim.Name = "MenuEcosim"
         resources.ApplyResources(Me.MenuEcosim, "MenuEcosim")
         '
@@ -609,6 +611,18 @@
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
+        'm_tsmiEcosimDelete
+        '
+        Me.m_tsmiEcosimDelete.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
+        Me.m_tsmiEcosimDelete.Name = "m_tsmiEcosimDelete"
+        resources.ApplyResources(Me.m_tsmiEcosimDelete, "m_tsmiEcosimDelete")
+        '
+        'm_tsmiEcospaceDelete
+        '
+        Me.m_tsmiEcospaceDelete.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
+        Me.m_tsmiEcospaceDelete.Name = "m_tsmiEcospaceDelete"
+        resources.ApplyResources(Me.m_tsmiEcospaceDelete, "m_tsmiEcospaceDelete")
+        '
         'AppLauncher
         '
         resources.ApplyResources(Me, "$this")
@@ -695,6 +709,8 @@
     Private WithEvents m_tsmiTimeSeriesExport As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiViewItems As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcosimDelete As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcospaceDelete As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 

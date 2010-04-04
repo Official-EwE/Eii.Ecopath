@@ -455,7 +455,8 @@ Namespace Wizard
         ''' <summary>
         ''' Event handler when dialog is being loaded.
         ''' </summary>
-        Private Sub DoLoad(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
             ' Set up possible modes correctly
             With Me.tabctrlModes
@@ -487,7 +488,7 @@ Namespace Wizard
                 Case eDialogModeType.DeleteScenario
                     ' Cannot save as
                     Me.tabctrlModes.TabPages.RemoveAt(3)
-                    Me.tabctrlModes.SelectedIndex = 3
+                    Me.tabctrlModes.SelectedIndex = 2
 
             End Select
 
@@ -509,10 +510,13 @@ Namespace Wizard
 
         End Sub
 
-        Private Sub tabctrlModes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabctrlModes.SelectedIndexChanged
+        Private Sub tabctrlModes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+                Handles tabctrlModes.SelectedIndexChanged
+
             ' Sanity check
             Debug.Assert(Object.ReferenceEquals(sender, Me.tabctrlModes))
             Me.Mode = DirectCast(Me.tabctrlModes.TabPages(Me.tabctrlModes.SelectedIndex).Tag, eDialogModeType)
+
         End Sub
 
         Private Sub OnCreateScenario(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -583,23 +587,32 @@ Namespace Wizard
 
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelCreate.Click, btnCancelLoad.Click, btnCancelSave.Click, btnCancelDelete.Click
+        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                Handles btnCancelCreate.Click, btnCancelLoad.Click, btnCancelSave.Click, btnCancelDelete.Click
+
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
+
         End Sub
 
         ''' <summary>
         ''' Event handler...
         ''' </summary>
-        Private Sub OnScenarioCreateNameChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbNameCreate.TextChanged
+        Private Sub OnScenarioCreateNameChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                Handles tbNameCreate.TextChanged
+
             Me.Scenario = Me.FindScenarioByName(tbNameCreate.Text)
+
         End Sub
 
         ''' <summary>
         ''' Event handler...
         ''' </summary>
-        Private Sub OnScenarioSaveAsNameChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbNameSaveAs.TextChanged
+        Private Sub OnScenarioSaveAsNameChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                Handles tbNameSaveAs.TextChanged
+
             Me.Scenario = Me.FindScenarioByName(tbNameSaveAs.Text)
+
         End Sub
 
         Private Sub OnRenameScenario(ByVal sender As System.Object, ByVal e As System.EventArgs) _

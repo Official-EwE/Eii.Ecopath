@@ -247,6 +247,12 @@
   <data name="m_tsmiEcospaceSaveAs.Text" xml:space="preserve">
     <value>Save Scenario &amp;As...</value>
   </data>
+  <data name="m_tsmiEcospaceDelete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>205, 22</value>
+  </data>
+  <data name="m_tsmiEcospaceDelete.Text" xml:space="preserve">
+    <value>&amp;Delete Scenario...</value>
+  </data>
   <data name="m_tsmiEcospaceEditMap.Size" type="System.Drawing.Size, System.Drawing">
     <value>205, 22</value>
   </data>
@@ -577,6 +583,12 @@
   <data name="m_tsmiEcosimSaveAs.Text" xml:space="preserve">
     <value>Save Scenario &amp;As...</value>
   </data>
+  <data name="m_tsmiEcosimDelete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>236, 22</value>
+  </data>
+  <data name="m_tsmiEcosimDelete.Text" xml:space="preserve">
+    <value>&amp;Delete Scenario...</value>
+  </data>
   <data name="m_tsmiTimeSeriesImport.Size" type="System.Drawing.Size, System.Drawing">
     <value>236, 22</value>
   </data>
@@ -788,7 +800,7 @@
     <value>m_ssMain</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
-    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.7.325, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.7.404, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -6258,6 +6270,18 @@
   </data>
   <data name="&gt;&gt;m_tsbModel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcosimDelete.Name" xml:space="preserve">
+    <value>m_tsmiEcosimDelete</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcosimDelete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceDelete.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceDelete</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceDelete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AppLauncher</value>

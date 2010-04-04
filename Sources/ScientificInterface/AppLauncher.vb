@@ -40,6 +40,8 @@ Public Class AppLauncher
 #Region " Variables "
 
     Private m_uic As cUIContext = Nothing
+    Private m_mhEcosim As cMessageHandler = Nothing
+    Private m_mhEcospace As cMessageHandler = Nothing
 
     Private m_pluginManager As cPluginManager = Nothing
     Private m_pluginMenuHandler As cPluginMenuHandler = Nothing
@@ -73,10 +75,12 @@ Public Class AppLauncher
     Private WithEvents m_cmdLoadEcosimScenario As cCommand = Nothing
     Private WithEvents m_cmdSaveEcosimScenario As cCommand = Nothing
     Private WithEvents m_cmdSaveEcosimScenarioAs As cCommand = Nothing
+    Private WithEvents m_cmdDeleteEcosimScenario As cCommand = Nothing
     Private WithEvents m_cmdNewEcospaceScenario As cCommand = Nothing
     Private WithEvents m_cmdLoadEcospaceScenario As cCommand = Nothing
     Private WithEvents m_cmdSaveEcospaceScenario As cCommand = Nothing
     Private WithEvents m_cmdSaveEcospaceScenarioAS As cCommand = Nothing
+    Private WithEvents m_cmdDeleteEcospaceScenario As cCommand = Nothing
     Private WithEvents m_cmdNewEcotracerScenario As cCommand = Nothing
     Private WithEvents m_cmdLoadEcotracerScenario As cCommand = Nothing
     Private WithEvents m_cmdSaveEcotracerScenario As cCommand = Nothing
@@ -423,6 +427,7 @@ Public Class AppLauncher
             Me.EnsureDefaultNodeSelected()
             ' Keep at it, Maurice
             Me.UpdateModelControls()
+            Me.UpdateScenarioControls()
 
             Return True
         Else
@@ -679,14 +684,10 @@ Public Class AppLauncher
         Me.InitPanels()
         Me.InitEventHandlers()
 
-        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-
         Me.InitDockPanelPositions()
         'Show start page
         Me.m_StartPage.Show(Me.m_DockPanel, DockState.Document)
 
-        ' Set app caption
-        Me.Text = Me.GetApplicationCaption()
         ' Start controlling the status strip
         Me.m_ssMain.Attach(Me.UIContext)
         ' Start controlling forms
@@ -709,6 +710,7 @@ Public Class AppLauncher
 
         Me.Help.HelpTopic(Me.m_StartPage) = "Ecopath with Ecosim 6 Getting started.htm"
 
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
     End Sub
 
     ''' <summary>
@@ -730,6 +732,9 @@ Public Class AppLauncher
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
 
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
+
         RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
         ' Terminate forms
@@ -737,10 +742,6 @@ Public Class AppLauncher
 
         MyBase.OnFormClosing(e)
 
-    End Sub
-
-    Protected Overrides Sub OnResizeEnd(ByVal e As System.EventArgs)
-        Me.UpdateModelPathText(Me.SelectedFileName)
     End Sub
 
 #End Region ' Form overrides
@@ -764,89 +765,97 @@ Public Class AppLauncher
         Me.m_cmdExecute = New cExecuteCommand(cmdh)
 
         ' Create and configure new command
-        m_cmdNewModel = New cCommand(cmdh, "NewEcopathModel")
-        m_cmdNewModel.AddControl(Me.m_tsmiFileNew)
+        Me.m_cmdNewModel = New cCommand(cmdh, "NewEcopathModel")
+        Me.m_cmdNewModel.AddControl(Me.m_tsmiFileNew)
 
         ' Create and configure open command
-        m_cmdLoadModel = New cCommand(cmdh, "LoadEcopathModel")
-        m_cmdLoadModel.AddControl(Me.m_tsmiFileOpen)
-        m_cmdLoadModel.AddControl(Me.m_tsbEcopath)
+        Me.m_cmdLoadModel = New cCommand(cmdh, "LoadEcopathModel")
+        Me.m_cmdLoadModel.AddControl(Me.m_tsmiFileOpen)
+        Me.m_cmdLoadModel.AddControl(Me.m_tsbEcopath)
 
         ' Create and configure save commands
-        m_cmdSaveModelAs = New cCommand(cmdh, "SaveModelAs")
-        m_cmdSaveModelAs.AddControl(Me.m_tsmiFileSaveAs)
+        Me.m_cmdSaveModelAs = New cCommand(cmdh, "SaveModelAs")
+        Me.m_cmdSaveModelAs.AddControl(Me.m_tsmiFileSaveAs)
 
-        m_cmdSave = New cCommand(cmdh, "SaveModel")
-        m_cmdSave.AddControl(Me.m_tsmiFileSave)
+        Me.m_cmdSave = New cCommand(cmdh, "SaveModel")
+        Me.m_cmdSave.AddControl(Me.m_tsmiFileSave)
 
         ' Create and configure 'close model' command
-        m_cmdCloseModel = New cCommand(cmdh, "CloseModel")
-        m_cmdCloseModel.AddControl(Me.m_tsmiFileClose)
+        Me.m_cmdCloseModel = New cCommand(cmdh, "CloseModel")
+        Me.m_cmdCloseModel.AddControl(Me.m_tsmiFileClose)
 
         ' Create and configure 'compact model' command
-        m_cmdCompactModel = New cCommand(cmdh, "CompactModel")
-        m_cmdCompactModel.AddControl(Me.m_tsmiFileCompact)
+        Me.m_cmdCompactModel = New cCommand(cmdh, "CompactModel")
+        Me.m_cmdCompactModel.AddControl(Me.m_tsmiFileCompact)
 
         ' Create and configure 'close document' command
-        m_cmdCloseDocument = New cCommand(cmdh, "CloseDocument")
-        m_cmdCloseDocument.AddControl(Me.m_tsmiWindowsClose)
+        Me.m_cmdCloseDocument = New cCommand(cmdh, "CloseDocument")
+        Me.m_cmdCloseDocument.AddControl(Me.m_tsmiWindowsClose)
 
         ' Create and configure navigate command
-        m_cmdNavigate = New cNavigationCommand(cmdh)
+        Me.m_cmdNavigate = New cNavigationCommand(cmdh)
 
         ' Create and configure 'close all forms' command
-        m_cmdCloseAllForms = New cCommand(cmdh, "CloseAllForms")
-        m_cmdCloseAllForms.AddControl(Me.m_tsmiWindowsCloseAll)
+        Me.m_cmdCloseAllForms = New cCommand(cmdh, "CloseAllForms")
+        Me.m_cmdCloseAllForms.AddControl(Me.m_tsmiWindowsCloseAll)
 
         'Create and configure 'new ecosim scenario' command
-        m_cmdNewEcosimScenario = New cCommand(cmdh, "NewEcosimScenario")
-        m_cmdNewEcosimScenario.AddControl(Me.m_tsmiEcosimNew)
+        Me.m_cmdNewEcosimScenario = New cCommand(cmdh, "NewEcosimScenario")
+        Me.m_cmdNewEcosimScenario.AddControl(Me.m_tsmiEcosimNew)
 
         'Create and configure 'load ecosim scenario' command
-        m_cmdLoadEcosimScenario = New cCommand(cmdh, "LoadEcosimScenario")
-        m_cmdLoadEcosimScenario.AddControl(Me.m_tsmiEcosimLoad)
-        m_cmdLoadEcosimScenario.AddControl(Me.m_tsbEcosim)
+        Me.m_cmdLoadEcosimScenario = New cCommand(cmdh, "LoadEcosimScenario")
+        Me.m_cmdLoadEcosimScenario.AddControl(Me.m_tsmiEcosimLoad)
+        Me.m_cmdLoadEcosimScenario.AddControl(Me.m_tsbEcosim)
 
         'Create and configure 'save ecosim scenario' command
-        m_cmdSaveEcosimScenario = New cCommand(cmdh, "SaveEcosimScenario")
-        m_cmdSaveEcosimScenario.AddControl(Me.m_tsmiEcosimSave)
+        Me.m_cmdSaveEcosimScenario = New cCommand(cmdh, "SaveEcosimScenario")
+        Me.m_cmdSaveEcosimScenario.AddControl(Me.m_tsmiEcosimSave)
 
         'Create and configure 'save ecosim scenario as' command
-        m_cmdSaveEcosimScenarioAs = New cCommand(cmdh, "SaveEcosimScenarioAs")
-        m_cmdSaveEcosimScenarioAs.AddControl(Me.m_tsmiEcosimSaveAs)
+        Me.m_cmdSaveEcosimScenarioAs = New cCommand(cmdh, "SaveEcosimScenarioAs")
+        Me.m_cmdSaveEcosimScenarioAs.AddControl(Me.m_tsmiEcosimSaveAs)
+
+        'Create and configure 'delete ecosim scenario' command
+        Me.m_cmdDeleteEcosimScenario = New cCommand(cmdh, "DeleteEcosimScenarioAs")
+        Me.m_cmdDeleteEcosimScenario.AddControl(Me.m_tsmiEcosimDelete)
 
         'Create and configure 'new ecospace scenario' command
-        m_cmdNewEcospaceScenario = New cCommand(cmdh, "NewEcospaceScenario")
-        m_cmdNewEcospaceScenario.AddControl(Me.m_tsmiEcospaceNew)
+        Me.m_cmdNewEcospaceScenario = New cCommand(cmdh, "NewEcospaceScenario")
+        Me.m_cmdNewEcospaceScenario.AddControl(Me.m_tsmiEcospaceNew)
 
         'Create and configure 'load ecospace scenario' command
-        m_cmdLoadEcospaceScenario = New cCommand(cmdh, "LoadEcospaceScenario")
-        m_cmdLoadEcospaceScenario.AddControl(Me.m_tsmiEcospaceLoad)
-        m_cmdLoadEcospaceScenario.AddControl(Me.m_tsbEcospace)
+        Me.m_cmdLoadEcospaceScenario = New cCommand(cmdh, "LoadEcospaceScenario")
+        Me.m_cmdLoadEcospaceScenario.AddControl(Me.m_tsmiEcospaceLoad)
+        Me.m_cmdLoadEcospaceScenario.AddControl(Me.m_tsbEcospace)
 
         'Create and configure 'save ecospace scenario' command
-        m_cmdSaveEcospaceScenario = New cCommand(cmdh, "SaveEcospaceScenario")
-        m_cmdSaveEcospaceScenario.AddControl(Me.m_tsmiEcospaceSave)
+        Me.m_cmdSaveEcospaceScenario = New cCommand(cmdh, "SaveEcospaceScenario")
+        Me.m_cmdSaveEcospaceScenario.AddControl(Me.m_tsmiEcospaceSave)
 
         'Create and configure 'save ecospace scenario as' command
-        m_cmdSaveEcospaceScenarioAS = New cCommand(cmdh, "SaveEcospaceScenarioAs")
-        m_cmdSaveEcospaceScenarioAS.AddControl(Me.m_tsmiEcospaceSaveAs)
+        Me.m_cmdSaveEcospaceScenarioAS = New cCommand(cmdh, "SaveEcospaceScenarioAs")
+        Me.m_cmdSaveEcospaceScenarioAS.AddControl(Me.m_tsmiEcospaceSaveAs)
+
+        'Create and configure 'delete ecospace scenario' command
+        Me.m_cmdDeleteEcospaceScenario = New cCommand(cmdh, "DeleteEcospaceScenario")
+        Me.m_cmdDeleteEcospaceScenario.AddControl(Me.m_tsmiEcospaceDelete)
 
         'Create and configure 'new ecotracer scenario' command
         Me.m_cmdNewEcotracerScenario = New cCommand(cmdh, "NewEcotracerScenario")
         Me.m_cmdNewEcotracerScenario.AddControl(Me.m_tsmiEcotracerNew)
 
         'Create and configure 'load ecotracer scenario' command
-        m_cmdLoadEcotracerScenario = New cCommand(cmdh, "LoadEcotracerScenario")
-        m_cmdLoadEcotracerScenario.AddControl(Me.m_tsmiEcotracerLoad)
+        Me.m_cmdLoadEcotracerScenario = New cCommand(cmdh, "LoadEcotracerScenario")
+        Me.m_cmdLoadEcotracerScenario.AddControl(Me.m_tsmiEcotracerLoad)
 
         'Create and configure 'save ecotracer scenario' command
-        m_cmdSaveEcotracerScenario = New cCommand(cmdh, "SaveEcotracerScenario")
-        m_cmdSaveEcotracerScenario.AddControl(Me.m_tsmiEcotracerSave)
+        Me.m_cmdSaveEcotracerScenario = New cCommand(cmdh, "SaveEcotracerScenario")
+        Me.m_cmdSaveEcotracerScenario.AddControl(Me.m_tsmiEcotracerSave)
 
         'Create and configure 'save ecotracer scenario as' command
-        m_cmdSaveEcotracerScenarioAS = New cCommand(cmdh, "SaveEcotracerScenarioAs")
-        m_cmdSaveEcotracerScenarioAS.AddControl(Me.m_tsmiEcotracerSaveAs)
+        Me.m_cmdSaveEcotracerScenarioAS = New cCommand(cmdh, "SaveEcotracerScenarioAs")
+        Me.m_cmdSaveEcotracerScenarioAS.AddControl(Me.m_tsmiEcotracerSaveAs)
 
         'Create and configure 'view Navtree' command
         Me.m_cmdViewNavPane = New cCommand(cmdh, "ViewNavPane")
@@ -985,6 +994,15 @@ Public Class AppLauncher
 
         ' Config state monitor
         Me.Core.StateMonitor.SyncObject = Me
+        Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_uic.SyncObject)
+        Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
+
+#If DEBUG Then
+        Me.m_mhEcosim.Name = "ApplSim"
+        Me.m_mhEcospace.Name = "ApplSpace"
+#End If
+        Me.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
+        Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
 
         ' Create plugin manager for this GUI
         Me.m_pluginManager = New cPluginManager()
@@ -1263,6 +1281,7 @@ Public Class AppLauncher
             Me.Refresh()
             ' Report succes
             Me.UpdateModelControls()
+            Me.UpdateScenarioControls()
         End If
 
         Return True
@@ -1325,8 +1344,25 @@ Public Class AppLauncher
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, updates the state of controls reflecting the current model. 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub UpdateModelControls()
 
+        Me.m_tsbModel.Text = cStringUtils.TruncatePath(Me.SelectedFileName, Me.m_tsbModel.Font, Me.m_tsbModel.Width)
+        Me.m_tsbModel.Visible = Not String.IsNullOrEmpty(Me.m_tsbModel.Text)
+
+        If String.IsNullOrEmpty(Me.SelectedFileName) Then
+            Me.Text = String.Format(My.Resources.GENERIC_CAPTION)
+        Else
+            Me.Text = String.Format(My.Resources.GENERIC_CAPTION_OPENMODEL, Me.SelectedFileName(False))
+        End If
+
+    End Sub
+
+    Private Sub UpdateScenarioControls()
         Dim mnuItem As ToolStripMenuItem = Nothing
 
         ' Clear the dropdown items first
@@ -1358,24 +1394,7 @@ Public Class AppLauncher
             End If
         End If
 
-        Me.UpdateModelPathText(Me.SelectedFileName)
-
-        Me.Text = GetApplicationCaption()
-
     End Sub
-
-    Private Sub UpdateModelPathText(ByVal strText As String)
-        Me.m_tsbModel.Text = cStringUtils.TruncatePath(strText, Me.m_tsbModel.Font, Me.m_tsbModel.Width)
-        Me.m_tsbModel.Visible = Not String.IsNullOrEmpty(strText)
-    End Sub
-
-    Private Function GetApplicationCaption() As String
-        If String.IsNullOrEmpty(Me.SelectedFileName) Then
-            Return String.Format(My.Resources.GENERIC_CAPTION)
-        Else
-            Return String.Format(My.Resources.GENERIC_CAPTION_OPENMODEL, Me.SelectedFileName(False))
-        End If
-    End Function
 
     Private Sub ReportFileAccessError(ByVal atResult As eDatasourceAccessType, ByVal strFileName As String)
 
@@ -2714,6 +2733,9 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
+    ''' <summary>
+    ''' Command handler; saves an Ecosim scenario
+    ''' </summary>
     Private Sub OnSaveEcosimScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenario.OnInvoke
         Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSIM_SAVING, Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).Name)
         Me.SetStatusText(strStatus, TriState.True)
@@ -2732,6 +2754,9 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.IsEcosimModified
     End Sub
 
+    ''' <summary>
+    ''' Command handler; saves an Ecosim scenario to a new name
+    ''' </summary>
     Private Sub OnSaveEcosimScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenarioAs.OnInvoke
 
         Dim dlg As New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.SaveScenario, _
@@ -2774,14 +2799,33 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the 'save ecosim scenario as' command
     ''' </summary>
-    Private Sub OnUpdateSaveEcosimScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenarioAs.OnUpdate
+    Private Sub OnUpdateSaveEcosimScenarioAs(ByVal cmd As cCommand) _
+        Handles m_cmdSaveEcosimScenarioAs.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; deletes an Ecosim scenario 
+    ''' </summary>
+    Private Sub OnInvokeDeleteEcosimScenario(ByVal cmd As cCommand) _
+         Handles m_cmdDeleteEcosimScenario.OnInvoke
+        Dim dlg As New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.DeleteScenario)
+        dlg.ShowDialog(Me)
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the 'delete ecosim scenario' command
+    ''' </summary>
+    Private Sub OnUpdateDeleteEcosimScenario(ByVal cmd As cCommand) _
+           Handles m_cmdDeleteEcosimScenario.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.EcosimScenarioCount > 0
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the import time series dialog.
     ''' </summary>
-    Private Sub m_cmdImportTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdImportTimeSeries.OnInvoke
+    Private Sub m_cmdImportTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdImportTimeSeries.OnInvoke
         Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Import)
     End Sub
 
@@ -3035,6 +3079,23 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateSaveEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenario.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.IsEcospaceModified
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; deletes an Ecosim scenario 
+    ''' </summary>
+    Private Sub OnInvokeDeleteEcospaceScenario(ByVal cmd As cCommand) _
+         Handles m_cmdDeleteEcospaceScenario.OnInvoke
+        Dim dlg As New EcospaceScenarioDlg(Me.UIContext, EwEScenarioDlg.eDialogModeType.DeleteScenario)
+        dlg.ShowDialog(Me)
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the 'delete ecospace scenario' command
+    ''' </summary>
+    Private Sub OnUpdateDeleteEcospaceScenario(ByVal cmd As cCommand) _
+           Handles m_cmdDeleteEcospaceScenario.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded And Me.Core.EcospaceScenarioCount > 0
     End Sub
 
     ''' <summary>
@@ -3436,6 +3497,14 @@ Public Class AppLauncher
 
     Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
         Me.UpdateModelControls()
+    End Sub
+
+    Private Sub OnCoreMessage(ByRef msg As cMessage)
+        If msg.Type = eMessageType.DataAddedOrRemoved Then
+            If msg.DataType = eDataTypes.EcoSimScenario Or msg.DataType = eDataTypes.EcoSpaceScenario Then
+                Me.UpdateScenarioControls()
+            End If
+        End If
     End Sub
 
 #Region " Key press handlers "
