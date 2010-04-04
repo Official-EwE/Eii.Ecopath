@@ -1789,13 +1789,8 @@ Namespace DataSources
 
             ' Init data structure
             ecopathDS.NumGroups = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup"))
-            psdDS.NumGroups = ecopathDS.NumGroups
-
             ecopathDS.NumLiving = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup WHERE (TYPE <= 1)"))
-            psdDS.NumLiving = ecopathDS.NumLiving
-
             ecopathDS.NumDetrit = ecopathDS.NumGroups - ecopathDS.NumLiving
-
 
             ' Allocate space
             If (Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables()) Then
