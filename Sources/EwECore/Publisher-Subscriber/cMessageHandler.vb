@@ -26,28 +26,41 @@ Imports EwEUtils.Core
 '''</history>
 Public Class cMessageHandler
 
-    Private m_DelegateNotifier As EwECore.cCore.CoreMessageDelegate
+#Region " Private vars "
+
+    ''' <summary>Delegate to use for handling the message.</summary>
+    Private m_DelegateNotifier As EwECore.cCore.CoreMessageDelegate = Nothing
+    ''' <summary>Sync object to use for handling the message.</summary>
     Private m_syncobj As System.Threading.SynchronizationContext = Nothing
-    Private m_corecomponent As eCoreComponentType
-    Private m_msgtype As eMessageType
+    ''' <summary>Core component filter. Cannot be <see cref="eCoreComponentType.NotSet">NotSet</see>.</summary>
+    Private m_corecomponent As eCoreComponentType = eCoreComponentType.NotSet
+    ''' <summary>Message type filter. Can be anything.</summary>
+    Private m_msgtype As eMessageType = eMessageType.Any
 
 #If DEBUG Then
+    ''' <summary>Message handler name (DEBUG only).</summary>
     Private m_strName As String = ""
 #End If
+
+#End Region ' Private vars
 
     ''' <summary>
     ''' Constructs a new cMessageHandler object that will send messages of a given type to the DelegateToCall argument.
     ''' </summary>
     ''' <param name="DelegateToCall">Delegate that will handle the message</param>
-    ''' <param name="SourceToHandle">Source of the message i.e EcoPath</param>
+    ''' <param name="SourceToHandle">Source of the message i.e EcoPath. This parameter cannot be <see cref="eCoreComponentType.NotSet">NotSet</see>.</param>
     ''' <param name="MessageTypeToHandle">Type of message to handle i.e. DietComp this message will only handle the DietComp not summing to one message</param>
     ''' <remarks>
     ''' <para>For a default handler set the MessageTypeToHandle flag to eMessageType.Any this will send any unhandled message to this delegate.</para>
     ''' <para>To have s single delegate handle multiple messages create a new cMessageHandler with this same 'DelegateToCall' argument and a different MessageTypeToHandle flag.</para>
     ''' </remarks>
-    Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate, ByVal SourceToHandle As eCoreComponentType, ByVal MessageTypeToHandle As eMessageType, ByVal syncobj As System.Threading.SynchronizationContext)
-        'Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate, ByVal SourceToHandle As eCoreComponentType, ByVal MessageTypeToHandle As eMessageType, ByVal syncobj As ISynchronizeInvoke)
-        'System.Threading.SynchronizationContext
+    Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate, _
+            ByVal SourceToHandle As eCoreComponentType, _
+            ByVal MessageTypeToHandle As eMessageType, _
+            ByVal syncobj As System.Threading.SynchronizationContext)
+
+        Debug.Assert(SourceToHandle <> eCoreComponentType.NotSet, "Must specify a valid source")
+
         Me.m_DelegateNotifier = DelegateToCall
         Me.m_corecomponent = SourceToHandle
         Me.m_msgtype = MessageTypeToHandle
@@ -159,6 +172,13 @@ Public Class cMessageHandler
     End Function
 
 #If DEBUG Then
+
+    ''' <summary>
+    ''' Get/set the name of a message handler for ease of debugging.
+    ''' </summary>
+    ''' <remarks>
+    ''' Property available in DEBUG mode only.
+    ''' </remarks>
     Public Property Name() As String
         Get
             Return Me.m_strName
@@ -167,6 +187,7 @@ Public Class cMessageHandler
             Me.m_strName = value
         End Set
     End Property
+
 #End If
 
 End Class
