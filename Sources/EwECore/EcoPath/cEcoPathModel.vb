@@ -330,6 +330,7 @@ Namespace Ecopath
                             End If
 
                             Dim fbMsg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.EcoPathGroupInput)
+                            fbMsg.Type = eMessageType.Estimate_BA
                             fbMsg.Suppressable = True
                             NotifyCore(fbMsg)
 
@@ -338,6 +339,7 @@ Namespace Ecopath
                             ElseIf fbMsg.Reply = cFeedbackMessage.eReply.NO Then
 
                                 strMsg = String.Format(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_NETMIGRATION, m_Data.GroupName(igrp))
+                                fbMsg.Type = eMessageType.Estimate_Net_Migration
                                 fbMsg.Message = strMsg
                                 NotifyCore(fbMsg)
 
