@@ -339,6 +339,12 @@ Namespace Database
 
 #Region " Saving "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Save imported data to the EwE6 database.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
         Private Function Save() As Boolean
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_MODEL)
             Me.SaveModel()
@@ -359,7 +365,7 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Import generic model information
+        ''' Save Ecopath model
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub SaveModel()
@@ -401,6 +407,9 @@ Namespace Database
 
 #Region " Groups "
 
+        ''' <summary>
+        ''' Save Ecopath groups
+        ''' </summary>
         Private Function SaveGroups() As Boolean
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -459,7 +468,7 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Writes the DietComp information to the database.
+        ''' Save Ecopath diets
         ''' </summary>
         ''' <returns>True if succesful</returns>
         ''' -------------------------------------------------------------------
@@ -505,7 +514,7 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Saves all fleets.
+        ''' Save Ecopath fleets
         ''' </summary>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
@@ -542,6 +551,9 @@ Namespace Database
             Return bSucces
         End Function
 
+        ''' <summary>
+        ''' Save Ecopath catch data
+        ''' </summary>
         Private Function SaveCatch() As Boolean
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -582,6 +594,9 @@ Namespace Database
             Return bSucces
         End Function
 
+        ''' <summary>
+        ''' Save Ecopath discard fate
+        ''' </summary>
         Private Function SaveDiscardFate() As Boolean
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing

@@ -32,7 +32,7 @@ Public Class cEwE5ModelImporterFactory
         Select Case cDataSourceFactory.GetSupportedType(strFilename)
 
             Case eDataSourceTypes.ACCDB, eDataSourceTypes.MDB
-                Return New cDBImporter(core, strFilename)
+                Return New cEwE5DatabaseImporter(core, strFilename)
 
             Case eDataSourceTypes.EII
                 Return New cEwE5EIIImporter(core, strFilename)

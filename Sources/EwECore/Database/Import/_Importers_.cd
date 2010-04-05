@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="EwECore.cEwE5ModelImporterFactory" Collapsed="true">
+    <Position X="3.25" Y="1.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Database\Import\cEwE5ModelImporterFactory.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EwECore.Database.cEwE5ModelImporter" Collapsed="true">
+    <Position X="6.25" Y="1.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IIAACYAAABCAIAIAIAAAAAAAAAAAIAAAAABgABKAAAA=</HashCode>
+      <FileName>Database\Import\cEwE5ModelImporter.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EwECore.Database.cEwE5EIIImporter" Collapsed="true">
+    <Position X="5" Y="2.5" Width="2" />
+    <NestedTypes>
+      <Class Name="EwECore.Database.cEwE5EIIImporter.cImportData" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Database\Import\cEwE5EIIImporter.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IAAAAIAAAACAIAAgAIAAAAAAAgAgIAAAAAFAAICABAA=</HashCode>
+      <FileName>Database\Import\cEwE5EIIImporter.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EwECore.Database.cEwE5DatabaseImporter" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="2" />
+    <NestedTypes>
+      <Class Name="EwECore.Database.cEwE5DatabaseImporter.cForcingShapeData" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Database\Import\cEwE5DatabaseImporter.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ISEwWKBoAMCEcwUiIBbIiAAgAqggAQEBMIQgIJKEBDA=</HashCode>
+      <FileName>Database\Import\cEwE5DatabaseImporter.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

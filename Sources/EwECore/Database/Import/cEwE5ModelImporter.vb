@@ -108,10 +108,22 @@ Namespace Database
         Protected m_strEwE5File As String = ""
         ''' <summary>Target database in EwE6 format.</summary>
         Protected m_dbEwE6 As cEwEDatabase ' Import to (write)
+        ''' <summary>
+        ''' Name of the model to import.
+        ''' </summary>
         Protected m_strModelName As String = ""
 
+        ''' <summary>
+        ''' The core to use when importing.
+        ''' </summary>
         Protected m_core As cCore = Nothing
+        ''' <summary>
+        ''' Number of steps that the import process will take.
+        ''' </summary>
         Protected m_iNumSteps As Integer = 0
+        ''' <summary>
+        ''' The current step processed by the import.
+        ''' </summary>
         Protected m_iStep As Integer = 0
 
 #End Region ' Private vars
@@ -236,17 +248,37 @@ Namespace Database
         ''' Logs a progress message.
         ''' </summary>
         ''' <param name="strMessage">Progress message.</param>
+        ''' <param name="iStep">Progress step. If -1, the internal step admin is 
+        ''' automatically incremented.</param>
         ''' -------------------------------------------------------------------
         Protected Sub LogProgress(ByVal strMessage As String, Optional ByVal iStep As Integer = -1)
 
             Dim sProgress As Single = 0
-            If Me.m_core Is Nothing Then Return
-            If iStep = -1 Then m_iStep += 1 Else m_iStep = iStep
-            If Me.m_iNumSteps <> 0 Then sProgress = CSng(Me.m_iStep / Me.m_iNumSteps) Else sProgress = 1.0
-            ' Send as progress message
-            Me.m_core.Messages.SendMessage(New cProgressMessage(sProgress, strMessage, eMessageType.DataImport, eCoreComponentType.DataSource))
-            ' Send to log as well
+
+            ' Need to auto-increment step?
+            If (iStep < 0) Then
+                ' #Yes: auto-increment
+                Me.m_iStep += 1
+            Else
+                ' #No: set the step
+                Me.m_iStep = iStep
+            End If
+
+            ' Calculate progress
+            If (Me.m_iNumSteps <> 0) Then
+                sProgress = CSng(Me.m_iStep / Me.m_iNumSteps)
+            Else
+                sProgress = 1.0
+            End If
+
+            ' Send to log
             Me.LogMessage(strMessage, eMessageType.DataImport, eMessageImportance.Information, False)
+
+            ' Public to core if possible
+            If (Me.m_core IsNot Nothing) Then
+                ' Send progress message
+                Me.m_core.Messages.SendMessage(New cProgressMessage(sProgress, strMessage, eMessageType.DataImport, eCoreComponentType.DataSource))
+            End If
 
         End Sub
 
@@ -260,23 +292,14 @@ Namespace Database
                                  Optional ByVal msgImportance As eMessageImportance = eMessageImportance.Information, _
                                  Optional ByVal bPublishToInterface As Boolean = False)
 
-            Me.LogMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance), bPublishToInterface)
-            ' Log everything
+            ' Add message to log
             Me.m_sbLog.AppendLine(strMessage)
 
-        End Sub
-
-        Protected Sub LogMessage(ByVal msg As cMessage, _
-                Optional ByVal bPublishToInterface As Boolean = False)
-
-            ' Send warnings and criticals to the core messages too
-            bPublishToInterface = bPublishToInterface Or _
-                (msg.Importance = eMessageImportance.Warning) Or _
-                (msg.Importance = eMessageImportance.Critical)
-
-            If bPublishToInterface Then
-                Me.m_core.m_publisher.SendMessage(msg)
+            ' Publicly log message
+            If (bPublishToInterface = True) And (Me.m_core IsNot Nothing) Then
+                Me.m_core.m_publisher.SendMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance))
             End If
+
         End Sub
 
 #End Region ' Status logging

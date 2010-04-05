@@ -48,7 +48,7 @@ Namespace Database
     ''' </code>
     ''' </example>
     ''' -----------------------------------------------------------------------
-    Public Class cDBImporter
+    Public Class cEwE5DatabaseImporter
         Inherits cEwE5ModelImporter
 
 #Region " Private bits "
@@ -65,9 +65,9 @@ Namespace Database
 
         ' == Databases ==
 
-         ''' <summary>Source database in EwE5 format.</summary>
+        ''' <summary>Source database in EwE5 format.</summary>
         Private m_dbEwE5 As cEwEDatabase ' Import from (read)
- 
+
         ' == Tables that will receive information throughout the import process ==
 
         ''' <summary>Primary keys lookup table</summary>
@@ -110,7 +110,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cEwE5ModelImporter.Open"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Open() As Boolean 
+        Public Overrides Function Open() As Boolean
 
             ' Pre
             Debug.Assert(Not Me.IsOpen())
@@ -140,7 +140,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cEwE5ModelImporter.IsOpen"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function IsOpen() As Boolean 
+        Public Overrides Function IsOpen() As Boolean
 
             Return (Me.m_dbEwE5 IsNot Nothing)
 
@@ -149,7 +149,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cEwE5ModelImporter.GetModels"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetModels() As cEwE5ModelImporter.cEwE5ModelInfo() 
+        Public Overrides Function GetModels() As cEwE5ModelImporter.cEwE5ModelInfo()
 
             ' Pre
             Debug.Assert(Me.IsOpen())
