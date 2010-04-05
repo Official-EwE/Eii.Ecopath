@@ -106,8 +106,8 @@ Public Class gridRiskResults
             Dim mse As cMSEManager = Me.Core.MSEManager
             If mse Is Nothing Then Exit Sub
 
-            Dim lstData1 As cCoreInputOutputList(Of cCoreInputOutputBase)
-            Dim lstData2 As cCoreInputOutputList(Of cCoreInputOutputBase)
+            Dim lstData1 As cCoreInputOutputList(Of cCoreInputOutputBase) = Nothing
+            Dim lstData2 As cCoreInputOutputList(Of cCoreInputOutputBase) = Nothing
             Dim lSources As New List(Of cCoreInputOutputBase)
 
             If Me.m_type = eGridType.Group Then

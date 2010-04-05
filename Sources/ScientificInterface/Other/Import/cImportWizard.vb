@@ -68,7 +68,7 @@ Namespace Import
             ''' Create a new import setting for an EwE5 model.
             ''' </summary>
             ''' <param name="mi">
-            ''' The <see cref="IEwE5ModelImporter.cEwE5ModelInfo">EwE5 model</see>
+            ''' The <see cref="cEwE5ModelImporter.cEwE5ModelInfo">EwE5 model</see>
             ''' to create import settings for.
             ''' </param>
             ''' -----------------------------------------------------------------------
@@ -80,7 +80,7 @@ Namespace Import
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Get the <see cref="IEwE5ModelImporter.cEwE5ModelInfo">EwE5 model 
+            ''' Get the <see cref="cEwE5ModelImporter.cEwE5ModelInfo">EwE5 model 
             ''' information</see> associated with this import setting.
             ''' </summary>
             ''' -----------------------------------------------------------------------

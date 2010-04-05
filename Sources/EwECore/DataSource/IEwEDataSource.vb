@@ -19,8 +19,6 @@ Namespace DataSources
     ''' <remarks>
     ''' <para>All data access must be implemented through this interface.</para>
     ''' <para>New Data Sources can be added by inheriting from this interface.</para>
-    ''' <para>See <see cref="cEIIDataSource">cEIIDataSource</see> for an example of
-    ''' an EII file reading data source.</para>
     ''' </remarks>
     ''' =======================================================================
     Public Interface IEwEDataSource

@@ -2691,7 +2691,6 @@ Namespace Database
         ''' <summary>
         ''' Import Time Series data
         ''' </summary>
-        ''' <param name="Me.m_strModelName"></param>
         Private Sub ImportTimeSeries()
             Me.ImportTSDatasets()
             Me.ImportTS()

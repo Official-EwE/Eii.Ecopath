@@ -10,20 +10,20 @@ Imports EwEUtils.Database
 
 ''' ===========================================================================
 ''' <summary>
-''' Factory class; builds a <see cref="IEwE5ModelImporter">EwE5 model importer</see>.
+''' Factory class; builds a <see cref="cEwE5ModelImporter">EwE5 model importer</see>.
 ''' </summary>
 ''' ===========================================================================
 Public Class cEwE5ModelImporterFactory
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Factory method; builds a <see cref="IEwE5ModelImporter">EwE5 model importer</see>
+    ''' Factory method; builds a <see cref="cEwE5ModelImporter">EwE5 model importer</see>
     ''' from a path to an EwE5 source document. 
     ''' </summary>
     ''' <param name="core">The core to associate the importer with.</param>
     ''' <param name="strFilename">Path to the EwE5 source document to build the
     ''' importer for.</param>
-    ''' <returns>A <see cref="IEwE5ModelImporter">EwE5 model importer</see>, if
+    ''' <returns>A <see cref="cEwE5ModelImporter">EwE5 model importer</see>, if
     ''' all went well, or Nothing otherwise.</returns>
     ''' -----------------------------------------------------------------------
     Public Shared Function GetEwE5ModelImporter(ByVal core As cCore, _
