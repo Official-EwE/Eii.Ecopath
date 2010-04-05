@@ -195,6 +195,8 @@ Public Enum eMessageType
 
     ''' <summary>MSE has completed a model run of some sort </summary>
     MSERunCompleted
+    Estimate_BA
+    Estimate_Net_Migration
 
 End Enum
 
