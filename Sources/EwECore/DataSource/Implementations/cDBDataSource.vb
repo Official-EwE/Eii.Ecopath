@@ -2260,504 +2260,504 @@ Namespace DataSources
 
 #Region " Helper methods "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' States if there is catch for at least one group.
-    ''' </summary>
-    ''' <returns>True if catch was found.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function IsFishing() As Boolean
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim bIsFishing As Boolean = False
-        Dim iGroup As Integer = 1
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States if there is catch for at least one group.
+        ''' </summary>
+        ''' <returns>True if catch was found.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function IsFishing() As Boolean
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim bIsFishing As Boolean = False
+            Dim iGroup As Integer = 1
 
-        While iGroup < ecopathDS.NumGroups And Not bIsFishing
-            bIsFishing = (ecopathDS.fCatch(iGroup) > 0.0)
-            iGroup += 1
-        End While
+            While iGroup < ecopathDS.NumGroups And Not bIsFishing
+                bIsFishing = (ecopathDS.fCatch(iGroup) > 0.0)
+                iGroup += 1
+            End While
 
-        Return bIsFishing
-    End Function
+            Return bIsFishing
+        End Function
 
-    Private Function AddCatch(ByVal iGroupID As Integer, ByVal iFleetID As Integer) As Boolean
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim drow As DataRow = Nothing
-        Dim bSucces As Boolean = True
+        Private Function AddCatch(ByVal iGroupID As Integer, ByVal iFleetID As Integer) As Boolean
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
 
-        Try
-            writer = Me.m_db.GetWriter("EcopathCatch")
-            drow = writer.NewRow()
-            drow("GroupID") = iGroupID
-            drow("FleetID") = iFleetID
-            ' All other values will receive defaults
-            writer.AddRow(drow)
-            Me.m_db.ReleaseWriter(writer)
-        Catch ex As Exception
-            bSucces = False
-        End Try
-        Return bSucces
+            Try
+                writer = Me.m_db.GetWriter("EcopathCatch")
+                drow = writer.NewRow()
+                drow("GroupID") = iGroupID
+                drow("FleetID") = iFleetID
+                ' All other values will receive defaults
+                writer.AddRow(drow)
+                Me.m_db.ReleaseWriter(writer)
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            Return bSucces
 
-    End Function
+        End Function
 
-    Private Function AddDiscardFate(ByVal iGroupID As Integer, ByVal iFleetID As Integer) As Boolean
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim drow As DataRow = Nothing
-        Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, iGroupID)
-        Dim bSucces As Boolean = True
+        Private Function AddDiscardFate(ByVal iGroupID As Integer, ByVal iFleetID As Integer) As Boolean
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, iGroupID)
+            Dim bSucces As Boolean = True
 
-        If (iGroup <= ecopathDS.NumLiving) Then Return True
+            If (iGroup <= ecopathDS.NumLiving) Then Return True
 
-        Try
-            writer = Me.m_db.GetWriter("EcopathDiscardFate")
-            drow = writer.NewRow()
-            drow("GroupID") = iGroupID
-            drow("FleetID") = iFleetID
-            ' Set default database value
-            writer.AddRow(drow)
-            Me.m_db.ReleaseWriter(writer)
-        Catch ex As Exception
-            bSucces = False
-        End Try
-        Return bSucces
+            Try
+                writer = Me.m_db.GetWriter("EcopathDiscardFate")
+                drow = writer.NewRow()
+                drow("GroupID") = iGroupID
+                drow("FleetID") = iFleetID
+                ' Set default database value
+                writer.AddRow(drow)
+                Me.m_db.ReleaseWriter(writer)
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            Return bSucces
 
-    End Function
+        End Function
 
 #End Region ' Helper methods
 
 #Region " Load "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Loads all fleet-related data.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' <remarks>
-    ''' If there is <see cref="IsFishing">no fishing</see>, the fleet data will not be loaded.
-    ''' This check is inherited from EwE5.
-    ''' </remarks>
-    ''' -------------------------------------------------------------------
-    Private Function LoadEcopathFleetInfo() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Loads all fleet-related data.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' If there is <see cref="IsFishing">no fishing</see>, the fleet data will not be loaded.
+        ''' This check is inherited from EwE5.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Private Function LoadEcopathFleetInfo() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim bSucces As Boolean = True
 
-        ecopathDS.NoGearData = Not IsFishing()
+            ecopathDS.NoGearData = Not IsFishing()
 
-        ecopathDS.NumFleet = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathFleet"))
+            ecopathDS.NumFleet = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathFleet"))
 
-        ' This will be necessary when reading Gear tables. Can only call this after groups are read.
-        If Not ecopathDS.RedimFleetVariables(True) Then
-            Return False
-        End If
+            ' This will be necessary when reading Gear tables. Can only call this after groups are read.
+            If Not ecopathDS.RedimFleetVariables(True) Then
+                Return False
+            End If
 
-        bSucces = LoadEcopathFleets()
-        bSucces = bSucces And LoadEcopathCatch()
-        bSucces = bSucces And LoadEcopathDiscardFate()
+            bSucces = LoadEcopathFleets()
+            bSucces = bSucces And LoadEcopathCatch()
+            bSucces = bSucces And LoadEcopathDiscardFate()
 
-        Return bSucces
+            Return bSucces
 
-    End Function
+        End Function
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Loads all Ecopath fleets.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function LoadEcopathFleets() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Loads all Ecopath fleets.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function LoadEcopathFleets() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim reader As IDataReader = Nothing
-        Dim iFleet As Integer = 1
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Nothing
+            Dim iFleet As Integer = 1
+            Dim bSucces As Boolean = True
 
-        Try
-            reader = Me.m_db.GetReader("SELECT * FROM EcopathFleet ORDER BY Sequence ASC")
-            While reader.Read()
+            Try
+                reader = Me.m_db.GetReader("SELECT * FROM EcopathFleet ORDER BY Sequence ASC")
+                While reader.Read()
 
-                ecopathDS.FleetDBID(iFleet) = CInt(reader("FleetID"))
-                ecopathDS.FleetName(iFleet) = CStr(reader("FleetName"))
-                ecopathDS.CostPct(iFleet, eCostIndex.Fixed) = CSng(reader("FixedCost"))
-                ecopathDS.CostPct(iFleet, eCostIndex.Sail) = CSng(reader("SailingCost"))
-                ecopathDS.CostPct(iFleet, eCostIndex.CUPE) = CSng(reader("variableCost"))
-                ecopathDS.FleetColor(iFleet) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
-                iFleet += 1
+                    ecopathDS.FleetDBID(iFleet) = CInt(reader("FleetID"))
+                    ecopathDS.FleetName(iFleet) = CStr(reader("FleetName"))
+                    ecopathDS.CostPct(iFleet, eCostIndex.Fixed) = CSng(reader("FixedCost"))
+                    ecopathDS.CostPct(iFleet, eCostIndex.Sail) = CSng(reader("SailingCost"))
+                    ecopathDS.CostPct(iFleet, eCostIndex.CUPE) = CSng(reader("variableCost"))
+                    ecopathDS.FleetColor(iFleet) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
+                    iFleet += 1
 
-            End While
+                End While
 
-            Me.m_db.ReleaseReader(reader)
+                Me.m_db.ReleaseReader(reader)
 
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading EcopathFleet {1}", ex.Message, iFleet))
-            bSucces = False
-        End Try
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading EcopathFleet {1}", ex.Message, iFleet))
+                bSucces = False
+            End Try
 
-        Return bSucces
+            Return bSucces
 
-    End Function
+        End Function
 
-    Private Function LoadEcopathCatch() As Boolean
+        Private Function LoadEcopathCatch() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim reader As IDataReader = Nothing
-        Dim iFleet As Integer = 0
-        Dim iGroup As Integer = 0
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Nothing
+            Dim iFleet As Integer = 0
+            Dim iGroup As Integer = 0
+            Dim bSucces As Boolean = True
 
-        Try
+            Try
 
-            reader = Me.m_db.GetReader("SELECT * FROM EcopathCatch")
-            While reader.Read()
-
-                iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
-                iFleet = Array.IndexOf(ecopathDS.FleetDBID, CInt(reader("FleetID")))
-
-                ' JS270707: no need to assert any longer
-                'Debug.Assert(iGroup >= 0 And iFleet >= 0)
-
-                If (iGroup >= 1 And iFleet >= 1) Then
-                    ecopathDS.Landing(iFleet, iGroup) = CSng(reader("Landing"))
-                    ecopathDS.Discard(iFleet, iGroup) = CSng(reader("discards"))
-                    ecopathDS.Market(iFleet, iGroup) = CSng(reader("price"))
-                    ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(Me.ReadSafe(reader, "DiscardMortality", 0.0!))
-                Else
-                    Me.LogMessage(String.Format("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
-                    bSucces = False
-                End If
-
-            End While
-
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading catch {1}, {2}", ex.Message, iGroup, iFleet))
-            bSucces = False
-        End Try
-
-        Me.m_db.ReleaseReader(reader)
-
-        Return bSucces
-
-    End Function
-
-    Private Function LoadEcopathDiscardFate() As Boolean
-
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim reader As IDataReader = Nothing
-        Dim iFleet As Integer = 0
-        Dim iGroup As Integer = 0
-        Dim bSucces As Boolean = True
-
-        Try
-            reader = Me.m_db.GetReader("SELECT * FROM EcopathDiscardFate")
-            If reader IsNot Nothing Then
-
+                reader = Me.m_db.GetReader("SELECT * FROM EcopathCatch")
                 While reader.Read()
 
                     iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
                     iFleet = Array.IndexOf(ecopathDS.FleetDBID, CInt(reader("FleetID")))
 
-                    ' JS 27jul07: no need to assert any longer
+                    ' JS270707: no need to assert any longer
                     'Debug.Assert(iGroup >= 0 And iFleet >= 0)
 
-                    If (iGroup > ecopathDS.NumLiving) Then
-                        ecopathDS.DiscardFate(iFleet, iGroup - ecopathDS.NumLiving) = CSng(reader("DiscardFate"))
-                        'Else
-                        '    '' ToDo_JS: localize this
-                        '    'Me.LogMessage(String.Format("DiscardFate value ignored for living group {0}, fleet ", iGroup), eMessageType.Any, eMessageImportance.Information)
-                        '    ' Keep on chugging, do not make assignment
-                        '    bSucces = True
+                    If (iGroup >= 1 And iFleet >= 1) Then
+                        ecopathDS.Landing(iFleet, iGroup) = CSng(reader("Landing"))
+                        ecopathDS.Discard(iFleet, iGroup) = CSng(reader("discards"))
+                        ecopathDS.Market(iFleet, iGroup) = CSng(reader("price"))
+                        ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(Me.ReadSafe(reader, "DiscardMortality", 0.0!))
+                    Else
+                        Me.LogMessage(String.Format("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
+                        bSucces = False
                     End If
 
                 End While
-                Me.m_db.ReleaseReader(reader)
 
-            End If
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading catch {1}, {2}", ex.Message, iGroup, iFleet))
+                bSucces = False
+            End Try
 
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
-            bSucces = False
-        End Try
+            Me.m_db.ReleaseReader(reader)
 
-        Return bSucces
+            Return bSucces
 
-    End Function
+        End Function
+
+        Private Function LoadEcopathDiscardFate() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Nothing
+            Dim iFleet As Integer = 0
+            Dim iGroup As Integer = 0
+            Dim bSucces As Boolean = True
+
+            Try
+                reader = Me.m_db.GetReader("SELECT * FROM EcopathDiscardFate")
+                If reader IsNot Nothing Then
+
+                    While reader.Read()
+
+                        iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
+                        iFleet = Array.IndexOf(ecopathDS.FleetDBID, CInt(reader("FleetID")))
+
+                        ' JS 27jul07: no need to assert any longer
+                        'Debug.Assert(iGroup >= 0 And iFleet >= 0)
+
+                        If (iGroup > ecopathDS.NumLiving) Then
+                            ecopathDS.DiscardFate(iFleet, iGroup - ecopathDS.NumLiving) = CSng(reader("DiscardFate"))
+                            'Else
+                            '    '' ToDo_JS: localize this
+                            '    'Me.LogMessage(String.Format("DiscardFate value ignored for living group {0}, fleet ", iGroup), eMessageType.Any, eMessageImportance.Information)
+                            '    ' Keep on chugging, do not make assignment
+                            '    bSucces = True
+                        End If
+
+                    End While
+                    Me.m_db.ReleaseReader(reader)
+
+                End If
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
+                bSucces = False
+            End Try
+
+            Return bSucces
+
+        End Function
 
 #End Region ' Load
 
 #Region " Save "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Saves all fleet-related data to the datasource.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function SaveEcopathFleetInfo() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Saves all fleet-related data to the datasource.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function SaveEcopathFleetInfo() As Boolean
 
-        Dim bSucces As Boolean = True
+            Dim bSucces As Boolean = True
 
-        bSucces = SaveEcopathFleets()
-        bSucces = bSucces And SaveCatch()
-        bSucces = bSucces And SaveDiscardFate()
+            bSucces = SaveEcopathFleets()
+            bSucces = bSucces And SaveCatch()
+            bSucces = bSucces And SaveDiscardFate()
 
-        Return bSucces
+            Return bSucces
 
-    End Function
+        End Function
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Saves all fleets.
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function SaveEcopathFleets() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Saves all fleets.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function SaveEcopathFleets() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Me.m_db.GetWriter("EcopathFleet")
-        Dim dt As DataTable = Nothing
-        Dim drow As DataRow = Nothing
-        Dim iFleet As Integer = 0
-        Dim bAddNewRow As Boolean = False
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iFleet As Integer = 0
+            Dim bAddNewRow As Boolean = False
+            Dim bSucces As Boolean = True
 
-        Try
+            Try
 
-            writer = Me.m_db.GetWriter("EcopathFleet")
-            dt = writer.GetDataTable()
+                writer = Me.m_db.GetWriter("EcopathFleet")
+                dt = writer.GetDataTable()
 
-            For iFleet = 1 To ecopathDS.NumFleet
+                For iFleet = 1 To ecopathDS.NumFleet
 
-                ' Get existing row, or create new row if a fleet does not yet exist in the DB. This can
-                ' happen when a fleet is added to the models without properly adding it to the database;
-                ' this code needs to be prepared for that eventuality.
-                drow = dt.Rows.Find(ecopathDS.FleetDBID(iFleet))
-                bAddNewRow = (drow Is Nothing)
+                    ' Get existing row, or create new row if a fleet does not yet exist in the DB. This can
+                    ' happen when a fleet is added to the models without properly adding it to the database;
+                    ' this code needs to be prepared for that eventuality.
+                    drow = dt.Rows.Find(ecopathDS.FleetDBID(iFleet))
+                    bAddNewRow = (drow Is Nothing)
 
-                If bAddNewRow Then drow = writer.NewRow()
-                Debug.Assert(drow IsNot Nothing, String.Format("No existing row for fleet {0}", ecopathDS.FleetDBID(iFleet)))
+                    If bAddNewRow Then drow = writer.NewRow()
+                    Debug.Assert(drow IsNot Nothing, String.Format("No existing row for fleet {0}", ecopathDS.FleetDBID(iFleet)))
 
-                drow("Sequence") = iFleet
-                If bAddNewRow Then drow("FleetID") = ecopathDS.FleetDBID(iFleet)
-                drow("FleetName") = ecopathDS.FleetName(iFleet)
-                drow("FixedCost") = ecopathDS.CostPct(iFleet, eCostIndex.Fixed)
-                drow("SailingCost") = ecopathDS.CostPct(iFleet, eCostIndex.Sail)
-                drow("variableCost") = ecopathDS.CostPct(iFleet, eCostIndex.CUPE)
-                drow("PoolColor") = String.Format("{0:x8}", ecopathDS.FleetColor(iFleet))
+                    drow("Sequence") = iFleet
+                    If bAddNewRow Then drow("FleetID") = ecopathDS.FleetDBID(iFleet)
+                    drow("FleetName") = ecopathDS.FleetName(iFleet)
+                    drow("FixedCost") = ecopathDS.CostPct(iFleet, eCostIndex.Fixed)
+                    drow("SailingCost") = ecopathDS.CostPct(iFleet, eCostIndex.Sail)
+                    drow("variableCost") = ecopathDS.CostPct(iFleet, eCostIndex.CUPE)
+                    drow("PoolColor") = String.Format("{0:x8}", ecopathDS.FleetColor(iFleet))
 
-                If bAddNewRow Then writer.AddRow(drow)
-            Next iFleet
-            ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+                    If bAddNewRow Then writer.AddRow(drow)
+                Next iFleet
+                ' Save changes
+                Me.m_db.ReleaseWriter(writer, True)
 
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while saving EcopathFleet", ex.Message))
-            bSucces = False
-        End Try
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathFleet", ex.Message))
+                bSucces = False
+            End Try
 
-        Return bSucces
-    End Function
+            Return bSucces
+        End Function
 
-    Private Function SaveCatch() As Boolean
+        Private Function SaveCatch() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim drow As DataRow = Nothing
-        Dim iFleet As Integer = 0
-        Dim iGroup As Integer = 0
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iFleet As Integer = 0
+            Dim iGroup As Integer = 0
+            Dim bSucces As Boolean = True
 
-        Try
-            Me.m_db.Execute("DELETE * FROM EcopathCatch")
+            Try
+                Me.m_db.Execute("DELETE * FROM EcopathCatch")
 
-            writer = Me.m_db.GetWriter("EcopathCatch")
+                writer = Me.m_db.GetWriter("EcopathCatch")
 
-            For iFleet = 1 To ecopathDS.NumFleet
-                For iGroup = 1 To ecopathDS.NumGroups
+                For iFleet = 1 To ecopathDS.NumFleet
+                    For iGroup = 1 To ecopathDS.NumGroups
 
-                    ' JS 04aug08: only save rows with data
-                    If (ecopathDS.Landing(iFleet, iGroup) > 0.0!) Or _
-                       (ecopathDS.Discard(iFleet, iGroup) > 0.0!) Or _
-                       ((ecopathDS.Market(iFleet, iGroup) > 0.0!) And (ecopathDS.Market(iFleet, iGroup) < 1.0!)) Or _
-                       (ecopathDS.PropDiscardMort(iFleet, iGroup) > 0.0!) Then
+                        ' JS 04aug08: only save rows with data
+                        If (ecopathDS.Landing(iFleet, iGroup) > 0.0!) Or _
+                           (ecopathDS.Discard(iFleet, iGroup) > 0.0!) Or _
+                           ((ecopathDS.Market(iFleet, iGroup) > 0.0!) And (ecopathDS.Market(iFleet, iGroup) < 1.0!)) Or _
+                           (ecopathDS.PropDiscardMort(iFleet, iGroup) > 0.0!) Then
+
+                            drow = writer.NewRow()
+                            drow("FleetID") = ecopathDS.FleetDBID(iFleet)
+                            drow("GroupID") = ecopathDS.GroupDBID(iGroup)
+                            drow("Landing") = ecopathDS.Landing(iFleet, iGroup)
+                            drow("Discards") = ecopathDS.Discard(iFleet, iGroup)
+                            drow("Price") = ecopathDS.Market(iFleet, iGroup)
+                            drow("DiscardMortality") = ecopathDS.PropDiscardMort(iFleet, iGroup)
+                            writer.AddRow(drow)
+
+                        End If
+
+                    Next iGroup
+                Next iFleet
+
+                ' Save changes
+                Me.m_db.ReleaseWriter(writer)
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving catch", ex.Message))
+                bSucces = False
+            End Try
+
+            Return bSucces
+        End Function
+
+        Private Function SaveDiscardFate() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iFleet As Integer = 0
+            Dim iGroup As Integer = 0
+            Dim bSucces As Boolean = True
+
+            Try
+                Me.m_db.Execute("DELETE * FROM EcopathDiscardFate")
+
+                writer = Me.m_db.GetWriter("EcopathDiscardFate")
+
+                For iFleet = 1 To ecopathDS.NumFleet
+                    For iGroup = 1 To ecopathDS.NumGroups - ecopathDS.NumLiving
 
                         drow = writer.NewRow()
                         drow("FleetID") = ecopathDS.FleetDBID(iFleet)
-                        drow("GroupID") = ecopathDS.GroupDBID(iGroup)
-                        drow("Landing") = ecopathDS.Landing(iFleet, iGroup)
-                        drow("Discards") = ecopathDS.Discard(iFleet, iGroup)
-                        drow("Price") = ecopathDS.Market(iFleet, iGroup)
-                        drow("DiscardMortality") = ecopathDS.PropDiscardMort(iFleet, iGroup)
+                        drow("GroupID") = ecopathDS.GroupDBID(iGroup + ecopathDS.NumLiving)
+                        drow("DiscardFate") = ecopathDS.DiscardFate(iFleet, iGroup)
                         writer.AddRow(drow)
 
-                    End If
+                    Next iGroup
+                Next iFleet
 
-                Next iGroup
-            Next iFleet
+                ' Save changes
+                Me.m_db.ReleaseWriter(writer)
 
-            ' Save changes
-            Me.m_db.ReleaseWriter(writer)
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
+                bSucces = False
+            End Try
 
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while saving catch", ex.Message))
-            bSucces = False
-        End Try
+            Return bSucces
 
-        Return bSucces
-    End Function
-
-    Private Function SaveDiscardFate() As Boolean
-
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim drow As DataRow = Nothing
-        Dim iFleet As Integer = 0
-        Dim iGroup As Integer = 0
-        Dim bSucces As Boolean = True
-
-        Try
-            Me.m_db.Execute("DELETE * FROM EcopathDiscardFate")
-
-            writer = Me.m_db.GetWriter("EcopathDiscardFate")
-
-            For iFleet = 1 To ecopathDS.NumFleet
-                For iGroup = 1 To ecopathDS.NumGroups - ecopathDS.NumLiving
-
-                    drow = writer.NewRow()
-                    drow("FleetID") = ecopathDS.FleetDBID(iFleet)
-                    drow("GroupID") = ecopathDS.GroupDBID(iGroup + ecopathDS.NumLiving)
-                    drow("DiscardFate") = ecopathDS.DiscardFate(iFleet, iGroup)
-                    writer.AddRow(drow)
-
-                Next iGroup
-            Next iFleet
-
-            ' Save changes
-            Me.m_db.ReleaseWriter(writer)
-
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while saving DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
-            bSucces = False
-        End Try
-
-        Return bSucces
-
-    End Function
+        End Function
 
 #End Region ' Save
 
 #Region " Modify "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Adds a fleet to the datasource.
-    ''' </summary>
-    ''' <param name="strFleetName">Name of the new fleet.</param>
-    ''' <param name="iDBID">Database ID assigned to the new fleet.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function AddFleet(ByVal strFleetName As String, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
-            Implements IEcopathDataSource.AddFleet
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Adds a fleet to the datasource.
+        ''' </summary>
+        ''' <param name="strFleetName">Name of the new fleet.</param>
+        ''' <param name="iDBID">Database ID assigned to the new fleet.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function AddFleet(ByVal strFleetName As String, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
+                Implements IEcopathDataSource.AddFleet
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim drow As DataRow = Nothing
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
 
-        Try
-            iDBID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcopathFleet")) + 1
-        Catch
-            iDBID = 1
-        End Try
+            Try
+                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcopathFleet")) + 1
+            Catch
+                iDBID = 1
+            End Try
 
-        Try
-            ' Start writing, protect sequence
-            writer = Me.m_db.GetWriter("EcopathFleet", "Sequence")
-            drow = writer.NewRow()
-            drow("FleetID") = iDBID
-            drow("FleetName") = strFleetName
-            drow("Sequence") = iPosition
-            drow("PoolColor") = "00000000"
-            writer.AddRow(drow)
-            Me.m_db.ReleaseWriter(writer)
+            Try
+                ' Start writing, protect sequence
+                writer = Me.m_db.GetWriter("EcopathFleet", "Sequence")
+                drow = writer.NewRow()
+                drow("FleetID") = iDBID
+                drow("FleetName") = strFleetName
+                drow("Sequence") = iPosition
+                drow("PoolColor") = "00000000"
+                writer.AddRow(drow)
+                Me.m_db.ReleaseWriter(writer)
 
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while adding fleet {1}", ex.Message, strFleetName))
-            bSucces = False
-        End Try
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while adding fleet {1}", ex.Message, strFleetName))
+                bSucces = False
+            End Try
 
-        ' Add Catch
-        bSucces = bSucces And Me.AddCatchDataForFleet(iDBID)
-        ' Create ecosim fleet forcing bits
+            ' Add Catch
+            bSucces = bSucces And Me.AddCatchDataForFleet(iDBID)
+            ' Create ecosim fleet forcing bits
 
-        ' Create fleet objects though
-        bSucces = bSucces And Me.AddEcosimFleetToAllScenarios(iDBID)
-        bSucces = bSucces And Me.AddEcospaceFleetToAllScenarios(iDBID)
+            ' Create fleet objects though
+            bSucces = bSucces And Me.AddEcosimFleetToAllScenarios(iDBID)
+            bSucces = bSucces And Me.AddEcospaceFleetToAllScenarios(iDBID)
 
-        Return bSucces
+            Return bSucces
 
-    End Function
+        End Function
 
-    Private Function AddCatchDataForFleet(ByVal iFleetID As Integer) As Boolean
+        Private Function AddCatchDataForFleet(ByVal iFleetID As Integer) As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim iGroupID As Integer = 0
-        Dim bSucces As Boolean = True
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim iGroupID As Integer = 0
+            Dim bSucces As Boolean = True
 
-        For iGroup As Integer = 1 To ecopathDS.NumLiving
-            iGroupID = ecopathDS.GroupDBID(iGroup)
-            bSucces = bSucces And Me.AddCatch(iGroupID, iFleetID)
-        Next
+            For iGroup As Integer = 1 To ecopathDS.NumLiving
+                iGroupID = ecopathDS.GroupDBID(iGroup)
+                bSucces = bSucces And Me.AddCatch(iGroupID, iFleetID)
+            Next
 
-        ' JS 21oct09: Send all detritus to only the LAST detritus group (bug 460)
-        '             This code assumes that detritus groups are at the end of the group list
-        bSucces = bSucces And Me.AddDiscardFate(ecopathDS.GroupDBID(ecopathDS.NumGroups), iFleetID)
+            ' JS 21oct09: Send all detritus to only the LAST detritus group (bug 460)
+            '             This code assumes that detritus groups are at the end of the group list
+            bSucces = bSucces And Me.AddDiscardFate(ecopathDS.GroupDBID(ecopathDS.NumGroups), iFleetID)
 
-        Return bSucces
+            Return bSucces
 
-    End Function
+        End Function
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Removes a fleet from the datasource.
-    ''' </summary>
-    ''' <param name="iDBID">Database ID of the fleet to remove.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Function RemoveFleet(ByVal iDBID As Integer) As Boolean _
-            Implements IEcopathDataSource.RemoveFleet
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Removes a fleet from the datasource.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the fleet to remove.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function RemoveFleet(ByVal iDBID As Integer) As Boolean _
+                Implements IEcopathDataSource.RemoveFleet
 
-        Dim bSucces As Boolean = True
-        Try
-            bSucces = Me.RemoveEcosimFleet(iDBID)
-            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathFleet WHERE (FleetID={0})", iDBID))
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while removing fleet {1}", ex.Message, iDBID))
-            bSucces = False
-        End Try
-        Return bSucces
+            Dim bSucces As Boolean = True
+            Try
+                bSucces = Me.RemoveEcosimFleet(iDBID)
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathFleet WHERE (FleetID={0})", iDBID))
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while removing fleet {1}", ex.Message, iDBID))
+                bSucces = False
+            End Try
+            Return bSucces
 
-    End Function
+        End Function
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Move an Ecopath fleet to a different position in the fleet sequence.
-    ''' </summary>
-    ''' <param name="iDBID">Database ID of the fleet to move.</param>
-    ''' <param name="iPosition">The new position of the fleet in the fleet sequence.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function MoveFleet(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
-            Implements DataSources.IEcopathDataSource.MoveFleet
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Move an Ecopath fleet to a different position in the fleet sequence.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the fleet to move.</param>
+        ''' <param name="iPosition">The new position of the fleet in the fleet sequence.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function MoveFleet(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
+                Implements DataSources.IEcopathDataSource.MoveFleet
 
-        Dim bSucces As Boolean = True
-        Try
-            Me.m_db.Execute(String.Format("UPDATE EcopathFleet SET Sequence={1} WHERE (FleetID={0})", iDBID, iPosition))
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while moving fleet {1}", ex.Message, iDBID))
-            bSucces = False
-        End Try
-        Return bSucces
-    End Function
+            Dim bSucces As Boolean = True
+            Try
+                Me.m_db.Execute(String.Format("UPDATE EcopathFleet SET Sequence={1} WHERE (FleetID={0})", iDBID, iPosition))
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while moving fleet {1}", ex.Message, iDBID))
+                bSucces = False
+            End Try
+            Return bSucces
+        End Function
 
 #End Region '  Modify
 
