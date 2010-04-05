@@ -27,7 +27,7 @@ Namespace Import
 #Region " Private bits "
 
         ''' <summary>The actual importer.</summary>
-        Private m_dbImp As IEwE5ModelImporter = Nothing
+        Private m_dbImp As cEwE5ModelImporter = Nothing
         ''' <summary>A setting for each EwE5 model.</summary>
         Private m_lImportSettings As New List(Of cImportSettings)
         ''' <summary>Folder to place imported models into.</summary>
@@ -53,7 +53,7 @@ Namespace Import
 #Region " Privates vars "
 
             ''' <summary>EwE5 model info.</summary>
-            Private m_mi As cEwE5ModelInfo = Nothing
+            Private m_mi As cEwE5ModelImporter.cEwE5ModelInfo = Nothing
             ''' <summary>Flag stating whether this EwE5 model should be imported.</summary>
             Private m_bImport As Boolean = False
             ''' <summary>EwE6 name of the model to import into.</summary>
@@ -68,11 +68,11 @@ Namespace Import
             ''' Create a new import setting for an EwE5 model.
             ''' </summary>
             ''' <param name="mi">
-            ''' The <see cref="cEwE5ModelInfo">EwE5 model</see>
+            ''' The <see cref="IEwE5ModelImporter.cEwE5ModelInfo">EwE5 model</see>
             ''' to create import settings for.
             ''' </param>
             ''' -----------------------------------------------------------------------
-            Public Sub New(ByVal mi As cEwE5ModelInfo)
+            Public Sub New(ByVal mi As cEwE5ModelImporter.cEwE5ModelInfo)
                 Me.m_mi = mi
                 Me.m_bImport = False
                 Me.m_strEwE6Name = mi.Name
@@ -80,11 +80,11 @@ Namespace Import
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Get the <see cref="cEwE5ModelInfo">EwE5 model 
+            ''' Get the <see cref="IEwE5ModelImporter.cEwE5ModelInfo">EwE5 model 
             ''' information</see> associated with this import setting.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Public ReadOnly Property ModelInfo() As cEwE5ModelInfo
+            Public ReadOnly Property ModelInfo() As cEwE5ModelImporter.cEwE5ModelInfo
                 Get
                     Return Me.m_mi
                 End Get
@@ -174,7 +174,7 @@ Namespace Import
             Me.m_strOutputFolder = Path.GetDirectoryName(strEwE5File)
 
             ' Prepare import settings
-            For Each mi As cEwE5ModelInfo In Me.m_dbImp.GetModels
+            For Each mi As cEwE5ModelImporter.cEwE5ModelInfo In Me.m_dbImp.GetModels
                 Dim imp As New cImportSettings(mi)
                 imp.SelectedForImport = (Me.m_dbImp.GetModels.Count = 1)
                 Me.m_lImportSettings.Add(imp)

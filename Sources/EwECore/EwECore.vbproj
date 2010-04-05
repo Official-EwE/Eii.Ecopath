@@ -238,7 +238,7 @@
     <Compile Include="Database\Import\cEwE5ModelImporterFactory.vb" />
     <Compile Include="Database\Import\cEwE5DatabaseImporter.vb" />
     <Compile Include="Database\Import\cEwE5EIIImporter.vb" />
-    <Compile Include="Database\Import\IEwE5ModelImporter.vb" />
+    <Compile Include="Database\Import\cEwE5ModelImporter.vb" />
     <Compile Include="Database\Updates\cDBUpdate.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_01_01.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_03_02.vb" />
@@ -277,9 +277,6 @@
     <Compile Include="Database\Updates\cDBUpdate6_00_07_003.vb" />
     <Compile Include="DataSource\cDatasourceFactory.vb" />
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
-    <Compile Include="DataSource\Implementations\cEIIDataSource.vb">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
     <Compile Include="EcoPath\cEcoPathStats.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFisheriesRegulation.vb" />

@@ -27,7 +27,7 @@ Public Class cEwE5ModelImporterFactory
     ''' all went well, or Nothing otherwise.</returns>
     ''' -----------------------------------------------------------------------
     Public Shared Function GetEwE5ModelImporter(ByVal core As cCore, _
-                                               ByVal strFilename As String) As IEwE5ModelImporter
+                                               ByVal strFilename As String) As cEwE5ModelImporter
 
         Select Case cDataSourceFactory.GetSupportedType(strFilename)
 

@@ -5,314 +5,619 @@ Imports System.IO
 Imports EwECore.Database
 Imports EwEUtils.Core
 Imports EwEUtils.Database
+Imports System.Text
+Imports EwECore.DataSources
 
 #End Region ' Imports 
 
-Public Class cEwE5EIIImporter
-    Implements IEwE5ModelImporter
-
-    Private m_core As cCore = Nothing
-    Private m_strFileName As String = ""
-    Private m_iFNum As Integer = cCore.NULL_VALUE
-
-    Public Sub New(ByVal core As cCore, ByVal strFileName As String)
-        Me.m_core = core
-        Me.m_strFileName = strFileName
-    End Sub
-
-#Region " Interface implementation "
+Namespace Database
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="IEwE5ModelImporter.Close"/>
+    ''' <summary>
+    ''' Imports an EwE5 .eii into an EwE6 database
+    ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function Open() As Boolean _
-        Implements Database.IEwE5ModelImporter.Open
+    Public Class cEwE5EIIImporter
+        Inherits cEwE5ModelImporter
 
-        Debug.Assert(Not Me.IsOpen())
+#Region " Private helper class "
 
-        Me.m_iFNum = FreeFile()
-        Try
-            FileOpen(Me.m_iFNum, Me.m_strFileName, OpenMode.Input)
-        Catch ex As Exception
-            cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. " + vbCrLf + m_strFileName + vbCrLf + "Error:" + ex.Message())
-            Me.m_iFNum = cCore.NULL_VALUE
-            Return False
-        End Try
+        Private Class cImportData
+            Inherits cEcopathDataStructures
 
-    End Function
+            Public UnitTime As eUnitTimeType = eUnitTimeType.Year
+            Public UnitTimeCustom As String = ""
+            Public UnitCurrencyCustom As String = ""
 
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="IEwE5ModelImporter.Close"/>
-    ''' -----------------------------------------------------------------------
-    Public Sub Close() _
-        Implements Database.IEwE5ModelImporter.Close
+        End Class
 
-        Debug.Assert(Me.IsOpen())
+#End Region ' Private helper class
 
-        FileClose(Me.m_iFNum)
-        Me.m_iFNum = cCore.NULL_VALUE
+#Region " Private vars "
 
-    End Sub
+        ''' <summary>Source file index to read from.</summary>
+        Private m_iFNum As Integer = cCore.NULL_VALUE
 
-    ''' -------------------------------------------------------------------
-    ''' <inheritdoc cref="IEwE5ModelImporter.IsOpen"/>
-    ''' -------------------------------------------------------------------
-    Public Function IsOpen() As Boolean _
-        Implements IEwE5ModelImporter.IsOpen
+        ''' <summary>Data buffer.</summary>
+        Private m_data As New cImportData()
 
-        Return (Me.m_iFNum <> cCore.NULL_VALUE)
+#End Region ' Private vars
 
-    End Function
+#Region " Construction "
 
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="IEwE5ModelImporter.GetModels"/>
-    ''' -----------------------------------------------------------------------
-    Public Function GetModels() As cEwE5ModelInfo() _
-        Implements Database.IEwE5ModelImporter.GetModels
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor, initializes a new instance of this class.
+        ''' </summary>
+        ''' <param name="core">The core to import into.</param>
+        ''' <param name="strEwE5File">Path to the Ecopath 5 document to import.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal core As cCore, ByVal strEwE5File As String)
+            MyBase.New(core, strEwE5File)
+        End Sub
 
-        Debug.Assert(Me.IsOpen())
+#End Region ' Construction
 
-        Dim info As New cEwE5ModelInfo("1", Path.GetFileNameWithoutExtension(Me.m_strFileName), "Ecopath 5 EII file", 0)
-        Return New cEwE5ModelInfo() {info}
+#Region " Overrides "
 
-    End Function
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdoc cref="cEwE5ModelImporter.Close"/>
+        ''' -----------------------------------------------------------------------
+        Public Overrides Function Open() As Boolean
 
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="IEwE5ModelImporter.Import"/>
-    ''' -----------------------------------------------------------------------
-    Public Function Import(ByVal strModelName As String, _
-                           ByVal db As cEwEDatabase, _
-                           ByVal strLogfileName As String) As Boolean _
-                           Implements Database.IEwE5ModelImporter.Import
+            Debug.Assert(Not Me.IsOpen())
 
-        Return False
-
-    End Function
-
-#End Region ' Interface implementation
-
-    Private Function LoadEII() As Boolean
-
-        'read the contents of the eii file into an EcopathParameters object
-        'this is written using vb file access instead of a filestream to keep it as close to the original vb code as possible
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
-        Dim pvar As Single
-        Dim i As Integer
-        Dim j As Integer
-        Dim K As Integer
-        Dim Dummy As Single
-        Dim jnk As String
-        Dim Import As Integer
-
-        If m_strFileName = "" Then
-            cLog.Write(Me.ToString + ".LoadEcopath(...) No file name specified.")
-            Return False
-        End If
-
-        Try
-            FileOpen(Me.m_iFNum, m_strFileName, OpenMode.Input)
-        Catch ex As Exception
-            cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. " + vbCrLf + m_strFileName + vbCrLf + "Error:" + ex.Message())
-            Return False
-        End Try
-
-        'fake model data
-        m_core.m_EwEModelDBID = 1
-        m_core.m_EwEModelName = Path.GetFileName(m_strFileName)
-        m_core.m_EwEModelNumDigits = 3
-        m_core.m_EwEModelDescription = "Simulated model read from EII file " & m_strFileName
-
-        'read the file
-        Try
-            Input(Me.m_iFNum, ecopathDS.NumGroups)
-            Input(Me.m_iFNum, ecopathDS.NumLiving)
-            Input(Me.m_iFNum, Me.m_core.m_EwEModelUnitCurrencyCustom)
-            Input(Me.m_iFNum, ecopathDS.currUnitIndex)
-
-            If Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables() Then
-                cLog.Write(Me.ToString + ".LoadModel(...) Failed to Re-Dimension group parameter arrays.")
+            Me.m_iFNum = FreeFile()
+            Try
+                FileOpen(Me.m_iFNum, Me.m_strEwE5File, OpenMode.Input)
+            Catch ex As Exception
+                Me.LogMessage(".LoadEcopath(...) Error opening eii file. " + vbCrLf + m_strEwE5File + vbCrLf + "Error:" + ex.Message())
+                Me.m_iFNum = cCore.NULL_VALUE
                 Return False
+            End Try
+            Return True
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdoc cref="cEwE5ModelImporter.Close"/>
+        ''' -----------------------------------------------------------------------
+        Public Overrides Sub Close()
+            Debug.Assert(Me.IsOpen())
+
+            FileClose(Me.m_iFNum)
+            Me.m_iFNum = cCore.NULL_VALUE
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="cEwE5ModelImporter.IsOpen"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function IsOpen() As Boolean
+
+            Return (Me.m_iFNum <> cCore.NULL_VALUE)
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdoc cref="cEwE5ModelImporter.GetModels"/>
+        ''' -----------------------------------------------------------------------
+        Public Overrides Function GetModels() As cEwE5ModelImporter.cEwE5ModelInfo()
+
+            Debug.Assert(Me.IsOpen())
+
+            Dim info As New cEwE5ModelImporter.cEwE5ModelInfo("1", Path.GetFileNameWithoutExtension(Me.m_strEwE5File), "Ecopath 5 EII file", 0)
+            Return New cEwE5ModelImporter.cEwE5ModelInfo() {info}
+
+        End Function
+
+#End Region ' Overrides 
+
+#Region " The import "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Imports and converts a model in an EwE5 database into a provided EwE6 database.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function PerformImport() As Boolean
+
+            Dim dbUpd As cDatabaseUpdater = Nothing
+            Dim bSucces As Boolean = False
+
+            Me.m_iNumSteps = 7
+
+            If Me.Open() Then
+                Me.LogProgress("Loading eii file...")
+                If Me.LoadEII() Then
+                    bSucces = Me.Save()
+                End If
+                Me.Close()
             End If
 
-            'groups
-            For K = 1 To ecopathDS.NumGroups
-                Input(Me.m_iFNum, ecopathDS.GroupName(K)) : Input(Me.m_iFNum, pvar) : Input(Me.m_iFNum, ecopathDS.DtImp(K))
-                Input(Me.m_iFNum, ecopathDS.Ex(K)) : Input(Me.m_iFNum, ecopathDS.fCatch(K)) : Input(Me.m_iFNum, ecopathDS.DC(K, 0))
-                Input(Me.m_iFNum, ecopathDS.Binput(K)) : Input(Me.m_iFNum, ecopathDS.PBinput(K)) : Input(Me.m_iFNum, ecopathDS.EEinput(K))
-                Input(Me.m_iFNum, ecopathDS.GEinput(K)) : Input(Me.m_iFNum, ecopathDS.QBinput(K))
+            ' Set version
+            Me.m_dbEwE6.SetVersion(Me.m_dbEwE6.GetVersion(), "Imported from EII file '" & Me.m_strEwE5File & "'")
 
-                ecopathDS.BHinput(K) = ecopathDS.Binput(K) / ecopathDS.Area(K)
+            ' Now run all available updates on the new EwE6 database
+            dbUpd = New cDatabaseUpdater(Me.m_core, 6.0!)
+            dbUpd.UpdateDatabase(Me.m_dbEwE6)
+            dbUpd = Nothing
 
-                ecopathDS.GroupDBID(K) = K
+            ' Release DB
+            Me.m_dbEwE6 = Nothing
 
-                'Input #me.m_iFNum, GroupName(K), Pvar, DtImp(K), Ex(K), Catch(K), parms.DC(K, 0), parms.B(K), parms.pb(K), parms.ee(K), parms.ge(K), parms.qb(K)
-                'jb this does not make any sence
-                'it uses the Primary Porduction as the version number ????
-                'If pvar < -1.99 Then
-                '    txt = "It is not possible to import your old version of the " _
-                '        + "Ecopath data file. " _
-                '        + "You may have to reenter your data.  " _
-                '        + "Open the eii file in Notepad, and check it. " _
-                '        + "A testversion of Ecopath with Ecosim had a bug where it would place, " _
-                '        + "e.g., '-94-95' instead of '-94 -95' in the eii file. If this is the case then add spaces where needed. " _
-                '        + "If not, please email v.christensen@cgiar.org " + vbNewLine _
-                '        + "Please edit data.  Press any key to abort. "
+            Me.LogMessage(My.Resources.CoreMessages.IMPORT_PROGRESS_COMPLETE)
 
-                '    MsgBox(txt, vbCritical + vbOKOnly, "Problem importing old file type")
+            Return bSucces
 
-                '    FileClose(me.m_iFNum)
-                '    ReadEii = False
-                '    Exit Function
-                'End If
+        End Function
 
-                ecopathDS.PP(K) = pvar - 2
-                If K > ecopathDS.NumLiving Then ecopathDS.PP(K) = 2
-                If ecopathDS.GE(K) = 0 Then ecopathDS.GE(K) = -9
+#End Region ' The import 
 
-            Next K
+#Region " Loading "
 
-            ' "Read DietComp"
-            ReDim ecopathDS.DietChanged(1, 0)
-            For K = 1 To ecopathDS.NumGroups
-                For j = 1 To ecopathDS.NumGroups
-                    Input(Me.m_iFNum, ecopathDS.DCInput(K, j))
-                    If ecopathDS.DCInput(K, j) > 0 Then
-                        ecopathDS.DietWasChanged(K, j)
-                    End If
+        ''' <summary>
+        ''' The old datasource code, to be transmogrified into database import logic
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function LoadEII() As Boolean
+
+            'read the contents of the eii file into a private EcopathParameters object
+            'this is written using vb file access instead of a filestream to keep it as close to the original vb code as possible
+            Dim pvar As Single
+            Dim i As Integer
+            Dim j As Integer
+            Dim K As Integer
+            Dim Dummy As Single
+            Dim jnk As String
+            Dim Import As Integer
+
+            Debug.Assert(Me.IsOpen())
+
+            'read the file
+            Try
+                Input(Me.m_iFNum, m_data.NumGroups)
+                Input(Me.m_iFNum, m_data.NumLiving)
+                Input(Me.m_iFNum, m_data.UnitCurrencyCustom)
+                Input(Me.m_iFNum, m_data.currUnitIndex)
+
+                If Not m_data.redimGroupVariables() Then
+                    Me.LogMessage(".LoadModel(...) Failed to Re-Dimension group parameter arrays.")
+                    Return False
+                End If
+
+                'groups
+                For K = 1 To m_data.NumGroups
+                    Input(Me.m_iFNum, m_data.GroupName(K)) : Input(Me.m_iFNum, pvar) : Input(Me.m_iFNum, m_data.DtImp(K))
+                    Input(Me.m_iFNum, m_data.Ex(K)) : Input(Me.m_iFNum, m_data.fCatch(K)) : Input(Me.m_iFNum, m_data.DCInput(K, 0))
+                    Input(Me.m_iFNum, m_data.Binput(K)) : Input(Me.m_iFNum, m_data.PBinput(K)) : Input(Me.m_iFNum, m_data.EEinput(K))
+                    Input(Me.m_iFNum, m_data.GEinput(K)) : Input(Me.m_iFNum, m_data.QBinput(K))
+
+                    m_data.BHinput(K) = m_data.Binput(K) / m_data.Area(K)
+
+                    m_data.GroupDBID(K) = K
+
+                    m_data.PP(K) = pvar - 2
+                    If K > m_data.NumLiving Then m_data.PP(K) = 2
+                    If m_data.GE(K) = 0 Then m_data.GE(K) = -9
+
+                Next K
+
+                ' "Read DietComp"
+                ReDim m_data.DietChanged(1, 0)
+                For K = 1 To m_data.NumGroups
+                    For j = 1 To m_data.NumGroups
+                        Input(Me.m_iFNum, m_data.DCInput(K, j))
+                    Next j
+                Next K
+
+                If EOF(Me.m_iFNum) Then Return True
+
+                'jb totp read in original routine using a string will read the entire line
+                Input(Me.m_iFNum, jnk)
+                'jb I have no idea what this is all about 
+                If Import < 0 Then Import = 0
+
+                'Unassimilated food
+                For j = 1 To m_data.NumGroups
+                    Input(Me.m_iFNum, Dummy) : Input(Me.m_iFNum, m_data.GS(j))
+                    If Dummy < 0 Then Dummy = 0
+                    m_data.GS(j) = Dummy + m_data.GS(j)
+                    If m_data.GS(j) > 1 Then m_data.GS(j) = m_data.GS(j) / 100
                 Next j
-            Next K
 
-            If EOF(Me.m_iFNum) Then Return True
+                Input(Me.m_iFNum, jnk)
 
-            'jb totp read in original routine using a string will read the entire line
-            Input(Me.m_iFNum, jnk)
-            'jb I have no idea what this is all about 
-            If Import < 0 Then Import = 0
+                'the time unit name
+                If EOF(Me.m_iFNum) = False Then
+                    Dim tmpbuff As String
+                    Input(Me.m_iFNum, tmpbuff)
+                    m_data.TimeUnitName = tmpbuff.Trim
+                End If
 
-            'Unassimilated food
-            For j = 1 To ecopathDS.NumGroups
-                Input(Me.m_iFNum, Dummy) : Input(Me.m_iFNum, ecopathDS.GS(j))
-                If Dummy < 0 Then Dummy = 0
-                ecopathDS.GS(j) = Dummy + ecopathDS.GS(j)
-                If ecopathDS.GS(j) > 1 Then ecopathDS.GS(j) = ecopathDS.GS(j) / 100
-            Next j
+                'the ecosystem remarks.
+                Input(Me.m_iFNum, jnk)
 
-            Input(Me.m_iFNum, jnk)
+                For i = 1 To m_data.NumGroups             ' parms.Bomass accumulation added March 95/VC
+                    Input(Me.m_iFNum, m_data.BA(i))
+                Next i
 
-            'the time unit name
-            If EOF(Me.m_iFNum) = False Then
-                Dim tmpbuff As String
-                Input(Me.m_iFNum, tmpbuff)
-                ecopathDS.TimeUnitName = tmpbuff.Trim
-                Select Case LCase(ecopathDS.TimeUnitName)
-                    Case "year"
-                        Me.m_core.m_EwEModelUnitTime = eUnitTimeType.Year
-                    Case "day"
-                        Me.m_core.m_EwEModelUnitTime = eUnitTimeType.Day
-                    Case Else
-                        Me.m_core.m_EwEModelUnitTime = eUnitTimeType.Custom
-                        Me.m_core.m_EwEModelUnitTimeCustom = ecopathDS.TimeUnitName
+                'If EOF(me.m_iFNum) = False And NumGroups > NumLiving + 1 Then
+                'More than 1 detritusbox Any reason for this??
+                For i = 1 To m_data.NumGroups
+                    For j = m_data.NumLiving + 1 To m_data.NumGroups
+                        Input(Me.m_iFNum, m_data.DF(i, j - m_data.NumLiving))     ' Diet Fate array added July 1994/VC
+                    Next j
+                Next i
 
-                End Select
-            End If
+                Input(Me.m_iFNum, jnk) ' 
+                For i = 1 To m_data.NumGroups             ' Emigration added Dec 98/VC
+                    Input(Me.m_iFNum, m_data.Emigration(i))
+                Next i
 
-            'the ecosystem remarks.
-            Input(Me.m_iFNum, jnk)
+                Input(Me.m_iFNum, jnk)
+                For i = 1 To m_data.NumGroups                 ' immigration added Dec 98/VC
+                    Input(Me.m_iFNum, m_data.Immig(i))
+                Next i
 
-            For i = 1 To ecopathDS.NumGroups             ' parms.Bomass accumulation added March 95/VC
-                Input(Me.m_iFNum, ecopathDS.BA(i))
-            Next i
+                Input(Me.m_iFNum, jnk)  'NumGear
+                Input(Me.m_iFNum, m_data.NumFleet)
 
-            'If EOF(me.m_iFNum) = False And NumGroups > NumLiving + 1 Then
-            'More than 1 detritusbox Any reason for this??
-            For i = 1 To ecopathDS.NumGroups
-                For j = ecopathDS.NumLiving + 1 To ecopathDS.NumGroups
-                    Input(Me.m_iFNum, ecopathDS.DF(i, j - ecopathDS.NumLiving))     ' Diet Fate array added July 1994/VC
-                Next j
-            Next i
+                m_data.RedimFleetVariables(True)
 
-            Input(Me.m_iFNum, jnk) ' 
-            For i = 1 To ecopathDS.NumGroups             ' Emigration added Dec 98/VC
-                Input(Me.m_iFNum, ecopathDS.Emigration(i))
-            Next i
+                Input(Me.m_iFNum, jnk) 'Gearnames
+                For i = 1 To m_data.NumFleet             ' Added Dec 98/VC
+                    Input(Me.m_iFNum, m_data.FleetName(i))
+                    m_data.FleetDBID(i) = i
+                Next i
 
-            Input(Me.m_iFNum, jnk)
-            For i = 1 To ecopathDS.NumGroups                 ' immigration added Dec 98/VC
-                Input(Me.m_iFNum, ecopathDS.Immig(i))
-            Next i
+                Input(Me.m_iFNum, jnk)  'cost
+                For i = 1 To m_data.NumFleet
+                    'First is fixed cost, second is cost per unit effort' Added Dec 98/VC
+                    Input(Me.m_iFNum, m_data.CostPct(i, eCostIndex.Fixed))
+                    Input(Me.m_iFNum, m_data.CostPct(i, eCostIndex.CUPE))
+                    Input(Me.m_iFNum, m_data.CostPct(i, eCostIndex.Sail))
+                Next i
 
-            Input(Me.m_iFNum, jnk)  'NumGear
-            Input(Me.m_iFNum, ecopathDS.NumFleet)
+                Input(Me.m_iFNum, jnk)  'landing
+                For i = 1 To m_data.NumFleet
+                    For j = 1 To m_data.NumGroups
+                        Input(Me.m_iFNum, m_data.Landing(i, j))    ' Landing added Dec 98/VC
+                    Next j
+                Next i
 
-            ecopathDS.RedimFleetVariables(True)
+                Input(Me.m_iFNum, jnk)  'discard
+                For i = 1 To m_data.NumFleet
+                    For j = 1 To m_data.NumGroups
+                        Input(Me.m_iFNum, m_data.Discard(i, j))    ' Added Dec 98/VC
+                    Next j
+                Next i
 
-            Input(Me.m_iFNum, jnk) 'Gearnames
-            For i = 1 To ecopathDS.NumFleet             ' Added Dec 98/VC
-                Input(Me.m_iFNum, ecopathDS.FleetName(i))
-                ecopathDS.FleetDBID(i) = i
-            Next i
+                Input(Me.m_iFNum, jnk)  'discard
+                For i = 1 To m_data.NumFleet
+                    For j = 1 To m_data.NumGroups - m_data.NumLiving
+                        Input(Me.m_iFNum, m_data.DiscardFate(i, j))   ' Added Dec 98/VC
+                    Next j
+                Next i
 
-            Input(Me.m_iFNum, jnk)  'cost
-            For i = 1 To ecopathDS.NumFleet
-                'First is fixed cost, second is cost per unit effort' Added Dec 98/VC
-                Input(Me.m_iFNum, ecopathDS.CostPct(i, eCostIndex.Fixed))
-                Input(Me.m_iFNum, ecopathDS.CostPct(i, eCostIndex.CUPE))
-                Input(Me.m_iFNum, ecopathDS.CostPct(i, eCostIndex.Sail))
-            Next i
+                Input(Me.m_iFNum, jnk)  'market
+                For i = 1 To m_data.NumFleet
+                    For j = 1 To m_data.NumGroups
+                        Input(Me.m_iFNum, m_data.Market(i, j))    ' Added Dec 98/VC
+                    Next j
+                Next i
 
-            Input(Me.m_iFNum, jnk)  'landing
-            For i = 1 To ecopathDS.NumFleet
-                For j = 1 To ecopathDS.NumGroups
-                    Input(Me.m_iFNum, ecopathDS.Landing(i, j))    ' Landing added Dec 98/VC
-                Next j
-            Next i
+                m_data.NoGearData = False
 
-            Input(Me.m_iFNum, jnk)  'discard
-            For i = 1 To ecopathDS.NumFleet
-                For j = 1 To ecopathDS.NumGroups
-                    Input(Me.m_iFNum, ecopathDS.Discard(i, j))    ' Added Dec 98/VC
-                Next j
-            Next i
+                'shadow
+                Input(Me.m_iFNum, jnk)
+                For i = 1 To m_data.NumGroups             ' Added Dec 98/VC
+                    Input(Me.m_iFNum, m_data.Shadow(i))
+                Next i
 
-            Input(Me.m_iFNum, jnk)  'discard
-            For i = 1 To ecopathDS.NumFleet
-                For j = 1 To ecopathDS.NumGroups - ecopathDS.NumLiving
-                    Input(Me.m_iFNum, ecopathDS.DiscardFate(i, j))   ' Added Dec 98/VC
-                Next j
-            Next i
+                'Habitatarea
+                Input(Me.m_iFNum, jnk)  '
+                For i = 1 To m_data.NumGroups             ' Added Dec 98/VC
+                    Input(Me.m_iFNum, m_data.Area(i))
+                    Input(Me.m_iFNum, m_data.BH(i))
+                Next i
 
-            Input(Me.m_iFNum, jnk)  'market
-            For i = 1 To ecopathDS.NumFleet
-                For j = 1 To ecopathDS.NumGroups
-                    Input(Me.m_iFNum, ecopathDS.Market(i, j))    ' Added Dec 98/VC
-                Next j
-            Next i
+            Catch ex As Exception 'catch any error during the reading of the data
+                'some kind of a reading error better find out what happend
+                Me.LogMessage(".LoadEcopath() Error reading eii file. Error: " + ex.Message())
+                Debug.Assert(False)
+                Return False
+            End Try
 
-            ecopathDS.NoGearData = False
+            Return True
 
-            'shadow
-            Input(Me.m_iFNum, jnk)
-            For i = 1 To ecopathDS.NumGroups             ' Added Dec 98/VC
-                Input(Me.m_iFNum, ecopathDS.Shadow(i))
-            Next i
+        End Function
 
-            'Habitatarea
-            Input(Me.m_iFNum, jnk)  '
-            For i = 1 To ecopathDS.NumGroups             ' Added Dec 98/VC
-                Input(Me.m_iFNum, ecopathDS.Area(i))
-                Input(Me.m_iFNum, ecopathDS.BH(i))
-            Next i
+#End Region ' Loading
 
-        Catch ex As Exception 'catch any error during the reading of the data
-            'some kind of a reading error better find out what happend
-            cLog.Write(Me.ToString + ".LoadEcopath() Error reading eii file. Error: " + ex.Message())
-            Debug.Assert(False)
-            Return False
-        End Try
+#Region " Saving "
 
-        Return True
+        Private Function Save() As Boolean
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_MODEL)
+            Me.SaveModel()
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOPATHGROUPS)
+            Me.SaveGroups()
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_POGRESS_DIETCOMP)
+            Me.SaveDietComp()
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FLEET)
+            Me.SaveFleets()
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH)
+            Me.SaveCatch()
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH)
+            Me.SaveDiscardFate()
+            Return True
+        End Function
 
-    End Function
+#Region " Model "
 
-End Class
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Import generic model information
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub SaveModel()
+
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim strYear As String = ""
+            Dim dt As DateTime = Nothing
+
+            ' Clear table
+            Me.m_dbEwE6.Execute("DELETE * FROM EcopathModel")
+
+            writer = m_dbEwE6.GetWriter("EcopathModel")
+
+            drow = writer.NewRow()
+            drow("ModelID") = 1
+            drow("Name") = Path.GetFileNameWithoutExtension(Me.m_strEwE5File)
+            drow("Description") = "Imported from EII file '" & Path.GetFileName(Me.m_strEwE5File) & "'"
+            drow("NumDigits") = 3
+
+            drow("UnitCurrency") = Me.m_data.currUnitIndex
+            drow("UnitCurrencyCustom") = Me.m_data.UnitCurrencyCustom
+
+            Select Case Me.m_data.UnitTimeCustom.Trim.ToLower()
+                Case "year", "" : Me.m_data.UnitTime = eUnitTimeType.Year : Me.m_data.UnitTimeCustom = ""
+                Case "day" : Me.m_data.UnitTime = eUnitTimeType.Day : Me.m_data.UnitTimeCustom = ""
+                Case Else : Me.m_data.UnitTime = eUnitTimeType.Custom
+            End Select
+            drow("UnitTime") = Me.m_data.UnitTime
+            drow("UnitTimeCustom") = Me.m_data.UnitTimeCustom
+
+            drow("MonetaryUnit") = eUnitMonetaryType.EUR.ToString()
+            writer.AddRow(drow)
+            Me.m_dbEwE6.ReleaseWriter(writer, True)
+
+        End Sub
+
+#End Region ' Model
+
+#Region " Groups "
+
+        Private Function SaveGroups() As Boolean
+
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            ' Clear table(s)
+            Me.m_dbEwE6.Execute("DELETE * FROM EcopathGroup")
+            writer = m_dbEwE6.GetWriter("EcopathGroup")
+
+            Try
+                For iGroup As Integer = 1 To Me.m_data.NumGroups
+
+                    drow = writer.NewRow()
+
+                    drow("GroupID") = iGroup
+                    drow("Sequence") = iGroup
+                    drow("GroupName") = Me.m_data.GroupName(iGroup)
+                    drow("Type") = Me.m_data.PP(iGroup)
+                    drow("Area") = Me.m_data.Area(iGroup)
+                    drow("BiomAcc") = Me.m_data.BA(iGroup)
+                    drow("BiomAccRate") = Me.m_data.BaBi(iGroup)
+                    drow("Unassim") = Me.m_data.GS(iGroup)
+                    drow("DtImports") = Me.m_data.DtImp(iGroup)
+                    drow("Export") = Me.m_data.Ex(iGroup)
+                    drow("Catch") = Me.m_data.fCatch(iGroup)
+                    drow("ImpVar") = Me.m_data.DCInput(iGroup, 0)
+                    drow("GroupIsFish") = Me.m_data.GroupIsFish(iGroup)
+                    drow("GroupIsInvert") = Me.m_data.GroupIsInvert(iGroup)
+                    drow("NonMarketValue") = Me.m_data.Shadow(iGroup)
+                    drow("Respiration") = Me.m_data.Resp(iGroup)
+
+                    'variable with input/output pair only the input gets saved
+                    drow("EcoEfficiency") = Me.m_data.EEinput(iGroup)
+                    drow("ProdBiom") = Me.m_data.PBinput(iGroup)
+                    drow("ConsBiom") = Me.m_data.QBinput(iGroup)
+                    drow("ProdCons") = Me.m_data.GEinput(iGroup)
+                    drow("Biomass") = Me.m_data.Binput(iGroup)
+
+                    drow("Immigration") = Me.m_data.Immig(iGroup)
+                    drow("Emigration") = Me.m_data.Emigration(iGroup)
+                    drow("EmigRate") = Me.m_data.Emig(iGroup)
+                    drow("PoolColor") = String.Format("{0:x8}", 0)
+
+                    writer.AddRow(drow)
+
+                Next iGroup
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            Me.m_dbEwE6.ReleaseWriter(writer)
+            Return bSucces
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Writes the DietComp information to the database.
+        ''' </summary>
+        ''' <returns>True if succesful</returns>
+        ''' -------------------------------------------------------------------
+        Private Function SaveDietComp() As Boolean
+
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            Me.m_dbEwE6.Execute("DELETE * FROM EcopathDietComp")
+            writer = Me.m_dbEwE6.GetWriter("EcopathDietComp")
+
+            Try
+                For iPred As Integer = 1 To Me.m_data.NumGroups
+                    For iPrey As Integer = 1 To Me.m_data.NumGroups
+
+                        drow = writer.NewRow()
+
+                        drow("PredID") = iPred
+                        drow("PreyID") = iPrey
+                        drow("Diet") = Me.m_data.DCInput(iPred, iPrey)
+                        If iPrey > Me.m_data.NumLiving Then
+                            drow("DetritusFate") = Me.m_data.DF(iPred, iPrey - Me.m_data.NumLiving)
+                        Else
+                            drow("DetritusFate") = 0
+                        End If
+
+                        writer.AddRow(drow)
+
+                    Next iPrey
+                Next iPred
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            Me.m_dbEwE6.ReleaseWriter(writer, True)
+
+            Return bSucces
+        End Function
+
+#End Region ' Groups
+
+#Region " Fleets "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Saves all fleets.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function SaveFleets() As Boolean
+
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            writer = Me.m_dbEwE6.GetWriter("EcopathFleet")
+            Try
+                For iFleet As Integer = 1 To Me.m_data.NumFleet
+
+                    drow = writer.NewRow()
+
+                    drow("Sequence") = iFleet
+                    drow("FleetID") = iFleet
+                    drow("FleetName") = Me.m_data.FleetName(iFleet)
+                    drow("FixedCost") = Me.m_data.CostPct(iFleet, eCostIndex.Fixed)
+                    drow("SailingCost") = Me.m_data.CostPct(iFleet, eCostIndex.Sail)
+                    drow("variableCost") = Me.m_data.CostPct(iFleet, eCostIndex.CUPE)
+                    drow("PoolColor") = String.Format("{0:x8}", 0)
+
+                    writer.AddRow(drow)
+
+                Next iFleet
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathFleet", ex.Message))
+                bSucces = False
+            End Try
+            Me.m_dbEwE6.ReleaseWriter(writer, True)
+
+            Return bSucces
+        End Function
+
+        Private Function SaveCatch() As Boolean
+
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            Me.m_dbEwE6.Execute("DELETE * FROM EcopathCatch")
+            writer = Me.m_dbEwE6.GetWriter("EcopathCatch")
+            Try
+                For iFleet As Integer = 1 To Me.m_data.NumFleet
+                    For iGroup As Integer = 1 To Me.m_data.NumGroups
+
+                        ' JS 04aug08: only save rows with data
+                        If (Me.m_data.Landing(iFleet, iGroup) > 0.0!) Or _
+                           (Me.m_data.Discard(iFleet, iGroup) > 0.0!) Or _
+                           ((Me.m_data.Market(iFleet, iGroup) > 0.0!) And (Me.m_data.Market(iFleet, iGroup) < 1.0!)) Or _
+                           (Me.m_data.PropDiscardMort(iFleet, iGroup) > 0.0!) Then
+
+                            drow = writer.NewRow()
+                            drow("FleetID") = iFleet
+                            drow("GroupID") = iGroup
+                            drow("Landing") = Me.m_data.Landing(iFleet, iGroup)
+                            drow("Discards") = Me.m_data.Discard(iFleet, iGroup)
+                            drow("Price") = Me.m_data.Market(iFleet, iGroup)
+                            drow("DiscardMortality") = Me.m_data.PropDiscardMort(iFleet, iGroup)
+                            writer.AddRow(drow)
+
+                        End If
+
+                    Next iGroup
+                Next iFleet
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving catch", ex.Message))
+                bSucces = False
+            End Try
+            Me.m_dbEwE6.ReleaseWriter(writer)
+
+            Return bSucces
+        End Function
+
+        Private Function SaveDiscardFate() As Boolean
+
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            Me.m_dbEwE6.Execute("DELETE * FROM EcopathDiscardFate")
+            writer = Me.m_dbEwE6.GetWriter("EcopathDiscardFate")
+            Try
+                For iFleet As Integer = 1 To Me.m_data.NumFleet
+                    For iGroup As Integer = 1 To Me.m_data.NumGroups - Me.m_data.NumLiving
+
+                        drow = writer.NewRow()
+
+                        drow("FleetID") = iFleet
+                        drow("GroupID") = (iGroup + Me.m_data.NumLiving)
+                        drow("DiscardFate") = Me.m_data.DiscardFate(iFleet, iGroup)
+
+                        writer.AddRow(drow)
+
+                    Next iGroup
+                Next iFleet
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving DiscardFate", ex.Message))
+                bSucces = False
+            End Try
+
+            Me.m_dbEwE6.ReleaseWriter(writer)
+            Return bSucces
+
+        End Function
+
+#End Region ' Fleets
+
+#End Region ' Saving
+
+    End Class
+
+End Namespace ' Database
