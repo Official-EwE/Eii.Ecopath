@@ -1830,7 +1830,8 @@ Public Class cCore
 
         ' Prepare feedback message
         strPrompt = My.Resources.CoreMessages.PROMPT_SAVE_CHANGES
-        fm = New cFeedbackMessage(strPrompt, eCoreComponentType.Core, _
+        fm = New cFeedbackMessage(strPrompt, _
+                                  eCoreComponentType.Core, eMessageType.Any, _
                                   eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
 
         If (bQuiet) Then
@@ -1970,7 +1971,7 @@ Public Class cCore
 
                         ' User wants to make a backup?
                         Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.DATABASE_BACKUP_PROMPT, _
-                                                         eCoreComponentType.DataSource, _
+                                                         eCoreComponentType.DataSource, eMessageType.Any, _
                                                          eMessageImportance.Information, _
                                                          cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
                         ' By default (if message is not handled) assume positive confirmation
@@ -6437,7 +6438,8 @@ Public Class cCore
 
         If Not bQuiet Then
             fmsg = New cFeedbackMessage(String.Format(My.Resources.CoreMessages.VULNERABILITIES_PROMPT_RESET, sDefaultValue), _
-                                        eCoreComponentType.EcoSim, eMessageImportance.Information, _
+                                        eCoreComponentType.EcoSim, eMessageType.Any, _
+                                        eMessageImportance.Information, _
                                         cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
             Me.m_publisher.SendMessage(fmsg)
             If fmsg.Reply = cFeedbackMessage.eReply.NO Then Return False
@@ -11041,7 +11043,8 @@ Public Class cCore
         Else
             Dim fmsg As New cFeedbackMessage( _
                     String.Format(My.Resources.CoreMessages.PLUGIN_PROMPT_DISABLE, PluginException.Message, vbNewLine), _
-                    eCoreComponentType.External, eMessageImportance.Warning, _
+                    eCoreComponentType.External, eMessageType.Any, _
+                    eMessageImportance.Warning, _
                     cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
 
             m_publisher.SendMessage(fmsg)

@@ -410,6 +410,7 @@ Namespace Controls
 
             fms = New cFeedbackMessage(strMessage, _
                                        eCoreComponentType.ShapesManager, _
+                                       eMessageType.Any, _
                                        eMessageImportance.Warning, _
                                        cFeedbackMessage.eReplyStyle.YES_NO, _
                                        eDataTypes.TimeSeriesDataset, _

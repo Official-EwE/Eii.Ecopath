@@ -814,6 +814,7 @@ Namespace FitToTimeSeries
                 If StopIndex > 0 Then
                     fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_ITERATIONS, _
                                                  eCoreComponentType.EcoSimFitToTimeSeries, _
+                                                 eMessageType.Any, _
                                                  eMessageImportance.Information, _
                                                  cFeedbackMessage.eReplyStyle.YES_NO)
                     sendMessage(fbmsg)
@@ -852,6 +853,7 @@ Namespace FitToTimeSeries
 
                 fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_CONVERGED, _
                                              eCoreComponentType.EcoSimFitToTimeSeries, _
+                                             eMessageType.Any, _
                                              eMessageImportance.Information, _
                                              cFeedbackMessage.eReplyStyle.YES_NO)
                 sendMessage(fbmsg)

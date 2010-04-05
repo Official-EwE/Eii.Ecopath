@@ -122,6 +122,7 @@ Public Class cFeedbackMessage
         MyBase.New()
     End Sub
 
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Constructor, initializes a new instance of this class.
@@ -132,13 +133,43 @@ Public Class cFeedbackMessage
     ''' <param name="replyStyle"><see cref="eReplyStyle">Reply style</see> of the message.</param>
     ''' <param name="msgDataType"><see cref="eDataTypes">Data type</see> associated with the message, if any.</param>
     ''' -----------------------------------------------------------------------
-    Sub New(ByVal msgStr As String, ByVal msgSource As eCoreComponentType, ByVal msgImportance As eMessageImportance, _
-            Optional ByVal replyStyle As eReplyStyle = eReplyStyle.OK_CANCEL, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet, _
+    <Obsolete("This constructor does not specify a message type. Use the other one instead")> _
+    Sub New(ByVal msgStr As String, _
+            ByVal msgSource As eCoreComponentType, _
+            ByVal msgImportance As eMessageImportance, _
+            Optional ByVal replyStyle As eReplyStyle = eReplyStyle.OK_CANCEL, _
+            Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet, _
             Optional ByVal defaultReply As eReply = eReply.CANCEL)
+
         MyBase.New(msgStr, eMessageType.Any, msgSource, msgImportance, msgDataType)
 
         Me.m_replyStyle = replyStyle
         Me.m_reply = defaultReply
+
+    End Sub
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Constructor, initializes a new instance of this class.
+    ''' </summary>
+    ''' <param name="msgStr">Message text.</param>
+    ''' <param name="msgSource"><see cref="eCoreComponentType">Source</see> of the message.</param>
+    ''' <param name="msgImportance"><see cref="eMessageImportance">Importance</see> of the message.</param>
+    ''' <param name="replyStyle"><see cref="eReplyStyle">Reply style</see> of the message.</param>
+    ''' <param name="msgDataType"><see cref="eDataTypes">Data type</see> associated with the message, if any.</param>
+    ''' -----------------------------------------------------------------------
+    Sub New(ByVal msgStr As String, _
+            ByVal msgSource As eCoreComponentType, _
+            ByVal msgType As eMessageType, _
+            ByVal msgImportance As eMessageImportance, _
+            Optional ByVal replyStyle As eReplyStyle = eReplyStyle.OK_CANCEL, _
+            Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet, _
+            Optional ByVal defaultReply As eReply = eReply.CANCEL)
+
+        MyBase.New(msgStr, msgType, msgSource, msgImportance, msgDataType)
+
+        Me.m_replyStyle = replyStyle
+        Me.m_reply = defaultReply
+
     End Sub
 
 #End Region ' Construction

@@ -329,8 +329,7 @@ Namespace Ecopath
                                 strMsg = String.Format(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE, m_Data.GroupName(igrp))
                             End If
 
-                            Dim fbMsg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.EcoPathGroupInput)
-                            fbMsg.Type = eMessageType.Estimate_BA
+                            Dim fbMsg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageType.Estimate_BA, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.EcoPathGroupInput)
                             fbMsg.Suppressable = True
                             NotifyCore(fbMsg)
 
@@ -1930,7 +1929,7 @@ nextJ:
                             ' Prepare message text
                             strMessage = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY, j, m_Data.GroupName(j))
                             ' Prepare message
-                            msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
+                            msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Maintenance)
                             msg.Suppressable = True
                             ' Send off
                             NotifyCore(msg)
@@ -1944,7 +1943,7 @@ nextJ:
                                 ' Prepare message text
                                 strMessage = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PRODxEE, j, m_Data.GroupName(j), Only.ToString("0.000"))
                                 ' Prepare message
-                                msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
+                                msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Maintenance)
                                 msg.Suppressable = True
                                 ' Send off
                                 NotifyCore(msg)
@@ -1954,7 +1953,7 @@ nextJ:
                                 ' Prepare message text
                                 strMessage = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY, j, m_Data.GroupName(j), m_Data.B(j).ToString("0.000"))
                                 ' Prepare message
-                                msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
+                                msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Maintenance)
                                 msg.Suppressable = True
                                 ' Send off
                                 NotifyCore(msg)
@@ -1986,7 +1985,7 @@ nextJ:
             str2 = str & vbNewLine + vbNewLine
             str2 = str2 & "Do you want to have cannibalism reduced (to 20 of used production) for all groups where this problem occurs. (Note: your input data will not be changed)"
             If done = False Then
-                msg = New cFeedbackMessage(str, eCoreComponentType.EcoPath, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                msg = New cFeedbackMessage(str, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
                 NotifyCore(msg)
 
                 RetVal = msg.Reply
@@ -2060,7 +2059,7 @@ exitSub:
                             ' #Yes: prepare message
                             msg = New cFeedbackMessage( _
                                     My.Resources.CoreMessages.DIETCOMP_PROMPT_SUMTOONE, _
-                                    eCoreComponentType.EcoPath, eMessageImportance.Warning, _
+                                    eCoreComponentType.EcoPath, eMessageType.DietComp, eMessageImportance.Warning, _
                                     cFeedbackMessage.eReplyStyle.YES_NO)
 
                         End If
@@ -2685,9 +2684,8 @@ ONE:
 
                             ' Prepare message
                             Dim strMsg As String = String.Format(My.Resources.CoreMessages.DIETCOMP_PROMPT_CORRECTTO15PERC, m_Data.GroupName(i), CInt(dcsum * 100))
-                            Dim msg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageImportance.Critical, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                            Dim msg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageType.DietComp_CorrectTo15Perc, eMessageImportance.Critical, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
                             msg.Suppressable = True
-                            msg.Type = eMessageType.DietComp_CorrectTo15Perc
 
                             ' Send message
                             NotifyCore(msg)

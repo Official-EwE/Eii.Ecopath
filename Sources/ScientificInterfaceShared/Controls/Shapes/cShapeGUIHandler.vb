@@ -327,6 +327,7 @@ Namespace Controls
                 If Not Me.SelectedShape.IsSeasonal Then
                     fms = New cFeedbackMessage(My.Resources.SHAPE_TYPE_TO_SEASONAL_MSG, _
                                                eCoreComponentType.ShapesManager, _
+                                               eMessageType.Any, _
                                                eMessageImportance.Information, _
                                                cFeedbackMessage.eReplyStyle.YES_NO, _
                                                eDataTypes.Forcing, cFeedbackMessage.eReply.YES)

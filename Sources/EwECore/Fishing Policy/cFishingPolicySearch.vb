@@ -543,7 +543,7 @@ Namespace FishingPolicy
 
                         addMessage(New cFeedbackMessage("Cost exceeds income for fleet " + m_core.m_EcoPathData.FleetName(iflt) + _
                                         " so initial fishing efforts violate earnings > cost constraint; restarting with Ecopath base efforts", _
-                                        eCoreComponentType.EcoSim, eMessageImportance.Critical))
+                                        eCoreComponentType.EcoSim, eMessageType.Any, eMessageImportance.Critical))
                         Exit For
                     End If  'Villy: Carl had introduced the clause above, omitting the calculation of basevalues
                 Next

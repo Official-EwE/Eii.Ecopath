@@ -254,40 +254,6 @@ Public Class AppLauncher
 
     End Sub
 
-
-    Private Delegate Function AskFeedbackDelegate(ByVal strMsg As String, _
-                             ByVal replystyle As cFeedbackMessage.eReplyStyle, _
-                             ByVal defaultreply As cFeedbackMessage.eReply, _
-                             ByVal importance As eMessageImportance, _
-                             ByVal component As eCoreComponentType) As cFeedbackMessage.eReply
-
-    ''' <summary>
-    ''' Ask for user feedback via the core.
-    ''' </summary>
-    ''' <param name="strMsg">Message prompt to send.</param>
-    ''' <param name="replystyle">Allowed feedback replies.</param>
-    ''' <param name="defaultreply">Default reply if the core decided to auto-answer the message.</param>
-    ''' <param name="importance">Message importance.</param>
-    ''' <param name="component">Core component to represent as message origin.</param>
-    ''' <returns>A message reply.</returns>
-    Public Function AskFeedback(ByVal strMsg As String, _
-                            Optional ByVal replystyle As cFeedbackMessage.eReplyStyle = cFeedbackMessage.eReplyStyle.YES_NO, _
-                            Optional ByVal defaultreply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.YES, _
-                            Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
-                            Optional ByVal component As eCoreComponentType = eCoreComponentType.Core) As cFeedbackMessage.eReply
-
-        If Me.InvokeRequired() Then
-            Dim objReply As Object = Me.Invoke(New AskFeedbackDelegate(AddressOf Me.AskFeedback), _
-                                               New Object() {strMsg, replystyle, defaultreply, importance, component})
-            Return CType(objReply, cFeedbackMessage.eReply)
-        End If
-
-        Dim fmsg As New cFeedbackMessage(strMsg, component, importance, replystyle, eDataTypes.NotSet, defaultreply)
-        Me.Core.Messages.SendMessage(fmsg)
-        Return fmsg.Reply
-
-    End Function
-
     ''' <summary>
     ''' Enumerated type, states how a database was loaded.
     ''' </summary>
@@ -326,7 +292,7 @@ Public Class AppLauncher
                 Case eLoadSourceType.MRU
                     ' Unable to locate a file from the MRU list: prompt to remove the entry 
                     Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
-                                                     eCoreComponentType.DataSource, _
+                                                     eCoreComponentType.DataSource, eMessageType.Any, _
                                                      eMessageImportance.Warning, _
                                                      cFeedbackMessage.eReplyStyle.YES_NO)
 
@@ -374,7 +340,7 @@ Public Class AppLauncher
 
                 Case eLoadSourceType.MRU
                     Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_INVALIDMODEL_REMOVEMRU, strFileName), _
-                                                     eCoreComponentType.DataSource, _
+                                                     eCoreComponentType.DataSource, eMessageType.Any, _
                                                      eMessageImportance.Critical, _
                                                      cFeedbackMessage.eReplyStyle.YES_NO)
                     If Me.Core.Messages.SendMessage(fmsg) Then
@@ -1064,11 +1030,11 @@ Public Class AppLauncher
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible
                         msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_PLUGIN_INCOMPATIBLE, pa.Filename), _
-                                           eCoreComponentType.External, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO)
+                                           eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO)
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
                         msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_PLUGIN_UNDETERMINED, pa.Filename), _
-                                           eCoreComponentType.External, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO)
+                                           eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO)
 
                 End Select
 
@@ -1292,8 +1258,12 @@ Public Class AppLauncher
         Dim msg As cMessage = Nothing
         Dim bSucces As Boolean = True
 
-        If Me.AskFeedback(My.Resources.PROMPT_MODEL_COMPACT, _
-             cFeedbackMessage.eReplyStyle.YES_NO, cFeedbackMessage.eReply.YES) <> cFeedbackMessage.eReply.YES Then
+        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_MODEL_COMPACT, _
+                                  eCoreComponentType.DataSource, eMessageType.Any, _
+                                  eMessageImportance.Critical, _
+                                  cFeedbackMessage.eReplyStyle.YES_NO)
+        Me.Core.Messages.SendMessage(fmsg)
+        If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then
             Return False
         End If
 

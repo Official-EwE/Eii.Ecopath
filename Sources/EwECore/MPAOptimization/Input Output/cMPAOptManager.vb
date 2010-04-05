@@ -334,7 +334,7 @@ Public Class cMPAOptManager
 
             ' Test if no seed cells nor MPA
             If Not Me.m_MPASearch.OKtoRun Then
-                Dim msg As New cFeedbackMessage("No Seed selected nor MPA's set, optimzation may yield unknown results. Would you like to continue?", eCoreComponentType.MPAOptimization, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.OK_CANCEL, eDataTypes.MPAOptParameters, cFeedbackMessage.eReply.CANCEL)
+                Dim msg As New cFeedbackMessage("No Seed selected nor MPA's set, optimzation may yield unknown results. Would you like to continue?", eCoreComponentType.MPAOptimization, eMessageType.Any, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.OK_CANCEL, eDataTypes.MPAOptParameters, cFeedbackMessage.eReply.CANCEL)
                 Me.m_core.Messages.SendMessage(msg)
                 If msg.Reply = cFeedbackMessage.eReply.CANCEL Or msg.Reply = cFeedbackMessage.eReply.NO Then Return False
             End If
