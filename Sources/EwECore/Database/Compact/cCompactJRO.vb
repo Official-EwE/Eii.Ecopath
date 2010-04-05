@@ -38,7 +38,15 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Function CanCompact() As Boolean _
             Implements IDatabaseCompact.CanCompact
-            Return Me.DetectJRO()
+
+            If cCompactJRO.s_bEngineSearched Then Return cCompactJRO.s_bEngineFound
+
+            ' "Universal" JRO key (same root on XP, Vista and Windows 7)
+            cCompactJRO.s_bEngineFound = DetectJRORecursive(Registry.ClassesRoot.OpenSubKey("TypeLib\{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}", False))
+            cCompactJRO.s_bEngineSearched = True
+
+            Return cCompactJRO.s_bEngineFound
+
         End Function
 
         ''' -------------------------------------------------------------------
@@ -93,18 +101,6 @@ Namespace Database
 #End Region ' IDatabaseCompact implementation
 
 #Region " Internals "
-
-        Private Function DetectJRO() As Boolean
-
-            If cCompactJRO.s_bEngineSearched Then Return cCompactJRO.s_bEngineFound
-
-            ' "Universal" JRO key (same root on XP, Vista and Windows 7)
-            cCompactJRO.s_bEngineFound = DetectJRORecursive(Registry.ClassesRoot.OpenSubKey("TypeLib\{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}", False))
-            cCompactJRO.s_bEngineSearched = True
-
-            Return cCompactJRO.s_bEngineFound
-
-        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -169,6 +165,13 @@ Namespace Database
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Validates the compatibility of installed JRO version.
+        ''' </summary>
+        ''' <param name="strFile">The JRO main DLL to validate.</param>
+        ''' <returns>True if JRO has the correct version.</returns>
+        ''' -------------------------------------------------------------------
         Private Function IsCorrectJRO(ByVal strFile As String) As Boolean
 
             If String.IsNullOrEmpty(strFile) Then Return False
