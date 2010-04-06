@@ -530,10 +530,7 @@ Friend Class cMSEPlotter
                         dx = Me.m_uic.Core.EcosimFirstYear + ((iTime + 1) / cCore.N_MONTHS)
                         ppl.Add(dx, values(iTime))
                     Next
-
-                    Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, cCore.NULL_VALUE, _
-                                                                   eLineType.ModelData, _
-                                                                   Color.Gray, ppl)
+                    Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, eLineType.ModelData, Color.Gray, ppl)
                     lstLines.Add(Line)
 
                 Next
@@ -573,7 +570,7 @@ Friend Class cMSEPlotter
                     ppl.Add(dx, data.Biomass(iTime))
                 Next
 
-                Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, cCore.NULL_VALUE, _
+                Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, _
                                                                eLineType.ModelData, _
                                                                Color.Gray, ppl)
                 lstLines.Add(Line)

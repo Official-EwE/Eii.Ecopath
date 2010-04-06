@@ -63,9 +63,11 @@ Namespace Ecosim
 
             Me.m_parms = Me.UIContext.Core.EcoSimModelParameters()
             Me.m_paneMaster = Me.m_graph.MasterPane
+
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_graph, [Enum].GetValues(GetType(ePaneTypes)).Length)
             Me.m_zgh.ShowPointValue = True
+            Me.m_zgh.IsTrackVisiblity = False
 
             Me.ConfigurePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
             Me.ConfigurePane(ePaneTypes.ConsumptionBiomass, My.Resources.HEADER_CONSUMPTIONBIOMASS)
@@ -191,6 +193,7 @@ Namespace Ecosim
             Dim dXValue As Double = 0
             Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
             Dim groupSimOut As cEcosimGroupOutput = Me.UIContext.Core.EcoSimGroupOutputs(iGroup)
+            Dim group As cEcoPathGroupInput = Me.UIContext.Core.EcoPathGroupInputs(iGroup)
 
             Dim pplB As New PointPairList()
             Dim pplConsB As New PointPairList()
@@ -246,7 +249,7 @@ Namespace Ecosim
                 pplMortFishing.Add(dXValue, groupSimOut.FishMort(i))
             Next
 
-            Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem("", iGroup, eLineType.ModelData, Color.Black, pplB))
+            Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem(group, pplB))
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassRel, iGroup, Color.Blue)
                 Me.AddCurveToGraphPane(ePaneTypes.Biomass, li)
             Next li
@@ -255,8 +258,8 @@ Namespace Ecosim
                 Me.AddCurveToGraphPane(ePaneTypes.Biomass, li)
             Next li
 
-            Me.AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, Me.m_zgh.CreateLineItem("", iGroup, eLineType.ModelData, Color.Black, pplConsB))
-            Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem("", iGroup, eLineType.ModelData, Color.Black, pplFeedTime))
+            Me.AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, Me.m_zgh.CreateLineItem(group, pplConsB))
+            Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem(group, pplFeedTime))
 
             For i As Integer = 1 To Me.UIContext.Core.nFleets
 
@@ -265,19 +268,11 @@ Namespace Ecosim
 
                 If fleet.Landings(iGroup) > 0 Then
                     Me.AddCurveToGraphPane(ePaneTypes.Yield, _
-                                           Me.m_zgh.CreateLineItem(fleet.Name, _
-                                                                   i, _
-                                                                   eLineType.ModelData, _
-                                                                   clr, _
-                                                                   applYieldFleet(i)), _
+                                           Me.m_zgh.CreateLineItem(fleet, applYieldFleet(i)), _
                                            True)
                 End If
                 Me.AddCurveToGraphPane(ePaneTypes.FleetFishingMortality, _
-                                       Me.m_zgh.CreateLineItem(fleet.Name, _
-                                                               i, _
-                                                               eLineType.ModelData, _
-                                                               clr, _
-                                                               applFishMortFleet(i)), _
+                                       Me.m_zgh.CreateLineItem(fleet, applFishMortFleet(i)), _
                                        True)
             Next
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)
@@ -291,7 +286,7 @@ Namespace Ecosim
 
                 Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_AVGERAGEWEIGHT)
 
-                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem("", iGroup, eLineType.ModelData, Color.Black, pplAvgWorProdCons))
+                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(group, pplAvgWorProdCons))
                 For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.AverageWeight, iGroup, Color.Blue)
                     Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, li)
                 Next li
@@ -299,13 +294,13 @@ Namespace Ecosim
             Else
 
                 Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_PRODCONS)
-                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem("", iGroup, eLineType.ModelData, Color.Black, pplAvgWorProdCons))
+                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(group, pplAvgWorProdCons))
 
             End If
 
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_TOTAL, iGroup, eLineType.ModelData, Color.Black, pplMortTotal))
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_PREDATION, iGroup, eLineType.ModelData, Color.Red, pplMortPredation))
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_FISHING, iGroup, eLineType.ModelData, Color.Blue, pplMortFishing))
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_TOTAL, eLineType.ModelData, Color.Black, pplMortTotal))
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_PREDATION, eLineType.ModelData, Color.Red, pplMortPredation))
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_FISHING, eLineType.ModelData, Color.Blue, pplMortFishing))
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.TotalMortality, iGroup, Color.Green)
                 Me.AddCurveToGraphPane(ePaneTypes.Mortality, li)
             Next li
@@ -320,11 +315,12 @@ Namespace Ecosim
             For i As Integer = 1 To Me.UIContext.Core.nLivingGroups
                 If groupSimOut.isPred(i) Then
                     Dim ppl As New PointPairList
+                    Dim pred As cEcoPathGroupInput = Me.UIContext.Core.EcoPathGroupInputs(i)
                     For j As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
                         dXValue = Me.UIContext.Core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.Predation(i, j))
                     Next
-                    Me.AddCurveToGraphPane(ePaneTypes.PredationMortality, Me.m_zgh.CreateLineItem(eLineType.ModelData, i, ppl))
+                    Me.AddCurveToGraphPane(ePaneTypes.PredationMortality, Me.m_zgh.CreateLineItem(pred, ppl))
                     iCount += 1
                 End If
             Next
@@ -334,11 +330,12 @@ Namespace Ecosim
             For i As Integer = 1 To Me.UIContext.Core.nLivingGroups
                 If groupSimOut.isPrey(i) Then
                     Dim ppl As New PointPairList
+                    Dim prey As cEcoPathGroupInput = Me.UIContext.Core.EcoPathGroupInputs(i)
                     For j As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
                         dXValue = Me.UIContext.Core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.PreyPercentage(i, j) * 100)
                     Next
-                    Me.AddCurveToGraphPane(ePaneTypes.Prey, Me.m_zgh.CreateLineItem(eLineType.ModelData, i, ppl))
+                    Me.AddCurveToGraphPane(ePaneTypes.Prey, Me.m_zgh.CreateLineItem(prey, ppl))
                     iCount += 1
                 End If
             Next
@@ -390,7 +387,7 @@ Namespace Ecosim
                     ppt.Add(Me.UIContext.Core.EcosimFirstYear + j - 1, da(j) * dScale)
                 End If
             Next
-            Return Me.m_zgh.CreateLineItem(gts.Name, gts.GroupIndex, eLineType.ReferenceData, clr, ppt)
+            Return Me.m_zgh.CreateLineItem(gts, ppt)
 
         End Function
 

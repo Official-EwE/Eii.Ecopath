@@ -142,36 +142,25 @@ Namespace Controls
         ''' Add a single line to the current run.
         ''' </summary>
         ''' <param name="strLabel">Label of the line to add.</param>
-        ''' <param name="iGroup">Index of the underlying group.</param>
-        ''' <param name="lineType"><see cref="eLineType">Type of the line</see> 
-        ''' to add. This flag will be used to colour and style the line.</param>
-        ''' <param name="plotDataType"><see cref="ePlotData">Data type</see> of
-        ''' the line. This flag will be used to remember which data was used to
-        ''' fill the <paramref name="list">line data</paramref>.</param>
         ''' <param name="list">Data for the line.</param>
         ''' <param name="bCumulative">Flag stating whether the line needs to be
         ''' plotted cumulative.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddLine(ByVal strLabel As String, _
-                           ByVal iGroup As Integer, _
-                           ByVal lineType As eLineType, _
-                           ByVal plotDataType As ePlotData, _
+        Public Sub AddLine(ByVal src As ICoreInterface, _
                            ByVal list As PointPairList, _
-                           ByVal bCumulative As Boolean)
+                           ByVal bCumulative As Boolean, _
+                           Optional ByVal strLabel As String = "")
 
-            Dim crv As LineItem = Nothing
+            Dim crv As LineItem = Me.CreateLineItem(src, list, strLabel)
 
-            Select Case lineType
+            Select Case Me.CurveType(crv)
 
                 Case eLineType.ReferenceData
-                    crv = Me.CreateLineItem(eLineType.ReferenceData, iGroup, list, plotDataType)
                     Me.m_curvelistTimeSeries.Add(crv)
-
-                Case eLineType.ModelData, _
-                     eLineType.NotSet
-                    crv = Me.CreateLineItem(eLineType.ModelData, iGroup, list, plotDataType)
+                Case eLineType.ModelData
                     Me.m_runCurrent.Lines.Add(crv)
-
+                Case Else
+                    Debug.Assert(False)
             End Select
 
             Me.PlotLines(New LineItem() {crv}, 1, True, False, bCumulative)
@@ -245,7 +234,7 @@ Namespace Controls
 
                     run = Me.m_lRuns.Item(iRunTest)
                     crv = run.Lines(iGroup - 1)
-                    
+
                     Me.SetCurveAppearance(crv, True, Me.IsPaneCumulative = False)
 
                 Next iRunTest
@@ -353,17 +342,34 @@ Namespace Controls
 
 #Region " Events "
 
-        Protected Overrides Sub OnStyleguideChanged(ByVal ct As cStyleGuide.eChangeType)
+        'Protected Overrides Sub OnStyleguideChanged(ByVal ct As cStyleGuide.eChangeType)
 
-            If (ct And cStyleGuide.eChangeType.GroupVisibility) = cStyleGuide.eChangeType.GroupVisibility Then
-                ' Update visibility on lines
-                For Each crv As CurveItem In Me.m_graphPane.CurveList
-                    Me.SetCurveVisibility(crv)
-                Next
-                Me.Graph.Refresh()
-            End If
+        '    Dim bRefresh As Boolean = False
+        '    Dim acurves As CurveItem() = Me.m_graphPane.CurveList.ToArray
 
-        End Sub
+        '    Try
+
+        '        If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
+        '            ' Update colours
+        '            For Each crv As CurveItem In acurves
+        '                Me.SetCurveAppearance(crv)
+        '            Next
+        '            bRefresh = True
+        '        ElseIf (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
+        '            ' Update line visibility
+        '            For Each crv As CurveItem In acurves
+        '                Me.SetCurveVisibility(crv)
+        '            Next
+        '            bRefresh = True
+        '        End If
+
+        '    Catch ex As Exception
+
+        '    End Try
+
+        '    If bRefresh Then Me.Graph.Refresh()
+
+        'End Sub
 
 #End Region ' Events
 
@@ -423,7 +429,7 @@ Namespace Controls
 
             Debug.Assert(info IsNot Nothing)
 
-            Dim clrGroup As Color = Me.StyleGuide.GroupColor(Me.Core, info.Index)
+            Dim clrGroup As Color = info.Colour
 
             ' Alter color
             If bUseColor Then
@@ -464,8 +470,7 @@ Namespace Controls
 
             Debug.Assert(info IsNot Nothing)
 
-            ' After all that, just make sure it's shown
-            line.IsVisible = Me.StyleGuide.GroupVisible(info.Index)
+            line.IsVisible = info.IsVisible
 
         End Sub
 

@@ -31,47 +31,160 @@ Namespace Controls
     <CLSCompliant(False)> _
     Public Class cZedGraphHelper
 
+#Region " Helper classes "
+
         ''' <summary>
-        ''' ZedGraphHelper internal class, manages curve contextual information.
+        ''' cZedGraphHelper internal class, manages curve contextual information.
         ''' </summary>
         Protected Class cCurveInfo
 
-            Private m_iIndex As Integer = 0
+            Private m_source As ICoreInterface = Nothing
+            Private m_iGroup As Integer = cCore.NULL_VALUE
+            Private m_iFleet As Integer = cCore.NULL_VALUE
+            Private m_uic As cUIContext = Nothing
+
+            Private m_strLabel As String = ""
+            Private m_colour As Color = Color.Aqua
             Private m_lineType As eLineType = eLineType.ModelData
-            Private m_plotdataType As ePlotData = ePlotData.Biomass
             Private m_bVisible As Boolean = True
 
-            Public Sub New(ByVal iIndex As Integer, _
-                           ByVal lineType As eLineType, _
-                           ByVal plotdataType As ePlotData)
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Constructor type 1: manage a curve connected to a core data object.
+            ''' </summary>
+            ''' <param name="src">Core data source to connect to.</param>
+            ''' <param name="uic">UI context to use for colours, visibility, etc.</param>
+            ''' <param name="strLabel">Label of the curve. If not provided, the
+            ''' curve label is obtained from the core data object.</param>
+            ''' ---------------------------------------------------------------
+            Public Sub New(ByVal src As ICoreInterface, _
+                           ByVal uic As cUIContext, _
+                           Optional ByVal strLabel As String = "")
 
-                Me.m_iIndex = iIndex
-                Me.m_lineType = lineType
-                Me.m_plotdataType = plotdataType
+                ' Sanity checks
+                Debug.Assert(src IsNot Nothing)
+                Debug.Assert(uic IsNot Nothing)
+
+                Me.m_source = src
+                Me.m_uic = uic
+                Me.m_strLabel = strLabel
+
+                If (TypeOf src Is cCoreInputOutputBase) Then
+                    If (TypeOf src Is cEcoPathGroupInput) Then
+                        Me.m_iGroup = src.Index
+                        Me.m_lineType = eLineType.ModelData
+                    ElseIf (TypeOf src Is cFleetInput) Then
+                        Me.m_iFleet = src.Index
+                        Me.m_lineType = eLineType.ModelData
+                    End If
+                Else
+                    If (TypeOf src Is cGroupTimeSeries) Then
+                        Me.m_iGroup = DirectCast(src, cGroupTimeSeries).GroupIndex
+                        Me.m_lineType = eLineType.ReferenceData
+                    ElseIf (TypeOf src Is cFleetTimeSeries) Then
+                        Me.m_iFleet = DirectCast(src, cFleetTimeSeries).FleetIndex
+                        Me.m_lineType = eLineType.ReferenceData
+                    End If
+                End If
+
+                ' Post-anaysis sanity checks
+                Debug.Assert(Me.m_lineType <> eLineType.NotSet)
+                Debug.Assert(Me.m_iGroup <> cCore.NULL_VALUE Or Me.m_iFleet <> cCore.NULL_VALUE)
+
             End Sub
 
-            Public ReadOnly Property Index() As Integer
-                Get
-                    Return Me.m_iIndex
-                End Get
-            End Property
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Constructor type 2: manage a curve with custom attributes.
+            ''' </summary>
+            ''' <param name="strLabel">Label of the curve.</param>
+            ''' <param name="colour">Colour of the curve.</param>
+            ''' <param name="lineType">Data type of the curve that will determine
+            ''' the curve display style.</param>
+            ''' ---------------------------------------------------------------
+            Public Sub New(ByVal strLabel As String, _
+                           ByVal colour As Color, _
+                           ByVal lineType As eLineType)
 
+                Me.m_strLabel = strLabel
+                Me.m_colour = colour
+                Me.m_lineType = lineType
+
+            End Sub
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get the <see cref="eLineType">data type</see> of the curve.
+            ''' </summary>
+            ''' <value></value>
+            ''' <returns></returns>
+            ''' ---------------------------------------------------------------
             Public ReadOnly Property LineType() As eLineType
                 Get
                     Return Me.m_lineType
                 End Get
             End Property
 
+            ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Get the plot data type for a curve.
+            ''' Get the label for the curve.
             ''' </summary>
-            Public ReadOnly Property PlotDataType() As ePlotData
+            ''' ---------------------------------------------------------------
+            Public ReadOnly Property Label() As String
                 Get
-                    Return Me.m_plotdataType
+                    ' Return overriding name, if any
+                    If Not String.IsNullOrEmpty(Me.m_strLabel) Then Return Me.m_strLabel
+                    ' Deduct from source
+                    If Me.m_source IsNot Nothing Then
+                        Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+                                             Me.m_source.Index, Me.m_source.Name)
+                    End If
+                    ' Hmm...
+                    Return ""
+                End Get
+            End Property
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get the index for the curve, if any.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public ReadOnly Property Index() As Integer
+                Get
+                    If Me.m_source IsNot Nothing Then Return Me.m_source.Index
+                    Return cCore.NULL_VALUE
+                End Get
+            End Property
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get the colour for the curve.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public ReadOnly Property Colour() As Color
+                Get
+                    If Me.m_iGroup <> cCore.NULL_VALUE Then Return Me.m_uic.StyleGuide.GroupColor(Me.m_uic.Core, Me.m_iGroup)
+                    If Me.m_iFleet <> cCore.NULL_VALUE Then Return Me.m_uic.StyleGuide.FleetColor(Me.m_uic.Core, Me.m_iFleet)
+                    Return Me.m_colour
+                End Get
+            End Property
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get the visibility state for the curve.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public ReadOnly Property IsVisible() As Boolean
+                Get
+                    If Me.m_iGroup <> cCore.NULL_VALUE Then Return Me.m_uic.StyleGuide.GroupVisible(Me.m_iGroup)
+                    If Me.m_iFleet <> cCore.NULL_VALUE Then Return Me.m_uic.StyleGuide.FleetVisible(Me.m_iFleet)
+                    Return True
                 End Get
             End Property
 
         End Class
+
+#End Region ' Helper classes
 
 #Region " Private vars "
 
@@ -97,6 +210,11 @@ Namespace Controls
 
         ' == Cumulative ==
         Private m_bCumulative() As Boolean
+
+        ' == Visibility tracking ==
+
+        ''' <summary>Flag stating whether styleguide item visibility should be tracked.</summary>
+        Private m_bTrackVisibility As Boolean = True
 
         ''' <summary>To set the max and min auto options.</summary>
         Public Enum eScaleOptionTypes
@@ -176,7 +294,7 @@ Namespace Controls
 
             ' Configure graph control
             Me.InitStyle()
-            Me.InitColors()
+            Me.UpdateColours()
 
         End Sub
 
@@ -732,22 +850,32 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set whether the graph tracks styleguide item visibility settings.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property IsTrackVisiblity() As Boolean
+            Get
+                Return Me.m_bTrackVisibility
+            End Get
+            Set(ByVal value As Boolean)
+                If (value <> Me.m_bTrackVisibility) Then
+                    value = Me.m_bTrackVisibility
+                    Me.UpdateCurveVisibility()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Create an EwE-styled line.
         ''' </summary>
-        ''' <param name="curveType"></param>
-        ''' <param name="iGroup"></param>
         ''' <param name="ppl"></param>
-        ''' <param name="plotdataType"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function CreateLineItem(ByVal curveType As eLineType, _
-                                                   ByVal iGroup As Integer, _
+        Public Overridable Function CreateLineItem(ByVal src As ICoreInterface, _
                                                    ByVal ppl As PointPairList, _
-                                                   Optional ByVal plotdataType As ePlotData = ePlotData.Biomass) As LineItem
-
-            Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
-            Return Me.CreateLineItem(group.Name, iGroup, curveType, Me.StyleGuide.GroupColor(Me.Core, group.Index), ppl, plotdataType)
-
+                                                   Optional ByVal strLabel As String = "") As LineItem
+            Return Me.CreateLineItem(New cCurveInfo(src, Me.m_uic, strLabel), ppl)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -755,52 +883,16 @@ Namespace Controls
         ''' Create an EwE-styled line.
         ''' </summary>
         ''' <param name="strName"></param>
-        ''' <param name="iIndex"></param>
         ''' <param name="curveType"></param>
         ''' <param name="clr"></param>
         ''' <param name="ppl"></param>
-        ''' <param name="plotdataType"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function CreateLineItem(ByVal strName As String, _
-                                                   ByVal iIndex As Integer, _
                                                    ByVal curveType As eLineType, _
                                                    ByVal clr As Color, _
-                                                   ByVal ppl As PointPairList, _
-                                                   Optional ByVal plotdataType As ePlotData = ePlotData.Biomass) As LineItem
-
-            Dim li As LineItem = Nothing
-            Dim info As cCurveInfo = New cCurveInfo(iIndex, curveType, plotdataType)
-
-            Select Case curveType
-
-                Case eLineType.ReferenceData
-                    li = New ZedGraph.LineItem(strName, ppl, clr, SymbolType.Circle, 1)
-
-                    li.Line.Color = Color.SlateGray
-                    li.Line.IsVisible = False
-
-                    li.Line.Fill.Color = clr
-                    li.Line.Fill.IsVisible = False
-
-                    ' ToDo_JS: obtain symbol size from style guide
-                    li.Symbol.Size = 4
-                    li.Symbol.Border.Color = clr
-                    li.Symbol.Border.IsVisible = True
-                    li.Symbol.Fill.Color = clr
-                    li.Symbol.Fill.IsVisible = False
-                    li.Symbol.IsVisible = True
-
-                Case eLineType.ModelData, _
-                     eLineType.NotSet
-                    li = New ZedGraph.LineItem(strName, ppl, clr, SymbolType.None, 1)
-
-            End Select
-
-            li.Tag = info
-
-            Return li
-
+                                                   ByVal ppl As PointPairList) As LineItem
+            Return Me.CreateLineItem(New cCurveInfo(strName, clr, curveType), ppl)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -879,24 +971,6 @@ Namespace Controls
             Dim info As cCurveInfo = Me.CurveInfo(ci)
             If (info Is Nothing) Then Return eLineType.NotSet
             Return info.LineType
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Return the <see cref="eVarNameFlags">variable</see> associated with a curve.
-        ''' </summary>
-        ''' <param name="ci">The curve to extract information for.</param>
-        ''' <returns>A <see cref="eVarNameFlags">variable</see>, or NotSet if this 
-        ''' information could not be found.</returns>
-        ''' <remarks>
-        ''' Note that this information only works on curves created via 
-        ''' <see cref="CreateLineItem">CreateLineItem</see>.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Function CurvePlotDataType(ByVal ci As CurveItem) As ePlotData
-            Dim info As cCurveInfo = Me.CurveInfo(ci)
-            If (info Is Nothing) Then Return ePlotData.Biomass
-            Return info.PlotDataType
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1218,7 +1292,12 @@ Namespace Controls
             End If
 
             If ((changeType And cStyleGuide.eChangeType.Colours) > 0) Then
-                Me.InitColors()
+                Me.UpdateColours()
+            End If
+
+            If ((changeType And cStyleGuide.eChangeType.GroupVisibility) > 0) Or _
+               ((changeType And cStyleGuide.eChangeType.FleetVisibility) > 0) Then
+                Me.UpdateCurveVisibility()
             End If
 
             If ((changeType And cStyleGuide.eChangeType.Units) > 0) Then
@@ -1296,9 +1375,56 @@ Namespace Controls
 
 #Region " Internal bits "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create an EwE-styled line.
+        ''' </summary>
+        ''' <param name="ppl"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function CreateLineItem(ByVal info As cCurveInfo, _
+                                                      ByVal ppl As PointPairList) As LineItem
+
+            Dim li As LineItem = Nothing
+
+            Select Case info.LineType()
+
+                Case eLineType.ReferenceData
+                    li = New ZedGraph.LineItem(info.Label, ppl, info.Colour, SymbolType.Circle, 1)
+
+                    li.Line.Color = Color.SlateGray
+                    li.Line.IsVisible = False
+
+                    li.Line.Fill.Color = info.Colour
+                    li.Line.Fill.IsVisible = False
+
+                    ' ToDo_JS: obtain symbol size from style guide
+                    li.Symbol.Size = 4
+                    li.Symbol.Border.Color = info.Colour
+                    li.Symbol.Border.IsVisible = True
+                    li.Symbol.Fill.Color = info.Colour
+                    li.Symbol.Fill.IsVisible = False
+                    li.Symbol.IsVisible = True
+
+                Case eLineType.ModelData, _
+                     eLineType.NotSet
+                    li = New ZedGraph.LineItem(info.Label, ppl, info.Colour, SymbolType.None, 1)
+
+            End Select
+
+            li.IsVisible = info.IsVisible
+            li.Tag = info
+
+            Return li
+
+        End Function
+
 #Region " Styling "
 
-        Private Sub InitColors()
+        Protected Overridable Sub UpdateColours()
+
+            Dim info As cCurveInfo = Nothing
+
             For iPane As Integer = 1 To Me.m_nPanels
                 With Me.GetPane(iPane)
                     .Chart.Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
@@ -1307,10 +1433,48 @@ Namespace Controls
                     Me.RemoveCursor(iPane)
                     Me.SetCursor(iPane)
 
+                    For Each ci As CurveItem In .CurveList
+                        info = Me.CurveInfo(ci)
+                        If info IsNot Nothing Then
+
+                            ci.Color = info.Colour
+
+                            If TypeOf ci Is LineItem Then
+                                With DirectCast(ci, LineItem)
+                                    .Line.Color = info.Colour
+                                    .Line.Fill.Color = .Line.Color
+                                    .Symbol.Border.Color = .Line.Color
+                                    .Symbol.Fill.Color = .Line.Color
+                                End With
+                            End If
+
+                        End If
+                    Next
+
                 End With
             Next iPane
 
         End Sub
+
+        Public Sub UpdateCurveVisibility()
+
+            For iPane As Integer = 1 To Me.m_nPanels
+                With Me.GetPane(iPane)
+                    For Each ci As CurveItem In .CurveList
+                        ci.IsVisible = Me.IsCurveVisible(ci)
+                    Next
+                End With
+            Next iPane
+
+        End Sub
+
+        Protected Overridable Function IsCurveVisible(ByVal ci As CurveItem) As Boolean
+            Dim info As cCurveInfo = Me.CurveInfo(ci)
+            If info IsNot Nothing Then
+                Return info.IsVisible Or (Me.IsTrackVisiblity = False)
+            End If
+            Return ci.IsVisible
+        End Function
 
         Protected Overridable Sub InitStyle()
 

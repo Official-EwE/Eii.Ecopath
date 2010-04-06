@@ -105,43 +105,6 @@ Public Class cCoreController
         LoadState(eCoreExecutionState.EcotracerLoaded, True)
     End Sub
 
-    Public Function LoadPersistState(ByVal iState As eCoreExecutionState, _
-            Optional ByVal bForceState As Boolean = False) As Boolean
-
-        ' State already superceded or active?
-        If (Me.m_monitor.IsExecutionStateSuperceded(iState)) And (bForceState = False) Then
-            Return True
-        End If
-
-        Select Case iState
-
-            Case eCoreExecutionState.EcopathLoaded
-                Return TryLoadEcopathModel()
-
-            Case eCoreExecutionState.EcopathCompleted
-                Return TryCompleteEcopath()
-
-            Case eCoreExecutionState.EcosimLoaded
-                Return TryLoadEcosimScenario(True)
-
-            Case eCoreExecutionState.EcosimInitialized
-                Return TryInitializeEcosim()
-
-            Case eCoreExecutionState.EcosimCompleted
-                Return TryCompleteEcosim()
-
-            Case eCoreExecutionState.EcospaceLoaded
-                Return TryLoadEcospaceScenario(True)
-
-            Case eCoreExecutionState.EcotracerLoaded
-                Return TryLoadEcotracerScenario(True)
-
-        End Select
-
-        Return False
-
-    End Function
-
 #End Region ' Public access
 
 #Region " Private members "
@@ -214,7 +177,7 @@ Public Class cCoreController
 
         'FG: Bug fix June 14, 2007
         If bPersist Then
-            If Me.LoadPersistState(eCoreExecutionState.EcopathCompleted) Then
+            If Me.LoadState(eCoreExecutionState.EcopathCompleted) Then
                 ' Let AppLauncher perform the load as it sees fit
                 bSuccess = appl.LoadEcosimScenario(bPersist, True)
             End If
@@ -243,7 +206,7 @@ Public Class cCoreController
         'FG: Bug fix June 14, 2007
         If bPersist Then
             ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecospace model to load.
-            If Me.LoadPersistState(eCoreExecutionState.EcosimInitialized) Then
+            If LoadState(eCoreExecutionState.EcosimInitialized) Then
                 ' Let AppLauncher perform the load as it sees fit
                 bSuccess = appl.LoadEcospaceScenario(bPersist, True)
             End If
@@ -272,7 +235,7 @@ Public Class cCoreController
 
         If bPersist Then
             ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecotracer model to load.
-            If Me.LoadPersistState(eCoreExecutionState.EcosimLoaded) Then
+            If Me.LoadState(eCoreExecutionState.EcosimLoaded) Then
                 ' Let AppLauncher perform the load as it sees fit
                 bSuccess = appl.LoadEcotracerScenario(bPersist, True)
             End If

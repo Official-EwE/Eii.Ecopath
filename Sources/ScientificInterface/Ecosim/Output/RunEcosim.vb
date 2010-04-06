@@ -738,7 +738,7 @@ Namespace Ecosim
                     Next iTimeStep
 
                     ' Add line
-                    m_zgp.AddLine(src.Name, iGroup, eLineType.ModelData, Me.PlotDataType, pplData, Me.IsCumulativePlot)
+                    m_zgp.AddLine(Me.Core.EcoPathGroupInputs(iGroup), pplData, Me.IsCumulativePlot)
 
                 End If
 
@@ -814,8 +814,7 @@ Namespace Ecosim
                     Next
 
                     ' Add line to graph.
-                    m_zgp.AddLine(String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, ts.Name, group.Name), _
-                                  gts.GroupIndex, eLineType.ReferenceData, Me.PlotDataType, ppl, False)
+                    m_zgp.AddLine(gts, ppl, False, String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, ts.Name, group.Name))
 
                 End If
             Next iTS

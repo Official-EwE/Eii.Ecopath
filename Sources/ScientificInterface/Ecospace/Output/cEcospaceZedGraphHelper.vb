@@ -41,8 +41,7 @@ Namespace Ecospace
 
             Me.m_pane.CurveList.Clear()
             For iGroup As Integer = 1 To nGroups
-                li = Me.CreateLineItem(eLineType.ModelData, iGroup, New PointPairList())
-                li.Tag = iGroup
+                li = Me.CreateLineItem(Me.Core.EcoPathGroupInputs(iGroup), New PointPairList())
                 Me.m_pane.CurveList.Add(li)
             Next
 
@@ -57,43 +56,20 @@ Namespace Ecospace
         End Sub
 
         Public Sub AddValue(ByVal iGroup As Integer, ByVal iTimeStep As Integer, ByVal sValue As Single)
-
             Try
-
                 Dim li As CurveItem = Me.m_pane.CurveList(iGroup - 1)
                 li.AddPoint(iTimeStep, sValue)
             Catch ex As Exception
 
             End Try
-
         End Sub
 
-        Public Sub UpdateCurveVisibility()
-
-            Dim li As CurveItem = Nothing
-            Dim bShowGroup As Boolean = True
-
-            Try
-                For iGroup As Integer = 1 To Me.m_nGroups
-
-                    li = Me.m_pane.CurveList(iGroup - 1)
-
-                    Select Case Me.GroupShowMode
-                        Case RunEcospace.eShowGroupType.ShowAll
-                            bShowGroup = True
-                        Case RunEcospace.eShowGroupType.ShowNonHidden
-                            bShowGroup = Me.StyleGuide.GroupVisible(iGroup)
-                        Case RunEcospace.eShowGroupType.ShowSingle
-                            bShowGroup = (iGroup = Me.m_iGroupToShow)
-                    End Select
-
-                    li.IsVisible = bShowGroup
-                Next
-            Catch ex As Exception
-
-            End Try
-        End Sub
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the group show mode. Note that this will not refresh the graph;
+        ''' the calling process will have to invoke <see cref="UpdateCurveVisibility">UpdateCurveVisibility</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property GroupShowMode() As RunEcospace.eShowGroupType
             Get
                 Return Me.m_showGroupMode
@@ -103,6 +79,12 @@ Namespace Ecospace
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the group to show. Note that this will not refresh the graph;
+        ''' the calling process will have to invoke <see cref="UpdateCurveVisibility">UpdateCurveVisibility</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property GroupToShow() As Integer
             Get
                 Return Me.m_iGroupToShow
@@ -111,6 +93,23 @@ Namespace Ecospace
                 Me.m_iGroupToShow = value
             End Set
         End Property
+
+        Protected Overrides Function IsCurveVisible(ByVal ci As ZedGraph.CurveItem) As Boolean
+
+            Dim info As cCurveInfo = Me.CurveInfo(ci)
+
+            Select Case Me.GroupShowMode
+                Case RunEcospace.eShowGroupType.ShowAll
+                    Return True
+                Case RunEcospace.eShowGroupType.ShowNonHidden
+                    Return MyBase.IsCurveVisible(ci)
+                Case RunEcospace.eShowGroupType.ShowSingle
+                    Return (info.Index = Me.m_iGroupToShow)
+            End Select
+
+            Return True
+
+        End Function
 
     End Class
 

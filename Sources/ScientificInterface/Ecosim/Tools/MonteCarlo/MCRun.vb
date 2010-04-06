@@ -482,16 +482,8 @@ Namespace Ecosim
                     Me.m_lpplIteration.Add(New PointPairList())
                 Next
 
-                Dim group As cEcoPathGroupInput = Nothing
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                    ' Get the ecopath group
-                    group = Me.Core.EcoPathGroupInputs(iGroup)
-
-                    Me.m_plothelper.AddLine(group.Name, iGroup, _
-                                            eLineType.ModelData, _
-                                            ePlotData.NotSet, _
-                                            Me.m_lpplIteration(iGroup - 1), False)
-
+                    Me.m_plothelper.AddLine(Me.Core.EcoPathGroupInputs(iGroup), Me.m_lpplIteration(iGroup - 1), False)
                 Next iGroup
 
             End If

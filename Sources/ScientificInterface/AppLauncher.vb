@@ -1611,7 +1611,7 @@ Public Class AppLauncher
         Dim frm As Form = Nothing
 
         ' Check if core can be brought up to par
-        If Me.CoreController.LoadPersistState(DirectCast(nc.CoreExecutionState, eCoreExecutionState)) Then
+        If Me.CoreController.LoadState(DirectCast(nc.CoreExecutionState, eCoreExecutionState)) Then
             ' Is form already loaded?
             If Not ActivateForm(nc.PageName) Then
                 ' Load instance of form for selected node

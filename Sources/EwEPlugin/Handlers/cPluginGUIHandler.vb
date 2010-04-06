@@ -219,6 +219,7 @@ Public MustInherit Class cPluginGUIHandler
 
         Dim cmd As cCommand = Nothing
         Dim pcmd As cPluginGUICommand = Nothing
+        Dim frm As Form = Nothing
 
         Debug.Assert(Me.m_cmdh IsNot Nothing)
 
@@ -241,7 +242,7 @@ Public MustInherit Class cPluginGUIHandler
                 pcmd.Invoke(ip, sender, e)
             Else
                 ' #No: activate plugin directly
-                ip.OnControlClick(sender, e, New Form())
+                ip.OnControlClick(sender, e, frm)
             End If
 
         Catch ex As Exception

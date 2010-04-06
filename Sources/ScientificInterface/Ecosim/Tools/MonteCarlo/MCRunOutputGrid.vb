@@ -25,7 +25,11 @@ Namespace Ecosim
                 Return MyBase.UIContext
             End Get
             Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
-                Me.m_mcmanager = value.Core.EcosimMonteCarlo
+                If (value IsNot Nothing) Then
+                    Me.m_mcmanager = value.Core.EcosimMonteCarlo
+                Else
+                    Me.m_mcmanager = Nothing
+                End If
                 MyBase.UIContext = value
             End Set
         End Property
