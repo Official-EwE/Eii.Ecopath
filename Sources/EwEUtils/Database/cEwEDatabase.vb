@@ -379,7 +379,6 @@ Namespace Database
                 Dim bIsValueNull As Boolean = False
                 Dim bIsNullable As Boolean = False
                 Dim bHasDefault As Boolean = False
-                Dim ciENU As New Globalization.CultureInfo(1033) ' "en-US"
                 Dim columnDataType As Data.OleDb.OleDbType = OleDbType.IUnknown
                 Dim strColumnName As String = ""
                 Dim strColumnDefault As String = ""
@@ -420,7 +419,7 @@ Namespace Database
 
                                 Case OleDbType.Single
                                     Try
-                                        drow(strColumnName) = Single.Parse(strColumnDefault, ciENU)
+                                        drow(strColumnName) = cStringUtils.ConvertToSingle(strColumnDefault, 0.0!)
                                     Catch ex As Exception
                                         Debug.Assert(False)
                                         drow(strColumnName) = 0.0!
@@ -428,7 +427,7 @@ Namespace Database
 
                                 Case OleDbType.Double
                                     Try
-                                        drow(strColumnName) = Double.Parse(strColumnDefault, ciENU)
+                                        drow(strColumnName) = cStringUtils.ConvertToDouble(strColumnDefault, 0.0#)
                                     Catch ex As Exception
                                         Debug.Assert(False)
                                         drow(strColumnName) = 0.0

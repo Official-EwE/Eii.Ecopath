@@ -261,6 +261,7 @@ Namespace Ecosim
             Me.m_F2TSManager.LastYear = CInt(Me.m_nudLastYear.Text)
             Me.m_F2TSManager.NumSplinePoints = CInt(Me.m_nudSplinePts.Text)
             Try
+                ' Parse using UI default number formatting
                 Me.m_F2TSManager.PPVariance = Single.Parse(Me.m_tbVariancePrimaryProd.Text)
             Catch ex As Exception
                 Me.m_F2TSManager.PPVariance = 0.1!

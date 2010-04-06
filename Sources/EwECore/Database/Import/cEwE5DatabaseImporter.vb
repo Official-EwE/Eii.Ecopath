@@ -401,7 +401,8 @@ Namespace Database
             For i As Integer = 0 To astrMemoBits.Length - 1
                 Try
                     ' Convert number string into a real single
-                    sValue = Single.Parse(astrMemoBits(i))
+                    ' JS 05Apr10: use US number format settings
+                    sValue = cStringUtils.ConvertToSingle(astrMemoBits(i), 0)
                 Catch ex As Exception
                     ' Provide default in case of an exception
                     sValue = 0
@@ -3132,10 +3133,10 @@ Namespace Database
                     '0: row with 4 digits, 1: col with 4 digits, 2: drawmod with 2 digits, 3: hab etc with 4 digits (can be depth 9999)
                     Try
                         strHabChange = strHabChanges.Substring(iHabChange * 14, 14)
-                        drow("InRow") = Integer.Parse(strHabChange.Substring(0, 4))
-                        drow("InCol") = Integer.Parse(strHabChange.Substring(4, 4))
-                        drow("DrawMod") = Integer.Parse(strHabChange.Substring(8, 2))
-                        drow("Change") = Integer.Parse(strHabChange.Substring(10, 4))
+                        drow("InRow") = cStringUtils.ConvertToInteger(strHabChange.Substring(0, 4))
+                        drow("InCol") = cStringUtils.ConvertToInteger(strHabChange.Substring(4, 4))
+                        drow("DrawMod") = cStringUtils.ConvertToInteger(strHabChange.Substring(8, 2))
+                        drow("Change") = cStringUtils.ConvertToInteger(strHabChange.Substring(10, 4))
                         writer.AddRow(drow)
                     Catch ex As Exception
                         ' No need to localize, log only
@@ -3483,7 +3484,7 @@ Namespace Database
                                         End If
                                     End If
                                     If (astrSail.Length > iCell) Then
-                                        drow("SailCost") = Single.Parse(astrSail(iCell))
+                                        drow("SailCost") = cStringUtils.ConvertToSingle(astrSail(iCell), 0)
                                     End If
                                     writerFishMap.AddRow(drow)
                                     iCell += 1
@@ -3609,7 +3610,7 @@ Namespace Database
                         ' Copy depth value
                         If astrDepth.Length > iCell Then
                             Try
-                                iDepth = Integer.Parse(astrDepth(iCell))
+                                iDepth = cStringUtils.ConvertToInteger(astrDepth(iCell))
                             Catch ex As Exception
                                 ' hmm
                                 iDepth = 0
@@ -3629,11 +3630,7 @@ Namespace Database
 
                             ' Resolve habitat ID for deep cell
                             If astrHabType.Length > iCell Then
-                                Try
-                                    sCellValue = Single.Parse(astrHabType(iCell))
-                                Catch ex As Exception
-                                    sCellValue = 0
-                                End Try
+                                sCellValue = cStringUtils.ConvertToSingle(astrHabType(iCell), 0)
                                 If sCellValue <> 0 Then
                                     drow("HabitatID") = Me.HashKey(eDataTypes.EcospaceHabitat, CStr(sCellValue), eDataTypes.EcoSpaceScenario, iScenarioID)
                                 End If
@@ -3641,11 +3638,7 @@ Namespace Database
 
                             ' Resolve region ID for deep cell
                             If astrRegion.Length > iCell Then
-                                Try
-                                    sCellValue = Single.Parse(astrRegion(iCell))
-                                Catch ex As Exception
-                                    sCellValue = 0
-                                End Try
+                                sCellValue = cStringUtils.ConvertToSingle(astrRegion(iCell), 0)
                                 If sCellValue <> 0 Then
                                     drow("RegionID") = Me.HashKey(eDataTypes.EcospaceRegion, CStr(sCellValue), eDataTypes.EcoSpaceScenario, iScenarioID)
                                 End If
@@ -3653,12 +3646,7 @@ Namespace Database
 
                             ' Resolve MPA ID for deep cell
                             If astrMPA.Length > iCell Then
-                                Try
-
-                                Catch ex As Exception
-                                    sCellValue = 0
-                                End Try
-                                sCellValue = Single.Parse(astrMPA(iCell))
+                                sCellValue = cStringUtils.ConvertToSingle(astrMPA(iCell), 0)
                                 If sCellValue <> 0 Then
                                     drow("MPAID") = Me.HashKey(eDataTypes.EcospaceMPA, CStr(sCellValue), eDataTypes.EcoSpaceScenario, iScenarioID)
                                 End If
@@ -3666,21 +3654,13 @@ Namespace Database
 
                             ' Copy Rel. PP for deep cell
                             If astrRelPP.Length > iCell Then
-                                Try
-                                    sCellValue = Single.Parse(astrRelPP(iCell))
-                                Catch ex As Exception
-                                    sCellValue = 0
-                                End Try
+                                sCellValue = cStringUtils.ConvertToSingle(astrRelPP(iCell), 0)
                                 drow("RelPP") = sCellValue
                             End If
 
                             ' Copy Rel. Cin for deep cell
                             If astrRelCin.Length > iCell Then
-                                Try
-                                    sCellValue = Single.Parse(astrRelCin(iCell))
-                                Catch ex As Exception
-                                    sCellValue = 0
-                                End Try
+                                sCellValue = cStringUtils.ConvertToSingle(astrRelCin(iCell), 0)
                                 drow("RelCin") = sCellValue
                             End If
 

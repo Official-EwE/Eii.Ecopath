@@ -978,12 +978,16 @@ Namespace Controls.EwEGrid
                                         astrCells(iCol) = CStr(cCore.NULL_VALUE)
                                     End If
                                     If (cell.DataModel.ValueType Is GetType(Single)) Then
+                                        ' Parse using UI default number formatting
                                         cell.Value = Single.Parse(astrCells(iCol), nfi)
                                     ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
+                                        ' Parse using UI default number formatting
                                         cell.Value = Double.Parse(astrCells(iCol), nfi)
                                     ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
+                                        ' Parse using UI default number formatting
                                         cell.Value = Integer.Parse(astrCells(iCol), nfi)
                                     ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
+                                        ' Parse using UI default number formatting
                                         cell.Value = Boolean.Parse(astrCells(iCol))
                                     End If
                                 End If

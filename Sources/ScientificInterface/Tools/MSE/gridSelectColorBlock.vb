@@ -98,6 +98,7 @@ Public Class gridSelectColorBlock
         If e.Position.Row <> CV_ROW Then Return
 
         Try
+            ' Parse using UI default number formatting
             m_orgValue = Single.Parse(CStr(e.Cell.GetValue(e.Position)))
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & " CellGotFocus() Exception: " & ex.Message)
@@ -111,6 +112,7 @@ Public Class gridSelectColorBlock
 
         Try
             Dim newvalue As Single
+            ' Parse using UI default number formatting
             newvalue = Single.Parse(CStr(e.Cell.GetValue(e.Position)))
             Dim dif As Single = CSng(Math.Round(newvalue - Me.m_orgValue, 2))
 

@@ -232,6 +232,7 @@ Namespace Controls
         Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
 
             If (p.Column = eColumnTypes.Weight) Then
+                ' Parse value using UI number settings
                 RaiseEvent OnWeightChanged(Me.RowItem(p.Row), Single.Parse(CStr(cell.GetValue(p))))
             End If
             Return True

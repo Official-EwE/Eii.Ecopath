@@ -145,6 +145,7 @@ Namespace Controls
                 If (Me.Handler IsNot Nothing) Then
                     Dim sWeight As Single = 1.0!
                     Try
+                        ' Parse value using UI number settings
                         sWeight = Single.Parse(m_tstbWeight.Text)
                     Catch ex As Exception
                         sWeight = 1.0!

@@ -4,6 +4,7 @@ Imports EwEUtils.Database
 Imports EwEUtils.Core
 Imports System.Data
 Imports System.Data.OleDb
+Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -84,7 +85,7 @@ Friend Class cDBUpdate6_00_07_003
                 If Not Convert.IsDBNull(reader("VisualStyle")) Then
                     strVisualStyle = CStr(reader("VisualStyle"))
                 End If
-                iPedigree = Integer.Parse(CStr(reader("Pedigree")))
+                iPedigree = cStringUtils.ConvertToInteger(CStr(reader("Pedigree")))
 
                 ' Need to transfer?
                 If (Not String.IsNullOrEmpty(strRemark)) Or _

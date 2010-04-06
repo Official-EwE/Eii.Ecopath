@@ -410,6 +410,7 @@ Public Class frmShapeValue
 
         'Update the time series
         ts.Name = txtName.Text
+        ' Parse value using UI number settings
         ts.WtType = Single.Parse(txtWeight.Text)
         ts.TimeSeriesType = Me.SelectedTimeSeriesType()
 
@@ -450,6 +451,7 @@ Public Class frmShapeValue
         ff.IsSeasonal = Me.IsSeasonal
 
         If TypeOf (ff) Is cMediationFunction Then
+            ' Parse value using UI number settings
             DirectCast(ff, cMediationFunction).XBaseIndex = Integer.Parse(Me.txtXBase.Text)
         End If
 
@@ -475,7 +477,8 @@ Public Class frmShapeValue
         cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_TIMESERIES_ADDING, txtName.Text), TriState.True)
 
         strName = txtName.Text
-        sWeight = CSng(txtWeight.Text)
+        ' Parse value using UI number settings
+        sWeight = Single.Parse(txtWeight.Text)
         tsType = Me.SelectedTimeSeriesType()
 
         ' Set the pool code
@@ -488,6 +491,7 @@ Public Class frmShapeValue
         Next
 
         Try
+            ' Parse value using UI number settings
             iFirstYear = Integer.Parse(CStr(Me.m_grid(0, 1).Value))
         Catch ex As Exception
 
@@ -523,6 +527,7 @@ Public Class frmShapeValue
             If (Me.m_editMode = eDialogEditModeType.EditTimeSeries) Or _
                (Me.m_editMode = eDialogEditModeType.AddTimeSeries) Then
                 ' TS need a valid weight factor
+                ' Parse value using UI number settings
                 bEnableOk = bEnableOk And (Single.Parse(Me.txtWeight.Text) >= 0)
                 ' TS need a valid poolcode selection
                 bEnableOk = bEnableOk And (Me.cmbPoolCode.SelectedIndex >= 0)

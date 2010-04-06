@@ -6,6 +6,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports EwEPlugin
 Imports System.Text
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -218,23 +219,23 @@ Partial Public Class AppLauncher
 
             If Me.m_bIsEcopathLoaded Then
 
-                Me.m_propGroupDigits = pm.GetProperty(core.EwEModel, eVarNameFlags.GroupDigits)
-                Me.m_propNumDigits = pm.GetProperty(core.EwEModel, eVarNameFlags.NumDigits)
+                Me.m_propGroupDigits = pm.GetProperty(Core.EwEModel, eVarNameFlags.GroupDigits)
+                Me.m_propNumDigits = pm.GetProperty(Core.EwEModel, eVarNameFlags.NumDigits)
                 AddHandler Me.m_propGroupDigits.PropertyChanged, AddressOf OnNumberFormatChanged
                 AddHandler Me.m_propNumDigits.PropertyChanged, AddressOf OnNumberFormatChanged
 
-                Me.m_propUnitCurrency = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
-                Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
+                Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
+                Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
                 AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnCurrencyUnitChanged
                 AddHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf OnCurrencyUnitChanged
 
-                Me.m_propUnitTime = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitTime), cIntegerProperty)
-                Me.m_propUnitTimeText = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
+                Me.m_propUnitTime = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitTime), cIntegerProperty)
+                Me.m_propUnitTimeText = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
                 AddHandler Me.m_propUnitTime.PropertyChanged, AddressOf OnTimeUnitChanged
                 AddHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf OnTimeUnitChanged
 
-                Me.m_propUnitMonetary = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitMonetary), cIntegerProperty)
-                Me.m_propUnitMonetaryText = DirectCast(pm.GetProperty(core.EwEModel, eVarNameFlags.UnitMonetaryCustomText), cStringProperty)
+                Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitMonetary), cIntegerProperty)
+                Me.m_propUnitMonetaryText = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitMonetaryCustomText), cStringProperty)
                 AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnMonetaryUnitChanged
                 AddHandler Me.m_propUnitMonetaryText.PropertyChanged, AddressOf OnMonetaryUnitChanged
 
@@ -347,6 +348,7 @@ Partial Public Class AppLauncher
             Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
             Me.StringToFontSetting(My.Settings.FontSubtitle, cStyleGuide.eApplicationFontType.SubTitle)
             Me.StringToFontSetting(My.Settings.FontLegend, cStyleGuide.eApplicationFontType.Legend)
+
             Me.StringToFontSetting(My.Settings.FontScale, cStyleGuide.eApplicationFontType.Scale)
 
             Me.StyleGuide.ResumeEvents()
@@ -412,7 +414,7 @@ Partial Public Class AppLauncher
             End If
             If astrBits.Length >= 3 Then
                 Try
-                    Me.StyleGuide.FontSize(ft) = Single.Parse(astrBits(2))
+                    Me.StyleGuide.FontSize(ft) = cStringUtils.ConvertToSingle(astrBits(2))
                 Catch ex As Exception
                     Me.StyleGuide.FontSize(ft) = 0.0!
                 End Try
@@ -426,7 +428,7 @@ Partial Public Class AppLauncher
             sb.Append(",")
             sb.Append(CInt(Me.StyleGuide.FontStyle(ft)))
             sb.Append(",")
-            sb.Append(Me.StyleGuide.FontSize(ft))
+            sb.Append(cStringUtils.FormatSingle(Me.StyleGuide.FontSize(ft)))
             Return sb.ToString()
 
         End Function

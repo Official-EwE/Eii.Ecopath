@@ -1102,6 +1102,7 @@ Public Class EditGroupsEwEGrid
                 End If
 
             Case eColumnTypes.GroupPP
+                ' Parse using system default number formatting
                 Dim sPP As Single = Single.Parse(CStr(cell.GetValue(p)))
                 ' truncate
                 sPP = Math.Max(0.0!, Math.Min(2.0!, sPP))

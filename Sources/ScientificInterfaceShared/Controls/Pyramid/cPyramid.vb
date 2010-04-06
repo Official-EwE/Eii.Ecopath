@@ -1,23 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cPyramid.vb,v $
-' Revision 1.1  2009/06/19 03:58:44  jeroens
-' Initial version
-'
-' Revision 1.3  2009/06/12 20:51:54  jeroens
-' TextFile read as UTF-8
-' Added legend box
-' Added IsValid
-'
-' Revision 1.2  2009/06/11 17:52:46  jeroens
-' Angle calcs parameterized
-'
-' Revision 1.1  2009/06/11 14:00:43  jeroens
-' initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports System
@@ -27,6 +8,7 @@ Imports System.Text
 Imports System.IO
 Imports System.Xml
 Imports System.Globalization
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -283,7 +265,6 @@ Public Class cPyramid
         Dim iTL As Integer = 0
         Dim sVal1 As Single = 0.0!
         Dim sVal2 As Single = 0.0!
-        Dim ciEnUSLocale As New CultureInfo("en-US")
 
         Try
             Me.Reset()
@@ -302,8 +283,8 @@ Public Class cPyramid
                             Case "model" : Me.m_strModel = attrib.Value
                             Case "type" : Me.m_pyramidtype = DirectCast([Enum].Parse(GetType(ePyramidTypes), attrib.Value), ePyramidTypes)
                             Case "unit" : Me.m_strUnit = attrib.Value
-                            Case "totalbiomass" : Me.m_sTotal = Single.Parse(attrib.Value, ciEnUSLocale)
-                            Case "numtl" : Me.m_iNumTLMax = Integer.Parse(attrib.Value, ciEnUSLocale)
+                            Case "totalbiomass" : Me.m_sTotal = cStringUtils.ConvertToSingle(attrib.Value, 0.0!)
+                            Case "numtl" : Me.m_iNumTLMax = cStringUtils.ConvertToInteger(attrib.Value, 0)
                             Case Else ' NOP
                         End Select
                     Next
@@ -317,9 +298,9 @@ Public Class cPyramid
                             iTL = 0 : sVal1 = 0.0! : sVal2 = 0.0!
                             For Each attrib As XmlAttribute In nodeTL.Attributes
                                 Select Case attrib.Name.ToLower()
-                                    Case "seq" : iTL = Integer.Parse(attrib.Value, ciEnUSLocale)
-                                    Case "biomass", "catch", "throughput" : sVal1 = Single.Parse(attrib.Value, ciEnUSLocale)
-                                    Case "relativebiomass", "relativecatch", "relativethroughput" : sVal2 = Single.Parse(attrib.Value, ciEnUSLocale)
+                                    Case "seq" : iTL = cStringUtils.ConvertToInteger(attrib.Value, 0)
+                                    Case "biomass", "catch", "throughput" : sVal1 = cStringUtils.ConvertToSingle(attrib.Value, 0.0!)
+                                    Case "relativebiomass", "relativecatch", "relativethroughput" : sVal2 = cStringUtils.ConvertToSingle(attrib.Value, 0.0!)
                                     Case Else ' NOP
                                 End Select
                             Next
