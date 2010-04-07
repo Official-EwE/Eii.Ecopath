@@ -22,7 +22,6 @@ Namespace Controls
         Private m_lRuns As New List(Of cRun)
         Private m_runCurrent As cRun = Nothing
         Private m_curvelistTimeSeries As New CurveList()
-        Private m_pplSum As New PointPairList
 
 #End Region ' Private vars
 
@@ -66,7 +65,6 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New()
-            'Me.m_clRunCurrent = New CurveList()
         End Sub
 
 #End Region
@@ -164,7 +162,7 @@ Namespace Controls
             End Select
 
             Me.PlotLines(New LineItem() {crv}, 1, True, False, bCumulative)
-            Me.SetCurveVisibility(crv)
+            'Me.UpdateCurveVisibility(crv)
 
         End Sub
 
@@ -206,6 +204,7 @@ Namespace Controls
         Public Sub ClearHighlights()
             ' Clear all colors
             Me.SetAllToColors(False)
+            Me.UpdateColours()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -217,8 +216,7 @@ Namespace Controls
         ''' <param name="iRun">The run to highlight.</param>
         ''' -------------------------------------------------------------------
         Public Sub Highlight(ByVal iGroup As Integer, _
-                             ByVal iRun As Integer, _
-                             Optional ByVal bHideGray As Boolean = False)
+                             ByVal iRun As Integer)
 
             Dim run As cRun = Nothing
             Dim crv As CurveItem = Nothing
@@ -257,15 +255,16 @@ Namespace Controls
 
             End If
 
-            ' Colour the time series for the group
-            For Each crv In Me.m_curvelistTimeSeries
-                Dim info As cCurveInfo = Me.CurveInfo(crv)
-                If (info IsNot Nothing) Then
-                    If (info.Index = iGroup) Then
-                        Me.SetCurveAppearance(crv, True, True)
+            If (iGroup > 0) Then
+                For Each crv In Me.m_curvelistTimeSeries
+                    Dim info As cCurveInfo = Me.CurveInfo(crv)
+                    If (info IsNot Nothing) Then
+                        Me.SetCurveAppearance(crv, (info.Index = iGroup), True)
                     End If
-                End If
-            Next
+                Next
+            End If
+
+            Me.UpdateColours()
 
         End Sub
 
@@ -314,20 +313,6 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether the managed graph shows a legend.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property ShowLegend() As Boolean
-            Get
-                Return Me.m_graphPane.Legend.IsVisible
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_graphPane.Legend.IsVisible = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Set the graph title.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -339,39 +324,6 @@ Namespace Controls
         End Property
 
 #End Region ' Public Properties
-
-#Region " Events "
-
-        'Protected Overrides Sub OnStyleguideChanged(ByVal ct As cStyleGuide.eChangeType)
-
-        '    Dim bRefresh As Boolean = False
-        '    Dim acurves As CurveItem() = Me.m_graphPane.CurveList.ToArray
-
-        '    Try
-
-        '        If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
-        '            ' Update colours
-        '            For Each crv As CurveItem In acurves
-        '                Me.SetCurveAppearance(crv)
-        '            Next
-        '            bRefresh = True
-        '        ElseIf (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
-        '            ' Update line visibility
-        '            For Each crv As CurveItem In acurves
-        '                Me.SetCurveVisibility(crv)
-        '            Next
-        '            bRefresh = True
-        '        End If
-
-        '    Catch ex As Exception
-
-        '    End Try
-
-        '    If bRefresh Then Me.Graph.Refresh()
-
-        'End Sub
-
-#End Region ' Events
 
 #Region " Private Helpers "
 
@@ -424,53 +376,13 @@ Namespace Controls
             ' Safety first
             If Not TypeOf (crv) Is LineItem Then Return
 
-            Dim li As LineItem = DirectCast(crv, LineItem)
+            'Dim li As LineItem = DirectCast(crv, LineItem)
             Dim info As cCurveInfo = Me.CurveInfo(crv)
 
             Debug.Assert(info IsNot Nothing)
 
-            Dim clrGroup As Color = info.Colour
-
-            ' Alter color
-            If bUseColor Then
-                If Me.IsPaneCumulative Then
-                    li.Line.Color = Color.SlateGray
-                Else
-                    li.Line.Color = clrGroup
-                    ' Move line to top
-                    Me.m_graphPane.CurveList.Remove(li)
-                    Me.m_graphPane.CurveList.Insert(0, li)
-                End If
-                li.Line.Fill.Color = clrGroup
-            Else
-                li.Line.Color = Color.LightSlateGray
-                li.Line.Fill.Color = Color.White
-            End If
-
-            ' Highlight the line if neededs
-            li.Line.Width = CInt(IIf(bUseHighlight, 3, 1))
-            li.Line.Fill.IsVisible = (Me.IsPaneCumulative)
-
-            ' Hide lines for time series
-            If info.LineType = eLineType.ReferenceData Then
-                li.Line.IsVisible = False
-            End If
-
-            Me.SetCurveVisibility(crv)
-
-        End Sub
-
-        Private Sub SetCurveVisibility(ByVal crv As CurveItem)
-
-            ' Safety first
-            If Not TypeOf (crv) Is LineItem Then Return
-
-            Dim line As LineItem = DirectCast(crv, LineItem)
-            Dim info As cCurveInfo = Me.CurveInfo(crv)
-
-            Debug.Assert(info IsNot Nothing)
-
-            line.IsVisible = info.IsVisible
+            info.IsHighlighted = bUseHighlight
+            info.IsGrayedOut = (Not bUseColor)
 
         End Sub
 
