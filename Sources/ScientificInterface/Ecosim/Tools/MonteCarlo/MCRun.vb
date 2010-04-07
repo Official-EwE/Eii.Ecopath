@@ -130,9 +130,9 @@ Namespace Ecosim
             Debug.Assert(Me.m_cmdLoadTS IsNot Nothing, "Command failed to load.")
 
             Me.m_lbGroups.Attach(Me.UIContext)
+            Me.m_lbGroups.SelectedIndex = 0
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
-            Me.PopulateGroupBox()
 
         End Sub
 
@@ -165,14 +165,6 @@ Namespace Ecosim
             MyBase.OnFormClosed(e)
 
         End Sub
-
-        'Private Sub MCRun_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        '    Me.m_mcmanager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
-        'End Sub
-
-        'Private Sub MCRun_Deactivate(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Deactivate
-        '    Me.m_mcmanager.EcosimTimeStepHandler = Nothing
-        'End Sub
 
         Private Sub btnStop_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnStop.Click
             Me.m_mcmanager.StopRun()
@@ -418,17 +410,9 @@ Namespace Ecosim
             'Only Highlight if the graphs are drawing
             If Me.m_mcmanager.bShowPlot Then
 
-
                 ' Start setting highlights
                 Me.m_plothelper.ClearHighlights()
 
-                'Dim gi As cGroupListBox.cGroupItem = Nothing
-                'For Each item As Object In Me.m_lbGroups.SelectedItems
-                '    If TypeOf (item) Is cGroupListBox.cGroupItem Then
-                '        gi = DirectCast(item, cGroupListBox.cGroupItem)
-                '        Me.m_plothelper.Highlight(gi.Group.Index, -1)
-                '    End If
-                'Next item
                 For Each i As Integer In Me.m_lbGroups.SelectedIndices
                     Me.m_plothelper.Highlight(Me.m_lbGroups.GroupIndex(i), -1)
                 Next
@@ -436,31 +420,6 @@ Namespace Ecosim
                 Me.m_graph.Invalidate()
 
             End If
-
-        End Sub
-
-        Private Sub PopulateGroupBox()
-
-            Me.m_lbGroups.GroupListTracking = cGroupListBox.eGroupTrackingType.AllGroups
-            Me.m_lbGroups.Populate()
-
-            'Dim group As cCoreGroupBase = Nothing
-            'Dim gi As cGroupListBox.cGroupItem = Nothing
-
-            'Me.m_lbGroups.SuspendLayout()
-            'Me.m_lbGroups.Items.Clear()
-
-            'For iGroup As Integer = 1 To Me.Core.nLivingGroups
-
-            '    ' #Yes: add group to the list of options
-            '    group = Me.Core.EcoPathGroupInputs(iGroup)
-            '    gi = New cGroupListBox.cGroupItem(group)
-            '    Me.m_lbGroups.Items.Add(gi)
-
-            'Next
-
-            Me.m_lbGroups.SelectedIndex = 0
-            'Me.m_lbGroups.ResumeLayout()
 
         End Sub
 

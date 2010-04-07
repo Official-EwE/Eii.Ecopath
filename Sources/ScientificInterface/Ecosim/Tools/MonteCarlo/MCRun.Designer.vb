@@ -119,6 +119,8 @@ Namespace Ecosim
             '
             Me.m_gridB.AutoSizeMinHeight = 10
             Me.m_gridB.AutoSizeMinWidth = 10
+            Me.m_gridB.AutoStretchColumnsToFitWidth = False
+            Me.m_gridB.AutoStretchRowsToFitHeight = False
             Me.m_gridB.BackColor = System.Drawing.Color.White
             Me.m_gridB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridB.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -141,6 +143,7 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridB.TrackPropertySelection = True
+            Me.m_gridB.UIContext = Nothing
             '
             'm_tbpBP
             '
@@ -153,6 +156,8 @@ Namespace Ecosim
             '
             Me.m_gridPB.AutoSizeMinHeight = 10
             Me.m_gridPB.AutoSizeMinWidth = 10
+            Me.m_gridPB.AutoStretchColumnsToFitWidth = False
+            Me.m_gridPB.AutoStretchRowsToFitHeight = False
             Me.m_gridPB.BackColor = System.Drawing.Color.White
             Me.m_gridPB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridPB.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -175,6 +180,7 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridPB.TrackPropertySelection = True
+            Me.m_gridPB.UIContext = Nothing
             '
             'm_tbpEE
             '
@@ -187,6 +193,8 @@ Namespace Ecosim
             '
             Me.m_gridEE.AutoSizeMinHeight = 10
             Me.m_gridEE.AutoSizeMinWidth = 10
+            Me.m_gridEE.AutoStretchColumnsToFitWidth = False
+            Me.m_gridEE.AutoStretchRowsToFitHeight = False
             Me.m_gridEE.BackColor = System.Drawing.Color.White
             Me.m_gridEE.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridEE.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -209,6 +217,7 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridEE.TrackPropertySelection = True
+            Me.m_gridEE.UIContext = Nothing
             '
             'm_tbpBA
             '
@@ -221,6 +230,8 @@ Namespace Ecosim
             '
             Me.m_gridBA.AutoSizeMinHeight = 10
             Me.m_gridBA.AutoSizeMinWidth = 10
+            Me.m_gridBA.AutoStretchColumnsToFitWidth = False
+            Me.m_gridBA.AutoStretchRowsToFitHeight = False
             Me.m_gridBA.BackColor = System.Drawing.Color.White
             Me.m_gridBA.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridBA.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -243,6 +254,7 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridBA.TrackPropertySelection = True
+            Me.m_gridBA.UIContext = Nothing
             '
             'm_tbpBPlot
             '
@@ -284,9 +296,10 @@ Namespace Ecosim
             Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbGroups.FormattingEnabled = True
             Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
-            Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.AllGroups
+            Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.LivingGroups
             Me.m_lbGroups.Name = "m_lbGroups"
-            Me.m_lbGroups.ShowAllGroupsItem = False
+            Me.m_lbGroups.SelectedGroup = Nothing
+            Me.m_lbGroups.SelectedGroupIndex = -1
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.ValueAsc
             '
@@ -308,6 +321,8 @@ Namespace Ecosim
             '
             Me.m_gridBestFit.AutoSizeMinHeight = 10
             Me.m_gridBestFit.AutoSizeMinWidth = 10
+            Me.m_gridBestFit.AutoStretchColumnsToFitWidth = False
+            Me.m_gridBestFit.AutoStretchRowsToFitHeight = False
             Me.m_gridBestFit.BackColor = System.Drawing.Color.White
             Me.m_gridBestFit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridBestFit.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -315,6 +330,7 @@ Namespace Ecosim
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridBestFit.CustomSort = False
             resources.ApplyResources(Me.m_gridBestFit, "m_gridBestFit")
+            Me.m_gridBestFit.FixedColumnWidths = True
             Me.m_gridBestFit.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridBestFit.GridToolTipActive = True
             Me.m_gridBestFit.Name = "m_gridBestFit"
@@ -328,6 +344,7 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridBestFit.TrackPropertySelection = True
+            Me.m_gridBestFit.UIContext = Nothing
             '
             'cbPedigree
             '

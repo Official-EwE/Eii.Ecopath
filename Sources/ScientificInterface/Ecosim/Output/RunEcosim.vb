@@ -231,7 +231,7 @@ Namespace Ecosim
             Handles m_tsmiShowLegend.Click
 
             Me.m_tsmiShowLegend.Checked = Not Me.m_tsmiShowLegend.Checked
-            Me.m_zgp.ShowLegend = Me.m_tsmiShowLegend.Checked
+            Me.m_zgp.IsLegendVisible = Me.m_tsmiShowLegend.Checked
             Me.m_zgp.RescaleAndRedraw()
 
         End Sub
