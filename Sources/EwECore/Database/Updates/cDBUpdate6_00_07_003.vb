@@ -131,7 +131,7 @@ Friend Class cDBUpdate6_00_07_003
         End If
 
         strSQL = "ALTER TABLE EcospaceScenarioFleetMap ADD PRIMARY KEY (ScenarioID, FleetID, InRow, InCol)"
-        bSucces = bSucces And db.Execute(strSQL)
+        db.Execute(strSQL) ' We can do without the PK
 
         Return bSucces
 
