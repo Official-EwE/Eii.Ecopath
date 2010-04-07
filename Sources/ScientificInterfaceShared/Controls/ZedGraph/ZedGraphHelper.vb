@@ -38,15 +38,23 @@ Namespace Controls
         ''' </summary>
         Protected Class cCurveInfo
 
+            ' == Auto-properties ==
+
             Private m_source As ICoreInterface = Nothing
             Private m_iGroup As Integer = cCore.NULL_VALUE
             Private m_iFleet As Integer = cCore.NULL_VALUE
             Private m_uic As cUIContext = Nothing
 
+            ' == Fixed properties ==
+
             Private m_strLabel As String = ""
             Private m_colour As Color = Color.Aqua
             Private m_lineType As eLineType = eLineType.ModelData
-            Private m_bVisible As Boolean = True
+
+            ' == Status flags ==
+
+            Private m_bGrayedOut As Boolean = False
+            Private m_bHighlighted As Boolean = False
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -151,7 +159,8 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public ReadOnly Property Index() As Integer
                 Get
-                    If Me.m_source IsNot Nothing Then Return Me.m_source.Index
+                    If Me.m_iGroup <> cCore.NULL_VALUE Then Return Me.m_iGroup
+                    If Me.m_iFleet <> cCore.NULL_VALUE Then Return Me.m_iFleet
                     Return cCore.NULL_VALUE
                 End Get
             End Property
@@ -163,6 +172,8 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public ReadOnly Property Colour() As Color
                 Get
+                    If Me.m_bGrayedOut Then Return Color.LightGray
+
                     If Me.m_iGroup <> cCore.NULL_VALUE Then Return Me.m_uic.StyleGuide.GroupColor(Me.m_uic.Core, Me.m_iGroup)
                     If Me.m_iFleet <> cCore.NULL_VALUE Then Return Me.m_uic.StyleGuide.FleetColor(Me.m_uic.Core, Me.m_iFleet)
                     Return Me.m_colour
@@ -180,6 +191,34 @@ Namespace Controls
                     If Me.m_iFleet <> cCore.NULL_VALUE Then Return Me.m_uic.StyleGuide.FleetVisible(Me.m_iFleet)
                     Return True
                 End Get
+            End Property
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set grayed-out state of a curve.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Property IsGrayedOut() As Boolean
+                Get
+                    Return Me.m_bGrayedOut
+                End Get
+                Set(ByVal value As Boolean)
+                    Me.m_bGrayedOut = value
+                End Set
+            End Property
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set highlight state of a curve.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Property IsHighlighted() As Boolean
+                Get
+                    Return Me.m_bHighlighted
+                End Get
+                Set(ByVal value As Boolean)
+                    Me.m_bHighlighted = value
+                End Set
             End Property
 
         End Class
@@ -293,7 +332,7 @@ Namespace Controls
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             ' Configure graph control
-            Me.InitStyle()
+            Me.UpdateStyle()
             Me.UpdateColours()
 
         End Sub
@@ -551,7 +590,7 @@ Namespace Controls
                 .Border.IsVisible = False
                 .Chart.Border.IsVisible = True
 
-                Me.InitLegend(gp)
+                Me.UpdateLegends(gp)
 
             End With
 
@@ -619,7 +658,7 @@ Namespace Controls
                                             Dim iLastLine As Integer = Me.FindLastCurvePos(eLineType.ModelData, iPane)
 
                                             If iLastLine > -1 Then
-                                                Me.SumLines(DirectCast(.CurveList(0), LineItem), li)
+                                                Me.SumLines(DirectCast(.CurveList(iLastLine), LineItem), li)
                                             End If
 
                                             ' Set cumulative colour style
@@ -861,6 +900,25 @@ Namespace Controls
                 If (value <> Me.m_bTrackVisibility) Then
                     value = Me.m_bTrackVisibility
                     Me.UpdateCurveVisibility()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether to display legends.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property IsLegendVisible() As Boolean
+            Get
+                Return Me.m_bShowLegend
+            End Get
+            Set(ByVal value As Boolean)
+                If (value <> Me.m_bShowLegend) Then
+                    Me.m_bShowLegend = value
+                    For i As Integer = 1 To Me.m_nPanels
+                        Me.UpdateLegends(Me.GetPane(i))
+                    Next
                 End If
             End Set
         End Property
@@ -1288,7 +1346,7 @@ Namespace Controls
         Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
 
             If ((changeType And cStyleGuide.eChangeType.Fonts) > 0) Then
-                Me.InitStyle()
+                Me.UpdateStyle()
             End If
 
             If ((changeType And cStyleGuide.eChangeType.Colours) > 0) Then
@@ -1305,7 +1363,7 @@ Namespace Controls
             End If
 
             If ((changeType And cStyleGuide.eChangeType.Legends) > 0) Then
-                Me.InitLegend()
+                Me.UpdateLegends()
             End If
         End Sub
 
@@ -1424,34 +1482,70 @@ Namespace Controls
         Protected Overridable Sub UpdateColours()
 
             Dim info As cCurveInfo = Nothing
+            Dim gp As GraphPane = Nothing
+            Dim ci As CurveItem = Nothing
+            Dim acurves() As CurveItem = Nothing
+            Dim iFirstDataLinePos As Integer = -1
+            Dim bPaneCumulative As Boolean = False
+            Dim iNumHighlights As Integer = 0
 
             For iPane As Integer = 1 To Me.m_nPanels
-                With Me.GetPane(iPane)
-                    .Chart.Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
-                    .Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
+                gp = Me.GetPane(iPane)
+                gp.Chart.Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
+                gp.Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
 
-                    Me.RemoveCursor(iPane)
-                    Me.SetCursor(iPane)
+                bPaneCumulative = Me.IsPaneCumulative(iPane)
+                Me.RemoveCursor(iPane)
+                Me.SetCursor(iPane)
 
-                    For Each ci As CurveItem In .CurveList
-                        info = Me.CurveInfo(ci)
-                        If info IsNot Nothing Then
+                acurves = gp.CurveList.ToArray
+                iFirstDataLinePos = Me.FindNextCurvePos(eLineType.ModelData, iPane)
+                iNumHighlights = 0
 
-                            ci.Color = info.Colour
+                For iCurve As Integer = 0 To acurves.Length - 1
+                    ci = acurves(iCurve)
+                    info = Me.CurveInfo(ci)
+                    If (info IsNot Nothing) Then
+                        If (info.IsHighlighted) Then iNumHighlights += 1
+                    End If
+                Next
 
-                            If TypeOf ci Is LineItem Then
-                                With DirectCast(ci, LineItem)
-                                    .Line.Color = info.Colour
-                                    .Line.Fill.Color = .Line.Color
-                                    .Symbol.Border.Color = .Line.Color
-                                    .Symbol.Fill.Color = .Line.Color
-                                End With
+                For iCurve As Integer = 0 To acurves.Length - 1
+
+                    ci = acurves(iCurve)
+                    info = Me.CurveInfo(ci)
+                    If info IsNot Nothing Then
+
+                        ' Not cumulative pane?
+                        If (Not bPaneCumulative) Then
+                            ' #Yes: Reorder coloured data lines
+                            If (info.LineType = eLineType.ModelData) And _
+                               (info.IsGrayedOut = False) Then
+                                gp.CurveList.Remove(ci)
+                                gp.CurveList.Insert(iFirstDataLinePos, ci)
                             End If
-
                         End If
-                    Next
 
-                End With
+                        ci.Color = info.Colour
+
+                        If TypeOf ci Is LineItem Then
+                            With DirectCast(ci, LineItem)
+                                If bPaneCumulative Then
+                                    .Line.Color = Color.Gray
+                                    .Line.Fill.Color = info.Colour
+                                Else
+                                    .Line.Color = info.Colour
+                                    .Line.Fill.Color = Color.White
+                                End If
+                                .Line.Width = CSng(IIf(info.IsHighlighted And iNumHighlights = 1, 3.0!, 1.0!))
+                                .Symbol.Border.Color = .Line.Color
+                                .Symbol.Fill.Color = .Line.Color
+                            End With
+                        End If
+
+                    End If
+                Next
+
             Next iPane
 
         End Sub
@@ -1476,7 +1570,7 @@ Namespace Controls
             Return ci.IsVisible
         End Function
 
-        Protected Overridable Sub InitStyle()
+        Protected Overridable Sub UpdateStyle()
 
             For iPane As Integer = 1 To Me.m_nPanels
                 With Me.GetPane(iPane)
@@ -1537,11 +1631,10 @@ Namespace Controls
 
         End Sub
 
-        Private Sub InitLegend(Optional ByVal gp As GraphPane = Nothing)
+        Private Sub UpdateLegends(Optional ByVal gp As GraphPane = Nothing)
 
             Dim bShow As Boolean = (Me.StyleGuide.ShowLegends = TriState.True) Or _
                                    (Me.StyleGuide.ShowLegends = TriState.UseDefault And Me.m_bShowLegend = True)
-
             If gp Is Nothing Then
                 For Each gp In Me.m_zgc.MasterPane.PaneList
                     gp.Legend.IsVisible = bShow
@@ -1549,10 +1642,6 @@ Namespace Controls
             Else
                 gp.Legend.IsVisible = bShow
             End If
-
-            'Using g As Graphics = Me.m_zgc.CreateGraphics()
-            '    Me.m_zgc.MasterPane.SetLayout(g, PaneLayout.SquareColPreferred)
-            'End Using
             Me.m_zgc.Invalidate()
 
         End Sub
