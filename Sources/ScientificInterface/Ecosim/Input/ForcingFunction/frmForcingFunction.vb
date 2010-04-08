@@ -35,10 +35,7 @@ Namespace Ecosim
 #Region " Constructors "
 
         Public Sub New()
-
-            ' This call is required by the Windows Form Designer.
             Me.InitializeComponent()
-
         End Sub
 
 #End Region ' Constructors
@@ -76,10 +73,17 @@ Namespace Ecosim
                 Return MyBase.UIContext
             End Get
             Set(ByVal value As cUIContext)
+                If MyBase.UIContext IsNot Nothing Then
+                    Me.m_shapeguihandler = Nothing
+                End If
+
                 MyBase.UIContext = value
-                Me.m_shapeguihandler = New cForcingShapeGUIHandler(Me.UIContext, _
-                    Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
-                    Me.m_sketchPad, Me.m_sketchPadToolbar)
+
+                If MyBase.UIContext IsNot Nothing Then
+                    Me.m_shapeguihandler = New cForcingShapeGUIHandler(Me.UIContext, _
+                        Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
+                        Me.m_sketchPad, Me.m_sketchPadToolbar)
+                End If
             End Set
         End Property
 
