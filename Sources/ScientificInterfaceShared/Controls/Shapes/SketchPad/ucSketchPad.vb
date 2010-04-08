@@ -134,6 +134,7 @@ Namespace Controls
         ''' Get/set the handler that manages this sketch pad.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public Property Handler() As cShapeGUIHandler
             Get
                 Return Me.m_handler
@@ -149,13 +150,13 @@ Namespace Controls
         ''' Get/set the style of the control to override data styles.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Obsolete("Use Editable instead")> _
         Public Property Style() As cStyleGuide.eStyleFlags
             Get
-                Return Me.m_style
+                If Me.Editable Then Return cStyleGuide.eStyleFlags.OK Else Return cStyleGuide.eStyleFlags.NotEditable
             End Get
             Set(ByVal value As cStyleGuide.eStyleFlags)
-                Me.m_style = value
-                Me.UpdateControl()
+                Me.Editable = ((value And cStyleGuide.eStyleFlags.NotEditable) > 0)
             End Set
         End Property
 
@@ -164,6 +165,7 @@ Namespace Controls
         ''' Get/set the shape to display in the sketch pad.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public Overridable Property Shape() As cShapeData
 
             Get
@@ -187,6 +189,8 @@ Namespace Controls
         ''' across the full length of time.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("State whether to display the shape as 12-month seasonal data or across the full length of time.")> _
         Public Property IsSeasonal() As Boolean
 
             Get
@@ -209,6 +213,8 @@ Namespace Controls
         ''' Get/set the line style used to render the graph.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("The line style used to render the graph")> _
         Public Property SketchDrawMode() As eSketchDrawModeTypes
 
             Get
@@ -227,6 +233,8 @@ Namespace Controls
         ''' Get/set whether the sketch pad should display an X and Y axis.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("State whether the sketch pad should display an X and Y axis.")> _
         Public Property DisplayAxis() As Boolean
 
             Get
@@ -246,6 +254,8 @@ Namespace Controls
         ''' to the range of data in the current shape.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("State whether the sketch pad should automatically scale the Y axis to the range of data in the current shape.")> _
         Public Property YAxisAutoScaleMode() As eAxisAutoScaleModeTypes
 
             Get
@@ -261,9 +271,11 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Get/set the max Y value for the graph.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("State the max Y value for the graph.")> _
         Public Property YAxisMaxValue() As Single
             Get
                 ' Locked for drawing?
@@ -287,10 +299,12 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Get/set the min Y value for the graph.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property YAxisMinValue() As Single
+        <Category("Sketchpad"), _
+          Description("State the min Y value for the graph.")> _
+         Public Property YAxisMinValue() As Single
             Get
                 Return Me.m_sYMin
             End Get
@@ -302,9 +316,11 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Value for horizontal (Y mark) line
+        ''' Value for horizontal (Y mark) line.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("The value for a horizontal (Y mark) line.")> _
         Public Property YMarkValue() As Single
             Get
                 Return Me.m_sYMarkValue
@@ -320,6 +336,8 @@ Namespace Controls
         ''' Label for horizontal (Y mark) line
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("The label for a horizontal (Y mark) line.")> _
         Public Property YMarkLabel() As String
             Get
                 Return Me.m_strYMarkLabel
@@ -332,9 +350,11 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Get/set whether the vertical (X mark) line should be shown.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("Flag stating whether the vertical (X mark) line should be shown.")> _
         Public Property ShowXMark() As Boolean
             Get
                 Return Me.m_bShowXMark
@@ -347,9 +367,11 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Value for vertical (X mark) line
+        ''' Value for vertical (X mark) line.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("Value for vertical (X mark) line.")> _
         Public Property XMarkValue() As Single
             Get
                 If Not Me.ShowXMark Then Return cCore.NULL_VALUE
@@ -363,9 +385,11 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Label for vertical (X mark) line
+        ''' Label for vertical (X mark) line.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("Label for vertical (X mark) line.")> _
         Public Property XMarkLabel() As String
             Get
                 Return Me.m_strXMarkLabel
@@ -381,6 +405,8 @@ Namespace Controls
         ''' Get/set the colour used to draw the shape.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("Colour to draw the shape with.")> _
         Public Property ShapeColor() As Color
 
             Get
@@ -399,6 +425,8 @@ Namespace Controls
         ''' Get the <see cref="eShapeCategoryTypes">category</see> of the shape.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("Category of the shape.")> _
         Public ReadOnly Property ShapeCategory() As eShapeCategoryTypes
 
             Get
@@ -463,12 +491,22 @@ Namespace Controls
 
         Private m_bEditable As Boolean = True
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="eShapeCategoryTypes">category</see> of the shape.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("States whether the shape can be edited by the user.")> _
         Public Overridable Property Editable() As Boolean
             Get
                 Return Me.m_bEditable
             End Get
             Set(ByVal bEditable As Boolean)
-                Me.m_bEditable = bEditable
+                If (bEditable <> Me.m_bEditable) Then
+                    Me.m_bEditable = bEditable
+                    Me.UpdateControl()
+                End If
             End Set
         End Property
 
@@ -520,7 +558,7 @@ Namespace Controls
 
             If (Me.m_uic Is Nothing) Then Return
 
-            If ((Me.Style And cStyleGuide.eStyleFlags.NotEditable) = 0) And (Me.m_shape IsNot Nothing) Then
+            If (Me.Editable = True) And (Me.m_shape IsNot Nothing) Then
                 Me.Enabled = True
                 Me.BackColor = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
             Else
