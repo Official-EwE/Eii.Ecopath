@@ -961,7 +961,7 @@ Namespace Ecosim
 
 
         ''' <summary>
-        ''' Set FishTime(Group) Density dependant fishing mortality used by Ecosim. 
+        ''' Set FishTime(Group) Density dependent fishing mortality used by Ecosim. 
         ''' </summary>
         ''' <param name="iTime"></param>
         ''' <remarks>If runnning in a regular mode (no search) then use fishing mortality rates set by the user to compute density dependant mortality. 
@@ -972,7 +972,7 @@ Namespace Ecosim
                 'in Fishing Polcy or MSE search
                 'sets FishRateNo to FishYear() computed before this is called then computes FishTime() with FishRateNo
                 For igrp As Integer = 1 To nvar
-                    'overwrite FishRateNo() with computed catch rates (FishYear(group)) if in Fishing Policy or MSE 
+                    'overwrite FishRateNo() with computed mortality rates (FishYear(group)) if in Fishing Policy or MSE 
                     'see EwE5 RunModelValue()
                     m_Data.FishRateNo(igrp, iTime) = m_search.FishYear(igrp) 'fish year was computed or set to FishRateNo(j, 12 * iyr - 11) if FisForced() = True (forcing data loaded)
                     m_Data.FishTime(igrp) = m_Data.QmQo(igrp) * m_Data.FishRateNo(igrp, iTime) / (1 + (m_Data.QmQo(igrp) - 1) * BB(igrp) / m_Data.StartBiomass(igrp))
@@ -1006,7 +1006,22 @@ Namespace Ecosim
                         ' If m_Data.FishTime(iGrp) > m_search.FLimit(iGrp) Then m_Data.FishTime(iGrp) = 3 ' m_search.FLimit(iGrp) ' : Stop
                         If m_Data.FishTime(iGrp) > 3 Then m_Data.FishTime(iGrp) = 3 ' m_search.FLimit(iGrp) ' : Stop
                     Else
-                        'Computed fishing mortality
+                        ''Computed fishing mortality
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        'ToDo_jb April-08-2010 Allow Effort to be set from the IEcosimModifyFGearPlugin
+                        'FGear(fleets) needs to be set to FishRateGear(fleet,itime) for every time step not just in search modes
+                        'FGear(fleets) needs to be accessable from here(passed in)
+                        'Total fishing mortality needs to be set using modified effort
+
+                        'Dim ft As Single
+                        'For ift As Integer = 1 To Me.m_Data.nGear
+                        '    ft = ft + m_Data.FishMGear(ift, iGrp) * fgear(ift) * (Me.m_Quota.PropLandedTime(ift, iGrp) + Me.m_Quota.Propdiscardtime(ift, iGrp))
+                        'Next
+                        'm_Data.FishRateNo(iGrp, iTime) = ft
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                        'total fishing mortality  = density dependent catchability, effort and base mortality
+                        'FishRateNo() is mortality at the current effort 
                         m_Data.FishTime(iGrp) = m_Data.QmQo(iGrp) * m_Data.FishRateNo(iGrp, iTime) / (1 + (m_Data.QmQo(iGrp) - 1) * BB(iGrp) / m_Data.StartBiomass(iGrp))
                     End If
 
@@ -3842,7 +3857,13 @@ Namespace Ecosim
 
         End Sub
 
-
+        ''' <summary>
+        ''' Populates FishRateNo(group,time) with fishing mortality rates for all time steps
+        ''' </summary>
+        ''' <remarks>
+        ''' Fishing mortality rates include fishing effort, density dependent catchability and discard mortality rates. 
+        ''' Called to initialize <see cref="cEcosimDatastructures.FishRateNo">FishRateNo(group,time)</see> or when effort changes.
+        ''' </remarks>
         Public Sub SetFFromGear()
             'calculates Fishrateno by group from fishing efforts except for groups flagged
             'to be forced by group F over time using csv file (fisforced(i)=true if i is forced in csv)
@@ -3854,6 +3875,16 @@ Namespace Ecosim
 
         End Sub
 
+        ''' <summary>
+        ''' Populates FishRateNo(group,time) with fishing mortality rates for a timestep from the current Biomass, Effort and Density dependent catchability(QmQo)
+        ''' </summary>
+        ''' <param name="BB">Biomass(group).</param>
+        ''' <param name="t">Timestep.</param>
+        ''' <param name="fishtime">Fishing Mortality at the current time step.</param>
+        ''' <param name="PredEffort">Boolean flag True if effort being predicted, False otherwise.</param>
+        ''' <remarks>
+        ''' Called by <see cref="SetFFromGear">SetFFromGear()</see> during initialization 
+        ''' and by <see cref="RunModelValue">RunModelValue</see> when the MSE is running so Fishing Mortality includes discards at the current discard mortality rates.</remarks>
         Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByRef fishtime() As Single, ByVal PredEffort As Boolean)
             Dim i As Integer, ig As Integer, Ft As Single
 
