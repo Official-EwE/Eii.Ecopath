@@ -5441,28 +5441,55 @@ Namespace DataSources
         Private Function AddAsForcingFunction(ByVal ts As cTimeSeriesImport) As Boolean
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim iShape As Integer = 0
+            Dim dt As DataTable = Nothing
+            Dim bNewShape As Boolean = True
             Dim drow As DataRow = Nothing
-            Dim iNextShapeID As Integer = 0
             Dim bSucces As Boolean = True
             Dim sbZScale As New Text.StringBuilder()
             Dim iRepetitions As Integer = 1
-
-            ' ToDo: find if FF with this name exists. If so, overwrite
+            Dim iShapeID As Integer = 0
 
             Try
-                iNextShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
-            Catch
-                iNextShapeID = 1
+                ' Find shape ID for a FF with the same name as the TS to import
+                iShapeID = CInt(Me.m_db.GetValue("SELECT ShapeID FROM EcosimShapeTime WHERE Title='" & ts.Name & "'"))
+            Catch ex As Exception
+                iShapeID = 0
             End Try
+
+            ' Did FF already exist?
+            If (iShapeID > 0) Then
+                ' #Yes: Not creating a new shape
+                bNewShape = False
+            Else
+                ' #No: creating a new shape
+                ' Determine next shape ID
+                Try
+                    iShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
+                Catch
+                    iShapeID = 1
+                End Try
+                bNewShape = True
+            End If
 
             Try
                 ' Start writing
                 writer = Me.m_db.GetWriter("EcoSimShape")
-                drow = writer.NewRow()
-                drow("ShapeID") = iNextShapeID
+                If bNewShape Then
+                    drow = writer.NewRow()
+                    drow("ShapeID") = iShapeID
+                Else
+                    dt = writer.GetDataTable()
+                    drow = dt.Rows.Find(iShapeID)
+                    drow.BeginEdit()
+                End If
+
                 drow("ShapeType") = eDataTypes.Forcing
-                writer.AddRow(drow)
+
+                If bNewShape Then
+                    writer.AddRow(drow)
+                Else
+                    drow.EndEdit()
+                End If
                 writer.Commit()
                 Me.m_db.ReleaseWriter(writer, True)
 
@@ -5473,9 +5500,16 @@ Namespace DataSources
             Try
                 writer = Me.m_db.GetWriter("EcosimShapeTime")
 
-                drow = writer.NewRow()
-                drow("ShapeID") = iNextShapeID
-                drow("Title") = ts.Name
+                If bNewShape Then
+                    drow = writer.NewRow()
+                    drow("ShapeID") = iShapeID
+                    drow("Title") = ts.Name
+                Else
+                    dt = writer.GetDataTable()
+                    drow = dt.Rows.Find(iShapeID)
+                    drow.BeginEdit()
+                End If
+
                 drow("YZero") = 0
                 drow("YBase") = 0
                 drow("YEnd") = 0
@@ -5494,7 +5528,12 @@ Namespace DataSources
                 Next
 
                 drow("Zscale") = sbZScale.ToString()
-                writer.AddRow(drow)
+
+                If (bNewShape) Then
+                    writer.AddRow(drow)
+                Else
+                    drow.EndEdit()
+                End If
 
                 Me.m_db.ReleaseWriter(writer, True)
 
