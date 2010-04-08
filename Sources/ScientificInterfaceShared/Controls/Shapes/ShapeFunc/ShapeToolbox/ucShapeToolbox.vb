@@ -321,6 +321,9 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub UpdateThumbnails()
 
+            ' UIC may disappear in response to manager commands
+            If Me.m_uic Is Nothing Then Return
+
             Dim iThumbSize As Integer = Me.m_uic.StyleGuide.ThumbnailSize
             Dim largeImageList As New ImageList
             Dim item As ListViewItem = Nothing
