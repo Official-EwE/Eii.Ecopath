@@ -892,7 +892,7 @@ Namespace Ecosim
 
             Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler(Me.UIContext, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.SelectedShape = DirectCast(item, cFishingRateShape)
-            Me.m_sketchPad.Style = cStyleGuide.eStyleFlags.OK
+            Me.m_sketchPad.Editable = True
             Me.UpdateControls()
         End Sub
 
@@ -907,7 +907,7 @@ Namespace Ecosim
             Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.UIContext, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.SelectedShape = shape
             ' Cannot edit Fs anymore
-            Me.m_sketchPad.Style = cStyleGuide.eStyleFlags.NotEditable
+            Me.m_sketchPad.Editable = False
             Me.UpdateControls()
         End Sub
 
