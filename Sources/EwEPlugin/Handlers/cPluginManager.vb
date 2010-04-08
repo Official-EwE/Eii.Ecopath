@@ -898,12 +898,12 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcosimModifyFGear(ByVal FGear As Object, ByVal BB As Object, ByVal EcosimDataStructures As Object, ByVal CurrentTime As Object) As Boolean
+    Public Function EcosimModifyFGear(ByVal FGear() As Single, ByVal BB() As Single, ByVal EcosimDataStructures As Object, ByVal CurrentTimeIndex As Integer) As Boolean
 
         ' Invoke IEcosimModifyFGearPlugin.EcosimModifyFGear(FGear, BB, EcosimDataStructures, CurrentTime)
         Return Me.TryInvokeMethod(GetType(IEcosimModifyFGearPlugin), _
                                   "EcosimModifyFGear", _
-                                  New Object() {FGear, BB, EcosimDataStructures, CurrentTime})
+                                  New Object() {FGear, BB, EcosimDataStructures, CurrentTimeIndex})
 
     End Function
 
