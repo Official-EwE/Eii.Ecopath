@@ -73,12 +73,12 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnRemoveRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRemoveRegion.Click
-            Me.m_grid.ToggleDeleteRow()
+            Me.m_grid.SetSelectedRowsDeleteState(True)
             Me.UpdateControls()
         End Sub
 
         Private Sub OnPreserveRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
-            Me.m_grid.ToggleDeleteRow()
+            Me.m_grid.SetSelectedRowsDeleteState(False)
             Me.UpdateControls()
         End Sub
 
@@ -116,8 +116,8 @@ Namespace Ecospace
 
         Private Sub UpdateControls()
             Me.m_btnAddRegion.Enabled = Me.m_grid.CanAddRow()
-            Me.m_btnRemoveRegion.Enabled = Me.m_grid.IsRegionRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
-            Me.m_btnKeep.Enabled = Me.m_grid.IsRegionRow() And Me.m_grid.IsFlaggedForDeletionRow()
+            Me.m_btnRemoveRegion.Enabled = (Not Me.m_grid.HasDeletedRegionsSelected())
+            Me.m_btnKeep.Enabled = Me.m_grid.HasDeletedRegionsSelected()
         End Sub
 
 #End Region ' Updating

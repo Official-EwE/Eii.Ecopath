@@ -16,6 +16,8 @@ Namespace Ecospace
     Public Class gridEditRegions
         : Inherits EwEGrid
 
+#Region " Privates "
+
         ''' <summary>A number representing the row that contains the first Region</summary>
         Private Const iFIRSTREGIONROW As Integer = 1
 
@@ -55,6 +57,8 @@ Namespace Ecospace
         End Enum
 
         Private m_allocateRegionsFlag As AllocationModeType = AllocationModeType.None
+
+#End Region ' Privates
 
 #Region " Helper classes "
 
@@ -554,51 +558,59 @@ Namespace Ecospace
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Delete a row from the grid
+        ''' Set deletion flag for selected rows.
         ''' </summary>
-        ''' <param name="iRow">The index of the row to delete.</param>
+        ''' <param name="bDelete">
+        ''' Flag stating whether selected rows should be deleted.
+        ''' </param>
         ''' -----------------------------------------------------------------------
-        Public Sub ToggleDeleteRow(Optional ByVal iRow As Integer = -1)
+        Public Sub SetSelectedRowsDeleteState(ByVal bDelete As Boolean)
 
-            If iRow = -1 Then iRow = Me.SelectedRow
-
-            Dim iRegion As Integer = iRow - iFIRSTREGIONROW
             Dim ri As cRegionInfo = Nothing
 
-            ' Validate
-            If iRegion < 0 Then Return
+            For iRow As Integer = iFIRSTREGIONROW To Me.RowsCount
+                If Me.Selection.ContainsRow(iRow) Then
+                    Try
+                        ri = DirectCast(Me.m_alRegions(iRow - 1), cRegionInfo)
+                        Me.RemoveRegion(ri, bDelete, False)
+                    Catch ex As Exception
 
-            ri = DirectCast(Me.m_alRegions(iRegion), cRegionInfo)
-            Me.RemoveRegion(ri, Not ri.FlaggedForDeletion, True)
+                    End Try
+                End If
+            Next
+            Me.UpdateGrid()
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether a row holds a region.
+        ''' States whether the user has rows selected for deletion.
         ''' </summary>
-        ''' <param name="iRow"></param>
-        ''' <returns></returns>
-        Public Function IsRegionRow(Optional ByVal iRow As Integer = -1) As Boolean
-            If iRow = -1 Then iRow = Me.SelectedRow()
-            Return (iRow >= iFIRSTREGIONROW) And (iRow < Me.RowsCount)
+        ''' -------------------------------------------------------------------
+        Public Function HasDeletedRegionsSelected() As Boolean
+
+            Dim bHasDeletedRowsSelected As Boolean = False
+            Dim ri As cRegionInfo = Nothing
+
+            For iRow As Integer = iFIRSTREGIONROW To Me.RowsCount
+                If Me.Selection.ContainsRow(iRow) Then
+                    Try
+                        ri = DirectCast(Me.m_alRegions(iRow - 1), cRegionInfo)
+                        bHasDeletedRowsSelected = bHasDeletedRowsSelected Or ri.FlaggedForDeletion
+                    Catch ex As Exception
+
+                    End Try
+                End If
+            Next
+            Return bHasDeletedRowsSelected
+
         End Function
 
-        ''' <summary>
-        ''' States whether the region on a row is flagged for deletion.
-        ''' </summary>
-        Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
-            If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not IsRegionRow(iRow) Then Return False
-
-            Dim iRegion As Integer = iRow - iFIRSTREGIONROW
-            Dim ri As cRegionInfo = DirectCast(Me.m_alRegions(iRegion), cRegionInfo)
-
-            Return ri.FlaggedForDeletion
-        End Function
-
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Add a row by creating a new region.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub InsertRow()
             If Not Me.CanAddRow() Then Return
 
@@ -614,13 +626,20 @@ Namespace Ecospace
                     cStringUtils.GetNextNumber(lstrRegions.ToArray(), My.Resources.DEFAULT_NEWREGION_NUM)))
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' States whether a row can be inserted at the indicated position.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Function CanAddRow() As Boolean
             Return True
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create regions from MPAs
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub CreateMPARegions()
 
             Dim iMPA As Integer = 0
@@ -646,6 +665,11 @@ Namespace Ecospace
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create regions from Habitats.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub CreateHabitatRegions()
 
             Dim iHab As Integer = 0
@@ -671,6 +695,11 @@ Namespace Ecospace
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create regions from cells.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub CreateCellRegions()
 
             ' ToDo_JS: globalize this method
@@ -737,10 +766,12 @@ Namespace Ecospace
         ''' Remove a region.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub RemoveRegion(ByVal ri As cRegionInfo, ByVal bRemove As Boolean, Optional ByVal bUpdate As Boolean = True)
+        Private Sub RemoveRegion(ByVal ri As cRegionInfo, _
+                                 ByVal bRemove As Boolean, _
+                                 Optional ByVal bUpdate As Boolean = True)
 
             ' Toggle 'flagged for deletion' flag
-            ri.FlaggedForDeletion = Not ri.FlaggedForDeletion
+            ri.FlaggedForDeletion = bRemove
 
             ' Check to see what is to happen to the Region now
             Select Case ri.Status
