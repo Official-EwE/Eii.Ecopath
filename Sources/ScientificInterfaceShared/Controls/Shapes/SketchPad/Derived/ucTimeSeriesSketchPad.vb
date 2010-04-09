@@ -47,6 +47,8 @@ Namespace Controls
                 ByVal drawMode As eSketchDrawModeTypes, _
                 ByVal sYMax As Single)
 
+            ' ToDo: Globalize this method
+
             If Me.UIContext Is Nothing Then Return
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
@@ -141,17 +143,25 @@ Namespace Controls
                 If TypeOf shape Is cGroupTimeSeries Then
 
                     Dim gts As cGroupTimeSeries = DirectCast(shape, cGroupTimeSeries)
-                    Dim group As cEcoPathGroupInput = core.EcoPathGroupInputs(gts.GroupIndex)
+                    Dim igroup As Integer = gts.GroupIndex
 
-                    strName = group.Name
+                    If (igroup > 0) Then
+                        strName = core.EcoPathGroupInputs(igroup).Name
+                    Else
+                        strName = "Not linked to any group!"
+                    End If
                     strType = cTimeSeriesShapeGUIHandler.GetTimeSeriesTypeName(gts.TimeSeriesType)
 
                 ElseIf TypeOf shape Is cFleetTimeSeries Then
 
                     Dim fts As cFleetTimeSeries = DirectCast(shape, cFleetTimeSeries)
-                    Dim fleet As cFleetInput = core.FleetInputs(fts.FleetIndex)
+                    Dim ifleet As Integer = fts.FleetIndex
 
-                    strName = fleet.Name
+                    If (ifleet > 0) Then
+                        strName = core.FleetInputs(fts.FleetIndex).Name
+                    Else
+                        strName = "Not linked to any fleet!"
+                    End If
                     strType = cTimeSeriesShapeGUIHandler.GetTimeSeriesTypeName(fts.TimeSeriesType)
 
                 End If
