@@ -101,9 +101,6 @@ Public Class frmModelDescription
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-        MyBase.OnFormClosed(e)
-        If Me.UIContext Is Nothing Then Return
-
         Me.m_fpArea.Release()
         Me.m_fpAuthor.Release()
         Me.m_fpContact.Release()
@@ -133,6 +130,8 @@ Public Class frmModelDescription
 
         RemoveHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
         Me.m_propUnitMonetary = Nothing
+
+        MyBase.OnFormClosed(e)
 
     End Sub
 

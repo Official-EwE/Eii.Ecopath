@@ -69,12 +69,11 @@ Public Class frmEcotracerOutput
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        MyBase.OnFormClosed(e)
 
         RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
         Me.m_zgh.Detach()
         Me.m_zgh = Nothing
+        MyBase.OnFormClosed(e)
 
     End Sub
 

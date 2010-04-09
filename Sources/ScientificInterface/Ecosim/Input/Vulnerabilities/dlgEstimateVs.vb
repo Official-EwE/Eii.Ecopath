@@ -63,8 +63,8 @@ Namespace Ecosim
 
             RemoveHandler Me.m_grid.OnSelectedVulnerabilitiesChanged, AddressOf OnSelectedVulnerabilitiesChanged
 
-            MyBase.OnFormClosed(e)
             Me.m_zgh.Detach()
+            MyBase.OnFormClosed(e)
 
         End Sub
 

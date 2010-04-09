@@ -41,11 +41,6 @@ Namespace Ecosim
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            MyBase.OnFormClosed(e)
-            Me.CoreComponents = Nothing
-        End Sub
-
 #End Region ' Private event handlers
 
 #Region " Internal implementation "

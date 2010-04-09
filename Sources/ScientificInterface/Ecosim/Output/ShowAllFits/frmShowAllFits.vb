@@ -68,7 +68,6 @@ Namespace Ecosim
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
-            Me.CoreComponents = Nothing
             MyBase.OnFormClosed(e)
         End Sub
 

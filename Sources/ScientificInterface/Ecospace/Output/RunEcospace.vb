@@ -272,7 +272,6 @@ Namespace Ecospace
 
             Me.m_bpConTracing = Nothing
 
-            Me.CoreComponents = Nothing
             MyBase.OnFormClosed(e)
         End Sub
 

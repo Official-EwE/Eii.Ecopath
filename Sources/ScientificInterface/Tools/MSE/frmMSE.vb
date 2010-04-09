@@ -75,7 +75,6 @@ Public Class frmMSE
         RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         RemoveHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
 
-        Me.CoreComponents = Nothing
         Me.m_MSE.Disconnect()
         MyBase.OnFormClosed(e)
 

@@ -60,15 +60,12 @@ Namespace Ecotracer
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-            MyBase.OnFormClosed(e)
-
-            Me.CoreComponents = Nothing
-
             Me.m_fpCDecayEnv.Release()
             Me.m_fpCInflowEnv.Release()
             Me.m_fpCOutflowEnv.Release()
             Me.m_fpCZeroEnv.Release()
             Me.m_fpInflowForceNumberEnv.Release()
+            MyBase.OnFormClosed(e)
 
         End Sub
 

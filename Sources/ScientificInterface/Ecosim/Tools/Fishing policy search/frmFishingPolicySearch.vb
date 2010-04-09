@@ -113,7 +113,6 @@ Namespace Ecosim
             Me.m_zghResults.Detach()
             Me.m_zghResults = Nothing
 
-            Me.CoreComponents = Nothing
             MyBase.OnFormClosed(e)
 
         End Sub

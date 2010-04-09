@@ -137,7 +137,6 @@ Namespace Ecospace.Basemap
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-            MyBase.OnFormClosed(e)
 
             RemoveHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
 
@@ -177,6 +176,7 @@ Namespace Ecospace.Basemap
             End If
 
             Me.m_propContaminantTracing = Nothing
+            MyBase.OnFormClosed(e)
 
         End Sub
 

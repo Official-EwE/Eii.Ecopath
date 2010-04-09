@@ -89,7 +89,6 @@ Namespace Ecospace
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            Me.CoreComponents = Nothing
             Me.m_bpUseIBM = Nothing
             Me.m_bpUseNewStanza = Nothing
             Me.m_bpAdjustSpace = Nothing

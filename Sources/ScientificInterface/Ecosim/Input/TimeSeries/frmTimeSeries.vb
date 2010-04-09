@@ -73,11 +73,6 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
-            MyBase.OnFormClosed(e)
-            Me.CoreComponents = Nothing
-        End Sub
-
 #End Region ' Event handlers
 
 #Region " Internal implementation "

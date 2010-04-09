@@ -64,7 +64,6 @@ Namespace Ecospace
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            Me.CoreComponents = Nothing
             Me.m_fpSumStartTime.Release()
             Me.m_fpSumEndTime.Release()
             Me.m_fpSumLength.Release()

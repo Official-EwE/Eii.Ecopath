@@ -45,8 +45,6 @@ Namespace Ecosim
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             ' Release style guide
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            ' Disconnect from baseclass refresh
-            Me.CoreComponents = Nothing
             ' Done
             MyBase.OnFormClosed(e)
         End Sub

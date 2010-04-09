@@ -42,12 +42,6 @@ Namespace Ecosim
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoPath, eCoreComponentType.PPIManager}
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            MyBase.OnFormClosed(e)
-            ' Release core messages
-            Me.CoreComponents = Nothing
-        End Sub
-
 #End Region ' Baseclass overrides
 
 #Region " Base functionality "

@@ -71,18 +71,6 @@ Namespace Ecosim
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler; implemented to make sure that this form stops receiving
-        ''' <see cref="cMessage">messages</see> from specific 
-        ''' <see cref="eCoreComponentType">message sources</see>.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
-            Me.CoreComponents = Nothing
-            MyBase.OnFormClosed(e)
-        End Sub
-
 #End Region ' Events 
 
 #Region " Overrides "

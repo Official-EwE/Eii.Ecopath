@@ -160,8 +160,6 @@ Namespace Ecosim
             Me.m_fpSSorg.Release()
             Me.m_fpTrial.Release()
 
-            Me.CoreComponents = Nothing
-
             MyBase.OnFormClosed(e)
 
         End Sub

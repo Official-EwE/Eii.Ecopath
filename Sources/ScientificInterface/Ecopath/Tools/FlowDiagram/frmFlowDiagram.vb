@@ -89,7 +89,6 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             RemoveHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
-            Me.CoreComponents = Nothing
             MyBase.OnFormClosed(e)
         End Sub
 

@@ -34,10 +34,10 @@ Public Class frmMSEResults
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
-        MyBase.OnFormClosed(e)
 
         RemoveHandler Me.m_EventSource.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
         RemoveHandler Me.m_EventSource.onRunCompleted, AddressOf Me.onRunCompleted
+        MyBase.OnFormClosed(e)
 
     End Sub
 

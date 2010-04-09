@@ -92,9 +92,6 @@ Namespace Ecosim
             Me.m_fpUseVarPQ.Release()
             Me.m_fpTempForceNumber.Release()
 
-            ' Clean up
-            Me.CoreComponents = Nothing
-
             RemoveHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
             Me.m_propConTracing = Nothing
 

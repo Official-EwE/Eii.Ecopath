@@ -84,9 +84,8 @@ Namespace Ecosim
             Me.m_fpEndSum.Release()
             Me.m_fpNumSteps.Release()
             Me.m_fpStartSum.Release()
-
-            Me.CoreComponents = Nothing
             MyBase.OnFormClosed(e)
+
         End Sub
 
         Private Sub cbGears_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _

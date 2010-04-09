@@ -106,10 +106,8 @@ Public Class dlgSensitivityOfSStoV
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
-
-        MyBase.OnFormClosed(e)
         Me.m_F2TSManager = Nothing
-
+        MyBase.OnFormClosed(e)
     End Sub
 
 #End Region ' Form

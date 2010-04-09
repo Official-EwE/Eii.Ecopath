@@ -149,8 +149,6 @@ Namespace Ecosim
             RemoveHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
             Me.m_zgp.Detach()
 
-            Me.CoreComponents = Nothing
-
             MyBase.OnFormClosed(e)
         End Sub
 
