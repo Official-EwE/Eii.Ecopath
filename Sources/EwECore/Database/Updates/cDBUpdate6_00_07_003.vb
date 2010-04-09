@@ -92,8 +92,8 @@ Friend Class cDBUpdate6_00_07_003
                     If Not Convert.IsDBNull(reader("VisualStyle")) Then
                         strVisualStyle = CStr(reader("VisualStyle"))
                     End If
-                    If Not Convert.IsDBNull(reader("PedigreeLevelID")) Then
-                        iPedigree = cStringUtils.ConvertToInteger(CStr(reader("PedigreeLevelID")))
+                    If Not Convert.IsDBNull(reader("Pedigree")) Then
+                        iPedigree = cStringUtils.ConvertToInteger(CStr(reader("Pedigree")))
                     Else
                         iPedigree = cCore.NULL_VALUE
                     End If
