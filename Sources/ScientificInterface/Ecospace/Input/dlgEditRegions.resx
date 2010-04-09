@@ -136,13 +136,13 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridEditRegions, EwE6, Version=6.0.6.1112, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.Ecospace.gridEditRegions, EwE6, Version=6.0.7.408, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_btnAddRegion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -172,7 +172,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnAddRegion.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_btnRemoveRegion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -205,7 +205,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnRemoveRegion.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="TableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -295,7 +295,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="OK_Button" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Cancel_Button" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -337,75 +337,72 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnKeep.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="btnHabToRegion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnHabToRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="btnHabToRegion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnHabToRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>225, 156</value>
-  </data>
-  <data name="btnHabToRegion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 23</value>
-  </data>
-  <data name="btnHabToRegion.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="btnHabToRegion.Text" xml:space="preserve">
-    <value>From habitats</value>
-  </data>
-  <data name="&gt;&gt;btnHabToRegion.Name" xml:space="preserve">
-    <value>btnHabToRegion</value>
-  </data>
-  <data name="&gt;&gt;btnHabToRegion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnHabToRegion.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnHabToRegion.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="btnFromCells.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnHabToRegion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="btnFromCells.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="m_btnHabToRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="btnFromCells.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnHabToRegion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="btnFromCells.Location" type="System.Drawing.Point, System.Drawing">
-    <value>225, 185</value>
+  <data name="m_btnHabToRegion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>225, 156</value>
   </data>
-  <data name="btnFromCells.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnHabToRegion.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 23</value>
   </data>
-  <data name="btnFromCells.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+  <data name="m_btnHabToRegion.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="btnFromCells.Text" xml:space="preserve">
-    <value>From cells</value>
+  <data name="m_btnHabToRegion.Text" xml:space="preserve">
+    <value>From habitats</value>
   </data>
-  <data name="btnFromCells.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="&gt;&gt;m_btnHabToRegion.Name" xml:space="preserve">
+    <value>m_btnHabToRegion</value>
   </data>
-  <data name="&gt;&gt;btnFromCells.Name" xml:space="preserve">
-    <value>btnFromCells</value>
-  </data>
-  <data name="&gt;&gt;btnFromCells.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnHabToRegion.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btnFromCells.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnHabToRegion.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btnFromCells.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnHabToRegion.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_btnFromCells.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnFromCells.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="m_btnFromCells.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnFromCells.Location" type="System.Drawing.Point, System.Drawing">
+    <value>225, 214</value>
+  </data>
+  <data name="m_btnFromCells.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 23</value>
+  </data>
+  <data name="m_btnFromCells.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_btnFromCells.Text" xml:space="preserve">
+    <value>From cells</value>
+  </data>
+  <data name="&gt;&gt;m_btnFromCells.Name" xml:space="preserve">
+    <value>m_btnFromCells</value>
+  </data>
+  <data name="&gt;&gt;m_btnFromCells.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnFromCells.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnFromCells.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_lbEdit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -479,6 +476,39 @@
   </data>
   <data name="&gt;&gt;m_lblGenerate.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_btnMPAtoRegion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnMPAtoRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="m_btnMPAtoRegion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnMPAtoRegion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>225, 185</value>
+  </data>
+  <data name="m_btnMPAtoRegion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 23</value>
+  </data>
+  <data name="m_btnMPAtoRegion.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_btnMPAtoRegion.Text" xml:space="preserve">
+    <value>From MPAs</value>
+  </data>
+  <data name="&gt;&gt;m_btnMPAtoRegion.Name" xml:space="preserve">
+    <value>m_btnMPAtoRegion</value>
+  </data>
+  <data name="&gt;&gt;m_btnMPAtoRegion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnMPAtoRegion.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnMPAtoRegion.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

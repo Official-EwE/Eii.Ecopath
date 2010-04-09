@@ -49,8 +49,9 @@ Namespace Ecospace
         ''' <summary>Enumerated type defining how regions should be allocated, if at all.</summary>
         Private Enum AllocationModeType As Integer
             None = 0
-            Habitat = 1
-            Cell = 2
+            Habitat
+            MPA
+            Cell
         End Enum
 
         Private m_allocateRegionsFlag As AllocationModeType = AllocationModeType.None
@@ -81,6 +82,8 @@ Namespace Ecospace
             Private m_status As AddRemoveItemStatus = AddRemoveItemStatus.Original
             ''' <summary>Habitat to allocate this region to, if any</summary>
             Private m_hab As cEcospaceHabitat = Nothing
+            ''' <summary>MPA to allocate this region to, if any</summary>
+            Private m_mpa As cEcospaceMPA = Nothing
             ''' <summary>Cell (col, row) to allocate this region to, if any</summary>
             Private m_ptCell As New Point(0, 0)
 
@@ -226,6 +229,20 @@ Namespace Ecospace
                 End Get
                 Set(ByVal value As cEcospaceHabitat)
                     Me.m_hab = value
+                End Set
+            End Property
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the MPA this region is associated with.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public Property MPA() As cEcospaceMPA
+                Get
+                    Return Me.m_mpa
+                End Get
+                Set(ByVal value As cEcospaceMPA)
+                    Me.m_mpa = value
                 End Set
             End Property
 
@@ -604,6 +621,31 @@ Namespace Ecospace
             Return True
         End Function
 
+        Public Sub CreateMPARegions()
+
+            Dim iMPA As Integer = 0
+            Dim mpa As cEcospaceMPA = Nothing
+            Dim ri As cRegionInfo = Nothing
+
+            ' Delete all existing regions
+            Dim ari As cRegionInfo() = Me.m_alRegions.ToArray
+            For Each ri In ari
+                Me.RemoveRegion(ri, False, False)
+            Next
+
+            ' Create new regions for each MPA
+            For iMPA = 1 To Me.Core.nMPAs
+                mpa = Me.Core.EcospaceMPAs(iMPA)
+                ri = Me.CreateRegion(mpa.Name, False)
+                ri.MPA = mpa
+            Next
+
+            Me.m_allocateRegionsFlag = AllocationModeType.MPA
+
+            Me.UpdateGrid()
+
+        End Sub
+
         Public Sub CreateHabitatRegions()
 
             Dim iHab As Integer = 0
@@ -631,12 +673,22 @@ Namespace Ecospace
 
         Public Sub CreateCellRegions()
 
+            ' ToDo_JS: globalize this method
+
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
             Dim ri As cRegionInfo = Nothing
 
-            ' ToDo_JS: Prompt for confirmation if this will create an insane pile of regions?
+            ' Throw warning that this may cause Ecospace to run out of memory.
+            Dim lTotal As Long = Me.Core.EcospaceBasemap.InCol * Me.Core.EcospaceBasemap.InRow
+            If lTotal > 500 Then ' yeah, that is an arbitrary number alright
+                ' Throw warning
+                If MsgBox("Based on the number of cells in your map this operation may cause Ecospace to run out of memory when gathering statistics. Are you sure you want to convert all cells to individual regions?", _
+                          MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel) <> MsgBoxResult.Yes Then
+                    Return
+                End If
+            End If
 
             ' Delete all existing regions
             Dim ari As cRegionInfo() = Me.m_alRegions.ToArray
@@ -827,8 +879,8 @@ Namespace Ecospace
             Dim iRegion As Integer = 0
             Dim bSuccess As Boolean = True
 
-            ' Habitat to region mapping
-            Dim dtHabitatIDToRegionID As New Dictionary(Of Integer, Integer)
+            ' Source to region mapping
+            Dim dtSourceIDToRegionID As New Dictionary(Of Integer, Integer)
             Dim dtCellToRegionID As New Dictionary(Of Point, Integer)
 
             ' Validate content of the grid
@@ -846,18 +898,22 @@ Namespace Ecospace
                 strPrompt = String.Format(My.Resources.ECOSPACE_EDITREGION_CONFIRMDELETENUM_PROMPT, Me.m_alRegionsRemoved.Count)
 
                 Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
+
                     Case MsgBoxResult.Cancel
                         ' Abort Apply process
                         Return False
+
                     Case MsgBoxResult.Yes
                         ' Confirm all regions
                         For Each ri In Me.m_alRegionsRemoved
                             ri.Confirmed = True
                         Next
                         bConfigurationChanged = True
+
                     Case Else
                         ' Unexpected anwer: assert
                         Debug.Assert(False)
+
                 End Select
 
             Else
@@ -869,19 +925,24 @@ Namespace Ecospace
                         strPrompt = String.Format(My.Resources.ECOSPACE_EDITREGION_CONFIRMDELETE_PROMPT, ri.Name)
 
                         Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
+
                             Case MsgBoxResult.Cancel
                                 ' Abort Apply process
                                 Return False
+
                             Case MsgBoxResult.No
                                 ' Do not delete this Region
                                 ri.Confirmed = False
+
                             Case MsgBoxResult.Yes
                                 ' Delete this Region
                                 ri.Confirmed = True
                                 bConfigurationChanged = True
+
                             Case Else
                                 ' Unexpected anwer: assert
                                 Debug.Assert(False)
+
                         End Select
 
                     End If
@@ -903,13 +964,21 @@ Namespace Ecospace
 
                         ' Prepare mapping
                         Select Case Me.m_allocateRegionsFlag
+
                             Case AllocationModeType.None
+
+                            Case AllocationModeType.MPA
+                                Dim mpa As cEcospaceMPA = ri.MPA
+                                If (mpa IsNot Nothing) Then dtSourceIDToRegionID(CInt(mpa.GetVariable(eVarNameFlags.DBID))) = iDBID
+
                             Case AllocationModeType.Habitat
                                 Dim hab As cEcospaceHabitat = ri.Habitat
-                                If (hab IsNot Nothing) Then dtHabitatIDToRegionID(CInt(hab.GetVariable(eVarNameFlags.DBID))) = iDBID
+                                If (hab IsNot Nothing) Then dtSourceIDToRegionID(CInt(hab.GetVariable(eVarNameFlags.DBID))) = iDBID
+
                             Case AllocationModeType.Cell
                                 Dim pt As Point = ri.Cell
                                 If ((pt.X > 0) And (pt.Y > 0)) Then dtCellToRegionID(pt) = iDBID
+
                         End Select
                     End If
                 Next
@@ -976,14 +1045,77 @@ Namespace Ecospace
             End If
 
             Select Case Me.m_allocateRegionsFlag
+
                 Case AllocationModeType.None
+
+                Case AllocationModeType.MPA
+                    bSuccess = bSuccess And Me.AllocateRegionsFromMPAs(dtSourceIDToRegionID)
+
                 Case AllocationModeType.Habitat
-                    bSuccess = bSuccess And Me.AllocateRegionsFromHabitats(dtHabitatIDToRegionID)
+                    bSuccess = bSuccess And Me.AllocateRegionsFromHabitats(dtSourceIDToRegionID)
+
                 Case AllocationModeType.Cell
                     bSuccess = bSuccess And Me.AllocateRegionsFromCells(dtCellToRegionID)
+
             End Select
 
             Return bSuccess
+
+        End Function
+
+        Private Function AllocateRegionsFromMPAs(ByVal dtMPAIDToRegionID As Dictionary(Of Integer, Integer)) As Boolean
+
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            Dim bmlRegions As cEcospaceLayer = bm.LayerRegion()
+            Dim bmlMPAs As cEcospaceLayer = bm.LayerMPA()
+            Dim iMPA As Integer = 0
+            Dim iMPADBID As Integer = 0
+            Dim mpa As cEcospaceMPA = Nothing
+            Dim iReg As Integer = 0
+            Dim iRegDBID As Integer = 0
+            Dim reg As cEcospaceRegion = Nothing
+
+            ' Ugh
+            Dim drm As Dictionary(Of Integer, cEcospaceRegion) = Me.GetRegionMappings()
+
+            ' For each row
+            For iRow As Integer = 1 To bm.InRow
+                ' For each col
+                For iCol As Integer = 1 To bm.InCol
+                    ' Get habitat for cell
+                    iMPA = CInt(bmlMPAs.Cell(iRow, iCol))
+                    ' Get default region
+                    iReg = 0
+                    ' Is habitat present at this cell?
+                    If (iMPA > 0) Then
+                        ' #Yes: get mpa
+                        mpa = Me.Core.EcospaceMPAs(iMPA)
+                        ' Get DBID for MPA
+                        iMPADBID = CInt(mpa.GetVariable(eVarNameFlags.DBID))
+                        ' Find if there is a region mapping
+                        If (dtMPAIDToRegionID.ContainsKey(iMPADBID)) Then
+                            ' #Yes: get mapped region DBID
+                            iRegDBID = dtMPAIDToRegionID(iMPADBID)
+                            ' Try to get region (this should work but hey, still good to check)
+                            If drm.ContainsKey(iRegDBID) Then
+                                ' #Yes: found a region
+                                reg = drm(iRegDBID)
+                                ' Finally get region index
+                                iReg = reg.Index
+                            End If
+                        End If
+                    End If
+
+                    ' Sanity check
+                    Debug.Assert((iMPA <> 0) = (iReg <> 0))
+
+                    ' Assign or clear region, depending on what has been found
+                    bmlRegions.Cell(iRow, iCol) = iReg
+
+                Next iCol
+            Next iRow
+
+            Return True
 
         End Function
 

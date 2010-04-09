@@ -82,18 +82,28 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_RegionGrid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
+        Private Sub m_RegionGrid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
+            Handles m_grid.OnSelectionChanged
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnCreateRegionsFromHabitats(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnHabToRegion.Click
+        Private Sub OnCreateRegionsFromHabitats(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnHabToRegion.Click
             Me.Cursor = Cursors.WaitCursor
             Me.m_grid.CreateHabitatRegions()
             Me.Cursor = Cursors.Default
             Me.m_eAllocateRegions = AllocationModeType.Habitat
         End Sub
 
-        Private Sub OnCreateRegionsFromCells(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFromCells.Click
+        Private Sub OnCreateRegionsFromMPAs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnMPAtoRegion.Click
+            Me.Cursor = Cursors.WaitCursor
+            Me.m_grid.CreateMPARegions()
+            Me.Cursor = Cursors.Default
+            Me.m_eAllocateRegions = AllocationModeType.Habitat
+        End Sub
+
+        Private Sub OnCreateRegionsFromCells(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnFromCells.Click
             Me.Cursor = Cursors.WaitCursor
             Me.m_grid.CreateCellRegions()
             Me.Cursor = Cursors.Default
