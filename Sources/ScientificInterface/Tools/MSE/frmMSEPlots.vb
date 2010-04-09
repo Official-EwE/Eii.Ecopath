@@ -73,7 +73,6 @@ Public Class frmMSEPlots
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        MyBase.OnFormClosed(e)
 
         RemoveHandler Me.m_MSEEvents.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
         RemoveHandler Me.m_MSEEvents.onRunCompleted, AddressOf Me.onRunCompleted
@@ -85,6 +84,7 @@ Public Class frmMSEPlots
         End If
 
         RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
+        MyBase.OnFormClosed(e)
 
     End Sub
 
