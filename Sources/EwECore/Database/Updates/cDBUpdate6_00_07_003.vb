@@ -70,32 +70,45 @@ Friend Class cDBUpdate6_00_07_003
 
             While reader.Read
 
-                strValueID = CStr(reader("ValueID"))
-                strValueID = strValueID.Replace("_", ":")
-                strValueID = strValueID.Replace("-", ":")
-                strValueID = strValueID.Replace("(", ":")
-                strValueID = strValueID.Replace(")", "")
+                Try
+                    strValueID = CStr(reader("ValueID"))
+                Catch ex As Exception
+                    strValueID = ""
+                End Try
 
-                strRemark = ""
-                strVisualStyle = ""
+                If (Not String.IsNullOrEmpty(strValueID)) Then
 
-                If Not Convert.IsDBNull(reader("Remark")) Then
-                    strRemark = CStr(reader("Remark")).Replace("""", """""")
-                End If
-                If Not Convert.IsDBNull(reader("VisualStyle")) Then
-                    strVisualStyle = CStr(reader("VisualStyle"))
-                End If
-                iPedigree = cStringUtils.ConvertToInteger(CStr(reader("Pedigree")))
+                    strValueID = strValueID.Replace("_", ":")
+                    strValueID = strValueID.Replace("-", ":")
+                    strValueID = strValueID.Replace("(", ":")
+                    strValueID = strValueID.Replace(")", "")
 
-                ' Need to transfer?
-                If (Not String.IsNullOrEmpty(strRemark)) Or _
-                   (Not String.IsNullOrEmpty(strVisualStyle)) Or _
-                   (iPedigree >= 0) Then
+                    strRemark = ""
+                    strVisualStyle = ""
 
-                    strSQL = String.Format("INSERT INTO Auxillary VALUES ({0}, ""{1}"", ""{2}"", ""{3}"", {4})", _
-                                           iDBID, strValueID, strRemark, strVisualStyle, iPedigree)
-                    bSucces = bSucces And db.Execute(strSQL)
-                    iDBID += 1
+                    If Not Convert.IsDBNull(reader("Remark")) Then
+                        strRemark = CStr(reader("Remark")).Replace("""", """""")
+                    End If
+                    If Not Convert.IsDBNull(reader("VisualStyle")) Then
+                        strVisualStyle = CStr(reader("VisualStyle"))
+                    End If
+                    If Not Convert.IsDBNull(reader("Pedigree")) Then
+                        iPedigree = cStringUtils.ConvertToInteger(CStr(reader("Pedigree")))
+                    Else
+                        iPedigree = cCore.NULL_VALUE
+                    End If
+
+                    ' Need to transfer?
+                    If (Not String.IsNullOrEmpty(strRemark)) Or _
+                       (Not String.IsNullOrEmpty(strVisualStyle)) Or _
+                       (iPedigree >= 0) Then
+
+                        strSQL = String.Format("INSERT INTO Auxillary VALUES ({0}, ""{1}"", ""{2}"", ""{3}"", {4})", _
+                                               iDBID, strValueID, strRemark, strVisualStyle, iPedigree)
+                        bSucces = bSucces And db.Execute(strSQL)
+                        iDBID += 1
+                    End If
+
                 End If
 
             End While
