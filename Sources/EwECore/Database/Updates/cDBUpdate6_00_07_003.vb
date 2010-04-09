@@ -63,7 +63,7 @@ Friend Class cDBUpdate6_00_07_003
         Dim iPedigree As Integer = 1
         Dim bSucces As Boolean = False
 
-        bSucces = db.Execute("CREATE TABLE Auxillary (DBID Integer, ValueID TEXT(70), Remark MEMO, VisualStyle MEMO, Pedigree INTEGER)")
+        bSucces = db.Execute("CREATE TABLE Auxillary (DBID Integer, ValueID TEXT(70), Remark MEMO, VisualStyle MEMO, PedigreeLevelID INTEGER)")
         bSucces = bSucces And db.Execute("ALTER TABLE Auxillary ADD PRIMARY KEY (DBID)")
 
         If bSucces Then
@@ -92,8 +92,8 @@ Friend Class cDBUpdate6_00_07_003
                     If Not Convert.IsDBNull(reader("VisualStyle")) Then
                         strVisualStyle = CStr(reader("VisualStyle"))
                     End If
-                    If Not Convert.IsDBNull(reader("Pedigree")) Then
-                        iPedigree = cStringUtils.ConvertToInteger(CStr(reader("Pedigree")))
+                    If Not Convert.IsDBNull(reader("PedigreeLevelID")) Then
+                        iPedigree = cStringUtils.ConvertToInteger(CStr(reader("PedigreeLevelID")))
                     Else
                         iPedigree = cCore.NULL_VALUE
                     End If
