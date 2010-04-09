@@ -261,31 +261,35 @@ Namespace Ecosim
 
                         gts = DirectCast(ts, cGroupTimeSeries)
                         iGroup = gts.GroupIndex
-                        grpOutput = Me.Core.EcoSimGroupOutputs(iGroup)
 
-                        For iTime As Integer = 1 To Me.Core.nEcosimTimeSteps
+                        If (iGroup > 0) Then
 
-                            asSimData(iTime) = 0.0!
+                            grpOutput = Me.Core.EcoSimGroupOutputs(iGroup)
 
-                            Select Case gts.TimeSeriesType
+                            For iTime As Integer = 1 To Me.Core.nEcosimTimeSteps
 
-                                Case eTimeSeriesType.Catches, _
-                                     eTimeSeriesType.CatchesForcing
-                                    asSimData(iTime) = grpOutput.Yield(iTime)
+                                asSimData(iTime) = 0.0!
 
-                                Case eTimeSeriesType.TotalMortality
-                                    asSimData(iTime) = grpOutput.TotalMort(iTime)
+                                Select Case gts.TimeSeriesType
 
-                                Case eTimeSeriesType.AverageWeight
-                                    If grpOutput.isMultiStanza Then
-                                        asSimData(iTime) = grpOutput.AvgWeight(iTime)
-                                    End If
+                                    Case eTimeSeriesType.Catches, _
+                                         eTimeSeriesType.CatchesForcing
+                                        asSimData(iTime) = grpOutput.Yield(iTime)
 
-                                Case Else
-                                    asSimData(iTime) = grpOutput.Biomass(iTime)
+                                    Case eTimeSeriesType.TotalMortality
+                                        asSimData(iTime) = grpOutput.TotalMort(iTime)
 
-                            End Select
-                        Next
+                                    Case eTimeSeriesType.AverageWeight
+                                        If grpOutput.isMultiStanza Then
+                                            asSimData(iTime) = grpOutput.AvgWeight(iTime)
+                                        End If
+
+                                    Case Else
+                                        asSimData(iTime) = grpOutput.Biomass(iTime)
+
+                                End Select
+                            Next
+                        End If
 
                     End If
                 End If
