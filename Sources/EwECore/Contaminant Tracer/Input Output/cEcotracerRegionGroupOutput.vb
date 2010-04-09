@@ -56,8 +56,12 @@ Public Class cEcotracerRegionGroupOutput
         Me.m_nRegions = TheCore.GetCoreCounter(eCoreCounterTypes.nRegions)
         Me.m_nTimeSteps = TheCore.GetCoreCounter(eCoreCounterTypes.nEcospaceTimeSteps)
 
-        ReDim m_data(Me.m_nRegions, Me.m_nGroups + 1, Me.m_nTimeSteps)
-        ReDim m_cb(Me.m_nRegions, Me.m_nGroups + 1, Me.m_nTimeSteps)
+        Try
+            ReDim m_data(Me.m_nRegions, Me.m_nGroups + 1, Me.m_nTimeSteps)
+            ReDim m_cb(Me.m_nRegions, Me.m_nGroups + 1, Me.m_nTimeSteps)
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString & ".New() Exception: " & ex.Message)
+        End Try
 
     End Sub
 

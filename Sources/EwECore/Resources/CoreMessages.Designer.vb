@@ -771,6 +771,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecospace will not be able to run due to an error during initialization..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_INIT_ERROR() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_INIT_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecospace scenario &apos;{0}&apos; failed to load. {1}.
         '''</summary>
         Friend Shared ReadOnly Property ECOSPACE_LOAD_FAILED() As String
@@ -803,6 +812,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ECOSPACE_NO_SPACE_SCENARIO() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_NO_SPACE_SCENARIO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace has run out of memory. Please try reducing the number of Regions and/or Timesteps..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_OUT_OF_MEMORY() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_OUT_OF_MEMORY", resourceCulture)
             End Get
         End Property
         

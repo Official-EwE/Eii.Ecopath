@@ -888,4 +888,10 @@ System Error: {0}</value>
   <data name="ECOSPACE_SIM_INIT_FAILED" xml:space="preserve">
     <value>Ecospace failed to initialize Ecosim. Please try loading a different Ecosim scenario and re-running Ecospace.</value>
   </data>
+  <data name="ECOSPACE_INIT_ERROR" xml:space="preserve">
+    <value>Ecospace will not be able to run due to an error during initialization.</value>
+  </data>
+  <data name="ECOSPACE_OUT_OF_MEMORY" xml:space="preserve">
+    <value>Ecospace has run out of memory. Please try reducing the number of Regions and/or Timesteps.</value>
+  </data>
 </root>

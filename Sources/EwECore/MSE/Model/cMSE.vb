@@ -1545,6 +1545,10 @@ Namespace MSE
                         'assume there's no fishing if the B is below half of the Bmsy
                         m_quota.Blim(igrp) = CSng(bMSY(BiggestFleet, igrp) * 0.5)
                         m_quota.Fopt(igrp) = CSng(fMSY(BiggestFleet, igrp))
+
+                        'set the reference levels to Blim and Bbase
+                        Me.m_data.BioBounds(igrp).Lower = m_quota.Blim(igrp)
+                        Me.m_data.BioBounds(igrp).Upper = m_quota.Bbase(igrp)
                     End If
                 Next
 

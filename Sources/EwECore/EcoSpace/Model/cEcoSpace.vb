@@ -477,21 +477,18 @@ Public Class cEcoSpace
 #Region "Public methods"
 
     Public Function Run() As Boolean
-        Dim bsuccess As Boolean
+        Dim bsuccess As Boolean = True
         Try
 
             'redim all 
-            redimForRun()
-            'System.Console.WriteLine("------------------------------------------------------")
-            'System.Console.WriteLine("cEcospace.Run() Scenario: " & Me.m_EPdata.EcospaceScenarioName(Me.m_EPdata.ActiveEcospaceScenario))
-            'Dim t As Single = Microsoft.VisualBasic.Timer
+            If redimForRun() Then
 
-            Me.initSpatialEquilibrium()
-            Me.FindSpatialEquilibrium()
+                Me.initSpatialEquilibrium()
+                Me.FindSpatialEquilibrium()
 
-            'System.Console.WriteLine("cEcospace.Run() Total run time: " & CStr(Microsoft.VisualBasic.Timer - t))
-            'System.Console.WriteLine("------------------------------------------------------")
-            bsuccess = True
+            Else
+                bsuccess = False
+            End If
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -1807,49 +1804,65 @@ Public Class cEcoSpace
     ''' These are variables that will be populated by the Ecospace initialization initSpatialEquilibrium().
     ''' This should not contain any data that was populated by the database.
     ''' </remarks>
-    Friend Sub redimForRun()
+    Friend Function redimForRun() As Boolean
         ' EwE5
         'ReDim ebb(NumGroups + 3 * npairs + Nvarsplit) As Single 'abmpa
         'ReDim BB(NumGroups + 3 * npairs + Nvarsplit) As Single
 
-        'redim new stanza stuff
-        ReDim m_Data.PredCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
-        ReDim m_Data.IFDweight(m_Data.InRow, m_Data.InCol, m_Data.NGroups)
-        ReDim m_Data.ByPassIntegrate(m_Data.nvartot)
+        Dim success As Boolean = True
+        Dim message As cMessage
+        Try
 
-        ReDim m_Data.BBase(m_Data.NGroups)
+            'redim new stanza stuff
+            ReDim m_Data.PredCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+            ReDim m_Data.IFDweight(m_Data.InRow, m_Data.InCol, m_Data.NGroups)
+            ReDim m_Data.ByPassIntegrate(m_Data.nvartot)
 
-        ReDim RelFitness(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
-        ReDim Basebiomass(m_Data.nvartot)
-        ReDim der(m_Data.NGroups)
-        ReDim loss(m_Data.NGroups)
-        ReDim pbb(m_Data.NGroups)
+            ReDim m_Data.BBase(m_Data.NGroups)
 
-        ReDim EatEff(m_Data.nvartot)
-        ReDim VulPred(m_Data.nvartot)
+            ReDim RelFitness(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+            ReDim Basebiomass(m_Data.nvartot)
+            ReDim der(m_Data.NGroups)
+            ReDim loss(m_Data.NGroups)
+            ReDim pbb(m_Data.NGroups)
 
-        ReDim Flowin(m_Data.nvartot)
-        ReDim FlowoutRate(m_Data.nvartot)
+            ReDim EatEff(m_Data.nvartot)
+            ReDim VulPred(m_Data.nvartot)
 
-        ReDim F(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim AMm(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            ReDim Flowin(m_Data.nvartot)
+            ReDim FlowoutRate(m_Data.nvartot)
 
-        ReDim BcwNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim CNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim dNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim Enomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            ReDim F(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            ReDim AMm(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
-        ' ReDim conSplit(m_Data.Nvarsplit)
-        ReDim TotEffort(m_Data.nFleets)
-        ReDim RecSplit(m_Data.Nvarsplit)
-        ReDim PconSplit(m_Data.Nvarsplit)
-        ReDim Tstanza(m_Data.Nvarsplit)
-        ReDim NstanzaBase(m_Data.Nvarsplit)
+            ReDim BcwNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            ReDim CNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            ReDim dNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            ReDim Enomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
-        nEcospaceTimeSteps = CInt(m_Data.TotalTime * (1.0 / m_Data.TimeStep))
-        m_Data.redimTimeStepResults(nEcospaceTimeSteps)
+            ' ReDim conSplit(m_Data.Nvarsplit)
+            ReDim TotEffort(m_Data.nFleets)
+            ReDim RecSplit(m_Data.Nvarsplit)
+            ReDim PconSplit(m_Data.Nvarsplit)
+            ReDim Tstanza(m_Data.Nvarsplit)
+            ReDim NstanzaBase(m_Data.Nvarsplit)
 
-    End Sub
+            nEcospaceTimeSteps = CInt(m_Data.TotalTime * (1.0 / m_Data.TimeStep))
+            success = success And m_Data.redimTimeStepResults(nEcospaceTimeSteps)
+
+        Catch ex As Exception
+            message = New cMessage(My.Resources.CoreMessages.ECOSPACE_INIT_ERROR, _
+                                   eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+        End Try
+
+        If message IsNot Nothing Then
+            Me.Messages.AddMessage(message)
+            success = False
+        End If
+
+        Return success
+
+    End Function
 
 
     Sub SetKmove()

@@ -225,6 +225,8 @@ Public Class cEcospaceDataStructures
     ''' </remarks>
     Public SumStart(1) As Single
 
+    Public lstRegions As New List(Of Single(,,))
+
     Public ResultsCatchRegionGearGroup(,,,) As Single 'ResultsCatchRegionGearGroup( NoRegions, nFleets, NGroups, ntimesteps)
     Public ResultsByFleet(,,) As Single 'ResultsByFleet(nvars,nFleets,NumberOfTimeSteps)
     Public ResultsByFleetGroup(,,,) As Single 'ResultsByFleetGroup(nvars,nFleets,nGroups,NumberOfTimeSteps)
@@ -429,6 +431,15 @@ Public Class cEcospaceDataStructures
 
     'not much
     Private m_ngroups As Integer
+    Private m_publisher As cMessagePublisher
+
+#End Region
+
+#Region "Construction"
+
+    Public Sub New(ByVal MessagePublisher As cMessagePublisher)
+        Me.m_publisher = MessagePublisher
+    End Sub
 
 #End Region
 
@@ -477,7 +488,6 @@ Public Class cEcospaceDataStructures
         End Get
 
     End Property
-
 
 #End Region
 
@@ -841,7 +851,6 @@ Public Class cEcospaceDataStructures
     Public Sub ReDimRegionVars()
         ReDim Me.RegionDBID(NoRegions)
         ReDim Me.RegionName(NoRegions)
-        ReDim ResultsRegionGroup(NoRegions, NGroups, nTimeSteps)
     End Sub
 
     Public Sub ReDimMapDims()
@@ -953,21 +962,38 @@ Public Class cEcospaceDataStructures
     ''' Redim the data that saves the Ecospace results over time
     ''' </summary>
     ''' <remarks>This must be called by Ecospace at the start of a run to clear out any existing data.</remarks>
-    Public Sub redimTimeStepResults(ByVal NumberOfTimeSteps As Integer)
+    Public Function redimTimeStepResults(ByVal NumberOfTimeSteps As Integer) As Boolean
 
         Debug.Assert(TimeStep > 0 And TotalTime > 0)
+        Dim success As Boolean = True
 
         'reset the number of time steps the model ran for
         nSumTimeSteps = 0
+        Dim message As cMessage
 
-        ReDim Me.ResultsByGroup(N_RESULTS_GROUPS, m_ngroups, NumberOfTimeSteps)
-        ReDim Me.ResultsByFleet(N_RESULTS_FLEETS, nFleets, NumberOfTimeSteps)
-        ReDim Me.ResultsByFleetGroup(N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
+        Try
 
-        ReDim Me.ResultsRegionGroup(NoRegions, NGroups, NumberOfTimeSteps)
-        ReDim Me.ResultsCatchRegionGearGroup(NoRegions, nFleets, NGroups, NumberOfTimeSteps)
+            ReDim Me.ResultsByGroup(N_RESULTS_GROUPS, m_ngroups, NumberOfTimeSteps)
+            ReDim Me.ResultsByFleet(N_RESULTS_FLEETS, nFleets, NumberOfTimeSteps)
+            ReDim Me.ResultsByFleetGroup(N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
 
-    End Sub
+            ReDim Me.ResultsRegionGroup(NoRegions, NGroups, NumberOfTimeSteps)
+            ReDim Me.ResultsCatchRegionGearGroup(NoRegions, nFleets, NGroups, NumberOfTimeSteps)
+
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString & ".redimTimeStepResults() Out of memory: " & ex.Message)
+            message = New cMessage(My.Resources.CoreMessages.ECOSPACE_OUT_OF_MEMORY, _
+                                   eMessageType.Any, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+         End Try
+
+        If message IsNot Nothing Then
+            Me.m_publisher.AddMessage(message)
+            success = False
+        End If
+
+        Return success
+
+    End Function
 
 
     Public Sub setDefaultSummaryPeriod()

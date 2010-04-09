@@ -535,7 +535,7 @@ Public Class cCore
         ' Create core data structures
         Me.m_EcoPathData = New cEcopathDataStructures
         Me.m_EcoSimData = New cEcosimDatastructures
-        Me.m_EcoSpaceData = New cEcospaceDataStructures
+        Me.m_EcoSpaceData = New cEcospaceDataStructures(Me.Messages)
         Me.m_Stanza = New cStanzaDatastructures
         Me.m_tracerData = New cContaminantTracerDataStructures
         Me.m_TSData = New cTimeSeriesDataStructures
@@ -6553,11 +6553,11 @@ Public Class cCore
 
     Private Function InitEcoSpace() As Boolean
 
-        m_Ecospace = New cEcoSpace
+        m_Ecospace = New cEcoSpace()
 
         m_Ecospace.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_SyncObj))
 
-        m_EcoSpaceData = New cEcospaceDataStructures
+        'm_EcoSpaceData = New cEcospaceDataStructures
         m_SpaceTSData = New cEcospaceTimeSeriesDataStructures
 
         m_Ecospace.TimeSeriesData = m_SpaceTSData
@@ -6683,8 +6683,11 @@ Public Class cCore
                     Me.m_StateMonitor.SetEcospaceRun()
 
                     breturn = m_Ecospace.Run()
-                    LoadEcospaceResults()
-                    loadEcoTracerResults()
+                    If breturn Then
+                        'only load the results if the run was successful
+                        LoadEcospaceResults()
+                        loadEcoTracerResults()
+                    End If
 
                     Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
                                   eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
