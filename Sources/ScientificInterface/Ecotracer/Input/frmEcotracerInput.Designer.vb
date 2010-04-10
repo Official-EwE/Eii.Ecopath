@@ -154,8 +154,8 @@ Namespace Ecotracer
             '
             'm_plAaargh
             '
-            Me.m_plAaargh.Controls.Add(Me.m_grid)
             resources.ApplyResources(Me.m_plAaargh, "m_plAaargh")
+            Me.m_plAaargh.Controls.Add(Me.m_grid)
             Me.m_plAaargh.Name = "m_plAaargh"
             '
             'frmEcotracerInput
