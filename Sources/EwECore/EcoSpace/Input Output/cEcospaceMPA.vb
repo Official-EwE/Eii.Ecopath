@@ -40,6 +40,30 @@ Public Class cEcospaceMPA
 
 #End Region
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the number of cells in a MPA.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property NumCells() As Integer 
+        Get
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim l As cEcospaceLayerMPA = bm.LayerMPA
+            Dim iIndex As Integer = Me.Index
+            Dim iNumCells As Integer = 0
+
+            For iRow As Integer = 1 To bm.InRow
+                For iCol As Integer = 1 To bm.InCol
+                    If l.Cell(iRow, iCol) = iIndex Then
+                        iNumCells += 1
+                    End If
+                Next
+            Next
+            Return iNumCells
+
+        End Get
+    End Property
+
 #Region " Variables by dot '.' operator "
 
     ''' <summary>

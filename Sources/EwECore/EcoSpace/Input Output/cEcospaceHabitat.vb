@@ -1,35 +1,3 @@
-'==============================================================================
-'
-' $Log: cEcospaceHabitat.vb,v $
-' Revision 1.2  2009/01/16 18:30:23  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:21  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/05/29 22:22:45  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.4  2007/09/24 18:55:34  jeroens
-' * Fixed datatype bug
-'
-' Revision 1.3  2007/09/14 16:54:07  jeroens
-' * Fixed validation status setup error
-'
-' Revision 1.2  2007/05/31 16:34:26  jeroens
-' * Exposed Habitat Area Proportion
-'
-' Revision 1.1  2007/05/01 17:12:33  joeb
-' Changed directory structure
-'
-' Revision 1.2  2007/01/20 00:28:38  joeb
-' Added Variables
-'
-' Revision 1.1  2007/01/14 21:18:24  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
@@ -68,6 +36,30 @@ Public Class cEcospaceHabitat
     End Sub
 
 #End Region
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the number of cells in a Habitat.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property NumCells() As Integer 
+        Get
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim l As cEcospaceLayerHabitat = bm.LayerHabitat
+            Dim iIndex As Integer = Me.Index
+            Dim iNumCells As Integer = 0
+
+            For iRow As Integer = 1 To bm.InRow
+                For iCol As Integer = 1 To bm.InCol
+                    If l.Cell(iRow, iCol) = iIndex Then
+                        iNumCells += 1
+                    End If
+                Next
+            Next
+            Return iNumCells
+
+        End Get
+    End Property
 
 #Region "Properties by dot (.) operator "
 
