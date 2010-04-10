@@ -2597,4 +2597,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="PROMPT_UPDATE_MIGRATION_SUPPRESS" xml:space="preserve">
     <value>Do not ask again for this file</value>
   </data>
+  <data name="HEADER_NUMCELLS" xml:space="preserve">
+    <value># cells</value>
+  </data>
 </root>

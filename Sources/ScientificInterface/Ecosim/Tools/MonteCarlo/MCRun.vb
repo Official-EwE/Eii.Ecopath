@@ -428,6 +428,7 @@ Namespace Ecosim
         Private Sub newRun()
 
             ' ToDo: globalize this method
+            Dim lLines As New List(Of LineItem)
 
             Me.m_nTrials += 1
             Me.m_plothelper.CreateRun(String.Format("Iteration {0}", Me.m_nTrials))
@@ -440,10 +441,11 @@ Namespace Ecosim
                 Next
 
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                    Me.m_plothelper.AddLine(Me.Core.EcoPathGroupInputs(iGroup), Me.m_lpplIteration(iGroup - 1), False)
+                    lLines.Add(Me.m_plothelper.CreateLine(Me.Core.EcoPathGroupInputs(iGroup), Me.m_lpplIteration(iGroup - 1)))
                 Next iGroup
 
             End If
+            Me.m_plothelper.PlotLines(lLines.ToArray)
 
         End Sub
 

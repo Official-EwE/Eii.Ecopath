@@ -99,7 +99,8 @@ Namespace Ecosim
             Me.m_zgp.ConfigurePane(My.Resources.HEADER_RELATIVEBIOMASS, My.Resources.HEADER_YEAR, My.Resources.HEADER_RELATIVEBIOMASS, False)
             Me.m_zgp.ShowMultipleRuns = Me.m_tsmShowMultipleRuns.Selected
 
-            Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.Both
+            Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.MaxOnly
+
             Me.m_zgp.YScaleMin = 0.0!
             Me.m_zgp.ShowPointValue = True
 
@@ -681,6 +682,7 @@ Namespace Ecosim
             Dim dValue As Double = 0.0#
             Dim iGroup As Integer = 0
             Dim bIncludeDataPoint As Boolean = True
+            Dim lLines As New List(Of LineItem)
 
             ' Safety checks
             If (Me.m_zgp Is Nothing) Then Return
@@ -736,7 +738,7 @@ Namespace Ecosim
                     Next iTimeStep
 
                     ' Add line
-                    m_zgp.AddLine(Me.Core.EcoPathGroupInputs(iGroup), pplData, Me.IsCumulativePlot)
+                    lLines.Add(Me.m_zgp.CreateLine(Me.Core.EcoPathGroupInputs(iGroup), pplData))
 
                 End If
 
@@ -746,12 +748,14 @@ Namespace Ecosim
             Me.m_graph.GraphPane.XAxis.Scale.Max = Core.EcoSimModelParameters.NumberYears + Core.EcosimFirstYear
 
             ' Draw timeseries 
-            Me.PopulateGraphTimeSeries()
+            Me.AddTimeSeriesLines(lLines)
 
             ' Calculate the Axis Scale Ranges
             Me.UpdateControls()
             Me.UpdateGraphHighlights()
-            Me.m_zgp.RescaleAndRedraw()
+
+            Me.m_zgp.PlotLines(lLines.ToArray(), bCumulative:=Me.IsCumulativePlot)
+            'Me.m_zgp.RescaleAndRedraw()
 
         End Sub
 
@@ -761,7 +765,7 @@ Namespace Ecosim
         ''' plot type.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub PopulateGraphTimeSeries()
+        Private Sub AddTimeSeriesLines(ByVal lLines As List(Of LineItem))
 
             Dim ppl As New PointPairList()
             Dim ts As cTimeSeries = Nothing
@@ -812,8 +816,7 @@ Namespace Ecosim
                     Next
 
                     ' Add line to graph.
-                    m_zgp.AddLine(gts, ppl, False, String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, ts.Name, group.Name))
-
+                    lLines.Add(Me.m_zgp.CreateLine(gts, ppl, String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, ts.Name, group.Name)))
                 End If
             Next iTS
 

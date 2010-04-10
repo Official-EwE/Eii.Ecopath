@@ -105,7 +105,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Makes sure all the object is set. Cleans up all list if required.
+        ''' Prepare a new run for display.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub CreateRun(ByVal strLabel As String)
@@ -126,9 +126,7 @@ Namespace Controls
         ''' <summary>
         ''' Is the graph ready to plot? Has it been initialized?
         ''' </summary>
-        ''' <value></value>
         ''' <returns>True if the graph is ready to plot.</returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property isReady() As Boolean
             Get
                 Return (Me.m_runCurrent IsNot Nothing)
@@ -141,13 +139,13 @@ Namespace Controls
         ''' </summary>
         ''' <param name="strLabel">Label of the line to add.</param>
         ''' <param name="list">Data for the line.</param>
-        ''' <param name="bCumulative">Flag stating whether the line needs to be
-        ''' plotted cumulative.</param>
+        ''' <remarks>
+        ''' Note that this does NOT add the line to ZedGraph.
+        ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub AddLine(ByVal src As ICoreInterface, _
-                           ByVal list As PointPairList, _
-                           ByVal bCumulative As Boolean, _
-                           Optional ByVal strLabel As String = "")
+        Public Function CreateLine(ByVal src As ICoreInterface, _
+                                   ByVal list As PointPairList, _
+                                   Optional ByVal strLabel As String = "") As LineItem
 
             Dim crv As LineItem = Me.CreateLineItem(src, list, strLabel)
 
@@ -161,10 +159,9 @@ Namespace Controls
                     Debug.Assert(False)
             End Select
 
-            Me.PlotLines(New LineItem() {crv}, 1, True, False, bCumulative)
-            'Me.UpdateCurveVisibility(crv)
+            Return crv
 
-        End Sub
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>

@@ -3584,6 +3584,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to # cells.
+        '''</summary>
+        Friend ReadOnly Property HEADER_NUMCELLS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_NUMCELLS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Omnivory index.
         '''</summary>
         Friend ReadOnly Property HEADER_OMNIVORYINDEX() As String
