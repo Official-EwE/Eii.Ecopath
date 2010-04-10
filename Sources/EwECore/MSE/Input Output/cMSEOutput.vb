@@ -210,8 +210,8 @@ Public Class cMSEFleetOutput
     Public Sub New(ByRef theCore As cCore, ByVal MSEData As cMSEDataStructures, ByVal GroupDBID As Integer, ByVal groupIndex As Integer)
         MyBase.New(theCore)
 
-        Dim val As cValue
-        Dim meta As cVariableMetaData
+        Dim val As cValue = Nothing
+        Dim meta As cVariableMetaData = Nothing
         m_MSEData = MSEData
 
         m_dataType = eDataTypes.MSEGroupOutputs

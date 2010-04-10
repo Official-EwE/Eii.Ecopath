@@ -201,10 +201,8 @@ Public Class cMSEDataStructures
     ''' Set default values for the Management Strategy Evaluation model cMSE
     ''' </summary>
     Public Sub Init()
-        Dim i As Integer, j As Integer
 
         Try
-
             ' JS 28Jan2010: moved to datasource
             ''load the bounds /traffic light object with the values from the Quotas
             'Me.DefaultBioBounds()
@@ -839,12 +837,14 @@ Public Class cMSESummaryStats
             Return 0
         End Get
     End Property
+
     Public ReadOnly Property Histogram(ByVal Index As Integer) As Single()
         Get
             Try
                 Return Me.m_lstHist(Index - 1)
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".Histogram() Exception: " & ex.Message)
+                Return Nothing
             End Try
         End Get
     End Property
@@ -856,6 +856,7 @@ Public Class cMSESummaryStats
                 Return Me.m_lstMeans(Index - 1)
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".Histogram() Exception: " & ex.Message)
+                Return Nothing
             End Try
         End Get
     End Property
