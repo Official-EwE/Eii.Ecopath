@@ -352,7 +352,7 @@ Namespace Ecospace
             ' Region name cell, editable this time
             Me(0, eColumnTypes.RegionName) = New EwEColumnHeaderCell(My.Resources.HEADER_REGION)
             ' Region name cell, editable this time
-            Me(0, eColumnTypes.RegionCellCount) = New EwEColumnHeaderCell(My.Resources.HEADER_NUMCELLS)
+            Me(0, eColumnTypes.RegionCellCount) = New EwEColumnHeaderCell("Count") 'My.Resources.HEADER_NUMCELLS
 
             ' Region index cell
             Me(0, eColumnTypes.RegionStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
