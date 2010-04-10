@@ -2,7 +2,7 @@ Namespace Ecotracer
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmEcotracerInput
-        Inherits frmEwEGrid
+        Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _
@@ -24,6 +24,7 @@ Namespace Ecotracer
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcotracerInput))
             Me.cmbEnvInflowFF = New System.Windows.Forms.ComboBox
             Me.m_lbFFEnv = New System.Windows.Forms.Label
             Me.m_tbCLossEnv = New System.Windows.Forms.TextBox
@@ -32,177 +33,150 @@ Namespace Ecotracer
             Me.m_lblCDecay = New System.Windows.Forms.Label
             Me.m_lblCInflowEnv = New System.Windows.Forms.Label
             Me.Label1 = New System.Windows.Forms.Label
-            Me.m_plGrid = New System.Windows.Forms.Panel
+            Me.m_grid = New ScientificInterface.Ecotracer.EcotracerInputGrid
             Me.m_tbCZeroEnv = New System.Windows.Forms.TextBox
             Me.m_tbCDecayRateEnv = New System.Windows.Forms.TextBox
             Me.m_lbCZeroEnv = New System.Windows.Forms.Label
             Me.m_lbCDecayRateEnv = New System.Windows.Forms.Label
-            Me.m_ts = New System.Windows.Forms.ToolStrip
+            Me.m_tlp = New System.Windows.Forms.TableLayoutPanel
+            Me.m_plAaargh = New System.Windows.Forms.Panel
+            Me.m_tlp.SuspendLayout()
+            Me.m_plAaargh.SuspendLayout()
             Me.SuspendLayout()
             '
             'cmbEnvInflowFF
             '
             Me.cmbEnvInflowFF.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cmbEnvInflowFF.FormattingEnabled = True
-            Me.cmbEnvInflowFF.Location = New System.Drawing.Point(201, 108)
+            resources.ApplyResources(Me.cmbEnvInflowFF, "cmbEnvInflowFF")
             Me.cmbEnvInflowFF.Name = "cmbEnvInflowFF"
-            Me.cmbEnvInflowFF.Size = New System.Drawing.Size(194, 21)
-            Me.cmbEnvInflowFF.TabIndex = 10
             '
             'm_lbFFEnv
             '
-            Me.m_lbFFEnv.AutoSize = True
-            Me.m_lbFFEnv.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lbFFEnv.Location = New System.Drawing.Point(12, 111)
+            resources.ApplyResources(Me.m_lbFFEnv, "m_lbFFEnv")
             Me.m_lbFFEnv.Name = "m_lbFFEnv"
-            Me.m_lbFFEnv.Size = New System.Drawing.Size(183, 13)
-            Me.m_lbFFEnv.TabIndex = 9
-            Me.m_lbFFEnv.Text = "&Environmental inflow forcing function:"
             '
             'm_tbCLossEnv
             '
-            Me.m_tbCLossEnv.Location = New System.Drawing.Point(500, 82)
+            resources.ApplyResources(Me.m_tbCLossEnv, "m_tbCLossEnv")
             Me.m_tbCLossEnv.Name = "m_tbCLossEnv"
-            Me.m_tbCLossEnv.Size = New System.Drawing.Size(80, 20)
-            Me.m_tbCLossEnv.TabIndex = 8
             '
             'lblInitializationHeader
             '
-            Me.lblInitializationHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.lblInitializationHeader, "lblInitializationHeader")
             Me.lblInitializationHeader.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblInitializationHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
             Me.lblInitializationHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblInitializationHeader.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.lblInitializationHeader.Location = New System.Drawing.Point(12, 35)
             Me.lblInitializationHeader.Name = "lblInitializationHeader"
-            Me.lblInitializationHeader.Size = New System.Drawing.Size(568, 18)
-            Me.lblInitializationHeader.TabIndex = 0
-            Me.lblInitializationHeader.Text = "Environment"
-            Me.lblInitializationHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_tbCInflowEnv
             '
-            Me.m_tbCInflowEnv.Location = New System.Drawing.Point(500, 56)
+            resources.ApplyResources(Me.m_tbCInflowEnv, "m_tbCInflowEnv")
             Me.m_tbCInflowEnv.Name = "m_tbCInflowEnv"
-            Me.m_tbCInflowEnv.Size = New System.Drawing.Size(80, 20)
-            Me.m_tbCInflowEnv.TabIndex = 4
             '
             'm_lblCDecay
             '
-            Me.m_lblCDecay.AutoSize = True
-            Me.m_lblCDecay.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblCDecay.Location = New System.Drawing.Point(318, 85)
+            resources.ApplyResources(Me.m_lblCDecay, "m_lblCDecay")
             Me.m_lblCDecay.Name = "m_lblCDecay"
-            Me.m_lblCDecay.Size = New System.Drawing.Size(176, 13)
-            Me.m_lblCDecay.TabIndex = 7
-            Me.m_lblCDecay.Text = "Base &volume exchange loss (/year):"
             '
             'm_lblCInflowEnv
             '
-            Me.m_lblCInflowEnv.AutoSize = True
-            Me.m_lblCInflowEnv.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblCInflowEnv.Location = New System.Drawing.Point(318, 59)
+            resources.ApplyResources(Me.m_lblCInflowEnv, "m_lblCInflowEnv")
             Me.m_lblCInflowEnv.Name = "m_lblCInflowEnv"
-            Me.m_lblCInflowEnv.Size = New System.Drawing.Size(147, 13)
-            Me.m_lblCInflowEnv.TabIndex = 3
-            Me.m_lblCInflowEnv.Text = "&Base inflow rate (t/km2/year):"
             '
             'Label1
             '
-            Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.Label1, "Label1")
             Me.Label1.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
             Me.Label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.Label1.Location = New System.Drawing.Point(12, 142)
             Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(568, 18)
-            Me.Label1.TabIndex = 11
-            Me.Label1.Text = "Groups"
-            Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'm_plGrid
+            'm_grid
             '
-            Me.m_plGrid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_plGrid.Location = New System.Drawing.Point(12, 164)
-            Me.m_plGrid.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_plGrid.Name = "m_plGrid"
-            Me.m_plGrid.Size = New System.Drawing.Size(568, 260)
-            Me.m_plGrid.TabIndex = 12
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.BackColor = System.Drawing.Color.White
+            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_grid.CustomSort = False
+            resources.ApplyResources(Me.m_grid, "m_grid")
+            Me.m_grid.FixedColumnWidths = False
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
+            Me.m_grid.Name = "m_grid"
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TrackPropertySelection = True
+            Me.m_grid.UIContext = Nothing
             '
             'm_tbCZeroEnv
             '
-            Me.m_tbCZeroEnv.Location = New System.Drawing.Point(201, 56)
+            resources.ApplyResources(Me.m_tbCZeroEnv, "m_tbCZeroEnv")
             Me.m_tbCZeroEnv.Name = "m_tbCZeroEnv"
-            Me.m_tbCZeroEnv.Size = New System.Drawing.Size(80, 20)
-            Me.m_tbCZeroEnv.TabIndex = 2
             '
             'm_tbCDecayRateEnv
             '
-            Me.m_tbCDecayRateEnv.Location = New System.Drawing.Point(201, 82)
+            resources.ApplyResources(Me.m_tbCDecayRateEnv, "m_tbCDecayRateEnv")
             Me.m_tbCDecayRateEnv.Name = "m_tbCDecayRateEnv"
-            Me.m_tbCDecayRateEnv.Size = New System.Drawing.Size(80, 20)
-            Me.m_tbCDecayRateEnv.TabIndex = 6
             '
             'm_lbCZeroEnv
             '
-            Me.m_lbCZeroEnv.AutoSize = True
-            Me.m_lbCZeroEnv.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lbCZeroEnv.Location = New System.Drawing.Point(12, 59)
+            resources.ApplyResources(Me.m_lbCZeroEnv, "m_lbCZeroEnv")
             Me.m_lbCZeroEnv.Name = "m_lbCZeroEnv"
-            Me.m_lbCZeroEnv.Size = New System.Drawing.Size(139, 13)
-            Me.m_lbCZeroEnv.TabIndex = 1
-            Me.m_lbCZeroEnv.Text = "&Initial concentration (t/km2):"
             '
             'm_lbCDecayRateEnv
             '
-            Me.m_lbCDecayRateEnv.AutoSize = True
-            Me.m_lbCDecayRateEnv.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lbCDecayRateEnv.Location = New System.Drawing.Point(12, 85)
+            resources.ApplyResources(Me.m_lbCDecayRateEnv, "m_lbCDecayRateEnv")
             Me.m_lbCDecayRateEnv.Name = "m_lbCDecayRateEnv"
-            Me.m_lbCDecayRateEnv.Size = New System.Drawing.Size(96, 13)
-            Me.m_lbCDecayRateEnv.TabIndex = 5
-            Me.m_lbCDecayRateEnv.Text = "&Decay rate (/year):"
             '
-            'm_ts
+            'm_tlp
             '
-            Me.m_ts.Location = New System.Drawing.Point(0, 0)
-            Me.m_ts.Name = "m_ts"
-            Me.m_ts.Size = New System.Drawing.Size(592, 25)
-            Me.m_ts.TabIndex = 13
+            resources.ApplyResources(Me.m_tlp, "m_tlp")
+            Me.m_tlp.Controls.Add(Me.m_lbCZeroEnv, 0, 0)
+            Me.m_tlp.Controls.Add(Me.m_lbCDecayRateEnv, 0, 1)
+            Me.m_tlp.Controls.Add(Me.m_lblCInflowEnv, 3, 0)
+            Me.m_tlp.Controls.Add(Me.m_lblCDecay, 3, 1)
+            Me.m_tlp.Controls.Add(Me.m_tbCDecayRateEnv, 1, 1)
+            Me.m_tlp.Controls.Add(Me.m_tbCInflowEnv, 4, 0)
+            Me.m_tlp.Controls.Add(Me.m_tbCLossEnv, 4, 1)
+            Me.m_tlp.Controls.Add(Me.m_tbCZeroEnv, 1, 0)
+            Me.m_tlp.Name = "m_tlp"
+            '
+            'm_plAaargh
+            '
+            Me.m_plAaargh.Controls.Add(Me.m_grid)
+            resources.ApplyResources(Me.m_plAaargh, "m_plAaargh")
+            Me.m_plAaargh.Name = "m_plAaargh"
             '
             'frmEcotracerInput
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(592, 436)
-            Me.Controls.Add(Me.m_ts)
-            Me.Controls.Add(Me.m_plGrid)
+            Me.Controls.Add(Me.m_plAaargh)
+            Me.Controls.Add(Me.m_tlp)
             Me.Controls.Add(Me.cmbEnvInflowFF)
             Me.Controls.Add(Me.m_lbFFEnv)
-            Me.Controls.Add(Me.m_tbCDecayRateEnv)
-            Me.Controls.Add(Me.m_tbCLossEnv)
             Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.lblInitializationHeader)
-            Me.Controls.Add(Me.m_tbCZeroEnv)
-            Me.Controls.Add(Me.m_tbCInflowEnv)
-            Me.Controls.Add(Me.m_lbCDecayRateEnv)
-            Me.Controls.Add(Me.m_lblCDecay)
-            Me.Controls.Add(Me.m_lbCZeroEnv)
-            Me.Controls.Add(Me.m_lblCInflowEnv)
-            Me.MinimumSize = New System.Drawing.Size(600, 250)
             Me.Name = "frmEcotracerInput"
-            Me.Text = "frmEcotracerInput"
+            Me.m_tlp.ResumeLayout(False)
+            Me.m_tlp.PerformLayout()
+            Me.m_plAaargh.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents m_plGrid As System.Windows.Forms.Panel
-        Private WithEvents m_ts As System.Windows.Forms.ToolStrip
+        Private WithEvents m_grid As EcotracerInputGrid
         Private WithEvents m_tbCLossEnv As System.Windows.Forms.TextBox
         Private WithEvents lblInitializationHeader As System.Windows.Forms.Label
         Private WithEvents m_tbCInflowEnv As System.Windows.Forms.TextBox
@@ -215,6 +189,8 @@ Namespace Ecotracer
         Private WithEvents cmbEnvInflowFF As System.Windows.Forms.ComboBox
         Private WithEvents m_lbFFEnv As System.Windows.Forms.Label
         Private WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_tlp As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_plAaargh As System.Windows.Forms.Panel
     End Class
 
 End Namespace

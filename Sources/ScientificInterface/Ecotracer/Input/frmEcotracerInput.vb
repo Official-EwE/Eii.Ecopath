@@ -29,7 +29,7 @@ Namespace Ecotracer
 #Region " Constructors "
 
         Public Sub New()
-            MyBase.New(New EcotracerInputGrid)
+            MyBase.New()
             Me.InitializeComponent()
         End Sub
 
@@ -51,10 +51,10 @@ Namespace Ecotracer
             Me.m_fpCInflowEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCInflowEnv, ecotracerModelParams, eVarNameFlags.CInflow)
             Me.m_fpCOutflowEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCLossEnv, ecotracerModelParams, eVarNameFlags.COutflow)
 
+            Me.m_grid.UIContext = Me.UIContext
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
             Me.UpdateFFFormatProviders()
-
-            Me.m_plGrid.Controls.Add(Me.Grid)
 
         End Sub
 
@@ -65,6 +65,9 @@ Namespace Ecotracer
             Me.m_fpCOutflowEnv.Release()
             Me.m_fpCZeroEnv.Release()
             Me.m_fpInflowForceNumberEnv.Release()
+
+            Me.m_grid.UIContext = Nothing
+
             MyBase.OnFormClosed(e)
 
         End Sub
