@@ -126,7 +126,7 @@
     <value>12, 12</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 303</value>
+    <value>262, 420</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
@@ -136,13 +136,13 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridEditRegions, EwE6, Version=6.0.7.408, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.gridEditRegions, EwE6, Version=6.0.7.409, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>13</value>
   </data>
   <data name="m_btnAddRegion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -151,16 +151,16 @@
     <value>Popup</value>
   </data>
   <data name="m_btnAddRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>226, 37</value>
+    <value>280, 148</value>
   </data>
   <data name="m_btnAddRegion.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
   <data name="m_btnAddRegion.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>6</value>
   </data>
   <data name="m_btnAddRegion.Text" xml:space="preserve">
-    <value>Add</value>
+    <value>A&amp;dd</value>
   </data>
   <data name="&gt;&gt;m_btnAddRegion.Name" xml:space="preserve">
     <value>m_btnAddRegion</value>
@@ -172,7 +172,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnAddRegion.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>12</value>
   </data>
   <data name="m_btnRemoveRegion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -184,16 +184,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnRemoveRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>226, 66</value>
+    <value>280, 177</value>
   </data>
   <data name="m_btnRemoveRegion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 23</value>
+    <value>97, 23</value>
   </data>
   <data name="m_btnRemoveRegion.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>7</value>
   </data>
   <data name="m_btnRemoveRegion.Text" xml:space="preserve">
-    <value>Remove</value>
+    <value>&amp;Remove</value>
   </data>
   <data name="&gt;&gt;m_btnRemoveRegion.Name" xml:space="preserve">
     <value>m_btnRemoveRegion</value>
@@ -205,13 +205,64 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnRemoveRegion.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>11</value>
   </data>
   <data name="TableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="&gt;&gt;OK_Button.Name" xml:space="preserve">
+    <value>OK_Button</value>
+  </data>
+  <data name="&gt;&gt;OK_Button.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;Cancel_Button.Name" xml:space="preserve">
+    <value>Cancel_Button</value>
+  </data>
+  <data name="&gt;&gt;Cancel_Button.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>179, 438</value>
+  </data>
+  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 29</value>
+  </data>
+  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="OK_Button" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Cancel_Button" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="OK_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
@@ -220,7 +271,10 @@
     <value>NoControl</value>
   </data>
   <data name="OK_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>2, 3</value>
+  </data>
+  <data name="OK_Button.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 3, 3</value>
   </data>
   <data name="OK_Button.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -250,7 +304,10 @@
     <value>NoControl</value>
   </data>
   <data name="Cancel_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>101, 3</value>
+    <value>104, 3</value>
+  </data>
+  <data name="Cancel_Button.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 0, 3</value>
   </data>
   <data name="Cancel_Button.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -273,33 +330,6 @@
   <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>125, 321</value>
-  </data>
-  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>197, 29</value>
-  </data>
-  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="OK_Button" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Cancel_Button" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
   <data name="m_btnKeep.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -313,16 +343,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnKeep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>226, 95</value>
+    <value>280, 206</value>
   </data>
   <data name="m_btnKeep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 23</value>
+    <value>97, 23</value>
   </data>
   <data name="m_btnKeep.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>8</value>
   </data>
   <data name="m_btnKeep.Text" xml:space="preserve">
-    <value>Keep</value>
+    <value>&amp;Keep</value>
   </data>
   <data name="m_btnKeep.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -337,7 +367,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnKeep.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>9</value>
   </data>
   <data name="m_btnHabToRegion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -349,16 +379,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnHabToRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>225, 156</value>
+    <value>280, 263</value>
   </data>
   <data name="m_btnHabToRegion.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 23</value>
   </data>
   <data name="m_btnHabToRegion.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>10</value>
   </data>
   <data name="m_btnHabToRegion.Text" xml:space="preserve">
-    <value>From habitats</value>
+    <value>From &amp;habitats</value>
   </data>
   <data name="&gt;&gt;m_btnHabToRegion.Name" xml:space="preserve">
     <value>m_btnHabToRegion</value>
@@ -370,7 +400,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnHabToRegion.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_btnFromCells.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -382,16 +412,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnFromCells.Location" type="System.Drawing.Point, System.Drawing">
-    <value>225, 214</value>
+    <value>280, 321</value>
   </data>
   <data name="m_btnFromCells.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 23</value>
   </data>
   <data name="m_btnFromCells.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>12</value>
   </data>
   <data name="m_btnFromCells.Text" xml:space="preserve">
-    <value>From cells</value>
+    <value>From &amp;cells</value>
   </data>
   <data name="&gt;&gt;m_btnFromCells.Name" xml:space="preserve">
     <value>m_btnFromCells</value>
@@ -403,7 +433,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnFromCells.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_lbEdit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -415,13 +445,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbEdit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>226, 12</value>
+    <value>280, 127</value>
   </data>
   <data name="m_lbEdit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 18</value>
+    <value>96, 18</value>
   </data>
   <data name="m_lbEdit.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>5</value>
   </data>
   <data name="m_lbEdit.Text" xml:space="preserve">
     <value>Edit</value>
@@ -439,7 +469,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lbEdit.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lblGenerate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -451,7 +481,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblGenerate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>226, 131</value>
+    <value>280, 242</value>
   </data>
   <data name="m_lblGenerate.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 18</value>
@@ -487,16 +517,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnMPAtoRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>225, 185</value>
+    <value>280, 292</value>
   </data>
   <data name="m_btnMPAtoRegion.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 23</value>
   </data>
   <data name="m_btnMPAtoRegion.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>11</value>
   </data>
   <data name="m_btnMPAtoRegion.Text" xml:space="preserve">
-    <value>From MPAs</value>
+    <value>From &amp;MPAs</value>
   </data>
   <data name="&gt;&gt;m_btnMPAtoRegion.Name" xml:space="preserve">
     <value>m_btnMPAtoRegion</value>
@@ -508,7 +538,160 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnMPAtoRegion.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_btnSelectEmpty.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnSelectEmpty.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="m_btnSelectEmpty.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnSelectEmpty.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnSelectEmpty.Location" type="System.Drawing.Point, System.Drawing">
+    <value>280, 91</value>
+  </data>
+  <data name="m_btnSelectEmpty.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 23</value>
+  </data>
+  <data name="m_btnSelectEmpty.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_btnSelectEmpty.Text" xml:space="preserve">
+    <value>&amp;Empty regions</value>
+  </data>
+  <data name="m_btnSelectEmpty.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageBeforeText</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectEmpty.Name" xml:space="preserve">
+    <value>m_btnSelectEmpty</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectEmpty.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectEmpty.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectEmpty.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="m_lblSelect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_lblSelect.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblSelect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblSelect.Location" type="System.Drawing.Point, System.Drawing">
+    <value>280, 12</value>
+  </data>
+  <data name="m_lblSelect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 18</value>
+  </data>
+  <data name="m_lblSelect.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblSelect.Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="m_lblSelect.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblSelect.Name" xml:space="preserve">
+    <value>m_lblSelect</value>
+  </data>
+  <data name="&gt;&gt;m_lblSelect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblSelect.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblSelect.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_btnSelectAll.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnSelectAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="m_btnSelectAll.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnSelectAll.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnSelectAll.Location" type="System.Drawing.Point, System.Drawing">
+    <value>280, 33</value>
+  </data>
+  <data name="m_btnSelectAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 23</value>
+  </data>
+  <data name="m_btnSelectAll.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_btnSelectAll.Text" xml:space="preserve">
+    <value>&amp;All</value>
+  </data>
+  <data name="m_btnSelectAll.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageBeforeText</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectAll.Name" xml:space="preserve">
+    <value>m_btnSelectAll</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectAll.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectAll.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="m_btnSelectNone.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnSelectNone.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="m_btnSelectNone.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnSelectNone.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnSelectNone.Location" type="System.Drawing.Point, System.Drawing">
+    <value>280, 62</value>
+  </data>
+  <data name="m_btnSelectNone.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 23</value>
+  </data>
+  <data name="m_btnSelectNone.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
+  </data>
+  <data name="m_btnSelectNone.Text" xml:space="preserve">
+    <value>&amp;None</value>
+  </data>
+  <data name="m_btnSelectNone.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageBeforeText</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectNone.Name" xml:space="preserve">
+    <value>m_btnSelectNone</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectNone.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectNone.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnSelectNone.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -517,7 +700,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>334, 362</value>
+    <value>388, 479</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

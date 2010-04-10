@@ -48,7 +48,28 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+            Me.m_grid.UIContext = Nothing
+            MyBase.OnFormClosed(e)
+        End Sub
+
+        Private Sub OnSelectAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnSelectAll.Click
+            Me.m_grid.SelectAll(True)
+        End Sub
+
+        Private Sub OnSelectNone(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnSelectNone.Click
+            Me.m_grid.SelectAll(False)
+        End Sub
+
+        Private Sub OnSelectEmpty(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnSelectEmpty.Click
+            Me.m_grid.SelectEmpty()
+        End Sub
+
+        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles OK_Button.Click
 
             ' Try to apply grid changes
             If Me.m_grid.Apply() = False Then
@@ -62,22 +83,26 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles Cancel_Button.Click
             Me.DialogResult = Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub OnAddRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnAddRegion.Click
+        Private Sub OnAddRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnAddRegion.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnRemoveRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRemoveRegion.Click
+        Private Sub OnRemoveRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnRemoveRegion.Click
             Me.m_grid.SetSelectedRowsDeleteState(True)
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnPreserveRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
+        Private Sub OnPreserveRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnKeep.Click
             Me.m_grid.SetSelectedRowsDeleteState(False)
             Me.UpdateControls()
         End Sub
@@ -103,7 +128,8 @@ Namespace Ecospace
             Me.m_eAllocateRegions = AllocationModeType.Habitat
         End Sub
 
-        Private Sub OnCreateRegionsFromCells(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnFromCells.Click
+        Private Sub OnCreateRegionsFromCells(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnFromCells.Click
             Me.Cursor = Cursors.WaitCursor
             Me.m_grid.CreateCellRegions()
             Me.Cursor = Cursors.Default
@@ -152,7 +178,7 @@ Namespace Ecospace
         End Sub
 
         Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.DialogResult = DialogResult.OK
             Me.Close()
         End Sub
 

@@ -34,6 +34,10 @@ Namespace Ecospace
             Me.m_lbEdit = New System.Windows.Forms.Label
             Me.m_lblGenerate = New System.Windows.Forms.Label
             Me.m_btnMPAtoRegion = New System.Windows.Forms.Button
+            Me.m_btnSelectEmpty = New System.Windows.Forms.Button
+            Me.m_lblSelect = New System.Windows.Forms.Label
+            Me.m_btnSelectAll = New System.Windows.Forms.Button
+            Me.m_btnSelectNone = New System.Windows.Forms.Button
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -132,6 +136,31 @@ Namespace Ecospace
             Me.m_btnMPAtoRegion.Name = "m_btnMPAtoRegion"
             Me.m_btnMPAtoRegion.UseVisualStyleBackColor = True
             '
+            'm_btnSelectEmpty
+            '
+            resources.ApplyResources(Me.m_btnSelectEmpty, "m_btnSelectEmpty")
+            Me.m_btnSelectEmpty.Name = "m_btnSelectEmpty"
+            Me.m_btnSelectEmpty.UseVisualStyleBackColor = True
+            '
+            'm_lblSelect
+            '
+            resources.ApplyResources(Me.m_lblSelect, "m_lblSelect")
+            Me.m_lblSelect.BackColor = System.Drawing.SystemColors.ControlDark
+            Me.m_lblSelect.ForeColor = System.Drawing.SystemColors.ControlLightLight
+            Me.m_lblSelect.Name = "m_lblSelect"
+            '
+            'm_btnSelectAll
+            '
+            resources.ApplyResources(Me.m_btnSelectAll, "m_btnSelectAll")
+            Me.m_btnSelectAll.Name = "m_btnSelectAll"
+            Me.m_btnSelectAll.UseVisualStyleBackColor = True
+            '
+            'm_btnSelectNone
+            '
+            resources.ApplyResources(Me.m_btnSelectNone, "m_btnSelectNone")
+            Me.m_btnSelectNone.Name = "m_btnSelectNone"
+            Me.m_btnSelectNone.UseVisualStyleBackColor = True
+            '
             'dlgEditRegions
             '
             Me.AcceptButton = Me.OK_Button
@@ -139,10 +168,14 @@ Namespace Ecospace
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
             Me.Controls.Add(Me.m_lblGenerate)
+            Me.Controls.Add(Me.m_lblSelect)
             Me.Controls.Add(Me.m_lbEdit)
             Me.Controls.Add(Me.m_btnFromCells)
             Me.Controls.Add(Me.m_btnMPAtoRegion)
             Me.Controls.Add(Me.m_btnHabToRegion)
+            Me.Controls.Add(Me.m_btnSelectNone)
+            Me.Controls.Add(Me.m_btnSelectAll)
+            Me.Controls.Add(Me.m_btnSelectEmpty)
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnRemoveRegion)
@@ -169,6 +202,10 @@ Namespace Ecospace
         Private WithEvents m_lbEdit As System.Windows.Forms.Label
         Private WithEvents m_lblGenerate As System.Windows.Forms.Label
         Private WithEvents m_btnMPAtoRegion As System.Windows.Forms.Button
+        Private WithEvents m_btnSelectEmpty As System.Windows.Forms.Button
+        Private WithEvents m_lblSelect As System.Windows.Forms.Label
+        Private WithEvents m_btnSelectAll As System.Windows.Forms.Button
+        Private WithEvents m_btnSelectNone As System.Windows.Forms.Button
 
     End Class
 
