@@ -55,6 +55,7 @@ Namespace Ecospace.Basemap.Layers
 
             Me.m_nudValue.Maximum = Me.Editor.CellValueMax
             Me.m_nudValue.Minimum = Me.Editor.CellValueMin
+            Me.m_nudValue.Value = Math.Max(Math.Min(Me.Editor.CellValue, Me.Editor.CellValueMax), Me.Editor.CellValueMin)
 
         End Sub
 

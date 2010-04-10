@@ -30,7 +30,7 @@ Namespace Ecospace.Basemap.Layers
         ''' <remarks></remarks>
         Private m_bReadOnly As Boolean = False
         ''' <summary>The current value 'under the cursor'.</summary>
-        Private m_decValue As Decimal = Nothing
+        Private Shared s_decValue As Decimal = Nothing
         Private m_decValueMax As Decimal = Decimal.MaxValue
         Private m_decValueMin As Decimal = 0
 
@@ -43,7 +43,7 @@ Namespace Ecospace.Basemap.Layers
         Private m_uic As cUIContext = Nothing
 
         ' === FEEDBACK SUPPORT ===
-        Private m_iCursorSize As Integer = 1
+        Private Shared s_iCursorSize As Integer = 1
 
 #End Region ' Private vars
 
@@ -297,24 +297,49 @@ Namespace Ecospace.Basemap.Layers
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the size of the cursor.
+        ''' </summary>
+        ''' <remarks>
+        ''' This value is persistent across layer editors.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Property CursorSize() As Integer
             Get
-                Return Me.m_iCursorSize
+                Return cLayerEditor.s_iCursorSize
             End Get
             Set(ByVal iCursorSize As Integer)
-                Me.m_iCursorSize = iCursorSize
+                cLayerEditor.s_iCursorSize = iCursorSize
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the value for the next cell that is to be edited.
+        ''' </summary>
+        ''' <remarks>
+        ''' This value is persistent across layer editors.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Property CellValue() As Decimal
             Get
-                Return Me.m_decValue
+                Return cLayerEditor.s_decValue
             End Get
             Set(ByVal value As Decimal)
-                Me.m_decValue = Math.Max(Math.Min(value, Me.m_decValueMax), Me.m_decValueMin)
+                cLayerEditor.s_decValue = Math.Max(Math.Min(value, Me.m_decValueMax), Me.m_decValueMin)
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the max value allowed in a cell.
+        ''' </summary>
+        ''' <remarks>
+        ''' Ideally, this value would be obtained from core meta data. For now,
+        ''' the UI is required to manually control this property.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Property CellValueMax() As Decimal
             Get
                 Return Me.m_decValueMax
@@ -324,6 +349,15 @@ Namespace Ecospace.Basemap.Layers
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the min value allowed in a cell.
+        ''' </summary>
+        ''' <remarks>
+        ''' Ideally, this value would be obtained from core meta data. For now,
+        ''' the UI is required to manually control this property.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Property CellValueMin() As Decimal
             Get
                 Return Me.m_decValueMin
