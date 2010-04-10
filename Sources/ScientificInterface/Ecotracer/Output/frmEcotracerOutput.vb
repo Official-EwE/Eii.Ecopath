@@ -249,6 +249,9 @@ Public Class frmEcotracerOutput
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub RefreshData()
+
+        If Me.UIContext Is Nothing Then Return
+
         Dim newDMode As eDisplayModeTypes
 
         newDMode = Me.getDisplayMode
