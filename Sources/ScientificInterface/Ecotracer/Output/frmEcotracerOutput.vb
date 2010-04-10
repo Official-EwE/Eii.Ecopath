@@ -565,6 +565,12 @@ Public Class frmEcotracerOutput
 
     End Sub
 
+    Public Overrides ReadOnly Property IsRunForm() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
 #End Region ' Overrides
 
 #Region "Display Mode Helper Classes"
