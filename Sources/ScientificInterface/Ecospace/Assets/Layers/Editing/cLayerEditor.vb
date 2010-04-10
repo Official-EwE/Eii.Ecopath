@@ -30,7 +30,9 @@ Namespace Ecospace.Basemap.Layers
         ''' <remarks></remarks>
         Private m_bReadOnly As Boolean = False
         ''' <summary>The current value 'under the cursor'.</summary>
-        Private m_objValue As Object = Nothing
+        Private m_decValue As Decimal = Nothing
+        Private m_decValueMax As Decimal = Decimal.MaxValue
+        Private m_decValueMin As Decimal = 0
 
         ' === GUI SUPPORT ===
         ''' <summary>Runtime type of the <see cref="ucLayerEditor">layer editor GUI</see>
@@ -52,8 +54,15 @@ Namespace Ecospace.Basemap.Layers
             Me.m_typeGUI = typeGUI
         End Sub
 
-        Public Sub Initialize(ByVal uic As cUIContext, _
-                              ByVal layer As cLayer)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Initialize the layer editor.
+        ''' </summary>
+        ''' <param name="uic">UI context to attach.</param>
+        ''' <param name="layer">Layer to attach.</param>
+        ''' -------------------------------------------------------------------
+        Public Overridable Sub Initialize(ByVal uic As cUIContext, _
+                                          ByVal layer As cLayer)
             Me.Layer = layer
             Me.UIContext = uic
         End Sub
@@ -297,12 +306,30 @@ Namespace Ecospace.Basemap.Layers
             End Set
         End Property
 
-        Public Property CellValue() As Object
+        Public Property CellValue() As Decimal
             Get
-                Return Me.m_objValue
+                Return Me.m_decValue
             End Get
-            Set(ByVal value As Object)
-                Me.m_objValue = value
+            Set(ByVal value As Decimal)
+                Me.m_decValue = Math.Max(Math.Min(value, Me.m_decValueMax), Me.m_decValueMin)
+            End Set
+        End Property
+
+        Public Property CellValueMax() As Decimal
+            Get
+                Return Me.m_decValueMax
+            End Get
+            Set(ByVal value As Decimal)
+                Me.m_decValueMax = value
+            End Set
+        End Property
+
+        Public Property CellValueMin() As Decimal
+            Get
+                Return Me.m_decValueMin
+            End Get
+            Set(ByVal value As Decimal)
+                Me.m_decValueMin = value
             End Set
         End Property
 

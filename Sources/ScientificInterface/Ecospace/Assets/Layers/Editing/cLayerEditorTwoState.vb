@@ -27,15 +27,23 @@ Namespace Ecospace.Basemap.Layers
             MyBase.New(typeGUI)
         End Sub
 
+        ''' <inheritdoc cref="cLayerEditor.Initialize"/>
+        Public Overrides Sub Initialize(ByVal uic As cUIContext, ByVal layer As cLayer)
+            MyBase.Initialize(uic, layer)
+            Me.CellValueMax = CDec(Math.Max(layer.ValueSet, layer.ValueClear))
+            Me.CellValueMin = CDec(Math.Min(layer.ValueSet, layer.ValueClear))
+        End Sub
+
+        ''' <inheritdoc cref="cLayerEditor.StartEdit"/>
         Public Overrides Sub StartEdit(ByVal ptClick As Point)
 
             ' Clicked on data cell?
             If Object.Equals(Layer.Value(ptClick.Y, ptClick.X), Layer.ValueSet) Then
                 ' #Yes: start clearing values
-                Me.CellValue = Layer.ValueClear
+                Me.CellValue = CDec(Layer.ValueClear)
             Else
                 ' #No: start setting values
-                Me.CellValue = Layer.ValueSet
+                Me.CellValue = CDec(Layer.ValueSet)
             End If
 
             If Me.GUI IsNot Nothing Then

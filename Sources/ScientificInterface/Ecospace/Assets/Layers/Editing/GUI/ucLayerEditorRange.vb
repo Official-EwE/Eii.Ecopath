@@ -52,20 +52,15 @@ Namespace Ecospace.Basemap.Layers
             Else
                 Me.m_nudValue.DecimalPlaces = Me.UIContext.StyleGuide.NumDigits
             End If
+
+            Me.m_nudValue.Maximum = Me.Editor.CellValueMax
+            Me.m_nudValue.Minimum = Me.Editor.CellValueMin
+
         End Sub
 
 #End Region ' Overrides
 
 #Region " Events "
-
-        Private Sub OnValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_nudValue.ValueChanged
-            If Me.Editor.Layer.ValueType Is GetType(Integer) Then
-                Me.Editor.CellValue = CInt(Me.m_nudValue.Value)
-            Else
-                Me.Editor.CellValue = CSng(Me.m_nudValue.Value)
-            End If
-        End Sub
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
@@ -74,6 +69,16 @@ Namespace Ecospace.Basemap.Layers
 
             AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             Me.UpdateContent()
+        End Sub
+
+        Private Sub OnValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_nudValue.ValueChanged
+
+            If Me.Editor.Layer.ValueType Is GetType(Integer) Then
+                Me.Editor.CellValue = Me.m_nudValue.Value
+            Else
+                Me.Editor.CellValue = Me.m_nudValue.Value
+            End If
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)

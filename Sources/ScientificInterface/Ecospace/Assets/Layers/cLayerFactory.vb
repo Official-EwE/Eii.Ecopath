@@ -120,6 +120,7 @@ Namespace Ecospace.Basemap.Layers
                     ' Represent regions as a gradient
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorRange()
+                    editor.CellValueMax = core.nRegions
                     If layerData Is Nothing Then layerData = bmd.LayerRegion
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.Name)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_REGIONS
