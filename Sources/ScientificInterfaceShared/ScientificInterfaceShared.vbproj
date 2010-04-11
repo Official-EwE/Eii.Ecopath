@@ -78,6 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\ApplicationStatus\cApplicationStatusNotifier.vb" />
+    <Compile Include="Controls\ColorDialog\cEwEColorDialog.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\EwEGrid\PropertyRowHeaderChildCell.vb" />
     <Compile Include="Controls\EwEGrid\PropertyRowHeaderParentCell.vb" />
     <Compile Include="Controls\EwEGrid\PropertyCell.vb" />
