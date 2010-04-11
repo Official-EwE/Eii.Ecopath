@@ -56,6 +56,7 @@ Partial Class frmEcotracerOutput
         '
         'm_lbGroups
         '
+        Me.m_lbGroups.AllGroupsItemColor = System.Drawing.Color.Black
         Me.m_lbGroups.AllGroupsItemText = "(Environment)"
         Me.m_lbGroups.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
