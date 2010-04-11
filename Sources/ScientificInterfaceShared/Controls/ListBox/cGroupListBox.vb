@@ -83,6 +83,8 @@ Namespace Controls
 
             ''' <summary>A value to sort by.</summary>
             Private m_sValue As Single = 0.0
+            ''' <summary>Optional color for an item.</summary>
+            Private m_color As Color = Color.Transparent
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -96,18 +98,15 @@ Namespace Controls
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Formats the item text for display in the GroupListBox.
+            ''' Creates a new item for usage in the GroupListBox.
             ''' </summary>
-            ''' <returns>The formatted item text.</returns>
+            ''' <param name="strLabel">Name to display for a non-group item.</param>
+            ''' <param name="color">Color for this item, if any.</param>
             ''' ---------------------------------------------------------------
-            Public Overrides Function ToString() As String
-                If (Me.Source IsNot Nothing) Then
-                    Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
-                                         Me.Source.Index, _
-                                         Me.Source.Name)
-                End If
-                Return My.Resources.GENERIC_VALUE_ALL
-            End Function
+            Public Sub New(ByVal strLabel As String, ByVal color As Color)
+                MyBase.New(strLabel)
+                Me.m_color = color
+            End Sub
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -134,6 +133,20 @@ Namespace Controls
                 End Set
             End Property
 
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Hard-coded color for an item.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Property Color() As Color
+                Get
+                    Return Me.m_color
+                End Get
+                Set(ByVal value As Color)
+                    Me.m_color = value
+                End Set
+            End Property
+
         End Class
 
 #End Region ' cGroupItem
@@ -143,7 +156,9 @@ Namespace Controls
         Private m_uic As cUIContext = Nothing
         Private m_sortType As eSortType = eSortType.GroupIndexAsc
         Private m_sSortThreshold As Single = cCore.NULL_VALUE
-        Private m_bShowAllItem As Boolean = True
+        Private m_bShowAllGroupsItem As Boolean = True
+        Private m_strAllGroupsItem As String = My.Resources.GENERIC_VALUE_ALL
+        Private m_clrAllGroupsItem As Color = Color.Transparent
         Private m_groupdisplaystyle As eGroupDisplayStyleTypes = eGroupDisplayStyleTypes.DisplayAlways
         Private m_grouptrackingtype As eGroupTrackingType = eGroupTrackingType.AllGroups
 
@@ -332,18 +347,54 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Browsable(True), _
-         Description("Include an 'all groups' item"), _
+         Description("State whether an 'all groups' item should be included in the list box"), _
          Category("EwE6"), _
          DefaultValue(True)> _
         Public Property ShowAllGroupsItem() As Boolean
             Get
-                Return Me.m_bShowAllItem
+                Return Me.m_bShowAllGroupsItem
             End Get
             Set(ByVal value As Boolean)
-                If value <> Me.m_bShowAllItem Then
-                    Me.m_bShowAllItem = value
+                If value <> Me.m_bShowAllGroupsItem Then
+                    Me.m_bShowAllGroupsItem = value
                     Me.Populate()
                 End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the text for the 'all groups' item.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         Description("The text for the 'all groups' item"), _
+         Category("EwE6"), _
+         DefaultValue(True)> _
+      Public Property AllGroupsItemText() As String
+            Get
+                Return Me.m_strAllGroupsItem
+            End Get
+            Set(ByVal value As String)
+                Me.m_strAllGroupsItem = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the colour for the 'all groups' item.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         Description("The colour for the 'all groups' item"), _
+         Category("EwE6"), _
+         DefaultValue(True)> _
+      Public Property AllGroupsItemColor() As Color
+            Get
+                Return Me.m_clrAllGroupsItem
+            End Get
+            Set(ByVal value As Color)
+                Me.m_clrAllGroupsItem = value
             End Set
         End Property
 
@@ -442,7 +493,7 @@ Namespace Controls
             Set(ByVal iGroup As Integer)
                 If (Not Me.IsInitialized()) Then Return
                 If (iGroup < 1 Or iGroup >= Me.m_uic.Core.nGroups) Then
-                    Me.SelectedIndex = CInt(IIf(Me.m_bShowAllItem, 0, -1))
+                    Me.SelectedIndex = CInt(IIf(Me.m_bShowAllGroupsItem, 0, -1))
                     Return
                 End If
                 Me.SelectedIndex = Me.GroupIndex(iGroup)
@@ -464,7 +515,7 @@ Namespace Controls
             Set(ByVal group As cEcoPathGroupInput)
                 If (Not Me.IsInitialized()) Then Return
                 If (group Is Nothing) Then
-                    Me.SelectedIndex = CInt(IIf(Me.m_bShowAllItem, 0, -1))
+                    Me.SelectedIndex = CInt(IIf(Me.m_bShowAllGroupsItem, 0, -1))
                     Return
                 End If
                 Me.SelectedIndex = Me.GroupIndex(group.Index)
@@ -588,8 +639,8 @@ Namespace Controls
             Me.Items.Clear()
 
             ' Add 'all groups' item
-            If Me.m_bShowAllItem Then
-                Me.Items.Add(New cGroupItem(Nothing))
+            If Me.m_bShowAllGroupsItem Then
+                Me.Items.Add(New cGroupItem(Me.m_strAllGroupsItem, Me.m_clrAllGroupsItem))
             End If
 
             ' Determine #groups to show
@@ -663,6 +714,8 @@ Namespace Controls
         Protected Overrides Sub OnDrawItem(ByVal e As DrawItemEventArgs)
 
             If (e.Index >= Me.Items.Count Or e.Index < 0) Then Return
+            ' Sanity check
+            If Me.UIContext Is Nothing Then Return
 
             Dim item As Object = Me.Items(e.Index)
             Dim gi As cGroupListBox.cGroupItem = Nothing
@@ -687,7 +740,14 @@ Namespace Controls
                         clrText = SystemColors.ControlDark
                         bItemValid = False
                     End If
+                Else
+                    ' #No group attached: pick up custom colour if possible.
+                    clrLegend = gi.Color
                 End If
+            End If
+
+            If Not Me.Enabled Then
+                clrText = SystemColors.GrayText
             End If
 
             ' TODO: Take current culture into consideration here. Right-to-left reading order cultures
