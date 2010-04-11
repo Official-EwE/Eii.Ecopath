@@ -9,6 +9,8 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
+' ToDo_JS: globalize this form!
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Form class, implementing the Ecotracer (contaminant tracing) output interface.
@@ -18,18 +20,33 @@ Public Class frmEcotracerOutput
 
 #Region " Definitions "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Enumerated type, indicates the form result display mode.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Enum eDisplayModeTypes As Byte
-        NotInitialized 'no mode has been set yet this make it easier to init the form
-        NoResults '
+        ''' <summary>No mode has been set yet this make it easier to init the form.</summary>
+        NotInitialized
+        ''' <summary>No results have been computed yet.</summary>
+        NoResults
+        ''' <summary>Show Ecosim results.</summary>
         Ecosim
+        ''' <summary>Show Ecospace results.</summary>
         Ecospace
     End Enum
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type, indicates possible plot types.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Enum ePlotTypes As Byte
+        ''' <summary>Plot type has not been initialized yet.</summary>
+        NotSet = 0
+        ''' <summary>Concentration plot.</summary>
         Conc
+        ''' <summary>Concentration over biomass plot.</summary>
         CB
     End Enum
 
@@ -37,23 +54,20 @@ Public Class frmEcotracerOutput
 
 #Region " Private vars "
 
-    ''' <summary></summary>
+    ''' <summary>Zed graph helper to make the graph look purdy with.</summary>
     Private m_zgh As cZedGraphHelper = Nothing
-    ''' <summary></summary>
+    ''' <summary>Form display mode.</summary>
     Private m_curDisplayMode As eDisplayModeTypes = eDisplayModeTypes.NotInitialized
-
-    ''' <summary></summary>
-    Private m_asScaling() As Single
-
-    Private m_DisplayHelper As IDisplayModeHelper
-
-    Private m_sortOrder() As Integer
-    Private m_bSorted As Boolean
-    Private m_plottype As ePlotTypes = ePlotTypes.CB
+    ''' <summary>Form type of plot.</summary>
+    Private m_plottype As ePlotTypes = ePlotTypes.NotSet
+    ''' <summary>Thing to gather the data for the form.</summary>
+    Private m_DisplayHelper As IDisplayModeHelper = Nothing
+    ''' <summary>Run progress.</summary>
+    Private m_iProgress As Integer = 0
 
 #End Region ' Private vars
 
-#Region " Events "
+#Region " Form overrides "
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
@@ -62,48 +76,73 @@ Public Class frmEcotracerOutput
 
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_zgc)
+        Me.m_lbGroups.Attach(Me.UIContext)
+
+        Me.PlotType = ePlotTypes.CB
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
         AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
         RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+        Me.m_lbGroups.Detach()
         Me.m_zgh.Detach()
         Me.m_zgh = Nothing
+
         MyBase.OnFormClosed(e)
 
     End Sub
 
-    Protected Overrides Sub OnActivated(ByVal e As System.EventArgs)
-        MyBase.OnActivated(e)
-        Me.RefreshData()
+    ' JS10Apr10: disabled, too erratic to be reliable
+    'Protected Overrides Sub OnActivated(ByVal e As System.EventArgs)
+    '    MyBase.OnActivated(e)
+    'End Sub
+
+    ' JS10Apr10: this probably needs to be refined to ONLY include run completed states
+    Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        If (msg.Source = eCoreComponentType.EcoSim) Or _
+           (msg.Source = eCoreComponentType.EcoSpace) Then
+            Me.RefreshData()
+        End If
     End Sub
 
-    Private Sub m_lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_lbGroups.SelectedIndexChanged, m_lbGroups.SelectedIndexChanged
-        PlotGroup()
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdoc cref="frmEwE.IsRunForm" />
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property IsRunForm() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
+#End Region ' Form overrides
+
+#Region " Events "
+
+    Private Sub OnGroupSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_lbGroups.SelectedIndexChanged
+        Me.PlotSelectedGroups()
     End Sub
 
     Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
         If ((changeType And cStyleGuide.eChangeType.Colours) > 0) Then
             ' Respond to group colour changes
-            Me.PlotGroup()
-            ' Invalidate group list box
-            Me.m_lbGroups.Invalidate()
+            Me.PlotSelectedGroups()
         End If
     End Sub
 
-    Private Sub btRunSim_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnRunEcosim(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_btnRunSim.Click
 
         Try
             'An Ecosim scenario was loaded when this form was loaded
             'so there is no need to check
             Me.Core.EcoSimModelParameters.ContaminantTracing = True
-            Me.startModelRun()
+            Me.StartModelRun()
             Me.Core.RunEcoSim(AddressOf Me.EcosimCallback)
             Me.RefreshGraph()
 
@@ -113,7 +152,7 @@ Public Class frmEcotracerOutput
 
     End Sub
 
-    Private Sub btRunSpace_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnRunEcospace(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_btnRunSpace.Click
 
         Try
@@ -128,7 +167,7 @@ Public Class frmEcotracerOutput
             'Make sure the scenario loaded successfully before trying to run Ecospace
             If Me.Core.StateMonitor.HasEcospaceLoaded Then
                 Me.Core.EcospaceModelParameters.ContaminantTracing = True
-                Me.startModelRun()
+                Me.StartModelRun()
                 Me.Core.RunEcoSpace(AddressOf Me.EcospaceCallback)
                 Me.RefreshGraph()
             End If
@@ -139,40 +178,30 @@ Public Class frmEcotracerOutput
 
     End Sub
 
-    Private Sub rbConc_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_rbConc.CheckedChanged
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler, called when a plot type radio button checked state has changed.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnPlotTypeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_rbConc.CheckedChanged, m_rbCB.CheckedChanged
 
-        If m_DisplayHelper Is Nothing Then Return
+        If (Me.m_DisplayHelper Is Nothing) Then Return
 
-        Dim rb As RadioButton = DirectCast(sender, RadioButton)
-        If rb.Checked Then
-            Me.m_plottype = ePlotTypes.Conc
-            If Me.m_bSorted Then Me.RefreshData()
-            Me.RefreshGraph()
+        If Me.m_rbConc.Checked Then
+            Me.PlotType = ePlotTypes.Conc
+        ElseIf Me.m_rbCB.Checked Then
+            Me.PlotType = ePlotTypes.CB
         End If
 
     End Sub
 
-    Private Sub rbCB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_rbCB.CheckedChanged
-
-        If m_DisplayHelper Is Nothing Then Return
-
-        Dim rb As RadioButton = DirectCast(sender, RadioButton)
-        If rb.Checked Then
-            Me.m_plottype = ePlotTypes.CB
-            If Me.m_bSorted Then Me.RefreshData()
-            Me.RefreshGraph()
-        End If
-
-    End Sub
-
-    Private Sub cmbRegions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRegionSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_cmbRegions.SelectedIndexChanged
         Me.RefreshGraph()
     End Sub
 
-    Private Sub ckSorted_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnSortedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_chkSortGroups.Click
         Me.RefreshData()
     End Sub
@@ -188,76 +217,110 @@ Public Class frmEcotracerOutput
 
 #Region " Internal bits "
 
-    Private m_iProgress As Integer = 0
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Start a model run Ecosim or Ecospace
+    ''' Get/set the graph plot type.
     ''' </summary>
-    ''' <remarks></remarks>
-    Private Sub startModelRun()
+    ''' -----------------------------------------------------------------------
+    Private Property PlotType() As ePlotTypes
+        Get
+            Return Me.m_plottype
+        End Get
+        Set(ByVal value As ePlotTypes)
+            If (value <> Me.m_plottype) Then
+                Me.m_plottype = value
+                Me.UpdateControls()
+                Me.RefreshData()
+                Me.RefreshGraph()
+            End If
+        End Set
+    End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Prepare the UI for running Ecosim or Ecospace.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub StartModelRun()
+        ' Reset progress
         Me.m_iProgress = 0
-
-        'clear out the progress bar
-        cApplicationStatusNotifier.SetStatusText("Running Ecotracer...", _
-                                                 TriState.UseDefault, _
-                                                 CSng(Me.m_iProgress / Me.m_DisplayHelper.nYears))
-
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Update the progress bar in response to a model time step
+    ''' Update the progress bar in response to a model time step.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Private Sub UpdateProgess()
 
         Me.m_iProgress += 1
 
         If (Me.m_iProgress < Me.m_DisplayHelper.nYears) Then
-            cApplicationStatusNotifier.SetStatusText("Running Ecotracer...", TriState.UseDefault, CSng(Me.m_iProgress / Me.m_DisplayHelper.nYears))
+            cApplicationStatusNotifier.SetStatusText("Running Ecotracer...", _
+                                                     TriState.UseDefault, _
+                                                     CSng(Me.m_iProgress / Me.m_DisplayHelper.nYears))
         Else
             cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault)
         End If
 
     End Sub
 
-    Private Function getDisplayMode() As eDisplayModeTypes
-        Dim dmode As eDisplayModeTypes
+    Private m_bInUpdate As Boolean = False
 
-        dmode = eDisplayModeTypes.NoResults
+    Private Sub UpdateControls()
 
-        'Ecosim selected
-        If Me.Core.EcoSimModelParameters.ContaminantTracing Then
-            dmode = eDisplayModeTypes.Ecosim
-        End If
+        If Me.m_bInUpdate Then Return
 
-        'Ecospace
-        'this is nested because EcospaceModelParameters will be Null if an Ecospace scenario has not been loaded
-        If Me.Core.StateMonitor.HasEcospaceLoaded Then
-            If Me.Core.EcospaceModelParameters.ContaminantTracing Then
-                dmode = eDisplayModeTypes.Ecospace
-            End If
-        End If
+        Me.m_bInUpdate = True
 
-        Return dmode
+        Me.m_rbCB.Checked = (Me.PlotType = ePlotTypes.CB)
+        Me.m_rbConc.Checked = (Me.PlotType = ePlotTypes.Conc)
 
-    End Function
+        Me.m_bInUpdate = False
 
+    End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Re-populates the interface 
+    ''' Get the current display mode.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
+    Private ReadOnly Property DisplayMode() As eDisplayModeTypes
+        Get
+            Dim mode As eDisplayModeTypes = eDisplayModeTypes.NoResults
+
+            'Ecosim selected
+            If Me.Core.EcoSimModelParameters.ContaminantTracing Then
+                mode = eDisplayModeTypes.Ecosim
+            End If
+
+            'Ecospace
+            'this is nested because EcospaceModelParameters will be Null if an Ecospace scenario has not been loaded
+            If Me.Core.StateMonitor.HasEcospaceLoaded Then
+                If Me.Core.EcospaceModelParameters.ContaminantTracing Then
+                    mode = eDisplayModeTypes.Ecospace
+                End If
+            End If
+
+            Return mode
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Re-populate the interface 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub RefreshData()
 
         If Me.UIContext Is Nothing Then Return
 
-        Dim newDMode As eDisplayModeTypes
+        Console.WriteLine(">> {0}: frmEcotracerOutput refreshed", Date.Now.ToLongTimeString)
 
-        newDMode = Me.getDisplayMode
+        Dim modeNew As eDisplayModeTypes = Me.DisplayMode
 
         'build the correct display mode helper based on the new display mode flag from getDisplayMode
-        Me.m_DisplayHelper = Me.DisplayHelperFactory(newDMode)
+        Me.m_DisplayHelper = Me.DisplayHelperFactory(modeNew)
 
         'refresh the display mode helper
         'if no new displayhelper was built this will refresh the current one based on the core state
@@ -265,14 +328,10 @@ Public Class frmEcotracerOutput
 
         'keep the display mode for next time 
         'it is used in DisplayHelperFactory()
-        Me.m_curDisplayMode = newDMode
+        Me.m_curDisplayMode = modeNew
 
         'get the sort order for the groups list box
-        Me.CalcSortOrder()
-
-        ' Populate the list box
-        Me.UpdateGroups()
-
+        Me.SortGroupList()
         Me.UpdateRegions()
 
         ' Config controls based on the display helper
@@ -281,17 +340,11 @@ Public Class frmEcotracerOutput
         Me.m_lbGroups.Enabled = m_DisplayHelper.Enabled
         Me.m_cmbRegions.Enabled = m_DisplayHelper.EnabledForSpace
 
-        'This is kind of crude. Reset the progress bar to zero
-        startModelRun()
-
-        Me.Refresh()
-
     End Sub
 
     ''' <summary>
     ''' Redraw the graph
     ''' </summary>
-    ''' <remarks></remarks>
     Private Sub RefreshGraph()
 
         'Set values in the display helper
@@ -311,7 +364,7 @@ Public Class frmEcotracerOutput
         Me.m_zgc.GraphPane.XAxis.Scale.Max = CDbl(Me.Core.EcosimFirstYear + m_DisplayHelper.nYears)
 
         'plot the data
-        Me.PlotGroup()
+        Me.PlotSelectedGroups()
 
     End Sub
 
@@ -319,40 +372,41 @@ Public Class frmEcotracerOutput
     ''' <summary>
     ''' 
     ''' </summary>
-    ''' <param name="iGroupSelected"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub PlotGroup(Optional ByVal iGroupSelected As Integer = cCore.NULL_VALUE)
+    Private Sub PlotSelectedGroups()
 
-        Dim lines As List(Of LineItem)
+        Dim lLinesPlot As New List(Of LineItem)
+        Dim aLinesGroup() As LineItem = Nothing
+        Dim source As cCoreInputOutputBase = Nothing
 
         ' ToDo_JS: validate tracer run status. This needs extending the core state monitor
-        Try
 
-            If iGroupSelected = cCore.NULL_VALUE And m_lbGroups.SelectedIndices.Count = 0 Then
-                'nothing to draw
-                Exit Sub
+        If Not Me.m_DisplayHelper.bCanPlot Then Return
+
+        ' Iterate over all selected listbox items
+        For Each iListboxItem As Integer In Me.m_lbGroups.SelectedIndices
+            ' Get source at this item
+            source = Me.m_lbGroups.GetGroupAt(iListboxItem)
+            ' Is environment node?
+            If (source Is Nothing) Then
+                ' #Yes: get environment lines
+                aLinesGroup = Me.m_DisplayHelper.GetGroupLines(0)
+            Else
+                ' #No: get group lines
+                aLinesGroup = Me.m_DisplayHelper.GetGroupLines(source.Index)
             End If
-
-            'can the display helper plot 
-            If Me.m_DisplayHelper.bCanPlot Then
-
-                ' If not forcing to draw a single item draw all selected
-                If iGroupSelected = cCore.NULL_VALUE Then
-                    lines = Me.m_DisplayHelper.GetGroupLines(m_lbGroups.SelectedItems)
-                Else
-                    ' Forced to draw a single item
-                    lines = Me.m_DisplayHelper.GetGroupLines(Me.m_sortOrder(iGroupSelected))
+            ' Add all lines
+            For Each li As LineItem In aLinesGroup
+                ' Is a line?
+                If (li IsNot Nothing) Then
+                    ' #Yes: add it
+                    lLinesPlot.Add(li)
                 End If
+            Next
+        Next
 
-                Debug.Assert(lines IsNot Nothing, Me.ToString, ".PlotGroup() Me.m_DisplayHelper.GetGroupLines() failed!")
-
-                m_zgh.PlotLines(lines.ToArray)
-
-            End If 'If Me.m_DisplayHelper.bCanPlot Then
-
-        Catch ex As Exception
-            EwECore.cLog.Write(ex)
-        End Try
+        ' Plot all encountered lines
+        Me.m_zgh.PlotLines(lLinesPlot.ToArray)
 
     End Sub
 
@@ -366,7 +420,6 @@ Public Class frmEcotracerOutput
         UpdateProgess()
     End Sub
 
-
     Private Sub UpdateRegions()
 
         Me.m_cmbRegions.Items.Clear()
@@ -375,7 +428,7 @@ Public Class frmEcotracerOutput
             'only populate the region list if space is enabled
             Me.m_cmbRegions.Items.Add("Undefined area")
             For irgn As Integer = 1 To Me.Core.nRegions
-                Me.m_cmbRegions.Items.Add("region " & irgn) ' Me.Core.EcospaceRegions(irgn).Name)
+                Me.m_cmbRegions.Items.Add(New cCoreInputOutputListboxItem(Me.Core.EcospaceRegions(irgn)))
             Next
             Me.m_cmbRegions.Items.Add("All Regions")
 
@@ -384,143 +437,44 @@ Public Class frmEcotracerOutput
 
     End Sub
 
-
-    Private Sub CalcSortOrder()
-        Dim maxVal As Single, iSort As Integer, gMax As Single
-        Dim GrpTaken() As Boolean
-        Dim ngrps As Integer = Me.Core.nGroups
-
-        ReDim Me.m_sortOrder(ngrps)
-        ReDim GrpTaken(ngrps)
-
-        'get the sorted checked state
-        Me.m_bSorted = Me.m_chkSortGroups.Checked
-
-        If m_bSorted Then
-            'sort into m_sortOrder() according to Max of group from the current displayhelper
-            For igrp As Integer = 1 To ngrps
-                maxVal = -1
-                For jgrps As Integer = 1 To ngrps
-                    gMax = Me.m_DisplayHelper.GetGroupMax(jgrps)
-                    If gMax > maxVal And GrpTaken(jgrps) = False Then
-                        maxVal = gMax
-                        iSort = jgrps
-                    End If
-                Next
-
-                m_sortOrder(igrp) = iSort
-                GrpTaken(iSort) = True
-            Next
-
-        Else 'If m_bSorted Then
-
-            'not sorted just display in default order
-            For igrp As Integer = 1 To ngrps
-                m_sortOrder(igrp) = igrp
-            Next
-
-        End If 'If m_bSorted Then
-
-    End Sub
-
-#Region " Group listbox handling "
-
-    Private Sub UpdateGroups()
-
-        m_lbGroups.Items.Clear()
-
-        'Add "All groups" at the top
-        m_lbGroups.Items.Add(0)
-        For i As Integer = 1 To Me.Core.nGroups
-            m_lbGroups.Items.Add(Me.m_sortOrder(i))
-        Next
-
-
-    End Sub
-
-    Private Sub m_lbGroups_DrawItem(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) _
-        Handles m_lbGroups.DrawItem
-
-        ' get the sender of this event
-        Dim s As ListBox = CType(sender, ListBox)
-        Dim iGroup As Integer = 0
-        Dim strItemText As String = ""
-        Dim clr As Color = Nothing
-        Dim rect As Rectangle = Nothing
-
-        If s Is Nothing Then Return
-        If e.Index = -1 Then Return
-
-        Try
-            'The rectangle to draw the color box
-            rect = New Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, e.Bounds.Height * 2, e.Bounds.Height - 4)
-            iGroup = CInt(s.Items(e.Index))
-
-            ' Sanity check
-            If iGroup <= Me.Core.nGroups Then
-                If iGroup = 0 Then
-                    strItemText = My.Resources.HEADER_ENVIRONMENT
-                    clr = Color.Black
-                Else
-                    Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
-                    strItemText = group.Name
-                    clr = Me.StyleGuide.GroupColor(Me.Core, iGroup)
-                End If
-            Else
-                strItemText = "" ' Deleted
-                clr = Color.Gray
-            End If
-
-            Me.DrawCustomItem(e, clr, strItemText, rect)
-
-        Catch ex As Exception
-            Debug.Assert(False)
-            Return
-        End Try
-    End Sub
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper methods to draw a custom listcontrol item 
+    ''' Sort the items in the group list box
     ''' </summary>
-    ''' <param name="e">DrawItemEventArgs sent by DrawItem event handler</param>
-    ''' <param name="clr">The colorbox's color</param>
-    ''' <param name="txt">The text beside the colorbox</param>
-    ''' <remarks>This method is called by both Listbox and Combobox drawItem event handlers</remarks>
-    Private Sub DrawCustomItem(ByVal e As System.Windows.Forms.DrawItemEventArgs, _
-                                ByVal clr As Color, _
-                                ByRef txt As String, _
-                                ByRef rect As Rectangle)
+    ''' -----------------------------------------------------------------------
+    Private Sub SortGroupList()
 
+        ' JS 10apr10: Let group listbox do the sorting
+        Me.m_lbGroups.SuspendLayout()
 
-        ' Do nothing if there is no data
-        If e.Index = -1 Then Return
+        ' User wants to sort by concentration values?
+        If Me.m_chkSortGroups.Checked Then
+            ' #Yes: sort listbox by value
+            ' First update sort values
+            For igrp As Integer = 1 To Me.Core.nGroups
+                Me.m_lbGroups.SortValue(igrp) = Me.m_DisplayHelper.GetGroupMax(igrp)
+            Next
+            ' Then set sort type, highest concentrations first
+            Me.m_lbGroups.SortType = cGroupListBox.eSortType.ValueDesc
+        Else
+            ' #No: just sort by group index, asc
+            Me.m_lbGroups.SortType = cGroupListBox.eSortType.GroupIndexAsc
+        End If
 
-        'If the item is selected, draw the correct background color
-        e.DrawBackground()
-        e.DrawFocusRectangle()
-
-        'Get the listbox's graphics object
-        Dim g As Graphics = e.Graphics
-
-        'Draw color box
-        g.FillRectangle(New SolidBrush(clr), rect)
-        g.DrawRectangle(Pens.Black, rect)
-        'Draw text 
-        g.DrawString(txt, e.Font, New SolidBrush(e.ForeColor), _
-                        New RectangleF(e.Bounds.X + rect.Width + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height))
+        Me.m_lbGroups.ResumeLayout()
+        Me.m_lbGroups.Sorted = True
 
     End Sub
-
-#End Region
 
 #Region " Helper methods "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get a Display mode helper object based on the newDisplayMode parameter
     ''' </summary>
     ''' <param name="newDisplayMode"></param>
     ''' <returns>If the current display mode matches the newDisplayMode parameter this will return the current IDisplayModeHelper object</returns>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Private Function DisplayHelperFactory(ByVal newDisplayMode As eDisplayModeTypes) As IDisplayModeHelper
 
         'This will only build a new IDisplayModeHelper if newDisplayMode is different from the current m_curDisplayMode
@@ -557,35 +511,29 @@ Public Class frmEcotracerOutput
 
 #Region " Overrides "
 
-    Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-
-        If msg.Source = eCoreComponentType.EcoSim Or msg.Source = eCoreComponentType.EcoSpace Then
-            Me.RefreshData()
-        End If
-
-    End Sub
-
-    Public Overrides ReadOnly Property IsRunForm() As Boolean
-        Get
-            Return True
-        End Get
-    End Property
-
 #End Region ' Overrides
 
 #Region "Display Mode Helper Classes"
 
 #Region "Interface definition"
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Interface for an Ecotracer display mode helper implementation.
+    ''' </summary>
+    ''' =======================================================================
     Private Interface IDisplayModeHelper
         Inherits IUIElement
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the line(s) to draw on the graph
+        ''' Get the line(s) to draw on the graph for a single group.
         ''' </summary>
-        ''' <param name="iGroup"></param>
-        Function GetGroupLines(ByVal iGroup As Integer) As System.Collections.Generic.List(Of ZedGraph.LineItem)
-        Function GetGroupLines(ByVal lstGroups As System.Windows.Forms.ListBox.SelectedObjectCollection) As System.Collections.Generic.List(Of ZedGraph.LineItem)
+        ''' <param name="iGroup">Index of the group to get line(s) for.</param>
+        ''' <remarks>For Ecospace results, lines may be returned for every 
+        ''' relevant region.</remarks>
+        ''' -------------------------------------------------------------------
+        Function GetGroupLines(ByVal iGroup As Integer) As LineItem()
 
         Function GetGroupMax(ByVal iGroup As Integer) As Single
 
@@ -673,80 +621,88 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
-        Public Function GetGroupLines(ByVal iGroup As Integer) As System.Collections.Generic.List(Of ZedGraph.LineItem) Implements IDisplayModeHelper.GetGroupLines
-            Debug.Assert(False, Me.ToString & ".GetGroupLines() Warning this should not be called!")
-            Return Nothing
+        Public Function GetGroupLines(ByVal iGroup As Integer) As LineItem() _
+            Implements IDisplayModeHelper.GetGroupLines
+            Debug.Assert(False, Me.ToString & ".GetGroupLine() Warning this should not be called!")
+            Return New LineItem() {}
         End Function
 
-        Public Function GetGroupLines(ByVal lstGroups As System.Windows.Forms.ListBox.SelectedObjectCollection) As System.Collections.Generic.List(Of ZedGraph.LineItem) Implements IDisplayModeHelper.GetGroupLines
-            Debug.Assert(False, Me.ToString & ".GetGroupLines() Warning this should not be called!")
-            Return Nothing
-        End Function
-
-        Public Function GetGroupMax(ByVal iGroup As Integer) As Single Implements IDisplayModeHelper.GetGroupMax
+        Public Function GetGroupMax(ByVal iGroup As Integer) As Single _
+            Implements IDisplayModeHelper.GetGroupMax
             Return 0.0
         End Function
 
-        Public ReadOnly Property Enabled() As Boolean Implements IDisplayModeHelper.Enabled
+        Public ReadOnly Property Enabled() As Boolean _
+            Implements IDisplayModeHelper.Enabled
             Get
                 Return False
             End Get
         End Property
 
-        Public ReadOnly Property Title() As String Implements IDisplayModeHelper.Title
+        Public ReadOnly Property Title() As String _
+            Implements IDisplayModeHelper.Title
             Get
                 Return "No data available."
             End Get
         End Property
 
-        Public Sub Refresh() Implements IDisplayModeHelper.Refresh
-
+        Public Sub Refresh() _
+            Implements IDisplayModeHelper.Refresh
+            ' NOP
         End Sub
 
-        Public ReadOnly Property nYears() As Integer Implements IDisplayModeHelper.nYears
+        Public ReadOnly Property nYears() As Integer _
+            Implements IDisplayModeHelper.nYears
             Get
                 Return 1
             End Get
         End Property
 
-        Public Property PlotType() As ePlotTypes Implements IDisplayModeHelper.PlotType
+        Public Property PlotType() As ePlotTypes _
+            Implements IDisplayModeHelper.PlotType
             Get
-                Return ePlotTypes.Conc
+                Return ePlotTypes.NotSet
             End Get
             Set(ByVal value As ePlotTypes)
-
+                ' NOP
             End Set
         End Property
 
-        Public WriteOnly Property RegionIndex() As Integer Implements IDisplayModeHelper.RegionIndex
+        Public WriteOnly Property RegionIndex() As Integer _
+            Implements IDisplayModeHelper.RegionIndex
             Set(ByVal value As Integer)
-
+                ' NOP
             End Set
         End Property
 
-        Public ReadOnly Property EnabledForSpace() As Boolean Implements IDisplayModeHelper.EnabledForSpace
+        Public ReadOnly Property EnabledForSpace() As Boolean _
+            Implements IDisplayModeHelper.EnabledForSpace
             Get
                 Return False
             End Get
         End Property
 
-        Public Function Max() As Single Implements IDisplayModeHelper.Max
+        Public Function Max() As Single _
+            Implements IDisplayModeHelper.Max
             Return 0.0
         End Function
 
-        Public ReadOnly Property XAxisLabel() As String Implements IDisplayModeHelper.XAxisLabel
+        Public ReadOnly Property XAxisLabel() As String _
+            Implements IDisplayModeHelper.XAxisLabel
             Get
                 Return "X Axis"
             End Get
         End Property
 
-        Public ReadOnly Property YAxisLabel() As String Implements IDisplayModeHelper.YAxisLabel
+        Public ReadOnly Property YAxisLabel() As String _
+            Implements IDisplayModeHelper.YAxisLabel
             Get
                 Return "Y Axis"
             End Get
         End Property
 
-        Public ReadOnly Property bCanPlot() As Boolean Implements IDisplayModeHelper.bCanPlot
+        Public ReadOnly Property bCanPlot() As Boolean _
+            Implements IDisplayModeHelper.bCanPlot
             Get
                 Return False
             End Get
@@ -843,35 +799,19 @@ Public Class frmEcotracerOutput
 
         End Function
 
-        Public Function GetGroupLines(ByVal iGroup As Integer) As System.Collections.Generic.List(Of ZedGraph.LineItem) Implements IDisplayModeHelper.GetGroupLines
-
-            Dim lstLines As New List(Of LineItem)
+        Public Function GetGroupLines(ByVal iGroup As Integer) As LineItem() _
+            Implements IDisplayModeHelper.GetGroupLines
 
             Me.m_Ymax = Single.MinValue
-            lstLines.Add(buildLine(iGroup))
-
-            Return lstLines
+            Return New LineItem() {buildLine(iGroup)}
 
         End Function
 
-        Public Function GetGroupLines(ByVal lstGroups As System.Windows.Forms.ListBox.SelectedObjectCollection) As System.Collections.Generic.List(Of ZedGraph.LineItem) Implements IDisplayModeHelper.GetGroupLines
-            Dim lstLines As New List(Of LineItem)
+        Public Function GetGroupMax(ByVal iGroup As Integer) As Single _
+            Implements IDisplayModeHelper.GetGroupMax
 
-            Me.m_Ymax = Single.MinValue
-            For Each iGroup As Integer In lstGroups
-                lstLines.Add(buildLine(iGroup))
-            Next iGroup
-
-            Return lstLines
-
-        End Function
-
-
-        Public Function GetGroupMax(ByVal iGroup As Integer) As Single Implements IDisplayModeHelper.GetGroupMax
             Dim smax As Single
-
             Try
-
                 'there is no biomass for the environment index so there is no way to compute C/B
                 'in that case use Concentration(group,time)
                 If Me.m_plottype = ePlotTypes.CB And iGroup > 0 Then
@@ -922,7 +862,8 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
-        Public Sub Refresh() Implements IDisplayModeHelper.Refresh
+        Public Sub Refresh() _
+            Implements IDisplayModeHelper.Refresh
 
             Me.m_bEnabled = False
 
@@ -933,47 +874,51 @@ Public Class frmEcotracerOutput
 
         End Sub
 
-
-        Public ReadOnly Property nYears() As Integer Implements IDisplayModeHelper.nYears
+        Public ReadOnly Property nYears() As Integer _
+            Implements IDisplayModeHelper.nYears
             Get
                 Return Me.Core.nEcosimYears
             End Get
         End Property
 
-        Public Property PlotType() As ePlotTypes Implements IDisplayModeHelper.PlotType
+        Public Property PlotType() As ePlotTypes _
+            Implements IDisplayModeHelper.PlotType
             Get
                 Return Me.m_plottype
             End Get
-
             Set(ByVal value As ePlotTypes)
                 Me.m_plottype = value
             End Set
-
         End Property
 
-        Public WriteOnly Property RegionIndex() As Integer Implements IDisplayModeHelper.RegionIndex
+        Public WriteOnly Property RegionIndex() As Integer _
+            Implements IDisplayModeHelper.RegionIndex
             Set(ByVal value As Integer)
                 'ecosim does not use regions
             End Set
         End Property
 
-        Public ReadOnly Property EnabledForSpace() As Boolean Implements IDisplayModeHelper.EnabledForSpace
+        Public ReadOnly Property EnabledForSpace() As Boolean _
+            Implements IDisplayModeHelper.EnabledForSpace
             Get
                 Return False
             End Get
         End Property
 
-        Public Function Max() As Single Implements IDisplayModeHelper.Max
+        Public Function Max() As Single _
+            Implements IDisplayModeHelper.Max
             Return Me.m_Ymax
         End Function
 
-        Public ReadOnly Property XAxisLabel() As String Implements IDisplayModeHelper.XAxisLabel
+        Public ReadOnly Property XAxisLabel() As String _
+            Implements IDisplayModeHelper.XAxisLabel
             Get
                 Return "Ecosim Years"
             End Get
         End Property
 
-        Public ReadOnly Property YAxisLabel() As String Implements IDisplayModeHelper.YAxisLabel
+        Public ReadOnly Property YAxisLabel() As String _
+            Implements IDisplayModeHelper.YAxisLabel
             Get
                 Dim lb As String
 
@@ -986,7 +931,8 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
-        Public ReadOnly Property bCanPlot() As Boolean Implements IDisplayModeHelper.bCanPlot
+        Public ReadOnly Property bCanPlot() As Boolean _
+            Implements IDisplayModeHelper.bCanPlot
             Get
                 Return True
             End Get
@@ -1059,7 +1005,9 @@ Public Class frmEcotracerOutput
             Return smax
         End Function
 
-        Public Function GetGroupLines(ByVal iGroup As Integer) As System.Collections.Generic.List(Of ZedGraph.LineItem) Implements IDisplayModeHelper.GetGroupLines
+        Public Function GetGroupLines(ByVal iGroup As Integer) As LineItem() _
+            Implements IDisplayModeHelper.GetGroupLines
+
             If iGroup < 0 Then Return Nothing ' Safety first
 
             Dim lstLines As New List(Of LineItem)
@@ -1070,24 +1018,7 @@ Public Class frmEcotracerOutput
                 lstLines.Add(buildLine(iGroup, ireg))
             Next
 
-            Return lstLines
-
-        End Function
-
-        Public Function GetGroupLines(ByVal lstGroups As System.Windows.Forms.ListBox.SelectedObjectCollection) As System.Collections.Generic.List(Of ZedGraph.LineItem) Implements IDisplayModeHelper.GetGroupLines
-            Dim lstLines As New List(Of LineItem)
-
-            Me.m_Ymax = Single.MinValue
-            For Each iGroup As Integer In lstGroups
-
-                'm_rgn1 and m_rgn2 were set in RegionIndex
-                For ireg As Integer = Me.m_rgn1 To Me.m_rgn2
-                    lstLines.Add(buildLine(iGroup, ireg))
-                Next
-
-            Next iGroup
-
-            Return lstLines
+            Return lstLines.ToArray
 
         End Function
 
