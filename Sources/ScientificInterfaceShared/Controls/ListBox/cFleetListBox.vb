@@ -79,16 +79,6 @@ Namespace Controls
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Formats the item text for display in the FleetListBox.
-            ''' </summary>
-            ''' <returns>The formatted item text.</returns>
-            ''' ---------------------------------------------------------------
-            Public Overrides Function ToString() As String
-                Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, Me.Source.Index, Me.Source.Name)
-            End Function
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
             ''' Get the fleet linked to the item.
             ''' </summary>
             ''' ---------------------------------------------------------------
@@ -579,6 +569,9 @@ Namespace Controls
         Protected Overrides Sub OnDrawItem(ByVal e As System.Windows.Forms.DrawItemEventArgs)
 
             If (e.Index >= Me.Items.Count Or e.Index < 0) Then Return
+
+            ' Sanity check
+            If Me.UIContext Is Nothing Then Return
 
             Dim item As Object = Me.Items(e.Index)
             Dim gi As cFleetListBox.cFleetItem = Nothing
