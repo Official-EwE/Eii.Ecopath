@@ -17,7 +17,7 @@ Namespace Controls
     Public Class cCoreInputOutputListboxItem
 
         ''' <summary>The object that is wrapped.</summary>
-        Private m_obj As cCoreInputOutputBase = Nothing
+        Private m_source As cCoreInputOutputBase = Nothing
         ''' <summary>Alternative display string if the object is not present.</summary>
         Private m_strLabel As String = ""
 
@@ -28,7 +28,7 @@ Namespace Controls
         ''' <param name="obj">The object to wrap.</param>
         ''' ---------------------------------------------------------------
         Public Sub New(ByVal obj As cCoreInputOutputBase)
-            Me.m_obj = obj
+            Me.m_source = obj
             Me.m_strLabel = ""
         End Sub
 
@@ -39,7 +39,7 @@ Namespace Controls
         ''' <param name="strLabel">The label to show for a null-object.</param>
         ''' ---------------------------------------------------------------
         Public Sub New(ByVal strLabel As String)
-            Me.m_obj = Nothing
+            Me.m_source = Nothing
             Me.m_strLabel = strLabel
         End Sub
 
@@ -50,7 +50,7 @@ Namespace Controls
         ''' ---------------------------------------------------------------
         Public Overridable ReadOnly Property Source() As cCoreInputOutputBase
             Get
-                Return Me.m_obj
+                Return Me.m_source
             End Get
         End Property
 
@@ -61,8 +61,12 @@ Namespace Controls
         ''' <returns></returns>
         ''' ---------------------------------------------------------------
         Public Overrides Function ToString() As String
-            If (Me.m_obj Is Nothing) Then Return Me.m_strLabel
-            Return Me.m_obj.Name()
+            If (Me.m_source Is Nothing) Then
+                Return Me.m_strLabel
+            End If
+            Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+                                 Me.m_source.Index, _
+                                 Me.m_source.Name)
         End Function
 
     End Class
