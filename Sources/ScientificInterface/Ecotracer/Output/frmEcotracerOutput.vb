@@ -255,10 +255,10 @@ Public Class frmEcotracerOutput
 
         Me.m_iProgress += 1
 
-        If (Me.m_iProgress < Me.m_DisplayHelper.nYears) Then
+        If (Me.m_iProgress < Me.m_DisplayHelper.nYears * cCore.N_MONTHS) Then
             cApplicationStatusNotifier.SetStatusText("Running Ecotracer...", _
                                                      TriState.UseDefault, _
-                                                     CSng(Me.m_iProgress / Me.m_DisplayHelper.nYears))
+                                                     CSng(Me.m_iProgress / (Me.m_DisplayHelper.nYears * cCore.N_MONTHS)))
         Else
             cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault)
         End If
@@ -446,6 +446,7 @@ Public Class frmEcotracerOutput
 
         ' JS 10apr10: Let group listbox do the sorting
         Me.m_lbGroups.SuspendLayout()
+        Me.m_lbGroups.Sorted = False
 
         ' User wants to sort by concentration values?
         If Me.m_chkSortGroups.Checked Then
@@ -461,8 +462,8 @@ Public Class frmEcotracerOutput
             Me.m_lbGroups.SortType = cGroupListBox.eSortType.GroupIndexAsc
         End If
 
-        Me.m_lbGroups.ResumeLayout()
         Me.m_lbGroups.Sorted = True
+        Me.m_lbGroups.ResumeLayout()
 
     End Sub
 
