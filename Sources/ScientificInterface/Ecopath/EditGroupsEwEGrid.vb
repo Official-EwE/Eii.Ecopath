@@ -1445,14 +1445,16 @@ Public Class EditGroupsEwEGrid
         Me.UpdateColorColumn()
     End Sub
 
-    Public Sub SetScaleGroupColors()
-
-        For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
-            Me.m_lgiGroups(iGroup).PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(iGroup + 1, Me.m_lgiGroups.Count))
-            Me.UpdateRow(iGroup + iFIRSTGROUPROW)
+    Public Sub SetDefaultGroupColors()
+        For iRow As Integer = iFIRSTGROUPROW To Me.RowsCount - 1
+            Me.SetDefaultGroupColor(iRow)
         Next
+        'Me.UpdateColorColumn()
+    End Sub
 
-        Me.UpdateColorColumn()
+    Public Sub SetDefaultGroupColor(ByVal iRow As Integer)
+        Me.m_lgiGroups(iRow - iFIRSTGROUPROW).PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(iRow - iFIRSTGROUPROW + 1, Me.m_lgiGroups.Count))
+        Me.UpdateRow(iRow)
     End Sub
 
     Public Sub SelectCustomColor(Optional ByVal iRow As Integer = -1)

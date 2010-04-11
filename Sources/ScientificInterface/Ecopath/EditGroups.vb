@@ -103,18 +103,23 @@ Namespace Ecopath
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_bntColorScale_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_bntColorScale.Click
-            Me.m_grid.SetScaleGroupColors()
+        Private Sub OnColourDefaultAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_bntColorDefaultAll.Click
+            Me.m_grid.SetDefaultGroupColors()
         End Sub
 
-        Private Sub m_btnColorDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnColorDefaults.Click
+        Private Sub OnColourAlternateAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnColorAlternateAll.Click
             Me.m_grid.SetAlternatingGroupColors()
         End Sub
 
-        Private Sub m_btnCustomColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnCustomColour.Click
+        Private Sub OnColourDefaultCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnColourDefaultCurrent.Click
+            Me.m_grid.SetDefaultGroupColor(Me.m_grid.SelectedRow)
+        End Sub
+
+        Private Sub OnColourCustomCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnColourCustomCurrent.Click
             Me.m_grid.SelectCustomColor()
         End Sub
 
@@ -128,7 +133,7 @@ Namespace Ecopath
             Me.m_btnInsert.Enabled = Me.m_grid.CanInsertRow()
             Me.m_btnDelete.Enabled = Me.m_grid.IsGroupRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
             Me.m_btnKeep.Enabled = Me.m_grid.IsGroupRow() And Me.m_grid.IsFlaggedForDeletionRow()
-            Me.m_btnCustomColour.Enabled = Me.m_grid.IsGroupRow()
+            Me.m_btnColourCustomCurrent.Enabled = Me.m_grid.IsGroupRow()
         End Sub
 
 #End Region ' Updating

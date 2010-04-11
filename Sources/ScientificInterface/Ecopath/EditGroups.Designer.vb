@@ -31,12 +31,13 @@ Namespace Ecopath
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.m_bntColorScale = New System.Windows.Forms.Button
-            Me.m_btnColorDefaults = New System.Windows.Forms.Button
+            Me.m_bntColorDefaultAll = New System.Windows.Forms.Button
+            Me.m_btnColorAlternateAll = New System.Windows.Forms.Button
             Me.m_lbColours = New System.Windows.Forms.Label
             Me.Label1 = New System.Windows.Forms.Label
             Me.m_lbOrder = New System.Windows.Forms.Label
-            Me.m_btnCustomColour = New System.Windows.Forms.Button
+            Me.m_btnColourCustomCurrent = New System.Windows.Forms.Button
+            Me.m_btnColourDefaultCurrent = New System.Windows.Forms.Button
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -45,9 +46,13 @@ Namespace Ecopath
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+            Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
             Me.m_grid.FixedColumnWidths = True
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
@@ -63,6 +68,7 @@ Namespace Ecopath
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TrackPropertySelection = True
+            Me.m_grid.UIContext = Nothing
             '
             'm_btnInsert
             '
@@ -112,17 +118,17 @@ Namespace Ecopath
             Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Cancel_Button.Name = "Cancel_Button"
             '
-            'm_bntColorScale
+            'm_bntColorDefaultAll
             '
-            resources.ApplyResources(Me.m_bntColorScale, "m_bntColorScale")
-            Me.m_bntColorScale.Name = "m_bntColorScale"
-            Me.m_bntColorScale.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_bntColorDefaultAll, "m_bntColorDefaultAll")
+            Me.m_bntColorDefaultAll.Name = "m_bntColorDefaultAll"
+            Me.m_bntColorDefaultAll.UseVisualStyleBackColor = True
             '
-            'm_btnColorDefaults
+            'm_btnColorAlternateAll
             '
-            resources.ApplyResources(Me.m_btnColorDefaults, "m_btnColorDefaults")
-            Me.m_btnColorDefaults.Name = "m_btnColorDefaults"
-            Me.m_btnColorDefaults.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnColorAlternateAll, "m_btnColorAlternateAll")
+            Me.m_btnColorAlternateAll.Name = "m_btnColorAlternateAll"
+            Me.m_btnColorAlternateAll.UseVisualStyleBackColor = True
             '
             'm_lbColours
             '
@@ -145,11 +151,17 @@ Namespace Ecopath
             Me.m_lbOrder.ForeColor = System.Drawing.SystemColors.ControlLightLight
             Me.m_lbOrder.Name = "m_lbOrder"
             '
-            'm_btnCustomColour
+            'm_btnColourCustomCurrent
             '
-            resources.ApplyResources(Me.m_btnCustomColour, "m_btnCustomColour")
-            Me.m_btnCustomColour.Name = "m_btnCustomColour"
-            Me.m_btnCustomColour.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnColourCustomCurrent, "m_btnColourCustomCurrent")
+            Me.m_btnColourCustomCurrent.Name = "m_btnColourCustomCurrent"
+            Me.m_btnColourCustomCurrent.UseVisualStyleBackColor = True
+            '
+            'm_btnColourDefaultCurrent
+            '
+            resources.ApplyResources(Me.m_btnColourDefaultCurrent, "m_btnColourDefaultCurrent")
+            Me.m_btnColourDefaultCurrent.Name = "m_btnColourDefaultCurrent"
+            Me.m_btnColourDefaultCurrent.UseVisualStyleBackColor = True
             '
             'EditGroups
             '
@@ -157,9 +169,10 @@ Namespace Ecopath
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
-            Me.Controls.Add(Me.m_btnCustomColour)
-            Me.Controls.Add(Me.m_btnColorDefaults)
-            Me.Controls.Add(Me.m_bntColorScale)
+            Me.Controls.Add(Me.m_btnColourDefaultCurrent)
+            Me.Controls.Add(Me.m_btnColourCustomCurrent)
+            Me.Controls.Add(Me.m_btnColorAlternateAll)
+            Me.Controls.Add(Me.m_bntColorDefaultAll)
             Me.Controls.Add(Me.m_lbOrder)
             Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.m_lbColours)
@@ -188,12 +201,13 @@ Namespace Ecopath
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
-        Private WithEvents m_bntColorScale As System.Windows.Forms.Button
-        Private WithEvents m_btnColorDefaults As System.Windows.Forms.Button
+        Private WithEvents m_bntColorDefaultAll As System.Windows.Forms.Button
+        Private WithEvents m_btnColorAlternateAll As System.Windows.Forms.Button
         Private WithEvents m_lbColours As System.Windows.Forms.Label
         Private WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_lbOrder As System.Windows.Forms.Label
-        Private WithEvents m_btnCustomColour As System.Windows.Forms.Button
+        Private WithEvents m_btnColourCustomCurrent As System.Windows.Forms.Button
+        Private WithEvents m_btnColourDefaultCurrent As System.Windows.Forms.Button
 
     End Class
 

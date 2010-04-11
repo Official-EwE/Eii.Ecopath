@@ -136,13 +136,13 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.EditGroupsStanzaEwEGrid, EwE6, Version=6.0.6.1022, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.EditGroupsEwEGrid, EwE6, Version=6.0.7.409, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="m_btnInsert.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -178,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnInsert.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="m_btnMoveUp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -214,7 +214,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnMoveUp.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_btnMoveDown.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -250,7 +250,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnMoveDown.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_btnDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -286,7 +286,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnDelete.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_btnKeep.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -322,13 +322,67 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnKeep.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="TableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="&gt;&gt;OK_Button.Name" xml:space="preserve">
+    <value>OK_Button</value>
+  </data>
+  <data name="&gt;&gt;OK_Button.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;Cancel_Button.Name" xml:space="preserve">
+    <value>Cancel_Button</value>
+  </data>
+  <data name="&gt;&gt;Cancel_Button.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>593, 404</value>
+  </data>
+  <data name="TableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>197, 29</value>
+  </data>
+  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="OK_Button" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Cancel_Button" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="OK_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
@@ -384,113 +438,83 @@
   <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>593, 404</value>
-  </data>
-  <data name="TableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>197, 29</value>
-  </data>
-  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="OK_Button" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Cancel_Button" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_bntColorScale.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_bntColorDefaultAll.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_bntColorScale.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="m_bntColorDefaultAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="m_bntColorScale.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_bntColorDefaultAll.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="m_bntColorScale.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_bntColorDefaultAll.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_bntColorScale.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_bntColorDefaultAll.Location" type="System.Drawing.Point, System.Drawing">
     <value>690, 236</value>
   </data>
-  <data name="m_bntColorScale.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_bntColorDefaultAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
-  <data name="m_bntColorScale.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_bntColorDefaultAll.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="m_bntColorScale.Text" xml:space="preserve">
-    <value>Scale</value>
+  <data name="m_bntColorDefaultAll.Text" xml:space="preserve">
+    <value>Default all</value>
   </data>
-  <data name="m_bntColorScale.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="m_bntColorDefaultAll.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
   </data>
-  <data name="&gt;&gt;m_bntColorScale.Name" xml:space="preserve">
-    <value>m_bntColorScale</value>
+  <data name="&gt;&gt;m_bntColorDefaultAll.Name" xml:space="preserve">
+    <value>m_bntColorDefaultAll</value>
   </data>
-  <data name="&gt;&gt;m_bntColorScale.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_bntColorDefaultAll.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_bntColorScale.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_bntColorDefaultAll.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_bntColorScale.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;m_bntColorDefaultAll.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="m_btnColorDefaults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnColorAlternateAll.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnColorDefaults.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="m_btnColorAlternateAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="m_btnColorDefaults.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_btnColorAlternateAll.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="m_btnColorDefaults.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnColorAlternateAll.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnColorDefaults.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnColorAlternateAll.Location" type="System.Drawing.Point, System.Drawing">
     <value>690, 265</value>
   </data>
-  <data name="m_btnColorDefaults.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnColorAlternateAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
-  <data name="m_btnColorDefaults.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnColorAlternateAll.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="m_btnColorDefaults.Text" xml:space="preserve">
-    <value>Alternating</value>
+  <data name="m_btnColorAlternateAll.Text" xml:space="preserve">
+    <value>Alternate all</value>
   </data>
-  <data name="m_btnColorDefaults.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="m_btnColorAlternateAll.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
   </data>
-  <data name="&gt;&gt;m_btnColorDefaults.Name" xml:space="preserve">
-    <value>m_btnColorDefaults</value>
+  <data name="&gt;&gt;m_btnColorAlternateAll.Name" xml:space="preserve">
+    <value>m_btnColorAlternateAll</value>
   </data>
-  <data name="&gt;&gt;m_btnColorDefaults.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColorAlternateAll.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnColorDefaults.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColorAlternateAll.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnColorDefaults.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;m_btnColorAlternateAll.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_lbColours.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -523,7 +547,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lbColours.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="Label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -559,7 +583,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lbOrder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -595,45 +619,84 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lbOrder.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
-  <data name="m_btnCustomColour.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnColourCustomCurrent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnCustomColour.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="m_btnColourCustomCurrent.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="m_btnCustomColour.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_btnColourCustomCurrent.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="m_btnCustomColour.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnColourCustomCurrent.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnCustomColour.Location" type="System.Drawing.Point, System.Drawing">
-    <value>690, 294</value>
+  <data name="m_btnColourCustomCurrent.Location" type="System.Drawing.Point, System.Drawing">
+    <value>690, 323</value>
   </data>
-  <data name="m_btnCustomColour.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnColourCustomCurrent.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
-  <data name="m_btnCustomColour.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+  <data name="m_btnColourCustomCurrent.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
   </data>
-  <data name="m_btnCustomColour.Text" xml:space="preserve">
+  <data name="m_btnColourCustomCurrent.Text" xml:space="preserve">
     <value>Custom...</value>
   </data>
-  <data name="m_btnCustomColour.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="m_btnColourCustomCurrent.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
   </data>
-  <data name="&gt;&gt;m_btnCustomColour.Name" xml:space="preserve">
-    <value>m_btnCustomColour</value>
+  <data name="&gt;&gt;m_btnColourCustomCurrent.Name" xml:space="preserve">
+    <value>m_btnColourCustomCurrent</value>
   </data>
-  <data name="&gt;&gt;m_btnCustomColour.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColourCustomCurrent.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnCustomColour.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColourCustomCurrent.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnCustomColour.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColourCustomCurrent.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_btnColourDefaultCurrent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnColourDefaultCurrent.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="m_btnColourDefaultCurrent.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnColourDefaultCurrent.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnColourDefaultCurrent.Location" type="System.Drawing.Point, System.Drawing">
+    <value>690, 294</value>
+  </data>
+  <data name="m_btnColourDefaultCurrent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 23</value>
+  </data>
+  <data name="m_btnColourDefaultCurrent.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="m_btnColourDefaultCurrent.Text" xml:space="preserve">
+    <value>Default current</value>
+  </data>
+  <data name="m_btnColourDefaultCurrent.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageBeforeText</value>
+  </data>
+  <data name="&gt;&gt;m_btnColourDefaultCurrent.Name" xml:space="preserve">
+    <value>m_btnColourDefaultCurrent</value>
+  </data>
+  <data name="&gt;&gt;m_btnColourDefaultCurrent.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnColourDefaultCurrent.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnColourDefaultCurrent.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
