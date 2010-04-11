@@ -5,15 +5,15 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports SourceGrid2
-Imports ScientificInterface.Other
 Imports EwEUtils.Drawing
+Imports ScientificInterface.Other
+Imports SourceGrid2
 
 #End Region ' Imports
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
-''' 
+''' Grid class implementing the Edit Groups interface grid bit.
 ''' </summary>
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
@@ -1468,7 +1468,7 @@ Public Class EditGroupsEwEGrid
 
         gi = Me.m_lgiGroups(iRow - iFIRSTGROUPROW)
 
-        dlgColor = New ColorDialog()
+        dlgColor = New cEwEColorDialog()
         dlgColor.Color = cStyleGuide.IntToColor(gi.PoolColor)
         If dlgColor.ShowDialog() = DialogResult.OK Then
             gi.PoolColor = cStyleGuide.ColorToInt(dlgColor.Color)

@@ -846,7 +846,7 @@ Imports ScientificInterface.Other
     Public Sub SelectCustomColor(Optional ByVal iRow As Integer = -1)
 
         Dim fi As cFleetInfo = Nothing
-        Dim dlgColor As ColorDialog = Nothing
+        Dim dlgColor As cEwEColorDialog = Nothing
 
         If iRow = -1 Then iRow = Me.SelectedRow
 
@@ -854,7 +854,7 @@ Imports ScientificInterface.Other
 
         fi = Me.m_lfiFleets(iRow - iFIRSTFLEETROW)
 
-        dlgColor = New ColorDialog()
+        dlgColor = New cEwEColorDialog()
         dlgColor.Color = cStyleGuide.IntToColor(fi.PoolColor)
         If dlgColor.ShowDialog() = DialogResult.OK Then
             fi.PoolColor = cStyleGuide.ColorToInt(dlgColor.Color)
