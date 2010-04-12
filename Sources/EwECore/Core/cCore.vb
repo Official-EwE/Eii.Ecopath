@@ -2506,6 +2506,12 @@ Public Class cCore
             .NumEcotracerScenarios = 0
         End With
 
+        With Me.m_tracerData
+            .RedimByNGroups(0)
+            .EcoSimConSimOn = False
+            .EcoSpaceConSimOn = False
+        End With
+
         Return True
     End Function
 
