@@ -4334,9 +4334,9 @@ Namespace DataSources
                 While reader.Read()
 
                     ' Find iPredator
-                    iPredator = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PredID")))
+                    iPredator = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
                     ' Find iPrey
-                    iPrey = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PreyID")))
+                    iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
 
                     If (iPredator > -1 And iPrey > -1) Then
                         ecosimDS.VulMult(iPrey, iPredator) = CSng(reader("vulnerability"))
@@ -4934,8 +4934,8 @@ Namespace DataSources
                     For iPrey = 1 To ecosimDS.nGroups
 
                         drow = writer.NewRow()
-                        drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredator))
-                        drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
+                        drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredator))
+                        drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
                         drow("ScenarioID") = idm.GetID(eDataTypes.EcoSimScenario, iScenarioID)
                         drow("vulnerability") = ecosimDS.VulMult(iPrey, iPredator)
                         writer.AddRow(drow)
