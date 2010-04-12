@@ -32,8 +32,13 @@ Public Class frmModelDescription
             Return MyBase.UIContext
         End Get
         Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+            If Me.UIContext IsNot Nothing Then
+                Me.m_csm = Nothing
+            End If
             MyBase.UIContext = value
-            Me.m_csm = Me.UIContext.Core.StateMonitor()
+            If Me.UIContext IsNot Nothing Then
+                Me.m_csm = Me.UIContext.Core.StateMonitor()
+            End If
         End Set
     End Property
 
