@@ -9272,6 +9272,7 @@ Public Class cCore
             If (ds.AppendEcotracerScenario(strName, strDescription, strAuthor, strContact, iScenarioID)) Then
                 Me.StateMonitor.UpdateDataState(Me.m_DataSource)
                 Me.InitEcotracerScenarios()
+                Me.DataAddedOrRemovedMessage("Ecotracer number of scenarios has changed.", eCoreComponentType.Ecotracer, eDataTypes.EcotracerScenario)
                 iScenario = Array.IndexOf(Me.m_EcoPathData.EcotracerScenarioDBID, iScenarioID)
                 Return Me.LoadEcotracerScenario(iScenario)
             End If
