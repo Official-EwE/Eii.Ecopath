@@ -1,39 +1,3 @@
-'==============================================================================
-'
-' $Log: cContaminantTracer.vb,v $
-' Revision 1.1  2008/09/26 07:30:10  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.16  2008/03/26 21:00:26  joeb
-' Added TracerCBRegion()
-'
-' Revision 1.15  2008/01/03 17:37:17  joeb
-' Changes for Excretion rate
-'
-' Revision 1.14  2007/12/29 20:27:23  joeb
-' Added CExcretionRate() and ConcMax()
-'
-' Revision 1.13  2007/12/21 18:38:11  joeb
-' Change EcoSpaceConSimOn so that is does not check the number of groups
-'
-' Revision 1.12  2007/12/21 17:48:24  joeb
-' Removed dead code
-'
-' Revision 1.11  2007/12/18 20:04:25  joeb
-' Changes for Ecospace
-'
-' Revision 1.10  2007/12/17 16:11:08  jeroens
-' * ConSimOn flags conditional to tracer initialization state
-'
-' Revision 1.9  2007/12/11 18:08:45  joeb
-' Added EcoSimConSimOn and EcoSpaceConSimOn flags to datastructures
-'
-' Revision 1.8  2007/11/26 02:08:27  jeroens
-' + Strict ON
-' + Added Cexcretionrate
-'
-'==============================================================================
-
 Option Strict On
 
 #Region "Contaminant tracing model"
@@ -350,22 +314,19 @@ Public Class cContaminantTracerDataStructures
     ''' <remarks></remarks>
     Public TracePlotCB As Boolean
 
-    ''' <summary>
-    ''' Results over time
-    ''' </summary>
-    ''' <remarks></remarks>
+    ''' <summary>Results over time</summary>
     Public TracerConc(,) As Single
-
+    ''' <summary>Concentration over time by region.</summary>
     Public TracerConcByRegion(,,) As Single ' by region, group, time
+    ''' <summary>Concentration over biomass over time by region.</summary>
     Public TracerCBRegion(,,) As Single ' by region, group, time
 
-    ''' <summary>
-    ''' Max concentration of contaminant at the current time step by group
-    ''' </summary>
-    ''' <remarks></remarks>
+    ''' <summary>Max concentration of contaminant at the current time step by group</summary>
     Public ConcMax() As Single
 
+    ''' <summary>Ecosim tracer enabled state flag.</summary>
     Friend m_bEcoSimConSimOn As Boolean
+    ''' <summary>Ecospace tracer enabled state flag.</summary>
     Friend m_bEcoSpaceConSimOn As Boolean
 
     Friend Sub RedimByNGroups(ByVal nGroups As Integer)
