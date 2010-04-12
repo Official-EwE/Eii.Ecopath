@@ -141,6 +141,7 @@ Partial Class frmEcotracerOutput
         '
         Me.m_cmbRegions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_cmbRegions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbRegions.FormattingEnabled = True
         Me.m_cmbRegions.Location = New System.Drawing.Point(22, 480)
         Me.m_cmbRegions.Name = "m_cmbRegions"

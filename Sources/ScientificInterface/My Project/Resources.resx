@@ -2600,4 +2600,13 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_NUMCELLS" xml:space="preserve">
     <value># cells</value>
   </data>
+  <data name="STATUS_ECOTRACER_RUNNING" xml:space="preserve">
+    <value>Running Ecotracer...</value>
+  </data>
+  <data name="HEADER_REGIONS_ALL" xml:space="preserve">
+    <value>All regions</value>
+  </data>
+  <data name="HEADER_REGIONS_UNDEFINED" xml:space="preserve">
+    <value>Undefined regions</value>
+  </data>
 </root>

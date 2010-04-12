@@ -62,8 +62,15 @@ Public Class frmEcotracerOutput
     Private m_plottype As ePlotTypes = ePlotTypes.NotSet
     ''' <summary>Thing to gather the data for the form.</summary>
     Private m_DisplayHelper As IDisplayModeHelper = Nothing
-    ''' <summary>Run progress.</summary>
-    Private m_iProgress As Integer = 0
+    ''' <summary>Run progress ratio [0, 1].</summary>
+    Private m_sProgress As Single = 0.0!
+    ''' <summary>Update loop prevention flag.</summary>
+    Private m_bInUpdate As Boolean = False
+
+    ''' <summary>Value tracker for Conc Sim.</summary>
+    Private m_propConcSimOn As cProperty = Nothing
+    ''' <summary>Value tracker for Conc Space.</summary>
+    Private m_propConcSpaceOn As cProperty = Nothing
 
 #End Region ' Private vars
 
@@ -74,11 +81,18 @@ Public Class frmEcotracerOutput
 
         If (Me.UIContext Is Nothing) Then Return
 
+        Me.RefreshData()
+
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_zgc)
         Me.m_lbGroups.Attach(Me.UIContext)
 
         Me.PlotType = ePlotTypes.CB
+
+        Me.m_propConcSimOn = Me.PropertyManager.GetProperty(Me.Core.EcoSimModelParameters, eVarNameFlags.ConSimOnEcoSim)
+        Me.m_propConcSpaceOn = Me.PropertyManager.GetProperty(Me.Core.EcospaceModelParameters, eVarNameFlags.ConSimOnEcoSpace)
+        AddHandler Me.m_propConcSimOn.PropertyChanged, AddressOf OnConcPropChanged
+        AddHandler Me.m_propConcSpaceOn.PropertyChanged, AddressOf OnConcPropChanged
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
@@ -88,6 +102,11 @@ Public Class frmEcotracerOutput
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
         RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+        RemoveHandler Me.m_propConcSimOn.PropertyChanged, AddressOf OnConcPropChanged
+        RemoveHandler Me.m_propConcSpaceOn.PropertyChanged, AddressOf OnConcPropChanged
+        Me.m_propConcSimOn = Nothing
+        Me.m_propConcSpaceOn = Nothing
 
         Me.m_lbGroups.Detach()
         Me.m_zgh.Detach()
@@ -141,7 +160,9 @@ Public Class frmEcotracerOutput
         Try
             'An Ecosim scenario was loaded when this form was loaded
             'so there is no need to check
+            Me.m_bInUpdate = True
             Me.Core.EcoSimModelParameters.ContaminantTracing = True
+            Me.m_bInUpdate = False
             Me.StartModelRun()
             Me.Core.RunEcoSim(AddressOf Me.EcosimCallback)
             Me.RefreshGraph()
@@ -166,7 +187,9 @@ Public Class frmEcotracerOutput
 
             'Make sure the scenario loaded successfully before trying to run Ecospace
             If Me.Core.StateMonitor.HasEcospaceLoaded Then
+                Me.m_bInUpdate = True
                 Me.Core.EcospaceModelParameters.ContaminantTracing = True
+                Me.m_bInUpdate = False
                 Me.StartModelRun()
                 Me.Core.RunEcoSpace(AddressOf Me.EcospaceCallback)
                 Me.RefreshGraph()
@@ -213,6 +236,13 @@ Public Class frmEcotracerOutput
         cmd.Invoke()
     End Sub
 
+    Private Sub OnConcPropChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+
+        If Me.m_bInUpdate Then Return
+        Me.RefreshData()
+
+    End Sub
+
 #End Region ' Events
 
 #Region " Internal bits "
@@ -243,30 +273,33 @@ Public Class frmEcotracerOutput
     ''' -----------------------------------------------------------------------
     Private Sub StartModelRun()
         ' Reset progress
-        Me.m_iProgress = 0
+        Me.UpdateProgess(0.0!)
+        Me.UpdateControls()
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Update the progress bar in response to a model time step.
     ''' </summary>
+    ''' <param name="sProgress">Progress to set [0, 1].</param>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateProgess()
+    Private Sub UpdateProgess(ByVal sProgress As Single)
 
-        Me.m_iProgress += 1
+        Me.m_sProgress = sProgress
 
-        If (Me.m_iProgress < Me.m_DisplayHelper.nYears * cCore.N_MONTHS) Then
-            cApplicationStatusNotifier.SetStatusText("Running Ecotracer...", _
-                                                     TriState.UseDefault, _
-                                                     CSng(Me.m_iProgress / (Me.m_DisplayHelper.nYears * cCore.N_MONTHS)))
+        If (Me.m_sProgress < 1.0!) Then
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOTRACER_RUNNING, TriState.UseDefault, Me.m_sProgress)
         Else
             cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault)
         End If
 
     End Sub
 
-    Private m_bInUpdate As Boolean = False
-
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub UpdateControls()
 
         If Me.m_bInUpdate Then Return
@@ -275,6 +308,12 @@ Public Class frmEcotracerOutput
 
         Me.m_rbCB.Checked = (Me.PlotType = ePlotTypes.CB)
         Me.m_rbConc.Checked = (Me.PlotType = ePlotTypes.Conc)
+
+        ' Config controls based on the display helper
+        Me.m_zgc.GraphPane.Title.Text = Me.m_DisplayHelper.Title
+        Me.m_zgc.Enabled = Me.m_DisplayHelper.Enabled
+        Me.m_lbGroups.Enabled = m_DisplayHelper.Enabled
+        Me.m_cmbRegions.Enabled = m_DisplayHelper.EnabledForSpace
 
         Me.m_bInUpdate = False
 
@@ -333,12 +372,7 @@ Public Class frmEcotracerOutput
         'get the sort order for the groups list box
         Me.SortGroupList()
         Me.UpdateRegions()
-
-        ' Config controls based on the display helper
-        Me.m_zgc.GraphPane.Title.Text = m_DisplayHelper.Title
-        Me.m_zgc.Enabled = m_DisplayHelper.Enabled
-        Me.m_lbGroups.Enabled = m_DisplayHelper.Enabled
-        Me.m_cmbRegions.Enabled = m_DisplayHelper.EnabledForSpace
+        Me.UpdateControls()
 
     End Sub
 
@@ -412,12 +446,12 @@ Public Class frmEcotracerOutput
 
     Private Sub EcosimCallback(ByVal iTime As Long, ByVal data As cEcoSimResults)
         'Ecosim callback()
-        UpdateProgess()
+        UpdateProgess(CSng(iTime / (Me.m_DisplayHelper.nYears * cCore.N_MONTHS)))
     End Sub
 
     Private Sub EcospaceCallback(ByRef EcospaceResults As cEcospaceTimestep)
         'Ecospace callback()
-        UpdateProgess()
+        UpdateProgess(CSng(EcospaceResults.TimeStepinYears / Me.m_DisplayHelper.nYears))
     End Sub
 
     Private Sub UpdateRegions()
@@ -426,11 +460,11 @@ Public Class frmEcotracerOutput
 
         If Me.m_DisplayHelper.EnabledForSpace Then
             'only populate the region list if space is enabled
-            Me.m_cmbRegions.Items.Add("Undefined area")
+            Me.m_cmbRegions.Items.Add(My.Resources.HEADER_REGIONS_UNDEFINED)
             For irgn As Integer = 1 To Me.Core.nRegions
                 Me.m_cmbRegions.Items.Add(New cCoreInputOutputListboxItem(Me.Core.EcospaceRegions(irgn)))
             Next
-            Me.m_cmbRegions.Items.Add("All Regions")
+            Me.m_cmbRegions.Items.Add(My.Resources.HEADER_REGIONS_ALL)
 
             Me.m_cmbRegions.SelectedIndex = Me.Core.nRegions + 1
         End If
@@ -538,13 +572,7 @@ Public Class frmEcotracerOutput
 
         Function GetGroupMax(ByVal iGroup As Integer) As Single
 
-        ''' <summary>
-        ''' Max value of the current lines
-        ''' </summary>
-        Function Max() As Single
-        ''' <summary>
-        ''' Update the object base on the current core run state
-        ''' </summary>
+        ''' <summary>Update the object base on the current core run state.</summary>
         Sub Refresh()
 
         ReadOnly Property Core() As cCore
@@ -683,11 +711,6 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
-        Public Function Max() As Single _
-            Implements IDisplayModeHelper.Max
-            Return 0.0
-        End Function
-
         Public ReadOnly Property XAxisLabel() As String _
             Implements IDisplayModeHelper.XAxisLabel
             Get
@@ -721,7 +744,6 @@ Public Class frmEcotracerOutput
         Private m_uic As cUIContext = Nothing
         Private m_bEnabled As Boolean
         Private m_plottype As ePlotTypes
-        Private m_Ymax As Single
 
         Sub New(ByRef uic As cUIContext)
             ' Sanity check
@@ -781,7 +803,6 @@ Public Class frmEcotracerOutput
                 For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
                     dx = Me.Core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
                     yVal = CDbl(td.Concentration(iGroup, iTimeStep) / SimBio.Biomass(iTimeStep))
-                    Me.m_Ymax = CSng(Math.Max(m_Ymax, yVal))
                     vList.Add(dx, yVal)
                 Next iTimeStep
 
@@ -790,7 +811,6 @@ Public Class frmEcotracerOutput
                 For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
                     dx = Me.Core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
                     yVal = CDbl(td.Concentration(iGroup, iTimeStep))
-                    Me.m_Ymax = CSng(Math.Max(m_Ymax, yVal))
                     vList.Add(dx, yVal)
                 Next iTimeStep
 
@@ -803,7 +823,6 @@ Public Class frmEcotracerOutput
         Public Function GetGroupLines(ByVal iGroup As Integer) As LineItem() _
             Implements IDisplayModeHelper.GetGroupLines
 
-            Me.m_Ymax = Single.MinValue
             Return New LineItem() {buildLine(iGroup)}
 
         End Function
@@ -906,11 +925,6 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
-        Public Function Max() As Single _
-            Implements IDisplayModeHelper.Max
-            Return Me.m_Ymax
-        End Function
-
         Public ReadOnly Property XAxisLabel() As String _
             Implements IDisplayModeHelper.XAxisLabel
             Get
@@ -954,7 +968,6 @@ Public Class frmEcotracerOutput
         Private m_bAllRgns As Boolean
         Private m_rgn1 As Integer
         Private m_rgn2 As Integer
-        Private m_Ymax As Single
 
         Sub New(ByVal uic As cUIContext)
             ' Sanity check
@@ -1012,7 +1025,6 @@ Public Class frmEcotracerOutput
             If iGroup < 0 Then Return Nothing ' Safety first
 
             Dim lstLines As New List(Of LineItem)
-            Me.m_Ymax = Single.MinValue
 
             'm_rgn1 and m_rgn2 were set in RegionIndex
             For ireg As Integer = Me.m_rgn1 To Me.m_rgn2
@@ -1023,64 +1035,48 @@ Public Class frmEcotracerOutput
 
         End Function
 
-        Private Function buildLine(ByVal iGroup As Integer, ByVal iregion As Integer) As LineItem
+        Private Function buildLine(ByVal iGroup As Integer, ByVal iRegion As Integer) As LineItem
+
             Dim td As cEcotracerRegionGroupOutput = Me.Core.EcotracerRegionGroupResults
-            Dim vList As PointPairList
-            Dim lstLines As New List(Of LineItem)
-            Dim strLabel As String
+            Dim list As PointPairList
             Dim clrLine As Color = Color.Black
-            Dim grpSym As SymbolType
-            Dim linesize As Single
-            Dim yVal As Single
-            Dim name As String = My.Resources.HEADER_ENVIRONMENT
-            Dim rgName As String = "Region " & iregion
-            Dim dx As Double
+            Dim strFilter As String = ""
+            Dim strRegionName As String = ""
+            Dim strLabel As String
+            Dim dX As Double
+            Dim sY As Single
             Dim ntsYear As Single
 
             ntsYear = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
 
-            'build the label group and region name
+            ' Build the line label
             If iGroup > 0 Then
-                name = Me.Core.EcoPathGroupInputs(iGroup).Name
+                strFilter = Me.Core.EcoPathGroupInputs(iGroup).Name
                 clrLine = Me.StyleGuide.GroupColor(Me.Core, iGroup)
+            Else
+                strFilter = My.Resources.HEADER_ENVIRONMENT
             End If
 
-            'If iregion > 0 Then
-            '    rgName = Me.Core.EcospaceRegions(iregion).Name
-            'End If
-
-            strLabel = name & ", " & rgName
+            If iRegion > 0 Then
+                strRegionName = Me.Core.EcospaceRegions(iRegion).Name
+                strLabel = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, strFilter, strRegionName)
+            Else
+                strLabel = strFilter
+            End If
 
             'this will figure out which varname to display 
             'base on the selected group and the ePlotTypes enum
             Dim varName As eVarNameFlags = getVarName(iGroup)
 
-            vList = New PointPairList()
+            list = New PointPairList()
 
             For iTimeStep As Integer = 1 To Me.Core.nEcospaceTimeSteps
-                dx = Me.Core.EcosimFirstYear + (iTimeStep / ntsYear)
-                yVal = td.GetVariable(varName, iregion, iGroup, iTimeStep)
-                Me.m_Ymax = CSng(Math.Max(m_Ymax, yVal))
-
-                vList.Add(dx, CDbl(yVal))
+                dX = Me.Core.EcosimFirstYear + (iTimeStep / ntsYear)
+                sY = td.GetVariable(varName, iRegion, iGroup, iTimeStep)
+                list.Add(dX, CDbl(sY))
             Next iTimeStep
 
-            'line symbol and line size
-            linesize = Me.Core.nRegions * 2 - iregion
-            If iregion = 0 Then
-                grpSym = SymbolType.None
-            Else
-                Try 'incase iregion is larger then the largest SymbolType enumerator
-                    grpSym = CType(iregion, SymbolType)
-                Catch ex As Exception
-                    grpSym = SymbolType.XCross
-                End Try
-            End If
-
-            'I obviously don't understand how the LineItem works
-            'setting the linesize does not change the thickness of the line
-            'even when the SymbolType is None
-            Return New LineItem(strLabel, vList, clrLine, grpSym, linesize)
+            Return New LineItem(strLabel, list, clrLine, SymbolType.None, 1)
 
         End Function
 
@@ -1088,8 +1084,6 @@ Public Class frmEcotracerOutput
         ''' Get the correct variable to display based on the selected Group and the ePlotTypes
         ''' </summary>
         ''' <param name="iGroup"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function getVarName(ByVal iGroup As Integer) As eVarNameFlags
 
             If iGroup = 0 Then
@@ -1189,10 +1183,6 @@ Public Class frmEcotracerOutput
                 Return Me.m_bEnabled
             End Get
         End Property
-
-        Public Function Max() As Single Implements IDisplayModeHelper.Max
-            Return m_Ymax
-        End Function
 
         Public ReadOnly Property XAxisLabel() As String Implements IDisplayModeHelper.XAxisLabel
             Get

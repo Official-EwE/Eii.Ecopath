@@ -3854,6 +3854,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to All regions.
+        '''</summary>
+        Friend ReadOnly Property HEADER_REGIONS_ALL() As String
+            Get
+                Return ResourceManager.GetString("HEADER_REGIONS_ALL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Undefined regions.
+        '''</summary>
+        Friend ReadOnly Property HEADER_REGIONS_UNDEFINED() As String
+            Get
+                Return ResourceManager.GetString("HEADER_REGIONS_UNDEFINED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Relative catch.
         '''</summary>
         Friend ReadOnly Property HEADER_RELATIVE_CATCH() As String
@@ -6000,6 +6018,15 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_ECOTRACER_LOADING() As String
             Get
                 Return ResourceManager.GetString("STATUS_ECOTRACER_LOADING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Running Ecotracer....
+        '''</summary>
+        Friend ReadOnly Property STATUS_ECOTRACER_RUNNING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_ECOTRACER_RUNNING", resourceCulture)
             End Get
         End Property
         
