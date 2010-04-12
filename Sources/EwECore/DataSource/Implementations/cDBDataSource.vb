@@ -4164,7 +4164,7 @@ Namespace DataSources
                 bSucces = False
             End Try
 
-            bSucces = bSucces And Me.LoadForcingMatrix()
+            bSucces = bSucces And Me.LoadEcosimVulnerabilities()
             bSucces = bSucces And Me.LoadPredPreyInteraction()
             bSucces = bSucces And Me.LoadMediationWeights()
             bSucces = bSucces And Me.LoadStanzaShapeAssignments()
@@ -4319,7 +4319,7 @@ Namespace DataSources
 
         End Function
 
-        Private Function LoadForcingMatrix() As Boolean
+        Private Function LoadEcosimVulnerabilities() As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -4334,11 +4334,13 @@ Namespace DataSources
                 While reader.Read()
 
                     ' Find iPredator
-                    iPredator = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
+                    iPredator = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PredID")))
                     ' Find iPrey
-                    iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
+                    iPrey = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PreyID")))
 
-                    ecosimDS.VulMult(iPrey, iPredator) = CSng(reader("vulnerability"))
+                    If (iPredator > -1 And iPrey > -1) Then
+                        ecosimDS.VulMult(iPrey, iPredator) = CSng(reader("vulnerability"))
+                    End If
 
                 End While
                 Me.m_db.ReleaseReader(reader)
@@ -4733,7 +4735,7 @@ Namespace DataSources
                 bSucces = False
             End Try
 
-            bSucces = bSucces And SaveForcingMatrix(idm)
+            bSucces = bSucces And SaveEcosimVulnerabilities(idm)
             bSucces = bSucces And SavePredPreyInteraction(idm)
             bSucces = bSucces And SaveMediationWeights(idm)
             bSucces = bSucces And SaveStanzaShapeAssignments(idm)
@@ -4913,7 +4915,7 @@ Namespace DataSources
 
         End Function
 
-        Private Function SaveForcingMatrix(ByRef idm As cIDMappings) As Boolean
+        Private Function SaveEcosimVulnerabilities(ByRef idm As cIDMappings) As Boolean
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
