@@ -42,6 +42,7 @@ Public Class AppLauncher
     Private m_uic As cUIContext = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
     Private m_mhEcospace As cMessageHandler = Nothing
+    Private m_mhEcotracer As cMessageHandler = Nothing
 
     Private m_pluginManager As cPluginManager = Nothing
     Private m_pluginMenuHandler As cPluginMenuHandler = Nothing
@@ -696,6 +697,7 @@ Public Class AppLauncher
 
         Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
         Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
 
         RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
@@ -735,12 +737,13 @@ Public Class AppLauncher
         Me.m_cmdLoadModel.AddControl(Me.m_tsmiFileOpen)
         Me.m_cmdLoadModel.AddControl(Me.m_tsbEcopath)
 
+        Me.m_cmdSave = New cCommand(cmdh, "SaveModel")
+        Me.m_cmdSave.AddControl(Me.m_tsmiFileSave)
+        Me.m_cmdSave.AddControl(Me.m_tsbSave)
+
         ' Create and configure save commands
         Me.m_cmdSaveModelAs = New cCommand(cmdh, "SaveModelAs")
         Me.m_cmdSaveModelAs.AddControl(Me.m_tsmiFileSaveAs)
-
-        Me.m_cmdSave = New cCommand(cmdh, "SaveModel")
-        Me.m_cmdSave.AddControl(Me.m_tsmiFileSave)
 
         ' Create and configure 'close model' command
         Me.m_cmdCloseModel = New cCommand(cmdh, "CloseModel")
@@ -810,6 +813,7 @@ Public Class AppLauncher
         'Create and configure 'load ecotracer scenario' command
         Me.m_cmdLoadEcotracerScenario = New cCommand(cmdh, "LoadEcotracerScenario")
         Me.m_cmdLoadEcotracerScenario.AddControl(Me.m_tsmiEcotracerLoad)
+        Me.m_cmdLoadEcotracerScenario.AddControl(Me.m_tsbEcotracer)
 
         'Create and configure 'save ecotracer scenario' command
         Me.m_cmdSaveEcotracerScenario = New cCommand(cmdh, "SaveEcotracerScenario")
@@ -958,13 +962,16 @@ Public Class AppLauncher
         Me.Core.StateMonitor.SyncObject = Me
         Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_uic.SyncObject)
         Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
+        Me.m_mhEcotracer = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Ecotracer, eMessageType.Any, Me.m_uic.SyncObject)
 
 #If DEBUG Then
         Me.m_mhEcosim.Name = "ApplSim"
         Me.m_mhEcospace.Name = "ApplSpace"
+        Me.m_mhEcotracer.Name = "ApplTracer"
 #End If
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
+        Me.Core.Messages.AddMessageHandler(Me.m_mhEcotracer)
 
         ' Create plugin manager for this GUI
         Me.m_pluginManager = New cPluginManager()
@@ -1329,35 +1336,56 @@ Public Class AppLauncher
     End Sub
 
     Private Sub UpdateScenarioControls()
-        Dim mnuItem As ToolStripMenuItem = Nothing
 
-        ' Clear the dropdown items first
+        Dim tsmi As ToolStripMenuItem = Nothing
+
+        ' Properly release sim menu items
+        For Each tsmi In Me.m_tsbEcosim.DropDownItems
+            RemoveHandler tsmi.Click, AddressOf EcosimScenarioClickEventHandler
+        Next
         Me.m_tsbEcosim.DropDownItems.Clear()
-        ' Clear the dropdown items first
+
+        ' Properly release space menu items
+        For Each tsmi In Me.m_tsbEcospace.DropDownItems
+            RemoveHandler tsmi.Click, AddressOf EcospaceScenarioClickEventHandler
+        Next
         Me.m_tsbEcospace.DropDownItems.Clear()
+
+        ' Properly release tracer menu items
+        For Each tsmi In Me.m_tsbEcotracer.DropDownItems
+            RemoveHandler tsmi.Click, AddressOf EcotracerScenarioClickEventHandler
+        Next
+        Me.m_tsbEcotracer.DropDownItems.Clear()
 
         'Load Ecosim scenarios.
         If Me.Core.StateMonitor.HasEcopathLoaded() Then
-            If Me.Core.EcosimScenarioCount > 0 Then
-                For i As Integer = 1 To Me.Core.EcosimScenarioCount
-                    mnuItem = New ToolStripMenuItem()
-                    mnuItem.Text = Me.Core.EcosimScenarios(i).Name
-                    mnuItem.Tag = i
-                    AddHandler mnuItem.Click, AddressOf EcosimScenarioClickEventHandler
-                    Me.m_tsbEcosim.DropDownItems.Add(mnuItem)
-                Next
-            End If
+
+            For i As Integer = 1 To Me.Core.EcosimScenarioCount
+                tsmi = New ToolStripMenuItem()
+                tsmi.Text = Me.Core.EcosimScenarios(i).Name
+                tsmi.Tag = i
+                AddHandler tsmi.Click, AddressOf EcosimScenarioClickEventHandler
+                Me.m_tsbEcosim.DropDownItems.Add(tsmi)
+            Next
 
             'Load Ecospace scenarios
-            If Me.Core.EcospaceScenarioCount > 0 Then
-                For i As Integer = 1 To Me.Core.EcospaceScenarioCount
-                    mnuItem = New ToolStripMenuItem()
-                    mnuItem.Text = Me.Core.EcospaceScenarios(i).Name
-                    mnuItem.Tag = i
-                    AddHandler mnuItem.Click, AddressOf EcospaceScenarioClickEventHandler
-                    Me.m_tsbEcospace.DropDownItems.Add(mnuItem)
-                Next
-            End If
+            For i As Integer = 1 To Me.Core.EcospaceScenarioCount
+                tsmi = New ToolStripMenuItem()
+                tsmi.Text = Me.Core.EcospaceScenarios(i).Name
+                tsmi.Tag = i
+                AddHandler tsmi.Click, AddressOf EcospaceScenarioClickEventHandler
+                Me.m_tsbEcospace.DropDownItems.Add(tsmi)
+            Next
+
+            'Load Ecotracer scenarios
+            For i As Integer = 1 To Me.Core.EcotracerScenarioCount
+                tsmi = New ToolStripMenuItem()
+                tsmi.Text = Me.Core.EcotracerScenarios(i).Name
+                tsmi.Tag = i
+                AddHandler tsmi.Click, AddressOf EcotracerScenarioClickEventHandler
+                Me.m_tsbEcotracer.DropDownItems.Add(tsmi)
+            Next
+
         End If
 
     End Sub
@@ -3279,7 +3307,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateSaveEcotracerScenario(ByVal cmd As cCommand) _
         Handles m_cmdSaveEcotracerScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.IsEcotracerModified
+        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded And Me.Core.StateMonitor.IsEcotracerModified
     End Sub
 
     Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) _
@@ -3378,7 +3406,7 @@ Public Class AppLauncher
 
     Private Sub OnUpdateEnableEcotracer(ByVal cmd As cCommand) _
         Handles m_cmdEnableEcotracer.OnUpdate
-        cmd.Enabled = True
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
 #End Region ' Ecotracer commands
@@ -3485,7 +3513,9 @@ Public Class AppLauncher
 
     Private Sub OnCoreMessage(ByRef msg As cMessage)
         If msg.Type = eMessageType.DataAddedOrRemoved Then
-            If msg.DataType = eDataTypes.EcoSimScenario Or msg.DataType = eDataTypes.EcoSpaceScenario Then
+            If (msg.DataType = eDataTypes.EcoSimScenario) Or _
+               (msg.DataType = eDataTypes.EcoSpaceScenario) Or _
+               (msg.DataType = eDataTypes.EcotracerScenario) Then
                 Me.UpdateScenarioControls()
             End If
         End If

@@ -40,7 +40,9 @@ Namespace Ecosim
                 Return MyBase.UIContext
             End Get
             Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
-                Me.m_EPManager = value.Core.EggProdShapeManager
+                If (value IsNot Nothing) Then
+                    Me.m_EPManager = value.Core.EggProdShapeManager
+                End If
                 MyBase.UIContext = value
             End Set
         End Property

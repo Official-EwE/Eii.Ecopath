@@ -53,15 +53,6 @@ Namespace Ecosim
 
 #Region " Public properties "
 
-        Public Overrides Property UIContext() As cUIContext
-            Get
-                Return MyBase.UIContext
-            End Get
-            Set(ByVal value As cUIContext)
-                MyBase.UIContext = value
-            End Set
-        End Property
-
         Public Event OnSelectedVulnerabilitiesChanged(ByVal sender As gridEstimateVs)
 
         Public Property SelectedGroupIndex() As Integer

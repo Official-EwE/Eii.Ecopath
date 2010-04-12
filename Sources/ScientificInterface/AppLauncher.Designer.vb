@@ -43,6 +43,7 @@
         Me.m_tsmiEcospaceLoad = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceSaveAs = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcospaceDelete = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceEditMap = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceEditHabitats = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceEditMPAs = New System.Windows.Forms.ToolStripMenuItem
@@ -88,6 +89,7 @@
         Me.m_tsmiEcosimLoad = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimSaveAs = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcosimDelete = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesImport = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesExport = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesLoad = New System.Windows.Forms.ToolStripMenuItem
@@ -101,13 +103,14 @@
         Me.m_tsmiEcotracerSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerSaveAs = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsModel = New System.Windows.Forms.ToolStrip
+        Me.m_tsbSave = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripButton
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
+        Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbModel = New System.Windows.Forms.ToolStripButton
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar
-        Me.m_tsmiEcosimDelete = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiEcospaceDelete = New System.Windows.Forms.ToolStripMenuItem
         m_tssModel1 = New System.Windows.Forms.ToolStripSeparator
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator
@@ -243,6 +246,12 @@
         '
         Me.m_tsmiEcospaceSaveAs.Name = "m_tsmiEcospaceSaveAs"
         resources.ApplyResources(Me.m_tsmiEcospaceSaveAs, "m_tsmiEcospaceSaveAs")
+        '
+        'm_tsmiEcospaceDelete
+        '
+        Me.m_tsmiEcospaceDelete.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
+        Me.m_tsmiEcospaceDelete.Name = "m_tsmiEcospaceDelete"
+        resources.ApplyResources(Me.m_tsmiEcospaceDelete, "m_tsmiEcospaceDelete")
         '
         'm_tsmiEcospaceEditMap
         '
@@ -496,6 +505,12 @@
         Me.m_tsmiEcosimSaveAs.Name = "m_tsmiEcosimSaveAs"
         resources.ApplyResources(Me.m_tsmiEcosimSaveAs, "m_tsmiEcosimSaveAs")
         '
+        'm_tsmiEcosimDelete
+        '
+        Me.m_tsmiEcosimDelete.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
+        Me.m_tsmiEcosimDelete.Name = "m_tsmiEcosimDelete"
+        resources.ApplyResources(Me.m_tsmiEcosimDelete, "m_tsmiEcosimDelete")
+        '
         'm_tsmiTimeSeriesImport
         '
         Me.m_tsmiTimeSeriesImport.Image = Global.ScientificInterface.My.Resources.Resources.ImportXMLHS
@@ -569,11 +584,23 @@
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, m_tssModel1, Me.m_tsbModel})
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, m_tssModel1, Me.m_tsbModel})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.m_tsModel.Stretch = True
+        '
+        'm_tsbSave
+        '
+        Me.m_tsbSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.m_tsbSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
+        resources.ApplyResources(Me.m_tsbSave, "m_tsbSave")
+        Me.m_tsbSave.Name = "m_tsbSave"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        resources.ApplyResources(Me.ToolStripSeparator2, "ToolStripSeparator2")
         '
         'm_tsbEcopath
         '
@@ -596,6 +623,12 @@
         resources.ApplyResources(Me.m_tsbEcospace, "m_tsbEcospace")
         Me.m_tsbEcospace.Name = "m_tsbEcospace"
         '
+        'm_tsbEcotracer
+        '
+        Me.m_tsbEcotracer.Image = Global.ScientificInterface.My.Resources.Resources.Ecotracer_32x32
+        resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
+        Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
+        '
         'm_tsbModel
         '
         Me.m_tsbModel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -610,18 +643,6 @@
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
-        '
-        'm_tsmiEcosimDelete
-        '
-        Me.m_tsmiEcosimDelete.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
-        Me.m_tsmiEcosimDelete.Name = "m_tsmiEcosimDelete"
-        resources.ApplyResources(Me.m_tsmiEcosimDelete, "m_tsmiEcosimDelete")
-        '
-        'm_tsmiEcospaceDelete
-        '
-        Me.m_tsmiEcospaceDelete.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
-        Me.m_tsmiEcospaceDelete.Name = "m_tsmiEcospaceDelete"
-        resources.ApplyResources(Me.m_tsmiEcospaceDelete, "m_tsmiEcospaceDelete")
         '
         'AppLauncher
         '
@@ -711,6 +732,9 @@
     Private WithEvents m_tsmiViewItems As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcosimDelete As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceDelete As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents m_tsbSave As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents m_tsbEcotracer As System.Windows.Forms.ToolStripSplitButton
 
 End Class
 

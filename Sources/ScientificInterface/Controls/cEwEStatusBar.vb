@@ -210,8 +210,9 @@ Public Class cEwEStatusBar
             Me.UpdateToolstripItem(Me.m_tsEcotracerScenario)
         End If
 
-        ' Update modified indicator
-        Me.m_tsiModified.Visible = Me.m_csm.IsModified()
+        ' JS 12Apr2010: removed, dirty feedback handled by save button in model bar
+        '' Update modified indicator
+        'Me.m_tsiModified.Visible = Me.m_csm.IsModified()
 
     End Sub
 

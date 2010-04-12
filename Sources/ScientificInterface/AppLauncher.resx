@@ -122,7 +122,7 @@
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_tssModel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 39</value>
+    <value>6, 24</value>
   </data>
   <metadata name="m_tssHelp2.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -674,7 +674,7 @@
     <value>0, 2, 0, 2</value>
   </data>
   <data name="m_menuMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>832, 24</value>
+    <value>836, 24</value>
   </data>
   <data name="m_menuMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -697,41 +697,59 @@
   <data name="m_tsModel.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="m_tsbEcopath.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+  <data name="m_tsbSave.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
     <value>None</value>
+  </data>
+  <data name="m_tsbSave.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbSave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 21</value>
+  </data>
+  <data name="m_tsbSave.Text" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="ToolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 24</value>
   </data>
   <data name="m_tsbEcopath.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="m_tsbEcopath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 36</value>
+    <value>66, 21</value>
   </data>
   <data name="m_tsbEcopath.Text" xml:space="preserve">
     <value>Ecopath</value>
-  </data>
-  <data name="m_tsbEcosim.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
   </data>
   <data name="m_tsbEcosim.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="m_tsbEcosim.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 36</value>
+    <value>76, 21</value>
   </data>
   <data name="m_tsbEcosim.Text" xml:space="preserve">
     <value>Ecosim</value>
-  </data>
-  <data name="m_tsbEcospace.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
   </data>
   <data name="m_tsbEcospace.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="m_tsbEcospace.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 36</value>
+    <value>89, 21</value>
   </data>
   <data name="m_tsbEcospace.Text" xml:space="preserve">
     <value>Ecospace</value>
+  </data>
+  <data name="m_tsbEcotracer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbEcotracer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 21</value>
+  </data>
+  <data name="m_tsbEcotracer.Text" xml:space="preserve">
+    <value>Ecotracer</value>
+  </data>
+  <data name="m_tsbEcotracer.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="m_tsbModel.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -752,7 +770,7 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsbModel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 36</value>
+    <value>74, 21</value>
   </data>
   <data name="m_tsbModel.Text" xml:space="preserve">
     <value>{model path}</value>
@@ -764,7 +782,7 @@
     <value>0, 24</value>
   </data>
   <data name="m_tsModel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>832, 39</value>
+    <value>836, 24</value>
   </data>
   <data name="m_tsModel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -791,7 +809,7 @@
     <value>0, 624</value>
   </data>
   <data name="m_ssMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>832, 22</value>
+    <value>836, 22</value>
   </data>
   <data name="m_ssMain.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -800,7 +818,7 @@
     <value>m_ssMain</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
-    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.7.404, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.7.412, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -818,7 +836,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>832, 646</value>
+    <value>836, 646</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -5776,6 +5794,9 @@
         AACAAQAAgAEAAMADAADABwAA8A8AAPw/AAA=
 </value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Ecopath with Ecosim 6</value>
   </data>
@@ -5909,6 +5930,12 @@
     <value>m_tsmiEcospaceSaveAs</value>
   </data>
   <data name="&gt;&gt;m_tsmiEcospaceSaveAs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceDelete.Name" xml:space="preserve">
+    <value>m_tsmiEcospaceDelete</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcospaceDelete.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiEcospaceEditMap.Name" xml:space="preserve">
@@ -6175,6 +6202,12 @@
   <data name="&gt;&gt;m_tsmiEcosimSaveAs.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsmiEcosimDelete.Name" xml:space="preserve">
+    <value>m_tsmiEcosimDelete</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcosimDelete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsmiTimeSeriesImport.Name" xml:space="preserve">
     <value>m_tsmiTimeSeriesImport</value>
   </data>
@@ -6247,6 +6280,18 @@
   <data name="&gt;&gt;m_tsmiEcotracerSaveAs.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsbSave.Name" xml:space="preserve">
+    <value>m_tsbSave</value>
+  </data>
+  <data name="&gt;&gt;m_tsbSave.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ToolStripSeparator2.Name" xml:space="preserve">
+    <value>ToolStripSeparator2</value>
+  </data>
+  <data name="&gt;&gt;ToolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsbEcopath.Name" xml:space="preserve">
     <value>m_tsbEcopath</value>
   </data>
@@ -6265,23 +6310,17 @@
   <data name="&gt;&gt;m_tsbEcospace.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSplitButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsbEcotracer.Name" xml:space="preserve">
+    <value>m_tsbEcotracer</value>
+  </data>
+  <data name="&gt;&gt;m_tsbEcotracer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSplitButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsbModel.Name" xml:space="preserve">
     <value>m_tsbModel</value>
   </data>
   <data name="&gt;&gt;m_tsbModel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcosimDelete.Name" xml:space="preserve">
-    <value>m_tsmiEcosimDelete</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcosimDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceDelete.Name" xml:space="preserve">
-    <value>m_tsmiEcospaceDelete</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcospaceDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AppLauncher</value>
