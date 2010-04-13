@@ -4124,9 +4124,9 @@ Public Class cCore
         Dim fleet As cFleetInput = Me.FleetInputs(obj.Index)
         For iGroup As Integer = 1 To Me.nGroups
             If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) = 0.0! Then
-                obj.SetStatusFlags(eVarNameFlags.Quota, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+                obj.SetStatusFlags(eVarNameFlags.QuotaShare, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             Else
-                obj.ClearStatusFlags(eVarNameFlags.Quota, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+                obj.ClearStatusFlags(eVarNameFlags.QuotaShare, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             End If
         Next
 
@@ -5439,7 +5439,7 @@ Public Class cCore
 
             Try
                 For iGroup As Integer = 1 To nGroups
-                    reg.Quota(iGroup) = m_QuotaData.Quota(iFleet, iGroup)
+                    reg.QuotaShare(iGroup) = m_QuotaData.Quotashare(iFleet, iGroup)
                 Next
 
             Catch ex As Exception
@@ -5765,7 +5765,7 @@ Public Class cCore
             m_QuotaData.MaxEffort(iFleet) = reg.MaxEffort
             m_QuotaData.QuotaType(iFleet) = reg.QuotaType
             For iGroup As Integer = 1 To nGroups
-                m_QuotaData.Quota(iFleet, iGroup) = reg.Quota(iGroup)
+                m_QuotaData.Quotashare(iFleet, iGroup) = reg.QuotaShare(iGroup)
             Next
 
         Catch ex As Exception
@@ -10375,8 +10375,22 @@ Public Class cCore
                         Set_MarketPrice_Flags(flt, True)
                         Set_Quota_Flags(Me.EcosimFisheriesRegulations(flt.Index), True)
 
+                        'landings have changed set quota share
+                        Me.m_QuotaData.setDefaultQuotaShare(Me.m_EcoPathData)
+
+                        Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
+                                                    eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcosimFisheriesRegulation)
+                        Me.m_publisher.AddMessage(qsMsg)
+
+
                     Case eVarNameFlags.Discards
                         Set_DiscardMort_Flags(flt, True)
+
+                        Me.m_QuotaData.setDefaultQuotaShare(Me.m_EcoPathData)
+                        Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
+                            eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcosimFisheriesRegulation)
+                        Me.m_publisher.AddMessage(qsMsg)
+
 
                 End Select
 
