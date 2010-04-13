@@ -7445,7 +7445,8 @@ Public Class cCore
     ''' <param name="strDescription"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function SaveEcospaceScenarioAs(ByVal strName As String, ByVal strDescription As String) As Boolean
+    Public Function SaveEcospaceScenarioAs(ByVal strName As String, _
+                                           ByVal strDescription As String) As Boolean
 
         Dim epd As cEcopathDataStructures = Me.m_EcoPathData
         Dim esd As cEcospaceDataStructures = Me.m_EcoSpaceData
@@ -7454,8 +7455,9 @@ Public Class cCore
         Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If Me.DataSource Is Nothing Then Return bSucces
-        If Not TypeOf (Me.DataSource) Is IEcospaceDatasource Then Return bSucces
+        If (Me.DataSource Is Nothing) Then Return False
+        If (Not TypeOf (Me.DataSource) Is IEcospaceDatasource) Then Return False
+        If (Me.m_EcoPathData.ActiveEcospaceScenario <= 0) Then Return False
 
         iScenarioID = Me.m_EcoPathData.EcospaceScenarioDBID(Me.m_EcoPathData.ActiveEcospaceScenario)
         If (iScenarioID <= 0) Then Return bSucces
@@ -7477,7 +7479,6 @@ Public Class cCore
 
             ' Inform the world
             Me.SendEcospaceSaveStateMessage(strName)
-
             ' Load Ecospace scenario
             bSucces = Me.LoadEcospaceScenario(Array.IndexOf(epd.EcospaceScenarioDBID, iScenarioID))
             Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcoSpaceScenario)
@@ -7515,12 +7516,13 @@ Public Class cCore
         ' Sanity check
         Debug.Assert(iScenario > 0 And iScenario < Me.m_EcoPathData.EcospaceScenarioDBID.Length)
 
+        ' Cannot delete a loaded scenario
         If (iScenario = Me.m_EcoPathData.ActiveEcospaceScenario) Then
             Me.m_publisher.SendMessage(New cMessage("Cannot delete a loaded scenario", eMessageType.NotSet, eCoreComponentType.DataSource, eMessageImportance.Warning))
             Return False
         End If
 
-        ' Save pending changes
+        ' Save pending relevant changes
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecospace) Then Return False
 
         ' Sanity checks
@@ -9439,15 +9441,18 @@ Public Class cCore
     ''' <remarks>
     ''' This code has NOT yet been tested!
     ''' </remarks>
-    Public Function SaveEcotracerScenarioAs(ByVal strName As String, ByVal strDescription As String) As Boolean
+    Public Function SaveEcotracerScenarioAs(ByVal strName As String, _
+                                            ByVal strDescription As String) As Boolean
 
         Dim epd As cEcopathDataStructures = Me.m_EcoPathData
-        Dim iScenarioID As Integer = 0
         Dim ds As IEcotracerDatasource = Nothing
+        Dim iScenarioID As Integer = 0
+        Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If Me.DataSource Is Nothing Then Return False
-        If Not TypeOf (Me.DataSource) Is IEcotracerDatasource Then Return False
+        If (Me.DataSource Is Nothing) Then Return False
+        If (Not TypeOf (Me.DataSource) Is IEcotracerDatasource) Then Return False
+        If (Me.m_EcoPathData.ActiveEcotracerScenario <= 0) Then Return False
 
         iScenarioID = Me.m_EcoPathData.EcotracerScenarioDBID(Me.m_EcoPathData.ActiveEcotracerScenario)
         If (iScenarioID <= 0) Then Return False
@@ -9459,20 +9464,20 @@ Public Class cCore
                 epd.EcotracerScenarioContact(Me.m_EcoPathData.ActiveEcotracerScenario), _
                 iScenarioID)) Then
 
-            ' #Yes: Reload scenarios
-            Me.InitEcotracerScenarios()
-            ' Update active scenario ID
-            Me.m_EcoPathData.ActiveEcotracerScenario = Array.IndexOf(Me.m_EcoPathData.EcotracerScenarioDBID, iScenarioID)
-            ' Invoke plugin point
+            ' #Yes: Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcotracerScenario(Me)
-            ' Inform the world
-            Me.SendEcotracerSaveStateMessage(strName)
-            ' Force update
-            Me.m_StateMonitor.SetEcotracerLoaded(True, TriState.True)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
+
+            ' Reload scenarios
+            Me.InitEcotracerScenarios()
+
+            ' Inform the world
+            Me.SendEcotracerSaveStateMessage(strName)
+            ' Load Ecospace scenario
+            bSucces = Me.LoadEcotracerScenario(Array.IndexOf(epd.EcotracerScenarioDBID, iScenarioID))
             Me.DataAddedOrRemovedMessage("Ecotracer number of scenarios has changed.", eCoreComponentType.Ecotracer, eDataTypes.EcotracerScenario)
-            Return True
+            Return bSucces
         End If
 
         ' Restore active scenario ID
@@ -9493,37 +9498,50 @@ Public Class cCore
         Return Me.RemoveEcosimScenario(scenario.Index)
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Remove a <see cref="cEcotracerScenario">Ecotracer Scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
+    ''' Remove a <see cref="cEcotracerScenario">Ecotracer Scenario</see> from 
+    ''' the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
-    ''' <param name="iScenario">Index of the scenario in the <see cref="m_EcotracerScenarios">Ecotracer Scenario list</see>.</param>
+    ''' <param name="iScenario">Index of the scenario in the 
+    ''' <see cref="m_EcotracerScenarios">Ecotracer Scenario list</see>.</param>
     ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function RemoveEcotracerScenario(ByVal iScenario As Integer) As Boolean
+
+        Dim ds As IEcotracerDatasource = Nothing
+        Dim iScenarioID As Integer = cCore.NULL_VALUE
+        Dim bSucces As Boolean = False
+
         ' Sanity check
         Debug.Assert(iScenario > 0 And iScenario < Me.m_EcoPathData.EcotracerScenarioDBID.Length)
 
-        Dim bNeedFullReload As Boolean = (iScenario = Me.m_EcoPathData.ActiveEcotracerScenario)
-        Dim iScenarioDBID As Integer = Me.m_EcoPathData.EcotracerScenarioDBID(iScenario)
-        Dim bSucces As Boolean = False And True And True And True And True ' Can't help trying
-        Dim ds As IEcotracerDatasource = Nothing
+        ' Cannot delete a loaded scenario
+        If (iScenario = Me.m_EcoPathData.ActiveEcotracerScenario) Then
+            Me.m_publisher.SendMessage(New cMessage("Cannot delete a loaded scenario", eMessageType.NotSet, eCoreComponentType.DataSource, eMessageImportance.Warning))
+            Return False
+        End If
 
-        ' Sanity checks
-        If Me.DataSource Is Nothing Then Return False
-        If Not TypeOf (Me.DataSource) Is IEcotracerDatasource Then Return False
-
+        ' Save pending relevant changes
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecotracer) Then Return False
 
-        ' Scenario removed succesfully?
+        ' Sanity checks
+        If (Me.DataSource Is Nothing) Then Return False
+        If (Not TypeOf (Me.DataSource) Is IEcotracerDatasource) Then Return False
+
+        ' Remember scenario ID to restore
+        If (Me.m_EcoPathData.ActiveEcotracerScenario > 0) Then
+            iScenarioID = Me.m_EcoPathData.EcotracerScenarioDBID(Me.m_EcoPathData.ActiveEcotracerScenario)
+        End If
+
         ds = DirectCast(Me.DataSource, IEcotracerDatasource)
-        If ds.RemoveEcotracerScenario(iScenarioDBID) Then
-            ' #Yes
-            ' Reload scenario list
+        ' Scenario removed succesfully?
+        If ds.RemoveEcotracerScenario(Me.m_EcoPathData.EcotracerScenarioDBID(iScenario)) Then
+            ' #Yes: reload scenario list
             bSucces = Me.InitEcotracerScenarios()
-            ' Was this the currently active scenario?
-            If bNeedFullReload Then
-                ' #Yes: Must entirely re-initialize Ecotracer - somehow
-                'bSucces = Me.int()
-            End If
+            ' Restore active scenario ID
+            Me.m_EcoPathData.ActiveEcotracerScenario = Array.IndexOf(Me.m_EcoPathData.EcotracerScenarioDBID, iScenarioID)
+            ' Broadcast change
             Me.DataAddedOrRemovedMessage("Ecotracer number of scenarios has changed.", eCoreComponentType.Ecotracer, eDataTypes.EcotracerScenario)
         End If
         ' Return succes
@@ -9575,7 +9593,7 @@ Public Class cCore
             Me.m_EcoPathData.EcotracerScenarioName(iScenario) = scn.Name
             Me.m_EcoPathData.EcotracerScenarioDescription(iScenario) = scn.Description
             Me.m_EcoPathData.EcotracerScenarioAuthor(iScenario) = scn.Author
-            Me.m_EcoPathData.EcotracerScenarioContact(iScenario) = scn.Description
+            Me.m_EcoPathData.EcotracerScenarioContact(iScenario) = scn.Contact
             ' Do not update last saved date; this is exclusively set by the core when saving
 
         Catch ex As Exception
