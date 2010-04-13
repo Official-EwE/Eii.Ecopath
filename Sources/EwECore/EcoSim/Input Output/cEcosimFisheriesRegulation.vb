@@ -61,7 +61,7 @@ Public Class cEcosimFisheriesRegulation
             ' === arrays ===
             'Quota
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Quota, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.Quota))
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.QuotaShare, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaShare))
             m_values.Add(val.varName, val)
 
             Me.AllowValidation = True
@@ -106,13 +106,13 @@ Public Class cEcosimFisheriesRegulation
         End Set
     End Property
 
-    Public Property Quota(ByVal iGroup As Integer) As Single
+    Public Property QuotaShare(ByVal iGroup As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.Quota, iGroup))
+            Return CSng(GetVariable(eVarNameFlags.QuotaShare, iGroup))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Quota, value, iGroup)
+            SetVariable(eVarNameFlags.QuotaShare, value, iGroup)
         End Set
     End Property
 
@@ -142,11 +142,11 @@ Public Class cEcosimFisheriesRegulation
 
     Public Property QuotaStatus(ByVal iGroup As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.Quota, iGroup)
+            Return GetStatus(eVarNameFlags.QuotaShare, iGroup)
         End Get
 
         Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Quota, value, iGroup)
+            SetStatus(eVarNameFlags.QuotaShare, value, iGroup)
         End Set
     End Property
 
