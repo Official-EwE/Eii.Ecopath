@@ -67,7 +67,7 @@ Namespace Ecosim
                 ' Fleet cells
                 For iFleet As Integer = 1 To core.nFleets
                     reg = core.EcosimFisheriesRegulations(iFleet)
-                    Me(iGroup, 1 + iFleet) = New PropertyCell(Me.PropertyManager, reg, eVarNameFlags.Quota, group)
+                    Me(iGroup, 1 + iFleet) = New PropertyCell(Me.PropertyManager, reg, eVarNameFlags.QuotaShare, group)
                 Next
             Next
 
