@@ -281,7 +281,7 @@ Namespace Core
         ''' <summary>Quota type imposed on a fleet</summary>
         QuotaType
         ''' <summary>Quota set for a gear/group combination</summary>
-        Quota
+        QuotaShare
         ''' <summary>Proportion of discards that dies</summary>
         DiscardMortality
 
