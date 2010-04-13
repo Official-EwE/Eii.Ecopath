@@ -144,6 +144,12 @@ Public Class cMSEDataStructures
     ''' <remarks></remarks>
     Public MSYEvaluateValue As Boolean
 
+    ''' <summary>
+    ''' Year/Timestep to start the assessment on
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public StartYear As Integer
+
 
 #End Region
 
@@ -223,6 +229,7 @@ Public Class cMSEDataStructures
             Me.MSYRunSilent = False
             Me.MSYEvaluateValue = True
             Me.MSYStartTimeIndex = 2
+            Me.StartYear = 1
 
         Catch ex As Exception
             cLog.Write(ex)

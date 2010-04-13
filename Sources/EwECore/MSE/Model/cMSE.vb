@@ -63,6 +63,8 @@ Namespace MSE
 
 #Region "Private data"
 
+        Private Const DEFAULT_EFFORT As Single = Single.MaxValue
+
         Private m_core As cCore
         Private m_data As cMSEDataStructures
         Private m_Ecosim As Ecosim.cEcoSimModel
@@ -113,6 +115,9 @@ Namespace MSE
         ''' <summary>Current year index computed by Ecosim</summary>
         ''' <remarks>set when Ecosim calls SetTime()</remarks>
         Private m_curYear As Integer
+
+
+        Private m_effort(,) As Single
 
 #End Region
 
@@ -251,6 +256,8 @@ Namespace MSE
 
                 Me.InitResults()
 
+                Me.setEffortForRun()
+
             Catch ex As Exception
                 cLog.Write(ex)
                 Throw New ApplicationException(Me.ToString & ".InitForRun() Error:" & ex.Message, ex)
@@ -274,6 +281,8 @@ Namespace MSE
                     Me.m_lstData = Nothing
                 End If
             End If
+
+            Me.setEffortToOriginal()
 
         End Sub
 
@@ -516,6 +525,63 @@ Namespace MSE
             End Try
 
         End Sub
+
+        ''' <summary>
+        ''' Set the Effort to a max value if running in default mode TrackUseQuota
+        ''' </summary>
+        ''' <remarks>Make a copy of effort so it can be set back at the end of a run</remarks>
+        Private Sub setEffortForRun()
+
+            Try
+
+                'make a copy of effort 
+                'use to set effort back to its original value after a run in setEffortToOriginal()
+                ReDim m_effort(Me.m_data.nFleets + 1, Me.m_esData.NTimes)
+
+                Debug.Assert(Me.m_esData.FishRateGear.Length = m_effort.Length, "Oppss....")
+
+                Array.Copy(Me.m_esData.FishRateGear, Me.m_effort, Me.m_esData.FishRateGear.Length)
+
+                If Me.m_data.EffortMode = eMSEEffortMode.TrackUseQuota Then
+                    For iflt As Integer = 1 To Me.m_data.nFleets
+                        If Me.m_quota.QuotaType(iflt) <> eQuotaTypes.NotUsed Then
+                            For it As Integer = Me.m_data.StartYear To Me.m_data.nTimeSteps
+                                Me.m_esData.FishRateGear(iflt, it) = DEFAULT_EFFORT
+                            Next it
+                        End If
+                    Next iflt
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+
+        End Sub
+
+
+        ''' <summary>
+        ''' Set Effort back to its original value after a run
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub setEffortToOriginal()
+
+            Try
+
+                For iflt As Integer = 1 To Me.m_data.nFleets
+                    If Me.m_quota.QuotaType(iflt) <> eQuotaTypes.NotUsed Then
+                        For it As Integer = Me.m_data.StartYear To Me.m_data.nTimeSteps
+                            Me.m_esData.FishRateGear(iflt, it) = Me.m_effort(iflt, it)
+                        Next it
+                    End If
+                Next iflt
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Sub
+
 
 #End Region
 
@@ -1045,6 +1111,13 @@ Namespace MSE
         Friend Sub RegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal t As Integer)
             Dim i As Integer, ig As Integer, Elim As Single, Emax As Single
             Dim ci As Single
+
+            'is this timestep > start year
+            If Not t > ((Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear) Then
+                'don't regulate effort
+                System.Console.WriteLine("MSE RegulateEffort() less than StartYear no regulation!")
+                Exit Sub
+            End If
 
             'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
             For ig = 1 To m_esData.nGear
