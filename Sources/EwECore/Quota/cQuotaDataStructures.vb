@@ -63,6 +63,8 @@ Public Class cQuotaDataStructures
     ''' <summary>Proportion of regulated discards (by gear group) for the current time step</summary>
     Public Propdiscardtime(,) As Single
 
+    ''' <summary>Percentage of total catch by at fleet on a group (by fleet, group)</summary>
+    ''' <remarks>Sums to one across all fleets for a group</remarks>
     Public Quotashare(,) As Single
 
     Public QuotaTime(,) As Single
@@ -127,12 +129,14 @@ Public Class cQuotaDataStructures
     ''' Set default values for regulated fisheries
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub setDefaultRegValues(ByVal EcoSimData As cEcosimDatastructures, ByVal EcoSim As cEcopathDataStructures)
+    Public Sub setDefaultRegValues(ByVal EcoSimData As cEcosimDatastructures, ByVal EcoPathData As cEcopathDataStructures)
+        Dim igrp As Integer
+        Dim iflt As Integer
 
         'If regulatory values have not been set (by the database) then set them to defaults
-        For iflt As Integer = 1 To Me.m_counters.nFleets
+        For iflt = 1 To Me.m_counters.nFleets
             If Me.MaxEffort(iflt) = cCore.NULL_VALUE Then Me.MaxEffort(iflt) = 10 '10 times the ecopath base effort
-            For igrp As Integer = 1 To Me.m_counters.nGroups
+            For igrp = 1 To Me.m_counters.nGroups
                 If Me.Quota(iflt, igrp) = cCore.NULL_VALUE Then Me.Quota(iflt, igrp) = EcoSimData.StartBiomass(igrp) * 10 '10 time the ecopath biomass
 
                 'Needs default value????
@@ -142,6 +146,49 @@ Public Class cQuotaDataStructures
 
             Next
         Next
+
+        'set Quota share to Ecopath landings and discards
+        Me.setDefaultQuotaShare(EcoPathData)
+
+    End Sub
+
+    ''' <summary>
+    ''' Set QuotaShare to default values from Ecopath.Landing and Ecopath.Discards
+    ''' </summary>
+    ''' <param name="EcoPathData">Ecopath data</param>
+    ''' <remarks>QuotaShare(fleet,group) is proportion of catch on a group by a fleet. Should sum to one for a group across fleets.</remarks>
+    Public Sub setDefaultQuotaShare(ByVal EcoPathData As cEcopathDataStructures)
+        Dim QuotaShareTot As Single
+        Dim igrp As Integer
+        Dim iflt As Integer
+
+        Try
+
+            If Quotashare Is Nothing Then
+                System.Console.WriteLine("Quota data can not set QuotaShare(fleets,groups) because an Ecosim scenario has not been loaded yet!")
+                Exit Sub
+            End If
+
+            For igrp = 1 To Me.m_counters.nGroups
+                QuotaShareTot = 0
+                For iflt = 1 To Me.m_counters.nFleets
+                    QuotaShareTot += EcoPathData.Landing(iflt, igrp) + EcoPathData.Discard(iflt, igrp)
+                Next
+
+                For iflt = 1 To Me.m_counters.nFleets
+                    If QuotaShareTot > 0 Then
+                        Me.Quotashare(iflt, igrp) = (EcoPathData.Landing(iflt, igrp) + EcoPathData.Discard(iflt, igrp)) / QuotaShareTot
+                    Else
+                        Me.Quotashare(iflt, igrp) = 0
+                    End If
+                Next
+
+            Next igrp
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            System.Console.WriteLine(Me.ToString & ".setDefaultQuotaShare() Exception: " & ex.Message)
+        End Try
 
     End Sub
 
