@@ -55,8 +55,6 @@ Namespace MSE
 
         'ToDo_jb 18-Jan-2010 cMSE database save reference values. This should get done in conjunction with the MSE Trunk merge and release
 
-        'ToDo_jb 18-Jan-2010 MSE looks like there may be a problem with Catch by fleet and catch by group these value should be the same but they aren't....
-
         Private Enum eResultsData
             GroupQuota
             FleetQuota
@@ -182,8 +180,7 @@ Namespace MSE
 
 
         Friend Sub InitAssessment()
-            Dim totalQuota() As Single
-            Dim iFlt As Integer, iGrp As Integer
+            Dim iGrp As Integer
             Dim ngear As Integer = Me.m_esData.nGear
 
             ReDim Me.FtargetT(Me.m_esData.nGroups)
@@ -193,23 +190,26 @@ Namespace MSE
                 m_data.BestimateLast(iGrp) = m_data.Bestimate(iGrp)
             Next iGrp
 
-            ReDim totalQuota(Me.m_esData.nGroups)
-            For iFlt = 1 To ngear
-                For iGrp = 1 To Me.m_esData.nGroups
-                    If (m_epdata.Landing(iFlt, iGrp) + m_epdata.Discard(iFlt, iGrp)) > 0 Then
-                        totalQuota(iGrp) = totalQuota(iGrp) + Me.m_quota.Quota(iFlt, iGrp)
-                    End If
-                Next
-            Next
+            'QuotaTime() get set in the first timestep by UpdateQuota() before it is used in RegulateEffort()
+            ' Dim totalQuota() As Single
+            ' Dim iFlt As Integer
 
-            For iFlt = 1 To ngear
-                For iGrp = 1 To Me.m_esData.nGroups
-                    If (m_epdata.Landing(iFlt, iGrp) + m_epdata.Discard(iFlt, iGrp)) > 0 Then
-                        Me.m_quota.QuotaTime(iFlt, iGrp) = Me.m_quota.Quota(iFlt, iGrp)
-                        Me.m_quota.Quotashare(iFlt, iGrp) = CSng(Me.m_quota.Quota(iFlt, iGrp) / (totalQuota(iGrp) + 0.0000000001))
-                    End If
-                Next
-            Next
+            'ReDim totalQuota(Me.m_esData.nGroups)
+            'For iFlt = 1 To ngear
+            '    For iGrp = 1 To Me.m_esData.nGroups
+            '        If (m_epdata.Landing(iFlt, iGrp) + m_epdata.Discard(iFlt, iGrp)) > 0 Then
+            '            totalQuota(iGrp) = totalQuota(iGrp) + Me.m_quota.Quota(iFlt, iGrp)
+            '        End If
+            '    Next
+            'Next
+
+            'For iFlt = 1 To ngear
+            '    For iGrp = 1 To Me.m_esData.nGroups
+            '        If (m_epdata.Landing(iFlt, iGrp) + m_epdata.Discard(iFlt, iGrp)) > 0 Then
+            '            Me.m_quota.QuotaTime(iFlt, iGrp) = Me.m_quota.Quota(iFlt, iGrp)
+            '        End If
+            '    Next
+            'Next
 
         End Sub
 
