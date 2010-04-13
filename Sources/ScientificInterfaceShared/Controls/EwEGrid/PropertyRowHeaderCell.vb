@@ -229,6 +229,15 @@ Namespace Controls.EwEGrid
             Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
         End Sub
 
+        Public Overrides Property Style() As Style.cStyleGuide.eStyleFlags
+            Get
+                Return MyBase.Style Or cStyleGuide.eStyleFlags.Names
+            End Get
+            Set(ByVal value As Style.cStyleGuide.eStyleFlags)
+                MyBase.Style = value
+            End Set
+        End Property
+
 #End Region ' Construction 
 
     End Class
