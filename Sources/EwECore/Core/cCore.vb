@@ -6552,7 +6552,7 @@ Public Class cCore
 
 #End Region 'EcoSim
 
-#Region "Ecospace"
+#Region " Ecospace "
 
 #Region " Variables "
 
@@ -6664,13 +6664,14 @@ Public Class cCore
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Run the Ecospace model with the currently loaded Ecosim and Ecospace scenario
     ''' </summary>
     ''' <param name="EcospaceTimeStepHandler">Optional handler to call with timestep data. 
     '''  If no handler is supplied then the user will not be called at each time step. </param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function RunEcoSpace(Optional ByRef EcospaceTimeStepHandler As EcoSpaceInterfaceDelegate = Nothing) As Boolean
         Dim breturn As Boolean
 
@@ -6746,11 +6747,12 @@ Public Class cCore
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Does every group have area defined on the map for its habitat(s)
     ''' </summary>
     ''' <returns>True if all groups have habitat area. False otherwise</returns>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Private Function checkHabitats() As Boolean
 
         Dim bHasArea As Boolean
@@ -6808,10 +6810,11 @@ Public Class cCore
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Stop a running EcoSim model
+    ''' Stop a running EcoSpace model.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Public Sub StopEcospace()
         Try
             If Not m_Ecospace Is Nothing Then
@@ -6823,8 +6826,6 @@ Public Class cCore
             cLog.Write(Me.ToString & ".StopEcospace() Error: & " & ex.Message)
         End Try
     End Sub
-
-
 
     ''' <summary>
     ''' This gets call by Ecospace at every time step
@@ -6862,7 +6863,6 @@ Public Class cCore
             Debug.Assert(False, Me.ToString & ".processEcospaceTimeStep() Error: " & ex.Message)
         End Try
     End Sub
-
 
     ''' <summary>
     ''' Sample code to loop over EcoSpace map of mortality by predation 
@@ -7114,7 +7114,6 @@ Public Class cCore
 #End Region ' Ecospace interface objects
 
 #Region " Scenarios "
-
 
     Private Function InitEcospaceScenarios() As Boolean
         Me.m_EcoSpaceScenarios.Clear()
@@ -8796,12 +8795,11 @@ Public Class cCore
 
 #End Region ' Ecospace
 
-#Region "Stanza "
+#Region " Stanza "
 
     ''' <summary>
     ''' Initialize and populate the Stanza interface between the core and an interface
     ''' </summary>
-    ''' <remarks></remarks>
     Private Function InitStanzas() As Boolean
 
         ' Now (re)generate CoreInterface objects.
@@ -8842,7 +8840,6 @@ Public Class cCore
         Next stanza
 
     End Function
-
 
     ''' <summary>
     ''' Populate a cStanzaGroup object with the core data
@@ -8916,7 +8913,6 @@ Public Class cCore
         End Try
 
     End Function
-
 
     ''' <summary>
     ''' Re-calculate Stanza variables from the new parameters in the cStanzaGroup object
@@ -9149,6 +9145,7 @@ Public Class cCore
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Add a group to a stanza configuration as a life stage.
     ''' </summary>
@@ -9156,7 +9153,8 @@ Public Class cCore
     ''' <param name="iGroupDBID">Database if of the Group to assign as life stage.</param>
     ''' <param name="iAge">The age to assign to this life stage.</param>
     ''' <param name="sMortality"></param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function AddStanzaLifestage(ByVal iStanza As Integer, ByVal iGroupDBID As Integer, _
                                        ByVal iAge As Integer, ByVal sMortality As Single) As Boolean
 
@@ -9179,14 +9177,16 @@ Public Class cCore
         Return bSucces
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Remove a life stage from a stanza configuration.
     ''' </summary>
-    ''' <param name="iStanza"></param>
+    ''' <param name="iStanza">Index of the stanza configuration to adjust.</param>
     ''' <param name="iGroupDBID">Database ID of group to remove as a life stage.</param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function RemoveStanzaLifestage(ByVal iStanza As Integer, ByVal iGroupDBID As Integer) As Boolean
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function RemoveStanzaLifestage(ByVal iStanza As Integer, _
+                                          ByVal iGroupDBID As Integer) As Boolean
         Dim iStanzaDBID As Integer = Me.m_Stanza.StanzaDBID(iStanza)
         Dim bSucces As Boolean = False
         Dim ds As IEcopathDataSource = Nothing
@@ -9248,6 +9248,12 @@ Public Class cCore
 
 #Region " Scenarios "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the number of available Ecotracer scenarios in the current loaded
+    ''' model.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcotracerScenarioCount() As Integer
         Get
             Try
@@ -9259,6 +9265,15 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get an Ecotracer scenario.
+    ''' </summary>
+    ''' <param name="iScenario">
+    ''' One-based index of the scenario to obtain. This value cannot exceed 
+    ''' <see cref="EcotracerScenarioCount">EcotracerScenarioCount</see>.
+    ''' </param>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcotracerScenarios(ByVal iScenario As Integer) As cEcotracerScenario
         Get
             Return Me.m_EcotracerScenarios(iScenario)
@@ -9276,6 +9291,7 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Creates and loads a new Ecotracer scenario.
     ''' </summary>
@@ -9284,8 +9300,11 @@ Public Class cCore
     ''' <param name="strAuthor">Author to assign to new scenario.</param>
     ''' <param name="strContact">Contact to assign to new scenario.</param>
     ''' <returns>True if succesful.</returns>
-    Public Function NewEcotracerScenario(ByVal strName As String, ByVal strDescription As String, _
-            ByVal strAuthor As String, ByVal strContact As String) As Boolean
+    ''' -----------------------------------------------------------------------
+    Public Function NewEcotracerScenario(ByVal strName As String, _
+                                         ByVal strDescription As String, _
+                                         ByVal strAuthor As String, _
+                                         ByVal strContact As String) As Boolean
 
         Dim ds As IEcotracerDatasource = Nothing
         Dim iScenarioID As Integer = 0
@@ -9320,20 +9339,28 @@ Public Class cCore
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Load an <see cref="cEcoSimScenario">Ecotracer scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
+    ''' Load an <see cref="cEcoSimScenario">Ecotracer scenario</see> from the 
+    ''' current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcotracerScenario">Scenario</see> to load.</param>
     ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function LoadEcotracerScenario(ByRef scenario As cEcotracerScenario) As Boolean
         Return LoadEcotracerScenario(scenario.Index)
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Load an <see cref="cEcotracerScenario">Ecotracer scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
+    ''' Load an <see cref="cEcotracerScenario">Ecotracer scenario</see> 
+    ''' from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
-    ''' <param name="iScenario">Index of the <see cref="cEcotracerScenario">Scenario</see> in the <see cref="m_EcotracerScenarios">Scenario list</see>.</param>
+    ''' <param name="iScenario">Index of the 
+    ''' <see cref="cEcotracerScenario">Scenario</see> in the 
+    ''' <see cref="m_EcotracerScenarios">Scenario list</see>.</param>
     ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function LoadEcotracerScenario(ByVal iScenario As Integer) As Boolean
 
         Dim ds As IEcotracerDatasource = Nothing
@@ -9387,6 +9414,13 @@ Public Class cCore
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Save the current Ecotracer scenario.
+    ''' </summary>
+    ''' <param name="scenario">A scenario to overwrite, if any.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function SaveEcotracerScenario(Optional ByVal scenario As cEcotracerScenario = Nothing) As Boolean
         Dim iScenarioID As Integer = 0
         Dim ds As IEcotracerDatasource = Nothing
@@ -9432,15 +9466,14 @@ Public Class cCore
         Return False
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Save the current ecotracer scenario under a new name.
     ''' </summary>
     ''' <param name="strName"></param>
     ''' <param name="strDescription"></param>
-    ''' <returns></returns>
-    ''' <remarks>
-    ''' This code has NOT yet been tested!
-    ''' </remarks>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function SaveEcotracerScenarioAs(ByVal strName As String, _
                                             ByVal strDescription As String) As Boolean
 
@@ -9489,11 +9522,13 @@ Public Class cCore
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Remove a <see cref="cEcotracerScenario">Ecotracer Scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcotracerScenario">Scenario</see> to remove.</param>
     ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function RemoveEcotracerScenario(ByVal scenario As cEcotracerScenario) As Boolean
         Return Me.RemoveEcosimScenario(scenario.Index)
     End Function
@@ -9663,11 +9698,18 @@ Public Class cCore
 
 #Region " ModelParameters "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the model parameters object for the current loaded Ecotracer scenario.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcotracerModelParameters() As cEcotracerModelParameters
         Get
             Return Me.m_EcotracerModelParameters
         End Get
     End Property
+
+#Region " Internals "
 
     Private Function InitEcotracerModelParamaters() As Boolean
         Me.m_EcotracerModelParameters = New cEcotracerModelParameters(Me)
@@ -9715,10 +9757,19 @@ Public Class cCore
 
     End Function
 
+#End Region ' Internals
+
 #End Region ' ModelParameters
 
 #Region " Groups "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get an Ecotracer <see cref="cEcotracerGroupInput">group input</see>.
+    ''' </summary>
+    ''' <param name="iGroup">One-based index of the group to obtain. This value
+    ''' cannot exceed <see cref="nGroups">nGroups</see>.</param>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcotracerGroupInputs(ByVal iGroup As Integer) As cEcotracerGroupInput
         Get
             Return Me.m_EcotracerGroupInputs(iGroup)
@@ -9890,7 +9941,7 @@ Public Class cCore
 
 #End Region ' Data adapters
 
-#Region "Auxiliary data "
+#Region " Auxiliary data "
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -9970,7 +10021,7 @@ Public Class cCore
 
 #End Region ' Auxillary data
 
-#Region "Interface layer"
+#Region " Variable validation "
 
     ''' <summary>
     ''' The one point where cCoreInputOutputBase objects report validated data.
@@ -11038,9 +11089,9 @@ Public Class cCore
 
     End Sub
 
-#End Region ' Interface layer 
+#End Region ' Variable validation
 
-#Region "Plugins"
+#Region " Plugins "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -11189,7 +11240,7 @@ Public Class cCore
 
 #End Region ' Plugins
 
-#Region "Search Managers"
+#Region " Search Managers "
 
     Public ReadOnly Property SearchObjective() As cSearchObjective
 
@@ -11320,7 +11371,7 @@ Public Class cCore
 
 #End Region
 
-#End Region
+#End Region ' Search managers
 
 #Region " Pedigree "
 
