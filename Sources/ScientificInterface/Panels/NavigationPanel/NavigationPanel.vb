@@ -195,7 +195,8 @@ Public Class NavigationPanel
             .Add("ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), "") ' ToDo: connect to help
             .Add("ndRefFixedEscape", eCoreExecutionState.EcosimLoaded, GetType(gridFixedEscapement), "") ' ToDo: connect to help
             .Add("ndRegulatoryOptions", eCoreExecutionState.EcosimLoaded, GetType(gridRegulatoryOptions), "") ' ToDo: connect to help
-            .Add("ndRegQuotas", eCoreExecutionState.EcosimLoaded, GetType(gridFishingQuotas), "") ' ToDo: connect to help
+            'jb April-13-2010 removed Quota grid Quota share is now computed from Landings and Discards
+            ''.Add("ndRegQuotas", eCoreExecutionState.EcosimLoaded, GetType(gridFishingQuotas), "") ' ToDo: connect to help
             .Add("ndRegFishingMort", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy), "") ' ToDo: connect to help
 
             'jb march-8-2010 removed Group objectives and Objective weights as they are not being used by the MSE
