@@ -1,22 +1,18 @@
-'==============================================================================
-'
-' Controller for collapsible panels
-' Based on 'Sliding Panel User Control', Sufian Mehmood Sheikh, sufian@my.web.pk
-'
-' $Log: ucCollapsiblePanelController.vb,v $
-' Revision 1.1  2008/09/26 07:31:14  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2008/09/15 18:42:19  jeroens
-' Initial version
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports System.ComponentModel
 
+#End Region ' Imports
+
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Control class, implementing a collapsible panel that animates when
+    ''' opeing or closing.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     <DefaultProperty("Caption")> _
     Public Class ucCollapsiblePanelController
 
@@ -31,8 +27,7 @@ Namespace Controls
 #Region " Constructor "
 
         Public Sub New()
-            InitializeComponent()
-
+            Me.InitializeComponent()
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         End Sub
@@ -41,16 +36,16 @@ Namespace Controls
 
 #Region " Events "
 
-        Private Sub DoLoad(ByVal sender As Object, ByVal e As System.EventArgs) _
-                Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
             Me.m_iExpandedHeight = Me.Parent.Height
             Me.Dock = DockStyle.Top
 
         End Sub
 
-        Private Sub DoPaint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
-                Handles Me.Paint
+        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+            MyBase.OnPaint(e)
 
             Dim xImg As Integer = Me.Padding.Left
             Dim xText As Integer = xImg + 16
@@ -76,9 +71,9 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnCollapseClick(ByVal sender As Object, ByVal e As System.EventArgs) _
-                Handles Me.Click
+        Protected Overrides Sub OnClick(ByVal e As System.EventArgs)
             Me.Collapsed = (Not Me.Collapsed)
+            MyBase.OnClick(e)
         End Sub
 
 #End Region ' Events
@@ -98,7 +93,7 @@ Namespace Controls
         End Property
 
         ''' <summary>
-        ''' Gets/Sets Animation Rate
+        ''' Get/set animation rate
         ''' </summary>
         <Category("Collapsible")> _
         Public Property AnimationRate() As Integer
