@@ -2010,13 +2010,13 @@ Public Class AppLauncher
 
     Private Sub OnFileOpen(ByVal cmd As cCommand) Handles m_cmdFileOpen.OnInvoke
 
-        Dim dlgLoad As New OpenFileDialog()
+        Dim dlgLoad As OpenFileDialog = Nothing
         Dim foc As cFileOpenCommand = DirectCast(cmd, cFileOpenCommand)
         Dim strPath As String = foc.Directory
 
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
 
-        cEwEFileDialogHelper.Configure(dlgLoad, foc.Title, foc.FileName, foc.Filters, foc.FilterIndex, strPath, foc.AllowMultiple)
+        dlgLoad = cEwEFileDialogHelper.OpenFileDialog(foc.Title, foc.FileName, foc.Filters, foc.FilterIndex, strPath, foc.AllowMultiple)
 
         foc.Result = dlgLoad.ShowDialog()
         foc.FilterIndex = dlgLoad.FilterIndex
@@ -2031,13 +2031,13 @@ Public Class AppLauncher
 
     Private Sub OnFileSave(ByVal cmd As cCommand) Handles m_cmdFileSave.OnInvoke
 
-        Dim dlgSave As New SaveFileDialog()
+        Dim dlgSave As SaveFileDialog = Nothing
         Dim fsc As cFileSaveCommand = DirectCast(cmd, cFileSaveCommand)
         Dim strPath As String = fsc.Directory
 
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
 
-        cEwEFileDialogHelper.Configure(dlgSave, fsc.Title, fsc.FileName, fsc.Filters, fsc.FilterIndex, strPath)
+        dlgSave = cEwEFileDialogHelper.SaveFileDialog(fsc.Title, fsc.FileName, fsc.Filters, fsc.FilterIndex, strPath)
 
         fsc.Result = dlgSave.ShowDialog()
         If (fsc.Result = Windows.Forms.DialogResult.OK) Then
@@ -2050,13 +2050,13 @@ Public Class AppLauncher
 
     Private Sub OnDirectoryOpen(ByVal cmd As cCommand) Handles m_cmdDirectoryOpen.OnInvoke
 
-        Dim dlgLoad As New FolderBrowserDialog()
+        Dim dlgLoad As FolderBrowserDialog = Nothing
         Dim doc As cDirectoryOpenCommand = DirectCast(cmd, cDirectoryOpenCommand)
         Dim strPath As String = doc.Directory
 
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
 
-        cEwEFileDialogHelper.Configure(dlgLoad, doc.Description, strPath)
+        dlgLoad = cEwEFileDialogHelper.FolderBrowserDialog(doc.Description, strPath)
 
         doc.Result = dlgLoad.ShowDialog()
 

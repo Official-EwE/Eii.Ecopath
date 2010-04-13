@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: cEwEFileDialogHelper.vb,v $
-' Revision 1.4  2009/06/18 15:56:43  jeroens
-' File open dialog supports multiple files
-'
-' Revision 1.3  2009/05/11 01:50:49  jeroens
-' Renamed command classes
-'
-' Revision 1.2  2008/11/10 22:11:36  jeroens
-' Updated file dlg config
-'
-' Revision 1.1  2008/09/09 14:57:08  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -25,15 +8,35 @@ Imports System.Reflection
 
 Namespace Controls
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' Helper class for configuring file dialogs.
+    ''' </summary>
+    ''' =======================================================================
     Public Class cEwEFileDialogHelper
 
-        Public Shared Sub Configure(ByVal dlg As OpenFileDialog, _
-                                    ByVal strTitle As String, _
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create an standardized File Open dialog for use in EwE.
+        ''' </summary>
+        ''' <param name="strTitle">Title to show.</param>
+        ''' <param name="strFileName">The initial file name to open the dialog for.</param>
+        ''' <param name="strFilters">Filters to display. Filters should be 
+        ''' formatted '[Name|*.extension|]*'</param>
+        ''' <param name="iDefaultFilter">Index of the default filter to set in the dialg.</param>
+        ''' <param name="strInitialDirectory">Default directory to set in the dialog.</param>
+        ''' <param name="bMultiSelect">Flag stating whether a user is allowed to 
+        ''' select multiple files.</param>
+        ''' <returns>A file dialog.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function OpenFileDialog(ByVal strTitle As String, _
                                     ByVal strFileName As String, _
                                     ByVal strFilters As String, _
                                     Optional ByVal iDefaultFilter As Integer = 0, _
                                     Optional ByVal strInitialDirectory As String = "", _
-                                    Optional ByVal bMultiSelect As Boolean = False)
+                                    Optional ByVal bMultiSelect As Boolean = False) As OpenFileDialog
+
+            Dim dlg As New OpenFileDialog()
 
             With dlg
                 .FileName = strFileName
@@ -60,16 +63,29 @@ Namespace Controls
                 dlg.InitialDirectory = strInitialDirectory
             End If
 
-        End Sub
+            Return dlg
+        End Function
 
-        Public Shared Sub Configure(ByVal dlg As SaveFileDialog, _
-                                    ByVal strTitle As String, _
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create an standardized File Save dialog for use in EwE.
+        ''' </summary>
+        ''' <param name="strTitle">Title to show.</param>
+        ''' <param name="strFileName">The initial file name to open the dialog for.</param>
+        ''' <param name="strFilters">Filters to display. Filters should be 
+        ''' formatted '[Name|*.extension|]*'</param>
+        ''' <param name="iDefaultFilter">Index of the default filter to set in the dialg.</param>
+        ''' <param name="strInitialDirectory">Default directory to set in the dialog.</param>
+        ''' <returns>A file dialog.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function SaveFileDialog(ByVal strTitle As String, _
                                     ByVal strFileName As String, _
                                     ByVal strFilters As String, _
                                     Optional ByVal iDefaultFilter As Integer = 0, _
                                     Optional ByVal strInitialDirectory As String = "", _
-                                    Optional ByVal bOverwritePrompt As Boolean = True)
+                                    Optional ByVal bOverwritePrompt As Boolean = True) As SaveFileDialog
 
+            Dim dlg As New SaveFileDialog()
             With dlg
                 .FileName = strFileName
                 .Filter = strFilters
@@ -94,11 +110,23 @@ Namespace Controls
                 dlg.InitialDirectory = strInitialDirectory
             End If
 
-        End Sub
+            Return dlg
 
-        Public Shared Sub Configure(ByVal dlg As FolderBrowserDialog, _
-                                    ByVal strDescription As String, _
-                                    ByVal strInitialDirectory As String)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create an standardized Folder browse dialog for use in EwE.
+        ''' </summary>
+        ''' <param name="strDescription">Description to display in the dialog.</param>
+        ''' <param name="strInitialDirectory">The initial directory to open the
+        ''' dialog for.</param>
+        ''' <returns>A file dialog.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FolderBrowserDialog(ByVal strDescription As String, _
+                                    ByVal strInitialDirectory As String) As FolderBrowserDialog
+
+            Dim dlg As New FolderBrowserDialog()
 
             With dlg
                 .SelectedPath = strInitialDirectory
@@ -110,7 +138,9 @@ Namespace Controls
             Dim pi As PropertyInfo = GetType(FolderBrowserDialog).GetProperty("AutoUpgradeEnabled")
             If (pi IsNot Nothing) Then pi.SetValue(dlg, True, Nothing)
 
-        End Sub
+            Return dlg
+
+        End Function
 
     End Class
 
