@@ -30,6 +30,15 @@ Friend Class cMSEEventSource
         m_dtReflevels.Add(eVarNameFlags.MSEBBase, AddressOf Me.fireOnRefLevelsChanged)
         m_dtReflevels.Add(eVarNameFlags.MSEBLim, AddressOf Me.fireOnRefLevelsChanged)
 
+        m_dtReflevels.Add(eVarNameFlags.MSERefFleetCatchLower, AddressOf Me.fireOnRefLevelsChanged)
+        m_dtReflevels.Add(eVarNameFlags.MSERefFleetCatchUpper, AddressOf Me.fireOnRefLevelsChanged)
+
+        m_dtReflevels.Add(eVarNameFlags.MSERefFleetEffortLower, AddressOf Me.fireOnRefLevelsChanged)
+        m_dtReflevels.Add(eVarNameFlags.MSERefFleetEffortUpper, AddressOf Me.fireOnRefLevelsChanged)
+
+        m_dtReflevels.Add(eVarNameFlags.MSERefGroupCatchLower, AddressOf Me.fireOnRefLevelsChanged)
+        m_dtReflevels.Add(eVarNameFlags.MSERefGroupCatchUpper, AddressOf Me.fireOnRefLevelsChanged)
+
         m_dtDataChanged.Add(eMessageType.MSERunCompleted, AddressOf Me.fireOnRunCompleted)
 
     End Sub
