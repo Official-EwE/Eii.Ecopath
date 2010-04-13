@@ -4329,6 +4329,12 @@ Namespace DataSources
             Dim iPrey As Integer = 0
             Dim bSucces As Boolean = True
 
+            For iPredator = 1 To Me.m_core.nGroups
+                For iPrey = 1 To Me.m_core.nGroups
+                    ecosimDS.VulMult(iPrey, iPredator) = 2.0!
+                Next iPrey
+            Next iPredator
+
             Try
                 reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
                 While reader.Read()
@@ -4916,9 +4922,10 @@ Namespace DataSources
         End Function
 
         Private Function SaveEcosimVulnerabilities(ByRef idm As cIDMappings) As Boolean
+
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+            Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iPredator As Integer = 0
@@ -4933,12 +4940,14 @@ Namespace DataSources
                 For iPredator = 1 To ecosimDS.nGroups
                     For iPrey = 1 To ecosimDS.nGroups
 
-                        drow = writer.NewRow()
-                        drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredator))
-                        drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
-                        drow("ScenarioID") = idm.GetID(eDataTypes.EcoSimScenario, iScenarioID)
-                        drow("vulnerability") = ecosimDS.VulMult(iPrey, iPredator)
-                        writer.AddRow(drow)
+                        If (ecosimDS.SimDC(iPredator, iPrey) > 0) Then
+                            drow = writer.NewRow()
+                            drow("ScenarioID") = iScenarioID
+                            drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredator))
+                            drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
+                            drow("vulnerability") = ecosimDS.VulMult(iPrey, iPredator)
+                            writer.AddRow(drow)
+                        End If
 
                     Next iPrey
                 Next iPredator
@@ -9066,7 +9075,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                iAdDBID = CInt(Me.m_db.GetValue("SELECT MAX(DBID) FROM Auxillary"))
+                iAdDBID = CInt(Me.m_db.GetValue("SELECT MAX(DBID) FROM Auxillary")) + 1
             Catch ex As Exception
                 iAdDBID = 1
             End Try

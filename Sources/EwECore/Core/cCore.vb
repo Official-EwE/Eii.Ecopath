@@ -5061,20 +5061,21 @@ Public Class cCore
                 epd.EcosimScenarioContact(Me.m_EcoPathData.ActiveEcosimScenario), _
                 iScenarioID) Then
 
-            ' Reload scenarios
-            Me.InitEcosimScenarios()
-            ' Update active scenario ID
-            Me.m_EcoPathData.ActiveEcosimScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID)
             ' #Yes: invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcosimScenario(Me)
-            ' Inform the world
-            Me.SendEcosimSaveStateMessage(strName)
-            ' Force update
-            Me.m_StateMonitor.SetEcoSimLoaded(True, TriState.True)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
-            DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
-            Return True
+
+            ' Reload scenarios
+            Me.InitEcosimScenarios()
+            ' Changed no. of scenarios
+            Me.DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
+
+            ' Inform the world
+            Me.SendEcosimSaveStateMessage(strName)
+
+            ' Load new Ecosim scenario to refresh all IO objects
+            Return Me.LoadEcosimScenario(iScenarioID)
         End If
 
         ' Restore active scenario ID
@@ -5106,7 +5107,7 @@ Public Class cCore
         Debug.Assert(iScenario > 0 And iScenario < Me.m_EcoPathData.EcosimScenarioDBID.Length)
 
         Dim bNeedFullReload As Boolean = (iScenario = Me.m_EcoPathData.ActiveEcosimScenario)
-        Dim iScenarioDBID As Integer = Me.m_EcoPathData.EcosimScenarioDBID(iScenario)
+        Dim iScenarioDB As Integer = Me.m_EcoPathData.EcosimScenarioDBID(Me.m_EcoPathData.ActiveEcosimScenario)
         Dim bSucces As Boolean = False ' ooh but that is a very depressing assumption
         Dim ds As IEcosimDatasource = Nothing
 
@@ -5118,7 +5119,7 @@ Public Class cCore
 
         ' Scenario removed succesfully?
         ds = DirectCast(Me.DataSource, IEcosimDatasource)
-        If ds.RemoveEcosimScenario(iScenarioDBID) Then
+        If ds.RemoveEcosimScenario(Me.m_EcoPathData.EcosimScenarioDBID(iScenario)) Then
             ' #Yes
             ' Reload scenario list
             bSucces = Me.InitEcosimScenarios()
@@ -5126,8 +5127,10 @@ Public Class cCore
             If bNeedFullReload Then
                 ' #Yes: Must entirely re-initialize Ecosim
                 bSucces = Me.InitEcoSim()
+            Else
+                ' Restore active scenario ID
+                Me.m_EcoPathData.ActiveEcosimScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioDB)
             End If
-
             Me.DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
 
         End If

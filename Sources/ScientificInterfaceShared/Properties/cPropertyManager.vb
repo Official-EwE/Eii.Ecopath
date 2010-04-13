@@ -410,8 +410,8 @@ Namespace Properties
             Dim prop As cProperty = Nothing
 
             ' Respond to major events
-            If (msg.Type = eMessageType.DataAddedOrRemoved) And (msg.Source = eCoreComponentType.EcoPath) Then
-                ' Clear existing properties when number of ecopath groups has changed
+            If (msg.Type = eMessageType.DataAddedOrRemoved) Then
+                ' Clear when major changes have happened
                 Me.Clear(msg.Source)
                 ' No need to proceed since all Properties are gone
                 Return
