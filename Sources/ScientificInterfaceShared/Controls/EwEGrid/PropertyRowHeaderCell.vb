@@ -229,6 +229,11 @@ Namespace Controls.EwEGrid
             Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Row headers always use <see cref="cStyleGuide.eStyleFlags.Names">Names</see> style.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overrides Property Style() As Style.cStyleGuide.eStyleFlags
             Get
                 Return MyBase.Style Or cStyleGuide.eStyleFlags.Names
