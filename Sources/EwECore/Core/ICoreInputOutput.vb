@@ -152,6 +152,17 @@ Public MustInherit Class cCoreInputOutputBase
 
 #Region " Protected variables "
 
+#Region " DEBUG ONLY "
+
+#If DEBUG Then
+    ''' <summary>DEBUG ONLY: instance tracker</summary>
+    Protected m_iInstance As Integer = cCore.NULL_VALUE
+    ''' <summary>DEBUG ONLY: instance tracker</summary>
+    Protected Shared s_iNextInstance As Integer = 1
+#End If
+
+#End Region ' DEBUG ONLY
+
     ''' <summary>
     ''' States whether <see cref="cValue.AllowValidation">Variable validation</see> is enabled for this object.
     ''' </summary>
@@ -227,6 +238,11 @@ Public MustInherit Class cCoreInputOutputBase
         meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Integer, eVarNameFlags.DBID, eStatusFlags.Null, eValueTypes.Int, meta, validator)
         m_values.Add(val.varName, val)
+
+#If DEBUG Then
+        Me.m_iInstance = cCoreInputOutputBase.s_iNextInstance
+        cCoreInputOutputBase.s_iNextInstance += 1
+#End If
 
     End Sub
 
