@@ -1758,6 +1758,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Apply.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_LABEL_APPLY() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_APPLY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} ({1}).
         '''</summary>
         Friend ReadOnly Property GENERIC_LABEL_DETAILEDLABEL() As String
@@ -6310,6 +6319,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Set this value to all selected cells.
+        '''</summary>
+        Friend ReadOnly Property TOOLTIP_GRID_APPLYVALUE() As String
+            Get
+                Return ResourceManager.GetString("TOOLTIP_GRID_APPLYVALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Load grid content from a CSV file.
         '''</summary>
         Friend ReadOnly Property TOOLTIP_GRID_LOADFROMCSV() As String
@@ -6324,15 +6342,6 @@ Namespace My.Resources
         Friend ReadOnly Property TOOLTIP_GRID_SAVETOCSV() As String
             Get
                 Return ResourceManager.GetString("TOOLTIP_GRID_SAVETOCSV", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Set this value to all selected cells.
-        '''</summary>
-        Friend ReadOnly Property TOOLTIP_GRID_SETVALUE() As String
-            Get
-                Return ResourceManager.GetString("TOOLTIP_GRID_SETVALUE", resourceCulture)
             End Get
         End Property
         

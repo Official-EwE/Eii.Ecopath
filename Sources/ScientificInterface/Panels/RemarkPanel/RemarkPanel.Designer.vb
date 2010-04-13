@@ -15,7 +15,7 @@ Partial Class RemarkPanel
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RemarkPanel))
         Me.m_tbRemark = New System.Windows.Forms.TextBox
         Me.m_lbVarName = New System.Windows.Forms.Label
-        Me.m_btnSet = New System.Windows.Forms.Button
+        Me.m_btnApply = New System.Windows.Forms.Button
         Me.SuspendLayout()
         '
         'm_tbRemark
@@ -28,29 +28,29 @@ Partial Class RemarkPanel
         resources.ApplyResources(Me.m_lbVarName, "m_lbVarName")
         Me.m_lbVarName.Name = "m_lbVarName"
         '
-        'm_btnSet
+        'm_btnApply
         '
-        resources.ApplyResources(Me.m_btnSet, "m_btnSet")
-        Me.m_btnSet.Image = Global.ScientificInterface.My.Resources.Resources.NavForward
-        Me.m_btnSet.Name = "m_btnSet"
-        Me.m_btnSet.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnApply, "m_btnApply")
+        Me.m_btnApply.Name = "m_btnApply"
+        Me.m_btnApply.UseVisualStyleBackColor = True
         '
         'RemarkPanel
         '
-        Me.AcceptButton = Me.m_btnSet
+        Me.AcceptButton = Me.m_btnApply
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.m_btnSet)
+        Me.Controls.Add(Me.m_btnApply)
         Me.Controls.Add(Me.m_lbVarName)
         Me.Controls.Add(Me.m_tbRemark)
         Me.HideOnClose = True
         Me.Name = "RemarkPanel"
         Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide
+        Me.TabText = "Remarks"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
     Friend WithEvents m_tbRemark As System.Windows.Forms.TextBox
     Friend WithEvents m_lbVarName As System.Windows.Forms.Label
-    Friend WithEvents m_btnSet As System.Windows.Forms.Button
+    Private WithEvents m_btnApply As System.Windows.Forms.Button
 End Class

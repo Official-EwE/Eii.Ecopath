@@ -123,8 +123,8 @@ Public Class frmEwEGrid
             AddHandler Me.m_ttbValue.KeyDown, AddressOf OnSetBoxKeyDown
 
             ' Create quick edit set button
-            Me.m_btnSet = New ToolStripButton(My.Resources.NavForward)
-            Me.m_btnSet.ToolTipText = My.Resources.TOOLTIP_GRID_SETVALUE
+            Me.m_btnSet = New ToolStripButton(My.Resources.GENERIC_LABEL_APPLY)
+            Me.m_btnSet.ToolTipText = My.Resources.TOOLTIP_GRID_APPLYVALUE
             AddHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
 
             ' Create import button (input grids only)

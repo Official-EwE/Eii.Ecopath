@@ -180,28 +180,34 @@
   <data name="&gt;&gt;m_lbVarName.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_btnSet.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnApply.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnSet.Location" type="System.Drawing.Point, System.Drawing">
-    <value>733, 4</value>
+  <data name="m_btnApply.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
   </data>
-  <data name="m_btnSet.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 23</value>
+  <data name="m_btnApply.Location" type="System.Drawing.Point, System.Drawing">
+    <value>681, 4</value>
   </data>
-  <data name="m_btnSet.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnApply.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnApply.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;m_btnSet.Name" xml:space="preserve">
-    <value>m_btnSet</value>
+  <data name="m_btnApply.Text" xml:space="preserve">
+    <value>Apply</value>
   </data>
-  <data name="&gt;&gt;m_btnSet.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnApply.Name" xml:space="preserve">
+    <value>m_btnApply</value>
+  </data>
+  <data name="&gt;&gt;m_btnApply.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnSet.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnApply.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnSet.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnApply.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -212,6 +218,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>759, 295</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -265,9 +274,6 @@
         CPYAAVpaAAH9/QAB1F4AAfb2AAH2hoAB/f2AA172wAcJCvAf9vb///39
 </value>
   </data>
-  <data name="$this.TabText" xml:space="preserve">
-    <value>Remarks</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Remarks</value>
   </data>
@@ -275,6 +281,6 @@
     <value>RemarkPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.1.2734.23473, Culture=neutral, PublicKeyToken=null</value>
+    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.3.3729.14004, Culture=neutral, PublicKeyToken=de94e906589de6fe</value>
   </data>
 </root>

@@ -108,7 +108,7 @@ Public Class RemarkPanel
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub m_btnSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSet.Click
+        Handles m_btnApply.Click
         Me.Apply()
     End Sub
 
@@ -197,8 +197,8 @@ Public Class RemarkPanel
             Next
         End If
 
-        Me.m_btnSet.Visible = bHasEcopath
-        Me.m_btnSet.Enabled = bHasSelection
+        Me.m_btnApply.Visible = bHasEcopath
+        Me.m_btnApply.Enabled = bHasSelection
         Me.m_tbRemark.Visible = bHasEcopath
         Me.m_tbRemark.Enabled = bHasSelection
 
