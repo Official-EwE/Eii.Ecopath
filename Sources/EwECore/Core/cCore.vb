@@ -929,7 +929,7 @@ Public Class cCore
         If Me.DataSource Is Nothing Then Return False
         If Not TypeOf (Me.DataSource) Is IEcosimDatasource Then Return False
 
-        If Not Me.SaveChanges() Then Return False
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return False
 
         ds = DirectCast(Me.DataSource, IEcosimDatasource)
 
@@ -956,7 +956,7 @@ Public Class cCore
         If Me.DataSource Is Nothing Then Return False
         If Not TypeOf (Me.DataSource) Is IEcosimDatasource Then Return False
 
-        If Not Me.SaveChanges() Then Return False
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return False
 
         ds = DirectCast(Me.DataSource, IEcosimDatasource)
         'the datasource is responsible for 
@@ -1493,7 +1493,7 @@ Public Class cCore
         If Me.DataSource Is Nothing Then Return bSucces
 
         ' Ask for saving
-        If Not Me.SaveChanges() Then Return bSucces
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return bSucces
 
         If (TypeOf Me.m_DataSource Is IEcosimDatasource) Then
             Dim sds As IEcosimDatasource = DirectCast(Me.m_DataSource, IEcosimDatasource)
@@ -1734,7 +1734,7 @@ Public Class cCore
             Return False
         End If
 
-        If Not Me.SaveChanges() Then Return False
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return False
 
         Try
 
@@ -1805,7 +1805,8 @@ Public Class cCore
         Return msg
     End Function
 
-    Public Function SaveChanges(Optional ByVal bQuiet As Boolean = False) As Boolean
+    Public Function SaveChanges(Optional ByVal bQuiet As Boolean = False, _
+                                Optional ByVal savelevel As eBatchChangeLevelFlags = eBatchChangeLevelFlags.Ecopath) As Boolean
 
         Dim fm As cFeedbackMessage = Nothing
         Dim strPrompt As String = ""
@@ -1815,7 +1816,6 @@ Public Class cCore
         '    loading a new Ecospace scenario, any pending Ecospace changes have to
         '    be stored but there is no need to save Sim or Path. A savelevel value 
         '    of Ecospace would achieve this.
-        Dim savelevel As eBatchChangeLevelFlags = eBatchChangeLevelFlags.Ecopath
 
         ' Hang on, can we do this at all?
         If (Me.m_DataSource Is Nothing) Then Return True
@@ -1823,10 +1823,23 @@ Public Class cCore
         ' In a batch?
         If (Me.m_iBatchLock > 0) Then Return True
 
-        ' Check if core data is dirty
-        If (Me.m_StateMonitor.IsModified = False) Then
-            Return True
+        ' Assess tracer
+        Dim bIsModified As Boolean = Me.m_StateMonitor.IsEcotracerModified
+        If savelevel = eBatchChangeLevelFlags.Ecotracer Then
+            If Not bIsModified Then Return True
         End If
+        ' Assess ecospace
+        bIsModified = bIsModified Or Me.m_StateMonitor.IsEcospaceModified
+        If savelevel = eBatchChangeLevelFlags.Ecospace Then
+            If Not bIsModified Then Return True
+        End If
+        ' Assess Ecosim
+        bIsModified = bIsModified Or Me.m_StateMonitor.IsEcosimModified
+        If savelevel = eBatchChangeLevelFlags.Ecosim Then
+            If Not bIsModified Then Return True
+        End If
+        ' Assess Ecopath
+        If Not Me.m_StateMonitor.IsModified Then Return True
 
         ' Prepare feedback message
         strPrompt = My.Resources.CoreMessages.PROMPT_SAVE_CHANGES
@@ -4821,7 +4834,7 @@ Public Class cCore
             Return False
         End If
 
-        If Not Me.SaveChanges() Then Return False
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return False
 
         Try
 
@@ -4858,7 +4871,7 @@ Public Class cCore
         If DataSource Is Nothing Then Return False
         If Not TypeOf (DataSource) Is IEcosimDatasource Then Return False
 
-        If Not Me.SaveChanges() Then Return False
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return False
 
         Try
 
@@ -5049,10 +5062,11 @@ Public Class cCore
         Dim epd As cEcopathDataStructures = Me.m_EcoPathData
         Dim iScenarioID As Integer = 0
         Dim ds As IEcosimDatasource = Nothing
+        Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If DataSource Is Nothing Then Return False
-        If Not TypeOf (DataSource) Is IEcosimDatasource Then Return False
+        If DataSource Is Nothing Then Return bSucces
+        If Not TypeOf (DataSource) Is IEcosimDatasource Then Return bSucces
 
         ' Save ok?
         ds = DirectCast(DataSource, IEcosimDatasource)
@@ -5068,22 +5082,24 @@ Public Class cCore
 
             ' Reload scenarios
             Me.InitEcosimScenarios()
-            '' Changed no. of scenarios
-            'Me.DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
 
             ' Inform the world
             Me.SendEcosimSaveStateMessage(strName)
 
             ' Load new Ecosim scenario to refresh all IO objects
-            Return Me.LoadEcosimScenario(Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID))
+            bSucces = Me.LoadEcosimScenario(Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID))
+            ' Changed no. of scenarios
+            Me.DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
+            ' Report succes
+            Return bSucces
         End If
 
         ' Restore active scenario ID
         Me.m_EcoPathData.ActiveEcosimScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID)
 
         ' Report failure
-        Me.SendEcosimSaveStateMessage(strName, False)
-        Return False
+        Me.SendEcosimSaveStateMessage(strName, bSucces)
+        Return bSucces
 
     End Function
 
@@ -5103,6 +5119,10 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     Public Function RemoveEcosimScenario(ByVal iScenario As Integer) As Boolean
 
+        Dim ds As IEcosimDatasource = Nothing
+        Dim iScenarioID As Integer = cCore.NULL_VALUE ' Scenario to restore
+        Dim bSucces As Boolean = False
+
         ' Sanity check
         Debug.Assert(iScenario > 0 And iScenario < Me.m_EcoPathData.EcosimScenarioDBID.Length)
 
@@ -5111,28 +5131,26 @@ Public Class cCore
             Return False
         End If
 
-        Dim ds As IEcosimDatasource = Nothing
-        Dim iScenarioDB As Integer = cCore.NULL_VALUE
-        Dim bSucces As Boolean = False
+        ' Save pending changes
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return False
 
         ' Sanity checks
-        If Me.DataSource Is Nothing Then Return False
-        If Not TypeOf (Me.DataSource) Is IEcosimDatasource Then Return False
+        If (Me.DataSource Is Nothing) Then Return False
+        If (Not TypeOf (Me.DataSource) Is IEcosimDatasource) Then Return False
 
-        If Not Me.SaveChanges() Then Return False
-
+        ' Remember scenario ID to restore
         If (Me.m_EcoPathData.ActiveEcosimScenario > 0) Then
-            iScenarioDB = Me.m_EcoPathData.EcosimScenarioDBID(Me.m_EcoPathData.ActiveEcosimScenario)
+            iScenarioID = Me.m_EcoPathData.EcosimScenarioDBID(Me.m_EcoPathData.ActiveEcosimScenario)
         End If
 
-        ' Scenario removed succesfully?
         ds = DirectCast(Me.DataSource, IEcosimDatasource)
+        ' Scenario removed succesfully?
         If ds.RemoveEcosimScenario(Me.m_EcoPathData.EcosimScenarioDBID(iScenario)) Then
-            ' #Yes
-            ' Reload scenario list
+            ' #Yes: reload scenario list
             bSucces = Me.InitEcosimScenarios()
             ' Restore active scenario ID
-            Me.m_EcoPathData.ActiveEcosimScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioDB)
+            Me.m_EcoPathData.ActiveEcosimScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID)
+            ' Broadcast change
             Me.DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
         End If
 
@@ -7235,7 +7253,7 @@ Public Class cCore
             Return False
         End If
 
-        If Not Me.SaveChanges() Then Return False
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecospace) Then Return False
 
         Try
 
@@ -7286,7 +7304,7 @@ Public Class cCore
         If DataSource Is Nothing Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
-        If Not Me.SaveChanges() Then Return False
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecospace) Then Return False
 
         Try
 
@@ -7431,15 +7449,16 @@ Public Class cCore
 
         Dim epd As cEcopathDataStructures = Me.m_EcoPathData
         Dim esd As cEcospaceDataStructures = Me.m_EcoSpaceData
-        Dim iScenarioID As Integer = 0
         Dim ds As IEcospaceDatasource = Nothing
+        Dim iScenarioID As Integer = 0
+        Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If Me.DataSource Is Nothing Then Return False
-        If Not TypeOf (Me.DataSource) Is IEcospaceDatasource Then Return False
+        If Me.DataSource Is Nothing Then Return bSucces
+        If Not TypeOf (Me.DataSource) Is IEcospaceDatasource Then Return bSucces
 
         iScenarioID = Me.m_EcoPathData.EcospaceScenarioDBID(Me.m_EcoPathData.ActiveEcospaceScenario)
-        If (iScenarioID <= 0) Then Return False
+        If (iScenarioID <= 0) Then Return bSucces
 
         ' Save ok?
         ds = DirectCast(DataSource, IEcospaceDatasource)
@@ -7455,21 +7474,22 @@ Public Class cCore
 
             ' Reload scenarios
             Me.InitEcospaceScenarios()
-            'Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcoSpaceScenario)
 
             ' Inform the world
             Me.SendEcospaceSaveStateMessage(strName)
 
             ' Load Ecospace scenario
-            Return Me.LoadEcospaceScenario(Array.IndexOf(epd.EcospaceScenarioDBID, iScenarioID))
+            bSucces = Me.LoadEcospaceScenario(Array.IndexOf(epd.EcospaceScenarioDBID, iScenarioID))
+            Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcoSpaceScenario)
+            Return bSucces
         End If
 
         ' Restore previous active scenario ID on save failure
         Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
 
         ' Report failure
-        Me.SendEcospaceSaveStateMessage(strName, False)
-        Return False
+        Me.SendEcospaceSaveStateMessage(strName, bSucces)
+        Return bSucces
     End Function
 
     ''' <summary>
@@ -7487,31 +7507,39 @@ Public Class cCore
     ''' <param name="iScenario">Index of the scenario in the <see cref="m_EcoSpaceScenarios">Ecospace Scenario list</see>.</param>
     ''' <returns>True if succesful.</returns>
     Public Function RemoveEcospaceScenario(ByVal iScenario As Integer) As Boolean
+
+        Dim ds As IEcospaceDatasource = Nothing
+        Dim iScenarioID As Integer = cCore.NULL_VALUE ' Scenario to restore
+        Dim bSucces As Boolean = False
+
         ' Sanity check
         Debug.Assert(iScenario > 0 And iScenario < Me.m_EcoPathData.EcospaceScenarioDBID.Length)
 
-        Dim bNeedFullReload As Boolean = (iScenario = Me.m_EcoPathData.ActiveEcospaceScenario)
-        Dim iScenarioDBID As Integer = Me.m_EcoPathData.EcospaceScenarioDBID(iScenario)
-        Dim bSucces As Boolean = False And True And True And True And True ' Can't help trying
-        Dim ds As IEcospaceDatasource = Nothing
+        If (iScenario = Me.m_EcoPathData.ActiveEcospaceScenario) Then
+            Me.m_publisher.SendMessage(New cMessage("Cannot delete a loaded scenario", eMessageType.NotSet, eCoreComponentType.DataSource, eMessageImportance.Warning))
+            Return False
+        End If
+
+        ' Save pending changes
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecospace) Then Return False
 
         ' Sanity checks
-        If Me.DataSource Is Nothing Then Return False
-        If Not TypeOf (Me.DataSource) Is IEcospaceDatasource Then Return False
+        If (Me.DataSource Is Nothing) Then Return False
+        If (Not TypeOf (Me.DataSource) Is IEcospaceDatasource) Then Return False
 
-        If Not Me.SaveChanges() Then Return False
+        ' Remember scenario ID to restore
+        If (Me.m_EcoPathData.ActiveEcospaceScenario > 0) Then
+            iScenarioID = Me.m_EcoPathData.EcospaceScenarioDBID(Me.m_EcoPathData.ActiveEcospaceScenario)
+        End If
 
-        ' Scenario removed succesfully?
         ds = DirectCast(Me.DataSource, IEcospaceDatasource)
-        If ds.RemoveEcospaceScenario(iScenarioDBID) Then
-            ' #Yes
-            ' Reload scenario list
+        ' Scenario removed succesfully?
+        If ds.RemoveEcospaceScenario(Me.m_EcoPathData.EcospaceScenarioDBID(iScenario)) Then
+            ' #Yes: reload scenario list
             bSucces = Me.InitEcospaceScenarios()
-            ' Was this the currently active scenario?
-            If bNeedFullReload Then
-                ' #Yes: Must entirely re-initialize Ecospace
-                bSucces = Me.InitEcoSpace()
-            End If
+            ' Restore active scenario ID
+            Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
+            ' Broadcast change
             Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcoSpaceScenario)
         End If
         ' Return succes
@@ -9269,7 +9297,7 @@ Public Class cCore
             Return False
         End If
 
-        If Not Me.SaveChanges() Then Return False
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecotracer) Then Return False
 
         Try
 
@@ -9483,7 +9511,7 @@ Public Class cCore
         If Me.DataSource Is Nothing Then Return False
         If Not TypeOf (Me.DataSource) Is IEcotracerDatasource Then Return False
 
-        If Not Me.SaveChanges() Then Return False
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecotracer) Then Return False
 
         ' Scenario removed succesfully?
         ds = DirectCast(Me.DataSource, IEcotracerDatasource)
