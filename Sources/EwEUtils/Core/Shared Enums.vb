@@ -1095,6 +1095,7 @@ Namespace Core
         MSEEffortValues
         MSEEffortAboveLimit
         MSEEffortBelowLimit
+        MSEStartYear
 
         MSYRunSilent
         MSYEvalValue

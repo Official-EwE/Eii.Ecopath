@@ -110,6 +110,10 @@ Public Class cMSEParameters
         val.Stored = False
         m_values.Add(val.varName, val)
 
+        meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.MSEStartYear, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEStartYear))
+        val.Stored = False
+        m_values.Add(val.varName, val)
 
 
         ResetStatusFlags()
@@ -240,7 +244,16 @@ Public Class cMSEParameters
         End Set
     End Property
 
-    
+    Public Property MSEStartYear() As Integer
+        Get
+            Return CInt(GetVariable(eVarNameFlags.MSEStartYear))
+        End Get
+
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.MSEStartYear, value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "Status Properties"

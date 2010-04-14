@@ -602,6 +602,7 @@ Namespace MSE
                 m_parameters.MSYStartTimeIndex = Me.m_MSEdata.MSYStartTimeIndex
                 m_parameters.MSYRunSilent = Me.m_MSEdata.MSYRunSilent
                 m_parameters.MSYEvaluateValue = Me.m_MSEdata.MSYEvaluateValue
+                m_parameters.MSEStartYear = Me.m_MSEdata.StartYear
 
                 m_parameters.ResetStatusFlags()
 

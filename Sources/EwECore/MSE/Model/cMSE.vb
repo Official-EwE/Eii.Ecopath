@@ -55,6 +55,8 @@ Namespace MSE
 
         'ToDo_jb 18-Jan-2010 cMSE database save reference values. This should get done in conjunction with the MSE Trunk merge and release
 
+        'ToDo_jb 13-April-2010 cMSE F timeseries can stay loaded when running in Ecosim Evaluation mode Track
+
         Private Enum eResultsData
             GroupQuota
             FleetQuota
@@ -502,12 +504,18 @@ Namespace MSE
 
             Try
 
+                If Me.m_data.EffortMode = eMSEEffortMode.Tracking Then
+                    'if not using a quota/effort regulation then no need to unload the F timeseries
+                    'this mode is evaluating the current Ecosim scenario if there is timeseries loaded we need to leave it in place
+                    Exit Sub
+                End If
+
                 If Me.m_core.ActiveTimeSeriesDatasetIndex > -1 Then
                     Dim DS As cTimeSeriesDataset
                     DS = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
                     For Each ts As cTimeSeries In DS
                         If ts.TimeSeriesType = eTimeSeriesType.FishingMortality Then
-                            'there is an effort in time series, so turn it off. 
+                            'there is an F in time series, so turn it off. 
                             ts.Enabled = False
                             bDataUnloaded = True
                         End If
@@ -519,6 +527,7 @@ Namespace MSE
 
                 End If 'If Me.m_core.ActiveTimeSeriesDatasetIndex > -1 Then
 
+
             Catch ex As Exception
                 System.Console.WriteLine(ex.Message)
                 cLog.Write(ex)
@@ -529,7 +538,10 @@ Namespace MSE
         ''' <summary>
         ''' Set the Effort to a max value if running in default mode TrackUseQuota
         ''' </summary>
-        ''' <remarks>Make a copy of effort so it can be set back at the end of a run</remarks>
+        ''' <remarks>
+        ''' Make a copy of effort so it can be set back at the end of a run no matter what the mode. 
+        ''' This prevents the MSE from leaving the Effort at some strange value
+        ''' </remarks>
         Private Sub setEffortForRun()
 
             Try
@@ -542,15 +554,19 @@ Namespace MSE
 
                 Array.Copy(Me.m_esData.FishRateGear, Me.m_effort, Me.m_esData.FishRateGear.Length)
 
+                'Only set Effort high if using the Quota/Target fish mortality 
                 If Me.m_data.EffortMode = eMSEEffortMode.TrackUseQuota Then
+
                     For iflt As Integer = 1 To Me.m_data.nFleets
+                        'Only if this fleet is regulated
                         If Me.m_quota.QuotaType(iflt) <> eQuotaTypes.NotUsed Then
                             For it As Integer = Me.m_data.StartYear To Me.m_data.nTimeSteps
                                 Me.m_esData.FishRateGear(iflt, it) = DEFAULT_EFFORT
                             Next it
-                        End If
+                        End If 'Me.m_quota.QuotaType(iflt) <> eQuotaTypes.NotUsed
                     Next iflt
-                End If
+
+                End If 'Me.m_data.EffortMode = eMSEEffortMode.TrackUseQuota
 
             Catch ex As Exception
                 cLog.Write(ex)
