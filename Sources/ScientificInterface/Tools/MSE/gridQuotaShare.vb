@@ -15,7 +15,7 @@ Namespace Ecosim
     ''' </summary>
     ''' ===========================================================================
     <CLSCompliant(False)> _
-    Public Class gridFishingQuotas
+    Public Class gridQuotaShare
         Inherits EwEGrid
 
         Public Sub New()
@@ -31,7 +31,7 @@ Namespace Ecosim
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.Redim(1, 2 + core.nFleets)
+            Me.Redim(1, 2 + Core.nFleets + 1) ' Include sum column
 
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
@@ -42,6 +42,7 @@ Namespace Ecosim
                                                                  src, eVarNameFlags.Name, Nothing, _
                                                                  My.Resources.GENERIC_LABEL_DETAILEDLABEL, cStyleGuide.eUnitType.Currency)
             Next
+            Me(0, 1 + Core.nFleets + 1) = New EwEColumnHeaderCell(My.Resources.HEADER_SUM)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
@@ -51,6 +52,10 @@ Namespace Ecosim
 
             Dim reg As cEcosimFisheriesRegulation = Nothing
             Dim group As cCoreInputOutputBase = Nothing
+            Dim prop As cProperty = Nothing
+            Dim propSum As cFormulaProperty = Nothing
+            Dim opSum As cMultiOperation = Nothing
+            Dim alPropSum As New ArrayList()
 
             ' For each group
             For iGroup As Integer = 1 To core.nGroups
@@ -64,11 +69,26 @@ Namespace Ecosim
                 Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
                 Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
+                ' Clear row sum
+                alPropSum.Clear()
+
                 ' Fleet cells
-                For iFleet As Integer = 1 To core.nFleets
-                    reg = core.EcosimFisheriesRegulations(iFleet)
-                    Me(iGroup, 1 + iFleet) = New PropertyCell(Me.PropertyManager, reg, eVarNameFlags.QuotaShare, group)
+                For iFleet As Integer = 1 To Me.Core.nFleets
+                    reg = Core.EcosimFisheriesRegulations(iFleet)
+                    prop = Me.PropertyManager.GetProperty(reg, eVarNameFlags.QuotaShare, group)
+                    Me(iGroup, 1 + iFleet) = New PropertyCell(prop)
+
+                    ' Add to sum row
+                    alPropSum.Add(prop)
                 Next
+
+                ' Now create the formula property that will calculate the sum of all cells in the row
+                opSum = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alPropSum.ToArray())
+                ' Create sum property
+                propSum = New cFormulaProperty(opSum)
+                ' Define sum cell
+                Me(iGroup, 1 + Me.Core.nFleets + 1) = New PropertyCell(propSum)
+
             Next
 
         End Sub

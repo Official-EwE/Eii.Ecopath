@@ -1,45 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: gridRegulatoryOptions.vb,v $
-' Revision 1.5  2009/05/28 12:37:39  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/05/21 19:27:19  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:43  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:55:35  jeroens
-' no message
-'
-' Revision 1.1  2008/10/09 00:09:38  jeroens
-' Renamed
-'
-' Revision 1.7  2008/10/08 22:33:56  jeroens
-' Localizing
-'
-' Revision 1.6  2008/10/07 21:28:48  jeroens
-' Localized
-'
-' Revision 1.5  2008/10/06 16:47:51  jeroens
-' NotSet -> NotUsed
-'
-' Revision 1.4  2008/10/04 00:49:09  jeroens
-' Connected v1
-'
-' Revision 1.3  2008/10/03 23:09:07  jeroens
-' Hooked up MaxEffort
-'
-' Revision 1.2  2008/10/03 21:55:03  jeroens
-' Mock-up improved
-'
-' Revision 1.1  2008/10/02 18:48:49  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore

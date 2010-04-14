@@ -907,7 +907,7 @@
       <DependentUpon>frmApplyMedPrimaryProducer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\FishingRegulation\frmTFMpolicy.resx">
+    <EmbeddedResource Include="Tools\MSE\frmTFMpolicy.resx">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1118,19 +1118,19 @@
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedPrimaryProducer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\FishingRegulation\frmTFMpolicy.Designer.vb">
+    <Compile Include="Tools\MSE\frmTFMpolicy.Designer.vb">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\FishingRegulation\frmTFMpolicy.vb">
+    <Compile Include="Tools\MSE\frmTFMpolicy.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\FishingRegulation\gridFishingQuotas.vb">
+    <Compile Include="Tools\MSE\gridQuotaShare.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\FishingRegulation\gridRegulatoryOptions.vb">
+    <Compile Include="Tools\MSE\gridRegulatoryOptions.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\FishingRegulation\gridTFMpolicy.vb">
+    <Compile Include="Tools\MSE\gridTFMpolicy.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\TimeSeries\dlgManageTimeSeries.Designer.vb">
