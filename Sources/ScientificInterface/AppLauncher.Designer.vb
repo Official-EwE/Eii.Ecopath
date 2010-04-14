@@ -102,6 +102,7 @@
         Me.m_tsmiEcotracerLoad = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerSaveAs = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcotracerDelete = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsModel = New System.Windows.Forms.ToolStrip
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
@@ -238,12 +239,12 @@
         '
         'm_tsmiEcospaceSave
         '
-        Me.m_tsmiEcospaceSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
         Me.m_tsmiEcospaceSave.Name = "m_tsmiEcospaceSave"
         resources.ApplyResources(Me.m_tsmiEcospaceSave, "m_tsmiEcospaceSave")
         '
         'm_tsmiEcospaceSaveAs
         '
+        Me.m_tsmiEcospaceSaveAs.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
         Me.m_tsmiEcospaceSaveAs.Name = "m_tsmiEcospaceSaveAs"
         resources.ApplyResources(Me.m_tsmiEcospaceSaveAs, "m_tsmiEcospaceSaveAs")
         '
@@ -496,12 +497,12 @@
         '
         'm_tsmiEcosimSave
         '
-        Me.m_tsmiEcosimSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
         Me.m_tsmiEcosimSave.Name = "m_tsmiEcosimSave"
         resources.ApplyResources(Me.m_tsmiEcosimSave, "m_tsmiEcosimSave")
         '
         'm_tsmiEcosimSaveAs
         '
+        Me.m_tsmiEcosimSaveAs.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
         Me.m_tsmiEcosimSaveAs.Name = "m_tsmiEcosimSaveAs"
         resources.ApplyResources(Me.m_tsmiEcosimSaveAs, "m_tsmiEcosimSaveAs")
         '
@@ -551,7 +552,7 @@
         '
         'MenuEcotracer
         '
-        Me.MenuEcotracer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcotracerNew, Me.m_tsmiEcotracerLoad, m_tssEcotracer1, Me.m_tsmiEcotracerSave, Me.m_tsmiEcotracerSaveAs})
+        Me.MenuEcotracer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcotracerNew, Me.m_tsmiEcotracerLoad, m_tssEcotracer1, Me.m_tsmiEcotracerSave, Me.m_tsmiEcotracerSaveAs, Me.m_tsmiEcotracerDelete})
         Me.MenuEcotracer.Image = Global.ScientificInterface.My.Resources.Resources.Ecotracer_32x32
         Me.MenuEcotracer.Name = "MenuEcotracer"
         resources.ApplyResources(Me.MenuEcotracer, "MenuEcotracer")
@@ -570,14 +571,20 @@
         '
         'm_tsmiEcotracerSave
         '
-        Me.m_tsmiEcotracerSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
         Me.m_tsmiEcotracerSave.Name = "m_tsmiEcotracerSave"
         resources.ApplyResources(Me.m_tsmiEcotracerSave, "m_tsmiEcotracerSave")
         '
         'm_tsmiEcotracerSaveAs
         '
+        Me.m_tsmiEcotracerSaveAs.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
         Me.m_tsmiEcotracerSaveAs.Name = "m_tsmiEcotracerSaveAs"
         resources.ApplyResources(Me.m_tsmiEcotracerSaveAs, "m_tsmiEcotracerSaveAs")
+        '
+        'm_tsmiEcotracerDelete
+        '
+        Me.m_tsmiEcotracerDelete.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
+        Me.m_tsmiEcotracerDelete.Name = "m_tsmiEcotracerDelete"
+        resources.ApplyResources(Me.m_tsmiEcotracerDelete, "m_tsmiEcotracerDelete")
         '
         'm_tsModel
         '
@@ -735,6 +742,7 @@
     Friend WithEvents m_tsbSave As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents m_tsbEcotracer As System.Windows.Forms.ToolStripSplitButton
+    Private WithEvents m_tsmiEcotracerDelete As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 

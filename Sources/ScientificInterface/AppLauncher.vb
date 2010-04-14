@@ -74,18 +74,19 @@ Public Class AppLauncher
     Private WithEvents m_cmdCloseDocument As cCommand = Nothing
     Private WithEvents m_cmdNewEcosimScenario As cCommand = Nothing
     Private WithEvents m_cmdLoadEcosimScenario As cCommand = Nothing
-    Private WithEvents m_cmdSaveEcosimScenario As cCommand = Nothing
+    'Private WithEvents m_cmdSaveEcosimScenario As cCommand = Nothing
     Private WithEvents m_cmdSaveEcosimScenarioAs As cCommand = Nothing
     Private WithEvents m_cmdDeleteEcosimScenario As cCommand = Nothing
     Private WithEvents m_cmdNewEcospaceScenario As cCommand = Nothing
     Private WithEvents m_cmdLoadEcospaceScenario As cCommand = Nothing
-    Private WithEvents m_cmdSaveEcospaceScenario As cCommand = Nothing
+    'Private WithEvents m_cmdSaveEcospaceScenario As cCommand = Nothing
     Private WithEvents m_cmdSaveEcospaceScenarioAS As cCommand = Nothing
     Private WithEvents m_cmdDeleteEcospaceScenario As cCommand = Nothing
     Private WithEvents m_cmdNewEcotracerScenario As cCommand = Nothing
     Private WithEvents m_cmdLoadEcotracerScenario As cCommand = Nothing
-    Private WithEvents m_cmdSaveEcotracerScenario As cCommand = Nothing
+    'Private WithEvents m_cmdSaveEcotracerScenario As cCommand = Nothing
     Private WithEvents m_cmdSaveEcotracerScenarioAS As cCommand = Nothing
+    Private WithEvents m_cmdDeleteEcotracerScenario As cCommand = Nothing
     Private WithEvents m_cmdCloseAllForms As cCommand = Nothing
     Private WithEvents m_cmdNavigate As cNavigationCommand = Nothing
     Private WithEvents m_cmdViewNavPane As cCommand = Nothing
@@ -773,9 +774,9 @@ Public Class AppLauncher
         Me.m_cmdLoadEcosimScenario.AddControl(Me.m_tsmiEcosimLoad)
         Me.m_cmdLoadEcosimScenario.AddControl(Me.m_tsbEcosim)
 
-        'Create and configure 'save ecosim scenario' command
-        Me.m_cmdSaveEcosimScenario = New cCommand(cmdh, "SaveEcosimScenario")
-        Me.m_cmdSaveEcosimScenario.AddControl(Me.m_tsmiEcosimSave)
+        ''Create and configure 'save ecosim scenario' command
+        'Me.m_cmdSaveEcosimScenario = New cCommand(cmdh, "SaveEcosimScenario")
+        'Me.m_cmdSaveEcosimScenario.AddControl(Me.m_tsmiEcosimSave)
 
         'Create and configure 'save ecosim scenario as' command
         Me.m_cmdSaveEcosimScenarioAs = New cCommand(cmdh, "SaveEcosimScenarioAs")
@@ -794,9 +795,9 @@ Public Class AppLauncher
         Me.m_cmdLoadEcospaceScenario.AddControl(Me.m_tsmiEcospaceLoad)
         Me.m_cmdLoadEcospaceScenario.AddControl(Me.m_tsbEcospace)
 
-        'Create and configure 'save ecospace scenario' command
-        Me.m_cmdSaveEcospaceScenario = New cCommand(cmdh, "SaveEcospaceScenario")
-        Me.m_cmdSaveEcospaceScenario.AddControl(Me.m_tsmiEcospaceSave)
+        ''Create and configure 'save ecospace scenario' command
+        'Me.m_cmdSaveEcospaceScenario = New cCommand(cmdh, "SaveEcospaceScenario")
+        'Me.m_cmdSaveEcospaceScenario.AddControl(Me.m_tsmiEcospaceSave)
 
         'Create and configure 'save ecospace scenario as' command
         Me.m_cmdSaveEcospaceScenarioAS = New cCommand(cmdh, "SaveEcospaceScenarioAs")
@@ -815,13 +816,17 @@ Public Class AppLauncher
         Me.m_cmdLoadEcotracerScenario.AddControl(Me.m_tsmiEcotracerLoad)
         Me.m_cmdLoadEcotracerScenario.AddControl(Me.m_tsbEcotracer)
 
-        'Create and configure 'save ecotracer scenario' command
-        Me.m_cmdSaveEcotracerScenario = New cCommand(cmdh, "SaveEcotracerScenario")
-        Me.m_cmdSaveEcotracerScenario.AddControl(Me.m_tsmiEcotracerSave)
+        ''Create and configure 'save ecotracer scenario' command
+        'Me.m_cmdSaveEcotracerScenario = New cCommand(cmdh, "SaveEcotracerScenario")
+        'Me.m_cmdSaveEcotracerScenario.AddControl(Me.m_tsmiEcotracerSave)
 
         'Create and configure 'save ecotracer scenario as' command
         Me.m_cmdSaveEcotracerScenarioAS = New cCommand(cmdh, "SaveEcotracerScenarioAs")
         Me.m_cmdSaveEcotracerScenarioAS.AddControl(Me.m_tsmiEcotracerSaveAs)
+
+        'Create and configure 'delete ecospace scenario' command
+        Me.m_cmdDeleteEcotracerScenario = New cCommand(cmdh, "DeleteEcotracerScenario")
+        Me.m_cmdDeleteEcotracerScenario.AddControl(Me.m_tsmiEcotracerDelete)
 
         'Create and configure 'view Navtree' command
         Me.m_cmdViewNavPane = New cCommand(cmdh, "ViewNavPane")
@@ -2745,26 +2750,26 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
-    ''' <summary>
-    ''' Command handler; saves an Ecosim scenario
-    ''' </summary>
-    Private Sub OnSaveEcosimScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenario.OnInvoke
-        Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSIM_SAVING, Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).Name)
-        Me.SetStatusText(strStatus, TriState.True)
-        Try
-            Me.Core.SaveEcosimScenario()
-        Catch ex As Exception
+    '''' <summary>
+    '''' Command handler; saves an Ecosim scenario
+    '''' </summary>
+    'Private Sub OnSaveEcosimScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenario.OnInvoke
+    '    Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSIM_SAVING, Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).Name)
+    '    Me.SetStatusText(strStatus, TriState.True)
+    '    Try
+    '        Me.Core.SaveEcosimScenario()
+    '    Catch ex As Exception
 
-        End Try
-        Me.SetStatusText("", TriState.False)
-    End Sub
+    '    End Try
+    '    Me.SetStatusText("", TriState.False)
+    'End Sub
 
-    ''' <summary>
-    ''' Command update handler; enables and disables the 'save ecosim scenario' command
-    ''' </summary>
-    Private Sub OnUpdateSaveEcosimScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.IsEcosimModified
-    End Sub
+    '''' <summary>
+    '''' Command update handler; enables and disables the 'save ecosim scenario' command
+    '''' </summary>
+    'Private Sub OnUpdateSaveEcosimScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenario.OnUpdate
+    '    cmd.Enabled = Me.Core.StateMonitor.IsEcosimModified
+    'End Sub
 
     ''' <summary>
     ''' Command handler; saves an Ecosim scenario to a new name
@@ -3071,27 +3076,27 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
-    ''' <summary>
-    ''' Command handler; saves the current active Ecospace scenario.
-    ''' </summary>
-    Private Sub OnSaveEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenario.OnInvoke
-        Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSPACE_SAVING, Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex).Name)
-        Me.SetStatusText(strStatus, TriState.True)
-        Try
-            Me.Core.SaveEcospaceScenario()
-        Catch ex As Exception
+    '''' <summary>
+    '''' Command handler; saves the current active Ecospace scenario.
+    '''' </summary>
+    'Private Sub OnSaveEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenario.OnInvoke
+    '    Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSPACE_SAVING, Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex).Name)
+    '    Me.SetStatusText(strStatus, TriState.True)
+    '    Try
+    '        Me.Core.SaveEcospaceScenario()
+    '    Catch ex As Exception
 
-        End Try
-        Me.SetStatusText("", TriState.False)
-    End Sub
+    '    End Try
+    '    Me.SetStatusText("", TriState.False)
+    'End Sub
 
-    ''' <summary>
-    ''' Command update handler; enables and disables the 
-    ''' <see cref="m_cmdSaveEcospaceScenario">Save Ecospace Scenario</see> command.
-    ''' </summary>
-    Private Sub OnUpdateSaveEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.IsEcospaceModified
-    End Sub
+    '''' <summary>
+    '''' Command update handler; enables and disables the 
+    '''' <see cref="m_cmdSaveEcospaceScenario">Save Ecospace Scenario</see> command.
+    '''' </summary>
+    'Private Sub OnUpdateSaveEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenario.OnUpdate
+    '    cmd.Enabled = Me.Core.StateMonitor.IsEcospaceModified
+    'End Sub
 
     ''' <summary>
     ''' Command handler; deletes an Ecosim scenario 
@@ -3107,7 +3112,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateDeleteEcospaceScenario(ByVal cmd As cCommand) _
            Handles m_cmdDeleteEcospaceScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded And Me.Core.EcospaceScenarioCount > 0
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.EcospaceScenarioCount > 0
     End Sub
 
     ''' <summary>
@@ -3294,21 +3299,21 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
-    Private Sub OnSaveEcotracerScenario(ByVal cmd As cCommand) _
-        Handles m_cmdSaveEcotracerScenario.OnInvoke
-        Dim strStatus As String = String.Format(My.Resources.STATUS_ECOTRACER_SAVING, Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex).Name)
-        Me.SetStatusText(strStatus, TriState.True)
-        Me.Core.SaveEcotracerScenario()
-        Me.SetStatusText("", TriState.False)
-    End Sub
+    'Private Sub OnSaveEcotracerScenario(ByVal cmd As cCommand) _
+    '    Handles m_cmdSaveEcotracerScenario.OnInvoke
+    '    Dim strStatus As String = String.Format(My.Resources.STATUS_ECOTRACER_SAVING, Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex).Name)
+    '    Me.SetStatusText(strStatus, TriState.True)
+    '    Me.Core.SaveEcotracerScenario()
+    '    Me.SetStatusText("", TriState.False)
+    'End Sub
 
-    ''' <summary>
-    ''' Command update handler; enables and disables the 'save ecotracer scenario' command
-    ''' </summary>
-    Private Sub OnUpdateSaveEcotracerScenario(ByVal cmd As cCommand) _
-        Handles m_cmdSaveEcotracerScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded And Me.Core.StateMonitor.IsEcotracerModified
-    End Sub
+    '''' <summary>
+    '''' Command update handler; enables and disables the 'save ecotracer scenario' command
+    '''' </summary>
+    'Private Sub OnUpdateSaveEcotracerScenario(ByVal cmd As cCommand) _
+    '    Handles m_cmdSaveEcotracerScenario.OnUpdate
+    '    cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded And Me.Core.StateMonitor.IsEcotracerModified
+    'End Sub
 
     Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) _
         Handles m_cmdSaveEcotracerScenarioAS.OnInvoke
@@ -3350,6 +3355,24 @@ Public Class AppLauncher
         Handles m_cmdSaveEcotracerScenarioAS.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcotracerLoaded()
     End Sub
+
+    ''' <summary>
+    ''' Command update handler; invokes the 'delete ecotracer scenario' command
+    ''' </summary>
+    Private Sub OnDeleteEcotracerScenario(ByVal cmd As cCommand) _
+         Handles m_cmdDeleteEcotracerScenario.OnInvoke
+        Dim dlg As New EcotracerScenarioDlg(Me.UIContext, EwEScenarioDlg.eDialogModeType.DeleteScenario)
+        dlg.ShowDialog(Me)
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the 'delete ecotracer scenario' command
+    ''' </summary>
+    Private Sub OnUpdateDeleteEcotracerScenario(ByVal cmd As cCommand) _
+        Handles m_cmdDeleteEcotracerScenario.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.EcotracerScenarioCount > 0
+    End Sub
+
 
     Private Sub OnEnableEcotracer(ByVal cmd As cCommand) _
         Handles m_cmdEnableEcotracer.OnInvoke
