@@ -193,7 +193,7 @@ Public Class NavigationPanel
             'MSE
             .Add("ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), "") ' ToDo: connect to help
             .Add("ndRefFixedEscape", eCoreExecutionState.EcosimLoaded, GetType(gridFixedEscapement), "") ' ToDo: connect to help
-            '.Add("ndRegulatoryOptions", eCoreExecutionState.EcosimLoaded, GetType(gridRegulatoryOptions), "") ' ToDo: connect to help
+            .Add("ndOptions", eCoreExecutionState.EcosimLoaded, GetType(frmOptions), "") ' ToDo: connect to help
             .Add("ndControlType", eCoreExecutionState.EcosimLoaded, GetType(gridRegulatoryOptions), "") ' ToDo: connect to help
             .Add("ndQuotaShare", eCoreExecutionState.EcosimLoaded, GetType(gridFishingQuotas), "") ' ToDo: connect to help
             .Add("ndRegFishingMort", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy), "") ' ToDo: connect to help
