@@ -192,4 +192,25 @@ Public Class cQuotaDataStructures
 
     End Sub
 
+    Public Sub SumQuotaShareToOne()
+
+        Dim QuotaShareTot As Single
+        Dim igrp As Integer
+        Dim iflt As Integer
+
+        For igrp = 1 To Me.m_counters.nGroups
+            QuotaShareTot = 0
+            For iflt = 1 To Me.m_counters.nFleets
+                QuotaShareTot += Me.Quotashare(iflt, igrp)
+            Next
+
+            If (QuotaShareTot > 0) And (QuotaShareTot <> 1.0!) Then
+                For iflt = 1 To Me.m_counters.nFleets
+                    Me.Quotashare(iflt, igrp) /= QuotaShareTot
+                Next
+            End If
+        Next igrp
+
+    End Sub
+
 End Class

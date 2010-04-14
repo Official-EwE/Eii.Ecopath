@@ -195,7 +195,7 @@ Public Class NavigationPanel
             .Add("ndRefFixedEscape", eCoreExecutionState.EcosimLoaded, GetType(gridFixedEscapement), "") ' ToDo: connect to help
             .Add("ndOptions", eCoreExecutionState.EcosimLoaded, GetType(frmOptions), "") ' ToDo: connect to help
             .Add("ndControlType", eCoreExecutionState.EcosimLoaded, GetType(gridRegulatoryOptions), "") ' ToDo: connect to help
-            .Add("ndQuotaShare", eCoreExecutionState.EcosimLoaded, GetType(gridQuotaShare), "") ' ToDo: connect to help
+            .Add("ndQuotaShare", eCoreExecutionState.EcosimLoaded, GetType(frmQuotaShare), "") ' ToDo: connect to help
             .Add("ndRegFishingMort", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy), "") ' ToDo: connect to help
 
             'jb march-8-2010 removed Group objectives and Objective weights as they are not being used by the MSE

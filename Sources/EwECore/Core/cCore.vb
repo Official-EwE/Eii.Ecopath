@@ -211,13 +211,11 @@ Public Class cCore
                         Return 0
                     End If
 
-                    'Joeh
                 Case eCoreCounterTypes.nEcopathAgeSteps
                     Return Me.nAgeSteps
 
                 Case eCoreCounterTypes.nWeightClasses
                     Return Me.nWeightClasses
-                    'End Joeh
 
                 Case Else
                     'Debug.Assert(False, String.Format("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
@@ -475,7 +473,6 @@ Public Class cCore
         End Get
     End Property
 
-    'Joeh
     Public ReadOnly Property nAgeSteps() As Integer
         Get
             Return m_PSDData.NAgeSteps
@@ -487,7 +484,6 @@ Public Class cCore
             Return m_PSDData.NWeightClasses
         End Get
     End Property
-    'End Joeh
 
 #End Region 'Public core variables
 
@@ -990,9 +986,7 @@ Public Class cCore
         'each models initialization will handle its own messages and flags
         Dim bsuccess As Boolean
         bsuccess = InitEcopath()
-        'Joeh
         bsuccess = bsuccess And InitPSDModel()
-        'End Joeh
         bsuccess = bsuccess And InitEcoSim()
         bsuccess = bsuccess And InitEcoSpace()
 
@@ -1016,11 +1010,8 @@ Public Class cCore
             'build a new EcoPath Model object
             m_EcoPath = New Ecopath.cEcoPathModel(Me.m_Functions)
             m_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
-
-            'Joeh
             m_EcoPath.m_stanza = m_Stanza
             m_EcoPath.m_psd = m_PSDData
-            'End Joeh
 
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
             m_EcoPath.EcopathData = m_EcoPathData
@@ -1052,7 +1043,6 @@ Public Class cCore
 
     End Function
 
-    'Joeh
     Private Function InitPSDModel() As Boolean
         Try
             m_psdModel = New cPSDModel
@@ -1066,7 +1056,6 @@ Public Class cCore
             Return False
         End Try
     End Function
-    'End Joeh
 
     ''' <summary>
     ''' Send a Data Changed message
@@ -2354,10 +2343,8 @@ Public Class cCore
                 'build input and output objects
                 bsuccess = bsuccess And InitEcoPathGroups()
 
-                'Joeh
                 'build the Stanza Groups for the interface
                 bsuccess = bsuccess And InitStanzas()
-                'End Joeh
 
                 'populate input objects
                 bsuccess = bsuccess And LoadEcopathInputs()
@@ -2729,7 +2716,6 @@ Public Class cCore
                 m_EcoPathData.Emig(iGroup) = Input.EmigRate
                 m_EcoPathData.PP(iGroup) = Input.PP
 
-                'Joeh
                 m_EcoPathData.vbK(iGroup) = Input.VBK
                 m_PSDData.AinLWInput(iGroup) = Input.AinLWInput
                 m_PSDData.BinLWInput(iGroup) = Input.BinLWInput
@@ -2738,7 +2724,6 @@ Public Class cCore
                 m_PSDData.t0Input(iGroup) = Input.t0Input
                 m_PSDData.TcatchInput(iGroup) = Input.TcatchInput
                 m_PSDData.TmaxInput(iGroup) = Input.TmaxInput
-                'End Joeh
 
                 m_EcoPathData.QBinput(iGroup) = Input.QBInput
                 m_EcoPathData.PBinput(iGroup) = Input.PBInput
@@ -3702,7 +3687,6 @@ Public Class cCore
 
     End Sub
 
-    'Joeh
     Private Sub PSDMessage_Handler(ByRef message As cMessage)
 
         Try
@@ -3726,7 +3710,6 @@ Public Class cCore
         End Try
 
     End Sub
-    'End Joeh
 
     ''' <summary>
     ''' Normalize ecopath input values
@@ -4686,6 +4669,26 @@ Public Class cCore
             Return Me.m_EcosimOutputs
         End Get
     End Property
+
+    ''' <summary>
+    ''' Normalize MSE QuotaShare values
+    ''' </summary>
+    Public Sub NormalizeQuotaShare()
+        ' Sanity check
+        Debug.Assert(Me.StateMonitor.HasEcosimLoaded())
+        ' Normalize Quota share values
+        Me.m_QuotaData.SumQuotaShareToOne()
+        ' Refresh ecosim quota data
+        Me.LoadEcosimFisheriesRegulations()
+        Me.m_StateMonitor.SetEcoSimLoaded(True)
+        ' Send out data changed message for MSE
+        Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoSim, eMessageType.DataModified))
+        Me.m_publisher.sendAllMessages()
+        ' Flag datasource as dirty
+        Me.DataSource.SetChanged(eCoreComponentType.MSE)
+        Me.m_StateMonitor.UpdateDataState(DataSource)
+
+    End Sub
 
     ''' <summary>
     ''' Initialize the EcoSim model
@@ -10453,10 +10456,8 @@ Public Class cCore
                         'see vaSimGetPBMandFtimeMax() in EwE5 case 10. Solve this here or in PostVariableUpdated?
                         Me.Cascade_VBK(group.VBK, group, msg)
 
-                        'Joeh
                     Case eVarNameFlags.TCatchInput
                         Me.Cascade_TCatchInput(group.TcatchInput, group, msg)
-                        'End Joeh
 
                     Case eVarNameFlags.PP
                         ' Cascade PP change to other Groups

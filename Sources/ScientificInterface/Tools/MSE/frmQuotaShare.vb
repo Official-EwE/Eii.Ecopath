@@ -1,19 +1,18 @@
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore
 
 #End Region ' Imports 
 
-Namespace Ecopath.Input
+Namespace Ecosim
 
     ''' =======================================================================
     ''' <summary>
-    ''' Form implementing the Ecopath Diet Composition interface.
+    ''' Form implementing the MSE Quota Shared interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class DietComp
-
+    Public Class frmQuotaShare
         Public Sub New()
             MyBase.New()
             Me.InitializeComponent()
@@ -21,10 +20,9 @@ Namespace Ecopath.Input
         End Sub
 
         Private Sub tsSumtoOneBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles tsSumtoOneBtn.Click
-            Me.Core.NormalizeDietInput()
+            Handles m_tsSumtoOneBtn.Click
+            Me.Core.NormalizeQuotaShare()
         End Sub
     End Class
 
 End Namespace
-
