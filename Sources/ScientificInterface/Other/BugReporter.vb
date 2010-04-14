@@ -1,8 +1,28 @@
+#Region " Imports "
+
+Option Strict On
+Imports System.Text
+Imports System.Reflection
+Imports EwEUtils.Utilities
+
+#End Region ' Imports
+
+''' ===========================================================================
+''' <summary>
+''' Helper class for sending a bug report email to the EwE dev team.
+''' </summary>
+''' ===========================================================================
 Public Class BugReporter
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Launch an email client with a pre-formatted bug report message.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Shared Sub InvokeBugReport()
-        Dim ub As New EwEUtils.Utilities.UrlBuilder("mailto:ewedevteam@gmail.com")
+
+        Dim ub As New UrlBuilder("mailto:ewedevteam@gmail.com")
         Dim sbBody As New System.Text.StringBuilder
-        Dim ac As ApplicationComponents = AppLauncher.GetInstance().ApplicationComponents()
         Dim strURL As String = ""
 
         ub.QueryString("subject") = "EwE incident report"
@@ -12,7 +32,10 @@ Public Class BugReporter
         sbBody.AppendLine("")
         sbBody.AppendLine("---------------------------------------------------")
         sbBody.AppendLine("EwE6 configuration (do not modify):")
-        sbBody.AppendLine(ac.ToString())
+        For Each an As AssemblyName In cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
+            sbBody.AppendLine(String.Format("* {0}={2},{1}", _
+                                            an.Name, cStringUtils.ToHexString(an.GetPublicKeyToken), an.Version))
+        Next
         sbBody.AppendLine("---------------------------------------------------")
         ub.QueryString("body") = sbBody.ToString()
 

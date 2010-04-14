@@ -533,7 +533,6 @@
     <Compile Include="Other\AboutBox\AboutEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Other\ApplicationComponents.vb" />
     <Compile Include="Other\BugReporter.vb" />
     <Compile Include="Other\Forms\frmEwE.vb">
       <SubType>Form</SubType>

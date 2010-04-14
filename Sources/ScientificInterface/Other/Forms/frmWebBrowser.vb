@@ -175,8 +175,7 @@ Public Class frmWebBrowser
     ''' -----------------------------------------------------------------------
     Private Function EwEBaseURL() As String
 
-        Dim ac As ApplicationComponents = AppLauncher.GetInstance().ApplicationComponents()
-        Dim aAssemblyNames As AssemblyName() = ac.RequiredComponents()
+        Dim aAssemblyNames As AssemblyName() = cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
         Dim pm As cPluginManager = Me.m_uic.Core.PluginManager
         Dim ub As New UrlBuilder(cBASEURL)
 

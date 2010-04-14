@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports EwEPlugin
+Imports EwEUtils.Utilities
 Imports System.Reflection
 Imports SourceGrid2
 
@@ -9,114 +10,82 @@ Imports SourceGrid2
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Grid showing loaded EwE assembly details
+''' Grid showing loaded EwE assembly details.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class AboutEwEGrid
     Inherits SourceGrid2.Grid
 
-    Public Sub New(ByVal uic As cUIContext)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Populate the grid with data.
+    ''' </summary>
+    ''' <param name="uic">UI context to use.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub Populate(ByVal uic As cUIContext)
 
-        Dim ac As ApplicationComponents = Nothing
+        Debug.Assert(uic IsNot Nothing)
+
         Dim pm As cPluginManager = Nothing
         Dim aanLoaded As AssemblyName() = Nothing
         Dim aanPlugins As AssemblyName() = Nothing
-
-        If (uic Is Nothing) Then Return
-
-        ac = AppLauncher.GetInstance().ApplicationComponents()
-        pm = uic.Core.PluginManager()
-        aanLoaded = ac.RequiredComponents()
-        aanPlugins = pm.PluginAssemblyNames()
-
-        ' Control face colour to use for grid rows and grid background
-        Dim clrBack As Color = SystemColors.Control
-        ' Row counter
         Dim iRow As Integer = 0
-        ' Cell to populate grid with
-        Dim cell As SourceGrid2.Cells.Real.Cell = Nothing
-        ' Data model for cell
-        Dim dm As New SourceGrid2.DataModels.DataModelBase(GetType(String))
-        ' Visual model for cell
-        Dim vm As New SourceGrid2.VisualModels.Common(False)
 
-        ' Configure data model
-        dm.EnableEdit = False
-
-        ' Configure visual model
-        vm.BackColor = clrBack
-        vm.FocusBackColor = clrBack
-        vm.SelectionBackColor = clrBack
+        pm = uic.Core.PluginManager()
+        aanPlugins = pm.PluginAssemblyNames()
+        aanLoaded = cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
 
         ' Prepare grid
         Me.Redim(aanLoaded.Length + aanPlugins.Length + 2, 2)
 
         ' Create header cells
-        cell = New Cells.Real.Cell(My.Resources.ABOUT_HEADER_SYSTEMCOMPONENTS, dm)
-        cell.VisualModel = New VisualModels.Header()
-        Me(iRow, 0) = cell
-
-        cell = New Cells.Real.Cell(My.Resources.ABOUT_HEADER_VERSION, dm)
-        cell.VisualModel = New VisualModels.Header()
-        Me(iRow, 1) = cell
+        Me(iRow, 0) = New EwEColumnHeaderCell(My.Resources.ABOUT_HEADER_SYSTEMCOMPONENTS)
+        Me(iRow, 1) = New EwEColumnHeaderCell(My.Resources.ABOUT_HEADER_VERSION)
 
         ' Add assembly cells
         iRow += 1
         For Each an As AssemblyName In aanLoaded
-            cell = New Cells.Real.Cell(an.Name, dm)
-            cell.VisualModel = vm
-            Me(iRow, 0) = cell
-
-            cell = New Cells.Real.Cell(an.Version.ToString(), dm)
-            cell.VisualModel = vm
-            Me(iRow, 1) = cell
-
+            Me(iRow, 0) = New EwERowHeaderCell(an.Name)
+            Me(iRow, 1) = New EwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             ' Next
             iRow += 1
         Next
 
-        ' Create header cells
-        cell = New Cells.Real.Cell(My.Resources.HEADER_PLUGINS, dm)
-        cell.VisualModel = New VisualModels.Header()
-        Me(iRow, 0) = cell
-
-        cell = New Cells.Real.Cell(My.Resources.ABOUT_HEADER_VERSION, dm)
-        cell.VisualModel = New VisualModels.Header()
-        Me(iRow, 1) = cell
+        ' Plug-ins section
+        Me(iRow, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_PLUGINS)
+        Me(iRow, 1) = New EwEColumnHeaderCell(My.Resources.ABOUT_HEADER_VERSION)
 
         ' Add plugin cells
         iRow += 1
         For Each an As AssemblyName In aanPlugins
-            cell = New Cells.Real.Cell(an.Name, dm)
-            cell.VisualModel = vm
-            Me(iRow, 0) = cell
-
-            cell = New Cells.Real.Cell(an.Version.ToString(), dm)
-            cell.VisualModel = vm
-            Me(iRow, 1) = cell
-
-            ' Next
+            Me(iRow, 0) = New EwERowHeaderCell(an.Name)
+            Me(iRow, 1) = New EwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             iRow += 1
         Next
-
-        ' Finalize grid for generic assimilation
-        Me.Dock = DockStyle.Fill
-        Me.BackColor = clrBack
-        Me.BorderStyle = BorderStyle.Fixed3D
 
         ' Column 1 w version numbers must be fully visible. Column 0 will occupy the rest of the space
         Me.Columns(0).AutoSizeMode = SourceGrid2.AutoSizeMode.None
         Me.Columns(1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
+        Me.AutoSizeAll()
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Grid resize: resize the columns
     ''' </summary>
-    Private Sub AboutEwEGrid_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+        MyBase.OnResize(e)
+
+        Dim iWidth As Integer = 0
+
         Me.AutoSizeAll()
-        Me.Columns(0).Width = Me.ClientRectangle.Width - Me.Columns(1).Width
+
+        If Me.ColumnsCount > 0 Then
+            Me.Columns(0).Width = Me.ClientRectangle.Width - Me.Columns(1).Width - Me.VScrollBar.Width - 1
+        End If
     End Sub
 
 End Class

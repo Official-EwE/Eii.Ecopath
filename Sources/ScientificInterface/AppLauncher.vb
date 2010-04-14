@@ -27,6 +27,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports Microsoft.VisualBasic
+Imports System.Threading
 
 #End Region ' Imports
 
@@ -123,9 +124,6 @@ Public Class AppLauncher
     ''' <summary>Style guide updater.</summary>
     Private m_styleguideupdater As StyleGuideUpdater = Nothing
     Private m_applictionStatusNotifier As cApplicationStatusNotifier = Nothing
-    Private m_applicationComponents As ApplicationComponents = Nothing
-
-    Private m_SyncObj As System.Threading.SynchronizationContext
 
 #End Region ' Variables
 
@@ -149,13 +147,6 @@ Public Class AppLauncher
         AppLauncher.__inst__ = Me
 
         Me.m_applictionStatusNotifier = New cApplicationStatusNotifier(Me)
-
-        If Me.m_SyncObj Is Nothing Then
-            'create the sync object on the same thread that created the AppLauncher
-            Me.m_SyncObj = System.Threading.SynchronizationContext.Current
-            'if there is no current context then create a new one on this thread. 
-            If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
-        End If
 
 #If Not Debug Then
         ' Remove estimate V's from release version while under development
@@ -218,12 +209,6 @@ Public Class AppLauncher
                     Return Path.GetFileName(ds.ToString())
                 End If
             End If
-        End Get
-    End Property
-
-    Public ReadOnly Property ApplicationComponents() As ScientificInterface.ApplicationComponents
-        Get
-            Return Me.m_applicationComponents
         End Get
     End Property
 
@@ -637,9 +622,6 @@ Public Class AppLauncher
         MRUHelper.BugFix(al)
         My.Settings.MdbRecentlyUsedList = al
 
-        ' Initialize app components
-        Me.m_applicationComponents = New ApplicationComponents()
-
         ' Peeks at key but does not consume it
         Me.KeyPreview = True
 
@@ -952,16 +934,23 @@ Public Class AppLauncher
 
     Private Sub InitCoreParams()
 
+        Dim so As SynchronizationContext = SynchronizationContext.Current
+
+        If so Is Nothing Then
+            'create the sync object on the same thread that created the AppLauncher
+            so = New SynchronizationContext()
+        End If
+
         Dim core As New cCore()
         Dim sg As New cStyleGuide()
         Dim cmdh As New cCommandHandler()
-        Dim pm As New cPropertyManager(core, sg, Me.m_SyncObj)
+        Dim pm As New cPropertyManager(core, sg, so)
         Dim fps As New cFormPositionSettings()
         Dim help As New cHelp(Me, "UserGuide\EwE6_userguide.chm", "User Interface.htm", "EWE_UsersGuide")
 
         core.InitCore()
 
-        Me.UIContext = New cUIContext(core, sg, pm, cmdh, fps, help, Me.m_SyncObj)
+        Me.UIContext = New cUIContext(core, sg, pm, cmdh, fps, help, so)
 
         ' Config state monitor
         Me.Core.StateMonitor.SyncObject = Me
@@ -980,8 +969,8 @@ Public Class AppLauncher
 
         ' Create plugin manager for this GUI
         Me.m_pluginManager = New cPluginManager()
-        Me.m_pluginManager.SyncObject = Me.m_SyncObj
         Me.m_pluginManager.UIContext = Me.UIContext
+        Me.m_pluginManager.SyncObject = Me.UIContext.SyncObject
 
         ' Config plugin manager
         Me.m_pluginManager.Core = Me.Core
