@@ -2965,6 +2965,7 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
 
@@ -2972,9 +2973,7 @@ Namespace DataSources
 
             ecosimDS.RedimVars()
             ecosimDS.SetDefaultParameters()
-
-            Me.m_core.m_QuotaData.RedimVars()
-            Me.m_core.m_MSEData.RedimVars()
+            mseDS.RedimVars()
 
             reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenario WHERE (ScenarioID={0})", iDBID))
             Try
@@ -3573,7 +3572,6 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
@@ -3612,10 +3610,10 @@ Namespace DataSources
                     ecosimDS.TempLeft(iEcopathGroup) = CSng(Me.ReadSafe(reader, "TempLeft", 1000.0!))
                     ecosimDS.TempRight(iEcopathGroup) = CSng(Me.ReadSafe(reader, "TempRight", 1000.0!))
 
-                    quotaDS.Blim(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Blim", -9999))
-                    quotaDS.Bbase(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Bbase", -9999))
-                    quotaDS.Fopt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Fopt", -9999))
-                    quotaDS.FixedEscapement(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedEscapement", 0.0!))
+                    mseDS.Blim(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Blim", -9999))
+                    mseDS.Bbase(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Bbase", -9999))
+                    mseDS.Fopt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Fopt", -9999))
+                    mseDS.FixedEscapement(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedEscapement", 0.0!))
 
                     mseDS.CVbiomEst(iEcopathGroup) = CSng(Me.ReadSafe(reader, "BiomassCV", mseDS.CVbiomEst(iEcopathGroup)))
                     mseDS.BioRiskValue(iEcopathGroup, 0) = CSng(Me.ReadSafe(reader, "LowerRisk", mseDS.BioRiskValue(iEcopathGroup, 0)))
@@ -3647,7 +3645,6 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Nothing
             Dim iFleetID As Integer = -1
@@ -3693,9 +3690,8 @@ Namespace DataSources
                     ecosimDS.CapDepreciate(iFleet) = CSng(Me.ReadSafe(reader, "CapDepreciate", 0.06))
                     ecosimDS.CapBaseGrowth(iFleet) = CSng(Me.ReadSafe(reader, "CapBaseGrowth", 0.2))
 
-                    quotaDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
-                    quotaDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
-
+                    mseDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
+                    mseDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
                     mseDS.CVFest(iFleet) = CSng(Me.ReadSafe(reader, "CV", mseDS.CVFest(iFleet)))
                     mseDS.Qgrow(iFleet) = CSng(Me.ReadSafe(reader, "QIncrease", mseDS.Qgrow(iFleet)))
 
@@ -3744,7 +3740,6 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Nothing
             Dim iFleetID As Integer = -1
@@ -3764,7 +3759,7 @@ Namespace DataSources
                     iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
 
                     If (iFleet > 0) And (iGroup > 0) Then
-                        quotaDS.Quota(iFleet, iGroup) = CSng(reader("Quota"))
+                        mseDS.Quota(iFleet, iGroup) = CSng(reader("Quota"))
                         mseDS.Fweight(iFleet, iGroup) = CSng(Me.ReadSafe(reader, "FWeight", 1.0))
                     End If
                 End While
@@ -3786,7 +3781,6 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -3890,10 +3884,10 @@ Namespace DataSources
                     drow("TempLeft") = ecosimDS.TempLeft(i)
                     drow("TempRight") = ecosimDS.TempRight(i)
 
-                    drow("Blim") = quotaDS.Blim(i)
-                    drow("Bbase") = quotaDS.Bbase(i)
-                    drow("Fopt") = quotaDS.Fopt(i)
-                    drow("FixedEscapement") = quotaDS.FixedEscapement(i)
+                    drow("Blim") = mseDS.Blim(i)
+                    drow("Bbase") = mseDS.Bbase(i)
+                    drow("Fopt") = mseDS.Fopt(i)
+                    drow("FixedEscapement") = mseDS.FixedEscapement(i)
 
                     drow("BiomassCV") = mseDS.CVbiomEst(i)
                     drow("LowerRisk") = mseDS.BioRiskValue(i, 0)
@@ -3929,7 +3923,6 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -3988,8 +3981,8 @@ Namespace DataSources
 
                     ' Write dynamic bit
                     drow("FishRateShapeID") = iShapeID
-                    drow("MaxEffort") = quotaDS.MaxEffort(iFleet)
-                    drow("QuotaType") = CInt(quotaDS.QuotaType(iFleet))
+                    drow("MaxEffort") = mseDS.MaxEffort(iFleet)
+                    drow("QuotaType") = CInt(mseDS.QuotaType(iFleet))
                     drow("Epower") = ecosimDS.Epower(iFleet)
                     drow("PCapBase") = ecosimDS.PcapBase(iFleet)
                     drow("CapDepreciate") = ecosimDS.CapDepreciate(iFleet)
@@ -4032,7 +4025,6 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim quotaDS As cQuotaDataStructures = Me.m_core.m_QuotaData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -4057,7 +4049,7 @@ Namespace DataSources
                         drow("FleetID") = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
                         drow("EcosimGroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
                         ' Write dynamic bit
-                        drow("Quota") = quotaDS.Quota(iFleet, iGroup)
+                        drow("Quota") = mseDS.Quota(iFleet, iGroup)
                         drow("Fweight") = mseDS.Fweight(iFleet, iGroup)
                         ' Add new row to the writer
                         writer.AddRow(drow)

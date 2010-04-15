@@ -52,12 +52,11 @@ Namespace Ecosim
 
         Private m_ConTracer As cContaminantTracer
         Private m_TracerData As cContaminantTracerDataStructures
+        Private m_MSEData As cMSEDataStructures
 
         Private m_pluginManager As cPluginManager
 
         Private m_RefData As cTimeSeriesDataStructures
-
-        Private m_Quota As cQuotaDataStructures
 
         Private m_publisher As New cMessagePublisher
         Private m_Ecofunctions As cEcoFunctions
@@ -344,12 +343,12 @@ Namespace Ecosim
             End Set
         End Property
 
-        Public Property QuotaData() As cQuotaDataStructures
+        Public Property MSEData() As cMSEDataStructures
             Get
-                Return Me.m_Quota
+                Return Me.m_MSEData
             End Get
-            Set(ByVal value As cQuotaDataStructures)
-                Me.m_Quota = value
+            Set(ByVal value As cMSEDataStructures)
+                Me.m_MSEData = value
             End Set
         End Property
 
@@ -449,7 +448,6 @@ Namespace Ecosim
                 m_Results = New cEcoSimResults(Me.nGroups, m_stanza.Nsplit, m_stanza.MaxAgeSplit, Me.m_EPData.NumFleet)
 
                 'Init PropLandedTime() and Propdiscardtime() to Ecopath values so they can be used during the initialization of Ecosim
-                Me.m_Quota.InitToEcoPath(Me.m_EPData)
 
                 RedimEcoSimVars()
 
@@ -2300,7 +2298,7 @@ Namespace Ecosim
                             Else
                                 'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
                                 'discard mort is included in Propdiscardtime() by initialization and MSE 
-                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_Data.FishMGear(K, i) * Me.m_Quota.Propdiscardtime(K, i)
+                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_Data.FishMGear(K, i) * Me.m_MSEData.Propdiscardtime(K, i)
                                 'DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishRateGear(K, 0) * m_Data.FishMGear(K, i) + Me.m_Quota.RegDiscard(K, i)
                             End If
                             ToDet = ToDet + DetFlowN
@@ -3907,9 +3905,9 @@ Namespace Ecosim
 
                     Ft = 0
                     For ig = 1 To m_Data.nGear
-                        Debug.Assert(Math.Round(Me.m_Quota.PropLandedTime(ig, i) + Me.m_Quota.Propdiscardtime(ig, i), 3) <= 1.0!, _
+                        Debug.Assert(Math.Round(Me.m_MSEData.PropLandedTime(ig, i) + Me.m_MSEData.Propdiscardtime(ig, i), 3) <= 1.0!, _
                                      Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
-                        Ft = Ft + m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Quota.PropLandedTime(ig, i) + Me.m_Quota.Propdiscardtime(ig, i))
+                        Ft = Ft + m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_MSEData.PropLandedTime(ig, i) + Me.m_MSEData.Propdiscardtime(ig, i))
                     Next
 
                     'multiply the catchability multiplyer (density-dependent)
@@ -4115,7 +4113,7 @@ Namespace Ecosim
                     Fg = Qmult(i) * m_Data.FishMGear(ig, i) * (m_Data.FishRateGear(ig, t) + 1.0E-20)
                     'jb use time varing proportion of landings
                     ' TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * m_EPData.PropLanded(ig, i)
-                    TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * Me.m_Quota.PropLandedTime(ig, i)
+                    TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * Me.m_MSEData.PropLandedTime(ig, i)
                 Next
                 TotCost = m_Data.FishRateGear(ig, t) * (m_EPData.cost(ig, eCostIndex.CUPE) + m_EPData.cost(ig, eCostIndex.Sail))
                 CurrentProfit(ig) = TotIncome - TotCost

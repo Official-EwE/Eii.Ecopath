@@ -320,7 +320,6 @@
     <Compile Include="Particle size distribution\Input Output\cPSDParameters.vb" />
     <Compile Include="Particle size distribution\Model\cPSDDatastructures.vb" />
     <Compile Include="Particle size distribution\Model\cPSDModel.vb" />
-    <Compile Include="Quota\cQuotaDataStructures.vb" />
     <Compile Include="Search\SearchInputOutput.vb" />
     <Compile Include="Search\SearchManager.vb" />
     <Compile Include="Shapes\TimeSeries\Writers\cTimeSeriesCSVWriter.vb" />

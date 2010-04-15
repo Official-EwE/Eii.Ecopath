@@ -366,7 +366,7 @@ Namespace MSE
                     Dim effShp As cForcingFunction
                     effShp = Me.m_core.FishingEffortShapeManager.Item(iflt)
                     ' JS 02Mar10: Only consider fleets with quota options set
-                    If (effShp.Mean < 10) And (m_core.m_QuotaData.QuotaType(iflt) <> eQuotaTypes.NotUsed) Then
+                    If (effShp.Mean < 10) And (Me.m_MSEdata.QuotaType(iflt) <> eQuotaTypes.NotUsed) Then
                         fleets = fleets & "'" & effShp.Name & "', "
                     End If
                 Next
@@ -433,7 +433,7 @@ Namespace MSE
             'this may have to change when the input/output object are created
             m_MSEdata.Init()
 
-            m_MSE.Init(m_MSEdata, m_core.m_QuotaData, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData, Me.m_core.PluginManager)
+            m_MSE.Init(m_MSEdata, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData, Me.m_core.PluginManager)
             m_MSE.InitAssessment()
 
             'connect the MSE model to the manager
@@ -469,8 +469,8 @@ Namespace MSE
             Next
 
             If Me.m_core.PluginManager IsNot Nothing Then
-                Me.m_core.PluginManager.MSEInitialized(Me.m_MSE, Me.m_MSEdata, Me.m_core.m_QuotaData, Me.m_core.m_EcoSimData)
-                Me.m_core.PluginManager.MSYInitialized(Me.m_MSEdata, Me.m_core.m_QuotaData, Me.m_core.m_EcoSimData)
+                Me.m_core.PluginManager.MSEInitialized(Me.m_MSE, Me.m_MSEdata, Me.m_MSEdata, Me.m_core.m_EcoSimData)
+                Me.m_core.PluginManager.MSYInitialized(Me.m_MSEdata, Me.m_MSEdata, Me.m_core.m_EcoSimData)
             End If
 
         End Function
@@ -497,7 +497,7 @@ Namespace MSE
 
                     mseGrp.UpperRisk = Me.m_MSEdata.BioRiskValue(mseGrp.Index, 1)
                     mseGrp.LowerRisk = Me.m_MSEdata.BioRiskValue(mseGrp.Index, 0)
-                    mseGrp.FixedEscapement = m_core.m_QuotaData.FixedEscapement(mseGrp.Index)
+                    mseGrp.FixedEscapement = Me.m_MSEdata.FixedEscapement(mseGrp.Index)
 
                     mseGrp.BiomassRefLower = Me.m_MSEdata.BioBounds(mseGrp.Index).Lower
                     mseGrp.BiomassRefUpper = Me.m_MSEdata.BioBounds(mseGrp.Index).Upper
@@ -628,7 +628,7 @@ Namespace MSE
 
                         For Each mseGrp As cMSEGroupInput In Me.m_lstGroupInputs
                             ' Me.m_MSEdata.CVbiomEst(mseGrp.Index) = mseGrp.BiomassCV
-                            Me.m_core.m_QuotaData.FixedEscapement(mseGrp.Index) = mseGrp.FixedEscapement
+                            Me.m_MSEdata.FixedEscapement(mseGrp.Index) = mseGrp.FixedEscapement
 
                             Me.m_MSEdata.BioRiskValue(mseGrp.Index, 1) = mseGrp.UpperRisk
                             Me.m_MSEdata.BioRiskValue(mseGrp.Index, 0) = mseGrp.LowerRisk
@@ -649,7 +649,7 @@ Namespace MSE
 
                         For Each mseFlt As cMSEFleetInput In Me.m_lstFleetInputs
                             Me.m_MSEdata.Qgrow(mseFlt.Index) = mseFlt.QIncrease
-                            
+
                             Me.m_MSEdata.CatchFleetBounds(mseFlt.Index).Lower = mseFlt.CatchRefLower
                             Me.m_MSEdata.CatchFleetBounds(mseFlt.Index).Upper = mseFlt.CatchRefUpper
 

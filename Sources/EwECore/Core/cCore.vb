@@ -537,8 +537,7 @@ Public Class cCore
         Me.m_TSData = New cTimeSeriesDataStructures
         Me.m_MPAOptData = New cMPAOptDataStructures
         Me.m_PSDData = New cPSDDatastructures(Me.m_EcoPathData)
-        Me.m_QuotaData = New cQuotaDataStructures(AddressOf Me.GetCoreCounter)
-        Me.m_MSEData = New cMSEDataStructures(Me.m_EcoPathData, Me.m_EcoSimData, Me.m_QuotaData)
+        Me.m_MSEData = New cMSEDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
 
         ' Create core state monitor and manager
         Me.m_StateMonitor = New cCoreStateMonitor(Me)
@@ -4568,7 +4567,6 @@ Public Class cCore
     'Delegate for Time-Step notification from the interface 
     Private m_InterfaceDelegate As Ecosim.EcoSimTimeStepDelegate
 
-    Friend m_QuotaData As cQuotaDataStructures
     Friend m_MSEData As cMSEDataStructures
 
     ''thread that the EcoSim model is running on
@@ -4677,7 +4675,7 @@ Public Class cCore
         ' Sanity check
         Debug.Assert(Me.StateMonitor.HasEcosimLoaded())
         ' Normalize Quota share values
-        Me.m_QuotaData.SumQuotaShareToOne()
+        Me.m_MSEData.SumQuotaShareToOne()
         ' Refresh ecosim quota data
         Me.LoadEcosimFisheriesRegulations()
         Me.m_StateMonitor.SetEcoSimLoaded(True)
@@ -4719,7 +4717,7 @@ Public Class cCore
             m_EcoSim.m_stanza = Me.m_Stanza
             m_EcoSim.TracerData = Me.m_tracerData
             m_EcoSim.TimeSeriesData = Me.m_TSData
-            m_EcoSim.QuotaData = Me.m_QuotaData
+            m_EcoSim.MSEData = Me.m_MSEData
 
             Me.m_EcosimOutputs = New cEcosimOutput(Me)
 
@@ -4929,11 +4927,10 @@ Public Class cCore
             m_EcoSimData.DefaultSummaryPeriods()
 
             'Init PropLandedTime() and Propdiscardtime() to Ecopath values so they can be used during the initialization of Ecosim
-            '  m_QuotaData.InitToEcoPath(Me.m_EcoPathData)
 
             m_EcoSim.Init(True)
 
-            m_QuotaData.setDefaultRegValues(Me.m_EcoSimData, Me.m_EcoPathData)
+            m_MSEData.setDefaultRegValues(Me.m_EcoSimData, Me.m_EcoPathData)
 
             InitEcosimGroups()
             InitEcosimFleetInput()
@@ -5215,9 +5212,9 @@ Public Class cCore
 
             Dim mse As cMSEManager = Me.MSEManager
 
-            group.BBase = m_QuotaData.Bbase(iGroup)
-            group.BLim = m_QuotaData.Blim(iGroup)
-            group.FOpt = m_QuotaData.Fopt(iGroup)
+            group.BBase = m_MSEData.Bbase(iGroup)
+            group.BLim = m_MSEData.Blim(iGroup)
+            group.FOpt = m_MSEData.Fopt(iGroup)
 
             Try
                 For iPred = 1 To nGroups
@@ -5455,12 +5452,12 @@ Public Class cCore
 
             'get the group name from EcoPath not EcoSim
             reg.Name = m_EcoPathData.FleetName(iFleet)
-            reg.MaxEffort = m_QuotaData.MaxEffort(iFleet)
-            reg.QuotaType = m_QuotaData.QuotaType(iFleet)
+            reg.MaxEffort = m_MSEData.MaxEffort(iFleet)
+            reg.QuotaType = m_MSEData.QuotaType(iFleet)
 
             Try
                 For iGroup As Integer = 1 To nGroups
-                    reg.QuotaShare(iGroup) = m_QuotaData.Quotashare(iFleet, iGroup)
+                    reg.QuotaShare(iGroup) = m_MSEData.Quotashare(iFleet, iGroup)
                 Next
 
             Catch ex As Exception
@@ -5699,9 +5696,9 @@ Public Class cCore
             Dim mse As cMSEManager = Me.MSEManager
 
             'regulatory values
-            m_QuotaData.Bbase(iGroup) = group.BBase
-            m_QuotaData.Blim(iGroup) = group.BLim
-            m_QuotaData.Fopt(iGroup) = group.FOpt
+            m_MSEData.Bbase(iGroup) = group.BBase
+            m_MSEData.Blim(iGroup) = group.BLim
+            m_MSEData.Fopt(iGroup) = group.FOpt
 
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
@@ -5783,10 +5780,10 @@ Public Class cCore
         Dim reg As cEcosimFisheriesRegulation = Me.EcosimFisheriesRegulations(iFleet)
 
         Try
-            m_QuotaData.MaxEffort(iFleet) = reg.MaxEffort
-            m_QuotaData.QuotaType(iFleet) = reg.QuotaType
+            m_MSEData.MaxEffort(iFleet) = reg.MaxEffort
+            m_MSEData.QuotaType(iFleet) = reg.QuotaType
             For iGroup As Integer = 1 To nGroups
-                m_QuotaData.Quotashare(iFleet, iGroup) = reg.QuotaShare(iGroup)
+                m_MSEData.Quotashare(iFleet, iGroup) = reg.QuotaShare(iGroup)
             Next
 
         Catch ex As Exception
@@ -10474,7 +10471,7 @@ Public Class cCore
                         Set_Quota_Flags(Me.EcosimFisheriesRegulations(flt.Index), True)
 
                         'landings have changed set quota share
-                        Me.m_QuotaData.setDefaultQuotaShare(Me.m_EcoPathData)
+                        Me.m_MSEData.setDefaultQuotaShare(Me.m_EcoPathData)
 
                         Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
                                                     eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcosimFisheriesRegulation)
@@ -10484,7 +10481,7 @@ Public Class cCore
                     Case eVarNameFlags.Discards
                         Set_DiscardMort_Flags(flt, True)
 
-                        Me.m_QuotaData.setDefaultQuotaShare(Me.m_EcoPathData)
+                        Me.m_MSEData.setDefaultQuotaShare(Me.m_EcoPathData)
                         Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
                             eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcosimFisheriesRegulation)
                         Me.m_publisher.AddMessage(qsMsg)

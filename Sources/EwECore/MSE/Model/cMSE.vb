@@ -74,7 +74,6 @@ Namespace MSE
         Private m_esData As cEcosimDatastructures
 
         Private m_epdata As cEcopathDataStructures
-        Private m_quota As cQuotaDataStructures
 
         Private m_nTrials As Integer
 
@@ -155,12 +154,11 @@ Namespace MSE
             Me.m_core = theCore
         End Sub
 
-        Public Sub Init(ByVal MSEData As cMSEDataStructures, ByVal QuotaData As cQuotaDataStructures, ByVal Ecosim As Ecosim.cEcoSimModel, ByVal SearchData As cSearchDatastructures, ByVal EcopathData As cEcopathDataStructures, ByVal PluginManager As cPluginManager)
+        Public Sub Init(ByVal MSEData As cMSEDataStructures, ByVal Ecosim As Ecosim.cEcoSimModel, ByVal SearchData As cSearchDatastructures, ByVal EcopathData As cEcopathDataStructures, ByVal PluginManager As cPluginManager)
 
             Me.m_data = MSEData
             Me.m_Ecosim = Ecosim
             Me.m_Search = SearchData
-            Me.m_quota = QuotaData
             Me.m_esData = m_Ecosim.m_Data
             Me.m_epdata = EcopathData
             Me.m_pluginManager = PluginManager
@@ -205,7 +203,7 @@ Namespace MSE
             'For iFlt = 1 To ngear
             '    For iGrp = 1 To Me.m_esData.nGroups
             '        If (m_epdata.Landing(iFlt, iGrp) + m_epdata.Discard(iFlt, iGrp)) > 0 Then
-            '            totalQuota(iGrp) = totalQuota(iGrp) + Me.m_quota.Quota(iFlt, iGrp)
+            '            totalQuota(iGrp) = totalQuota(iGrp) + Me.m_data.Quota(iFlt, iGrp)
             '        End If
             '    Next
             'Next
@@ -213,7 +211,7 @@ Namespace MSE
             'For iFlt = 1 To ngear
             '    For iGrp = 1 To Me.m_esData.nGroups
             '        If (m_epdata.Landing(iFlt, iGrp) + m_epdata.Discard(iFlt, iGrp)) > 0 Then
-            '            Me.m_quota.QuotaTime(iFlt, iGrp) = Me.m_quota.Quota(iFlt, iGrp)
+            '            Me.m_data.QuotaTime(iFlt, iGrp) = Me.m_data.Quota(iFlt, iGrp)
             '        End If
             '    Next
             'Next
@@ -559,11 +557,11 @@ Namespace MSE
 
                     For iflt As Integer = 1 To Me.m_data.nFleets
                         'Only if this fleet is regulated
-                        If Me.m_quota.QuotaType(iflt) <> eQuotaTypes.NotUsed Then
+                        If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed Then
                             For it As Integer = Me.m_data.StartYear To Me.m_data.nTimeSteps
                                 Me.m_esData.FishRateGear(iflt, it) = DEFAULT_EFFORT
                             Next it
-                        End If 'Me.m_quota.QuotaType(iflt) <> eQuotaTypes.NotUsed
+                        End If 'Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed
                     Next iflt
 
                 End If 'Me.m_data.EffortMode = eMSEEffortMode.TrackUseQuota
@@ -584,7 +582,7 @@ Namespace MSE
             Try
 
                 For iflt As Integer = 1 To Me.m_data.nFleets
-                    If Me.m_quota.QuotaType(iflt) <> eQuotaTypes.NotUsed Then
+                    If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed Then
                         For it As Integer = Me.m_data.StartYear To Me.m_data.nTimeSteps
                             Me.m_esData.FishRateGear(iflt, it) = Me.m_effort(iflt, it)
                         Next it
@@ -1138,13 +1136,13 @@ Namespace MSE
             'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
             For ig = 1 To m_esData.nGear
 
-                ' If m_esData.FishRateGear(ig, t) > Me.m_quota.MaxEffort(ig) Then m_esData.FishRateGear(ig, t) = Me.m_quota.MaxEffort(ig)
+                ' If m_esData.FishRateGear(ig, t) > Me.m_data.MaxEffort(ig) Then m_esData.FishRateGear(ig, t) = Me.m_data.MaxEffort(ig)
 
-                Select Case Me.m_quota.QuotaType(ig)
+                Select Case Me.m_data.QuotaType(ig)
 
                     Case eQuotaTypes.Effort
                         'NOT IMPLEMENTED at this time
-                        Debug.Assert(Me.m_quota.QuotaType(ig) = eQuotaTypes.Effort, "Effort regulations have not been implemented at this time!")
+                        Debug.Assert(Me.m_data.QuotaType(ig) = eQuotaTypes.Effort, "Effort regulations have not been implemented at this time!")
 
                         'QMult will need to be computed using Bestimate()
                         'F(igrp) = fTarget(igrp) / qmult(igrp)
@@ -1154,7 +1152,7 @@ Namespace MSE
                         For i = 1 To m_data.NGroups
                             If (m_epdata.Landing(ig, i) + m_epdata.Discard(ig, i)) > 0 Then
                                 'Calculate the effort limitation, has quote been exceeded?
-                                Elim = CSng(Me.m_quota.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)))
+                                Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)))
                                 If m_esData.FishRateGear(ig, t) > Elim Then
                                     m_esData.FishRateGear(ig, t) = Elim
                                 End If
@@ -1167,7 +1165,7 @@ Namespace MSE
                         For i = 1 To m_data.NGroups
                             If (m_epdata.Landing(ig, i)) > 0 Then
                                 'Calculate the effort limitation, has quote for strongest stock (calling for biggest effort) been exceeded?
-                                Elim = CSng(Me.m_quota.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)))
+                                Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)))
                                 If Elim > Emax Then Emax = Elim
 
                             End If
@@ -1178,23 +1176,23 @@ Namespace MSE
                             If (m_epdata.Landing(ig, i)) > 0 Then
                                 ci = m_esData.FishRateGear(ig, t) * QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)
 
-                                If ci > Me.m_quota.QuotaTime(ig, i) Then
+                                If ci > Me.m_data.QuotaTime(ig, i) Then
                                     'fishing mortality exceeds quota
-                                    Me.m_quota.PropLandedTime(ig, i) = CSng(Me.m_quota.QuotaTime(ig, i) / (ci + 1.0E-20))
-                                    If Me.m_quota.QuotaType(ig) = eQuotaTypes.Strongest Then
+                                    Me.m_data.PropLandedTime(ig, i) = CSng(Me.m_data.QuotaTime(ig, i) / (ci + 1.0E-20))
+                                    If Me.m_data.QuotaType(ig) = eQuotaTypes.Strongest Then
                                         'QuotaType = Strongest 
                                         'excess catch discarded and included in the fishing mortailtiy
-                                        Me.m_quota.Propdiscardtime(ig, i) = (1 - Me.m_quota.PropLandedTime(ig, i)) * m_epdata.PropDiscardMort(ig, i)
+                                        Me.m_data.Propdiscardtime(ig, i) = (1 - Me.m_data.PropLandedTime(ig, i)) * m_epdata.PropDiscardMort(ig, i)
                                     Else
                                         'QuotaType = Selective 
                                         'excess catch is NOT included in fishing mortaility all discards survive
-                                        Me.m_quota.Propdiscardtime(ig, i) = 0
+                                        Me.m_data.Propdiscardtime(ig, i) = 0
                                     End If
 
                                 Else
                                     'ci < QuotaTime
-                                    Me.m_quota.PropLandedTime(ig, i) = m_epdata.PropLanded(ig, i)
-                                    Me.m_quota.Propdiscardtime(ig, i) = m_epdata.PropDiscard(ig, i)
+                                    Me.m_data.PropLandedTime(ig, i) = m_epdata.PropLanded(ig, i)
+                                    Me.m_data.Propdiscardtime(ig, i) = m_epdata.PropDiscard(ig, i)
                                 End If
 
                             End If
@@ -1241,9 +1239,9 @@ Namespace MSE
 
             For igrp = 1 To Me.m_epdata.NumGroups
 
-                If Me.m_quota.FixedEscapement(igrp) > 0 Then
+                If Me.m_data.FixedEscapement(igrp) > 0 Then
 
-                    tQuota(igrp) = m_data.Bestimate(igrp) - m_quota.FixedEscapement(igrp)
+                    tQuota(igrp) = m_data.Bestimate(igrp) - m_data.FixedEscapement(igrp)
 
                     'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
                     'but assume uncertaint is smaller?????? not done here
@@ -1253,15 +1251,15 @@ Namespace MSE
 
                 Else    'not using fixed escapement, so calculate 
 
-                    If m_quota.Bbase(igrp) > 0 Then
+                    If m_data.Bbase(igrp) > 0 Then
 
-                        'Debug.Assert(Me.m_quota.Bbase(igrp) > Me.m_quota.Blim(igrp), "MSE UpdateQuotas() Bbase must be greater than Blim.")
+                        'Debug.Assert(Me.m_data.Bbase(igrp) > Me.m_data.Blim(igrp), "MSE UpdateQuotas() Bbase must be greater than Blim.")
 
                         'note here that Bbase has to be set larger than Blim
                         'VC to JB: I think the Biomass below should be Bestimate instead; talked to Carl and he agrees. will be a double wham, which is OK.
-                        FtargetT(igrp) = Me.m_quota.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_quota.Blim(igrp)) / (Me.m_quota.Bbase(igrp) - Me.m_quota.Blim(igrp))
+                        FtargetT(igrp) = Me.m_data.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_data.Blim(igrp)) / (Me.m_data.Bbase(igrp) - Me.m_data.Blim(igrp))
                         If FtargetT(igrp) < 0 Then FtargetT(igrp) = 0
-                        If FtargetT(igrp) > Me.m_quota.Fopt(igrp) Then FtargetT(igrp) = Me.m_quota.Fopt(igrp)
+                        If FtargetT(igrp) > Me.m_data.Fopt(igrp) Then FtargetT(igrp) = Me.m_data.Fopt(igrp)
                         tQuota(igrp) = FtargetT(igrp) * Me.m_data.Bestimate(igrp)
 
                         'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
@@ -1274,7 +1272,7 @@ Namespace MSE
 
             For iflt = 1 To Me.m_esData.nGear
                 For igrp = 1 To Me.m_epdata.NumGroups
-                    Me.m_quota.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_quota.Quotashare(iflt, igrp)
+                    Me.m_data.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_data.Quotashare(iflt, igrp)
                 Next
             Next
 
@@ -1306,7 +1304,7 @@ Namespace MSE
                 For iflt As Integer = 1 To Me.m_epdata.NumFleet
                     sumb = 0
                     For igrp = 1 To Me.m_epdata.NumGroups
-                        sumb += QuotaT(igrp) * Me.m_quota.Quotashare(iflt, igrp)
+                        sumb += QuotaT(igrp) * Me.m_data.Quotashare(iflt, igrp)
                     Next
                     For it As Integer = 1 To 12
                         d(iflt, it + (Me.m_curYear - 1) * 12) = sumb
@@ -1382,7 +1380,7 @@ Namespace MSE
             SetBaseValues()
 
             If Me.m_core.PluginManager IsNot Nothing Then
-                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_quota, Me.m_esData)
+                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_data, Me.m_esData)
             End If
 
             'next is a vc temp fix for debugging
@@ -1630,14 +1628,14 @@ Namespace MSE
                     Next
                     'now we know the biggestcatch, so save the biomass from there to the Bmsy:
                     If BiggestFleet > 0 Then
-                        m_quota.Bbase(igrp) = CSng(bMSY(BiggestFleet, igrp))
+                        m_data.Bbase(igrp) = CSng(bMSY(BiggestFleet, igrp))
                         'assume there's no fishing if the B is below half of the Bmsy
-                        m_quota.Blim(igrp) = CSng(bMSY(BiggestFleet, igrp) * 0.5)
-                        m_quota.Fopt(igrp) = CSng(fMSY(BiggestFleet, igrp))
+                        m_data.Blim(igrp) = CSng(bMSY(BiggestFleet, igrp) * 0.5)
+                        m_data.Fopt(igrp) = CSng(fMSY(BiggestFleet, igrp))
 
                         'set the reference levels to Blim and Bbase
-                        Me.m_data.BioBounds(igrp).Lower = m_quota.Blim(igrp)
-                        Me.m_data.BioBounds(igrp).Upper = m_quota.Bbase(igrp)
+                        Me.m_data.BioBounds(igrp).Lower = m_data.Blim(igrp)
+                        Me.m_data.BioBounds(igrp).Upper = m_data.Bbase(igrp)
                     End If
                 Next
 
@@ -1686,7 +1684,7 @@ Namespace MSE
             SetBaseValues()
 
             If Me.m_core.PluginManager IsNot Nothing Then
-                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_quota, Me.m_esData)
+                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_data, Me.m_esData)
             End If
 
             'next is a vc temp fix for debugging

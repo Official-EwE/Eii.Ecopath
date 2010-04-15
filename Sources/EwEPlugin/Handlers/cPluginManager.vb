@@ -1385,32 +1385,29 @@ Public Class cPluginManager
 
     Public Function MSEInitialized(ByVal MSEModel As Object, _
                                    ByVal MSEDataStructure As Object, _
-                                   ByVal QuotaDataStructures As Object, _
                                    ByVal EcosimDatastructures As Object) As Boolean
 
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSEInitialized), "MSEInitialized", _
-                                                    New Object() {MSEModel, MSEDataStructure, QuotaDataStructures, EcosimDatastructures})
+                                                    New Object() {MSEModel, MSEDataStructure, EcosimDatastructures})
 
 
     End Function
 
     Public Function MSYInitialized(ByVal MSEDataStructure As Object, _
-                               ByVal QuotaDataStructures As Object, _
-                               ByVal EcosimDatastructures As Object) As Boolean
+                                   ByVal EcosimDatastructures As Object) As Boolean
 
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSYPlugin), "MSYInitialized", _
-                                                    New Object() {MSEDataStructure, QuotaDataStructures, EcosimDatastructures})
+                                                    New Object() {MSEDataStructure, EcosimDatastructures})
 
 
     End Function
 
 
     Public Function MSYRunStarted(ByVal MSEDataStructure As Object, _
-                               ByVal QuotaDataStructures As Object, _
-                               ByVal EcosimDatastructures As Object) As Boolean
+                                  ByVal EcosimDatastructures As Object) As Boolean
 
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSYPlugin), "MSYRunStarted", _
-                                                    New Object() {MSEDataStructure, QuotaDataStructures, EcosimDatastructures})
+                                                    New Object() {MSEDataStructure, EcosimDatastructures})
 
 
     End Function

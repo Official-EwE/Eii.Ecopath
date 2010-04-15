@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports Microsoft.VisualBasic
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -150,6 +151,39 @@ Public Class cMSEDataStructures
     ''' <remarks></remarks>
     Public StartYear As Integer
 
+    ' Public DoClosedLoop As Boolean
+
+    Public Bbase() As Single
+    Public Blim() As Single
+    Public Fopt() As Single
+    ' Public KalWt() As Single
+    Public FixedEscapement() As Single
+
+    ' Public CVest() As Single
+
+    ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort  (by gear)</summary>
+    Public MaxEffort() As Single 'gear
+
+    ''' <summary>Type of quota system in effect (by gear) </summary>
+    Public QuotaType() As eQuotaTypes 'gear
+
+    ''' <summary>Fishing Quota for regulated fisheries  (by gear group)</summary>
+    Public Quota(,) As Single 'gear group
+
+    ''' <summary>Biomass discarded because of regulation  (by gear group)</summary>
+    Public RegDiscard(,) As Single ' gear group
+
+    ''' <summary>Proportion of regulated landings (by gear group) for the current time step</summary>
+    Public PropLandedTime(,) As Single
+
+    ''' <summary>Proportion of regulated discards (by gear group) for the current time step</summary>
+    Public Propdiscardtime(,) As Single
+
+    ''' <summary>Percentage of total catch by at fleet on a group (by fleet, group)</summary>
+    ''' <remarks>Sums to one across all fleets for a group</remarks>
+    Public Quotashare(,) As Single
+
+    Public QuotaTime(,) As Single
 
 #End Region
 
@@ -158,21 +192,18 @@ Public Class cMSEDataStructures
     Private m_curIter As Integer
     Private m_EPData As cEcopathDataStructures
     Private m_ESData As cEcosimDatastructures
-    Private m_QuotaData As cQuotaDataStructures
 
 #End Region
 
 #Region " Constructor "
 
     Public Sub New(ByVal EPdata As cEcopathDataStructures, _
-                   ByVal ESdata As cEcosimDatastructures, _
-                   ByVal QuotaData As cQuotaDataStructures)
+                   ByVal ESdata As cEcosimDatastructures)
         Me.NTrials = 10 'default number of trials
         Me.EffortMode = eMSEEffortMode.TrackUseQuota
         Me.StopRun = False
         Me.m_EPData = EPdata
         Me.m_ESData = ESdata
-        Me.m_QuotaData = QuotaData
     End Sub
 
 #End Region 'Constructor
@@ -230,6 +261,14 @@ Public Class cMSEDataStructures
             Me.MSYEvaluateValue = True
             Me.MSYStartTimeIndex = 2
             Me.StartYear = 1
+
+            For iflt As Integer = 1 To nFleets
+                For igrp As Integer = 1 To NGroups
+                    'jb 7-Jan-2010 addded PropDiscardMort() so the default for discards contain only the mort
+                    Me.Propdiscardtime(iflt, igrp) = Me.m_EPData.PropDiscard(iflt, igrp) * Me.m_EPData.PropDiscardMort(iflt, igrp)
+                    Me.PropLandedTime(iflt, igrp) = Me.m_EPData.PropLanded(iflt, igrp)
+                Next
+            Next
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -304,6 +343,36 @@ Public Class cMSEDataStructures
             ' CVFest(iFlt) = 0.3
         Next iFlt
 
+        ReDim QuotaType(nFleets)
+        ReDim RegDiscard(nFleets, NGroups)
+        ReDim MaxEffort(nFleets)
+        ReDim Quota(nFleets, NGroups)
+        ReDim PropLandedTime(nFleets, NGroups)
+        ReDim Propdiscardtime(nFleets, NGroups)
+
+        ReDim Quotashare(nFleets, NGroups)
+        ReDim QuotaTime(nFleets, NGroups)
+        ReDim Blim(NGroups)
+        ReDim Bbase(NGroups)
+        ReDim Fopt(NGroups)
+        ReDim FixedEscapement(NGroups)
+
+        For i As Integer = 1 To NGroups
+            Blim(i) = cCore.NULL_VALUE
+            Bbase(i) = cCore.NULL_VALUE
+            Fopt(i) = cCore.NULL_VALUE
+            FixedEscapement(i) = 0
+        Next
+
+        'Setting regulatory values to NULL will cause them to be set to a default value if the database does not contain values
+        'see cEcosimModel.setDefaultValues
+        For iflt As Integer = 1 To nFleets
+            MaxEffort(iflt) = cCore.NULL_VALUE
+            For igrp As Integer = 1 To NGroups
+                Quota(iflt, igrp) = cCore.NULL_VALUE
+            Next
+        Next
+
     End Sub
 
 
@@ -364,8 +433,8 @@ Public Class cMSEDataStructures
     Public Sub DefaultBioBounds(ByVal igrp As Integer)
 
         Try
-            If Me.m_QuotaData.Blim(igrp) >= 0 Then
-                Me.BioBounds(igrp) = New cMSEBounds(igrp, Me.m_QuotaData.Blim(igrp), Me.m_QuotaData.Bbase(igrp))
+            If Me.Blim(igrp) >= 0 Then
+                Me.BioBounds(igrp) = New cMSEBounds(igrp, Me.Blim(igrp), Me.Bbase(igrp))
             Else
                 Me.BioBounds(igrp) = New cMSEBounds(igrp, Me.m_EPData.B(igrp) * 0.1F, Me.m_EPData.B(igrp) * 0.4F)
             End If
@@ -499,6 +568,94 @@ Public Class cMSEDataStructures
             Return Me.m_EPData.NumFleet
         End Get
     End Property
+
+    ''' <summary>
+    ''' Set default values for regulated fisheries
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub setDefaultRegValues(ByVal EcoSimData As cEcosimDatastructures, ByVal EcoPathData As cEcopathDataStructures)
+        Dim igrp As Integer
+        Dim iflt As Integer
+
+        'If regulatory values have not been set (by the database) then set them to defaults
+        For iflt = 1 To Me.nFleets
+            If Me.MaxEffort(iflt) = cCore.NULL_VALUE Then Me.MaxEffort(iflt) = 10 '10 times the ecopath base effort
+            For igrp = 1 To Me.NGroups
+                If Me.Quota(iflt, igrp) = cCore.NULL_VALUE Then Me.Quota(iflt, igrp) = EcoSimData.StartBiomass(igrp) * 10 '10 time the ecopath biomass
+
+                'Needs default value????
+                If Blim(igrp) = cCore.NULL_VALUE Then Blim(igrp) = Me.m_ESData.StartBiomass(igrp) * 0.1!
+                If Bbase(igrp) = cCore.NULL_VALUE Then Bbase(igrp) = Me.m_ESData.StartBiomass(igrp) * 0.4!
+                If Fopt(igrp) = cCore.NULL_VALUE Then Fopt(igrp) = EcoSimData.Fish1(igrp)
+
+            Next
+        Next
+
+        'set Quota share to Ecopath landings and discards
+        Me.setDefaultQuotaShare(EcoPathData)
+
+    End Sub
+
+    ''' <summary>
+    ''' Set QuotaShare to default values from Ecopath.Landing and Ecopath.Discards
+    ''' </summary>
+    ''' <param name="EcoPathData">Ecopath data</param>
+    ''' <remarks>QuotaShare(fleet,group) is proportion of catch on a group by a fleet. Should sum to one for a group across fleets.</remarks>
+    Public Sub setDefaultQuotaShare(ByVal EcoPathData As cEcopathDataStructures)
+        Dim QuotaShareTot As Single
+        Dim igrp As Integer
+        Dim iflt As Integer
+
+        Try
+
+            If Quotashare Is Nothing Then
+                System.Console.WriteLine("Quota data can not set QuotaShare(fleets,groups) because an Ecosim scenario has not been loaded yet!")
+                Exit Sub
+            End If
+
+            For igrp = 1 To Me.NGroups
+                QuotaShareTot = 0
+                For iflt = 1 To Me.nFleets
+                    QuotaShareTot += EcoPathData.Landing(iflt, igrp) + EcoPathData.Discard(iflt, igrp)
+                Next
+
+                For iflt = 1 To Me.nFleets
+                    If QuotaShareTot > 0 Then
+                        Me.Quotashare(iflt, igrp) = (EcoPathData.Landing(iflt, igrp) + EcoPathData.Discard(iflt, igrp)) / QuotaShareTot
+                    Else
+                        Me.Quotashare(iflt, igrp) = 0
+                    End If
+                Next
+
+            Next igrp
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            System.Console.WriteLine(Me.ToString & ".setDefaultQuotaShare() Exception: " & ex.Message)
+        End Try
+
+    End Sub
+
+    Public Sub SumQuotaShareToOne()
+
+        Dim QuotaShareTot As Single
+        Dim igrp As Integer
+        Dim iflt As Integer
+
+        For igrp = 1 To Me.NGroups
+            QuotaShareTot = 0
+            For iflt = 1 To Me.nFleets
+                QuotaShareTot += Me.Quotashare(iflt, igrp)
+            Next
+
+            If (QuotaShareTot > 0) And (QuotaShareTot <> 1.0!) Then
+                For iflt = 1 To Me.nFleets
+                    Me.Quotashare(iflt, igrp) /= QuotaShareTot
+                Next
+            End If
+        Next igrp
+
+    End Sub
 
 #End Region
 
@@ -986,7 +1143,6 @@ Public Class cMSESummaryStats
             Return Me.m_lstValues.Item(index - 1).Count
         End Get
     End Property
-
 
     Public Overrides Function ToString() As String
         Dim buf As New System.Text.StringBuilder

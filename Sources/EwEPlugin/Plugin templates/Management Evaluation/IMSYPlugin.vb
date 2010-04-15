@@ -10,19 +10,17 @@ Public Interface IMSYPlugin
     ''' MSY has been initialized
     ''' </summary>
     ''' <param name="MSEDataStructure">MSE data structures</param>
-    ''' <param name="QuotaDataStructures">Quota data structures</param>
     ''' <param name="EcosimDatastructures">Ecosim data structures</param>
     ''' <remarks></remarks>
-    Sub MSYInitialized(ByVal MSEDataStructure As Object, ByVal QuotaDataStructures As Object, ByVal EcosimDatastructures As Object)
+    Sub MSYInitialized(ByVal MSEDataStructure As Object, ByVal EcosimDatastructures As Object)
 
     ''' <summary>
     ''' The MSY variables have been initialized and search is about to start.
     ''' </summary>
     ''' <param name="MSEDataStructure"></param>
-    ''' <param name="QuotaDataStructures"></param>
     ''' <param name="EcosimDatastructures"></param>
     ''' <remarks></remarks>
-    Sub MSYRunStarted(ByVal MSEDataStructure As Object, ByVal QuotaDataStructures As Object, ByVal EcosimDatastructures As Object)
+    Sub MSYRunStarted(ByVal MSEDataStructure As Object, ByVal EcosimDatastructures As Object)
 
     ''' <summary>
     ''' MSY search has completed all its iteration and computed effort for all fleets. Interface objects have not been populated at this time.
