@@ -3709,7 +3709,7 @@ Namespace Ecosim
         ''' <summary>
         ''' Init Biomass to Ecopath values during initialization
         ''' </summary>
-        ''' <remarks>Warning: <see cref="cQuotaDataStructures.setDefaultRegValues"> </see>QuotaDataStructures.setDefaultRegValues() uses Ecopath.B() instead of Ecosim.StartBiomass() because of initialization order. </remarks>
+        ''' <remarks>Warning: <see cref="cMSEDataStructures.setDefaultRegValues"> </see>cMSEDataStructures.setDefaultRegValues() uses Ecopath.B() instead of Ecosim.StartBiomass() because of initialization order. </remarks>
         Public Sub SetStartBiomass()
             Dim i As Integer ', TotalBiomass As Single
 
