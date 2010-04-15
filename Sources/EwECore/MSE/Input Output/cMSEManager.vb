@@ -2,6 +2,7 @@ Option Strict On
 
 Imports EwECore
 Imports EwECore.Ecosim
+Imports EwECore.MSE
 Imports System.Threading
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
@@ -55,7 +56,6 @@ Namespace MSE
         Private m_lstGroupCatchStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSECatchByGroupStats, 1)
         Private m_lstEffortStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEEffortStats, 1)
         Private m_lstFleetStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEEffortStats, 1)
-        'Private m_lstGroupQuotaStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEGroupQuotaStats, 1)
 
         Private m_output As cMSEOutput
         Private m_parameters As cMSEParameters
@@ -301,8 +301,8 @@ Namespace MSE
             'If using Quota regulations and any type of effort
             'make sure there is at least one type of Quota Option set
             'warn the user if both a Quota option and Fixed Escapement are set as both can not run on the same group
-            If Me.ModelParameters.EffortMode = eMSEEffortMode.PredictUseQuota Or _
-                    Me.ModelParameters.EffortMode = eMSEEffortMode.TrackUseQuota Then
+            If Me.ModelParameters.RegulatoryMode = eMSERegulationMode.PredictUseRegualtions Or _
+                    Me.ModelParameters.RegulatoryMode = eMSERegulationMode.UseRegulations Then
                 'xxxxxxxxxxxxxxxxxxxxxxx
                 'check the Quota type
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -357,32 +357,33 @@ Namespace MSE
 
             End If ' If Me.m_MSE.ModelParameters.EffortMode = eMSEEffortMode.PredictUseQuota Or _
 
-            'If Ecosim Effort and Quota options are set
-            'Make sure the Effort is set high so the Quota regulation will limit effort
-            'This is not absolutely necessary
-            If Me.ModelParameters.EffortMode = eMSEEffortMode.TrackUseQuota Then
-                Dim fleets As String
-                'if we are regulating catch and using the Ecosim effort
-                'make sure the effort is high... what's high... that's a good question
-                For iflt As Integer = 0 To Me.m_core.nFleets - 1
-                    Dim effShp As cForcingFunction
-                    effShp = Me.m_core.FishingEffortShapeManager.Item(iflt)
-                    ' JS 02Mar10: Only consider fleets with quota options set
-                    If (effShp.Mean < 10) And (Me.m_MSEdata.QuotaType(iflt) <> eQuotaTypes.NotUsed) Then
-                        fleets = fleets & "'" & effShp.Name & "', "
-                    End If
-                Next
+            'jb 15-April-2010 Don't need to do this anymore Effort is set by MSE if EffortSource = NoCap
+            ''If Ecosim Effort and Quota options are set
+            ''Make sure the Effort is set high so the Quota regulation will limit effort
+            ''This is not absolutely necessary
+            'If Me.ModelParameters.RegulatoryMode = eMSERegulationMode.UseRegulations Then
+            '    Dim fleets As String
+            '    'if we are regulating catch and using the Ecosim effort
+            '    'make sure the effort is high... what's high... that's a good question
+            '    For iflt As Integer = 0 To Me.m_core.nFleets - 1
+            '        Dim effShp As cForcingFunction
+            '        effShp = Me.m_core.FishingEffortShapeManager.Item(iflt)
+            '        ' JS 02Mar10: Only consider fleets with quota options set
+            '        If (effShp.Mean < 10) And (Me.m_MSEdata.QuotaType(iflt) <> eQuotaTypes.NotUsed) Then
+            '            fleets = fleets & "'" & effShp.Name & "', "
+            '        End If
+            '    Next
 
-                If Not String.IsNullOrEmpty(fleets) Then
+            '    If Not String.IsNullOrEmpty(fleets) Then
 
-                    'strip off the last ', '
-                    fleets = fleets.Remove(fleets.Length - 2)
-                    Me.m_core.Messages.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.MSE_VALIDATION_EFFORT, fleets), _
-                                                eMessageType.DataValidation, eCoreComponentType.MSE, eMessageImportance.Warning))
-                End If
+            '        'strip off the last ', '
+            '        fleets = fleets.Remove(fleets.Length - 2)
+            '        Me.m_core.Messages.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.MSE_VALIDATION_EFFORT, fleets), _
+            '                                    eMessageType.DataValidation, eCoreComponentType.MSE, eMessageImportance.Warning))
+            '    End If
 
 
-            End If 'If Me.m_MSE.ModelParameters.EffortMode = eMSEEffortMode.TrackUseQuota Then
+            'End If 'If Me.m_MSE.ModelParameters.EffortMode = eMSEEffortMode.TrackUseQuota Then
 
             Me.m_core.Messages.sendAllMessages()
 
@@ -604,7 +605,8 @@ Namespace MSE
                 m_parameters.UseEconomicPlugin = Me.m_search.MSEUseEconomicPlugin
                 m_parameters.NTrials = Me.m_MSEdata.NTrials
                 'm_parameters.RegFeedBack = Me.m_MSEdata.bDoQuotaRegulation
-                m_parameters.EffortMode = Me.m_MSEdata.EffortMode
+                m_parameters.RegulatoryMode = Me.m_MSEdata.RegulationMode
+                m_parameters.EffortSource = Me.m_MSEdata.EffortSource
                 m_parameters.StopRun = Me.m_MSEdata.StopRun
                 m_parameters.Save = Me.m_MSEdata.SaveOutput
 
@@ -701,7 +703,8 @@ Namespace MSE
                         Me.m_MSEdata.AssessMethod = Me.m_parameters.AssessmentMethod()
                         Me.m_MSEdata.AssessPower = Me.m_parameters.AssessPower()
                         Me.m_MSEdata.NTrials = Me.m_parameters.NTrials()
-                        Me.m_MSEdata.EffortMode = Me.m_parameters.EffortMode
+                        Me.m_MSEdata.RegulationMode = Me.m_parameters.RegulatoryMode
+                        Me.m_MSEdata.EffortSource = Me.m_parameters.EffortSource
                         Me.m_MSEdata.StopRun = Me.m_parameters.StopRun
                         Me.m_MSEdata.SaveOutput = Me.m_parameters.Save
 
