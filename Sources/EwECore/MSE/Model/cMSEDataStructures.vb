@@ -8,16 +8,28 @@ Imports EwEUtils.Core
 
 Namespace MSE
 
-    Public Enum eMSEEffortMode
+    ''' <summary>
+    ''' Regulatory mode for MSE
+    ''' </summary>
+    ''' <remarks>Effort can come from a variaty of sources</remarks>
+    Public Enum eMSERegulationMode
+        ''' <summary>Regulation are used. Max effort from Ecosim scenario or no max effort imposed.</summary>
+    UseRegulations
 
-        ''' <summary>Ecosim effort. Then effort is being regulate by the Quota.</summary>
-        TrackUseQuota
-        ''' <summary>Effort is being predicted via Ecosim. Then effort is being regulate by the Quota.</summary>
-        PredictUseQuota
-        ''' <summary>Ecosim effort.</summary>
-        Tracking
+    ''' <summary>Effort is being predicted via Ecosim. Regulations are used</summary>
+    PredictUseRegualtions
 
+    ''' <summary>Ecosim effort. Effort not regulated</summary>
+    NoRegulations
+
+End Enum
+
+    Public Enum eMSEEffortSource
+        EcosimEffort
+        NoCap
+        Predicted
     End Enum
+
 
     Public Class cMSEDataStructures
 
@@ -107,9 +119,12 @@ Namespace MSE
         Public CostSum As cMSESummaryStats
         Public JobsSum As cMSESummaryStats
 
+
         Public Bestimate() As Single
         Public BestimateLast() As Single
-        Public EffortMode As eMSEEffortMode
+        Public RegulationMode As eMSERegulationMode
+        Public EffortSource As eMSEEffortSource
+        Public EffortMode As eMSERegulationMode
 
         Public BioBounds() As cMSEBounds
         ''' <summary>Catch by group bounds</summary>
@@ -199,10 +214,11 @@ Namespace MSE
 
 #Region " Constructor "
 
+
         Public Sub New(ByVal EPdata As cEcopathDataStructures, _
                        ByVal ESdata As cEcosimDatastructures)
             Me.NTrials = 10 'default number of trials
-            Me.EffortMode = eMSEEffortMode.TrackUseQuota
+            Me.RegulationMode = eMSERegulationMode.UseRegulations
             Me.StopRun = False
             Me.m_EPData = EPdata
             Me.m_ESData = ESdata
@@ -212,10 +228,11 @@ Namespace MSE
 
 #Region "Methods and Properties"
 
+
         Public ReadOnly Property UseQuotaRegs() As Boolean
             Get
                 'Quota regs are being applied if Effort is Predicting or QuotaTracking
-                If Me.EffortMode = eMSEEffortMode.PredictUseQuota Or Me.EffortMode = eMSEEffortMode.TrackUseQuota Then
+                If Me.RegulationMode = eMSERegulationMode.PredictUseRegualtions Or Me.RegulationMode = eMSERegulationMode.UseRegulations Then
                     Return True
                 End If
                 'NOT if EffortMode is Tracking 
@@ -263,6 +280,7 @@ Namespace MSE
                 Me.MSYEvaluateValue = True
                 Me.MSYStartTimeIndex = 2
                 Me.StartYear = 1
+                Me.EffortSource = eMSEEffortSource.NoCap
 
                 For iflt As Integer = 1 To nFleets
                     For igrp As Integer = 1 To NGroups
