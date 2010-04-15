@@ -117,9 +117,6 @@ Namespace MSE
         ''' <remarks>set when Ecosim calls SetTime()</remarks>
         Private m_curYear As Integer
 
-
-        Private m_effort(,) As Single
-
 #End Region
 
 #Region "Public Properties"
@@ -502,11 +499,14 @@ Namespace MSE
 
             Try
 
-                If Me.m_data.EffortMode = eMSEEffortMode.Tracking Then
+                If Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
                     'if not using a quota/effort regulation then no need to unload the F timeseries
                     'this mode is evaluating the current Ecosim scenario if there is timeseries loaded we need to leave it in place
                     Exit Sub
                 End If
+
+                Debug.Assert(Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations Or Me.m_data.RegulationMode = eMSERegulationMode.PredictUseRegualtions, _
+                            "MSE.DisableFTimeSeries() Effort mode may be set wrong.")
 
                 If Me.m_core.ActiveTimeSeriesDatasetIndex > -1 Then
                     Dim DS As cTimeSeriesDataset
@@ -524,7 +524,6 @@ Namespace MSE
                     End If
 
                 End If 'If Me.m_core.ActiveTimeSeriesDatasetIndex > -1 Then
-
 
             Catch ex As Exception
                 System.Console.WriteLine(ex.Message)
@@ -544,16 +543,8 @@ Namespace MSE
 
             Try
 
-                'make a copy of effort 
-                'use to set effort back to its original value after a run in setEffortToOriginal()
-                ReDim m_effort(Me.m_data.nFleets + 1, Me.m_esData.NTimes)
-
-                Debug.Assert(Me.m_esData.FishRateGear.Length = m_effort.Length, "Oppss....")
-
-                Array.Copy(Me.m_esData.FishRateGear, Me.m_effort, Me.m_esData.FishRateGear.Length)
-
-                'Only set Effort high if using the Quota/Target fish mortality 
-                If Me.m_data.EffortMode = eMSEEffortMode.TrackUseQuota Then
+                'Only set Effort high if using controls and EffortSource is NoCap
+                If Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_data.EffortSource = eMSEEffortSource.NoCap Then
 
                     For iflt As Integer = 1 To Me.m_data.nFleets
                         'Only if this fleet is regulated
@@ -576,7 +567,7 @@ Namespace MSE
         ''' <summary>
         ''' Set Effort back to its original value after a run
         ''' </summary>
-        ''' <remarks></remarks>
+        ''' <remarks>Always set effort base to its original value!</remarks>
         Private Sub setEffortToOriginal()
 
             Try
@@ -584,7 +575,7 @@ Namespace MSE
                 For iflt As Integer = 1 To Me.m_data.nFleets
                     If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed Then
                         For it As Integer = Me.m_data.StartYear To Me.m_data.nTimeSteps
-                            Me.m_esData.FishRateGear(iflt, it) = Me.m_effort(iflt, it)
+                            Me.m_esData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
                         Next it
                     End If
                 Next iflt
@@ -618,6 +609,9 @@ Namespace MSE
                 Me.m_Search.SearchMode = eSearchModes.InitializingSearch
                 Me.m_esData.bTimestepOutput = True
 
+                'sets MeanEmploy, MeanVal, MeanManVal, MeanEcoVal, MeanTotalValue
+                Me.SetBaseValues()
+
                 'init the MSE data
                 Me.InitForRun()
                 Me.m_data.InitForRun()
@@ -626,9 +620,6 @@ Namespace MSE
                 Me.m_Search.setMinSearchBlocks() 'set number of search blocks to one and dim FblockCodes()
                 If Me.m_Search.BaseYear = 0 Then Me.m_Search.BaseYear = 1
                 Me.m_Search.setBaseYearEffort(Me.m_esData)
-
-                'sets MeanEmploy, MeanVal, MeanManVal, MeanEcoVal, MeanTotalValue
-                Me.SetBaseValues()
 
                 'runs Ecosim and gets the base values
                 Me.setBestTotalValue()
@@ -639,7 +630,7 @@ Namespace MSE
 
                 'if we are predicting effort then make sure it is turned on in Ecosim
                 Me.m_esData.PredictSimEffort = False
-                If Me.m_data.EffortMode = eMSEEffortMode.PredictUseQuota Then Me.m_esData.PredictSimEffort = True
+                If Me.m_data.RegulationMode = eMSERegulationMode.PredictUseRegualtions Then Me.m_esData.PredictSimEffort = True
 
                 For itr = 1 To m_data.NTrials
 
@@ -713,7 +704,7 @@ Namespace MSE
 
         Private Sub SetEffortToBaseValue(Optional ByVal DoIt As Boolean = False)
 
-            If Me.m_data.EffortMode = eMSEEffortMode.TrackUseQuota Or DoIt Then
+            If Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations Or DoIt Then
                 'if we are tracking the Ecosim effort and regulating it via the quota 
                 'then we need to set effort to something for each iteration
                 For iflt As Integer = 1 To m_core.nFleets
@@ -1006,7 +997,7 @@ Namespace MSE
                     End If
                 Next i
 
-                If Not Me.m_data.EffortMode = eMSEEffortMode.Tracking Then
+                If Not Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
                     'Only vary effort here if we are in the Tracking mode(effort is set by the current Ecosim Effort). 
                     Exit Sub
                 End If
@@ -1042,7 +1033,7 @@ Namespace MSE
 
             Try
 
-                If Not Me.m_data.EffortMode = eMSEEffortMode.Tracking Then
+                If Not Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
                     'Predicting effort this means we are running the regulatory code to regulate effort
                     'so don't vary effort or catchability here
                     'When?
@@ -1053,7 +1044,7 @@ Namespace MSE
                     'it will use the effort from ecosim. 
                 End If
 
-                Debug.Assert(Me.m_data.EffortMode = eMSEEffortMode.Tracking, "MSE EffortMode incorrectly set!")
+                Debug.Assert(Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations, "MSE EffortMode incorrectly set!")
 
                 ReDim Fest(m_epdata.NumFleet, m_epdata.NumLiving), Best(m_epdata.NumLiving)
 
@@ -2408,9 +2399,6 @@ Namespace MSE
 
 
 #End Region
-
-
-
 
     End Class
 
