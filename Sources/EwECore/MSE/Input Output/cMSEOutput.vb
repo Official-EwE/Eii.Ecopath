@@ -3,73 +3,75 @@ Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
+Namespace MSE
+
 #Region "MSE Groups outputs"
 
-Public Class cMSEGroupOutput
-    Inherits cCoreGroupBase
+    Public Class cMSEGroupOutput
+        Inherits cCoreGroupBase
 
-    'dictionary of vars and wrappers that directly access the core data
-    Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
-    Private m_MSEData As cMSEDataStructures
+        'dictionary of vars and wrappers that directly access the core data
+        Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
+        Private m_MSEData As cMSEDataStructures
 
 
 #Region "Construction"
 
-    Public Sub New(ByRef theCore As cCore, ByVal MSEData As cMSEDataStructures, ByVal GroupDBID As Integer, ByVal groupIndex As Integer)
-        MyBase.New(theCore)
+        Public Sub New(ByRef theCore As cCore, ByVal MSEData As cMSEDataStructures, ByVal GroupDBID As Integer, ByVal groupIndex As Integer)
+            MyBase.New(theCore)
 
-        Dim val As cValue
-        Dim meta As cVariableMetaData
-        m_MSEData = MSEData
+            Dim val As cValue
+            Dim meta As cVariableMetaData
+            m_MSEData = MSEData
 
-        m_dataType = eDataTypes.MSEGroupOutputs
-        m_coreComponent = eCoreComponentType.MSE
-        Me.DBID = GroupDBID
-        Me.Index = groupIndex
+            m_dataType = eDataTypes.MSEGroupOutputs
+            m_coreComponent = eCoreComponentType.MSE
+            Me.DBID = GroupDBID
+            Me.Index = groupIndex
 
-        'Allow validation should be false for MSE output values
-        'the status flag is set in Me.ResetStatusFlags() and should always stay the same eStatusFlags.NotEditable Or eStatusFlags.OK not via the validation
-        'If a validator is used then it must be made thread safe as outputs for the MSE are set on a different thread then the core/interface thread
-        'the default validator will throw a threading error
-        Me.AllowValidation = False
+            'Allow validation should be false for MSE output values
+            'the status flag is set in Me.ResetStatusFlags() and should always stay the same eStatusFlags.NotEditable Or eStatusFlags.OK not via the validation
+            'If a validator is used then it must be made thread safe as outputs for the MSE are set on a different thread then the core/interface thread
+            'the default validator will throw a threading error
+            Me.AllowValidation = False
 
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eCoreComponentType.MSE, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eCoreComponentType.MSE, Index, cCore.NULL_VALUE)
 
-        'Risk
+            'Risk
 
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSELowerRiskPercent, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
-        m_values.Add(val.varName, val)
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSELowerRiskPercent, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
+            m_values.Add(val.varName, val)
 
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEUpperRiskPercent, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
-        m_values.Add(val.varName, val)
-
-
-        ' meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSEBiomass, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eCoreCounterTypes.nEcosimTimeSteps, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSECatchByGroup, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eCoreCounterTypes.nEcosimTimeSteps, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        'MSEHistogram
-    End Sub
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSEUpperRiskPercent, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
+            m_values.Add(val.varName, val)
 
 
-    Public Sub Init()
+            ' meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSEBiomass, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eCoreCounterTypes.nEcosimTimeSteps, AddressOf m_core.GetCoreCounter)
+            m_values.Add(val.varName, val)
 
-        'the results arrays of ecosim are redim for each run
-        'this means the reference to the results data is lost on each run 
-        'so reset the reference
-        m_coreData.Clear()
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSECatchByGroup, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eCoreCounterTypes.nEcosimTimeSteps, AddressOf m_core.GetCoreCounter)
+            m_values.Add(val.varName, val)
 
-        'cEcosimDataStrucures.ResultsOverTime(var,group,time) Var and Group are fixed
-        m_coreData.Add(eVarNameFlags.MSEBiomass, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
-        m_coreData.Add(eVarNameFlags.MSECatchByGroup, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Yield, Me.Index))
+            'MSEHistogram
+        End Sub
 
 
-    End Sub
+        Public Sub Init()
+
+            'the results arrays of ecosim are redim for each run
+            'this means the reference to the results data is lost on each run 
+            'so reset the reference
+            m_coreData.Clear()
+
+            'cEcosimDataStrucures.ResultsOverTime(var,group,time) Var and Group are fixed
+            m_coreData.Add(eVarNameFlags.MSEBiomass, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
+            m_coreData.Add(eVarNameFlags.MSECatchByGroup, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Yield, Me.Index))
+
+
+        End Sub
 
 #End Region
 
@@ -77,121 +79,121 @@ Public Class cMSEGroupOutput
 #Region "Overridden base class methods"
 
 
-    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex1 As Integer = -9999, Optional ByVal iIndex2 As Integer = -9999, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object
+        Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex1 As Integer = -9999, Optional ByVal iIndex2 As Integer = -9999, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
-        If Not m_coreData.ContainsKey(VarName) Then
-            'NOT in list of sim vars so get the value from the base class GetVariable(...)
-            Return MyBase.GetVariable(VarName, iIndex1, iIndex2)
-        Else
-            'Varname is access directly via the core data
-            Return m_coreData.Item(VarName).Value(iIndex1, iIndex2)
-        End If
+            If Not m_coreData.ContainsKey(VarName) Then
+                'NOT in list of sim vars so get the value from the base class GetVariable(...)
+                Return MyBase.GetVariable(VarName, iIndex1, iIndex2)
+            Else
+                'Varname is access directly via the core data
+                Return m_coreData.Item(VarName).Value(iIndex1, iIndex2)
+            End If
 
-    End Function
+        End Function
 
 #End Region
 
 #Region "Variable access via dot operators"
 
-    Public Property LowerRiskPercent() As Single
-        Get
-            Return CInt(GetVariable(eVarNameFlags.MSELowerRiskPercent))
-        End Get
+        Public Property LowerRiskPercent() As Single
+            Get
+                Return CInt(GetVariable(eVarNameFlags.MSELowerRiskPercent))
+            End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.MSELowerRiskPercent, value)
-        End Set
-    End Property
-
-
-    Public Property UpperRiskPercent() As Single
-        Get
-            Return CInt(GetVariable(eVarNameFlags.MSEUpperRiskPercent))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.MSEUpperRiskPercent, value)
-        End Set
-    End Property
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSELowerRiskPercent, value)
+            End Set
+        End Property
 
 
-    Public Property LowerRiskCountStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.MSELowerRiskPercent)
-        End Get
+        Public Property UpperRiskPercent() As Single
+            Get
+                Return CInt(GetVariable(eVarNameFlags.MSEUpperRiskPercent))
+            End Get
 
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MSELowerRiskPercent, value)
-        End Set
-    End Property
-
-
-    Public Property UpperRiskCountStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.MSEUpperRiskPercent)
-        End Get
-
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MSEUpperRiskPercent, value)
-        End Set
-    End Property
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEUpperRiskPercent, value)
+            End Set
+        End Property
 
 
-    Public ReadOnly Property Biomass(ByVal iTime As Integer) As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.MSEBiomass, iTime))
-        End Get
-    End Property
+        Public Property LowerRiskCountStatus() As eStatusFlags
+            Get
+                Return GetStatus(eVarNameFlags.MSELowerRiskPercent)
+            End Get
 
-    Public Property BiomassStatus(ByVal iTime As Integer) As eStatusFlags
-        Get
-            Return Me.GetStatus(eVarNameFlags.MSEBiomass, iTime)
-        End Get
+            Set(ByVal value As eStatusFlags)
+                SetStatus(eVarNameFlags.MSELowerRiskPercent, value)
+            End Set
+        End Property
 
-        Set(ByVal value As eStatusFlags)
-            Me.SetStatusFlags(eVarNameFlags.MSEBiomass, value, iTime)
-        End Set
-    End Property
 
-    Public ReadOnly Property GroupCatch(ByVal iTime As Integer) As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.MSECatchByGroup, iTime))
-        End Get
-    End Property
+        Public Property UpperRiskCountStatus() As eStatusFlags
+            Get
+                Return GetStatus(eVarNameFlags.MSEUpperRiskPercent)
+            End Get
+
+            Set(ByVal value As eStatusFlags)
+                SetStatus(eVarNameFlags.MSEUpperRiskPercent, value)
+            End Set
+        End Property
+
+
+        Public ReadOnly Property Biomass(ByVal iTime As Integer) As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEBiomass, iTime))
+            End Get
+        End Property
+
+        Public Property BiomassStatus(ByVal iTime As Integer) As eStatusFlags
+            Get
+                Return Me.GetStatus(eVarNameFlags.MSEBiomass, iTime)
+            End Get
+
+            Set(ByVal value As eStatusFlags)
+                Me.SetStatusFlags(eVarNameFlags.MSEBiomass, value, iTime)
+            End Set
+        End Property
+
+        Public ReadOnly Property GroupCatch(ByVal iTime As Integer) As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSECatchByGroup, iTime))
+            End Get
+        End Property
 
 #End Region
 
 #Region "Over ridden methods"
 
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
-        Dim i As Integer
+        Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+            Dim i As Integer
 
-        Dim statusflag As eStatusFlags = eStatusFlags.NotEditable Or eStatusFlags.OK
+            Dim statusflag As eStatusFlags = eStatusFlags.NotEditable Or eStatusFlags.OK
 
-        Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)
-        Dim value As cValue
-        For Each keyvalue In m_values
-            Try
-                value = keyvalue.Value
+            Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)
+            Dim value As cValue
+            For Each keyvalue In m_values
+                Try
+                    value = keyvalue.Value
 
-                Select Case value.varType
-                    Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray, eValueTypes.LayerArray
-                        For i = 0 To value.Length : value.Status(i) = statusflag : Next i
-                    Case Else
-                        value.Status = statusflag
-                End Select
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-                Return False
-            End Try
-        Next keyvalue
-        Return True
+                    Select Case value.varType
+                        Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray, eValueTypes.LayerArray
+                            For i = 0 To value.Length : value.Status(i) = statusflag : Next i
+                        Case Else
+                            value.Status = statusflag
+                    End Select
+                Catch ex As Exception
+                    Debug.Assert(False, ex.Message)
+                    Return False
+                End Try
+            Next keyvalue
+            Return True
 
-    End Function
+        End Function
 
 #End Region
 
-End Class
+    End Class
 
 #End Region
 
@@ -904,6 +906,4 @@ End Class
 
 #End Region
 
-
-
-
+End Namespace

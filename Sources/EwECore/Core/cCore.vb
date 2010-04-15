@@ -4106,10 +4106,10 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_Quota_Flags(ByVal obj As cEcosimFisheriesRegulation, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_Quota_Flags(ByVal obj As cMSEFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
 
         If obj Is Nothing Then
-            'If Ecosim has not been loaded then the cEcosimFisheriesRegulation objects will be Nothing
+            'If Ecosim has not been loaded then the cMSEFleetInput objects will be Nothing
             'boot out of here in that case
             Return False
         End If
@@ -4127,7 +4127,7 @@ Public Class cCore
 
         If bSendMessage Then
             Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, _
-                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcosimFisheriesRegulation))
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput))
         End If
 
         obj.AllowValidation = True
@@ -4372,7 +4372,8 @@ Public Class cCore
             Case eDataTypes.FleetInput, _
                  eDataTypes.EcosimFleetInput, _
                  eDataTypes.EcosimFleetOutput, _
-                 eDataTypes.EcospaceFleet ', eDataTypes.FleetOutput
+                 eDataTypes.EcospaceFleet, _
+                 eDataTypes.MSEFleetInput
 
                 ' Cascase fleet name to all relevant core IO objects
                 objCascade = Me.FleetInputs(obj.Index)
@@ -4553,7 +4554,6 @@ Public Class cCore
     'Friend m_EcoSimGroupSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
     Friend m_EcosimFleetInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFleetInput, 1)
     Friend m_EcosimFleetOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
-    Friend m_EcosimFisheriesRegulations As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFisheriesRegulation, 1)
     Private m_PPIManager As cPPIManager
 
     Private m_EcopathStats As cEcoPathStats
@@ -4674,10 +4674,8 @@ Public Class cCore
     Public Sub NormalizeQuotaShare()
         ' Sanity check
         Debug.Assert(Me.StateMonitor.HasEcosimLoaded())
-        ' Normalize Quota share values
-        Me.m_MSEData.SumQuotaShareToOne()
-        ' Refresh ecosim quota data
-        Me.LoadEcosimFisheriesRegulations()
+        ' Normalize MSE quota share values
+        Me.MSEManager.SumQuotaShareToOne()
         Me.m_StateMonitor.SetEcoSimLoaded(True)
         ' Send out data changed message for MSE
         Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoSim, eMessageType.DataModified))
@@ -4946,7 +4944,6 @@ Public Class cCore
 
             InitEcosimGroupOutput()
             InitEcosimFleetOutput()
-            InitEcosimFisheriesRegulations()
 
             InitEcosimTimeSeries()
             LoadEcosimTimeSeries()
@@ -4955,7 +4952,6 @@ Public Class cCore
             Me.LoadStanzas()
 
             Me.m_EcosimStats = New cEcosimStats(Me)
-
 
             'init the monte carlo model with the newly loaded data
             Me.m_MonteCarlo.init(Me)
@@ -5282,27 +5278,6 @@ Public Class cCore
         End Get
     End Property
 
-    ''' <summary>
-    ''' Get regulation information that apply to a given fleet in Ecosim.
-    ''' </summary>
-    ''' <param name="iFleet">The fleet to obtain regulations information for.</param>
-    Public ReadOnly Property EcosimFisheriesRegulations(ByVal iFleet As Integer) As cEcosimFisheriesRegulation
-        Get
-
-            Try
-                If Me.m_EcosimFisheriesRegulations IsNot Nothing Then
-                    If Me.m_EcosimFisheriesRegulations.Count > 0 Then
-                        Return DirectCast(m_EcosimFisheriesRegulations(iFleet), cEcosimFisheriesRegulation)
-                    End If
-                End If
-                Return Nothing
-            Catch ex As Exception
-                cLog.Write(ex)
-                Return Nothing
-            End Try
-        End Get
-    End Property
-
     Private Sub InitEcosimFleetInput()
         Try
 
@@ -5421,57 +5396,6 @@ Public Class cCore
             Throw New ArgumentException(Me.ToString & ".LoadEcosimOutputs() Error: " & ex.Message, ex)
         End Try
     End Sub
-
-    ''' <summary>
-    ''' Update the list of available ecosim input groups
-    ''' </summary>
-    Private Function InitEcosimFisheriesRegulations() As Boolean
-
-        m_EcosimFisheriesRegulations.Clear()
-
-        For i As Integer = 1 To nFleets
-            m_EcosimFisheriesRegulations.Add(New cEcosimFisheriesRegulation(Me, m_EcoPathData.FleetDBID(i)))
-        Next i
-
-        LoadEcosimFisheriesRegulations()
-
-    End Function
-
-    Private Function LoadEcosimFisheriesRegulations() As Boolean
-
-        Dim bSucces As Boolean = True
-
-        For Each reg As cEcosimFisheriesRegulation In m_EcosimFisheriesRegulations
-
-            'convert the Database ID into an iGroup
-            Dim iFleet As Integer = Array.IndexOf(m_EcoPathData.FleetDBID, reg.DBID)
-
-            reg.AllowValidation = False
-
-            reg.Index = iFleet
-
-            'get the group name from EcoPath not EcoSim
-            reg.Name = m_EcoPathData.FleetName(iFleet)
-            reg.MaxEffort = m_MSEData.MaxEffort(iFleet)
-            reg.QuotaType = m_MSEData.QuotaType(iFleet)
-
-            Try
-                For iGroup As Integer = 1 To nGroups
-                    reg.QuotaShare(iGroup) = m_MSEData.Quotashare(iFleet, iGroup)
-                Next
-
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-                bSucces = False
-            End Try
-
-            reg.ResetStatusFlags()
-            reg.AllowValidation = True
-
-        Next
-        Return bSucces
-
-    End Function
 
     Private Function InitEcosimGroupOutput() As Boolean
 
@@ -5767,30 +5691,6 @@ Public Class cCore
             Return False
 
         End Try
-        Return True
-
-    End Function
-
-    ''' <summary>
-    ''' </summary>
-    ''' <returns>True if succesful.</returns>
-    Private Function UpdateEcosimFisheriesRegulation(ByVal iDBID As Integer) As Boolean
-
-        Dim iFleet As Integer = Array.IndexOf(Me.m_EcoPathData.FleetDBID, iDBID)
-        Dim reg As cEcosimFisheriesRegulation = Me.EcosimFisheriesRegulations(iFleet)
-
-        Try
-            m_MSEData.MaxEffort(iFleet) = reg.MaxEffort
-            m_MSEData.QuotaType(iFleet) = reg.QuotaType
-            For iGroup As Integer = 1 To nGroups
-                m_MSEData.Quotashare(iFleet, iGroup) = reg.QuotaShare(iGroup)
-            Next
-
-        Catch ex As Exception
-            cLog.Write(Me.ToString & ".UpdateEcoSimScenario() Error: " & ex.Message)
-            Return False
-        End Try
-
         Return True
 
     End Function
@@ -10112,9 +10012,6 @@ Public Class cCore
                     ' VERIFY_JS: This line of code is never hit?
                     msAffected = eCoreComponentType.ShapesManager
 
-                Case eDataTypes.EcosimFisheriesRegulation
-                    If bValidatedOk Then Me.UpdateEcosimFisheriesRegulation(idAffected)
-
                 Case eDataTypes.EcospaceBasemap
                     If bValidatedOk Then Me.UpdateEcospaceBasemap()
 
@@ -10468,13 +10365,13 @@ Public Class cCore
                 Select Case value.varName
                     Case eVarNameFlags.Landings, eVarNameFlags.OffVesselPrice
                         Set_MarketPrice_Flags(flt, True)
-                        Set_Quota_Flags(Me.EcosimFisheriesRegulations(flt.Index), True)
+                        Set_Quota_Flags(Me.MSEManager.FleetInputs(flt.Index), True)
 
                         'landings have changed set quota share
                         Me.m_MSEData.setDefaultQuotaShare(Me.m_EcoPathData)
 
                         Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
-                                                    eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcosimFisheriesRegulation)
+                                                    eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
                         Me.m_publisher.AddMessage(qsMsg)
 
 
@@ -10483,7 +10380,7 @@ Public Class cCore
 
                         Me.m_MSEData.setDefaultQuotaShare(Me.m_EcoPathData)
                         Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
-                            eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcosimFisheriesRegulation)
+                            eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
                         Me.m_publisher.AddMessage(qsMsg)
 
 
@@ -10887,7 +10784,7 @@ Public Class cCore
 
                 End Select
 
-            Case eDataTypes.EcosimFisheriesRegulation
+            Case eDataTypes.MSEFleetInput
 
                 'Something in the fisheries regulation data has changed 
                 'update all the variables
@@ -11146,7 +11043,7 @@ Public Class cCore
     Private Sub OnPluginAssemblyStateChanged(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
 
         If (pa Is Nothing) Then Return
-        If pa.Plugins(GetType(IEconomicData)) IsNot Nothing Then
+        If (pa.Plugins(GetType(IEconomicData)) IsNot Nothing) Then
             Me.OnEconomicDataPluginEnabled()
         End If
 

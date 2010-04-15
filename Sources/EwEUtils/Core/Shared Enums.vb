@@ -1594,10 +1594,10 @@ Namespace Core
         ''' </summary>    
         GameData = 58
 
-        ''' <summary>
-        ''' Data belongs to the Ecosim fisheries regulation engine.
-        ''' </summary>    
-        EcosimFisheriesRegulation = 59
+        '''' <summary>
+        '''' Data belongs to the Ecosim fisheries regulation engine.
+        '''' </summary>    
+        'EcosimFisheriesRegulation = 59
 
         ''' <summary>
         ''' Data belongs to Ecopath statistics.

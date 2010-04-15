@@ -4,6 +4,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports SourceGrid2.Cells
+Imports EwECore.MSE
 
 #End Region ' Imports
 
@@ -36,8 +37,8 @@ Namespace Ecosim
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
 
-            For iFleet As Integer = 1 To core.nFleets
-                src = core.FleetInputs(iFleet)
+            For iFleet As Integer = 1 To Core.nFleets
+                src = Core.FleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, _
                                                                  src, eVarNameFlags.Name, Nothing, _
                                                                  My.Resources.GENERIC_LABEL_DETAILEDLABEL, cStyleGuide.eUnitType.Currency)
@@ -50,7 +51,7 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            Dim reg As cEcosimFisheriesRegulation = Nothing
+            Dim fleet As cMSEFleetInput = Nothing
             Dim group As cCoreInputOutputBase = Nothing
             Dim prop As cProperty = Nothing
             Dim propSum As cFormulaProperty = Nothing
@@ -58,12 +59,12 @@ Namespace Ecosim
             Dim alPropSum As New ArrayList()
 
             ' For each group
-            For iGroup As Integer = 1 To core.nGroups
+            For iGroup As Integer = 1 To Core.nGroups
 
                 Me.AddRow()
 
                 'Get the group info
-                group = core.EcoPathGroupInputs(iGroup)
+                group = Core.EcoPathGroupInputs(iGroup)
 
                 ' Fleet name As row header
                 Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
@@ -74,8 +75,8 @@ Namespace Ecosim
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To Me.Core.nFleets
-                    reg = Core.EcosimFisheriesRegulations(iFleet)
-                    prop = Me.PropertyManager.GetProperty(reg, eVarNameFlags.QuotaShare, group)
+                    fleet = Core.MSEManager.FleetInputs(iFleet)
+                    prop = Me.PropertyManager.GetProperty(fleet, eVarNameFlags.QuotaShare, group)
                     Me(iGroup, 1 + iFleet) = New PropertyCell(prop)
 
                     ' Add to sum row

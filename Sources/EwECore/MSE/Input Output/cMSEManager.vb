@@ -292,6 +292,8 @@ Namespace MSE
 
         Public Function ValidateRun() As Boolean
 
+            ' ToDo_JS: globalize this method
+
             ' Should this method not use Feedback messages where the user can opt to
             ' cancel the run if data is going to get affected too much?
 
@@ -306,7 +308,7 @@ Namespace MSE
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 Dim bNoQuotaSet As Boolean = True
                 For iFlt As Integer = 1 To Me.m_core.nFleets
-                    If Me.m_core.EcosimFisheriesRegulations(iFlt).QuotaType <> eQuotaTypes.NotUsed Then
+                    If Me.FleetInputs(iFlt).QuotaType <> eQuotaTypes.NotUsed Then
                         bNoQuotaSet = False
                         bOK = False
                         Exit For
@@ -330,7 +332,7 @@ Namespace MSE
                         'check the Quota options for this group
                         For iFlt As Integer = 1 To Me.m_core.nFleets
                             If Me.m_core.FleetInputs(iFlt).Landings(igrp) > 0 Then
-                                If Me.m_core.EcosimFisheriesRegulations(iFlt).QuotaType <> eQuotaTypes.NotUsed Then
+                                If Me.FleetInputs(iFlt).QuotaType <> eQuotaTypes.NotUsed Then
                                     'this group has both Fixed Escapement and Quota option set
                                     'Only Fixed Escapement will be used
 
@@ -495,20 +497,20 @@ Namespace MSE
                     mseGrp.Index = iGroup
                     mseGrp.Name = Me.m_core.m_EcoPathData.GroupName(iGroup)
 
-                    mseGrp.UpperRisk = Me.m_MSEdata.BioRiskValue(mseGrp.Index, 1)
-                    mseGrp.LowerRisk = Me.m_MSEdata.BioRiskValue(mseGrp.Index, 0)
-                    mseGrp.FixedEscapement = Me.m_MSEdata.FixedEscapement(mseGrp.Index)
+                    mseGrp.UpperRisk = Me.m_MSEdata.BioRiskValue(iGroup, 1)
+                    mseGrp.LowerRisk = Me.m_MSEdata.BioRiskValue(iGroup, 0)
+                    mseGrp.FixedEscapement = Me.m_MSEdata.FixedEscapement(iGroup)
 
-                    mseGrp.BiomassRefLower = Me.m_MSEdata.BioBounds(mseGrp.Index).Lower
-                    mseGrp.BiomassRefUpper = Me.m_MSEdata.BioBounds(mseGrp.Index).Upper
+                    mseGrp.BiomassRefLower = Me.m_MSEdata.BioBounds(iGroup).Lower
+                    mseGrp.BiomassRefUpper = Me.m_MSEdata.BioBounds(iGroup).Upper
 
-                    mseGrp.CatchRefLower = Me.m_MSEdata.CatchGroupBounds(mseGrp.Index).Lower
-                    mseGrp.CatchRefUpper = Me.m_MSEdata.CatchGroupBounds(mseGrp.Index).Upper
+                    mseGrp.CatchRefLower = Me.m_MSEdata.CatchGroupBounds(iGroup).Lower
+                    mseGrp.CatchRefUpper = Me.m_MSEdata.CatchGroupBounds(iGroup).Upper
 
                     For it As Integer = 1 To Me.m_MSEdata.nYears
-                        mseGrp.BiomassCV(it) = Me.m_MSEdata.CVBiomT(mseGrp.Index, it)
+                        mseGrp.BiomassCV(it) = Me.m_MSEdata.CVBiomT(iGroup, it)
                     Next
-                    'mseGrp.BiomassCV = Me.m_MSEdata.CVbiomEst(mseGrp.Index)
+                    'mseGrp.BiomassCV = Me.m_MSEdata.CVbiomEst(iGroup)
 
                     mseGrp.ResetStatusFlags()
                     mseGrp.AllowValidation = True
@@ -556,21 +558,28 @@ Namespace MSE
 
                     mseFlt.Index = iFleet
                     mseFlt.Name = Me.m_core.m_EcoPathData.FleetName(iFleet)
-                    mseFlt.QIncrease = Me.m_MSEdata.Qgrow(mseFlt.Index)
-                    mseFlt.MSYEvaluateFleet = Me.m_MSEdata.MSYEvaluateFleet(mseFlt.Index)
+                    mseFlt.QIncrease = Me.m_MSEdata.Qgrow(iFleet)
+                    mseFlt.MSYEvaluateFleet = Me.m_MSEdata.MSYEvaluateFleet(iFleet)
 
-                    mseFlt.CatchRefLower = Me.m_MSEdata.CatchFleetBounds(mseFlt.Index).Lower
-                    mseFlt.CatchRefUpper = Me.m_MSEdata.CatchFleetBounds(mseFlt.Index).Upper
+                    mseFlt.CatchRefLower = Me.m_MSEdata.CatchFleetBounds(iFleet).Lower
+                    mseFlt.CatchRefUpper = Me.m_MSEdata.CatchFleetBounds(iFleet).Upper
 
-                    mseFlt.EffortRefLower = Me.m_MSEdata.EffortFleetBounds(mseFlt.Index).Lower
-                    mseFlt.EffortRefUpper = Me.m_MSEdata.EffortFleetBounds(mseFlt.Index).Upper
+                    mseFlt.EffortRefLower = Me.m_MSEdata.EffortFleetBounds(iFleet).Lower
+                    mseFlt.EffortRefUpper = Me.m_MSEdata.EffortFleetBounds(iFleet).Upper
 
                     For igrp As Integer = 1 To m_core.nLivingGroups
-                        mseFlt.FleetWeight(igrp) = Me.m_MSEdata.Fweight(mseFlt.Index, igrp)
+                        mseFlt.FleetWeight(igrp) = Me.m_MSEdata.Fweight(iFleet, igrp)
                     Next
 
                     For it As Integer = 1 To Me.m_MSEdata.nYears
-                        mseFlt.FleetCV(it) = Me.m_MSEdata.CVFT(mseFlt.Index, it)
+                        mseFlt.FleetCV(it) = Me.m_MSEdata.CVFT(iFleet, it)
+                    Next
+
+                    mseFlt.MaxEffort = Me.m_MSEdata.MaxEffort(iFleet)
+                    mseFlt.QuotaType = Me.m_MSEdata.QuotaType(iFleet)
+
+                    For iGroup = 1 To m_core.nGroups
+                        mseFlt.QuotaShare(iGroup) = m_MSEdata.Quotashare(iFleet, iGroup)
                     Next
 
                     mseFlt.ResetStatusFlags()
@@ -627,20 +636,23 @@ Namespace MSE
                     Case eDataTypes.MSEGroupInput
 
                         For Each mseGrp As cMSEGroupInput In Me.m_lstGroupInputs
-                            ' Me.m_MSEdata.CVbiomEst(mseGrp.Index) = mseGrp.BiomassCV
-                            Me.m_MSEdata.FixedEscapement(mseGrp.Index) = mseGrp.FixedEscapement
 
-                            Me.m_MSEdata.BioRiskValue(mseGrp.Index, 1) = mseGrp.UpperRisk
-                            Me.m_MSEdata.BioRiskValue(mseGrp.Index, 0) = mseGrp.LowerRisk
+                            Dim iGroup As Integer = mseGrp.Index
 
-                            Me.m_MSEdata.BioBounds(mseGrp.Index).Lower = mseGrp.BiomassRefLower
-                            Me.m_MSEdata.BioBounds(mseGrp.Index).Upper = mseGrp.BiomassRefUpper
+                            ' Me.m_MSEdata.CVbiomEst(iGroup) = mseGrp.BiomassCV
+                            Me.m_MSEdata.FixedEscapement(iGroup) = mseGrp.FixedEscapement
 
-                            Me.m_MSEdata.CatchGroupBounds(mseGrp.Index).Lower = mseGrp.CatchRefLower
-                            Me.m_MSEdata.CatchGroupBounds(mseGrp.Index).Upper = mseGrp.CatchRefUpper
+                            Me.m_MSEdata.BioRiskValue(iGroup, 1) = mseGrp.UpperRisk
+                            Me.m_MSEdata.BioRiskValue(iGroup, 0) = mseGrp.LowerRisk
+
+                            Me.m_MSEdata.BioBounds(iGroup).Lower = mseGrp.BiomassRefLower
+                            Me.m_MSEdata.BioBounds(iGroup).Upper = mseGrp.BiomassRefUpper
+
+                            Me.m_MSEdata.CatchGroupBounds(iGroup).Lower = mseGrp.CatchRefLower
+                            Me.m_MSEdata.CatchGroupBounds(iGroup).Upper = mseGrp.CatchRefUpper
 
                             For it As Integer = 1 To Me.m_MSEdata.nYears
-                                Me.m_MSEdata.CVBiomT(mseGrp.Index, it) = mseGrp.BiomassCV(it)
+                                Me.m_MSEdata.CVBiomT(iGroup, it) = mseGrp.BiomassCV(it)
                             Next
 
                         Next
@@ -648,21 +660,30 @@ Namespace MSE
                     Case eDataTypes.MSEFleetInput
 
                         For Each mseFlt As cMSEFleetInput In Me.m_lstFleetInputs
-                            Me.m_MSEdata.Qgrow(mseFlt.Index) = mseFlt.QIncrease
 
-                            Me.m_MSEdata.CatchFleetBounds(mseFlt.Index).Lower = mseFlt.CatchRefLower
-                            Me.m_MSEdata.CatchFleetBounds(mseFlt.Index).Upper = mseFlt.CatchRefUpper
+                            Dim iFleet As Integer = mseFlt.Index
 
-                            Me.m_MSEdata.EffortFleetBounds(mseFlt.Index).Lower = mseFlt.EffortRefLower
-                            Me.m_MSEdata.EffortFleetBounds(mseFlt.Index).Upper = mseFlt.EffortRefUpper
-                            Me.m_MSEdata.MSYEvaluateFleet(mseFlt.Index) = mseFlt.MSYEvaluateFleet
+                            Me.m_MSEdata.Qgrow(iFleet) = mseFlt.QIncrease
+
+                            Me.m_MSEdata.CatchFleetBounds(iFleet).Lower = mseFlt.CatchRefLower
+                            Me.m_MSEdata.CatchFleetBounds(iFleet).Upper = mseFlt.CatchRefUpper
+
+                            Me.m_MSEdata.EffortFleetBounds(iFleet).Lower = mseFlt.EffortRefLower
+                            Me.m_MSEdata.EffortFleetBounds(iFleet).Upper = mseFlt.EffortRefUpper
+                            Me.m_MSEdata.MSYEvaluateFleet(iFleet) = mseFlt.MSYEvaluateFleet
 
                             For igrp As Integer = 1 To m_core.nLivingGroups
-                                Me.m_MSEdata.Fweight(mseFlt.Index, igrp) = mseFlt.FleetWeight(igrp)
+                                Me.m_MSEdata.Fweight(iFleet, igrp) = mseFlt.FleetWeight(igrp)
                             Next igrp
 
                             For it As Integer = 1 To Me.m_MSEdata.nYears
-                                Me.m_MSEdata.CVFT(mseFlt.Index, it) = mseFlt.FleetCV(it)
+                                Me.m_MSEdata.CVFT(iFleet, it) = mseFlt.FleetCV(it)
+                            Next
+
+                            Me.m_MSEdata.MaxEffort(iFleet) = mseFlt.MaxEffort
+                            Me.m_MSEdata.QuotaType(iFleet) = mseFlt.QuotaType
+                            For iGroup As Integer = 1 To m_core.nGroups
+                                m_MSEdata.Quotashare(iFleet, iGroup) = mseFlt.QuotaShare(iGroup)
                             Next
 
                         Next mseFlt
@@ -706,6 +727,27 @@ Namespace MSE
 
         End Sub
 
+        Public Sub SumQuotaShareToOne()
+
+            Dim QuotaShareTot As Single
+            Dim igrp As Integer
+            Dim iflt As Integer
+
+            For igrp = 1 To Me.m_core.nGroups
+                QuotaShareTot = 0
+                For iflt = 1 To Me.m_core.nFleets
+                    QuotaShareTot += Me.m_MSEdata.Quotashare(iflt, igrp)
+                Next
+
+                If (QuotaShareTot > 0) And (QuotaShareTot <> 1.0!) Then
+                    For iflt = 1 To Me.m_core.nFleets
+                        Me.m_MSEdata.Quotashare(iflt, igrp) /= QuotaShareTot
+                    Next
+                End If
+            Next igrp
+            Me.Load()
+
+        End Sub
 #End Region
 
 #Region "Model communication callback delegates for model and interface"

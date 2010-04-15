@@ -27,7 +27,7 @@ Public Class cGameServerInterface
         m_dctCoreListData.Add(eDataTypes.EcoSimGroupOutput, m_core.m_EcoSimGroupOutputs)
         m_dctCoreListData.Add(eDataTypes.EcosimFleetOutput, m_core.m_EcosimFleetOutputs)
         m_dctCoreListData.Add(eDataTypes.EcoSimScenario, m_core.m_EcoSimScenarios)
-        m_dctCoreListData.Add(eDataTypes.EcosimFisheriesRegulation, m_core.m_EcosimFisheriesRegulations)
+        m_dctCoreListData.Add(eDataTypes.MSEFleetInput, m_core.MSEManager.FleetInputs)
         m_dctCoreListData.Add(eDataTypes.EcoSimGroupInput, m_core.m_EcoSimGroups)
 
         'EcoSpace
