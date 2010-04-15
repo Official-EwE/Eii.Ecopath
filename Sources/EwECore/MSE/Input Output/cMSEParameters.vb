@@ -81,12 +81,20 @@ Namespace MSE
             val.Stored = False
             m_values.Add(val.varName, val)
 
-            'Effort Mode
-            meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eMSEEffortMode)).Length, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.MSEEffortMode, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEEffortMode))
+            'Regualtory Mode
+            meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eMSERegulationMode)).Length, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Integer, eVarNameFlags.MSERegulatoryMode, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEEffortSource))
             val.Stored = False
             m_values.Add(val.varName, val)
 
+
+            'Effort Mode
+            meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eMSEEffortSource)).Length, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Integer, eVarNameFlags.MSEEffortSource, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEEffortSource))
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
+            m_values.Add(val.varName, val)
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.MSEStop, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEStop))
             val.Stored = False
@@ -260,20 +268,34 @@ Namespace MSE
 
 #Region "Status Properties"
 
-        Public Property EffortMode() As eMSEEffortMode
-            Get
-                Return DirectCast(GetVariable(eVarNameFlags.MSEEffortMode), eMSEEffortMode)
-            End Get
 
-            Set(ByVal value As eMSEEffortMode)
-                SetVariable(eVarNameFlags.MSEEffortMode, value)
+    Public Property RegulatoryMode() As eMSERegulationMode
+        Get
+            Return DirectCast(GetVariable(eVarNameFlags.MSERegulatoryMode), eMSERegulationMode)
+        End Get
+            Set(ByVal value As eMSERegulationMode)
+                SetVariable(eVarNameFlags.MSERegulatoryMode, value)
             End Set
         End Property
+
+
+
+    Public Property EffortSource() As eMSEEffortSource
+        Get
+            Return DirectCast(GetVariable(eVarNameFlags.MSEEffortSource), eMSEEffortSource)
+        End Get
+
+        Set(ByVal value As eMSEEffortSource)
+            SetVariable(eVarNameFlags.MSEEffortSource, value)
+        End Set
+    End Property
+
 
         Public Property StopRunStatus() As eStatusFlags
             Get
                 Return GetStatus(eVarNameFlags.MSEUseEconomicPlugin)
             End Get
+
 
             Set(ByVal value As eStatusFlags)
                 SetStatus(eVarNameFlags.MSEUseEconomicPlugin, value)
