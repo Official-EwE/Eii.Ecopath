@@ -1028,7 +1028,12 @@ Namespace Core
         MSESave
 
         ''' <summary>Effort type the MSE is to use.</summary>
-        MSEEffortMode
+        MSEEffortSource
+
+        ''' <summary>
+        ''' Regulatory type use be MSE
+        ''' </summary>
+        MSERegulatoryMode
 
         MSERefBioLower
         MSERefBioUpper
