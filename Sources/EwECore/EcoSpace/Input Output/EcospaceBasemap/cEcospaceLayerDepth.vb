@@ -16,4 +16,12 @@ Public Class cEcospaceLayerDepth
         Me.m_dataType = eDataTypes.EcospaceLayerDepth
     End Sub
 
+    Public Function IsWaterCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+        Return Me.Cell(iRow, iCol) > 0
+    End Function
+
+    Public Function IsLandCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+        Return Me.Cell(iRow, iCol) <= 0
+    End Function
+
 End Class

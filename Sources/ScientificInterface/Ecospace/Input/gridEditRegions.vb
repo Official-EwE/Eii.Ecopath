@@ -767,6 +767,7 @@ Namespace Ecospace
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
             Dim ri As cRegionInfo = Nothing
 
             ' Throw warning that this may cause Ecospace to run out of memory.
@@ -788,8 +789,10 @@ Namespace Ecospace
             ' Create a region for each cell
             For iCol = 1 To bm.InCol
                 For iRow = 1 To bm.InRow
-                    ri = Me.CreateRegion(String.Format("({0}, {1})", iCol, iRow), False)
-                    ri.Cell = New Point(iCol, iRow)
+                    If layerDepth.IsWaterCell(iRow, iCol) Then
+                        ri = Me.CreateRegion(String.Format("({0}, {1})", iCol, iRow), False)
+                        ri.Cell = New Point(iCol, iRow)
+                    End If
                 Next iRow
             Next iCol
 
