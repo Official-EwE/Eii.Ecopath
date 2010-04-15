@@ -1380,7 +1380,7 @@ Namespace MSE
             SetBaseValues()
 
             If Me.m_core.PluginManager IsNot Nothing Then
-                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_data, Me.m_esData)
+                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_esData)
             End If
 
             'next is a vc temp fix for debugging
@@ -1684,7 +1684,7 @@ Namespace MSE
             SetBaseValues()
 
             If Me.m_core.PluginManager IsNot Nothing Then
-                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_data, Me.m_esData)
+                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_esData)
             End If
 
             'next is a vc temp fix for debugging
