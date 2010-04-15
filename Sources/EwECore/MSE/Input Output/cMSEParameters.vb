@@ -94,7 +94,6 @@ Namespace MSE
             val.Stored = False
             m_values.Add(val.varName, val)
 
-            m_values.Add(val.varName, val)
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.MSEStop, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEStop))
             val.Stored = False
