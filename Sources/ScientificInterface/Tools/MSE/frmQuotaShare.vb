@@ -19,7 +19,7 @@ Namespace Ecosim
             Me.Grid = Me.m_grid
         End Sub
 
-        Private Sub tsSumtoOneBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSumSharesToOne(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsSumtoOneBtn.Click
             Me.Core.NormalizeQuotaShare()
         End Sub
