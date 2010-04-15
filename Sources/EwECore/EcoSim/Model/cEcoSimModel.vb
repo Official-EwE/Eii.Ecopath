@@ -747,7 +747,7 @@ Namespace Ecosim
                     If Me.m_search.SearchMode = eSearchModes.MSE And Me.m_MSE.Data.UseQuotaRegs Then
                         'Effort is being regulated by the Quota's
                         'Effort can be either predicted or tracked from the existing Ecosim value
-                        Debug.Assert(Me.m_MSE.Data.EffortMode <> eMSEEffortMode.Tracking)
+                        Debug.Assert(Me.m_MSE.Data.RegulationMode <> eMSERegulationMode.NoRegulations)
 
                         If ipct = 1 Then
                             'only do the assessment and update the quotas once at the start of each year
