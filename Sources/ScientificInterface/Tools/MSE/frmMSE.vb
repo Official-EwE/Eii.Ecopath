@@ -37,20 +37,20 @@ Public Class frmMSE
     Dim m_MSE As cMSEManager
 
     Private m_fpNTrials As cPropertyFormatProvider
-    Private m_fpUsePlugin As cPropertyFormatProvider
+    Private m_fpStartYear As cPropertyFormatProvider
     Private m_fpSave As cPropertyFormatProvider
 
-    Private m_fpKalman As cPropertyFormatProvider
-    Private m_fpForecast As cPropertyFormatProvider
-    Private m_fpSBPower As cPropertyFormatProvider
+    'Private m_fpKalman As cPropertyFormatProvider
+    'Private m_fpForecast As cPropertyFormatProvider
+    'Private m_fpSBPower As cPropertyFormatProvider
 
-    Private m_fpUseQuotaRegs As cPropertyFormatProvider
+    'Private m_fpUseQuotaRegs As cPropertyFormatProvider
 
     Private m_paneMaster As MasterPane = Nothing
     Private m_zgh As cZedGraphHelper = Nothing
     Private m_curState As eMSEStates
 
-    Private m_dctEffortControls As Dictionary(Of eMSEEffortMode, RadioButton)
+    '   Private m_dctEffortControls As Dictionary(Of eMSERegulationMode, RadioButton)
 
     Private m_plotter As cMSEPlotter
     Private m_coreMessage As cMSEEventSource
@@ -88,31 +88,12 @@ Public Class frmMSE
         Me.m_MSE = Me.UIContext.Core.MSEManager
 
         Me.m_fpNTrials = New cPropertyFormatProvider(Me.UIContext, Me.txNTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
-        Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.UIContext, Me.ckPlugin, Me.m_MSE.ModelParameters, eVarNameFlags.MSEUseEconomicPlugin)
+        Me.m_fpStartYear = New cPropertyFormatProvider(Me.UIContext, Me.txStartYear, Me.m_MSE.ModelParameters, eVarNameFlags.MSEStartYear)
         Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
-
-        Me.m_fpForecast = New cPropertyFormatProvider(Me.UIContext, Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
-        Me.m_fpSBPower = New cPropertyFormatProvider(Me.UIContext, Me.txSBPower, Me.m_MSE.ModelParameters, eVarNameFlags.MSEAssessPower)
-        Me.m_fpKalman = New cPropertyFormatProvider(Me.UIContext, Me.txKalmanGain, Me.m_MSE.ModelParameters, eVarNameFlags.MSEKalmanGain)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
 
         m_coreMessage = New cMSEEventSource
-
-        'Assessment methods Catch Estimated Biomass and Direct Exploitation are stored in the tag property of the radio buttons
-        'see the Changed event of the radio buttons for setting the parameters
-        Me.rbCatchEstBio.Tag = eAssessmentMethods.CatchEstmBio
-        Me.rbDirectExp.Tag = eAssessmentMethods.DirectExploitation
-        Me.rbExact.Tag = eAssessmentMethods.Exact
-
-        Me.rbFTracking.Tag = eMSEEffortMode.Tracking
-        Me.rbPredictEffort.Tag = eMSEEffortMode.PredictUseQuota
-        Me.rbTrackUseQuota.Tag = eMSEEffortMode.TrackUseQuota
-
-        m_dctEffortControls = New Dictionary(Of eMSEEffortMode, RadioButton)
-        m_dctEffortControls.Add(eMSEEffortMode.Tracking, Me.rbFTracking)
-        m_dctEffortControls.Add(eMSEEffortMode.PredictUseQuota, Me.rbPredictEffort)
-        m_dctEffortControls.Add(eMSEEffortMode.TrackUseQuota, Me.rbTrackUseQuota)
 
         ' Display Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
@@ -132,8 +113,6 @@ Public Class frmMSE
         Me.m_plotter.PlotType = ePlotTypes.Line
         Me.m_plotter.DataType = ePlotData.Biomass
 
-        Me.UpdateSelectedEffortMode()
-
         Me.UpdateControls(eMSEStates.InActive)
 
         Me.initGraphs()
@@ -146,8 +125,6 @@ Public Class frmMSE
         'there is no interation data available for the graph
         'that has to be added via AddLineToGraph()
         Me.m_plotter.Clear()
-        '  Me.AddRefToGraph()
-        'Me.m_plotter.Draw()
 
     End Sub
 
@@ -243,15 +220,15 @@ Public Class frmMSE
 
 #Region "Interface events"
 
-    Private Sub rbFTracking_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFTracking.CheckedChanged, rbPredictEffort.CheckedChanged, rbTrackUseQuota.CheckedChanged
+    Private Sub rbFTracking_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
         If Me.m_MSE Is Nothing Then Exit Sub
 
         Try
             Dim rb As RadioButton = DirectCast(sender, RadioButton)
             If rb.Checked = True Then
-                Dim EffortMode As eMSEEffortMode = DirectCast(rb.Tag, eMSEEffortMode)
-                Me.m_MSE.ModelParameters.EffortMode = EffortMode
+                Dim EffortMode As eMSERegulationMode = DirectCast(rb.Tag, eMSERegulationMode)
+                Me.m_MSE.ModelParameters.RegulatoryMode = EffortMode
             End If
 
         Catch ex As Exception
@@ -281,7 +258,7 @@ Public Class frmMSE
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub onAssessmentMethodChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbCatchEstBio.CheckedChanged, rbDirectExp.CheckedChanged, rbExact.CheckedChanged
+    Private Sub onAssessmentMethodChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
 
             If Me.m_MSE Is Nothing Then Exit Sub
@@ -359,17 +336,6 @@ Public Class frmMSE
 
 #Region "Controls"
 
-
-    Private Sub UpdateSelectedEffortMode()
-
-        Try
-            m_dctEffortControls.Item(Me.m_MSE.ModelParameters.EffortMode).Checked = True
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
     Private Sub UpdateControls(ByVal State As eMSEStates)
 
         Try
@@ -380,35 +346,21 @@ Public Class frmMSE
                     Me.btRun.Enabled = True
                     Me.btStop.Enabled = False
                     Me.btShowHide.Enabled = True
-                    Me.pnlFTracking.Enabled = True
-                    Me.pnlRunOpt.Enabled = True
-                    Me.pnlRegOpt.Enabled = True
+                    Me.txStartYear.Enabled = True
 
                 Case eMSEStates.Running
                     Me.btRun.Enabled = False
                     Me.btStop.Enabled = True
                     Me.btShowHide.Enabled = False
-                    Me.pnlFTracking.Enabled = False
-                    Me.pnlRunOpt.Enabled = False
-                    Me.pnlFTracking.Enabled = False
-                    Me.pnlRegOpt.Enabled = False
+                    Me.txStartYear.Enabled = False
 
                 Case eMSEStates.Completed
                     Me.btRun.Enabled = True
                     Me.btStop.Enabled = False
                     Me.btShowHide.Enabled = True
-                    Me.pnlRunOpt.Enabled = True
-                    Me.pnlRegOpt.Enabled = True
+                    Me.txStartYear.Enabled = True
 
             End Select
-
-            If State <> eMSEStates.Running Then
-                If Me.m_MSE.ModelParameters.EffortMode = eMSEEffortMode.Tracking Then
-                    Me.pnlFTracking.Enabled = True
-                Else
-                    Me.pnlFTracking.Enabled = False
-                End If
-            End If
 
             m_curState = State
 
@@ -422,5 +374,8 @@ Public Class frmMSE
 
 #End Region
 
+    Private Sub frmMSE_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class
 
