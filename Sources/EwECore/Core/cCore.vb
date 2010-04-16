@@ -4928,8 +4928,6 @@ Public Class cCore
 
             m_EcoSim.Init(True)
 
-            m_MSEData.setDefaultRegValues(Me.m_EcoSimData, Me.m_EcoPathData)
-
             InitEcosimGroups()
             InitEcosimFleetInput()
             initEcoSimModelParameters()
@@ -10367,9 +10365,6 @@ Public Class cCore
                         Set_MarketPrice_Flags(flt, True)
                         Set_Quota_Flags(Me.MSEManager.FleetInputs(flt.Index), True)
 
-                        'landings have changed set quota share
-                        Me.m_MSEData.setDefaultQuotaShare(Me.m_EcoPathData)
-
                         Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
                                                     eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
                         Me.m_publisher.AddMessage(qsMsg)
@@ -10378,7 +10373,6 @@ Public Class cCore
                     Case eVarNameFlags.Discards
                         Set_DiscardMort_Flags(flt, True)
 
-                        Me.m_MSEData.setDefaultQuotaShare(Me.m_EcoPathData)
                         Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
                             eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
                         Me.m_publisher.AddMessage(qsMsg)
