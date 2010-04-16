@@ -17,7 +17,7 @@ Namespace MSE
     UseRegulations
 
     ''' <summary>Effort is being predicted via Ecosim. Regulations are used</summary>
-    PredictUseRegualtions
+        PredictUseRegualtions
 
     ''' <summary>Ecosim effort. Effort not regulated</summary>
     NoRegulations
@@ -119,12 +119,13 @@ End Enum
         Public CostSum As cMSESummaryStats
         Public JobsSum As cMSESummaryStats
 
-
         Public Bestimate() As Single
         Public BestimateLast() As Single
+
+        ''' <summary>Regulatory Mode</summary>
+        ''' <remarks></remarks>
         Public RegulationMode As eMSERegulationMode
         Public EffortSource As eMSEEffortSource
-        Public EffortMode As eMSERegulationMode
 
         Public BioBounds() As cMSEBounds
         ''' <summary>Catch by group bounds</summary>
@@ -163,20 +164,15 @@ End Enum
         Public MSYEvaluateValue As Boolean
 
         ''' <summary>
-        ''' Year/Timestep to start the assessment on
+        ''' Year to start the assessment on
         ''' </summary>
-        ''' <remarks></remarks>
+        ''' <remarks>This is in years the model runs on timesteps</remarks>
         Public StartYear As Integer
-
-        ' Public DoClosedLoop As Boolean
 
         Public Bbase() As Single
         Public Blim() As Single
         Public Fopt() As Single
-        ' Public KalWt() As Single
         Public FixedEscapement() As Single
-
-        ' Public CVest() As Single
 
         ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort  (by gear)</summary>
         Public MaxEffort() As Single 'gear
@@ -217,11 +213,14 @@ End Enum
 
         Public Sub New(ByVal EPdata As cEcopathDataStructures, _
                        ByVal ESdata As cEcosimDatastructures)
+
+            Me.m_EPData = EPdata
+            Me.m_ESData = ESdata
+
             Me.NTrials = 10 'default number of trials
             Me.RegulationMode = eMSERegulationMode.UseRegulations
             Me.StopRun = False
-            Me.m_EPData = EPdata
-            Me.m_ESData = ESdata
+
         End Sub
 
 #End Region 'Constructor
@@ -392,6 +391,8 @@ End Enum
                     Quota(iflt, igrp) = cCore.NULL_VALUE
                 Next
             Next
+
+            Me.setDefaultRegValues(Me.m_ESData, Me.m_EPData)
 
         End Sub
 
