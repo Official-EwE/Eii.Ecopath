@@ -542,14 +542,15 @@ Namespace MSE
         Private Sub setEffortForRun()
 
             Try
-
                 'Only set Effort high if using controls and EffortSource is NoCap
                 If Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_data.EffortSource = eMSEEffortSource.NoCap Then
+
+                    Dim stime As Integer = (Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear + 1
 
                     For iflt As Integer = 1 To Me.m_data.nFleets
                         'Only if this fleet is regulated
                         If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed Then
-                            For it As Integer = Me.m_data.StartYear To Me.m_data.nTimeSteps
+                            For it As Integer = stime To Me.m_data.nTimeSteps
                                 Me.m_esData.FishRateGear(iflt, it) = DEFAULT_EFFORT
                             Next it
                         End If 'Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed

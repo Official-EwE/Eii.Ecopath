@@ -707,6 +707,9 @@ Namespace MSE
                         Me.m_MSEdata.EffortSource = Me.m_parameters.EffortSource
                         Me.m_MSEdata.StopRun = Me.m_parameters.StopRun
                         Me.m_MSEdata.SaveOutput = Me.m_parameters.Save
+                        Me.m_MSEdata.StartYear = Me.m_parameters.MSEStartYear
+                        Me.m_MSEdata.MSYStartTimeIndex = Me.m_parameters.MSYStartTimeIndex
+
 
                         Me.m_MSEdata.MSYEvaluateValue = Me.m_parameters.MSYEvaluateValue
                         Me.m_MSEdata.MSYRunSilent = Me.m_parameters.MSYRunSilent
