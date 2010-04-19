@@ -1527,11 +1527,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Trophic mediation function &apos;{0}&apos; has zero value at Ecopath base and cannot be used. Please edit your data.
+        '''  Looks up a localized string similar to Some mediation files cannot be used. Please edit your data..
         '''</summary>
         Friend Shared ReadOnly Property MEDIATION_ZERO_BASE() As String
             Get
                 Return ResourceManager.GetString("MEDIATION_ZERO_BASE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Trophic mediation function &apos;{0}&apos; has zero value at Ecopath base..
+        '''</summary>
+        Friend Shared ReadOnly Property MEDIATION_ZERO_BASE_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("MEDIATION_ZERO_BASE_DETAIL", resourceCulture)
             End Get
         End Property
         

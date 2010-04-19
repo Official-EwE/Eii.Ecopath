@@ -722,8 +722,8 @@ System Error: {0}</value>
   <data name="PSD_ERROR_WEIGHTCLASSES" xml:space="preserve">
     <value>The PSD estimation routine can work only when groups fall into at least two weight classes. Please redefine the weight range by adjusting the number of weight classes and/or the lowest weight class.</value>
   </data>
-  <data name="MEDIATION_ZERO_BASE" xml:space="preserve">
-    <value>Trophic mediation function '{0}' has zero value at Ecopath base and cannot be used. Please edit your data</value>
+  <data name="MEDIATION_ZERO_BASE_DETAIL" xml:space="preserve">
+    <value>Trophic mediation function '{0}' has zero value at Ecopath base.</value>
     <comment>{0}=med fn name</comment>
   </data>
   <data name="STANZA_KinVGBF_MISSING" xml:space="preserve">
@@ -893,5 +893,8 @@ System Error: {0}</value>
   </data>
   <data name="ECOSPACE_OUT_OF_MEMORY" xml:space="preserve">
     <value>Ecospace has run out of memory. Please try reducing the number of Regions and/or Timesteps.</value>
+  </data>
+  <data name="MEDIATION_ZERO_BASE" xml:space="preserve">
+    <value>Some mediation files cannot be used. Please edit your data.</value>
   </data>
 </root>

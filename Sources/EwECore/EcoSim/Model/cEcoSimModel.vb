@@ -2679,7 +2679,10 @@ Namespace Ecosim
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub InitializeMedFunctions()
+
             Dim ii As Integer, i As Integer, j As Integer, jj As Integer ', MedX As Single
+            Dim msg As cMessage = Nothing
+            Dim vs As cVariableStatus = Nothing
 
             'Clear out the old data set all mediation functions to false
             'SetMedFunctions is only called from derivt if
@@ -2735,8 +2738,19 @@ Namespace Ecosim
                 m_Data.NMedXused(i) = jj
                 m_Data.MedYbase(i) = m_Data.Medpoints(m_Data.IMedBase(i), i)
                 If m_Data.MedYbase(i) = 0 Then
-                    Me.m_publisher.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.MEDIATION_ZERO_BASE, Me.m_Data.MediationTitles(i)), _
-                                                eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
+
+                    ' Create base message
+                    If (msg Is Nothing) Then
+                        msg = New cMessage(My.Resources.CoreMessages.MEDIATION_ZERO_BASE, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                        Me.m_publisher.AddMessage(msg)
+                    End If
+
+                    ' Add detail
+                    vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
+                                             String.Format(My.Resources.CoreMessages.MEDIATION_ZERO_BASE_DETAIL, Me.m_Data.MediationTitles(i)), _
+                                             eVarNameFlags.MedFunctNumber, eDataTypes.Mediation, eCoreComponentType.EcoSim, i)
+                    msg.AddVariable(vs)
+                    ' Flag med fn as unusable
                     m_Data.MedIsUsed(i) = False
                 End If
                 If jj = 0 Or m_Data.MedXbase(i) = 0 Then
