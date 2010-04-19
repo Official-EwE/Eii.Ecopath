@@ -2151,14 +2151,16 @@ Namespace Database
 
                 Case eDataTypes.Mediation
                     Dim nShapeNumber As Integer = CInt(Me.m_dbEwE6.GetValue("SELECT COUNT(*) FROM EcosimShapeMediation"))
-                    fsd.Title = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
+
+                    ' JS 19April 2010 (Sascha is 5!!!): do NOT adjust title; this will cripple ability to find duplicates
+                    'fsd.Title = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
 
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeMediation")
                     drow = writer.NewRow()
                     drow("IMedBase") = fsd.IMedBase
                     drow("zScale") = fsd.ZScale
                     ' New in EwE6
-                    drow("Title") = fsd.Title
+                    drow("Title") = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
                     drow("Yzero") = fsd.Yzero
                     drow("Ybase") = fsd.YBase
                     drow("Yend") = fsd.YBase
