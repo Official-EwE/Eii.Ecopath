@@ -880,6 +880,35 @@ Public Class cPluginManager
 
     End Sub
 
+    Public Function EcosimPreDataInitialized(ByVal EcosimDatastructures As Object) As Boolean
+
+        Return Me.TryInvokeMethod(GetType(IEcosimDataInitializedPlugin), _
+                                  "EcosimPreDataInitialized", _
+                                  New Object() {EcosimDatastructures})
+
+    End Function
+
+
+    Public Function EcosimPostDataInitialized(ByVal EcosimDatastructures As Object) As Boolean
+
+        Return Me.TryInvokeMethod(GetType(IEcosimDataInitializedPlugin), _
+                                  "EcosimPostDataInitialized", _
+                                  New Object() {EcosimDatastructures})
+
+    End Function
+
+
+
+    Public Function EcosimPreRunInitialized(ByVal EcosimDatastructures As Object) As Boolean
+
+        Return Me.TryInvokeMethod(GetType(IEcosimDataInitializedPlugin), _
+                                  "EcosimPreRunInitialized", _
+                                  New Object() {EcosimDatastructures})
+
+    End Function
+
+
+
     Public Function EcosimInitialized(ByVal EcosimDatastructures As Object) As Boolean
 
         ' Invoke IEcosimInitializedPlugin.EcosimInitialized(datasource)
@@ -888,6 +917,7 @@ Public Class cPluginManager
                                   New Object() {EcosimDatastructures})
 
     End Function
+
 
     Public Function EcosimModifyTimeseries(ByVal TimeSeriesDataStructures As Object) As Boolean
 
