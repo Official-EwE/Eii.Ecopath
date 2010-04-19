@@ -140,7 +140,6 @@ Namespace Ecosim
             End Set
         End Property
 
-
         ''' <summary>
         ''' Color of the currently selected block
         ''' </summary>
@@ -220,8 +219,15 @@ Namespace Ecosim
         Private Sub pbFishingBlocks_MouseDown(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
             Handles m_pbFishingBlocks.MouseDown
 
-            Me.m_bIsSketching = True
-            Me.m_DataSource.BatchEdit = True
+            If (e.Button And Windows.Forms.MouseButtons.Right) > 0 Then
+                Me.ProcessMousePickup(e.Location)
+            End If
+
+            If (e.Button And Windows.Forms.MouseButtons.Left) > 0 Then
+                Me.m_bIsSketching = True
+                Me.m_DataSource.BatchEdit = True
+                Me.ProcessMouseSketch(e.Location)
+            End If
 
         End Sub
 
@@ -229,7 +235,7 @@ Namespace Ecosim
             Handles m_pbFishingBlocks.MouseMove
 
             If Me.m_bIsSketching Then
-                Me.ProcessCellClick(e.X, e.Y)
+                Me.ProcessMouseSketch(e.Location)
             End If
 
         End Sub
@@ -242,12 +248,12 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub pbFishingBlocks_MouseClick(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
-            Handles m_pbFishingBlocks.MouseClick
+        'Private Sub pbFishingBlocks_MouseClick(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
+        '    Handles m_pbFishingBlocks.MouseClick
 
-            Me.ProcessCellClick(e.X, e.Y)
+        '    Me.ProcessMouseSketch(e.Location)
 
-        End Sub
+        'End Sub
 
         Private Sub PolicyColorBlocks_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.SizeChanged
@@ -381,37 +387,52 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub ProcessCellClick(ByVal x As Integer, ByVal y As Integer)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Pick a block colour from the current mouse location.
+        ''' </summary>
+        ''' <param name="ptCursor"></param>
+        ''' -------------------------------------------------------------------
+        Private Sub ProcessMousePickup(ByVal ptCursor As Point)
+
+            Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
+            If ptBlock.Y < 0 Or ptBlock.Y > m_iRows - 1 Then Return
+            If ptBlock.X > m_iCols - 1 Then Return
+
+            Dim iBlock As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
+            Me.m_blockCodes.SelectedBlock = iBlock
+
+        End Sub
+
+        Private Sub ProcessMouseSketch(ByVal ptCursor As Point)
 
             If Not Me.m_bInit Then Return
 
-            Dim iRow As Integer = CInt(Math.Floor(y / m_sRowHeight))
-            Dim iCol As Integer = CInt(Math.Floor((x - m_sFirstColWidth) / m_sColWidth) + 1)
-
-            If iRow < 0 Or iRow > m_iRows - 1 Then Return
-            If iCol > m_iCols - 1 Then Return
+            Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
+            If ptBlock.Y < 0 Or ptBlock.Y > m_iRows - 1 Then Return
+            If ptBlock.X > m_iCols - 1 Then Return
 
             'BatchEdits have been set before this is called
 
             ' Is row header clicked?
-            If (iCol < 1) Then
+            If (ptBlock.X < 1) Then
 
                 ' #Yes: is column header clicked? If so: cannot fill block row
-                If iRow < 1 Then Return
+                If ptBlock.Y < 1 Then Return
 
                 For i As Integer = 1 To Me.m_DataSource.BlockCells.GetLength(1) - 1
-                    Me.FillBlock(iRow, i)
+                    Me.FillBlock(ptBlock.Y, i)
                 Next
             Else
                 ' Is column header clicked?
-                If (iRow < 1) Then
+                If (ptBlock.Y < 1) Then
                     ' #Yes: is row header clicked? If so: cannot fill block column
-                    If (iCol < 1) Then Return
+                    If (ptBlock.X < 1) Then Return
                     For i As Integer = 1 To Me.m_DataSource.BlockCells.GetLength(0) - 1
-                        Me.FillBlock(i, iCol)
+                        Me.FillBlock(i, ptBlock.X)
                     Next
                 Else
-                    Me.FillBlock(iRow, iCol)
+                    Me.FillBlock(ptBlock.Y, ptBlock.X)
                 End If
             End If
 
@@ -435,6 +456,15 @@ Namespace Ecosim
             m_pbFishingBlocks.Invalidate()
 
         End Sub
+
+        Private Function CursorToBlock(ByVal ptCursor As Point) As Point
+
+            Dim iRow As Integer = CInt(Math.Floor(ptCursor.Y / Me.m_sRowHeight))
+            Dim iCol As Integer = CInt(Math.Floor((ptCursor.X - Me.m_sFirstColWidth) / Me.m_sColWidth) + 1)
+
+            Return New Point(iCol, iRow)
+
+        End Function
 
 #End Region
 

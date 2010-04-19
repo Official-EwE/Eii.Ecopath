@@ -73,24 +73,19 @@ Namespace Ecosim
 
             Dim fleetMSE As cMSEFleetInput = Nothing
 
-            ' For each fleet
+            ' For each flt
             For iFleet As Integer = 1 To Core.nFleets
 
-                'Get the fleet info
+                'Get the flt info
                 fleetMSE = Core.MSEManager.FleetInputs(iFleet)
 
                 Me.AddRow()
 
                 Me(iFleet, eColumnTypes.Index) = New EwERowHeaderCell(iFleet)
                 Me(iFleet, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, fleetMSE, eVarNameFlags.Name)
-                'Me(iFleet, eColumnTypes.MaxEffort) = New PropertyCell(Me.PropertyManager, reg, eVarNameFlags.MaxEffort)
 
                 Me(iFleet, eColumnTypes.OptionNotUsed) = New SourceGrid2.Cells.Real.CheckBox(True)
                 Me(iFleet, eColumnTypes.OptionNotUsed).Behaviors.Add(m_bm)
-
-
-                'Me(iFleet, eColumnTypes.OptionEffort) = New SourceGrid2.Cells.Real.CheckBox(False)
-                'Me(iFleet, eColumnTypes.OptionEffort).Behaviors.Add(m_bm)
 
                 Me(iFleet, eColumnTypes.OptionWeakest) = New SourceGrid2.Cells.Real.CheckBox(False)
                 Me(iFleet, eColumnTypes.OptionWeakest).Behaviors.Add(m_bm)
@@ -123,20 +118,19 @@ Namespace Ecosim
         ''' -----------------------------------------------------------------------
         Private Sub UpdateRow(ByVal iRow As Integer)
 
-            Dim reg As cMSEFleetInput = Nothing
+            Dim flt As cMSEFleetInput = Nothing
             Dim ri As RowInfo = Nothing
 
             ri = Me.Rows(iRow)
-            reg = DirectCast(ri.Tag, cMSEFleetInput)
+            flt = DirectCast(ri.Tag, cMSEFleetInput)
 
             Me.AllowUpdates = False
 
             ' Set option checks
-            Me(iRow, eColumnTypes.OptionNotUsed).Value = (reg.QuotaType = eQuotaTypes.NotUsed)
-            '   Me(iRow, eColumnTypes.OptionEffort).Value = (reg.QuotaType = eQuotaTypes.Effort)
-            Me(iRow, eColumnTypes.OptionWeakest).Value = (reg.QuotaType = eQuotaTypes.Weakest)
-            Me(iRow, eColumnTypes.OptionStrongest).Value = (reg.QuotaType = eQuotaTypes.Strongest)
-            Me(iRow, eColumnTypes.OptionSelective).Value = (reg.QuotaType = eQuotaTypes.Selective)
+            Me(iRow, eColumnTypes.OptionNotUsed).Value = (flt.QuotaType = eQuotaTypes.NotUsed)
+            Me(iRow, eColumnTypes.OptionWeakest).Value = (flt.QuotaType = eQuotaTypes.Weakest)
+            Me(iRow, eColumnTypes.OptionStrongest).Value = (flt.QuotaType = eQuotaTypes.Strongest)
+            Me(iRow, eColumnTypes.OptionSelective).Value = (flt.QuotaType = eQuotaTypes.Selective)
 
             Me.AllowUpdates = True
 
@@ -161,32 +155,28 @@ Namespace Ecosim
 
             If Not Me.AllowUpdates Then Return True
 
-            Dim reg As cMSEFleetInput = Nothing
+            Dim flt As cMSEFleetInput = Nothing
             Dim ri As RowInfo = Nothing
 
             ri = Me.Rows(p.Row)
-            reg = DirectCast(ri.Tag, cMSEFleetInput)
+            flt = DirectCast(ri.Tag, cMSEFleetInput)
 
             Select Case DirectCast(p.Column, eColumnTypes)
 
                 Case eColumnTypes.OptionNotUsed
-                    reg.QuotaType = eQuotaTypes.NotUsed
+                    flt.QuotaType = eQuotaTypes.NotUsed
                     Me.UpdateRow(p.Row)
 
-                    'Case eColumnTypes.OptionEffort
-                    '    reg.QuotaType = eQuotaTypes.Effort
-                    '    Me.UpdateRow(p.Row)
-
                 Case eColumnTypes.OptionSelective
-                    reg.QuotaType = eQuotaTypes.Selective
+                    flt.QuotaType = eQuotaTypes.Selective
                     Me.UpdateRow(p.Row)
 
                 Case eColumnTypes.OptionStrongest
-                    reg.QuotaType = eQuotaTypes.Strongest
+                    flt.QuotaType = eQuotaTypes.Strongest
                     Me.UpdateRow(p.Row)
 
                 Case eColumnTypes.OptionWeakest
-                    reg.QuotaType = eQuotaTypes.Weakest
+                    flt.QuotaType = eQuotaTypes.Weakest
                     Me.UpdateRow(p.Row)
 
             End Select
