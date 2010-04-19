@@ -2612,4 +2612,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="GENERIC_LABEL_APPLY" xml:space="preserve">
     <value>Apply</value>
   </data>
+  <data name="PROMPT_MESSAGE_HIDE" xml:space="preserve">
+    <value>Hide this type of message until a model is reloaded</value>
+  </data>
 </root>

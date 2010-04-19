@@ -5320,6 +5320,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Hide this type of message until a model is reloaded.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_MESSAGE_HIDE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_MESSAGE_HIDE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to To compact your database your model will need to be closed. Are you sure you want to compact your database?.
         '''</summary>
         Friend ReadOnly Property PROMPT_MODEL_COMPACT() As String

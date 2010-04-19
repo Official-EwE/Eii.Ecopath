@@ -301,10 +301,10 @@ Public Class StatusPanel
         If (msg.Importance = eMessageImportance.Critical) Or (msg.Importance = eMessageImportance.Warning) Then
             ' Is dockable AND is in auto-hinding state?
             If (Me.DockPanel IsNot Nothing) And _
-               ((Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide) Or _
-                (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockLeftAutoHide) Or _
-                (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide) Or _
-                (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockTopAutoHide)) Then
+               ((Me.DockState = DockState.DockBottomAutoHide) Or _
+                (Me.DockState = DockState.DockLeftAutoHide) Or _
+                (Me.DockState = DockState.DockRightAutoHide) Or _
+                (Me.DockState = DockState.DockTopAutoHide)) Then
                 Try
                     Me.DockPanel.ActiveAutoHideContent = Me
                 Catch ex As Exception
@@ -544,7 +544,7 @@ Public Class StatusPanel
                     ' Invoke the special message box
                     cCustomMessageBox.Show(strMessage, AppLauncher.GetInstance().Text, _
                                            mbb, mbi, _
-                                           bSuppress, "Hide this type of message until a model is reloaded")
+                                           bSuppress, My.Resources.PROMPT_MESSAGE_HIDE)
                     If bSuppress Then
                         '#Yes: suppress it during the rest of this session
                         Me.m_msh.Suppress(msg.Source, msg.Type) = True
