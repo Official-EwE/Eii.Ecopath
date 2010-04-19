@@ -895,6 +895,6 @@ System Error: {0}</value>
     <value>Ecospace has run out of memory. Please try reducing the number of Regions and/or Timesteps.</value>
   </data>
   <data name="MEDIATION_ZERO_BASE" xml:space="preserve">
-    <value>Some mediation files cannot be used. Please edit your data.</value>
+    <value>One or more mediation files cannot be used. Please edit your data.</value>
   </data>
 </root>

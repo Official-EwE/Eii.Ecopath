@@ -1527,7 +1527,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Some mediation files cannot be used. Please edit your data..
+        '''  Looks up a localized string similar to One or more mediation files cannot be used. Please edit your data..
         '''</summary>
         Friend Shared ReadOnly Property MEDIATION_ZERO_BASE() As String
             Get
