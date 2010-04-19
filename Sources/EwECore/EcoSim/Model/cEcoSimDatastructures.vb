@@ -50,6 +50,8 @@ Public Class cEcosimDatastructures
 
     ''' <summary>Array of Ecosim group database IDs.</summary>
     Public GroupDBID() As Integer
+    ''' <summary>Array of Ecosim fleet database IDs.</summary>
+    Public FleetDBID() As Integer
 
     ''' <summary>Total number of groups in the model.</summary>
     Public nGroups As Integer
@@ -522,7 +524,6 @@ Public Class cEcosimDatastructures
         ReDim TempLeft(nGroups)
         ReDim TempRight(nGroups)
 
-
         'ReDim BaseTimeSwitch(nGroups)
         ReDim SwitchPower(nGroups)
         NutBaseFreeProp = 0.9999
@@ -586,6 +587,7 @@ Public Class cEcosimDatastructures
         ReDim GroupFishRateNoDBID(nGroups)
 
         'the plus one is for combined fleets
+        ReDim FleetDBID(nGear + 1)
         ReDim FishRateGearDBID(nGear + 1)
         ReDim FishRateGearBasis(nGear + 1)
         ReDim FishRateGearTitle(nGear + 1)
@@ -604,28 +606,8 @@ Public Class cEcosimDatastructures
         ReDim IsMedFunction(nGroups, nGroups, MaxFunctions)
         ReDim FunctionType(nGroups, nGroups, MaxFunctions)
 
-        '<<<<<<< .working
-        '=======
-        ''for regulated fisheries
-        'ReDim QuotaType(nGear)
-        'ReDim RegDiscard(nGear, nGroups)
-        'ReDim MaxEffort(nGear)
-        'ReDim Quota(nGear, nGroups)
-        'ReDim PropLandedTime(nGear, nGroups)
-        'ReDim Propdiscardtime(nGear, nGroups)
-
-        'ReDim Bestimate(nGroups)
-        'ReDim BestimateLast(nGroups)
-        'ReDim Quotashare(nGear, nGroups)
-        'ReDim QuotaTime(nGear, nGroups)
-        'ReDim CVest(nGroups)
-        'ReDim KalWt(nGroups)
-        'ReDim Blim(nGroups)
-        'ReDim Bbase(nGroups)
-        'ReDim Fopt(nGroups)
         ReDim TLSim(nGroups)
 
-        '>>>>>>> .merge-right.r2561
         ReDim GroupDetritus(nGroups)
 
         ReDim Epower(nGear)

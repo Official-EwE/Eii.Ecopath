@@ -4106,22 +4106,22 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_Quota_Flags(ByVal obj As cMSEFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_Quota_Flags(ByVal fleetMSE As cMSEFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
 
-        If obj Is Nothing Then
+        If fleetMSE Is Nothing Then
             'If Ecosim has not been loaded then the cMSEFleetInput objects will be Nothing
             'boot out of here in that case
             Return False
         End If
 
-        obj.AllowValidation = False
+        fleetMSE.AllowValidation = False
 
-        Dim fleet As cFleetInput = Me.FleetInputs(obj.Index)
+        Dim fleet As cFleetInput = Me.FleetInputs(fleetMSE.Index)
         For iGroup As Integer = 1 To Me.nGroups
             If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) = 0.0! Then
-                obj.SetStatusFlags(eVarNameFlags.QuotaShare, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+                fleetMSE.SetStatusFlags(eVarNameFlags.QuotaShare, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             Else
-                obj.ClearStatusFlags(eVarNameFlags.QuotaShare, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+                fleetMSE.ClearStatusFlags(eVarNameFlags.QuotaShare, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             End If
         Next
 
@@ -4130,7 +4130,7 @@ Public Class cCore
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput))
         End If
 
-        obj.AllowValidation = True
+        fleetMSE.AllowValidation = True
         Return True
     End Function
 
@@ -4927,6 +4927,8 @@ Public Class cCore
             'Init PropLandedTime() and Propdiscardtime() to Ecopath values so they can be used during the initialization of Ecosim
 
             m_EcoSim.Init(True)
+
+            Me.m_MSEData.setDefaultRegValues(Me.m_EcoSimData, Me.m_EcoPathData)
 
             InitEcosimGroups()
             InitEcosimFleetInput()
@@ -8435,9 +8437,12 @@ Public Class cCore
     ''' </summary>
     ''' <param name="strMPAName">Name of MPA to add.</param>
     ''' <param name="iMPA">Index of the new MPA.</param>
+    ''' <param name="abMPAMonths">Flags indicating when the MPA is OPEN for fishing.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddEcospaceMPA(ByVal strMPAName As String, ByVal abMPAMonths() As Boolean, ByRef iMPA As Integer) As Boolean
+    Public Function AddEcospaceMPA(ByVal strMPAName As String, _
+                                   ByVal abMPAMonths() As Boolean, _
+                                   ByRef iMPA As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
         Dim obj As cCoreInputOutputBase = Nothing
         Dim iDBID As Integer = 0

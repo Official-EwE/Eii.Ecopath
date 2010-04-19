@@ -1759,6 +1759,7 @@ Namespace Database
             Dim iScenarioID As Integer = 0
             Dim iEcopathFleetID As Integer = 0
             Dim iShapeID As Integer = 0
+            Dim iFleetID As Integer = 1
 
             ' JS090826: first day to the EwE25 conference, and time to raise hell. The previous logic failed to import
             '           fleets for Ecosim when only defined in Ecopath.
@@ -1799,6 +1800,7 @@ Namespace Database
                     drow = writer.NewRow()
                     drow("ScenarioID") = iScenarioID
                     drow("EcopathFleetID") = iEcopathFleetID
+                    drow("FleetID") = iFleetID
                     drow("FishRateShapeID") = iShapeID
 
                     readerEcopath = m_dbEwE5.GetReader(String.Format("SELECT * FROM [Gear] WHERE (gearName='{0}')", strFleet))
@@ -1811,6 +1813,8 @@ Namespace Database
 
                     m_dbEwE5.ReleaseReader(readerEcopath)
                     readerEcopath = Nothing
+
+                    iFleetID += 1
 
                     writer.AddRow(drow)
                     writer.Commit()

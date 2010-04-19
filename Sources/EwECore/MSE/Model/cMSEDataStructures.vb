@@ -60,6 +60,7 @@ End Enum
         Public CVbiomEst() As Single 'Biomass coefficient of variation
         Public CVFest() As Single 'Fishing effort coefficient of variation
         Public CVBiomT(,) As Single 'groups,years
+        ''' <summary>fleets,years</summary>
         Public CVFT(,) As Single ' fleets,years
 
         Public VarQest() As Single 'Estimated variation in the estimation of fishing effort. Use in the first year of the simulation to vary effort. See Init
@@ -391,8 +392,6 @@ End Enum
                     Quota(iflt, igrp) = cCore.NULL_VALUE
                 Next
             Next
-
-            Me.setDefaultRegValues(Me.m_ESData, Me.m_EPData)
 
         End Sub
 
