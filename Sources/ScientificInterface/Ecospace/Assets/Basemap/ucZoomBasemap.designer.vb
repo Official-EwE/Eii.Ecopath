@@ -35,7 +35,6 @@ Namespace Ecospace
             Me.m_tsmiZoomIn = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiZoomOut = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiZoomReset = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_map = New ScientificInterface.Ecospace.ucBaseMap
             Me.m_tsZoom = New System.Windows.Forms.ToolStrip
             Me.m_tsbSaveImage = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
@@ -49,6 +48,7 @@ Namespace Ecospace
             Me.m_tsbZoomReset = New System.Windows.Forms.ToolStripButton
             Me.m_sbHorz = New System.Windows.Forms.HScrollBar
             Me.m_sbVert = New System.Windows.Forms.VScrollBar
+            Me.m_map = New ScientificInterface.Ecospace.ucBaseMap
             Me.m_plZoom.SuspendLayout()
             Me.m_cmsZoom.SuspendLayout()
             Me.m_tsZoom.SuspendLayout()
@@ -61,7 +61,6 @@ Namespace Ecospace
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_plZoom.BackColor = System.Drawing.SystemColors.AppWorkspace
             Me.m_plZoom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_plZoom.ContextMenuStrip = Me.m_cmsZoom
             Me.m_plZoom.Controls.Add(Me.m_map)
             Me.m_plZoom.Location = New System.Drawing.Point(0, 25)
             Me.m_plZoom.Margin = New System.Windows.Forms.Padding(0)
@@ -78,6 +77,7 @@ Namespace Ecospace
             'PositionToolStripMenuItem
             '
             Me.PositionToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewCenter2, Me.m_tsmiViewStretch2})
+            Me.PositionToolStripMenuItem.Enabled = False
             Me.PositionToolStripMenuItem.Name = "PositionToolStripMenuItem"
             Me.PositionToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
             Me.PositionToolStripMenuItem.Text = "Position"
@@ -101,6 +101,7 @@ Namespace Ecospace
             '
             'm_tsmiZoomIn
             '
+            Me.m_tsmiZoomIn.Enabled = False
             Me.m_tsmiZoomIn.Name = "m_tsmiZoomIn"
             Me.m_tsmiZoomIn.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
             Me.m_tsmiZoomIn.Size = New System.Drawing.Size(180, 22)
@@ -108,6 +109,7 @@ Namespace Ecospace
             '
             'm_tsmiZoomOut
             '
+            Me.m_tsmiZoomOut.Enabled = False
             Me.m_tsmiZoomOut.Name = "m_tsmiZoomOut"
             Me.m_tsmiZoomOut.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
             Me.m_tsmiZoomOut.Size = New System.Drawing.Size(180, 22)
@@ -115,21 +117,11 @@ Namespace Ecospace
             '
             'm_tsmiZoomReset
             '
+            Me.m_tsmiZoomReset.Enabled = False
             Me.m_tsmiZoomReset.Name = "m_tsmiZoomReset"
             Me.m_tsmiZoomReset.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
             Me.m_tsmiZoomReset.Size = New System.Drawing.Size(180, 22)
             Me.m_tsmiZoomReset.Text = "Reset zoom"
-            '
-            'm_map
-            '
-            Me.m_map.BackColor = System.Drawing.SystemColors.Window
-            Me.m_map.Basemap = Nothing
-            Me.m_map.Editable = False
-            Me.m_map.Location = New System.Drawing.Point(0, 0)
-            Me.m_map.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_map.Name = "m_map"
-            Me.m_map.Size = New System.Drawing.Size(200, 200)
-            Me.m_map.TabIndex = 0
             '
             'm_tsZoom
             '
@@ -231,6 +223,17 @@ Namespace Ecospace
             Me.m_sbVert.Size = New System.Drawing.Size(16, 319)
             Me.m_sbVert.TabIndex = 2
             '
+            'm_map
+            '
+            Me.m_map.BackColor = System.Drawing.SystemColors.Window
+            Me.m_map.Basemap = Nothing
+            Me.m_map.Editable = False
+            Me.m_map.Location = New System.Drawing.Point(0, 0)
+            Me.m_map.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_map.Name = "m_map"
+            Me.m_map.Size = New System.Drawing.Size(200, 200)
+            Me.m_map.TabIndex = 0
+            '
             'ucZoomBaseMap
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -249,29 +252,29 @@ Namespace Ecospace
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents m_plZoom As System.Windows.Forms.Panel
-        Friend WithEvents m_tsZoom As System.Windows.Forms.ToolStrip
-        Friend WithEvents m_tsbZoomIn As System.Windows.Forms.ToolStripButton
-        Friend WithEvents m_tsbZoomOut As System.Windows.Forms.ToolStripButton
-        Friend WithEvents m_tsbZoomReset As System.Windows.Forms.ToolStripButton
-        Friend WithEvents m_tscbZoomPercent As System.Windows.Forms.ToolStripComboBox
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents m_map As Ecospace.ucBaseMap
-        Friend WithEvents m_tsddbPosition As System.Windows.Forms.ToolStripDropDownButton
-        Friend WithEvents m_tsmiViewStretch1 As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_tsmiViewCenter1 As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_sbHorz As System.Windows.Forms.HScrollBar
-        Friend WithEvents m_sbVert As System.Windows.Forms.VScrollBar
-        Friend WithEvents m_cmsZoom As System.Windows.Forms.ContextMenuStrip
-        Friend WithEvents PositionToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_tsmiViewCenter2 As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_tsmiViewStretch2 As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents m_tsmiZoomIn As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_tsmiZoomOut As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_tsmiZoomReset As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_tsbSaveImage As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tsbZoomIn As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbZoomOut As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbZoomReset As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tscbZoomPercent As System.Windows.Forms.ToolStripComboBox
+        Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tsddbPosition As System.Windows.Forms.ToolStripDropDownButton
+        Private WithEvents m_tsmiViewStretch1 As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiViewCenter1 As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_sbHorz As System.Windows.Forms.HScrollBar
+        Private WithEvents m_sbVert As System.Windows.Forms.VScrollBar
+        Private WithEvents PositionToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiViewCenter2 As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiViewStretch2 As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tsmiZoomIn As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiZoomOut As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiZoomReset As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsbSaveImage As System.Windows.Forms.ToolStripButton
+        Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_cmsZoom As System.Windows.Forms.ContextMenuStrip
+        Private WithEvents m_plZoom As System.Windows.Forms.Panel
+        Private WithEvents m_tsZoom As System.Windows.Forms.ToolStrip
+        Private WithEvents m_map As ScientificInterface.Ecospace.ucBaseMap
 
     End Class
 

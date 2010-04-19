@@ -279,7 +279,11 @@ Namespace Ecospace
 
             If (Me.m_ptScreenPrevious = Nothing) Then Me.m_ptScreenPrevious = ptScreenCur
 
-            If (e.Button = MouseButtons.Left) Then
+            If ((e.Button And Windows.Forms.MouseButtons.Right) > 0) Then
+                Me.m_layerSelected.Editor.Pickup(Me.GetCellIndex(e.Location))
+            End If
+
+            If ((e.Button And MouseButtons.Left) > 0) Then
 
                 Dim ptCellFrom As Point = Me.GetCellIndex(Me.m_ptScreenPrevious)
                 Dim ptCellTo As Point = Me.GetCellIndex(ptScreenCur)
@@ -292,6 +296,7 @@ Namespace Ecospace
                 Me.m_layerSelected.IsModified = True
 
                 Me.UpdateMap(Me.m_bmp, ptUpdateMin, ptUpdateMax)
+
             End If
 
             Me.m_ptScreenPrevious = ptScreenCur

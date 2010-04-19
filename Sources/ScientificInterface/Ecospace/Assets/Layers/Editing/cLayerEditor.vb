@@ -245,6 +245,22 @@ Namespace Ecospace.Basemap.Layers
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Pick up the cell value at a given point, and store this value in the
+        ''' layer editor as the next value that will be set.
+        ''' </summary>
+        ''' <param name="pt"></param>
+        ''' -------------------------------------------------------------------
+        Public Overridable Sub Pickup(ByVal pt As Point)
+
+            Try
+                Me.CellValue = CDec(Layer.Value(pt.Y, pt.X))
+            Catch ex As Exception
+            End Try
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' User is done editing the layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -328,6 +344,9 @@ Namespace Ecospace.Basemap.Layers
             End Get
             Set(ByVal value As Decimal)
                 cLayerEditor.s_decValue = Math.Max(Math.Min(value, Me.m_decValueMax), Me.m_decValueMin)
+                If (Me.m_gui IsNot Nothing) Then
+                    Me.m_gui.UpdateContent()
+                End If
             End Set
         End Property
 

@@ -754,7 +754,7 @@ Namespace Ecospace
             ' Store ref
             Me.m_basemap = Me.UIContext.Core.EcospaceBasemap
             ' Initalize the m_ucBasemap
-            Me.m_ucZoom.m_map.Basemap = Me.m_basemap
+            Me.m_ucZoom.Map.Basemap = Me.m_basemap
             Me.ReloadMap()
             Me.ReloadMPAChoices()
         End Sub
