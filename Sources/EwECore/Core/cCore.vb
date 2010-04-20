@@ -4928,7 +4928,7 @@ Public Class cCore
 
             m_EcoSim.Init(True)
 
-            Me.m_MSEData.setDefaultRegValues(Me.m_EcoSimData, Me.m_EcoPathData)
+            Me.m_MSEData.setDefaultRegValues()
 
             InitEcosimGroups()
             InitEcosimFleetInput()
