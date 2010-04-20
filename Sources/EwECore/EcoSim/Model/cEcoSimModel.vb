@@ -444,6 +444,10 @@ Namespace Ecosim
         Public Function Init(ByVal bFullInitialization As Boolean) As Boolean
 
             Try
+
+                'Ecosim data is about to initialize
+                If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimPreDataInitialized(Me.m_Data)
+
                 'jb this may need to be called every time Ecosim is Run 
                 'to make sure any edits made in Ecosim are used for the initialization
                 m_Results = New cEcoSimResults(Me.nGroups, m_stanza.Nsplit, m_stanza.MaxAgeSplit, Me.m_EPData.NumFleet)
@@ -500,6 +504,9 @@ Namespace Ecosim
                 CalculateAssimilationEfficiencies()
 
                 Me.m_ConTracer = New cContaminantTracer
+
+                'Ecosim data has initialized
+                If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimPostDataInitialized(Me.m_Data)
 
                 m_publisher.sendAllMessages()
 
@@ -591,6 +598,9 @@ Namespace Ecosim
             'Set to one for normal run has no effect on catchability (relQ)
             'For a managment strategy evalution MSE varied as a function of Qgrow (user input) in MSE.YearTimeStep()
             Dim QYear() As Single
+
+            'Ecosim is about to be initialized for a run
+            If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimPreRunInitialized(Me.m_Data)
 
             'Dim sumBio As Single, sumCatch As Single' sum of biomass and catch for debugging only
 
