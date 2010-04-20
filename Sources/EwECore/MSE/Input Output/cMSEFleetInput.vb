@@ -144,7 +144,7 @@ Namespace MSE
 
             Next value
 
-            Return True
+            Return Me.m_core.Set_Quota_Flags(Me, False)
 
         End Function
 
