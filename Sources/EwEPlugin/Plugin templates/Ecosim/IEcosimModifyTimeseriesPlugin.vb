@@ -1,18 +1,19 @@
-'==============================================================================
-'
-' $Log: IEcosimModifyTimeseriesPlugin.vb,v $
-' Revision 1.1  2008/09/26 07:31:07  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2007/06/20 17:45:21  sherman
-' Put CVS header
-'
-'
-'
-'==============================================================================
+Option Strict On
+
+''' ===========================================================================
+''' <summary>
+''' Plugin points for the initialization of Ecosim data cEcosimDataStructures 
+''' </summary>
+''' ===========================================================================
 Public Interface IEcosimModifyTimeseriesPlugin
     Inherits IPlugin
 
+    ''' <summary>
+    ''' Ecosim is about to initialize for a run. This point allows plug-ins to 
+    ''' adjust loaded reference data prior to a run.
+    ''' </summary>
+    ''' <param name="TimeSeriesDataStructures">cTimeSeriesDataStructures instance.</param>
+    ''' <remarks>Call prior to initialization of run data.</remarks>
     Sub EcosimModifyTimeseries(ByVal TimeSeriesDataStructures As Object)
 
 End Interface
