@@ -172,7 +172,7 @@ Namespace Properties
             strID = key.ToString()
             Select Case src.CoreComponent
                 Case eCoreComponentType.EcoPath : ht = Me.m_htEcopath
-                Case eCoreComponentType.EcoSim : ht = Me.m_htEcosim
+                Case eCoreComponentType.EcoSim, eCoreComponentType.MSE : ht = Me.m_htEcosim
                 Case eCoreComponentType.EcoSpace : ht = Me.m_htEcospace
                 Case eCoreComponentType.Ecotracer : ht = Me.m_htEcotracer
                 Case Else : ht = Me.m_htGeneric
