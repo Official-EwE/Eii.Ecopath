@@ -16,7 +16,7 @@ Imports EwEUtils.Commands
 
 Public Class frmOptions
 
-
+    'ToDo_jb 19-April-2010 Change "Effort and regulatory option" to something Effort and evaluation type control type....
     Dim m_MSE As cMSEManager
 
     Private m_fpNTrials As cPropertyFormatProvider
@@ -53,17 +53,16 @@ Public Class frmOptions
         Me.rbDirectExp.Tag = eAssessmentMethods.DirectExploitation
         Me.rbExact.Tag = eAssessmentMethods.Exact
 
-        Me.rbNoCap.Tag = eMSEEffortSource.NoCap
-        Me.rbEcosimEffort.Tag = eMSEEffortSource.EcosimEffort
+        Me.rbEffortNoCap.Tag = eMSEEffortSource.NoCap
+        Me.rbEffortEcosim.Tag = eMSEEffortSource.EcosimEffort
+        Me.rbEffortPredicted.Tag = eMSEEffortSource.Predicted
 
-        Me.rbFTracking.Tag = eMSERegulationMode.NoRegulations
-        Me.rbPredictEffort.Tag = eMSERegulationMode.PredictUseRegualtions
-        Me.rbTrackUseQuota.Tag = eMSERegulationMode.UseRegulations
+        Me.rbNoRegs.Tag = eMSERegulationMode.NoRegulations
+        Me.rbUseRegs.Tag = eMSERegulationMode.UseRegulations
 
         m_dctEffortControls = New Dictionary(Of eMSERegulationMode, RadioButton)
-        m_dctEffortControls.Add(eMSERegulationMode.NoRegulations, Me.rbFTracking)
-        m_dctEffortControls.Add(eMSERegulationMode.PredictUseRegualtions, Me.rbPredictEffort)
-        m_dctEffortControls.Add(eMSERegulationMode.UseRegulations, Me.rbTrackUseQuota)
+        m_dctEffortControls.Add(eMSERegulationMode.NoRegulations, Me.rbNoRegs)
+        m_dctEffortControls.Add(eMSERegulationMode.UseRegulations, Me.rbUseRegs)
 
         Me.UpdateSelectedEffortMode()
         Me.updateControls()
@@ -71,7 +70,7 @@ Public Class frmOptions
     End Sub
 
 
-    Private Sub rbFTracking_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFTracking.CheckedChanged, rbPredictEffort.CheckedChanged, rbTrackUseQuota.CheckedChanged
+    Private Sub rbFTracking_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbNoRegs.CheckedChanged, rbUseRegs.CheckedChanged
 
         If Me.m_MSE Is Nothing Then Exit Sub
 
@@ -147,8 +146,8 @@ Public Class frmOptions
 
     End Sub
 
-   
-    Private Sub rbNoCap_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbNoCap.CheckedChanged, rbEcosimEffort.CheckedChanged
+
+    Private Sub rbNoCap_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbEffortNoCap.CheckedChanged, rbEffortEcosim.CheckedChanged, rbEffortPredicted.CheckedChanged
 
         Try
 

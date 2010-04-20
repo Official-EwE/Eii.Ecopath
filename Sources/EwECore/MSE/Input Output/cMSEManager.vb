@@ -301,8 +301,7 @@ Namespace MSE
             'If using Quota regulations and any type of effort
             'make sure there is at least one type of Quota Option set
             'warn the user if both a Quota option and Fixed Escapement are set as both can not run on the same group
-            If Me.ModelParameters.RegulatoryMode = eMSERegulationMode.PredictUseRegualtions Or _
-                    Me.ModelParameters.RegulatoryMode = eMSERegulationMode.UseRegulations Then
+            If Me.ModelParameters.RegulatoryMode = eMSERegulationMode.UseRegulations Then
                 'xxxxxxxxxxxxxxxxxxxxxxx
                 'check the Quota type
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -437,6 +436,8 @@ Namespace MSE
             m_MSEdata.Init()
 
             m_MSE.Init(m_MSEdata, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData, Me.m_core.PluginManager)
+            'set CV to the first timestep
+            m_MSE.setTime(1, 1)
             m_MSE.InitAssessment()
 
             'connect the MSE model to the manager

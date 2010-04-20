@@ -55,8 +55,6 @@ Namespace MSE
 
         'ToDo_jb 18-Jan-2010 cMSE database save reference values. This should get done in conjunction with the MSE Trunk merge and release
 
-        'ToDo_jb 13-April-2010 cMSE F timeseries can stay loaded when running in Ecosim Evaluation mode Track
-
         Private Enum eResultsData
             GroupQuota
             FleetQuota
@@ -279,7 +277,8 @@ Namespace MSE
                 End If
             End If
 
-            Me.setEffortToOriginal()
+            Me.SetEffortToBaseValue(True)
+            'Me.setEffortToOriginal()
 
         End Sub
 
@@ -505,9 +504,6 @@ Namespace MSE
                     Exit Sub
                 End If
 
-                Debug.Assert(Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations Or Me.m_data.RegulationMode = eMSERegulationMode.PredictUseRegualtions, _
-                            "MSE.DisableFTimeSeries() Effort mode may be set wrong.")
-
                 If Me.m_core.ActiveTimeSeriesDatasetIndex > -1 Then
                     Dim DS As cTimeSeriesDataset
                     DS = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
@@ -631,7 +627,9 @@ Namespace MSE
 
                 'if we are predicting effort then make sure it is turned on in Ecosim
                 Me.m_esData.PredictSimEffort = False
-                If Me.m_data.RegulationMode = eMSERegulationMode.PredictUseRegualtions Then Me.m_esData.PredictSimEffort = True
+                If Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_data.EffortSource = eMSEEffortSource.Predicted Then
+                    Me.m_esData.PredictSimEffort = True
+                End If
 
                 For itr = 1 To m_data.NTrials
 
@@ -661,6 +659,8 @@ Namespace MSE
                 Next itr
 
                 Me.ComputeStats()
+
+                SetEffortToBaseValue(True)
 
                 'Me.dumpStats()
 
@@ -704,8 +704,10 @@ Namespace MSE
         End Sub
 
         Private Sub SetEffortToBaseValue(Optional ByVal DoIt As Boolean = False)
+            Dim bReload As Boolean
+            bReload = Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_data.EffortSource = eMSEEffortSource.EcosimEffort
 
-            If Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations Or DoIt Then
+            If bReload Or DoIt Then
                 'if we are tracking the Ecosim effort and regulating it via the quota 
                 'then we need to set effort to something for each iteration
                 For iflt As Integer = 1 To m_core.nFleets
@@ -1034,6 +1036,7 @@ Namespace MSE
 
             Try
 
+
                 If Not Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
                     'Predicting effort this means we are running the regulatory code to regulate effort
                     'so don't vary effort or catchability here
@@ -1121,7 +1124,7 @@ Namespace MSE
             'is this timestep > start year
             If Not t > ((Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear) Then
                 'don't regulate effort
-                System.Console.WriteLine("MSE RegulateEffort() less than StartYear no regulation!")
+                System.Console.WriteLine("MSE RegulateEffort() t = " & t.ToString & " StartYear = " & Me.m_data.StartYear.ToString & " no regulation!")
                 Exit Sub
             End If
 
