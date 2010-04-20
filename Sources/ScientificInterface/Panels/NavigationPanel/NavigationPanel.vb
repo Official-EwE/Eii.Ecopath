@@ -206,7 +206,7 @@ Public Class NavigationPanel
             .Add("ndAssessGroup", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessGroups), "") ' ToDo: connect to help
             .Add("ndAssessFleet", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessFleets), "") ' ToDo: connect to help
             .Add("ndRefMSY", eCoreExecutionState.EcosimLoaded, GetType(frmMSY), "") ' ToDo: connect to help
-            .Add("ndRefBiomass", eCoreExecutionState.EcosimLoaded, GetType(gridGroupRefLevels), "") ' ToDo: connect to help
+            .Add("ndRefBiomass", eCoreExecutionState.EcosimLoaded, GetType(frmGroupRefLevels), "") ' ToDo: connect to help
             .Add("ndRefCatch", eCoreExecutionState.EcosimLoaded, GetType(gridFleetRefLevels), "") ' ToDo: connect to help
             .Add("ndMSEPlots", eCoreExecutionState.EcosimLoaded, GetType(frmMSEPlots), "") ' ToDo: connect to help
             .Add("ndMSEResults", eCoreExecutionState.EcosimLoaded, GetType(frmMSEResults), "") ' ToDo: connect to help

@@ -734,6 +734,9 @@ Namespace MSE
 
         End Sub
 
+        ''' <summary>
+        ''' Sum quota shares to one.
+        ''' </summary>
         Public Sub SumQuotaShareToOne()
 
             Dim QuotaShareTot As Single
@@ -755,6 +758,24 @@ Namespace MSE
             Me.Load()
 
         End Sub
+
+        ''' <summary>
+        ''' Reset quota shares to defaults.
+        ''' </summary>
+        Public Sub SetDefaultQuotaShare()
+
+            Me.m_MSEdata.setDefaultQuotaShare()
+            Me.Load()
+
+        End Sub
+
+        ''' <summary>
+        ''' Reset group references levels to default fishing mortalities.
+        ''' </summary>
+        Public Sub SetDefaultGroupRefLevels()
+            ' ToDo: write this
+        End Sub
+
 #End Region
 
 #Region "Model communication callback delegates for model and interface"

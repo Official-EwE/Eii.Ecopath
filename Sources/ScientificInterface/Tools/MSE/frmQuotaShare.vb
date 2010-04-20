@@ -23,6 +23,11 @@ Namespace Ecosim
             Handles m_tsSumtoOneBtn.Click
             Me.Core.NormalizeQuotaShare()
         End Sub
+
+        Private Sub OnDefaultShares(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnDefaults.Click
+            Me.Core.SetDefaultQuotaShare()
+        End Sub
     End Class
 
 End Namespace

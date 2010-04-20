@@ -24,7 +24,9 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmQuotaShare))
             Me.m_tss = New System.Windows.Forms.ToolStrip
+            Me.m_tsbnDefaults = New System.Windows.Forms.ToolStripButton
             Me.m_tsSumtoOneBtn = New System.Windows.Forms.ToolStripButton
             Me.m_grid = New ScientificInterface.Ecosim.gridQuotaShare
             Me.m_tss.SuspendLayout()
@@ -32,19 +34,29 @@
             '
             'm_tss
             '
-            Me.m_tss.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsSumtoOneBtn})
+            Me.m_tss.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefaults, Me.m_tsSumtoOneBtn})
             Me.m_tss.Location = New System.Drawing.Point(0, 0)
             Me.m_tss.Name = "m_tss"
             Me.m_tss.Size = New System.Drawing.Size(327, 25)
             Me.m_tss.TabIndex = 2
             Me.m_tss.Text = "ToolStrip1"
             '
+            'm_tsbnDefaults
+            '
+            Me.m_tsbnDefaults.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbnDefaults.Image = CType(resources.GetObject("m_tsbnDefaults.Image"), System.Drawing.Image)
+            Me.m_tsbnDefaults.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnDefaults.Name = "m_tsbnDefaults"
+            Me.m_tsbnDefaults.Size = New System.Drawing.Size(82, 22)
+            Me.m_tsbnDefaults.Text = "Set to &defaults"
+            '
             'm_tsSumtoOneBtn
             '
+            Me.m_tsSumtoOneBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             Me.m_tsSumtoOneBtn.Image = Global.ScientificInterface.My.Resources.Resources.OptionsIconSM
             Me.m_tsSumtoOneBtn.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsSumtoOneBtn.Name = "m_tsSumtoOneBtn"
-            Me.m_tsSumtoOneBtn.Size = New System.Drawing.Size(81, 22)
+            Me.m_tsSumtoOneBtn.Size = New System.Drawing.Size(65, 22)
             Me.m_tsSumtoOneBtn.Text = "Sum to &one"
             '
             'm_grid
@@ -98,6 +110,7 @@
         Private WithEvents m_grid As gridQuotaShare
         Private WithEvents m_tss As System.Windows.Forms.ToolStrip
         Private WithEvents m_tsSumtoOneBtn As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnDefaults As System.Windows.Forms.ToolStripButton
     End Class
 
 End Namespace

@@ -4683,7 +4683,37 @@ Public Class cCore
         ' Flag datasource as dirty
         Me.DataSource.SetChanged(eCoreComponentType.MSE)
         Me.m_StateMonitor.UpdateDataState(DataSource)
+    End Sub
 
+    ''' <summary>
+    ''' Set MSE QuotaShare values to default
+    ''' </summary>
+    Public Sub SetDefaultQuotaShare()
+        ' Sanity check
+        Debug.Assert(Me.StateMonitor.HasEcosimLoaded())
+        ' Set default MSE quota share values
+        Me.MSEManager.SetDefaultQuotaShare()
+        Me.m_StateMonitor.SetEcoSimLoaded(True)
+        ' Send out data changed message for MSE
+        Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoSim, eMessageType.DataModified))
+        Me.m_publisher.sendAllMessages()
+        ' Flag datasource as dirty
+        Me.DataSource.SetChanged(eCoreComponentType.MSE)
+        Me.m_StateMonitor.UpdateDataState(DataSource)
+    End Sub
+
+    Public Sub ResetMSEGroupRefLevels()
+        ' Sanity check
+        Debug.Assert(Me.StateMonitor.HasEcosimLoaded())
+        ' Set default MSE quota share values
+        Me.MSEManager.SetDefaultGroupRefLevels()
+        Me.m_StateMonitor.SetEcoSimLoaded(True)
+        ' Send out data changed message for MSE
+        Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoSim, eMessageType.DataModified))
+        Me.m_publisher.sendAllMessages()
+        ' Flag datasource as dirty
+        Me.DataSource.SetChanged(eCoreComponentType.MSE)
+        Me.m_StateMonitor.UpdateDataState(DataSource)
     End Sub
 
     ''' <summary>
