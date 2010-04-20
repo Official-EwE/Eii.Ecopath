@@ -15,14 +15,6 @@ Public Interface IEcosimDataInitializedPlugin
     Sub EcosimPreDataInitialized(ByVal EcosimDatastructures As Object)
 
     ''' <summary>
-    ''' Ecosim has loaded a scenario and has completed its call to cEcosimModel.Init().
-    ''' </summary>
-    ''' <param name="EcosimDatastructures">cEcosimDataStructers as an object</param>
-    ''' <remarks>Call after data has been initialized but before run initialization</remarks>
-    Sub EcosimPostDataInitialized(ByVal EcosimDatastructures As Object)
-
-
-    ''' <summary>
     ''' Ecosim is about to initailize for a run
     ''' </summary>
     ''' <param name="EcosimDatastructures">cEcosimDataStructers as an object</param>

@@ -888,17 +888,6 @@ Public Class cPluginManager
 
     End Function
 
-
-    Public Function EcosimPostDataInitialized(ByVal EcosimDatastructures As Object) As Boolean
-
-        Return Me.TryInvokeMethod(GetType(IEcosimDataInitializedPlugin), _
-                                  "EcosimPostDataInitialized", _
-                                  New Object() {EcosimDatastructures})
-
-    End Function
-
-
-
     Public Function EcosimPreRunInitialized(ByVal EcosimDatastructures As Object) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IEcosimDataInitializedPlugin), _
@@ -906,7 +895,6 @@ Public Class cPluginManager
                                   New Object() {EcosimDatastructures})
 
     End Function
-
 
 
     Public Function EcosimInitialized(ByVal EcosimDatastructures As Object) As Boolean

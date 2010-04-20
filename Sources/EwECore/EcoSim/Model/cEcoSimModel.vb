@@ -505,9 +505,6 @@ Namespace Ecosim
 
                 Me.m_ConTracer = New cContaminantTracer
 
-                'Ecosim data has initialized
-                If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimPostDataInitialized(Me.m_Data)
-
                 m_publisher.sendAllMessages()
 
                 Return True
