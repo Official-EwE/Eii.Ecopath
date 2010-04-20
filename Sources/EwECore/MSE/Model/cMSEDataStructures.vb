@@ -16,8 +16,8 @@ Namespace MSE
         ''' <summary>Regulation are used. Max effort from Ecosim scenario or no max effort imposed.</summary>
     UseRegulations
 
-    ''' <summary>Effort is being predicted via Ecosim. Regulations are used</summary>
-        PredictUseRegualtions
+        '''' <summary>Effort is being predicted via Ecosim. Regulations are used</summary>
+        'PredictUseRegualtions
 
     ''' <summary>Ecosim effort. Effort not regulated</summary>
     NoRegulations
@@ -218,6 +218,8 @@ End Enum
             Me.m_EPData = EPdata
             Me.m_ESData = ESdata
 
+            Debug.Assert(EPdata IsNot Nothing And ESdata IsNot Nothing, Me.ToString & ".New() Ecopath and Ecosim data cannot be Nothing!")
+
             Me.NTrials = 10 'default number of trials
             Me.RegulationMode = eMSERegulationMode.UseRegulations
             Me.StopRun = False
@@ -232,7 +234,7 @@ End Enum
         Public ReadOnly Property UseQuotaRegs() As Boolean
             Get
                 'Quota regs are being applied if Effort is Predicting or QuotaTracking
-                If Me.RegulationMode = eMSERegulationMode.PredictUseRegualtions Or Me.RegulationMode = eMSERegulationMode.UseRegulations Then
+                If Me.RegulationMode = eMSERegulationMode.UseRegulations Then
                     Return True
                 End If
                 'NOT if EffortMode is Tracking 
@@ -392,6 +394,8 @@ End Enum
                     Quota(iflt, igrp) = cCore.NULL_VALUE
                 Next
             Next
+
+            Me.setDefaultRegValues()
 
         End Sub
 
@@ -593,7 +597,7 @@ End Enum
         ''' Set default values for regulated fisheries
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub setDefaultRegValues(ByVal EcoSimData As cEcosimDatastructures, ByVal EcoPathData As cEcopathDataStructures)
+        Public Sub setDefaultRegValues()
             Dim igrp As Integer
             Dim iflt As Integer
 
@@ -601,18 +605,18 @@ End Enum
             For iflt = 1 To Me.nFleets
                 If Me.MaxEffort(iflt) = cCore.NULL_VALUE Then Me.MaxEffort(iflt) = 10 '10 times the ecopath base effort
                 For igrp = 1 To Me.NGroups
-                    If Me.Quota(iflt, igrp) = cCore.NULL_VALUE Then Me.Quota(iflt, igrp) = EcoSimData.StartBiomass(igrp) * 10 '10 time the ecopath biomass
+                    If Me.Quota(iflt, igrp) = cCore.NULL_VALUE Then Me.Quota(iflt, igrp) = Me.m_EPData.B(igrp) * 10 '10 time the ecopath biomass
 
-                    'Needs default value????
-                    If Blim(igrp) = cCore.NULL_VALUE Then Blim(igrp) = Me.m_ESData.StartBiomass(igrp) * 0.1!
-                    If Bbase(igrp) = cCore.NULL_VALUE Then Bbase(igrp) = Me.m_ESData.StartBiomass(igrp) * 0.4!
-                    If Fopt(igrp) = cCore.NULL_VALUE Then Fopt(igrp) = EcoSimData.Fish1(igrp)
+                    'Ecosim has not initialized at this point so some values are not available
+                    If Blim(igrp) = cCore.NULL_VALUE Then Blim(igrp) = Me.m_EPData.B(igrp) * 0.1!
+                    If Bbase(igrp) = cCore.NULL_VALUE Then Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4!
+                    If Fopt(igrp) = cCore.NULL_VALUE Then Fopt(igrp) = Me.m_EPData.fCatch(igrp) / (Me.m_EPData.B(igrp) + 1.0E-10F) 'Ecopath base F
 
                 Next
             Next
 
             'set Quota share to Ecopath landings and discards
-            Me.setDefaultQuotaShare(EcoPathData)
+            Me.setDefaultQuotaShare()
 
         End Sub
 
@@ -621,7 +625,7 @@ End Enum
         ''' </summary>
         ''' <param name="EcoPathData">Ecopath data</param>
         ''' <remarks>QuotaShare(fleet,group) is proportion of catch on a group by a fleet. Should sum to one for a group across fleets.</remarks>
-        Public Sub setDefaultQuotaShare(ByVal EcoPathData As cEcopathDataStructures)
+        Public Sub setDefaultQuotaShare()
             Dim QuotaShareTot As Single
             Dim igrp As Integer
             Dim iflt As Integer
@@ -636,12 +640,12 @@ End Enum
                 For igrp = 1 To Me.NGroups
                     QuotaShareTot = 0
                     For iflt = 1 To Me.nFleets
-                        QuotaShareTot += EcoPathData.Landing(iflt, igrp) + EcoPathData.Discard(iflt, igrp)
+                        QuotaShareTot += Me.m_EPData.Landing(iflt, igrp) + Me.m_EPData.Discard(iflt, igrp)
                     Next
 
                     For iflt = 1 To Me.nFleets
                         If QuotaShareTot > 0 Then
-                            Me.Quotashare(iflt, igrp) = (EcoPathData.Landing(iflt, igrp) + EcoPathData.Discard(iflt, igrp)) / QuotaShareTot
+                            Me.Quotashare(iflt, igrp) = (Me.m_EPData.Landing(iflt, igrp) + Me.m_EPData.Discard(iflt, igrp)) / QuotaShareTot
                         Else
                             Me.Quotashare(iflt, igrp) = 0
                         End If
