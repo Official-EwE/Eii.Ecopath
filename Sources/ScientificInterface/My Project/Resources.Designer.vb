@@ -2585,11 +2585,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Biomass lower.
+        '''</summary>
+        Friend ReadOnly Property HEADER_BIOMASS_LOWER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIOMASS_LOWER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass ({0}).
         '''</summary>
         Friend ReadOnly Property HEADER_BIOMASS_UNIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_BIOMASS_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Biomass upper.
+        '''</summary>
+        Friend ReadOnly Property HEADER_BIOMASS_UPPER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIOMASS_UPPER", resourceCulture)
             End Get
         End Property
         
@@ -2653,6 +2671,24 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_CATCH_CUMULATIVE() As String
             Get
                 Return ResourceManager.GetString("HEADER_CATCH_CUMULATIVE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Catch lower.
+        '''</summary>
+        Friend ReadOnly Property HEADER_CATCH_LOWER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CATCH_LOWER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Catch upper.
+        '''</summary>
+        Friend ReadOnly Property HEADER_CATCH_UPPER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CATCH_UPPER", resourceCulture)
             End Get
         End Property
         
@@ -2869,6 +2905,24 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_EE_ABBR() As String
             Get
                 Return ResourceManager.GetString("HEADER_EE_ABBR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Effort lower.
+        '''</summary>
+        Friend ReadOnly Property HEADER_EFFORT_LOWER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_EFFORT_LOWER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Effort upper.
+        '''</summary>
+        Friend ReadOnly Property HEADER_EFFORT_UPPER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_EFFORT_UPPER", resourceCulture)
             End Get
         End Property
         

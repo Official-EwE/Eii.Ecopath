@@ -19,18 +19,17 @@ Public Class gridGroupRefLevels
 
     Protected Overrides Sub InitStyle()
 
-        ' ToDo: localize this method
-
         MyBase.InitStyle()
+
         Me.Redim(1, 6)
         Me(0, 0) = New EwEColumnHeaderCell("")
         Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-        Me(0, 2) = New EwEColumnHeaderCell("Biomass Lower")
-        Me(0, 3) = New EwEColumnHeaderCell("Biomass Upper")
-        Me(0, 4) = New EwEColumnHeaderCell("Catch Lower")
-        Me(0, 5) = New EwEColumnHeaderCell("Catch Upper")
+        Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_LOWER)
+        Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_UPPER)
+        Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_LOWER)
+        Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_UPPER)
 
-        Me.FixedColumns = 1
+        Me.FixedColumns = 2
         Me.FixedColumnWidths = False
 
     End Sub
