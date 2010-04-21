@@ -20,6 +20,16 @@ Namespace Database
 
 #Region " Public helper classes "
 
+        Protected Class cEwE5ModelInfoSort
+            Implements IComparer(Of cEwE5ModelInfo)
+
+            Public Function Compare(ByVal x As cEwE5ModelInfo, ByVal y As cEwE5ModelInfo) As Integer _
+                Implements IComparer(Of cEwE5ModelInfo).Compare
+                Return String.Compare(x.Name, y.Name)
+            End Function
+
+        End Class
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Helper class, provides information of an EwE5 model found in the 

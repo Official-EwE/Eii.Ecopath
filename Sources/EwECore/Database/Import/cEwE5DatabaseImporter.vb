@@ -166,7 +166,11 @@ Namespace Database
                 l.Add(mi)
             End While
 
+            ' Sort models
+            l.Sort(New cEwE5ModelInfoSort())
+
             Return l.ToArray()
+
         End Function
 
 #End Region ' Interface implementation
@@ -330,6 +334,8 @@ Namespace Database
             dbUpd = New cDatabaseUpdater(Me.m_core, 6.0!)
             dbUpd.UpdateDatabase(Me.m_dbEwE6)
             dbUpd = Nothing
+
+            Me.Close()
 
             ' Release DB
             Me.m_dbEwE6 = Nothing
