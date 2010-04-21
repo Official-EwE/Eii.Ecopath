@@ -262,23 +262,29 @@ Namespace MSE
 
         Public Sub FinalizeRun()
 
-            'set the ecosim predict effort flag back to its original value
-            Me.m_esData.PredictSimEffort = Me.m_orgPredictEffort
+            Try
 
-            Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
-            If (ds IsNot Nothing) Then
-                ds.EnableData(New cEcosimRunType) = Me.m_orgUsePlugin
-            End If
+                'set the ecosim predict effort flag back to its original value
+                Me.m_esData.PredictSimEffort = Me.m_orgPredictEffort
 
-            If Me.m_data.SaveOutput Then
-                If Me.m_lstData IsNot Nothing Then
-                    Me.m_lstData.Clear()
-                    Me.m_lstData = Nothing
+                Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
+                If (ds IsNot Nothing) Then
+                    ds.EnableData(New cEcosimRunType) = Me.m_orgUsePlugin
                 End If
-            End If
 
-            Me.SetEffortToBaseValue(True)
-            'Me.setEffortToOriginal()
+                If Me.m_data.SaveOutput Then
+                    If Me.m_lstData IsNot Nothing Then
+                        Me.m_lstData.Clear()
+                        Me.m_lstData = Nothing
+                    End If
+                End If
+
+                Me.SetEffortToBaseValue(True)
+                'Me.setEffortToOriginal()
+
+            Catch ex As Exception
+                System.Console.WriteLine(Me.ToString & ".FinalizeRun() Exception: " & ex.Message)
+            End Try
 
         End Sub
 
@@ -466,9 +472,11 @@ Namespace MSE
                 Next
             Next
 
-            ReDim Me.m_baseEffort(Me.m_esData.nGear, Me.m_esData.NTimes)
+            'read the size of the array instead of using Ecosim.NTimes because it can be different if a timeseries has been loaded!!!
+            Dim n As Integer = Me.m_esData.FishRateGear.GetUpperBound(1)
+            ReDim Me.m_baseEffort(Me.m_esData.nGear, n)
             For iflt As Integer = 1 To m_core.nFleets
-                For it As Integer = 1 To Me.m_esData.NTimes
+                For it As Integer = 1 To n
                     m_baseEffort(iflt, it) = Me.m_esData.FishRateGear(iflt, it)
                 Next
             Next
@@ -706,16 +714,21 @@ Namespace MSE
         Private Sub SetEffortToBaseValue(Optional ByVal DoIt As Boolean = False)
             Dim bReload As Boolean
             bReload = Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_data.EffortSource = eMSEEffortSource.EcosimEffort
+            Try
 
-            If bReload Or DoIt Then
-                'if we are tracking the Ecosim effort and regulating it via the quota 
-                'then we need to set effort to something for each iteration
-                For iflt As Integer = 1 To m_core.nFleets
-                    For it As Integer = 1 To Me.m_esData.NTimes
-                        Me.m_esData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
+                If bReload Or DoIt Then
+                    'if we are tracking the Ecosim effort and regulating it via the quota 
+                    'then we need to set effort to something for each iteration
+                    Dim n As Integer = Me.m_esData.FishRateGear.GetUpperBound(1)
+                    For iflt As Integer = 1 To m_core.nFleets
+                        For it As Integer = 1 To n
+                            Me.m_esData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
+                        Next
                     Next
-                Next
-            End If
+                End If
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".SetEffortToBaseValue() Exception: " & ex.Message)
+            End Try
 
         End Sub
 

@@ -1865,12 +1865,13 @@ Namespace Ecosim
         End Sub
 
         Friend Function RandomNormal() As Single
-            Dim i As Integer, X As Single
+            Dim i As Integer, X As Double
+            Dim rnd As New Random(CInt(Microsoft.VisualBasic.Timer * 1000))
             X = -6
             For i = 1 To 12
-                X = X + Rnd()
+                X = X + rnd.NextDouble
             Next
-            RandomNormal = X
+            RandomNormal = CSng(X)
         End Function
 
 

@@ -284,18 +284,26 @@ End Enum
                 Me.StartYear = 1
                 Me.EffortSource = eMSEEffortSource.NoCap
 
-                For iflt As Integer = 1 To nFleets
-                    For igrp As Integer = 1 To NGroups
-                        'jb 7-Jan-2010 addded PropDiscardMort() so the default for discards contain only the mort
-                        Me.Propdiscardtime(iflt, igrp) = Me.m_EPData.PropDiscard(iflt, igrp) * Me.m_EPData.PropDiscardMort(iflt, igrp)
-                        Me.PropLandedTime(iflt, igrp) = Me.m_EPData.PropLanded(iflt, igrp)
-                    Next
-                Next
-
             Catch ex As Exception
                 cLog.Write(ex)
                 Throw New ApplicationException("Init() " & ex.Message, ex)
             End Try
+
+        End Sub
+
+        ''' <summary>
+        ''' Init Propdiscardtime(fleets,groups) and PropLandedTime(fleets, groups) to Ecopath landing and discards
+        ''' </summary>
+        ''' <remarks>This must be call before <see cref="EwECore.Ecosim.cEcoSimModel.Init">Ecosim.Init(Boolean)</see> 
+        ''' so Propdiscardtime() and PropLandedTime() can be used to init <see cref="cEcosimDatastructures.FishRateNo">FishRateNo()</see> (fishing mortality)</remarks>
+        Public Sub InitToEcopath()
+            For iflt As Integer = 1 To nFleets
+                For igrp As Integer = 1 To NGroups
+                    'jb 7-Jan-2010 addded PropDiscardMort() so the default for discards contain only the mort
+                    Me.Propdiscardtime(iflt, igrp) = Me.m_EPData.PropDiscard(iflt, igrp) * Me.m_EPData.PropDiscardMort(iflt, igrp)
+                    Me.PropLandedTime(iflt, igrp) = Me.m_EPData.PropLanded(iflt, igrp)
+                Next
+            Next
 
         End Sub
 
