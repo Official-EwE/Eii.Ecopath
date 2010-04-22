@@ -14,23 +14,24 @@ Namespace Ecosim
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.m_pbFishingBlocks = New System.Windows.Forms.PictureBox
-            Me.lblInitializationHeader = New System.Windows.Forms.Label
+            Me.m_lblBlockHeader = New System.Windows.Forms.Label
             Me.m_nudSeqEndYear = New System.Windows.Forms.NumericUpDown
             Me.m_lblEndYear = New System.Windows.Forms.Label
             Me.m_nudSeqStartYear = New System.Windows.Forms.NumericUpDown
             Me.m_lblStartYear = New System.Windows.Forms.Label
             Me.m_nudNumYearsPerBlock = New System.Windows.Forms.NumericUpDown
             Me.m_btnSetGear = New System.Windows.Forms.Button
-            Me.tlpMain = New System.Windows.Forms.TableLayoutPanel
+            Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
+            Me.m_lblControls = New System.Windows.Forms.Label
+            Me.m_pnlControls = New System.Windows.Forms.Panel
+            Me.m_plBlocks = New System.Windows.Forms.Panel
             Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel
-            Me.pnlControls = New System.Windows.Forms.Panel
-            Me.Label1 = New System.Windows.Forms.Label
             CType(Me.m_pbFishingBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSeqEndYear, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSeqStartYear, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumYearsPerBlock, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.tlpMain.SuspendLayout()
-            Me.pnlControls.SuspendLayout()
+            Me.m_tlpMain.SuspendLayout()
+            Me.m_pnlControls.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_pbFishingBlocks
@@ -43,27 +44,28 @@ Namespace Ecosim
             Me.m_pbFishingBlocks.Margin = New System.Windows.Forms.Padding(0)
             Me.m_pbFishingBlocks.Name = "m_pbFishingBlocks"
             Me.m_pbFishingBlocks.Size = New System.Drawing.Size(870, 493)
-            Me.m_pbFishingBlocks.TabIndex = 0
+            Me.m_pbFishingBlocks.TabIndex = 1
             Me.m_pbFishingBlocks.TabStop = False
             '
-            'lblInitializationHeader
+            'm_lblBlockHeader
             '
-            Me.lblInitializationHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_lblBlockHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.lblInitializationHeader.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblInitializationHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-            Me.lblInitializationHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblInitializationHeader.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.lblInitializationHeader.Location = New System.Drawing.Point(3, 0)
-            Me.lblInitializationHeader.Name = "lblInitializationHeader"
-            Me.lblInitializationHeader.Size = New System.Drawing.Size(583, 17)
-            Me.lblInitializationHeader.TabIndex = 10
-            Me.lblInitializationHeader.Text = "Blocks"
-            Me.lblInitializationHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.m_lblBlockHeader.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblBlockHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
+            Me.m_lblBlockHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblBlockHeader.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_lblBlockHeader.Location = New System.Drawing.Point(0, 0)
+            Me.m_lblBlockHeader.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_lblBlockHeader.Name = "m_lblBlockHeader"
+            Me.m_lblBlockHeader.Size = New System.Drawing.Size(586, 17)
+            Me.m_lblBlockHeader.TabIndex = 0
+            Me.m_lblBlockHeader.Text = "Blocks"
+            Me.m_lblBlockHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_nudSeqEndYear
             '
-            Me.m_nudSeqEndYear.Location = New System.Drawing.Point(230, 6)
+            Me.m_nudSeqEndYear.Location = New System.Drawing.Point(238, 6)
             Me.m_nudSeqEndYear.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudSeqEndYear.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudSeqEndYear.Name = "m_nudSeqEndYear"
@@ -111,33 +113,75 @@ Namespace Ecosim
             '
             'm_btnSetGear
             '
-            Me.m_btnSetGear.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.m_btnSetGear.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.m_btnSetGear.FlatStyle = System.Windows.Forms.FlatStyle.Popup
             Me.m_btnSetGear.Location = New System.Drawing.Point(46, 5)
             Me.m_btnSetGear.Name = "m_btnSetGear"
-            Me.m_btnSetGear.Size = New System.Drawing.Size(66, 22)
+            Me.m_btnSetGear.Size = New System.Drawing.Size(75, 22)
             Me.m_btnSetGear.TabIndex = 3
-            Me.m_btnSetGear.Text = "&Set gear"
+            Me.m_btnSetGear.Text = "&Set"
             Me.m_btnSetGear.UseVisualStyleBackColor = True
             '
-            'tlpMain
+            'm_tlpMain
             '
-            Me.tlpMain.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_tlpMain.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.tlpMain.ColumnCount = 2
-            Me.tlpMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.tlpMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 281.0!))
-            Me.tlpMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-            Me.tlpMain.Controls.Add(Me.Label1, 1, 0)
-            Me.tlpMain.Controls.Add(Me.pnlControls, 1, 1)
-            Me.tlpMain.Controls.Add(Me.lblInitializationHeader, 0, 0)
-            Me.tlpMain.Location = New System.Drawing.Point(0, 0)
-            Me.tlpMain.Name = "tlpMain"
-            Me.tlpMain.RowCount = 2
-            Me.tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18.94737!))
-            Me.tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 81.05263!))
-            Me.tlpMain.Size = New System.Drawing.Size(870, 92)
-            Me.tlpMain.TabIndex = 13
+            Me.m_tlpMain.ColumnCount = 2
+            Me.m_tlpMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
+            Me.m_tlpMain.Controls.Add(Me.m_lblControls, 1, 0)
+            Me.m_tlpMain.Controls.Add(Me.m_pnlControls, 1, 1)
+            Me.m_tlpMain.Controls.Add(Me.m_lblBlockHeader, 0, 0)
+            Me.m_tlpMain.Controls.Add(Me.m_plBlocks, 0, 1)
+            Me.m_tlpMain.Location = New System.Drawing.Point(0, 0)
+            Me.m_tlpMain.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_tlpMain.Name = "m_tlpMain"
+            Me.m_tlpMain.RowCount = 2
+            Me.m_tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18.94737!))
+            Me.m_tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 81.05263!))
+            Me.m_tlpMain.Size = New System.Drawing.Size(870, 92)
+            Me.m_tlpMain.TabIndex = 0
+            '
+            'm_lblControls
+            '
+            Me.m_lblControls.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lblControls.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblControls.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
+            Me.m_lblControls.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblControls.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_lblControls.Location = New System.Drawing.Point(589, 0)
+            Me.m_lblControls.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+            Me.m_lblControls.Name = "m_lblControls"
+            Me.m_lblControls.Size = New System.Drawing.Size(281, 17)
+            Me.m_lblControls.TabIndex = 14
+            Me.m_lblControls.Text = "Set block years and sequence"
+            Me.m_lblControls.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_pnlControls
+            '
+            Me.m_pnlControls.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_pnlControls.Controls.Add(Me.m_nudSeqEndYear)
+            Me.m_pnlControls.Controls.Add(Me.m_lblEndYear)
+            Me.m_pnlControls.Controls.Add(Me.m_nudSeqStartYear)
+            Me.m_pnlControls.Controls.Add(Me.m_btnSetGear)
+            Me.m_pnlControls.Controls.Add(Me.m_lblStartYear)
+            Me.m_pnlControls.Controls.Add(Me.m_nudNumYearsPerBlock)
+            Me.m_pnlControls.Location = New System.Drawing.Point(589, 17)
+            Me.m_pnlControls.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+            Me.m_pnlControls.Name = "m_pnlControls"
+            Me.m_pnlControls.Size = New System.Drawing.Size(281, 75)
+            Me.m_pnlControls.TabIndex = 14
+            '
+            'm_plBlocks
+            '
+            Me.m_plBlocks.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_plBlocks.Location = New System.Drawing.Point(0, 17)
+            Me.m_plBlocks.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_plBlocks.Name = "m_plBlocks"
+            Me.m_plBlocks.Size = New System.Drawing.Size(586, 75)
+            Me.m_plBlocks.TabIndex = 1
             '
             'TableLayoutPanel3
             '
@@ -154,39 +198,11 @@ Namespace Ecosim
             Me.TableLayoutPanel3.Size = New System.Drawing.Size(200, 100)
             Me.TableLayoutPanel3.TabIndex = 0
             '
-            'pnlControls
-            '
-            Me.pnlControls.Controls.Add(Me.m_nudSeqEndYear)
-            Me.pnlControls.Controls.Add(Me.m_lblEndYear)
-            Me.pnlControls.Controls.Add(Me.m_nudSeqStartYear)
-            Me.pnlControls.Controls.Add(Me.m_btnSetGear)
-            Me.pnlControls.Controls.Add(Me.m_lblStartYear)
-            Me.pnlControls.Controls.Add(Me.m_nudNumYearsPerBlock)
-            Me.pnlControls.Location = New System.Drawing.Point(592, 20)
-            Me.pnlControls.Name = "pnlControls"
-            Me.pnlControls.Size = New System.Drawing.Size(274, 69)
-            Me.pnlControls.TabIndex = 14
-            '
-            'Label1
-            '
-            Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.Label1.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-            Me.Label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.Label1.Location = New System.Drawing.Point(592, 0)
-            Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(275, 17)
-            Me.Label1.TabIndex = 14
-            Me.Label1.Text = "Set block years and sequence"
-            Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
             'ucPolicyColorBlocks
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.tlpMain)
+            Me.Controls.Add(Me.m_tlpMain)
             Me.Controls.Add(Me.m_pbFishingBlocks)
             Me.Name = "ucPolicyColorBlocks"
             Me.Size = New System.Drawing.Size(870, 588)
@@ -194,9 +210,9 @@ Namespace Ecosim
             CType(Me.m_nudSeqEndYear, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudSeqStartYear, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNumYearsPerBlock, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.tlpMain.ResumeLayout(False)
-            Me.pnlControls.ResumeLayout(False)
-            Me.pnlControls.PerformLayout()
+            Me.m_tlpMain.ResumeLayout(False)
+            Me.m_pnlControls.ResumeLayout(False)
+            Me.m_pnlControls.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -207,11 +223,12 @@ Namespace Ecosim
         Private WithEvents m_lblEndYear As System.Windows.Forms.Label
         Private WithEvents m_nudSeqStartYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblStartYear As System.Windows.Forms.Label
-        Private WithEvents lblInitializationHeader As System.Windows.Forms.Label
-        Friend WithEvents tlpMain As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_lblBlockHeader As System.Windows.Forms.Label
         Friend WithEvents TableLayoutPanel3 As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents pnlControls As System.Windows.Forms.Panel
-        Private WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_lblControls As System.Windows.Forms.Label
+        Private WithEvents m_tlpMain As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_pnlControls As System.Windows.Forms.Panel
+        Private WithEvents m_plBlocks As System.Windows.Forms.Panel
 
     End Class
 

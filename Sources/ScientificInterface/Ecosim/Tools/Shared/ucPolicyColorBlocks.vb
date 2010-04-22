@@ -13,7 +13,6 @@ Namespace Ecosim
 
 #Region "Color Blocks User control"
 
-
     ''' =======================================================================
     ''' <summary>
     ''' Control implementing the policy blocks sketch user interface.
@@ -80,15 +79,14 @@ Namespace Ecosim
 
                 Dim selector As Control = DirectCast(Me.m_blockCodes, Control)
                 selector.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right Or AnchorStyles.Top
-                Me.tlpMain.Controls.Add(selector, 0, 1)
+                selector.Size = Me.m_plBlocks.ClientSize ' Ugh
+                Me.m_plBlocks.Controls.Clear()
+                Me.m_plBlocks.Controls.Add(selector)
 
-                'datasource decides if the control panel is visible
-                If Not Me.m_DataSource.isControlPanelVisible Then
-                    'the control panel is setup to be shown so we only have to turn it off
-                    Me.pnlControls.Visible = False 'don't really have to do this
-                    Me.pnlControls.Enabled = False 'or this
-                    Me.tlpMain.ColumnStyles(1).Width = 0 'just hiding the column would work
-                End If
+                ' datasource decides if the control panel is visible
+                ' JS 22Apr2010: Now panel auto-sizes there is no need for tinkering with column widths.
+                '               Added ControlPanelVisible to provide user with design-time control.
+                me.ControlPanelVisible = Me.m_DataSource.isControlPanelVisible
 
                 AddHandler BlockCodes.onValueChanged, AddressOf onCVValuesChanged
 
@@ -164,6 +162,18 @@ Namespace Ecosim
             End Set
         End Property
 
+        ''' <summary>
+        ''' Get/set whether the policy block selector should show the controls panel.
+        ''' </summary>
+        Public Property ControlPanelVisible() As Boolean
+            Get
+                Return Me.m_pnlControls.Visible
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_pnlControls.Visible = value
+                Me.m_lblControls.Visible = value
+            End Set
+        End Property
 #End Region
 
 #Region " Events handlers "
@@ -248,15 +258,8 @@ Namespace Ecosim
 
         End Sub
 
-        'Private Sub pbFishingBlocks_MouseClick(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
-        '    Handles m_pbFishingBlocks.MouseClick
-
-        '    Me.ProcessMouseSketch(e.Location)
-
-        'End Sub
-
-        Private Sub PolicyColorBlocks_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.SizeChanged
+        Protected Overrides Sub OnSizeChanged(ByVal e As System.EventArgs)
+            MyBase.OnSizeChanged(e)
 
             ' Redraw the blocks
             Me.m_pbFishingBlocks.Invalidate()

@@ -209,7 +209,7 @@ Public Class ucCVBlockSelector
 #Region " Events "
 
     Private Sub onGridValueChanged(ByVal newValue As Single, ByVal Index As Integer) _
-        Handles m_gridSelector.onValueChanged
+        Handles m_gridSelector.OnValueChanged
 
         Try
             RaiseEvent onValueChanged(newValue, Index)

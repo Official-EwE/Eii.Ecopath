@@ -22,13 +22,73 @@ Imports SourceGrid2
 Public Class gridSelectColorBlock
     Inherits EwEGrid
 
-    'Private Const CV_ROW As Integer = 0
-    Private m_parent As ucCVBlockSelector
-    Private m_nblocks As Integer
+#Region " Helper class "
 
-    Private m_orgValue As Single
+    ''' =======================================================================
+    ''' <summary>
+    ''' Helper class for drawing a colored CV cell.
+    ''' </summary>
+    ''' <remarks>
+    ''' This class is hard-wired to gridSelectColorBlock.
+    ''' </remarks>
+    ''' =======================================================================
+    Private Class cCVCellVisualizer
+        Inherits VisualModels.Common
 
-    Public Event onValueChanged(ByVal newValue As Single, ByVal Index As Integer)
+        Private m_parent As gridSelectColorBlock = Nothing
+
+        Public Sub New(ByVal parent As gridSelectColorBlock)
+            Debug.Assert(parent IsNot Nothing)
+            Me.m_parent = parent
+        End Sub
+
+        Protected Overrides Sub DrawCell_Background(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
+                                                    ByVal p_CellPosition As SourceGrid2.Position, _
+                                                    ByVal e As PaintEventArgs, _
+                                                    ByVal p_ClientRectangle As System.Drawing.Rectangle, _
+                                                    ByVal p_Status As SourceGrid2.DrawCellStatus)
+
+            Me.BackColor = Me.m_parent.BlockColor(p_CellPosition.Column - 1)
+            MyBase.DrawCell_Background(p_Cell, p_CellPosition, e, p_ClientRectangle, DrawCellStatus.Normal)
+
+        End Sub
+
+        Protected Overrides Sub DrawCell_Border(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
+                                                ByVal p_CellPosition As SourceGrid2.Position, _
+                                                ByVal e As PaintEventArgs, _
+                                                ByVal p_ClientRectangle As Rectangle, _
+                                                ByVal p_Status As SourceGrid2.DrawCellStatus)
+
+            Dim border As Border = Nothing
+
+            If (p_CellPosition.Column - 1 = Me.m_parent.SelectedBlock) Then
+                border = New Border(Me.m_parent.HighlightColor, 3)
+                Me.Border = New RectangleBorder(border)
+            Else
+                Me.Border = Nothing
+            End If
+
+            MyBase.DrawCell_Border(p_Cell, p_CellPosition, e, p_ClientRectangle, DrawCellStatus.Normal)
+
+        End Sub
+
+    End Class
+
+#End Region ' Helper class
+
+#Region " Private vars "
+
+    Private m_parent As ucCVBlockSelector = Nothing
+    Private m_vm As cCVCellVisualizer = Nothing
+    Private m_orgValue As Single = cCore.NULL_VALUE
+    ''' <summary>Number of blocks.</summary>
+    Private m_nblocks As Integer = 0
+    ''' <summary>Selected block.</summary>
+    Private m_iBlock As Integer = 0
+
+    Public Event OnValueChanged(ByVal newValue As Single, ByVal Index As Integer)
+
+#End Region ' Private vars
 
 #Region " Constructor "
 
@@ -54,10 +114,7 @@ Public Class gridSelectColorBlock
 
         MyBase.InitStyle()
 
-        'Me.Dock = DockStyle.None
-
         Me.Redim(2, Me.m_parent.NumBlocks + 1)
-        'Me(0, 0) = New EwEColumnHeaderCell("") 'dummy row
         Me(0, 0) = New EwERowHeaderCell("CV")
         Me(1, 0) = New EwERowHeaderCell("Color")
 
@@ -72,76 +129,94 @@ Public Class gridSelectColorBlock
 
     End Sub
 
+    Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
+        Return DockStyle.None
+    End Function
+
     Public Property SelectedBlock() As Integer
         Get
-            Return Me.FocusCellPosition.Column
+            Return Me.m_iBlock
         End Get
         Set(ByVal value As Integer)
-            Try
-                If (value <> Me.SelectedBlock) Then
-                    Me.SetFocusCell(New Position(1, value))
-                    Me.Invalidate()
-                End If
-            Catch ex As Exception
-            End Try
+            If (value <> Me.m_iBlock) Then
+                Me.m_iBlock = value
+                Me.InvalidateCells()
+            End If
         End Set
     End Property
 
     Protected Overrides Sub FillData()
 
-        If Me.m_parent Is Nothing Then Return
+        If (Me.m_parent Is Nothing) Then Return
+        If (Me.StyleGuide Is Nothing) Then Return
+
+        If (Me.m_vm Is Nothing) Then
+            Me.m_vm = New cCVCellVisualizer(Me)
+        End If
 
         'Color and values come from parent control
         Dim cvs() As Single = Me.m_parent.BlockValues
 
         For i As Integer = 1 To Me.m_parent.NumBlocks
 
-            ''hidden row
-            'Me(0, i) = New EwEColumnHeaderCell()
-            'Me(0, i).Value = cvs(i).ToString
-
             Me(0, i) = New EwECell(cvs(i), cvs(i).GetType)
 
-            Dim vm As New SourceGrid2.VisualModels.Common
-            vm.BackColor = Me.m_parent.BlockColor(i)
             Dim cell As New Cell("", GetType(String))
-            cell.VisualModel = vm
+            cell.VisualModel = Me.m_vm
+            cell.EditableMode = EditableMode.None
+            cell.EnableEdit = False
             Me(1, i) = cell
 
         Next
 
     End Sub
 
+    Protected ReadOnly Property BlockColor(ByVal i As Integer) As Color
+        Get
+            If (i < Me.m_parent.NumBlocks) Then
+                Return Me.m_parent.BlockColor(i)
+            End If
+            Return Color.White
+        End Get
+    End Property
+
+    Protected ReadOnly Property HighlightColor() As Color
+        Get
+            If (Me.StyleGuide IsNot Nothing) Then
+                Return Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+            End If
+            Return Color.Orange
+        End Get
+    End Property
+
     Private Sub gridSelectColorBlock_CellGotFocus(ByVal sender As Object, ByVal e As SourceGrid2.PositionCancelEventArgs) _
         Handles Me.CellGotFocus
 
-        If e.Position.Row <> 0 Then Return
-
         Try
             ' Parse using UI default number formatting
-            m_orgValue = Single.Parse(CStr(e.Cell.GetValue(e.Position)))
+            Me.m_orgValue = Single.Parse(CStr(Me(0, e.Position.Column).Value))
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & " CellGotFocus() Exception: " & ex.Message)
         End Try
+        ' Set selected block
+        Me.SelectedBlock = e.Position.Column - 1
 
     End Sub
 
     Private Sub gridSelectColorBlock_CellLostFocus(ByVal sender As Object, ByVal e As SourceGrid2.PositionCancelEventArgs) _
         Handles Me.CellLostFocus
 
-        If e.Position.Row <> 0 Then Return
-
         Try
             Dim newvalue As Single
             ' Parse using UI default number formatting
-            newvalue = Single.Parse(CStr(e.Cell.GetValue(e.Position)))
+            newvalue = Single.Parse(CStr(Me(0, e.Position.Column).Value))
             Dim dif As Single = CSng(Math.Round(newvalue - Me.m_orgValue, 2))
 
             'has the cell been edited
             If dif <> 0.0 Then
                 Dim col As Integer = e.Position.Column
                 Me.m_parent.BlockValues(col) = newvalue
-                RaiseEvent onValueChanged(newvalue, col)
+                RaiseEvent OnValueChanged(newvalue, col)
             End If
 
         Catch ex As Exception
