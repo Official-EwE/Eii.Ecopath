@@ -178,8 +178,6 @@ Namespace MSE
             End Set
         End Property
 
-
-
         Public Property FixedEscapement() As Single
             Get
                 Return CType(GetVariable(eVarNameFlags.MSEFixedEscapement), Single)
@@ -189,7 +187,6 @@ Namespace MSE
                 SetVariable(eVarNameFlags.MSEFixedEscapement, value)
             End Set
         End Property
-
 
         Public Property ForcastGain() As Single
             Get
@@ -213,21 +210,6 @@ Namespace MSE
         End Property
 
 
-
-
-        'Public Property KalmanGain() As Single
-        '    Get
-        '        Return CType(GetVariable(eVarNameFlags.MSEKalmanGain), Single)
-        '    End Get
-
-        '    Set(ByVal value As Single)
-        '        SetVariable(eVarNameFlags.MSEKalmanGain, value)
-        '    End Set
-        'End Property
-
-
-
-
         Public Property FixedEscapementStatus() As eStatusFlags
             Get
                 Return DirectCast(GetStatus(eVarNameFlags.MSEFixedEscapement), eStatusFlags)
@@ -237,8 +219,6 @@ Namespace MSE
                 SetStatus(eVarNameFlags.MSEFixedEscapement, value)
             End Set
         End Property
-
-
 
         Public Property BiomassCVStatus() As eStatusFlags
             Get
@@ -260,7 +240,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property UpperRiskStatus() As eStatusFlags
             Get
                 Return DirectCast(GetStatus(eVarNameFlags.MSEUpperRisk), eStatusFlags)
@@ -270,7 +249,6 @@ Namespace MSE
                 SetStatus(eVarNameFlags.MSEUpperRisk, value)
             End Set
         End Property
-
 
         Public Property BiomassRefLowerStatus() As eStatusFlags
             Get
@@ -289,6 +267,26 @@ Namespace MSE
 
             Set(ByVal value As eStatusFlags)
                 SetStatus(eVarNameFlags.MSERefBioLower, value)
+            End Set
+        End Property
+
+        Public Property ForcastGainStatus() As eStatusFlags
+            Get
+                Return CType(GetStatus(eVarNameFlags.MSEForcastGain), eStatusFlags)
+            End Get
+
+            Set(ByVal value As eStatusFlags)
+                SetStatus(eVarNameFlags.MSEForcastGain, value)
+            End Set
+        End Property
+
+        Public Property RHalfB0RatioStatus() As eStatusFlags
+            Get
+                Return CType(GetStatus(eVarNameFlags.RHalfB0Ratio), eStatusFlags)
+            End Get
+
+            Set(ByVal value As eStatusFlags)
+                SetStatus(eVarNameFlags.RHalfB0Ratio, value)
             End Set
         End Property
 
