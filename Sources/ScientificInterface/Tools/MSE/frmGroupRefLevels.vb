@@ -14,9 +14,8 @@ Namespace Ecosim
     Public Class frmGroupRefLevels
 
         Public Sub New()
-            MyBase.New()
+            MyBase.New(New gridGroupRefLevels())
             Me.InitializeComponent()
-            Me.Grid = Me.m_grid
         End Sub
 
         Private Sub OnReset(ByVal sender As System.Object, ByVal e As System.EventArgs) _
