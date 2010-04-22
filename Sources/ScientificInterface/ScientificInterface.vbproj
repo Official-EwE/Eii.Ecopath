@@ -1145,6 +1145,9 @@
     <Compile Include="Tools\MSE\gridQuotaShare.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Tools\MSE\gridMSERecruitment.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Tools\MSE\gridRegulatoryOptions.vb">
       <SubType>Component</SubType>
     </Compile>

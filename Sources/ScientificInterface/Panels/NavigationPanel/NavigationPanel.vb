@@ -211,6 +211,9 @@ Public Class NavigationPanel
             .Add("ndMSEPlots", eCoreExecutionState.EcosimLoaded, GetType(frmMSEPlots), "") ' ToDo: connect to help
             .Add("ndMSEResults", eCoreExecutionState.EcosimLoaded, GetType(frmMSEResults), "") ' ToDo: connect to help
 
+            .Add("ndMSERecruitment", eCoreExecutionState.EcosimLoaded, GetType(gridMSERecruitment), "") ' ToDo: connect to help
+            'ndMSERecruitment
+
         End With
 
         ' JS 19Mar2010: now why was this necessary?
