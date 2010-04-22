@@ -773,7 +773,13 @@ Namespace MSE
         ''' Reset group references levels to default fishing mortalities.
         ''' </summary>
         Public Sub SetDefaultGroupRefLevels()
-            ' ToDo: write this
+
+            For iGroup As Integer = 1 To Me.m_MSEdata.NGroups
+                Me.m_MSEdata.BioBounds(iGroup).Lower = Me.m_MSEdata.Blim(iGroup)
+                Me.m_MSEdata.BioBounds(iGroup).Upper = Me.m_MSEdata.Bbase(iGroup)
+            Next iGroup
+            Me.Load()
+
         End Sub
 
 #End Region
