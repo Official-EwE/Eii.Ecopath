@@ -191,28 +191,24 @@ Public Class NavigationPanel
             .Add("ndEcoTracer_Output", eCoreExecutionState.EcotracerLoaded, GetType(frmEcotracerOutput), "") ' ToDo: connect to help
 
             'MSE
-            .Add("ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), "") ' ToDo: connect to help
-            .Add("ndRefFixedEscape", eCoreExecutionState.EcosimLoaded, GetType(gridFixedEscapement), "") ' ToDo: connect to help
             .Add("ndOptions", eCoreExecutionState.EcosimLoaded, GetType(frmOptions), "") ' ToDo: connect to help
             .Add("ndControlType", eCoreExecutionState.EcosimLoaded, GetType(gridRegulatoryOptions), "") ' ToDo: connect to help
+            .Add("ndRefFixedEscape", eCoreExecutionState.EcosimLoaded, GetType(gridFixedEscapement), "") ' ToDo: connect to help
             .Add("ndQuotaShare", eCoreExecutionState.EcosimLoaded, GetType(frmQuotaShare), "") ' ToDo: connect to help
             .Add("ndRegFishingMort", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy), "") ' ToDo: connect to help
-
+            .Add("ndAssessGroup", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessGroups), "") ' ToDo: connect to help
+            .Add("ndAssessFleet", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessFleets), "") ' ToDo: connect to help
+            .Add("ndMSERecruitment", eCoreExecutionState.EcosimLoaded, GetType(frmMSERecruitment), "") ' ToDo: connect to help
             'jb march-8-2010 removed Group objectives and Objective weights as they are not being used by the MSE
             '.Add("ndEfTrackObjectives", eCoreExecutionState.EcosimLoaded, GetType(gridMSEOjectiveWeights), "") ' ToDo: connect to help
             '.Add("ndEfTrackEcoObjectives", eCoreExecutionState.EcosimLoaded, GetType(gridMSEGroupObjectives), "") ' ToDo: connect to help
-            .Add("ndEfTrackFleetWeights", eCoreExecutionState.EcosimLoaded, GetType(gridFishingWeights), "") ' ToDo: connect to help
-
-            .Add("ndAssessGroup", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessGroups), "") ' ToDo: connect to help
-            .Add("ndAssessFleet", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessFleets), "") ' ToDo: connect to help
             .Add("ndRefMSY", eCoreExecutionState.EcosimLoaded, GetType(frmMSY), "") ' ToDo: connect to help
             .Add("ndRefBiomass", eCoreExecutionState.EcosimLoaded, GetType(frmGroupRefLevels), "") ' ToDo: connect to help
             .Add("ndRefCatch", eCoreExecutionState.EcosimLoaded, GetType(gridFleetRefLevels), "") ' ToDo: connect to help
-            .Add("ndMSEPlots", eCoreExecutionState.EcosimLoaded, GetType(frmMSEPlots), "") ' ToDo: connect to help
+            .Add("ndEfTrackFleetWeights", eCoreExecutionState.EcosimLoaded, GetType(gridFishingWeights), "") ' ToDo: connect to help
+            .Add("ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), "") ' ToDo: connect to help
             .Add("ndMSEResults", eCoreExecutionState.EcosimLoaded, GetType(frmMSEResults), "") ' ToDo: connect to help
-
-            .Add("ndMSERecruitment", eCoreExecutionState.EcosimLoaded, GetType(gridMSERecruitment), "") ' ToDo: connect to help
-            'ndMSERecruitment
+            .Add("ndMSEPlots", eCoreExecutionState.EcosimLoaded, GetType(frmMSEPlots), "") ' ToDo: connect to help
 
         End With
 

@@ -51,7 +51,7 @@ Partial Class frmMSE
         '
         'txNTrials
         '
-        Me.txNTrials.Location = New System.Drawing.Point(423, 8)
+        Me.txNTrials.Location = New System.Drawing.Point(660, 10)
         Me.txNTrials.Name = "txNTrials"
         Me.txNTrials.Size = New System.Drawing.Size(63, 20)
         Me.txNTrials.TabIndex = 2
@@ -59,7 +59,7 @@ Partial Class frmMSE
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(339, 12)
+        Me.Label1.Location = New System.Drawing.Point(576, 14)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(83, 13)
         Me.Label1.TabIndex = 3
@@ -72,7 +72,7 @@ Partial Class frmMSE
         Me.Label3.BackColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label3.Location = New System.Drawing.Point(5, 86)
+        Me.Label3.Location = New System.Drawing.Point(5, 34)
         Me.Label3.Name = "Label3"
         Me.Label3.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.Label3.Size = New System.Drawing.Size(892, 22)
@@ -83,7 +83,7 @@ Partial Class frmMSE
         'btStop
         '
         Me.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btStop.Location = New System.Drawing.Point(5, 46)
+        Me.btStop.Location = New System.Drawing.Point(154, 9)
         Me.btStop.Name = "btStop"
         Me.btStop.Size = New System.Drawing.Size(146, 22)
         Me.btStop.TabIndex = 26
@@ -95,7 +95,7 @@ Partial Class frmMSE
         Me.zdGraph.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.zdGraph.Location = New System.Drawing.Point(5, 108)
+        Me.zdGraph.Location = New System.Drawing.Point(5, 56)
         Me.zdGraph.Margin = New System.Windows.Forms.Padding(0)
         Me.zdGraph.Name = "zdGraph"
         Me.zdGraph.ScrollGrace = 0
@@ -105,15 +105,15 @@ Partial Class frmMSE
         Me.zdGraph.ScrollMinX = 0
         Me.zdGraph.ScrollMinY = 0
         Me.zdGraph.ScrollMinY2 = 0
-        Me.zdGraph.Size = New System.Drawing.Size(892, 659)
+        Me.zdGraph.Size = New System.Drawing.Size(892, 711)
         Me.zdGraph.TabIndex = 27
         '
         'btShowHide
         '
         Me.btShowHide.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btShowHide.Location = New System.Drawing.Point(170, 8)
+        Me.btShowHide.Location = New System.Drawing.Point(316, 10)
         Me.btShowHide.Name = "btShowHide"
-        Me.btShowHide.Size = New System.Drawing.Size(145, 25)
+        Me.btShowHide.Size = New System.Drawing.Size(145, 21)
         Me.btShowHide.TabIndex = 32
         Me.btShowHide.Text = "Show/hide items..."
         Me.btShowHide.UseVisualStyleBackColor = True
@@ -122,7 +122,7 @@ Partial Class frmMSE
         '
         Me.ckSave.AutoSize = True
         Me.ckSave.Enabled = False
-        Me.ckSave.Location = New System.Drawing.Point(170, 50)
+        Me.ckSave.Location = New System.Drawing.Point(467, 13)
         Me.ckSave.Name = "ckSave"
         Me.ckSave.Size = New System.Drawing.Size(84, 17)
         Me.ckSave.TabIndex = 36
@@ -131,7 +131,7 @@ Partial Class frmMSE
         '
         'txStartYear
         '
-        Me.txStartYear.Location = New System.Drawing.Point(423, 41)
+        Me.txStartYear.Location = New System.Drawing.Point(813, 11)
         Me.txStartYear.Name = "txStartYear"
         Me.txStartYear.Size = New System.Drawing.Size(66, 20)
         Me.txStartYear.TabIndex = 37
@@ -139,7 +139,7 @@ Partial Class frmMSE
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(339, 44)
+        Me.Label2.Location = New System.Drawing.Point(752, 14)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(55, 13)
         Me.Label2.TabIndex = 38

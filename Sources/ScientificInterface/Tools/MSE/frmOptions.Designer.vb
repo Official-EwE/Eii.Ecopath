@@ -42,8 +42,6 @@ Partial Class frmOptions
         Me.txKalmanGain = New System.Windows.Forms.TextBox
         Me.Label8 = New System.Windows.Forms.Label
         Me.ckPlugin = New System.Windows.Forms.CheckBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.txForecast = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
         Me.pnlRegOpt.SuspendLayout()
         Me.pnlUseReg.SuspendLayout()
@@ -167,23 +165,23 @@ Partial Class frmOptions
         Me.rbCatchEstBio.Text = "Catch/estimated biomass"
         Me.rbCatchEstBio.UseVisualStyleBackColor = True
         '
-        'rbTrackUseQuota
+        'rbUseRegs
         '
         Me.rbUseRegs.AutoSize = True
         Me.rbUseRegs.Checked = True
         Me.rbUseRegs.Location = New System.Drawing.Point(6, 26)
-        Me.rbUseRegs.Name = "rbTrackUseQuota"
+        Me.rbUseRegs.Name = "rbUseRegs"
         Me.rbUseRegs.Size = New System.Drawing.Size(133, 17)
         Me.rbUseRegs.TabIndex = 26
         Me.rbUseRegs.TabStop = True
         Me.rbUseRegs.Text = "Use regulatory controls"
         Me.rbUseRegs.UseVisualStyleBackColor = True
         '
-        'rbFTracking
+        'rbNoRegs
         '
         Me.rbNoRegs.AutoSize = True
         Me.rbNoRegs.Location = New System.Drawing.Point(6, 132)
-        Me.rbNoRegs.Name = "rbFTracking"
+        Me.rbNoRegs.Name = "rbNoRegs"
         Me.rbNoRegs.Size = New System.Drawing.Size(294, 17)
         Me.rbNoRegs.TabIndex = 24
         Me.rbNoRegs.Text = "No regulatory controls (evaluate current Ecosim scenario)"
@@ -208,17 +206,15 @@ Partial Class frmOptions
         Me.pnlRunOpt.Controls.Add(Me.txKalmanGain)
         Me.pnlRunOpt.Controls.Add(Me.Label8)
         Me.pnlRunOpt.Controls.Add(Me.ckPlugin)
-        Me.pnlRunOpt.Controls.Add(Me.Label5)
-        Me.pnlRunOpt.Controls.Add(Me.txForecast)
         Me.pnlRunOpt.Controls.Add(Me.Label2)
         Me.pnlRunOpt.Location = New System.Drawing.Point(12, 12)
         Me.pnlRunOpt.Name = "pnlRunOpt"
-        Me.pnlRunOpt.Size = New System.Drawing.Size(213, 141)
+        Me.pnlRunOpt.Size = New System.Drawing.Size(213, 88)
         Me.pnlRunOpt.TabIndex = 34
         '
         'txKalmanGain
         '
-        Me.txKalmanGain.Location = New System.Drawing.Point(134, 55)
+        Me.txKalmanGain.Location = New System.Drawing.Point(134, 26)
         Me.txKalmanGain.Name = "txKalmanGain"
         Me.txKalmanGain.Size = New System.Drawing.Size(48, 20)
         Me.txKalmanGain.TabIndex = 38
@@ -226,7 +222,7 @@ Partial Class frmOptions
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(3, 59)
+        Me.Label8.Location = New System.Drawing.Point(3, 30)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(68, 13)
         Me.Label8.TabIndex = 37
@@ -236,28 +232,12 @@ Partial Class frmOptions
         '
         Me.ckPlugin.AutoSize = True
         Me.ckPlugin.Enabled = False
-        Me.ckPlugin.Location = New System.Drawing.Point(6, 88)
+        Me.ckPlugin.Location = New System.Drawing.Point(6, 59)
         Me.ckPlugin.Name = "ckPlugin"
         Me.ckPlugin.Size = New System.Drawing.Size(149, 17)
         Me.ckPlugin.TabIndex = 33
         Me.ckPlugin.Text = "Use plugin economic data"
         Me.ckPlugin.UseVisualStyleBackColor = True
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(3, 30)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(103, 13)
-        Me.Label5.TabIndex = 35
-        Me.Label5.Text = "Forecast stock gain:"
-        '
-        'txForecast
-        '
-        Me.txForecast.Location = New System.Drawing.Point(134, 26)
-        Me.txForecast.Name = "txForecast"
-        Me.txForecast.Size = New System.Drawing.Size(48, 20)
-        Me.txForecast.TabIndex = 34
         '
         'Label2
         '
@@ -311,8 +291,6 @@ Partial Class frmOptions
     Friend WithEvents pnlRunOpt As System.Windows.Forms.Panel
     Friend WithEvents txKalmanGain As System.Windows.Forms.TextBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
-    Private WithEvents Label5 As System.Windows.Forms.Label
-    Private WithEvents txForecast As System.Windows.Forms.TextBox
     Private WithEvents ckPlugin As System.Windows.Forms.CheckBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
 End Class
