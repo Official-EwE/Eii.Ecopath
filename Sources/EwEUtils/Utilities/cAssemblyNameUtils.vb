@@ -63,15 +63,15 @@ Namespace Utilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Extracts the version number of an assembly and returns it as a string.
+        ''' Returns the version number of an assembly.
         ''' </summary>
         ''' <param name="an">The <see cref="AssemblyName">AssemblyName</see> to return
         ''' the version for.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetVersion(ByVal an As AssemblyName) As String
-            If (an Is Nothing) Then Return String.Empty
-            Return an.Version.ToString()
+        Public Shared Function GetVersion(ByVal an As AssemblyName) As Version
+            If (an Is Nothing) Then Return Nothing
+            Return an.Version
         End Function
 
         ''' -----------------------------------------------------------------------

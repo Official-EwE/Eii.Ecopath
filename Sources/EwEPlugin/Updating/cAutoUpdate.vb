@@ -36,9 +36,9 @@ Friend Class cAutoUpdate
     Private m_strFile As String = ""
 
     ''' <summary>Attached core version.</summary>
-    Private m_strCoreVersion As String = ""
+    Private m_verCore As Version = Nothing
     ''' <summary>Attached plug-in version.</summary>
-    Private m_strPluginVersion As String = ""
+    Private m_verPlugin As Version = Nothing
     ''' <summary>Attached plug-in short file name.</summary>
     Private m_strPluginName As String = ""
     ''' <summary>Attached plug-in public hash key token.</summary>
@@ -57,7 +57,7 @@ Friend Class cAutoUpdate
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal core As Object)
 
-        Me.m_strCoreVersion = Me.CoreVersion(core)
+        Me.m_verCore = Me.CoreVersion(core)
         Me.m_cookiejar = New CookieContainer()
         Me.m_service = New EwEAutoUpdateRef.UpdateService()
         Me.m_service.CookieContainer = Me.m_cookiejar
@@ -120,7 +120,7 @@ Friend Class cAutoUpdate
             ' Grab details
             Me.m_strPluginName = cAssemblyUtils.GetName(assemPlugin)
             Me.m_strPluginToken = cAssemblyUtils.GetToken(assemPlugin)
-            Me.m_strPluginVersion = cAssemblyUtils.GetVersion(assemPlugin)
+            Me.m_verPlugin = cAssemblyUtils.GetVersion(assemPlugin)
         Catch e As Exception
             Return False
         End Try
@@ -170,7 +170,7 @@ Friend Class cAutoUpdate
         End If
 
         ' Perform local version check first
-        If Me.m_strPluginVersion.CompareTo(Me.m_strCoreVersion) >= 0 Then
+        If Me.m_verPlugin.CompareTo(Me.m_verCore) >= 0 Then
             Return eUpdateStatusTypes.Success
         End If
 
@@ -275,7 +275,7 @@ Friend Class cAutoUpdate
     ''' </summary>
     ''' <param name="core">The core object to query the assembly for.</param>
     ''' -----------------------------------------------------------------------
-    Private ReadOnly Property CoreVersion(ByVal core As Object) As String
+    Private ReadOnly Property CoreVersion(ByVal core As Object) As Version
         Get
             Dim anCore As AssemblyName = cAssemblyUtils.GetAssemblyName(core.GetType())
             Return cAssemblyUtils.GetVersion(anCore)
@@ -299,9 +299,11 @@ Friend Class cAutoUpdate
     Private Function HasMigration() As eUpdateStatusTypes
 
         Debug.Assert(String.IsNullOrEmpty(Me.m_strPluginToken), "Assembly is not weak-named")
+        Debug.Assert(Me.m_verCore IsNot Nothing, "Something is VERY wrong")
+        Debug.Assert(Me.m_verPlugin IsNot Nothing, "Something is VERY wrong")
 
         Try
-            Me.m_strPluginToken = Me.m_service.GetPluginMigrationToken(Me.m_strCoreVersion, Me.m_strPluginName, Me.m_strPluginVersion)
+            Me.m_strPluginToken = Me.m_service.GetPluginMigrationToken(Me.m_verCore.ToString, Me.m_strPluginName, Me.m_verPlugin.ToString)
 
             If Not String.IsNullOrEmpty(Me.m_strPluginToken) Then
                 Return eUpdateStatusTypes.Info_CanMigrate
@@ -327,8 +329,11 @@ Friend Class cAutoUpdate
     ''' -----------------------------------------------------------------------
     Private Function HasUpdate() As eUpdateStatusTypes
 
+        Debug.Assert(Me.m_verCore IsNot Nothing, "Something is VERY wrong")
+        Debug.Assert(Me.m_verPlugin IsNot Nothing, "Something is VERY wrong")
+
         Try
-            If Me.m_service.CheckPluginUpdate(Me.m_strCoreVersion, Me.m_strPluginName, Me.m_strPluginToken, Me.m_strPluginVersion) Then
+            If Me.m_service.CheckPluginUpdate(Me.m_verCore.ToString, Me.m_strPluginName, Me.m_strPluginToken, Me.m_verPlugin.ToString) Then
                 Return eUpdateStatusTypes.Success
             End If
 
