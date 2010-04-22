@@ -86,6 +86,12 @@ End Enum
         Public RstockPred() As Single
         Public KalmanGain() As Single
         Public QGrowUsed() As Single
+        Public BhalfT() As Single
+        ''' <summary>
+        ''' Input Ratio of Bt to B0 needed for 50% of max recruitment 
+        ''' </summary>
+        Public RHalfB0Ratio() As Single
+        Public Rmax() As Single
 
         ''' <summary>sum of employment value over all the completed trials</summary>
         Public sumEmployVal As Single
@@ -319,6 +325,10 @@ End Enum
             ReDim VarQgrow(nFleets)
             ReDim Wftot(nFleets)
 
+            ReDim BhalfT(NGroups)
+            ReDim Rmax(NGroups)
+            ReDim RHalfB0Ratio(NGroups)
+
             ReDim Fweight(nFleets, NGroups)
             ReDim Qgrow(nFleets)
             ReDim Fwc(nFleets, 1)
@@ -354,7 +364,6 @@ End Enum
 
             'set default values
             For iGrp As Integer = 1 To NGroups
-
                 ' CVbiomEst(iGrp) = 0.2
                 GstockPred(iGrp) = 0.6
                 KalmanGain(iGrp) = 0.65
@@ -404,6 +413,7 @@ End Enum
             Next
 
             Me.setDefaultRegValues()
+            Me.setDefaultRecruitment()
 
         End Sub
 
@@ -628,10 +638,23 @@ End Enum
 
         End Sub
 
+
+        ''' <summary>
+        ''' Set default values for the recruitment model
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Sub setDefaultRecruitment()
+
+            For igrp As Integer = 1 To Me.NGroups
+                Me.RHalfB0Ratio(igrp) = 0.1
+                Me.GstockPred(igrp) = 0.6
+            Next
+
+        End Sub
+
         ''' <summary>
         ''' Set QuotaShare to default values from Ecopath.Landing and Ecopath.Discards
         ''' </summary>
-        ''' <param name="EcoPathData">Ecopath data</param>
         ''' <remarks>QuotaShare(fleet,group) is proportion of catch on a group by a fleet. Should sum to one for a group across fleets.</remarks>
         Public Sub setDefaultQuotaShare()
             Dim QuotaShareTot As Single

@@ -509,6 +509,9 @@ Namespace MSE
                     mseGrp.CatchRefLower = Me.m_MSEdata.CatchGroupBounds(iGroup).Lower
                     mseGrp.CatchRefUpper = Me.m_MSEdata.CatchGroupBounds(iGroup).Upper
 
+                    mseGrp.RHalfB0Ratio = Me.m_MSEdata.RHalfB0Ratio(iGroup)
+                    mseGrp.ForcastGain = Me.m_MSEdata.GstockPred(iGroup)
+
                     For it As Integer = 1 To Me.m_MSEdata.nYears
                         mseGrp.BiomassCV(it) = Me.m_MSEdata.CVBiomT(iGroup, it)
                     Next
@@ -653,6 +656,9 @@ Namespace MSE
 
                             Me.m_MSEdata.CatchGroupBounds(iGroup).Lower = mseGrp.CatchRefLower
                             Me.m_MSEdata.CatchGroupBounds(iGroup).Upper = mseGrp.CatchRefUpper
+
+                            Me.m_MSEdata.RHalfB0Ratio(iGroup) = mseGrp.RHalfB0Ratio
+                            Me.m_MSEdata.GstockPred(iGroup) = mseGrp.ForcastGain
 
                             For it As Integer = 1 To Me.m_MSEdata.nYears
                                 Me.m_MSEdata.CVBiomT(iGroup, it) = mseGrp.BiomassCV(it)

@@ -70,6 +70,16 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERefGroupCatchUpper))
             m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSEForcastGain, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEForcastGain))
+            m_values.Add(val.varName, val)
+
+
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.RHalfB0Ratio, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.RHalfB0Ratio))
+            m_values.Add(val.varName, val)
+
+
             Me.AllowValidation = True
 
         End Sub
@@ -179,6 +189,30 @@ Namespace MSE
                 SetVariable(eVarNameFlags.MSEFixedEscapement, value)
             End Set
         End Property
+
+
+        Public Property ForcastGain() As Single
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSEForcastGain), Single)
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEForcastGain, value)
+            End Set
+        End Property
+
+
+        Public Property RHalfB0Ratio() As Single
+            Get
+                Return CType(GetVariable(eVarNameFlags.RHalfB0Ratio), Single)
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.RHalfB0Ratio, value)
+            End Set
+        End Property
+
+
 
 
         'Public Property KalmanGain() As Single

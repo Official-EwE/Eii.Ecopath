@@ -63,7 +63,7 @@ Namespace MSE
 
 #Region "Private data"
 
-        Private Const DEFAULT_EFFORT As Single = Single.MaxValue
+        Private Const DEFAULT_EFFORT As Single = 1000000000
 
         Private m_core As cCore
         Private m_data As cMSEDataStructures
@@ -216,7 +216,7 @@ Namespace MSE
         Public Sub InitForRun()
 
             Try
-                Dim iflt As Integer
+                Dim igrp As Integer
                 ReDim BestTime(m_epdata.NumGroups)
 
                 Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
@@ -229,15 +229,17 @@ Namespace MSE
 
                 Me.m_data.clearBioRisk()
 
-                For iflt = 1 To m_epdata.NumFleet
+                For igrp = 1 To m_epdata.NumFleet
                     'save qgrowth parameter so as not to interfere with value fitting simulations
-                    Me.m_data.QGrowUsed(iflt) = m_data.Qgrow(iflt)
+                    Me.m_data.QGrowUsed(igrp) = m_data.Qgrow(igrp)
                 Next
 
                 'init RstockPred from GstockPred
                 'GstockPred could have been altered by an interface
-                For iflt = 1 To Me.m_epdata.NumLiving
-                    Me.m_data.RstockPred(iflt) = (1 - Me.m_data.GstockPred(iflt)) * Me.m_esData.StartBiomass(iflt)
+                For igrp = 1 To Me.m_epdata.NumLiving
+                    Me.m_data.BhalfT(igrp) = Me.m_data.RHalfB0Ratio(igrp) * Me.m_epdata.B(igrp)
+                    Me.m_data.RstockPred(igrp) = (1 - Me.m_data.GstockPred(igrp)) * Me.m_esData.StartBiomass(igrp)
+                    Me.m_data.Rmax(igrp) = Me.m_data.RstockPred(igrp) * (Me.m_data.RHalfB0Ratio(igrp) + 1)
                 Next
 
                 Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
@@ -1219,16 +1221,22 @@ Namespace MSE
 
             Dim Bobs() As Single
             ReDim Bobs(Me.m_epdata.NumGroups)
+            Dim RstockPred As Single
+            'ratio of Bt needed for 50% of max recruitment to B0
+            ' Dim RMax As Single
+
+            System.Console.WriteLine()
 
             For i As Integer = 1 To Me.m_epdata.NumGroups
                 Me.m_data.BestimateLast(i) = Me.m_data.Bestimate(i)
                 'the true biomass is the actual Ecosim biomass = Biomass()
                 'Bobs is the observed biomass which is the true biomass with a random factor added
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
+
+                RstockPred = CSng(m_data.Rmax(i) * Me.m_data.BestimateLast(i) / (m_data.BhalfT(i) + Me.m_data.BestimateLast(i)))
                 'and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
                 'VC091107 fixed problem in eq below
-                Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + m_data.RstockPred(i))
-
+                Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + RstockPred)
             Next i
 
         End Sub

@@ -1008,6 +1008,7 @@ Namespace Core
         MSEAssessPower
         MSENTrials
         MSEUseEconomicPlugin
+        RHalfB0Ratio
 
         'data by iteration
         MSEBiomass
