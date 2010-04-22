@@ -283,7 +283,7 @@ End Enum
                 Me.CostSum = New cMSESummaryStats(Me, Nothing, 1)
 
                 'default values for MSY 
-                'these values can be overridden by an MSE of MSY plugin
+                'these values can be overridden by an MSE or MSY plugin
                 Me.MSYRunSilent = False
                 Me.MSYEvaluateValue = True
                 Me.MSYStartTimeIndex = 2
