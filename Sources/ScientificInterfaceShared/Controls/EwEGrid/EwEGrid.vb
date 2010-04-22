@@ -500,7 +500,6 @@ Namespace Controls.EwEGrid
                                   SourceGrid2.ContextMenuStyle.ColumnResize Or _
                                   SourceGrid2.ContextMenuStyle.AutoSize
 
-            Me.Dock = Me.DefaultDockStyle()
             Me.AutoStretchRowsToFitHeight = False
 
             ' JS 05aug07: this flag controls whether selections can be made with cell nav keys and [ctrl] and/or [shift]
@@ -565,10 +564,6 @@ Namespace Controls.EwEGrid
         Protected Overridable Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
             ' NOP
         End Sub
-
-        Protected Overridable Function DefaultDockStyle() As DockStyle
-            Return DockStyle.Fill
-        End Function
 
         ''' <summary>
         ''' Flag, states whether columns are fixed in width and height.

@@ -151,10 +151,6 @@ Public Class gridMapLayerToAttribute
                 Me.FixedColumnWidths = False
             End Sub
 
-            Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
-                Return Windows.Forms.DockStyle.None
-            End Function
-
             Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
                 Dim strAttribute As String = Me.AttributeAtRow(p.Row)

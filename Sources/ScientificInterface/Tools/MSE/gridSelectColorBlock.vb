@@ -129,10 +129,6 @@ Public Class gridSelectColorBlock
 
     End Sub
 
-    Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
-        Return DockStyle.None
-    End Function
-
     Public Property SelectedBlock() As Integer
         Get
             Return Me.m_iBlock

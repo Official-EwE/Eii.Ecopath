@@ -45,11 +45,19 @@ Namespace Ecosim
                 Return MyBase.UIContext
             End Get
             Set(ByVal value As cUIContext)
+
+                If MyBase.UIContext IsNot Nothing Then
+                    Me.m_stbHandler = Nothing
+                End If
+
                 MyBase.UIContext = value
                 Me.m_sketchPad.UIContext = value
-                Me.m_stbHandler = New cTimeSeriesShapeGUIHandler(Me.UIContext, _
-                        Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
-                        Me.m_sketchPad, Me.m_sketchPadToolbar)
+
+                If MyBase.UIContext IsNot Nothing Then
+                    Me.m_stbHandler = New cTimeSeriesShapeGUIHandler(Me.UIContext, _
+                            Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
+                            Me.m_sketchPad, Me.m_sketchPadToolbar)
+                End If
             End Set
         End Property
 

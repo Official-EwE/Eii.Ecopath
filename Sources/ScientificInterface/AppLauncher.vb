@@ -1171,7 +1171,9 @@ Public Class AppLauncher
                 frmNew = cnt
             ElseIf TypeOf classObject Is EwEGrid Then
                 ' Is a grid
-                Dim cnt As DockContent = New frmEwEGrid(DirectCast(classObject, EwEGrid))
+                Dim grid As EwEGrid = DirectCast(classObject, EwEGrid)
+                grid.Dock = DockStyle.Fill
+                Dim cnt As DockContent = New frmEwEGrid(grid)
                 cnt.Text = strText
                 cnt.TabText = strText
                 frmNew = cnt

@@ -239,10 +239,6 @@ Public Class gridLayerData
         End Set
     End Property
 
-    Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
-        Return DockStyle.None
-    End Function
-
     Protected Overrides Sub InitLayout()
         If Me.m_layer Is Nothing Then Return
         Me.Redim(Me.m_basemap.InRow + 1, Me.m_basemap.InCol + 1)

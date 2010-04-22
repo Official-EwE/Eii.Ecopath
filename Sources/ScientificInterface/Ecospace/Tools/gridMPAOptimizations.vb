@@ -78,10 +78,6 @@ Public Class gridMPAOptimizations
 
     End Sub
 
-    Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
-        Return DockStyle.None
-    End Function
-
     Public Sub LogResult(ByVal sEconomicValue As Single, ByVal sSocialValue As Single, _
         ByVal sMandatedValue As Single, ByVal sEcologicalValue As Single, _
         ByVal sBiomassDiversityValue As Single, ByVal sBoundaryWeightValue As Single, _

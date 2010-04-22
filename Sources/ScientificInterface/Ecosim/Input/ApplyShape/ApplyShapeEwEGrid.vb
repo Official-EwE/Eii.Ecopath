@@ -274,10 +274,6 @@ Namespace Ecosim
             Me.FixedColumnWidths = False
         End Sub
 
-        Protected Overrides Function DefaultDockStyle() As DockStyle
-            Return DockStyle.Fill
-        End Function
-
 #End Region ' Overrides 
 
 #Region " Internals "

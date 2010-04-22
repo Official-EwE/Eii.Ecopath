@@ -44,7 +44,17 @@ Public Class ucSuitabilityPlot
             Return Me.m_uic
         End Get
         Set(ByVal value As cUIContext)
+
+            If Me.m_uic IsNot Nothing Then
+                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            End If
+
             Me.m_uic = value
+
+            If Me.m_uic IsNot Nothing Then
+                AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            End If
+
         End Set
     End Property
 
@@ -65,7 +75,6 @@ Public Class ucSuitabilityPlot
 
         Me.m_rbElectivity.Checked = True
 
-        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         Me.UpdatePredatorList()
         Me.UpdateGraph()
@@ -74,12 +83,12 @@ Public Class ucSuitabilityPlot
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
 
+        Me.UIContext = Nothing
         Try
             If Me.m_zgh IsNot Nothing Then
                 Me.m_zgh.Detach()
                 Me.m_zgh = Nothing
 
-                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             End If
 
             If disposing AndAlso components IsNot Nothing Then

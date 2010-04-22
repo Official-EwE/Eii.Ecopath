@@ -362,10 +362,6 @@ Namespace Ecospace
 
         End Sub
 
-        Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
-            Return DockStyle.None
-        End Function
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Overridden to first create a snapshot of the Region/stanza configuration

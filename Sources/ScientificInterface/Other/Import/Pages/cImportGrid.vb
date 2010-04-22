@@ -102,16 +102,6 @@ Namespace Import
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Make sure grid does not dock by default.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' -----------------------------------------------------------------------
-        Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
-            Return DockStyle.None
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Populate grid with current import settings.
         ''' </summary>
         ''' -----------------------------------------------------------------------

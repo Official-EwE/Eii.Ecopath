@@ -46,10 +46,13 @@ Namespace Ecospace
             'Initialize the results grid
             Me.m_GridGear = New cGridEcospaceResultsGear
             Me.m_GridGear.UIContext = Me.UIContext
+            Me.m_GridGear.Dock = DockStyle.Fill
             Me.m_GridGroup = New cGridEcospaceResultsGroup
             Me.m_GridGroup.UIContext = Me.UIContext
+            Me.m_GridGroup.Dock = DockStyle.Fill
             Me.m_GridRegion = New cGridEcospaceResultsRegion
             Me.m_GridRegion.UIContext = Me.UIContext
+            Me.m_GridRegion.Dock = DockStyle.Fill
 
             ' Add the result grids. 
             Me.m_plResultsGrid.Controls.Add(m_GridGear)

@@ -217,7 +217,9 @@ Namespace Ecosim
             End Get
             Set(ByVal value As cUIContext)
                 MyBase.UIContext = value
-                Me.m_vulnerabilityBlockCodeSelector.UIContext = value
+                If Me.m_vulnerabilityBlockCodeSelector IsNot Nothing Then
+                    Me.m_vulnerabilityBlockCodeSelector.UIContext = value
+                End If
             End Set
         End Property
 

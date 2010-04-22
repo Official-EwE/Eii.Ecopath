@@ -72,10 +72,6 @@ Namespace Ecosim
             Me.FixedColumnWidths = False
         End Sub
 
-        Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
-            Return DockStyle.None
-        End Function
-
     End Class
 
 End Namespace

@@ -47,15 +47,6 @@ Public Class EditMultiStanzaEwEGrid
         End Set
     End Property
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' No dockink! No dockink!
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-     Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
-        Return DockStyle.None
-    End Function
-
 #End Region
 
     Public Sub CalculateStanzaParameters()

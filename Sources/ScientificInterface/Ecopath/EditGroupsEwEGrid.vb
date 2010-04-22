@@ -785,10 +785,6 @@ Public Class EditGroupsEwEGrid
         Me.AutoSizeColumnRange(1, Me.ColumnsCount - 1, 1, Me.RowsCount - 1)
     End Sub
 
-    Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
-        Return DockStyle.None
-    End Function
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Event handler; called when a cell has received focus. Overriden to notify
