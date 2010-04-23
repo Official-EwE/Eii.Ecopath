@@ -512,6 +512,8 @@ Namespace MSE
                     mseGrp.RHalfB0Ratio = Me.m_MSEdata.RHalfB0Ratio(iGroup)
                     mseGrp.ForcastGain = Me.m_MSEdata.GstockPred(iGroup)
 
+                    mseGrp.FixedF = Me.m_MSEdata.FixedF(iGroup)
+
                     For it As Integer = 1 To Me.m_MSEdata.nYears
                         mseGrp.BiomassCV(it) = Me.m_MSEdata.CVBiomT(iGroup, it)
                     Next
@@ -659,6 +661,7 @@ Namespace MSE
 
                             Me.m_MSEdata.RHalfB0Ratio(iGroup) = mseGrp.RHalfB0Ratio
                             Me.m_MSEdata.GstockPred(iGroup) = mseGrp.ForcastGain
+                            Me.m_MSEdata.FixedF(iGroup) = mseGrp.FixedF
 
                             For it As Integer = 1 To Me.m_MSEdata.nYears
                                 Me.m_MSEdata.CVBiomT(iGroup, it) = mseGrp.BiomassCV(it)

@@ -1009,6 +1009,7 @@ Namespace Core
         MSENTrials
         MSEUseEconomicPlugin
         RHalfB0Ratio
+        MSEFixedF
 
         'data by iteration
         MSEBiomass

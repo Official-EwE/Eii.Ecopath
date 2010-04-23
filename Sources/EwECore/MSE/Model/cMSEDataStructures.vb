@@ -181,6 +181,8 @@ End Enum
         Public Fopt() As Single
         Public FixedEscapement() As Single
 
+        Public FixedF() As Single
+
         ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort  (by gear)</summary>
         Public MaxEffort() As Single 'gear
 
@@ -395,12 +397,14 @@ End Enum
             ReDim Bbase(NGroups)
             ReDim Fopt(NGroups)
             ReDim FixedEscapement(NGroups)
+            ReDim FixedF(NGroups)
 
             For i As Integer = 1 To NGroups
                 Blim(i) = cCore.NULL_VALUE
                 Bbase(i) = cCore.NULL_VALUE
                 Fopt(i) = cCore.NULL_VALUE
                 FixedEscapement(i) = 0
+                FixedF(i) = 0
             Next
 
             'Setting regulatory values to NULL will cause them to be set to a default value if the database does not contain values

@@ -41,14 +41,21 @@ Namespace Ecosim
 
 #Region " Public interfaces "
 
-        Public Property Group() As cEcoSimGroupInput
+        Public Property Group() As cMSEGroupInput
             Get
-                If Me.Selection.SelectedRows.Length = 1 Then
-                    Return DirectCast(Me.Selection.SelectedRows(0).Tag, cEcoSimGroupInput)
-                End If
+                Try
+
+                    If Me.Selection.SelectedRows.Length = 1 Then
+                        Return DirectCast(Me.Selection.SelectedRows(0).Tag, cMSEGroupInput)
+                    End If
+                Catch ex As Exception
+                    Debug.Assert(False, "Invalid cast!!!! maybe..." & ex.Message)
+                End Try
+
                 Return Nothing
+
             End Get
-            Set(ByVal value As cEcoSimGroupInput)
+            Set(ByVal value As cMSEGroupInput)
                 Me.Selection.Clear()
                 If value IsNot Nothing Then
                     Me.Selection.Add(New Position(value.Index, 0))
@@ -85,7 +92,7 @@ Namespace Ecosim
             ' For each group
             For iGroup As Integer = 1 To Core.nGroups
 
-                'Get the group info
+                'Get the group info!!!!
                 group = Core.MSEManager.GroupInputs(iGroup)
 
                 Me.AddRow()

@@ -79,6 +79,9 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.RHalfB0Ratio, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.RHalfB0Ratio))
             m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSEFixedF, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFixedF))
+            m_values.Add(val.varName, val)
 
             Me.AllowValidation = True
 
@@ -209,6 +212,25 @@ Namespace MSE
             End Set
         End Property
 
+        Public Property FixedF() As Single
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSEFixedF), Single)
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEFixedF, value)
+            End Set
+        End Property
+
+        Public Property FixedFStatus() As eStatusFlags
+            Get
+                Return DirectCast(GetStatus(eVarNameFlags.MSEFixedF), eStatusFlags)
+            End Get
+
+            Set(ByVal value As eStatusFlags)
+                SetStatus(eVarNameFlags.MSEFixedF, value)
+            End Set
+        End Property
 
         Public Property FixedEscapementStatus() As eStatusFlags
             Get

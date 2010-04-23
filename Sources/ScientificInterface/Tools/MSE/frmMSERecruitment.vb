@@ -53,7 +53,7 @@ Namespace Ecosim
 
             Me.m_grid.UIContext = Me.UIContext
             If (Core.nGroups > 0) Then
-                Me.m_grid.Group = Me.Core.EcoSimGroupInputs(1)
+                ' Me.m_grid.Group = Me.Core.EcoSimGroupInputs(1)
             End If
 
         End Sub
@@ -89,30 +89,30 @@ Namespace Ecosim
         ''' Get/set the group in the form
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Property Group() As cEcoSimGroupInput
+        Private Property Group() As EwECore.MSE.cMSEGroupInput
             Get
-                Return Me.m_group
+                Return Nothing 'Me.m_group
             End Get
-            Set(ByVal value As cEcoSimGroupInput)
+            Set(ByVal value As EwECore.MSE.cMSEGroupInput)
 
-                Dim pm As cPropertyManager = Me.PropertyManager
+                'Dim pm As cPropertyManager = Me.PropertyManager
 
-                ' Unregister
-                If (Me.m_group IsNot Nothing) Then
-                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf HandlePropertyChanged
-                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf HandlePropertyChanged
-                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf HandlePropertyChanged
-                End If
+                '' Unregister
+                'If (Me.m_group IsNot Nothing) Then
+                '    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf HandlePropertyChanged
+                '    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf HandlePropertyChanged
+                '    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf HandlePropertyChanged
+                'End If
 
-                ' Update
-                Me.m_group = value
+                '' Update
+                'Me.m_group = value
 
-                ' Register
-                If (Me.m_group IsNot Nothing) Then
-                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf HandlePropertyChanged
-                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf HandlePropertyChanged
-                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf HandlePropertyChanged
-                End If
+                '' Register
+                'If (Me.m_group IsNot Nothing) Then
+                '    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf HandlePropertyChanged
+                '    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf HandlePropertyChanged
+                '    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf HandlePropertyChanged
+                'End If
 
                 ' Ledlaw the glaph
                 Me.Redraw()
