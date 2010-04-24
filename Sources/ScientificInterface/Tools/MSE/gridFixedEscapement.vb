@@ -24,7 +24,7 @@ Public Class gridFixedEscapement
         Me(0, 0) = New EwEColumnHeaderCell("")
         Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
         Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_FIXEDESCAPE)
-        Me(0, 3) = New EwEColumnHeaderCell("Fixed fishing mortality")
+        Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_FIXEDF)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False

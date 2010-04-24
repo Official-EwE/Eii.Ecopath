@@ -2633,4 +2633,13 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_EFFORT_UPPER" xml:space="preserve">
     <value>Effort upper</value>
   </data>
+  <data name="HEADER_FIXEDF" xml:space="preserve">
+    <value>Fixed fishing mortality</value>
+  </data>
+  <data name="HEADER_FORCASTGAIN" xml:space="preserve">
+    <value>Recruitment/total population</value>
+  </data>
+  <data name="HEADER_RHALFB0RATIO" xml:space="preserve">
+    <value>Ratio Bt/Ecopath B for 50% recruitment</value>
+  </data>
 </root>

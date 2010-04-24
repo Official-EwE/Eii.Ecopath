@@ -3080,6 +3080,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fixed fishing mortality.
+        '''</summary>
+        Friend ReadOnly Property HEADER_FIXEDF() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FIXEDF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fleet/gear.
         '''</summary>
         Friend ReadOnly Property HEADER_FLEET_GEAR() As String
@@ -3130,6 +3139,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_FOPT() As String
             Get
                 Return ResourceManager.GetString("HEADER_FOPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Recruitment/total population.
+        '''</summary>
+        Friend ReadOnly Property HEADER_FORCASTGAIN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FORCASTGAIN", resourceCulture)
             End Get
         End Property
         
@@ -4012,6 +4030,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_RESPIRATIONASSIMILATION() As String
             Get
                 Return ResourceManager.GetString("HEADER_RESPIRATIONASSIMILATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ratio Bt/Ecopath B for 50% recruitment.
+        '''</summary>
+        Friend ReadOnly Property HEADER_RHALFB0RATIO() As String
+            Get
+                Return ResourceManager.GetString("HEADER_RHALFB0RATIO", resourceCulture)
             End Get
         End Property
         

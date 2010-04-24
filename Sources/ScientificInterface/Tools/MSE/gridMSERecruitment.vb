@@ -77,8 +77,8 @@ Namespace Ecosim
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.RHalfB) = New EwEColumnHeaderCell("Ratio Bt/Ecopath B for 50% recruitment")
-            Me(0, eColumnTypes.ForcastGain) = New EwEColumnHeaderCell("Recruitment/total population")
+            Me(0, eColumnTypes.RHalfB) = New EwEColumnHeaderCell(My.Resources.HEADER_RHALFB0RATIO)
+            Me(0, eColumnTypes.ForcastGain) = New EwEColumnHeaderCell(My.Resources.HEADER_FORCASTGAIN)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False
