@@ -1077,6 +1077,15 @@ Public Class cPluginManager
 
     End Function
 
+
+    Public Function EcospaceRunCompleted(ByVal EcospaceDatastructures As Object) As Boolean
+
+        ' Invoke IEcospaceInitializedPlugin.EcospaceInitialized(EcospaceDatastructures)
+        Me.TryInvokeMethod(GetType(IEcospaceRunCompletedPlugin), "EcospaceRunCompleted", New Object() {EcospaceDatastructures})
+
+    End Function
+
+
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Bridge, invokes the SaveEcospaceScenario plug-in point on any available and responsive 
