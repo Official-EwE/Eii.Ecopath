@@ -6665,6 +6665,8 @@ Public Class cCore
             Me.m_StateMonitor.SetEcospaceCompleted()
             Me.m_publisher.sendAllMessages()
 
+            If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcospaceRunCompleted(Me.m_EcoSpaceData)
+
             Return breturn
 
         Catch ex As Exception
