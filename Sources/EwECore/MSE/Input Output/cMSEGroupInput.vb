@@ -327,12 +327,14 @@ Namespace MSE
 
             If tcatch = 0.0! Then
                 Me.SetStatusFlags(eVarNameFlags.MSEFixedEscapement, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSEFixedF, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.SetStatusFlags(eVarNameFlags.MSEBioCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
 
                 Me.SetStatusFlags(eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.SetStatusFlags(eVarNameFlags.MSERefGroupCatchLower, eStatusFlags.Null Or eStatusFlags.NotEditable)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.MSEFixedEscapement, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSEFixedF, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.ClearStatusFlags(eVarNameFlags.MSEBioCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
 
                 Me.ClearStatusFlags(eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.Null Or eStatusFlags.NotEditable)
