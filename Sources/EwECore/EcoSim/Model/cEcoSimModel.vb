@@ -1174,9 +1174,6 @@ Namespace Ecosim
 
             Derivt(t + DeltaT, yt, dyt)
 
-
-            'jb 23-April-2010 added call to Deritv for subtimesteps
-
             '  Derivt t, b(), dydx()
             'may have to call deriv here again to reset consumption and loss rates?
             For i = 1 To nGroups 'N
@@ -1192,6 +1189,9 @@ Namespace Ecosim
                     B(i) = (1 - m_Data.SorWt) * biomeq(i) + m_Data.SorWt * B(i)
                 End If
             Next
+
+            'ToDo_jb 23-April-2010 Added call to derivt with Blast + BThis / 2 (average B)
+            'when in subtimesteps to compute mPred() with reasonable biomass
 
             'average biomass and loss to a monthly value for SplitUpdate
             avgMonthlyStanzaVars(B, UpdateStanzaGroups)
