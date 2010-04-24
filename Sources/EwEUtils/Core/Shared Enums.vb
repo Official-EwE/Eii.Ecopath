@@ -2234,9 +2234,10 @@ Namespace Core
         ''' <summary>Quota options apply to the weakest stock.</summary>
         Weakest
         ''' <summary>Quota options apply to the strongest stock plus discards.</summary>
-        Strongest
+        HighestValue
         ''' <summary>Quota options apply to selective fishing.</summary>
         Selective
+
     End Enum
 
 #End Region ' Quota types
