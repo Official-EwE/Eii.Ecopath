@@ -6249,7 +6249,7 @@ Namespace DataSources
                     mseDS.MSYStartTimeIndex = CInt(Me.ReadSafe(reader, "StartIndex", 2))
 
                     For iGroup As Integer = 1 To ecopathDS.NumGroups
-                        mseDS.GstockPred(iGroup) = CSng(Me.ReadSafe(reader, "ForcastGain", 0.6))
+                        mseDS.RstockRatio(iGroup) = CSng(Me.ReadSafe(reader, "ForcastGain", 0.6))
                         mseDS.KalmanGain(iGroup) = CSng(Me.ReadSafe(reader, "KalmanGain", 0.6))
                     Next iGroup
 
@@ -6293,7 +6293,7 @@ Namespace DataSources
                 drow("ScenarioID") = iScenarioID
                 drow("AssessMethod") = mseDS.AssessMethod
                 drow("AssessPower") = mseDS.AssessPower
-                drow("ForcastGain") = mseDS.GstockPred(1)
+                drow("ForcastGain") = mseDS.RstockRatio(1)
                 drow("KalmanGain") = mseDS.KalmanGain(1)
                 drow("Ntrials") = mseDS.NTrials
                 drow("StartIndex") = mseDS.MSYStartTimeIndex

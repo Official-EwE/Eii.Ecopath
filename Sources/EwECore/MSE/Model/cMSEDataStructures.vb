@@ -83,7 +83,8 @@ End Enum
 
         Public AssessPower As Single
         Public GstockPred() As Single
-        Public RstockPred() As Single
+        Public RStock0() As Single
+        Public RstockRatio() As Single
         Public KalmanGain() As Single
         Public QGrowUsed() As Single
         Public BhalfT() As Single
@@ -321,7 +322,8 @@ End Enum
         Public Sub RedimVars()
 
             ReDim GstockPred(NGroups)
-            ReDim RstockPred(NGroups)
+            ReDim RstockRatio(NGroups)
+            ReDim RStock0(NGroups)
             ReDim KalmanGain(NGroups)
             ReDim VarQest(nFleets), KalGainQ(nFleets), VarQyear(nFleets)
             ReDim VarQgrow(nFleets)
@@ -367,7 +369,8 @@ End Enum
             'set default values
             For iGrp As Integer = 1 To NGroups
                 ' CVbiomEst(iGrp) = 0.2
-                GstockPred(iGrp) = 0.6
+                'GstockPred(iGrp) = 0.6
+                RstockRatio(iGrp) = 0.4
                 KalmanGain(iGrp) = 0.65
                 BioRiskValue(iGrp, 0) = 0.5 'lower
                 BioRiskValue(iGrp, 1) = 2 'upper
@@ -651,7 +654,7 @@ End Enum
 
             For igrp As Integer = 1 To Me.NGroups
                 Me.RHalfB0Ratio(igrp) = 0.1
-                Me.GstockPred(igrp) = 0.6
+                Me.RstockRatio(igrp) = 0.4
             Next
 
         End Sub

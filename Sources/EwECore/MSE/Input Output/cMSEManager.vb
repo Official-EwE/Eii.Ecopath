@@ -510,7 +510,7 @@ Namespace MSE
                     mseGrp.CatchRefUpper = Me.m_MSEdata.CatchGroupBounds(iGroup).Upper
 
                     mseGrp.RHalfB0Ratio = Me.m_MSEdata.RHalfB0Ratio(iGroup)
-                    mseGrp.ForcastGain = Me.m_MSEdata.GstockPred(iGroup)
+                    mseGrp.ForcastGain = Me.m_MSEdata.RstockRatio(iGroup)
 
                     mseGrp.FixedF = Me.m_MSEdata.FixedF(iGroup)
 
@@ -602,7 +602,7 @@ Namespace MSE
                 Try
                     'Ok both ForcastGain and KalmanGain are arrays in the code
                     'but both set as a single value from the interface
-                    m_parameters.ForcastGain = Me.m_MSEdata.GstockPred(1)
+                    ' m_parameters.ForcastGain = Me.m_MSEdata.GstockPred(1)
                     m_parameters.KalmanGain = Me.m_MSEdata.KalmanGain(1)
                 Catch ex As Exception
 
@@ -660,7 +660,7 @@ Namespace MSE
                             Me.m_MSEdata.CatchGroupBounds(iGroup).Upper = mseGrp.CatchRefUpper
 
                             Me.m_MSEdata.RHalfB0Ratio(iGroup) = mseGrp.RHalfB0Ratio
-                            Me.m_MSEdata.GstockPred(iGroup) = mseGrp.ForcastGain
+                            Me.m_MSEdata.RstockRatio(iGroup) = mseGrp.ForcastGain
                             Me.m_MSEdata.FixedF(iGroup) = mseGrp.FixedF
 
                             For it As Integer = 1 To Me.m_MSEdata.nYears
@@ -706,8 +706,8 @@ Namespace MSE
                             'KalmanGain and ForcastGain are set as a single value in the interface
                             'this is applied to all the groups for the code
                             Me.m_MSEdata.KalmanGain(igrp) = Me.m_parameters.KalmanGain
-                            Me.m_MSEdata.GstockPred(igrp) = Me.m_parameters.ForcastGain
-                            Me.m_MSEdata.RstockPred(igrp) = (1 - Me.m_MSEdata.GstockPred(igrp)) * m_core.StartBiomass(igrp)
+                            'Me.m_MSEdata.GstockPred(igrp) = Me.m_parameters.ForcastGain
+                            'Me.m_MSEdata.RstockRatio(igrp) = (1 - Me.m_MSEdata.GstockPred(igrp)) * m_core.StartBiomass(igrp)
                         Next igrp
 
                         Me.m_MSEdata.AssessMethod = Me.m_parameters.AssessmentMethod()

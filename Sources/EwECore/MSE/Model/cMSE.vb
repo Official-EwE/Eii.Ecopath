@@ -237,9 +237,12 @@ Namespace MSE
                 'init RstockPred from GstockPred
                 'GstockPred could have been altered by an interface
                 For igrp = 1 To Me.m_epdata.NumLiving
+
+                    Me.m_data.GstockPred(igrp) = 1 - Me.m_data.RstockRatio(igrp)
                     Me.m_data.BhalfT(igrp) = Me.m_data.RHalfB0Ratio(igrp) * Me.m_epdata.B(igrp)
-                    Me.m_data.RstockPred(igrp) = (1 - Me.m_data.GstockPred(igrp)) * Me.m_esData.StartBiomass(igrp)
-                    Me.m_data.Rmax(igrp) = Me.m_data.RstockPred(igrp) * (Me.m_data.RHalfB0Ratio(igrp) + 1)
+
+                    Me.m_data.RStock0(igrp) = Me.m_data.RstockRatio(igrp) * Me.m_esData.StartBiomass(igrp)
+                    Me.m_data.Rmax(igrp) = Me.m_data.RStock0(igrp) * (Me.m_data.RHalfB0Ratio(igrp) + 1)
                 Next
 
                 Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
@@ -1083,7 +1086,7 @@ Namespace MSE
                             Best(j) = CSng(Math.Exp(Normal2() * m_data.CVbiomEst(j)) * Me.m_esData.StartBiomass(j) * (Bbar(j) / Me.m_esData.StartBiomass(j)) ^ m_data.AssessPower)
 
                             If BestTime(j) > 0 Then  'have previous biomass estimate for this run
-                                Bp = m_data.GstockPred(j) * BestTime(j) + m_data.RstockPred(j)
+                                Bp = m_data.GstockPred(j) * BestTime(j) + m_data.RStock0(j)
                                 BestTime(j) = Bp + m_data.KalmanGain(j) * (Best(j) - Bp)
                             Else
                                 BestTime(j) = Best(j)
@@ -1154,9 +1157,6 @@ Namespace MSE
                         'NOT IMPLEMENTED at this time
                         Debug.Assert(Me.m_data.QuotaType(ig) = eQuotaTypes.Effort, "Effort regulations have not been implemented at this time!")
 
-                        'QMult will need to be computed using Bestimate()
-                        'F(igrp) = fTarget(igrp) / qmult(igrp)
-
                     Case eQuotaTypes.Weakest 'limit effort to weakest stock
 
                         For i = 1 To m_data.NGroups
@@ -1169,19 +1169,70 @@ Namespace MSE
                             End If
                         Next i
 
-                    Case eQuotaTypes.Strongest, eQuotaTypes.Selective 'limit effort to strongest stock but discard overages on weaker stocks
+                        'Case eQuotaTypes.HighestValue, eQuotaTypes.Selective 'limit effort to strongest stock but discard overages on weaker stocks
+                        '    '  Case eQuotaTypes.Strongest, eQuotaTypes.Selective 'limit effort to strongest stock but discard overages on weaker stocks
+
+                        '    Emax = 0
+                        '    For i = 1 To m_data.NGroups
+                        '        If (m_epdata.Landing(ig, i)) > 0 Then
+                        '            'Calculate the effort limitation, has quote for strongest stock (calling for biggest effort) been exceeded?
+                        '            Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)))
+                        '            If Elim > Emax Then Emax = Elim
+
+                        '        End If
+                        '    Next i
+
+                        '    If Emax < m_esData.FishRateGear(ig, t) Then m_esData.FishRateGear(ig, t) = Emax
+                        '    For i = 1 To m_data.NGroups
+                        '        If (m_epdata.Landing(ig, i)) > 0 Then
+                        '            ci = m_esData.FishRateGear(ig, t) * QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)
+
+                        '            If ci > Me.m_data.QuotaTime(ig, i) Then
+                        '                'fishing mortality exceeds quota
+                        '                Me.m_data.PropLandedTime(ig, i) = CSng(Me.m_data.QuotaTime(ig, i) / (ci + 1.0E-20))
+                        '                If Me.m_data.QuotaType(ig) = eQuotaTypes.Strongest Then
+                        '                    'QuotaType = Strongest 
+                        '                    'excess catch discarded and included in the fishing mortailtiy
+                        '                    Me.m_data.Propdiscardtime(ig, i) = (1 - Me.m_data.PropLandedTime(ig, i)) * m_epdata.PropDiscardMort(ig, i)
+                        '                Else
+                        '                    'QuotaType = Selective 
+                        '                    'excess catch is NOT included in fishing mortaility all discards survive
+                        '                    Me.m_data.Propdiscardtime(ig, i) = 0
+                        '                End If
+
+                        '            Else
+                        '                'ci < QuotaTime
+                        '                Me.m_data.PropLandedTime(ig, i) = m_epdata.PropLanded(ig, i)
+                        '                Me.m_data.Propdiscardtime(ig, i) = m_epdata.PropDiscard(ig, i)
+                        '            End If
+
+                        '        End If
+                        '    Next i
+
+                    Case eQuotaTypes.HighestValue, eQuotaTypes.Selective 'limit effort to highest economic value stock but discard overages on weaker stocks
 
                         Emax = 0
+                        Dim vmax As Single = 0
+                        Dim imax As Integer = 0
+                        Dim v As Single
                         For i = 1 To m_data.NGroups
                             If (m_epdata.Landing(ig, i)) > 0 Then
-                                'Calculate the effort limitation, has quote for strongest stock (calling for biggest effort) been exceeded?
-                                Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)))
-                                If Elim > Emax Then Emax = Elim
+                                'find the stock with the biggest economic value
+                                v = CSng(Me.m_data.QuotaTime(ig, i) * Me.m_epdata.Market(ig, i))
+                                If v > vmax Then
+                                    vmax = v
+                                    imax = i
+                                End If
 
                             End If
                         Next i
 
+                        'get the effort limit for the stock with the biggest value
+                        Emax = CSng(Me.m_data.QuotaTime(ig, imax) / (1.0E-20 + QMult(imax) * m_esData.FishMGear(ig, imax) * Biomass(imax)))
+
+                        'Limit the effort if it is greater than the max allowable 
                         If Emax < m_esData.FishRateGear(ig, t) Then m_esData.FishRateGear(ig, t) = Emax
+
                         For i = 1 To m_data.NGroups
                             If (m_epdata.Landing(ig, i)) > 0 Then
                                 ci = m_esData.FishRateGear(ig, t) * QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)
@@ -1189,7 +1240,7 @@ Namespace MSE
                                 If ci > Me.m_data.QuotaTime(ig, i) Then
                                     'fishing mortality exceeds quota
                                     Me.m_data.PropLandedTime(ig, i) = CSng(Me.m_data.QuotaTime(ig, i) / (ci + 1.0E-20))
-                                    If Me.m_data.QuotaType(ig) = eQuotaTypes.Strongest Then
+                                    If Me.m_data.QuotaType(ig) = eQuotaTypes.HighestValue Then
                                         'QuotaType = Strongest 
                                         'excess catch discarded and included in the fishing mortailtiy
                                         Me.m_data.Propdiscardtime(ig, i) = (1 - Me.m_data.PropLandedTime(ig, i)) * m_epdata.PropDiscardMort(ig, i)
@@ -1207,6 +1258,8 @@ Namespace MSE
 
                             End If
                         Next i
+
+
 
                 End Select
             Next ig
