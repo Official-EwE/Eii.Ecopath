@@ -129,7 +129,7 @@ Namespace Ecosim
             ' Set option checks
             Me(iRow, eColumnTypes.OptionNotUsed).Value = (flt.QuotaType = eQuotaTypes.NotUsed)
             Me(iRow, eColumnTypes.OptionWeakest).Value = (flt.QuotaType = eQuotaTypes.Weakest)
-            Me(iRow, eColumnTypes.OptionStrongest).Value = (flt.QuotaType = eQuotaTypes.Strongest)
+            Me(iRow, eColumnTypes.OptionStrongest).Value = (flt.QuotaType = eQuotaTypes.HighestValue)
             Me(iRow, eColumnTypes.OptionSelective).Value = (flt.QuotaType = eQuotaTypes.Selective)
 
             Me.AllowUpdates = True
@@ -172,7 +172,7 @@ Namespace Ecosim
                     Me.UpdateRow(p.Row)
 
                 Case eColumnTypes.OptionStrongest
-                    flt.QuotaType = eQuotaTypes.Strongest
+                    flt.QuotaType = eQuotaTypes.HighestValue
                     Me.UpdateRow(p.Row)
 
                 Case eColumnTypes.OptionWeakest
