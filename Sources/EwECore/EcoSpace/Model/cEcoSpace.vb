@@ -585,7 +585,7 @@ Public Class cEcoSpace
                 '            'SetBoundaryB
 
                 'set time step counters
-                its = CInt(m_Data.TimeNow * 12) + 1 ' i time assuming a monthly time step used for data array by month i.e. zscale()
+                its = Int(m_Data.TimeNow * 12) + 1 ' i time assuming a monthly time step used for data array by month i.e. zscale()
                 itt += 1 'cumulative i time at the curent time step 
 
                 Debug.Assert(itt <= nEcospaceTimeSteps, "itt > nEcospaceTimeSteps")
