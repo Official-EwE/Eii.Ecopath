@@ -125,6 +125,9 @@ Public Class frmWebBrowser
         End If
     End Sub
 
+#Region " Presumed dead "
+#If 0 Then
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Undead method, allows direct opening of models from within the browser. Cool stuff,
@@ -142,6 +145,9 @@ Public Class frmWebBrowser
         End If
 
     End Sub
+
+#End If
+#End Region
 
 #End Region ' Events
 

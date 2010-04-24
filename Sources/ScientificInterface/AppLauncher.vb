@@ -53,12 +53,16 @@ Public Class AppLauncher
     Private m_strLastSelectedPath As String = ""
     Private m_lstrStatus As New List(Of String)
 
+#Region " Panels "
+
     Private m_DockPanel As DockPanel = Nothing
     Private m_NavPanel As NavigationPanel = Nothing
     Private m_StatusPanel As StatusPanel = Nothing
     Private m_RemarkPanel As RemarkPanel = Nothing
     Private m_StartPage As frmWebBrowser = Nothing
     Private m_lstrProtectedPanelNames As New List(Of String)
+
+#End Region ' Panels
 
 #Region " Commands "
 
@@ -124,6 +128,20 @@ Public Class AppLauncher
     ''' <summary>Style guide updater.</summary>
     Private m_styleguideupdater As StyleGuideUpdater = Nothing
     Private m_applictionStatusNotifier As cApplicationStatusNotifier = Nothing
+
+    ''' <summary>
+    ''' Enumerated type, states how a database was loaded.
+    ''' </summary>
+    Private Enum eLoadSourceType As Integer
+        ''' <summary>Database open attempt originated from the internal API.</summary>
+        API = 0
+        ''' <summary>Database open attempt originated from the command line.</summary>
+        CommandLine
+        ''' <summary>Database open attempt originated from the MRU list.</summary>
+        MRU
+        ''' <summary>Database open attempt originated from the user interface.</summary>
+        User
+    End Enum
 
 #End Region ' Variables
 
@@ -195,505 +213,20 @@ Public Class AppLauncher
 
 #End Region ' IUIElement implementation
 
-#Region " Properties "
+#Region " Initialization "
 
-    Public ReadOnly Property SelectedFileName(Optional ByVal bFullPath As Boolean = True) As String
-        Get
-            Dim ds As IEwEDataSource = Me.Core.DataSource
-            If Object.ReferenceEquals(ds, Nothing) Then
-                Return ""
-            Else
-                If bFullPath Then
-                    Return ds.ToString()
-                Else
-                    Return Path.GetFileName(ds.ToString())
-                End If
+    Private Sub ProcessCommandLine()
+
+        Dim astrCmd As String() = cStringUtils.SplitQualified(Microsoft.VisualBasic.Command(), " ")
+
+        If (astrCmd.Length > 0) Then
+            If Not String.IsNullOrEmpty(astrCmd(0)) Then
+                ' Open the model
+                Me.LoadEcopathModel(astrCmd(0).Replace("""", ""), eLoadSourceType.CommandLine)
             End If
-        End Get
-    End Property
-
-#End Region ' Properties
-
-#Region " Public interfaces "
-
-    Private Delegate Sub SendMessageDelegate(ByVal strMsg As String, _
-                                             ByVal importance As eMessageImportance, _
-                                             ByVal component As eCoreComponentType)
-
-    ''' <summary>
-    ''' Send a message via the core.
-    ''' </summary>
-    ''' <param name="strMsg">Message text to send.</param>
-    ''' <param name="importance">Message importance.</param>
-    ''' <param name="component">Core component to represent as message origin.</param>
-    Public Sub SendMessage(ByVal strMsg As String, _
-                           Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
-                           Optional ByVal component As eCoreComponentType = eCoreComponentType.Core)
-
-        If Me.InvokeRequired() Then
-            Me.Invoke(New SendMessageDelegate(AddressOf Me.SendMessage), _
-                                              New Object() {strMsg, importance, component})
-            Return
         End If
-
-        Dim msg As New cMessage(strMsg, eMessageType.Any, component, importance)
-        Me.Core.Messages.SendMessage(msg)
 
     End Sub
-
-    ''' <summary>
-    ''' Enumerated type, states how a database was loaded.
-    ''' </summary>
-    Public Enum eLoadSourceType As Integer
-        ''' <summary>Database open attempt originated from the internal API.</summary>
-        API = 0
-        ''' <summary>Database open attempt originated from the command line.</summary>
-        CommandLine
-        ''' <summary>Database open attempt originated from the MRU list.</summary>
-        MRU
-        ''' <summary>Database open attempt originated from the user interface.</summary>
-        User
-    End Enum
-
-    ''' ---------------------------------------------------------------------------
-    ''' <summary>
-    ''' Open Ecopath model from given location.
-    ''' </summary>
-    ''' <param name="strFileName">Location of the model to open.</param>
-    ''' <param name="loadsource">Flag indicating where the load request came from.</param>
-    ''' <remarks>This code is designed for strFileName to indicate a path. It should 
-    ''' be possible to indicate a database as well. One day...</remarks>
-    ''' ---------------------------------------------------------------------------
-    Public Function LoadEcopathModel(ByVal strFileName As String, _
-                                     ByVal loadsource As eLoadSourceType) As Boolean
-
-        Dim ds As IEwEDataSource = Nothing
-        Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
-
-        ' Check if target file exists at all before affecting anything
-        If Not File.Exists(strFileName) Then
-
-            ' Handle failure
-            Select Case loadsource
-
-                Case eLoadSourceType.MRU
-                    ' Unable to locate a file from the MRU list: prompt to remove the entry 
-                    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
-                                                     eCoreComponentType.DataSource, eMessageType.Any, _
-                                                     eMessageImportance.Warning, _
-                                                     cFeedbackMessage.eReplyStyle.YES_NO)
-
-                    If Me.Core.Messages.SendMessage(fmsg) Then
-                        If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
-                            Me.RemoveRecentFilesSetting(strFileName)
-                        End If
-                    End If
-
-                Case eLoadSourceType.User, _
-                     eLoadSourceType.CommandLine
-                    ' Unable to load model, show generic error
-                    Dim msg As New cMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
-                                            eMessageType.Any, _
-                                            eCoreComponentType.DataSource, _
-                                            eMessageImportance.Warning)
-                    Me.Core.Messages.SendMessage(msg)
-
-                Case eLoadSourceType.API
-                    ' Do not provide user feedback in response to an API call
-
-            End Select
-            Return False
-        End If
-
-        ' Can close the current open model, if any?
-        If Not CloseEcopathModel() Then
-            ' #No: cannot close - abort
-            Return False
-        End If
-
-        If Not CovertToEwE6(strFileName) Then
-            ' #No: EwE6 database? abort
-            Return False
-        End If
-
-        ' Abort if no new file name given
-        If String.IsNullOrEmpty(strFileName) Then Return True
-
-        ' Create datasource on the selected file
-        ds = cDataSourceFactory.Create(strFileName)
-
-        If (ds Is Nothing) Then
-            Select Case loadsource
-
-                Case eLoadSourceType.MRU
-                    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_INVALIDMODEL_REMOVEMRU, strFileName), _
-                                                     eCoreComponentType.DataSource, eMessageType.Any, _
-                                                     eMessageImportance.Critical, _
-                                                     cFeedbackMessage.eReplyStyle.YES_NO)
-                    If Me.Core.Messages.SendMessage(fmsg) Then
-                        If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
-                            Me.RemoveRecentFilesSetting(strFileName)
-                        End If
-                    End If
-
-                Case eLoadSourceType.User, eLoadSourceType.CommandLine
-                    Dim msg As New cMessage(String.Format(My.Resources.PROMPT_INVALIDMODEL, strFileName), _
-                                            eMessageType.Any, _
-                                            eCoreComponentType.DataSource, _
-                                            eMessageImportance.Critical)
-                    Me.Core.Messages.SendMessage(msg)
-
-                Case eLoadSourceType.API
-                    ' Ok then
-
-            End Select
-            Return False
-        End If
-
-        ' Update MRU
-        Me.AddRecentFilesSetting(strFileName)
-
-        ' Open the datasource
-        atResult = ds.Open(strFileName, Me.Core)
-
-        If (atResult <> eDatasourceAccessType.Success) Then
-            Me.ReportFileAccessError(atResult, strFileName)
-            Return False
-        End If
-
-        ' Ok, now let's see if the core can work with this
-        If Me.Core.LoadModel(ds) Then
-
-            ' Set core output path
-            Me.Core.OutputPath = Path.GetDirectoryName(strFileName)
-
-            ' JS 08Aug07: Whatever happened, at least the default node needs to be visible.
-            '             This also overcomes bug 133 (see bug description in ActivateForm). The Dock engine
-            '             may create forms from crippled XML settings where a doc parent section is missing.
-            '             Such forms get instantiated but GetContentFromPersistentString never gets called
-            '             because the forms are not content as far as the dock engine is concerned. Nice!
-            '             This logic makes sure that at least the default form is properly selected (and indirectly activated)
-            Me.EnsureDefaultNodeSelected()
-            ' Keep at it, Maurice
-            Me.UpdateModelControls()
-            Me.UpdateScenarioControls()
-
-            Return True
-        Else
-            Dim message As String = String.Format(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName)
-            MessageBox.Show(Me, message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Return False
-        End If
-
-    End Function
-
-    ''' ---------------------------------------------------------------------------
-    ''' <summary>
-    ''' Save model to a different datasource and switch to that new datasource. 
-    ''' </summary>
-    ''' <param name="strFileName">Full path + extension of the file to save.</param>
-    ''' ---------------------------------------------------------------------------
-    Public Function SaveEcopathModelAs(ByVal strFileName As String) As Boolean
-
-        If (Me.Core.Save(strFileName)) Then
-            Me.AddRecentFilesSetting(strFileName)
-            Me.UpdateModelControls()
-            Return True
-        End If
-        Return False
-    End Function
-
-    ''' ---------------------------------------------------------------------------
-    ''' <summary>
-    ''' Create a new Ecopath model at a requested location.
-    ''' </summary>
-    ''' <param name="strFileName">The name of the file to create.</param>
-    ''' <param name="strModelName">The name of the model to create.</param>
-    ''' <param name="format">The file format to create.</param>
-    ''' <returns>An Ecopath database, if succesful.</returns>
-    ''' <remarks>
-    ''' Note that this will NOT load the new model! For this, 
-    ''' <see cref="LoadEcopathModel">cAppLauncher.LoadEcopathModel</see> will need
-    ''' to be called.
-    ''' </remarks>
-    ''' ---------------------------------------------------------------------------
-    Public Function CreateEcopathModel(ByVal strFileName As String, _
-                                       ByVal strModelName As String, _
-                                       ByVal format As eDataSourceTypes) As cEwEDatabase
-
-        Dim db As cEwEDatabase = Nothing
-        Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
-        Dim msg As cMessage = Nothing
-
-        Select Case format
-            Case eDataSourceTypes.MDB, eDataSourceTypes.ACCDB
-                db = New cEwEAccessDatabase()
-                atResult = db.Create(strFileName, strModelName, True, format)
-
-            Case eDataSourceTypes.EII
-                atResult = eDatasourceAccessType.Failed_DeprecatedOperation
-
-            Case eDataSourceTypes.NotSet
-                atResult = eDatasourceAccessType.Failed_UnknownType
-        End Select
-
-        ' Provide status feedback
-        Select Case atResult
-
-            Case eDatasourceAccessType.Success, eDatasourceAccessType.Opened
-                msg = New cMessage(String.Format(My.Resources.PROMPT_MODELCREATED, strFileName), _
-                    eMessageType.Any, _
-                    eCoreComponentType.DataSource, eMessageImportance.Information)
-
-            Case eDatasourceAccessType.Failed_CannotSave
-                msg = New cMessage(String.Format(My.Resources.PROMPT_INVALIDTARGETPATH, strFileName), _
-                    eMessageType.Any, _
-                    eCoreComponentType.DataSource, _
-                    eMessageImportance.Critical)
-                db = Nothing
-
-                ' Should not occur
-                'Case eDatasourceAccessType.Failed_ReadOnly 
-
-            Case eDatasourceAccessType.Failed_OSUnsupported
-                msg = New cMessage(My.Resources.PROMPT_DRIVERERROR, _
-                    eMessageType.Any, _
-                    eCoreComponentType.DataSource, _
-                    eMessageImportance.Critical)
-                db = Nothing
-
-            Case eDatasourceAccessType.Failed_UnknownType
-                msg = New cMessage(My.Resources.PROMPT_INVALIDFILE, _
-                    eMessageType.Any, _
-                    eCoreComponentType.DataSource, _
-                    eMessageImportance.Critical)
-                db = Nothing
-
-            Case eDatasourceAccessType.Failed_DeprecatedOperation
-                msg = New cMessage(My.Resources.PROMPT_FILETYPEDEPRECATED, _
-                    eMessageType.Any, _
-                    eCoreComponentType.DataSource, _
-                    eMessageImportance.Critical)
-
-            Case eDatasourceAccessType.Failed_Unknown
-                msg = New cMessage(String.Format(My.Resources.PROMPT_CREATE_GENERICERROR, strFileName), _
-                    eMessageType.Any, _
-                    eCoreComponentType.DataSource, _
-                    eMessageImportance.Warning)
-                db = Nothing
-
-        End Select
-
-        If (msg IsNot Nothing) Then Me.Core.Messages.SendMessage(msg)
-
-        Return db
-
-    End Function
-
-    ''' ---------------------------------------------------------------------------
-    ''' <summary>
-    ''' Create a new Ecopath model at a requested location.
-    ''' </summary>
-    ''' <param name="strFileName">The name of the file to create.</param>
-    ''' <param name="strModelName">The name of the model to create.</param>
-    ''' <returns>An Ecopath database, if succesful.</returns>
-    ''' <remarks>
-    ''' <para>Note that this will NOT load the new model! For this, 
-    ''' <see cref="LoadEcopathModel">cAppLauncher.LoadEcopathModel</see> will need
-    ''' to be called.</para>
-    ''' <para>This method distills the database type from the provided file name.</para>
-    ''' </remarks>
-    ''' ---------------------------------------------------------------------------
-    Public Function CreateEcopathModel(ByVal strFileName As String, _
-                                       ByVal strModelName As String) As cEwEDatabase
-        Return Me.CreateEcopathModel(strFileName, _
-                                     strModelName, _
-                                     cDataSourceFactory.GetSupportedType(strFileName))
-    End Function
-
-    Private Delegate Sub SetStatusTextDelegate(ByVal strText As String, _
-        ByVal tsUseWaitCursor As TriState, _
-        ByVal sProgress As Single)
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Set the application status strip text and wait cursor.
-    ''' </summary>
-    ''' <param name="strText">Status text to display, if any.</param>
-    ''' <param name="tsUseWaitCursor">
-    ''' <para>Tri-state flag stating whether a wait cursor should be shown.
-    ''' Values are interpreted as follows:</para>
-    ''' <list type="bullet">
-    ''' <item><description>True: the wait cursor must be set.</description></item>
-    ''' <item><description>False: the wait cursor must be cleared.</description></item>
-    ''' <item><description>UseDefault: the wait cursor state should not change.</description></item>
-    ''' </list>
-    ''' </param>
-    ''' <param name="sProgress">Ratio [0, 1] of progress to display. 0 to hide progress.</param>
-    ''' <remarks>
-    ''' Note that the wait cursor state is maintained via an internal counter. Setting
-    ''' the wait cursor state will increment this counter, clearing the wait cursor state
-    ''' decrements the counter. The actual wait cursor will be set when this counter is non-zero,
-    ''' and is cleared when this counter reaches zero.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Private Sub SetStatusText(Optional ByVal strText As String = "", _
-        Optional ByVal tsUseWaitCursor As TriState = TriState.UseDefault, _
-        Optional ByVal sProgress As Single = 0.0) _
-        Implements IApplicationStatusDispatcher.SetStatusText
-
-        If Me.InvokeRequired() Then
-            Me.Invoke(New SetStatusTextDelegate(AddressOf Me.SetStatusText), _
-                      New Object() {strText, tsUseWaitCursor, sProgress})
-            Return
-        End If
-
-        ' ToDo_JS: Consider using a timer to clear any status text after a certain interval
-
-        ' Give app a chance to render
-        Application.DoEvents()
-
-        ' Update wait cursor
-        Select Case tsUseWaitCursor
-
-            Case TriState.True ' Set wait cursor
-
-                ' Push text to the status text stack
-                Me.m_lstrStatus.Insert(0, strText)
-                ' Set wait cursor
-                Me.Cursor = Cursors.WaitCursor
-
-            Case TriState.False ' Clear wait cursor
-
-                ' Has wait cursors pending?
-                If Me.m_lstrStatus.Count > 0 Then
-                    ' #Yes: no text specified?
-                    If String.IsNullOrEmpty(strText) Then
-                        ' #Yes: obtain text from the status text stack
-                        strText = Me.m_lstrStatus(0)
-                    End If
-                    ' Pop text from the status text stack
-                    Me.m_lstrStatus.RemoveAt(0)
-                End If
-
-                ' Status stack empty?
-                If Me.m_lstrStatus.Count = 0 Then
-                    ' #Yes: restore default cursor
-                    Me.Cursor = Cursors.Default
-                    strText = ""
-                End If
-
-            Case TriState.UseDefault
-                ' Don't do anything. Really.
-
-        End Select
-
-        ' JS 12oct07: disabled total refresh to minimize screen flickering
-        '' Redraw!
-        'Me.Refresh()
-
-        ' Update status text
-        Me.m_ssMain.SetStatusText(strText, sProgress)
-
-    End Sub
-
-#End Region ' Public interfaces
-
-#Region " Form overrides "
-
-    ''' <summary>
-    ''' </summary>
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-
-        ' Add the dock panel 
-        Me.SuspendLayout()
-        m_DockPanel = New DockPanel
-        With m_DockPanel
-            .Parent = Me
-            .Dock = DockStyle.Fill
-            .BringToFront()
-        End With
-
-        Me.Icon = My.Resources.Ecopath
-        Me.ResumeLayout()
-        My.Settings.Reload()
-
-        Dim al As ArrayList = My.Settings.MdbRecentlyUsedList
-        MRUHelper.BugFix(al)
-        My.Settings.MdbRecentlyUsedList = al
-
-        ' Peeks at key but does not consume it
-        Me.KeyPreview = True
-
-        Me.InitCoreParams()
-        Me.InitCommands()
-        Me.InitPanels()
-        Me.InitEventHandlers()
-
-        Me.InitDockPanelPositions()
-        'Show start page
-        Me.m_StartPage.Show(Me.m_DockPanel, DockState.Document)
-
-        ' Start controlling the status strip
-        Me.m_ssMain.Attach(Me.UIContext)
-        ' Start controlling forms
-        Me.m_FormStateHelper = New cEwEFormStateHelper(Me.Core.StateMonitor, Me.m_DockPanel)
-
-        ' Update plug-ins first, if required
-        If My.Settings.AutoUpdatePlugins Then
-            Dim frm As New frmUpdateComponents(Me.m_pluginManager)
-            frm.ShowDialog()
-        End If
-
-        ' Load plugins once GUI has been created.
-        Me.LoadPlugins()
-        ' Auto-launch plugins
-        Me.AutolaunchPlugins()
-
-        Me.ProcessCommandLine()
-        Me.DefaultSettingLoadedEventHandler(Nothing, Nothing) ' Ugh!
-        Me.UpdateModelControls()
-
-        Me.Help.HelpTopic(Me.m_StartPage) = "Ecopath with Ecosim 6 Getting started.htm"
-
-        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-    End Sub
-
-    ''' <summary>
-    ''' Event handler, catches the form closing event to make sure the core is finalized.
-    ''' Application shut-down is cancelled if the core does not finalize correctly.
-    ''' </summary>
-    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
-
-        ' Cancel application shut down if the core does not terminate succesfully.
-        e.Cancel = Not Me.Core.CloseModel()
-
-        ' The core does not terminate sucessfully
-        If e.Cancel = True Then Return
-
-        ' Save form settings
-        Me.SaveMainFormSettings()
-
-        ' Cleanup: disconnect command handler from idle event
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-        RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
-
-        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
-        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
-        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
-
-        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-
-        ' Terminate forms
-        Me.CloseAllContents()
-
-        MyBase.OnFormClosing(e)
-
-    End Sub
-
-#End Region ' Form overrides
-
-#Region " Internal implementation "
 
     Private Sub InitCommands()
 
@@ -991,6 +524,276 @@ Public Class AppLauncher
 
     End Sub
 
+    Private Sub InitEventHandlers()
+
+        AddHandler My.Settings.SettingsLoaded, AddressOf DefaultSettingLoadedEventHandler
+        AddHandler m_DockPanel.ActiveDocumentChanged, AddressOf ActiveDocumentChangedEventHandler
+
+    End Sub
+
+#End Region ' Initialization
+
+#Region " Properties "
+
+    Public ReadOnly Property SelectedFileName(Optional ByVal bFullPath As Boolean = True) As String
+        Get
+            Dim ds As IEwEDataSource = Me.Core.DataSource
+            If Object.ReferenceEquals(ds, Nothing) Then
+                Return ""
+            Else
+                If bFullPath Then
+                    Return ds.ToString()
+                Else
+                    Return Path.GetFileName(ds.ToString())
+                End If
+            End If
+        End Get
+    End Property
+
+#End Region ' Properties
+
+#Region " Messages "
+
+    Private Delegate Sub SendMessageDelegate(ByVal strMsg As String, ByVal importance As eMessageImportance, ByVal component As eCoreComponentType)
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Send a message via the core.
+    ''' </summary>
+    ''' <param name="strMsg">Message text to send.</param>
+    ''' <param name="importance">Message importance.</param>
+    ''' <param name="component">Core component to represent as message origin.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub SendMessage(ByVal strMsg As String, _
+                           Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
+                           Optional ByVal component As eCoreComponentType = eCoreComponentType.Core)
+
+        If Me.InvokeRequired() Then
+            Me.Invoke(New SendMessageDelegate(AddressOf Me.SendMessage), _
+                                              New Object() {strMsg, importance, component})
+            Return
+        End If
+
+        Dim msg As New cMessage(strMsg, eMessageType.Any, component, importance)
+        Me.Core.Messages.SendMessage(msg)
+
+    End Sub
+
+    Private Delegate Function AskFeedbackDelegate(ByVal strMsg As String, ByVal importance As eMessageImportance, ByVal component As eCoreComponentType, ByVal replies As cFeedbackMessage.eReplyStyle, ByVal defaultReply As cFeedbackMessage.eReply) As cFeedbackMessage.eReply
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ask for user feedback via the core feedback messaging system.
+    ''' </summary>
+    ''' <param name="strMsg">Message text to send.</param>
+    ''' <param name="importance">Message importance.</param>
+    ''' <param name="component">Core component to represent as message origin.</param>
+    ''' -----------------------------------------------------------------------
+    Public Function AskFeedback(ByVal strMsg As String, _
+                             Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
+                             Optional ByVal component As eCoreComponentType = eCoreComponentType.Core, _
+                             Optional ByVal replystyle As cFeedbackMessage.eReplyStyle = cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, _
+                             Optional ByVal defaultreply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.YES) As cFeedbackMessage.eReply
+
+        If Me.InvokeRequired() Then
+            Dim dlgt As New AskFeedbackDelegate(AddressOf Me.AskFeedback)
+            Dim aparms() As Object = New Object() {strMsg, importance, component, replystyle, defaultreply}
+            Return DirectCast(Me.Invoke(dlgt, aparms), cFeedbackMessage.eReply)
+        End If
+
+        Dim fmsg As New cFeedbackMessage(strMsg, component, eMessageType.Any, importance, replystyle, eDataTypes.NotSet, defaultreply)
+        Me.Core.Messages.SendMessage(fmsg)
+        Return fmsg.Reply
+
+    End Function
+
+#End Region ' Messages
+
+#Region " Form overrides "
+
+    ''' <summary>
+    ''' </summary>
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+        ' Add the dock panel 
+        Me.SuspendLayout()
+        m_DockPanel = New DockPanel
+        With m_DockPanel
+            .Parent = Me
+            .Dock = DockStyle.Fill
+            .BringToFront()
+        End With
+
+        Me.Icon = My.Resources.Ecopath
+        Me.ResumeLayout()
+        My.Settings.Reload()
+
+        Dim al As ArrayList = My.Settings.MdbRecentlyUsedList
+        My.Settings.MdbRecentlyUsedList = al
+
+        ' Peeks at key but does not consume it
+        Me.KeyPreview = True
+
+        Me.InitCoreParams()
+        Me.InitCommands()
+        Me.InitPanels()
+        Me.InitEventHandlers()
+
+        Me.InitDockPanelPositions()
+        'Show start page
+        Me.m_StartPage.Show(Me.m_DockPanel, DockState.Document)
+
+        ' Start controlling the status strip
+        Me.m_ssMain.Attach(Me.UIContext)
+        ' Start controlling forms
+        Me.m_FormStateHelper = New cEwEFormStateHelper(Me.Core.StateMonitor, Me.m_DockPanel)
+
+        ' Update plug-ins first, if required
+        If My.Settings.AutoUpdatePlugins Then
+            Dim frm As New frmUpdateComponents(Me.m_pluginManager)
+            frm.ShowDialog()
+        End If
+
+        ' Load plugins once GUI has been created.
+        Me.LoadPlugins()
+        ' Auto-launch plugins
+        Me.AutolaunchPlugins()
+
+        Me.ProcessCommandLine()
+        Me.DefaultSettingLoadedEventHandler(Nothing, Nothing) ' Ugh!
+        Me.UpdateModelControls()
+
+        Me.Help.HelpTopic(Me.m_StartPage) = "Ecopath with Ecosim 6 Getting started.htm"
+
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+    End Sub
+
+    ''' <summary>
+    ''' Event handler, catches the form closing event to make sure the core is finalized.
+    ''' Application shut-down is cancelled if the core does not finalize correctly.
+    ''' </summary>
+    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+
+        ' Cancel application shut down if the core does not terminate succesfully.
+        e.Cancel = Not Me.Core.CloseModel()
+
+        ' The core does not terminate sucessfully
+        If e.Cancel = True Then Return
+
+        ' Save form settings
+        Me.SaveMainFormSettings()
+
+        ' Cleanup: disconnect command handler from idle event
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
+
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
+
+        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
+        ' Terminate forms
+        Me.CloseAllContents()
+        ' Clean up
+        Me.ClearMRUMenu()
+
+        MyBase.OnFormClosing(e)
+
+    End Sub
+
+#End Region ' Form overrides
+
+#Region " Status feedback "
+
+    Private Delegate Sub SetStatusTextDelegate(ByVal strText As String, ByVal tsUseWaitCursor As TriState, ByVal sProgress As Single)
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Set the application status strip text and wait cursor.
+    ''' </summary>
+    ''' <param name="strText">Status text to display, if any.</param>
+    ''' <param name="tsUseWaitCursor">
+    ''' <para>Tri-state flag stating whether a wait cursor should be shown.
+    ''' Values are interpreted as follows:</para>
+    ''' <list type="bullet">
+    ''' <item><description>True: the wait cursor must be set.</description></item>
+    ''' <item><description>False: the wait cursor must be cleared.</description></item>
+    ''' <item><description>UseDefault: the wait cursor state should not change.</description></item>
+    ''' </list>
+    ''' </param>
+    ''' <param name="sProgress">Ratio [0, 1] of progress to display. 0 to hide progress.</param>
+    ''' <remarks>
+    ''' Note that the wait cursor state is maintained via an internal counter. Setting
+    ''' the wait cursor state will increment this counter, clearing the wait cursor state
+    ''' decrements the counter. The actual wait cursor will be set when this counter is non-zero,
+    ''' and is cleared when this counter reaches zero.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Private Sub SetStatusText(Optional ByVal strText As String = "", _
+        Optional ByVal tsUseWaitCursor As TriState = TriState.UseDefault, _
+        Optional ByVal sProgress As Single = 0.0) _
+        Implements IApplicationStatusDispatcher.SetStatusText
+
+        If Me.InvokeRequired() Then
+            Me.Invoke(New SetStatusTextDelegate(AddressOf Me.SetStatusText), _
+                      New Object() {strText, tsUseWaitCursor, sProgress})
+            Return
+        End If
+
+        ' ToDo_JS: Consider using a timer to clear any status text after a certain interval
+
+        ' Give app a chance to render
+        Application.DoEvents()
+
+        ' Update wait cursor
+        Select Case tsUseWaitCursor
+
+            Case TriState.True ' Set wait cursor
+
+                ' Push text to the status text stack
+                Me.m_lstrStatus.Insert(0, strText)
+                ' Set wait cursor
+                Me.Cursor = Cursors.WaitCursor
+
+            Case TriState.False ' Clear wait cursor
+
+                ' Has wait cursors pending?
+                If Me.m_lstrStatus.Count > 0 Then
+                    ' #Yes: no text specified?
+                    If String.IsNullOrEmpty(strText) Then
+                        ' #Yes: obtain text from the status text stack
+                        strText = Me.m_lstrStatus(0)
+                    End If
+                    ' Pop text from the status text stack
+                    Me.m_lstrStatus.RemoveAt(0)
+                End If
+
+                ' Status stack empty?
+                If Me.m_lstrStatus.Count = 0 Then
+                    ' #Yes: restore default cursor
+                    Me.Cursor = Cursors.Default
+                    strText = ""
+                End If
+
+            Case TriState.UseDefault
+                ' Don't do anything. Really.
+
+        End Select
+
+        ' JS 12oct07: disabled total refresh to minimize screen flickering
+        '' Redraw!
+        'Me.Refresh()
+
+        ' Update status text
+        Me.m_ssMain.SetStatusText(strText, sProgress)
+
+    End Sub
+
+#End Region ' Status feedback
+
+#Region " Plug-ins "
+
     Private Sub AutolaunchPlugins()
         Dim pl As New cPluginAutolaunchHandler(Me.m_pluginManager, Me.UIContext.CommandHandler)
     End Sub
@@ -998,7 +801,9 @@ Public Class AppLauncher
     Private Sub LoadPlugins()
 
         Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
-        Dim msg As cMessage = Nothing
+        Dim strMessage As String = ""
+        Dim reply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.OK
+        Dim bNeedReply As Boolean = False
 
         Me.m_pluginManager.LoadPlugins()
 
@@ -1018,7 +823,8 @@ Public Class AppLauncher
             ' Check for enabled and incompatible plug-ins
             If pa.Enabled Then
 
-                msg = Nothing
+                strMessage = ""
+                bNeedReply = False
 
                 Select Case pa.Compatibility
 
@@ -1026,27 +832,30 @@ Public Class AppLauncher
                         ' NOP
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution
-                        msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_CAUTION, pa.Filename), _
-                                           eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
+                        strMessage = String.Format(My.Resources.PROMPT_PLUGIN_CAUTION, pa.Filename)
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible
-                        msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_PLUGIN_INCOMPATIBLE, pa.Filename), _
-                                           eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO)
+                        strMessage = String.Format(My.Resources.PROMPT_PLUGIN_INCOMPATIBLE, pa.Filename)
+                        bNeedReply = True
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
-                        msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_PLUGIN_UNDETERMINED, pa.Filename), _
-                                           eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO)
+                        strMessage = String.Format(My.Resources.PROMPT_PLUGIN_UNDETERMINED, pa.Filename)
+                        bNeedReply = True
 
                 End Select
 
                 ' Has a message to send?
-                If msg IsNot Nothing Then
+                If (Not String.IsNullOrEmpty(strMessage)) Then
                     ' #Yes: Send message
-                    Me.Core.Messages.SendMessage(msg)
-                    ' Feedback required?
-                    If TypeOf (msg) Is cFeedbackMessage Then
-                        ' #Yes: if replied with 'yes'
-                        If DirectCast(msg, cFeedbackMessage).Reply = cFeedbackMessage.eReply.YES Then
+                    ' No feedback required?
+                    If (bNeedReply = False) Then
+                        ' #Yes: send simple message
+                        Me.SendMessage(strMessage, eMessageImportance.Warning, eCoreComponentType.Core)
+                    Else
+                        ' #No: ask for plugin disable feedback
+                        reply = Me.AskFeedback(strMessage, eMessageImportance.Warning, eCoreComponentType.External, cFeedbackMessage.eReplyStyle.YES_NO)
+                        ' Need plugin to be disabled?
+                        If (reply = cFeedbackMessage.eReply.YES) Then
                             ' #Yes: disable the plug-in
                             pa.Enabled = False
                             alDisabledPlugins.Add(pa.Filename)
@@ -1063,210 +872,19 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub InitEventHandlers()
+#End Region ' Plug-ins
 
-        AddHandler My.Settings.SettingsLoaded, AddressOf DefaultSettingLoadedEventHandler
-        AddHandler m_DockPanel.ActiveDocumentChanged, AddressOf ActiveDocumentChangedEventHandler
-
-    End Sub
-
-    ''' <summary>
-    ''' Private method to close all open child forms PLUS all panels on the parent form.
-    ''' </summary>
-    Private Sub CloseAllContents()
-        m_NavPanel.DockPanel = Nothing
-        m_RemarkPanel.DockPanel = Nothing
-        m_StatusPanel.DockPanel = Nothing
-
-        'Close all other documents windows
-        CloseAllDocuments()
-    End Sub
-
-    ''' <summary>
-    ''' Private method to close all open child forms of the parent form.
-    ''' </summary>
-    Private Sub CloseAllDocuments()
-
-        Dim lForms As New List(Of Form)
-
-        ' Make temp list of all documents that may be closed. This cannot
-        ' be performed in a for..ech loop because that affects the iterator
-        ' used in the loop.
-        For Each f As Form In Me.m_DockPanel.Contents
-            If Not Me.m_lstrProtectedPanelNames.Contains(f.Name) Then
-                lForms.Add(f)
-            End If
-        Next
-        ' Now close the forms
-        For Each f As Form In lForms
-            f.Close()
-        Next
-        ' Let's explicitly clean-up for once.
-        lForms = Nothing
-
-        Me.m_NavPanel.SelectedNodeName = ""
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Helper method, tries to activate an opened dock panel or MDI child 
-    ''' window.
-    ''' </summary>
-    ''' <param name="strText">Tab text to find the panel with.</param>
-    ''' <returns>True if an existing panel was found.</returns>
-    ''' -----------------------------------------------------------------------
-    Private Function ActivateForm(ByVal strText As String) As Boolean
-        ' Dock settings, loop through current opened 
-        For Each cnt As DockContent In m_DockPanel.Contents
-            If (String.Compare(cnt.Text, strText, False) = 0) Then
-                ' JS 08aug07: work-around for bug 133 (http://www.ecopath.org/developers/bugtracker/view.php?id=133)
-                ' Source:   Weifen Luo dock content xml section for "Document" state panel is improperly written or missing
-                ' Effect:   Forms that are supposed to be docked in that panel are constructed with Unknown dock properties
-                '           but are not docked into any panel. Upon Activation, this logic restores damaged dock styles to
-                '           reveal forms affected by this bug.
-                ' Solution: Fix imcomplete XML issues in the dock panel engine.
-                '           Hahaha!
-                With cnt
-                    .IsHidden = False
-                    If .DockState = DockState.Unknown Then .DockState = DockState.Document
-                    If .VisibleState = DockState.Unknown Then .VisibleState = DockState.Document
-                    If .WindowState = FormWindowState.Minimized Then .WindowState = FormWindowState.Normal
-                    .BringToFront()
-                End With
-                Return True
-            End If
-        Next
-        ' Failed to find an existing panel with this tab text.
-        Return False
-    End Function
-
-    ''' ---------------------------------------------------------------------------
-    ''' <summary>
-    ''' Create a form or dock panel for a given type.
-    ''' </summary>
-    ''' <param name="strText">Text to assign to the form.</param>
-    ''' <param name="t"><see cref="Type">Type</see> of the form to create.</param>
-    ''' <returns>A <see cref="Form">Form</see>-derived instance, or Nothing if the
-    ''' form could not be created.
-    ''' </returns>
-    ''' ---------------------------------------------------------------------------
-    Private Function LoadFormFromType(ByVal strText As String, ByVal t As Type, ByVal state As eCoreExecutionState) As Form
-
-        Dim classObject As Object
-        Dim frmNew As Form = Nothing
-
-        If Object.ReferenceEquals(t, Nothing) Then Return Nothing
-
-        ' Test the instance if it loads properly
-        Me.SetStatusText(My.Resources.GENERIC_STATUS_LOADINGFORM, TriState.True)
-        Try
-            classObject = Activator.CreateInstance(t)
-
-            If TypeOf classObject Is DockContent Then
-                ' Is dock content
-                Dim cnt As DockContent = DirectCast(classObject, DockContent)
-                cnt.Text = strText
-                cnt.TabText = strText
-                frmNew = cnt
-            ElseIf TypeOf classObject Is EwEGrid Then
-                ' Is a grid
-                Dim grid As EwEGrid = DirectCast(classObject, EwEGrid)
-                grid.Dock = DockStyle.Fill
-                Dim cnt As DockContent = New frmEwEGrid(grid)
-                cnt.Text = strText
-                cnt.TabText = strText
-                frmNew = cnt
-            ElseIf TypeOf classObject Is Form Then
-                ' Is a generic form
-                frmNew = DirectCast(classObject, Form)
-                frmNew.Text = strText
-            End If
-
-            If TypeOf frmNew Is frmEwE Then
-                ' Provide form with state
-                DirectCast(frmNew, frmEwE).CoreExecutionState = state
-            End If
-
-            If (TypeOf (frmNew) Is IUIElement) Then
-                ' Configure new object with UI context
-                DirectCast(frmNew, IUIElement).UIContext = Me.UIContext
-            End If
-
-
-            ' Set form icon based on core state
-            Select Case state
-                Case eCoreExecutionState.EcopathLoaded, eCoreExecutionState.EcopathCompleted, eCoreExecutionState.EcopathRunning
-                    frmNew.Icon = My.Resources.Ecopath
-                Case eCoreExecutionState.EcosimLoaded, eCoreExecutionState.EcosimRunning, eCoreExecutionState.EcosimCompleted
-                    frmNew.Icon = My.Resources.Ecosim3
-                Case eCoreExecutionState.EcospaceLoaded, eCoreExecutionState.EcospaceRunning, eCoreExecutionState.EcospaceCompleted
-                    frmNew.Icon = My.Resources.Ecospace3
-                Case eCoreExecutionState.EcotracerLoaded
-                    frmNew.Icon = My.Resources.Ecotracer
-            End Select
-
-        Catch ex As Exception
-            Debug.Assert(False, "Creation of Form was not successful.  Please contact help: '" & strText & "' threw exception " & ex.ToString)
-        End Try
-        Me.SetStatusText("", TriState.False)
-
-        Return frmNew
-    End Function
-
-    ''' ---------------------------------------------------------------------------
-    ''' <summary>
-    ''' Close the current open Ecopath Model
-    ''' </summary>
-    ''' ---------------------------------------------------------------------------
-    Private Function CloseEcopathModel() As Boolean
-
-        If Not String.IsNullOrEmpty(Me.SelectedFileName) Then
-
-            ' Not allowed to terminate core?
-            If (Not Me.Core.CloseModel()) Then
-                ' #Not allowed: abort
-                Return False
-            End If
-
-            ' Store last directory
-            My.Settings.LastSelectedDirectory = Me.m_strLastSelectedPath
-            ' Close all open documents
-            Me.CloseAllDocuments()
-
-            ' Reset components
-            Me.m_NavPanel.Reset()
-            Me.m_StatusPanel.Reset()
-
-            ' Clear the properties cache
-            Me.m_uic.PropertyManager.Clear(eCoreComponentType.EcoPath)
-            ' Clean up
-            GC.Collect()
-            ' Redraw everything immediately
-            Me.Refresh()
-            ' Report succes
-            Me.UpdateModelControls()
-            Me.UpdateScenarioControls()
-        End If
-
-        Return True
-
-    End Function
+#Region " Database utils "
 
     Private Function CompactModel() As Boolean
 
         Dim ds As IEwEDataSource = Me.Core.DataSource
         Dim result As eDatasourceAccessType = eDatasourceAccessType.Success
         Dim strFileName As String = Me.SelectedFileName()
-        Dim msg As cMessage = Nothing
+        Dim strMessage As String = ""
         Dim bSucces As Boolean = True
 
-        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_MODEL_COMPACT, _
-                                  eCoreComponentType.DataSource, eMessageType.Any, _
-                                  eMessageImportance.Critical, _
-                                  cFeedbackMessage.eReplyStyle.YES_NO)
-        Me.Core.Messages.SendMessage(fmsg)
-        If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then
+        If (Me.AskFeedback(My.Resources.PROMPT_MODEL_COMPACT) <> cFeedbackMessage.eReply.YES) Then
             Return False
         End If
 
@@ -1279,138 +897,35 @@ Public Class AppLauncher
         If result = eDatasourceAccessType.Success Then
             bSucces = Me.LoadEcopathModel(strFileName, eLoadSourceType.API)
             If bSucces Then
-                msg = New cMessage(My.Resources.STATUS_MODEL_COMPACT_SUCCESS, _
-                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Information)
+                strMessage = My.Resources.STATUS_MODEL_COMPACT_SUCCESS
             Else
-                msg = New cMessage(My.Resources.STATUS_MODEL_COMPACT_RELOADFAIL, _
-                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
+                strMessage = My.Resources.STATUS_MODEL_COMPACT_RELOADFAIL
             End If
         Else
             ' Report error
             Select Case result
                 Case eDatasourceAccessType.Failed_OSUnsupported
-                    msg = New cMessage(My.Resources.STATUS_MODEL_COMPACTING_OS, _
-                                       eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
+                    strMessage = My.Resources.STATUS_MODEL_COMPACTING_OS
                 Case eDatasourceAccessType.Failed_CannotSave
-                    msg = New cMessage(My.Resources.STATUS_MODEL_COMPACTING_TEMPFILE, _
-                                       eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
-                Case eDatasourceAccessType.Failed_FileNotFound
-                Case eDatasourceAccessType.Failed_Unknown
-                    msg = New cMessage(My.Resources.STATUS_MODEL_COMPACTING_FAILED, _
-                                       eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
+                    strMessage = My.Resources.STATUS_MODEL_COMPACTING_TEMPFILE
+                Case eDatasourceAccessType.Failed_FileNotFound, _
+                     eDatasourceAccessType.Failed_Unknown
+                    strMessage = My.Resources.STATUS_MODEL_COMPACTING_FAILED
                 Case eDatasourceAccessType.Failed_ReadOnly
-                    msg = New cMessage(My.Resources.STATUS_MODEL_ACCESS_READONLY, _
-                                       eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Critical)
-
+                    strMessage = My.Resources.STATUS_MODEL_ACCESS_READONLY
             End Select
             bSucces = False
         End If
 
-        ' Send error
-        Me.Core.Messages.SendMessage(msg)
+        If (bSucces) Then
+            Me.SendMessage(strMessage, eMessageImportance.Information, eCoreComponentType.DataSource)
+        Else
+            Me.SendMessage(strMessage, eMessageImportance.Critical, eCoreComponentType.DataSource)
+        End If
 
         Return bSucces
 
     End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Helper method, updates the state of controls reflecting the current model. 
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub UpdateModelControls()
-
-        Me.m_tsbModel.Text = cStringUtils.TruncatePath(Me.SelectedFileName, Me.m_tsbModel.Font, Me.m_tsbModel.Width)
-        Me.m_tsbModel.Visible = Not String.IsNullOrEmpty(Me.m_tsbModel.Text)
-
-        If String.IsNullOrEmpty(Me.SelectedFileName) Then
-            Me.Text = String.Format(My.Resources.GENERIC_CAPTION)
-        Else
-            Me.Text = String.Format(My.Resources.GENERIC_CAPTION_OPENMODEL, Me.SelectedFileName(False))
-        End If
-
-    End Sub
-
-    Private Sub UpdateScenarioControls()
-
-        Dim tsmi As ToolStripMenuItem = Nothing
-
-        ' Properly release sim menu items
-        For Each tsmi In Me.m_tsbEcosim.DropDownItems
-            RemoveHandler tsmi.Click, AddressOf EcosimScenarioClickEventHandler
-        Next
-        Me.m_tsbEcosim.DropDownItems.Clear()
-
-        ' Properly release space menu items
-        For Each tsmi In Me.m_tsbEcospace.DropDownItems
-            RemoveHandler tsmi.Click, AddressOf EcospaceScenarioClickEventHandler
-        Next
-        Me.m_tsbEcospace.DropDownItems.Clear()
-
-        ' Properly release tracer menu items
-        For Each tsmi In Me.m_tsbEcotracer.DropDownItems
-            RemoveHandler tsmi.Click, AddressOf EcotracerScenarioClickEventHandler
-        Next
-        Me.m_tsbEcotracer.DropDownItems.Clear()
-
-        'Load Ecosim scenarios.
-        If Me.Core.StateMonitor.HasEcopathLoaded() Then
-
-            For i As Integer = 1 To Me.Core.EcosimScenarioCount
-                tsmi = New ToolStripMenuItem()
-                tsmi.Text = Me.Core.EcosimScenarios(i).Name
-                tsmi.Tag = i
-                AddHandler tsmi.Click, AddressOf EcosimScenarioClickEventHandler
-                Me.m_tsbEcosim.DropDownItems.Add(tsmi)
-            Next
-
-            'Load Ecospace scenarios
-            For i As Integer = 1 To Me.Core.EcospaceScenarioCount
-                tsmi = New ToolStripMenuItem()
-                tsmi.Text = Me.Core.EcospaceScenarios(i).Name
-                tsmi.Tag = i
-                AddHandler tsmi.Click, AddressOf EcospaceScenarioClickEventHandler
-                Me.m_tsbEcospace.DropDownItems.Add(tsmi)
-            Next
-
-            'Load Ecotracer scenarios
-            For i As Integer = 1 To Me.Core.EcotracerScenarioCount
-                tsmi = New ToolStripMenuItem()
-                tsmi.Text = Me.Core.EcotracerScenarios(i).Name
-                tsmi.Tag = i
-                AddHandler tsmi.Click, AddressOf EcotracerScenarioClickEventHandler
-                Me.m_tsbEcotracer.DropDownItems.Add(tsmi)
-            Next
-
-        End If
-
-    End Sub
-
-    Private Sub ReportFileAccessError(ByVal atResult As eDatasourceAccessType, ByVal strFileName As String)
-
-        Dim msg As cMessage = Nothing
-
-        Select Case atResult
-            Case eDatasourceAccessType.Failed_ReadOnly
-                msg = New cMessage(String.Format(My.Resources.STATUS_MODEL_ACCESS_READONLY, strFileName), _
-                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
-            Case eDatasourceAccessType.Failed_OSUnsupported
-                msg = New cMessage(String.Format(My.Resources.STATUS_MODEL_ACCESS_OS, strFileName), _
-                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
-            Case eDatasourceAccessType.Failed_FileNotFound
-                msg = New cMessage(String.Format(My.Resources.STATUS_MODEL_ACCESS_404, strFileName), _
-                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
-            Case eDatasourceAccessType.Failed_CannotSave
-                msg = New cMessage(String.Format(My.Resources.STATUS_MODEL_SAVE_404, strFileName), _
-                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
-            Case Else
-                msg = New cMessage(String.Format(My.Resources.STATUS_MODEL_ACCESS_FAILED, strFileName), _
-                                   eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
-        End Select
-
-        Me.Core.Messages.SendMessage(msg)
-
-    End Sub
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -1496,6 +1011,108 @@ Public Class AppLauncher
 
     End Function
 
+    Private Sub ReportFileAccessError(ByVal atResult As eDatasourceAccessType, ByVal strFileName As String)
+
+        Dim strMessage As String = ""
+
+        Select Case atResult
+            Case eDatasourceAccessType.Failed_ReadOnly
+                strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_READONLY, strFileName)
+            Case eDatasourceAccessType.Failed_OSUnsupported
+                strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_OS, strFileName)
+            Case eDatasourceAccessType.Failed_FileNotFound
+                strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_404, strFileName)
+            Case eDatasourceAccessType.Failed_CannotSave
+                strMessage = String.Format(My.Resources.STATUS_MODEL_SAVE_404, strFileName)
+            Case Else
+                strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_FAILED, strFileName)
+        End Select
+
+        Me.SendMessage(strMessage, eMessageImportance.Warning, eCoreComponentType.DataSource)
+
+    End Sub
+
+#End Region ' Database utils
+
+#Region " UI updates "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, updates the state of controls reflecting the current model. 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub UpdateModelControls()
+
+        Me.m_tsbModel.Text = cStringUtils.TruncatePath(Me.SelectedFileName, Me.m_tsbModel.Font, Me.m_tsbModel.Width)
+        Me.m_tsbModel.Visible = Not String.IsNullOrEmpty(Me.m_tsbModel.Text)
+
+        If String.IsNullOrEmpty(Me.SelectedFileName) Then
+            Me.Text = String.Format(My.Resources.GENERIC_CAPTION)
+        Else
+            Me.Text = String.Format(My.Resources.GENERIC_CAPTION_OPENMODEL, Me.SelectedFileName(False))
+        End If
+
+    End Sub
+
+    Private Sub UpdateScenarioControls()
+
+        Dim tsmi As ToolStripMenuItem = Nothing
+
+        ' Properly release sim menu items
+        For Each tsmi In Me.m_tsbEcosim.DropDownItems
+            RemoveHandler tsmi.Click, AddressOf EcosimScenarioClickEventHandler
+        Next
+        Me.m_tsbEcosim.DropDownItems.Clear()
+
+        ' Properly release space menu items
+        For Each tsmi In Me.m_tsbEcospace.DropDownItems
+            RemoveHandler tsmi.Click, AddressOf EcospaceScenarioClickEventHandler
+        Next
+        Me.m_tsbEcospace.DropDownItems.Clear()
+
+        ' Properly release tracer menu items
+        For Each tsmi In Me.m_tsbEcotracer.DropDownItems
+            RemoveHandler tsmi.Click, AddressOf EcotracerScenarioClickEventHandler
+        Next
+        Me.m_tsbEcotracer.DropDownItems.Clear()
+
+        'Load Ecosim scenarios.
+        If Me.Core.StateMonitor.HasEcopathLoaded() Then
+
+            For i As Integer = 1 To Me.Core.EcosimScenarioCount
+                tsmi = New ToolStripMenuItem()
+                tsmi.Text = Me.Core.EcosimScenarios(i).Name
+                tsmi.Tag = i
+                AddHandler tsmi.Click, AddressOf EcosimScenarioClickEventHandler
+                Me.m_tsbEcosim.DropDownItems.Add(tsmi)
+            Next
+
+            'Load Ecospace scenarios
+            For i As Integer = 1 To Me.Core.EcospaceScenarioCount
+                tsmi = New ToolStripMenuItem()
+                tsmi.Text = Me.Core.EcospaceScenarios(i).Name
+                tsmi.Tag = i
+                AddHandler tsmi.Click, AddressOf EcospaceScenarioClickEventHandler
+                Me.m_tsbEcospace.DropDownItems.Add(tsmi)
+            Next
+
+            'Load Ecotracer scenarios
+            For i As Integer = 1 To Me.Core.EcotracerScenarioCount
+                tsmi = New ToolStripMenuItem()
+                tsmi.Text = Me.Core.EcotracerScenarios(i).Name
+                tsmi.Tag = i
+                AddHandler tsmi.Click, AddressOf EcotracerScenarioClickEventHandler
+                Me.m_tsbEcotracer.DropDownItems.Add(tsmi)
+            Next
+
+        End If
+
+    End Sub
+
+#End Region ' UI updates
+
+#Region " Settings "
+
     Private Sub SaveMainFormSettings()
 
         ' Save the user settings when EwE exits
@@ -1508,6 +1125,10 @@ Public Class AppLauncher
 
     End Sub
 
+#End Region ' Settings
+
+#Region " MRU "
+
     Private Sub AddRecentFilesSetting(ByVal strFileName As String)
 
         Dim alMDBmru As ArrayList = My.Settings.MdbRecentlyUsedList
@@ -1516,37 +1137,22 @@ Public Class AppLauncher
 
         ' Insert at head
         alMDBmru.Insert(0, strFileName)
-
-        ' Remove first occurrence from further down the list
-        For iEntry As Integer = 1 To alMDBmru.Count - 2
-            ' Valid entry?
-            If (TypeOf alMDBmru(iEntry) Is String) Then
-                ' Get entry
-                Dim strEntry As String = CStr(alMDBmru(iEntry))
-                ' Is same file?
-                If strEntry.StartsWith(strFileName) Then
-                    ' #Yes: remove 
-                    alMDBmru.RemoveAt(iEntry)
-                    ' Done
-                    Exit For
-                End If
-            End If
-        Next iEntry
-
-        ' Update system settings
         My.Settings.MdbRecentlyUsedList = alMDBmru
-        My.Settings.Save()
+
+        ' Remove any occurrences further down the list
+        Me.RemoveRecentFilesSetting(strFileName, 1)
 
     End Sub
 
-    Private Sub RemoveRecentFilesSetting(ByVal strFileName As String)
+    Private Sub RemoveRecentFilesSetting(ByVal strFileName As String, _
+                                         Optional ByVal iStartPos As Integer = 0)
 
         Dim alMDBmru As ArrayList = My.Settings.MdbRecentlyUsedList
 
         If (alMDBmru Is Nothing) Then Return
 
         ' Remove first occurrence from down the list
-        For iEntry As Integer = 0 To alMDBmru.Count - 2
+        For iEntry As Integer = iStartPos To alMDBmru.Count - 2
             ' Valid entry?
             If (TypeOf alMDBmru(iEntry) Is String) Then
                 ' Get entry
@@ -1567,57 +1173,176 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub DisplayFileLists(ByVal menuItem As ToolStripMenuItem, ByVal fileList As ArrayList, ByVal cnt As Integer)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Show the list of MRU items in the menu structure.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub PopulateMRUMenu()
 
-        ' no recently accessed files yet
-        If fileList.Count = 1 Then
+        Dim alMRU As ArrayList = My.Settings.MdbRecentlyUsedList
+        Dim iNumItems As Integer = Math.Min(alMRU.Count - 1, My.Settings.MdbRecentlyUsedCount)
+        Dim item As ToolStripMenuItem = Nothing
 
-            If menuItem.DropDownItems.Count = 1 AndAlso _
-                   menuItem.DropDownItems.Item(0).Text = My.Resources.GENERIC_VALUE_NONE Then
-                Return
-            End If
+        ' Clear MRU list
+        Me.ClearMRUMenu()
 
-            menuItem.DropDownItems.Clear()
-            Dim mnuItem As New ToolStripMenuItem
-            mnuItem.Text = My.Resources.GENERIC_VALUE_NONE
-            mnuItem.Enabled = False
-            menuItem.DropDownItems.Add(mnuItem)
+        ' No recently accessed files yet?
+        If (alMRU.Count <= 1) Then
+            ' Always have 'None' item
+            item = New ToolStripMenuItem()
+            item.Text = My.Resources.GENERIC_VALUE_NONE
+            item.Enabled = False
+            Me.m_tsmiFileRecent.DropDownItems.Add(item)
+
             Return
         End If
 
-        ' Has recent accessed file
-        Dim showCnt As Integer = cnt
-        If showCnt > fileList.Count - 1 Then
-            showCnt = fileList.Count - 1
-        End If
+        For i As Integer = 0 To iNumItems - 1
 
-        ' Have new recent files, the list needs to be updated.
-        menuItem.DropDownItems.Clear()
+            item = New ToolStripMenuItem()
 
-        For i As Integer = 0 To showCnt - 1
-            Dim mnuItem As New ToolStripMenuItem
-            Dim str As String() = CStr(fileList.Item(i)).Split(New Char() {";"c})
-            mnuItem.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i + 1, str(0))
+            Dim str As String() = CStr(alMRU.Item(i)).Split(New Char() {";"c})
+            item.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i + 1, str(0))
+            item.Tag = str(0)
+
             'Add event handler to invoke the model
-            AddHandler mnuItem.Click, AddressOf RecentFileClickEventHandler
+            AddHandler item.Click, AddressOf RecentFileClickEventHandler
 
-            menuItem.DropDownItems.Add(mnuItem)
+            Console.WriteLine("Set")
+
+            Me.m_tsmiFileRecent.DropDownItems.Add(item)
         Next
 
     End Sub
 
-    Private Sub ProcessCommandLine()
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Clear the list of MRU items from the menu structure.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub ClearMRUMenu()
 
-        Dim astrCmd As String() = cStringUtils.SplitQualified(Microsoft.VisualBasic.Command(), " ")
-
-        If (astrCmd.Length > 0) Then
-            If Not String.IsNullOrEmpty(astrCmd(0)) Then
-                ' Open the model
-                Me.LoadEcopathModel(astrCmd(0).Replace("""", ""), eLoadSourceType.CommandLine)
+        Dim item As ToolStripMenuItem = Nothing
+        For Each item In Me.m_tsmiFileRecent.DropDownItems
+            If item.Tag IsNot Nothing Then
+                RemoveHandler item.Click, AddressOf RecentFileClickEventHandler
+                Console.WriteLine("Clear")
             End If
-        End If
+        Next
+        Me.m_tsmiFileRecent.DropDownItems.Clear()
 
     End Sub
+
+#End Region ' MRU
+
+#Region " Content navigation "
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Create a form or dock panel for a given type.
+    ''' </summary>
+    ''' <param name="strText">Text to assign to the form.</param>
+    ''' <param name="t"><see cref="Type">Type</see> of the form to create.</param>
+    ''' <returns>A <see cref="Form">Form</see>-derived instance, or Nothing if the
+    ''' form could not be created.
+    ''' </returns>
+    ''' ---------------------------------------------------------------------------
+    Private Function LoadFormFromType(ByVal strText As String, ByVal t As Type, ByVal state As eCoreExecutionState) As Form
+
+        Dim classObject As Object
+        Dim frmNew As Form = Nothing
+
+        If Object.ReferenceEquals(t, Nothing) Then Return Nothing
+
+        ' Test the instance if it loads properly
+        Me.SetStatusText(My.Resources.GENERIC_STATUS_LOADINGFORM, TriState.True)
+        Try
+            classObject = Activator.CreateInstance(t)
+
+            If TypeOf classObject Is DockContent Then
+                ' Is dock content
+                Dim cnt As DockContent = DirectCast(classObject, DockContent)
+                cnt.Text = strText
+                cnt.TabText = strText
+                frmNew = cnt
+            ElseIf TypeOf classObject Is EwEGrid Then
+                ' Is a grid
+                Dim grid As EwEGrid = DirectCast(classObject, EwEGrid)
+                grid.Dock = DockStyle.Fill
+                Dim cnt As DockContent = New frmEwEGrid(grid)
+                cnt.Text = strText
+                cnt.TabText = strText
+                frmNew = cnt
+            ElseIf TypeOf classObject Is Form Then
+                ' Is a generic form
+                frmNew = DirectCast(classObject, Form)
+                frmNew.Text = strText
+            End If
+
+            If TypeOf frmNew Is frmEwE Then
+                ' Provide form with state
+                DirectCast(frmNew, frmEwE).CoreExecutionState = state
+            End If
+
+            If (TypeOf (frmNew) Is IUIElement) Then
+                ' Configure new object with UI context
+                DirectCast(frmNew, IUIElement).UIContext = Me.UIContext
+            End If
+
+
+            ' Set form icon based on core state
+            Select Case state
+                Case eCoreExecutionState.EcopathLoaded, eCoreExecutionState.EcopathCompleted, eCoreExecutionState.EcopathRunning
+                    frmNew.Icon = My.Resources.Ecopath
+                Case eCoreExecutionState.EcosimLoaded, eCoreExecutionState.EcosimRunning, eCoreExecutionState.EcosimCompleted
+                    frmNew.Icon = My.Resources.Ecosim3
+                Case eCoreExecutionState.EcospaceLoaded, eCoreExecutionState.EcospaceRunning, eCoreExecutionState.EcospaceCompleted
+                    frmNew.Icon = My.Resources.Ecospace3
+                Case eCoreExecutionState.EcotracerLoaded
+                    frmNew.Icon = My.Resources.Ecotracer
+            End Select
+
+        Catch ex As Exception
+            Debug.Assert(False, "Creation of Form was not successful.  Please contact help: '" & strText & "' threw exception " & ex.ToString)
+        End Try
+        Me.SetStatusText("", TriState.False)
+
+        Return frmNew
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, tries to activate an opened dock panel or MDI child 
+    ''' window.
+    ''' </summary>
+    ''' <param name="strText">Tab text to find the panel with.</param>
+    ''' <returns>True if an existing panel was found.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function ActivateForm(ByVal strText As String) As Boolean
+        ' Dock settings, loop through current opened 
+        For Each cnt As DockContent In m_DockPanel.Contents
+            If (String.Compare(cnt.Text, strText, False) = 0) Then
+                ' JS 08aug07: work-around for bug 133 (http://www.ecopath.org/developers/bugtracker/view.php?id=133)
+                ' Source:   Weifen Luo dock content xml section for "Document" state panel is improperly written or missing
+                ' Effect:   Forms that are supposed to be docked in that panel are constructed with Unknown dock properties
+                '           but are not docked into any panel. Upon Activation, this logic restores damaged dock styles to
+                '           reveal forms affected by this bug.
+                ' Solution: Fix imcomplete XML issues in the dock panel engine.
+                '           Hahaha!
+                With cnt
+                    .IsHidden = False
+                    If .DockState = DockState.Unknown Then .DockState = DockState.Document
+                    If .VisibleState = DockState.Unknown Then .VisibleState = DockState.Document
+                    If .WindowState = FormWindowState.Minimized Then .WindowState = FormWindowState.Normal
+                    .BringToFront()
+                End With
+                Return True
+            End If
+        Next
+        ' Failed to find an existing panel with this tab text.
+        Return False
+    End Function
 
     Private Sub EnsureDefaultNodeSelected()
         ' BAAAAAD!
@@ -1628,6 +1353,51 @@ Public Class AppLauncher
         Me.m_NavPanel.SelectedNodeName = strNodeName
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Private method to close all open child forms PLUS all panels on the parent form.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub CloseAllContents()
+        m_NavPanel.DockPanel = Nothing
+        m_RemarkPanel.DockPanel = Nothing
+        m_StatusPanel.DockPanel = Nothing
+
+        'Close all other documents
+        CloseAllDocuments()
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Private method to close all open child forms of the parent form.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub CloseAllDocuments()
+
+        Dim lForms As New List(Of Form)
+
+        ' Make temp list of all documents that may be closed. This cannot
+        ' be performed in a for..ech loop because that affects the iterator
+        ' used in the loop.
+        For Each f As Form In Me.m_DockPanel.Contents
+            If Not Me.m_lstrProtectedPanelNames.Contains(f.Name) Then
+                lForms.Add(f)
+            End If
+        Next
+        ' Now close the forms
+        For Each f As Form In lForms
+            f.Close()
+        Next
+        ' Let's explicitly clean-up for once.
+        lForms = Nothing
+
+        Me.m_NavPanel.SelectedNodeName = ""
+
+    End Sub
+
+#Region " Presumed dead "
+
+#If 0 Then
     Private Function CreateDocument(ByVal nc As cNavigationCommand) As IDockContent
 
         If nc Is Nothing Then Return Nothing
@@ -1661,6 +1431,353 @@ Public Class AppLauncher
         Return Nothing
 
     End Function
+#End If
+
+#End Region ' Presumed dead
+
+#End Region ' Content navigation
+
+#Region " Ecopath "
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Open Ecopath model from given location.
+    ''' </summary>
+    ''' <param name="strFileName">Location of the model to open.</param>
+    ''' <param name="loadsource">Flag indicating where the load request came from.</param>
+    ''' <remarks>This code is designed for strFileName to indicate a path. It should 
+    ''' be possible to indicate a database as well. One day...</remarks>
+    ''' ---------------------------------------------------------------------------
+    Private Function LoadEcopathModel(ByVal strFileName As String, _
+                                      ByVal loadsource As eLoadSourceType) As Boolean
+
+        Dim ds As IEwEDataSource = Nothing
+        Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
+
+        ' Check if target file exists at all before affecting anything
+        If Not File.Exists(strFileName) Then
+
+            ' Handle failure
+            Select Case loadsource
+
+                Case eLoadSourceType.MRU
+                    If Me.AskFeedback(String.Format(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
+                                      replystyle:=cFeedbackMessage.eReplyStyle.YES_NO) = cFeedbackMessage.eReply.YES Then
+                        Me.RemoveRecentFilesSetting(strFileName)
+                    End If
+
+                Case eLoadSourceType.User, _
+                     eLoadSourceType.CommandLine
+                    ' Unable to load model, show generic error
+                    Me.SendMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
+                                   eMessageImportance.Warning, eCoreComponentType.DataSource)
+
+                Case eLoadSourceType.API
+                    ' Do not provide user feedback in response to an API call
+
+            End Select
+            Return False
+        End If
+
+        ' Can close the current open model, if any?
+        If Not CloseEcopathModel() Then
+            ' #No: cannot close - abort
+            Return False
+        End If
+
+        If Not CovertToEwE6(strFileName) Then
+            ' #No: EwE6 database? abort
+            Return False
+        End If
+
+        ' Abort if no new file name given
+        If String.IsNullOrEmpty(strFileName) Then Return True
+
+        ' Create datasource on the selected file
+        ds = cDataSourceFactory.Create(strFileName)
+
+        If (ds Is Nothing) Then
+            Select Case loadsource
+
+                Case eLoadSourceType.MRU
+                    ' Should not occur
+
+                Case eLoadSourceType.User, eLoadSourceType.CommandLine
+                    ' Unable to load model, show generic error
+                    Me.SendMessage(String.Format(My.Resources.PROMPT_INVALIDMODEL, strFileName), _
+                                   eMessageImportance.Warning, eCoreComponentType.DataSource)
+
+                Case eLoadSourceType.API
+                    ' Ok then
+
+            End Select
+            Return False
+        End If
+
+        ' Update MRU
+        Me.AddRecentFilesSetting(strFileName)
+
+        ' Open the datasource
+        atResult = ds.Open(strFileName, Me.Core)
+
+        If (atResult <> eDatasourceAccessType.Success) Then
+            Me.ReportFileAccessError(atResult, strFileName)
+            Return False
+        End If
+
+        ' Ok, now let's see if the core can work with this
+        If Me.Core.LoadModel(ds) Then
+
+            ' Set core output path
+            Me.Core.OutputPath = Path.GetDirectoryName(strFileName)
+
+            ' JS 08Aug07: Whatever happened, at least the default node needs to be visible.
+            '             This also overcomes bug 133 (see bug description in ActivateForm). The Dock engine
+            '             may create forms from crippled XML settings where a doc parent section is missing.
+            '             Such forms get instantiated but GetContentFromPersistentString never gets called
+            '             because the forms are not content as far as the dock engine is concerned. Nice!
+            '             This logic makes sure that at least the default form is properly selected (and indirectly activated)
+            Me.EnsureDefaultNodeSelected()
+            ' Keep at it, Maurice
+            Me.UpdateModelControls()
+            Me.UpdateScenarioControls()
+
+            Return True
+        Else
+            Dim message As String = String.Format(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName)
+            MessageBox.Show(Me, message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return False
+        End If
+
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Save model to a different datasource and switch to that new datasource. 
+    ''' </summary>
+    ''' <param name="strFileName">Full path + extension of the file to save.</param>
+    ''' ---------------------------------------------------------------------------
+    Private Function SaveEcopathModelAs(ByVal strFileName As String) As Boolean
+
+        If (Me.Core.Save(strFileName)) Then
+            Me.AddRecentFilesSetting(strFileName)
+            Me.UpdateModelControls()
+            Return True
+        End If
+        Return False
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Create a new Ecopath model at a requested location.
+    ''' </summary>
+    ''' <param name="strFileName">The name of the file to create.</param>
+    ''' <param name="strModelName">The name of the model to create.</param>
+    ''' <param name="format">The file format to create.</param>
+    ''' <returns>An Ecopath database, if succesful.</returns>
+    ''' <remarks>
+    ''' Note that this will NOT load the new model! For this, 
+    ''' <see cref="LoadEcopathModel">cAppLauncher.LoadEcopathModel</see> will need
+    ''' to be called.
+    ''' </remarks>
+    ''' ---------------------------------------------------------------------------
+    Friend Function CreateEcopathModel(ByVal strFileName As String, _
+                                        ByVal strModelName As String, _
+                                        ByVal format As eDataSourceTypes) As cEwEDatabase
+
+        Dim db As cEwEDatabase = Nothing
+        Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
+        Dim strPrompt As String = ""
+        Dim importance As eMessageImportance = eMessageImportance.Warning
+
+        Select Case format
+            Case eDataSourceTypes.MDB, eDataSourceTypes.ACCDB
+                db = New cEwEAccessDatabase()
+                atResult = db.Create(strFileName, strModelName, True, format)
+
+            Case eDataSourceTypes.EII
+                atResult = eDatasourceAccessType.Failed_DeprecatedOperation
+
+            Case eDataSourceTypes.NotSet
+                atResult = eDatasourceAccessType.Failed_UnknownType
+        End Select
+
+        ' Provide status feedback
+        Select Case atResult
+
+            Case eDatasourceAccessType.Success, eDatasourceAccessType.Opened
+                strPrompt = String.Format(My.Resources.PROMPT_MODELCREATED, strFileName)
+                importance = eMessageImportance.Information
+
+            Case eDatasourceAccessType.Failed_CannotSave
+                strPrompt = String.Format(My.Resources.PROMPT_INVALIDTARGETPATH, strFileName)
+                importance = eMessageImportance.Critical
+
+                ' Should not occur
+                'Case eDatasourceAccessType.Failed_ReadOnly 
+
+            Case eDatasourceAccessType.Failed_OSUnsupported
+                strPrompt = My.Resources.PROMPT_DRIVERERROR
+                importance = eMessageImportance.Critical
+
+            Case eDatasourceAccessType.Failed_UnknownType
+                strPrompt = My.Resources.PROMPT_INVALIDFILE
+                importance = eMessageImportance.Critical
+
+            Case eDatasourceAccessType.Failed_DeprecatedOperation
+                strPrompt = My.Resources.PROMPT_FILETYPEDEPRECATED
+                importance = eMessageImportance.Critical
+
+            Case eDatasourceAccessType.Failed_Unknown
+                strPrompt = String.Format(My.Resources.PROMPT_CREATE_GENERICERROR, strFileName)
+                importance = eMessageImportance.Critical
+
+        End Select
+
+        If Not String.IsNullOrEmpty(strPrompt) Then
+            Me.SendMessage(strPrompt, importance, eCoreComponentType.DataSource)
+        End If
+
+        If importance = eMessageImportance.Critical Then
+            db = Nothing
+        End If
+
+        Return db
+
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Create a new Ecopath model at a requested location.
+    ''' </summary>
+    ''' <param name="strFileName">The name of the file to create.</param>
+    ''' <param name="strModelName">The name of the model to create.</param>
+    ''' <returns>An Ecopath database, if succesful.</returns>
+    ''' <remarks>
+    ''' <para>Note that this will NOT load the new model! For this, 
+    ''' <see cref="LoadEcopathModel">cAppLauncher.LoadEcopathModel</see> will need
+    ''' to be called.</para>
+    ''' <para>This method distills the database type from the provided file name.</para>
+    ''' </remarks>
+    ''' ---------------------------------------------------------------------------
+    Friend Function CreateEcopathModel(ByVal strFileName As String, _
+                                        ByVal strModelName As String) As cEwEDatabase
+        Return Me.CreateEcopathModel(strFileName, _
+                                     strModelName, _
+                                     cDataSourceFactory.GetSupportedType(strFileName))
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Close the current open Ecopath Model
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Private Function CloseEcopathModel() As Boolean
+
+        If Not String.IsNullOrEmpty(Me.SelectedFileName) Then
+
+            ' Not allowed to terminate core?
+            If (Not Me.Core.CloseModel()) Then
+                ' #Not allowed: abort
+                Return False
+            End If
+
+            ' Store last directory
+            My.Settings.LastSelectedDirectory = Me.m_strLastSelectedPath
+            ' Close all open documents
+            Me.CloseAllDocuments()
+
+            ' Reset components
+            Me.m_NavPanel.Reset()
+            Me.m_StatusPanel.Reset()
+
+            ' Clear the properties cache
+            Me.m_uic.PropertyManager.Clear(eCoreComponentType.EcoPath)
+            ' Clean up
+            GC.Collect()
+            ' Redraw everything immediately
+            Me.Refresh()
+            ' Report succes
+            Me.UpdateModelControls()
+            Me.UpdateScenarioControls()
+        End If
+
+        Return True
+
+    End Function
+
+#End Region ' Ecopath
+
+#Region " Ecosim "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load or reload an Ecosim scenario.
+    ''' </summary>
+    ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Friend Function LoadEcosimScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
+
+        Dim dlg As EcosimScenarioDlg = Nothing
+        Dim bSucces As Boolean = False
+        Dim es As cEcoSimScenario = Nothing
+
+        ' Try to obtain ecosim scenario to load
+
+        ' Invoked from a command?
+        If (Me.m_cmdLoadEcosimScenario.IsInvoking()) Then
+            ' #Yes: try to obtain scenario from command
+            es = DirectCast(Me.m_cmdLoadEcosimScenario.Tag, cEcoSimScenario)
+            ' #No: Are we reloading and an active scenario is present?
+        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcosimScenarioIndex >= 0) Then
+            Return True
+        End If
+
+        ' No scenario found yet?
+        If (es Is Nothing) Then
+            ' #No scenario: invoke ecosim scenario selection dialog
+            dlg = New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.LoadScenario)
+            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+
+                Select Case dlg.Mode
+                    Case EcosimScenarioDlg.eDialogModeType.CreateScenario
+                        ' User wants to create a scenario instead
+                        Return Me.CreateEcosimScenario(dlg.ScenarioName, dlg.ScenarioDescription, dlg.ScenarioAuthor, dlg.ScenarioContact)
+                    Case EcosimScenarioDlg.eDialogModeType.LoadScenario
+                        ' User wants to load a scenario
+                        es = DirectCast(dlg.Scenario, cEcoSimScenario)
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+
+            End If
+        End If
+
+        Return LoadEcosimScenario(es)
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load an Ecosim scenario.
+    ''' </summary>
+    ''' <param name="es">The <see cref="cEcoSimScenario">Scenario</see> to load.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Private Function LoadEcosimScenario(ByVal es As cEcoSimScenario) As Boolean
+
+        Dim bSucces As Boolean = False
+
+        If (es IsNot Nothing) Then
+            ' #Yes: Load it
+            Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_LOADING, es.Name), TriState.True)
+            bSucces = Me.Core.LoadEcosimScenario(es)
+            Me.SetStatusText("", TriState.False)
+        End If
+        Return bSucces
+
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -1683,27 +1800,173 @@ Public Class AppLauncher
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Invoke the manage time series interface.
+    ''' </summary>
+    ''' <param name="mode"><see cref="dlgManageTimeSeries.eModeType">Mode</see>
+    ''' specifying how to open the interface.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub ManageTimeSeries(ByVal mode As dlgManageTimeSeries.eModeType)
+
+        Dim dlg As New dlgManageTimeSeries(Me.UIContext, mode)
+
+        ' Hmm
+        dlg.StartPosition = FormStartPosition.CenterParent
+        dlg.ShowInTaskbar = False
+        dlg.ShowDialog()
+
+    End Sub
+
+#End Region ' Ecosim
+
+#Region " Ecospace "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load or reload an Ecospace scenario.
+    ''' </summary>
+    ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Friend Function LoadEcospaceScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
+
+        Dim dlg As EcospaceScenarioDlg = Nothing
+        Dim bSucces As Boolean = False
+        Dim es As cEcospaceScenario = Nothing
+
+        ' Try to obtain ecospace scenario to load
+
+        ' Invoked from a command?
+        If (Me.m_cmdLoadEcospaceScenario.IsInvoking()) Then
+            ' #Yes: try to obtain scenario from command
+            es = CType(Me.m_cmdLoadEcospaceScenario.Tag, cEcospaceScenario)
+            ' #No: Are we reloading and an active scenario is present?
+        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcospaceScenarioIndex >= 0) Then
+            Return True
+        End If
+
+        ' No scenario found yet?
+        If (es Is Nothing) Then
+            ' #No scenario: invoke ecospace scenario selection dialog
+            dlg = New EcospaceScenarioDlg(Me.UIContext, EcospaceScenarioDlg.eDialogModeType.LoadScenario)
+            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+
+                Select Case dlg.Mode
+                    Case EcospaceScenarioDlg.eDialogModeType.CreateScenario
+                        ' User wants to create a scenario instead
+                        Return Me.CreateEcospaceScenario(dlg.ScenarioName, dlg.ScenarioDescription, _
+                                dlg.ScenarioAuthor, dlg.ScenarioContact, _
+                                10, 10, 0, 0, 0.5)
+                    Case EcospaceScenarioDlg.eDialogModeType.LoadScenario
+                        ' User wants to load a scenario
+                        es = DirectCast(dlg.Scenario, cEcospaceScenario)
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+
+            End If
+        End If
+
+        Return Me.LoadEcospaceScenario(es)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strName"></param>
+    ''' <param name="strDescription"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Private Function CreateEcospaceScenario(ByVal strName As String, ByVal strDescription As String, _
+            ByVal strAuthor As String, ByVal strContact As String, _
+            ByVal iNumRows As Integer, ByVal iNumCols As Integer, _
+            ByVal sLatTL As Single, ByVal sLonTL As Single, ByVal sCellSize As Single) As Boolean
+
+        Dim bSucces As Boolean = False
+
+        Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_CREATING, strName), TriState.True)
+        bSucces = Me.Core.NewEcospaceScenario(strName, strDescription, _
+            strAuthor, strContact, iNumRows, iNumCols, sLatTL, sLonTL, sCellSize)
+        Me.SetStatusText("", TriState.False)
+        Return bSucces
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' 
     ''' </summary>
     ''' <param name="es"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadEcosimScenario(ByVal es As cEcoSimScenario) As Boolean
+    Private Function LoadEcospaceScenario(ByVal es As cEcospaceScenario) As Boolean
 
         Dim bSucces As Boolean = False
 
         If (es IsNot Nothing) Then
             ' #Yes: Load it
-            Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_LOADING, es.Name), TriState.True)
-            bSucces = Me.Core.LoadEcosimScenario(es)
+            Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_LOADING, es.Name), TriState.True)
+            bSucces = Me.Core.LoadEcospaceScenario(es)
             Me.SetStatusText("", TriState.False)
-
-            ' Update MRU list
-            MRUHelper.UpdateMRUString(My.Settings.MdbRecentlyUsedList, es.Name, MRUHelper.eModuleType.Ecosim)
-            My.Settings.Save()
-
         End If
         Return bSucces
+
+    End Function
+
+#End Region ' Ecospace
+
+#Region " Ecotracer "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load or reload an Ecotracer scenario.
+    ''' </summary>
+    ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Friend Function LoadEcotracerScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
+
+        Dim dlg As EcotracerScenarioDlg = Nothing
+        Dim bSucces As Boolean = False
+        Dim es As cEcotracerScenario = Nothing
+
+        ' Prerequesite: Ecosim needs to be loaded
+        Me.CoreController.LoadState(eCoreExecutionState.EcosimLoaded)
+        ' Not succesful? abort
+        If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return False
+
+        ' Try to obtain ecotracer scenario to load
+
+        ' Invoked from a command?
+        If (Me.m_cmdLoadEcotracerScenario.IsInvoking()) Then
+            ' #Yes: try to obtain scenario from command
+            es = CType(Me.m_cmdLoadEcotracerScenario.Tag, cEcotracerScenario)
+            ' #No: Are we reloading and an active scenario is present?
+        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcotracerScenarioIndex >= 0) Then
+            Return True
+        End If
+
+        ' No scenario found yet?
+        If (es Is Nothing) Then
+            ' #No scenario: invoke ecotracer scenario selection dialog
+            dlg = New EcotracerScenarioDlg(Me.UIContext, EcotracerScenarioDlg.eDialogModeType.LoadScenario)
+            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+
+                Select Case dlg.Mode
+                    Case EcotracerScenarioDlg.eDialogModeType.CreateScenario
+                        ' User wants to create a scenario instead
+                        Return Me.CreateEcotracerScenario(dlg.ScenarioName, dlg.ScenarioDescription, dlg.ScenarioAuthor, dlg.ScenarioContact)
+                    Case EcotracerScenarioDlg.eDialogModeType.LoadScenario
+                        ' User wants to load a scenario
+                        es = DirectCast(dlg.Scenario, cEcotracerScenario)
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+
+            End If
+        End If
+
+        Return LoadEcotracerScenario(es)
 
     End Function
 
@@ -1742,263 +2005,12 @@ Public Class AppLauncher
             Me.SetStatusText(String.Format(My.Resources.STATUS_ECOTRACER_LOADING, es.Name), TriState.True)
             bSucces = Me.Core.LoadEcotracerScenario(es)
             Me.SetStatusText("", TriState.False)
-
-            ' Update MRU list
-            MRUHelper.UpdateMRUString(My.Settings.MdbRecentlyUsedList, es.Name, MRUHelper.eModuleType.Ecotracer)
-            My.Settings.Save()
-
         End If
         Return bSucces
 
     End Function
 
-#End Region ' Internal implementation
-
-#Region " Friend interfaces "
-
-#Region " Helpers "
-
-    Private Function FindEcosimScenario(ByVal strName As String) As cEcoSimScenario
-        ' Got a scenario name?
-        If Not String.IsNullOrEmpty(strName) Then
-            ' #Yes: try to find a scenario with this same name
-            For i As Integer = 1 To Me.Core.EcosimScenarioCount
-                If Me.Core.EcosimScenarios(i).Name = strName Then
-                    ' Got it!
-                    Return Me.Core.EcosimScenarios(i)
-                End If
-            Next
-        End If
-        Return Nothing
-    End Function
-
-    Private Function FindEcospaceScenario(ByVal strName As String) As cEcospaceScenario
-        ' Got a scenario name?
-        If Not String.IsNullOrEmpty(strName) Then
-            ' #Yes: try to find a scenario with this same name
-            For i As Integer = 1 To Me.Core.EcospaceScenarioCount
-                If Me.Core.EcospaceScenarios(i).Name = strName Then
-                    ' Got it!
-                    Return Me.Core.EcospaceScenarios(i)
-                End If
-            Next
-        End If
-        Return Nothing
-    End Function
-
-    Private Function FindEcotracerScenario(ByVal strName As String) As cEcotracerScenario
-        ' Got a scenario name?
-        If Not String.IsNullOrEmpty(strName) Then
-            ' #Yes: try to find a scenario with this same name
-            For i As Integer = 1 To Me.Core.EcotracerScenarioCount
-                If Me.Core.EcotracerScenarios(i).Name = strName Then
-                    ' Got it!
-                    Return Me.Core.EcotracerScenarios(i)
-                End If
-            Next
-        End If
-        Return Nothing
-    End Function
-
-#End Region ' Helpers
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Load or reload an Ecosim scenario.
-    ''' </summary>
-    ''' <param name="bPersist">Flag indicating whether scenario should be obtained from persistent setting.</param>
-    ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Friend Function LoadEcosimScenario(Optional ByVal bPersist As Boolean = False, _
-            Optional ByVal bTryReuse As Boolean = False) As Boolean
-
-        Dim dlg As EcosimScenarioDlg = Nothing
-        Dim bSucces As Boolean = False
-        Dim strName As String = String.Empty
-        Dim es As cEcoSimScenario = Nothing
-
-        ' Try to obtain ecosim scenario to load
-
-        ' Invoked from a command?
-        If (Me.m_cmdLoadEcosimScenario.IsInvoking()) Then
-            ' #Yes: try to obtain scenario from command
-            es = CType(Me.m_cmdLoadEcosimScenario.Tag, cEcoSimScenario)
-            ' #No: Are we reloading and an active scenario is present?
-        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcosimScenarioIndex >= 0) Then
-            '' '' '' Try to reload current scenario
-            ' '' ''es = Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex)
-            ' '' '' Reuse existing scenario (maybe tell core to reload Ecosim GUI objects?)
-            Return True
-        End If
-
-        strName = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Ecosim)
-
-        ' No scenario found?
-        If (es Is Nothing) And (bPersist = True) Then
-            ' Try to load persistent scenario from MRU settings if allowed
-            es = Me.FindEcosimScenario(strName)
-        End If
-
-        ' No scenario found yet?
-        If (es Is Nothing) Then
-            ' #No scenario: invoke ecosim scenario selection dialog
-            dlg = New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.LoadScenario)
-            dlg.Scenario = Me.FindEcosimScenario(strName)
-            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-
-                Select Case dlg.Mode
-                    Case EcosimScenarioDlg.eDialogModeType.CreateScenario
-                        ' User wants to create a scenario instead
-                        Return Me.CreateEcosimScenario(dlg.ScenarioName, dlg.ScenarioDescription, dlg.ScenarioAuthor, dlg.ScenarioContact)
-                    Case EcosimScenarioDlg.eDialogModeType.LoadScenario
-                        ' User wants to load a scenario
-                        es = DirectCast(dlg.Scenario, cEcoSimScenario)
-                    Case Else
-                        Debug.Assert(False)
-                End Select
-
-            End If
-        End If
-
-        Return LoadEcosimScenario(es)
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Load or reload an Ecospace scenario.
-    ''' </summary>
-    ''' <param name="bPersist">Flag indicating whether scenario should be obtained from persistent setting.</param>
-    ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Friend Function LoadEcospaceScenario(ByVal bPersist As Boolean, _
-            Optional ByVal bTryReuse As Boolean = False) As Boolean
-
-        Dim dlg As EcospaceScenarioDlg = Nothing
-        Dim bSucces As Boolean = False
-        Dim strName As String = String.Empty
-        Dim es As cEcospaceScenario = Nothing
-
-        ' Try to obtain ecospace scenario to load
-
-        ' Invoked from a command?
-        If (Me.m_cmdLoadEcospaceScenario.IsInvoking()) Then
-            ' #Yes: try to obtain scenario from command
-            es = CType(Me.m_cmdLoadEcospaceScenario.Tag, cEcospaceScenario)
-            ' #No: Are we reloading and an active scenario is present?
-        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcospaceScenarioIndex >= 0) Then
-            '' Try to reload current scenario
-            'es = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex)
-
-            ' Reuse existing scenario (maybe tell core to reload Ecosim GUI objects?)
-            Return True
-        End If
-
-        strName = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Ecospace)
-
-        ' No scenario found?
-        If (es Is Nothing) And (bPersist = True) Then
-            ' Try to load persistent scenario from MRU settings if allowed
-            es = Me.FindEcospaceScenario(strName)
-        End If
-
-        ' No scenario found yet?
-        If (es Is Nothing) Then
-            ' #No scenario: invoke ecospace scenario selection dialog
-            dlg = New EcospaceScenarioDlg(Me.UIContext, EcospaceScenarioDlg.eDialogModeType.LoadScenario)
-            dlg.Scenario = Me.FindEcospaceScenario(strName)
-            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-
-                Select Case dlg.Mode
-                    Case EcospaceScenarioDlg.eDialogModeType.CreateScenario
-                        ' User wants to create a scenario instead
-                        Return Me.CreateEcospaceScenario(dlg.ScenarioName, dlg.ScenarioDescription, _
-                                dlg.ScenarioAuthor, dlg.ScenarioContact, _
-                                10, 10, 0, 0, 0.5)
-                    Case EcospaceScenarioDlg.eDialogModeType.LoadScenario
-                        ' User wants to load a scenario
-                        es = DirectCast(dlg.Scenario, cEcospaceScenario)
-                    Case Else
-                        Debug.Assert(False)
-                End Select
-
-            End If
-        End If
-
-        Return Me.LoadEcospaceScenario(es)
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Load or reload an Ecotracer scenario.
-    ''' </summary>
-    ''' <param name="bPersist">Flag indicating whether scenario should be obtained from persistent setting.</param>
-    ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Friend Function LoadEcotracerScenario(Optional ByVal bPersist As Boolean = False, _
-            Optional ByVal bTryReuse As Boolean = False) As Boolean
-
-        Dim dlg As EcotracerScenarioDlg = Nothing
-        Dim bSucces As Boolean = False
-        Dim strName As String = String.Empty
-        Dim es As cEcotracerScenario = Nothing
-
-        ' Prerequesite: Ecosim needs to be loaded
-        Me.CoreController.LoadState(eCoreExecutionState.EcosimLoaded)
-        ' Not succesful? abort
-        If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return False
-
-        ' Try to obtain ecotracer scenario to load
-
-        ' Invoked from a command?
-        If (Me.m_cmdLoadEcotracerScenario.IsInvoking()) Then
-            ' #Yes: try to obtain scenario from command
-            es = CType(Me.m_cmdLoadEcotracerScenario.Tag, cEcotracerScenario)
-            ' #No: Are we reloading and an active scenario is present?
-        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcotracerScenarioIndex >= 0) Then
-            '' Try to reload current scenario
-            'es = Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex)
-            ' Reuse existing scenario (maybe tell core to reload Ecotracer GUI objects?)
-            Return True
-        End If
-
-        strName = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Ecotracer)
-
-        ' No scenario found?
-        If (es Is Nothing) And (bPersist = True) Then
-            ' Try to load persistent scenario from MRU settings if allowed
-            es = Me.FindEcotracerScenario(strName)
-        End If
-
-        ' No scenario found yet?
-        If (es Is Nothing) Then
-            ' #No scenario: invoke ecotracer scenario selection dialog
-            dlg = New EcotracerScenarioDlg(Me.UIContext, EcotracerScenarioDlg.eDialogModeType.LoadScenario)
-            dlg.Scenario = Me.FindEcotracerScenario(strName)
-            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-
-                Select Case dlg.Mode
-                    Case EcotracerScenarioDlg.eDialogModeType.CreateScenario
-                        ' User wants to create a scenario instead
-                        Return Me.CreateEcotracerScenario(dlg.ScenarioName, dlg.ScenarioDescription, dlg.ScenarioAuthor, dlg.ScenarioContact)
-                    Case EcotracerScenarioDlg.eDialogModeType.LoadScenario
-                        ' User wants to load a scenario
-                        es = DirectCast(dlg.Scenario, cEcotracerScenario)
-                    Case Else
-                        Debug.Assert(False)
-                End Select
-
-            End If
-        End If
-
-        Return LoadEcotracerScenario(es)
-
-    End Function
-
-#End Region ' Friend interfaces
+#End Region ' Ecotracer
 
 #Region " Command handlers "
 
@@ -2527,8 +2539,15 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
     End Sub
 
-    Private Sub RecentMDBToolStripMenuItem_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiFileRecent.DropDownOpening
-        DisplayFileLists(m_tsmiFileRecent, My.Settings.MdbRecentlyUsedList, CInt(My.Settings.MdbRecentlyUsedCount))
+    Private Sub OnMRUOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsmiFileRecent.DropDownOpening
+        Me.PopulateMRUMenu()
+    End Sub
+
+    Private Sub OnMRUClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsmiFileRecent.DropDownClosed
+        ' Ok, do NOT do this here; the dropdown is closed BEFORE a MRU invoke is called. Lovely!
+        'Me.ResetMRU()
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiFileExit.Click
@@ -3183,54 +3202,6 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strName"></param>
-    ''' <param name="strDescription"></param>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Private Function CreateEcospaceScenario(ByVal strName As String, ByVal strDescription As String, _
-            ByVal strAuthor As String, ByVal strContact As String, _
-            ByVal iNumRows As Integer, ByVal iNumCols As Integer, _
-            ByVal sLatTL As Single, ByVal sLonTL As Single, ByVal sCellSize As Single) As Boolean
-
-        Dim bSucces As Boolean = False
-
-        Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_CREATING, strName), TriState.True)
-        bSucces = Me.Core.NewEcospaceScenario(strName, strDescription, _
-            strAuthor, strContact, iNumRows, iNumCols, sLatTL, sLonTL, sCellSize)
-        Me.SetStatusText("", TriState.False)
-        Return bSucces
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="es"></param>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Private Function LoadEcospaceScenario(ByVal es As cEcospaceScenario) As Boolean
-
-        Dim bSucces As Boolean = False
-
-        If (es IsNot Nothing) Then
-            ' #Yes: Load it
-            Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_LOADING, es.Name), TriState.True)
-            bSucces = Me.Core.LoadEcospaceScenario(es)
-            Me.SetStatusText("", TriState.False)
-
-            ' Update MRU list
-            MRUHelper.UpdateMRUString(My.Settings.MdbRecentlyUsedList, es.Name, MRUHelper.eModuleType.Ecospace)
-            My.Settings.Save()
-
-        End If
-        Return bSucces
-
-    End Function
 
 #End Region ' Ecospace scenario commands
 
@@ -3430,11 +3401,9 @@ Public Class AppLauncher
 #Region " Event Handlers "
 
     Private Sub RecentFileClickEventHandler(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-
-        ' Get rid of file index - presuming that there are less than 99 MRU entries!
-        Dim fn As String = mnuItem.Text.Substring(3)
-        LoadEcopathModel(fn, eLoadSourceType.MRU)
+        Dim mnuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
+        Dim strFileName As String = CStr(mnuItem.Tag)
+        Me.LoadEcopathModel(strFileName, eLoadSourceType.MRU)
     End Sub
 
     Private Sub EcosimScenarioClickEventHandler(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -3586,35 +3555,5 @@ Public Class AppLauncher
 #End Region ' Key press handlers
 
 #End Region ' Event Handlers
-
-#Region " Ecosim "
-
-    Private Sub ManageTimeSeries(ByVal mode As dlgManageTimeSeries.eModeType)
-
-        Dim dlg As New dlgManageTimeSeries(Me.UIContext, mode)
-
-        ' Hmm
-        dlg.StartPosition = FormStartPosition.CenterParent
-        dlg.ShowInTaskbar = False
-        If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
-
-            Select Case dlg.Mode
-                Case dlgManageTimeSeries.eModeType.Load
-                    MRUHelper.UpdateMRUString(My.Settings.MdbRecentlyUsedList, dlg.DatasetName, MRUHelper.eModuleType.Dataset)
-                    My.Settings.Save()
-                Case dlgManageTimeSeries.eModeType.Weight
-                    ' NOP
-                Case dlgManageTimeSeries.eModeType.Import
-                    MRUHelper.UpdateMRUString(My.Settings.MdbRecentlyUsedList, dlg.DatasetName, MRUHelper.eModuleType.Dataset)
-                    My.Settings.Save()
-                    'Case dlgManageTimeSeries.eModeType.Export
-                    '    ' NOP
-                Case dlgManageTimeSeries.eModeType.Delete
-                    ' NOP
-            End Select
-        End If
-    End Sub
-
-#End Region ' Ecosim
 
 End Class

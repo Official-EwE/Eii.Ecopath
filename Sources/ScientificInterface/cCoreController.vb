@@ -70,7 +70,7 @@ Public Class cCoreController
                 Return TryCompleteEcopath()
 
             Case eCoreExecutionState.EcosimLoaded
-                Return TryLoadEcosimScenario(False)
+                Return TryLoadEcosimScenario()
 
             Case eCoreExecutionState.EcosimInitialized
                 Return TryInitializeEcosim()
@@ -79,11 +79,11 @@ Public Class cCoreController
                 Return TryCompleteEcosim()
 
             Case eCoreExecutionState.EcotracerLoaded
-                Return TryLoadEcotracerScenario(False)
+                Return TryLoadEcotracerScenario()
 
             Case eCoreExecutionState.EcospaceLoaded, _
                  eCoreExecutionState.EcospaceInitialized
-                Return TryLoadEcospaceScenario(False)
+                Return TryLoadEcospaceScenario()
 
         End Select
 
@@ -170,24 +170,15 @@ Public Class cCoreController
     ''' </summary>
     ''' <returns>True if succesful.</returns>
     ''' ---------------------------------------------------------------------------
-    Private Function TryLoadEcosimScenario(ByVal bPersist As Boolean) As Boolean
+    Private Function TryLoadEcosimScenario() As Boolean
 
         Dim bSuccess As Boolean = False
         Dim appl As AppLauncher = AppLauncher.GetInstance()
 
-        'FG: Bug fix June 14, 2007
-        If bPersist Then
-            If Me.LoadState(eCoreExecutionState.EcopathCompleted) Then
-                ' Let AppLauncher perform the load as it sees fit
-                bSuccess = appl.LoadEcosimScenario(bPersist, True)
-            End If
-        Else
-            If Me.LoadState(eCoreExecutionState.EcopathCompleted) Then
-                ' Let AppLauncher perform the load as it sees fit
-                bSuccess = appl.LoadEcosimScenario(bPersist, True)
-            End If
+        If Me.LoadState(eCoreExecutionState.EcopathCompleted) Then
+            ' Let AppLauncher perform the load as it sees fit
+            bSuccess = appl.LoadEcosimScenario(True)
         End If
-        ' Ecopath has completed?
 
         Return bSuccess
     End Function
@@ -198,26 +189,17 @@ Public Class cCoreController
     ''' </summary>
     ''' <returns>True if succesful.</returns>
     ''' ---------------------------------------------------------------------------
-    Private Function TryLoadEcospaceScenario(ByVal bPersist As Boolean) As Boolean
+    Private Function TryLoadEcospaceScenario() As Boolean
 
         Dim bSuccess As Boolean = False
         Dim appl As AppLauncher = AppLauncher.GetInstance()
 
-        'FG: Bug fix June 14, 2007
-        If bPersist Then
-            ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecospace model to load.
-            If LoadState(eCoreExecutionState.EcosimInitialized) Then
-                ' Let AppLauncher perform the load as it sees fit
-                bSuccess = appl.LoadEcospaceScenario(bPersist, True)
-            End If
-        Else
-            ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecospace model to load.
-            If Me.LoadState(eCoreExecutionState.EcosimInitialized) Then
-                ' Let AppLauncher perform the load as it sees fit
-                bSuccess = appl.LoadEcospaceScenario(bPersist, True)
-            End If
+        ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecospace model to load.
+        If LoadState(eCoreExecutionState.EcosimInitialized) Then
+            ' Let AppLauncher perform the load as it sees fit
+            bSuccess = appl.LoadEcospaceScenario(True)
         End If
-
+ 
         Return bSuccess
     End Function
 
@@ -228,23 +210,15 @@ Public Class cCoreController
     ''' </summary>
     ''' <returns>True if succesful.</returns>
     ''' ---------------------------------------------------------------------------
-    Private Function TryLoadEcotracerScenario(ByVal bPersist As Boolean) As Boolean
+    Private Function TryLoadEcotracerScenario() As Boolean
 
         Dim bSuccess As Boolean = False
         Dim appl As AppLauncher = AppLauncher.GetInstance()
 
-        If bPersist Then
-            ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecotracer model to load.
-            If Me.LoadState(eCoreExecutionState.EcosimLoaded) Then
-                ' Let AppLauncher perform the load as it sees fit
-                bSuccess = appl.LoadEcotracerScenario(bPersist, True)
-            End If
-        Else
-            ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecotracer model to load.
-            If Me.LoadState(eCoreExecutionState.EcosimLoaded) Then
-                ' Let AppLauncher perform the load as it sees fit
-                bSuccess = appl.LoadEcotracerScenario(bPersist, True)
-            End If
+        ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecotracer model to load.
+        If Me.LoadState(eCoreExecutionState.EcosimLoaded) Then
+            ' Let AppLauncher perform the load as it sees fit
+            bSuccess = appl.LoadEcotracerScenario(True)
         End If
 
         Return bSuccess
