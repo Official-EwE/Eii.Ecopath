@@ -812,19 +812,16 @@ Namespace Ecosim
                     For irk4 As Integer = 1 To Me.m_Data.StepsPerMonth
 
                         If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimSubTimestepBegin(BB, t, DeltaT, irk4, m_Data)
-                        'System.Console.WriteLine("t = " & t.ToString & ", Grp 50 = " & BB(50).ToString)
+
                         'update stanza groups on the last iteration
                         Dim UpdateStanza As Boolean = (irk4 = Me.m_Data.StepsPerMonth)
                         rk4(BB, nvar, t, DeltaT, UpdateStanza)
                         t += DeltaT
                         Me.setBiomassForcing(iyr)
+
                         If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimSubTimestepEnd(BB, t, DeltaT, irk4, m_Data)
 
                     Next irk4
-
-
-
-                    ' cLog.WriteArrayToFile("b EwE6.csv", BB, itime.ToString)
 
                     If AbortRun Then
                         'rk4() sent a message
@@ -858,15 +855,6 @@ Namespace Ecosim
                         Me.PopulateResults(itime, ipct)
                         Me.FireOnTimeStep(itime)
                     End If
-
-                    'jb this is just for degugging
-                    'For igrp As Integer = 1 To Me.nGroups
-                    '    sumBio += BB(igrp)
-                    '    If m_Data.bTimestepOutput Then
-                    '        'zero fleet index hold sum of catch for all fleets
-                    '        sumCatch += m_Data.ResultsSumCatchByGroupGear(igrp, 0, itime)
-                    '    End If
-                    'Next
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimEndTimeStep(BB, m_Data, itime, m_Results)
 
@@ -1185,6 +1173,9 @@ Namespace Ecosim
             Next
 
             Derivt(t + DeltaT, yt, dyt)
+
+
+            'jb 23-April-2010 added call to Deritv for subtimesteps
 
             '  Derivt t, b(), dydx()
             'may have to call deriv here again to reset consumption and loss rates?
