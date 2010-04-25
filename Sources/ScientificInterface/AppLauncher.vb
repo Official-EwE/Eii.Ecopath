@@ -695,8 +695,10 @@ Public Class AppLauncher
 
         ' Terminate forms
         Me.CloseAllContents()
+
         ' Clean up
-        Me.ClearMRUMenu()
+        Me.ClearMRUDropdown()
+        Me.ClearScenarioDropdowns()
 
         MyBase.OnFormClosing(e)
 
@@ -1054,7 +1056,62 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub UpdateScenarioControls()
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, populate the content of the scenario drop-down controls
+    ''' with lists of scenarios available in the current model. 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub PopulateScenarioDropdowns()
+
+        Dim tsmi As ToolStripMenuItem = Nothing
+
+        Me.ClearScenarioDropdowns()
+
+        ' Has a model loaded?
+        If Me.Core.StateMonitor.HasEcopathLoaded() Then
+
+            ' #Yes: add scenario lists
+
+            ' VERIFY_JS: Should scenarios be sorted in the most recent load order, or is that going to be highly confusing?
+
+            ' List available Ecosim scenarios.
+            For i As Integer = 1 To Me.Core.EcosimScenarioCount
+                tsmi = New ToolStripMenuItem()
+                tsmi.Text = Me.Core.EcosimScenarios(i).Name
+                tsmi.Tag = i
+                AddHandler tsmi.Click, AddressOf EcosimScenarioClickEventHandler
+                Me.m_tsbEcosim.DropDownItems.Add(tsmi)
+            Next
+
+            ' List available Ecospace scenarios
+            For i As Integer = 1 To Me.Core.EcospaceScenarioCount
+                tsmi = New ToolStripMenuItem()
+                tsmi.Text = Me.Core.EcospaceScenarios(i).Name
+                tsmi.Tag = i
+                AddHandler tsmi.Click, AddressOf EcospaceScenarioClickEventHandler
+                Me.m_tsbEcospace.DropDownItems.Add(tsmi)
+            Next
+
+            ' List available Ecotracer scenarios
+            For i As Integer = 1 To Me.Core.EcotracerScenarioCount
+                tsmi = New ToolStripMenuItem()
+                tsmi.Text = Me.Core.EcotracerScenarios(i).Name
+                tsmi.Tag = i
+                AddHandler tsmi.Click, AddressOf EcotracerScenarioClickEventHandler
+                Me.m_tsbEcotracer.DropDownItems.Add(tsmi)
+            Next
+
+        End If
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, clear the content of the scenario drop-down controls. 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub ClearScenarioDropdowns()
 
         Dim tsmi As ToolStripMenuItem = Nothing
 
@@ -1075,37 +1132,6 @@ Public Class AppLauncher
             RemoveHandler tsmi.Click, AddressOf EcotracerScenarioClickEventHandler
         Next
         Me.m_tsbEcotracer.DropDownItems.Clear()
-
-        'Load Ecosim scenarios.
-        If Me.Core.StateMonitor.HasEcopathLoaded() Then
-
-            For i As Integer = 1 To Me.Core.EcosimScenarioCount
-                tsmi = New ToolStripMenuItem()
-                tsmi.Text = Me.Core.EcosimScenarios(i).Name
-                tsmi.Tag = i
-                AddHandler tsmi.Click, AddressOf EcosimScenarioClickEventHandler
-                Me.m_tsbEcosim.DropDownItems.Add(tsmi)
-            Next
-
-            'Load Ecospace scenarios
-            For i As Integer = 1 To Me.Core.EcospaceScenarioCount
-                tsmi = New ToolStripMenuItem()
-                tsmi.Text = Me.Core.EcospaceScenarios(i).Name
-                tsmi.Tag = i
-                AddHandler tsmi.Click, AddressOf EcospaceScenarioClickEventHandler
-                Me.m_tsbEcospace.DropDownItems.Add(tsmi)
-            Next
-
-            'Load Ecotracer scenarios
-            For i As Integer = 1 To Me.Core.EcotracerScenarioCount
-                tsmi = New ToolStripMenuItem()
-                tsmi.Text = Me.Core.EcotracerScenarios(i).Name
-                tsmi.Tag = i
-                AddHandler tsmi.Click, AddressOf EcotracerScenarioClickEventHandler
-                Me.m_tsbEcotracer.DropDownItems.Add(tsmi)
-            Next
-
-        End If
 
     End Sub
 
@@ -1129,6 +1155,12 @@ Public Class AppLauncher
 
 #Region " MRU "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Add a file name to the top of the MRU list.
+    ''' </summary>
+    ''' <param name="strFileName">Name of the file to add.</param>
+    ''' -----------------------------------------------------------------------
     Private Sub AddRecentFilesSetting(ByVal strFileName As String)
 
         Dim alMDBmru As ArrayList = My.Settings.MdbRecentlyUsedList
@@ -1144,6 +1176,15 @@ Public Class AppLauncher
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Remove a file name from the MRU list, if possible.
+    ''' </summary>
+    ''' <param name="strFileName">Name of the file to remove.</param>
+    ''' <param name="iStartPos">Index in the MRU list to start searching for
+    ''' the item to remove. If not provided, the search will start at the 
+    ''' beginning of the list.</param>
+    ''' -----------------------------------------------------------------------
     Private Sub RemoveRecentFilesSetting(ByVal strFileName As String, _
                                          Optional ByVal iStartPos As Integer = 0)
 
@@ -1178,14 +1219,14 @@ Public Class AppLauncher
     ''' Show the list of MRU items in the menu structure.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub PopulateMRUMenu()
+    Private Sub PopulateMRUDropdown()
 
         Dim alMRU As ArrayList = My.Settings.MdbRecentlyUsedList
         Dim iNumItems As Integer = Math.Min(alMRU.Count - 1, My.Settings.MdbRecentlyUsedCount)
         Dim item As ToolStripMenuItem = Nothing
 
         ' Clear MRU list
-        Me.ClearMRUMenu()
+        Me.ClearMRUDropdown()
 
         ' No recently accessed files yet?
         If (alMRU.Count <= 1) Then
@@ -1209,8 +1250,6 @@ Public Class AppLauncher
             'Add event handler to invoke the model
             AddHandler item.Click, AddressOf RecentFileClickEventHandler
 
-            Console.WriteLine("Set")
-
             Me.m_tsmiFileRecent.DropDownItems.Add(item)
         Next
 
@@ -1221,15 +1260,18 @@ Public Class AppLauncher
     ''' Clear the list of MRU items from the menu structure.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub ClearMRUMenu()
+    Private Sub ClearMRUDropdown()
 
         Dim item As ToolStripMenuItem = Nothing
+
         For Each item In Me.m_tsmiFileRecent.DropDownItems
-            If item.Tag IsNot Nothing Then
+            If (item.Tag IsNot Nothing) Then
+                ' Remove dangling event handler
                 RemoveHandler item.Click, AddressOf RecentFileClickEventHandler
-                Console.WriteLine("Clear")
             End If
         Next
+
+        ' Eradicate menu items
         Me.m_tsmiFileRecent.DropDownItems.Clear()
 
     End Sub
@@ -1540,7 +1582,7 @@ Public Class AppLauncher
             Me.EnsureDefaultNodeSelected()
             ' Keep at it, Maurice
             Me.UpdateModelControls()
-            Me.UpdateScenarioControls()
+            Me.PopulateScenarioDropdowns()
 
             Return True
         Else
@@ -1693,15 +1735,19 @@ Public Class AppLauncher
 
             ' Clear the properties cache
             Me.m_uic.PropertyManager.Clear(eCoreComponentType.EcoPath)
-            ' Clean up
+
+            ' Clean up UI bits
+            Me.UpdateModelControls()
+            Me.ClearScenarioDropdowns()
+
+            ' Take out the trash
             GC.Collect()
+
             ' Redraw everything immediately
             Me.Refresh()
-            ' Report succes
-            Me.UpdateModelControls()
-            Me.UpdateScenarioControls()
         End If
 
+        ' Report succes
         Return True
 
     End Function
@@ -2541,7 +2587,7 @@ Public Class AppLauncher
 
     Private Sub OnMRUOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsmiFileRecent.DropDownOpening
-        Me.PopulateMRUMenu()
+        Me.PopulateMRUDropdown()
     End Sub
 
     Private Sub OnMRUClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -3499,7 +3545,7 @@ Public Class AppLauncher
             If (msg.DataType = eDataTypes.EcoSimScenario) Or _
                (msg.DataType = eDataTypes.EcoSpaceScenario) Or _
                (msg.DataType = eDataTypes.EcotracerScenario) Then
-                Me.UpdateScenarioControls()
+                Me.PopulateScenarioDropdowns()
             End If
         End If
     End Sub
