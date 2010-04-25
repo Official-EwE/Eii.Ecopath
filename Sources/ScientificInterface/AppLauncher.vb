@@ -31,9 +31,11 @@ Imports System.Threading
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' The main entry point for the graphics interface
+''' The main form of the EwE6 Scientific Interface
 ''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class AppLauncher
     Implements IApplicationStatusDispatcher
     Implements IUIElement
@@ -49,6 +51,9 @@ Public Class AppLauncher
     Private m_pluginMenuHandler As cPluginMenuHandler = Nothing
     Private m_coreController As cCoreController = Nothing
     Private m_FormStateHelper As cEwEFormStateHelper = Nothing
+    ''' <summary>Style guide updater.</summary>
+    Private m_styleguideupdater As StyleGuideUpdater = Nothing
+    Private m_applictionStatusNotifier As cApplicationStatusNotifier = Nothing
 
     Private m_strLastSelectedPath As String = ""
     Private m_lstrStatus As New List(Of String)
@@ -124,10 +129,6 @@ Public Class AppLauncher
     Private WithEvents m_cmdExportEcosimResultsToCSV As cCommand = Nothing
 
 #End Region ' Commands
-
-    ''' <summary>Style guide updater.</summary>
-    Private m_styleguideupdater As StyleGuideUpdater = Nothing
-    Private m_applictionStatusNotifier As cApplicationStatusNotifier = Nothing
 
     ''' <summary>
     ''' Enumerated type, states how a database was loaded.
@@ -526,8 +527,8 @@ Public Class AppLauncher
 
     Private Sub InitEventHandlers()
 
-        AddHandler My.Settings.SettingsLoaded, AddressOf DefaultSettingLoadedEventHandler
-        AddHandler m_DockPanel.ActiveDocumentChanged, AddressOf ActiveDocumentChangedEventHandler
+        AddHandler My.Settings.SettingsLoaded, AddressOf OnDefaultSettingLoaded
+        AddHandler m_DockPanel.ActiveDocumentChanged, AddressOf OnActiveDocumentChanged
 
     End Sub
 
@@ -535,6 +536,13 @@ Public Class AppLauncher
 
 #Region " Properties "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the file name of the current loaded model.
+    ''' </summary>
+    ''' <param name="bFullPath">Flag stating thether the full path needs to be 
+    ''' returned.</param>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property SelectedFileName(Optional ByVal bFullPath As Boolean = True) As String
         Get
             Dim ds As IEwEDataSource = Me.Core.DataSource
@@ -611,8 +619,11 @@ Public Class AppLauncher
 
 #Region " Form overrides "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Overridden to initialize the app launcer form.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
         ' Add the dock panel 
@@ -660,7 +671,7 @@ Public Class AppLauncher
         Me.AutolaunchPlugins()
 
         Me.ProcessCommandLine()
-        Me.DefaultSettingLoadedEventHandler(Nothing, Nothing) ' Ugh!
+        Me.OnDefaultSettingLoaded(Nothing, Nothing) ' Ugh!
         Me.UpdateModelControls()
 
         Me.Help.HelpTopic(Me.m_StartPage) = "Ecopath with Ecosim 6 Getting started.htm"
@@ -668,11 +679,13 @@ Public Class AppLauncher
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Event handler, catches the form closing event to make sure the core is finalized.
     ''' Application shut-down is cancelled if the core does not finalize correctly.
     ''' </summary>
-    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
 
         ' Cancel application shut down if the core does not terminate succesfully.
         e.Cancel = Not Me.Core.CloseModel()
@@ -702,6 +715,44 @@ Public Class AppLauncher
 
         MyBase.OnFormClosing(e)
 
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Cluck?
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Sub OnKeyDown(ByVal e As KeyEventArgs)
+
+        Select Case e.KeyCode
+            Case Keys.F12
+                MsgBox("Bite me", MsgBoxStyle.Information)
+                Return
+        End Select
+
+        If e.Alt And e.Control And e.Shift Then
+            ' Egg!
+            Dim strURL As String = ""
+            Select Case e.KeyCode
+                Case Keys.Oemtilde : strURL = "http://farm1.static.flickr.com/160/374820104_5ec655655c.jpg"
+                Case Keys.D1 : strURL = "http://farm1.static.flickr.com/82/261884734_01ad1712a6.jpg"
+                Case Keys.D2 : strURL = "http://farm2.static.flickr.com/1218/536646225_09f93a0b8c.jpg"
+                Case Keys.D3 : strURL = "http://farm1.static.flickr.com/112/261883295_1cab2a9714.jpg"
+                Case Keys.D4 : strURL = "http://farm1.static.flickr.com/87/261883288_06e5599f56.jpg"
+                Case Keys.D5 : strURL = "http://farm1.static.flickr.com/89/261883279_6c8b139ed9.jpg"
+                Case Keys.D6 : strURL = "http://farm1.static.flickr.com/121/261883269_cf6fd5f287.jpg"
+                Case Keys.D7 : strURL = "http://farm2.static.flickr.com/1312/1400452382_47306892c0.jpg"
+                Case Keys.D8 : strURL = "http://farm2.static.flickr.com/1012/1400449350_7dfad8dd60.jpg"
+                Case Keys.D9 : strURL = "http://farm3.static.flickr.com/2344/1536185215_fe4d413654.jpg"
+                Case Keys.D0 : strURL = "http://farm1.static.flickr.com/143/377851455_28924928b1.jpg"
+            End Select
+
+            If Not String.IsNullOrEmpty(strURL) Then
+                Me.m_StartPage.URL = strURL
+                Me.m_StartPage.Show(Me.m_DockPanel, DockState.Document)
+            End If
+
+        End If
     End Sub
 
 #End Region ' Form overrides
@@ -1080,7 +1131,7 @@ Public Class AppLauncher
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcosimScenarios(i).Name
                 tsmi.Tag = i
-                AddHandler tsmi.Click, AddressOf EcosimScenarioClickEventHandler
+                AddHandler tsmi.Click, AddressOf OnLoadEcosimScenario
                 Me.m_tsbEcosim.DropDownItems.Add(tsmi)
             Next
 
@@ -1089,7 +1140,7 @@ Public Class AppLauncher
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcospaceScenarios(i).Name
                 tsmi.Tag = i
-                AddHandler tsmi.Click, AddressOf EcospaceScenarioClickEventHandler
+                AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenario
                 Me.m_tsbEcospace.DropDownItems.Add(tsmi)
             Next
 
@@ -1098,7 +1149,7 @@ Public Class AppLauncher
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcotracerScenarios(i).Name
                 tsmi.Tag = i
-                AddHandler tsmi.Click, AddressOf EcotracerScenarioClickEventHandler
+                AddHandler tsmi.Click, AddressOf OnLoadEcotracerScenario
                 Me.m_tsbEcotracer.DropDownItems.Add(tsmi)
             Next
 
@@ -1117,19 +1168,19 @@ Public Class AppLauncher
 
         ' Properly release sim menu items
         For Each tsmi In Me.m_tsbEcosim.DropDownItems
-            RemoveHandler tsmi.Click, AddressOf EcosimScenarioClickEventHandler
+            RemoveHandler tsmi.Click, AddressOf OnLoadEcosimScenario
         Next
         Me.m_tsbEcosim.DropDownItems.Clear()
 
         ' Properly release space menu items
         For Each tsmi In Me.m_tsbEcospace.DropDownItems
-            RemoveHandler tsmi.Click, AddressOf EcospaceScenarioClickEventHandler
+            RemoveHandler tsmi.Click, AddressOf OnLoadEcospaceScenario
         Next
         Me.m_tsbEcospace.DropDownItems.Clear()
 
         ' Properly release tracer menu items
         For Each tsmi In Me.m_tsbEcotracer.DropDownItems
-            RemoveHandler tsmi.Click, AddressOf EcotracerScenarioClickEventHandler
+            RemoveHandler tsmi.Click, AddressOf OnLoadEcotracerScenario
         Next
         Me.m_tsbEcotracer.DropDownItems.Clear()
 
@@ -1248,7 +1299,7 @@ Public Class AppLauncher
             item.Tag = str(0)
 
             'Add event handler to invoke the model
-            AddHandler item.Click, AddressOf RecentFileClickEventHandler
+            AddHandler item.Click, AddressOf OnMRUItemClicked
 
             Me.m_tsmiFileRecent.DropDownItems.Add(item)
         Next
@@ -1267,7 +1318,7 @@ Public Class AppLauncher
         For Each item In Me.m_tsmiFileRecent.DropDownItems
             If (item.Tag IsNot Nothing) Then
                 ' Remove dangling event handler
-                RemoveHandler item.Click, AddressOf RecentFileClickEventHandler
+                RemoveHandler item.Click, AddressOf OnMRUItemClicked
             End If
         Next
 
@@ -2121,61 +2172,6 @@ Public Class AppLauncher
 
     End Sub
 
-    ''' <summary>
-    ''' Create new Ecopath model
-    ''' </summary>
-    Private Sub OnNewFile(ByVal cmd As cCommand) Handles m_cmdNewModel.OnInvoke
-
-        Dim db As cEwEDatabase = Nothing
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-
-        cmdFS.Invoke(My.Resources.DEFAULT_NEWMODELNAME, "", My.Resources.FILEFILTER_MODEL_SAVE, 1)
-
-        If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
-            ' #Yes: able to create model at selected location?
-            db = Me.CreateEcopathModel(cmdFS.FileName, Path.GetFileNameWithoutExtension(cmdFS.FileName))
-            If db IsNot Nothing Then
-                ' #Yes: Able to load model?
-                Me.LoadEcopathModel(cmdFS.FileName, eLoadSourceType.User)
-            End If
-        End If
-
-    End Sub
-
-    ''' <summary>
-    ''' Update new model command state
-    ''' </summary>
-    Private Sub OnUpdateNewFile(ByVal cmd As cCommand) Handles m_cmdNewModel.OnUpdate
-        cmd.Enabled = True
-    End Sub
-
-    ''' <summary>
-    ''' Open Ecopath model from file
-    ''' </summary>
-    Private Sub OnLoadModel(ByVal cmd As cCommand) Handles m_cmdLoadModel.OnInvoke
-
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-        Dim strFilter As String = My.Resources.FILEFILTER_MODEL_OPEN
-
-        If cmd.Tag IsNot Nothing Then
-            cmdFO.Invoke(Path.GetFileName(CStr(cmd.Tag)), Path.GetDirectoryName(CStr(cmd.Tag)), strFilter, 1)
-        Else
-            cmdFO.Invoke(strFilter, 1)
-        End If
-
-        If (cmdFO.Result = DialogResult.OK) Then
-
-            ' Open the model
-            Me.SetStatusText(My.Resources.STATUS_ECOPATH_LOADING, TriState.True)
-            Me.LoadEcopathModel(cmdFO.FileName, eLoadSourceType.User)
-            Me.SetStatusText("", TriState.False)
-
-        End If
-
-    End Sub
-
     Private Sub OnOpenDocument(ByVal cmd As cCommand) Handles m_cmdNavigate.OnInvoke
 
         Dim nc As cNavigationCommand = Nothing
@@ -2231,76 +2227,144 @@ Public Class AppLauncher
         ' JS Jan2408: Make sure the nav tree correctly reflects the current selected page.
         ' This is important if the navigation to the requested page failed, which can happen
         ' if the core controller is unable to bring the core to the requested state.
-        Me.ActiveDocumentChangedEventHandler(Nothing, Nothing)
+        Me.OnActiveDocumentChanged(Nothing, Nothing)
 
     End Sub
 
-    Private Sub OnRunGUIPlugin(ByVal cmd As cCommand) Handles m_cmdPluginGUICommand.OnInvoke
+    ''' <summary>
+    ''' Close the current active document.
+    ''' </summary>
+    Private Sub OnCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnInvoke
+        ' Is the window docked?
+        ' Check whether an active document exists; this will occur when all panels are already closed.
+        If Not Object.ReferenceEquals(Me.m_DockPanel.ActiveDocument, Nothing) Then
+            ' Close active doc
+            Me.m_DockPanel.ActiveDocument.DockHandler.Close()
+        End If
 
-        ' Sanity checks
-        If Not (TypeOf cmd Is cPluginGUICommand) Then Return
+    End Sub
 
-        ' Phew
-        Dim pgcmd As cPluginGUICommand = DirectCast(cmd, cPluginGUICommand)
-        ' Check if core can be brought up to par
-        If Me.CoreController.LoadState(pgcmd.CoreExecutionState) Then
-            ' Invoke plugin. This code does not - and cannot - verify whether the plugin has already ran,
-            ' and whether any plug-in UI elements are still active. The plug-in is responsible for dealing
-            ' with consecutive run requests.
+    ''' <summary>
+    ''' Command handler; update the 'close document' command state
+    ''' </summary>
+    Private Sub OnUpdateCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnUpdate
+        cmd.Enabled = False
+        ' Is the window docked?
+        cmd.Enabled = Not Object.ReferenceEquals(Me.m_DockPanel.ActiveDocument, Nothing)
+    End Sub
 
-            Me.SetStatusText(My.Resources.GENERIC_STATUS_LOADINGPLUGIN, TriState.True)
-            Try
-                pgcmd.RunPlugin()
-            Catch ex As Exception
+    ''' <summary>
+    ''' Command handler; closes all closable child forms.
+    ''' </summary>
+    Private Sub OnCloseAllForms(ByVal cmd As cCommand) Handles m_cmdCloseAllForms.OnInvoke
+        ' Close all child forms of the parent
+        Me.CloseAllDocuments()
+    End Sub
 
-            End Try
-            Me.SetStatusText("", TriState.False)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler, called when the MRU dropdown menu is about to open.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnMRUOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsmiFileRecent.DropDownOpening
+        Me.PopulateMRUDropdown()
+    End Sub
 
-            ' See if the plug-in attached any form to the command. This form will be nested in the interface
-            ' if possible.
-            If pgcmd.Form IsNot Nothing Then
-                ' #Yes: form detected
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler, called when the MRU dropdown menu has closed.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnMRUClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsmiFileRecent.DropDownClosed
+        ' Ok, do NOT do this here; the dropdown is closed BEFORE a MRU invoke is called. Lovely!
+        'Me.ResetMRU()
+    End Sub
 
-                ' Protect this form from auto-closing if it is supposed to stay 'always open'
-                If (pgcmd.CoreExecutionState = eCoreExecutionState.Idle) And _
-                   (Me.m_lstrProtectedPanelNames.IndexOf(pgcmd.Form.Name) = -1) Then
-                    Me.m_lstrProtectedPanelNames.Add(pgcmd.Form.Name)
-                End If
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler, called when the Exit menu item is selected.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnExit(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsmiFileExit.Click
+        Me.Close()
+    End Sub
 
-                ' Able to activate this form from the open tabs?
-                If Not ActivateForm(pgcmd.Form.Text) Then
-                    ' #No: form is not currently integrated in the dock panel, it must be nested in the GUI.
+#End Region ' Generic commands
 
-                    ' Make sure it is not already shown; a visible form cannot be docked.
-                    If pgcmd.Form.Visible Then
-                        pgcmd.Form.Hide()
-                    End If
+#Region " File menu commands "
 
-                    ' Is this a dockable form? 
-                    If (TypeOf pgcmd.Form Is DockContent) And (m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
-                        ' #Yes
-                        ' Fix dockstyle
-                        If pgcmd.DockState = 0 Then pgcmd.DockState = DockState.Document
-                        ' Show the form in the dock panel
-                        DirectCast(pgcmd.Form, DockContent).Show(Me.m_DockPanel, DirectCast(pgcmd.DockState, DockState))
+    ''' <summary>
+    ''' Create new Ecopath model
+    ''' </summary>
+    Private Sub OnNewModel(ByVal cmd As cCommand) Handles m_cmdNewModel.OnInvoke
 
-                        ' Fix window state
-                        If pgcmd.Form.WindowState = FormWindowState.Minimized Then
-                            pgcmd.Form.WindowState = FormWindowState.Normal
-                            pgcmd.Form.Show()
-                        End If
+        Dim db As cEwEDatabase = Nothing
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-                    Else
-                        ' Show form
-                        pgcmd.Form.MdiParent = Me
-                        pgcmd.Form.Show()
-                    End If
-                    ' Switch help
-                    ' ToDo_JS: consider allowing plug-in provided help documents
-                    Me.Help.HelpTopic(pgcmd.Form) = ""
-                End If
+        cmdFS.Invoke(My.Resources.DEFAULT_NEWMODELNAME, "", My.Resources.FILEFILTER_MODEL_SAVE, 1)
+
+        If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
+            ' #Yes: able to create model at selected location?
+            db = Me.CreateEcopathModel(cmdFS.FileName, Path.GetFileNameWithoutExtension(cmdFS.FileName))
+            If db IsNot Nothing Then
+                ' #Yes: Able to load model?
+                Me.LoadEcopathModel(cmdFS.FileName, eLoadSourceType.User)
             End If
         End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Update new model command state
+    ''' </summary>
+    Private Sub OnUpdateNewModel(ByVal cmd As cCommand) Handles m_cmdNewModel.OnUpdate
+        cmd.Enabled = True
+    End Sub
+
+    ''' <summary>
+    ''' Open Ecopath model from file
+    ''' </summary>
+    Private Sub OnLoadModel(ByVal cmd As cCommand) Handles m_cmdLoadModel.OnInvoke
+
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+        Dim strFilter As String = My.Resources.FILEFILTER_MODEL_OPEN
+
+        If cmd.Tag IsNot Nothing Then
+            cmdFO.Invoke(Path.GetFileName(CStr(cmd.Tag)), Path.GetDirectoryName(CStr(cmd.Tag)), strFilter, 1)
+        Else
+            cmdFO.Invoke(strFilter, 1)
+        End If
+
+        If (cmdFO.Result = DialogResult.OK) Then
+
+            ' Open the model
+            Me.SetStatusText(My.Resources.STATUS_ECOPATH_LOADING, TriState.True)
+            Me.LoadEcopathModel(cmdFO.FileName, eLoadSourceType.User)
+            Me.SetStatusText("", TriState.False)
+
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Save the model
+    ''' </summary>
+    Private Sub OnSave(ByVal cmd As cCommand) Handles m_cmdSave.OnInvoke
+        Me.SetStatusText(My.Resources.STATUS_MODEL_SAVING, TriState.True)
+        Me.Core.Save()
+        Me.SetStatusText("", TriState.False)
+    End Sub
+
+    ''' <summary>
+    ''' Update save model command state
+    ''' </summary>
+    Private Sub OnUpdateSave(ByVal cmd As cCommand) Handles m_cmdSave.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.IsModified
     End Sub
 
     ''' <summary>
@@ -2365,22 +2429,6 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
-    ''' Save the model
-    ''' </summary>
-    Private Sub OnSave(ByVal cmd As cCommand) Handles m_cmdSave.OnInvoke
-        Me.SetStatusText(My.Resources.STATUS_MODEL_SAVING, TriState.True)
-        Me.Core.Save()
-        Me.SetStatusText("", TriState.False)
-    End Sub
-
-    ''' <summary>
-    ''' Update save model command state
-    ''' </summary>
-    Private Sub OnUpdateSave(ByVal cmd As cCommand) Handles m_cmdSave.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.IsModified
-    End Sub
-
-    ''' <summary>
     ''' Close the current open model
     ''' </summary>
     Private Sub OnCloseModel(ByVal cmd As cCommand) Handles m_cmdCloseModel.OnInvoke
@@ -2413,35 +2461,9 @@ Public Class AppLauncher
         End If
     End Sub
 
-    ''' <summary>
-    ''' Close the current active document.
-    ''' </summary>
-    Private Sub OnCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnInvoke
-        ' Is the window docked?
-        ' Check whether an active document exists; this will occur when all panels are already closed.
-        If Not Object.ReferenceEquals(Me.m_DockPanel.ActiveDocument, Nothing) Then
-            ' Close active doc
-            Me.m_DockPanel.ActiveDocument.DockHandler.Close()
-        End If
+#End Region ' File commands
 
-    End Sub
-
-    ''' <summary>
-    ''' Command handler; update the 'close document' command state
-    ''' </summary>
-    Private Sub OnUpdateCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnUpdate
-        cmd.Enabled = False
-        ' Is the window docked?
-        cmd.Enabled = Not Object.ReferenceEquals(Me.m_DockPanel.ActiveDocument, Nothing)
-    End Sub
-
-    ''' <summary>
-    ''' Command handler; closes all closable child forms.
-    ''' </summary>
-    Private Sub OnCloseAllForms(ByVal cmd As cCommand) Handles m_cmdCloseAllForms.OnInvoke
-        ' Close all child forms of the parent
-        Me.CloseAllDocuments()
-    End Sub
+#Region " View commands "
 
     ''' <summary>
     ''' Command handler; toggles main statusbar visibility
@@ -2456,153 +2478,6 @@ Public Class AppLauncher
     Private Sub OnUpdateViewMainStatusbar(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdViewStatusbar.OnUpdate
         cmd.Checked = Me.m_ssMain.Visible
     End Sub
-
-    ''' <summary>
-    ''' Command handler; invokes the edit groups interface
-    ''' </summary>
-    Private Sub OnEditGroups(ByVal cmd As cCommand) Handles m_cmdEditGroups.OnInvoke
-
-        Try
-            Dim dlg As New EditGroups(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
-            Me.Help.HelpTopic(dlg) = "Edit groups.htm"
-            dlg.ShowDialog(Me)
-        Catch ex As Exception
-            ' Woops
-            Debug.Assert(False)
-        End Try
-
-    End Sub
-
-    ''' <summary>
-    ''' Command update handler; enables and disables the <see cref="m_cmdEditGroups">Edit Groups command</see>.
-    ''' </summary>
-    Private Sub OnUpdateEditGroups(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditGroups.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
-    End Sub
-
-    ''' <summary>
-    ''' Command handler; invokes the edit multi stanza interface
-    ''' </summary>
-    Private Sub OnEditMultiStanza(ByVal cmd As cCommand) Handles m_cmdEditMultiStanza.OnInvoke
-        Dim dlg As New EditMultiStanza(Me.UIContext)
-        Me.Help.HelpTopic(dlg) = "Edit multi stanza.htm"
-        dlg.ShowDialog(Me)
-    End Sub
-
-    ''' <summary>
-    ''' Command update handler; enables and disables the <see cref="m_cmdEditMultiStanza">Edit Multi-stanza command</see>.
-    ''' </summary>
-    Private Sub OnUpdateMultiStanza(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditMultiStanza.OnUpdate
-        ' MultiStanza can be edited when ecopath has loaded and the core has more than one stanza group
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded() And (Me.Core.nStanzas > 0)
-    End Sub
-
-    ''' <summary>
-    ''' Command handler; invokes the edit fleets interface
-    ''' </summary>
-    Private Sub OnEditFleets(ByVal cmd As cCommand) Handles m_cmdEditFleets.OnInvoke
-        Try
-            Dim dlg As New EditFleets(Me.UIContext, DirectCast(cmd.Tag, cFleetInput))
-            Me.Help.HelpTopic(dlg) = "Edit fleets.htm"
-            dlg.ShowDialog(Me)
-        Catch ex As Exception
-            ' Woops
-            Debug.Assert(False)
-        End Try
-    End Sub
-
-    ''' <summary>
-    ''' Command update handler; enables and disables the <see cref="m_cmdEditFleets">Edit Fleets command</see>.
-    ''' </summary>
-    Private Sub OnUpdateEditFleets(ByVal cmd As EwEUtils.Commands.cCommand) _
-        Handles m_cmdEditFleets.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
-    End Sub
-
-    Private Sub OnDisplayShowHideItems(ByVal cmd As cCommand) _
-        Handles m_cmdShowHideItems.OnInvoke
-        Dim dlg As New dlgShowHideItems(Me.UIContext, m_cmdShowHideItems.ShowGroups, m_cmdShowHideItems.ShowTotals)
-        dlg.ShowDialog()
-    End Sub
-
-    Private Sub OnUpdateShowHideItems(ByVal cmd As cCommand) _
-        Handles m_cmdShowHideItems.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
-    End Sub
-
-    ''' <summary>
-    ''' Command handler; invokes the import layers dialog.
-    ''' </summary>
-    Private Sub m_cmdImportLayerData_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
-        Handles m_cmdImportLayerData.OnInvoke
-
-        Dim dlg As New dlgImportLayerData(Me.UIContext)
-
-        If cmd.Tag IsNot Nothing Then
-            Try
-                dlg.Layers = DirectCast(cmd.Tag, cLayer())
-            Catch ex As Exception
-                Debug.Assert(False, "Expected array of cLayer")
-            End Try
-        End If
-        dlg.ShowDialog()
-
-    End Sub
-
-    ''' <summary>
-    ''' Command update handler; enables and disables the 
-    ''' <see cref="m_cmdImportLayerData">import layer data command</see>.
-    ''' </summary>
-    Private Sub m_cmdImportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
-        Handles m_cmdImportLayerData.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
-    End Sub
-
-    ''' <summary>
-    ''' Command handler; invokes the export layers dialog.
-    ''' </summary>
-    Private Sub m_cmdExportLayerData_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
-        Handles m_cmdExportLayerData.OnInvoke
-
-        Dim dlg As New dlgExportLayerData(Me.UIContext)
-        If cmd.Tag IsNot Nothing Then
-            Try
-                dlg.Layers = DirectCast(cmd.Tag, cLayer())
-            Catch ex As Exception
-                Debug.Assert(False, "Expected array of cLayer")
-            End Try
-        End If
-        dlg.ShowDialog()
-
-    End Sub
-
-    ''' <summary>
-    ''' Command update handler; enables and disables the 
-    ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
-    ''' </summary>
-    Private Sub m_cmdExportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
-        Handles m_cmdExportLayerData.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
-    End Sub
-
-    Private Sub OnMRUOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsmiFileRecent.DropDownOpening
-        Me.PopulateMRUDropdown()
-    End Sub
-
-    Private Sub OnMRUClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsmiFileRecent.DropDownClosed
-        ' Ok, do NOT do this here; the dropdown is closed BEFORE a MRU invoke is called. Lovely!
-        'Me.ResetMRU()
-    End Sub
-
-    Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiFileExit.Click
-        Me.Close()
-    End Sub
-
-#End Region ' Main Menu - File
-
-#Region " Main Menu - View "
 
     ''' <summary>
     ''' Command handler; shows the start page.
@@ -2698,9 +2573,9 @@ Public Class AppLauncher
         cmd.Checked = Me.m_tsModel.Visible
     End Sub
 
-#End Region ' Main Menu - View
+#End Region ' View commands
 
-#Region " Main Menu - Tools "
+#Region " Tools commands "
 
     ''' <summary>
     ''' Open the EwE6 option dialog
@@ -2709,55 +2584,112 @@ Public Class AppLauncher
         Handles m_tsmiOptions.Click
 
         Dim dlgOptions As New dlgOptions(Me.UIContext)
-        ' FG: Fixed a bug..Should not use Show instead of using ShowDialog and specify its owner so it will
-        ' be displayed at the specified location Nov 15, 2006
+        ' FG Nov 15, 2006: Should not use Show instead of using ShowDialog and specify its owner so it will
+        ' be displayed at the specified location
         dlgOptions.ShowDialog(Me)
 
     End Sub
 
-#End Region ' Main Menu - Tools
+#End Region ' Tools commands
 
-#Region " Main Menu - Windows "
-
-#End Region ' Main Menu - Tools
-
-#Region " Main Menu - Help "
+#Region " Help commands "
 
     ''' <summary>
     ''' Command handler; invokes the About... dialog.
     ''' </summary>
-    Private Sub m_cmdHelpAbout_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdHelpAbout.OnInvoke
-
+    Private Sub OnShowAboutDialog(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdHelpAbout.OnInvoke
         Dim dlgAbout As New frmAboutEwE(Me.UIContext)
         Me.Help.HelpTopic(dlgAbout) = ""
         dlgAbout.ShowDialog(Me)
-
     End Sub
 
-    ''' <summary>
-    ''' Command update handler; enables the About.. command.
-    ''' </summary>
-    Private Sub m_cmdHelpAbout_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdHelpAbout.OnUpdate
-        cmd.Enabled = True
-    End Sub
-
-    Private Sub ContentsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpContents.Click
+    Private Sub OnHelpTOC(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpContents.Click
         Me.Help.ShowHelp(HelpNavigator.TableOfContents)
     End Sub
 
-    Private Sub IndexToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpIndex.Click
+    Private Sub OnHelpIndex(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpIndex.Click
         Me.Help.ShowHelp(HelpNavigator.KeywordIndex)
     End Sub
 
-    Private Sub SearchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpSearch.Click
+    Private Sub OnHelpSearch(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpSearch.Click
         Me.Help.ShowHelp(HelpNavigator.Find)
     End Sub
 
-    Private Sub ReportBugMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpBugReport.Click
+    Private Sub OnReportBug(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpBugReport.Click
         BugReporter.InvokeBugReport()
     End Sub
 
 #End Region ' Main Menu - Help
+
+#Region " Ecopath commands "
+
+    ''' <summary>
+    ''' Command handler; invokes the edit groups interface
+    ''' </summary>
+    Private Sub OnEditGroups(ByVal cmd As cCommand) Handles m_cmdEditGroups.OnInvoke
+        Dim dlg As New EditGroups(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
+        Me.Help.HelpTopic(dlg) = "Edit groups.htm"
+        dlg.ShowDialog(Me)
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdEditGroups">Edit Groups command</see>.
+    ''' </summary>
+    Private Sub OnUpdateEditGroups(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditGroups.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; invokes the edit multi stanza interface
+    ''' </summary>
+    Private Sub OnEditMultiStanza(ByVal cmd As cCommand) Handles m_cmdEditMultiStanza.OnInvoke
+        Dim dlg As New EditMultiStanza(Me.UIContext)
+        Me.Help.HelpTopic(dlg) = "Edit multi stanza.htm"
+        dlg.ShowDialog(Me)
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdEditMultiStanza">Edit Multi-stanza command</see>.
+    ''' </summary>
+    Private Sub OnUpdateMultiStanza(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditMultiStanza.OnUpdate
+        ' MultiStanza can be edited when ecopath has loaded and the core has more than one stanza group
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded() And (Me.Core.nStanzas > 0)
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; invokes the edit fleets interface
+    ''' </summary>
+    Private Sub OnEditFleets(ByVal cmd As cCommand) Handles m_cmdEditFleets.OnInvoke
+        Try
+            Dim dlg As New EditFleets(Me.UIContext, DirectCast(cmd.Tag, cFleetInput))
+            Me.Help.HelpTopic(dlg) = "Edit fleets.htm"
+            dlg.ShowDialog(Me)
+        Catch ex As Exception
+            ' Woops
+            Debug.Assert(False)
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdEditFleets">Edit Fleets command</see>.
+    ''' </summary>
+    Private Sub OnUpdateEditFleets(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdEditFleets.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
+    End Sub
+
+    Private Sub OnDisplayShowHideItems(ByVal cmd As cCommand) _
+        Handles m_cmdShowHideItems.OnInvoke
+        Dim dlg As New dlgShowHideItems(Me.UIContext, m_cmdShowHideItems.ShowGroups, m_cmdShowHideItems.ShowTotals)
+        dlg.ShowDialog()
+    End Sub
+
+    Private Sub OnUpdateShowHideItems(ByVal cmd As cCommand) _
+        Handles m_cmdShowHideItems.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
+    End Sub
+
+#End Region ' Main Menu - File
 
 #Region " Ecosim commands "
 
@@ -3027,7 +2959,7 @@ Public Class AppLauncher
 
 #End Region ' Ecosim commands
 
-#Region " Ecospace scenario commands "
+#Region " Ecospace commands "
 
     Private Sub OnNewEcospaceScenario(ByVal cmd As cCommand) _
         Handles m_cmdNewEcospaceScenario.OnInvoke
@@ -3248,8 +3180,62 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
+    ''' <summary>
+    ''' Command handler; invokes the import layer data dialog.
+    ''' </summary>
+    Private Sub OnImportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdImportLayerData.OnInvoke
 
-#End Region ' Ecospace scenario commands
+        Dim dlg As New dlgImportLayerData(Me.UIContext)
+
+        If cmd.Tag IsNot Nothing Then
+            Try
+                dlg.Layers = DirectCast(cmd.Tag, cLayer())
+            Catch ex As Exception
+                Debug.Assert(False, "Expected array of cLayer")
+            End Try
+        End If
+        dlg.ShowDialog()
+
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the 
+    ''' <see cref="m_cmdImportLayerData">import layer data command</see>.
+    ''' </summary>
+    Private Sub m_cmdImportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdImportLayerData.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; invokes the export layers dialog.
+    ''' </summary>
+    Private Sub m_cmdExportLayerData_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdExportLayerData.OnInvoke
+
+        Dim dlg As New dlgExportLayerData(Me.UIContext)
+        If cmd.Tag IsNot Nothing Then
+            Try
+                dlg.Layers = DirectCast(cmd.Tag, cLayer())
+            Catch ex As Exception
+                Debug.Assert(False, "Expected array of cLayer")
+            End Try
+        End If
+        dlg.ShowDialog()
+
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the 
+    ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
+    ''' </summary>
+    Private Sub m_cmdExportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdExportLayerData.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
+    End Sub
+
+#End Region ' Ecospace commands
 
 #Region " Ecotracer commands "
 
@@ -3381,7 +3367,6 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.EcotracerScenarioCount > 0
     End Sub
 
-
     Private Sub OnEnableEcotracer(ByVal cmd As cCommand) _
         Handles m_cmdEnableEcotracer.OnInvoke
 
@@ -3442,17 +3427,89 @@ Public Class AppLauncher
 
 #End Region ' Ecotracer commands
 
+#Region " Plug-in commands "
+
+    Private Sub OnRunGUIPlugin(ByVal cmd As cCommand) Handles m_cmdPluginGUICommand.OnInvoke
+
+        ' Sanity checks
+        If Not (TypeOf cmd Is cPluginGUICommand) Then Return
+
+        ' Phew
+        Dim pgcmd As cPluginGUICommand = DirectCast(cmd, cPluginGUICommand)
+        ' Check if core can be brought up to par
+        If Me.CoreController.LoadState(pgcmd.CoreExecutionState) Then
+            ' Invoke plugin. This code does not - and cannot - verify whether the plugin has already ran,
+            ' and whether any plug-in UI elements are still active. The plug-in is responsible for dealing
+            ' with consecutive run requests.
+
+            Me.SetStatusText(My.Resources.GENERIC_STATUS_LOADINGPLUGIN, TriState.True)
+            Try
+                pgcmd.RunPlugin()
+            Catch ex As Exception
+
+            End Try
+            Me.SetStatusText("", TriState.False)
+
+            ' See if the plug-in attached any form to the command. This form will be nested in the interface
+            ' if possible.
+            If pgcmd.Form IsNot Nothing Then
+                ' #Yes: form detected
+
+                ' Protect this form from auto-closing if it is supposed to stay 'always open'
+                If (pgcmd.CoreExecutionState = eCoreExecutionState.Idle) And _
+                   (Me.m_lstrProtectedPanelNames.IndexOf(pgcmd.Form.Name) = -1) Then
+                    Me.m_lstrProtectedPanelNames.Add(pgcmd.Form.Name)
+                End If
+
+                ' Able to activate this form from the open tabs?
+                If Not ActivateForm(pgcmd.Form.Text) Then
+                    ' #No: form is not currently integrated in the dock panel, it must be nested in the GUI.
+
+                    ' Make sure it is not already shown; a visible form cannot be docked.
+                    If pgcmd.Form.Visible Then
+                        pgcmd.Form.Hide()
+                    End If
+
+                    ' Is this a dockable form? 
+                    If (TypeOf pgcmd.Form Is DockContent) And (m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
+                        ' #Yes
+                        ' Fix dockstyle
+                        If pgcmd.DockState = 0 Then pgcmd.DockState = DockState.Document
+                        ' Show the form in the dock panel
+                        DirectCast(pgcmd.Form, DockContent).Show(Me.m_DockPanel, DirectCast(pgcmd.DockState, DockState))
+
+                        ' Fix window state
+                        If pgcmd.Form.WindowState = FormWindowState.Minimized Then
+                            pgcmd.Form.WindowState = FormWindowState.Normal
+                            pgcmd.Form.Show()
+                        End If
+
+                    Else
+                        ' Show form
+                        pgcmd.Form.MdiParent = Me
+                        pgcmd.Form.Show()
+                    End If
+                    ' Switch help
+                    ' ToDo_JS: consider allowing plug-in provided help documents
+                    Me.Help.HelpTopic(pgcmd.Form) = ""
+                End If
+            End If
+        End If
+    End Sub
+
+#End Region ' Plug-in commands
+
 #End Region ' Command handlers 
 
-#Region " Event Handlers "
+#Region " Big and evil event handlers "
 
-    Private Sub RecentFileClickEventHandler(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnMRUItemClicked(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
         Dim strFileName As String = CStr(mnuItem.Tag)
         Me.LoadEcopathModel(strFileName, eLoadSourceType.MRU)
     End Sub
 
-    Private Sub EcosimScenarioClickEventHandler(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnLoadEcosimScenario(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Dim iScenario As Integer = CInt(mnuItem.Tag)
 
@@ -3461,7 +3518,7 @@ Public Class AppLauncher
         Me.m_cmdLoadEcosimScenario.Tag = Nothing
     End Sub
 
-    Private Sub EcospaceScenarioClickEventHandler(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnLoadEcospaceScenario(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Dim iScenario As Integer = CInt(mnuItem.Tag)
 
@@ -3470,7 +3527,7 @@ Public Class AppLauncher
         Me.m_cmdLoadEcospaceScenario.Tag = Nothing
     End Sub
 
-    Private Sub EcotracerScenarioClickEventHandler(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnLoadEcotracerScenario(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Dim iScenario As Integer = CInt(mnuItem.Tag)
 
@@ -3479,7 +3536,7 @@ Public Class AppLauncher
         Me.m_cmdLoadEcotracerScenario.Tag = Nothing
     End Sub
 
-    Private Sub DefaultSettingLoadedEventHandler(ByVal sender As Object, ByVal e As System.Configuration.SettingsLoadedEventArgs)
+    Private Sub OnDefaultSettingLoaded(ByVal sender As Object, ByVal e As System.Configuration.SettingsLoadedEventArgs)
 
         Me.m_strLastSelectedPath = My.Settings.LastSelectedDirectory
         If Not Directory.Exists(Me.m_strLastSelectedPath) Then
@@ -3496,7 +3553,7 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub ActiveDocumentChangedEventHandler(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub OnActiveDocumentChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
         Dim idc As IDockContent = m_DockPanel.ActiveDocument
         Dim dch As DockContentHandler = Nothing
@@ -3550,56 +3607,6 @@ Public Class AppLauncher
         End If
     End Sub
 
-#Region " Key press handlers "
-
-    Private Sub AppLauncher_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
-        Select Case e.KeyCode
-            Case Keys.F12
-                ' process Next step
-                MsgBox("Bite me")
-        End Select
-        If e.Alt And e.Control And e.Shift Then
-            Select Case e.KeyCode
-                Case Keys.Oemtilde
-                    m_StartPage.URL = "http://farm1.static.flickr.com/160/374820104_5ec655655c.jpg"
-                    m_StartPage.Show(m_DockPanel, DockState.Document)
-                Case Keys.D1
-                    m_StartPage.URL = "http://farm1.static.flickr.com/82/261884734_01ad1712a6.jpg"
-                    m_StartPage.Show(m_DockPanel, DockState.Document)
-                Case Keys.D2
-                    m_StartPage.URL = "http://farm2.static.flickr.com/1218/536646225_09f93a0b8c.jpg"
-                    m_StartPage.Show(m_DockPanel, DockState.Document)
-                Case Keys.D3
-                    m_StartPage.URL = "http://farm1.static.flickr.com/112/261883295_1cab2a9714.jpg"
-                    m_StartPage.Show(m_DockPanel, DockState.Document)
-                Case Keys.D4
-                    m_StartPage.URL = "http://farm1.static.flickr.com/87/261883288_06e5599f56.jpg"
-                    m_StartPage.Show(m_DockPanel, DockState.Document)
-                Case Keys.D5
-                    m_StartPage.URL = "http://farm1.static.flickr.com/89/261883279_6c8b139ed9.jpg"
-                    m_StartPage.Show(m_DockPanel, DockState.Document)
-                Case Keys.D6
-                    m_StartPage.URL = "http://farm1.static.flickr.com/121/261883269_cf6fd5f287.jpg"
-                    m_StartPage.Show(m_DockPanel, DockState.Document)
-                Case Keys.D7
-                    m_StartPage.URL = "http://farm2.static.flickr.com/1312/1400452382_47306892c0.jpg"
-                    m_StartPage.Show(m_DockPanel, DockState.Document)
-                Case Keys.D8
-                    m_StartPage.URL = "http://farm2.static.flickr.com/1012/1400449350_7dfad8dd60.jpg"
-                    m_StartPage.Show(m_DockPanel, DockState.Document)
-                Case Keys.D9
-                    m_StartPage.URL = "http://farm3.static.flickr.com/2344/1536185215_fe4d413654.jpg"
-                    m_StartPage.Show(m_DockPanel, DockState.Document)
-                Case Keys.D0
-                    m_StartPage.URL = "http://farm1.static.flickr.com/143/377851455_28924928b1.jpg"
-                    m_StartPage.Show(m_DockPanel, DockState.Document)
-            End Select
-
-        End If
-    End Sub
-
-#End Region ' Key press handlers
-
-#End Region ' Event Handlers
+#End Region ' Big and evil event handlers
 
 End Class
