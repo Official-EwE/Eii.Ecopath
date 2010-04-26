@@ -1598,8 +1598,12 @@ Public Class cCore
 
         'setEcosimRunLength() will call DoDatValCalculations to re-load forcing data
         Me.setEcosimRunLength(Me.m_TSData.NdatYear, False)
-
-        Me.m_EcoSim.SetFFromGear()
+        Dim QYear() As Single
+        ReDim QYear(Me.nGroups)
+        For i As Integer = 1 To Me.nGroups
+            QYear(i) = 1
+        Next
+        Me.m_EcoSim.SetFFromGear(QYear)
 
         Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
 
@@ -10905,9 +10909,12 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
                 Case eDataTypes.FishingEffort, eDataTypes.FishingPolicyManager
+                    Dim qyear() As Single
+                    ReDim qyear(Me.nGroups)
+                    For i As Integer = 1 To Me.nFleets : qyear(i) = 1 : Next
 
                     'reset the mortaility due to fishing to the new values
-                    Me.m_EcoSim.SetFFromGear()
+                    Me.m_EcoSim.SetFFromGear(qyear)
 
                     'now load the interface data
                     'if the FishRate shape manager has changed the data then fishmort was also changed

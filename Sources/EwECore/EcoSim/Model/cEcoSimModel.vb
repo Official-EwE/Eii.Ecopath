@@ -496,7 +496,12 @@ Namespace Ecosim
                 'InitAssessment()
 
                 If bFullInitialization Then
-                    SetFFromGear()
+                    Dim qyear() As Single
+                    ReDim qyear(Me.nGroups)
+                    For i As Integer = 1 To Me.m_Data.nGear : qyear(i) = 1 : Next
+
+                    SetFFromGear(qyear)
+
                 End If
 
                 SetTimeSteps()
@@ -599,6 +604,9 @@ Namespace Ecosim
             'Ecosim is about to be initialized for a run
             If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimPreRunInitialized(Me.m_Data)
 
+
+            ' Me.m_search.InitForYear()
+
             'Dim sumBio As Single, sumCatch As Single' sum of biomass and catch for debugging only
 
             If m_Data.bTimestepOutput Then
@@ -631,7 +639,10 @@ Namespace Ecosim
             ReDim EatenOfAvg(nGroups)
             ReDim PredAvg(nGroups)
 
-
+            ReDim Me.m_MSEData.CatchYearGroup(Me.nGroups)
+            For iGrp As Integer = 1 To Me.m_Data.nGroups
+                Me.m_MSEData.CatchYearGroup(iGrp) = Me.m_EPData.fCatch(iGrp)
+            Next
 
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
             '*
@@ -682,8 +693,6 @@ Namespace Ecosim
             m_search.ExistValue = 0
 
             m_Data.FirstTime = True
-
-            'cLog.WriteMatrixToFile("FishRateNo.csv", m_Data.FishRateNo, "FishRateNo")
 
             ' JS 08Jan10: moved NA calculations to Ecosim
             Me.EstimateTLofCatch(0)
@@ -764,8 +773,10 @@ Namespace Ecosim
                             Me.m_MSE.UpdateQuotas(BB)
                         End If
 
+
+
                         'regulate the effort base on the Quota for this year on each timestep
-                        Me.SetFtimeFromGear(BB, itime, m_Data.FishTime, True)
+                        Me.SetFtimeFromGear(BB, itime, m_Data.FishTime, QYear, True)
 
                     End If
 
@@ -773,7 +784,7 @@ Namespace Ecosim
 
                         'Predict Effort
                         PredictCurrentEffort(itime)
-                        SetFtimeFromGear(BB, itime, m_Data.FishTime, True)
+                        SetFtimeFromGear(BB, itime, m_Data.FishTime, QYear, True)
                         FindCurrentProfit(BB, itime)
                         PredictCapacityChange()
                     End If
@@ -3876,13 +3887,13 @@ Namespace Ecosim
         ''' Fishing mortality rates include fishing effort, density dependent catchability and discard mortality rates. 
         ''' Called to initialize <see cref="cEcosimDatastructures.FishRateNo">FishRateNo(group,time)</see> or when effort changes.
         ''' </remarks>
-        Public Sub SetFFromGear()
+        Public Sub SetFFromGear(ByVal QYear() As Single)
             'calculates Fishrateno by group from fishing efforts except for groups flagged
             'to be forced by group F over time using csv file (fisforced(i)=true if i is forced in csv)
             Dim t As Integer
 
             For t = 1 To m_Data.NTimes
-                SetFtimeFromGear(m_Data.StartBiomass, t, m_Data.FishTime, False)
+                SetFtimeFromGear(m_Data.StartBiomass, t, m_Data.FishTime, QYear, False)
             Next
 
         End Sub
@@ -3897,7 +3908,7 @@ Namespace Ecosim
         ''' <remarks>
         ''' Called by <see cref="SetFFromGear">SetFFromGear()</see> during initialization 
         ''' and by <see cref="RunModelValue">RunModelValue</see> when the MSE is running so Fishing Mortality includes discards at the current discard mortality rates.</remarks>
-        Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByRef fishtime() As Single, ByVal PredEffort As Boolean)
+        Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByRef fishtime() As Single, ByVal QYear() As Single, ByVal PredEffort As Boolean)
             Dim i As Integer, ig As Integer, Ft As Single
 
             ReDim Qmult(m_Data.nGroups)
@@ -3910,7 +3921,8 @@ Namespace Ecosim
             If Me.m_search.SearchMode = eSearchModes.MSE Then
                 'do the regulatory reduction in FishRateGear(ig,t) for each ig (gear) 
                 'based on the target fishing mortalty set by the user
-                Me.m_MSE.RegulateEffort(BB, Qmult, t)
+                Me.m_MSE.RegulateEffort(BB, Qmult, QYear, t)
+                Me.m_MSE.CalcCatch(BB, Qmult, QYear, t)
             End If
 
             'Apply this to get the actual fishing mortality
@@ -3921,7 +3933,8 @@ Namespace Ecosim
                     For ig = 1 To m_Data.nGear
                         Debug.Assert(Math.Round(Me.m_MSEData.PropLandedTime(ig, i) + Me.m_MSEData.Propdiscardtime(ig, i), 3) <= 1.0!, _
                                      Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
-                        Ft = Ft + m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_MSEData.PropLandedTime(ig, i) + Me.m_MSEData.Propdiscardtime(ig, i))
+
+                        Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_MSEData.PropLandedTime(ig, i) + Me.m_MSEData.Propdiscardtime(ig, i))
                     Next
 
                     'multiply the catchability multiplyer (density-dependent)

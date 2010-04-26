@@ -195,6 +195,8 @@ Public Class cSearchDatastructures
     ''' RunModel value... should it be calculated OUTSIDE? the loop?</remarks>
     Public FishYear() As Single
 
+    ' Public CatchYearGroup() As Single
+
     ''' <summary>
     ''' Semaphor provides single thread access to calcEcospaceMonthlyCatch()
     ''' </summary>

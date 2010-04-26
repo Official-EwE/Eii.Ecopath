@@ -243,6 +243,7 @@ Namespace MSE
 
                     Me.m_data.RStock0(igrp) = Me.m_data.RstockRatio(igrp) * Me.m_esData.StartBiomass(igrp)
                     Me.m_data.Rmax(igrp) = Me.m_data.RStock0(igrp) * (Me.m_data.RHalfB0Ratio(igrp) + 1)
+
                 Next
 
                 Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
@@ -545,8 +546,6 @@ Namespace MSE
         ''' Set the Effort to a max value if running in default mode TrackUseQuota
         ''' </summary>
         ''' <remarks>
-        ''' Make a copy of effort so it can be set back at the end of a run no matter what the mode. 
-        ''' This prevents the MSE from leaving the Effort at some strange value
         ''' </remarks>
         Private Sub setEffortForRun()
 
@@ -716,21 +715,31 @@ Namespace MSE
 
         End Sub
 
-        Private Sub SetEffortToBaseValue(Optional ByVal DoIt As Boolean = False)
-            Dim bReload As Boolean
-            bReload = Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_data.EffortSource = eMSEEffortSource.EcosimEffort
+        Private Sub SetEffortToBaseValue(Optional ByVal LastCall As Boolean = False)
+
+            'only reset effort if we are using the regulations
+            If Not Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations Then
+                Exit Sub
+            End If
+
             Try
 
-                If bReload Or DoIt Then
+                If Me.m_data.EffortSource = eMSEEffortSource.EcosimEffort Or LastCall Then
                     'if we are tracking the Ecosim effort and regulating it via the quota 
-                    'then we need to set effort to something for each iteration
+                    'then we need to set effort to original input ecosim effort
                     Dim n As Integer = Me.m_esData.FishRateGear.GetUpperBound(1)
                     For iflt As Integer = 1 To m_core.nFleets
                         For it As Integer = 1 To n
                             Me.m_esData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
                         Next
                     Next
+
+                ElseIf Me.m_data.EffortSource = eMSEEffortSource.NoCap Then
+
+                    Me.setEffortForRun()
+
                 End If
+
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".SetEffortToBaseValue() Exception: " & ex.Message)
             End Try
@@ -1054,7 +1063,6 @@ Namespace MSE
 
             Try
 
-
                 If Not Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
                     'Predicting effort this means we are running the regulatory code to regulate effort
                     'so don't vary effort or catchability here
@@ -1134,8 +1142,23 @@ Namespace MSE
 
         End Sub
 
+        Public Sub CalcCatch(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
 
-        Friend Sub RegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal t As Integer)
+            Dim cloc As Single
+            For iFlt As Integer = 1 To Me.m_data.nFleets
+                For iGrp As Integer = 1 To Me.m_epdata.NumLiving
+                    cloc = Me.m_data.PropLandedTime(iFlt, iGrp) * Biomass(iGrp) * QMult(iGrp) * QYear(iFlt) * Me.m_esData.FishRateGear(iFlt, t) * Me.m_esData.FishMGear(iFlt, iGrp) / 12.0F
+
+                    'CatchYear() is just for this year it is cleared out at the start of each year
+                    Me.m_data.CatchYearGroup(iGrp) += cloc
+
+                Next iGrp
+            Next iFlt
+
+        End Sub
+
+
+        Friend Sub RegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
             Dim i As Integer, ig As Integer, Elim As Single, Emax As Single
             Dim ci As Single
 
@@ -1149,8 +1172,6 @@ Namespace MSE
             'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
             For ig = 1 To m_esData.nGear
 
-                ' If m_esData.FishRateGear(ig, t) > Me.m_data.MaxEffort(ig) Then m_esData.FishRateGear(ig, t) = Me.m_data.MaxEffort(ig)
-
                 Select Case Me.m_data.QuotaType(ig)
 
                     Case eQuotaTypes.Effort
@@ -1162,52 +1183,12 @@ Namespace MSE
                         For i = 1 To m_data.NGroups
                             If (m_epdata.Landing(ig, i) + m_epdata.Discard(ig, i)) > 0 Then
                                 'Calculate the effort limitation, has quote been exceeded?
-                                Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)))
+                                Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * QYear(ig) * m_esData.FishMGear(ig, i) * Biomass(i)))
                                 If m_esData.FishRateGear(ig, t) > Elim Then
                                     m_esData.FishRateGear(ig, t) = Elim
                                 End If
                             End If
                         Next i
-
-                        'Case eQuotaTypes.HighestValue, eQuotaTypes.Selective 'limit effort to strongest stock but discard overages on weaker stocks
-                        '    '  Case eQuotaTypes.Strongest, eQuotaTypes.Selective 'limit effort to strongest stock but discard overages on weaker stocks
-
-                        '    Emax = 0
-                        '    For i = 1 To m_data.NGroups
-                        '        If (m_epdata.Landing(ig, i)) > 0 Then
-                        '            'Calculate the effort limitation, has quote for strongest stock (calling for biggest effort) been exceeded?
-                        '            Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)))
-                        '            If Elim > Emax Then Emax = Elim
-
-                        '        End If
-                        '    Next i
-
-                        '    If Emax < m_esData.FishRateGear(ig, t) Then m_esData.FishRateGear(ig, t) = Emax
-                        '    For i = 1 To m_data.NGroups
-                        '        If (m_epdata.Landing(ig, i)) > 0 Then
-                        '            ci = m_esData.FishRateGear(ig, t) * QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)
-
-                        '            If ci > Me.m_data.QuotaTime(ig, i) Then
-                        '                'fishing mortality exceeds quota
-                        '                Me.m_data.PropLandedTime(ig, i) = CSng(Me.m_data.QuotaTime(ig, i) / (ci + 1.0E-20))
-                        '                If Me.m_data.QuotaType(ig) = eQuotaTypes.Strongest Then
-                        '                    'QuotaType = Strongest 
-                        '                    'excess catch discarded and included in the fishing mortailtiy
-                        '                    Me.m_data.Propdiscardtime(ig, i) = (1 - Me.m_data.PropLandedTime(ig, i)) * m_epdata.PropDiscardMort(ig, i)
-                        '                Else
-                        '                    'QuotaType = Selective 
-                        '                    'excess catch is NOT included in fishing mortaility all discards survive
-                        '                    Me.m_data.Propdiscardtime(ig, i) = 0
-                        '                End If
-
-                        '            Else
-                        '                'ci < QuotaTime
-                        '                Me.m_data.PropLandedTime(ig, i) = m_epdata.PropLanded(ig, i)
-                        '                Me.m_data.Propdiscardtime(ig, i) = m_epdata.PropDiscard(ig, i)
-                        '            End If
-
-                        '        End If
-                        '    Next i
 
                     Case eQuotaTypes.HighestValue, eQuotaTypes.Selective 'limit effort to highest economic value stock but discard overages on weaker stocks
 
@@ -1228,14 +1209,14 @@ Namespace MSE
                         Next i
 
                         'get the effort limit for the stock with the biggest value
-                        Emax = CSng(Me.m_data.QuotaTime(ig, imax) / (1.0E-20 + QMult(imax) * m_esData.FishMGear(ig, imax) * Biomass(imax)))
+                        Emax = CSng(Me.m_data.QuotaTime(ig, imax) / (1.0E-20 + QMult(imax) * QYear(ig) * m_esData.FishMGear(ig, imax) * Biomass(imax)))
 
                         'Limit the effort if it is greater than the max allowable 
                         If Emax < m_esData.FishRateGear(ig, t) Then m_esData.FishRateGear(ig, t) = Emax
 
                         For i = 1 To m_data.NGroups
                             If (m_epdata.Landing(ig, i)) > 0 Then
-                                ci = m_esData.FishRateGear(ig, t) * QMult(i) * m_esData.FishMGear(ig, i) * Biomass(i)
+                                ci = m_esData.FishRateGear(ig, t) * QMult(i) * QYear(ig) * m_esData.FishMGear(ig, i) * Biomass(i)
 
                                 If ci > Me.m_data.QuotaTime(ig, i) Then
                                     'fishing mortality exceeds quota
@@ -1259,8 +1240,6 @@ Namespace MSE
                             End If
                         Next i
 
-
-
                 End Select
             Next ig
 
@@ -1275,13 +1254,11 @@ Namespace MSE
             Dim Bobs() As Single
             ReDim Bobs(Me.m_epdata.NumGroups)
             Dim RstockPred As Single
-            'ratio of Bt needed for 50% of max recruitment to B0
-            ' Dim RMax As Single
-
-            System.Console.WriteLine()
+            '    System.Console.WriteLine("---Catch year---")
 
             For i As Integer = 1 To Me.m_epdata.NumGroups
-                Me.m_data.BestimateLast(i) = Me.m_data.Bestimate(i)
+                Me.m_data.BestimateLast(i) = Me.m_data.Bestimate(i) * CSng(Math.Exp(-Me.m_data.CatchYearGroup(i) / Me.m_data.Bestimate(i))) ' Me.m_Search.CatchYear(i)
+                Me.m_data.CatchYearGroup(i) = 0
                 'the true biomass is the actual Ecosim biomass = Biomass()
                 'Bobs is the observed biomass which is the true biomass with a random factor added
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
@@ -1290,7 +1267,15 @@ Namespace MSE
                 'and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
                 'VC091107 fixed problem in eq below
                 Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + RstockPred)
+
+                If (Biomass(i) < Me.m_data.Blim(i)) And i = 4 Then
+                    System.Console.WriteLine("B=" & Biomass(i).ToString & ", Best=" & Me.m_data.Bestimate(i).ToString)
+                End If
+
+                'Debug.Assert(Biomass(i) < Me.m_data.Blim(i))
+
             Next i
+            System.Console.WriteLine()
 
         End Sub
 

@@ -208,6 +208,8 @@ End Enum
 
         Public QuotaTime(,) As Single
 
+        Public CatchYearGroup() As Single
+
 #End Region
 
 #Region "Private data"
@@ -653,8 +655,8 @@ End Enum
         Public Sub setDefaultRecruitment()
 
             For igrp As Integer = 1 To Me.NGroups
-                Me.RHalfB0Ratio(igrp) = 0.1
-                Me.RstockRatio(igrp) = 0.4
+                Me.RHalfB0Ratio(igrp) = 0.2
+                Me.RstockRatio(igrp) = CSng(1 - Math.Exp(-Me.m_EPData.PB(igrp)))
             Next
 
         End Sub
