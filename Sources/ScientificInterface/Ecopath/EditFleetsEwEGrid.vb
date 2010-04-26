@@ -534,7 +534,7 @@ Imports ScientificInterface.Other
 
         Select Case DirectCast(p.Column, eColumnTypes)
             Case eColumnTypes.FleetColor
-                Me.SelectCustomColor(p.Row)
+                Me.SelectCustomFleetColor(p.Row)
         End Select
 
     End Sub
@@ -782,7 +782,7 @@ Imports ScientificInterface.Other
 
 #Region " Selection extension "
 
-    Private Function SelectedRow() As Integer
+    Public Function SelectedRow() As Integer
 
         Dim iSelectedRow As Integer = -1
         Dim selection As SourceGrid2.Selection = Me.Selection
@@ -828,18 +828,18 @@ Imports ScientificInterface.Other
 
 #Region " Colors "
 
-    Public Sub ResetFleetColors()
-
-        Dim fi As cFleetInfo = Nothing
-        For iFleet As Integer = 0 To Me.m_lfiFleets.Count - 1
-            fi = Me.m_lfiFleets(iFleet)
-            fi.PoolColor = 0
+    Public Sub SetDefaultFleetColors()
+        For iRow As Integer = iFIRSTFLEETROW To Me.RowsCount - 1
+            Me.SetDefaultFleetColor(iRow)
         Next
-        Me.UpdateColorColumn()
-
     End Sub
 
-    Public Sub SelectCustomColor(Optional ByVal iRow As Integer = -1)
+    Public Sub SetDefaultFleetColor(ByVal iRow As Integer)
+        Me.m_lfiFleets(iRow - iFIRSTFLEETROW).PoolColor = 0 'cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(iRow - iFIRSTFLEETROW + 1, Me.m_lfiFleets.Count))
+        Me.UpdateRow(iRow)
+    End Sub
+
+    Public Sub SelectCustomFleetColor(Optional ByVal iRow As Integer = -1)
 
         Dim fi As cFleetInfo = Nothing
         Dim dlgColor As cEwEColorDialog = Nothing

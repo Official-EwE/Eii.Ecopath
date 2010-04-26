@@ -103,9 +103,19 @@ Namespace Ecopath
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnDefault_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnDefault.Click
-            Me.m_grid.ResetFleetColors()
+        Private Sub OnDefaultAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnDefaultAll.Click
+            Me.m_grid.SetDefaultFleetColors()
+        End Sub
+
+        Private Sub OnDefaultCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnDefaultCurrent.Click
+            Me.m_grid.SetDefaultFleetColor(Me.m_grid.selectedrow)
+        End Sub
+
+        Private Sub OnCustomColor(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnCustom.Click
+            Me.m_grid.SelectCustomFleetColor(Me.m_grid.SelectedRow)
         End Sub
 
 #End Region ' Event handlers 
@@ -118,6 +128,9 @@ Namespace Ecopath
             Me.m_btnInsert.Enabled = Me.m_grid.CanInsertRow()
             Me.m_btnDelete.Enabled = Me.m_grid.IsFleetRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
             Me.m_btnKeep.Enabled = Me.m_grid.IsFleetRow() And Me.m_grid.IsFlaggedForDeletionRow()
+
+            Me.m_btnDefaultCurrent.Enabled = Me.m_grid.IsFleetRow()
+            Me.m_btnCustom.Enabled = Me.m_grid.IsFleetRow()
         End Sub
 
 #End Region ' Updating

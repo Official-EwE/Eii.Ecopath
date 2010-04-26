@@ -33,8 +33,10 @@ Namespace Ecopath
             Me.m_btnInsert = New System.Windows.Forms.Button
             Me.m_lbEdit = New System.Windows.Forms.Label
             Me.m_lbOrder = New System.Windows.Forms.Label
-            Me.m_btnDefault = New System.Windows.Forms.Button
+            Me.m_btnDefaultAll = New System.Windows.Forms.Button
             Me.m_hdrColors = New System.Windows.Forms.Label
+            Me.m_btnDefaultCurrent = New System.Windows.Forms.Button
+            Me.m_btnCustom = New System.Windows.Forms.Button
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -43,6 +45,8 @@ Namespace Ecopath
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
@@ -61,6 +65,7 @@ Namespace Ecopath
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TrackPropertySelection = True
+            Me.m_grid.UIContext = Nothing
             '
             'TableLayoutPanel1
             '
@@ -124,11 +129,11 @@ Namespace Ecopath
             Me.m_lbOrder.ForeColor = System.Drawing.SystemColors.ControlLightLight
             Me.m_lbOrder.Name = "m_lbOrder"
             '
-            'm_btnDefault
+            'm_btnDefaultAll
             '
-            resources.ApplyResources(Me.m_btnDefault, "m_btnDefault")
-            Me.m_btnDefault.Name = "m_btnDefault"
-            Me.m_btnDefault.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnDefaultAll, "m_btnDefaultAll")
+            Me.m_btnDefaultAll.Name = "m_btnDefaultAll"
+            Me.m_btnDefaultAll.UseVisualStyleBackColor = True
             '
             'm_hdrColors
             '
@@ -136,6 +141,18 @@ Namespace Ecopath
             Me.m_hdrColors.BackColor = System.Drawing.SystemColors.ControlDark
             Me.m_hdrColors.ForeColor = System.Drawing.SystemColors.ControlLightLight
             Me.m_hdrColors.Name = "m_hdrColors"
+            '
+            'm_btnDefaultCurrent
+            '
+            resources.ApplyResources(Me.m_btnDefaultCurrent, "m_btnDefaultCurrent")
+            Me.m_btnDefaultCurrent.Name = "m_btnDefaultCurrent"
+            Me.m_btnDefaultCurrent.UseVisualStyleBackColor = True
+            '
+            'm_btnCustom
+            '
+            resources.ApplyResources(Me.m_btnCustom, "m_btnCustom")
+            Me.m_btnCustom.Name = "m_btnCustom"
+            Me.m_btnCustom.UseVisualStyleBackColor = True
             '
             'EditFleets
             '
@@ -150,7 +167,9 @@ Namespace Ecopath
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnDelete)
             Me.Controls.Add(Me.m_grid)
-            Me.Controls.Add(Me.m_btnDefault)
+            Me.Controls.Add(Me.m_btnCustom)
+            Me.Controls.Add(Me.m_btnDefaultCurrent)
+            Me.Controls.Add(Me.m_btnDefaultAll)
             Me.Controls.Add(Me.m_btnMoveDown)
             Me.Controls.Add(Me.m_btnMoveUp)
             Me.Controls.Add(Me.m_btnInsert)
@@ -173,8 +192,10 @@ Namespace Ecopath
         Private WithEvents m_lbEdit As System.Windows.Forms.Label
         Private WithEvents m_lbOrder As System.Windows.Forms.Label
         Private WithEvents m_grid As EditFleetsEwEGrid
-        Private WithEvents m_btnDefault As System.Windows.Forms.Button
+        Private WithEvents m_btnDefaultAll As System.Windows.Forms.Button
         Private WithEvents m_hdrColors As System.Windows.Forms.Label
+        Private WithEvents m_btnDefaultCurrent As System.Windows.Forms.Button
+        Private WithEvents m_btnCustom As System.Windows.Forms.Button
 
     End Class
 

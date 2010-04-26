@@ -1445,11 +1445,10 @@ Public Class EditGroupsEwEGrid
         For iRow As Integer = iFIRSTGROUPROW To Me.RowsCount - 1
             Me.SetDefaultGroupColor(iRow)
         Next
-        'Me.UpdateColorColumn()
     End Sub
 
     Public Sub SetDefaultGroupColor(ByVal iRow As Integer)
-        Me.m_lgiGroups(iRow - iFIRSTGROUPROW).PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(iRow - iFIRSTGROUPROW + 1, Me.m_lgiGroups.Count))
+        Me.m_lgiGroups(iRow - iFIRSTGROUPROW).PoolColor = 0 ' cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(iRow - iFIRSTGROUPROW + 1, Me.m_lgiGroups.Count))
         Me.UpdateRow(iRow)
     End Sub
 
