@@ -1,4 +1,5 @@
 Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared
 
 Namespace Ecopath.Input
 
@@ -24,7 +25,7 @@ Namespace Ecopath.Input
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DietComp))
-            Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
+            Me.ToolStrip1 = New cEwEToolstrip
             Me.tsSumtoOneBtn = New System.Windows.Forms.ToolStripButton
             Me.m_grid = New ScientificInterface.Ecopath.Input.DietCompositionEwEGrid
             Me.ToolStrip1.SuspendLayout()

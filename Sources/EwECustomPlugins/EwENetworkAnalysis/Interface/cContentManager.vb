@@ -7,6 +7,7 @@ Imports EwECore.DataSources
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -74,8 +75,6 @@ Public MustInherit Class cContentManager
         Me.HideControls()
 
         AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
-        cToolstripUtils.HideRepeatingSeparators(Me.m_toolstrip)
 
         Return True
 

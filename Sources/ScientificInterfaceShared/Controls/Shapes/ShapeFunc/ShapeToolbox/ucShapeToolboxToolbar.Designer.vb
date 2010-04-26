@@ -25,7 +25,7 @@ Namespace Controls
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucShapeToolboxToolbar))
-            Me.m_ts = New System.Windows.Forms.ToolStrip
+            Me.m_ts = New cEwEToolstrip
             Me.m_tsbImport = New System.Windows.Forms.ToolStripButton
             Me.m_tsbLoad = New System.Windows.Forms.ToolStripButton
             Me.m_tsbWeight = New System.Windows.Forms.ToolStripButton
@@ -165,7 +165,7 @@ Namespace Controls
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_ts As System.Windows.Forms.ToolStrip
+        Private WithEvents m_ts As cEwEToolstrip
         Private WithEvents m_tsbImport As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbLoad As System.Windows.Forms.ToolStripButton
         Private WithEvents m_ts1 As System.Windows.Forms.ToolStripSeparator

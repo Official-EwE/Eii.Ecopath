@@ -1,4 +1,6 @@
 Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Controls
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmNetworkAnalysis
@@ -34,7 +36,7 @@ Partial Class frmNetworkAnalysis
         Me.m_datagrid = New System.Windows.Forms.DataGridView
         Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.m_toolstrip = New System.Windows.Forms.ToolStrip
+        Me.m_toolstrip = New cEwEToolstrip
         Me.tsmiRun = New System.Windows.Forms.ToolStripButton
         Me.tsmiDisplayGroups = New System.Windows.Forms.ToolStripButton
         Me.tslblSelection1 = New System.Windows.Forms.ToolStripLabel
@@ -246,7 +248,7 @@ Partial Class frmNetworkAnalysis
     Private WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Private WithEvents tsbtnOutputIndicesCSV As System.Windows.Forms.ToolStripButton
     Private WithEvents tsbtnOutputGraphEMF As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_toolstrip As System.Windows.Forms.ToolStrip
+    Private WithEvents m_toolstrip As cEwEToolstrip
     Private WithEvents m_datagrid As System.Windows.Forms.DataGridView
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tlpInfo As System.Windows.Forms.TableLayoutPanel

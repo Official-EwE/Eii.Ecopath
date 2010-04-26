@@ -1,4 +1,5 @@
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class ucResults
@@ -14,7 +15,7 @@ Partial Class ucResults
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucResults))
         Me.m_btnRunEcopath = New System.Windows.Forms.Button
-        Me.m_tsResults = New System.Windows.Forms.ToolStrip
+        Me.m_tsResults = New cEwEToolstrip
         Me.m_tslFleets = New System.Windows.Forms.ToolStripLabel
         Me.m_tscmbFleets = New System.Windows.Forms.ToolStripComboBox
         Me.m_tssep1 = New System.Windows.Forms.ToolStripSeparator
@@ -210,7 +211,7 @@ Partial Class ucResults
     End Sub
 
     Private WithEvents m_btnRunEcopath As System.Windows.Forms.Button
-    Private WithEvents m_tsResults As System.Windows.Forms.ToolStrip
+    Private WithEvents m_tsResults As cEwEToolstrip
     Private WithEvents m_tslFleets As System.Windows.Forms.ToolStripLabel
     Private WithEvents m_tscmbFleets As System.Windows.Forms.ToolStripComboBox
     Private WithEvents m_btnRunEcosim As System.Windows.Forms.Button

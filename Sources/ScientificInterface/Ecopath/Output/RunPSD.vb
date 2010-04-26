@@ -8,6 +8,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Properties
 Imports ZedGraph
+Imports EwEUtils.Utilities
 
 #End Region 'Imports
 
@@ -80,8 +81,6 @@ Namespace Ecopath.Output
 
             ' Sync controls
             Me.UpdateToolstrip()
-            ' Neatify
-            cToolstripUtils.HideRepeatingSeparators(Me.m_tsRunPSD)
 
             ' Synchronize plot with Ecopath results
             Me.SynchronizePlot()

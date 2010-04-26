@@ -7,6 +7,7 @@ Imports EwECore
 Imports System.Drawing.Drawing2D
 Imports System.Drawing
 Imports System.ComponentModel
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -92,13 +93,8 @@ Namespace Controls
         Private m_bInUpdate As Boolean = False
 
         Private Sub UpdateControls()
-
             If (Me.Handler Is Nothing) Then Return
-
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DefineXAxis, m_tsbnDefineXAxis)
-
-            cToolstripUtils.HideRepeatingSeparators(Me.tsMenus)
-
         End Sub
 
         Private Sub UpdateCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, ByVal tsi As ToolStripItem)

@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: ucSketchPadToolbar.vb,v $
-' Revision 1.5  2009/04/12 22:14:18  jeroens
-' Initial state correctly processed
-'
-' Revision 1.4  2009/03/24 14:08:22  jeroens
-' Uses moved cToolstripUtils
-'
-' Revision 1.3  2009/03/20 17:55:42  jeroens
-' Shape controls are multiple selection
-'
-' Revision 1.2  2009/03/02 02:05:37  jeroens
-' Properly named handlers
-'
-' Revision 1.1  2008/12/15 15:36:42  jeroens
-' Moved from ScInt
-'
-' Revision 1.1  2008/09/26 07:31:44  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -30,6 +7,7 @@ Imports EwECore
 Imports System.Drawing.Drawing2D
 Imports System.Drawing
 Imports System.ComponentModel
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -196,8 +174,6 @@ Namespace Controls
                 Me.m_bInUpdate = False
 
             End If
-
-            cToolstripUtils.HideRepeatingSeparators(Me.tsMenus)
 
         End Sub
 

@@ -9,6 +9,7 @@ Imports EwEUtils.Commands
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -410,8 +411,6 @@ Public Class ucResults
         Me.m_tscmbGraphData.Visible = (Me.m_viewMode <> eViewModeType.Ecopath)
 
         Me.m_bInUpdate = False
-
-        cToolstripUtils.HideRepeatingSeparators(Me.m_tsResults)
 
     End Sub
 

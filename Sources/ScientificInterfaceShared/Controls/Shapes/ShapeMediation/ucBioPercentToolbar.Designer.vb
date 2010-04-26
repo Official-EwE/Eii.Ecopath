@@ -22,7 +22,7 @@ Namespace Controls
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucBioPercentToolbar))
-            Me.tsMenus = New System.Windows.Forms.ToolStrip
+            Me.tsMenus = New cEwEToolstrip
             Me.m_tsbnDefineXAxis = New System.Windows.Forms.ToolStripButton
             Me.tsMenus.SuspendLayout()
             Me.SuspendLayout()
@@ -55,7 +55,7 @@ Namespace Controls
 
         End Sub
         Private WithEvents m_tsbnDefineXAxis As System.Windows.Forms.ToolStripButton
-        Private WithEvents tsMenus As System.Windows.Forms.ToolStrip
+        Private WithEvents tsMenus As cEwEToolstrip
 
     End Class
 

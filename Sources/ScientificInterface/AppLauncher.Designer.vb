@@ -103,14 +103,13 @@
         Me.m_tsmiEcotracerSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerSaveAs = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerDelete = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsModel = New System.Windows.Forms.ToolStrip
+        Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripButton
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton
-        Me.m_tsbModel = New System.Windows.Forms.ToolStripButton
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar
         m_tssModel1 = New System.Windows.Forms.ToolStripSeparator
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator
@@ -591,9 +590,10 @@
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, m_tssModel1, Me.m_tsbModel})
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, m_tssModel1})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
+        Me.m_tsModel.Path = ""
         Me.m_tsModel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.m_tsModel.Stretch = True
         '
@@ -636,15 +636,6 @@
         resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
         Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
         '
-        'm_tsbModel
-        '
-        Me.m_tsbModel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.m_tsbModel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.m_tsbModel.ForeColor = System.Drawing.SystemColors.ControlDark
-        resources.ApplyResources(Me.m_tsbModel, "m_tsbModel")
-        Me.m_tsbModel.Name = "m_tsbModel"
-        Me.m_tsbModel.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
-        '
         'm_ssMain
         '
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
@@ -684,7 +675,7 @@
     Private WithEvents m_tsmiEcosimSave As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiTimeSeriesImport As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiNone As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsModel As System.Windows.Forms.ToolStrip
+    Private WithEvents m_tsModel As cModelPathToolStrip
     Private WithEvents m_tsmiEcospaceLoad As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceSave As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiWindowsClose As System.Windows.Forms.ToolStripMenuItem
@@ -702,7 +693,6 @@
     Private WithEvents m_tsmiEcotracerSave As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcotracerSaveAs As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcotracerNew As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsbModel As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbEcosim As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsbEcospace As System.Windows.Forms.ToolStripSplitButton
@@ -732,16 +722,16 @@
     Private WithEvents m_tsmiFileExit As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiFileCompact As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuEcosim As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_ssMain As ScientificInterface.cEwEStatusBar
+    Private WithEvents m_ssMain As ScientificInterface.cEwEStatusBar
     Private WithEvents m_tsmiEcosimEstimateVs As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiTimeSeriesExport As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiViewItems As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcosimDelete As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceDelete As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsbSave As System.Windows.Forms.ToolStripButton
-    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_tsbEcotracer As System.Windows.Forms.ToolStripSplitButton
+    Private WithEvents m_tsbSave As System.Windows.Forms.ToolStripButton
+    Private WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsbEcotracer As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiEcotracerDelete As System.Windows.Forms.ToolStripMenuItem
 
 End Class

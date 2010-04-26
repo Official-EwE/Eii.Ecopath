@@ -1096,9 +1096,7 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Private Sub UpdateModelControls()
 
-        Me.m_tsbModel.Text = cStringUtils.TruncatePath(Me.SelectedFileName, Me.m_tsbModel.Font, Me.m_tsbModel.Width)
-        Me.m_tsbModel.Visible = Not String.IsNullOrEmpty(Me.m_tsbModel.Text)
-
+        Me.m_tsModel.Path = Me.SelectedFileName
         If String.IsNullOrEmpty(Me.SelectedFileName) Then
             Me.Text = String.Format(My.Resources.GENERIC_CAPTION)
         Else
@@ -3579,16 +3577,9 @@ Public Class AppLauncher
         Me.UpdateSelectedNode(strNodeName)
     End Sub
 
-    Private Sub m_tslModelPath_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tsbModel.MouseEnter
-        Me.m_tsbModel.ForeColor = SystemColors.ControlText
-    End Sub
-
-    Private Sub m_tslModelPath_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tsbModel.MouseLeave
-        Me.m_tsbModel.ForeColor = SystemColors.ControlDark
-    End Sub
-
-    Private Sub m_tslModelPath_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbModel.Click
-        Me.m_cmdLoadModel.Tag = m_tsbModel.Text
+    Private Sub OnModelPathAreaClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsModel.OnPathAreaClicked
+        Me.m_cmdLoadModel.Tag = Me.m_tsModel.Path
         Me.m_cmdLoadModel.Invoke()
         Me.m_cmdLoadModel.Tag = Nothing
     End Sub

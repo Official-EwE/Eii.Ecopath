@@ -13,6 +13,7 @@ Imports EwEUtils.Commands
 Imports System.IO
 Imports SourceGrid2.Cells
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared
 
 #End Region
 
@@ -103,7 +104,7 @@ Public Class frmEwEGrid
                 ' Not found?
                 If m_ts Is Nothing Then
                     ' #Yes: create toolstrip
-                    Me.m_ts = New ToolStrip()
+                    Me.m_ts = New cEwEToolstrip()
                     Me.m_ts.Name = "tsQuickEdit"
                     Me.m_form.Controls.Add(Me.m_ts)
                     Me.m_bToolStripCreated = True
@@ -400,8 +401,6 @@ Public Class frmEwEGrid
             If Not Object.ReferenceEquals(Me.m_btnImport, Nothing) Then
                 Me.m_btnImport.Visible = bIsInputForm
             End If
-
-            cToolstripUtils.HideRepeatingSeparators(Me.m_ts)
 
         End Sub
 

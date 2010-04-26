@@ -21,7 +21,7 @@ Namespace Controls
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucSketchPadToolbar))
-            Me.tsMenus = New System.Windows.Forms.ToolStrip
+            Me.tsMenus = New cEwEToolstrip
             Me.tsBtnSave = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
             Me.tslbShapeView = New System.Windows.Forms.ToolStripLabel
@@ -126,18 +126,18 @@ Namespace Controls
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents tsMenus As System.Windows.Forms.ToolStrip
-        Friend WithEvents tsBtnReset As System.Windows.Forms.ToolStripButton
-        Friend WithEvents tsBtnValue As System.Windows.Forms.ToolStripButton
-        Friend WithEvents tsBtnSave As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents tsBtnOptions As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents tscbbShapeView As System.Windows.Forms.ToolStripComboBox
+        Private WithEvents tsMenus As cEwEToolstrip
+        Private WithEvents tsBtnReset As System.Windows.Forms.ToolStripButton
+        Private WithEvents tsBtnValue As System.Windows.Forms.ToolStripButton
+        Private WithEvents tsBtnSave As System.Windows.Forms.ToolStripButton
+        Private WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents tsBtnOptions As System.Windows.Forms.ToolStripButton
+        Private WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents tscbbShapeView As System.Windows.Forms.ToolStripComboBox
         Private WithEvents tslbShapeView As System.Windows.Forms.ToolStripLabel
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents tsbChangeShape As System.Windows.Forms.ToolStripButton
-        Friend WithEvents m_tslWeight As System.Windows.Forms.ToolStripLabel
+        Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents tsbChangeShape As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tslWeight As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tstbWeight As System.Windows.Forms.ToolStripTextBox
 
     End Class

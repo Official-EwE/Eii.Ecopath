@@ -174,50 +174,6 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' method for truncating a path with elipses
-        ''' </summary>
-        ''' <param name="strPath">The path to truncate.</param>
-        ''' <param name="font">The font to trucate with.</param>
-        ''' <returns>
-        ''' The truncated path
-        ''' </returns>
-        ''' <remarks>
-        ''' Taken from http://www.dreamincode.net/code/snippet3281.htm
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Shared Function TruncatePath(ByVal strPath As String, _
-                                            ByVal font As Font, _
-                                            ByVal iMaxWidth As Integer) As String
-
-            Dim strPathTruncated As String = ""
-            Dim bmp As Bitmap = Nothing
-            Dim g As Graphics = Nothing
-            Dim szfText As SizeF = Nothing
-
-            ' First trim and copy the path
-            strPathTruncated = String.Copy(strPath.Trim())
-            ' Create graphics to measure with
-            bmp = New Bitmap(1, 1)
-            g = Graphics.FromImage(bmp)
-            ' Measure the text in its current form
-            szfText = g.MeasureString(strPathTruncated, font)
-
-            ' Replace the center of the path with elipses
-            TextRenderer.MeasureText(strPathTruncated, font, _
-                                     New Size(Math.Min(iMaxWidth, CInt(szfText.Width)), CInt(szfText.Height)), _
-                                     TextFormatFlags.ModifyString Or TextFormatFlags.PathEllipsis)
-
-            ' Clean up
-            g.Dispose()
-            bmp.Dispose()
-
-            ' Return the modified path
-            Return strPathTruncated
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Converts an arabic value into a roman representation.
         ''' </summary>
         ''' <param name="nArabicValue">The value to convert.</param>

@@ -235,7 +235,12 @@
     <Compile Include="Controls\TextBox\ucCharacterTextBox.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\Toolstrip\cToolstripUtils.vb" />
+    <Compile Include="Controls\Toolstrip\cEwEToolstrip.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Toolstrip\cModelPathToolStrip.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\Tooltip\cToolTipShared.vb">
       <SubType>Component</SubType>
     </Compile>

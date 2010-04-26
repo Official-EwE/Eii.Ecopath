@@ -1,5 +1,6 @@
 Option Strict On
 Imports EwEUtils.Commands
+Imports EwEUtils.Utilities
 
 Namespace Controls
 
@@ -63,8 +64,6 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ResetAll, Me.m_tsbResetAll)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToZero, Me.m_tsbSetTo0)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetValue, Me.m_tsbSetToValue)
-
-            cToolstripUtils.HideRepeatingSeparators(Me.m_ts)
 
         End Sub
 

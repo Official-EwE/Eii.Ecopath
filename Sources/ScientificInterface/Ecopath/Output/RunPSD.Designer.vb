@@ -35,7 +35,7 @@ Namespace Ecopath.Output
             Dim m_sep4 As System.Windows.Forms.ToolStripSeparator
             Dim m_sep5 As System.Windows.Forms.ToolStripSeparator
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunPSD))
-            Me.m_tsRunPSD = New System.Windows.Forms.ToolStrip
+            Me.m_tsRunPSD = New cEwEToolstrip
             Me.m_tsddTotalMortality = New System.Windows.Forms.ToolStripDropDownButton
             Me.m_tsmiGroupPB = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiLorenzen = New System.Windows.Forms.ToolStripMenuItem
@@ -220,7 +220,7 @@ Namespace Ecopath.Output
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_tsRunPSD As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsRunPSD As cEwEToolstrip
         Private WithEvents m_tstbxNoOfPointsMovAvg As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tsbtnRun As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsddTotalMortality As System.Windows.Forms.ToolStripDropDownButton
