@@ -784,8 +784,6 @@ Namespace MSE
 
         End Sub
 
-
-
         ''' <summary>
         ''' Reset group references levels to default fishing mortalities.
         ''' </summary>

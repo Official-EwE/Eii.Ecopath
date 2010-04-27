@@ -71,6 +71,14 @@ Namespace Ecosim
             Me.Redraw()
         End Sub
 
+        Private Sub tsbtDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbtDefaults.Click
+            Try
+                Me.Core.SetDefaultMSERecruitment()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
 #End Region ' Events
 
 #Region " Internals "
