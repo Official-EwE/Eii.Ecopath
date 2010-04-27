@@ -60,17 +60,22 @@ Public Class frmOptions
         Me.rbNoRegs.Tag = eMSERegulationMode.NoRegulations
         Me.rbUseRegs.Tag = eMSERegulationMode.UseRegulations
 
-        m_dctEffortControls = New Dictionary(Of eMSERegulationMode, RadioButton)
-        m_dctEffortControls.Add(eMSERegulationMode.NoRegulations, Me.rbNoRegs)
-        m_dctEffortControls.Add(eMSERegulationMode.UseRegulations, Me.rbUseRegs)
+        Me.m_dctEffortControls = New Dictionary(Of eMSERegulationMode, RadioButton)
+        Me.m_dctEffortControls.Add(eMSERegulationMode.NoRegulations, Me.rbNoRegs)
+        Me.m_dctEffortControls.Add(eMSERegulationMode.UseRegulations, Me.rbUseRegs)
 
         Me.UpdateSelectedEffortMode()
-        Me.updateControls()
+        Me.UpdateControls()
 
     End Sub
 
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Me.m_dctEffortControls.Clear()
+        MyBase.OnFormClosed(e)
+    End Sub
 
-    Private Sub rbFTracking_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbNoRegs.CheckedChanged, rbUseRegs.CheckedChanged
+    Private Sub rbFTracking_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles rbNoRegs.CheckedChanged, rbUseRegs.CheckedChanged
 
         If Me.m_MSE Is Nothing Then Exit Sub
 
@@ -85,7 +90,7 @@ Public Class frmOptions
             Debug.Assert(False, "Exception setting MSE Effort Mode. " & ex.Message)
         End Try
 
-        Me.updateControls()
+        Me.UpdateControls()
         Me.Refresh()
 
     End Sub
@@ -94,10 +99,8 @@ Public Class frmOptions
     ''' <summary>
     ''' Change the biomass assessment method based on the selected radio button
     ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub onAssessmentMethodChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbCatchEstBio.CheckedChanged, rbDirectExp.CheckedChanged, rbExact.CheckedChanged
+    Private Sub onAssessmentMethodChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles rbCatchEstBio.CheckedChanged, rbDirectExp.CheckedChanged, rbExact.CheckedChanged
         Try
 
             If Me.m_MSE Is Nothing Then Exit Sub
@@ -118,17 +121,15 @@ Public Class frmOptions
 
 
     Private Sub UpdateSelectedEffortMode()
-
         Try
             m_dctEffortControls.Item(Me.m_MSE.ModelParameters.RegulatoryMode).Checked = True
         Catch ex As Exception
 
         End Try
-
     End Sub
 
 
-    Private Sub updateControls()
+    Private Sub UpdateControls()
 
         Me.pnlUseReg.Enabled = False
         Me.pnlFTracking.Enabled = False
@@ -147,7 +148,8 @@ Public Class frmOptions
     End Sub
 
 
-    Private Sub rbNoCap_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbEffortNoCap.CheckedChanged, rbEffortEcosim.CheckedChanged, rbEffortPredicted.CheckedChanged
+    Private Sub rbNoCap_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles rbEffortNoCap.CheckedChanged, rbEffortEcosim.CheckedChanged, rbEffortPredicted.CheckedChanged
 
         Try
 
@@ -167,7 +169,4 @@ Public Class frmOptions
 
     End Sub
 
-    Private Sub frmOptions_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-    End Sub
 End Class
