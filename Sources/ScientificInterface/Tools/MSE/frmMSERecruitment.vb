@@ -147,7 +147,7 @@ Namespace Ecosim
 
                 'the 100 steps for the graphs:
                 Dim iStep As Integer = 100
-                Dim BiomassStep As Single = iRuns / 10 * HalfRecruitmentBiomass
+                Dim BiomassStep As Single
 
                 'the max recruitment = RecEcop*(Ratio+1)
                 Dim maxYaxisValue As Single = EcopathRecruitment * (m_group.ForcastGain + 1)
@@ -158,8 +158,9 @@ Namespace Ecosim
                 Recruitment(0) = 0
                 Dim Rmax As Single = 1
                 For i As Integer = 1 To iStep
+                    BiomassStep = CSng(iStep) / CSng(10 * HalfRecruitmentBiomass)
                     'Recruitment is calculated as:  R = R max * No  / (Bh + No)
-                    Recruitment(i) = maxRecruitment * i / (HalfRecruitmentBiomass + i)
+                    Recruitment(i) = maxRecruitment * BiomassStep / (HalfRecruitmentBiomass + BiomassStep)
                     'Rec=(Rmax*C2)/(Ratio*Be+C2)
                 Next
                 'now we need some lines:
