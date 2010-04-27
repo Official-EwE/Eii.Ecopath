@@ -6249,7 +6249,8 @@ Namespace DataSources
                     mseDS.MSYStartTimeIndex = CInt(Me.ReadSafe(reader, "StartIndex", 2))
 
                     For iGroup As Integer = 1 To ecopathDS.NumGroups
-                        mseDS.RstockRatio(iGroup) = CSng(Me.ReadSafe(reader, "ForcastGain", 0.6))
+                        'ForcastGain is no longer used RStock needs to be used instead and saved by group
+                        'mseDS.RstockRatio(iGroup) = CSng(Me.ReadSafe(reader, "ForcastGain", mseDS.RstockRatio(iGroup)))
                         mseDS.KalmanGain(iGroup) = CSng(Me.ReadSafe(reader, "KalmanGain", 0.6))
                     Next iGroup
 
