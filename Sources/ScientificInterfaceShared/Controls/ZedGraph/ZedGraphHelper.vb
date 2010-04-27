@@ -823,6 +823,26 @@ Namespace Controls
             End Set
         End Property
 
+        Public Property XScaleMax(Optional ByVal iPane As Integer = 1) As Double
+            Get
+                Return Me.GetPane(iPane).XAxis.Scale.Max
+            End Get
+            Set(ByVal value As Double)
+                Me.GetPane(iPane).XAxis.Scale.Max = value
+                RescaleAndRedraw(iPane)
+            End Set
+        End Property
+
+        Public Property XScaleMin(Optional ByVal iPane As Integer = 1) As Double
+            Get
+                Return Me.GetPane(iPane).XAxis.Scale.Min
+            End Get
+            Set(ByVal value As Double)
+                Me.GetPane(iPane).XAxis.Scale.Min = value
+                RescaleAndRedraw(iPane)
+            End Set
+        End Property
+
         Public Property YScaleMax(Optional ByVal iPane As Integer = 1) As Double
             Get
                 Return Me.GetPane(iPane).YAxis.Scale.Max
@@ -925,14 +945,17 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create an EwE-styled line.
+        ''' Create an EwE-styled line for either an Ecopath group or fleet.
         ''' </summary>
         ''' <param name="ppl"></param>
+        ''' <remarks>All other source types will be rejected.</remarks>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function CreateLineItem(ByVal src As ICoreInterface, _
                                                    ByVal ppl As PointPairList, _
                                                    Optional ByVal strLabel As String = "") As LineItem
+            ' SAnity check
+            Debug.Assert(TypeOf (src) Is cEcoPathGroupInput Or TypeOf (src) Is cFleetInput)
             Return Me.CreateLineItem(New cCurveInfo(src, Me.m_uic, strLabel), ppl)
         End Function
 
