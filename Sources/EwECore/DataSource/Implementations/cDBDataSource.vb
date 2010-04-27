@@ -308,7 +308,7 @@ Namespace DataSources
         Private Function ReadSafe(ByVal reader As IDataReader, _
                                   ByVal strField As String, _
                                   Optional ByVal objValueDefault As Object = Nothing, _
-                                  Optional ByVal objValueIgnore As Object = cCore.NULL_VALUE) As Object
+                                  Optional ByVal objValueIgnore As Object = CSng(cCore.NULL_VALUE)) As Object
 
             Dim objResult As Object = Nothing
 
@@ -3638,7 +3638,7 @@ Namespace DataSources
 
                     mseDS.RstockRatio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RStockRatio", mseDS.RstockRatio(igroup)))
                     mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup)))
-                    mseDS.KalmanGain(iEcopathGroup) = CSng(Me.ReadSafe(reader, "KalmanGain", 0.6))
+                    mseDS.cvRec(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RecruitmentCV", 0.8))
 
                     ' bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
@@ -3985,7 +3985,7 @@ Namespace DataSources
                     drow("CatchRefUpper") = mseDS.CatchGroupBounds(i).Upper
                     drow("RStockRatio") = mseDS.RstockRatio(i)
                     drow("RHalfB0Ratio") = mseDS.RHalfB0Ratio(i)
-                    drow("KalmanGain") = mseDS.KalmanGain(i)
+                    drow("RecruitmentCV") = mseDS.cvRec(i)
 
                     If bNewRow Then
                         writer.AddRow(drow)
