@@ -93,6 +93,7 @@ End Enum
         ''' </summary>
         Public RHalfB0Ratio() As Single
         Public Rmax() As Single
+        Public cvRec() As Single
 
         ''' <summary>sum of employment value over all the completed trials</summary>
         Public sumEmployVal As Single
@@ -334,6 +335,7 @@ End Enum
             ReDim BhalfT(NGroups)
             ReDim Rmax(NGroups)
             ReDim RHalfB0Ratio(NGroups)
+            ReDim cvRec(NGroups)
 
             ReDim Fweight(nFleets, NGroups)
             ReDim Qgrow(nFleets)
