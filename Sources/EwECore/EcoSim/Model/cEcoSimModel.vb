@@ -773,8 +773,6 @@ Namespace Ecosim
                             Me.m_MSE.UpdateQuotas(BB)
                         End If
 
-
-
                         'regulate the effort base on the Quota for this year on each timestep
                         Me.SetFtimeFromGear(BB, itime, m_Data.FishTime, QYear, True)
 

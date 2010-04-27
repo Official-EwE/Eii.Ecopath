@@ -370,9 +370,7 @@ End Enum
 
             'set default values
             For iGrp As Integer = 1 To NGroups
-                ' CVbiomEst(iGrp) = 0.2
-                'GstockPred(iGrp) = 0.6
-                RstockRatio(iGrp) = 0.4
+
                 KalmanGain(iGrp) = 0.65
                 BioRiskValue(iGrp, 0) = 0.5 'lower
                 BioRiskValue(iGrp, 1) = 2 'upper
@@ -386,7 +384,6 @@ End Enum
 
             For iFlt As Integer = 1 To nFleets
                 Qgrow(iFlt) = 0.03
-                ' CVFest(iFlt) = 0.3
             Next iFlt
 
             ReDim QuotaType(nFleets)
