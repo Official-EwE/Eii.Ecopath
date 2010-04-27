@@ -130,8 +130,7 @@ Namespace Ecosim
             If (Me.m_group Is Nothing) Then
                 Return New Single() {}
             Else  'a group has been selected
-                'how long the x-axis
-                'for vertical line, pass the x-values.
+
                 Dim iGrp As Integer = Me.m_group.Index
                 'Calculate the recruitment as a vector with x-values.
                 'the Ecopath biomass is the reference biomass:
@@ -150,15 +149,17 @@ Namespace Ecosim
                 Dim BiomassStep As Single
 
                 'the max recruitment = RecEcop*(Ratio+1)
-                Dim maxYaxisValue As Single = EcopathRecruitment * (m_group.ForcastGain + 1)
+                Dim maxYaxisValue As Single = EcopathRecruitment * (m_group.RHalfB0Ratio + 1)
 
                 'We'll make the plot with 100 points, plot the (0) array value 
                 Dim Recruitment(iStep) As Single
                 Dim maxRecruitment As Single = EcopathRecruitment * (m_group.RHalfB0Ratio + 1)    'RecEcop*(Ratio+1)
                 Recruitment(0) = 0
                 Dim Rmax As Single = 1
+
+                'the max x value is 
                 For i As Integer = 1 To iStep
-                    BiomassStep = CSng(iStep) / CSng(10 * HalfRecruitmentBiomass)
+                    BiomassStep = CSng(i / 10) * HalfRecruitmentBiomass
                     'Recruitment is calculated as:  R = R max * No  / (Bh + No)
                     Recruitment(i) = maxRecruitment * BiomassStep / (HalfRecruitmentBiomass + BiomassStep)
                     'Rec=(Rmax*C2)/(Ratio*Be+C2)
@@ -173,7 +174,8 @@ Namespace Ecosim
                 'place a vertical,   full, red line at: EcopathBiomass
 
 
-                Return New Single() {Me.m_group.RHalfB0Ratio, Me.m_group.ForcastGain}
+                Return Recruitment
+                ' New Single() {Me.m_group.RHalfB0Ratio, Me.m_group.ForcastGain}
             End If
         End Function
 
