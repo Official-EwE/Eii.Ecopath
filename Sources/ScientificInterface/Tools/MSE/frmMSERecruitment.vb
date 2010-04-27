@@ -25,6 +25,23 @@ Namespace Ecosim
         ''' <summary>Group selected in the form.</summary>
         Private m_group As cMSEGroupInput = Nothing
 
+        Private Structure sGraphData
+
+            Public MaxRecruitment As Single
+            Public HalfRecruitmentBiomass As Single
+            Public EcopathBiomass As Single
+            Public Biomass() As Single
+            Public Recruitment() As Single
+            Public NumSteps As Integer
+
+            Public Sub New(ByVal iStep As Integer)
+                Me.NumSteps = iStep
+                ReDim Me.Biomass(iStep)
+                ReDim Me.Recruitment(iStep)
+            End Sub
+
+        End Structure
+
 #End Region ' Internals
 
 #Region " Events "
@@ -90,7 +107,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Property Group() As cMSEGroupInput
             Get
-                Return Nothing 'Me.m_group
+                Return Me.m_group
             End Get
             Set(ByVal value As cMSEGroupInput)
 
@@ -119,61 +136,60 @@ Namespace Ecosim
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Return the points to render in the graph.
+        ''' Return the data to render in the graph.
         ''' </summary>
-        ''' <returns>An array of points to render in the graph.</returns>
-        ''' <remarks>
-        ''' Please, PLEASE change this code to something more meaningful!!!
-        ''' </remarks>
+        ''' <returns>A <see cref="sGraphData">graph data</see> instance with data
+        ''' to render in the graph.</returns>
         ''' -------------------------------------------------------------------
-        Private Function GetGraphValues() As Single()
-            If (Me.m_group Is Nothing) Then
-                Return New Single() {}
+        Private Function GetGraphValues() As sGraphData
+
+            Dim data As sGraphData = Nothing
+
+            If (Me.Group Is Nothing) Then
+                data = New sGraphData(0)
+                Return data
             Else  'a group has been selected
 
-                Dim iGrp As Integer = Me.m_group.Index
-                'Calculate the recruitment as a vector with x-values.
-                'the Ecopath biomass is the reference biomass:
-                Dim EcopathBiomass As Single = Me.Core.EcoPathGroupOutputs(Me.m_group.Index).Biomass
-                'Now we can calculate the biomass where the recruitment is half of the maximum
-                'with a default of 0.2 it means that the half of max recruitments is at 20% of the Ecopath biomass
-                Dim HalfRecruitmentBiomass As Single = EcopathBiomass * m_group.RHalfB0Ratio
-
-                Dim EcopathRecruitment As Single = EcopathBiomass * m_group.ForcastGain   'the ForcastGain is the Ecopath recruitment
-
-                'Let's just scale the x-axis to 10 times the HalfRecruitmentBiomass
-                Dim maxXaxisValue As Single = 10 * HalfRecruitmentBiomass
+                Dim BiomassStep As Single
+                Dim iGrp As Integer = Me.Group.Index
 
                 'the 100 steps for the graphs:
-                Dim iStep As Integer = 100
-                Dim BiomassStep As Single
+                data = New sGraphData(100)
+
+                'Calculate the recruitment as a vector with x-values.
+                'the Ecopath biomass is the reference biomass:
+                data.EcopathBiomass = Me.Core.EcoPathGroupOutputs(iGrp).Biomass
+                'Now we can calculate the biomass where the recruitment is half of the maximum
+                'with a default of 0.2 it means that the half of max recruitments is at 20% of the Ecopath biomass
+                data.HalfRecruitmentBiomass = data.EcopathBiomass * Me.Group.RHalfB0Ratio
+
+                Dim EcopathRecruitment As Single = data.EcopathBiomass * Me.Group.ForcastGain   'the ForcastGain is the Ecopath recruitment
+
+                'Let's just scale the x-axis to 10 times the HalfRecruitmentBiomass
+                Dim maxXaxisValue As Single = 10 * data.HalfRecruitmentBiomass
+
 
                 'the max recruitment = RecEcop*(Ratio+1)
-                Dim maxYaxisValue As Single = EcopathRecruitment * (m_group.RHalfB0Ratio + 1)
+                Dim maxYaxisValue As Single = EcopathRecruitment * (Me.Group.RHalfB0Ratio + 1)
 
-                'We'll make the plot with 100 points, plot the (0) array value 
-                Dim Recruitment(iStep) As Single
-                Dim maxRecruitment As Single = EcopathRecruitment * (m_group.RHalfB0Ratio + 1)    'RecEcop*(Ratio+1)
-                Recruitment(0) = 0
+                'Dim Recruitment(iStep) As Single
+                data.MaxRecruitment = EcopathRecruitment * (Me.Group.RHalfB0Ratio + 1)    'RecEcop*(Ratio+1)
                 Dim Rmax As Single = 1
 
+                'plot the (0) array value 
+                data.Recruitment(0) = 0
+
                 'the max x value is 
-                For i As Integer = 1 To iStep
-                    BiomassStep = CSng(i / 10) * HalfRecruitmentBiomass
+                For i As Integer = 1 To data.NumSteps
+                    BiomassStep = CSng(i / 10) * data.HalfRecruitmentBiomass
                     'Recruitment is calculated as:  R = R max * No  / (Bh + No)
-                    Recruitment(i) = maxRecruitment * BiomassStep / (HalfRecruitmentBiomass + BiomassStep)
+                    data.Recruitment(i) = data.MaxRecruitment * BiomassStep / (data.HalfRecruitmentBiomass + BiomassStep)
+                    data.Biomass(i) = BiomassStep
                     'Rec=(Rmax*C2)/(Ratio*Be+C2)
                 Next
-                'now we need some lines:
-                'place a horizontal, stippled?, grey line at: maxRecruitment / 2
-                'place a horizontal, stippled?, grey line at: maxRecruitment 
-                'place a vertical,   stippled?, grey line at: HalfRecruitment biomass
-
-                'place a vertical,   full, red line at: EcopathBiomass
 
 
-                Return Recruitment
-                ' New Single() {Me.m_group.RHalfB0Ratio, Me.m_group.ForcastGain}
+                Return data
             End If
         End Function
 
@@ -188,21 +204,46 @@ Namespace Ecosim
 
             Dim lpts As New PointPairList
             Dim lLines As New List(Of LineItem)
-            Dim values As Single() = Me.GetGraphValues
+            Dim data As sGraphData = Me.GetGraphValues()
 
-            If (Me.m_group IsNot Nothing) Then
+            If (Me.Group IsNot Nothing) Then
                 ' Group has data?
-                If (Me.m_group.GetStatus(eVarNameFlags.MSEForcastGain) And eStatusFlags.Null) = 0 Then
+                If (Me.Group.GetStatus(eVarNameFlags.MSEForcastGain) And eStatusFlags.Null) = 0 Then
                     ' #Yes: plot data
-                    For i As Integer = 0 To values.Count - 1
-                        lpts.Add(i, values(i))
+                    For i As Integer = 0 To data.NumSteps - 1
+                        lpts.Add(data.Biomass(i), data.Recruitment(i))
                     Next
-                    lLines.Add(Me.m_zgh.CreateLineItem(Me.Core.EcoPathGroupInputs(Me.m_group.Index), lpts))
+                    lLines.Add(Me.m_zgh.CreateLineItem(Me.Core.EcoPathGroupInputs(Me.Group.Index), lpts))
                 End If
             End If
 
-            If lLines.Count > 0 Then
-                Me.m_zgh.PlotLines(lLines.ToArray, 1, True)
+            If data.NumSteps > 0 Then
+
+                Me.m_zgh.YScaleMax = data.MaxRecruitment * 1.2
+                Me.m_zgh.XScaleMax = data.Biomass(data.NumSteps - 1)
+
+                'now we need some lines:
+                '  - place a horizontal, stippled?, grey line at: maxRecruitment 
+                lpts = New PointPairList()
+                lpts.Add(0.0!, data.MaxRecruitment) : lpts.Add(Me.m_zgh.XScaleMax, data.MaxRecruitment)
+                lLines.Add(Me.m_zgh.CreateLineItem("Max. recruitment", eLineType.NotSet, Color.DarkSlateGray, lpts))
+
+                '  - place a horizontal, stippled?, grey line at: maxRecruitment / 2
+                lpts = New PointPairList()
+                lpts.Add(0.0!, data.MaxRecruitment / 2) : lpts.Add(Me.m_zgh.XScaleMax, data.MaxRecruitment / 2)
+                lLines.Add(Me.m_zgh.CreateLineItem("Half max. recruitment", eLineType.NotSet, Color.LightGray, lpts))
+
+                '  - place a vertical,   stippled?, grey line at: HalfRecruitment biomass
+                lpts = New PointPairList()
+                lpts.Add(data.HalfRecruitmentBiomass, 0.0) : lpts.Add(data.HalfRecruitmentBiomass, Me.m_zgh.YScaleMax)
+                lLines.Add(Me.m_zgh.CreateLineItem("Half recruitment biomass", eLineType.NotSet, Color.LightSalmon, lpts))
+
+                '  - place a vertical,   full, red line at: EcopathBiomass
+                lpts = New PointPairList()
+                lpts.Add(data.EcopathBiomass, 0.0!) : lpts.Add(data.EcopathBiomass, Me.m_zgh.YScaleMax)
+                lLines.Add(Me.m_zgh.CreateLineItem("Ecopath biomass", eLineType.NotSet, Color.Red, lpts))
+
+                Me.m_zgh.PlotLines(lLines.ToArray)
                 Me.m_graph.Cursor = Cursors.Default
             Else
                 ' Clear graph
