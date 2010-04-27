@@ -517,7 +517,6 @@ Namespace MSE
                     For it As Integer = 1 To Me.m_MSEdata.nYears
                         mseGrp.BiomassCV(it) = Me.m_MSEdata.CVBiomT(iGroup, it)
                     Next
-                    'mseGrp.BiomassCV = Me.m_MSEdata.CVbiomEst(iGroup)
 
                     mseGrp.ResetStatusFlags()
                     mseGrp.AllowValidation = True
@@ -777,6 +776,15 @@ Namespace MSE
             Me.Load()
 
         End Sub
+
+        Public Sub SetDefaultRecruitment()
+
+            Me.m_MSEdata.setDefaultRecruitment()
+            Me.Load()
+
+        End Sub
+
+
 
         ''' <summary>
         ''' Reset group references levels to default fishing mortalities.

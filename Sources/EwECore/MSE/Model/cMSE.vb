@@ -1268,11 +1268,11 @@ Namespace MSE
                 'VC091107 fixed problem in eq below
                 Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + RstockPred)
 
-                If (Biomass(i) < Me.m_data.Blim(i)) And i = 4 Then
-                    System.Console.WriteLine("B=" & Biomass(i).ToString & ", Best=" & Me.m_data.Bestimate(i).ToString)
-                End If
+                'If (Biomass(i) < Me.m_data.Blim(i)) And i = 4 Then
+                '    System.Console.WriteLine("B=" & Biomass(i).ToString & ", Best=" & Me.m_data.Bestimate(i).ToString)
+                'End If
 
-                'Debug.Assert(Biomass(i) < Me.m_data.Blim(i))
+                ''Debug.Assert(Biomass(i) < Me.m_data.Blim(i))
 
             Next i
             System.Console.WriteLine()
