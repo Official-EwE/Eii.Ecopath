@@ -951,6 +951,11 @@ End Enum
                         Next
                     Next
 
+                    'to calculate variance:
+                    'during run, sum of x, sum of x^2
+                    'variance s = [Sum of x^2 - Average x * sum of x] / (n - 1)
+                    'where n is the number of x's
+
                 Catch ex As Exception
                     cLog.Write(ex)
                     System.Console.WriteLine(ex.ToString)
