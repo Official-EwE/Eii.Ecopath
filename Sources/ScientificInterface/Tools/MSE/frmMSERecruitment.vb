@@ -169,8 +169,6 @@ Namespace Ecosim
                 'place a horizontal, stippled?, grey line at: maxRecruitment 
                 'place a vertical,   stippled?, grey line at: HalfRecruitment biomass
 
-                'whenever the user updates the m_group.RHalfB0Ratio then update this line 
-                '(probably ok just to call this whole function when that happens:
                 'place a vertical,   full, red line at: EcopathBiomass
 
 
