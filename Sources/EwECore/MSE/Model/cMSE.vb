@@ -1254,6 +1254,8 @@ Namespace MSE
             Dim Bobs() As Single
             ReDim Bobs(Me.m_epdata.NumGroups)
             Dim RstockPred As Single
+            Dim vPred As Single
+            Dim cvRec As Single = 0.8
             '    System.Console.WriteLine("---Catch year---")
 
             For i As Integer = 1 To Me.m_epdata.NumGroups
@@ -1264,15 +1266,12 @@ Namespace MSE
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
 
                 RstockPred = CSng(m_data.Rmax(i) * Me.m_data.BestimateLast(i) / (m_data.BhalfT(i) + Me.m_data.BestimateLast(i)))
+                vPred = CSng((m_data.RstockRatio(i) * cvRec) ^ 2 / (1 - m_data.GstockPred(i) ^ 2))
+                Me.m_data.KalmanGain(i) = CSng(vPred / (vPred + Me.m_data.CVbiomEst(i) ^ 2))
                 'and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
                 'VC091107 fixed problem in eq below
+                'Me.m_data.KalmanGain(i) = 0.6
                 Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + RstockPred)
-
-                'If (Biomass(i) < Me.m_data.Blim(i)) And i = 4 Then
-                '    System.Console.WriteLine("B=" & Biomass(i).ToString & ", Best=" & Me.m_data.Bestimate(i).ToString)
-                'End If
-
-                ''Debug.Assert(Biomass(i) < Me.m_data.Blim(i))
 
             Next i
             System.Console.WriteLine()
