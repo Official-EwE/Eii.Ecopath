@@ -3626,13 +3626,30 @@ Namespace DataSources
                     mseDS.BioRiskValue(iEcopathGroup, 0) = CSng(Me.ReadSafe(reader, "LowerRisk", mseDS.BioRiskValue(iEcopathGroup, 0)))
                     mseDS.BioRiskValue(iEcopathGroup, 1) = CSng(Me.ReadSafe(reader, "UpperRisk", mseDS.BioRiskValue(iEcopathGroup, 1)))
 
+
+                    Dim bound As Single
                     mseDS.DefaultBioBounds(iEcopathGroup)
-                    mseDS.BioBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower))
-                    mseDS.BioBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "BiomassRefUpper", mseDS.BioBounds(iEcopathGroup).Upper))
+                    bound = CSng(Me.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower))
+                    If bound = cCore.NULL_VALUE Then bound = mseDS.BioBounds(iEcopathGroup).Lower
+                    mseDS.BioBounds(iEcopathGroup).Lower = bound
+                    bound = CSng(Me.ReadSafe(reader, "BiomassRefUpper", mseDS.BioBounds(iEcopathGroup).Upper))
+                    If bound = cCore.NULL_VALUE Then bound = mseDS.BioBounds(iEcopathGroup).Upper
+                    mseDS.BioBounds(iEcopathGroup).Upper = bound
+
+                    ' mseDS.BioBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower))
+                    'mseDS.BioBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "BiomassRefUpper", mseDS.BioBounds(iEcopathGroup).Upper))
 
                     mseDS.DefaultCatchBoundsGroup(iEcopathGroup)
-                    mseDS.CatchGroupBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower))
-                    mseDS.CatchGroupBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper))
+                    bound = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower))
+                    If bound = cCore.NULL_VALUE Then bound = mseDS.CatchGroupBounds(iEcopathGroup).Lower
+                    mseDS.CatchGroupBounds(iEcopathGroup).Lower = bound
+
+                    bound = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper))
+                    If bound = cCore.NULL_VALUE Then bound = mseDS.CatchGroupBounds(iEcopathGroup).Upper
+                    mseDS.CatchGroupBounds(iEcopathGroup).Upper = bound
+
+                    'mseDS.CatchGroupBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower))
+                    'mseDS.CatchGroupBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper))
 
                     ' bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
