@@ -56,9 +56,9 @@ Partial Class frmOptions
         Me.pnlRegOpt.Controls.Add(Me.rbUseRegs)
         Me.pnlRegOpt.Controls.Add(Me.rbNoRegs)
         Me.pnlRegOpt.Controls.Add(Me.Label7)
-        Me.pnlRegOpt.Location = New System.Drawing.Point(242, 12)
+        Me.pnlRegOpt.Location = New System.Drawing.Point(12, 117)
         Me.pnlRegOpt.Name = "pnlRegOpt"
-        Me.pnlRegOpt.Size = New System.Drawing.Size(325, 339)
+        Me.pnlRegOpt.Size = New System.Drawing.Size(988, 339)
         Me.pnlRegOpt.TabIndex = 25
         '
         'pnlUseReg
@@ -196,7 +196,7 @@ Partial Class frmOptions
         Me.Label7.Location = New System.Drawing.Point(0, 0)
         Me.Label7.Name = "Label7"
         Me.Label7.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label7.Size = New System.Drawing.Size(325, 18)
+        Me.Label7.Size = New System.Drawing.Size(988, 18)
         Me.Label7.TabIndex = 18
         Me.Label7.Text = "Effort and regulatory options"
         Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -209,7 +209,7 @@ Partial Class frmOptions
         Me.pnlRunOpt.Controls.Add(Me.Label2)
         Me.pnlRunOpt.Location = New System.Drawing.Point(12, 12)
         Me.pnlRunOpt.Name = "pnlRunOpt"
-        Me.pnlRunOpt.Size = New System.Drawing.Size(213, 88)
+        Me.pnlRunOpt.Size = New System.Drawing.Size(988, 88)
         Me.pnlRunOpt.TabIndex = 34
         '
         'txKalmanGain
@@ -248,7 +248,7 @@ Partial Class frmOptions
         Me.Label2.Location = New System.Drawing.Point(0, 0)
         Me.Label2.Name = "Label2"
         Me.Label2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label2.Size = New System.Drawing.Size(213, 18)
+        Me.Label2.Size = New System.Drawing.Size(988, 18)
         Me.Label2.TabIndex = 32
         Me.Label2.Text = "Model run options"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft

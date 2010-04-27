@@ -3899,7 +3899,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Strongest stock quota.
+        '''  Looks up a localized string similar to Highest value stock quota.
         '''</summary>
         Friend ReadOnly Property HEADER_QUOTA_STRONGESTSTOCK() As String
             Get
