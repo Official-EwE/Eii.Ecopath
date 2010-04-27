@@ -695,6 +695,7 @@ Namespace MSE
             Me.m_data.CatchFleetStats.ComputeStats()
             Me.m_data.CatchGroupStats.ComputeStats()
             Me.m_data.EffortStats.ComputeStats()
+            Me.m_data.BioEstStats.ComputeStats()
 
         End Sub
 
@@ -708,6 +709,8 @@ Namespace MSE
             Me.m_data.CatchFleetStats.AddIteration()
             Me.m_data.CatchGroupStats.AddIteration()
             Me.m_data.EffortStats.AddIteration()
+
+            Me.m_data.BioEstStats.AddIteration()
 
             Me.m_data.ProfitSum.AddIteration()
             Me.m_data.JobsSum.AddIteration()
@@ -1328,6 +1331,12 @@ Namespace MSE
                     Me.m_data.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_data.Quotashare(iflt, igrp)
                 Next
             Next
+
+            Dim val As Single
+            For igrp = 1 To Me.m_esData.nGroups
+                val = Me.m_data.Bestimate(igrp) / Biomass(igrp)
+                Me.m_data.BioEstStats.AddValue(igrp, CInt(Me.m_curT), val)
+            Next igrp
 
             Me.StoreQuotas(tQuota)
 

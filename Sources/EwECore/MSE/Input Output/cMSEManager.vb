@@ -57,6 +57,8 @@ Namespace MSE
         Private m_lstEffortStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEEffortStats, 1)
         Private m_lstFleetStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEEffortStats, 1)
 
+        Private m_lstBioEstStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEBiomassStats, 1)
+
         Private m_output As cMSEOutput
         Private m_parameters As cMSEParameters
 
@@ -161,6 +163,14 @@ Namespace MSE
             End Get
         End Property
 
+
+
+        Public ReadOnly Property BioEstimatesStats() As cCoreInputOutputList(Of cCoreInputOutputBase)
+            Get
+                Return Me.m_lstBioEstStats
+            End Get
+        End Property
+
         Public ReadOnly Property GroupCatchStats() As cCoreInputOutputList(Of cCoreInputOutputBase)
             Get
                 Return Me.m_lstGroupCatchStats
@@ -206,6 +216,12 @@ Namespace MSE
             End Get
         End Property
 
+
+        Public ReadOnly Property BioEstimatesStats(ByVal iGroupIndex As Integer) As cMSEStats
+            Get
+                Return DirectCast(Me.m_lstBioEstStats(iGroupIndex), cMSEStats) 'Return Me.m_lstBioEstStats
+            End Get
+        End Property
         Public ReadOnly Property ModelParameters() As cMSEParameters
             Get
                 Return Me.m_parameters
@@ -232,6 +248,17 @@ Namespace MSE
             Me.m_VarToStat.Add(eVarNameFlags.MSEBiomassValues, eMSEStatNames.Values)
             Me.m_VarToStat.Add(eVarNameFlags.MSEBiomassAboveLimit, eMSEStatNames.AboveLimit)
             Me.m_VarToStat.Add(eVarNameFlags.MSEBiomassBelowLimit, eMSEStatNames.BelowLimit)
+
+            Me.m_VarToStat.Add(eVarNameFlags.MSEBioEstHistogram, eMSEStatNames.PercentageHistogram)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEBioEstMeanValues, eMSEStatNames.MeanRun)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEBioEstMin, eMSEStatNames.Min)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEBioEstMax, eMSEStatNames.Max)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEBioEstCV, eMSEStatNames.CV)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEBioEstBins, eMSEStatNames.nBins)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEBioEstBinWidths, eMSEStatNames.BinWidth)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEBioEstValues, eMSEStatNames.Values)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEBioEstAboveLimit, eMSEStatNames.AboveLimit)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEBioEstBelowLimit, eMSEStatNames.BelowLimit)
 
             Me.m_VarToStat.Add(eVarNameFlags.MSEFleetValueHistogram, eMSEStatNames.PercentageHistogram)
             Me.m_VarToStat.Add(eVarNameFlags.MSEFleetValueMeanValues, eMSEStatNames.MeanRun)
@@ -466,7 +493,11 @@ Namespace MSE
             Me.m_lstGroupOutputs.Clear()
             Me.m_lstBiomassStats.Clear()
             Me.m_lstGroupCatchStats.Clear()
+            Me.m_lstBioEstStats.Clear()
             For igrp As Integer = 1 To m_core.nGroups
+                'BioEst
+                Me.m_lstBioEstStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioEstStats, eDataTypes.MSEBioEstStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
+
                 Me.m_lstGroupOutputs.Add(New cMSEGroupOutput(Me.m_core, Me.m_MSEdata, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
                 Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
                 Me.m_lstGroupCatchStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchGroupStats, eDataTypes.MSECatchByGroupStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
@@ -532,6 +563,12 @@ Namespace MSE
 
                 'Stat objects 
                 For Each stat As cMSEStats In Me.m_lstBiomassStats
+                    stat.AllowValidation = False 'no validation of outputs
+                    stat.Index = Array.IndexOf(coreData.GroupDBID, stat.DBID)
+                    stat.Name = Me.m_core.m_EcoPathData.GroupName(stat.Index)
+                Next
+
+                For Each stat As cMSEStats In Me.m_lstBioEstStats
                     stat.AllowValidation = False 'no validation of outputs
                     stat.Index = Array.IndexOf(coreData.GroupDBID, stat.DBID)
                     stat.Name = Me.m_core.m_EcoPathData.GroupName(stat.Index)

@@ -120,6 +120,7 @@ Namespace Definitions
         GroupCatch
         FleetValue
         Effort
+        BioEst
     End Enum
 
     ''' -----------------------------------------------------------------------

@@ -1102,6 +1102,19 @@ Namespace Core
         MSEEffortValues
         MSEEffortAboveLimit
         MSEEffortBelowLimit
+
+        MSEBioEstHistogram
+        MSEBioEstMeanValues
+        MSEBioEstMin
+        MSEBioEstMax
+        MSEBioEstCV
+        MSEBioEstStd
+        MSEBioEstBins
+        MSEBioEstBinWidths
+        MSEBioEstValues
+        MSEBioEstAboveLimit
+        MSEBioEstBelowLimit
+
         MSEStartYear
 
         MSYRunSilent
@@ -1734,6 +1747,8 @@ Namespace Core
         ''' Data belongs to Auxillary data.
         ''' </summary>
         Auxillary = 83
+
+        MSEBioEstStats
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

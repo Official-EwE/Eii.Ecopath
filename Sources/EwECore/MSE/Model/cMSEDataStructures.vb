@@ -128,6 +128,8 @@ End Enum
         Public CostSum As cMSESummaryStats
         Public JobsSum As cMSESummaryStats
 
+        Public BioEstStats As cMSESummaryStats
+
         Public Bestimate() As Single
         Public BestimateLast() As Single
 
@@ -283,6 +285,8 @@ End Enum
                 Me.CatchGroupStats = New cMSESummaryStats(Me, Me.CatchGroupBounds, NGroups)
                 Me.CatchFleetStats = New cMSESummaryStats(Me, Me.CatchFleetBounds, nFleets)
                 Me.EffortStats = New cMSESummaryStats(Me, Me.EffortFleetBounds, nFleets)
+
+                Me.BioEstStats = New cMSESummaryStats(Me, Me.BioBounds, NGroups)
 
                 Me.ProfitSum = New cMSESummaryStats(Me, Nothing, 1)
                 Me.JobsSum = New cMSESummaryStats(Me, Nothing, 1)
@@ -580,6 +584,7 @@ End Enum
             Try
 
                 Me.BioStats.Init()
+                Me.BioEstStats.Init()
                 Me.CatchGroupStats.Init()
                 Me.CatchFleetStats.Init()
                 Me.EffortStats.Init()

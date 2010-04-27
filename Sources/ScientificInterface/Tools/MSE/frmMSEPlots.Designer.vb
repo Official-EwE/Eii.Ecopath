@@ -37,6 +37,7 @@ Partial Class frmMSEPlots
         Me.lbType = New System.Windows.Forms.Label
         Me.rbValues = New System.Windows.Forms.RadioButton
         Me.rbHisto = New System.Windows.Forms.RadioButton
+        Me.rbBioEst = New System.Windows.Forms.RadioButton
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
@@ -62,6 +63,7 @@ Partial Class frmMSEPlots
         '
         Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel1.Controls.Add(Me.rbBioEst)
         Me.Panel1.Controls.Add(Me.btShowHide)
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Controls.Add(Me.rbEffort)
@@ -76,7 +78,7 @@ Partial Class frmMSEPlots
         'btShowHide
         '
         Me.btShowHide.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btShowHide.Location = New System.Drawing.Point(188, 24)
+        Me.btShowHide.Location = New System.Drawing.Point(285, 21)
         Me.btShowHide.Name = "btShowHide"
         Me.btShowHide.Size = New System.Drawing.Size(120, 23)
         Me.btShowHide.TabIndex = 7
@@ -101,7 +103,7 @@ Partial Class frmMSEPlots
         'rbEffort
         '
         Me.rbEffort.AutoSize = True
-        Me.rbEffort.Location = New System.Drawing.Point(105, 48)
+        Me.rbEffort.Location = New System.Drawing.Point(200, 48)
         Me.rbEffort.Name = "rbEffort"
         Me.rbEffort.Size = New System.Drawing.Size(75, 17)
         Me.rbEffort.TabIndex = 8
@@ -111,7 +113,7 @@ Partial Class frmMSEPlots
         'rbFleetValue
         '
         Me.rbFleetValue.AutoSize = True
-        Me.rbFleetValue.Location = New System.Drawing.Point(105, 24)
+        Me.rbFleetValue.Location = New System.Drawing.Point(200, 24)
         Me.rbFleetValue.Name = "rbFleetValue"
         Me.rbFleetValue.Size = New System.Drawing.Size(77, 17)
         Me.rbFleetValue.TabIndex = 7
@@ -187,6 +189,17 @@ Partial Class frmMSEPlots
         Me.rbHisto.Text = "Histogram"
         Me.rbHisto.UseVisualStyleBackColor = True
         '
+        'rbBioEst
+        '
+        Me.rbBioEst.AutoSize = True
+        Me.rbBioEst.Location = New System.Drawing.Point(105, 24)
+        Me.rbBioEst.Name = "rbBioEst"
+        Me.rbBioEst.Size = New System.Drawing.Size(92, 17)
+        Me.rbBioEst.TabIndex = 10
+        Me.rbBioEst.TabStop = True
+        Me.rbBioEst.Text = "B estimated/B"
+        Me.rbBioEst.UseVisualStyleBackColor = True
+        '
         'frmMSEPlots
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -217,4 +230,5 @@ Partial Class frmMSEPlots
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lbType As System.Windows.Forms.Label
     Private WithEvents btShowHide As System.Windows.Forms.Button
+    Friend WithEvents rbBioEst As System.Windows.Forms.RadioButton
 End Class

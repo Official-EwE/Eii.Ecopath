@@ -60,6 +60,7 @@ Public Class frmMSEPlots
         Me.rbGroupCatch.Tag = ePlotData.GroupCatch
         Me.rbFleetValue.Tag = ePlotData.FleetValue
         Me.rbEffort.Tag = ePlotData.Effort
+        Me.rbBioEst.Tag = ePlotData.BioEst
 
         Me.m_curPlotData = ePlotData.Biomass
         Me.m_curPlotType = ePlotTypes.Histogram
@@ -146,6 +147,10 @@ Public Class frmMSEPlots
         Select Case Me.m_curPlotData
             Case ePlotData.Biomass
                 PlotGroupData(Me.m_MSE.BiomassStats, Me.m_curPlotType, Me.m_curPlotData)
+
+            Case ePlotData.BioEst
+                PlotGroupData(Me.m_MSE.BioEstimatesStats, Me.m_curPlotType, Me.m_curPlotData)
+
             Case ePlotData.GroupCatch
                 PlotGroupData(Me.m_MSE.GroupCatchStats, Me.m_curPlotType, Me.m_curPlotData)
             Case ePlotData.FleetValue
@@ -157,7 +162,8 @@ Public Class frmMSEPlots
     End Sub
 
     Private Sub onDataTypeCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-                Handles rbGroupBiomass.CheckedChanged, rbGroupCatch.CheckedChanged, rbFleetValue.CheckedChanged, rbEffort.CheckedChanged
+                Handles rbGroupBiomass.CheckedChanged, rbGroupCatch.CheckedChanged, _
+                rbFleetValue.CheckedChanged, rbEffort.CheckedChanged, rbBioEst.CheckedChanged
         Try
 
             If DirectCast(sender, RadioButton).Checked Then
