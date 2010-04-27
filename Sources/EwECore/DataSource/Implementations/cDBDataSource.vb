@@ -302,11 +302,13 @@ Namespace DataSources
         ''' <param name="reader">The <see cref="IDataReader">IDataReader</see> to read from.</param>
         ''' <param name="strField">The name of the DB field (column) to read.</param>
         ''' <param name="objValueDefault">A default value to return if the field could not be read.</param>
+        ''' <param name="objValueIgnore">Value to interpret as 'no value. When encountered, the default value will be returned.</param>
         ''' <returns>The value of the requested column, or the provided default if an error occurred.</returns>
         ''' -----------------------------------------------------------------------
         Private Function ReadSafe(ByVal reader As IDataReader, _
                                   ByVal strField As String, _
-                                  Optional ByVal objValueDefault As Object = Nothing) As Object
+                                  Optional ByVal objValueDefault As Object = Nothing, _
+                                  Optional ByVal objValueIgnore As Object = cCore.NULL_VALUE) As Object
 
             Dim objResult As Object = Nothing
 
@@ -323,7 +325,7 @@ Namespace DataSources
                 Console.WriteLine("DB: Exception {2} occurred while accessing field '{0}', returning provided default '{1}'", strField, objValueDefault, ex.ToString)
             End Try
 
-            If (Object.ReferenceEquals(objResult, Nothing)) Then
+            If (Object.ReferenceEquals(objResult, Nothing)) Or (Object.ReferenceEquals(objResult, objValueIgnore)) Then
                 objResult = objValueDefault
             End If
 
@@ -3626,30 +3628,17 @@ Namespace DataSources
                     mseDS.BioRiskValue(iEcopathGroup, 0) = CSng(Me.ReadSafe(reader, "LowerRisk", mseDS.BioRiskValue(iEcopathGroup, 0)))
                     mseDS.BioRiskValue(iEcopathGroup, 1) = CSng(Me.ReadSafe(reader, "UpperRisk", mseDS.BioRiskValue(iEcopathGroup, 1)))
 
-
-                    Dim bound As Single
                     mseDS.DefaultBioBounds(iEcopathGroup)
-                    bound = CSng(Me.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower))
-                    If bound = cCore.NULL_VALUE Then bound = mseDS.BioBounds(iEcopathGroup).Lower
-                    mseDS.BioBounds(iEcopathGroup).Lower = bound
-                    bound = CSng(Me.ReadSafe(reader, "BiomassRefUpper", mseDS.BioBounds(iEcopathGroup).Upper))
-                    If bound = cCore.NULL_VALUE Then bound = mseDS.BioBounds(iEcopathGroup).Upper
-                    mseDS.BioBounds(iEcopathGroup).Upper = bound
-
-                    ' mseDS.BioBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower))
-                    'mseDS.BioBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "BiomassRefUpper", mseDS.BioBounds(iEcopathGroup).Upper))
+                    mseDS.BioBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower))
+                    mseDS.BioBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "BiomassRefUpper", mseDS.BioBounds(iEcopathGroup).Upper))
 
                     mseDS.DefaultCatchBoundsGroup(iEcopathGroup)
-                    bound = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower))
-                    If bound = cCore.NULL_VALUE Then bound = mseDS.CatchGroupBounds(iEcopathGroup).Lower
-                    mseDS.CatchGroupBounds(iEcopathGroup).Lower = bound
+                    mseDS.CatchGroupBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower))
+                    mseDS.CatchGroupBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper))
 
-                    bound = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper))
-                    If bound = cCore.NULL_VALUE Then bound = mseDS.CatchGroupBounds(iEcopathGroup).Upper
-                    mseDS.CatchGroupBounds(iEcopathGroup).Upper = bound
-
-                    'mseDS.CatchGroupBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower))
-                    'mseDS.CatchGroupBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper))
+                    mseDS.RstockRatio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RStockRatio", mseDS.RstockRatio(igroup)))
+                    mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup)))
+                    mseDS.KalmanGain(iEcopathGroup) = CSng(Me.ReadSafe(reader, "KalmanGain", 0.6))
 
                     ' bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
@@ -3994,6 +3983,9 @@ Namespace DataSources
                     drow("BiomassRefUpper") = mseDS.BioBounds(i).Upper
                     drow("CatchRefLower") = mseDS.CatchGroupBounds(i).Lower
                     drow("CatchRefUpper") = mseDS.CatchGroupBounds(i).Upper
+                    drow("RStockRatio") = mseDS.RstockRatio(i)
+                    drow("RHalfB0Ratio") = mseDS.RHalfB0Ratio(i)
+                    drow("KalmanGain") = mseDS.KalmanGain(i)
 
                     If bNewRow Then
                         writer.AddRow(drow)
@@ -6265,12 +6257,6 @@ Namespace DataSources
                     mseDS.NTrials = CInt(Me.ReadSafe(reader, "NTrials", 10))
                     mseDS.MSYStartTimeIndex = CInt(Me.ReadSafe(reader, "StartIndex", 2))
 
-                    For iGroup As Integer = 1 To ecopathDS.NumGroups
-                        'ForcastGain is no longer used RStock needs to be used instead and saved by group
-                        'mseDS.RstockRatio(iGroup) = CSng(Me.ReadSafe(reader, "ForcastGain", mseDS.RstockRatio(iGroup)))
-                        mseDS.KalmanGain(iGroup) = CSng(Me.ReadSafe(reader, "KalmanGain", 0.6))
-                    Next iGroup
-
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
                     bSucces = False
@@ -6311,8 +6297,6 @@ Namespace DataSources
                 drow("ScenarioID") = iScenarioID
                 drow("AssessMethod") = mseDS.AssessMethod
                 drow("AssessPower") = mseDS.AssessPower
-                drow("ForcastGain") = mseDS.RstockRatio(1)
-                drow("KalmanGain") = mseDS.KalmanGain(1)
                 drow("Ntrials") = mseDS.NTrials
                 drow("StartIndex") = mseDS.MSYStartTimeIndex
 
