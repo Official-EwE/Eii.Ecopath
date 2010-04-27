@@ -129,7 +129,49 @@ Namespace Ecosim
         Private Function GetGraphValues() As Single()
             If (Me.m_group Is Nothing) Then
                 Return New Single() {}
-            Else
+            Else  'a group has been selected
+                'how long the x-axis
+                'for vertical line, pass the x-values.
+                Dim iGrp As Integer = Me.m_group.Index
+                'Calculate the recruitment as a vector with x-values.
+                'the Ecopath biomass is the reference biomass:
+                Dim EcopathBiomass As Single = Me.Core.EcoPathGroupOutputs(Me.m_group.Index).Biomass
+                'Now we can calculate the biomass where the recruitment is half of the maximum
+                'with a default of 0.2 it means that the half of max recruitments is at 20% of the Ecopath biomass
+                Dim HalfRecruitmentBiomass As Single = EcopathBiomass * m_group.RHalfB0Ratio
+
+                Dim EcopathRecruitment As Single = EcopathBiomass * m_group.ForcastGain   'the ForcastGain is the Ecopath recruitment
+
+                'Let's just scale the x-axis to 10 times the HalfRecruitmentBiomass
+                Dim maxXaxisValue As Single = 10 * HalfRecruitmentBiomass
+
+                'the 100 steps for the graphs:
+                Dim iStep As Integer = 100
+                Dim BiomassStep As Single = iRuns / 10 * HalfRecruitmentBiomass
+
+                'the max recruitment = RecEcop*(Ratio+1)
+                Dim maxYaxisValue As Single = EcopathRecruitment * (m_group.ForcastGain + 1)
+
+                'We'll make the plot with 100 points, plot the (0) array value 
+                Dim Recruitment(iStep) As Single
+                Dim maxRecruitment As Single = EcopathRecruitment * (m_group.RHalfB0Ratio + 1)    'RecEcop*(Ratio+1)
+                Recruitment(0) = 0
+                Dim Rmax As Single = 1
+                For i As Integer = 1 To iStep
+                    'Recruitment is calculated as:  R = R max * No  / (Bh + No)
+                    Recruitment(i) = maxRecruitment * i / (HalfRecruitmentBiomass + i)
+                    'Rec=(Rmax*C2)/(Ratio*Be+C2)
+                Next
+                'now we need some lines:
+                'place a horizontal, stippled?, grey line at: maxRecruitment / 2
+                'place a horizontal, stippled?, grey line at: maxRecruitment 
+                'place a vertical,   stippled?, grey line at: HalfRecruitment biomass
+
+                'whenever the user updates the m_group.RHalfB0Ratio then update this line 
+                '(probably ok just to call this whole function when that happens:
+                'place a vertical,   full, red line at: EcopathBiomass
+
+
                 Return New Single() {Me.m_group.RHalfB0Ratio, Me.m_group.ForcastGain}
             End If
         End Function
