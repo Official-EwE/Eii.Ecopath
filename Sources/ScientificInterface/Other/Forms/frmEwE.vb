@@ -203,8 +203,9 @@ Public Class frmEwE
 #Region " Private variables "
 
     Private Shared s_refresh As cEwEFormRefresh = Nothing
-    Private m_uic As cUIContext = Nothing
 
+    ''' <summary>Almighty UI context holding form UI contextual information.</summary>
+    Private m_uic As cUIContext = Nothing
     ''' <summary>Core state that determines the enabled state of a form.</summary>
     Private m_coreExecutionState As eCoreExecutionState = eCoreExecutionState.Idle
     ''' <summary>Array of message sources that invalidate the information displayed in a form.</summary>
