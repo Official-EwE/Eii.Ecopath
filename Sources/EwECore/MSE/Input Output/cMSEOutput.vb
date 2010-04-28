@@ -442,7 +442,13 @@ Public Class cMSEResultsStatsWrapper
         Get
             Return m_data.MeanValues(Me.m_index)(iTime)
         End Get
-    End Property
+        End Property
+
+        Public ReadOnly Property Mean() As Single
+            Get
+                Return m_data.Mean(Me.m_index)
+            End Get
+        End Property
 
 
     Public ReadOnly Property BinWidths() As Single
@@ -564,21 +570,20 @@ Public Class cMSEStats
 
 #End Region
 
-
 #Region "Overridden base class methods"
 
 
-    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex1 As Integer = -9999, Optional ByVal iIndex2 As Integer = -9999, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object
+        Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex1 As Integer = -9999, Optional ByVal iIndex2 As Integer = -9999, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
-        If Me.m_Stats.Contains(VarName) Then
-            Return Me.m_Stats.GetVariable(VarName, iIndex1, iIndex2, iIndex3)
-        Else
-            Return MyBase.GetVariable(VarName, iIndex1, iIndex2, iIndex3)
-        End If
+            If Me.m_Stats.Contains(VarName) Then
+                Return Me.m_Stats.GetVariable(VarName, iIndex1, iIndex2, iIndex3)
+            Else
+                Return MyBase.GetVariable(VarName, iIndex1, iIndex2, iIndex3)
+            End If
 
-        Return Nothing
+            Return Nothing
 
-    End Function
+        End Function
 
 #End Region
 
@@ -650,7 +655,14 @@ Public Class cMSEStats
         Get
             Return Me.m_Stats.nIterations
         End Get
-    End Property
+        End Property
+
+        Public ReadOnly Property Mean() As Single
+            Get
+                Return Me.m_Stats.Mean
+            End Get
+        End Property
+
 
 
     ''' <summary>

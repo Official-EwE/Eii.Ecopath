@@ -598,13 +598,21 @@ Friend Class cMSEPlotter
         For iTime As Integer = 1 To Me.m_uic.Core.nEcosimTimeSteps
             dx = Me.m_uic.Core.EcosimFirstYear + (iTime / cCore.N_MONTHS)
             ppl.Add(dx, StatsData.Mean(iTime))
+
         Next
 
         Dim LineItem As LineItem = New ZedGraph.LineItem("", ppl, Me.getLineColour(StatsData), SymbolType.None, 2)
+
+        Dim pplMean As New PointPairList
+        pplMean.Add(0, StatsData.Mean)
+        pplMean.Add(dx, StatsData.Mean)
+        Dim liMeanPt As LineItem = New ZedGraph.LineItem("", pplMean, Color.Blue, SymbolType.None, 1)
+
         Try
             'Dim pane As ZedGraph.GraphPane = Me.m_zgh.GetPane(ipane)
             'draw the mean line on top of the other lines (insert at the zero position)
             pane.CurveList.Insert(0, LineItem)
+            pane.CurveList.Insert(0, liMeanPt)
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".AddMeanLineToGraph() Error: " & ex.Message)
         End Try
