@@ -248,22 +248,22 @@ Namespace Ecosim
                 '  - place a horizontal, stippled?, grey line at: maxRecruitment 
                 lpts = New PointPairList()
                 lpts.Add(0.0!, data.MaxRecruitment) : lpts.Add(Me.m_zgh.XScaleMax, data.MaxRecruitment)
-                lLines.Add(Me.m_zgh.CreateLineItem("Max. recruitment", eLineType.NotSet, Color.Gray, lpts))
+                lLines.Add(Me.m_zgh.CreateLineItem("Max. recruitment", eLineType.NotSet, Color.LightGray, lpts))
 
                 '  - place a horizontal, stippled?, grey line at: maxRecruitment / 2
                 lpts = New PointPairList()
-                lpts.Add(0.0!, data.MaxRecruitment / 2) : lpts.Add(Me.m_zgh.XScaleMax, data.MaxRecruitment / 2)
-                lLines.Add(Me.m_zgh.CreateLineItem("Half max. recruitment", eLineType.NotSet, Color.LightGray, lpts))
+                lpts.Add(0.0!, data.MaxRecruitment / 2) : lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
+                lLines.Add(Me.m_zgh.CreateLineItem("Half max. recruitment", eLineType.NotSet, Color.FromArgb(255, 230, 230, 230), lpts))
 
                 '  - place a vertical,   stippled?, grey line at: HalfRecruitment biomass
                 lpts = New PointPairList()
-                lpts.Add(data.HalfRecruitmentBiomass, 0.0) : lpts.Add(data.HalfRecruitmentBiomass, Me.m_zgh.YScaleMax)
-                lLines.Add(Me.m_zgh.CreateLineItem("Half recruitment biomass", eLineType.NotSet, Color.LightSalmon, lpts))
+                lpts.Add(data.HalfRecruitmentBiomass, 0.0) : lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
+                lLines.Add(Me.m_zgh.CreateLineItem("Half recruitment biomass", eLineType.NotSet, Color.LightPink, lpts))
 
                 '  - place a vertical,   full, red line at: EcopathBiomass
                 lpts = New PointPairList()
                 lpts.Add(data.EcopathBiomass, 0.0!) : lpts.Add(data.EcopathBiomass, Me.m_zgh.YScaleMax)
-                lLines.Add(Me.m_zgh.CreateLineItem("Ecopath biomass", eLineType.NotSet, Color.Red, lpts))
+                lLines.Add(Me.m_zgh.CreateLineItem("Ecopath biomass", eLineType.NotSet, Color.LightSalmon, lpts))
 
                 ' place lines
                 Me.m_zgh.PlotLines(lLines.ToArray)
