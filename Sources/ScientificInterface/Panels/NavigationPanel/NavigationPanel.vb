@@ -99,7 +99,7 @@ Public Class NavigationPanel
 
             'Basic Parameters
             .Add("ndModelDescription", eCoreExecutionState.EcopathLoaded, GetType(frmModelDescription), "Model description.htm")
-            .Add("ndBasicInput", eCoreExecutionState.EcopathLoaded, GetType(BasicInputEwEGrid), "Basic input.htm")
+            .Add("ndBasicInput", eCoreExecutionState.EcopathLoaded, GetType(BasicInputEwEGrid), "Basic input.htm", True)
             .Add("ndDietComposition", eCoreExecutionState.EcopathLoaded, GetType(DietComp), "Diet composition.htm")
             .Add("ndDetritusFate", eCoreExecutionState.EcopathLoaded, GetType(DetritusFateEwEGrid), "Detritus fate.htm")
             .Add("ndOtherProduction", eCoreExecutionState.EcopathLoaded, GetType(OtherProductionEwEGrid), "Other production.htm")
@@ -252,6 +252,10 @@ Public Class NavigationPanel
 
             If m_tvNavigation.Nodes.Count = 0 Then Return
 
+            If (String.IsNullOrEmpty(value)) Then
+                value = Me.m_nodeController.DefaultNodeName
+            End If
+
             ' Try to find node to select
             If Not String.IsNullOrEmpty(value) Then
                 nd = Me.FindNode(Me.m_tvNavigation.Nodes, value)
@@ -305,15 +309,11 @@ Public Class NavigationPanel
 
         For Each nodeSearch As TreeNode In nodes
 
-            ' Does node text compare to requested text?
-            If (String.Compare(nodeSearch.Text, strText) = 0) Then
-                ' JS 26Feb2010: do not search registered nodes since this will not find nodes added via plug-ins.
-                '' #Yes: is this a registered node?
-                'If (Me.m_nodeController.SearchNodeByName(nodeSearch.Name) IsNot Nothing) Then
+            ' Does either node text or name compare to requested text?
+            If (String.Compare(nodeSearch.Text, strText) = 0) Or (String.Compare(nodeSearch.Name, strText) = 0) Then
                 ' #Yes: got it
                 nodeFound = nodeSearch
                 Exit For
-                'End If
             End If
 
             ' Search all child nodes
