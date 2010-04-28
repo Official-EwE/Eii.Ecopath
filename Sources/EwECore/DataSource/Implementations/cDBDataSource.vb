@@ -2985,6 +2985,7 @@ Namespace DataSources
             ecosimDS.RedimVars()
             ecosimDS.SetDefaultParameters()
             mseDS.RedimVars()
+            mseDS.setDefaultRegValues()
 
             reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
             Try

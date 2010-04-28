@@ -644,14 +644,14 @@ End Enum
 
             'If regulatory values have not been set (by the database) then set them to defaults
             For iflt = 1 To Me.nFleets
-                If Me.MaxEffort(iflt) = cCore.NULL_VALUE Then Me.MaxEffort(iflt) = 10 '10 times the ecopath base effort
+                Me.MaxEffort(iflt) = 10 '10 times the ecopath base effort
                 For igrp = 1 To Me.NGroups
-                    If Me.Quota(iflt, igrp) = cCore.NULL_VALUE Then Me.Quota(iflt, igrp) = Me.m_EPData.B(igrp) * 10 '10 time the ecopath biomass
+                    Me.Quota(iflt, igrp) = Me.m_EPData.B(igrp) * 10 '10 time the ecopath biomass
 
                     'Ecosim has not initialized at this point so some values are not available
-                    If Blim(igrp) = cCore.NULL_VALUE Then Blim(igrp) = Me.m_EPData.B(igrp) * 0.1!
-                    If Bbase(igrp) = cCore.NULL_VALUE Then Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4!
-                    If Fopt(igrp) = cCore.NULL_VALUE Then Fopt(igrp) = Me.m_EPData.fCatch(igrp) / (Me.m_EPData.B(igrp) + 1.0E-10F) 'Ecopath base F
+                    Blim(igrp) = Me.m_EPData.B(igrp) * 0.1!
+                    Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4!
+                    Fopt(igrp) = Me.m_EPData.fCatch(igrp) / (Me.m_EPData.B(igrp) + 1.0E-10F) 'Ecopath base F
                     Me.RHalfB0Ratio(igrp) = 0.2
                 Next
             Next
