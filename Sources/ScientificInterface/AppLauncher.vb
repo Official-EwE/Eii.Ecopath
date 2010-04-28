@@ -1333,16 +1333,19 @@ Public Class AppLauncher
     ''' <summary>
     ''' Create a form or dock panel for a given type.
     ''' </summary>
-    ''' <param name="strText">Text to assign to the form.</param>
+    ''' <param name="strNavLink">Navigation descriptor that created the form.</param>
     ''' <param name="t"><see cref="Type">Type</see> of the form to create.</param>
     ''' <returns>A <see cref="Form">Form</see>-derived instance, or Nothing if the
     ''' form could not be created.
     ''' </returns>
     ''' ---------------------------------------------------------------------------
-    Private Function LoadFormFromType(ByVal strText As String, ByVal t As Type, ByVal state As eCoreExecutionState) As Form
+    Private Function LoadFormFromType(ByVal strNavLink As String, _
+                                      ByVal t As Type, _
+                                      ByVal state As eCoreExecutionState) As Form
 
         Dim classObject As Object
         Dim frmNew As Form = Nothing
+        Dim strCaption As String = ""
 
         If Object.ReferenceEquals(t, Nothing) Then Return Nothing
 
@@ -1353,22 +1356,19 @@ Public Class AppLauncher
 
             If TypeOf classObject Is DockContent Then
                 ' Is dock content
-                Dim cnt As DockContent = DirectCast(classObject, DockContent)
-                cnt.Text = strText
-                cnt.TabText = strText
-                frmNew = cnt
+                frmNew = DirectCast(classObject, DockContent)
             ElseIf TypeOf classObject Is EwEGrid Then
                 ' Is a grid
                 Dim grid As EwEGrid = DirectCast(classObject, EwEGrid)
+                ' Fill the form with griddibits
                 grid.Dock = DockStyle.Fill
-                Dim cnt As DockContent = New frmEwEGrid(grid)
-                cnt.Text = strText
-                cnt.TabText = strText
-                frmNew = cnt
+                frmNew = New frmEwEGrid(grid)
+                ' Use grid text as form caption
+                frmNew.Text = grid.Text
             ElseIf TypeOf classObject Is Form Then
                 ' Is a generic form
                 frmNew = DirectCast(classObject, Form)
-                frmNew.Text = strText
+                frmNew.Text = strNavLink
             End If
 
             If TypeOf frmNew Is frmEwE Then
@@ -1381,6 +1381,20 @@ Public Class AppLauncher
                 DirectCast(frmNew, IUIElement).UIContext = Me.UIContext
             End If
 
+            ' Fix form caption
+            strCaption = frmNew.Text
+            ' Use a default if necessary
+            If String.IsNullOrEmpty(strCaption) Then strCaption = strNavLink
+            ' Stick caption back into the form
+            frmNew.Text = strCaption
+            If (TypeOf frmNew Is DockContent) Then
+                Dim cnt As DockContent = DirectCast(frmNew, DockContent)
+                ' Use caption also for tab text
+                cnt.TabText = strCaption
+            End If
+
+            ' Store nav link
+            frmNew.Tag = strNavLink
 
             ' Set form icon based on core state
             Select Case state
@@ -1395,7 +1409,7 @@ Public Class AppLauncher
             End Select
 
         Catch ex As Exception
-            Debug.Assert(False, "Creation of Form was not successful.  Please contact help: '" & strText & "' threw exception " & ex.ToString)
+            Debug.Assert(False, "Creation of Form was not successful.  Please contact help: '" & strNavLink & "' threw exception " & ex.ToString)
         End Try
         Me.SetStatusText("", TriState.False)
 
@@ -1407,13 +1421,22 @@ Public Class AppLauncher
     ''' Helper method, tries to activate an opened dock panel or MDI child 
     ''' window.
     ''' </summary>
-    ''' <param name="strText">Tab text to find the panel with.</param>
+    ''' <param name="strNavLink">Navigation descriptor to find the panel with.</param>
     ''' <returns>True if an existing panel was found.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ActivateForm(ByVal strText As String) As Boolean
+    Private Function ActivateForm(ByVal strNavLink As String) As Boolean
+
+        Dim bFound As Boolean = False
+
         ' Dock settings, loop through current opened 
         For Each cnt As DockContent In m_DockPanel.Contents
-            If (String.Compare(cnt.Text, strText, False) = 0) Then
+
+            If (TypeOf cnt.Tag Is String) Then
+                bFound = String.Compare(CStr(cnt.Tag), strNavLink, False) = 0
+            End If
+            bFound = bFound Or (String.Compare(cnt.Text, strNavLink, False) = 0)
+
+            If bFound Then
                 ' JS 08aug07: work-around for bug 133 (http://www.ecopath.org/developers/bugtracker/view.php?id=133)
                 ' Source:   Weifen Luo dock content xml section for "Document" state panel is improperly written or missing
                 ' Effect:   Forms that are supposed to be docked in that panel are constructed with Unknown dock properties
@@ -1435,13 +1458,14 @@ Public Class AppLauncher
         Return False
     End Function
 
-    Private Sub EnsureDefaultNodeSelected()
-        ' BAAAAAD!
-        If Me.m_NavPanel.SelectedNodeName = "" Then Me.UpdateSelectedNode("Basic input")
-    End Sub
+    ''' <summary>Flag to prevent looped updates.</summary>
+    Private m_bInUpdate As Boolean = False
 
     Private Sub UpdateSelectedNode(ByVal strNodeName As String)
+        If (Me.m_bInUpdate) Then Return
+        Me.m_bInUpdate = True
         Me.m_NavPanel.SelectedNodeName = strNodeName
+        Me.m_bInUpdate = False
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -1622,13 +1646,14 @@ Public Class AppLauncher
             ' Set core output path
             Me.Core.OutputPath = Path.GetDirectoryName(strFileName)
 
-            ' JS 08Aug07: Whatever happened, at least the default node needs to be visible.
-            '             This also overcomes bug 133 (see bug description in ActivateForm). The Dock engine
-            '             may create forms from crippled XML settings where a doc parent section is missing.
-            '             Such forms get instantiated but GetContentFromPersistentString never gets called
-            '             because the forms are not content as far as the dock engine is concerned. Nice!
-            '             This logic makes sure that at least the default form is properly selected (and indirectly activated)
-            Me.EnsureDefaultNodeSelected()
+            '' JS 08Aug07: Whatever happened, at least the default node needs to be visible.
+            ''             This also overcomes bug 133 (see bug description in ActivateForm). The Dock engine
+            ''             may create forms from crippled XML settings where a doc parent section is missing.
+            ''             Such forms get instantiated but GetContentFromPersistentString never gets called
+            ''             because the forms are not content as far as the dock engine is concerned. Nice!
+            ''             This logic makes sure that at least the default form is properly selected (and indirectly activated)
+            'Me.EnsureDefaultNodeSelected()
+            Me.UpdateSelectedNode("")
             ' Keep at it, Maurice
             Me.UpdateModelControls()
             Me.PopulateScenarioDropdowns()
@@ -3561,11 +3586,15 @@ Public Class AppLauncher
             dch = idc.DockHandler
 
             If Not Object.ReferenceEquals(dch, Nothing) Then
+                ' Get default nav link
                 strNodeName = dch.TabText
             End If
 
-            ' Kick core controller
             If (TypeOf idc Is frmEwE) Then
+                ' Get form specific nav link
+                If TypeOf DirectCast(idc, frmEwE).Tag Is String Then
+                    strNodeName = CStr(DirectCast(idc, frmEwE).Tag)
+                End If
                 ' Update core state if possible
                 Me.CoreController.LoadState(DirectCast(idc, frmEwE).CoreExecutionState)
             End If
