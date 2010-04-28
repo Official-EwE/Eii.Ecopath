@@ -1470,7 +1470,7 @@ Public Class AppLauncher
     Private Sub UpdateSelectedNode(ByVal strNodeName As String)
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
-        Me.m_NavPanel.SelectedNodeName = strNodeName
+        Me.m_NavPanel.SelectedNodeName(True) = strNodeName
         Me.m_bInUpdate = False
     End Sub
 

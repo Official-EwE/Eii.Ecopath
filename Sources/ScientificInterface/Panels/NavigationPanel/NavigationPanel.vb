@@ -237,8 +237,9 @@ Public Class NavigationPanel
     ''' <summary>
     ''' Get or set the current selected node name in the nav structure
     ''' </summary>
+    ''' <param name="bUseDefault">States whether default node may be considered.</param>
     ''' <remarks>In order to highlight the selection</remarks>
-    Public Property SelectedNodeName() As String
+    Public Property SelectedNodeName(Optional ByVal bUseDefault As Boolean = False) As String
 
         Get
             If Me.m_tvNavigation.SelectedNode Is Nothing Then Return ""
@@ -250,9 +251,9 @@ Public Class NavigationPanel
             Dim bSelected As Boolean = False
             Dim nd As TreeNode = Nothing
 
-            If m_tvNavigation.Nodes.Count = 0 Then Return
+            If Me.m_tvNavigation.Nodes.Count = 0 Then Return
 
-            If (String.IsNullOrEmpty(value)) Then
+            If (String.IsNullOrEmpty(value) And bUseDefault) Then
                 value = Me.m_nodeController.DefaultNodeName
             End If
 
