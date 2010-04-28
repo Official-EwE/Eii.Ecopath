@@ -262,7 +262,7 @@ Partial Class frmOptions
         Me.Controls.Add(Me.pnlRegOpt)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmOptions"
-        Me.Text = "frmOptions"
+        Me.Text = "MSE options"
         Me.pnlRegOpt.ResumeLayout(False)
         Me.pnlRegOpt.PerformLayout()
         Me.pnlUseReg.ResumeLayout(False)

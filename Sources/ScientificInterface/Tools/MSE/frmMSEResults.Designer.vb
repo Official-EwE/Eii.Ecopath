@@ -58,6 +58,8 @@ Partial Class frmMSEResults
         '
         Me.Grid.AutoSizeMinHeight = 10
         Me.Grid.AutoSizeMinWidth = 10
+        Me.Grid.AutoStretchColumnsToFitWidth = False
+        Me.Grid.AutoStretchRowsToFitHeight = False
         Me.Grid.BackColor = System.Drawing.Color.White
         Me.Grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -68,6 +70,7 @@ Partial Class frmMSEResults
         Me.Grid.FixedColumnWidths = True
         Me.Grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.Grid.GridToolTipActive = True
+        Me.Grid.GridType = ScientificInterface.gridRiskResults.eGridType.Group
         Me.Grid.Location = New System.Drawing.Point(0, 0)
         Me.Grid.Name = "Grid"
         Me.Grid.Size = New System.Drawing.Size(685, 394)
@@ -82,6 +85,7 @@ Partial Class frmMSEResults
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.Grid.TabIndex = 4
         Me.Grid.TrackPropertySelection = True
+        Me.Grid.UIContext = Nothing
         '
         'pnlGrid
         '
@@ -102,8 +106,9 @@ Partial Class frmMSEResults
         Me.Controls.Add(Me.pnlGrid)
         Me.Controls.Add(Me.rbFleet)
         Me.Controls.Add(Me.rbGroup)
+        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSEResults"
-        Me.Text = "frmMSEResults"
+        Me.Text = "MSE results"
         Me.pnlGrid.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()

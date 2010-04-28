@@ -25,17 +25,17 @@ Namespace Ecopath.Input
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DietComp))
-            Me.ToolStrip1 = New cEwEToolstrip
+            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.tsSumtoOneBtn = New System.Windows.Forms.ToolStripButton
             Me.m_grid = New ScientificInterface.Ecopath.Input.DietCompositionEwEGrid
-            Me.ToolStrip1.SuspendLayout()
+            Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
-            'ToolStrip1
+            'm_ts
             '
-            Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsSumtoOneBtn})
-            resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
-            Me.ToolStrip1.Name = "ToolStrip1"
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsSumtoOneBtn})
+            resources.ApplyResources(Me.m_ts, "m_ts")
+            Me.m_ts.Name = "m_ts"
             '
             'tsSumtoOneBtn
             '
@@ -47,7 +47,13 @@ Namespace Ecopath.Input
             '
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
-            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.BackColor = System.Drawing.Color.White
+            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
@@ -71,11 +77,11 @@ Namespace Ecopath.Input
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_grid)
-            Me.Controls.Add(Me.ToolStrip1)
+            Me.Controls.Add(Me.m_ts)
             Me.Name = "DietComp"
             Me.TabText = "DietComp"
-            Me.ToolStrip1.ResumeLayout(False)
-            Me.ToolStrip1.PerformLayout()
+            Me.m_ts.ResumeLayout(False)
+            Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -83,6 +89,7 @@ Namespace Ecopath.Input
         Private WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
         Private WithEvents m_grid As DietCompositionEwEGrid
         Private WithEvents tsSumtoOneBtn As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_ts As ScientificInterfaceShared.Controls.cEwEToolstrip
     End Class
 
 End Namespace

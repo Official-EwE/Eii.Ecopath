@@ -111,7 +111,7 @@
             Me.Controls.Add(Me.m_scMain)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmTargetFishingMortalityPolicy"
-            Me.Text = "frmSpeciesQuota"
+            Me.Text = "TFM policy"
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)

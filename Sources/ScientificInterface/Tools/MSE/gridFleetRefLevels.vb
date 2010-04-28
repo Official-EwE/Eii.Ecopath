@@ -15,6 +15,8 @@ Public Class gridFleetRefLevels
     : Inherits EwEGrid
 
     Public Sub New()
+        ' Set text to use in dock panel
+        Me.Text = My.Resources.CAPTION_MSEFLEETREF
     End Sub
 
     Protected Overrides Sub InitStyle()

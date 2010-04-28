@@ -589,7 +589,7 @@ Partial Class frmModelDescription
         Me.Controls.Add(Me.m_lbAuthor)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmModelDescription"
-        Me.Text = "frmModelParameters"
+        Me.Text = "Model Parameters"
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpUnits.ResumeLayout(False)
         Me.m_gbCurrencyUnit.ResumeLayout(False)

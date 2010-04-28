@@ -210,7 +210,7 @@ Partial Class frmMSEPlots
         Me.Controls.Add(Me.ZedGraph)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSEPlots"
-        Me.Text = "frmMSEPlots"
+        Me.Text = "MSE plots"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.Panel2.ResumeLayout(False)

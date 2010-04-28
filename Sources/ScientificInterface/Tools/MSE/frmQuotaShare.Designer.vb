@@ -100,7 +100,7 @@
             Me.Controls.Add(Me.m_tss)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmQuotaShare"
-            Me.Text = "frmQuotaShare"
+            Me.Text = "MSE quota share"
             Me.m_tss.ResumeLayout(False)
             Me.m_tss.PerformLayout()
             Me.ResumeLayout(False)

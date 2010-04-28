@@ -140,6 +140,15 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to MSE Fleet Ref. Levels.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_MSEFLEETREF() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_MSEFLEETREF", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property Collapsed() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Collapsed", resourceCulture)

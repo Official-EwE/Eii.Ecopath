@@ -27,6 +27,7 @@ Partial Class frmMSEAssessGroups
         '
         'm_blocks
         '
+        Me.m_blocks.ControlPanelVisible = False
         Me.m_blocks.CurColor = System.Drawing.Color.Empty
         Me.m_blocks.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_blocks.Location = New System.Drawing.Point(0, 0)
@@ -45,7 +46,7 @@ Partial Class frmMSEAssessGroups
         Me.Controls.Add(Me.m_blocks)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSEAssessGroups"
-        Me.Text = "frmMSEAssessGroups"
+        Me.Text = "MSE group assessments"
         Me.ResumeLayout(False)
 
     End Sub

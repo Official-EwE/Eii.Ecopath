@@ -2642,4 +2642,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_RHALFB0RATIO" xml:space="preserve">
     <value>Ratio Bt/Ecopath B for 50% recruitment</value>
   </data>
+  <data name="CAPTION_MSEFLEETREF" xml:space="preserve">
+    <value>MSE Fleet Ref. Levels</value>
+  </data>
 </root>

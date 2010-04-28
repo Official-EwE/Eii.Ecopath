@@ -162,7 +162,7 @@ Partial Class frmMSE
         Me.Controls.Add(Me.btRun)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSE"
-        Me.Text = "frmMSE"
+        Me.Text = "Run MSE"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
