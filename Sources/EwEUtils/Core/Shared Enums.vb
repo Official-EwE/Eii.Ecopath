@@ -1041,6 +1041,9 @@ Namespace Core
         MSERefBioLower
         MSERefBioUpper
 
+        MSERefBioEstLower
+        MSERefBioEstUpper
+
         MSERefGroupCatchLower
         MSERefGroupCatchUpper
 

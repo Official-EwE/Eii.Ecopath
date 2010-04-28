@@ -16,10 +16,7 @@ Namespace MSE
         ''' <summary>Regulation are used. Max effort from Ecosim scenario or no max effort imposed.</summary>
     UseRegulations
 
-        '''' <summary>Effort is being predicted via Ecosim. Regulations are used</summary>
-        'PredictUseRegualtions
-
-    ''' <summary>Ecosim effort. Effort not regulated</summary>
+        ''' <summary>Ecosim effort. Effort not regulated</summary>
     NoRegulations
 
 End Enum
@@ -141,6 +138,8 @@ End Enum
         Public BioBounds() As cMSEBounds
         ''' <summary>Catch by group bounds</summary>
         Public CatchGroupBounds() As cMSEBounds
+
+        Public BioEstBounds() As cMSEBounds
 
         ''' <summary>Catch by fleet bounds</summary>
         Public CatchFleetBounds() As cMSEBounds
@@ -286,7 +285,7 @@ End Enum
                 Me.CatchFleetStats = New cMSESummaryStats(Me, Me.CatchFleetBounds, nFleets)
                 Me.EffortStats = New cMSESummaryStats(Me, Me.EffortFleetBounds, nFleets)
 
-                Me.BioEstStats = New cMSESummaryStats(Me, Me.BioBounds, NGroups)
+                Me.BioEstStats = New cMSESummaryStats(Me, Me.BioEstBounds, NGroups)
 
                 Me.ProfitSum = New cMSESummaryStats(Me, Nothing, 1)
                 Me.JobsSum = New cMSESummaryStats(Me, Nothing, 1)
@@ -364,6 +363,7 @@ End Enum
             Next
 
             ReDim BioBounds(NGroups)
+            ReDim Me.BioEstBounds(NGroups)
             ReDim Me.CatchGroupBounds(NGroups)
             ReDim Me.CatchFleetBounds(Me.nFleets)
             ReDim Me.EffortFleetBounds(Me.nFleets)
@@ -376,6 +376,8 @@ End Enum
 
             'set default values
             For iGrp As Integer = 1 To NGroups
+
+                Me.BioEstBounds(iGrp) = New cMSEBounds(iGrp, 1, 1)
 
                 KalmanGain(iGrp) = 0.65
                 BioRiskValue(iGrp, 0) = 0.5 'lower

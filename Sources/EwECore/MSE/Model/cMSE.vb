@@ -1187,6 +1187,7 @@ Namespace MSE
                             If (m_epdata.Landing(ig, i) + m_epdata.Discard(ig, i)) > 0 Then
                                 'Calculate the effort limitation, has quote been exceeded?
                                 Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * QYear(ig) * m_esData.FishMGear(ig, i) * Biomass(i)))
+                                Debug.Assert(Elim >= 0)
                                 If m_esData.FishRateGear(ig, t) > Elim Then
                                     m_esData.FishRateGear(ig, t) = Elim
                                 End If
@@ -1246,13 +1247,9 @@ Namespace MSE
                 End Select
             Next ig
 
-
             Dim val As Single
-
-            ' System.Console.WriteLine("Best/B")
-
             For igrp As Integer = 1 To Me.m_esData.nGroups
-                val = CSng(Math.Log(Biomass(igrp) / Me.m_data.Bestimate(igrp)))
+                val = Biomass(igrp) / Me.m_data.Bestimate(igrp)
 
                 If val > 5 Then
                     System.Console.WriteLine("Grp=" & igrp.ToString & " " & val.ToString & ", ")

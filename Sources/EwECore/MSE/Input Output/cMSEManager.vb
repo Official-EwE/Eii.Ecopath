@@ -537,6 +537,9 @@ Namespace MSE
                     mseGrp.BiomassRefLower = Me.m_MSEdata.BioBounds(iGroup).Lower
                     mseGrp.BiomassRefUpper = Me.m_MSEdata.BioBounds(iGroup).Upper
 
+                    mseGrp.BiomassEstRefLower = Me.m_MSEdata.BioEstBounds(iGroup).Lower
+                    mseGrp.BiomassEstRefUpper = Me.m_MSEdata.BioEstBounds(iGroup).Upper
+
                     mseGrp.CatchRefLower = Me.m_MSEdata.CatchGroupBounds(iGroup).Lower
                     mseGrp.CatchRefUpper = Me.m_MSEdata.CatchGroupBounds(iGroup).Upper
 

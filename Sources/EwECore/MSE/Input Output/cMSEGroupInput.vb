@@ -61,6 +61,16 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.MSERefBioUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERefBioUpper))
             m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSERefBioEstLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERefBioEstLower))
+            m_values.Add(val.varName, val)
+
+            'Ref levels
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSERefBioEstUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERefBioEstUpper))
+            m_values.Add(val.varName, val)
+
+
             'Fleets ref levels
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.MSERefGroupCatchLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERefGroupCatchLower))
@@ -163,6 +173,27 @@ Namespace MSE
 
             Set(ByVal value As Single)
                 SetVariable(eVarNameFlags.MSERefBioUpper, value)
+            End Set
+        End Property
+
+        Public Property BiomassEstRefUpper() As Single
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSERefBioEstUpper), Single)
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSERefBioEstUpper, value)
+            End Set
+        End Property
+
+
+        Public Property BiomassEstRefLower() As Single
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSERefBioEstLower), Single)
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSERefBioEstLower, value)
             End Set
         End Property
 

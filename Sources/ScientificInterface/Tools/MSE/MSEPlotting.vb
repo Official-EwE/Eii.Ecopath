@@ -281,7 +281,7 @@ Friend Class cMSEPlotter
 
             Case ePlotData.BioEst
                 Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
-                refPoint = New cMSERefPoint(grp.BiomassRefLower, grp.BiomassRefUpper)
+                refPoint = New cMSERefPoint(grp.BiomassEstRefLower, grp.BiomassEstRefUpper)
 
             Case ePlotData.GroupCatch
                 Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
@@ -646,8 +646,11 @@ Friend Class cMSEPlotter
             pplUB.Add(0, UpperBound)
             pplUB.Add(Me.m_uic.Core.nEcosimTimeSteps, UpperBound)
 
-            Dim LBItem As LineItem = New ZedGraph.LineItem("", pplLB, Color.Pink, SymbolType.None, 1)
-            Dim UBItem As LineItem = New ZedGraph.LineItem("", pplUB, Color.Pink, SymbolType.None, 1)
+            Dim LBItem As LineItem = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Pink, pplLB)
+            LBItem.Line.Style = Drawing2D.DashStyle.Dash
+
+            Dim UBItem As LineItem = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Pink, pplUB)
+            UBItem.Line.Style = Drawing2D.DashStyle.Dash
             LBItem.Tag = LB_TAG
             UBItem.Tag = UB_TAG
             Try
