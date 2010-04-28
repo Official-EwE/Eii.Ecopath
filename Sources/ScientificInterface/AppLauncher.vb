@@ -528,7 +528,8 @@ Public Class AppLauncher
     Private Sub InitEventHandlers()
 
         AddHandler My.Settings.SettingsLoaded, AddressOf OnDefaultSettingLoaded
-        AddHandler m_DockPanel.ActiveDocumentChanged, AddressOf OnActiveDocumentChanged
+        ' JS 27Apr10: ActiveContent seems to track much more accurately than ActiveDocument
+        AddHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
 
     End Sub
 
@@ -1432,9 +1433,12 @@ Public Class AppLauncher
         For Each cnt As DockContent In m_DockPanel.Contents
 
             If (TypeOf cnt.Tag Is String) Then
-                bFound = String.Compare(CStr(cnt.Tag), strNavLink, False) = 0
+                bFound = String.Compare(CStr(cnt.Tag), strNavLink, True) = 0
             End If
-            bFound = bFound Or (String.Compare(cnt.Text, strNavLink, False) = 0)
+
+            If Not bFound Then
+                bFound = (String.Compare(cnt.Text, strNavLink, True) = 0)
+            End If
 
             If bFound Then
                 ' JS 08aug07: work-around for bug 133 (http://www.ecopath.org/developers/bugtracker/view.php?id=133)
@@ -1450,7 +1454,9 @@ Public Class AppLauncher
                     If .VisibleState = DockState.Unknown Then .VisibleState = DockState.Document
                     If .WindowState = FormWindowState.Minimized Then .WindowState = FormWindowState.Normal
                     .BringToFront()
+                    .Focus()
                 End With
+
                 Return True
             End If
         Next
@@ -2250,7 +2256,7 @@ Public Class AppLauncher
         ' JS Jan2408: Make sure the nav tree correctly reflects the current selected page.
         ' This is important if the navigation to the requested page failed, which can happen
         ' if the core controller is unable to bring the core to the requested state.
-        Me.OnActiveDocumentChanged(Nothing, Nothing)
+        Me.OnTabFocusChanged(Nothing, Nothing)
 
     End Sub
 
@@ -3576,7 +3582,7 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub OnActiveDocumentChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub OnTabFocusChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
         Dim idc As IDockContent = m_DockPanel.ActiveDocument
         Dim dch As DockContentHandler = Nothing
