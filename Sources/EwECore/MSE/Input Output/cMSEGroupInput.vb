@@ -348,6 +348,10 @@ Namespace MSE
 
                 Me.SetStatusFlags(eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.SetStatusFlags(eVarNameFlags.MSERefGroupCatchLower, eStatusFlags.Null Or eStatusFlags.NotEditable)
+
+                Me.SetStatusFlags(eVarNameFlags.RHalfB0Ratio, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSEForcastGain, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSERecruitmentCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.MSEFixedEscapement, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.ClearStatusFlags(eVarNameFlags.MSEFixedF, eStatusFlags.Null Or eStatusFlags.NotEditable)
@@ -355,6 +359,10 @@ Namespace MSE
 
                 Me.ClearStatusFlags(eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.ClearStatusFlags(eVarNameFlags.MSERefGroupCatchLower, eStatusFlags.Null Or eStatusFlags.NotEditable)
+
+                Me.ClearStatusFlags(eVarNameFlags.RHalfB0Ratio, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSEForcastGain, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSERecruitmentCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
             End If
 
             'If bSendMessage Then
