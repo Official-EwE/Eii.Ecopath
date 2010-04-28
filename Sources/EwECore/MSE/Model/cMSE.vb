@@ -1252,7 +1252,7 @@ Namespace MSE
             ' System.Console.WriteLine("Best/B")
 
             For igrp As Integer = 1 To Me.m_esData.nGroups
-                val = Biomass(igrp) / Me.m_data.Bestimate(igrp)
+                val = CSng(Math.Log(Biomass(igrp) / Me.m_data.Bestimate(igrp)))
 
                 If val > 5 Then
                     System.Console.WriteLine("Grp=" & igrp.ToString & " " & val.ToString & ", ")
@@ -1273,8 +1273,6 @@ Namespace MSE
             ReDim Bobs(Me.m_epdata.NumGroups)
             Dim RstockPred As Single
             Dim vPred As Single
-            Dim cvRec As Single = 0.8
-            '    System.Console.WriteLine("---Catch year---")
 
             For i As Integer = 1 To Me.m_epdata.NumGroups
                 Me.m_data.BestimateLast(i) = Me.m_data.Bestimate(i) * CSng(Math.Exp(-Me.m_data.CatchYearGroup(i) / Me.m_data.Bestimate(i))) ' Me.m_Search.CatchYear(i)
@@ -1284,7 +1282,7 @@ Namespace MSE
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
 
                 RstockPred = CSng(m_data.Rmax(i) * Me.m_data.BestimateLast(i) / (m_data.BhalfT(i) + Me.m_data.BestimateLast(i)))
-                vPred = CSng((m_data.RstockRatio(i) * cvRec) ^ 2 / (1 - m_data.GstockPred(i) ^ 2))
+                vPred = CSng((m_data.RstockRatio(i) * Me.m_data.cvRec(i)) ^ 2 / (1 - m_data.GstockPred(i) ^ 2))
                 Me.m_data.KalmanGain(i) = CSng(vPred / (vPred + Me.m_data.CVbiomEst(i) ^ 2))
                 'and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
                 'VC091107 fixed problem in eq below
@@ -1292,7 +1290,6 @@ Namespace MSE
                 Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + RstockPred)
 
             Next i
-            System.Console.WriteLine()
 
         End Sub
 
