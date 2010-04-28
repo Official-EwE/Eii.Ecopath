@@ -912,17 +912,21 @@ Namespace Controls.EwEGrid
 
             Me.m_lpropertySelected.Clear()
 
-            ' Get properties from selected cells
-            For Each p As Position In Me.Selection.GetCellsPositions
-                c = Me(p.Row, p.Column)
-                If c IsNot Nothing Then
-                    ' Is property cell?
-                    If TypeOf c Is PropertyCell Then
-                        ' #Yes: add to list of selected cells
-                        Me.m_lpropertySelected.Add(DirectCast(c, PropertyCell).GetProperty())
+            If e.EventType <> SelectionChangeEventType.Clear Then
+
+                ' Get properties from selected cells
+                For Each p As Position In Me.Selection.GetCellsPositions
+                    c = Me(p.Row, p.Column)
+                    If c IsNot Nothing Then
+                        ' Is property cell?
+                        If TypeOf c Is PropertyCell Then
+                            ' #Yes: add to list of selected cells
+                            Me.m_lpropertySelected.Add(DirectCast(c, PropertyCell).GetProperty())
+                        End If
                     End If
-                End If
-            Next
+                Next
+
+            End If
 
             If cmd IsNot Nothing Then
                 If (TypeOf cmd Is cPropertySelectionCommand) Then
