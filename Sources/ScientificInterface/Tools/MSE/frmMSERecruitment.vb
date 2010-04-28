@@ -232,7 +232,7 @@ Namespace Ecosim
                     For i As Integer = 0 To data.NumSteps - 1
                         lpts.Add(data.Biomass(i), data.Recruitment(i))
                     Next
-                    lLines.Add(Me.m_zgh.CreateLineItem(Me.Core.EcoPathGroupInputs(Me.Group.Index), lpts))
+                    lLines.Add(Me.m_zgh.CreateLineItem(Me.Group.Name, eLineType.ModelData, Color.DarkGray, lpts))
                 End If
             End If
 
