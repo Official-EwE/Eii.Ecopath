@@ -3638,7 +3638,7 @@ Namespace DataSources
 
                     mseDS.RstockRatio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RStockRatio", mseDS.RstockRatio(igroup)))
                     mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup)))
-                    mseDS.cvRec(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RecruitmentCV", 0.8))
+                    mseDS.cvRec(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RecruitmentCV", mseDS.cvRec(iEcopathGroup)))
 
                     ' bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
