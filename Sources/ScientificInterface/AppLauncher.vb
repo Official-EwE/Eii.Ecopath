@@ -1464,14 +1464,8 @@ Public Class AppLauncher
         Return False
     End Function
 
-    ''' <summary>Flag to prevent looped updates.</summary>
-    Private m_bInUpdate As Boolean = False
-
     Private Sub UpdateSelectedNode(ByVal strNodeName As String)
-        If (Me.m_bInUpdate) Then Return
-        Me.m_bInUpdate = True
         Me.m_NavPanel.SelectedNodeName(True) = strNodeName
-        Me.m_bInUpdate = False
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -1515,46 +1509,6 @@ Public Class AppLauncher
         Me.m_NavPanel.SelectedNodeName = ""
 
     End Sub
-
-#Region " Presumed dead "
-
-#If 0 Then
-    Private Function CreateDocument(ByVal nc As cNavigationCommand) As IDockContent
-
-        If nc Is Nothing Then Return Nothing
-
-        Dim frm As Form = Nothing
-
-        ' Check if core can be brought up to par
-        If Me.CoreController.LoadState(DirectCast(nc.CoreExecutionState, eCoreExecutionState)) Then
-            ' Is form already loaded?
-            If Not ActivateForm(nc.PageName) Then
-                ' Load instance of form for selected node
-                frm = Me.LoadFormFromType(nc.PageName, nc.ClassType, nc.CoreExecutionState)
-                ' Was a form created?
-                If frm IsNot Nothing Then
-                    ' #Yes
-                    ' Is this a dockable form? 
-                    If TypeOf frm Is DockContent And m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi Then
-                        ' #Yes
-                        Dim cnt As DockContent = DirectCast(frm, DockContent)
-                        ' Show the form in the dock panel
-                        Return cnt
-                    End If
-                Else
-                    ' Show form
-                    frm.MdiParent = Me
-                    frm.Show()
-                End If
-            End If
-        End If
-
-        Return Nothing
-
-    End Function
-#End If
-
-#End Region ' Presumed dead
 
 #End Region ' Content navigation
 
@@ -2201,36 +2155,57 @@ Public Class AppLauncher
 
     End Sub
 
+    ''' <summary>Flag to prevent looped navigation chaos.</summary>
+    Private m_bNavigating As Boolean = False
+
     Private Sub OnOpenDocument(ByVal cmd As cCommand) Handles m_cmdNavigate.OnInvoke
 
         Dim nc As cNavigationCommand = Nothing
         Dim frm As Form = Nothing
+        Dim strNavPageID As String = ""
+        Dim strNavPageName As String = ""
+        Dim strNavHelpURL As String = ""
+        Dim tNavClassType As Type = Nothing
+        Dim iNavCoreState As eCoreExecutionState = eCoreExecutionState.Idle
 
         ' Sanity checks
         If cmd Is Nothing Then Return
         If Not (TypeOf cmd Is cNavigationCommand) Then Return
 
+        If Me.m_bNavigating Then Return
+        Me.m_bNavigating = True
+
         nc = DirectCast(cmd, cNavigationCommand)
 
-        If nc.PageID = "ndScenario" Then
+        ' Preserve properties from Nav command, because the  nav command may 
+        ' change in response to actions in this method
+        strNavPageID = nc.PageID
+        strNavPageName = nc.PageName
+        strNavHelpURL = nc.HelpURL
+        tNavClassType = nc.ClassType
+        iNavCoreState = nc.CoreExecutionState
+
+        If strNavPageID = "ndScenario" Then
             m_coreController.LoadEcosimScenario()
             Return
         End If
 
-        If nc.PageID = "ndEcospaceScenario" Then
+        If strNavPageID = "ndEcospaceScenario" Then
             m_coreController.LoadEcospaceScenario()
+            Return
         End If
 
-        If nc.PageID = "ndEcotracerScenario" Then
+        If strNavPageID = "ndEcotracerScenario" Then
             Me.CoreController.LoadEcotracerScenario()
+            Return
         End If
 
         ' Check if core can be brought up to par
-        If Me.CoreController.LoadState(CType(nc.CoreExecutionState, eCoreExecutionState)) Then
+        If Me.CoreController.LoadState(iNavCoreState) Then
             ' Is form already loaded?
-            If Not ActivateForm(nc.PageName) Then
+            If Not ActivateForm(strNavPageName) Then
                 ' Load instance of form for selected node
-                frm = Me.LoadFormFromType(nc.PageName, nc.ClassType, nc.CoreExecutionState)
+                frm = Me.LoadFormFromType(strNavPageName, tNavClassType, iNavCoreState)
                 ' Was a form created?
                 If frm IsNot Nothing Then
                     ' #Yes
@@ -2241,17 +2216,19 @@ Public Class AppLauncher
                         ' Show the form in the dock panel
                         DirectCast(frm, DockContent).Show(Me.m_DockPanel, DockState.Document)
                         ' Switch help
-                        Me.Help.HelpTopic(frm) = nc.HelpURL
+                        Me.Help.HelpTopic(frm) = strNavHelpURL
                     Else
                         ' Show form
                         frm.MdiParent = Me
                         frm.Show()
                         ' Switch help
-                        Me.Help.HelpTopic(frm) = nc.HelpURL
+                        Me.Help.HelpTopic(frm) = strNavHelpURL
                     End If
                 End If
             End If
         End If
+
+        Me.m_bNavigating = False
 
         ' JS Jan2408: Make sure the nav tree correctly reflects the current selected page.
         ' This is important if the navigation to the requested page failed, which can happen
