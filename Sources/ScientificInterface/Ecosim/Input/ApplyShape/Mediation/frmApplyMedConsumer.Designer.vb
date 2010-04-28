@@ -23,12 +23,12 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyFFPrimaryProducer))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyMedConsumer))
             Me.plApplyFFGrid = New System.Windows.Forms.Panel
             Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
             Me.tsBtnClearAll = New System.Windows.Forms.ToolStripButton
-            Me.tsBtnSetAll = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+            Me.tsBtnSetAll = New System.Windows.Forms.ToolStripButton
             Me.ToolStrip1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -50,24 +50,27 @@ Namespace Ecosim
             resources.ApplyResources(Me.tsBtnClearAll, "tsBtnClearAll")
             Me.tsBtnClearAll.Name = "tsBtnClearAll"
             '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
             'tsBtnSetAll
             '
             Me.tsBtnSetAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             resources.ApplyResources(Me.tsBtnSetAll, "tsBtnSetAll")
             Me.tsBtnSetAll.Name = "tsBtnSetAll"
             '
-            'ToolStripSeparator1
-            '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
-            '
-            'ApplyFF
+            'frmApplyMedConsumer
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.ToolStrip1)
             Me.Controls.Add(Me.plApplyFFGrid)
-            Me.Name = "ApplyFF"
+            Me.Name = "frmApplyMedConsumer"
+            Me.TabText = "Apply shapes"
+            Me.Controls.SetChildIndex(Me.plApplyFFGrid, 0)
+            Me.Controls.SetChildIndex(Me.ToolStrip1, 0)
             Me.ToolStrip1.ResumeLayout(False)
             Me.ToolStrip1.PerformLayout()
             Me.ResumeLayout(False)

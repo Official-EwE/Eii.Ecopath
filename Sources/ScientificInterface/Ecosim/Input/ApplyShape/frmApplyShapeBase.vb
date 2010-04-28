@@ -31,6 +31,8 @@ Namespace Ecosim
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
+            If Me.UIContext Is Nothing Then Return
+
             ' Config grid
             Me.m_grid.ApplyTargetMode = Me.ApplyTargetMode
             Me.m_grid.ApplyShapeMode = Me.ApplyShapeMode

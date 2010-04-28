@@ -142,7 +142,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;plApplyFFGrid.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <metadata name="ToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
@@ -220,7 +220,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ToolStrip1.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -231,22 +231,13 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>643, 405</value>
   </data>
-  <data name="$this.TabText" xml:space="preserve">
-    <value>Apply shapes</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Apply shapes</value>
+    <value>Apply mediation (prod)</value>
   </data>
   <data name="&gt;&gt;tsBtnClearAll.Name" xml:space="preserve">
     <value>tsBtnClearAll</value>
   </data>
   <data name="&gt;&gt;tsBtnClearAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsBtnSetAll.Name" xml:space="preserve">
-    <value>tsBtnSetAll</value>
-  </data>
-  <data name="&gt;&gt;tsBtnSetAll.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
@@ -255,10 +246,16 @@
   <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;tsBtnSetAll.Name" xml:space="preserve">
+    <value>tsBtnSetAll</value>
+  </data>
+  <data name="&gt;&gt;tsBtnSetAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ApplyFF</value>
+    <value>frmApplyMedPrimaryProducer</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.1.2734.22179, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.Ecosim.frmApplyShapeBase, EwE6, Version=6.1.0.428, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>
