@@ -146,7 +146,7 @@ Public Class ucCVBlockSelector
         Implements IBlockSelector.ValuetoBlock
         Try
             'This could probable find an exact match and still work 
-            'ven if the user has edited the value of the currently selected block/cell
+            'even if the user has edited the value of the currently selected block/cell
             Dim i As Integer
             'closest match
             Dim dif As Single
@@ -163,7 +163,7 @@ Public Class ucCVBlockSelector
             'Warn the user if minDif is not zero not an exact match
             If minDif <> 0 Then
                 'if something has changed in the control or the data this could happen
-                'this will warn in the debug enviroment at least
+                'this will warn in the debug environment at least
                 System.Console.WriteLine("Failed to find an exact match for the CV value " & cv.ToString & " the closest value will be used.")
             End If
 
