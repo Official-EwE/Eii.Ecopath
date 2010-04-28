@@ -165,8 +165,11 @@ Namespace Ecosim
 
                 Dim EcopathRecruitment As Single = data.EcopathBiomass * Me.Group.ForcastGain   'the ForcastGain is the Ecopath recruitment
 
-                'Let's just scale the x-axis to 10 times the HalfRecruitmentBiomass
-                Dim maxXaxisValue As Single = 10 * data.HalfRecruitmentBiomass
+                'Let's just scale the x-axis to default 10 times the HalfRecruitmentBiomass
+                Dim maxXaxisValue As Single = 10
+                If CSng(1.1 / Group.RHalfB0Ratio) > maxXaxisValue Then
+                    maxXaxisValue = CSng(1.2 * 1 / Group.RHalfB0Ratio)
+                End If
 
 
                 'the max recruitment = RecEcop*(Ratio+1)
@@ -181,7 +184,7 @@ Namespace Ecosim
 
                 'the max x value is 
                 For i As Integer = 1 To data.NumSteps
-                    BiomassStep = CSng(i / 10) * data.HalfRecruitmentBiomass
+                    BiomassStep = CSng(i / 100 * maxXaxisValue * data.HalfRecruitmentBiomass)
                     'Recruitment is calculated as:  R = R max * No  / (Bh + No)
                     data.Recruitment(i) = data.MaxRecruitment * BiomassStep / (data.HalfRecruitmentBiomass + BiomassStep)
                     data.Biomass(i) = BiomassStep
