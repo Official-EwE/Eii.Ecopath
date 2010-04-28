@@ -48,7 +48,7 @@ Public Class gridSelectColorBlock
                                                     ByVal p_ClientRectangle As System.Drawing.Rectangle, _
                                                     ByVal p_Status As SourceGrid2.DrawCellStatus)
 
-            Me.BackColor = Me.m_parent.BlockColor(p_CellPosition.Column - 1)
+            Me.BackColor = Me.m_parent.BlockColor(p_CellPosition.Column)
             MyBase.DrawCell_Background(p_Cell, p_CellPosition, e, p_ClientRectangle, DrawCellStatus.Normal)
 
         End Sub
@@ -61,7 +61,7 @@ Public Class gridSelectColorBlock
 
             Dim border As Border = Nothing
 
-            If (p_CellPosition.Column - 1 = Me.m_parent.SelectedBlock) Then
+            If (p_CellPosition.Column = Me.m_parent.SelectedBlock) Then
                 border = New Border(Me.m_parent.HighlightColor, 3)
                 Me.Border = New RectangleBorder(border)
             Else
@@ -78,15 +78,21 @@ Public Class gridSelectColorBlock
 
 #Region " Private vars "
 
-    Private m_parent As ucCVBlockSelector = Nothing
+    ''' <summary>Block selector connected to this grid</summary>
+    Private m_parentSelector As ucCVBlockSelector = Nothing
+    ''' <summary>Cell renderer.</summary>
     Private m_vm As cCVCellVisualizer = Nothing
-    Private m_orgValue As Single = cCore.NULL_VALUE
     ''' <summary>Number of blocks.</summary>
-    Private m_nblocks As Integer = 0
-    ''' <summary>Selected block.</summary>
-    Private m_iBlock As Integer = 0
+    Private m_iNumBlocks As Integer = 0
+    ''' <summary>ONE-based index of a selected block.</summary>
+    Private m_iBlock As Integer = 1
+    ''' <summary>Selected block CV value.</summary>
+    Private m_sBlockValue As Single = cCore.NULL_VALUE
 
-    Public Event OnValueChanged(ByVal newValue As Single, ByVal Index As Integer)
+    ''' <summary>=Event, informing the world that the selected block has changed.</summary>
+    ''' <param name="sNewValue">The value of the selected block.</param>
+    ''' <param name="iBlock">The index of the newly selected block.</param>
+    Public Event OnValueChanged(ByVal sNewValue As Single, ByVal iBlock As Integer)
 
 #End Region ' Private vars
 
@@ -98,35 +104,15 @@ Public Class gridSelectColorBlock
 
 #End Region ' Constructor
 
-    Public WriteOnly Property BlockSelector() As ucCVBlockSelector
-        Set(ByVal value As ucCVBlockSelector)
-            Me.m_parent = value
-            Me.InitStyle()
-            Me.FillData()
-        End Set
-    End Property
+#Region " Public "
 
-    Protected Overrides Sub InitStyle()
+    Public Sub Attach(ByVal parentSelector As ucCVBlockSelector)
+        Me.m_parentSelector = parentSelector
+        Me.RefreshContent()
+    End Sub
 
-        ' ToDo: localize this method
-
-        If Me.m_parent Is Nothing Then Return
-
-        MyBase.InitStyle()
-
-        Me.Redim(2, Me.m_parent.NumBlocks + 1)
-        Me(0, 0) = New EwERowHeaderCell("CV")
-        Me(1, 0) = New EwERowHeaderCell("Color")
-
-        'hide the first row
-        ' JB: sourcegrid will explode if you try to edit the first row so hide it and put the cv values in the second row
-        ' JS: this is because the first row is set as fixed. Turn this off and you're ok
-        'Me.Rows(0).Height = 0
-        Me.FixedRows = 0
-
-        Me.FixedColumns = 1
-        Me.HScroll = True
-
+    Public Sub Detach()
+        Me.m_parentSelector = Nothing
     End Sub
 
     Public Property SelectedBlock() As Integer
@@ -141,9 +127,75 @@ Public Class gridSelectColorBlock
         End Set
     End Property
 
+#End Region ' Public
+
+#Region " Events "
+
+    Private Sub gridSelectColorBlock_CellGotFocus(ByVal sender As Object, ByVal e As SourceGrid2.PositionCancelEventArgs) _
+        Handles Me.CellGotFocus
+
+        Try
+            ' Parse using UI default number formatting
+            Me.m_sBlockValue = Single.Parse(CStr(Me(0, e.Position.Column).Value))
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString & " CellGotFocus() Exception: " & ex.Message)
+        End Try
+        ' Set selected block
+        Me.SelectedBlock = e.Position.Column
+
+    End Sub
+
+    Private Sub gridSelectColorBlock_CellLostFocus(ByVal sender As Object, ByVal e As SourceGrid2.PositionCancelEventArgs) _
+        Handles Me.CellLostFocus
+
+        Try
+            ' Parse using UI default number formatting
+            Dim newvalue As Single = Single.Parse(CStr(Me(0, e.Position.Column).Value))
+            Dim dif As Single = CSng(Math.Round(newvalue - Me.m_sBlockValue, 2))
+
+            'has the cell been edited
+            If dif <> 0.0 Then
+                Dim col As Integer = e.Position.Column
+                Me.m_parentSelector.BlockValues(col) = newvalue
+                RaiseEvent OnValueChanged(newvalue, col)
+            End If
+
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString & " CellLostFocus() Exception: " & ex.Message)
+        End Try
+
+    End Sub
+
+#End Region ' Events
+
+#Region " Internals "
+
+    Protected Overrides Sub InitStyle()
+
+        ' ToDo: localize this method
+
+        If Me.m_parentSelector Is Nothing Then Return
+
+        MyBase.InitStyle()
+
+        Me.Redim(2, Me.m_parentSelector.NumBlocks + 1)
+        Me(0, 0) = New EwERowHeaderCell("CV")
+        Me(1, 0) = New EwERowHeaderCell("Color")
+
+        'hide the first row
+        ' JB: sourcegrid will explode if you try to edit the first row so hide it and put the cv values in the second row
+        ' JS: this is because the first row is set as fixed. Turn this off and you're ok
+        'Me.Rows(0).Height = 0
+        Me.FixedRows = 0
+
+        Me.FixedColumns = 1
+        Me.HScroll = True
+
+    End Sub
+
     Protected Overrides Sub FillData()
 
-        If (Me.m_parent Is Nothing) Then Return
+        If (Me.m_parentSelector Is Nothing) Then Return
         If (Me.StyleGuide Is Nothing) Then Return
 
         If (Me.m_vm Is Nothing) Then
@@ -151,12 +203,15 @@ Public Class gridSelectColorBlock
         End If
 
         'Color and values come from parent control
-        Dim cvs() As Single = Me.m_parent.BlockValues
+        Dim cvs() As Single = Me.m_parentSelector.BlockValues
 
-        For i As Integer = 1 To Me.m_parent.NumBlocks
+        ' Define rows of CV cells, where each row index corresponds to a one-based CV colour and value
+        '   in the underlying arrays Me.m_parent.BlockColor (colours) and Me.m_parentSelector.BlockValues (values)
+        For i As Integer = 1 To Me.m_parentSelector.NumBlocks
 
+            ' Top row (row 0) holds CV values
             Me(0, i) = New EwECell(cvs(i), cvs(i).GetType)
-
+            ' Bottom row (row 1) holds CV colours
             Dim cell As New Cell("", GetType(String))
             cell.VisualModel = Me.m_vm
             cell.EditableMode = EditableMode.None
@@ -167,67 +222,33 @@ Public Class gridSelectColorBlock
 
     End Sub
 
-    Protected ReadOnly Property BlockColor(ByVal i As Integer) As Color
-        Get
-            If (i < Me.m_parent.NumBlocks) Then
-                Return Me.m_parent.BlockColor(i)
-            End If
-            Return Color.White
-        End Get
-    End Property
-
-    Protected ReadOnly Property HighlightColor() As Color
-        Get
-            If (Me.StyleGuide IsNot Nothing) Then
-                Return Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
-            End If
-            Return Color.Orange
-        End Get
-    End Property
-
-    Private Sub gridSelectColorBlock_CellGotFocus(ByVal sender As Object, ByVal e As SourceGrid2.PositionCancelEventArgs) _
-        Handles Me.CellGotFocus
-
-        Try
-            ' Parse using UI default number formatting
-            Me.m_orgValue = Single.Parse(CStr(Me(0, e.Position.Column).Value))
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString & " CellGotFocus() Exception: " & ex.Message)
-        End Try
-        ' Set selected block
-        Me.SelectedBlock = e.Position.Column - 1
-
+    Protected Overrides Sub InitLayout()
+        If Me.UIContext Is Nothing Then Return
+        Me.InitStyle()
+        Me.FillData()
     End Sub
 
-    Private Sub gridSelectColorBlock_CellLostFocus(ByVal sender As Object, ByVal e As SourceGrid2.PositionCancelEventArgs) _
-        Handles Me.CellLostFocus
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the block colour for a given block.
+    ''' </summary>
+    ''' <param name="i">The one-based index of the block.</param>
+    ''' <returns>The colour of the block.</returns>
+    ''' -----------------------------------------------------------------------
+    Protected Function BlockColor(ByVal i As Integer) As Color
+        If (i <= Me.m_parentSelector.NumBlocks) Then
+            Return Me.m_parentSelector.BlockColor(i)
+        End If
+        Return Color.White
+    End Function
 
-        Try
-            Dim newvalue As Single
-            ' Parse using UI default number formatting
-            newvalue = Single.Parse(CStr(Me(0, e.Position.Column).Value))
-            Dim dif As Single = CSng(Math.Round(newvalue - Me.m_orgValue, 2))
+    Protected Function HighlightColor() As Color
+        If (Me.StyleGuide IsNot Nothing) Then
+            Return Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+        End If
+        Return Color.Orange
+    End Function
 
-            'has the cell been edited
-            If dif <> 0.0 Then
-                Dim col As Integer = e.Position.Column
-                Me.m_parent.BlockValues(col) = newvalue
-                RaiseEvent OnValueChanged(newvalue, col)
-            End If
-
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString & " CellLostFocus() Exception: " & ex.Message)
-        End Try
-
-    End Sub
-
-    Public Sub populate()
-        Try
-            Me.InitStyle()
-            Me.FillData()
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
-    End Sub
+#End Region ' Internals
 
 End Class
