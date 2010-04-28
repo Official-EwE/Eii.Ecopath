@@ -61,6 +61,7 @@ Namespace Ecosim
             Me.m_zgh.AllowZoom = False
             Me.m_zgh.AllowPan = False
             Me.m_zgh.AllowEdit = True
+            Me.m_zgh.ShowPointValue = True
 
             Me.m_grid.UIContext = Me.UIContext
 
