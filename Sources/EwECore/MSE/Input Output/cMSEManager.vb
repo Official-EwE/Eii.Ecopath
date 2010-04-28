@@ -544,6 +544,7 @@ Namespace MSE
                     mseGrp.ForcastGain = Me.m_MSEdata.RstockRatio(iGroup)
 
                     mseGrp.FixedF = Me.m_MSEdata.FixedF(iGroup)
+                    mseGrp.RecruitmentCV = Me.m_MSEdata.cvRec(iGroup)
 
                     For it As Integer = 1 To Me.m_MSEdata.nYears
                         mseGrp.BiomassCV(it) = Me.m_MSEdata.CVBiomT(iGroup, it)
@@ -697,6 +698,7 @@ Namespace MSE
 
                             Me.m_MSEdata.RHalfB0Ratio(iGroup) = mseGrp.RHalfB0Ratio
                             Me.m_MSEdata.RstockRatio(iGroup) = mseGrp.ForcastGain
+                            Me.m_MSEdata.cvRec(iGroup) = mseGrp.RecruitmentCV
                             Me.m_MSEdata.FixedF(iGroup) = mseGrp.FixedF
 
                             For it As Integer = 1 To Me.m_MSEdata.nYears

@@ -90,8 +90,8 @@
             Me.tsbtDefaults.Image = CType(resources.GetObject("tsbtDefaults.Image"), System.Drawing.Image)
             Me.tsbtDefaults.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.tsbtDefaults.Name = "tsbtDefaults"
-            Me.tsbtDefaults.Size = New System.Drawing.Size(82, 22)
-            Me.tsbtDefaults.Text = "Set to defaults"
+            Me.tsbtDefaults.Size = New System.Drawing.Size(189, 22)
+            Me.tsbtDefaults.Text = "Set Recruitment/total pop. to default"
             '
             'm_grid
             '

@@ -83,6 +83,11 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.MSEFixedF, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFixedF))
             m_values.Add(val.varName, val)
 
+
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSERecruitmentCV, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERecruitmentCV))
+            m_values.Add(val.varName, val)
+
             Me.AllowValidation = True
 
         End Sub
@@ -219,6 +224,17 @@ Namespace MSE
 
             Set(ByVal value As Single)
                 SetVariable(eVarNameFlags.MSEFixedF, value)
+            End Set
+        End Property
+
+
+        Public Property RecruitmentCV() As Single
+            Get
+                Return CType(GetVariable(eVarNameFlags.MSERecruitmentCV), Single)
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSERecruitmentCV, value)
             End Set
         End Property
 

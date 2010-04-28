@@ -1010,6 +1010,7 @@ Namespace Core
         MSEUseEconomicPlugin
         RHalfB0Ratio
         MSEFixedF
+        MSERecruitmentCV
 
         'data by iteration
         MSEBiomass

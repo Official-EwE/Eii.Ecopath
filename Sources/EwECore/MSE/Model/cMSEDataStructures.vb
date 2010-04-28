@@ -426,6 +426,7 @@ End Enum
 
             Me.setDefaultRegValues()
             Me.setDefaultRecruitment()
+            Me.setDefaultRecruitmentCV()
 
         End Sub
 
@@ -624,6 +625,13 @@ End Enum
             End Get
         End Property
 
+
+        Public Sub setDefaultRecruitmentCV()
+            For igrp As Integer = 1 To NGroups
+                Me.cvRec(igrp) = 0.8
+            Next
+        End Sub
+
         ''' <summary>
         ''' Set default values for regulated fisheries
         ''' </summary>
@@ -642,7 +650,7 @@ End Enum
                     If Blim(igrp) = cCore.NULL_VALUE Then Blim(igrp) = Me.m_EPData.B(igrp) * 0.1!
                     If Bbase(igrp) = cCore.NULL_VALUE Then Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4!
                     If Fopt(igrp) = cCore.NULL_VALUE Then Fopt(igrp) = Me.m_EPData.fCatch(igrp) / (Me.m_EPData.B(igrp) + 1.0E-10F) 'Ecopath base F
-
+                    Me.RHalfB0Ratio(igrp) = 0.2
                 Next
             Next
 
@@ -659,7 +667,6 @@ End Enum
         Public Sub setDefaultRecruitment()
 
             For igrp As Integer = 1 To Me.NGroups
-                Me.RHalfB0Ratio(igrp) = 0.2
                 Me.RstockRatio(igrp) = CSng(1 - Math.Exp(-Me.m_EPData.PB(igrp)))
             Next
 
