@@ -350,7 +350,7 @@ Friend Class cMSEPlotter
 
         Select Case Me.m_dataType
 
-            Case ePlotData.Biomass, ePlotData.GroupCatch
+            Case ePlotData.Biomass, ePlotData.GroupCatch, ePlotData.BioEst
                 'By group
                 For Each grp As cCoreGroupBase In Me.m_manager.GroupInputs
                     If Me.m_uic.StyleGuide.GroupVisible(grp.Index) Then
