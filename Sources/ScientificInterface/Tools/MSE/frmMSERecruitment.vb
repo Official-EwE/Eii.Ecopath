@@ -56,7 +56,7 @@ Namespace Ecosim
 
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
-            Me.m_zgh.ConfigurePane("", My.Resources.HEADER_BIOMASS, My.Resources.HEADER_TFM, True)
+            Me.m_zgh.ConfigurePane("", My.Resources.HEADER_BIOMASS, "Recruitment", True)
 
             Me.m_zgh.AllowZoom = False
             Me.m_zgh.AllowPan = False
