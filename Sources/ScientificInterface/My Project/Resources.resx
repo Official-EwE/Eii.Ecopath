@@ -2645,4 +2645,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="CAPTION_MSEFLEETREF" xml:space="preserve">
     <value>MSE Fleet Ref. Levels</value>
   </data>
+  <data name="HEADER_RECRUITMENT" xml:space="preserve">
+    <value>Recruitment</value>
+  </data>
 </root>

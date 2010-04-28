@@ -3926,6 +3926,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Recruitment.
+        '''</summary>
+        Friend ReadOnly Property HEADER_RECRUITMENT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_RECRUITMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Recruitment ({0}).
         '''</summary>
         Friend ReadOnly Property HEADER_RECRUITMENT_UNIT() As String
