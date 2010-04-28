@@ -40,12 +40,6 @@ Public Class frmMSE
     Private m_fpStartYear As cPropertyFormatProvider
     Private m_fpSave As cPropertyFormatProvider
 
-    'Private m_fpKalman As cPropertyFormatProvider
-    'Private m_fpForecast As cPropertyFormatProvider
-    'Private m_fpSBPower As cPropertyFormatProvider
-
-    'Private m_fpUseQuotaRegs As cPropertyFormatProvider
-
     Private m_paneMaster As MasterPane = Nothing
     Private m_zgh As cZedGraphHelper = Nothing
     Private m_curState As eMSEStates
@@ -347,18 +341,30 @@ Public Class frmMSE
                     Me.btStop.Enabled = False
                     Me.btShowHide.Enabled = True
                     Me.txStartYear.Enabled = True
+                    Me.txNTrials.Enabled = True
+                    Me.ckSave.Enabled = True
+                    Label1.Enabled = True
+                    Label2.Enabled = True
 
                 Case eMSEStates.Running
                     Me.btRun.Enabled = False
                     Me.btStop.Enabled = True
                     Me.btShowHide.Enabled = False
                     Me.txStartYear.Enabled = False
+                    Me.txNTrials.Enabled = False
+                    Me.ckSave.Enabled = False
+                    Label1.Enabled = False
+                    Label2.Enabled = False
 
                 Case eMSEStates.Completed
                     Me.btRun.Enabled = True
                     Me.btStop.Enabled = False
                     Me.btShowHide.Enabled = True
                     Me.txStartYear.Enabled = True
+                    Me.txNTrials.Enabled = True
+                    Me.ckSave.Enabled = True
+                    Label1.Enabled = True
+                    Label2.Enabled = True
 
             End Select
 
