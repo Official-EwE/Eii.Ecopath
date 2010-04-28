@@ -27,6 +27,7 @@ Partial Class frmMSEPlots
         Me.components = New System.ComponentModel.Container
         Me.ZedGraph = New ZedGraph.ZedGraphControl
         Me.Panel1 = New System.Windows.Forms.Panel
+        Me.rbBioEst = New System.Windows.Forms.RadioButton
         Me.btShowHide = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
         Me.rbEffort = New System.Windows.Forms.RadioButton
@@ -37,7 +38,6 @@ Partial Class frmMSEPlots
         Me.lbType = New System.Windows.Forms.Label
         Me.rbValues = New System.Windows.Forms.RadioButton
         Me.rbHisto = New System.Windows.Forms.RadioButton
-        Me.rbBioEst = New System.Windows.Forms.RadioButton
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
@@ -74,6 +74,17 @@ Partial Class frmMSEPlots
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(654, 65)
         Me.Panel1.TabIndex = 5
+        '
+        'rbBioEst
+        '
+        Me.rbBioEst.AutoSize = True
+        Me.rbBioEst.Location = New System.Drawing.Point(105, 24)
+        Me.rbBioEst.Name = "rbBioEst"
+        Me.rbBioEst.Size = New System.Drawing.Size(92, 17)
+        Me.rbBioEst.TabIndex = 10
+        Me.rbBioEst.TabStop = True
+        Me.rbBioEst.Text = "B/B estimated"
+        Me.rbBioEst.UseVisualStyleBackColor = True
         '
         'btShowHide
         '
@@ -188,17 +199,6 @@ Partial Class frmMSEPlots
         Me.rbHisto.Tag = ""
         Me.rbHisto.Text = "Histogram"
         Me.rbHisto.UseVisualStyleBackColor = True
-        '
-        'rbBioEst
-        '
-        Me.rbBioEst.AutoSize = True
-        Me.rbBioEst.Location = New System.Drawing.Point(105, 24)
-        Me.rbBioEst.Name = "rbBioEst"
-        Me.rbBioEst.Size = New System.Drawing.Size(92, 17)
-        Me.rbBioEst.TabIndex = 10
-        Me.rbBioEst.TabStop = True
-        Me.rbBioEst.Text = "B estimated/B"
-        Me.rbBioEst.UseVisualStyleBackColor = True
         '
         'frmMSEPlots
         '

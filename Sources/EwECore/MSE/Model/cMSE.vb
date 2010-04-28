@@ -1246,6 +1246,21 @@ Namespace MSE
                 End Select
             Next ig
 
+
+            Dim val As Single
+
+            ' System.Console.WriteLine("Best/B")
+
+            For igrp As Integer = 1 To Me.m_esData.nGroups
+                val = Biomass(igrp) / Me.m_data.Bestimate(igrp)
+
+                If val > 5 Then
+                    System.Console.WriteLine("Grp=" & igrp.ToString & " " & val.ToString & ", ")
+                End If
+                '  System.Console.Write(val.ToString & ", ")
+                Me.m_data.BioEstStats.AddValue(igrp, CInt(Me.m_curT), val)
+            Next igrp
+
         End Sub
 
         ''' <summary>
@@ -1332,11 +1347,11 @@ Namespace MSE
                 Next
             Next
 
-            Dim val As Single
-            For igrp = 1 To Me.m_esData.nGroups
-                val = Me.m_data.Bestimate(igrp) / Biomass(igrp)
-                Me.m_data.BioEstStats.AddValue(igrp, CInt(Me.m_curT), val)
-            Next igrp
+            'Dim val As Single
+            'For igrp = 1 To Me.m_esData.nGroups
+            '    val = Me.m_data.Bestimate(igrp) / Biomass(igrp)
+            '    Me.m_data.BioEstStats.AddValue(igrp, CInt(Me.m_curT), val)
+            'Next igrp
 
             Me.StoreQuotas(tQuota)
 

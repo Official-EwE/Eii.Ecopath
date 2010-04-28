@@ -278,6 +278,11 @@ Friend Class cMSEPlotter
             Case ePlotData.Biomass
                 Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
                 refPoint = New cMSERefPoint(grp.BiomassRefLower, grp.BiomassRefUpper)
+
+            Case ePlotData.BioEst
+                Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
+                refPoint = New cMSERefPoint(grp.BiomassRefLower, grp.BiomassRefUpper)
+
             Case ePlotData.GroupCatch
                 Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
                 refPoint = New cMSERefPoint(grp.CatchRefLower, grp.CatchRefUpper)
