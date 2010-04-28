@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: cTreeViewNodeController.vb,v $
-' Revision 1.4  2009/05/11 01:50:51  jeroens
-' Renamed command classes
-'
-' Revision 1.3  2009/04/06 15:31:50  jeroens
-' Fixed withevents mem leak
-'
-' Revision 1.2  2008/12/15 15:37:27  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:20  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/07/31 20:45:03  jeroens
-' Fixed CLS compliancy state
-'
-' Revision 1.1  2008/06/01 23:45:11  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.1  2007/06/14 14:57:07  jeroens
-' * Separated off of NavigationPanel
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -52,6 +26,10 @@ Namespace Controls
         Private m_tv As TreeView = Nothing
         ''' <summary>List of added nodes</summary>
         Private m_lNodeInfo As New List(Of cNodeInfo)
+        ''' <summary>Default node to select.</summary>
+        Private m_niDefault As cNodeInfo = Nothing
+
+#Region " Public access "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -105,8 +83,14 @@ Namespace Controls
         Public Sub Add(ByVal strTreeNodeName As String, _
                        ByVal execstate As eCoreExecutionState, _
                        ByVal tClass As Type, _
-                       Optional ByVal strHelpURL As String = "")
-            m_lNodeInfo.Add(New cNodeInfo(strTreeNodeName, execstate, tClass, strHelpURL))
+                       Optional ByVal strHelpURL As String = "", _
+                       Optional ByVal bIsDefault As Boolean = False)
+
+            Dim ni As New cNodeInfo(strTreeNodeName, execstate, tClass, strHelpURL)
+            Me.m_lNodeInfo.Add(ni)
+            If bIsDefault Then
+                Me.m_niDefault = ni
+            End If
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -128,17 +112,6 @@ Namespace Controls
             Return Nothing
         End Function
 
-        Public Function SearchNodeByType(ByVal strNodeType As String) As cNodeInfo
-
-            For Each nd As cNodeInfo In m_lNodeInfo
-                If strNodeType = nd.Type.ToString Then
-                    Return nd
-                End If
-            Next
-            Return Nothing
-
-        End Function
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Helper method, expands a nested series of child nodes with one child.
@@ -156,6 +129,23 @@ Namespace Controls
             End If
             node.EnsureVisible()
         End Sub
+
+        ''' -------------------------------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the name of the default node to select in case the current
+        ''' node is cleared.
+        ''' </summary>
+        ''' -------------------------------------------------------------------------------------------
+        Public ReadOnly Property DefaultNodeName() As String
+            Get
+                If Me.m_niDefault Is Nothing Then Return ""
+                Return Me.m_niDefault.NodeName
+            End Get
+        End Property
+
+#End Region ' Public access
+
+#Region " Internals "
 
         Private Sub ExpandChildren(ByVal node As TreeNode)
             If node.GetNodeCount(False) = 1 Then
@@ -231,6 +221,8 @@ Namespace Controls
             End If
 
         End Sub
+
+#End Region ' Internals
 
     End Class
 
