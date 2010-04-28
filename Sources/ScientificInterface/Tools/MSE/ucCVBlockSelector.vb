@@ -53,12 +53,17 @@ Public Class ucCVBlockSelector
             Return Me.m_uic
         End Get
         Set(ByVal value As cUIContext)
+
+            If (Me.m_uic IsNot Nothing) Then
+                Me.m_gridSelector.Detach()
+            End If
+
             Me.m_uic = value
 
-            Me.m_gridSelector.UIContext = value
-            Me.m_gridSelector.BlockSelector = Me
-            Me.m_gridSelector.Dock = DockStyle.None
-
+            If (Me.m_uic IsNot Nothing) Then
+                Me.m_gridSelector.Attach(Me)
+                Me.m_gridSelector.UIContext = value
+            End If
         End Set
     End Property
 
@@ -78,7 +83,7 @@ Public Class ucCVBlockSelector
     Public ReadOnly Property BlockColors() As System.Drawing.Color() _
         Implements IBlockSelector.BlockColors
         Get
-            Dim lcolors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.NumBlocks)
+            Dim lcolors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.NumBlocks + 2) ' +2 to spread the max colours a bit better
             Return lcolors.ToArray
         End Get
     End Property
@@ -92,14 +97,12 @@ Public Class ucCVBlockSelector
 
         Set(ByVal value As Integer)
             Me.m_numBlocks = value
-
             Try
                 Me.setCVsToNBlocks()
                 Me.m_gridSelector.Invalidate()
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".NumBlocks() Exception: " & ex.Message)
             End Try
-
         End Set
 
     End Property
@@ -181,6 +184,11 @@ Public Class ucCVBlockSelector
 
 #Region " Public interfaces "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' ONE based array of block values
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property BlockValues() As Single()
         Get
             Return Me.m_cvs
@@ -198,7 +206,7 @@ Public Class ucCVBlockSelector
             End Try
 
             'populate the grid selector with the new values
-            Me.m_gridSelector.populate()
+            Me.m_gridSelector.RefreshContent()
 
         End Set
 
