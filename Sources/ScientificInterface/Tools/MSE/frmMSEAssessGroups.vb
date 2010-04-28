@@ -6,6 +6,11 @@ Imports EwECore.MSE
 
 #End Region ' Imports
 
+''' ===========================================================================
+''' <summary>
+''' Form implementing the MSE Group CV / Assessment interface.
+''' </summary>
+''' ===========================================================================
 Public Class frmMSEAssessGroups
 
     Public Sub New()
@@ -22,15 +27,12 @@ Public Class frmMSEAssessGroups
         End Set
     End Property
 
-
-    Private Sub frmMSEAssessGroups_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-        'attach the datasource and the block selector to the ucPolicyColorBlocks control
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
+        ' Attach the datasource and the block selector to the ucPolicyColorBlocks control
         Dim ds As New cMSEGroupColorBlockDataSource(Me.UIContext)
         Me.m_blocks.Attach(ds, New ucCVBlockSelector)
-
     End Sub
-
 
 End Class
 
@@ -42,31 +44,34 @@ Public Class cMSEGroupColorBlockDataSource
     Implements IPolicyColorBlockDataSource
 
     Private m_uic As cUIContext
-
     Private m_BlockCells(,) As Integer
-
     Private m_blockCodes As ucCVBlockSelector
     Private m_iTotalBlocks As Integer
     Private m_batchEdit As Boolean
-
-    Public ReadOnly Property BlockCells() As Integer(,) Implements IPolicyColorBlockDataSource.BlockCells
-        Get
-            Return m_BlockCells
-        End Get
-    End Property
-
-
-    Public ReadOnly Property TotalBlocks() As Integer Implements IPolicyColorBlockDataSource.TotalBlocks
-        Get
-            Return Me.m_uic.Core.EcoSimModelParameters.NumberYears
-        End Get
-    End Property
 
     Public Sub New(ByVal UIContext As cUIContext)
         Me.m_uic = UIContext
     End Sub
 
-    Public Sub Atatch(ByVal Blocks As IBlockSelector) Implements IPolicyColorBlockDataSource.Attach
+    ''' <inheritdoc cref="IPolicyColorBlockDataSource.BlockCells"/>
+    Public ReadOnly Property BlockCells() As Integer(,) _
+        Implements IPolicyColorBlockDataSource.BlockCells
+        Get
+            Return m_BlockCells
+        End Get
+    End Property
+
+    ''' <inheritdoc cref="IPolicyColorBlockDataSource.TotalBlocks"/>
+    Public ReadOnly Property TotalBlocks() As Integer _
+        Implements IPolicyColorBlockDataSource.TotalBlocks
+        Get
+            Return Me.m_uic.Core.EcoSimModelParameters.NumberYears
+        End Get
+    End Property
+
+    ''' <inheritdoc cref="IPolicyColorBlockDataSource.Attach"/>
+    Public Sub Attach(ByVal Blocks As IBlockSelector) _
+        Implements IPolicyColorBlockDataSource.Attach
 
         Debug.Assert(TypeOf Blocks Is ucCVBlockSelector, Me.ToString & ".Atatch() Blocks must be a ucCVBlockSelector!")
         Try
@@ -107,7 +112,9 @@ Public Class cMSEGroupColorBlockDataSource
         End Try
     End Sub
 
-    Public Sub Init() Implements IPolicyColorBlockDataSource.Init
+    ''' <inheritdoc cref="IPolicyColorBlockDataSource.Init"/>
+    Public Sub Init() _
+        Implements IPolicyColorBlockDataSource.Init
 
         m_iTotalBlocks = Me.m_uic.Core.EcoSimModelParameters.NumberYears
 
@@ -123,7 +130,9 @@ Public Class cMSEGroupColorBlockDataSource
 
     End Sub
 
-    Public Sub FillBlock(ByVal iRow As Integer, ByVal iCol As Integer) Implements IPolicyColorBlockDataSource.FillBlock
+    ''' <inheritdoc cref="IPolicyColorBlockDataSource.FillBlock"/>
+    Public Sub FillBlock(ByVal iRow As Integer, ByVal iCol As Integer) _
+        Implements IPolicyColorBlockDataSource.FillBlock
 
         ' Sanity checks
         'If (iCol <= Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters.BaseYear) Then Return
@@ -138,19 +147,27 @@ Public Class cMSEGroupColorBlockDataSource
 
     End Sub
 
-    Public Sub SetSeqColorCodes(ByVal startYear As Integer, ByVal endYear As Integer, ByVal yearPerBlock As Integer) Implements IPolicyColorBlockDataSource.SetSeqColorCodes
+    ''' <inheritdoc cref="IPolicyColorBlockDataSource.SetSeqColorCodes"/>
+    Public Sub SetSeqColorCodes(ByVal startYear As Integer, _
+                                ByVal endYear As Integer, _
+                                ByVal yearPerBlock As Integer) _
+        Implements IPolicyColorBlockDataSource.SetSeqColorCodes
 
         'Sequence years not implemented for MSE groups
 
     End Sub
 
-    Public ReadOnly Property nRows() As Integer Implements IPolicyColorBlockDataSource.nRows
+    ''' <inheritdoc cref="IPolicyColorBlockDataSource.nRows"/>
+    Public ReadOnly Property nRows() As Integer _
+        Implements IPolicyColorBlockDataSource.nRows
         Get
             Return Me.m_uic.Core.nGroups
         End Get
     End Property
 
-    Public ReadOnly Property RowLabel(ByVal iRow As Integer) As String Implements IPolicyColorBlockDataSource.RowLabel
+    ''' <inheritdoc cref="IPolicyColorBlockDataSource.RowLabel"/>
+    Public ReadOnly Property RowLabel(ByVal iRow As Integer) As String _
+        Implements IPolicyColorBlockDataSource.RowLabel
         Get
             Try
                 Return Me.m_uic.Core.MSEManager.GroupInputs(iRow).Name
@@ -161,7 +178,9 @@ Public Class cMSEGroupColorBlockDataSource
         End Get
     End Property
 
-    Public Property BatchEdit() As Boolean Implements Ecosim.IPolicyColorBlockDataSource.BatchEdit
+    ''' <inheritdoc cref="IPolicyColorBlockDataSource.BatchEdit"/>
+    Public Property BatchEdit() As Boolean _
+        Implements Ecosim.IPolicyColorBlockDataSource.BatchEdit
         Get
             Return Me.m_batchEdit
         End Get
@@ -179,7 +198,9 @@ Public Class cMSEGroupColorBlockDataSource
 
     End Property
 
-    Public Sub Update() Implements Ecosim.IPolicyColorBlockDataSource.Update
+    ''' <inheritdoc cref="IPolicyColorBlockDataSource.Update"/>
+    Public Sub Update() _
+        Implements Ecosim.IPolicyColorBlockDataSource.Update
 
         Try
             For igrp As Integer = 1 To Me.m_uic.Core.nGroups
@@ -194,7 +215,9 @@ Public Class cMSEGroupColorBlockDataSource
         End Try
     End Sub
 
-    Public ReadOnly Property isControlPanelVisible() As Boolean Implements Ecosim.IPolicyColorBlockDataSource.isControlPanelVisible
+    ''' <inheritdoc cref="IPolicyColorBlockDataSource.isControlPanelVisible"/>
+    Public ReadOnly Property isControlPanelVisible() As Boolean _
+        Implements Ecosim.IPolicyColorBlockDataSource.isControlPanelVisible
         Get
             Return False
         End Get
