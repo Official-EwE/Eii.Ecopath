@@ -6,6 +6,7 @@ Imports EwEUtils.Core
 Imports System.Windows.Forms
 Imports ZedGraph
 Imports EwECore.MSE
+Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -49,6 +50,8 @@ Namespace Ecosim
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
+            Dim group As cMSEGroupInput = Nothing
+
             If Me.UIContext Is Nothing Then Return
 
             Me.m_zgh = New cZedGraphHelper()
@@ -60,40 +63,51 @@ Namespace Ecosim
             Me.m_zgh.AllowEdit = True
 
             Me.m_grid.UIContext = Me.UIContext
-            If (Core.nGroups > 0) Then
-                Me.m_grid.Group = Me.Core.MSEManager.GroupInputs(1)
-            End If
+
+            ' Select first group with likely values
+            For iGroup As Integer = 1 To Core.nGroups
+                ' Get group
+                group = Me.Core.MSEManager.GroupInputs(iGroup)
+                ' Has forcastgain value?
+                If ((group.GetStatus(eVarNameFlags.MSEForcastGain) And eStatusFlags.Null) = 0) Then
+                    ' #Yep: select group in grid (which will update this group too)
+                    Me.m_grid.Group = group
+                    ' Bail out
+                    Exit For
+                End If
+            Next
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             If Me.m_zgh IsNot Nothing Then
-                Me.Group = Nothing
                 Me.m_zgh.Detach()
                 Me.m_zgh = Nothing
             End If
-
+            Me.Group = Nothing
             MyBase.OnFormClosed(e)
+
         End Sub
 
-        Private Sub HandleGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
+        Private Sub HandleGridSelectionChanged(ByVal selection As CellVirtualCollection) _
             Handles m_grid.OnSelectionChanged
             ' Update group selection according to user actions in the grid
             Me.Group = Me.m_grid.Group
         End Sub
 
-        Private Sub HandlePropertyChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
-            ' A relevant property has changed: redraw the graph
-            Me.Redraw()
-        End Sub
-
-        Private Sub tsbtDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbtDefaults.Click
+        Private Sub tsbtDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles tsbtDefaults.Click
             Try
                 Me.Core.SetDefaultMSERecruitment()
             Catch ex As Exception
-
+                ' Yippee
             End Try
+        End Sub
+
+        Private Sub HandlePropertyChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
+            ' A relevant property has changed: redraw the graph
+            Me.Redraw()
         End Sub
 
 #End Region ' Events
@@ -102,7 +116,7 @@ Namespace Ecosim
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the group in the form
+        ''' Get/set the group to select in the form.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Property Group() As cMSEGroupInput
@@ -128,7 +142,7 @@ Namespace Ecosim
                     AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEForcastGain).PropertyChanged, AddressOf HandlePropertyChanged
                 End If
 
-                ' Redraw the glaph
+                ' Redraw the graph
                 Me.Redraw()
 
             End Set
@@ -198,10 +212,12 @@ Namespace Ecosim
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Redraw the quota curve.
+        ''' Redraw the recruitment curve.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub Redraw()
+
+            ' ToDo_JS: globalize this method
 
             If Me.m_zgh Is Nothing Then Return
 
@@ -220,8 +236,11 @@ Namespace Ecosim
                 End If
             End If
 
-            If data.NumSteps > 0 Then
+            ' Did any lines get manufactured?
+            If lLines.Count > 0 Then
 
+                '#Yes: plot graph
+                '  - fix graph scale
                 Me.m_zgh.YScaleMax = data.MaxRecruitment * 1.2
                 Me.m_zgh.XScaleMax = data.Biomass(data.NumSteps - 1)
 
@@ -229,7 +248,7 @@ Namespace Ecosim
                 '  - place a horizontal, stippled?, grey line at: maxRecruitment 
                 lpts = New PointPairList()
                 lpts.Add(0.0!, data.MaxRecruitment) : lpts.Add(Me.m_zgh.XScaleMax, data.MaxRecruitment)
-                lLines.Add(Me.m_zgh.CreateLineItem("Max. recruitment", eLineType.NotSet, Color.DarkSlateGray, lpts))
+                lLines.Add(Me.m_zgh.CreateLineItem("Max. recruitment", eLineType.NotSet, Color.Gray, lpts))
 
                 '  - place a horizontal, stippled?, grey line at: maxRecruitment / 2
                 lpts = New PointPairList()
@@ -246,12 +265,13 @@ Namespace Ecosim
                 lpts.Add(data.EcopathBiomass, 0.0!) : lpts.Add(data.EcopathBiomass, Me.m_zgh.YScaleMax)
                 lLines.Add(Me.m_zgh.CreateLineItem("Ecopath biomass", eLineType.NotSet, Color.Red, lpts))
 
+                ' place lines
                 Me.m_zgh.PlotLines(lLines.ToArray)
-                Me.m_graph.Cursor = Cursors.Default
+                'Me.m_graph.Cursor = Cursors.Default
             Else
                 ' Clear graph
                 Me.m_zgh.PlotLines(Nothing)
-                Me.m_graph.Cursor = Cursors.No
+                'Me.m_graph.Cursor = Cursors.No
             End If
 
         End Sub
