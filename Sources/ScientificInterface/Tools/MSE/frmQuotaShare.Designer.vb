@@ -35,29 +35,21 @@
             'm_tss
             '
             Me.m_tss.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefaults, Me.m_tsSumtoOneBtn})
-            Me.m_tss.Location = New System.Drawing.Point(0, 0)
+            resources.ApplyResources(Me.m_tss, "m_tss")
             Me.m_tss.Name = "m_tss"
-            Me.m_tss.Size = New System.Drawing.Size(327, 25)
-            Me.m_tss.TabIndex = 2
-            Me.m_tss.Text = "ToolStrip1"
             '
             'm_tsbnDefaults
             '
             Me.m_tsbnDefaults.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsbnDefaults.Image = CType(resources.GetObject("m_tsbnDefaults.Image"), System.Drawing.Image)
-            Me.m_tsbnDefaults.ImageTransparentColor = System.Drawing.Color.Magenta
+            resources.ApplyResources(Me.m_tsbnDefaults, "m_tsbnDefaults")
             Me.m_tsbnDefaults.Name = "m_tsbnDefaults"
-            Me.m_tsbnDefaults.Size = New System.Drawing.Size(82, 22)
-            Me.m_tsbnDefaults.Text = "Set to &defaults"
             '
             'm_tsSumtoOneBtn
             '
             Me.m_tsSumtoOneBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             Me.m_tsSumtoOneBtn.Image = Global.ScientificInterface.My.Resources.Resources.OptionsIconSM
-            Me.m_tsSumtoOneBtn.ImageTransparentColor = System.Drawing.Color.Magenta
+            resources.ApplyResources(Me.m_tsSumtoOneBtn, "m_tsSumtoOneBtn")
             Me.m_tsSumtoOneBtn.Name = "m_tsSumtoOneBtn"
-            Me.m_tsSumtoOneBtn.Size = New System.Drawing.Size(65, 22)
-            Me.m_tsSumtoOneBtn.Text = "Sum to &one"
             '
             'm_grid
             '
@@ -71,13 +63,11 @@
                         Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
-            Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
-            Me.m_grid.Location = New System.Drawing.Point(0, 25)
             Me.m_grid.Name = "m_grid"
-            Me.m_grid.Size = New System.Drawing.Size(327, 132)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -87,20 +77,16 @@
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TabIndex = 3
             Me.m_grid.TrackPropertySelection = True
             Me.m_grid.UIContext = Nothing
             '
             'frmQuotaShare
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(327, 157)
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_tss)
-            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmQuotaShare"
-            Me.Text = "MSE quota share"
             Me.m_tss.ResumeLayout(False)
             Me.m_tss.PerformLayout()
             Me.ResumeLayout(False)

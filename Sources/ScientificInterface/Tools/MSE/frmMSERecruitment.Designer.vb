@@ -40,11 +40,8 @@
             'm_scMain
             '
             Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_scMain.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_scMain.Location = New System.Drawing.Point(0, 0)
-            Me.m_scMain.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.m_scMain, "m_scMain")
             Me.m_scMain.Name = "m_scMain"
-            Me.m_scMain.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
             'm_scMain.Panel1
             '
@@ -54,15 +51,11 @@
             '
             Me.m_scMain.Panel2.Controls.Add(Me.tsToolStrip)
             Me.m_scMain.Panel2.Controls.Add(Me.m_grid)
-            Me.m_scMain.Size = New System.Drawing.Size(656, 392)
-            Me.m_scMain.SplitterDistance = 137
-            Me.m_scMain.TabIndex = 1
             '
             'm_graph
             '
-            Me.m_graph.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.EditModifierKeys = System.Windows.Forms.Keys.None
-            Me.m_graph.Location = New System.Drawing.Point(0, 0)
             Me.m_graph.Name = "m_graph"
             Me.m_graph.ScrollGrace = 0
             Me.m_graph.ScrollMaxX = 0
@@ -71,33 +64,23 @@
             Me.m_graph.ScrollMinX = 0
             Me.m_graph.ScrollMinY = 0
             Me.m_graph.ScrollMinY2 = 0
-            Me.m_graph.Size = New System.Drawing.Size(652, 133)
-            Me.m_graph.TabIndex = 0
             Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
             '
             'tsToolStrip
             '
             Me.tsToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbtDefaults})
-            Me.tsToolStrip.Location = New System.Drawing.Point(0, 0)
+            resources.ApplyResources(Me.tsToolStrip, "tsToolStrip")
             Me.tsToolStrip.Name = "tsToolStrip"
-            Me.tsToolStrip.Size = New System.Drawing.Size(652, 25)
-            Me.tsToolStrip.TabIndex = 1
-            Me.tsToolStrip.Text = "ToolStrip1"
             '
             'tsbtDefaults
             '
             Me.tsbtDefaults.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.tsbtDefaults.Image = CType(resources.GetObject("tsbtDefaults.Image"), System.Drawing.Image)
-            Me.tsbtDefaults.ImageTransparentColor = System.Drawing.Color.Magenta
+            resources.ApplyResources(Me.tsbtDefaults, "tsbtDefaults")
             Me.tsbtDefaults.Name = "tsbtDefaults"
-            Me.tsbtDefaults.Size = New System.Drawing.Size(189, 22)
-            Me.tsbtDefaults.Text = "Set Recruitment/total pop. to default"
             '
             'm_grid
             '
-            Me.m_grid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -112,9 +95,7 @@
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.Group = Nothing
-            Me.m_grid.Location = New System.Drawing.Point(0, 28)
             Me.m_grid.Name = "m_grid"
-            Me.m_grid.Size = New System.Drawing.Size(652, 219)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -124,19 +105,15 @@
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TabIndex = 0
             Me.m_grid.TrackPropertySelection = True
             Me.m_grid.UIContext = Nothing
             '
             'frmMSERecruitment
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(656, 392)
             Me.Controls.Add(Me.m_scMain)
-            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmMSERecruitment"
-            Me.Text = "MSE recruitment"
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.Panel2.PerformLayout()

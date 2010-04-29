@@ -26,77 +26,51 @@ Partial Class frmMSE
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Me.btRun = New System.Windows.Forms.Button
-        Me.txNTrials = New System.Windows.Forms.TextBox
-        Me.Label1 = New System.Windows.Forms.Label
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSE))
+        Me.m_btRun = New System.Windows.Forms.Button
+        Me.m_lblNumTrials = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
         Me.btStop = New System.Windows.Forms.Button
         Me.zdGraph = New ZedGraph.ZedGraphControl
         Me.btShowHide = New System.Windows.Forms.Button
         Me.ckSave = New System.Windows.Forms.CheckBox
-        Me.txStartYear = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
+        Me.m_lblStartYear = New System.Windows.Forms.Label
+        Me.m_tlpTop = New System.Windows.Forms.TableLayoutPanel
+        Me.m_nudStartYear = New System.Windows.Forms.NumericUpDown
+        Me.m_nudNumTrials = New System.Windows.Forms.NumericUpDown
+        Me.m_tlpTop.SuspendLayout()
+        CType(Me.m_nudStartYear, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudNumTrials, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'btRun
+        'm_btRun
         '
-        Me.btRun.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btRun.Location = New System.Drawing.Point(5, 9)
-        Me.btRun.Margin = New System.Windows.Forms.Padding(0)
-        Me.btRun.Name = "btRun"
-        Me.btRun.Size = New System.Drawing.Size(146, 22)
-        Me.btRun.TabIndex = 0
-        Me.btRun.Text = "&Run"
-        Me.btRun.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btRun, "m_btRun")
+        Me.m_btRun.Name = "m_btRun"
+        Me.m_btRun.UseVisualStyleBackColor = True
         '
-        'txNTrials
+        'm_lblNumTrials
         '
-        Me.txNTrials.Location = New System.Drawing.Point(660, 10)
-        Me.txNTrials.Name = "txNTrials"
-        Me.txNTrials.Size = New System.Drawing.Size(63, 20)
-        Me.txNTrials.TabIndex = 2
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(576, 14)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(83, 13)
-        Me.Label1.TabIndex = 3
-        Me.Label1.Text = "Number of trials:"
+        resources.ApplyResources(Me.m_lblNumTrials, "m_lblNumTrials")
+        Me.m_lblNumTrials.Name = "m_lblNumTrials"
         '
         'Label3
         '
-        Me.Label3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.Label3, "Label3")
         Me.Label3.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label3.Location = New System.Drawing.Point(5, 34)
         Me.Label3.Name = "Label3"
-        Me.Label3.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label3.Size = New System.Drawing.Size(892, 22)
-        Me.Label3.TabIndex = 9
-        Me.Label3.Text = "Outputs"
-        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'btStop
         '
-        Me.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btStop.Location = New System.Drawing.Point(154, 9)
+        resources.ApplyResources(Me.btStop, "btStop")
         Me.btStop.Name = "btStop"
-        Me.btStop.Size = New System.Drawing.Size(146, 22)
-        Me.btStop.TabIndex = 26
-        Me.btStop.Text = "Stop"
         Me.btStop.UseVisualStyleBackColor = True
         '
         'zdGraph
         '
-        Me.zdGraph.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.zdGraph.Location = New System.Drawing.Point(5, 56)
-        Me.zdGraph.Margin = New System.Windows.Forms.Padding(0)
+        resources.ApplyResources(Me.zdGraph, "zdGraph")
+        Me.zdGraph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.zdGraph.Name = "zdGraph"
         Me.zdGraph.ScrollGrace = 0
         Me.zdGraph.ScrollMaxX = 0
@@ -105,76 +79,71 @@ Partial Class frmMSE
         Me.zdGraph.ScrollMinX = 0
         Me.zdGraph.ScrollMinY = 0
         Me.zdGraph.ScrollMinY2 = 0
-        Me.zdGraph.Size = New System.Drawing.Size(892, 711)
-        Me.zdGraph.TabIndex = 27
         '
         'btShowHide
         '
-        Me.btShowHide.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btShowHide.Location = New System.Drawing.Point(316, 10)
+        resources.ApplyResources(Me.btShowHide, "btShowHide")
         Me.btShowHide.Name = "btShowHide"
-        Me.btShowHide.Size = New System.Drawing.Size(145, 21)
-        Me.btShowHide.TabIndex = 32
-        Me.btShowHide.Text = "Show/hide items..."
         Me.btShowHide.UseVisualStyleBackColor = True
         '
         'ckSave
         '
-        Me.ckSave.AutoSize = True
-        Me.ckSave.Enabled = False
-        Me.ckSave.Location = New System.Drawing.Point(467, 13)
+        resources.ApplyResources(Me.ckSave, "ckSave")
         Me.ckSave.Name = "ckSave"
-        Me.ckSave.Size = New System.Drawing.Size(84, 17)
-        Me.ckSave.TabIndex = 36
-        Me.ckSave.Text = "Save output"
         Me.ckSave.UseVisualStyleBackColor = True
         '
-        'txStartYear
+        'm_lblStartYear
         '
-        Me.txStartYear.Location = New System.Drawing.Point(813, 11)
-        Me.txStartYear.Name = "txStartYear"
-        Me.txStartYear.Size = New System.Drawing.Size(66, 20)
-        Me.txStartYear.TabIndex = 37
+        resources.ApplyResources(Me.m_lblStartYear, "m_lblStartYear")
+        Me.m_lblStartYear.Name = "m_lblStartYear"
         '
-        'Label2
+        'm_tlpTop
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(752, 14)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(55, 13)
-        Me.Label2.TabIndex = 38
-        Me.Label2.Text = "Start year:"
+        resources.ApplyResources(Me.m_tlpTop, "m_tlpTop")
+        Me.m_tlpTop.Controls.Add(Me.m_lblStartYear, 9, 0)
+        Me.m_tlpTop.Controls.Add(Me.btStop, 1, 0)
+        Me.m_tlpTop.Controls.Add(Me.btShowHide, 2, 0)
+        Me.m_tlpTop.Controls.Add(Me.m_btRun, 0, 0)
+        Me.m_tlpTop.Controls.Add(Me.m_nudStartYear, 10, 0)
+        Me.m_tlpTop.Controls.Add(Me.m_lblNumTrials, 6, 0)
+        Me.m_tlpTop.Controls.Add(Me.ckSave, 4, 0)
+        Me.m_tlpTop.Controls.Add(Me.m_nudNumTrials, 7, 0)
+        Me.m_tlpTop.Name = "m_tlpTop"
+        '
+        'm_nudStartYear
+        '
+        resources.ApplyResources(Me.m_nudStartYear, "m_nudStartYear")
+        Me.m_nudStartYear.Name = "m_nudStartYear"
+        '
+        'm_nudNumTrials
+        '
+        resources.ApplyResources(Me.m_nudNumTrials, "m_nudNumTrials")
+        Me.m_nudNumTrials.Name = "m_nudNumTrials"
         '
         'frmMSE
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(906, 776)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.txStartYear)
-        Me.Controls.Add(Me.btShowHide)
-        Me.Controls.Add(Me.ckSave)
+        Me.Controls.Add(Me.m_tlpTop)
         Me.Controls.Add(Me.zdGraph)
-        Me.Controls.Add(Me.btStop)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.txNTrials)
-        Me.Controls.Add(Me.btRun)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSE"
-        Me.Text = "Run MSE"
+        Me.m_tlpTop.ResumeLayout(False)
+        Me.m_tlpTop.PerformLayout()
+        CType(Me.m_nudStartYear, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudNumTrials, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
-    Private WithEvents btRun As System.Windows.Forms.Button
-    Private WithEvents txNTrials As System.Windows.Forms.TextBox
-    Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_btRun As System.Windows.Forms.Button
+    Private WithEvents m_lblNumTrials As System.Windows.Forms.Label
     Private WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents btStop As System.Windows.Forms.Button
+    Private WithEvents btStop As System.Windows.Forms.Button
     Private WithEvents zdGraph As ZedGraph.ZedGraphControl
-    Friend WithEvents btShowHide As System.Windows.Forms.Button
-    Friend WithEvents ckSave As System.Windows.Forms.CheckBox
-    Friend WithEvents txStartYear As System.Windows.Forms.TextBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Private WithEvents btShowHide As System.Windows.Forms.Button
+    Private WithEvents m_lblStartYear As System.Windows.Forms.Label
+    Private WithEvents m_tlpTop As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents ckSave As System.Windows.Forms.CheckBox
+    Private WithEvents m_nudNumTrials As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudStartYear As System.Windows.Forms.NumericUpDown
 End Class

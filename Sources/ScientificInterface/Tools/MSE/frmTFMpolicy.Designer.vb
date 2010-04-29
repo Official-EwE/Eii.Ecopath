@@ -25,6 +25,7 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTargetFishingMortalityPolicy))
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_graph = New ZedGraph.ZedGraphControl
             Me.m_grid = New ScientificInterface.Ecosim.gridTargetFishingMortalityPolicy
@@ -36,11 +37,8 @@
             'm_scMain
             '
             Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_scMain.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_scMain.Location = New System.Drawing.Point(0, 0)
-            Me.m_scMain.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.m_scMain, "m_scMain")
             Me.m_scMain.Name = "m_scMain"
-            Me.m_scMain.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
             'm_scMain.Panel1
             '
@@ -49,15 +47,11 @@
             'm_scMain.Panel2
             '
             Me.m_scMain.Panel2.Controls.Add(Me.m_grid)
-            Me.m_scMain.Size = New System.Drawing.Size(656, 392)
-            Me.m_scMain.SplitterDistance = 245
-            Me.m_scMain.TabIndex = 1
             '
             'm_graph
             '
-            Me.m_graph.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.EditModifierKeys = System.Windows.Forms.Keys.None
-            Me.m_graph.Location = New System.Drawing.Point(0, 0)
             Me.m_graph.Name = "m_graph"
             Me.m_graph.ScrollGrace = 0
             Me.m_graph.ScrollMaxX = 0
@@ -66,8 +60,6 @@
             Me.m_graph.ScrollMinX = 0
             Me.m_graph.ScrollMinY = 0
             Me.m_graph.ScrollMinY2 = 0
-            Me.m_graph.Size = New System.Drawing.Size(652, 241)
-            Me.m_graph.TabIndex = 0
             Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
             '
             'm_grid
@@ -82,14 +74,12 @@
                         Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
-            Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.Group = Nothing
-            Me.m_grid.Location = New System.Drawing.Point(0, 0)
             Me.m_grid.Name = "m_grid"
-            Me.m_grid.Size = New System.Drawing.Size(652, 139)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -99,19 +89,15 @@
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TabIndex = 0
             Me.m_grid.TrackPropertySelection = True
             Me.m_grid.UIContext = Nothing
             '
             'frmTargetFishingMortalityPolicy
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(656, 392)
             Me.Controls.Add(Me.m_scMain)
-            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmTargetFishingMortalityPolicy"
-            Me.Text = "TFM policy"
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)

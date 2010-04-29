@@ -27,7 +27,7 @@ Partial Class frmMSEResults
     Private Sub InitializeComponent()
         Me.rbGroup = New System.Windows.Forms.RadioButton
         Me.rbFleet = New System.Windows.Forms.RadioButton
-        Me.Grid = New ScientificInterface.gridRiskResults
+        Me.m_grid = New ScientificInterface.gridRiskResults
         Me.pnlGrid = New System.Windows.Forms.Panel
         Me.pnlGrid.SuspendLayout()
         Me.SuspendLayout()
@@ -36,45 +36,45 @@ Partial Class frmMSEResults
         '
         Me.rbGroup.AutoSize = True
         Me.rbGroup.Checked = True
-        Me.rbGroup.Location = New System.Drawing.Point(15, 10)
+        Me.rbGroup.Location = New System.Drawing.Point(1, 10)
         Me.rbGroup.Name = "rbGroup"
         Me.rbGroup.Size = New System.Drawing.Size(54, 17)
         Me.rbGroup.TabIndex = 0
         Me.rbGroup.TabStop = True
-        Me.rbGroup.Text = "Group"
+        Me.rbGroup.Text = "&Group"
         Me.rbGroup.UseVisualStyleBackColor = True
         '
         'rbFleet
         '
         Me.rbFleet.AutoSize = True
-        Me.rbFleet.Location = New System.Drawing.Point(75, 10)
+        Me.rbFleet.Location = New System.Drawing.Point(72, 10)
         Me.rbFleet.Name = "rbFleet"
         Me.rbFleet.Size = New System.Drawing.Size(48, 17)
         Me.rbFleet.TabIndex = 3
-        Me.rbFleet.Text = "Fleet"
+        Me.rbFleet.Text = "&Fleet"
         Me.rbFleet.UseVisualStyleBackColor = True
         '
-        'Grid
+        'm_grid
         '
-        Me.Grid.AutoSizeMinHeight = 10
-        Me.Grid.AutoSizeMinWidth = 10
-        Me.Grid.AutoStretchColumnsToFitWidth = False
-        Me.Grid.AutoStretchRowsToFitHeight = False
-        Me.Grid.BackColor = System.Drawing.Color.White
-        Me.Grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
                     Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                     Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.Grid.CustomSort = False
-        Me.Grid.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Grid.FixedColumnWidths = True
-        Me.Grid.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.Grid.GridToolTipActive = True
-        Me.Grid.GridType = ScientificInterface.gridRiskResults.eGridType.Group
-        Me.Grid.Location = New System.Drawing.Point(0, 0)
-        Me.Grid.Name = "Grid"
-        Me.Grid.Size = New System.Drawing.Size(685, 394)
-        Me.Grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+        Me.m_grid.CustomSort = False
+        Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_grid.FixedColumnWidths = True
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.GridType = ScientificInterface.gridRiskResults.eGridType.Group
+        Me.m_grid.Location = New System.Drawing.Point(0, 0)
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.Size = New System.Drawing.Size(640, 393)
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                     Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                     Or SourceGrid2.GridSpecialKeys.Delete) _
                     Or SourceGrid2.GridSpecialKeys.Arrows) _
@@ -83,26 +83,26 @@ Partial Class frmMSEResults
                     Or SourceGrid2.GridSpecialKeys.Enter) _
                     Or SourceGrid2.GridSpecialKeys.Escape) _
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.Grid.TabIndex = 4
-        Me.Grid.TrackPropertySelection = True
-        Me.Grid.UIContext = Nothing
+        Me.m_grid.TabIndex = 4
+        Me.m_grid.TrackPropertySelection = True
+        Me.m_grid.UIContext = Nothing
         '
         'pnlGrid
         '
         Me.pnlGrid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pnlGrid.Controls.Add(Me.Grid)
+        Me.pnlGrid.Controls.Add(Me.m_grid)
         Me.pnlGrid.Location = New System.Drawing.Point(1, 33)
         Me.pnlGrid.Name = "pnlGrid"
-        Me.pnlGrid.Size = New System.Drawing.Size(685, 394)
+        Me.pnlGrid.Size = New System.Drawing.Size(640, 393)
         Me.pnlGrid.TabIndex = 5
         '
         'frmMSEResults
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(684, 426)
+        Me.ClientSize = New System.Drawing.Size(639, 425)
         Me.Controls.Add(Me.pnlGrid)
         Me.Controls.Add(Me.rbFleet)
         Me.Controls.Add(Me.rbGroup)
@@ -114,8 +114,8 @@ Partial Class frmMSEResults
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents rbGroup As System.Windows.Forms.RadioButton
     Friend WithEvents rbFleet As System.Windows.Forms.RadioButton
-    Friend WithEvents Grid As ScientificInterface.gridRiskResults
     Friend WithEvents pnlGrid As System.Windows.Forms.Panel
+    Private WithEvents m_grid As ScientificInterface.gridRiskResults
+    Private WithEvents rbGroup As System.Windows.Forms.RadioButton
 End Class

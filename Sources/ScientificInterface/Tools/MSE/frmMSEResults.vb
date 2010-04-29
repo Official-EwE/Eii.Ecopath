@@ -24,7 +24,7 @@ Public Class frmMSEResults
         Me.rbFleet.Tag = ScientificInterface.gridRiskResults.eGridType.Fleet
         Me.rbGroup.Tag = ScientificInterface.gridRiskResults.eGridType.Group
 
-        Me.Grid.UIContext = Me.UIContext
+        Me.m_grid.UIContext = Me.UIContext
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE}
 
@@ -42,12 +42,12 @@ Public Class frmMSEResults
     End Sub
 
     ''' <summary>
-    ''' Reference levels have changed! For now just update the grid
+    ''' Reference levels have changed! For now just update the m_grid
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub onRefLevelsChanged()
         Try
-            Me.Grid.Update()
+            Me.m_grid.Update()
         Catch ex As Exception
 
         End Try
@@ -58,7 +58,7 @@ Public Class frmMSEResults
         Try
             Dim rb As RadioButton = DirectCast(sender, RadioButton)
             If rb.Checked Then
-                Me.Grid.GridType = DirectCast(rb.Tag, ScientificInterface.gridRiskResults.eGridType)
+                Me.m_grid.GridType = DirectCast(rb.Tag, ScientificInterface.gridRiskResults.eGridType)
             End If
         Catch ex As Exception
 
@@ -67,12 +67,12 @@ Public Class frmMSEResults
     End Sub
 
     ''' <summary>
-    ''' Stats data has changed. For now just update the grid
+    ''' Stats data has changed. For now just update the m_grid
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub onRunCompleted()
         Try
-            Me.Grid.Update()
+            Me.m_grid.Update()
         Catch ex As Exception
 
         End Try

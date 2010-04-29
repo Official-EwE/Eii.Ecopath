@@ -22,6 +22,7 @@ Partial Class frmMSEAssessFleets
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEAssessFleets))
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
         Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks
         Me.GridFishingCV1 = New ScientificInterface.gridFishingCV
@@ -32,10 +33,8 @@ Partial Class frmMSEAssessFleets
         '
         'SplitContainer1
         '
-        Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SplitContainer1.Location = New System.Drawing.Point(0, 0)
+        resources.ApplyResources(Me.SplitContainer1, "SplitContainer1")
         Me.SplitContainer1.Name = "SplitContainer1"
-        Me.SplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal
         '
         'SplitContainer1.Panel1
         '
@@ -44,21 +43,14 @@ Partial Class frmMSEAssessFleets
         'SplitContainer1.Panel2
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.GridFishingCV1)
-        Me.SplitContainer1.Size = New System.Drawing.Size(652, 483)
-        Me.SplitContainer1.SplitterDistance = 217
-        Me.SplitContainer1.TabIndex = 0
         '
         'm_blocks
         '
         Me.m_blocks.ControlPanelVisible = False
         Me.m_blocks.CurColor = System.Drawing.Color.Empty
-        Me.m_blocks.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_blocks.Location = New System.Drawing.Point(0, 0)
-        Me.m_blocks.Margin = New System.Windows.Forms.Padding(0)
+        resources.ApplyResources(Me.m_blocks, "m_blocks")
         Me.m_blocks.Name = "m_blocks"
         Me.m_blocks.ParmBlockCodes = Nothing
-        Me.m_blocks.Size = New System.Drawing.Size(652, 217)
-        Me.m_blocks.TabIndex = 0
         Me.m_blocks.UIContext = Nothing
         '
         'GridFishingCV1
@@ -73,13 +65,11 @@ Partial Class frmMSEAssessFleets
                     Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                     Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.GridFishingCV1.CustomSort = False
-        Me.GridFishingCV1.Dock = System.Windows.Forms.DockStyle.Fill
+        resources.ApplyResources(Me.GridFishingCV1, "GridFishingCV1")
         Me.GridFishingCV1.FixedColumnWidths = False
         Me.GridFishingCV1.FocusStyle = SourceGrid2.FocusStyle.None
         Me.GridFishingCV1.GridToolTipActive = True
-        Me.GridFishingCV1.Location = New System.Drawing.Point(0, 0)
         Me.GridFishingCV1.Name = "GridFishingCV1"
-        Me.GridFishingCV1.Size = New System.Drawing.Size(652, 262)
         Me.GridFishingCV1.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                     Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                     Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -89,19 +79,15 @@ Partial Class frmMSEAssessFleets
                     Or SourceGrid2.GridSpecialKeys.Enter) _
                     Or SourceGrid2.GridSpecialKeys.Escape) _
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.GridFishingCV1.TabIndex = 0
         Me.GridFishingCV1.TrackPropertySelection = True
         Me.GridFishingCV1.UIContext = Nothing
         '
         'frmMSEAssessFleets
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(652, 483)
         Me.Controls.Add(Me.SplitContainer1)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSEAssessFleets"
-        Me.Text = "MSE fleet assessments"
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         Me.SplitContainer1.ResumeLayout(False)

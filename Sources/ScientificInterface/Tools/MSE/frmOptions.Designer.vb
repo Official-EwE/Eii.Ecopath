@@ -24,6 +24,7 @@ Partial Class frmOptions
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOptions))
         Me.pnlRegOpt = New System.Windows.Forms.Panel
         Me.pnlUseReg = New System.Windows.Forms.Panel
         Me.rbEffortEcosim = New System.Windows.Forms.RadioButton
@@ -56,52 +57,35 @@ Partial Class frmOptions
         Me.pnlRegOpt.Controls.Add(Me.rbUseRegs)
         Me.pnlRegOpt.Controls.Add(Me.rbNoRegs)
         Me.pnlRegOpt.Controls.Add(Me.Label7)
-        Me.pnlRegOpt.Location = New System.Drawing.Point(12, 117)
+        resources.ApplyResources(Me.pnlRegOpt, "pnlRegOpt")
         Me.pnlRegOpt.Name = "pnlRegOpt"
-        Me.pnlRegOpt.Size = New System.Drawing.Size(988, 339)
-        Me.pnlRegOpt.TabIndex = 25
         '
         'pnlUseReg
         '
         Me.pnlUseReg.Controls.Add(Me.rbEffortEcosim)
         Me.pnlUseReg.Controls.Add(Me.rbEffortNoCap)
         Me.pnlUseReg.Controls.Add(Me.rbEffortPredicted)
-        Me.pnlUseReg.Location = New System.Drawing.Point(16, 45)
+        resources.ApplyResources(Me.pnlUseReg, "pnlUseReg")
         Me.pnlUseReg.Name = "pnlUseReg"
-        Me.pnlUseReg.Size = New System.Drawing.Size(249, 81)
-        Me.pnlUseReg.TabIndex = 27
         '
         'rbEffortEcosim
         '
-        Me.rbEffortEcosim.AutoSize = True
-        Me.rbEffortEcosim.Location = New System.Drawing.Point(19, 26)
+        resources.ApplyResources(Me.rbEffortEcosim, "rbEffortEcosim")
         Me.rbEffortEcosim.Name = "rbEffortEcosim"
-        Me.rbEffortEcosim.Size = New System.Drawing.Size(172, 17)
-        Me.rbEffortEcosim.TabIndex = 1
-        Me.rbEffortEcosim.Text = "Cap effort at the Ecosim level   "
         Me.rbEffortEcosim.UseVisualStyleBackColor = True
         '
         'rbEffortNoCap
         '
-        Me.rbEffortNoCap.AutoSize = True
+        resources.ApplyResources(Me.rbEffortNoCap, "rbEffortNoCap")
         Me.rbEffortNoCap.Checked = True
-        Me.rbEffortNoCap.Location = New System.Drawing.Point(19, 3)
         Me.rbEffortNoCap.Name = "rbEffortNoCap"
-        Me.rbEffortNoCap.Size = New System.Drawing.Size(132, 17)
-        Me.rbEffortNoCap.TabIndex = 0
         Me.rbEffortNoCap.TabStop = True
-        Me.rbEffortNoCap.Text = "No upper cap on effort"
         Me.rbEffortNoCap.UseVisualStyleBackColor = True
         '
         'rbEffortPredicted
         '
-        Me.rbEffortPredicted.AutoSize = True
-        Me.rbEffortPredicted.Location = New System.Drawing.Point(19, 49)
+        resources.ApplyResources(Me.rbEffortPredicted, "rbEffortPredicted")
         Me.rbEffortPredicted.Name = "rbEffortPredicted"
-        Me.rbEffortPredicted.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.rbEffortPredicted.Size = New System.Drawing.Size(85, 17)
-        Me.rbEffortPredicted.TabIndex = 25
-        Me.rbEffortPredicted.Text = "Predict effort"
         Me.rbEffortPredicted.UseVisualStyleBackColor = True
         '
         'pnlFTracking
@@ -111,95 +95,60 @@ Partial Class frmOptions
         Me.pnlFTracking.Controls.Add(Me.rbExact)
         Me.pnlFTracking.Controls.Add(Me.rbDirectExp)
         Me.pnlFTracking.Controls.Add(Me.rbCatchEstBio)
-        Me.pnlFTracking.Location = New System.Drawing.Point(16, 155)
+        resources.ApplyResources(Me.pnlFTracking, "pnlFTracking")
         Me.pnlFTracking.Name = "pnlFTracking"
-        Me.pnlFTracking.Size = New System.Drawing.Size(235, 119)
-        Me.pnlFTracking.TabIndex = 26
         '
         'txSBPower
         '
-        Me.txSBPower.Location = New System.Drawing.Point(167, 87)
+        resources.ApplyResources(Me.txSBPower, "txSBPower")
         Me.txSBPower.Name = "txSBPower"
-        Me.txSBPower.Size = New System.Drawing.Size(48, 20)
-        Me.txSBPower.TabIndex = 25
         '
         'Label6
         '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(16, 91)
+        resources.ApplyResources(Me.Label6, "Label6")
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(133, 13)
-        Me.Label6.TabIndex = 24
-        Me.Label6.Text = "Survey vs. biomass power:"
         '
         'rbExact
         '
-        Me.rbExact.AutoSize = True
-        Me.rbExact.Location = New System.Drawing.Point(19, 60)
+        resources.ApplyResources(Me.rbExact, "rbExact")
         Me.rbExact.Name = "rbExact"
-        Me.rbExact.Size = New System.Drawing.Size(128, 17)
-        Me.rbExact.TabIndex = 23
         Me.rbExact.TabStop = True
-        Me.rbExact.Text = "Exact biomass known"
         Me.rbExact.UseVisualStyleBackColor = True
         '
         'rbDirectExp
         '
-        Me.rbDirectExp.AutoSize = True
-        Me.rbDirectExp.Location = New System.Drawing.Point(19, 32)
+        resources.ApplyResources(Me.rbDirectExp, "rbDirectExp")
         Me.rbDirectExp.Name = "rbDirectExp"
-        Me.rbDirectExp.Size = New System.Drawing.Size(130, 17)
-        Me.rbDirectExp.TabIndex = 22
-        Me.rbDirectExp.Text = "Direct exploitation rate"
         Me.rbDirectExp.UseVisualStyleBackColor = True
         '
         'rbCatchEstBio
         '
-        Me.rbCatchEstBio.AutoSize = True
+        resources.ApplyResources(Me.rbCatchEstBio, "rbCatchEstBio")
         Me.rbCatchEstBio.Checked = True
-        Me.rbCatchEstBio.Location = New System.Drawing.Point(19, 3)
         Me.rbCatchEstBio.Name = "rbCatchEstBio"
-        Me.rbCatchEstBio.Size = New System.Drawing.Size(144, 17)
-        Me.rbCatchEstBio.TabIndex = 21
         Me.rbCatchEstBio.TabStop = True
-        Me.rbCatchEstBio.Text = "Catch/estimated biomass"
         Me.rbCatchEstBio.UseVisualStyleBackColor = True
         '
         'rbUseRegs
         '
-        Me.rbUseRegs.AutoSize = True
+        resources.ApplyResources(Me.rbUseRegs, "rbUseRegs")
         Me.rbUseRegs.Checked = True
-        Me.rbUseRegs.Location = New System.Drawing.Point(6, 26)
         Me.rbUseRegs.Name = "rbUseRegs"
-        Me.rbUseRegs.Size = New System.Drawing.Size(133, 17)
-        Me.rbUseRegs.TabIndex = 26
         Me.rbUseRegs.TabStop = True
-        Me.rbUseRegs.Text = "Use regulatory controls"
         Me.rbUseRegs.UseVisualStyleBackColor = True
         '
         'rbNoRegs
         '
-        Me.rbNoRegs.AutoSize = True
-        Me.rbNoRegs.Location = New System.Drawing.Point(6, 132)
+        resources.ApplyResources(Me.rbNoRegs, "rbNoRegs")
         Me.rbNoRegs.Name = "rbNoRegs"
-        Me.rbNoRegs.Size = New System.Drawing.Size(294, 17)
-        Me.rbNoRegs.TabIndex = 24
-        Me.rbNoRegs.Text = "No regulatory controls (evaluate current Ecosim scenario)"
         Me.rbNoRegs.UseVisualStyleBackColor = True
         '
         'Label7
         '
         Me.Label7.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.Label7.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        resources.ApplyResources(Me.Label7, "Label7")
         Me.Label7.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label7.Location = New System.Drawing.Point(0, 0)
         Me.Label7.Name = "Label7"
-        Me.Label7.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label7.Size = New System.Drawing.Size(988, 18)
-        Me.Label7.TabIndex = 18
-        Me.Label7.Text = "Effort and regulatory options"
-        Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'pnlRunOpt
         '
@@ -207,62 +156,39 @@ Partial Class frmOptions
         Me.pnlRunOpt.Controls.Add(Me.Label8)
         Me.pnlRunOpt.Controls.Add(Me.ckPlugin)
         Me.pnlRunOpt.Controls.Add(Me.Label2)
-        Me.pnlRunOpt.Location = New System.Drawing.Point(12, 12)
+        resources.ApplyResources(Me.pnlRunOpt, "pnlRunOpt")
         Me.pnlRunOpt.Name = "pnlRunOpt"
-        Me.pnlRunOpt.Size = New System.Drawing.Size(988, 88)
-        Me.pnlRunOpt.TabIndex = 34
         '
         'txKalmanGain
         '
-        Me.txKalmanGain.Location = New System.Drawing.Point(134, 26)
+        resources.ApplyResources(Me.txKalmanGain, "txKalmanGain")
         Me.txKalmanGain.Name = "txKalmanGain"
-        Me.txKalmanGain.Size = New System.Drawing.Size(48, 20)
-        Me.txKalmanGain.TabIndex = 38
         '
         'Label8
         '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(3, 30)
+        resources.ApplyResources(Me.Label8, "Label8")
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(68, 13)
-        Me.Label8.TabIndex = 37
-        Me.Label8.Text = "Kalman gain:"
         '
         'ckPlugin
         '
-        Me.ckPlugin.AutoSize = True
-        Me.ckPlugin.Enabled = False
-        Me.ckPlugin.Location = New System.Drawing.Point(6, 59)
+        resources.ApplyResources(Me.ckPlugin, "ckPlugin")
         Me.ckPlugin.Name = "ckPlugin"
-        Me.ckPlugin.Size = New System.Drawing.Size(149, 17)
-        Me.ckPlugin.TabIndex = 33
-        Me.ckPlugin.Text = "Use plugin economic data"
         Me.ckPlugin.UseVisualStyleBackColor = True
         '
         'Label2
         '
         Me.Label2.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.Label2.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        resources.ApplyResources(Me.Label2, "Label2")
         Me.Label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label2.Location = New System.Drawing.Point(0, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label2.Size = New System.Drawing.Size(988, 18)
-        Me.Label2.TabIndex = 32
-        Me.Label2.Text = "Model run options"
-        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'frmOptions
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1012, 620)
         Me.Controls.Add(Me.pnlRunOpt)
         Me.Controls.Add(Me.pnlRegOpt)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmOptions"
-        Me.Text = "MSE options"
         Me.pnlRegOpt.ResumeLayout(False)
         Me.pnlRegOpt.PerformLayout()
         Me.pnlUseReg.ResumeLayout(False)

@@ -81,8 +81,8 @@ Public Class frmMSE
 
         Me.m_MSE = Me.UIContext.Core.MSEManager
 
-        Me.m_fpNTrials = New cPropertyFormatProvider(Me.UIContext, Me.txNTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
-        Me.m_fpStartYear = New cPropertyFormatProvider(Me.UIContext, Me.txStartYear, Me.m_MSE.ModelParameters, eVarNameFlags.MSEStartYear)
+        Me.m_fpNTrials = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
+        Me.m_fpStartYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudStartYear, Me.m_MSE.ModelParameters, eVarNameFlags.MSEStartYear)
         Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
@@ -235,7 +235,7 @@ Public Class frmMSE
     End Sub
 
 
-    Private Sub onRunClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles btRun.Click
+    Private Sub onRunClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_btRun.Click
 
         Try
             Me.runMSE()
@@ -337,34 +337,34 @@ Public Class frmMSE
             Select Case State
 
                 Case eMSEStates.InActive
-                    Me.btRun.Enabled = True
+                    Me.m_btRun.Enabled = True
                     Me.btStop.Enabled = False
                     Me.btShowHide.Enabled = True
-                    Me.txStartYear.Enabled = True
-                    Me.txNTrials.Enabled = True
+                    Me.m_nudStartYear.Enabled = True
+                    Me.m_nudNumTrials.Enabled = True
                     Me.ckSave.Enabled = True
-                    Label1.Enabled = True
-                    Label2.Enabled = True
+                    m_lblNumTrials.Enabled = True
+                    m_lblStartYear.Enabled = True
 
                 Case eMSEStates.Running
-                    Me.btRun.Enabled = False
+                    Me.m_btRun.Enabled = False
                     Me.btStop.Enabled = True
                     Me.btShowHide.Enabled = False
-                    Me.txStartYear.Enabled = False
-                    Me.txNTrials.Enabled = False
+                    Me.m_nudStartYear.Enabled = False
+                    Me.m_nudNumTrials.Enabled = False
                     Me.ckSave.Enabled = False
-                    Label1.Enabled = False
-                    Label2.Enabled = False
+                    m_lblNumTrials.Enabled = False
+                    m_lblStartYear.Enabled = False
 
                 Case eMSEStates.Completed
-                    Me.btRun.Enabled = True
+                    Me.m_btRun.Enabled = True
                     Me.btStop.Enabled = False
                     Me.btShowHide.Enabled = True
-                    Me.txStartYear.Enabled = True
-                    Me.txNTrials.Enabled = True
+                    Me.m_nudStartYear.Enabled = True
+                    Me.m_nudNumTrials.Enabled = True
                     Me.ckSave.Enabled = True
-                    Label1.Enabled = True
-                    Label2.Enabled = True
+                    m_lblNumTrials.Enabled = True
+                    m_lblStartYear.Enabled = True
 
             End Select
 

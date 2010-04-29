@@ -22,6 +22,7 @@ Partial Class frmMSEAssessGroups
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEAssessGroups))
         Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks
         Me.SuspendLayout()
         '
@@ -29,24 +30,17 @@ Partial Class frmMSEAssessGroups
         '
         Me.m_blocks.ControlPanelVisible = False
         Me.m_blocks.CurColor = System.Drawing.Color.Empty
-        Me.m_blocks.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_blocks.Location = New System.Drawing.Point(0, 0)
-        Me.m_blocks.Margin = New System.Windows.Forms.Padding(0)
+        resources.ApplyResources(Me.m_blocks, "m_blocks")
         Me.m_blocks.Name = "m_blocks"
         Me.m_blocks.ParmBlockCodes = Nothing
-        Me.m_blocks.Size = New System.Drawing.Size(652, 483)
-        Me.m_blocks.TabIndex = 1
         Me.m_blocks.UIContext = Nothing
         '
         'frmMSEAssessGroups
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(652, 483)
         Me.Controls.Add(Me.m_blocks)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSEAssessGroups"
-        Me.Text = "MSE group assessments"
         Me.ResumeLayout(False)
 
     End Sub
