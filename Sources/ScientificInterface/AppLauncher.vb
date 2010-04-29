@@ -2132,6 +2132,7 @@ Public Class AppLauncher
             fsc.FileName = dlgSave.FileName
             fsc.FilterIndex = dlgSave.FilterIndex
             Me.m_strLastSelectedPath = Path.GetDirectoryName(dlgSave.FileName)
+            My.Settings.Save()
         End If
 
     End Sub
@@ -2363,6 +2364,7 @@ Public Class AppLauncher
     Private Sub OnSave(ByVal cmd As cCommand) Handles m_cmdSave.OnInvoke
         Me.SetStatusText(My.Resources.STATUS_MODEL_SAVING, TriState.True)
         Me.Core.Save()
+        My.Settings.Save()
         Me.SetStatusText("", TriState.False)
     End Sub
 
