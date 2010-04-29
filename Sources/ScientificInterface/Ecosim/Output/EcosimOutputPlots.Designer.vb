@@ -66,6 +66,8 @@ Namespace Ecosim
             '
             'm_lbGroups
             '
+            Me.m_lbGroups.AllGroupsItemColor = System.Drawing.Color.Transparent
+            Me.m_lbGroups.AllGroupsItemText = "(All)"
             resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
             Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbGroups.FormattingEnabled = True
@@ -86,6 +88,8 @@ Namespace Ecosim
             '
             'm_lbPredators
             '
+            Me.m_lbPredators.AllGroupsItemColor = System.Drawing.Color.Transparent
+            Me.m_lbPredators.AllGroupsItemText = "(All)"
             resources.ApplyResources(Me.m_lbPredators, "m_lbPredators")
             Me.m_lbPredators.BackColor = System.Drawing.SystemColors.Window
             Me.m_lbPredators.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
@@ -101,6 +105,8 @@ Namespace Ecosim
             '
             'm_lbPrey
             '
+            Me.m_lbPrey.AllGroupsItemColor = System.Drawing.Color.Transparent
+            Me.m_lbPrey.AllGroupsItemText = "(All)"
             resources.ApplyResources(Me.m_lbPrey, "m_lbPrey")
             Me.m_lbPrey.BackColor = System.Drawing.SystemColors.Window
             Me.m_lbPrey.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed

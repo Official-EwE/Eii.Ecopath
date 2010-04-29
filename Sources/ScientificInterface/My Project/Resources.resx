@@ -1372,7 +1372,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <comment>Ecopath model status tooltip. Fields: {0}=vbNewLine, {1}=model name, {2}=model path</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_NAMES" xml:space="preserve">
-    <value>Names and headers|Colour scheme to use for header cells in grids</value>
+    <value>Names|Colour scheme to use for name cells in grids</value>
   </data>
   <data name="OptionsIconSM" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

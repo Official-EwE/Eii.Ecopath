@@ -5074,7 +5074,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Names and headers|Colour scheme to use for header cells in grids.
+        '''  Looks up a localized string similar to Names|Colour scheme to use for name cells in grids.
         '''</summary>
         Friend ReadOnly Property OPTIONS_COLORDLG_PROMPT_NAMES() As String
             Get

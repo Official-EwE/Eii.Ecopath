@@ -2177,8 +2177,8 @@ Public Class AppLauncher
 
         nc = DirectCast(cmd, cNavigationCommand)
 
-        ' Preserve properties from Nav command, because the  nav command may 
-        ' change in response to actions in this method
+        ' Preserve properties from Nav command, because the content of the nav 
+        '    command may change in response to actions in this method
         strNavPageID = nc.PageID
         strNavPageName = nc.PageName
         strNavHelpURL = nc.HelpURL
