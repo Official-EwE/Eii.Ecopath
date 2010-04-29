@@ -1464,8 +1464,20 @@ Public Class AppLauncher
         Return False
     End Function
 
-    Private Sub UpdateSelectedNode(ByVal strNodeName As String)
+    ''' <summary>Flag to prevent looped navigation chaos.</summary>
+    Private m_bNavigating As Boolean = False
+    Private m_strLastActiveContent As String = ""
+
+    Private Sub UpdateSelectedNode(ByVal strNodeName As String, Optional ByVal bAllowDefault As Boolean = False)
+
+        If Me.m_bNavigating Then Return
+        Me.m_bNavigating = True
+        ' Remember this
+        Me.m_strLastActiveContent = strNodeName
+        ' Kick nav panel
         Me.m_NavPanel.SelectedNodeName(True) = strNodeName
+        Me.m_bNavigating = False
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -1506,7 +1518,7 @@ Public Class AppLauncher
         ' Let's explicitly clean-up for once.
         lForms = Nothing
 
-        Me.m_NavPanel.SelectedNodeName = ""
+        Me.UpdateSelectedNode("", False)
 
     End Sub
 
@@ -1613,7 +1625,7 @@ Public Class AppLauncher
             ''             because the forms are not content as far as the dock engine is concerned. Nice!
             ''             This logic makes sure that at least the default form is properly selected (and indirectly activated)
             'Me.EnsureDefaultNodeSelected()
-            Me.UpdateSelectedNode("")
+            Me.UpdateSelectedNode("", True)
             ' Keep at it, Maurice
             Me.UpdateModelControls()
             Me.PopulateScenarioDropdowns()
@@ -2156,9 +2168,6 @@ Public Class AppLauncher
 
     End Sub
 
-    ''' <summary>Flag to prevent looped navigation chaos.</summary>
-    Private m_bNavigating As Boolean = False
-
     Private Sub OnOpenDocument(ByVal cmd As cCommand) Handles m_cmdNavigate.OnInvoke
 
         Dim nc As cNavigationCommand = Nothing
@@ -2172,9 +2181,6 @@ Public Class AppLauncher
         ' Sanity checks
         If cmd Is Nothing Then Return
         If Not (TypeOf cmd Is cNavigationCommand) Then Return
-
-        If Me.m_bNavigating Then Return
-        Me.m_bNavigating = True
 
         nc = DirectCast(cmd, cNavigationCommand)
 
@@ -2228,8 +2234,6 @@ Public Class AppLauncher
                 End If
             End If
         End If
-
-        Me.m_bNavigating = False
 
         ' JS Jan2408: Make sure the nav tree correctly reflects the current selected page.
         ' This is important if the navigation to the requested page failed, which can happen
@@ -3565,30 +3569,38 @@ Public Class AppLauncher
 
         Dim idc As IDockContent = m_DockPanel.ActiveDocument
         Dim dch As DockContentHandler = Nothing
-        Dim strNodeName As String = String.Empty
+        Dim strNewNodeName As String = String.Empty
+        Dim stateNew As eCoreExecutionState = eCoreExecutionState.Idle
+
+        ' UI is CONTROLLING the nav tree, do NOT respond to events
+        If Me.m_bNavigating Then Return
 
         If Not Object.ReferenceEquals(idc, Nothing) Then
             dch = idc.DockHandler
 
             If Not Object.ReferenceEquals(dch, Nothing) Then
                 ' Get default nav link
-                strNodeName = dch.TabText
+                strNewNodeName = dch.TabText
             End If
 
             If (TypeOf idc Is frmEwE) Then
                 ' Get form specific nav link
                 If TypeOf DirectCast(idc, frmEwE).Tag Is String Then
-                    strNodeName = CStr(DirectCast(idc, frmEwE).Tag)
+                    strNewNodeName = CStr(DirectCast(idc, frmEwE).Tag)
                 End If
-                ' Update core state if possible
-                Me.CoreController.LoadState(DirectCast(idc, frmEwE).CoreExecutionState)
+                stateNew = DirectCast(idc, frmEwE).CoreExecutionState
             End If
         End If
 
-        ' Update help
-        Me.Help.ActiveHelpControl = CType(m_DockPanel.ActiveDocument, Control)
-
-        Me.UpdateSelectedNode(strNodeName)
+        ' About to change?
+        If (String.Compare(Me.m_strLastActiveContent, strNewNodeName) <> 0) Then
+            ' Update core state if possible
+            Me.CoreController.LoadState(stateNew)
+            ' Update help
+            Me.Help.ActiveHelpControl = CType(m_DockPanel.ActiveDocument, Control)
+            ' Switch
+            Me.UpdateSelectedNode(strNewNodeName)
+        End If
     End Sub
 
     Private Sub OnModelPathAreaClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
