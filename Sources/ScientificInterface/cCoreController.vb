@@ -39,6 +39,8 @@ Public Class cCoreController
         Me.m_monitor = monitor
     End Sub
 
+    Private m_bInUpdate As Boolean = False
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Check whether the EwE Core running state matches a given state, and if
@@ -55,39 +57,50 @@ Public Class cCoreController
     Public Function LoadState(ByVal iState As eCoreExecutionState, _
             Optional ByVal bForceState As Boolean = False) As Boolean
 
+        Dim bSucces As Boolean = True
+
         ' State already superceded or active?
         If (Me.m_monitor.IsExecutionStateSuperceded(iState)) And (bForceState = False) Then
-            Return True
+            Return bSucces
         End If
+
+        If Me.m_bInUpdate Then Return bSucces
+        Me.m_bInUpdate = True
 
         Select Case iState
 
             Case eCoreExecutionState.EcopathLoaded, _
                  eCoreExecutionState.EcopathInitialized
-                Return TryLoadEcopathModel()
+                bSucces = TryLoadEcopathModel()
 
             Case eCoreExecutionState.EcopathCompleted
-                Return TryCompleteEcopath()
+                bSucces = TryCompleteEcopath()
 
             Case eCoreExecutionState.EcosimLoaded
-                Return TryLoadEcosimScenario()
+                bSucces = TryLoadEcosimScenario()
 
             Case eCoreExecutionState.EcosimInitialized
-                Return TryInitializeEcosim()
+                bSucces = TryInitializeEcosim()
 
             Case eCoreExecutionState.EcosimCompleted
-                Return TryCompleteEcosim()
+                bSucces = TryCompleteEcosim()
 
             Case eCoreExecutionState.EcotracerLoaded
-                Return TryLoadEcotracerScenario()
+                bSucces = TryLoadEcotracerScenario()
 
             Case eCoreExecutionState.EcospaceLoaded, _
                  eCoreExecutionState.EcospaceInitialized
-                Return TryLoadEcospaceScenario()
+                bSucces = TryLoadEcospaceScenario()
+
+            Case Else
+                bSucces = False
 
         End Select
 
-        Return False
+        Me.m_bInUpdate = False
+
+        Return bSucces
+
     End Function
 
     Public Sub LoadEcosimScenario()
