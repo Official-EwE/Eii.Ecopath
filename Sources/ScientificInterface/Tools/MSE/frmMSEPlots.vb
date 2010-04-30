@@ -129,12 +129,12 @@ Public Class frmMSEPlots
                 If Me.UIContext.StyleGuide.FleetVisible(stat.Index) Then
                     data.Add(stat)
                 End If
-            -Next
+            Next
 
-                Me.m_plotter.PlotType = PlotType
-                Me.m_plotter.DataType = DataType
-                Me.m_plotter.AddData(data)
-                Me.m_plotter.Draw()
+            Me.m_plotter.PlotType = PlotType
+            Me.m_plotter.DataType = DataType
+            Me.m_plotter.AddData(data)
+            Me.m_plotter.Draw()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".PlotFleetData() Exception: " & ex.Message)
