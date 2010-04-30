@@ -398,13 +398,13 @@ Friend Class cMSEPlotter
 
                     Select Case Me.m_dataType
                         Case ePlotData.Biomass
-                            Return "Biomass k/km2"
+                            Return "Biomass"
                         Case ePlotData.Effort
                             Return "Effort"
                         Case ePlotData.FleetValue
-                            Return "Value of catch"
+                            Return "Catch (value)"
                         Case ePlotData.GroupCatch
-                            Return "Biomass of catch"
+                            Return "Catch (weight)"
                     End Select
 
             End Select
@@ -426,13 +426,13 @@ Friend Class cMSEPlotter
 
                     Select Case Me.m_dataType
                         Case ePlotData.Biomass
-                            Return "Biomass k/km2"
+                            Return "Biomass t/km2"
                         Case ePlotData.Effort
                             Return "Effort"
                         Case ePlotData.FleetValue
-                            Return "Value of catch"
+                            Return "Catch (value)"
                         Case ePlotData.GroupCatch
-                            Return "Biomass of catch"
+                            Return "Catch (weight)"
                     End Select
 
                 Case ePlotTypes.Line, ePlotTypes.Values
@@ -608,11 +608,27 @@ Friend Class cMSEPlotter
         pplMean.Add(dx, StatsData.Mean)
         Dim liMeanPt As LineItem = New ZedGraph.LineItem("", pplMean, Color.Blue, SymbolType.None, 1)
 
+        'Dim pplMeanPlus2Std As New PointPairList
+        'pplMeanPlus2Std.Add(0, StatsData.Mean + 2 * StatsData.Std)
+        'pplMeanPlus2Std.Add(dx, StatsData.Mean + 2 * StatsData.Std)
+        'Dim liMeanPlus As LineItem = New ZedGraph.LineItem("", pplMeanPlus2Std, Color.Blue, SymbolType.None, 1)
+        'liMeanPlus.Line.Style = Drawing2D.DashStyle.Dot
+        ''liMeanPtVar.Line.Width = 0.5
+
+        'Dim pplMeanMinus2Std As New PointPairList
+        'pplMeanMinus2Std.Add(0, StatsData.Mean + 2 * StatsData.Std)
+        'pplMeanMinus2Std.Add(dx, StatsData.Mean + 2 * StatsData.Std)
+        'Dim liMeanMinus As LineItem = New ZedGraph.LineItem("", pplMeanMinus2Std, Color.Blue, SymbolType.None, 1)
+        'liMeanMinus.Line.Style = Drawing2D.DashStyle.Dot
+        ''liMeanPtVa-r.Line.Width = 0.5
+
         Try
             'Dim pane As ZedGraph.GraphPane = Me.m_zgh.GetPane(ipane)
             'draw the mean line on top of the other lines (insert at the zero position)
             pane.CurveList.Insert(0, LineItem)
             pane.CurveList.Insert(0, liMeanPt)
+            'pane.CurveList.Insert(0, liMeanPlus)
+            'pane.CurveList.Insert(0, liMeanMinus)
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".AddMeanLineToGraph() Error: " & ex.Message)
         End Try

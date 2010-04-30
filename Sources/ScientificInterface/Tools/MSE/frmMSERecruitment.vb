@@ -183,7 +183,7 @@ Namespace Ecosim
                 'Let's just scale the x-axis to default 10 times the HalfRecruitmentBiomass
                 Dim maxXaxisValue As Single = 10
                 If CSng(1.1 / Group.RHalfB0Ratio) > maxXaxisValue Then
-                    maxXaxisValue = CSng(1.2 * 1 / Group.RHalfB0Ratio)
+                    maxXaxisValue = CSng(1.2 / Group.RHalfB0Ratio)  '1.2 is just to give some extra space on the x axis
                 End If
 
 

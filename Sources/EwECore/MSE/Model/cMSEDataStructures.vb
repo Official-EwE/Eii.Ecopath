@@ -742,6 +742,7 @@ End Enum
             Mean
             Min
             Max
+            SumOfSquares
         End Enum
 
         Private m_mseData As cMSEDataStructures
@@ -815,7 +816,7 @@ End Enum
 
                 m_curIter = 0
 
-                ReDim Me.m_data(2, Me.m_count)
+                ReDim Me.m_data(3, Me.m_count)
                 ReDim Me.m_n(Me.m_count)
 
                 ReDim Me.m_binWidth(Me.m_count)
@@ -858,6 +859,7 @@ End Enum
 
                 index -= 1
                 Me.m_data(eSumIndexes.Mean, index) += Value
+                Me.m_data(eSumIndexes.SumOfSquares, index) += CSng(Value ^ 2)
                 Me.m_data(eSumIndexes.Min, index) = Math.Min(Me.m_data(eSumIndexes.Min, index), Value)
                 Me.m_data(eSumIndexes.Max, index) = Math.Max(Me.m_data(eSumIndexes.Max, index), Value)
 
@@ -948,8 +950,8 @@ End Enum
 
         Public ReadOnly Property Variance(ByVal Index As Integer) As Single
             Get
-                Dim ss As Single
-                Dim n As Single
+                'Dim ss As Single
+                'Dim n As Single
                 Try
 
                     Debug.Assert(Index <= Me.m_lstValues.Count, "MSE Statistics Variance index out of bounds.")
@@ -959,18 +961,16 @@ End Enum
 
                     Dim m As Single = Me.Mean(Index)
 
-                    Dim lstGrouping As List(Of Single()) = Me.m_lstValues.Item(Index - 1)
-                    For Each iterVals As Single() In lstGrouping
-                        For it As Integer = 1 To Me.m_mseData.nTimeSteps
-                            ss += CSng((iterVals(it) - m) ^ 2.0F)
-                            n += 1
-                        Next
-                    Next
+                    
+                    'Dim lstGrouping As List(Of Single()) = Me.m_lstValues.Item(Index - 1)
+                    'For Each iterVals As Single() In lstGrouping
 
-                    'to calculate variance:
-                    'during run, sum of x, sum of x^2
-                    'variance s = [Sum of x^2 - Average x * sum of x] / (n - 1)
-                    'where n is the number of x's
+                    '    For it As Integer = 1 To Me.m_mseData.nTimeSteps
+                    '        ss += CSng((iterVals(it) - m) ^ 2.0F)
+                    '        n += 1
+                    '    Next
+                    'Next
+
 
                 Catch ex As Exception
                     cLog.Write(ex)
@@ -978,8 +978,21 @@ End Enum
                 End Try
 
                 'Debug.Assert(n > 1, "MSE Statistics Variance No data to compute.")
-                If n <= 1 Then Return 0
-                Return ss / (n - 1)
+                'how many values are there?
+                Dim iCnt As Integer = Me.m_n(Index)
+                If iCnt <= 1 Then Return 0
+
+                'to calculate variance:
+                'during run, sum of x, sum of x^2
+                'variance s = [Sum of x^2 - (sum of x)^2 / n] / (n - 1)
+                'where n is the number of x's
+                Dim Vari As Single = CSng((m_data(eSumIndexes.SumOfSquares, Index) - m_data(eSumIndexes.Mean, Index) ^ 2 / iCnt)) / CSng(iCnt - 1)
+
+                Return Vari
+
+
+                'If n <= 1 Then Return 0
+                'Return ss / (n - 1)
 
             End Get
 
@@ -1209,7 +1222,7 @@ End Enum
             Dim buf As New System.Text.StringBuilder
             For i As Integer = 1 To Me.m_count
                 buf.Append("Mean=" & Me.Mean(i).ToString & ", Min=" & Me.Min(i).ToString & ", " & _
-                           "Max=" & Me.Max(i).ToString & ", Variance= " & Me.Variance(i).ToString & ", STD= " & Me.Std(i).ToString & ", ")
+                           "Max=" & Me.Max(i).ToString & ", Variance= " & Me.Variance(i).ToString & ", Std.= " & Me.Std(i).ToString & ", ")
             Next
             Return buf.ToString
         End Function
