@@ -141,7 +141,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MSE fleet Ref. Levels.
+        '''  Looks up a localized string similar to MSE fleet ref. levels.
         '''</summary>
         Friend ReadOnly Property CAPTION_MSEFLEETREF() As String
             Get
