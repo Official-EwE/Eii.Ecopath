@@ -730,7 +730,7 @@ Public Class cCore
                 '                   cause batch level Ecosim and higher to automatically reload because Ecopath 
                 '                   will most likely not run. This addresses issue #512
                 Dim iEcosimScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecosim, Me.m_EcoPathData.ActiveEcosimScenario, cCore.NULL_VALUE))
-                Dim iEcospaceScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecospace, Me.m_EcoPathData.ActiveEcospaceScenario, cCore.NULL_VALUE))
+                Dim iEcospaceScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecospace, Me.ActiveEcospaceScenarioIndex, cCore.NULL_VALUE))
                 Dim iEcotracerScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecotracer, Me.m_EcoPathData.ActiveEcotracerScenario, cCore.NULL_VALUE))
                 Dim iDatasetToReload As Integer = 0
 
@@ -5121,11 +5121,18 @@ Public Class cCore
         Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If DataSource Is Nothing Then Return bSucces
-        If Not TypeOf (DataSource) Is IEcosimDatasource Then Return bSucces
+        If (DataSource Is Nothing) Then Return bSucces
+        If (Not TypeOf (DataSource) Is IEcosimDatasource) Then Return bSucces
+        If (Me.ActiveEcosimScenarioIndex <= 0) Then Return bSucces
 
-        ' Save ok?
+        ' Is this the current scenario?
+        If String.Compare(Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name, strName, True) = 0 Then
+            ' #Yes: save directly instead
+            Return Me.SaveEcosimScenario()
+        End If
+
         ds = DirectCast(DataSource, IEcosimDatasource)
+        ' Save ok?
         If ds.SaveEcosimScenarioAs(strName, strDescription, _
                 epd.EcosimScenarioAuthor(Me.m_EcoPathData.ActiveEcosimScenario), _
                 epd.EcosimScenarioContact(Me.m_EcoPathData.ActiveEcosimScenario), _
@@ -7363,7 +7370,7 @@ Public Class cCore
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
         ' Overwrite scenario?
-        iScenarioID = m_EcoPathData.EcospaceScenarioDBID(m_EcoPathData.ActiveEcospaceScenario)
+        iScenarioID = m_EcoPathData.EcospaceScenarioDBID(ActiveEcospaceScenarioIndex)
         Debug.Assert(iScenarioID > 0)
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
@@ -7418,16 +7425,22 @@ Public Class cCore
         ' Sanity checks
         If (Me.DataSource Is Nothing) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcospaceDatasource) Then Return False
-        If (Me.m_EcoPathData.ActiveEcospaceScenario <= 0) Then Return False
+        If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
 
-        iScenarioID = Me.m_EcoPathData.EcospaceScenarioDBID(Me.m_EcoPathData.ActiveEcospaceScenario)
+        iScenarioID = Me.m_EcoPathData.EcospaceScenarioDBID(Me.ActiveEcospaceScenarioIndex)
         If (iScenarioID <= 0) Then Return bSucces
 
-        ' Save ok?
+        ' Is this the current scenario?
+        If String.Compare(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name, strName, True) = 0 Then
+            ' #Yes: save directly instead
+            Return Me.SaveEcospaceScenario()
+        End If
+
         ds = DirectCast(DataSource, IEcospaceDatasource)
+        ' Save ok?
         If (ds.SaveEcospaceScenarioAs(strName, strDescription, _
-                epd.EcospaceScenarioAuthor(Me.m_EcoPathData.ActiveEcospaceScenario), _
-                epd.EcospaceScenarioContact(Me.m_EcoPathData.ActiveEcospaceScenario), _
+                epd.EcospaceScenarioAuthor(Me.ActiveEcospaceScenarioIndex), _
+                epd.EcospaceScenarioContact(Me.ActiveEcospaceScenarioIndex), _
                 iScenarioID)) Then
 
             ' #Yes: invoke plugin point
@@ -7478,7 +7491,7 @@ Public Class cCore
         Debug.Assert(iScenario > 0 And iScenario < Me.m_EcoPathData.EcospaceScenarioDBID.Length)
 
         ' Cannot delete a loaded scenario
-        If (iScenario = Me.m_EcoPathData.ActiveEcospaceScenario) Then
+        If (iScenario = Me.ActiveEcospaceScenarioIndex) Then
             Me.m_publisher.SendMessage(New cMessage("Cannot delete a loaded scenario", eMessageType.NotSet, eCoreComponentType.DataSource, eMessageImportance.Warning))
             Return False
         End If
@@ -7491,8 +7504,8 @@ Public Class cCore
         If (Not TypeOf (Me.DataSource) Is IEcospaceDatasource) Then Return False
 
         ' Remember scenario ID to restore
-        If (Me.m_EcoPathData.ActiveEcospaceScenario > 0) Then
-            iScenarioID = Me.m_EcoPathData.EcospaceScenarioDBID(Me.m_EcoPathData.ActiveEcospaceScenario)
+        If (Me.ActiveEcospaceScenarioIndex > 0) Then
+            iScenarioID = Me.m_EcoPathData.EcospaceScenarioDBID(Me.ActiveEcospaceScenarioIndex)
         End If
 
         ds = DirectCast(Me.DataSource, IEcospaceDatasource)
@@ -7541,7 +7554,7 @@ Public Class cCore
     Private Function InitEcospaceModelParameters() As Boolean
         'there is only one cEcospaceModelParameters object 
         Try
-            Me.m_EcospaceModelParams = New cEcospaceModelParameters(Me, m_EcoPathData.EcospaceScenarioDBID(m_EcoPathData.ActiveEcospaceScenario))
+            Me.m_EcospaceModelParams = New cEcospaceModelParameters(Me, m_EcoPathData.EcospaceScenarioDBID(ActiveEcospaceScenarioIndex))
             '  Return True
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".InitEcospaceModelParameters() Error: " & ex.Message)
@@ -7669,7 +7682,7 @@ Public Class cCore
 
         ' Sanity checks
         If DataSource Is Nothing Then Return False
-        If Me.m_EcoPathData.ActiveEcospaceScenario <= 0 Then Return False
+        If Me.ActiveEcospaceScenarioIndex <= 0 Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
         ' Increase batch count
@@ -8194,7 +8207,7 @@ Public Class cCore
 
         ' Sanity checks
         If DataSource Is Nothing Then Return False
-        If Me.m_EcoPathData.ActiveEcospaceScenario <= 0 Then Return False
+        If Me.ActiveEcospaceScenarioIndex <= 0 Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
         ' Increase batch count
@@ -8229,7 +8242,7 @@ Public Class cCore
 
         ' Sanity checks
         If DataSource Is Nothing Then Return False
-        If Me.m_EcoPathData.ActiveEcospaceScenario <= 0 Then Return False
+        If Me.ActiveEcospaceScenarioIndex <= 0 Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
         ' Not allowed to remove 'All' habitat
         If objHabitat.Index = 0 Then Return False
@@ -8349,7 +8362,7 @@ Public Class cCore
 
         ' Sanity checks
         If DataSource Is Nothing Then Return False
-        If Me.m_EcoPathData.ActiveEcospaceScenario <= 0 Then Return False
+        If Me.ActiveEcospaceScenarioIndex <= 0 Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
         ' Increase batch count
@@ -8384,7 +8397,7 @@ Public Class cCore
 
         ' Sanity checks
         If DataSource Is Nothing Then Return False
-        If Me.m_EcoPathData.ActiveEcospaceScenario <= 0 Then Return False
+        If Me.ActiveEcospaceScenarioIndex <= 0 Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
         ' Not allowed to delete 0 region (if any)
@@ -8512,7 +8525,7 @@ Public Class cCore
 
         ' Sanity checks
         If DataSource Is Nothing Then Return False
-        If Me.m_EcoPathData.ActiveEcospaceScenario <= 0 Then Return False
+        If Me.ActiveEcospaceScenarioIndex <= 0 Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
         ' Increase batch count
@@ -8522,7 +8535,7 @@ Public Class cCore
         If ds.AppendEcospaceMPA(strMPAName, abMPAMonths, iDBID) Then
             ' JS 20sep07: Release batch lock will reload the scenario already
             '' This has effects throughout the Ecospace scenario - reload it
-            'bSucces = Me.LoadEcospaceScenario(Me.m_EcoPathData.ActiveEcospaceScenario)
+            'bSucces = Me.LoadEcospaceScenario(Me.ActiveEcospaceScenarioIndex)
             ' Broadcast update
             Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace MPA {0} has been added", strMPAName), _
                 eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
@@ -8550,7 +8563,7 @@ Public Class cCore
 
         ' Sanity checks
         If DataSource Is Nothing Then Return False
-        If Me.m_EcoPathData.ActiveEcospaceScenario <= 0 Then Return False
+        If Me.ActiveEcospaceScenarioIndex <= 0 Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
         ' Increase batch count
@@ -8699,7 +8712,7 @@ Public Class cCore
 
         ' Sanity checks
         If DataSource Is Nothing Then Return False
-        If Me.m_EcoPathData.ActiveEcospaceScenario <= 0 Then Return False
+        If Me.ActiveEcospaceScenarioIndex <= 0 Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
         ' Increase batch count
@@ -8735,7 +8748,7 @@ Public Class cCore
 
         ' Sanity checks
         If DataSource Is Nothing Then Return False
-        If Me.m_EcoPathData.ActiveEcospaceScenario <= 0 Then Return False
+        If Me.ActiveEcospaceScenarioIndex <= 0 Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
         ' Increase batch count
