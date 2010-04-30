@@ -19,7 +19,7 @@ Public Class cEcosimFleetOutput
 
         Me.m_dataType = eDataTypes.EcosimFleetOutput
         Me.Index = iFleet
-        Me.DBID = TheCore.m_EcoPathData.FleetDBID(iFleet)
+        Me.DBID = TheCore.m_EcoSimData.FleetDBID(iFleet)
 
         'no validators
         'Catch biomass

@@ -277,6 +277,7 @@
     <Compile Include="Database\Updates\cDBUpdate6_00_07_003.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_01_00_000.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_01_00_001.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_01_00_002.vb" />
     <Compile Include="DataSource\cDatasourceFactory.vb" />
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />

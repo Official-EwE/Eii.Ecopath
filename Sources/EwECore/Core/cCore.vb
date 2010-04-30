@@ -5731,7 +5731,7 @@ Public Class cCore
 
                 fleet.AllowValidation = False
 
-                iFleet = Array.IndexOf(m_EcoPathData.FleetDBID, fleet.DBID)
+                iFleet = Array.IndexOf(m_EcoSimData.FleetDBID, fleet.DBID)
                 Debug.Assert(iFleet > 0 And iFleet <= m_EcoPathData.NumFleet, "Failed to find Fleet index for database ID " & fleet.DBID.ToString)
 
                 fleet.Name = Me.m_EcoPathData.FleetName(iFleet)

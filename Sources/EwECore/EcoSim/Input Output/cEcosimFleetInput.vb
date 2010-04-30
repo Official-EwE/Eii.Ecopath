@@ -19,7 +19,7 @@ Public Class cEcosimFleetInput
         Me.AllowValidation = False
 
         Me.Index = iFleet
-        Me.DBID = TheCore.m_EcoPathData.FleetDBID(iFleet)
+        Me.DBID = TheCore.m_EcoSimData.FleetDBID(iFleet)
         Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcosimFleetInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
         'EPower

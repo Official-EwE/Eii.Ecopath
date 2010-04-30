@@ -9,7 +9,7 @@ Imports EwECore.DataSources.cDBDataSource
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.1.0.001:</para>
+''' <para>Database update 6.1.0.002:</para>
 ''' <para>
 ''' <list type="bullet">
 ''' <item><description>Added more MSE fields.</description></item>
@@ -17,7 +17,7 @@ Imports EwECore.DataSources.cDBDataSource
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_01_00_001
+Friend Class cDBUpdate6_01_00_002
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -33,7 +33,7 @@ Friend Class cDBUpdate6_01_00_001
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.100001!
+            Return 6.100002!
         End Get
     End Property
 
@@ -45,7 +45,7 @@ Friend Class cDBUpdate6_01_00_001
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added more MSE fields."
+            Return "Added fixed mortality MSE fields."
         End Get
     End Property
 
@@ -56,16 +56,7 @@ Friend Class cDBUpdate6_01_00_001
     End Function
 
     Private Function UpdateMSETables(ByVal db As cEwEDatabase) As Boolean
-
-        Dim bSucces As Boolean = db.Execute("ALTER TABLE EcosimScenarioGroup ADD COLUMN RecruitmentCV SINGLE")
-        bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioGroup ADD COLUMN RStockRatio SINGLE")
-        bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioGroup ADD COLUMN RHalfB0Ratio SINGLE")
-
-        bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioMSE DROP COLUMN KalmanGain")
-        bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioMSE DROP COLUMN ForcastGain")
-
-        Return bSucces
-
+        Return db.Execute("ALTER TABLE EcosimScenarioGroup ADD COLUMN FixedF SINGLE")
     End Function
 
 End Class
