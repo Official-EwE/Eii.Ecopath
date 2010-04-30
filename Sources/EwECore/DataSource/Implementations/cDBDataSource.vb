@@ -3540,6 +3540,7 @@ Namespace DataSources
             Try
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE FleetID={0}", iEcopathFleetID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcoSimScenarioFleetYear WHERE FleetID={0}", iEcopathFleetID))
             Catch ex As Exception
                 bSucces = False
             End Try
@@ -3567,6 +3568,7 @@ Namespace DataSources
                 ' Big sigh, it's even worse...
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE EcosimGroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroupYear WHERE GroupID={0}", iGroupID))
 
             Catch ex As Exception
                 bSucces = False
@@ -3624,6 +3626,7 @@ Namespace DataSources
                     mseDS.Bbase(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Bbase", mseDS.Bbase(iEcopathGroup)))
                     mseDS.Fopt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Fopt", mseDS.Fopt(iEcopathGroup)))
                     mseDS.FixedEscapement(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedEscapement", 0.0!))
+                    mseDS.FixedF(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedF", 0.0!))
 
                     mseDS.CVbiomEst(iEcopathGroup) = CSng(Me.ReadSafe(reader, "BiomassCV", mseDS.CVbiomEst(iEcopathGroup)))
                     mseDS.BioRiskValue(iEcopathGroup, 0) = CSng(Me.ReadSafe(reader, "LowerRisk", mseDS.BioRiskValue(iEcopathGroup, 0)))
@@ -3807,7 +3810,7 @@ Namespace DataSources
             Try
                 While reader.Read()
                     iFleetID = CInt(reader("FleetID"))
-                    iFleet = Array.IndexOf(ecosimDS.FleetDBID, iFleetID)
+                    iFleet = Array.IndexOf(ecopathDS.FleetDBID, iFleetID)
                     iYear = CInt(reader("TimeYear"))
                     If (iFleet > 0) And (iFleet <= ecosimDS.nGear) And _
                        (iYear > 0) And (iYear <= mseDS.nYears) Then
@@ -3976,6 +3979,7 @@ Namespace DataSources
                     drow("Bbase") = mseDS.Bbase(i)
                     drow("Fopt") = mseDS.Fopt(i)
                     drow("FixedEscapement") = mseDS.FixedEscapement(i)
+                    drow("FixedF") = mseDS.FixedF(i)
 
                     drow("BiomassCV") = mseDS.CVbiomEst(i)
                     drow("LowerRisk") = mseDS.BioRiskValue(i, 0)
@@ -4070,6 +4074,7 @@ Namespace DataSources
 
             Dim iActiveEcosimScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim bDuplicating As Boolean = (idm.GetID(eDataTypes.EcoSimScenario, iActiveEcosimScenarioID) <> iActiveEcosimScenarioID)
+            Dim iNextFleetID As Integer = 0
             Dim iFleetID As Integer = 0
             Dim iNextShapeID As Integer = 0
             Dim iShapeID As Integer = 0
@@ -4082,6 +4087,12 @@ Namespace DataSources
                 iNextShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
             Catch ex As Exception
                 iNextShapeID = 1
+            End Try
+            ' Get next available fleet ID
+            Try
+                iNextFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcosimScenarioFleet")) + 1
+            Catch ex As Exception
+                iNextFleetID = 1
             End Try
 
             objKeys(0) = iScenarioID
@@ -4102,13 +4113,15 @@ Namespace DataSources
                         ' Populate PK
                         drow("ScenarioID") = objKeys(0)
                         drow("EcopathFleetID") = objKeys(1)
-                        drow("FleetID") = drow("EcopathFleetID")
+                        drow("FleetID") = iNextFleetID
+                        iNextFleetID += 1
                     Else
                         ' #No: edit the row
                         drow.BeginEdit()
                     End If
 
                     iFleetID = CInt(drow("FleetID"))
+                    idm.Add(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet), iFleetID)
 
                     If bDuplicating Then
                         iShapeID = iNextShapeID
@@ -4117,7 +4130,6 @@ Namespace DataSources
                         iShapeID = CInt(drow("FishRateShapeID"))
                     End If
                     idm.Add(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(iFleet), iShapeID)
-                    idm.Add(eDataTypes.EcosimFleetInput, ecosimDS.FleetDBID(iFleet), iFleetID)
 
                     ' Write dynamic bit
                     drow("FishRateShapeID") = iShapeID
@@ -4132,8 +4144,8 @@ Namespace DataSources
                     drow("QIncrease") = mseDS.Qgrow(iFleet)
                     drow("CatchRefLower") = mseDS.CatchFleetBounds(iFleet).Lower
                     drow("CatchRefUpper") = mseDS.CatchFleetBounds(iFleet).Upper
-                    drow("EffortRefLower") = mseDS.CatchFleetBounds(iFleet).Lower
-                    drow("EffortRefUpper") = mseDS.CatchFleetBounds(iFleet).Upper
+                    drow("EffortRefLower") = mseDS.EffortFleetBounds(iFleet).Lower
+                    drow("EffortRefUpper") = mseDS.EffortFleetBounds(iFleet).Upper
                     'drow("MSYEvaluateFleet") = CInt(IIf(mseDS.MSYEvaluateFleet(iFleet), 1, 0))
 
                     ' Wrap up: was this a new row?
@@ -4189,7 +4201,7 @@ Namespace DataSources
                         drow = writer.NewRow()
                         ' Populate key
                         drow("ScenarioID") = iScenarioID
-                        drow("FleetID") = idm.GetID(eDataTypes.EcosimFleetInput, ecosimDS.FleetDBID(iFleet))
+                        drow("FleetID") = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
                         drow("TimeYear") = iYear
                         ' Write dynamic bit
                         drow("CV") = mseDS.CVFT(iFleet, iYear)
