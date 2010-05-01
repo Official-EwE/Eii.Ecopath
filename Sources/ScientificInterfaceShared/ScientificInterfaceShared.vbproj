@@ -141,6 +141,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\IUIElement.vb" />
+    <Compile Include="Controls\Label\cEwEHeaderLabel.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ListBox\cCoreInputOutputListboxItem.vb" />
     <Compile Include="Controls\ListBox\cFleetListBox.vb">
       <SubType>Component</SubType>
