@@ -231,92 +231,44 @@
   <data name="&gt;&gt;m_gpMRU.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="lblTitle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_hdrCaption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
-  <data name="lblTitle.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrCaption.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="lblTitle.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrCaption.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblTitle.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrCaption.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="lblTitle.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrCaption.Size" type="System.Drawing.Size, System.Drawing">
     <value>382, 18</value>
   </data>
-  <data name="lblTitle.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrCaption.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="lblTitle.Text" xml:space="preserve">
+  <data name="m_hdrCaption.Text" xml:space="preserve">
     <value>General options</value>
   </data>
-  <data name="lblTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrCaption.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;lblTitle.Name" xml:space="preserve">
-    <value>lblTitle</value>
+  <data name="&gt;&gt;m_hdrCaption.Name" xml:space="preserve">
+    <value>m_hdrCaption</value>
   </data>
-  <data name="&gt;&gt;lblTitle.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblTitle.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblTitle.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_gpMsg.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxNumMessages.Name" xml:space="preserve">
-    <value>m_nudMaxNumMessages</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxNumMessages.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxNumMessages.Parent" xml:space="preserve">
-    <value>m_gpMsg</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxNumMessages.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxNumMessages.Name" xml:space="preserve">
-    <value>m_lblMaxNumMessages</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxNumMessages.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxNumMessages.Parent" xml:space="preserve">
-    <value>m_gpMsg</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxNumMessages.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_gpMsg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 190</value>
-  </data>
-  <data name="m_gpMsg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 56</value>
-  </data>
-  <data name="m_gpMsg.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_gpMsg.Text" xml:space="preserve">
-    <value>Status panel</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Name" xml:space="preserve">
-    <value>m_gpMsg</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_nudMaxNumMessages.Location" type="System.Drawing.Point, System.Drawing">
     <value>177, 23</value>
@@ -367,6 +319,30 @@
     <value>m_gpMsg</value>
   </data>
   <data name="&gt;&gt;m_lblMaxNumMessages.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_gpMsg.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 190</value>
+  </data>
+  <data name="m_gpMsg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>382, 56</value>
+  </data>
+  <data name="m_gpMsg.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_gpMsg.Text" xml:space="preserve">
+    <value>Status panel</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Name" xml:space="preserve">
+    <value>m_gpMsg</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_gbStartup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">

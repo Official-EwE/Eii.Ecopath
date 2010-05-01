@@ -234,34 +234,34 @@
   <data name="&gt;&gt;m_cmbItemForeground.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="lblItemBackColor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_lblItemBackColor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="lblItemBackColor.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblItemBackColor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblItemBackColor.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblItemBackColor.Location" type="System.Drawing.Point, System.Drawing">
     <value>237, 71</value>
   </data>
-  <data name="lblItemBackColor.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblItemBackColor.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 13</value>
   </data>
-  <data name="lblItemBackColor.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblItemBackColor.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="lblItemBackColor.Text" xml:space="preserve">
+  <data name="m_lblItemBackColor.Text" xml:space="preserve">
     <value>Item &amp;background:</value>
   </data>
-  <data name="&gt;&gt;lblItemBackColor.Name" xml:space="preserve">
-    <value>lblItemBackColor</value>
+  <data name="&gt;&gt;m_lblItemBackColor.Name" xml:space="preserve">
+    <value>m_lblItemBackColor</value>
   </data>
-  <data name="&gt;&gt;lblItemBackColor.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblItemBackColor.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblItemBackColor.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblItemBackColor.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblItemBackColor.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblItemBackColor.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
   <data name="m_btnCustomForeColor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -411,37 +411,34 @@
   <data name="&gt;&gt;m_grpExample.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="lblColorHeader.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_hdrCaption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
-  <data name="lblColorHeader.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblColorHeader.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrCaption.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="lblColorHeader.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrCaption.Size" type="System.Drawing.Size, System.Drawing">
     <value>436, 18</value>
   </data>
-  <data name="lblColorHeader.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrCaption.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="lblColorHeader.Text" xml:space="preserve">
+  <data name="m_hdrCaption.Text" xml:space="preserve">
     <value>Color options</value>
   </data>
-  <data name="lblColorHeader.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrCaption.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;lblColorHeader.Name" xml:space="preserve">
-    <value>lblColorHeader</value>
+  <data name="&gt;&gt;m_hdrCaption.Name" xml:space="preserve">
+    <value>m_hdrCaption</value>
   </data>
-  <data name="&gt;&gt;lblColorHeader.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.501, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;lblColorHeader.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblColorHeader.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_lblDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">

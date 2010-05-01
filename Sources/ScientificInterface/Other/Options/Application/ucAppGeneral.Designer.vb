@@ -1,3 +1,5 @@
+Imports ScientificInterfaceShared
+
 Namespace Other
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -26,7 +28,7 @@ Partial Class ucAppGeneral
             Me.m_nudMRU = New System.Windows.Forms.NumericUpDown
             Me.m_btnClearMRU = New System.Windows.Forms.Button
             Me.lblMDB = New System.Windows.Forms.Label
-            Me.lblTitle = New System.Windows.Forms.Label
+            Me.m_hdrCaption = New cEwEHeaderLabel
             Me.m_gpMsg = New System.Windows.Forms.GroupBox
             Me.m_nudMaxNumMessages = New System.Windows.Forms.NumericUpDown
             Me.m_lblMaxNumMessages = New System.Windows.Forms.Label
@@ -68,12 +70,10 @@ Partial Class ucAppGeneral
             resources.ApplyResources(Me.lblMDB, "lblMDB")
             Me.lblMDB.Name = "lblMDB"
             '
-            'lblTitle
+            'm_hdrCaption
             '
-            Me.lblTitle.BackColor = System.Drawing.SystemColors.ButtonShadow
-            resources.ApplyResources(Me.lblTitle, "lblTitle")
-            Me.lblTitle.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblTitle.Name = "lblTitle"
+            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
+            Me.m_hdrCaption.Name = "m_hdrCaption"
             '
             'm_gpMsg
             '
@@ -135,7 +135,7 @@ Partial Class ucAppGeneral
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_gbStartup)
             Me.Controls.Add(Me.m_gpMsg)
-            Me.Controls.Add(Me.lblTitle)
+            Me.Controls.Add(Me.m_hdrCaption)
             Me.Controls.Add(Me.m_gpMRU)
             Me.Name = "ucAppGeneral"
             Me.m_gpMRU.ResumeLayout(False)
@@ -149,8 +149,7 @@ Partial Class ucAppGeneral
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents lblMDB As System.Windows.Forms.Label
-        Friend WithEvents lblTitle As System.Windows.Forms.Label
+        Private WithEvents lblMDB As System.Windows.Forms.Label
         Private WithEvents m_nudMaxNumMessages As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblMaxNumMessages As System.Windows.Forms.Label
         Private WithEvents m_btnClearMRU As System.Windows.Forms.Button
@@ -162,6 +161,7 @@ Partial Class ucAppGeneral
         Private WithEvents m_cbDownloadUpdates As System.Windows.Forms.CheckBox
         Private WithEvents m_lblResetOverwritePrompts As System.Windows.Forms.Label
         Private WithEvents m_btnResetOverwritePrompts As System.Windows.Forms.Button
+        Private WithEvents m_hdrCaption As cEwEHeaderLabel
 
     End Class
 

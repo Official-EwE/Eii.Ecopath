@@ -334,7 +334,7 @@ Namespace Other
             If Not bShowForeground Then Me.m_cmbItemForeground.SelectedIndex = -1
 
             ' Enable/disable background color related controls
-            Me.lblItemBackColor.Enabled = bShowBackground
+            Me.m_lblItemBackColor.Enabled = bShowBackground
             Me.m_cmbItemBackground.Enabled = bShowBackground
             Me.m_btnCustomBackColor.Enabled = bShowBackground
 

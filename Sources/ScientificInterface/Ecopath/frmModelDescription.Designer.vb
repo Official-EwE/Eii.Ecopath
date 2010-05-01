@@ -1,3 +1,5 @@
+Imports ScientificInterfaceShared
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmModelDescription
     Inherits frmEwE
@@ -24,21 +26,18 @@ Partial Class frmModelDescription
     Private Sub InitializeComponent()
         Me.m_udNumDigits = New System.Windows.Forms.NumericUpDown
         Me.lbNumDigits = New System.Windows.Forms.Label
-        Me.lblColorHeader = New System.Windows.Forms.Label
+        Me.m_lblOptions = New ScientificInterfaceShared.cEwEHeaderLabel
         Me.m_lbDescription = New System.Windows.Forms.Label
-        Me.lbScenarioName = New System.Windows.Forms.Label
-        Me.lblScenario = New System.Windows.Forms.Label
+        Me.m_lbScenarioName = New System.Windows.Forms.Label
+        Me.m_lblModel = New ScientificInterfaceShared.cEwEHeaderLabel
         Me.m_tbName = New System.Windows.Forms.TextBox
         Me.m_lbAuthor = New System.Windows.Forms.Label
         Me.m_tbAuthor = New System.Windows.Forms.TextBox
         Me.m_lbContact = New System.Windows.Forms.Label
-        Me.m_tbContact = New System.Windows.Forms.TextBox
-        Me.m_tbDescription = New System.Windows.Forms.TextBox
-        Me.m_txbPath = New System.Windows.Forms.Label
-        Me.lblPath = New System.Windows.Forms.Label
-        Me.lblArea = New System.Windows.Forms.Label
+        Me.m_lblFile = New System.Windows.Forms.Label
+        Me.m_lblArea = New System.Windows.Forms.Label
         Me.m_tbArea = New System.Windows.Forms.TextBox
-        Me.lblAreaUnit = New System.Windows.Forms.Label
+        Me.m_lblAreaUnit = New System.Windows.Forms.Label
         Me.m_tlpUnits = New System.Windows.Forms.TableLayoutPanel
         Me.m_gbCurrencyUnit = New System.Windows.Forms.GroupBox
         Me.tbCurrencyNutrientOther = New System.Windows.Forms.TextBox
@@ -59,13 +58,16 @@ Partial Class frmModelDescription
         Me.rbTimeOther = New System.Windows.Forms.RadioButton
         Me.rbDay = New System.Windows.Forms.RadioButton
         Me.rbYear = New System.Windows.Forms.RadioButton
-        Me.lbNote = New System.Windows.Forms.Label
         Me.m_gbMonetaryUnits = New System.Windows.Forms.GroupBox
         Me.m_lblMonetaryUnit = New System.Windows.Forms.Label
         Me.m_cmbMonetaryUnit = New ScientificInterfaceShared.Controls.cMonetaryUnitComboBox
         Me.m_gbNumFormatting = New System.Windows.Forms.GroupBox
         Me.m_cbGroupDigits = New System.Windows.Forms.CheckBox
         Me.m_chkPSD = New System.Windows.Forms.CheckBox
+        Me.m_tbxFile = New System.Windows.Forms.TextBox
+        Me.m_tbContact = New System.Windows.Forms.RichTextBox
+        Me.m_tbDescription = New System.Windows.Forms.RichTextBox
+        Me.m_hdrExecution = New ScientificInterfaceShared.cEwEHeaderLabel
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -76,7 +78,7 @@ Partial Class frmModelDescription
         '
         'm_udNumDigits
         '
-        Me.m_udNumDigits.Location = New System.Drawing.Point(166, 18)
+        Me.m_udNumDigits.Location = New System.Drawing.Point(131, 19)
         Me.m_udNumDigits.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
         Me.m_udNumDigits.Name = "m_udNumDigits"
         Me.m_udNumDigits.Size = New System.Drawing.Size(64, 20)
@@ -92,20 +94,17 @@ Partial Class frmModelDescription
         Me.lbNumDigits.TabIndex = 0
         Me.lbNumDigits.Text = "Relevant decimal &digits:"
         '
-        'lblColorHeader
+        'm_lblOptions
         '
-        Me.lblColorHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_lblOptions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblColorHeader.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.lblColorHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.lblColorHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.lblColorHeader.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblColorHeader.Location = New System.Drawing.Point(12, 326)
-        Me.lblColorHeader.Name = "lblColorHeader"
-        Me.lblColorHeader.Size = New System.Drawing.Size(647, 18)
-        Me.lblColorHeader.TabIndex = 14
-        Me.lblColorHeader.Text = "General options"
-        Me.lblColorHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.m_lblOptions.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_lblOptions.Location = New System.Drawing.Point(12, 309)
+        Me.m_lblOptions.Name = "m_lblOptions"
+        Me.m_lblOptions.Size = New System.Drawing.Size(647, 18)
+        Me.m_lblOptions.TabIndex = 14
+        Me.m_lblOptions.Text = "General options"
+        Me.m_lblOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_lbDescription
         '
@@ -117,30 +116,27 @@ Partial Class frmModelDescription
         Me.m_lbDescription.TabIndex = 3
         Me.m_lbDescription.Text = "D&escription:"
         '
-        'lbScenarioName
+        'm_lbScenarioName
         '
-        Me.lbScenarioName.AutoSize = True
-        Me.lbScenarioName.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lbScenarioName.Location = New System.Drawing.Point(12, 42)
-        Me.lbScenarioName.Name = "lbScenarioName"
-        Me.lbScenarioName.Size = New System.Drawing.Size(38, 13)
-        Me.lbScenarioName.TabIndex = 1
-        Me.lbScenarioName.Text = "&Name:"
+        Me.m_lbScenarioName.AutoSize = True
+        Me.m_lbScenarioName.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_lbScenarioName.Location = New System.Drawing.Point(12, 42)
+        Me.m_lbScenarioName.Name = "m_lbScenarioName"
+        Me.m_lbScenarioName.Size = New System.Drawing.Size(38, 13)
+        Me.m_lbScenarioName.TabIndex = 1
+        Me.m_lbScenarioName.Text = "&Name:"
         '
-        'lblScenario
+        'm_lblModel
         '
-        Me.lblScenario.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_lblModel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblScenario.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.lblScenario.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.lblScenario.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.lblScenario.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lblScenario.Location = New System.Drawing.Point(12, 9)
-        Me.lblScenario.Name = "lblScenario"
-        Me.lblScenario.Size = New System.Drawing.Size(647, 18)
-        Me.lblScenario.TabIndex = 0
-        Me.lblScenario.Text = "Model"
-        Me.lblScenario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.m_lblModel.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_lblModel.Location = New System.Drawing.Point(12, 9)
+        Me.m_lblModel.Name = "m_lblModel"
+        Me.m_lblModel.Size = New System.Drawing.Size(647, 18)
+        Me.m_lblModel.TabIndex = 0
+        Me.m_lblModel.Text = "Model"
+        Me.m_lblModel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_tbName
         '
@@ -181,53 +177,23 @@ Partial Class frmModelDescription
         Me.m_lbContact.TabIndex = 7
         Me.m_lbContact.Text = "&Contact:"
         '
-        'm_tbContact
+        'm_lblFile
         '
-        Me.m_tbContact.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbContact.Location = New System.Drawing.Point(102, 182)
-        Me.m_tbContact.MaxLength = 250
-        Me.m_tbContact.Multiline = True
-        Me.m_tbContact.Name = "m_tbContact"
-        Me.m_tbContact.Size = New System.Drawing.Size(557, 58)
-        Me.m_tbContact.TabIndex = 8
+        Me.m_lblFile.AutoSize = True
+        Me.m_lblFile.Location = New System.Drawing.Point(12, 276)
+        Me.m_lblFile.Name = "m_lblFile"
+        Me.m_lblFile.Size = New System.Drawing.Size(26, 13)
+        Me.m_lblFile.TabIndex = 12
+        Me.m_lblFile.Text = "File:"
         '
-        'm_tbDescription
+        'm_lblArea
         '
-        Me.m_tbDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbDescription.Location = New System.Drawing.Point(102, 65)
-        Me.m_tbDescription.Multiline = True
-        Me.m_tbDescription.Name = "m_tbDescription"
-        Me.m_tbDescription.Size = New System.Drawing.Size(557, 85)
-        Me.m_tbDescription.TabIndex = 4
-        '
-        'm_txbPath
-        '
-        Me.m_txbPath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_txbPath.Location = New System.Drawing.Point(102, 273)
-        Me.m_txbPath.Name = "m_txbPath"
-        Me.m_txbPath.Size = New System.Drawing.Size(557, 41)
-        Me.m_txbPath.TabIndex = 13
-        '
-        'lblPath
-        '
-        Me.lblPath.AutoSize = True
-        Me.lblPath.Location = New System.Drawing.Point(12, 273)
-        Me.lblPath.Name = "lblPath"
-        Me.lblPath.Size = New System.Drawing.Size(26, 13)
-        Me.lblPath.TabIndex = 12
-        Me.lblPath.Text = "File:"
-        '
-        'lblArea
-        '
-        Me.lblArea.AutoSize = True
-        Me.lblArea.Location = New System.Drawing.Point(12, 250)
-        Me.lblArea.Name = "lblArea"
-        Me.lblArea.Size = New System.Drawing.Size(32, 13)
-        Me.lblArea.TabIndex = 9
-        Me.lblArea.Text = "A&rea:"
+        Me.m_lblArea.AutoSize = True
+        Me.m_lblArea.Location = New System.Drawing.Point(12, 250)
+        Me.m_lblArea.Name = "m_lblArea"
+        Me.m_lblArea.Size = New System.Drawing.Size(32, 13)
+        Me.m_lblArea.TabIndex = 9
+        Me.m_lblArea.Text = "A&rea:"
         '
         'm_tbArea
         '
@@ -237,13 +203,13 @@ Partial Class frmModelDescription
         Me.m_tbArea.Size = New System.Drawing.Size(92, 20)
         Me.m_tbArea.TabIndex = 10
         '
-        'lblAreaUnit
+        'm_lblAreaUnit
         '
-        Me.lblAreaUnit.Location = New System.Drawing.Point(200, 250)
-        Me.lblAreaUnit.Name = "lblAreaUnit"
-        Me.lblAreaUnit.Size = New System.Drawing.Size(76, 17)
-        Me.lblAreaUnit.TabIndex = 11
-        Me.lblAreaUnit.Text = "km²"
+        Me.m_lblAreaUnit.Location = New System.Drawing.Point(200, 250)
+        Me.m_lblAreaUnit.Name = "m_lblAreaUnit"
+        Me.m_lblAreaUnit.Size = New System.Drawing.Size(76, 17)
+        Me.m_lblAreaUnit.TabIndex = 11
+        Me.m_lblAreaUnit.Text = "km²"
         '
         'm_tlpUnits
         '
@@ -256,7 +222,7 @@ Partial Class frmModelDescription
         Me.m_tlpUnits.Controls.Add(Me.m_gbTimeUnits, 1, 1)
         Me.m_tlpUnits.Controls.Add(Me.m_gbMonetaryUnits, 1, 0)
         Me.m_tlpUnits.Controls.Add(Me.m_gbNumFormatting, 0, 0)
-        Me.m_tlpUnits.Location = New System.Drawing.Point(12, 354)
+        Me.m_tlpUnits.Location = New System.Drawing.Point(12, 337)
         Me.m_tlpUnits.Margin = New System.Windows.Forms.Padding(0)
         Me.m_tlpUnits.Name = "m_tlpUnits"
         Me.m_tlpUnits.RowCount = 2
@@ -283,9 +249,9 @@ Partial Class frmModelDescription
         Me.m_gbCurrencyUnit.Controls.Add(Me.rbDryWeight)
         Me.m_gbCurrencyUnit.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_gbCurrencyUnit.Location = New System.Drawing.Point(0, 86)
-        Me.m_gbCurrencyUnit.Margin = New System.Windows.Forms.Padding(0, 3, 3, 3)
+        Me.m_gbCurrencyUnit.Margin = New System.Windows.Forms.Padding(0, 3, 3, 0)
         Me.m_gbCurrencyUnit.Name = "m_gbCurrencyUnit"
-        Me.m_gbCurrencyUnit.Size = New System.Drawing.Size(351, 189)
+        Me.m_gbCurrencyUnit.Size = New System.Drawing.Size(351, 192)
         Me.m_gbCurrencyUnit.TabIndex = 2
         Me.m_gbCurrencyUnit.TabStop = False
         Me.m_gbCurrencyUnit.Text = "C&urrency units"
@@ -429,12 +395,11 @@ Partial Class frmModelDescription
         Me.m_gbTimeUnits.Controls.Add(Me.rbTimeOther)
         Me.m_gbTimeUnits.Controls.Add(Me.rbDay)
         Me.m_gbTimeUnits.Controls.Add(Me.rbYear)
-        Me.m_gbTimeUnits.Controls.Add(Me.lbNote)
         Me.m_gbTimeUnits.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_gbTimeUnits.Location = New System.Drawing.Point(357, 86)
-        Me.m_gbTimeUnits.Margin = New System.Windows.Forms.Padding(3, 3, 0, 3)
+        Me.m_gbTimeUnits.Margin = New System.Windows.Forms.Padding(3, 3, 0, 0)
         Me.m_gbTimeUnits.Name = "m_gbTimeUnits"
-        Me.m_gbTimeUnits.Size = New System.Drawing.Size(290, 189)
+        Me.m_gbTimeUnits.Size = New System.Drawing.Size(290, 192)
         Me.m_gbTimeUnits.TabIndex = 3
         Me.m_gbTimeUnits.TabStop = False
         Me.m_gbTimeUnits.Text = "&Time units"
@@ -481,28 +446,15 @@ Partial Class frmModelDescription
         Me.rbYear.Text = "year *)"
         Me.rbYear.UseVisualStyleBackColor = True
         '
-        'lbNote
-        '
-        Me.lbNote.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lbNote.Enabled = False
-        Me.lbNote.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic)
-        Me.lbNote.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lbNote.Location = New System.Drawing.Point(6, 122)
-        Me.lbNote.Name = "lbNote"
-        Me.lbNote.Size = New System.Drawing.Size(278, 61)
-        Me.lbNote.TabIndex = 8
-        Me.lbNote.Text = "*) In Ecosim/Ecospace the time unit should be 'year'"
-        Me.lbNote.TextAlign = System.Drawing.ContentAlignment.BottomLeft
-        '
         'm_gbMonetaryUnits
         '
         Me.m_gbMonetaryUnits.Controls.Add(Me.m_lblMonetaryUnit)
         Me.m_gbMonetaryUnits.Controls.Add(Me.m_cmbMonetaryUnit)
         Me.m_gbMonetaryUnits.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_gbMonetaryUnits.Location = New System.Drawing.Point(357, 3)
+        Me.m_gbMonetaryUnits.Location = New System.Drawing.Point(357, 0)
+        Me.m_gbMonetaryUnits.Margin = New System.Windows.Forms.Padding(3, 0, 0, 3)
         Me.m_gbMonetaryUnits.Name = "m_gbMonetaryUnits"
-        Me.m_gbMonetaryUnits.Size = New System.Drawing.Size(287, 77)
+        Me.m_gbMonetaryUnits.Size = New System.Drawing.Size(290, 80)
         Me.m_gbMonetaryUnits.TabIndex = 1
         Me.m_gbMonetaryUnits.TabStop = False
         Me.m_gbMonetaryUnits.Text = "&Monetary units"
@@ -525,7 +477,7 @@ Partial Class frmModelDescription
         Me.m_cmbMonetaryUnit.Location = New System.Drawing.Point(93, 18)
         Me.m_cmbMonetaryUnit.MaxDropDownItems = 16
         Me.m_cmbMonetaryUnit.Name = "m_cmbMonetaryUnit"
-        Me.m_cmbMonetaryUnit.Size = New System.Drawing.Size(191, 21)
+        Me.m_cmbMonetaryUnit.Size = New System.Drawing.Size(194, 21)
         Me.m_cmbMonetaryUnit.Sorted = True
         Me.m_cmbMonetaryUnit.TabIndex = 1
         Me.m_cmbMonetaryUnit.UIContext = Nothing
@@ -537,9 +489,10 @@ Partial Class frmModelDescription
         Me.m_gbNumFormatting.Controls.Add(Me.lbNumDigits)
         Me.m_gbNumFormatting.Controls.Add(Me.m_udNumDigits)
         Me.m_gbNumFormatting.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_gbNumFormatting.Location = New System.Drawing.Point(3, 3)
+        Me.m_gbNumFormatting.Location = New System.Drawing.Point(0, 0)
+        Me.m_gbNumFormatting.Margin = New System.Windows.Forms.Padding(0, 0, 3, 3)
         Me.m_gbNumFormatting.Name = "m_gbNumFormatting"
-        Me.m_gbNumFormatting.Size = New System.Drawing.Size(348, 77)
+        Me.m_gbNumFormatting.Size = New System.Drawing.Size(351, 80)
         Me.m_gbNumFormatting.TabIndex = 0
         Me.m_gbNumFormatting.TabStop = False
         Me.m_gbNumFormatting.Text = "&Number formatting"
@@ -557,35 +510,76 @@ Partial Class frmModelDescription
         'm_chkPSD
         '
         Me.m_chkPSD.AutoSize = True
-        Me.m_chkPSD.Location = New System.Drawing.Point(12, 639)
+        Me.m_chkPSD.Location = New System.Drawing.Point(12, 655)
         Me.m_chkPSD.Name = "m_chkPSD"
         Me.m_chkPSD.Size = New System.Drawing.Size(262, 17)
         Me.m_chkPSD.TabIndex = 16
         Me.m_chkPSD.Text = "Include particle size distribution calculations (&PSD)"
         Me.m_chkPSD.UseVisualStyleBackColor = True
         '
+        'm_tbxFile
+        '
+        Me.m_tbxFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_tbxFile.Location = New System.Drawing.Point(102, 273)
+        Me.m_tbxFile.Name = "m_tbxFile"
+        Me.m_tbxFile.ReadOnly = True
+        Me.m_tbxFile.Size = New System.Drawing.Size(557, 20)
+        Me.m_tbxFile.TabIndex = 13
+        '
+        'm_tbContact
+        '
+        Me.m_tbContact.Location = New System.Drawing.Point(102, 185)
+        Me.m_tbContact.MaxLength = 32767
+        Me.m_tbContact.Name = "m_tbContact"
+        Me.m_tbContact.Size = New System.Drawing.Size(557, 56)
+        Me.m_tbContact.TabIndex = 8
+        Me.m_tbContact.Text = ""
+        '
+        'm_tbDescription
+        '
+        Me.m_tbDescription.Location = New System.Drawing.Point(102, 65)
+        Me.m_tbDescription.MaxLength = 32767
+        Me.m_tbDescription.Name = "m_tbDescription"
+        Me.m_tbDescription.Size = New System.Drawing.Size(557, 85)
+        Me.m_tbDescription.TabIndex = 4
+        Me.m_tbDescription.Text = ""
+        '
+        'm_hdrExecution
+        '
+        Me.m_hdrExecution.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_hdrExecution.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_hdrExecution.Location = New System.Drawing.Point(12, 630)
+        Me.m_hdrExecution.Name = "m_hdrExecution"
+        Me.m_hdrExecution.Size = New System.Drawing.Size(647, 18)
+        Me.m_hdrExecution.TabIndex = 14
+        Me.m_hdrExecution.Text = "Execution"
+        Me.m_hdrExecution.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'frmModelDescription
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(671, 659)
-        Me.Controls.Add(Me.m_chkPSD)
-        Me.Controls.Add(Me.m_tlpUnits)
-        Me.Controls.Add(Me.lblAreaUnit)
-        Me.Controls.Add(Me.lblArea)
-        Me.Controls.Add(Me.lblPath)
-        Me.Controls.Add(Me.m_txbPath)
+        Me.ClientSize = New System.Drawing.Size(671, 804)
         Me.Controls.Add(Me.m_tbDescription)
         Me.Controls.Add(Me.m_tbContact)
+        Me.Controls.Add(Me.m_tbxFile)
+        Me.Controls.Add(Me.m_chkPSD)
+        Me.Controls.Add(Me.m_tlpUnits)
+        Me.Controls.Add(Me.m_lblAreaUnit)
+        Me.Controls.Add(Me.m_lblArea)
+        Me.Controls.Add(Me.m_lblFile)
         Me.Controls.Add(Me.m_tbArea)
         Me.Controls.Add(Me.m_tbAuthor)
-        Me.Controls.Add(Me.lblScenario)
+        Me.Controls.Add(Me.m_lblModel)
         Me.Controls.Add(Me.m_tbName)
         Me.Controls.Add(Me.m_lbContact)
-        Me.Controls.Add(Me.lblColorHeader)
+        Me.Controls.Add(Me.m_hdrExecution)
+        Me.Controls.Add(Me.m_lblOptions)
         Me.Controls.Add(Me.m_lbDescription)
-        Me.Controls.Add(Me.lbScenarioName)
+        Me.Controls.Add(Me.m_lbScenarioName)
         Me.Controls.Add(Me.m_lbAuthor)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmModelDescription"
@@ -606,21 +600,18 @@ Partial Class frmModelDescription
     End Sub
     Private WithEvents m_udNumDigits As System.Windows.Forms.NumericUpDown
     Private WithEvents lbNumDigits As System.Windows.Forms.Label
-    Private WithEvents lblColorHeader As System.Windows.Forms.Label
+    Private WithEvents m_lblOptions As cEwEHeaderLabel
     Private WithEvents m_lbDescription As System.Windows.Forms.Label
-    Private WithEvents lbScenarioName As System.Windows.Forms.Label
-    Private WithEvents lblScenario As System.Windows.Forms.Label
+    Private WithEvents m_lbScenarioName As System.Windows.Forms.Label
+    Private WithEvents m_lblModel As cEwEHeaderLabel
     Private WithEvents m_tbName As System.Windows.Forms.TextBox
-    Private WithEvents m_tbContact As System.Windows.Forms.TextBox
     Private WithEvents m_tbAuthor As System.Windows.Forms.TextBox
     Private WithEvents m_lbContact As System.Windows.Forms.Label
     Private WithEvents m_lbAuthor As System.Windows.Forms.Label
-    Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
-    Private WithEvents m_txbPath As System.Windows.Forms.Label
-    Private WithEvents lblPath As System.Windows.Forms.Label
-    Private WithEvents lblArea As System.Windows.Forms.Label
+    Private WithEvents m_lblFile As System.Windows.Forms.Label
+    Private WithEvents m_lblArea As System.Windows.Forms.Label
     Private WithEvents m_tbArea As System.Windows.Forms.TextBox
-    Private WithEvents lblAreaUnit As System.Windows.Forms.Label
+    Private WithEvents m_lblAreaUnit As System.Windows.Forms.Label
     Private WithEvents m_tlpUnits As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_gbCurrencyUnit As System.Windows.Forms.GroupBox
     Private WithEvents m_lblEnergyRelated As System.Windows.Forms.Label
@@ -639,7 +630,6 @@ Partial Class frmModelDescription
     Private WithEvents rbTimeOther As System.Windows.Forms.RadioButton
     Private WithEvents rbDay As System.Windows.Forms.RadioButton
     Private WithEvents rbYear As System.Windows.Forms.RadioButton
-    Private WithEvents lbNote As System.Windows.Forms.Label
     Private WithEvents m_lblMonetaryUnit As System.Windows.Forms.Label
     Private WithEvents m_cmbMonetaryUnit As ScientificInterfaceShared.Controls.cMonetaryUnitComboBox
     Private WithEvents rbNutrientOther As System.Windows.Forms.RadioButton
@@ -648,4 +638,8 @@ Partial Class frmModelDescription
     Friend WithEvents m_cbGroupDigits As System.Windows.Forms.CheckBox
     Private WithEvents m_gbMonetaryUnits As System.Windows.Forms.GroupBox
     Private WithEvents m_gbNumFormatting As System.Windows.Forms.GroupBox
+    Private WithEvents m_tbxFile As System.Windows.Forms.TextBox
+    Private WithEvents m_tbContact As System.Windows.Forms.RichTextBox
+    Private WithEvents m_tbDescription As System.Windows.Forms.RichTextBox
+    Private WithEvents m_hdrExecution As ScientificInterfaceShared.cEwEHeaderLabel
 End Class

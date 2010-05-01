@@ -118,39 +118,39 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_lblHeader.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_hdr1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_lblHeader.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdr1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblHeader.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdr1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_lblHeader.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdr1.Size" type="System.Drawing.Size, System.Drawing">
     <value>436, 18</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_lblHeader.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdr1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_lblHeader.Text" xml:space="preserve">
+  <data name="m_hdr1.Text" xml:space="preserve">
     <value>Graphs and charts</value>
   </data>
-  <data name="m_lblHeader.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdr1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblHeader.Name" xml:space="preserve">
-    <value>m_lblHeader</value>
+  <data name="&gt;&gt;m_hdr1.Name" xml:space="preserve">
+    <value>m_hdr1</value>
   </data>
-  <data name="&gt;&gt;m_lblHeader.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdr1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblHeader.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdr1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblHeader.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdr1.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
   <data name="m_lblThumbnailSize.AutoSize" type="System.Boolean, mscorlib">
@@ -285,6 +285,24 @@
   <data name="m_gbThumbnails.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_lblThumbnailUnit.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblThumbnailUnit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblThumbnailUnit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>190, 21</value>
+  </data>
+  <data name="m_lblThumbnailUnit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 13</value>
+  </data>
+  <data name="m_lblThumbnailUnit.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_lblThumbnailUnit.Text" xml:space="preserve">
+    <value>pixels</value>
+  </data>
   <data name="&gt;&gt;m_lblThumbnailUnit.Name" xml:space="preserve">
     <value>m_lblThumbnailUnit</value>
   </data>
@@ -320,36 +338,6 @@
   </data>
   <data name="&gt;&gt;m_gbThumbnails.ZOrder" xml:space="preserve">
     <value>10</value>
-  </data>
-  <data name="m_lblThumbnailUnit.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblThumbnailUnit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblThumbnailUnit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>190, 21</value>
-  </data>
-  <data name="m_lblThumbnailUnit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>33, 13</value>
-  </data>
-  <data name="m_lblThumbnailUnit.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_lblThumbnailUnit.Text" xml:space="preserve">
-    <value>pixels</value>
-  </data>
-  <data name="&gt;&gt;m_lblThumbnailUnit.Name" xml:space="preserve">
-    <value>m_lblThumbnailUnit</value>
-  </data>
-  <data name="&gt;&gt;m_lblThumbnailUnit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblThumbnailUnit.Parent" xml:space="preserve">
-    <value>m_gbThumbnails</value>
-  </data>
-  <data name="&gt;&gt;m_lblThumbnailUnit.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_nudFontSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -444,40 +432,40 @@
   <data name="&gt;&gt;m_lblExample.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_lblFontHeader.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdr2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblFontHeader.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdr2.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblFontHeader.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdr2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblFontHeader.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdr2.Location" type="System.Drawing.Point, System.Drawing">
     <value>-2, 144</value>
   </data>
-  <data name="m_lblFontHeader.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdr2.Size" type="System.Drawing.Size, System.Drawing">
     <value>436, 18</value>
   </data>
-  <data name="m_lblFontHeader.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdr2.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_lblFontHeader.Text" xml:space="preserve">
+  <data name="m_hdr2.Text" xml:space="preserve">
     <value>Fonts</value>
   </data>
-  <data name="m_lblFontHeader.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdr2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblFontHeader.Name" xml:space="preserve">
-    <value>m_lblFontHeader</value>
+  <data name="&gt;&gt;m_hdr2.Name" xml:space="preserve">
+    <value>m_hdr2</value>
   </data>
-  <data name="&gt;&gt;m_lblFontHeader.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdr2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblFontHeader.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdr2.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblFontHeader.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdr2.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_gbxExample.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">

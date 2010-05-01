@@ -78,7 +78,7 @@ Public Class frmModelDescription
         Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitMonetary), cIntegerProperty)
         AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
 
-        Me.m_txbPath.Text = appl.SelectedFileName()
+        Me.m_tbxFile.Text = appl.SelectedFileName()
         Me.m_cmbMonetaryUnit.UIContext = Me.UIContext
 
         ' Listen to shapes data added or removed messages
@@ -142,7 +142,7 @@ Public Class frmModelDescription
 
     Private Sub m_csm_CoreDataStateEvent(ByVal coreStateMonitor As EwECore.cCoreStateMonitor)
         Dim appl As AppLauncher = AppLauncher.GetInstance()
-        Me.m_txbPath.Text = appl.SelectedFileName()
+        Me.m_tbxFile.Text = appl.SelectedFileName()
     End Sub
 
 #Region " Unit handling "

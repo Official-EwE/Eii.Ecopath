@@ -1,3 +1,5 @@
+Imports ScientificInterfaceShared
+
 Namespace Ecopath
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -28,17 +30,15 @@ Namespace Ecopath
             Me.m_btnMoveDown = New System.Windows.Forms.Button
             Me.m_btnDelete = New System.Windows.Forms.Button
             Me.m_btnKeep = New System.Windows.Forms.Button
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
             Me.m_bntColorDefaultAll = New System.Windows.Forms.Button
             Me.m_btnColorAlternateAll = New System.Windows.Forms.Button
-            Me.m_lbColours = New System.Windows.Forms.Label
-            Me.Label1 = New System.Windows.Forms.Label
-            Me.m_lbOrder = New System.Windows.Forms.Label
+            Me.m_hdrColours = New cEwEHeaderLabel
+            Me.m_hdrEdit = New cEwEHeaderLabel
+            Me.m_hdrOrder = New cEwEHeaderLabel
             Me.m_btnColourCustomCurrent = New System.Windows.Forms.Button
             Me.m_btnColourDefaultCurrent = New System.Windows.Forms.Button
-            Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_grid
@@ -100,13 +100,6 @@ Namespace Ecopath
             Me.m_btnKeep.Name = "m_btnKeep"
             Me.m_btnKeep.UseVisualStyleBackColor = True
             '
-            'TableLayoutPanel1
-            '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-            '
             'OK_Button
             '
             resources.ApplyResources(Me.OK_Button, "OK_Button")
@@ -130,26 +123,20 @@ Namespace Ecopath
             Me.m_btnColorAlternateAll.Name = "m_btnColorAlternateAll"
             Me.m_btnColorAlternateAll.UseVisualStyleBackColor = True
             '
-            'm_lbColours
+            'm_hdrColours
             '
-            resources.ApplyResources(Me.m_lbColours, "m_lbColours")
-            Me.m_lbColours.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lbColours.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.m_lbColours.Name = "m_lbColours"
+            resources.ApplyResources(Me.m_hdrColours, "m_hdrColours")
+            Me.m_hdrColours.Name = "m_hdrColours"
             '
-            'Label1
+            'm_hdrEdit
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.Label1.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
+            Me.m_hdrEdit.Name = "m_hdrEdit"
             '
-            'm_lbOrder
+            'm_hdrOrder
             '
-            resources.ApplyResources(Me.m_lbOrder, "m_lbOrder")
-            Me.m_lbOrder.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lbOrder.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.m_lbOrder.Name = "m_lbOrder"
+            resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
+            Me.m_hdrOrder.Name = "m_hdrOrder"
             '
             'm_btnColourCustomCurrent
             '
@@ -169,14 +156,15 @@ Namespace Ecopath
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.Controls.Add(Me.Cancel_Button)
+            Me.Controls.Add(Me.OK_Button)
             Me.Controls.Add(Me.m_btnColourDefaultCurrent)
             Me.Controls.Add(Me.m_btnColourCustomCurrent)
             Me.Controls.Add(Me.m_btnColorAlternateAll)
             Me.Controls.Add(Me.m_bntColorDefaultAll)
-            Me.Controls.Add(Me.m_lbOrder)
-            Me.Controls.Add(Me.Label1)
-            Me.Controls.Add(Me.m_lbColours)
-            Me.Controls.Add(Me.TableLayoutPanel1)
+            Me.Controls.Add(Me.m_hdrOrder)
+            Me.Controls.Add(Me.m_hdrEdit)
+            Me.Controls.Add(Me.m_hdrColours)
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.m_btnDelete)
             Me.Controls.Add(Me.m_btnMoveDown)
@@ -187,7 +175,6 @@ Namespace Ecopath
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
-            Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -198,14 +185,13 @@ Namespace Ecopath
         Private WithEvents m_btnMoveDown As System.Windows.Forms.Button
         Private WithEvents m_btnDelete As System.Windows.Forms.Button
         Private WithEvents m_btnKeep As System.Windows.Forms.Button
-        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
         Private WithEvents m_bntColorDefaultAll As System.Windows.Forms.Button
         Private WithEvents m_btnColorAlternateAll As System.Windows.Forms.Button
-        Private WithEvents m_lbColours As System.Windows.Forms.Label
-        Private WithEvents Label1 As System.Windows.Forms.Label
-        Private WithEvents m_lbOrder As System.Windows.Forms.Label
+        Private m_hdrColours As cEwEHeaderLabel
+        Private m_hdrEdit As cEwEHeaderLabel
+        Private m_hdrOrder As cEwEHeaderLabel
         Private WithEvents m_btnColourCustomCurrent As System.Windows.Forms.Button
         Private WithEvents m_btnColourDefaultCurrent As System.Windows.Forms.Button
 

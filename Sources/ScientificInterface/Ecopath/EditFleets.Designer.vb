@@ -1,3 +1,5 @@
+Imports ScientificInterfaceShared
+
 Namespace Ecopath
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -22,7 +24,6 @@ Namespace Ecopath
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EditFleets))
-            Me.m_grid = New ScientificInterface.EditFleetsEwEGrid
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
@@ -31,41 +32,15 @@ Namespace Ecopath
             Me.m_btnMoveDown = New System.Windows.Forms.Button
             Me.m_btnMoveUp = New System.Windows.Forms.Button
             Me.m_btnInsert = New System.Windows.Forms.Button
-            Me.m_lbEdit = New System.Windows.Forms.Label
-            Me.m_lbOrder = New System.Windows.Forms.Label
             Me.m_btnDefaultAll = New System.Windows.Forms.Button
-            Me.m_hdrColors = New System.Windows.Forms.Label
             Me.m_btnDefaultCurrent = New System.Windows.Forms.Button
             Me.m_btnCustom = New System.Windows.Forms.Button
+            Me.m_hdrColors = New ScientificInterfaceShared.cEwEHeaderLabel
+            Me.m_hdrOrder = New ScientificInterfaceShared.cEwEHeaderLabel
+            Me.m_hdrEdit = New ScientificInterfaceShared.cEwEHeaderLabel
+            Me.m_grid = New ScientificInterface.EditFleetsEwEGrid
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
-            '
-            'm_grid
-            '
-            resources.ApplyResources(Me.m_grid, "m_grid")
-            Me.m_grid.AutoSizeMinHeight = 10
-            Me.m_grid.AutoSizeMinWidth = 10
-            Me.m_grid.AutoStretchColumnsToFitWidth = False
-            Me.m_grid.AutoStretchRowsToFitHeight = False
-            Me.m_grid.BackColor = System.Drawing.Color.White
-            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
-            Me.m_grid.CustomSort = False
-            Me.m_grid.FixedColumnWidths = False
-            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_grid.GridToolTipActive = True
-            Me.m_grid.Name = "m_grid"
-            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TrackPropertySelection = True
-            Me.m_grid.UIContext = Nothing
             '
             'TableLayoutPanel1
             '
@@ -115,32 +90,11 @@ Namespace Ecopath
             Me.m_btnInsert.Name = "m_btnInsert"
             Me.m_btnInsert.UseVisualStyleBackColor = True
             '
-            'm_lbEdit
-            '
-            resources.ApplyResources(Me.m_lbEdit, "m_lbEdit")
-            Me.m_lbEdit.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lbEdit.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.m_lbEdit.Name = "m_lbEdit"
-            '
-            'm_lbOrder
-            '
-            resources.ApplyResources(Me.m_lbOrder, "m_lbOrder")
-            Me.m_lbOrder.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lbOrder.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.m_lbOrder.Name = "m_lbOrder"
-            '
             'm_btnDefaultAll
             '
             resources.ApplyResources(Me.m_btnDefaultAll, "m_btnDefaultAll")
             Me.m_btnDefaultAll.Name = "m_btnDefaultAll"
             Me.m_btnDefaultAll.UseVisualStyleBackColor = True
-            '
-            'm_hdrColors
-            '
-            resources.ApplyResources(Me.m_hdrColors, "m_hdrColors")
-            Me.m_hdrColors.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_hdrColors.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.m_hdrColors.Name = "m_hdrColors"
             '
             'm_btnDefaultCurrent
             '
@@ -154,6 +108,48 @@ Namespace Ecopath
             Me.m_btnCustom.Name = "m_btnCustom"
             Me.m_btnCustom.UseVisualStyleBackColor = True
             '
+            'm_hdrColors
+            '
+            resources.ApplyResources(Me.m_hdrColors, "m_hdrColors")
+            Me.m_hdrColors.Name = "m_hdrColors"
+            '
+            'm_hdrOrder
+            '
+            resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
+            Me.m_hdrOrder.Name = "m_hdrOrder"
+            '
+            'm_hdrEdit
+            '
+            resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
+            Me.m_hdrEdit.Name = "m_hdrEdit"
+            '
+            'm_grid
+            '
+            resources.ApplyResources(Me.m_grid, "m_grid")
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.BackColor = System.Drawing.Color.White
+            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+            Me.m_grid.CustomSort = False
+            Me.m_grid.FixedColumnWidths = False
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
+            Me.m_grid.Name = "m_grid"
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TrackPropertySelection = True
+            Me.m_grid.UIContext = Nothing
+            '
             'EditFleets
             '
             Me.AcceptButton = Me.OK_Button
@@ -161,8 +157,8 @@ Namespace Ecopath
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
             Me.Controls.Add(Me.m_hdrColors)
-            Me.Controls.Add(Me.m_lbOrder)
-            Me.Controls.Add(Me.m_lbEdit)
+            Me.Controls.Add(Me.m_hdrOrder)
+            Me.Controls.Add(Me.m_hdrEdit)
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnDelete)
@@ -189,11 +185,11 @@ Namespace Ecopath
         Private WithEvents m_btnMoveDown As System.Windows.Forms.Button
         Private WithEvents m_btnMoveUp As System.Windows.Forms.Button
         Private WithEvents m_btnInsert As System.Windows.Forms.Button
-        Private WithEvents m_lbEdit As System.Windows.Forms.Label
-        Private WithEvents m_lbOrder As System.Windows.Forms.Label
+        Private WithEvents m_hdrEdit As cEwEHeaderLabel
+        Private WithEvents m_hdrOrder As cEwEHeaderLabel
         Private WithEvents m_grid As EditFleetsEwEGrid
         Private WithEvents m_btnDefaultAll As System.Windows.Forms.Button
-        Private WithEvents m_hdrColors As System.Windows.Forms.Label
+        Private WithEvents m_hdrColors As cEwEHeaderLabel
         Private WithEvents m_btnDefaultCurrent As System.Windows.Forms.Button
         Private WithEvents m_btnCustom As System.Windows.Forms.Button
 

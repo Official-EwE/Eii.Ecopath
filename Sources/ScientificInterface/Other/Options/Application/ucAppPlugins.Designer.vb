@@ -1,3 +1,5 @@
+Imports ScientificInterfaceShared
+
 Namespace Other
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -14,7 +16,7 @@ Namespace Other
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucAppPlugins))
-            Me.lblTitle = New System.Windows.Forms.Label
+            Me.m_hdrCaption = New cEwEHeaderLabel
             Me.m_tvPlugins = New System.Windows.Forms.TreeView
             Me.m_ilPlugins = New System.Windows.Forms.ImageList(Me.components)
             Me.m_split = New System.Windows.Forms.SplitContainer
@@ -23,19 +25,13 @@ Namespace Other
             Me.m_split.SuspendLayout()
             Me.SuspendLayout()
             '
-            'lblTitle
+            'm_hdrCaption
             '
-            Me.lblTitle.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblTitle.Dock = System.Windows.Forms.DockStyle.Top
-            Me.lblTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-            Me.lblTitle.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblTitle.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.lblTitle.Location = New System.Drawing.Point(0, 0)
-            Me.lblTitle.Name = "lblTitle"
-            Me.lblTitle.Size = New System.Drawing.Size(414, 18)
-            Me.lblTitle.TabIndex = 0
-            Me.lblTitle.Text = "Plugins"
-            Me.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.m_hdrCaption.Dock = System.Windows.Forms.DockStyle.Top
+            Me.m_hdrCaption.Location = New System.Drawing.Point(0, 0)
+            Me.m_hdrCaption.Name = "m_hdrCaption"
+            Me.m_hdrCaption.Size = New System.Drawing.Size(414, 18)
+            Me.m_hdrCaption.Text = "Plugins"
             '
             'm_tvPlugins
             '
@@ -93,7 +89,7 @@ Namespace Other
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_cbDownloadUpdates)
             Me.Controls.Add(Me.m_split)
-            Me.Controls.Add(Me.lblTitle)
+            Me.Controls.Add(Me.m_hdrCaption)
             Me.Margin = New System.Windows.Forms.Padding(0)
             Me.Name = "ucAppPlugins"
             Me.Size = New System.Drawing.Size(414, 353)
@@ -103,11 +99,11 @@ Namespace Other
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents lblTitle As System.Windows.Forms.Label
-        Friend WithEvents m_tvPlugins As System.Windows.Forms.TreeView
-        Friend WithEvents m_split As System.Windows.Forms.SplitContainer
+        Private WithEvents m_tvPlugins As System.Windows.Forms.TreeView
+        Private WithEvents m_split As System.Windows.Forms.SplitContainer
         Private WithEvents m_ilPlugins As System.Windows.Forms.ImageList
         Private WithEvents m_cbDownloadUpdates As System.Windows.Forms.CheckBox
+        Private WithEvents m_hdrCaption As cEwEHeaderLabel
 
     End Class
 

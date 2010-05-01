@@ -1,3 +1,5 @@
+Imports ScientificInterfaceShared
+
 Namespace Other
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -26,13 +28,13 @@ Namespace Other
             Me.m_btnResetAll = New System.Windows.Forms.Button
             Me.m_lblItemForeColor = New System.Windows.Forms.Label
             Me.m_cmbItemForeground = New System.Windows.Forms.ComboBox
-            Me.lblItemBackColor = New System.Windows.Forms.Label
+            Me.m_lblItemBackColor = New System.Windows.Forms.Label
             Me.m_btnCustomForeColor = New System.Windows.Forms.Button
             Me.m_cmbItemBackground = New System.Windows.Forms.ComboBox
             Me.m_btnCustomBackColor = New System.Windows.Forms.Button
             Me.m_grpExample = New System.Windows.Forms.GroupBox
             Me.m_lblExample = New System.Windows.Forms.Label
-            Me.lblColorHeader = New System.Windows.Forms.Label
+            Me.m_hdrCaption = New ScientificInterfaceShared.cEwEHeaderLabel
             Me.m_lblDescription = New System.Windows.Forms.Label
             Me.m_lblSelection = New System.Windows.Forms.Label
             Me.m_lblColorItem = New System.Windows.Forms.Label
@@ -66,10 +68,10 @@ Namespace Other
             Me.m_cmbItemForeground.FormattingEnabled = True
             Me.m_cmbItemForeground.Name = "m_cmbItemForeground"
             '
-            'lblItemBackColor
+            'm_lblItemBackColor
             '
-            resources.ApplyResources(Me.lblItemBackColor, "lblItemBackColor")
-            Me.lblItemBackColor.Name = "lblItemBackColor"
+            resources.ApplyResources(Me.m_lblItemBackColor, "m_lblItemBackColor")
+            Me.m_lblItemBackColor.Name = "m_lblItemBackColor"
             '
             'm_btnCustomForeColor
             '
@@ -103,12 +105,10 @@ Namespace Other
             resources.ApplyResources(Me.m_lblExample, "m_lblExample")
             Me.m_lblExample.Name = "m_lblExample"
             '
-            'lblColorHeader
+            'm_hdrCaption
             '
-            Me.lblColorHeader.BackColor = System.Drawing.SystemColors.ButtonShadow
-            resources.ApplyResources(Me.lblColorHeader, "lblColorHeader")
-            Me.lblColorHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblColorHeader.Name = "lblColorHeader"
+            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
+            Me.m_hdrCaption.Name = "m_hdrCaption"
             '
             'm_lblDescription
             '
@@ -131,12 +131,12 @@ Namespace Other
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_lblDescription)
             Me.Controls.Add(Me.m_lblSelection)
-            Me.Controls.Add(Me.lblColorHeader)
+            Me.Controls.Add(Me.m_hdrCaption)
             Me.Controls.Add(Me.m_grpExample)
             Me.Controls.Add(Me.m_btnCustomBackColor)
             Me.Controls.Add(Me.m_cmbItemBackground)
             Me.Controls.Add(Me.m_btnCustomForeColor)
-            Me.Controls.Add(Me.lblItemBackColor)
+            Me.Controls.Add(Me.m_lblItemBackColor)
             Me.Controls.Add(Me.m_cmbItemForeground)
             Me.Controls.Add(Me.m_lblColorItem)
             Me.Controls.Add(Me.m_lblItemForeColor)
@@ -151,12 +151,12 @@ Namespace Other
         Private WithEvents m_btnResetAll As System.Windows.Forms.Button
         Private WithEvents m_lblItemForeColor As System.Windows.Forms.Label
         Private WithEvents m_cmbItemForeground As System.Windows.Forms.ComboBox
-        Private WithEvents lblItemBackColor As System.Windows.Forms.Label
+        Private WithEvents m_lblItemBackColor As System.Windows.Forms.Label
         Private WithEvents m_btnCustomForeColor As System.Windows.Forms.Button
         Private WithEvents m_cmbItemBackground As System.Windows.Forms.ComboBox
         Private WithEvents m_btnCustomBackColor As System.Windows.Forms.Button
         Private WithEvents m_grpExample As System.Windows.Forms.GroupBox
-        Private WithEvents lblColorHeader As System.Windows.Forms.Label
+        Private m_hdrCaption As cEwEHeaderLabel
         Private WithEvents m_lblExample As System.Windows.Forms.Label
         Private WithEvents m_lblDescription As System.Windows.Forms.Label
         Private WithEvents m_lblSelection As System.Windows.Forms.Label
