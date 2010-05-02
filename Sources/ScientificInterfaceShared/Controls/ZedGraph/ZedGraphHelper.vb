@@ -738,6 +738,10 @@ Namespace Controls
             For iPane = iMin To iMax
                 abCursor(iPane) = Me.ShowCursor(iPane)
                 Me.ShowCursor(iPane) = False
+                With Me.GetPane(iPane).YAxis.Scale
+                    .MaxGrace = Me.YScaleGrace
+                    .MinGrace = Me.YScaleGrace
+                End With
             Next
 
             ' Recalc axis
@@ -768,7 +772,7 @@ Namespace Controls
                 With Me.GetPane(iPane).YAxis.Scale
                     .MinAuto = bAutoscale
                     .MaxAuto = bAutoscale
-                    RescaleAndRedraw(iPane)
+                    Me.RescaleAndRedraw(iPane)
                 End With
             End Set
         End Property
@@ -810,7 +814,7 @@ Namespace Controls
                             .MinAuto = False
                             .MaxAuto = False
                     End Select
-                    RescaleAndRedraw(iPane)
+                    Me.RescaleAndRedraw(iPane)
                 End With
             End Set
         End Property
@@ -837,7 +841,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the grace margin for manually scaled Y axis.
+        ''' Get/set the grace margin for Y axis.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property YScaleGrace() As Single
@@ -846,6 +850,7 @@ Namespace Controls
             End Get
             Set(ByVal value As Single)
                 Me.m_sYScaleGrace = value
+                Me.RescaleAndRedraw()
             End Set
         End Property
 
@@ -854,8 +859,9 @@ Namespace Controls
                 Return Me.GetPane(iPane).XAxis.Scale.Min
             End Get
             Set(ByVal value As Double)
+                Me.AutoScaleYOption(iPane) = eScaleOptionTypes.None
                 Me.GetPane(iPane).XAxis.Scale.Min = value
-                RescaleAndRedraw(iPane)
+                Me.RescaleAndRedraw(iPane)
             End Set
         End Property
 
@@ -864,8 +870,9 @@ Namespace Controls
                 Return Me.GetPane(iPane).YAxis.Scale.Max
             End Get
             Set(ByVal value As Double)
+                Me.AutoScaleYOption(iPane) = eScaleOptionTypes.None
                 Me.GetPane(iPane).YAxis.Scale.Max = value
-                RescaleAndRedraw(iPane)
+                Me.RescaleAndRedraw(iPane)
             End Set
         End Property
 
