@@ -228,7 +228,8 @@ Friend Class cMSEPlotter
         For Each data As cCoreGroupBase In Me.m_Data
             ipane += 1
             stats = Me.m_manager.BiomassStats(data.Index)
-            Me.plotMean(stats, Me.m_zgh.GetPane(ipane))
+            Me.m_zgh.AutoScaleYOption(ipane) = cZedGraphHelper.eScaleOptionTypes.None
+            Me.plotMean(stats, ipane)
         Next
 
         '  Me.m_zgh.RescaleAndRedraw()
@@ -254,7 +255,7 @@ Friend Class cMSEPlotter
             ipane += 1
             'get the reference data from the core for this datatype
             Dim RefPoint As cMSERefPoint = Me.getRefPoint(statobj.Index)
-            'Data the data to the graph pane, this will remove existing reference lines
+            'Add the data to the graph pane, this will remove existing reference lines
             Me.plotRefLine(RefPoint.LowerReference, RefPoint.UpperReference, Me.m_zgh.GetPane(ipane))
 
             'Do NOT rescale if this is a Histogram
@@ -383,10 +384,14 @@ Friend Class cMSEPlotter
 
         End Select
 
+        ' Show values under the cursor
+        Me.m_zgh.ShowPointValue = True
+
     End Sub
 
     Private ReadOnly Property YLabel() As String
         Get
+            ' ToDo: globalize this
 
             Select Case Me.m_type
 
@@ -416,9 +421,9 @@ Friend Class cMSEPlotter
     End Property
 
 
-
     Private ReadOnly Property XLabel() As String
         Get
+            ' ToDo: globalize this
 
             Select Case Me.m_type
 
@@ -456,12 +461,11 @@ Friend Class cMSEPlotter
         End If
 
     End Sub
-    Private Sub ClearGraphs()
 
+    Private Sub ClearGraphs()
         For Each Pane As GraphPane In Me.m_zgh.Graph.MasterPane.PaneList
             Pane.CurveList.Clear()
         Next
-
     End Sub
 
     Private Sub plotHistoGram()
@@ -500,7 +504,7 @@ Friend Class cMSEPlotter
                 li.IsOverrideOrdinal = True
 
                 pane.XAxis.Type = AxisType.Linear
-                pane.YAxis.Scale.Max = max * 1.2
+                pane.YAxis.Scale.Max = max * Me.m_zgh.YScaleGrace
 
             Next
 
@@ -520,6 +524,7 @@ Friend Class cMSEPlotter
             Dim ipane As Integer
             Dim dx As Double
             Dim values() As Single
+            Dim max As Single = Single.MinValue
             Dim lstLines As New List(Of ZedGraph.LineItem)
 
             For Each data As cMSEStats In Me.m_Data '
@@ -534,6 +539,7 @@ Friend Class cMSEPlotter
                     For iTime As Integer = 0 To Me.m_uic.Core.nEcosimTimeSteps - 1
                         dx = Me.m_uic.Core.EcosimFirstYear + ((iTime + 1) / cCore.N_MONTHS)
                         ppl.Add(dx, values(iTime))
+                        max = Math.Max(values(iTime), max)
                     Next
                     Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, eLineType.ModelData, Color.Gray, ppl)
                     lstLines.Add(Line)
@@ -541,9 +547,10 @@ Friend Class cMSEPlotter
                 Next
 
                 Me.m_zgh.PlotLines(lstLines.ToArray, ipane, False, False)
-                Me.plotMean(data, Me.m_zgh.GetPane(ipane))
+                Me.plotMean(data, ipane)
             Next
 
+            Me.m_zgh.YScaleMax = max * Me.m_zgh.YScaleGrace
             Me.m_zgh.RescaleAndRedraw()
 
         Catch ex As Exception
@@ -591,47 +598,45 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Private Sub plotMean(ByVal StatsData As cMSEStats, ByVal pane As ZedGraph.GraphPane)
+    Private Sub plotMean(ByVal StatsData As cMSEStats, ByVal ipane As Integer)
         Dim dx As Double
 
-        Dim ppl As New PointPairList
+        Dim ppl As PointPairList = Nothing
+        Dim li As LineItem = Nothing
+        Dim lines As New List(Of LineItem)
+
+        ppl = New PointPairList()
         For iTime As Integer = 1 To Me.m_uic.Core.nEcosimTimeSteps
             dx = Me.m_uic.Core.EcosimFirstYear + (iTime / cCore.N_MONTHS)
             ppl.Add(dx, StatsData.Mean(iTime))
-
         Next
+        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Me.getLineColour(StatsData), ppl)
+        li.Line.Width = 2
+        lines.Add(li)
 
-        Dim LineItem As LineItem = New ZedGraph.LineItem("", ppl, Me.getLineColour(StatsData), SymbolType.None, 2)
+        ppl = New PointPairList()
+        ppl.Add(0, StatsData.Mean)
+        ppl.Add(dx, StatsData.Mean)
+        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
+        lines.Add(li)
 
-        Dim pplMean As New PointPairList
-        pplMean.Add(0, StatsData.Mean)
-        pplMean.Add(dx, StatsData.Mean)
-        Dim liMeanPt As LineItem = New ZedGraph.LineItem("", pplMean, Color.Blue, SymbolType.None, 1)
+        ppl = New PointPairList()
+        ppl.Add(0, StatsData.Mean + 2 * StatsData.Std)
+        ppl.Add(dx, StatsData.Mean + 2 * StatsData.Std)
+        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
+        li.Line.Style = Drawing2D.DashStyle.Dot
+        li.Line.Width = 0.5
+        lines.Add(li)
 
-        'Dim pplMeanPlus2Std As New PointPairList
-        'pplMeanPlus2Std.Add(0, StatsData.Mean + 2 * StatsData.Std)
-        'pplMeanPlus2Std.Add(dx, StatsData.Mean + 2 * StatsData.Std)
-        'Dim liMeanPlus As LineItem = New ZedGraph.LineItem("", pplMeanPlus2Std, Color.Blue, SymbolType.None, 1)
-        'liMeanPlus.Line.Style = Drawing2D.DashStyle.Dot
-        ''liMeanPtVar.Line.Width = 0.5
+        ppl = New PointPairList()
+        ppl.Add(0, StatsData.Mean + 2 * StatsData.Std)
+        ppl.Add(dx, StatsData.Mean + 2 * StatsData.Std)
+        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
+        li.Line.Style = Drawing2D.DashStyle.Dot
+        li.Line.Width = 0.5
+        lines.Add(li)
 
-        'Dim pplMeanMinus2Std As New PointPairList
-        'pplMeanMinus2Std.Add(0, StatsData.Mean + 2 * StatsData.Std)
-        'pplMeanMinus2Std.Add(dx, StatsData.Mean + 2 * StatsData.Std)
-        'Dim liMeanMinus As LineItem = New ZedGraph.LineItem("", pplMeanMinus2Std, Color.Blue, SymbolType.None, 1)
-        'liMeanMinus.Line.Style = Drawing2D.DashStyle.Dot
-        ''liMeanPtVa-r.Line.Width = 0.5
-
-        Try
-            'Dim pane As ZedGraph.GraphPane = Me.m_zgh.GetPane(ipane)
-            'draw the mean line on top of the other lines (insert at the zero position)
-            pane.CurveList.Insert(0, LineItem)
-            pane.CurveList.Insert(0, liMeanPt)
-            'pane.CurveList.Insert(0, liMeanPlus)
-            'pane.CurveList.Insert(0, liMeanMinus)
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString & ".AddMeanLineToGraph() Error: " & ex.Message)
-        End Try
+        Me.m_zgh.PlotLines(lines.ToArray(), ipane, False, False)
 
     End Sub
 
