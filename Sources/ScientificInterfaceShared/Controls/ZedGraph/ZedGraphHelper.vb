@@ -237,6 +237,8 @@ Namespace Controls
         'Private m_dtGroupLines As New Dictionary(Of LineItem, Integer)
         ''' <summary>Registered axis that need to display units.</summary>
         Private m_dtAxisLabels As New Dictionary(Of Axis, cAxisLabelFormatter)
+        ''' <summary>Grace value for manual scaled Y-axis.</summary>
+        Private m_sYScaleGrace As Single = 1.2!
 
         ' == Legend ==
         ''' <summary>States whether this instance should show a legend if left to 'default'</summary>
@@ -830,6 +832,20 @@ Namespace Controls
             Set(ByVal value As Double)
                 Me.GetPane(iPane).XAxis.Scale.Max = value
                 RescaleAndRedraw(iPane)
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the grace margin for manually scaled Y axis.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property YScaleGrace() As Single
+            Get
+                Return Me.m_sYScaleGrace
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sYScaleGrace = value
             End Set
         End Property
 
