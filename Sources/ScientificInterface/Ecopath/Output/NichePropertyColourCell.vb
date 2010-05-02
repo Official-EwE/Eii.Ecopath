@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: NichePropertyColourCell.vb,v $
-' Revision 1.2  2009/05/28 12:36:56  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2008/09/26 07:31:33  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/06/02 00:01:27  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.4  2008/05/29 22:22:40  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.3  2007/06/22 02:57:58  jeroens
-' * Selection state of cell now considered when drawing background
-'
-' Revision 1.2  2007/05/31 13:11:23  jeroens
-' * Renamed StyleGuide StyleFlags to eStyleFlags
-'
-' Revision 1.1  2006/08/21 02:16:00  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwECore

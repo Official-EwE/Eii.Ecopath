@@ -1,24 +1,3 @@
-'==============================================================================
-'
-' $Log: CustomComboBoxFleetGroupTree.vb,v $
-' Revision 1.5  2009/04/28 15:22:02  jeroens
-' Fleets - > Effort
-' Groups -> Mortality
-'
-' Revision 1.4  2009/03/26 17:41:40  jeroens
-' Fixed confusion between rate and effort shape names
-'
-' Revision 1.3  2009/02/24 04:06:25  jeroens
-' Commented
-'
-' Revision 1.2  2008/12/15 15:58:24  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:46  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On

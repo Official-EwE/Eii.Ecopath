@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: EcospaceParameters.vb,v $
-' Revision 1.7  2009/05/11 01:50:48  jeroens
-' Renamed command classes
-'
-' Revision 1.6  2009/03/19 16:02:26  jeroens
-' Added FormatProvider.Release
-'
-' Revision 1.5  2009/02/05 17:48:39  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.4  2009/01/16 18:30:07  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.3  2009/01/15 22:39:55  joeb
-' Moved Ecospace start and end summary periods from Parameters form to Results form
-'
-' Revision 1.2  2008/12/15 15:52:26  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:55  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On

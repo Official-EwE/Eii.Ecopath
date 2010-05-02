@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: cMessageStateHandler.vb,v $
-' Revision 1.4  2009/05/21 18:53:37  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.3  2009/01/16 18:30:31  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/12/15 15:58:24  jeroens
-' no message
-'
-' Revision 1.1  2008/07/23 21:18:18  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On

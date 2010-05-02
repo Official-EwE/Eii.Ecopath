@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: ucHatch.vb,v $
-' Revision 1.1  2008/09/26 07:31:26  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/06/02 00:01:48  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.1  2008/01/01 19:51:18  jeroens
-' New and/or moved
-'
-' Revision 1.3  2007/12/01 22:07:22  jeroens
-' * Fixed rendering bug
-'
-' Revision 1.2  2007/09/30 19:09:03  jeroens
-' * Hatch combo closed on double-click
-'
-' Revision 1.1  2007/09/21 16:33:27  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 Imports System.Windows.Forms
 Imports System.Drawing

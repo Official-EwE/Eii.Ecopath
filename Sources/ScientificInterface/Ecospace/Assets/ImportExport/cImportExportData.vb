@@ -1,21 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cImportExportData.vb,v $
-' Revision 1.1  2008/11/10 18:26:08  jeroens
-' Share and enjoy
-'
-' Revision 1.1  2008/11/10 02:25:52  jeroens
-' Renamed
-'
-' Revision 1.2  2008/11/10 01:51:52  jeroens
-' Added .asc support
-'
-' Revision 1.1  2008/11/08 23:44:48  jeroens
-' Supports CSV and SHP
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 

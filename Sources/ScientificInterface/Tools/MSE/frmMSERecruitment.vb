@@ -242,7 +242,7 @@ Namespace Ecosim
 
                 '#Yes: plot graph
                 '  - fix graph scale
-                Me.m_zgh.YScaleMax = data.MaxRecruitment * 1.2
+                Me.m_zgh.YScaleMax = data.MaxRecruitment * Me.m_zgh.YScaleGrace
                 Me.m_zgh.XScaleMax = data.Biomass(data.NumSteps - 1)
 
                 'now we need some lines:

@@ -251,7 +251,7 @@ Public Class ucSuitabilityPlot
 
             ' Fix axis scales
             gp.XAxis.Scale.Max = Xmax
-            gp.YAxis.Scale.Max = Ymax * 1.2
+            gp.YAxis.Scale.Max = Ymax * Me.m_zgh.YScaleGrace
 
         End If
 
