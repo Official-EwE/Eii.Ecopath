@@ -286,7 +286,6 @@ Namespace MSE
                 End If
 
                 Me.SetEffortToBaseValue(True)
-                'Me.setEffortToOriginal()
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".FinalizeRun() Exception: " & ex.Message)
@@ -672,10 +671,6 @@ Namespace MSE
 
                 Me.ComputeStats()
 
-                SetEffortToBaseValue(True)
-
-                'Me.dumpStats()
-
             Catch ex As Exception
                 cLog.Write(ex)
                 Debug.Assert(False, "MSE Exception: " & ex.Message)
@@ -741,6 +736,14 @@ Namespace MSE
 
                     Me.setEffortForRun()
 
+                End If
+
+                If LastCall Then
+                    Dim q() As Single
+                    ReDim q(Me.m_data.nFleets)
+                    For i As Integer = 1 To Me.m_data.nFleets : q(i) = 1 : Next
+                    'set fishing mortality to the base effort
+                    Me.m_Ecosim.SetFFromGear(q)
                 End If
 
             Catch ex As Exception
