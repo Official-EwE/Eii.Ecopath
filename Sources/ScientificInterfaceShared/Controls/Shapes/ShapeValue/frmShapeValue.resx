@@ -459,33 +459,6 @@
   <data name="tlpNoOfYears.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="btnSetNoOfYears.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="btnSetNoOfYears.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="btnSetNoOfYears.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnSetNoOfYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>130, 0</value>
-  </data>
-  <data name="btnSetNoOfYears.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="btnSetNoOfYears.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="btnSetNoOfYears.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="btnSetNoOfYears.Text" xml:space="preserve">
-    <value>&amp;Set</value>
-  </data>
-  <data name="btnSetNoOfYears.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;btnSetNoOfYears.Name" xml:space="preserve">
     <value>btnSetNoOfYears</value>
   </data>
@@ -533,6 +506,30 @@
   </data>
   <data name="pnlValueGrid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_grid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 324</value>
+  </data>
+  <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
+    <value>m_grid</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.ShapeValueGrid, ScientificInterfaceShared, Version=6.1.0.503, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
+    <value>pnlValueGrid</value>
+  </data>
+  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="pnlValueGrid.Location" type="System.Drawing.Point, System.Drawing">
     <value>76, 162</value>
@@ -707,6 +704,45 @@
   </data>
   <data name="tlbAll.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="txtName" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cmbType" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbValues" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblType" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblPoolCode" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cmbPoolCode" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtWeight" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblWeight" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lbNoOfYears" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tlpNoOfYears" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnlValueGrid" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblViewAs" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cmbViewAs" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblXBase" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtXBase" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="btnSetNoOfYears.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="btnSetNoOfYears.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="btnSetNoOfYears.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnSetNoOfYears.Location" type="System.Drawing.Point, System.Drawing">
+    <value>130, 0</value>
+  </data>
+  <data name="btnSetNoOfYears.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="btnSetNoOfYears.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="btnSetNoOfYears.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="btnSetNoOfYears.Text" xml:space="preserve">
+    <value>&amp;Set</value>
+  </data>
+  <data name="btnSetNoOfYears.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;btnSetNoOfYears.Name" xml:space="preserve">
+    <value>btnSetNoOfYears</value>
+  </data>
+  <data name="&gt;&gt;btnSetNoOfYears.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSetNoOfYears.Parent" xml:space="preserve">
+    <value>tlpNoOfYears</value>
+  </data>
+  <data name="&gt;&gt;btnSetNoOfYears.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>

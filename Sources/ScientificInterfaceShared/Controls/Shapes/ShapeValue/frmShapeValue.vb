@@ -6,87 +6,16 @@ Imports EwECore
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
 
-#End Region
+#End Region ' Imports
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Shape value edit form
+''' Shape value edit form.
 ''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class frmShapeValue
 
-#Region " Private vars "
-
-    Private m_uic As cUIContext = Nothing
-    Private m_shape As cShapeData = Nothing
-    Private m_iNumPoints As Integer = 0
-    Private m_SketchPad As ucSketchPad = Nothing
-    Private m_grid As ShapeValueGrid = Nothing
-    Private m_displayMode As eDisplayMode = eDisplayMode.Monthly
-    Private m_editMode As eDialogEditModeType = eDialogEditModeType.EditTimeSeries
-
-    Private Enum eDialogEditModeType
-        AddTimeSeries
-        AddForcing
-        EditTimeSeries
-        EditForcing
-    End Enum
-
-#End Region ' Private vars
-
-    Private Const cNUMROWS_EMTPY As Integer = 100
-
-    Public Sub New(ByVal uic As cUIContext, _
-                   Optional ByVal shape As cShapeData = Nothing)
-
-        Me.InitializeComponent()
-
-        Me.m_uic = uic
-
-        Me.m_grid = New ShapeValueGrid()
-        Me.m_grid.UIContext = uic
-        Me.pnlValueGrid.Controls.Add(Me.m_grid)
-
-        ' Store shape
-        Me.m_shape = shape
-        ' Determine interface mode
-        If shape Is Nothing Then
-            Me.m_editMode = eDialogEditModeType.AddTimeSeries
-        Else
-            Me.m_editMode = DirectCast(IIf(TypeOf shape Is cTimeSeries, eDialogEditModeType.EditTimeSeries, eDialogEditModeType.EditForcing), eDialogEditModeType)
-        End If
-
-        ' Determine display mode
-        If TypeOf (shape) Is cMediationFunction Then
-            Me.m_displayMode = frmShapeValue.eDisplayMode.Index
-        ElseIf TypeOf (shape) Is cTimeSeries Then
-            Me.m_displayMode = frmShapeValue.eDisplayMode.Yearly
-        Else
-            Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
-        End If
-
-    End Sub
-
-    Public Enum eDisplayMode As Integer
-        ''' <summary>Display values per year</summary>
-        Yearly
-        ''' <summary>Display values per year, month</summary>
-        Monthly
-        ''' <summary>Display values per index</summary>
-        Index
-    End Enum
-
-    Public Property NumPoints() As Integer
-        Get
-            Return m_iNumPoints
-        End Get
-        Protected Set(ByVal iNumpoints As Integer)
-            Me.m_iNumPoints = iNumpoints
-            Me.m_lblNumYears.Text = CStr(Me.m_iNumPoints)
-        End Set
-    End Property
-
-#Region " Helper classes "
-
-#Region " Class cTSTComboBoxItem "
+#Region " Private helper classes "
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -165,9 +94,88 @@ Public Class frmShapeValue
 
     End Class
 
-#End Region ' Class cTSTComboBoxItem
+#End Region ' Private helper classes
 
-#End Region ' Helper classes
+#Region " Private vars "
+
+    Private m_uic As cUIContext = Nothing
+    Private m_shape As cShapeData = Nothing
+    Private m_iNumPoints As Integer = 0
+    Private m_SketchPad As ucSketchPad = Nothing
+    Private m_displayMode As eDisplayMode = eDisplayMode.Monthly
+    Private m_editMode As eDialogEditModeType = eDialogEditModeType.EditTimeSeries
+
+    Private Enum eDialogEditModeType
+        AddTimeSeries
+        AddForcing
+        EditTimeSeries
+        EditForcing
+    End Enum
+
+    Private Const cNUMROWS_EMTPY As Integer = 100
+
+#End Region ' Private vars
+
+#Region " Construction "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Constructor, initializes a new instance of this class.
+    ''' </summary>
+    ''' <param name="uic">The UI context to connect to.</param>
+    ''' <param name="shape">The shape to edit, if any. If left to Nothing, this
+    ''' interface assumes that a new time series is being added.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub New(ByVal uic As cUIContext, _
+                   Optional ByVal shape As cShapeData = Nothing)
+
+        Me.InitializeComponent()
+
+        ' Config
+        Me.m_uic = uic
+        Me.m_grid.UIContext = uic
+
+        ' Store shape
+        Me.m_shape = shape
+
+        ' Determine interface mode
+        If (shape Is Nothing) Then
+            Me.m_editMode = eDialogEditModeType.AddTimeSeries
+        Else
+            Me.m_editMode = DirectCast(IIf(TypeOf shape Is cTimeSeries, eDialogEditModeType.EditTimeSeries, eDialogEditModeType.EditForcing), eDialogEditModeType)
+        End If
+
+        ' Determine display mode
+        If TypeOf (shape) Is cMediationFunction Then
+            Me.m_displayMode = frmShapeValue.eDisplayMode.Index
+        ElseIf TypeOf (shape) Is cTimeSeries Then
+            Me.m_displayMode = frmShapeValue.eDisplayMode.Yearly
+        Else
+            Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
+        End If
+
+    End Sub
+
+#End Region ' Construction
+
+#Region " Public interfaces "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type, describes how the shape value interface will display 
+    ''' shape data.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eDisplayMode As Integer
+        ''' <summary>Display values per year</summary>
+        Yearly
+        ''' <summary>Display values per year and month</summary>
+        Monthly
+        ''' <summary>Display values per index</summary>
+        Index
+    End Enum
+
+#End Region ' Public interfaces
 
 #Region " Events "
 
@@ -242,17 +250,32 @@ Public Class frmShapeValue
     Private Sub cmbViewAs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles cmbViewAs.SelectedIndexChanged
         Me.NumPoints = CInt(IIf(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.XMax))
-        Me.m_grid.SetValues(Me.NumPoints, Me.m_shape, Me.m_displayMode)
+        If Not Me.m_bInUpdate Then
+            Me.m_grid.SetValues(Me.m_shape, Me.NumPoints, Me.m_displayMode)
+        End If
     End Sub
 
 #End Region ' Events
 
 #Region " Internal implementation "
 
+    Private Property NumPoints() As Integer
+        Get
+            Return m_iNumPoints
+        End Get
+        Set(ByVal iNumpoints As Integer)
+            Me.m_iNumPoints = iNumpoints
+            Me.m_lblNumYears.Text = CStr(Me.m_iNumPoints)
+        End Set
+    End Property
+
+    Private m_bInUpdate As Boolean = False
+
     Private Sub FillDataGrid()
 
         Me.SuspendLayout()
-        Me.m_grid.Visible = False
+        Me.m_bInUpdate = True
+        'Me.m_grid.Visible = False
 
         Select Case Me.m_editMode
             Case eDialogEditModeType.AddTimeSeries
@@ -267,7 +290,8 @@ Public Class frmShapeValue
         End Select
         Me.UpdateControls()
 
-        Me.m_grid.Visible = True
+        Me.m_bInUpdate = False
+        'Me.m_grid.Visible = True
         Me.ResumeLayout()
 
     End Sub
@@ -308,7 +332,7 @@ Public Class frmShapeValue
         Me.IsSeasonal = Me.m_shape.IsSeasonal
 
         Me.NumPoints = CInt(IIf(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.XMax))
-        Me.m_grid.SetValues(Me.NumPoints, Me.m_shape, Me.m_displayMode)
+        Me.m_grid.SetValues(Me.m_shape, Me.NumPoints, Me.m_displayMode)
 
     End Sub
 
@@ -344,7 +368,7 @@ Public Class frmShapeValue
         btnOK.Visible = True
         btnCancel.Visible = True
 
-        Me.m_grid.SetValues(Me.NumPoints, Me.m_shape, Me.m_displayMode)
+        Me.m_grid.SetValues(Me.m_shape, Me.NumPoints, Me.m_displayMode)
 
     End Sub
 
@@ -389,7 +413,7 @@ Public Class frmShapeValue
         Me.FillPoolCodeComboBox()
         cmbPoolCode.Text = cmbPoolCode.Items(0).ToString
 
-        Me.m_grid.SetEmpty(Me.NumPoints, 1, (Me.m_editMode = eDialogEditModeType.AddTimeSeries Or Me.m_editMode = eDialogEditModeType.EditTimeSeries))
+        Me.m_grid.Clear(Me.NumPoints, (Me.m_editMode = eDialogEditModeType.AddTimeSeries Or Me.m_editMode = eDialogEditModeType.EditTimeSeries))
 
     End Sub
 
@@ -472,6 +496,7 @@ Public Class frmShapeValue
         Dim iPoolCode As Integer
         Dim tsType As eTimeSeriesType
         Dim iDBID As Integer = -1
+        Dim asValues As Single() = Nothing
         Dim bSucces As Boolean = True
 
         cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_TIMESERIES_ADDING, txtName.Text), TriState.True)
@@ -483,22 +508,10 @@ Public Class frmShapeValue
 
         ' Set the pool code
         iPoolCode = cmbPoolCode.SelectedIndex + 1
+        iFirstYear = Me.m_grid.ValueStartRef
+        asValues = Me.m_grid.Values(Me.m_iNumPoints)
 
-        ' Gather values
-        Dim asValues(Me.m_iNumPoints) As Single
-        For i As Integer = 1 To m_iNumPoints - 1
-            asValues(i - 1) = CSng(Me.m_grid(i, 1).Value)
-        Next
-
-        Try
-            ' Parse value using UI number settings
-            iFirstYear = Integer.Parse(CStr(Me.m_grid(0, 1).Value))
-        Catch ex As Exception
-
-        End Try
-
-        bSucces = Me.m_uic.Core.AddTimeSeries(strName, iPoolCode, tsType, _
-                sWeight, asValues, iDBID)
+        bSucces = Me.m_uic.Core.AddTimeSeries(strName, iPoolCode, tsType, sWeight, asValues, iDBID)
 
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
@@ -642,4 +655,4 @@ Public Class frmShapeValue
 
 #End Region 'Internal implementation
 
- End Class
+End Class

@@ -8,17 +8,55 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Grid disaplying individual values of a <see cref="cShapeData">shape</see>
+''' </summary>
+''' ---------------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class ShapeValueGrid
     Inherits EwEGrid
+
+#Region " Private vars "
 
     Private m_iNumValues As Integer = 50
     Private m_bSuppressZeroes As Boolean = False
     Private m_shape As cShapeData = Nothing
     Private m_displayMode As frmShapeValue.eDisplayMode = frmShapeValue.eDisplayMode.Monthly
 
-    Public Sub SetValues(ByVal iNumValues As Integer, _
-                         ByVal shape As cShapeData, _
+#End Region ' Private vars
+
+#Region " Public interfaces "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Erase all values in the grid and prepare the grid for new use.
+    ''' </summary>
+    ''' <param name="iNumValues">The number of rows to display in the grid.</param>
+    ''' <param name="bSuppressZeroes">States whether the grid will hide (True)
+    ''' or show (False) zeroes.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub Clear(ByVal iNumValues As Integer, _
+                     ByVal bSuppressZeroes As Boolean)
+
+        Me.m_iNumValues = iNumValues
+        Me.m_bSuppressZeroes = bSuppressZeroes
+        Me.m_shape = Nothing
+
+        Me.InitLayout()
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Populate the grid from a new shape.
+    ''' </summary>
+    ''' <param name="shape">The shape to display.</param>
+    ''' <param name="iNumValues">The number of values to display.</param>
+    ''' <param name="displayMode">Mode that indicates how to format label
+    ''' values.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub SetValues(ByVal shape As cShapeData, _
+                         ByVal iNumValues As Integer, _
                          ByVal displayMode As frmShapeValue.eDisplayMode)
 
         Me.m_iNumValues = iNumValues
@@ -30,43 +68,69 @@ Public Class ShapeValueGrid
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Apply the values to a shape.
+    ''' </summary>
+    ''' <param name="shape">Optional alternate shape to apply values to. If not
+    ''' specified, values will be applied to the shape currently connected to
+    ''' the grid.</param>
+    ''' -----------------------------------------------------------------------
     Public Sub ApplyValues(Optional ByVal shape As cShapeData = Nothing)
-        Dim cell As EwECell = Nothing
-        Dim asNewValues() As Single
-        Dim iValue As Integer = 1
-        Dim iCell As Integer = 1
+
         Dim iNumValues As Integer = Me.m_iNumValues
-
         If (shape Is Nothing) Then shape = Me.m_shape
+        If (shape.IsSeasonal) Then iNumValues = Me.m_shape.XMax
+        shape.ShapeData = Me.Values(iNumValues)
 
-        If shape.IsSeasonal Then iNumValues = Me.m_shape.XMax
-        ReDim asNewValues(iNumValues)
-
-        For iValue = 1 To shape.XMax
-            Select Case Me.m_displayMode
-
-                Case frmShapeValue.eDisplayMode.Index, _
-                     frmShapeValue.eDisplayMode.Yearly
-                    cell = DirectCast(Me(iCell, 1), EwECell)
-
-                Case frmShapeValue.eDisplayMode.Monthly
-                    cell = DirectCast(Me(iCell, 2), EwECell)
-
-            End Select
-
-            asNewValues(iValue) = CSng(cell.Value)
-            iCell += 1
-            If iCell > Me.m_iNumValues Then iCell = 1
-        Next
-        shape.ShapeData = asNewValues
     End Sub
 
-    Public Sub SetEmpty(ByVal iNumValues As Integer, ByVal iFirstValueLabel As Integer, ByVal bSuppressZeroes As Boolean)
-        Me.m_iNumValues = iNumValues
-        Me.m_bSuppressZeroes = bSuppressZeroes
-        Me.m_shape = Nothing
-        Me.InitLayout()
-    End Sub
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the values in the grid.
+    ''' </summary>
+    ''' <param name="iNumValues">Number of values to retrieve, or -1 to obtain
+    ''' all possible values.</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Values(Optional ByVal iNumValues As Integer = -1) As Single()
+        Get
+
+            Dim lValues As New List(Of Single)
+            Dim iValueCol As Integer = Me.ValueColumn
+            Dim cell As EwECell = Nothing
+
+            If (iNumValues <= 0) Then iNumValues = Me.m_iNumValues
+            iNumValues = Math.Min(iNumValues, Me.RowsCount)
+
+            For iCell As Integer = 1 To iNumValues
+                cell = DirectCast(Me(iCell, iValueCol), EwECell)
+                lValues.Add(CSng(cell.Value))
+            Next
+            Return lValues.ToArray
+
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the numeric equivalent for the very first value.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property ValueStartRef() As Integer
+        Get
+            Try
+                ' Parse value using UI number settings
+                Return Integer.Parse(CStr(Me(0, 1).Value))
+            Catch ex As Exception
+
+            End Try
+            Return cCore.NULL_VALUE
+        End Get
+    End Property
+
+#End Region ' Public interfaces
+
+#Region " Grid overrides "
 
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
@@ -172,11 +236,6 @@ Public Class ShapeValueGrid
         Me.FixedColumns = 0
     End Sub
 
-    'Protected Overrides Sub bm_colSelectClick(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
-    '    ' Allow col selection
-    '    MyBase.bm_colSelectClick(sender, e)
-    'End Sub
-
     Protected Overrides Sub bm_rowSelectClick(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
         ' Do not allow col selections
         'MyBase.bm_rowSelectClick(sender, e)
@@ -186,5 +245,24 @@ Public Class ShapeValueGrid
         ' Do not allow entire grid selections
         'MyBase.bm_tlCellClick(sender, e)
     End Sub
+
+#End Region ' Grid overrides
+
+#Region " Internals "
+
+    ''' <summary>
+    ''' Get the index of the value column in the grid.
+    ''' </summary>
+    Private ReadOnly Property ValueColumn() As Integer
+        Get
+            If Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly Then
+                Return 2
+            Else
+                Return 1
+            End If
+        End Get
+    End Property
+
+#End Region ' Internals
 
 End Class

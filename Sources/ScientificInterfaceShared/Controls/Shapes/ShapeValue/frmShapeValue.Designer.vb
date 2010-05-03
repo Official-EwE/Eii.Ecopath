@@ -35,6 +35,7 @@
         Me.tlpNoOfYears = New System.Windows.Forms.TableLayoutPanel
         Me.btnSetNoOfYears = New System.Windows.Forms.Button
         Me.pnlValueGrid = New System.Windows.Forms.Panel
+        Me.m_grid = New ScientificInterfaceShared.ShapeValueGrid
         Me.lblViewAs = New System.Windows.Forms.Label
         Me.cmbViewAs = New System.Windows.Forms.ComboBox
         Me.lblXBase = New System.Windows.Forms.Label
@@ -43,6 +44,7 @@
         Me.btnCancel = New System.Windows.Forms.Button
         Me.tlbAll.SuspendLayout()
         Me.tlpNoOfYears.SuspendLayout()
+        Me.pnlValueGrid.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblName
@@ -139,8 +141,38 @@
         'pnlValueGrid
         '
         resources.ApplyResources(Me.pnlValueGrid, "pnlValueGrid")
+        Me.pnlValueGrid.Controls.Add(Me.m_grid)
         Me.pnlValueGrid.Name = "pnlValueGrid"
         Me.pnlValueGrid.TabStop = True
+        '
+        'm_grid
+        '
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_grid.CustomSort = False
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                    Or SourceGrid2.GridSpecialKeys.Delete) _
+                    Or SourceGrid2.GridSpecialKeys.Arrows) _
+                    Or SourceGrid2.GridSpecialKeys.Tab) _
+                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                    Or SourceGrid2.GridSpecialKeys.Enter) _
+                    Or SourceGrid2.GridSpecialKeys.Escape) _
+                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_grid.TrackPropertySelection = False
+        Me.m_grid.UIContext = Nothing
         '
         'lblViewAs
         '
@@ -196,6 +228,7 @@
         Me.tlbAll.ResumeLayout(False)
         Me.tlbAll.PerformLayout()
         Me.tlpNoOfYears.ResumeLayout(False)
+        Me.pnlValueGrid.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -220,6 +253,7 @@
     Private WithEvents lblXBase As System.Windows.Forms.Label
     Private WithEvents txtXBase As System.Windows.Forms.TextBox
     Private WithEvents btnSetNoOfYears As System.Windows.Forms.Button
+    Private WithEvents m_grid As ScientificInterfaceShared.ShapeValueGrid
 
 End Class
 
