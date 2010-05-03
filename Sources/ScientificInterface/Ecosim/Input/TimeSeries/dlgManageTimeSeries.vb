@@ -580,20 +580,29 @@ Public Class dlgManageTimeSeries
 
         Dim ds As cTimeSeriesDataset = Nothing
         Dim clf As cCore.eBatchChangeLevelFlags = cCore.eBatchChangeLevelFlags.TimeSeries
+        Dim bCreateNewSet As Boolean = False
         Dim bSucces As Boolean = True
+        Dim iDataset As Integer = 0
 
         If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return
 
-        ' Create new dataset if it will contain one of more TS
+        ' Determine if need to create a new dataset
         For Each ts As cTimeSeriesImport In Me.m_tr
-            If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) <> cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing) Then
-                bSucces = Me.m_uic.Core.AppendTimeSeriesDataset(Me.DatasetName, Me.m_tbImportDescription.Text, _
-                        Me.m_tbImportAuthor.Text, Me.m_tbImportContact.Text, Me.m_tr.FirstYear, Me.m_tr.NumYears)
-                Exit For
-            End If
+            ' Create new dataset if it will contain one of more TS
+            bCreateNewSet = bCreateNewSet Or (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) <> cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing)
         Next
 
-        ' Dataset succesfully removed?
+        ' Need to create a new dataset?
+        If (bCreateNewSet) Then
+            ' #Yes: do it
+            bSucces = Me.m_uic.Core.AppendTimeSeriesDataset(Me.DatasetName, Me.m_tbImportDescription.Text, _
+                        Me.m_tbImportAuthor.Text, Me.m_tbImportContact.Text, Me.m_tr.FirstYear, Me.m_tr.NumYears, iDataset)
+        Else
+            ' #No: append to current
+            iDataset = Me.m_uic.Core.ActiveTimeSeriesDatasetIndex
+        End If
+
+        ' So far so good?
         If (bSucces = True) Then
             ' #Yes: start importing
             cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_IMPORTING_DATASET, Me.DatasetName), TriState.True)
@@ -617,7 +626,7 @@ Public Class dlgManageTimeSeries
                         End Select
                     End If
 
-                    If Me.m_uic.Core.ImportEcosimTimeSeries(ts, Me.m_uic.Core.ActiveTimeSeriesDatasetIndex) Then
+                    If Me.m_uic.Core.ImportEcosimTimeSeries(ts, iDataset) Then
                         Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
 
                             Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing
@@ -638,35 +647,21 @@ Public Class dlgManageTimeSeries
             cApplicationStatusNotifier.SetStatusText("", TriState.False)
         End If
 
-        ' Release appropriate level
+        ' Release appropriate level (this will reload the time series definitions)
         Me.m_uic.Core.ReleaseBatchLock(clf, bSucces)
 
         ' Need to apply on load?
         If (bSucces And Me.m_cbImportEnableOnImport.Checked) Then
-            ' Start apply process
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
-            Try
-                ' For each dataset
-                For iDS As Integer = 1 To Me.m_uic.Core.nTimeSeriesDatasets
-                    ' Get dataset #
-                    Dim tsDS As cTimeSeriesDataset = Me.m_uic.Core.TimeSeriesDataset(iDS)
-                    ' Is this the dataset that we just imported?
-                    If (String.Compare(tsDS.Name, Me.DatasetName, True) = 0) Then
-                        ' #Yes: Load and apply the dataset
-                        Me.m_uic.Core.LoadTimeSeries(iDS, True)
-                        ' Done!
-                        Exit For
-                    End If
-                Next
-            Catch ex As Exception
-                bSucces = False
-            End Try
+            ' Reload time series
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
+            Me.m_uic.Core.LoadTimeSeries(iDataset)
             cApplicationStatusNotifier.SetStatusText("", TriState.False)
         End If
 
         ' Close dialog
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
+
     End Sub
 
 #End Region ' Import

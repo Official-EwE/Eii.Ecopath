@@ -746,8 +746,12 @@ Public Class cCore
                 If (iEcosimScenarioToLoad >= 0) Then Me.LoadEcosimScenario(iEcosimScenarioToLoad)
                 If (iEcospaceScenarioToLoad >= 0) Then Me.LoadEcospaceScenario(iEcospaceScenarioToLoad)
                 If (iEcotracerScenarioToLoad >= 0) Then Me.LoadEcotracerScenario(iEcotracerScenarioToLoad)
-                If (iDatasetToReload > 0) Then
-                    Me.LoadTimeSeries(iDatasetToReload, True)
+
+                If (Me.m_batchChangeLevel <= eBatchChangeLevelFlags.TimeSeries) Then
+                    Me.InitAndLoadEcosimTimeSeriesDatasets()
+                    If (iDatasetToReload > 0) Then
+                        Me.LoadTimeSeries(iDatasetToReload, True)
+                    End If
                 End If
 
             End If
@@ -1711,12 +1715,30 @@ Public Class cCore
 
     End Function
 
-    Public Function AppendTimeSeriesDataset(ByVal strName As String, ByVal strDescription As String, _
-            ByVal strAuthor As String, ByVal strContact As String, ByVal iFirstYear As Integer, ByVal iNumYears As Integer) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Append a time series dataset to the core.
+    ''' </summary>
+    ''' <param name="strName"></param>
+    ''' <param name="strDescription"></param>
+    ''' <param name="strAuthor"></param>
+    ''' <param name="strContact"></param>
+    ''' <param name="iFirstYear"></param>
+    ''' <param name="iNumYears"></param>
+    ''' <param name="iDataset">Index of the new time series dataset if the 
+    ''' operation completed succesfully.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function AppendTimeSeriesDataset(ByVal strName As String, _
+                                            ByVal strDescription As String, _
+                                            ByVal strAuthor As String, _
+                                            ByVal strContact As String, _
+                                            ByVal iFirstYear As Integer, _
+                                            ByVal iNumYears As Integer, _
+                                            ByRef iDataset As Integer) As Boolean
 
         Dim ds As IEcosimDatasource = Nothing
         Dim iDatasetID As Integer = 0
-        Dim iDataset As Integer = 0
 
         ' Safety check
         If DataSource Is Nothing Then Return False
@@ -1736,11 +1758,12 @@ Public Class cCore
                 Me.InitAndLoadEcosimTimeSeriesDatasets()
                 Me.DataAddedOrRemovedMessage("Number of time series datasets has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
                 iDataset = Array.IndexOf(Me.m_TSData.iDatasetDBID, iDatasetID)
-                If Me.LoadTimeSeries(iDataset, False) Then
-                    ' Update enabled TS
-                    Me.m_TSData.loadEnabled()
-                    Return True
-                End If
+                'If Me.LoadTimeSeries(iDataset, False) Then
+                '    ' Update enabled TS
+                '    Me.m_TSData.loadEnabled()
+                '    Return True
+                'End If
+                Return True
             End If
 
         Catch ex As Exception
