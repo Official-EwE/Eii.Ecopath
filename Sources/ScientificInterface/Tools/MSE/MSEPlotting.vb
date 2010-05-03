@@ -300,29 +300,6 @@ Friend Class cMSEPlotter
 
     End Function
 
-    Private Sub plotRefLines_old()
-        Dim ipane As Integer
-
-        'this should not be called if m_RefPoints is null
-        ' Debug.Assert(Me.m_RefPoints IsNot Nothing, Me.ToString & ".plotRefLines() no reference lines have been added!")
-        If Me.m_RefPoints Is Nothing Then
-            Exit Sub 'just in case
-        End If
-
-        For Each Ref As cMSERefPoint In m_RefPoints
-            ipane += 1
-            Me.plotRefLine(Ref.LowerReference, Ref.UpperReference, Me.m_zgh.GetPane(ipane))
-            If Me.m_type = ePlotTypes.Histogram Then
-                'do not rescale a histogram
-                Me.m_zgh.Redraw()
-            Else
-                Me.m_zgh.AutoscalePane(ipane) = True
-            End If
-
-        Next
-
-    End Sub
-
 #End Region
 
 #Region "Private methods"
@@ -573,7 +550,8 @@ Friend Class cMSEPlotter
         Try
 
             Dim ipane As Integer
-            Dim dx As Double
+            Dim dx As Double = 1 / cCore.N_MONTHS
+            Dim x As Double
             Dim lstLines As New List(Of ZedGraph.LineItem)
 
             For Each data As cMSEGroupOutput In Me.m_Data '
@@ -581,10 +559,10 @@ Friend Class cMSEPlotter
                 lstLines.Clear()
 
                 Dim ppl As New PointPairList
-
+                x = Me.m_uic.Core.EcosimFirstYear
                 For iTime As Integer = 1 To Me.m_uic.Core.nEcosimTimeSteps
-                    dx = Me.m_uic.Core.EcosimFirstYear + (iTime / cCore.N_MONTHS)
-                    ppl.Add(dx, data.Biomass(iTime))
+                    ppl.Add(x, data.Biomass(iTime))
+                    x += dx
                 Next
 
                 Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, _
@@ -633,13 +611,13 @@ Friend Class cMSEPlotter
         li.Line.Width = 0.5
         lines.Add(li)
 
-        ppl = New PointPairList()
-        ppl.Add(0, StatsData.Mean + 2 * StatsData.Std)
-        ppl.Add(dx, StatsData.Mean + 2 * StatsData.Std)
-        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
-        li.Line.Style = Drawing2D.DashStyle.Dot
-        li.Line.Width = 0.5
-        lines.Add(li)
+        'ppl = New PointPairList()
+        'ppl.Add(0, StatsData.Mean + 2 * StatsData.Std)
+        'ppl.Add(dx, StatsData.Mean + 2 * StatsData.Std)
+        'li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
+        'li.Line.Style = Drawing2D.DashStyle.Dot
+        'li.Line.Width = 0.5
+        'lines.Add(li)
 
         Me.m_zgh.PlotLines(lines.ToArray(), ipane, False, False)
 
