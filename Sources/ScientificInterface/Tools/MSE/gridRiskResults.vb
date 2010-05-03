@@ -51,45 +51,49 @@ Public Class gridRiskResults
     Protected Overrides Sub InitStyle()
 
         MyBase.InitStyle()
-        Me.Redim(1, 14)
+        Me.Redim(1, 16)
 
         ' ToDo: localize this method
 
         If Me.m_type = eGridType.Group Then
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP)
-            Me(0, 2) = New EwEColumnHeaderCell("Biomass Min.")
-            Me(0, 3) = New EwEColumnHeaderCell("Biomass Max.")
-            Me(0, 4) = New EwEColumnHeaderCell("Biomass CV")
-            Me(0, 5) = New EwEColumnHeaderCell("Biomass Std.")
-            Me(0, 6) = New EwEColumnHeaderCell("Biomass % below reference")
-            Me(0, 7) = New EwEColumnHeaderCell("Biomass % above reference")
+            Me(0, 2) = New EwEColumnHeaderCell("Biomass Mean.")
+            Me(0, 3) = New EwEColumnHeaderCell("Biomass Min.")
+            Me(0, 4) = New EwEColumnHeaderCell("Biomass Max.")
+            Me(0, 5) = New EwEColumnHeaderCell("Biomass CV")
+            Me(0, 6) = New EwEColumnHeaderCell("Biomass Std.")
+            Me(0, 7) = New EwEColumnHeaderCell("Biomass % below reference")
+            Me(0, 8) = New EwEColumnHeaderCell("Biomass % above reference")
 
-            Me(0, 8) = New EwEColumnHeaderCell("Catch Min.")
-            Me(0, 9) = New EwEColumnHeaderCell("Catch Max.")
-            Me(0, 10) = New EwEColumnHeaderCell("Catch CV")
-            Me(0, 11) = New EwEColumnHeaderCell("Catch Std.")
+            Me(0, 9) = New EwEColumnHeaderCell("Catch Mean.")
+            Me(0, 10) = New EwEColumnHeaderCell("Catch Min.")
+            Me(0, 11) = New EwEColumnHeaderCell("Catch Max.")
+            Me(0, 12) = New EwEColumnHeaderCell("Catch CV")
+            Me(0, 13) = New EwEColumnHeaderCell("Catch Std.")
 
-            Me(0, 12) = New EwEColumnHeaderCell("Catch % below reference")
-            Me(0, 13) = New EwEColumnHeaderCell("Catch % above reference")
+            Me(0, 14) = New EwEColumnHeaderCell("Catch % below reference")
+            Me(0, 15) = New EwEColumnHeaderCell("Catch % above reference")
 
         ElseIf Me.m_type = eGridType.Fleet Then
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
-            Me(0, 2) = New EwEColumnHeaderCell("Catch Min.")
-            Me(0, 3) = New EwEColumnHeaderCell("Catch Max.")
-            Me(0, 4) = New EwEColumnHeaderCell("Catch CV")
-            Me(0, 5) = New EwEColumnHeaderCell("Catch Std.")
+            Me(0, 2) = New EwEColumnHeaderCell("Catch Mean.")
+            Me(0, 3) = New EwEColumnHeaderCell("Catch Min.")
+            Me(0, 4) = New EwEColumnHeaderCell("Catch Max.")
+            Me(0, 5) = New EwEColumnHeaderCell("Catch CV")
+            Me(0, 6) = New EwEColumnHeaderCell("Catch Std.")
 
-            Me(0, 6) = New EwEColumnHeaderCell("Catch % below reference")
-            Me(0, 7) = New EwEColumnHeaderCell("Catch % above reference")
+            Me(0, 7) = New EwEColumnHeaderCell("Catch % below reference")
+            Me(0, 8) = New EwEColumnHeaderCell("Catch % above reference")
 
-            Me(0, 8) = New EwEColumnHeaderCell("Effort Min.")
-            Me(0, 9) = New EwEColumnHeaderCell("Effort Max.")
-            Me(0, 10) = New EwEColumnHeaderCell("Effort CV")
-            Me(0, 11) = New EwEColumnHeaderCell("Catch Std.")
-            Me(0, 12) = New EwEColumnHeaderCell("Effort % below reference")
-            Me(0, 13) = New EwEColumnHeaderCell("Effort % above reference")
+            Me(0, 9) = New EwEColumnHeaderCell("Effort Mean.")
+            Me(0, 10) = New EwEColumnHeaderCell("Effort Min.")
+            Me(0, 11) = New EwEColumnHeaderCell("Effort Max.")
+            Me(0, 12) = New EwEColumnHeaderCell("Effort CV")
+            Me(0, 13) = New EwEColumnHeaderCell("Catch Std.")
+            Me(0, 14) = New EwEColumnHeaderCell("Effort % below reference")
+            Me(0, 15) = New EwEColumnHeaderCell("Effort % above reference")
 
         End If
 
@@ -131,21 +135,23 @@ Public Class gridRiskResults
             Me.InitCells(lstData1.Count, lSources.ToArray())
 
             For Each grp As cMSEStats In lstData1
-                Me.SetCellValue(grp.Index, 2, grp.Min)
-                Me.SetCellValue(grp.Index, 3, grp.Max)
-                Me.SetCellValue(grp.Index, 4, grp.CV)
-                Me.SetCellValue(grp.Index, 5, grp.Std)
-                Me.SetCellValue(grp.Index, 6, grp.BelowLimit)
-                Me.SetCellValue(grp.Index, 7, grp.AboveLimit)
+                Me.SetCellValue(grp.Index, 2, grp.Mean)
+                Me.SetCellValue(grp.Index, 3, grp.Min)
+                Me.SetCellValue(grp.Index, 4, grp.Max)
+                Me.SetCellValue(grp.Index, 5, grp.CV)
+                Me.SetCellValue(grp.Index, 6, grp.Std)
+                Me.SetCellValue(grp.Index, 7, grp.BelowLimit)
+                Me.SetCellValue(grp.Index, 8, grp.AboveLimit)
             Next
 
             For Each grp As cMSEStats In lstData2
-                Me.SetCellValue(grp.Index, 8, grp.Min)
-                Me.SetCellValue(grp.Index, 9, grp.Max)
-                Me.SetCellValue(grp.Index, 10, grp.CV)
-                Me.SetCellValue(grp.Index, 11, grp.Std)
-                Me.SetCellValue(grp.Index, 12, grp.BelowLimit)
-                Me.SetCellValue(grp.Index, 13, grp.AboveLimit)
+                Me.SetCellValue(grp.Index, 9, grp.Mean)
+                Me.SetCellValue(grp.Index, 10, grp.Min)
+                Me.SetCellValue(grp.Index, 11, grp.Max)
+                Me.SetCellValue(grp.Index, 12, grp.CV)
+                Me.SetCellValue(grp.Index, 13, grp.Std)
+                Me.SetCellValue(grp.Index, 14, grp.BelowLimit)
+                Me.SetCellValue(grp.Index, 15, grp.AboveLimit)
             Next
 
         Catch ex As Exception
@@ -174,7 +180,7 @@ Public Class gridRiskResults
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
 
                 'set the cell to Null if there is no catch or discards for this group
-                If Me.m_type = eGridType.Group And columnIndex > 7 Then
+                If Me.m_type = eGridType.Group And columnIndex > 8 Then
                     Dim noCatch As Boolean = True
                     For iflt As Integer = 1 To Me.Core.nFleets
                         If Me.Core.FleetInputs(iflt).Landings(rowIndex) + Me.Core.FleetInputs(iflt).Discards(rowIndex) > 0 Then
