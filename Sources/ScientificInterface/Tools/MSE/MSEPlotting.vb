@@ -532,7 +532,6 @@ Friend Class cMSEPlotter
                 Me.plotMean(data, ipane)
             Next
 
-            Me.m_zgh.YScaleMax = max * Me.m_zgh.YScaleGrace
             Me.m_zgh.RescaleAndRedraw()
 
         Catch ex As Exception
@@ -588,6 +587,7 @@ Friend Class cMSEPlotter
         Dim li As LineItem = Nothing
         Dim lines As New List(Of LineItem)
 
+        'time varing mean
         ppl = New PointPairList()
         For iTime As Integer = 1 To Me.m_uic.Core.nEcosimTimeSteps
             dx = Me.m_uic.Core.EcosimFirstYear + (iTime / cCore.N_MONTHS)
@@ -597,27 +597,30 @@ Friend Class cMSEPlotter
         li.Line.Width = 2
         lines.Add(li)
 
+        'mean over all the data(solid blue line)
         ppl = New PointPairList()
         ppl.Add(0, StatsData.Mean)
         ppl.Add(dx, StatsData.Mean)
         li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
         lines.Add(li)
 
+        '2 standard deviation lines
+        Dim std2 As Single = 2 * StatsData.Std
         ppl = New PointPairList()
-        ppl.Add(0, StatsData.Mean + 2 * StatsData.Std)
-        ppl.Add(dx, StatsData.Mean + 2 * StatsData.Std)
+        ppl.Add(0, StatsData.Mean + std2)
+        ppl.Add(dx, StatsData.Mean + std2)
         li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
         li.Line.Style = Drawing2D.DashStyle.Dot
         li.Line.Width = 0.5
         lines.Add(li)
 
-        'ppl = New PointPairList()
-        'ppl.Add(0, StatsData.Mean + 2 * StatsData.Std)
-        'ppl.Add(dx, StatsData.Mean + 2 * StatsData.Std)
-        'li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
-        'li.Line.Style = Drawing2D.DashStyle.Dot
-        'li.Line.Width = 0.5
-        'lines.Add(li)
+        ppl = New PointPairList()
+        ppl.Add(0, StatsData.Mean - std2)
+        ppl.Add(dx, StatsData.Mean - std2)
+        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
+        li.Line.Style = Drawing2D.DashStyle.Dot
+        li.Line.Width = 0.5
+        lines.Add(li)
 
         Me.m_zgh.PlotLines(lines.ToArray(), ipane, False, False)
 
