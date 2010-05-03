@@ -1323,6 +1323,12 @@ Namespace MSE
                         FtargetT(igrp) = Me.m_data.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_data.Blim(igrp)) / (Me.m_data.Bbase(igrp) - Me.m_data.Blim(igrp))
                         If FtargetT(igrp) < 0 Then FtargetT(igrp) = 0
                         If FtargetT(igrp) > Me.m_data.Fopt(igrp) Then FtargetT(igrp) = Me.m_data.Fopt(igrp)
+
+                        If m_data.FixedF(igrp) > 0 Then
+                            'if there is a fixed F then use it
+                            FtargetT(igrp) = m_data.FixedF(igrp)
+                        End If
+
                         tQuota(igrp) = FtargetT(igrp) * Me.m_data.Bestimate(igrp)
 
                         'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
