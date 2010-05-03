@@ -950,8 +950,8 @@ End Enum
 
         Public ReadOnly Property Variance(ByVal Index As Integer) As Single
             Get
-                'Dim ss As Single
-                'Dim n As Single
+                Dim ss As Single
+                Dim n As Single
                 Try
 
                     Debug.Assert(Index <= Me.m_lstValues.Count, "MSE Statistics Variance index out of bounds.")
@@ -959,9 +959,9 @@ End Enum
                         Return 0
                     End If
 
-                    Dim m As Single = Me.Mean(Index)
+                    'Dim m As Single = Me.Mean(Index)
 
-                    
+
                     'Dim lstGrouping As List(Of Single()) = Me.m_lstValues.Item(Index - 1)
                     'For Each iterVals As Single() In lstGrouping
 
@@ -971,28 +971,29 @@ End Enum
                     '    Next
                     'Next
 
+                    'If n <= 1 Then Return 0
+                    'Return ss / (n - 1)
+
+
+
+                    ''Debug.Assert(n > 1, "MSE Statistics Variance No data to compute.")
+                    ''how many values are there?
+                    Index -= 1
+                    Dim iCnt As Integer = Me.m_n(Index)
+                    If iCnt <= 1 Then Return 0
+
+                    'to calculate variance:
+                    'during run, sum of x, sum of x^2
+                    'variance s = [Sum of x^2 - (sum of x)^2 / n] / (n - 1)
+                    'where n is the number of x's
+                    Dim Vari As Single = CSng((m_data(eSumIndexes.SumOfSquares, Index) - m_data(eSumIndexes.Mean, Index) ^ 2 / iCnt)) / CSng(iCnt - 1)
+                    Return Vari
 
                 Catch ex As Exception
                     cLog.Write(ex)
                     System.Console.WriteLine(ex.ToString)
                 End Try
 
-                'Debug.Assert(n > 1, "MSE Statistics Variance No data to compute.")
-                'how many values are there?
-                Dim iCnt As Integer = Me.m_n(Index)
-                If iCnt <= 1 Then Return 0
-
-                'to calculate variance:
-                'during run, sum of x, sum of x^2
-                'variance s = [Sum of x^2 - (sum of x)^2 / n] / (n - 1)
-                'where n is the number of x's
-                Dim Vari As Single = CSng((m_data(eSumIndexes.SumOfSquares, Index) - m_data(eSumIndexes.Mean, Index) ^ 2 / iCnt)) / CSng(iCnt - 1)
-
-                Return Vari
-
-
-                'If n <= 1 Then Return 0
-                'Return ss / (n - 1)
 
             End Get
 
