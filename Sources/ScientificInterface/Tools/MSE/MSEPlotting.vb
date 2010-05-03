@@ -523,24 +523,29 @@ Friend Class cMSEPlotter
 
             Dim ipane As Integer
             Dim dx As Double
+            Dim x As Double
             Dim values() As Single
             Dim max As Single = Single.MinValue
             Dim lstLines As New List(Of ZedGraph.LineItem)
 
+            dx = 1 / cCore.N_MONTHS
             For Each data As cMSEStats In Me.m_Data '
                 ipane += 1
                 lstLines.Clear()
 
                 For iter As Integer = 1 To data.nIterations
                     Dim ppl As New PointPairList
-                    'cMSEStats.Values(iteration) is zero based!!!
+                    'get the values for this interation
                     values = data.Values(iter)
-
-                    For iTime As Integer = 0 To Me.m_uic.Core.nEcosimTimeSteps - 1
-                        dx = Me.m_uic.Core.EcosimFirstYear + ((iTime + 1) / cCore.N_MONTHS)
-                        ppl.Add(dx, values(iTime))
+                    'reset the x starting value
+                    x = Me.m_uic.Core.EcosimFirstYear
+                    'add a point for each value
+                    For iTime As Integer = 1 To Me.m_uic.Core.nEcosimTimeSteps
+                        ppl.Add(x, values(iTime))
                         max = Math.Max(values(iTime), max)
+                        x += dx
                     Next
+
                     Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, eLineType.ModelData, Color.Gray, ppl)
                     lstLines.Add(Line)
 
@@ -668,12 +673,13 @@ Friend Class cMSEPlotter
             'Line plot
             Dim pplLB As New PointPairList
             Dim pplUB As New PointPairList
+            Dim xlast As Double = Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS
 
             pplLB.Add(0, LowerBound)
-            pplLB.Add(Me.m_uic.Core.nEcosimTimeSteps, LowerBound)
+            pplLB.Add(xlast, LowerBound)
 
             pplUB.Add(0, UpperBound)
-            pplUB.Add(Me.m_uic.Core.nEcosimTimeSteps, UpperBound)
+            pplUB.Add(xlast, UpperBound)
 
             Dim LBItem As LineItem = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Pink, pplLB)
             LBItem.Line.Style = Drawing2D.DashStyle.Dash
