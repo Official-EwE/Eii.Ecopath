@@ -13,9 +13,13 @@ Namespace Controls
     ''' =======================================================================
     Public Class ucZedGraphHoverMenu
 
+#Region " Constructor "
+
         Public Sub New()
             Me.InitializeComponent()
         End Sub
+
+#End Region ' Constructor
 
 #Region " Public interfaces "
 
