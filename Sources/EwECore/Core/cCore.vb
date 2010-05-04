@@ -5296,12 +5296,6 @@ Public Class cCore
             group.SalinitySpreadLeft = m_EcoSimData.SdSalLeft(iGroup)
             group.SalinitySpreadRight = m_EcoSimData.SdSalRight(iGroup)
 
-            Dim mse As cMSEManager = Me.MSEManager
-
-            group.BBase = m_MSEData.Bbase(iGroup)
-            group.BLim = m_MSEData.Blim(iGroup)
-            group.FOpt = m_MSEData.Fopt(iGroup)
-
             Try
                 For iPred = 1 To nGroups
 
@@ -5706,13 +5700,6 @@ Public Class cCore
             m_EcoSimData.SdSalLeft(iGroup) = group.SalinitySpreadLeft
             m_EcoSimData.SdSalRight(iGroup) = group.SalinitySpreadRight
             m_EcoSimData.SalOpt(iGroup) = group.SalinityOpt
-
-            Dim mse As cMSEManager = Me.MSEManager
-
-            'regulatory values
-            m_MSEData.Bbase(iGroup) = group.BBase
-            m_MSEData.Blim(iGroup) = group.BLim
-            m_MSEData.Fopt(iGroup) = group.FOpt
 
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
@@ -10701,13 +10688,13 @@ Public Class cCore
 
         End Select
 
-        ' Cascade name changes across models
-        If value.varName = eVarNameFlags.Name Then
-            Me.Cascade_Name(CStr(value.Value), obj, msg)
-        End If
+                ' Cascade name changes across models
+                If value.varName = eVarNameFlags.Name Then
+                    Me.Cascade_Name(CStr(value.Value), obj, msg)
+                End If
 
 
-        ' Cascade PP changes across models
+                ' Cascade PP changes across models
 
     End Sub
 
@@ -10890,6 +10877,15 @@ Public Class cCore
                 'jb if the game client has edited the fisheries quotas make sure the status flags are reset 
                 'the client may have edited values that are not editable
                 obj.ResetStatusFlags()
+
+
+            Case eDataTypes.MSEGroupInput
+
+                obj.ResetStatusFlags()
+
+                Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+                             eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEGroupInput))
+
 
         End Select
 
