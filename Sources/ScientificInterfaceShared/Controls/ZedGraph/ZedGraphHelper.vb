@@ -266,7 +266,7 @@ Namespace Controls
         ' == Hover menu ==
 
         ''' <summary>States whether a floating hover menu should be displayed on the graph.</summary>
-        Private m_bShowHoverMenu As Boolean = False
+        Private m_bShowHoverMenu As Boolean = True
         ''' <summary>The hover menu to display on top of graph areas.</summary>
         Private m_hovermenu As ucZedGraphHoverMenu = Nothing
 
@@ -1444,6 +1444,43 @@ Namespace Controls
 
 #End Region ' Hover menu
 
+#Region " Pane value querying "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get mean value of all <see cref="eLineType.ModelData">model data</see>
+        ''' in a pane.
+        ''' </summary>
+        ''' <param name="iPane"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function GetValueAvg(Optional ByVal iPane As Integer = 1) As Single
+
+            Dim gp As GraphPane = Me.GetPane(iPane)
+            Dim ci As CurveItem = Nothing
+            Dim dTotal As Double = 0.0#
+            Dim iNumValues As Integer = 0
+
+            For iCurve As Integer = 0 To gp.CurveList.Count - 1
+                ci = gp.CurveList(iCurve)
+                If Me.CurveType(ci) = eLineType.ModelData Then
+                    For iPT As Integer = 0 To ci.Points.Count - 1
+                        dTotal += ci.Points(iPT).Y
+                        iNumValues += 1
+                    Next
+                End If
+            Next
+
+            If (iNumValues = 0) Then
+                Return 0
+            Else
+                Return CSng(dTotal / iNumValues)
+            End If
+
+        End Function
+
+#End Region ' Pane value querying
+
 #End Region ' Public interfaces
 
 #Region " Events "
@@ -1884,8 +1921,6 @@ Namespace Controls
 
 #End Region ' Context menu
 
-#End Region ' Internal bits
-
 #Region " Hover menu handling "
 
         Private m_dZoomRate As Double = 1.0
@@ -1904,7 +1939,7 @@ Namespace Controls
 
         Private Sub ShowHover(ByVal bShow As Boolean)
             Me.m_hovermenu.Visible = (bShow Or IsMouseOnHoverPanel()) And Me.m_bShowHoverMenu
-            Dim ptHover As New Point(4, Me.m_zgc.Height - Me.m_hovermenu.Height - 4)
+            Dim ptHover As New Point(4, Me.m_zgc.Height - Me.m_hovermenu.Height - 8)
             Me.m_hovermenu.Location = Me.m_zgc.PointToScreen(ptHover)
         End Sub
 
@@ -1924,32 +1959,40 @@ Namespace Controls
 
             Dim gp As GraphPane = Nothing
             Dim zs As ZoomState = Nothing
+            Dim sValueAvg As Single = 0.0
 
             If Me.m_zgc.InvokeRequired Then
                 Me.m_zgc.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommandCallback), New Object() {cmd})
                 Return
             End If
 
-            Select Case cmd
-                Case ucZedGraphHoverMenu.eCommandTypes.ZoomIn
-                    Me.m_dZoomRate = 1 + Me.m_zgc.ZoomStepFraction
-                Case ucZedGraphHoverMenu.eCommandTypes.ZoomOut
-                    Me.m_dZoomRate = 1 - Me.m_zgc.ZoomStepFraction
-            End Select
-
             For iPane As Integer = 1 To Me.NumPanes
                 ' Get pane
                 gp = Me.GetPane(iPane)
-                ' ToDo: find mean value in pane to zoom onto
-                ' Zoom
-                Me.m_zgc.ZoomPane(gp, Me.m_dZoomRate, New PointF(0, CSng(gp.YAxis.Scale.Max / 2)), True)
+                ' Get pane avg
+                sValueAvg = Me.GetValueAvg(iPane)
+
+                ' Manually zoom in, place zoom in zoom stack. Zoom out means recalling zoom positions
+                Select Case cmd
+                    Case ucZedGraphHoverMenu.eCommandTypes.ZoomIn
+                        zs = New ZoomState(gp, ZoomState.StateType.Zoom)
+                        gp.ZoomStack.Add(zs)
+                        gp.YAxis.Scale.Max -= (gp.YAxis.Scale.Max - sValueAvg) / 4
+                        gp.YAxis.Scale.Min += (sValueAvg - gp.YAxis.Scale.Min) / 4
+                    Case ucZedGraphHoverMenu.eCommandTypes.ZoomOut
+                        zs = gp.ZoomStack.Pop(gp)
+                        If zs IsNot Nothing Then zs.ApplyState(gp)
+                End Select
             Next
 
+            Me.m_zgc.Refresh()
             Me.UpdateHoverMenuState()
 
         End Sub
 
 #End Region ' Hover menu handling
+
+#End Region ' Internal bits
 
     End Class
 
