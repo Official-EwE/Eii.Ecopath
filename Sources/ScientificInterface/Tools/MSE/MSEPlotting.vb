@@ -228,7 +228,7 @@ Friend Class cMSEPlotter
         For Each data As cCoreGroupBase In Me.m_Data
             ipane += 1
             stats = Me.m_manager.BiomassStats(data.Index)
-            Me.m_zgh.AutoScaleYOption(ipane) = cZedGraphHelper.eScaleOptionTypes.None
+            '   Me.m_zgh.AutoScaleYOption(ipane) = cZedGraphHelper.eScaleOptionTypes.None
             Me.plotMean(stats, ipane)
         Next
 
@@ -260,7 +260,7 @@ Friend Class cMSEPlotter
 
             'Do NOT rescale if this is a Histogram
             If Me.m_type <> ePlotTypes.Histogram Then
-                Me.m_zgh.AutoscalePane(ipane) = True
+                ' Me.m_zgh.AutoscalePane(ipane) = True
             End If
 
         Next
@@ -314,10 +314,12 @@ Friend Class cMSEPlotter
 
     Private Sub configHistoPanes()
 
+        Me.m_zgh.YScaleGrace = 1.1
         Dim ipane As Integer
         For Each data As cMSEStats In m_Data
             ipane += 1
-            Me.m_zgh.ConfigurePane(data.Name, Me.XLabel, data.Min, data.Max, Me.YLabel, 0, 0, False, LegendPos.Top, ipane)
+            Me.m_zgh.ConfigurePane(data.Name, Me.XLabel, data.Min, data.Max, Me.YLabel, 0, 1, False, LegendPos.Top, ipane)
+            Me.m_zgh.AutoscalePane(ipane) = False
         Next
 
     End Sub
@@ -502,7 +504,6 @@ Friend Class cMSEPlotter
             Dim dx As Double
             Dim x As Double
             Dim values() As Single
-            Dim max As Single = Single.MinValue
             Dim lstLines As New List(Of ZedGraph.LineItem)
 
             dx = 1 / cCore.N_MONTHS
@@ -519,7 +520,6 @@ Friend Class cMSEPlotter
                     'add a point for each value
                     For iTime As Integer = 1 To Me.m_uic.Core.nEcosimTimeSteps
                         ppl.Add(x, values(iTime))
-                        max = Math.Max(values(iTime), max)
                         x += dx
                     Next
 
@@ -527,7 +527,8 @@ Friend Class cMSEPlotter
                     lstLines.Add(Line)
 
                 Next
-
+                'set the y max
+                Me.m_zgh.YScaleMax(ipane) = data.Max * Me.m_zgh.YScaleGrace
                 Me.m_zgh.PlotLines(lstLines.ToArray, ipane, False, False)
                 Me.plotMean(data, ipane)
             Next
