@@ -317,7 +317,9 @@ Namespace Controls
             Me.m_zgc = zgc
             Me.m_nPanels = iNumPanels
 
-            Me.m_hovermenu = New ucZedGraphHoverMenu(New ucZedGraphHoverMenu.OnCommandDelegate(AddressOf OnHoverMenuCommandCallback))
+            Me.m_hovermenu = New ucZedGraphHoverMenu()
+
+            AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
             While Me.m_zgc.MasterPane.PaneList.Count < iNumPanels
                 Me.m_zgc.MasterPane.PaneList.Add(New GraphPane())
@@ -373,6 +375,7 @@ Namespace Controls
             RemoveHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            RemoveHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
             Me.m_dtAxisLabels.Clear()
 
@@ -1997,14 +2000,14 @@ Namespace Controls
         ''' </summary>
         ''' <param name="cmd"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnHoverMenuCommandCallback(ByVal cmd As ucZedGraphHoverMenu.eCommandTypes)
+        Private Sub OnHoverMenuCommand(ByVal cmd As ucZedGraphHoverMenu.eCommandTypes)
 
             Dim gp As GraphPane = Nothing
             Dim zs As ZoomState = Nothing
             Dim sValueAvg As Single = 0.0
 
             If Me.m_zgc.InvokeRequired Then
-                Me.m_zgc.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommandCallback), New Object() {cmd})
+                Me.m_zgc.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommand), New Object() {cmd})
                 Return
             End If
 
