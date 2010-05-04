@@ -1923,38 +1923,80 @@ Namespace Controls
 
 #Region " Hover menu handling "
 
-        Private m_dZoomRate As Double = 1.0
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler, trapped to show the hover menu when the mouse enters
+        ''' the zed graph area.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Sub OnMouseEnter(ByVal sender As Object, ByVal e As System.EventArgs)
             Me.ShowHover(True)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler, trapped to hide the hover menu when the mouse enters
+        ''' the zed graph area.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Sub OnMouseLeave(ByVal sender As Object, ByVal e As System.EventArgs)
             Me.ShowHover(False)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Evaluate the hover menu state anew.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Sub UpdateHoverMenuState()
-            Me.ShowHover(IsMouseOnControl() Or IsMouseOnHoverPanel())
+            Me.ShowHover(Me.IsMouseOverGraph() Or Me.IsMouseOverPanel())
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Show or hide the hover menu.
+        ''' </summary>
+        ''' <param name="bShow">Flag stating whether the hover menu should be 
+        ''' shown (True) or hidden (False).</param>
+        ''' -------------------------------------------------------------------
         Private Sub ShowHover(ByVal bShow As Boolean)
-            Me.m_hovermenu.Visible = (bShow Or IsMouseOnHoverPanel()) And Me.m_bShowHoverMenu
+            Me.m_hovermenu.Visible = (bShow Or IsMouseOverPanel()) And Me.m_bShowHoverMenu
             Dim ptHover As New Point(4, Me.m_zgc.Height - Me.m_hovermenu.Height - 8)
             Me.m_hovermenu.Location = Me.m_zgc.PointToScreen(ptHover)
         End Sub
 
-        Private Function IsMouseOnHoverPanel() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, returns whether the mouse is over the hover menu.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function IsMouseOverPanel() As Boolean
             Dim pt As Point = Me.m_hovermenu.PointToClient(Form.MousePosition)
             Return Me.m_hovermenu.ClientRectangle.Contains(pt)
         End Function
 
-        Private Function IsMouseOnControl() As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, returns whether the mouse is over the zed graph.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function IsMouseOverGraph() As Boolean
             Dim pt As Point = Me.m_zgc.PointToClient(Form.MousePosition)
             Return Me.m_zgc.ClientRectangle.Contains(pt)
         End Function
 
+        ''' <summary>Cross-threading delegate.</summary>
+        ''' <param name="cmd"></param>
         Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As ucZedGraphHoverMenu.eCommandTypes)
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Callback for hover menu events.
+        ''' </summary>
+        ''' <param name="cmd"></param>
+        ''' -------------------------------------------------------------------
         Private Sub OnHoverMenuCommandCallback(ByVal cmd As ucZedGraphHoverMenu.eCommandTypes)
 
             Dim gp As GraphPane = Nothing
