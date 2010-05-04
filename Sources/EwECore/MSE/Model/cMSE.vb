@@ -1300,19 +1300,31 @@ Namespace MSE
             ReDim tQuota(Me.m_epdata.NumGroups)
             ReDim FtargetT(Me.m_epdata.NumGroups)
 
+            '1 Set the quota via Fixed Escapement, Fixed Fishing Mortality or Target Fishing Mortality(hockey stick)
+            '2 Apply uncertainty to the Quota
+            '3 Share the Quota between the fleets
             For igrp = 1 To Me.m_epdata.NumGroups
 
                 If Me.m_data.FixedEscapement(igrp) > 0 Then
+                    'xxxxxxxxxxxxxxxxxxxxxxx
+                    'Fixed Escapement
+                    'xxxxxxxxxxxxxxxxxxxxxxx
 
                     tQuota(igrp) = m_data.Bestimate(igrp) - m_data.FixedEscapement(igrp)
-
-                    'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
-                    'but assume uncertaint is smaller?????? not done here
-                    tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
-
                     If tQuota(igrp) < 0 Then tQuota(igrp) = 0
 
-                Else    'not using fixed escapement, so calculate 
+                ElseIf m_data.FixedF(igrp) > 0 Then
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'Fixed Mortality
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                    FtargetT(igrp) = m_data.FixedF(igrp)
+                    tQuota(igrp) = FtargetT(igrp) * Me.m_data.Bestimate(igrp)
+
+                Else
+                    'xxxxxxxxxxxxxxxxxxxxxxxx
+                    'Target Fishing Mortality
+                    'xxxxxxxxxxxxxxxxxxxxxxxx
 
                     If m_data.Bbase(igrp) > 0 Then
 
@@ -1324,32 +1336,25 @@ Namespace MSE
                         If FtargetT(igrp) < 0 Then FtargetT(igrp) = 0
                         If FtargetT(igrp) > Me.m_data.Fopt(igrp) Then FtargetT(igrp) = Me.m_data.Fopt(igrp)
 
-                        If m_data.FixedF(igrp) > 0 Then
-                            'if there is a fixed F then use it
-                            FtargetT(igrp) = m_data.FixedF(igrp)
-                        End If
-
                         tQuota(igrp) = FtargetT(igrp) * Me.m_data.Bestimate(igrp)
 
-                        'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
-                        'but assume uncertaint is smaller?????? not done here
-                        tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
                     End If
 
                 End If
+
+                'Randomize the Quota set above
+                'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
+                'but assume uncertaint is smaller?????? not done here
+                tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
+
             Next igrp
 
+            'Share the Quota across the fleets for this timestep
             For iflt = 1 To Me.m_esData.nGear
                 For igrp = 1 To Me.m_epdata.NumGroups
                     Me.m_data.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_data.Quotashare(iflt, igrp)
                 Next
             Next
-
-            'Dim val As Single
-            'For igrp = 1 To Me.m_esData.nGroups
-            '    val = Me.m_data.Bestimate(igrp) / Biomass(igrp)
-            '    Me.m_data.BioEstStats.AddValue(igrp, CInt(Me.m_curT), val)
-            'Next igrp
 
             Me.StoreQuotas(tQuota)
 
