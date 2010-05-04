@@ -75,7 +75,6 @@ Namespace MSE
 
 #End Region
 
-
 #Region "Overridden base class methods"
 
 
@@ -250,7 +249,6 @@ Public Class cMSEFleetOutput
     End Sub
 
 #End Region
-
 
 #Region "Overridden base class methods"
 
