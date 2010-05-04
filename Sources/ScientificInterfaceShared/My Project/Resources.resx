@@ -117,17 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="GENERIC_CURRENCIES" xml:space="preserve">
-    <value>AED|UAE Dirham|AFN|Afghanistan Afghani|ALL|Albanian Lek|AMD|Armenian Dram|ANG|Antillean Guilder|AOR|Angolan New Kwanza|ARS|Argentinian Peso|AUD|Australian Dollar|AWG|Aruban Florin|AZM|Azerbaijan Manat|BAM|Bosnian Konvertibilna Marka|BBD|Barbadian Dollar|BDT|Bangladesh Taka|BGN|Bulgarian New Lev|BHD|Bahraini Dinar|BIF|Burundian Franc|BMD|Bermudan Dollar|BND|Brunei Dollar|BOB|Bolivian Boliviano|BRL|Brazilian Real|BSD|Bahamas Dollar|BTN|Bhutan Ngultrum|BWP|Botswana Pula|BYB|Belarussian Ruble|BZD|Belizean Dollar|CAD|Canadian Dollar|CDF|Congolese Franc|CHF|Swiss Franc|CLP|Chilean Peso|CNY|Chinese Yuan Renminbi|COP|Colombian Peso|CRC|Costa Rican Colon|CUP|Cuban Peso|CVE|Cape Verdean Escudo|CZK|Czech Koruna|DJF|Djiboutian Franc|DKK|Danish Krone|DOP|Dominican Republic Peso|DZD|Algerian Dinar|ECS|Ecuador Sucre|EEK|Estonian Kroon|EGP|Eqyptian Pound|ETB|Ethiopian Birr|EUR|Euro|FJD|Fijian Dollar|FKP|Falkland Islands Pound|FRF|French Franc|GBP|UK Pound Sterling|GEL|Georgian Lari|GHC|Ghana Cedi|GIP|Gibraltarian Pound|GMD|Gambian Dalasi|GNF|Guinean Franc|GTQ|Guatemalan Quetzal|GYD|Guyanese Dollar|HKD|Hong Kong Dollar|HNL|Honduran Lempira|HRK|Croatian Kuna|HTG|Haitian Gourde|HUF|Hungarian Forint|IDR|Indonesian Rupiah|ILS|Israeli New Sheqel|INR|Indian Rupee|IQD|Iraqi Dinar|IRR|Iranian Rial|ISK|Iceland Krona|JMD|Jamaican Dollar|JOD|Jordanian Dinar|JPY|Japanese Yen|KES|Kenyan Shilling|KGS|Kyrgyzstan Som|KHR|Cambodian Riel|KMF|Comoran Franc|KPW|Korean PR Won (N.Korea)|KRW|Korean Republic Won (S.Korea)|KWD|Kuwaiti Dinar|KYD|Caymanian Dollar|KZT|Kazakhstan Tenge|LAK|Laos Kip|LBP|Lebanese Pound|LKR|Sri Lanka Rupee|LRD|Liberian Dollar|LSL|Lesothian Loti|LTL|Lithuanian Litas|LVL|Latvian Lat|LYD|Libyan Dinar|MAD|Moroccan Dirham|MAD|Moroccan Dirham|MDL|Moldovan Leu|MGF|Malagasy Franc|MKD|Macedonian Denar|MMK|Myanmar Kyat|MNT|Mongolian Tugrik|MOP|Macau Pataca|MRO|Mauritanian Ougiya|MUR|Mauritian Rupee|MVR|Maldivian Rufiyaa|MWK|Malawi Kwacha|MXN|Mexican New Peso|MYR|Malaysian Ringgit|MZM|Mozambique Metical|NAD|Namibia Dollar|NGN|Nigerian Naira|NIO|Nicaraguan Crdoba|NOK|Norwegian Krone|NPR|Nepalese Rupee|NZD|New Zealand Dollar|OMR|Omani Rial|PAB|Panamanian Balboa|PEN|Peruvian New Sol|PGK|Papua New Guinea Kina|PHP|Philippine Piso|PKR|Pakistani Rupee|PLN|Polish New Zloty|PYG|Paraguayan Guaran|QAR|Qatari Riyal|ROL|Romanian Leu|RSD|Serbian Dinar|RUB|Russian Rouble|RWF|Rwandan Franc|SAR|Saudi Riyal|SBD|Solomon Islands Dollar|SCR|Seychelles Rupee|SDD|Sudanese Dinar|SEK|Swedish Krona|SGD|Singaporean Dollar|SHP|Saint Helena Pound|SKK|Slovak Koruna|SLL|Sierra Leone Leone|SOS|Somali Shilling|SRG|Surinamese Guilder|STD|Sáo Tome &amp; Principe Dobra|SVC|Salvadoran Colon|SYP|Syrian Pound|SZL|Swaziland Lilangeni|THB|Thai Baht|TJR|Tajikistan Ruble|TMM|Turkmenistan Manat|TND|Tunisian Dinar|TOP|Tonga Pa'anga|TRY|New Turkish Lira|TTD|Trinidadian Dollar|TWD|Taiwanese Yuan|TZS|Tanzanian Shilling|UAH|Ukraine Hryvnias|UGX|Uganda New Shilling|USD|U.S. Dollar|UYU|Peso Uruguayo|UZS|Uzbekistan Sum|VEB|Venezuelan Bolvar|VND|Vietnamese New Dng|VUV|Vanuatu Vatu|WST|Western Samoan Tala|XAF|CFA Central Franc|XCD|East Caribbean Dollar|XOF|CFA West Franc|XPF|French Polynesian CFA France (CFP)|YER|Yemen Rial|ZAR|South African Rand|ZMK|Zambian Kwacha|ZWD|Zimbabwean Dollar</value>
-    <comment>abbr|name pairs, separated by |</comment>
+  <data name="TS_TYPE_BIOMASSABS" xml:space="preserve">
+    <value>Absolute biomass</value>
   </data>
-  <data name="GENERIC_LABEL_CURRENCY" xml:space="preserve">
-    <value>{0} {1}</value>
-    <comment>{0}: three-letter currency abbreviation, {1}: name of currency unit</comment>
+  <data name="MENU_SHOW_LEGEND" xml:space="preserve">
+    <value>&amp;Show legend</value>
   </data>
-  <data name="GENERIC_LABEL_INDEXEDLABEL" xml:space="preserve">
-    <value>{0}: {1}</value>
-    <comment>{0}:index, {1}:name</comment>
+  <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
+    <value>Relative biomass</value>
+  </data>
+  <data name="UNIT_CURRENCY_CALORIE" xml:space="preserve">
+    <value>kcal/m²</value>
+  </data>
+  <data name="TS_TYPE_TOTALMORT" xml:space="preserve">
+    <value>Total mortality</value>
+  </data>
+  <data name="UNIT_CURRENCY_DRYWEIGHT" xml:space="preserve">
+    <value>g/m²</value>
+  </data>
+  <data name="BUTTON_CANCEL" xml:space="preserve">
+    <value>&amp;Cancel</value>
+  </data>
+  <data name="STATUS_TIMESERIES_ADDING" xml:space="preserve">
+    <value>Adding time series {0} ...</value>
+    <comment>{0}: time series name</comment>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="minus" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -138,70 +151,15 @@
         +gR4iIiIcCf6BA==
 </value>
   </data>
-  <data name="plus" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        Qk0yAQAAAAAAADYAAAAoAAAACQAAAAkAAAABABgAAAAAAAAAAADEDgAAxA4AAAAAAAAAAAAA08KwtZh4
-        tZh4tZh4tZh4tZh4tZh4tZh408KwTrWYeL/M0q6+xqi4wqe4wae4waa3wKq6w7WYeE61mHjZ4eTP2NzJ
-        09gAAADG0dbAzNK7yM+1mHhOtZh47vLy7PDw5+3tAAAA4+nq2eDjzNbbtZh4TrWYePH19QAAAAAAAAAA
-        AAAAAAAAANLb37WYeE61mHj19/f19/f09/cAAAD09vbr8PHa4eW1mHhOtZh4+/z8+/39+/39AAAA+/z8
-        +vz88/b3tZh4TrWYePf39/f39////////////////////7WYeE7TwrC1mHi1mHi1mHi1mHi1mHi1mHi1
-        mHjTwrBO
-</value>
+  <data name="GENERIC_CHAR_COMMA" xml:space="preserve">
+    <value>, (comma)</value>
+    <comment>'Comma' character description</comment>
   </data>
-  <data name="UNIT_CURRENCY_CALORIE" xml:space="preserve">
-    <value>kcal/m²</value>
+  <data name="GENERIC_VALUE_ALL" xml:space="preserve">
+    <value>(All)</value>
   </data>
-  <data name="UNIT_CURRENCY_CARBON" xml:space="preserve">
-    <value>g/m²</value>
-  </data>
-  <data name="UNIT_CURRENCY_DRYWEIGHT" xml:space="preserve">
-    <value>g/m²</value>
-  </data>
-  <data name="UNIT_CURRENCY_JOULES" xml:space="preserve">
-    <value>J/m²</value>
-  </data>
-  <data name="UNIT_CURRENCY_NITROGEN" xml:space="preserve">
-    <value>mg N/m²</value>
-  </data>
-  <data name="UNIT_CURRENCY_PHOSPOROUS" xml:space="preserve">
-    <value>mg P/m²</value>
-  </data>
-  <data name="UNIT_CURRENCY_WETWEIGHT" xml:space="preserve">
-    <value>t/km²</value>
-  </data>
-  <data name="UNIT_TIME_DAY" xml:space="preserve">
-    <value>day</value>
-  </data>
-  <data name="UNIT_TIME_YEAR" xml:space="preserve">
-    <value>year</value>
-  </data>
-  <data name="GENERIC_TEXT_NODATA" xml:space="preserve">
-    <value>(no data)</value>
-  </data>
-  <data name="GENERIC_VALUE_NOTAVAILABLE" xml:space="preserve">
-    <value>(N/A)</value>
-  </data>
-  <data name="GENERIC_TEXT_CURSOR" xml:space="preserve">
-    <value>Cursor</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="CheckBoxHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CheckBoxHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="FILEFILTER_IMAGE" xml:space="preserve">
-    <value>Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff</value>
-    <comment>| separated list of image filters. Order: bitmap, jpeg, gif, png, tiff</comment>
-  </data>
-  <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
-    <value>'{0}' failed to save to file '{1}': {2}.</value>
-    <comment>{0}: item that saved. {1}: file dest. {2}: error reason</comment>
-  </data>
-  <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
-    <value>'{0}' is succesfully saved to file '{1}'.</value>
-    <comment>{0}: item that saved. {1}: file dest</comment>
-  </data>
-  <data name="MEDIATION_X_AXIS_LABEL" xml:space="preserve">
-    <value>Mediating group (weighted) biomass</value>
+  <data name="HEADER_RELATIVEWEIGHT" xml:space="preserve">
+    <value>Relative weight</value>
   </data>
   <data name="RUN_ECOSIM_F_VALUE_CAPTION" xml:space="preserve">
     <value>Change F</value>
@@ -209,62 +167,127 @@
   <data name="RUN_ECOSIM_F_VALUE_MSG" xml:space="preserve">
     <value>Enter F~value (or enter a string of comma separated F's for all fleets)</value>
   </data>
-  <data name="SHAPE_TYPE_TO_SEASONAL_CAPTION" xml:space="preserve">
-    <value>Change shape type</value>
+  <data name="arrow_right" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAASBJREFUOE9j/P//
+        PwNFAGQAJZgizWDXU2I7yQb4z3Tf7TnRkQ3ZUpJcANT83anD+jaGASXHM/6DcOHh1P+5+xL/Z+yI/Z+0
+        MeJ/zMrg/2ELff8Dbf4P1Pw/aXHU/5i5of9NK/QvwgwBuwCked2tpf9X31j0f/m1ef8XX5n1f/6laf9n
+        nZ/8f+qZvv8TTnX+7z7e+r/9aOP/pkO1/wMmev3XzFQ9CQ8DkM0rry/4v/TqnP8LL8/4P/fClP8zzk34
+        P/l09/++k+3/O481/W85XPe/4WDV/5p9Zf+9elz/qyQrHoEbgM/ZQD//t24w/e/aYf8/bmHkf89uF5Dm
+        8yheICYq9Qu0LIDO/g7UfJPsWABq3qEQJ0t+NGJzKUnpYHAaAABvYKkCkr/+vQAAAABJRU5ErkJggg==
+</value>
   </data>
-  <data name="SHAPE_TYPE_TO_SEASONAL_MSG" xml:space="preserve">
-    <value>Changing a shape from 'Long term' to 'Seasonal' will cause your long-term data to be overwritten by a seasonal pattern. This action cannot be undone. Are you sure you want to do this?</value>
+  <data name="UNIT_CURRENCY_JOULES" xml:space="preserve">
+    <value>J/m²</value>
   </data>
-  <data name="WarningHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\WarningHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ECOSIM_DEFAULT_NEWEGGPRODSHAPE" xml:space="preserve">
-    <value>Egg production shape {0}</value>
-    <comment>The default name for a new Ecosim Egg production shape. {0}: autonumber</comment>
-  </data>
-  <data name="ECOSIM_DEFAULT_NEWFORCINGSHAPE" xml:space="preserve">
-    <value>Forcing shape {0}</value>
-    <comment>The default name for a new Ecosim forcing shape. {0}: autonumber</comment>
+  <data name="HEADER_RELATIVEWEIGHT_ABBR" xml:space="preserve">
+    <value>Rel. weight</value>
   </data>
   <data name="ECOSIM_DEFAULT_NEWTIMESERIES" xml:space="preserve">
     <value>New time series {0}</value>
     <comment>The default name for a new Ecosim time series. {0}: autonumber</comment>
   </data>
-  <data name="HEADER_ADD" xml:space="preserve">
-    <value>Add</value>
+  <data name="SHAPE_TYPE_TO_SEASONAL_CAPTION" xml:space="preserve">
+    <value>Change shape type</value>
+  </data>
+  <data name="LABEL_GROUP" xml:space="preserve">
+    <value>&amp;Group:</value>
+  </data>
+  <data name="GENERIC_LABEL_INDEXEDLABEL" xml:space="preserve">
+    <value>{0}: {1}</value>
+    <comment>{0}:index, {1}:name</comment>
+  </data>
+  <data name="TS_TYPE_FISHINGEFFORT" xml:space="preserve">
+    <value>Fishing effort</value>
+  </data>
+  <data name="GENERIC_CHAR_PERIOD" xml:space="preserve">
+    <value>. (period)</value>
+    <comment>'Period' character description</comment>
+  </data>
+  <data name="UNIT_TIME_DAY" xml:space="preserve">
+    <value>day</value>
   </data>
   <data name="HEADER_VALUE" xml:space="preserve">
     <value>Value</value>
   </data>
-  <data name="HEADER_VALUES" xml:space="preserve">
-    <value>Values</value>
+  <data name="MEDIATION_X_AXIS_LABEL" xml:space="preserve">
+    <value>Mediating group (weighted) biomass</value>
+  </data>
+  <data name="UNIT_TIME_YEAR" xml:space="preserve">
+    <value>year</value>
+  </data>
+  <data name="FILEFILTER_IMAGE" xml:space="preserve">
+    <value>Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff</value>
+    <comment>| separated list of image filters. Order: bitmap, jpeg, gif, png, tiff</comment>
   </data>
   <data name="LABEL_FLEET" xml:space="preserve">
     <value>&amp;Fleet:</value>
   </data>
-  <data name="LABEL_GROUP" xml:space="preserve">
-    <value>&amp;Group:</value>
+  <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
+    <value>Ecotracer relative concentration</value>
+  </data>
+  <data name="GENERIC_LABEL_DETAIL" xml:space="preserve">
+    <value>{0} ({1})</value>
+    <comment>{0}: main value, {1}: detail for {0}</comment>
+  </data>
+  <data name="GENERIC_LABEL_GRAPHVALUE" xml:space="preserve">
+    <value>{0}: ({1}, {2})</value>
+    <comment>{0}: graph curve name, {1}: X point value, {2}: Y point value</comment>
+  </data>
+  <data name="UNIT_CURRENCY_NITROGEN" xml:space="preserve">
+    <value>mg N/m²</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWEGGPRODSHAPE" xml:space="preserve">
+    <value>Egg production shape {0}</value>
+    <comment>The default name for a new Ecosim Egg production shape. {0}: autonumber</comment>
+  </data>
+  <data name="GENERIC_CURRENCIES" xml:space="preserve">
+    <value>AED|UAE Dirham|AFN|Afghanistan Afghani|ALL|Albanian Lek|AMD|Armenian Dram|ANG|Antillean Guilder|AOR|Angolan New Kwanza|ARS|Argentinian Peso|AUD|Australian Dollar|AWG|Aruban Florin|AZM|Azerbaijan Manat|BAM|Bosnian Konvertibilna Marka|BBD|Barbadian Dollar|BDT|Bangladesh Taka|BGN|Bulgarian New Lev|BHD|Bahraini Dinar|BIF|Burundian Franc|BMD|Bermudan Dollar|BND|Brunei Dollar|BOB|Bolivian Boliviano|BRL|Brazilian Real|BSD|Bahamas Dollar|BTN|Bhutan Ngultrum|BWP|Botswana Pula|BYB|Belarussian Ruble|BZD|Belizean Dollar|CAD|Canadian Dollar|CDF|Congolese Franc|CHF|Swiss Franc|CLP|Chilean Peso|CNY|Chinese Yuan Renminbi|COP|Colombian Peso|CRC|Costa Rican Colon|CUP|Cuban Peso|CVE|Cape Verdean Escudo|CZK|Czech Koruna|DJF|Djiboutian Franc|DKK|Danish Krone|DOP|Dominican Republic Peso|DZD|Algerian Dinar|ECS|Ecuador Sucre|EEK|Estonian Kroon|EGP|Eqyptian Pound|ETB|Ethiopian Birr|EUR|Euro|FJD|Fijian Dollar|FKP|Falkland Islands Pound|FRF|French Franc|GBP|UK Pound Sterling|GEL|Georgian Lari|GHC|Ghana Cedi|GIP|Gibraltarian Pound|GMD|Gambian Dalasi|GNF|Guinean Franc|GTQ|Guatemalan Quetzal|GYD|Guyanese Dollar|HKD|Hong Kong Dollar|HNL|Honduran Lempira|HRK|Croatian Kuna|HTG|Haitian Gourde|HUF|Hungarian Forint|IDR|Indonesian Rupiah|ILS|Israeli New Sheqel|INR|Indian Rupee|IQD|Iraqi Dinar|IRR|Iranian Rial|ISK|Iceland Krona|JMD|Jamaican Dollar|JOD|Jordanian Dinar|JPY|Japanese Yen|KES|Kenyan Shilling|KGS|Kyrgyzstan Som|KHR|Cambodian Riel|KMF|Comoran Franc|KPW|Korean PR Won (N.Korea)|KRW|Korean Republic Won (S.Korea)|KWD|Kuwaiti Dinar|KYD|Caymanian Dollar|KZT|Kazakhstan Tenge|LAK|Laos Kip|LBP|Lebanese Pound|LKR|Sri Lanka Rupee|LRD|Liberian Dollar|LSL|Lesothian Loti|LTL|Lithuanian Litas|LVL|Latvian Lat|LYD|Libyan Dinar|MAD|Moroccan Dirham|MAD|Moroccan Dirham|MDL|Moldovan Leu|MGF|Malagasy Franc|MKD|Macedonian Denar|MMK|Myanmar Kyat|MNT|Mongolian Tugrik|MOP|Macau Pataca|MRO|Mauritanian Ougiya|MUR|Mauritian Rupee|MVR|Maldivian Rufiyaa|MWK|Malawi Kwacha|MXN|Mexican New Peso|MYR|Malaysian Ringgit|MZM|Mozambique Metical|NAD|Namibia Dollar|NGN|Nigerian Naira|NIO|Nicaraguan Crdoba|NOK|Norwegian Krone|NPR|Nepalese Rupee|NZD|New Zealand Dollar|OMR|Omani Rial|PAB|Panamanian Balboa|PEN|Peruvian New Sol|PGK|Papua New Guinea Kina|PHP|Philippine Piso|PKR|Pakistani Rupee|PLN|Polish New Zloty|PYG|Paraguayan Guaran|QAR|Qatari Riyal|ROL|Romanian Leu|RSD|Serbian Dinar|RUB|Russian Rouble|RWF|Rwandan Franc|SAR|Saudi Riyal|SBD|Solomon Islands Dollar|SCR|Seychelles Rupee|SDD|Sudanese Dinar|SEK|Swedish Krona|SGD|Singaporean Dollar|SHP|Saint Helena Pound|SKK|Slovak Koruna|SLL|Sierra Leone Leone|SOS|Somali Shilling|SRG|Surinamese Guilder|STD|Sáo Tome &amp; Principe Dobra|SVC|Salvadoran Colon|SYP|Syrian Pound|SZL|Swaziland Lilangeni|THB|Thai Baht|TJR|Tajikistan Ruble|TMM|Turkmenistan Manat|TND|Tunisian Dinar|TOP|Tonga Pa'anga|TRY|New Turkish Lira|TTD|Trinidadian Dollar|TWD|Taiwanese Yuan|TZS|Tanzanian Shilling|UAH|Ukraine Hryvnias|UGX|Uganda New Shilling|USD|U.S. Dollar|UYU|Peso Uruguayo|UZS|Uzbekistan Sum|VEB|Venezuelan Bolvar|VND|Vietnamese New Dng|VUV|Vanuatu Vatu|WST|Western Samoan Tala|XAF|CFA Central Franc|XCD|East Caribbean Dollar|XOF|CFA West Franc|XPF|French Polynesian CFA France (CFP)|YER|Yemen Rial|ZAR|South African Rand|ZMK|Zambian Kwacha|ZWD|Zimbabwean Dollar</value>
+    <comment>abbr|name pairs, separated by |</comment>
+  </data>
+  <data name="TS_TYPE_CONSTTOTALMORT" xml:space="preserve">
+    <value>Constant total mortality</value>
+  </data>
+  <data name="TS_TYPE_FISHINGMORT" xml:space="preserve">
+    <value>Fishing mortality</value>
+  </data>
+  <data name="GENERIC_VALUE_NOTAVAILABLE" xml:space="preserve">
+    <value>(N/A)</value>
+  </data>
+  <data name="PROMPT_SHAPE_DELETE" xml:space="preserve">
+    <value>You are about to delete forcing or mediation function '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
+  </data>
+  <data name="GENERIC_CHAR_SEMICOLON" xml:space="preserve">
+    <value>; (semi-colon)</value>
+    <comment>'Semi-colon' character description</comment>
   </data>
   <data name="PROMPT_TIMESERIES_DELETE" xml:space="preserve">
     <value>You are about to delete time series '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
     <comment>{0}: time series name</comment>
   </data>
-  <data name="STATUS_TIMESERIES_ADDING" xml:space="preserve">
-    <value>Adding time series {0} ...</value>
-    <comment>{0}: time series name</comment>
+  <data name="HEADER_VALUES" xml:space="preserve">
+    <value>Values</value>
   </data>
-  <data name="STATUS_TIMESERIES_UPDATING" xml:space="preserve">
-    <value>Updating time series {0}...</value>
-    <comment>{0}: time series name</comment>
+  <data name="UNIT_CURRENCY_CARBON" xml:space="preserve">
+    <value>g/m²</value>
   </data>
-  <data name="OptionsHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\OptionsHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="HEADER_INDEX" xml:space="preserve">
-    <value>Index</value>
+  <data name="ECOSIM_DEFAULT_NEWMEDIATIONSHAPE" xml:space="preserve">
+    <value>Mediation shape {0}</value>
+    <comment>The default name for a new Ecosim mediation shape. {0}: autonumber</comment>
   </data>
   <data name="HEADER_MONTH" xml:space="preserve">
     <value>Month</value>
+  </data>
+  <data name="TS_TYPE_CATCHESFORCING" xml:space="preserve">
+    <value>Catches forcing</value>
+  </data>
+  <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
+    <value>'{0}' is succesfully saved to file '{1}'.</value>
+    <comment>{0}: item that saved. {1}: file dest</comment>
+  </data>
+  <data name="BUTTON_CLOSE" xml:space="preserve">
+    <value>&amp;Close</value>
   </data>
   <data name="HEADER_YEAR" xml:space="preserve">
     <value>Year</value>
@@ -273,92 +296,8 @@
     <value>You are about to delete {0} time series'. This action cannot be undone. Are you sure you want to do this?</value>
     <comment>{0}: delete count</comment>
   </data>
-  <data name="GENERIC_VALUE_ALL" xml:space="preserve">
-    <value>(All)</value>
-  </data>
-  <data name="GENERIC_LABEL_GRAPHVALUE" xml:space="preserve">
-    <value>{0}: ({1}, {2})</value>
-    <comment>{0}: graph curve name, {1}: X point value, {2}: Y point value</comment>
-  </data>
-  <data name="PROMPT_SHAPE_DELETE" xml:space="preserve">
-    <value>You are about to delete forcing or mediation function '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
-  </data>
-  <data name="PROMPT_SHAPE_DELETE_MULTIPLE" xml:space="preserve">
-    <value>You are about to delete {0} forcing or mediation functions'. This action cannot be undone. Are you sure you want to do this?</value>
-  </data>
-  <data name="GENERIC_LABEL_DETAIL" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>{0}: main value, {1}: detail for {0}</comment>
-  </data>
-  <data name="TS_TYPE_AVERAGEWEIGHT" xml:space="preserve">
-    <value>Average weight</value>
-  </data>
-  <data name="TS_TYPE_BIOMASSABS" xml:space="preserve">
-    <value>Absolute biomass</value>
-  </data>
-  <data name="TS_TYPE_BIOMASSFORCING" xml:space="preserve">
-    <value>Biomass forcing</value>
-  </data>
-  <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
-    <value>Relative biomass</value>
-  </data>
-  <data name="TS_TYPE_CATCHES" xml:space="preserve">
-    <value>Catches</value>
-  </data>
-  <data name="TS_TYPE_CATCHESFORCING" xml:space="preserve">
-    <value>Catches forcing</value>
-  </data>
-  <data name="TS_TYPE_CONSTTOTALMORT" xml:space="preserve">
-    <value>Constant total mortality</value>
-  </data>
-  <data name="TS_TYPE_FISHINGEFFORT" xml:space="preserve">
-    <value>Fishing effort</value>
-  </data>
-  <data name="TS_TYPE_FISHINGMORT" xml:space="preserve">
-    <value>Fishing mortality</value>
-  </data>
-  <data name="TS_TYPE_TIMEFORCING" xml:space="preserve">
-    <value>Time forcing</value>
-  </data>
-  <data name="TS_TYPE_TOTALMORT" xml:space="preserve">
-    <value>Total mortality</value>
-  </data>
-  <data name="TS_TYPE_TRACER_CONCABS" xml:space="preserve">
-    <value>Ecotracer absolute concentration</value>
-  </data>
-  <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
-    <value>Ecotracer relative concentration</value>
-  </data>
-  <data name="FILEFILTER_CSV" xml:space="preserve">
-    <value>Comma-separated text files (*.csv)|*.csv</value>
-  </data>
-  <data name="MENU_EXTRACT_TO_CSV" xml:space="preserve">
-    <value>E&amp;xtract to CSV...</value>
-  </data>
-  <data name="MENU_SHOW_LEGEND" xml:space="preserve">
-    <value>&amp;Show legend</value>
-  </data>
-  <data name="BUTTON_CANCEL" xml:space="preserve">
-    <value>&amp;Cancel</value>
-  </data>
-  <data name="BUTTON_CLOSE" xml:space="preserve">
-    <value>&amp;Close</value>
-  </data>
-  <data name="GENERIC_CHAR_COLON" xml:space="preserve">
-    <value>: (colon)</value>
-    <comment>'Colon' character description</comment>
-  </data>
-  <data name="GENERIC_CHAR_COMMA" xml:space="preserve">
-    <value>, (comma)</value>
-    <comment>'Comma' character description</comment>
-  </data>
-  <data name="GENERIC_CHAR_PERIOD" xml:space="preserve">
-    <value>. (period)</value>
-    <comment>'Period' character description</comment>
-  </data>
-  <data name="GENERIC_CHAR_SEMICOLON" xml:space="preserve">
-    <value>; (semi-colon)</value>
-    <comment>'Semi-colon' character description</comment>
+  <data name="HEADER_NAME" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="arrow_left" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -372,31 +311,98 @@
         RK5CYII=
 </value>
   </data>
-  <data name="arrow_right" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="GENERIC_LABEL_CURRENCY" xml:space="preserve">
+    <value>{0} {1}</value>
+    <comment>{0}: three-letter currency abbreviation, {1}: name of currency unit</comment>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="WarningHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WarningHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
+    <value>'{0}' failed to save to file '{1}': {2}.</value>
+    <comment>{0}: item that saved. {1}: file dest. {2}: error reason</comment>
+  </data>
+  <data name="plus" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAASBJREFUOE9j/P//
-        PwNFAGQAJZgizWDXU2I7yQb4z3Tf7TnRkQ3ZUpJcANT83anD+jaGASXHM/6DcOHh1P+5+xL/Z+yI/Z+0
-        MeJ/zMrg/2ELff8Dbf4P1Pw/aXHU/5i5of9NK/QvwgwBuwCked2tpf9X31j0f/m1ef8XX5n1f/6laf9n
-        nZ/8f+qZvv8TTnX+7z7e+r/9aOP/pkO1/wMmev3XzFQ9CQ8DkM0rry/4v/TqnP8LL8/4P/fClP8zzk34
-        P/l09/++k+3/O481/W85XPe/4WDV/5p9Zf+9elz/qyQrHoEbgM/ZQD//t24w/e/aYf8/bmHkf89uF5Dm
-        8yheICYq9Qu0LIDO/g7UfJPsWABq3qEQJ0t+NGJzKUnpYHAaAABvYKkCkr/+vQAAAABJRU5ErkJggg==
+        Qk0yAQAAAAAAADYAAAAoAAAACQAAAAkAAAABABgAAAAAAAAAAADEDgAAxA4AAAAAAAAAAAAA08KwtZh4
+        tZh4tZh4tZh4tZh4tZh4tZh408KwTrWYeL/M0q6+xqi4wqe4wae4waa3wKq6w7WYeE61mHjZ4eTP2NzJ
+        09gAAADG0dbAzNK7yM+1mHhOtZh47vLy7PDw5+3tAAAA4+nq2eDjzNbbtZh4TrWYePH19QAAAAAAAAAA
+        AAAAAAAAANLb37WYeE61mHj19/f19/f09/cAAAD09vbr8PHa4eW1mHhOtZh4+/z8+/39+/39AAAA+/z8
+        +vz88/b3tZh4TrWYePf39/f39////////////////////7WYeE7TwrC1mHi1mHi1mHi1mHi1mHi1mHi1
+        mHjTwrBO
 </value>
   </data>
-  <data name="ECOSIM_DEFAULT_NEWMEDIATIONSHAPE" xml:space="preserve">
-    <value>Mediation shape {0}</value>
-    <comment>The default name for a new Ecosim mediation shape. {0}: autonumber</comment>
+  <data name="GENERIC_CHAR_COLON" xml:space="preserve">
+    <value>: (colon)</value>
+    <comment>'Colon' character description</comment>
+  </data>
+  <data name="TS_TYPE_TRACER_CONCABS" xml:space="preserve">
+    <value>Ecotracer absolute concentration</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSFORCING" xml:space="preserve">
+    <value>Biomass forcing</value>
+  </data>
+  <data name="CheckBoxHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CheckBoxHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GENERIC_TEXT_CURSOR" xml:space="preserve">
+    <value>Cursor</value>
+  </data>
+  <data name="FILEFILTER_CSV" xml:space="preserve">
+    <value>Comma-separated text files (*.csv)|*.csv</value>
+  </data>
+  <data name="TS_TYPE_AVERAGEWEIGHT" xml:space="preserve">
+    <value>Average weight</value>
+  </data>
+  <data name="SHAPE_TYPE_TO_SEASONAL_MSG" xml:space="preserve">
+    <value>Changing a shape from 'Long term' to 'Seasonal' will cause your long-term data to be overwritten by a seasonal pattern. This action cannot be undone. Are you sure you want to do this?</value>
+  </data>
+  <data name="MENU_EXTRACT_TO_CSV" xml:space="preserve">
+    <value>E&amp;xtract to CSV...</value>
+  </data>
+  <data name="UNIT_CURRENCY_PHOSPOROUS" xml:space="preserve">
+    <value>mg P/m²</value>
+  </data>
+  <data name="STATUS_TIMESERIES_UPDATING" xml:space="preserve">
+    <value>Updating time series {0}...</value>
+    <comment>{0}: time series name</comment>
+  </data>
+  <data name="UNIT_CURRENCY_WETWEIGHT" xml:space="preserve">
+    <value>t/km²</value>
+  </data>
+  <data name="GENERIC_TEXT_NODATA" xml:space="preserve">
+    <value>(no data)</value>
+  </data>
+  <data name="TS_TYPE_CATCHES" xml:space="preserve">
+    <value>Catches</value>
   </data>
   <data name="ECOSIM_DEF_MED_X_AXIS" xml:space="preserve">
     <value>Mediating group</value>
   </data>
-  <data name="HEADER_NAME" xml:space="preserve">
-    <value>Name</value>
+  <data name="PROMPT_SHAPE_DELETE_MULTIPLE" xml:space="preserve">
+    <value>You are about to delete {0} forcing or mediation functions'. This action cannot be undone. Are you sure you want to do this?</value>
   </data>
-  <data name="HEADER_RELATIVEWEIGHT" xml:space="preserve">
-    <value>Relative weight</value>
+  <data name="ECOSIM_DEFAULT_NEWFORCINGSHAPE" xml:space="preserve">
+    <value>Forcing shape {0}</value>
+    <comment>The default name for a new Ecosim forcing shape. {0}: autonumber</comment>
   </data>
-  <data name="HEADER_RELATIVEWEIGHT_ABBR" xml:space="preserve">
-    <value>Rel. weight</value>
+  <data name="HEADER_INDEX" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="HEADER_ADD" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="OptionsHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OptionsHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TS_TYPE_TIMEFORCING" xml:space="preserve">
+    <value>Time forcing</value>
+  </data>
+  <data name="ZoomOutHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ZoomOutHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ZoomInHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ZoomInHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

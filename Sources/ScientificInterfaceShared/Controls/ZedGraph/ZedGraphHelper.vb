@@ -233,8 +233,6 @@ Namespace Controls
         Private m_zgc As ZedGraphControl = Nothing
         ''' <summary>Number of panels wanted in the zed graph</summary>
         Private m_nPanels As Integer = 1
-        '''' <summary>Registered lines representing EwE groups.</summary>
-        'Private m_dtGroupLines As New Dictionary(Of LineItem, Integer)
         ''' <summary>Registered axis that need to display units.</summary>
         Private m_dtAxisLabels As New Dictionary(Of Axis, cAxisLabelFormatter)
         ''' <summary>Grace value for manual scaled Y-axis.</summary>
@@ -264,6 +262,13 @@ Namespace Controls
             Both
             None
         End Enum
+
+        ' == Hover menu ==
+
+        ''' <summary>States whether a floating hover menu should be displayed on the graph.</summary>
+        Private m_bShowHoverMenu As Boolean = False
+        ''' <summary>The hover menu to display on top of graph areas.</summary>
+        Private m_hovermenu As ucZedGraphHoverMenu = Nothing
 
 #End Region ' Private vars
 
@@ -312,6 +317,8 @@ Namespace Controls
             Me.m_zgc = zgc
             Me.m_nPanels = iNumPanels
 
+            Me.m_hovermenu = New ucZedGraphHoverMenu(New ucZedGraphHoverMenu.OnCommandDelegate(AddressOf OnHoverMenuCommandCallback))
+
             While Me.m_zgc.MasterPane.PaneList.Count < iNumPanels
                 Me.m_zgc.MasterPane.PaneList.Add(New GraphPane())
             End While
@@ -328,10 +335,15 @@ Namespace Controls
             AddHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             AddHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
             AddHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
+            AddHandler Me.m_zgc.MouseEnter, AddressOf OnMouseEnter
+            AddHandler Me.m_zgc.MouseLeave, AddressOf OnMouseLeave
             AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
             AddHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+            Me.AllowZoom = True
+            Me.AllowPan = False
 
             ' Configure graph control
             Me.UpdateStyle()
@@ -355,13 +367,18 @@ Namespace Controls
             RemoveHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             RemoveHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
             RemoveHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
+            RemoveHandler Me.m_zgc.MouseEnter, AddressOf OnMouseEnter
+            RemoveHandler Me.m_zgc.MouseLeave, AddressOf OnMouseLeave
             RemoveHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
             RemoveHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-            'Me.m_dtGroupLines.Clear()
             Me.m_dtAxisLabels.Clear()
+
+            Me.m_hovermenu.Close()
+            Me.m_hovermenu.Dispose()
+            Me.m_hovermenu = Nothing
 
             Me.m_zgc = Nothing
 
@@ -510,9 +527,13 @@ Namespace Controls
             With gp
 
                 .XAxis.Scale.Min = dXAxisMin
+                .XAxis.Scale.MinGrace = 0.0#
+                .XAxis.Scale.MaxGrace = 0.0#
                 If dXAxisMin <> dXAxisMax Then .XAxis.Scale.Max = dXAxisMax
 
                 .YAxis.Scale.Min = dYAxisMin
+                .YAxis.Scale.MinGrace = Me.m_sYScaleGrace
+                .YAxis.Scale.MaxGrace = Me.m_sYScaleGrace
                 If dYAxisMin <> dYAxisMax Then .YAxis.Scale.Max = dYAxisMax
 
             End With
@@ -580,12 +601,16 @@ Namespace Controls
                 .XAxis.MinorTic.IsAllTics = False
                 .XAxis.MinorTic.IsOpposite = False
                 .XAxis.MajorTic.IsOpposite = False
+                .XAxis.Scale.MinGrace = 0.0#
+                .XAxis.Scale.MaxGrace = 0.0#
 
                 Me.AxisLabel(.YAxis, strYAxisLabel, aUnitsYAxis)
                 .YAxis.Title.IsVisible = Not String.IsNullOrEmpty(strYAxisLabel)
                 .YAxis.MinorTic.IsAllTics = False
                 .YAxis.MinorTic.IsOpposite = False
                 .YAxis.MajorTic.IsOpposite = False
+                .YAxis.Scale.MinGrace = Me.m_sYScaleGrace
+                .YAxis.Scale.MaxGrace = Me.m_sYScaleGrace
 
                 .Legend.Position = legendPos
 
@@ -742,6 +767,10 @@ Namespace Controls
                     .MaxGrace = Me.YScaleGrace
                     .MinGrace = Me.YScaleGrace
                 End With
+                With Me.GetPane(iPane).XAxis.Scale
+                    .MaxGrace = 0
+                    .MinGrace = 0
+                End With
             Next
 
             ' Recalc axis
@@ -876,11 +905,16 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set whether vetical zoom is allowed.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public WriteOnly Property AllowZoom() As Boolean
             Set(ByVal value As Boolean)
                 Me.m_zgc.IsZoomOnMouseCenter = value
                 Me.m_zgc.IsEnableVZoom = value
-                Me.m_zgc.IsEnableHZoom = value
+                Me.m_zgc.IsEnableHZoom = False
                 Me.m_zgc.IsEnableWheelZoom = value
                 Me.m_zgc.IsEnableZoom = value
                 If value Then
@@ -891,10 +925,15 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set whether vetical pan is allowed.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public WriteOnly Property AllowPan() As Boolean
             Set(ByVal value As Boolean)
                 Me.m_zgc.IsEnableVPan = value
-                Me.m_zgc.IsEnableHPan = value
+                Me.m_zgc.IsEnableHPan = False
                 If value Then
                     Me.m_zgc.PanButtons = MouseButtons.Left
                 Else
@@ -903,6 +942,11 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set whether value edits are allowed.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public WriteOnly Property AllowEdit() As Boolean
             Set(ByVal value As Boolean)
                 Me.m_zgc.IsEnableHEdit = value
@@ -1379,6 +1423,27 @@ Namespace Controls
 
 #End Region ' Context Menu
 
+#Region " Hover menu "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether a hovering menu should be displayed on the graph.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ShowHoverMenu() As Boolean
+            Get
+                Return Me.m_bShowHoverMenu
+            End Get
+            Set(ByVal value As Boolean)
+                If value <> Me.m_bShowHoverMenu Then
+                    Me.m_bShowHoverMenu = value
+                    Me.UpdateHoverMenuState()
+                End If
+            End Set
+        End Property
+
+#End Region ' Hover menu
+
 #End Region ' Public interfaces
 
 #Region " Events "
@@ -1820,6 +1885,71 @@ Namespace Controls
 #End Region ' Context menu
 
 #End Region ' Internal bits
+
+#Region " Hover menu handling "
+
+        Private m_dZoomRate As Double = 1.0
+
+        Private Sub OnMouseEnter(ByVal sender As Object, ByVal e As System.EventArgs)
+            Me.ShowHover(True)
+        End Sub
+
+        Private Sub OnMouseLeave(ByVal sender As Object, ByVal e As System.EventArgs)
+            Me.ShowHover(False)
+        End Sub
+
+        Private Sub UpdateHoverMenuState()
+            Me.ShowHover(IsMouseOnControl() Or IsMouseOnHoverPanel())
+        End Sub
+
+        Private Sub ShowHover(ByVal bShow As Boolean)
+            Me.m_hovermenu.Visible = (bShow Or IsMouseOnHoverPanel()) And Me.m_bShowHoverMenu
+            Dim ptHover As New Point(4, Me.m_zgc.Height - Me.m_hovermenu.Height - 4)
+            Me.m_hovermenu.Location = Me.m_zgc.PointToScreen(ptHover)
+        End Sub
+
+        Private Function IsMouseOnHoverPanel() As Boolean
+            Dim pt As Point = Me.m_hovermenu.PointToClient(Form.MousePosition)
+            Return Me.m_hovermenu.ClientRectangle.Contains(pt)
+        End Function
+
+        Private Function IsMouseOnControl() As Boolean
+            Dim pt As Point = Me.m_zgc.PointToClient(Form.MousePosition)
+            Return Me.m_zgc.ClientRectangle.Contains(pt)
+        End Function
+
+        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As ucZedGraphHoverMenu.eCommandTypes)
+
+        Private Sub OnHoverMenuCommandCallback(ByVal cmd As ucZedGraphHoverMenu.eCommandTypes)
+
+            Dim gp As GraphPane = Nothing
+            Dim zs As ZoomState = Nothing
+
+            If Me.m_zgc.InvokeRequired Then
+                Me.m_zgc.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommandCallback), New Object() {cmd})
+                Return
+            End If
+
+            Select Case cmd
+                Case ucZedGraphHoverMenu.eCommandTypes.ZoomIn
+                    Me.m_dZoomRate = 1 + Me.m_zgc.ZoomStepFraction
+                Case ucZedGraphHoverMenu.eCommandTypes.ZoomOut
+                    Me.m_dZoomRate = 1 - Me.m_zgc.ZoomStepFraction
+            End Select
+
+            For iPane As Integer = 1 To Me.NumPanes
+                ' Get pane
+                gp = Me.GetPane(iPane)
+                ' ToDo: find mean value in pane to zoom onto
+                ' Zoom
+                Me.m_zgc.ZoomPane(gp, Me.m_dZoomRate, New PointF(0, CSng(gp.YAxis.Scale.Max / 2)), True)
+            Next
+
+            Me.UpdateHoverMenuState()
+
+        End Sub
+
+#End Region ' Hover menu handling
 
     End Class
 
