@@ -98,6 +98,25 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.MSERecruitmentCV, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERecruitmentCV))
             m_values.Add(val.varName, val)
 
+
+            ''Quota per species
+            'meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            'val = New cValue(New Single, eVarNameFlags.QuotaSpecies, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaSpecies))
+            'm_values.Add(val.varName, val)
+            'bBase
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSEBBase, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBBase))
+            m_values.Add(val.varName, val)
+            'bLim
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSEBLim, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBLim))
+            m_values.Add(val.varName, val)
+            'FOpt
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSEFmax, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFmax))
+            m_values.Add(val.varName, val)
+
+
             Me.AllowValidation = True
 
         End Sub
@@ -269,6 +288,37 @@ Namespace MSE
             End Set
         End Property
 
+
+        Public Property BLim() As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEBLim))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEBLim, value)
+            End Set
+        End Property
+
+        Public Property BBase() As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEBBase))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEBBase, value)
+            End Set
+        End Property
+
+        Public Property FOpt() As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEFmax))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEFmax, value)
+            End Set
+        End Property
+
         Public Property FixedFStatus() As eStatusFlags
             Get
                 Return DirectCast(GetStatus(eVarNameFlags.MSEFixedF), eStatusFlags)
@@ -383,6 +433,11 @@ Namespace MSE
                 Me.SetStatusFlags(eVarNameFlags.RHalfB0Ratio, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.SetStatusFlags(eVarNameFlags.MSEForcastGain, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.SetStatusFlags(eVarNameFlags.MSERecruitmentCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
+
+                Me.SetStatusFlags(eVarNameFlags.MSEBBase, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSEBLim, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSEFmax, eStatusFlags.Null Or eStatusFlags.NotEditable)
+
             Else
                 Me.ClearStatusFlags(eVarNameFlags.MSEFixedEscapement, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.ClearStatusFlags(eVarNameFlags.MSEFixedF, eStatusFlags.Null Or eStatusFlags.NotEditable)
@@ -394,12 +449,18 @@ Namespace MSE
                 Me.ClearStatusFlags(eVarNameFlags.RHalfB0Ratio, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.ClearStatusFlags(eVarNameFlags.MSEForcastGain, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.ClearStatusFlags(eVarNameFlags.MSERecruitmentCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
+
+                Me.ClearStatusFlags(eVarNameFlags.MSEBBase, eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSEBLim, eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSEFmax, eStatusFlags.NotEditable)
+
             End If
 
-            'If bSendMessage Then
-            '    Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, _
-            '            eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcosimFisheriesRegulation))
-            'End If
+            If Me.FixedEscapement <> 0 Or Me.FixedF <> 0 Then
+                Me.SetStatusFlags(eVarNameFlags.MSEBBase, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSEBLim, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSEFmax, eStatusFlags.Null Or eStatusFlags.NotEditable)
+            End If
 
             Me.AllowValidation = True
 

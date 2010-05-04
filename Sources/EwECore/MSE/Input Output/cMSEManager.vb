@@ -549,6 +549,10 @@ Namespace MSE
                     mseGrp.FixedF = Me.m_MSEdata.FixedF(iGroup)
                     mseGrp.RecruitmentCV = Me.m_MSEdata.cvRec(iGroup)
 
+                    mseGrp.BLim = Me.m_MSEdata.Blim(iGroup)
+                    mseGrp.BBase = Me.m_MSEdata.Bbase(iGroup)
+                    mseGrp.FOpt = Me.m_MSEdata.Fopt(iGroup)
+
                     For it As Integer = 1 To Me.m_MSEdata.nYears
                         mseGrp.BiomassCV(it) = Me.m_MSEdata.CVBiomT(iGroup, it)
                     Next
@@ -703,6 +707,10 @@ Namespace MSE
                             Me.m_MSEdata.RstockRatio(iGroup) = mseGrp.ForcastGain
                             Me.m_MSEdata.cvRec(iGroup) = mseGrp.RecruitmentCV
                             Me.m_MSEdata.FixedF(iGroup) = mseGrp.FixedF
+
+                            Me.m_MSEdata.Blim(iGroup) = mseGrp.BLim
+                            Me.m_MSEdata.Bbase(iGroup) = mseGrp.BBase
+                            Me.m_MSEdata.Fopt(iGroup) = mseGrp.FOpt
 
                             For it As Integer = 1 To Me.m_MSEdata.nYears
                                 Me.m_MSEdata.CVBiomT(iGroup, it) = mseGrp.BiomassCV(it)
