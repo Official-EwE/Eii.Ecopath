@@ -5,6 +5,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports SourceGrid2
 Imports SourceGrid2.Cells
+Imports EwECore.MSE
 
 #End Region ' Imports
 
@@ -41,14 +42,14 @@ Namespace Ecosim
 
 #Region " Public interfaces "
 
-        Public Property Group() As cEcoSimGroupInput
+        Public Property Group() As cMSEGroupInput
             Get
                 If Me.Selection.SelectedRows.Length = 1 Then
-                    Return DirectCast(Me.Selection.SelectedRows(0).Tag, cEcoSimGroupInput)
+                    Return DirectCast(Me.Selection.SelectedRows(0).Tag, cMSEGroupInput)
                 End If
                 Return Nothing
             End Get
-            Set(ByVal value As cEcoSimGroupInput)
+            Set(ByVal value As cMSEGroupInput)
                 Me.Selection.Clear()
                 If value IsNot Nothing Then
                     Me.Selection.Add(New Position(value.Index, 0))
@@ -81,13 +82,13 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            Dim group As cEcoSimGroupInput = Nothing
+            Dim group As cMSEGroupInput = Nothing
 
             ' For each group
             For iGroup As Integer = 1 To core.nGroups
 
                 'Get the group info
-                group = core.EcoSimGroupInputs(iGroup)
+                group = Core.MSEManager.GroupInputs(iGroup)
 
                 Me.AddRow()
 

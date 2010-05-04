@@ -5,6 +5,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports System.Windows.Forms
 Imports ZedGraph
+Imports EwECore.MSE
 
 #End Region ' Imports
 
@@ -30,7 +31,7 @@ Namespace Ecosim
         ''' <summary><see cref="cZedGraphHelper">Helper</see> to manipulate the graph.</summary>
         Private m_zgh As cZedGraphHelper = Nothing
         ''' <summary>Group selected in the form.</summary>
-        Private m_group As cEcoSimGroupInput = Nothing
+        Private m_group As cMSEGroupInput = Nothing
         ''' <summary>Graph drag mode.</summary>
         Private m_dragtype As eDragType = eDragType.None
 
@@ -53,7 +54,7 @@ Namespace Ecosim
 
             Me.m_grid.UIContext = Me.UIContext
             If (Core.nGroups > 0) Then
-                Me.m_grid.Group = Me.Core.EcoSimGroupInputs(1)
+                Me.m_grid.Group = Me.Core.MSEManager.GroupInputs(1)
             End If
 
         End Sub
@@ -89,11 +90,11 @@ Namespace Ecosim
         ''' Get/set the group in the form
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Property Group() As cEcoSimGroupInput
+        Private Property Group() As cMSEGroupInput
             Get
                 Return Me.m_group
             End Get
-            Set(ByVal value As cEcoSimGroupInput)
+            Set(ByVal value As cMSEGroupInput)
 
                 Dim pm As cPropertyManager = Me.PropertyManager
 
