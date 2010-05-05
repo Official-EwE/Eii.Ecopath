@@ -581,7 +581,7 @@ Namespace MSE
 
             Try
 
-                CallBack(eCallBackTypes.Started)
+                PostMessage(eCallBackTypes.Started)
 
                 'keep the original value of PredictEffort so we can set it back at the end of the run
                 m_orgPredictEffort = Me.m_esData.PredictSimEffort
@@ -622,7 +622,7 @@ Namespace MSE
 
                     m_data.CurrentIteration = itr
                     Me.AddIteration()
-                    Me.CallBack(eCallBackTypes.IterationStarted)
+                    Me.PostMessage(eCallBackTypes.IterationStarted)
 
                     'Set MSE data back to initial values for a new run
                     m_data.InitForTrial()
@@ -637,7 +637,7 @@ Namespace MSE
                     Me.PostPluginData()
 
                     Me.SumValues()
-                    Me.CallBack(eCallBackTypes.IterationCompleted)
+                    Me.PostMessage(eCallBackTypes.IterationCompleted)
 
                     SetEffortToBaseValue()
 
@@ -653,7 +653,7 @@ Namespace MSE
                 Me.m_core.Messages.SendMessage(New cMessage("Error while calculating MSE. " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
             End Try
 
-            CallBack(eCallBackTypes.RunCompleted)
+            PostMessage(eCallBackTypes.RunCompleted)
 
             'turn off the search
             Me.m_Search.SearchMode = eSearchModes.NotInSearch
@@ -942,11 +942,16 @@ Namespace MSE
 
 
 
-        Private Sub CallBack(ByVal CallBackType As eCallBackTypes)
+        Private Sub PostMessage(ByVal CallBackType As eCallBackTypes)
 
             Try
 
                 Select Case CallBackType
+
+                    Case eCallBackTypes.IterationStarted
+                        Me.m_core.PluginManager.MSEIterationStarted()
+                    Case eCallBackTypes.IterationCompleted
+                        Me.m_core.PluginManager.MSEIterationCompleted()
                     Case eCallBackTypes.RunCompleted
                         Me.FinalizeRun()
                 End Select
@@ -1226,6 +1231,13 @@ Namespace MSE
                 End Select
             Next ig
 
+            Try
+                Me.m_core.PluginManager.MSERegulateEffort(Biomass, QMult, QYear, t)
+            Catch ex As Exception
+                System.Console.WriteLine(Me.ToString & ".DoAssessment()PluginManager.MSERegulateEffort Exception: " & ex.Message)
+            End Try
+
+
             Dim val As Single
             For igrp As Integer = 1 To Me.m_esData.nGroups
                 val = Biomass(igrp) / Me.m_data.Bestimate(igrp)
@@ -1261,6 +1273,12 @@ Namespace MSE
                 Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + RstockPred)
 
             Next i
+
+            Try
+                Me.m_core.PluginManager.MSEDoAssessment(Biomass)
+            Catch ex As Exception
+                System.Console.WriteLine(Me.ToString & ".DoAssessment()PluginManager.MSEDoAssessment Exception: " & ex.Message)
+            End Try
 
         End Sub
 
@@ -1318,7 +1336,7 @@ Namespace MSE
 
                 End If
 
-                'Randomize the Quota set above
+                'Add uncertainty to the Quota set above
                 'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
                 'but assume uncertaint is smaller?????? not done here
                 tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
@@ -1331,6 +1349,12 @@ Namespace MSE
                     Me.m_data.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_data.Quotashare(iflt, igrp)
                 Next
             Next
+
+            Try
+                Me.m_core.PluginManager.MSEUpdateQuotas(Biomass)
+            Catch ex As Exception
+                System.Console.WriteLine(Me.ToString & ".DoAssessment()PluginManager.MSEUpdateQuotas Exception: " & ex.Message)
+            End Try
 
             Me.StoreQuotas(tQuota)
 
