@@ -407,6 +407,9 @@ Public Class cValidatorManager
         'MSE FleetWeight must be a valid fleet
         m_validators.Add(eVarNameFlags.MSEFleetWeight, validator)
 
+        m_validators.Add(eVarNameFlags.MSEFixedEscapement, validator)
+        m_validators.Add(eVarNameFlags.MSEFixedF, validator)
+
         'MPAOpt
         m_validators.Add(eVarNameFlags.MPAOptStartYear, validator)
         m_validators.Add(eVarNameFlags.MPAOptEndYear, validator)
