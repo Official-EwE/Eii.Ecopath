@@ -10365,6 +10365,25 @@ Public Class cCore
 
                 End If
 
+
+            Case eVarNameFlags.MSEFixedF, eVarNameFlags.MSEFixedEscapement
+
+                'Fixed F and Fixed Escapement can not be set at the same time
+                'get the other value
+                Dim otherVal As Single = Me.m_MSEData.FixedF(ValueObject.Index)
+                If ValueObject.varName = eVarNameFlags.MSEFixedF Then
+                    otherVal = Me.m_MSEData.FixedEscapement(ValueObject.Index)
+                End If
+
+                If otherVal = 0 Then
+                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationStatus = eStatusFlags.OK
+                    ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
+                Else
+                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.MSE_FIXF_FIXESC_FAILEDVALIDATION)
+                    ValueObject.ValidationStatus = eStatusFlags.FailedValidation
+                End If
+
         End Select
 
         Return True
