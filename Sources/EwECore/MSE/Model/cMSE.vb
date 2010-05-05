@@ -53,8 +53,6 @@ Namespace MSE
 
         'ToDo_jb 18-Jan-2010 cMSE output files need to have header and maybe more outputs
 
-        'ToDo_jb 18-Jan-2010 cMSE database save reference values. This should get done in conjunction with the MSE Trunk merge and release
-
         Private Enum eResultsData
             GroupQuota
             FleetQuota
@@ -181,7 +179,6 @@ Namespace MSE
 
         Friend Sub InitAssessment()
             Dim iGrp As Integer
-            Dim ngear As Integer = Me.m_esData.nGear
 
             ReDim Me.FtargetT(Me.m_esData.nGroups)
 
@@ -189,27 +186,6 @@ Namespace MSE
                 m_data.Bestimate(iGrp) = Me.m_esData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(iGrp) * Me.m_Ecosim.RandomNormal()))
                 m_data.BestimateLast(iGrp) = m_data.Bestimate(iGrp)
             Next iGrp
-
-            'QuotaTime() get set in the first timestep by UpdateQuota() before it is used in RegulateEffort()
-            ' Dim totalQuota() As Single
-            ' Dim iFlt As Integer
-
-            'ReDim totalQuota(Me.m_esData.nGroups)
-            'For iFlt = 1 To ngear
-            '    For iGrp = 1 To Me.m_esData.nGroups
-            '        If (m_epdata.Landing(iFlt, iGrp) + m_epdata.Discard(iFlt, iGrp)) > 0 Then
-            '            totalQuota(iGrp) = totalQuota(iGrp) + Me.m_data.Quota(iFlt, iGrp)
-            '        End If
-            '    Next
-            'Next
-
-            'For iFlt = 1 To ngear
-            '    For iGrp = 1 To Me.m_esData.nGroups
-            '        If (m_epdata.Landing(iFlt, iGrp) + m_epdata.Discard(iFlt, iGrp)) > 0 Then
-            '            Me.m_data.QuotaTime(iFlt, iGrp) = Me.m_data.Quota(iFlt, iGrp)
-            '        End If
-            '    Next
-            'Next
 
         End Sub
 
