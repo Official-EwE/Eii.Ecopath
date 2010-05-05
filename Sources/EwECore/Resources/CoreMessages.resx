@@ -897,4 +897,7 @@ System Error: {0}</value>
   <data name="MEDIATION_ZERO_BASE" xml:space="preserve">
     <value>One or more mediation files cannot be used. Please edit your data.</value>
   </data>
+  <data name="MSE_FIXF_FIXESC_FAILEDVALIDATION" xml:space="preserve">
+    <value>Failed to set the value. Fix F and Fixed escapement cannot both contain a value.</value>
+  </data>
 </root>

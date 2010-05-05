@@ -1545,6 +1545,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to set the value. Fix F and Fixed escapement cannot both contain a value..
+        '''</summary>
+        Friend Shared ReadOnly Property MSE_FIXF_FIXESC_FAILEDVALIDATION() As String
+            Get
+                Return ResourceManager.GetString("MSE_FIXF_FIXESC_FAILEDVALIDATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Effort for fleet(s) &apos;{0}&apos; may need to increased for the quota regulations to have an effect..
         '''</summary>
         Friend Shared ReadOnly Property MSE_VALIDATION_EFFORT() As String
