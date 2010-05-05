@@ -831,7 +831,8 @@ Namespace Controls
                 End With
             End Get
             Set(ByVal value As eScaleOptionTypes)
-                With Me.GetPane(iPane).YAxis.Scale
+                Dim gp As GraphPane = Me.GetPane(iPane)
+                With gp.YAxis.Scale
                     Select Case value
                         Case eScaleOptionTypes.Both
                             .MinAuto = True
@@ -846,6 +847,7 @@ Namespace Controls
                             .MinAuto = False
                             .MaxAuto = False
                     End Select
+                    gp.ZoomStack.Clear()
                     Me.RescaleAndRedraw(iPane)
                 End With
             End Set
@@ -1025,7 +1027,8 @@ Namespace Controls
                                                    ByVal ppl As PointPairList, _
                                                    Optional ByVal strLabel As String = "") As LineItem
             ' SAnity check
-            Debug.Assert(TypeOf (src) Is cEcoPathGroupInput Or TypeOf (src) Is cFleetInput)
+            Debug.Assert(TypeOf (src) Is cEcoPathGroupInput Or TypeOf (src) Is cFleetInput Or _
+                         TypeOf (src) Is cGroupTimeSeries Or TypeOf (src) Is cFleetTimeSeries)
             Return Me.CreateLineItem(New cCurveInfo(src, Me.m_uic, strLabel), ppl)
         End Function
 
