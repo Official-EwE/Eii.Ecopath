@@ -345,21 +345,15 @@ Public Class cContaminantTracerDataStructures
         ReDim TracerConc(nGroups + 1, nTime)
     End Sub
 
-
     Public Sub redimForEcospaceRun(ByVal nRegions As Integer, ByVal nGroups As Integer, ByVal nTime As Integer)
         ReDim TracerConcByRegion(nRegions, nGroups + 1, nTime)
         ReDim TracerCBRegion(nRegions, nGroups + 1, nTime)
     End Sub
 
-
-    'Public Sub setTestValues()
-
-    '    For i As Integer = 0 To Cenv.Length - 1
-    '        Cenv(i) = 0.5
-    '        Czero(i) = 0.5
-    '    Next
-
-    'End Sub
+    Public Sub Clear()
+        Me.m_nGroups = 0
+        Me.RedimByNGroups(0)
+    End Sub
 
     Public Sub CopyTo(ByRef d As cContaminantTracerDataStructures)
         'EwE5 ReadEcoTracer() for variables that are saved to database

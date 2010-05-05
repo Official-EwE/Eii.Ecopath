@@ -444,6 +444,7 @@ Public Class cEcospaceDataStructures
 #End Region
 
 #Region "Public Properties"
+
     ''' <summary>Number of Base Groups (Ecopath) </summary>
     ''' <remarks>This was nvar in EwE5</remarks>
     Public Property NGroups() As Integer
@@ -492,6 +493,11 @@ Public Class cEcospaceDataStructures
 #End Region
 
 #Region "Public Methods"
+
+    Public Sub Clear()
+        Me.m_ngroups = 0
+        Me.nFleets = 0
+    End Sub
 
     ''' <summary>
     ''' Set default values and dimemsion basic arrays

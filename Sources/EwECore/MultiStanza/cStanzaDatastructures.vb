@@ -134,6 +134,12 @@ Public Class cStanzaDatastructures
 
     End Sub
 
+    Public Sub Clear()
+        Me.Nsplit = 0
+        Me.nGroups = 0
+        Me.redimStanza()
+    End Sub
+
     Public Sub copyTo(ByRef d As cStanzaDatastructures)
         Try
             d.MaxStanza = MaxStanza

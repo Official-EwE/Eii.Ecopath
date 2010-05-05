@@ -2522,30 +2522,36 @@ Public Class cCore
         Me.m_StateMonitor.SetEcopathLoaded(False)
         Me.m_StateMonitor.UpdateDataState(Nothing)
 
-        ' Reset counters
-        With Me.m_EcoPathData
-            .NumGroups = 0
-            .NumFleet = 0
-            .NumLiving = 0
-            .NumDetrit = 0
-            .NumEcosimScenarios = 0
-            .NumEcospaceScenarios = 0
-            .NumEcotracerScenarios = 0
-        End With
+        ' Clear core data
+        Me.m_EcoPathData.Clear()
+        Me.m_Stanza.Clear()
+        Me.m_EcoSimData.Clear()
+        Me.m_EcoSpaceData.Clear()
+        Me.m_tracerData.Clear()
 
-        With Me.m_Stanza
-            .Nsplit = 0
-            .nGroups = 0
-            .Nsplit = 0
-        End With
-
-        With Me.m_tracerData
-            .RedimByNGroups(0)
-            .EcoSimConSimOn = False
-            .EcoSpaceConSimOn = False
-        End With
+        ' JS 5may10: Do not discards IO objects; this may have effects throughout the UI
+        '' Empty IO objects
+        'Me.m_EcoPathInputs.Clear()
+        'Me.m_EcoPathOutputs.Clear()
+        'Me.m_EcopathFleetsInput.Clear()
+        'Me.m_EcosimFleetInputs.Clear()
+        'Me.m_EcosimFleetOutputs.Clear()
+        'Me.m_EcoSimGroupOutputs.Clear()
+        'Me.m_EcoSimScenarios.Clear()
+        'Me.m_EcospaceFleetOutputs.Clear()
+        'Me.m_EcoSpaceFleets.Clear()
+        'Me.m_EcospaceGroupOuputs.Clear()
+        'Me.m_EcoSpaceGroups.Clear()
+        'Me.m_EcospaceHabitats.Clear()
+        'Me.m_EcospaceMPAs.Clear()
+        'Me.m_EcospaceRegions.Clear()
+        'Me.m_EcoSpaceScenarios.Clear()
+        'Me.m_EcotracerGroupInputs.Clear()
+        'Me.m_EcotracerScenarios.Clear()
+        'Me.m_stanzaGroups.Clear()
 
         Return True
+
     End Function
 
 #End Region ' Model

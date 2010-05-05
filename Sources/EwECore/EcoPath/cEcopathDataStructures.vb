@@ -525,6 +525,16 @@ Public Class cEcopathDataStructures
 
     End Sub
 
+    Public Sub Clear()
+        Me.NumGroups = 0
+        Me.NumFleet = 0
+        Me.NumLiving = 0
+        Me.NumDetrit = 0
+        Me.NumEcosimScenarios = 0
+        Me.NumEcospaceScenarios = 0
+        Me.NumEcotracerScenarios = 0
+    End Sub
+
 #End Region
 
 #Region "Computed Variables/Stats"

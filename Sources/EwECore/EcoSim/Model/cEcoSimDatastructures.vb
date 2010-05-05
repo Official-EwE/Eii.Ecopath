@@ -637,6 +637,11 @@ Public Class cEcosimDatastructures
         Next
     End Sub
 
+    Public Sub Clear()
+        Me.nGroups = 0
+        Me.nGear = 0
+    End Sub
+
     ''' <summary>
     ''' Initialize the forcing shapes to a value of one. This will overwrite  an existing values
     ''' </summary>
