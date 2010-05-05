@@ -302,6 +302,13 @@ Namespace MSE
                 'this will set isRunning to True
                 Me.setWait()
 
+                Try
+                    Me.m_core.PluginManager.MSERunStarted()
+                Catch ex As Exception
+                    System.Console.WriteLine(Me.ToString & ".ProcessCallBack() Exception thrown from PluginManager. " & ex.Message)
+                End Try
+
+
                 m_thrdRunMSE = New Thread(AddressOf m_MSE.Run)
                 m_thrdRunMSE.Start()
 
@@ -928,6 +935,12 @@ Namespace MSE
                     Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSECatchByFleetStats))
                     Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSECatchByGroupStats))
                     Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEEffortStats))
+
+                    Try
+                        Me.m_core.PluginManager.MSERunCompleted()
+                    Catch ex As Exception
+                        System.Console.WriteLine(Me.ToString & ".ProcessCallBack() Exception thrown from PluginManager. " & ex.Message)
+                    End Try
 
             End Select
 
