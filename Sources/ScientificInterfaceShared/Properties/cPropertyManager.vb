@@ -30,6 +30,10 @@ Namespace Properties
         ''' <summary>Error property</summary>
         Private m_propNoData As cStringProperty = Nothing
 
+        ' ToDo: ideally this should become a dictionary of dictionaries,
+        '       as dict(core component, dict(string, cProp)) in order to
+        '       automating the binning process of properties
+
         ''' <summary>Quick property lookup tables</summary>
         Private m_htGeneric As New Dictionary(Of String, cProperty)
         Private m_htEcopath As New Dictionary(Of String, cProperty)
@@ -89,7 +93,7 @@ Namespace Properties
                     Me.m_htEcospace.Clear()
                     Me.m_htEcotracer.Clear()
 
-                Case eCoreComponentType.EcoSim
+                Case eCoreComponentType.EcoSim, eCoreComponentType.MSE
                     Me.m_htEcosim.Clear()
                     Me.m_htEcospace.Clear()
                     Me.m_htEcotracer.Clear()
@@ -347,7 +351,7 @@ Namespace Properties
                         prop.Refresh()
                     Next
 
-                Case eCoreComponentType.EcoSim
+                Case eCoreComponentType.EcoSim, eCoreComponentType.MSE
                     For Each prop As cProperty In Me.m_htEcosim.Values
                         ' Refresh yourself
                         prop.Refresh()
