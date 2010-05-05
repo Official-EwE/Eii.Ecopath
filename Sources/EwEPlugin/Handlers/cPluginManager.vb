@@ -1410,6 +1410,62 @@ Public Class cPluginManager
 
 #Region " MSE and MSY "
 
+    Public Function MSERunStarted() As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSERunStarted", _
+                                                    New Object() {})
+
+
+    End Function
+
+    Public Function MSERunCompleted() As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSERunCompleted", _
+                                                    New Object() {})
+
+
+    End Function
+
+    Public Function MSEIterationStarted() As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSEIterationStarted", _
+                                                    New Object() {})
+
+
+    End Function
+
+    Public Function MSEIterationCompleted() As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSEIterationCompleted", _
+                                                    New Object() {})
+
+
+    End Function
+
+    Public Function MSEDoAssessment(ByVal Biomass() As Single) As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSEDoAssessment", _
+                                                    New Object() {Biomass})
+
+
+    End Function
+
+    Public Function MSEUpdateQuotas(ByVal Biomass() As Single) As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSEUpdateQuotas", _
+                                                    New Object() {Biomass})
+
+
+    End Function
+
+    Public Function MSERegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer) As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSERegulateEffort", _
+                                                    New Object() {Biomass, QMult, QYear, t})
+
+
+    End Function
+
     Public Function MSEInitialized(ByVal MSEModel As Object, _
                                    ByVal MSEDataStructure As Object, _
                                    ByVal EcosimDatastructures As Object) As Boolean
