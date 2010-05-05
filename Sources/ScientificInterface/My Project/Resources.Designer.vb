@@ -164,8 +164,9 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch0\stshfloch0\stshfhich0\stshfbi0\deflang4105\deflangfe4105{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}{\f37\froman\fcharset238\fprq2 Times New Roman CE;}
-        '''{\f38\froman\fcharset204\fprq2 Times New Roman Cyr;}{\f40\froman\fcharset161\fprq2 Times New Roman Greek;}{\f41\froman\fcharset162\fprq2 Times New Roman Tur;}{\f42\fbidi \froman\fcharset1 [rest of string was truncated]&quot;;.
+        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch0\stshfloch0\stshfhich0\stshfbi0\deflang2057\deflangfe2057\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+        '''{\f34\fbidi \froman\fcharset1\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}
+        '''{\fdb [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property credits() As String
             Get
@@ -585,9 +586,18 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Mortality: total, fish.(blue), pred.(red).
         '''</summary>
-        Friend ReadOnly Property ECOSIM_PLOT_CAPTION_MORT() As String
+        Friend ReadOnly Property ECOSIM_PLOT_CAPTION_MORT_CONS() As String
             Get
-                Return ResourceManager.GetString("ECOSIM_PLOT_CAPTION_MORT", resourceCulture)
+                Return ResourceManager.GetString("ECOSIM_PLOT_CAPTION_MORT_CONS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to P/B(black), pred.mort.(red), fish.mort.(blue).
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_PLOT_CAPTION_MORT_PROD() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_PLOT_CAPTION_MORT_PROD", resourceCulture)
             End Get
         End Property
         

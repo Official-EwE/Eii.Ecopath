@@ -72,7 +72,8 @@ Namespace Ecosim
             Me.ConfigurePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
             Me.ConfigurePane(ePaneTypes.ConsumptionBiomass, My.Resources.HEADER_CONSUMPTIONBIOMASS)
             Me.ConfigurePane(ePaneTypes.PredationMortality, My.Resources.HEADER_PREDMORT)
-            Me.ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT)
+            ' JS: EwE5 distinguishes between P/B (PP=1) and TotalMort (PP=0) for 
+            Me.ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS)
             Me.ConfigurePane(ePaneTypes.FeedingTime, My.Resources.HEADER_FEEDINGTIME)
             Me.ConfigurePane(ePaneTypes.Prey, My.Resources.HEADER_PREY_PERCENTAGE)
             Me.ConfigurePane(ePaneTypes.Yield, My.Resources.HEADER_YIELD)
@@ -207,6 +208,13 @@ Namespace Ecosim
 
             'Set the master pane title
             Me.m_zgh.Configure(groupSimOut.Name)
+
+            ' Configure mort pane caption
+            If group.IsConsumer Then
+                Me.ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS)
+            Else
+                Me.ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_PROD)
+            End If
 
             ' Clear all panes
             For Each pt As ePaneTypes In [Enum].GetValues(GetType(ePaneTypes))

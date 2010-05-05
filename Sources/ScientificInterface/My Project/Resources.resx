@@ -1068,7 +1068,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Layer {0}</value>
     <comment>{0}: layer number or name</comment>
   </data>
-  <data name="ECOSIM_PLOT_CAPTION_MORT" xml:space="preserve">
+  <data name="ECOSIM_PLOT_CAPTION_MORT_CONS" xml:space="preserve">
     <value>Mortality: total, fish.(blue), pred.(red)</value>
   </data>
   <data name="ECOSIM_SCENARIO_NEW_CAPTION" xml:space="preserve">
@@ -2647,5 +2647,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="HEADER_RECRUITMENT" xml:space="preserve">
     <value>Recruitment</value>
+  </data>
+  <data name="ECOSIM_PLOT_CAPTION_MORT_PROD" xml:space="preserve">
+    <value>P/B(black), pred.mort.(red), fish.mort.(blue)</value>
   </data>
 </root>
