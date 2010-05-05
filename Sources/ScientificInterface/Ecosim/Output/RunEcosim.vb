@@ -62,6 +62,7 @@ Namespace Ecosim
         Private m_bIsAnnual As Boolean = False
         Private m_bIsCumulative As Boolean = False
         Private m_bIsExploring As Boolean = False
+        Private m_bIsEffortSelected As Boolean = False
 
 #End Region ' Variables
 
@@ -894,6 +895,7 @@ Namespace Ecosim
             Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler(Me.UIContext, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.SelectedShape = DirectCast(item, cFishingRateShape)
             Me.m_sketchPad.Editable = True
+            Me.m_bIsEffortSelected = True
             Me.UpdateControls()
         End Sub
 
@@ -905,10 +907,11 @@ Namespace Ecosim
             ' Mortality shapes are 0-base indexed, groups are 1-base indexed
             shape = Core.FishMortShapeManager.Item(item.Index - 1)
 
-            Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.UIContext, Nothing, Me.m_sketchPad)
+            Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.UIContext, Nothing, Me.m_sketchPad, Nothing)
             Me.m_shapeGUIHandler.SelectedShape = shape
             ' Cannot edit Fs anymore
             Me.m_sketchPad.Editable = False
+            Me.m_bIsEffortSelected = False
             Me.UpdateControls()
         End Sub
 
@@ -968,6 +971,9 @@ Namespace Ecosim
 
             Me.m_scOptions.Panel1Collapsed = Not Me.m_tsmShowMultipleRuns.Checked
             Me.m_tstbChangeAmount.Text = CStr(Me.m_sChangeTrackSize)
+
+            Me.tsbSetToValue.Enabled = Me.m_bIsEffortSelected
+            Me.tsbSetTo0.Enabled = Me.m_bIsEffortSelected
 
             Me.m_bInUpdate = False
 
