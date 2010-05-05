@@ -152,6 +152,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Plugin templates\Management Evaluation\IMSEInitialized.vb" />
+    <Compile Include="Plugin templates\Management Evaluation\IMSERunPlugin.vb" />
     <Compile Include="Plugin templates\Management Evaluation\IMSYPlugin.vb" />
     <Compile Include="Plugin templates\Search\ISearchPlugin.vb" />
     <Compile Include="Updating\cAutoUpdate.vb" />
