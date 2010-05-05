@@ -56,6 +56,7 @@ Namespace Ecopath.Output
             Dim fleet As cFleetInput = Nothing
             Dim cell As EwECell = Nothing
             Dim sLandings As Single = 0.0!
+            Dim sDiscards As Single = 0.0!
             Dim sBiomass As Single = 0.0!
             Dim style As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed)
 
@@ -66,11 +67,12 @@ Namespace Ecopath.Output
                     group = Core.EcoPathGroupOutputs(iGroup)
                     ' Get values 
                     sLandings = fleet.Landings(iGroup)
+                    sDiscards = fleet.Discards(iGroup)
                     sBiomass = group.Biomass()
 
                     ' Create cell
                     If sBiomass > 0 Then
-                        cell = New EwECell(sLandings / sBiomass, GetType(Single), style)
+                        cell = New EwECell((sLandings + sDiscards) / sBiomass, GetType(Single), style)
                     Else
                         cell = New EwECell(0.0!, GetType(Single), style Or cStyleGuide.eStyleFlags.Null)
                     End If
