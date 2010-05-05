@@ -2527,9 +2527,16 @@ Public Class cCore
             .NumGroups = 0
             .NumFleet = 0
             .NumLiving = 0
+            .NumDetrit = 0
             .NumEcosimScenarios = 0
             .NumEcospaceScenarios = 0
             .NumEcotracerScenarios = 0
+        End With
+
+        With Me.m_Stanza
+            .Nsplit = 0
+            .nGroups = 0
+            .Nsplit = 0
         End With
 
         With Me.m_tracerData
