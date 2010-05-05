@@ -1468,14 +1468,15 @@ Public Class AppLauncher
     Private m_bNavigating As Boolean = False
     Private m_strLastActiveContent As String = ""
 
-    Private Sub UpdateSelectedNode(ByVal strNodeName As String, Optional ByVal bAllowDefault As Boolean = False)
+    Private Sub UpdateSelectedNode(ByVal strNodeName As String, _
+                                   Optional ByVal bAllowDefault As Boolean = False)
 
         If Me.m_bNavigating Then Return
         Me.m_bNavigating = True
         ' Remember this
         Me.m_strLastActiveContent = strNodeName
         ' Kick nav panel
-        Me.m_NavPanel.SelectedNodeName(True) = strNodeName
+        Me.m_NavPanel.SelectedNodeName(bAllowDefault) = strNodeName
         Me.m_bNavigating = False
 
     End Sub
