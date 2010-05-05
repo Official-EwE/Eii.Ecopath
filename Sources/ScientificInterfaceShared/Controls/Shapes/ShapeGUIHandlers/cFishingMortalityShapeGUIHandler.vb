@@ -38,6 +38,22 @@ Namespace Controls
             MyBase.New(uic, stb, stbtb, sp, sptb)
         End Sub
 
+        Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+
+            Select Case cmd
+                Case eShapeCommandTypes.ChangeShape, _
+                     eShapeCommandTypes.Duplicate, _
+                     eShapeCommandTypes.Modify, _
+                     eShapeCommandTypes.Reset, _
+                     eShapeCommandTypes.ResetAll, _
+                     eShapeCommandTypes.SetToZero, _
+                     eShapeCommandTypes.SetValue
+                    Return False
+            End Select
+            Return MyBase.SupportCommand(cmd)
+
+        End Function
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Returns the colour for rendering fishing mortality shapes.
