@@ -103,6 +103,14 @@ Namespace Controls
             Me.m_curvelistTimeSeries.Clear()
         End Sub
 
+        Public Sub ClearTimeSeries()
+            ' Remove all lines for the local run from the graph pane
+            For Each li As LineItem In Me.m_curvelistTimeSeries
+                Me.m_graphPane.CurveList.Remove(li)
+            Next
+            Me.m_curvelistTimeSeries.Clear()
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Prepare a new run for display.
@@ -118,9 +126,15 @@ Namespace Controls
 
         Public Sub ResetRun()
             If (Me.m_runCurrent Is Nothing) Then Return
+
+            ' Remove all lines for the local run from the graph pane
+            For Each li As LineItem In Me.m_runCurrent.Lines
+                Me.m_graphPane.CurveList.Remove(li)
+            Next
+            ' Clear current run
             Me.m_runCurrent.Lines.Clear()
-            Me.m_graphPane.CurveList.Clear()
-            Me.m_curvelistTimeSeries.Clear()
+            ' Clear time series
+            Me.ClearTimeSeries()
         End Sub
 
         ''' <summary>
@@ -148,7 +162,6 @@ Namespace Controls
                                    Optional ByVal strLabel As String = "") As LineItem
 
             Dim crv As LineItem = Me.CreateLineItem(src, list, strLabel)
-
             Select Case Me.CurveType(crv)
 
                 Case eLineType.ReferenceData
@@ -238,6 +251,7 @@ Namespace Controls
 
                 ' Only single run to highlight
                 run = Me.m_lRuns(iRun)
+
                 For iGroup = run.Lines.Count - 1 To 0 Step -1
                     crv = run.Lines(iGroup)
                     Me.SetCurveAppearance(crv, True, False)
