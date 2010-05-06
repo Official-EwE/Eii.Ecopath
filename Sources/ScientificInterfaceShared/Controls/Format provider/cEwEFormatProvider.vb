@@ -52,7 +52,7 @@ Namespace Controls
                 Dim wrapper As IControlWrapper = Nothing
 
                 ' Wrapper supported Windows controls
-                If TypeOf (ctrl) Is TextBox Then
+                If TypeOf (ctrl) Is TextBox Or TypeOf (ctrl) Is RichTextBox Then
                     wrapper = New TextBoxWrapper
                 ElseIf TypeOf (ctrl) Is Label Then
                     wrapper = New LabelWrapper
@@ -179,7 +179,7 @@ Namespace Controls
             ''' <summary>UI context for this wrapper.</summary>
             Private m_uic As cUIContext = Nothing
             ''' <summary>The wrapped text box</summary>
-            Private m_tb As TextBox = Nothing
+            Private m_tb As TextBoxBase = Nothing
             ''' <summary>The EwEFormatProvider that implements value and colour
             ''' behaviour onto the text box.</summary>
             Private m_provider As cEwEFormatProvider = Nothing
@@ -205,7 +205,7 @@ Namespace Controls
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' 
+            ''' Wrap control as a TextBoxBase class
             ''' </summary>
             ''' <param name="ctrl"></param>
             ''' <param name="provider"></param>
@@ -221,7 +221,7 @@ Namespace Controls
 
                 Try
                     ' Store ref to Text box
-                    Me.m_tb = DirectCast(ctrl, TextBox)
+                    Me.m_tb = DirectCast(ctrl, TextBoxBase)
                     AddHandler Me.m_tb.LostFocus, AddressOf OnControlLostFocus
 
                     ' Store ref to provider
