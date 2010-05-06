@@ -255,6 +255,13 @@ Namespace Controls
         ''' <summary>Flag stating whether styleguide item visibility should be tracked.</summary>
         Private m_bTrackVisibility As Boolean = True
 
+        ' == Context menu ==
+
+        ''' <summary>Menu items to add to the context menu. The menu items are
+        ''' member vars so eventhandlers can be properly detached preventing
+        ''' memory leaks.</summary>
+        Private m_menuitemSaveToCSV As ToolStripMenuItem = Nothing
+
         ''' <summary>To set the max and min auto options.</summary>
         Public Enum eScaleOptionTypes
             MaxOnly
@@ -382,6 +389,12 @@ Namespace Controls
             Me.m_hovermenu.Close()
             Me.m_hovermenu.Dispose()
             Me.m_hovermenu = Nothing
+
+            If (Me.m_menuitemSaveToCSV IsNot Nothing) Then
+                RemoveHandler Me.m_menuitemSaveToCSV.Click, AddressOf OnExtractToCSV
+                Me.m_menuitemSaveToCSV.Dispose()
+                Me.m_menuitemSaveToCSV = Nothing
+            End If
 
             Me.m_zgc = Nothing
 
@@ -1901,18 +1914,30 @@ Namespace Controls
                                          ByVal mousePt As Point, _
                                          ByVal objState As ZedGraphControl.ContextMenuObjectState)
 
-            Dim bLegendsVisible As Boolean = False
+            ' Remove 'Set_to_default' item
+            ' (After http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu)
+            For Each tsmi As ToolStripMenuItem In menuStrip.Items
+                If String.Compare(CStr(tsmi.Tag), "set_default", True) = 0 Then
+                    menuStrip.Items.Remove(tsmi)
+                    Exit For
+                End If
+            Next
 
-            ' create a new menu item
-            Dim item As ToolStripMenuItem = New ToolStripMenuItem()
-            ' This is the user-defined Tag so you can find this menu item later if necessary
-            item.Name = "Extract_CSV_Data"
-            ' This is the text that will show up in the menu
-            item.Text = My.Resources.MENU_EXTRACT_TO_CSV
-            ' Add a handler that will respond when that menu item is selected
-            AddHandler item.Click, AddressOf OnExtractToCSV
+            ' SaveToCSV menu item not used yet?
+            If (Me.m_menuitemSaveToCSV Is Nothing) Then
+                ' #Yes: create it
+                Me.m_menuitemSaveToCSV = New ToolStripMenuItem()
+                ' Add tag to recognize the item later on
+                Me.m_menuitemSaveToCSV.Tag = "extract_to_csv"
+                ' Set menu item text
+                Me.m_menuitemSaveToCSV.Text = My.Resources.MENU_EXTRACT_TO_CSV
+                ' Add a handler that will respond when that menu item is selected
+                ' ** Note that this handler needs to be removed manually to ensure the menu item is released
+                AddHandler Me.m_menuitemSaveToCSV.Click, AddressOf OnExtractToCSV
+            End If
+
             ' Add the menu item to the menu
-            menuStrip.Items.Add(item)
+            menuStrip.Items.Add(Me.m_menuitemSaveToCSV)
 
         End Sub
 
