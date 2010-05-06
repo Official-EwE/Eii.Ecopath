@@ -83,9 +83,10 @@ Namespace MSE
         Private m_orgPredictEffort As Boolean
         Private m_orgUsePlugin As Boolean = False
 
+        'jb 6-May-2010 Replace FtargetT() with FTarget() in UpdateQuota() FtargetT() is never used outside UpdateQuota
         'fishing mortality at the current time step
         'calc in UpdateQuotas() using the estimated biomass
-        Private FtargetT() As Single
+        'Private FtargetT() As Single
 
         Private WithEvents m_EconomicData As cEconomicDataSource
 
@@ -180,7 +181,7 @@ Namespace MSE
         Friend Sub InitAssessment()
             Dim iGrp As Integer
 
-            ReDim Me.FtargetT(Me.m_esData.nGroups)
+            'ReDim Me.FtargetT(Me.m_esData.nGroups)
 
             For iGrp = 1 To Me.m_esData.nGroups
                 m_data.Bestimate(iGrp) = Me.m_esData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(iGrp) * Me.m_Ecosim.RandomNormal()))
@@ -1290,9 +1291,10 @@ Namespace MSE
         Friend Sub UpdateQuotas(ByVal Biomass() As Single)
             Dim iflt As Integer, igrp As Integer
             Dim tQuota() As Single
+            Dim FTarget() As Single
 
             ReDim tQuota(Me.m_epdata.NumGroups)
-            ReDim FtargetT(Me.m_epdata.NumGroups)
+            ReDim FTarget(Me.m_epdata.NumGroups)
 
             '1 Set the quota via Fixed Escapement, Fixed Fishing Mortality or Target Fishing Mortality(hockey stick)
             '2 Apply uncertainty to the Quota
@@ -1312,8 +1314,7 @@ Namespace MSE
                     'Fixed Mortality
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                    FtargetT(igrp) = m_data.FixedF(igrp)
-                    tQuota(igrp) = FtargetT(igrp) * Me.m_data.Bestimate(igrp)
+                    tQuota(igrp) = m_data.FixedF(igrp) * Me.m_data.Bestimate(igrp)
 
                 Else
                     'xxxxxxxxxxxxxxxxxxxxxxxx
@@ -1326,11 +1327,11 @@ Namespace MSE
 
                         'note here that Bbase has to be set larger than Blim
                         'VC to JB: I think the Biomass below should be Bestimate instead; talked to Carl and he agrees. will be a double wham, which is OK.
-                        FtargetT(igrp) = Me.m_data.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_data.Blim(igrp)) / (Me.m_data.Bbase(igrp) - Me.m_data.Blim(igrp))
-                        If FtargetT(igrp) < 0 Then FtargetT(igrp) = 0
-                        If FtargetT(igrp) > Me.m_data.Fopt(igrp) Then FtargetT(igrp) = Me.m_data.Fopt(igrp)
+                        FTarget(igrp) = Me.m_data.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_data.Blim(igrp)) / (Me.m_data.Bbase(igrp) - Me.m_data.Blim(igrp))
+                        If FTarget(igrp) < 0 Then FTarget(igrp) = 0
+                        If FTarget(igrp) > Me.m_data.Fopt(igrp) Then FTarget(igrp) = Me.m_data.Fopt(igrp)
 
-                        tQuota(igrp) = FtargetT(igrp) * Me.m_data.Bestimate(igrp)
+                        tQuota(igrp) = FTarget(igrp) * Me.m_data.Bestimate(igrp)
 
                     End If
 
