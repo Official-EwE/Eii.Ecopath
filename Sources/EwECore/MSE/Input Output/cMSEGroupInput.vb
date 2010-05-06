@@ -457,9 +457,9 @@ Namespace MSE
             End If
 
             If Me.FixedEscapement <> 0 Or Me.FixedF <> 0 Then
-                Me.SetStatusFlags(eVarNameFlags.MSEBBase, eStatusFlags.Null Or eStatusFlags.NotEditable)
-                Me.SetStatusFlags(eVarNameFlags.MSEBLim, eStatusFlags.Null Or eStatusFlags.NotEditable)
-                Me.SetStatusFlags(eVarNameFlags.MSEFmax, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSEBBase, eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSEBLim, eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSEFmax, eStatusFlags.NotEditable)
             End If
 
             Me.AllowValidation = True
