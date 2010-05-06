@@ -529,6 +529,8 @@ Partial Class frmModelDescription
         '
         'm_tbContact
         '
+        Me.m_tbContact.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbContact.Location = New System.Drawing.Point(102, 185)
         Me.m_tbContact.MaxLength = 32767
         Me.m_tbContact.Name = "m_tbContact"
@@ -538,6 +540,8 @@ Partial Class frmModelDescription
         '
         'm_tbDescription
         '
+        Me.m_tbDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbDescription.Location = New System.Drawing.Point(102, 65)
         Me.m_tbDescription.MaxLength = 32767
         Me.m_tbDescription.Name = "m_tbDescription"
