@@ -10485,12 +10485,13 @@ Public Class cCore
                 Select Case value.varName
                     Case eVarNameFlags.Landings, eVarNameFlags.OffVesselPrice
                         Set_MarketPrice_Flags(flt, True)
-                        Set_Quota_Flags(Me.MSEManager.FleetInputs(flt.Index), True)
 
-                        Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
-                                                    eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
-                        Me.m_publisher.AddMessage(qsMsg)
-
+                        If Me.m_StateMonitor.HasEcosimLoaded Then
+                            Set_Quota_Flags(Me.MSEManager.FleetInputs(flt.Index), True)
+                            Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
+                                                        eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
+                            Me.m_publisher.AddMessage(qsMsg)
+                        End If
 
                     Case eVarNameFlags.Discards
                         Set_DiscardMort_Flags(flt, True)
