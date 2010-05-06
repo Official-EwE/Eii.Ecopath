@@ -3479,7 +3479,14 @@ Namespace DataSources
             Dim writerFleet As cEwEDatabase.cEwEDbWriter = Nothing
             Dim bFleetFound As Boolean = False
             Dim drow As DataRow = Nothing
+            Dim iNextFleetID As Integer = 0
             Dim bSucces As Boolean = True
+
+            Try
+                iNextFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcosimScenarioFleet"))
+            Catch ex As Exception
+                iNextFleetID += 1
+            End Try
 
             readerFleet = Me.m_db.GetReader(String.Format("SELECT EcopathFleetID FROM EcoSimScenarioFleet WHERE (EcopathFleetID={0}) AND (ScenarioID={1})", iEcopathFleetID, iScenarioID))
             If readerFleet IsNot Nothing Then
@@ -3504,7 +3511,10 @@ Namespace DataSources
                     drow = writerFleet.NewRow()
                     drow("ScenarioID") = iScenarioID
                     drow("EcopathFleetID") = iEcopathFleetID
+                    drow("FleetID") = iNextFleetID
                     writerFleet.AddRow(drow)
+
+                    iNextFleetID += 1
                     bSucces = bSucces And Me.m_db.ReleaseWriter(writerFleet, True)
 
                     ' Log repair state
