@@ -332,6 +332,7 @@ Namespace Ecosim
 
             Try
                 Dim lb As ListBox = DirectCast(sender, ListBox)
+                ' Clear selection of all other groups when 'all' is clicked
                 If (lb.GetSelected(0) = True) And (lb.SelectedIndices.Count > 1) Then
                     For i As Integer = 0 To lb.SelectedIndices.Count - 1
                         lb.SetSelected(i, (i = 0))
@@ -755,8 +756,9 @@ Namespace Ecosim
             Me.UpdateControls()
             Me.UpdateGraphHighlights()
 
-            Me.m_zgp.PlotLines(lLines.ToArray(), bCumulative:=Me.IsCumulativePlot)
-            'Me.m_zgp.RescaleAndRedraw()
+            Me.m_zgp.PlotLines(lLines.ToArray(), 1, True, _
+                               Me.m_zgp.ShowMultipleRuns = False, _
+                               Me.IsCumulativePlot)
 
         End Sub
 
