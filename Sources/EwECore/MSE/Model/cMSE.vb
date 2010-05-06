@@ -53,6 +53,10 @@ Namespace MSE
 
         'ToDo_jb 18-Jan-2010 cMSE output files need to have header and maybe more outputs
 
+        'ToDo_jb 6-May-2010 cMSE Stats are gathered correctly when running with a start year > 1. 
+        'ToDo_jb 6-May-2010 cMSE Histogram can deal with zero values
+        'ToDo_jb 6-May-2010 cMSE Plugin data is used for value when selected
+
         Private Enum eResultsData
             GroupQuota
             FleetQuota
@@ -1051,15 +1055,10 @@ Namespace MSE
 
             Try
 
+                'are we running the regulatory code
                 If Not Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
-                    'Predicting effort this means we are running the regulatory code to regulate effort
-                    'so don't vary effort or catchability here
-                    'When?
-                    '= whenever using regulatory options
-
+                    'Yes so don't use this to assess the effort
                     Exit Sub
-                    'if not we're tracking effort, so now that's what we're doing, using user input effort,
-                    'it will use the effort from ecosim. 
                 End If
 
                 Debug.Assert(Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations, "MSE EffortMode incorrectly set!")
