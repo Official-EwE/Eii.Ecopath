@@ -945,23 +945,25 @@ Public Class cFishingRateShape
                     Next
                 End If
 
-                'FishRateGear() is a multiplier that is used to change the catch rate for all the groups caught by this fleet
-                'It represents the fishing effort 1 is no change in effort from the existing value, zero would remove all fishing, two would double the catch rate
-                'Now use FishRateGear/effort to update the catch rate for each group fished by this fleet
+                'FishRateGear() is a multiplier that is used to change fishing effort from the base Ecopath value for a fleet
+                'Now use FishRateGear/effort to update the fishing mortality for each group fished by this fleet
                 For igrp As Integer = 1 To m_data.nGroups
 
-                    If Not isCombinedFleets Then
+                    'don't change the fishing mortality if there is fishing mortality timeseries loaded for this group
+                    If Not Me.m_data.FisForced(igrp) Then
+                        If Not isCombinedFleets Then
 
-                        m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(m_iEcoSimIndex, igrp) * (m_data.FishRateGear(m_iEcoSimIndex, it) - orgvalue)
+                            m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(m_iEcoSimIndex, igrp) * (m_data.FishRateGear(m_iEcoSimIndex, it) - orgvalue)
 
-                    Else
-                        'combined fleet this changes all the catch rates
-                        m_data.FishRateNo(igrp, it) = 0
-                        For iflt As Integer = 1 To m_data.nGear
-                            m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(iflt, igrp) * m_data.FishRateGear(iflt, it)
-                        Next iflt
+                        Else
+                            'combined fleet this changes all the mortality
+                            m_data.FishRateNo(igrp, it) = 0
+                            For iflt As Integer = 1 To m_data.nGear
+                                m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(iflt, igrp) * m_data.FishRateGear(iflt, it)
+                            Next iflt
 
-                    End If
+                        End If ' Not isCombinedFleets
+                    End If ' Not Me.m_data.FisForced(igrp) 
 
                 Next igrp
             End If 'newvalue <> orgvalue
