@@ -34,9 +34,11 @@ Public Class cCoreStateManager
             Select Case ExecutionState
 
                 Case EwEUtils.Core.eCoreExecutionState.EcopathCompleted
+                    If Not Me.m_core.StateMonitor.HasEcopathLoaded Then Return False
                     Return m_core.RunEcoPath()
 
                 Case EwEUtils.Core.eCoreExecutionState.EcosimInitialized
+                    If Not Me.m_core.StateMonitor.HasEcosimLoaded Then Return False
                     If m_core.m_EcoSim.Init(False) Then
                         m_core.StateMonitor.SetEcoSimInitialized()
                         Return True
@@ -44,6 +46,7 @@ Public Class cCoreStateManager
                     Return False
 
                 Case EwEUtils.Core.eCoreExecutionState.EcosimCompleted
+                    If Not Me.m_core.StateMonitor.HasEcosimLoaded Then Return False
                     Return m_core.RunEcoSim()
 
             End Select
@@ -51,8 +54,8 @@ Public Class cCoreStateManager
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, Me.ToString & ".LoadState(" & ExecutionState.ToString & ") Error: " & ex.Message)
-            Return False
         End Try
+        Return False
 
     End Function
 
