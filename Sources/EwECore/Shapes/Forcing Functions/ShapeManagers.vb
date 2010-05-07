@@ -974,12 +974,13 @@ Public Class cFishingMortalityManger
         'clear out any existing data
         m_shapes.Clear()
         For iGroup As Integer = 1 To m_Data.nGroups ' one shape for each group 
+            ' Fishing rate shapes are no longer loaded from the DB
+            m_Data.FishRateNoDBID(iGroup) = Me.m_core.m_EcoSimData.GroupDBID(iGroup)
 
             shape = New cFishingMortShape(m_Data, Me, m_Data.FishRateNoDBID(iGroup), m_core.m_EcoPathData.GroupName(iGroup))
             'keep the index of this forcing function in the list in the function itself
             'it will be used later to return the list item for a given EcoSim array index
             shape.ID = m_shapes.Count
-            shape.DBID = m_Data.FishRateNoDBID(iGroup)
             shape.Index = iGroup
             m_shapes.Add(shape)
 
