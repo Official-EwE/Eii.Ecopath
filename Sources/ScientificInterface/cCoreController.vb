@@ -132,10 +132,7 @@ Public Class cCoreController
     ''' <returns>True if succesful.</returns>
     ''' ---------------------------------------------------------------------------
     Private Function TryLoadEcopathModel() As Boolean
-        ' The navigation tree is only visible when an Ecopath model is loaded.
-        ' This is an assumption that may get us into trouble if the form behaviour
-        ' were to change.
-        Return True
+        Return Me.m_monitor.HasEcopathLoaded
     End Function
 
     ''' ---------------------------------------------------------------------------
