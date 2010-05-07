@@ -169,14 +169,17 @@ Public Class cForcingFunction
     ''' <param name="esData"><see cref="cEcosimDatastructures">Ecosim data structure</see>
     ''' to create the forcing function from.</param>
     ''' <param name="Manager"></param>
-    ''' <param name="DBID"></param>
+    ''' <param name="iDBID"></param>
     ''' <param name="DataType"></param>
     ''' <remarks>
     ''' This is used by the Manager to create forcing function from the 
     ''' underlying EcoSim data.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Friend Sub New(ByRef esData As cEcosimDatastructures, ByRef Manager As cBaseShapeManager, ByVal DBID As Integer, ByVal DataType As eDataTypes)
+    Friend Sub New(ByRef esData As cEcosimDatastructures, _
+                   ByRef Manager As cBaseShapeManager, _
+                   ByVal iDBID As Integer, _
+                   ByVal DataType As eDataTypes)
 
         MyBase.New(esData.ForcePoints)
 
@@ -185,7 +188,7 @@ Public Class cForcingFunction
 
         m_datatype = DataType
         m_coreComponent = CoreComponent
-        m_dbID = DBID
+        m_iDBID = iDBID
 
         m_manager = Manager 'keep a reference to the manager for this shape
 
@@ -202,7 +205,7 @@ Public Class cForcingFunction
     ''' <remarks>This seperates creation from initialization so that an existing object can be repopluated from its underlying data</remarks>
     Protected Friend Overridable Function Load() As Boolean
 
-        m_iEcoSimIndex = Array.IndexOf(m_data.ForcingDBIDs, m_dbID)
+        m_iEcoSimIndex = Array.IndexOf(m_data.ForcingDBIDs, m_iDBID)
         Debug.Assert(m_iEcoSimIndex <> -1, "Failed to find index for Shape.")
 
         If m_iEcoSimIndex = -1 Then Return False
@@ -261,8 +264,8 @@ Public Class cForcingFunction
 
 
             'turn the Database ID into an Array index using the Ecosim Data structures database ID this value should be good
-            m_iEcoSimIndex = Array.IndexOf(m_data.ForcingDBIDs, m_dbID)
-            Debug.Assert(m_iEcoSimIndex >= 0, Me.ToString & ".Update() Failed to find index for Database ID " & m_dbID)
+            m_iEcoSimIndex = Array.IndexOf(m_data.ForcingDBIDs, m_iDBID)
+            Debug.Assert(m_iEcoSimIndex >= 0, Me.ToString & ".Update() Failed to find index for Database ID " & m_iDBID)
             If (m_iEcoSimIndex = cCore.NULL_VALUE) Or (m_iEcoSimIndex > m_data.ForcingShapes) Then
                 cLog.Write(Me.ToString & ".Update() index out of bounds. Data not updated.")
                 Return False
@@ -438,8 +441,8 @@ Public Class cMediationFunction
 
             m_bInInit = True
             m_data = EcoSimData
-            m_dbID = DBID
-            m_iEcoSimIndex = Array.IndexOf(m_data.MediationDBIDs, m_dbID)
+            m_iDBID = DBID
+            m_iEcoSimIndex = Array.IndexOf(m_data.MediationDBIDs, m_iDBID)
             Dim iShape As Integer = m_iEcoSimIndex 'just for clarity
 
             m_manager = Manager 'keep a reference to the manager for this shape
@@ -488,7 +491,7 @@ Public Class cMediationFunction
         m_bInInit = True
         Me.LockUpdates()
 
-        m_iEcoSimIndex = Array.IndexOf(m_data.MediationDBIDs, m_dbID)
+        m_iEcoSimIndex = Array.IndexOf(m_data.MediationDBIDs, m_iDBID)
         Debug.Assert(m_iEcoSimIndex > -1, "mediation shape database ID invalid.")
         If m_iEcoSimIndex < 0 Then Return False
 
@@ -528,7 +531,7 @@ Public Class cMediationFunction
     Public Property XBaseIndex() As Integer
         Get
             Try
-                Return m_data.IMedBase(Array.IndexOf(m_data.MediationDBIDs, m_dbID))
+                Return m_data.IMedBase(Array.IndexOf(m_data.MediationDBIDs, m_iDBID))
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 cLog.Write(ex)
@@ -537,7 +540,7 @@ Public Class cMediationFunction
         End Get
         Set(ByVal value As Integer)
             Try
-                m_data.IMedBase(Array.IndexOf(m_data.MediationDBIDs, m_dbID)) = value
+                m_data.IMedBase(Array.IndexOf(m_data.MediationDBIDs, m_iDBID)) = value
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 cLog.Write(ex)
@@ -555,7 +558,7 @@ Public Class cMediationFunction
     Public ReadOnly Property XBase() As Single
         Get
             Try
-                Return m_data.MedXbase(Array.IndexOf(m_data.MediationDBIDs, m_dbID))
+                Return m_data.MedXbase(Array.IndexOf(m_data.MediationDBIDs, m_iDBID))
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 cLog.Write(ex)
@@ -581,7 +584,7 @@ Public Class cMediationFunction
             Return False
         End If
 
-        m_iEcoSimIndex = Array.IndexOf(m_data.MediationDBIDs, m_dbID)
+        m_iEcoSimIndex = Array.IndexOf(m_data.MediationDBIDs, m_iDBID)
         'can not update if there is not an index to the underlying data structures
         If (m_iEcoSimIndex = cCore.NULL_VALUE) Or (m_iEcoSimIndex > m_data.MediationShapes) Then
             cLog.Write(Me.ToString & ".update(m_data) index out of bounds. Data not updated.")
@@ -981,14 +984,15 @@ End Class
 #Region " Fish Mortality Shape "
 
 ''' <summary>
-''' A fish s
+''' A fishing mortality shape.
 ''' </summary>
-''' <remarks></remarks>
 Public Class cFishingMortShape
     Inherits cForcingFunction
 
-
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef Manager As cBaseShapeManager, ByVal DBID As Integer, ByVal GroupName As String)
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, _
+                   ByRef Manager As cBaseShapeManager, _
+                   ByVal DBID As Integer, _
+                   ByVal GroupName As String)
 
         MyBase.New(EcoSimData, Manager, DBID, eDataTypes.FishMort)
         m_bInInit = True
@@ -997,8 +1001,7 @@ Public Class cFishingMortShape
         m_iEcoSimIndex = Array.IndexOf(m_data.FishRateNoDBID, Me.DBID)
 
         Me.Name = GroupName 'groupname is part of the Ecopath data so it can not be retrieved from the Ecosim data and must be passed in
-
-        Load()
+        Me.Load()
 
         m_bInInit = False
 
@@ -1014,13 +1017,13 @@ Public Class cFishingMortShape
 
         m_bInInit = True
 
-        m_iEcoSimIndex = Array.IndexOf(m_data.FishRateNoDBID, m_dbID)
+        Me.m_iEcoSimIndex = Array.IndexOf(m_data.FishRateNoDBID, m_iDBID)
         Debug.Assert(m_iEcoSimIndex <> -1, Me.ToString & ".Load() invalid database ID.")
         If m_iEcoSimIndex = -1 Then Return False
 
         Me.ResizeData(m_data.NTimes)
         For ipt As Integer = 1 To m_data.NTimes
-            Me.ShapeData(ipt) = m_data.FishRateNo(m_iEcoSimIndex, ipt) 'FishRateNo(nGroups,nTime)
+            Me.ShapeData(ipt) = m_data.FishRateNo(Me.m_iEcoSimIndex, ipt) 'FishRateNo(nGroups,nTime)
         Next ipt
 
         m_nYears = m_data.NumYears
