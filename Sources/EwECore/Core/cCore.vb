@@ -1587,14 +1587,24 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function UpdateTimeSeries() As Boolean
+        Dim lstEffortToReset As New List(Of Integer)
 
         ' Update enable flags
         For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
             Me.m_TSData.bEnable(ts.Index) = ts.Enabled
         Next
+
         For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet
+            'build a list of all disabled Effort timeseries that need to be reset to default (one)
+            If ts.TimeSeriesType = eTimeSeriesType.FishingEffort Then
+                If Me.m_TSData.bEnable(ts.Index) = True And ts.Enabled = False Then
+                    'Timeseries is being disabled so keep the index to reset effort from
+                    lstEffortToReset.Add(ts.DatPool)
+                End If
+            End If
             Me.m_TSData.bEnable(ts.Index) = ts.Enabled
         Next
+
         ' Load enabled TS
         Me.m_TSData.loadEnabled()
         ' Ecosim needs to run again
@@ -1602,6 +1612,11 @@ Public Class cCore
 
         'setEcosimRunLength() will call DoDatValCalculations to re-load forcing data
         Me.setEcosimRunLength(Me.m_TSData.NdatYear, False)
+
+        'reset all efforts that were unloaded/disabled
+        Me.m_EcoSimData.setEffortToDefault(lstEffortToReset)
+
+        'set fishing mortality from Fleet Effort/Gear
         Dim QYear() As Single
         ReDim QYear(Me.nGroups)
         For i As Integer = 1 To Me.nGroups

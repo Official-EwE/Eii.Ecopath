@@ -1125,6 +1125,24 @@ Public Class cEcosimDatastructures
 
     End Sub
 
+    ''' <summary>
+    ''' Set effort to default value for all the fleets in list
+    ''' </summary>
+    ''' <param name="lstFleetsIndexesToSet">List for fleets to set to default</param>
+    ''' <remarks>Call when an effort timeseries has been unloaded to reset effort to default values</remarks>
+    Sub setEffortToDefault(ByVal lstFleetsIndexesToSet As List(Of Integer))
+        Try
+            'reset effort to 1 for all fleets that where disabled
+            For Each flt As Integer In lstFleetsIndexesToSet
+                For it As Integer = 1 To Me.NTimes
+                    Me.FishRateGear(flt, it) = 1
+                Next
+            Next
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString & ".setEffortToDefault() Exception: " & ex.Message)
+            cLog.Write(ex)
+        End Try
+    End Sub
 
     ''' <summary>
     ''' Set default fish mortality values
