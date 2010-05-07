@@ -16,7 +16,7 @@ Public MustInherit Class cShapeData
 
     Protected m_datatype As eDataTypes = eDataTypes.NotSet
     Protected m_coreComponent As eCoreComponentType = eCoreComponentType.NotSet
-    Protected m_dbID As Integer = 0
+    Protected m_iDBID As Integer = 0
     Private m_strName As String
     Private m_xdata() As Single
     'Private m_Ymax As Single
@@ -263,10 +263,10 @@ Public MustInherit Class cShapeData
     Public Property DBID() As Integer _
         Implements ICoreInterface.DBID
         Get
-            Return m_dbID
+            Return m_iDBID
         End Get
         Friend Set(ByVal value As Integer)
-            m_dbID = value
+            m_iDBID = value
         End Set
     End Property
 
