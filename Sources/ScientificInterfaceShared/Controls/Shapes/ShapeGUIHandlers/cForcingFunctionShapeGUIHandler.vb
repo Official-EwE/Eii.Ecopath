@@ -35,15 +35,13 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal stb As ucShapeToolbox, _
-                       ByVal stbtb As ucShapeToolboxToolbar, _
-                       ByVal sp As ucSketchPad, _
-                       ByVal sptb As ucSketchPadToolbar)
-
-            MyBase.New(uic, stb, stbtb, sp, sptb)
+        Public Overrides Sub Attach(ByVal uic As cUIContext, _
+                                    ByVal stb As ucShapeToolbox, _
+                                    ByVal stbtb As ucShapeToolboxToolbar, _
+                                    ByVal sp As ucSketchPad, _
+                                    ByVal sptb As ucSketchPadToolbar)
+            MyBase.Attach(uic, stb, stbtb, sp, sptb)
             Me.UpdateShapeList()
-
         End Sub
 
 #Region " Forcing overrides "

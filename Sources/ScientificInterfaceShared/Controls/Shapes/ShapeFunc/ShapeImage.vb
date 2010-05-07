@@ -91,7 +91,7 @@ Namespace Controls
                                 Optional ByVal strXMarkLabel As String = "")
 
             If shape Is Nothing Then Return
-            If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax
+            If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax * 1.2!
             If (sYMark = cCore.NULL_VALUE) Then sYMark = CSng(IIf(shape.DataType = eDataTypes.Mediation, 0.5!, 1.0!))
 
             ShapeImage.DrawShapeDirect(uic, _
@@ -121,9 +121,6 @@ Namespace Controls
             Dim pnMark As New Pen(Color.Blue, 1)
 
             pnMark.DashStyle = DashStyle.Dash
-
-            ' No max specified? Calc it.
-            If (sYMax <> sYMax) Then Return
 
             Select Case drawMode
 

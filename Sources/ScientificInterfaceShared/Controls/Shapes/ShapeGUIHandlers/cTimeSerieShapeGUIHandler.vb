@@ -26,6 +26,8 @@ Namespace Controls
         ''' <summary>The Time Series to distribute.</summary>
         Private m_lShapes As New List(Of cShapeData)
 
+#Region " Baseclass overrides "
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
@@ -36,13 +38,13 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal stb As ucShapeToolbox, _
-                       ByVal stbtb As ucShapeToolboxToolbar, _
-                       ByVal sp As ucSketchPad, _
-                       ByVal sptb As ucSketchPadToolbar)
+        Public Overloads Sub Attach(ByVal uic As cUIContext, _
+                                    ByVal stb As ucShapeToolbox, _
+                                    ByVal stbtb As ucShapeToolboxToolbar, _
+                                    ByVal sp As ucSketchPad, _
+                                    ByVal sptb As ucSketchPadToolbar)
 
-            MyBase.New(uic, stb, stbtb, sp, sptb)
+            MyBase.Attach(uic, stb, stbtb, sp, sptb)
 
             If Me.SketchPad IsNot Nothing Then
                 ' Cannot draw onto time series shapes
@@ -56,8 +58,6 @@ Namespace Controls
 
             Me.UpdateShapeList(New cShapeData() {sp.Shape}, eAutoSelectMode.SelectFirstShape)
         End Sub
-
-#Region " Baseclass overrides "
 
         ''' -------------------------------------------------------------------
         ''' <summary>

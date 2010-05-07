@@ -37,15 +37,15 @@ Namespace Controls
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' <param name="bp"><see cref="ucBioPercent">Biomass percentage control</see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal stb As ucShapeToolbox, _
-                       ByVal stbtb As ucShapeToolboxToolbar, _
-                       ByVal sp As ucSketchPad, _
-                       ByVal sptb As ucSketchPadToolbar, _
-                       ByVal bp As ucBioPercent, _
-                       ByVal bpt As ucBioPercentToolbar)
+        Public Shadows Sub Attach(ByVal uic As cUIContext, _
+                                  ByVal stb As ucShapeToolbox, _
+                                  ByVal stbtb As ucShapeToolboxToolbar, _
+                                  ByVal sp As ucSketchPad, _
+                                  ByVal sptb As ucSketchPadToolbar, _
+                                  ByVal bp As ucBioPercent, _
+                                  ByVal bpt As ucBioPercentToolbar)
 
-            MyBase.New(uic, stb, stbtb, sp, sptb)
+            MyBase.Attach(uic, stb, stbtb, sp, sptb)
 
             Me.SketchPad.ShowXMark = True
             Me.BiomassPercent = bp
@@ -56,15 +56,10 @@ Namespace Controls
 
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Destructor; releases all controls.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Sub Finalize()
+        Public Overloads Sub Detach()
             Me.BiomassPercent = Nothing
             Me.BiomassPercentToolbar = Nothing
-            MyBase.Finalize()
+            MyBase.Detach()
         End Sub
 
         Public Overrides Sub SetSeasonal(ByVal shape As EwECore.cShapeData, ByVal bSeasonal As Boolean)

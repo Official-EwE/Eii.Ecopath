@@ -52,11 +52,10 @@ Namespace Ecosim
             ''' <param name="stb"></param>
             ''' <param name="sp"></param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal uic As cUIContext, _
-                           ByVal stb As ucShapeToolbox, _
-                           ByVal sp As ucSketchPad)
-
-                MyBase.New(uic, stb, Nothing, sp, Nothing)
+            Public Shadows Sub Attach(ByVal uic As cUIContext, _
+                                      ByVal stb As ucShapeToolbox, _
+                                      ByVal sp As ucSketchPad)
+                MyBase.Attach(uic, stb, Nothing, sp, Nothing)
             End Sub
 
             ''' ---------------------------------------------------------------
@@ -110,6 +109,8 @@ Namespace Ecosim
 
             MyBase.OnLoad(e)
 
+            If Me.UIContext Is Nothing Then Return
+
             Me.m_F2TSManager = Me.Core.EcosimFitToTimeSeries
             Me.m_cbAnomalySearch.Checked = Me.m_F2TSManager.AnomalySearch
             Me.m_cbVulnerabilitySearch.Checked = Me.m_F2TSManager.VulnerabilitySearch
@@ -130,7 +131,8 @@ Namespace Ecosim
             Me.m_grid.Manager = Me.Core.FishingPolicyManager
             Me.m_grid.UIContext = Me.UIContext
 
-            Me.m_shapeHandler = New AppliedFFGUIHandler(Me.UIContext, Me.m_shapeToolBox, Me.m_sketchPad)
+            Me.m_shapeHandler = New AppliedFFGUIHandler()
+            Me.m_shapeHandler.Attach(Me.UIContext, Me.m_shapeToolBox, Me.m_sketchPad)
 
             Me.m_cmdTSWeights = Me.UIContext.CommandHandler.GetCommand("WeightTimeSeries")
             If (Me.m_cmdTSWeights IsNot Nothing) Then
@@ -151,6 +153,8 @@ Namespace Ecosim
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
+            If Me.UIContext Is Nothing Then Return
+
             Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
                                         AddressOf OnRunStopped, AddressOf Me.OnModelRun)
 
@@ -158,6 +162,7 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockCodeSelector = Nothing
             Me.m_F2TSManager = Nothing
 
+            Me.m_shapeHandler.Detach()
             Me.m_shapeHandler = Nothing
 
             If (Me.m_cmdTSWeights IsNot Nothing) Then

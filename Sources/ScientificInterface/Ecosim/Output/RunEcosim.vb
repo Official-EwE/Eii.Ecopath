@@ -139,6 +139,12 @@ Namespace Ecosim
 
             If Me.UIContext Is Nothing Then Return
 
+            ' Clean up
+            If Me.m_shapeGUIHandler IsNot Nothing Then
+                Me.m_shapeGUIHandler.Detach()
+                Me.m_shapeGUIHandler = Nothing
+            End If
+
             ' Show/Hide Groups
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
@@ -890,26 +896,44 @@ Namespace Ecosim
         ''' <summary>
         ''' Load fishing effort data from the Fishing Rate manager 
         ''' </summary>
-        ''' <remarks>Right now, it is zero based</remarks>
         Private Sub LoadFishingRateShape()
+
             Dim item As ICoreInterface = Me.GetSelectedGroupOrFleet()
 
-            Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler(Me.UIContext, Nothing, Me.m_sketchPad)
+            If (Not TypeOf Me.m_shapeGUIHandler Is cFishingEffortShapeGUIHandler) Then
+                If (Not Me.m_shapeGUIHandler Is Nothing) Then
+                    Me.m_shapeGUIHandler.Detach()
+                    Me.m_shapeGUIHandler = Nothing
+                End If
+                Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler()
+                Me.m_shapeGUIHandler.Attach(Me.UIContext, Nothing, Nothing, Me.m_sketchPad, Nothing)
+            End If
+
             Me.m_shapeGUIHandler.SelectedShape = DirectCast(item, cFishingRateShape)
             Me.m_sketchPad.Editable = True
             Me.m_bIsEffortSelected = True
             Me.UpdateControls()
+
         End Sub
 
         'Fish Rate (Y/B)
         Private Sub LoadFishMortShape()
+
             Dim item As ICoreInterface = Me.GetSelectedGroupOrFleet()
             Dim shape As cShapeData = Nothing
 
             ' Mortality shapes are 0-base indexed, groups are 1-base indexed
             shape = Core.FishMortShapeManager.Item(item.Index - 1)
 
-            Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.UIContext, Nothing, Me.m_sketchPad, Nothing)
+            If (Not TypeOf Me.m_shapeGUIHandler Is cFishingMortalityShapeGUIHandler) Then
+                If (Not Me.m_shapeGUIHandler Is Nothing) Then
+                    Me.m_shapeGUIHandler.Detach()
+                    Me.m_shapeGUIHandler = Nothing
+                End If
+                Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler()
+                Me.m_shapeGUIHandler.Attach(Me.UIContext, Nothing, Nothing, Me.m_sketchPad, Nothing)
+            End If
+
             Me.m_shapeGUIHandler.SelectedShape = shape
             ' Cannot edit Fs anymore
             Me.m_sketchPad.Editable = False

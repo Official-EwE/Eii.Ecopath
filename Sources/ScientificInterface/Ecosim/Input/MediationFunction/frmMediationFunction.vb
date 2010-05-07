@@ -26,7 +26,7 @@ Namespace Ecosim
 #Region " Private variables "
 
         ''' <summary>Controller for shape-related GUI components in this form.</summary>
-        Private m_shapeguihandler As cShapeGUIHandler = Nothing
+        Private m_shapeguihandler As cMediationShapeGUIHandler = Nothing
 
 #End Region '  Private variables
 
@@ -50,10 +50,6 @@ Namespace Ecosim
             End Set
         End Property
 
-#End Region ' Overrides
-
-#Region " Events "
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Event handler; implemented to make sure that this form receives 
@@ -64,17 +60,18 @@ Namespace Ecosim
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
             If (Me.UIContext Is Nothing) Then Return
-            Me.m_shapeguihandler = New cMediationShapeGUIHandler(Me.UIContext, _
+            Me.m_shapeguihandler = New cMediationShapeGUIHandler()
+            Me.m_shapeguihandler.Attach(Me.UIContext, _
                   Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
                   Me.m_sketchPad, Me.m_sketchPadToolbar, _
                   Me.m_bioPercent, Me.m_biopercenttoolbar)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
-#End Region ' Events 
-
-#Region " Overrides "
-
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+            Me.m_shapeguihandler.Detach()
+            MyBase.OnFormClosed(e)
+        End Sub
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Generic EwEForm message handler; implemented to respond to Forcing 

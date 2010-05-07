@@ -26,7 +26,7 @@ Namespace Ecosim
 #Region "Private variables"
 
         ''' <summary></summary>
-        Private m_stbHandler As cShapeGUIHandler = Nothing
+        Private m_sgh As cShapeGUIHandler = Nothing
 
 #End Region
 
@@ -38,28 +38,7 @@ Namespace Ecosim
 
 #End Region
 
-#Region " Event handlers "
-
-        Public Overrides Property UIContext() As cUIContext
-            Get
-                Return MyBase.UIContext
-            End Get
-            Set(ByVal value As cUIContext)
-
-                If MyBase.UIContext IsNot Nothing Then
-                    Me.m_stbHandler = Nothing
-                End If
-
-                MyBase.UIContext = value
-                Me.m_sketchPad.UIContext = value
-
-                If MyBase.UIContext IsNot Nothing Then
-                    Me.m_stbHandler = New cTimeSeriesShapeGUIHandler(Me.UIContext, _
-                            Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
-                            Me.m_sketchPad, Me.m_sketchPadToolbar)
-                End If
-            End Set
-        End Property
+#Region " Overrides "
 
         ''' <summary>
         ''' The Form's Load event. This method initialized the value of the controls in
@@ -67,8 +46,15 @@ Namespace Ecosim
         ''' </summary>
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
+
             ' Hook up message sources
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
+
+            Me.m_sgh = New cTimeSeriesShapeGUIHandler()
+            Me.m_sgh.Attach(Me.UIContext, Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, Me.m_sketchPad, Me.m_sketchPadToolbar)
 
             ' Once hooked up, try to get TS if not here yet
             If Not Me.UIContext.Core.HasTimeSeries Then
@@ -81,7 +67,12 @@ Namespace Ecosim
 
         End Sub
 
-#End Region ' Event handlers
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+            Me.m_sgh.Detach()
+            MyBase.OnFormClosed(e)
+        End Sub
+
+#End Region ' Overrides
 
 #Region " Internal implementation "
 
@@ -89,7 +80,7 @@ Namespace Ecosim
             If ((msg.Source = eCoreComponentType.TimeSeries) And _
                 (msg.Type = eMessageType.DataAddedOrRemoved Or msg.Type = eMessageType.DataModified)) Then
                 ' Refresh content
-                Me.m_stbHandler.Refresh()
+                Me.m_sgh.Refresh()
             End If
         End Sub
 

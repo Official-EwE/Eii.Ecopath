@@ -48,11 +48,17 @@ Namespace Ecosim
         ''' <see cref="eCoreComponentType">message sources</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub onLoad(ByVal e As System.EventArgs)
-            Me.m_shapeguihandler = New cEggProductionShapeGUIHandler(Me.UIContext, _
-                Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
-                Me.m_sketchPad, Me.m_sketchPadToolbar)
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            Me.m_shapeguihandler = New cEggProductionShapeGUIHandler()
+            Me.m_shapeguihandler.Attach(Me.UIContext, Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
+                                        Me.m_sketchPad, Me.m_sketchPadToolbar)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
+        End Sub
+
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+            Me.m_shapeguihandler.Detach()
+            MyBase.OnFormClosed(e)
         End Sub
 
 #End Region ' Events 

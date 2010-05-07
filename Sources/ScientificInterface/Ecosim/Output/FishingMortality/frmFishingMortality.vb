@@ -70,19 +70,22 @@ Namespace Ecosim
 
 #End Region ' Private event handlers
 
-#Region " Internal implementation "
+#Region " OVerrides"
 
-        Public Overrides Property UIContext() As cUIContext
-            Get
-                Return MyBase.UIContext
-            End Get
-            Set(ByVal value As cUIContext)
-                MyBase.UIContext = value
-                Me.m_handler = New cFishingMortalityShapeGUIHandler(Me.UIContext, _
-                    Me.m_shapeToolBox, Me.m_sketchPad, _
-                    Nothing, Me.m_sketchPadToolbar)
-            End Set
-        End Property
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+            If Me.UIContext Is Nothing Then Return
+
+            Me.m_handler = New cFishingMortalityShapeGUIHandler()
+            Me.m_handler.Attach(Me.UIContext, _
+                                Me.m_shapeToolBox, Nothing, _
+                                Me.m_sketchPad, Me.m_sketchPadToolbar)
+        End Sub
+
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+            Me.m_handler.Detach()
+            MyBase.OnFormClosed(e)
+        End Sub
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             Select Case msg.Source

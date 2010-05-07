@@ -68,24 +68,24 @@ Namespace Ecosim
 
 #Region " Overrides "
 
-        Public Overrides Property UIContext() As cUIContext
-            Get
-                Return MyBase.UIContext
-            End Get
-            Set(ByVal value As cUIContext)
-                If MyBase.UIContext IsNot Nothing Then
-                    Me.m_shapeguihandler = Nothing
-                End If
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
-                MyBase.UIContext = value
+            ' Design time fix
+            If (Me.UIContext Is Nothing) Then Return
 
-                If MyBase.UIContext IsNot Nothing Then
-                    Me.m_shapeguihandler = New cForcingShapeGUIHandler(Me.UIContext, _
-                        Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
-                        Me.m_sketchPad, Me.m_sketchPadToolbar)
-                End If
-            End Set
-        End Property
+            Me.m_shapeguihandler = New cForcingShapeGUIHandler()
+            Me.m_shapeguihandler.Attach(Me.UIContext, _
+                                        Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
+                                        Me.m_sketchPad, Me.m_sketchPadToolbar)
+
+        End Sub
+
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+            Me.m_shapeguihandler.Detach()
+            Me.m_shapeguihandler = Nothing
+            MyBase.OnFormClosed(e)
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>

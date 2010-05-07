@@ -81,7 +81,8 @@ Public Class dlgManageTimeSeries
         Me.m_tbImportContact.Text = Me.m_uic.Core.EwEModel.Contact
 
         Me.m_spTimeSeriesPreview.UIContext = Me.m_uic
-        Me.m_tsh = New cTimeSeriesShapeGUIHandler(Me.m_uic, Nothing, Nothing, Me.m_spTimeSeriesPreview, Nothing)
+        Me.m_tsh = New cTimeSeriesShapeGUIHandler()
+        Me.m_tsh.Attach(Me.m_uic, Nothing, Nothing, Me.m_spTimeSeriesPreview, Nothing)
 
         Me.FillImportDatasetCombo()
         Me.ReloadTimeSeries()
@@ -94,6 +95,16 @@ Public Class dlgManageTimeSeries
         Me.m_bInitialized = True
         Me.Mode = mode
 
+    End Sub
+
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Me.m_tsh.Detach()
+        Me.m_tsh = Nothing
+        MyBase.OnFormClosed(e)
     End Sub
 
 #Region " Events "
