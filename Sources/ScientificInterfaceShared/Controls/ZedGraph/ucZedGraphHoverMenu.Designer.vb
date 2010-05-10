@@ -2,7 +2,7 @@
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucZedGraphHoverMenu
-        Inherits Form
+        Inherits UserControl
 
         'UserControl overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _
@@ -55,16 +55,12 @@
             Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.BackColor = System.Drawing.SystemColors.ButtonFace
             Me.ClientSize = New System.Drawing.Size(46, 23)
-            Me.ControlBox = False
             Me.Controls.Add(Me.m_btnOut)
             Me.Controls.Add(Me.m_btnIn)
             Me.DoubleBuffered = True
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
             Me.MaximumSize = New System.Drawing.Size(46, 23)
             Me.MinimumSize = New System.Drawing.Size(46, 23)
             Me.Name = "ucZedGraphHoverMenu"
-            Me.ShowIcon = False
-            Me.ShowInTaskbar = False
             Me.ResumeLayout(False)
 
         End Sub

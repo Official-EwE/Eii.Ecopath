@@ -325,6 +325,8 @@ Namespace Controls
             Me.m_nPanels = iNumPanels
 
             Me.m_hovermenu = New ucZedGraphHoverMenu()
+            Me.m_zgc.Parent.Controls.Add(Me.m_hovermenu)
+            Me.m_hovermenu.BringToFront()
 
             AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
@@ -386,7 +388,6 @@ Namespace Controls
 
             Me.m_dtAxisLabels.Clear()
 
-            Me.m_hovermenu.Close()
             Me.m_hovermenu.Dispose()
             Me.m_hovermenu = Nothing
 
@@ -1992,8 +1993,8 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub ShowHover(ByVal bShow As Boolean)
             Me.m_hovermenu.Visible = (bShow Or IsMouseOverPanel()) And Me.m_bShowHoverMenu
-            Dim ptHover As New Point(4, Me.m_zgc.Height - Me.m_hovermenu.Height - 8)
-            Me.m_hovermenu.Location = Me.m_zgc.PointToScreen(ptHover)
+            Dim ptHover As New Point(Me.m_zgc.Left + 4, Me.m_zgc.Top + Me.m_zgc.Height - Me.m_hovermenu.Height - 4)
+            Me.m_hovermenu.Location = ptHover
         End Sub
 
         ''' -------------------------------------------------------------------
