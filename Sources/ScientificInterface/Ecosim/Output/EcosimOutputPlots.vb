@@ -392,7 +392,7 @@ Namespace Ecosim
             Dim da() As Single = gts.ShapeData()
             For j As Integer = 1 To da.Length - 1
                 If (da(j) > 0) Then
-                    ppt.Add(Me.UIContext.Core.EcosimFirstYear + j - 1, da(j) * dScale)
+                    ppt.Add(Me.UIContext.Core.EcosimFirstYear + j - 0.5, da(j) * dScale)
                 End If
             Next
             Return Me.m_zgh.CreateLineItem(gts, ppt)

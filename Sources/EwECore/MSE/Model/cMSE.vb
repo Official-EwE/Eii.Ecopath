@@ -1129,7 +1129,7 @@ Namespace MSE
 
         End Sub
 
-        Public Sub CalcCatch(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
+        Private Sub CalcCatch(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
 
             Dim cloc As Single
             For iFlt As Integer = 1 To Me.m_data.nFleets
@@ -1144,8 +1144,23 @@ Namespace MSE
 
         End Sub
 
+        Public Sub DoRegulations(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
 
-        Friend Sub RegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
+            Try
+
+                Me.RegulateEffort(Biomass, QMult, QYear, t)
+                Me.CalcCatch(Biomass, QMult, QYear, t)
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".DoRegulations() Exception: " & ex.Message)
+                cLog.Write(ex)
+                System.Console.WriteLine(Me.ToString & ".DoRegulations() Exception: " & ex.Message)
+            End Try
+
+        End Sub
+
+
+        Private Sub RegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
             Dim i As Integer, ig As Integer, Elim As Single, Emax As Single
             Dim ci As Single
 
@@ -1237,13 +1252,6 @@ Namespace MSE
                 System.Console.WriteLine(Me.ToString & ".DoAssessment()PluginManager.MSERegulateEffort Exception: " & ex.Message)
             End Try
 
-
-            Dim val As Single
-            For igrp As Integer = 1 To Me.m_esData.nGroups
-                val = Biomass(igrp) / Me.m_data.Bestimate(igrp)
-                Me.m_data.BioEstStats.AddValue(igrp, CInt(Me.m_curT), val)
-            Next igrp
-
         End Sub
 
         ''' <summary>
@@ -1273,6 +1281,13 @@ Namespace MSE
                 Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + RstockPred)
 
             Next i
+
+            Dim val As Single
+            For igrp As Integer = 1 To Me.m_esData.nGroups
+                val = Biomass(igrp) / Me.m_data.Bestimate(igrp)
+                Me.m_data.BioEstStats.AddValue(igrp, Me.m_curYear, val)
+            Next igrp
+
 
             Try
                 Me.m_core.PluginManager.MSEDoAssessment(Biomass)

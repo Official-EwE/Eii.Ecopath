@@ -819,7 +819,7 @@ Namespace Ecosim
                         If iYear < gts.ShapeData().Length Then
                             If gts.ShapeData(iYear) > 0 Then
                                 ' Minus 1 because it should start with the first year
-                                ppl.Add(iYear + Core.EcosimFirstYear - 1, (gts.ShapeData()(iYear) / EDataQ) / StartBio)
+                                ppl.Add(iYear + Core.EcosimFirstYear - 0.5, (gts.ShapeData()(iYear) / EDataQ) / StartBio)
                             End If
                         End If
                     Next

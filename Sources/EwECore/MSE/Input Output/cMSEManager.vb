@@ -467,7 +467,7 @@ Namespace MSE
             'cMSEDataStructures are not part of the core!!!!!
             'Only the MSEManager and model know about them 
             'this may have to change when the input/output object are created
-            m_MSEdata.Init()
+            m_MSEdata.Init(theCore)
 
             m_MSE.Init(m_MSEdata, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData, Me.m_core.PluginManager)
             'set CV to the first timestep

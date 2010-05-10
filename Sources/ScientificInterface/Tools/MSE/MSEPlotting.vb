@@ -506,9 +506,9 @@ Friend Class cMSEPlotter
             Dim values() As Single
             Dim lstLines As New List(Of ZedGraph.LineItem)
 
-            dx = 1 / cCore.N_MONTHS
             For Each data As cMSEStats In Me.m_Data '
                 ipane += 1
+                dx = 1 / data.nStepsPerYear
                 lstLines.Clear()
 
                 For iter As Integer = 1 To data.nIterations
@@ -518,7 +518,7 @@ Friend Class cMSEPlotter
                     'reset the x starting value
                     x = Me.m_uic.Core.EcosimFirstYear
                     'add a point for each value
-                    For iTime As Integer = 1 To Me.m_uic.Core.nEcosimTimeSteps
+                    For iTime As Integer = 1 To data.nTimeSteps
                         ppl.Add(x, values(iTime))
                         x += dx
                     Next
@@ -529,6 +529,8 @@ Friend Class cMSEPlotter
                 Next
                 'set the y max
                 Me.m_zgh.YScaleMax(ipane) = data.Max * Me.m_zgh.YScaleGrace
+                Me.m_zgh.YScaleMin(ipane) = 0
+
                 Me.m_zgh.PlotLines(lstLines.ToArray, ipane, False, False)
                 Me.plotMean(data, ipane)
             Next
@@ -582,7 +584,7 @@ Friend Class cMSEPlotter
     End Sub
 
     Private Sub plotMean(ByVal StatsData As cMSEStats, ByVal ipane As Integer)
-        Dim dx As Double
+        Dim x As Double, dx As Double
 
         Dim ppl As PointPairList = Nothing
         Dim li As LineItem = Nothing
@@ -590,9 +592,11 @@ Friend Class cMSEPlotter
 
         'time varing mean
         ppl = New PointPairList()
-        For iTime As Integer = 1 To Me.m_uic.Core.nEcosimTimeSteps
-            dx = Me.m_uic.Core.EcosimFirstYear + (iTime / cCore.N_MONTHS)
-            ppl.Add(dx, StatsData.Mean(iTime))
+        x = Me.m_uic.Core.EcosimFirstYear
+        dx = 1 / StatsData.nStepsPerYear
+        For iTime As Integer = 1 To StatsData.nTimeSteps
+            ppl.Add(x, StatsData.Mean(iTime))
+            x += dx
         Next
         li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Me.getLineColour(StatsData), ppl)
         li.Line.Width = 2
@@ -601,7 +605,7 @@ Friend Class cMSEPlotter
         'mean over all the data(solid blue line)
         ppl = New PointPairList()
         ppl.Add(0, StatsData.Mean)
-        ppl.Add(dx, StatsData.Mean)
+        ppl.Add(x, StatsData.Mean)
         li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
         lines.Add(li)
 
@@ -609,7 +613,7 @@ Friend Class cMSEPlotter
         Dim std2 As Single = 2 * StatsData.Std
         ppl = New PointPairList()
         ppl.Add(0, StatsData.Mean + std2)
-        ppl.Add(dx, StatsData.Mean + std2)
+        ppl.Add(x, StatsData.Mean + std2)
         li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
         li.Line.Style = Drawing2D.DashStyle.Dot
         li.Line.Width = 0.5
@@ -617,7 +621,7 @@ Friend Class cMSEPlotter
 
         ppl = New PointPairList()
         ppl.Add(0, StatsData.Mean - std2)
-        ppl.Add(dx, StatsData.Mean - std2)
+        ppl.Add(x, StatsData.Mean - std2)
         li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
         li.Line.Style = Drawing2D.DashStyle.Dot
         li.Line.Width = 0.5

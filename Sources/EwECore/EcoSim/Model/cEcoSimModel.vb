@@ -639,11 +639,6 @@ Namespace Ecosim
             ReDim EatenOfAvg(nGroups)
             ReDim PredAvg(nGroups)
 
-            ReDim Me.m_MSEData.CatchYearGroup(Me.nGroups)
-            For iGrp As Integer = 1 To Me.m_Data.nGroups
-                Me.m_MSEData.CatchYearGroup(iGrp) = Me.m_EPData.fCatch(iGrp)
-            Next
-
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
             '*
             If m_search.bInSearch Then
@@ -3906,7 +3901,7 @@ Namespace Ecosim
         ''' <remarks>
         ''' Called by <see cref="SetFFromGear">SetFFromGear()</see> during initialization 
         ''' and by <see cref="RunModelValue">RunModelValue</see> when the MSE is running so Fishing Mortality includes discards at the current discard mortality rates.</remarks>
-        Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByRef fishtime() As Single, ByVal QYear() As Single, ByVal PredEffort As Boolean)
+        Friend Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByRef fishtime() As Single, ByVal QYear() As Single, ByVal PredEffort As Boolean)
             Dim i As Integer, ig As Integer, Ft As Single
 
             ReDim Qmult(m_Data.nGroups)
@@ -3917,10 +3912,11 @@ Namespace Ecosim
             Next
 
             If Me.m_search.SearchMode = eSearchModes.MSE Then
+
                 'do the regulatory reduction in FishRateGear(ig,t) for each ig (gear) 
                 'based on the target fishing mortalty set by the user
-                Me.m_MSE.RegulateEffort(BB, Qmult, QYear, t)
-                Me.m_MSE.CalcCatch(BB, Qmult, QYear, t)
+                Me.m_MSE.DoRegulations(BB, Qmult, QYear, t)
+
             End If
 
             'Apply this to get the actual fishing mortality

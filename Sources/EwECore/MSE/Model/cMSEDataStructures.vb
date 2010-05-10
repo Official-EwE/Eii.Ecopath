@@ -8,18 +8,20 @@ Imports EwEUtils.Core
 
 Namespace MSE
 
+    Public Delegate Function MSECounterDelegate(ByVal SizeType As eCoreCounterTypes) As Integer
+
     ''' <summary>
     ''' Regulatory mode for MSE
     ''' </summary>
     ''' <remarks>Effort can come from a variaty of sources</remarks>
     Public Enum eMSERegulationMode
         ''' <summary>Regulation are used. Max effort from Ecosim scenario or no max effort imposed.</summary>
-    UseRegulations
+        UseRegulations
 
         ''' <summary>Ecosim effort. Effort not regulated</summary>
-    NoRegulations
+        NoRegulations
 
-End Enum
+    End Enum
 
     Public Enum eMSEEffortSource
         EcosimEffort
@@ -271,25 +273,21 @@ End Enum
         ''' <summary>
         ''' Set default values for the Management Strategy Evaluation model cMSE
         ''' </summary>
-        Public Sub Init()
+        Public Sub Init(ByVal theCore As cCore)
 
             Try
-                ' JS 28Jan2010: moved to datasource
-                ''load the bounds /traffic light object with the values from the Quotas
-                'Me.DefaultBioBounds()
-                ''
-                'Me.DefaultCatchBounds()
 
-                Me.BioStats = New cMSESummaryStats(Me, Me.BioBounds, NGroups)
-                Me.CatchGroupStats = New cMSESummaryStats(Me, Me.CatchGroupBounds, NGroups)
-                Me.CatchFleetStats = New cMSESummaryStats(Me, Me.CatchFleetBounds, nFleets)
-                Me.EffortStats = New cMSESummaryStats(Me, Me.EffortFleetBounds, nFleets)
+                Me.BioStats = New cMSESummaryStats(Me, Me.BioBounds, NGroups, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.CatchGroupStats = New cMSESummaryStats(Me, Me.CatchGroupBounds, NGroups, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.CatchFleetStats = New cMSESummaryStats(Me, Me.CatchFleetBounds, nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.EffortStats = New cMSESummaryStats(Me, Me.EffortFleetBounds, nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
 
-                Me.BioEstStats = New cMSESummaryStats(Me, Me.BioEstBounds, NGroups)
+                'yearly time steps
+                Me.BioEstStats = New cMSESummaryStats(Me, Me.BioEstBounds, NGroups, 1, eCoreCounterTypes.nEcosimYears, AddressOf theCore.GetCoreCounter)
 
-                Me.ProfitSum = New cMSESummaryStats(Me, Nothing, 1)
-                Me.JobsSum = New cMSESummaryStats(Me, Nothing, 1)
-                Me.CostSum = New cMSESummaryStats(Me, Nothing, 1)
+                Me.ProfitSum = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.JobsSum = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.CostSum = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
 
                 'default values for MSY 
                 'these values can be overridden by an MSE or MSY plugin
@@ -580,6 +578,12 @@ End Enum
                 KalGainQ(iFlt) = VarQest(iFlt) / (VarQest(iFlt) + VarQyear(iFlt))
             Next iFlt
 
+
+            ReDim Me.CatchYearGroup(Me.NGroups)
+            For iGrp = 1 To Me.NGroups
+                Me.CatchYearGroup(iGrp) = Me.m_EPData.fCatch(iGrp)
+            Next
+
         End Sub
 
         Public Sub InitForRun()
@@ -739,7 +743,7 @@ End Enum
     Public Class cMSESummaryStats
 
         Private Enum eSumIndexes
-            Mean
+            Sum
             Min
             Max
             SumOfSquares
@@ -777,14 +781,19 @@ End Enum
         Private m_lstMeans As New List(Of Single())
 
         Private m_bounds() As cMSEBounds
+        ' Private m_nTimeSteps As Integer
+        Private m_nStepsPerYear As Integer
+        Private m_CounterDelegate As MSECounterDelegate
+        Private m_CounterType As eCoreCounterTypes
 
-
-        Public Sub New(ByVal MSEData As cMSEDataStructures, ByVal Bounds() As cMSEBounds, ByVal NumberOfData As Integer)
+        Public Sub New(ByVal MSEData As cMSEDataStructures, ByVal Bounds() As cMSEBounds, ByVal NumberOfData As Integer, ByVal StepsPerYear As Integer, ByVal CounterType As eCoreCounterTypes, ByVal CounterDelegate As MSECounterDelegate)
 
             m_mseData = MSEData
             m_count = NumberOfData - 1
             m_bounds = Bounds
-
+            m_CounterType = CounterType
+            m_nStepsPerYear = StepsPerYear
+            m_CounterDelegate = CounterDelegate
         End Sub
 
 
@@ -800,7 +809,7 @@ End Enum
                 Me.m_curIter += 1
                 For Each lst As List(Of Single()) In Me.m_lstValues
                     Dim d() As Single
-                    ReDim d(Me.m_mseData.nTimeSteps)
+                    ReDim d(Me.nTimeSteps)
                     lst.Add(d)
                 Next
             Catch ex As Exception
@@ -842,7 +851,7 @@ End Enum
                 'this way if they are used before ComputeStats() is called they will not return Null
                 Dim values() As Single
                 For i As Integer = 0 To Me.m_count
-                    ReDim values(Me.m_mseData.nTimeSteps)
+                    ReDim values(Me.nTimeSteps)
                     Me.m_lstHist.Add(values)
                     Me.m_lstMeans.Add(values)
                 Next
@@ -858,7 +867,7 @@ End Enum
             Try
 
                 index -= 1
-                Me.m_data(eSumIndexes.Mean, index) += Value
+                Me.m_data(eSumIndexes.Sum, index) += Value
                 Me.m_data(eSumIndexes.SumOfSquares, index) += CSng(Value ^ 2)
                 Me.m_data(eSumIndexes.Min, index) = Math.Min(Me.m_data(eSumIndexes.Min, index), Value)
                 Me.m_data(eSumIndexes.Max, index) = Math.Max(Me.m_data(eSumIndexes.Max, index), Value)
@@ -903,11 +912,11 @@ End Enum
 
                 For Each lst As List(Of Single()) In Me.m_lstValues 'group/fleet
                     'mean values are stored in a one based array to be consistent with the interface
-                    ReDim means(Me.m_mseData.nTimeSteps)
+                    ReDim means(Me.nTimeSteps)
                     Me.m_lstMeans.Add(means)
 
                     For Each iterVals As Single() In lst 'iteration
-                        For i As Integer = 1 To Me.m_mseData.nTimeSteps
+                        For i As Integer = 1 To Me.nTimeSteps
                             'sum the iteration for this time step
                             means(i) += iterVals(i)
                         Next
@@ -930,7 +939,7 @@ End Enum
         Public ReadOnly Property Mean(ByVal Index As Integer) As Single
             Get
                 Index -= 1
-                Return Me.m_data(eSumIndexes.Mean, Index) / Me.m_n(Index)
+                Return Me.m_data(eSumIndexes.Sum, Index) / Me.m_n(Index)
             End Get
         End Property
 
@@ -986,7 +995,7 @@ End Enum
                     'during run, sum of x, sum of x^2
                     'variance s = [Sum of x^2 - (sum of x)^2 / n] / (n - 1)
                     'where n is the number of x's
-                    Dim Vari As Single = CSng((m_data(eSumIndexes.SumOfSquares, Index) - m_data(eSumIndexes.Mean, Index) ^ 2 / iCnt)) / CSng(iCnt - 1)
+                    Dim Vari As Single = CSng((m_data(eSumIndexes.SumOfSquares, Index) - m_data(eSumIndexes.Sum, Index) ^ 2 / iCnt)) / CSng(iCnt - 1)
                     Return Vari
 
                 Catch ex As Exception
@@ -1131,7 +1140,7 @@ End Enum
                         For Each iterVals As Single() In iterList
 
                             'all the data points for this iteration
-                            For it As Integer = 1 To Me.m_mseData.nTimeSteps
+                            For it As Integer = 1 To Me.nTimeSteps
                                 ibin = CInt(Math.Truncate((iterVals(it) - min) / m_binWidth(GroupingIndex)))
                                 If ibin >= m_nBins(GroupingIndex) Then
                                     'this value must be the max bump it down into the last bin
@@ -1198,7 +1207,7 @@ End Enum
                     vals = Me.m_lstValues.Item(Index - 1).Item(Iteration - 1)
                 Catch ex As Exception
                     Debug.Assert(False, Me.ToString & ".Values() Exception: " & ex.Message)
-                    ReDim vals(Me.m_mseData.nTimeSteps)
+                    ReDim vals(Me.nTimeSteps)
                 End Try
 
                 Return vals
@@ -1227,6 +1236,23 @@ End Enum
             Next
             Return buf.ToString
         End Function
+
+        Public ReadOnly Property nTimeSteps() As Integer
+            Get
+                Try
+                    Return Me.m_CounterDelegate(Me.m_CounterType)
+                Catch ex As Exception
+
+                End Try
+
+            End Get
+        End Property
+
+        Public ReadOnly Property nStepsPerYear() As Integer
+            Get
+                Return Me.m_nStepsPerYear
+            End Get
+        End Property
 
 
     End Class

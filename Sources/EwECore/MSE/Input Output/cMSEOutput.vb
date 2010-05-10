@@ -524,7 +524,20 @@ Public Class cMSEResultsStatsWrapper
         Get
             Return Me.m_data.nIterations(Me.m_index)
         End Get
-    End Property
+        End Property
+
+        Public ReadOnly Property nTimeSteps() As Integer
+            Get
+                Return Me.m_data.nTimeSteps
+            End Get
+        End Property
+
+
+        Public ReadOnly Property nStepsPerYear() As Integer
+            Get
+                Return Me.m_data.nStepsPerYear
+            End Get
+        End Property
 
 End Class
 
@@ -661,7 +674,17 @@ Public Class cMSEStats
             End Get
         End Property
 
+        Public ReadOnly Property nTimeSteps() As Integer
+            Get
+                Return Me.m_Stats.nTimeSteps
+            End Get
+        End Property
 
+        Public ReadOnly Property nStepsPerYear() As Integer
+            Get
+                Return Me.m_Stats.nStepsPerYear
+            End Get
+        End Property
 
     ''' <summary>
     ''' Returns a zero based array of values for an iteration
