@@ -327,6 +327,7 @@ Namespace Controls
             Me.m_hovermenu = New ucZedGraphHoverMenu()
             Me.m_zgc.Parent.Controls.Add(Me.m_hovermenu)
             Me.m_hovermenu.BringToFront()
+            Me.ShowHover(False)
 
             AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
