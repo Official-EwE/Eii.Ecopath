@@ -150,7 +150,8 @@ Namespace Controls
         ''' Get/set the style of the control to override data styles.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Obsolete("Use Editable instead")> _
+        <Obsolete("Use Editable instead"), _
+         Browsable(False)> _
         Public Property Style() As cStyleGuide.eStyleFlags
             Get
                 If Me.Editable Then Return cStyleGuide.eStyleFlags.OK Else Return cStyleGuide.eStyleFlags.NotEditable

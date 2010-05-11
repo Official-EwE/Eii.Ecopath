@@ -292,7 +292,7 @@
       <DependentUpon>ucZedGraphHoverMenu.vb</DependentUpon>
     </Compile>
     <Compile Include="Controls\ZedGraph\ucZedGraphHoverMenu.vb">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ZedGraph\ZedGraphHelper.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphKiteHelper.vb" />
