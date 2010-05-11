@@ -327,6 +327,7 @@ Friend Class cMSEPlotter
     Private Sub configValuePanes()
 
         Dim ipane As Integer
+        Dim xStart As Double = CDbl(Me.m_uic.Core.EcosimFirstYear)
 
         Select Case Me.m_dataType
 
@@ -335,9 +336,7 @@ Friend Class cMSEPlotter
                 For Each grp As cCoreGroupBase In Me.m_manager.GroupInputs
                     If Me.m_uic.StyleGuide.GroupVisible(grp.Index) Then
                         ipane += 1
-                        Me.m_zgh.ConfigurePane(grp.Name, _
-                                               Me.XLabel, _
-                                               CDbl(Me.m_uic.Core.EcosimFirstYear), _
+                        Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, xStart, _
                                                CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
                                                Me.YLabel, 0, 0, False, LegendPos.Top, ipane)
                         Me.m_zgh.AutoscalePane(ipane) = True
@@ -351,9 +350,7 @@ Friend Class cMSEPlotter
                     flt = Me.m_uic.Core.FleetInputs(iflt)
                     If Me.m_uic.StyleGuide.FleetVisible(flt.Index) Then
                         ipane += 1
-                        Me.m_zgh.ConfigurePane(flt.Name, _
-                                               Me.XLabel, _
-                                               CDbl(Me.m_uic.Core.EcosimFirstYear), _
+                        Me.m_zgh.ConfigurePane(flt.Name, Me.XLabel, xStart, _
                                                CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
                                                Me.YLabel, 0, 0, _
                                                False, LegendPos.Top, ipane)
@@ -519,6 +516,7 @@ Friend Class cMSEPlotter
                     x = Me.m_uic.Core.EcosimFirstYear
                     'add a point for each value
                     For iTime As Integer = 1 To data.nTimeSteps
+
                         ppl.Add(x, values(iTime))
                         x += dx
                     Next
@@ -563,6 +561,7 @@ Friend Class cMSEPlotter
                 Dim ppl As New PointPairList
                 x = Me.m_uic.Core.EcosimFirstYear
                 For iTime As Integer = 1 To Me.m_uic.Core.nEcosimTimeSteps
+
                     ppl.Add(x, data.Biomass(iTime))
                     x += dx
                 Next
@@ -595,6 +594,7 @@ Friend Class cMSEPlotter
         x = Me.m_uic.Core.EcosimFirstYear
         dx = 1 / StatsData.nStepsPerYear
         For iTime As Integer = 1 To StatsData.nTimeSteps
+
             ppl.Add(x, StatsData.Mean(iTime))
             x += dx
         Next
