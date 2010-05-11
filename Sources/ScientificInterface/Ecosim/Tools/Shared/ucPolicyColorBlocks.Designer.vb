@@ -14,7 +14,7 @@ Namespace Ecosim
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.m_pbFishingBlocks = New System.Windows.Forms.PictureBox
-            Me.m_lblBlockHeader = New System.Windows.Forms.Label
+            Me.m_lblBlockHeader = New cEwEHeaderLabel
             Me.m_nudSeqEndYear = New System.Windows.Forms.NumericUpDown
             Me.m_lblEndYear = New System.Windows.Forms.Label
             Me.m_nudSeqStartYear = New System.Windows.Forms.NumericUpDown
@@ -223,8 +223,8 @@ Namespace Ecosim
         Private WithEvents m_lblEndYear As System.Windows.Forms.Label
         Private WithEvents m_nudSeqStartYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblStartYear As System.Windows.Forms.Label
-        Private WithEvents m_lblBlockHeader As System.Windows.Forms.Label
-        Friend WithEvents TableLayoutPanel3 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_lblBlockHeader As cEwEHeaderLabel
+        Private WithEvents TableLayoutPanel3 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblControls As System.Windows.Forms.Label
         Private WithEvents m_tlpMain As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_pnlControls As System.Windows.Forms.Panel

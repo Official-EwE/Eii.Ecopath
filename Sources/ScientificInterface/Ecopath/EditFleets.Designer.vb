@@ -1,4 +1,4 @@
-Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Controls
 
 Namespace Ecopath
 
@@ -35,10 +35,10 @@ Namespace Ecopath
             Me.m_btnDefaultAll = New System.Windows.Forms.Button
             Me.m_btnDefaultCurrent = New System.Windows.Forms.Button
             Me.m_btnCustom = New System.Windows.Forms.Button
-            Me.m_hdrColors = New ScientificInterfaceShared.cEwEHeaderLabel
-            Me.m_hdrOrder = New ScientificInterfaceShared.cEwEHeaderLabel
-            Me.m_hdrEdit = New ScientificInterfaceShared.cEwEHeaderLabel
-            Me.m_grid = New ScientificInterface.EditFleetsEwEGrid
+            Me.m_hdrColors = New cEwEHeaderLabel
+            Me.m_hdrOrder = New cEwEHeaderLabel
+            Me.m_hdrEdit = New cEwEHeaderLabel
+            Me.m_grid = New EditFleetsEwEGrid
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '

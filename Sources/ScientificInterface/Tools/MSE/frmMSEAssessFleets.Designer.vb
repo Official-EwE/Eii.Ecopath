@@ -23,26 +23,26 @@ Partial Class frmMSEAssessFleets
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEAssessFleets))
-        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
+        Me.m_split = New System.Windows.Forms.SplitContainer
         Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks
         Me.GridFishingCV1 = New ScientificInterface.gridFishingCV
-        Me.SplitContainer1.Panel1.SuspendLayout()
-        Me.SplitContainer1.Panel2.SuspendLayout()
-        Me.SplitContainer1.SuspendLayout()
+        Me.m_split.Panel1.SuspendLayout()
+        Me.m_split.Panel2.SuspendLayout()
+        Me.m_split.SuspendLayout()
         Me.SuspendLayout()
         '
-        'SplitContainer1
+        'm_split
         '
-        resources.ApplyResources(Me.SplitContainer1, "SplitContainer1")
-        Me.SplitContainer1.Name = "SplitContainer1"
+        resources.ApplyResources(Me.m_split, "m_split")
+        Me.m_split.Name = "m_split"
         '
-        'SplitContainer1.Panel1
+        'm_split.Panel1
         '
-        Me.SplitContainer1.Panel1.Controls.Add(Me.m_blocks)
+        Me.m_split.Panel1.Controls.Add(Me.m_blocks)
         '
-        'SplitContainer1.Panel2
+        'm_split.Panel2
         '
-        Me.SplitContainer1.Panel2.Controls.Add(Me.GridFishingCV1)
+        Me.m_split.Panel2.Controls.Add(Me.GridFishingCV1)
         '
         'm_blocks
         '
@@ -86,15 +86,15 @@ Partial Class frmMSEAssessFleets
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.SplitContainer1)
+        Me.Controls.Add(Me.m_split)
         Me.Name = "frmMSEAssessFleets"
-        Me.SplitContainer1.Panel1.ResumeLayout(False)
-        Me.SplitContainer1.Panel2.ResumeLayout(False)
-        Me.SplitContainer1.ResumeLayout(False)
+        Me.m_split.Panel1.ResumeLayout(False)
+        Me.m_split.Panel2.ResumeLayout(False)
+        Me.m_split.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
     Private WithEvents m_blocks As ScientificInterface.Ecosim.ucPolicyColorBlocks
     Private WithEvents GridFishingCV1 As ScientificInterface.gridFishingCV
+    Private WithEvents m_split As System.Windows.Forms.SplitContainer
 End Class

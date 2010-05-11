@@ -63,7 +63,7 @@ Public Class frmMSE
         Dim cmdh As cCommandHandler = Me.CommandHandler
         Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
-            cmd.RemoveControl(Me.btShowHide)
+            cmd.RemoveControl(Me.m_btnShowHide)
         End If
 
         RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
@@ -83,7 +83,7 @@ Public Class frmMSE
 
         Me.m_fpNTrials = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
         Me.m_fpStartYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudStartYear, Me.m_MSE.ModelParameters, eVarNameFlags.MSEStartYear)
-        Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
+        Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.m_ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
 
@@ -92,18 +92,18 @@ Public Class frmMSE
         ' Display Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
-            cmd.AddControl(Me.btShowHide)
+            cmd.AddControl(Me.m_btnShowHide)
         End If
 
         AddHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         AddHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
 
-        Me.m_paneMaster = Me.zdGraph.MasterPane
+        Me.m_paneMaster = Me.m_zgc.MasterPane
         Me.m_zgh = New cZedGraphHelper()
 
         Me.m_plotter = New cMSEPlotter
 
-        Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.m_zgh, Me.zdGraph)
+        Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.m_zgh, Me.m_zgc)
         Me.m_plotter.PlotType = ePlotTypes.Line
         Me.m_plotter.DataType = ePlotData.Biomass
 
@@ -271,7 +271,7 @@ Public Class frmMSE
     End Sub
 
 
-    Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btStop.Click
+    Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
         Me.m_MSE.ModelParameters.StopRun = True
     End Sub
 
@@ -338,31 +338,31 @@ Public Class frmMSE
 
                 Case eMSEStates.InActive
                     Me.m_btRun.Enabled = True
-                    Me.btStop.Enabled = False
-                    Me.btShowHide.Enabled = True
+                    Me.m_btnStop.Enabled = False
+                    Me.m_btnShowHide.Enabled = True
                     Me.m_nudStartYear.Enabled = True
                     Me.m_nudNumTrials.Enabled = True
-                    Me.ckSave.Enabled = True
+                    Me.m_ckSave.Enabled = True
                     m_lblNumTrials.Enabled = True
                     m_lblStartYear.Enabled = True
 
                 Case eMSEStates.Running
                     Me.m_btRun.Enabled = False
-                    Me.btStop.Enabled = True
-                    Me.btShowHide.Enabled = False
+                    Me.m_btnStop.Enabled = True
+                    Me.m_btnShowHide.Enabled = False
                     Me.m_nudStartYear.Enabled = False
                     Me.m_nudNumTrials.Enabled = False
-                    Me.ckSave.Enabled = False
+                    Me.m_ckSave.Enabled = False
                     m_lblNumTrials.Enabled = False
                     m_lblStartYear.Enabled = False
 
                 Case eMSEStates.Completed
                     Me.m_btRun.Enabled = True
-                    Me.btStop.Enabled = False
-                    Me.btShowHide.Enabled = True
+                    Me.m_btnStop.Enabled = False
+                    Me.m_btnShowHide.Enabled = True
                     Me.m_nudStartYear.Enabled = True
                     Me.m_nudNumTrials.Enabled = True
-                    Me.ckSave.Enabled = True
+                    Me.m_ckSave.Enabled = True
                     m_lblNumTrials.Enabled = True
                     m_lblStartYear.Enabled = True
 
@@ -380,8 +380,5 @@ Public Class frmMSE
 
 #End Region
 
-    Private Sub frmMSE_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-    End Sub
 End Class
 

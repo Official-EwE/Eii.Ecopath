@@ -1,4 +1,4 @@
-Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Controls
 
 Namespace Other
 
@@ -34,7 +34,7 @@ Namespace Other
             Me.m_btnCustomBackColor = New System.Windows.Forms.Button
             Me.m_grpExample = New System.Windows.Forms.GroupBox
             Me.m_lblExample = New System.Windows.Forms.Label
-            Me.m_hdrCaption = New ScientificInterfaceShared.cEwEHeaderLabel
+            Me.m_hdrCaption = New cEwEHeaderLabel
             Me.m_lblDescription = New System.Windows.Forms.Label
             Me.m_lblSelection = New System.Windows.Forms.Label
             Me.m_lblColorItem = New System.Windows.Forms.Label
