@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: cStanzaGroup.vb,v $
-' Revision 1.5  2009/05/22 16:20:20  jeroens
-' cStanzaGroup will never allow validation
-'
-' Revision 1.4  2009/04/16 01:45:12  jeroens
-' Added missing VariableStatus
-'
-' Revision 1.3  2009/02/27 07:55:15  jeroens
-' Changed vbK placement
-'
-' Revision 1.2  2009/01/16 18:30:36  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:28  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwECore.ValueWrapper
