@@ -566,10 +566,18 @@ Public Class dlgManageTimeSeries
         End If
 
         ' Populate preview grid
+        Dim iCt As Integer
+        If tsrPreview.RowCount < 50 Then
+            iCt = tsrPreview.RowCount
+        Else
+            iCt = 50
+        End If
+
         Me.m_dgvImportPreview.SuspendLayout()
-        Me.m_dgvImportPreview.RowCount = tsrPreview.RowCount
+        Me.m_dgvImportPreview.RowCount = iCt 'tsrPreview.RowCount
         Me.m_dgvImportPreview.ColumnCount = tsrPreview.ColumnCount
-        For iRow As Integer = 1 To tsrPreview.RowCount
+        'vc had a model with 3000 years run & time series; takes forever to make the preview, so truncating it
+        For iRow As Integer = 1 To iCt ' tsrPreview.RowCount
             drow = Me.m_dgvImportPreview.Rows(iRow - 1)
             drow.ErrorText = tsrPreview.RowError(iRow).ToString()
             For iCol As Integer = 1 To tsrPreview.ColumnCount
