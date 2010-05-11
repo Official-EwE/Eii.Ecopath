@@ -52,12 +52,12 @@ Partial Class frmOptions
         '
         'pnlRegOpt
         '
+        resources.ApplyResources(Me.pnlRegOpt, "pnlRegOpt")
         Me.pnlRegOpt.Controls.Add(Me.pnlUseReg)
         Me.pnlRegOpt.Controls.Add(Me.pnlFTracking)
         Me.pnlRegOpt.Controls.Add(Me.rbUseRegs)
         Me.pnlRegOpt.Controls.Add(Me.rbNoRegs)
         Me.pnlRegOpt.Controls.Add(Me.Label7)
-        resources.ApplyResources(Me.pnlRegOpt, "pnlRegOpt")
         Me.pnlRegOpt.Name = "pnlRegOpt"
         '
         'pnlUseReg
@@ -152,11 +152,11 @@ Partial Class frmOptions
         '
         'pnlRunOpt
         '
+        resources.ApplyResources(Me.pnlRunOpt, "pnlRunOpt")
         Me.pnlRunOpt.Controls.Add(Me.txKalmanGain)
         Me.pnlRunOpt.Controls.Add(Me.Label8)
         Me.pnlRunOpt.Controls.Add(Me.ckPlugin)
         Me.pnlRunOpt.Controls.Add(Me.Label2)
-        resources.ApplyResources(Me.pnlRunOpt, "pnlRunOpt")
         Me.pnlRunOpt.Name = "pnlRunOpt"
         '
         'txKalmanGain
@@ -200,7 +200,6 @@ Partial Class frmOptions
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents pnlRegOpt As System.Windows.Forms.Panel
     Friend WithEvents rbUseRegs As System.Windows.Forms.RadioButton
     Friend WithEvents rbEffortPredicted As System.Windows.Forms.RadioButton
     Friend WithEvents rbNoRegs As System.Windows.Forms.RadioButton
@@ -214,9 +213,10 @@ Partial Class frmOptions
     Private WithEvents rbCatchEstBio As System.Windows.Forms.RadioButton
     Friend WithEvents rbEffortEcosim As System.Windows.Forms.RadioButton
     Friend WithEvents rbEffortNoCap As System.Windows.Forms.RadioButton
-    Friend WithEvents pnlRunOpt As System.Windows.Forms.Panel
     Friend WithEvents txKalmanGain As System.Windows.Forms.TextBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Private WithEvents ckPlugin As System.Windows.Forms.CheckBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Private WithEvents pnlRegOpt As System.Windows.Forms.Panel
+    Private WithEvents pnlRunOpt As System.Windows.Forms.Panel
 End Class
