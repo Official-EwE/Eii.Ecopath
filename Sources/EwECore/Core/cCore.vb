@@ -8945,6 +8945,12 @@ Public Class cCore
         Try
             Dim iStanza As Integer = stanza.Index
             Dim nStanzas As Integer = stanza.NStanzas
+
+            If (nStanzas <= 0) Then
+                ' Fail calculations without making any changes
+                Return False
+            End If
+
             Dim i As Integer
             Dim orgVBK As Single = Me.EcoPathGroupInputs(stanza.iGroups(1)).VBK
             Dim iHatchCode As Integer = stanza.HatchCode

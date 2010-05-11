@@ -747,7 +747,14 @@ Public Class EditGroupsEwEGrid
         ' Make snapshot of stanza configuration
         For iStanza As Integer = 0 To Core.nStanzas - 1
             stanza = Core.StanzaGroups(iStanza)
-            si = New cStanzaInfo(stanza, Core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
+            ' Is complete stanza config?
+            If stanza.NStanzas > 0 Then
+                ' #Yes: add full stanza set-up
+                si = New cStanzaInfo(stanza, Core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
+            Else
+                ' #No: just add the name
+                si = New cStanzaInfo(stanza.Name)
+            End If
             Me.m_lsiStanza.Add(si)
 
             ' Stanza group list is a one-based array
@@ -762,14 +769,15 @@ Public Class EditGroupsEwEGrid
             Next
         Next
 
-        ' This might have resulted in some cleaning-up
-        Dim aStanza As cStanzaInfo() = Me.m_lsiStanza.ToArray()
-        For iStanza As Integer = 0 To aStanza.Length - 1
-            si = aStanza(iStanza)
-            If si.NumGroups = 0 Then
-                Me.m_lsiStanza.Remove(si)
-            End If
-        Next
+        ' JS 11May2010: do not remove empty stanza configurations, user may want to (re)use the names
+        '' This might have resulted in some cleaning-up
+        'Dim aStanza As cStanzaInfo() = Me.m_lsiStanza.ToArray()
+        'For iStanza As Integer = 0 To aStanza.Length - 1
+        '    si = aStanza(iStanza)
+        '    If si.NumGroups = 0 Then
+        '        Me.m_lsiStanza.Remove(si)
+        '    End If
+        'Next
 
         ' Brute-force update grid
         UpdateGrid()

@@ -1406,9 +1406,8 @@ Namespace DataSources
                     ' There are probably no stanza groups defined yet
                     stanzaDS.MaxStanza = 0
                 End Try
-            Else
-
             End If
+
             ' Get the number of groups from ecopath
             stanzaDS.nGroups = ecopathDS.NumGroups
 
@@ -1419,11 +1418,6 @@ Namespace DataSources
 
             stanzaDS.redimStanza()
 
-            '' Set all group vbK values to -1
-            'For iGroup = 1 To ecopathDS.NumGroups
-            '    ecopathDS.vbKInput(iGroup) = -1.0!
-            'Next
-
             ' First read Stanza
             rdStanza = Me.m_db.GetReader("SELECT * FROM Stanza")
             If rdStanza IsNot Nothing Then
@@ -1432,68 +1426,69 @@ Namespace DataSources
 
                     ' Is valid stanza?
                     iLifeStage = CInt(Me.m_db.GetValue(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0})", CInt(rdStanza("StanzaID")))))
-                    If (iLifeStage > 0) Then
+                    'If (iLifeStage > 0) Then
 
-                        ' Read this stanza
-                        iStanza += 1
+                    ' Read this stanza
+                    iStanza += 1
 
+                    Try
+
+                        stanzaDS.StanzaDBID(iStanza) = CInt(rdStanza("StanzaID"))
+                        ' JS 06jun20: StanzaName array 1-dimensional. GroupNames only seem to matter to the EwE5 GUI.
+                        '             EwE6 will resolve stanza group names via iCoreInputOutput objects to keep track of 'live' changes.
+                        stanzaDS.StanzaName(iStanza) = CStr(rdStanza("StanzaName"))
+
+                        stanzaDS.RecPowerSplit(iStanza) = CSng(rdStanza("RecPower"))
+                        stanzaDS.BABsplit(iStanza) = CSng(rdStanza("BabSplit"))
+                        stanzaDS.WmatWinf(iStanza) = CSng(rdStanza("WMatWinf"))
+                        ' stanzaDS.HatchCode(iStanza) = CInt(rdStanza("HatchCode"))
+                        stanzaDS.FixedFecundity(iStanza) = CBool(rdStanza("FixedFecundity"))
+
+                        ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
+
+                    Catch ex As Exception
+                        Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
+                        bSucces = False
+                    End Try
+
+                    rdLifeStage = Me.m_db.GetReader(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
+                    iLifeStage = 0
+                    While rdLifeStage.Read()
+
+                        ' Next life stage in this stanza
+                        iLifeStage += 1
+
+                        ' Store Stanza configuration
                         Try
 
-                            stanzaDS.StanzaDBID(iStanza) = CInt(rdStanza("StanzaID"))
-                            ' JS 06jun20: StanzaName array 1-dimensional. GroupNames only seem to matter to the EwE5 GUI.
-                            '             EwE6 will resolve stanza group names via iCoreInputOutput objects to keep track of 'live' changes.
-                            stanzaDS.StanzaName(iStanza) = CStr(rdStanza("StanzaName"))
-
-                            stanzaDS.RecPowerSplit(iStanza) = CSng(rdStanza("RecPower"))
-                            stanzaDS.BABsplit(iStanza) = CSng(rdStanza("BabSplit"))
-                            stanzaDS.WmatWinf(iStanza) = CSng(rdStanza("WMatWinf"))
-                            ' stanzaDS.HatchCode(iStanza) = CInt(rdStanza("HatchCode"))
-                            stanzaDS.FixedFecundity(iStanza) = CBool(rdStanza("FixedFecundity"))
-
-                            ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
+                            ' Resolve group index
+                            iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(rdLifeStage("GroupID")))
+                            ' JS 06jun20: Disabled (see comment above)
+                            ' ecosimDS.StanzaName(nStanza, nGroup) = ecopathDS.GroupName(iGroup)
+                            stanzaDS.EcopathCode(iStanza, iLifeStage) = iGroup
+                            stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rdLifeStage("Mortality"))
+                            stanzaDS.SpeciesCode(iGroup, 0) = iStanza
+                            stanzaDS.Age1(iStanza, iLifeStage) = CInt(rdLifeStage("AgeStart"))
 
                         Catch ex As Exception
-                            Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
+                            Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
                             bSucces = False
                         End Try
 
-                        rdLifeStage = Me.m_db.GetReader(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
-                        iLifeStage = 0
-                        While rdLifeStage.Read()
+                        ' Inform Ecopath
+                        ecopathDS.StanzaGroup(iGroup) = True
 
-                            ' Next life stage in this stanza
-                            iLifeStage += 1
+                    End While
 
-                            ' Store Stanza configuration
-                            Try
+                    Me.m_db.ReleaseReader(rdLifeStage)
 
-                                ' Resolve group index
-                                iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(rdLifeStage("GroupID")))
-                                ' JS 06jun20: Disabled (see comment above)
-                                ' ecosimDS.StanzaName(nStanza, nGroup) = ecopathDS.GroupName(iGroup)
-                                stanzaDS.EcopathCode(iStanza, iLifeStage) = iGroup
-                                stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rdLifeStage("Mortality"))
-                                stanzaDS.SpeciesCode(iGroup, 0) = iStanza
-                                stanzaDS.Age1(iStanza, iLifeStage) = CInt(rdLifeStage("AgeStart"))
-
-                            Catch ex As Exception
-                                Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
-                                bSucces = False
-                            End Try
-
-                            ' Inform Ecopath
-                            ecopathDS.StanzaGroup(iGroup) = True
-
-                        End While
-
-                        Me.m_db.ReleaseReader(rdLifeStage)
-
-                        ' Update number of groups in this stanza
-                        stanzaDS.Nstanza(iStanza) = iLifeStage
-                        Debug.Assert(iLifeStage >= 1, String.Format("Stanza group {0}, ID {1} has no life stages!", stanzaDS.StanzaName(iStanza), stanzaDS.StanzaDBID(iStanza)))
-                    Else
-                        Me.LogMessage(String.Format("Stanza group {0}, ID {1} has no life stages. This group is not read", rdStanza("StanzaName"), rdStanza("StanzaID")), eMessageType.Any, eMessageImportance.Maintenance)
-                    End If
+                    ' Update number of groups in this stanza
+                    stanzaDS.Nstanza(iStanza) = iLifeStage
+                    'Debug.Assert(iLifeStage >= 1, String.Format("Stanza group {0}, ID {1} has no life stages!", stanzaDS.StanzaName(iStanza), stanzaDS.StanzaDBID(iStanza)))
+                    'Else
+                    'Me.LogMessage(String.Format("Stanza group {0}, ID {1} has no life stages. This group is not read", rdStanza("StanzaName"), rdStanza("StanzaID")), eMessageType.Any, eMessageImportance.Maintenance)
+                    'stanzaDS.Nsplit -= 1
+                    'End If
 
                 End While
 

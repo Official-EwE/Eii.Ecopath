@@ -1227,7 +1227,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>By biomass</value>
   </data>
   <data name="PROMPT_PLUGIN_INCOMPATIBLE" xml:space="preserve">
-    <value>The plug-in '{0}' uses outdated EwE components, and is likely to be imcompatible with this version of EwE6. Do you wish to disable this plug-in?</value>
+    <value>The plug-in '{0}' uses outdated EwE components, and is likely to be incompatible with this version of EwE6. Do you wish to disable this plug-in?</value>
     <comment>{0}: plug-in name</comment>
   </data>
   <data name="FILEFILTER_SAVE_RASTER" xml:space="preserve">
@@ -2650,5 +2650,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOSIM_PLOT_CAPTION_MORT_PROD" xml:space="preserve">
     <value>P/B(black), pred.mort.(red), fish.mort.(blue)</value>
+  </data>
+  <data name="PROMPT_STANZA_MISSING_LIFESTAGES" xml:space="preserve">
+    <value>One or more stanza configurations do not have life stages assigned. Do you want to do this now?</value>
   </data>
 </root>

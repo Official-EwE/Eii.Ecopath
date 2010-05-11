@@ -2656,6 +2656,22 @@ Public Class AppLauncher
     ''' Command handler; invokes the edit multi stanza interface
     ''' </summary>
     Private Sub OnEditMultiStanza(ByVal cmd As cCommand) Handles m_cmdEditMultiStanza.OnInvoke
+
+        ' Test if all stanza groups have at least one life stage
+        Dim bAllStanzaComplete As Boolean = True
+        For i As Integer = 0 To Me.Core.nStanzas - 1
+            bAllStanzaComplete = bAllStanzaComplete And (Me.Core.StanzaGroups(i).NStanzas > 0)
+        Next
+
+        If bAllStanzaComplete = False Then
+            If Me.AskFeedback(My.Resources.PROMPT_STANZA_MISSING_LIFESTAGES, _
+                              eMessageImportance.Warning, eCoreComponentType.Core, _
+                              cFeedbackMessage.eReplyStyle.YES_NO) = cFeedbackMessage.eReply.YES Then
+                Me.m_cmdEditGroups.Invoke()
+            End If
+            Return
+        End If
+
         Dim dlg As New EditMultiStanza(Me.UIContext)
         Me.Help.HelpTopic(dlg) = "Edit multi stanza.htm"
         dlg.ShowDialog(Me)
@@ -2666,7 +2682,8 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateMultiStanza(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditMultiStanza.OnUpdate
         ' MultiStanza can be edited when ecopath has loaded and the core has more than one stanza group
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded() And (Me.Core.nStanzas > 0)
+        cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded() = True) And _
+                      (Me.Core.nStanzas > 0)
     End Sub
 
     ''' <summary>

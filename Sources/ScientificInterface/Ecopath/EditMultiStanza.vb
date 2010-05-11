@@ -238,17 +238,28 @@ Namespace Ecopath
 
             Dim bEcosimLoaded As Boolean = Me.m_uic.Core.StateMonitor.HasEcosimLoaded()
             Dim stanza As cStanzaGroup = Me.m_grid.StanzaGroup
-            Dim source As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(stanza.iGroups(stanza.LeadingB))
+            Dim source As cEcoPathGroupInput = Nothing
 
-            Me.m_fpStanza.Value = Me.m_grid.StanzaGroup.Index
-            Me.m_fpK.Value = source.VBK
+            If (stanza.LeadingB > 0) Then
+                source = Me.m_uic.Core.EcoPathGroupInputs(stanza.iGroups(stanza.LeadingB))
+            End If
+
+            Me.m_fpStanza.Value = stanza.Index
+            If (source IsNot Nothing) Then
+                Me.m_fpK.Value = source.VBK
+                Me.m_fpK.Enabled = True
+            Else
+                Me.m_fpK.Value = cCore.NULL_VALUE
+                Me.m_fpK.Enabled = False
+            End If
+
             Me.m_fpRecPwr.Value = stanza.RecruitmentPower
             Me.m_fpBab.Value = stanza.BiomassAccumulationRate
             Me.m_fpWmatWinf.Value = stanza.WmatWinf
 
             If bEcosimLoaded Then
                 ' Only sync FF when sim scenario is loaded
-                Me.m_fpFF.Value = Me.m_grid.StanzaGroup.HatchCode
+                Me.m_fpFF.Value = stanza.HatchCode
             End If
 
             Me.m_cbFFecun.Checked = stanza.FixedFecundity
