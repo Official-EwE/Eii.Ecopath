@@ -27,6 +27,7 @@ Partial Class frmMSE
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSE))
         Me.m_btRun = New System.Windows.Forms.Button
         Me.m_lblNumTrials = New System.Windows.Forms.Label
         Me.m_hdrOutputs = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -45,56 +46,30 @@ Partial Class frmMSE
         '
         'm_btRun
         '
-        Me.m_btRun.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.m_btRun.Location = New System.Drawing.Point(0, 0)
-        Me.m_btRun.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
+        resources.ApplyResources(Me.m_btRun, "m_btRun")
         Me.m_btRun.Name = "m_btRun"
-        Me.m_btRun.Size = New System.Drawing.Size(75, 23)
-        Me.m_btRun.TabIndex = 0
-        Me.m_btRun.Text = "&Run"
         Me.m_btRun.UseVisualStyleBackColor = True
         '
         'm_lblNumTrials
         '
-        Me.m_lblNumTrials.AutoSize = True
-        Me.m_lblNumTrials.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lblNumTrials.Location = New System.Drawing.Point(306, 0)
+        resources.ApplyResources(Me.m_lblNumTrials, "m_lblNumTrials")
         Me.m_lblNumTrials.Name = "m_lblNumTrials"
-        Me.m_lblNumTrials.Size = New System.Drawing.Size(83, 23)
-        Me.m_lblNumTrials.TabIndex = 4
-        Me.m_lblNumTrials.Text = "&Number of trials:"
-        Me.m_lblNumTrials.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_hdrOutputs
         '
-        Me.m_hdrOutputs.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_hdrOutputs.Location = New System.Drawing.Point(5, 31)
+        resources.ApplyResources(Me.m_hdrOutputs, "m_hdrOutputs")
         Me.m_hdrOutputs.Name = "m_hdrOutputs"
-        Me.m_hdrOutputs.Size = New System.Drawing.Size(635, 18)
-        Me.m_hdrOutputs.TabIndex = 1
-        Me.m_hdrOutputs.Text = "Outputs"
-        Me.m_hdrOutputs.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_btnStop
         '
-        Me.m_btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.m_btnStop.Location = New System.Drawing.Point(81, 0)
-        Me.m_btnStop.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
+        resources.ApplyResources(Me.m_btnStop, "m_btnStop")
         Me.m_btnStop.Name = "m_btnStop"
-        Me.m_btnStop.Size = New System.Drawing.Size(75, 23)
-        Me.m_btnStop.TabIndex = 1
-        Me.m_btnStop.Text = "Stop"
         Me.m_btnStop.UseVisualStyleBackColor = True
         '
         'm_zgc
         '
-        Me.m_zgc.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.m_zgc, "m_zgc")
         Me.m_zgc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_zgc.Location = New System.Drawing.Point(5, 49)
-        Me.m_zgc.Margin = New System.Windows.Forms.Padding(0)
         Me.m_zgc.Name = "m_zgc"
         Me.m_zgc.ScrollGrace = 0
         Me.m_zgc.ScrollMaxX = 0
@@ -103,59 +78,27 @@ Partial Class frmMSE
         Me.m_zgc.ScrollMinX = 0
         Me.m_zgc.ScrollMinY = 0
         Me.m_zgc.ScrollMinY2 = 0
-        Me.m_zgc.Size = New System.Drawing.Size(635, 412)
-        Me.m_zgc.TabIndex = 2
         '
         'm_btnShowHide
         '
-        Me.m_btnShowHide.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.m_btnShowHide.Location = New System.Drawing.Point(162, 0)
-        Me.m_btnShowHide.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
+        resources.ApplyResources(Me.m_btnShowHide, "m_btnShowHide")
         Me.m_btnShowHide.Name = "m_btnShowHide"
-        Me.m_btnShowHide.Size = New System.Drawing.Size(110, 23)
-        Me.m_btnShowHide.TabIndex = 2
-        Me.m_btnShowHide.Text = "&Show/hide items..."
         Me.m_btnShowHide.UseVisualStyleBackColor = True
         '
         'm_ckSave
         '
-        Me.m_ckSave.AutoSize = True
-        Me.m_ckSave.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_ckSave.Enabled = False
-        Me.m_ckSave.Location = New System.Drawing.Point(247, 3)
+        resources.ApplyResources(Me.m_ckSave, "m_ckSave")
         Me.m_ckSave.Name = "m_ckSave"
-        Me.m_ckSave.Size = New System.Drawing.Size(84, 17)
-        Me.m_ckSave.TabIndex = 3
-        Me.m_ckSave.Text = "Save &output"
         Me.m_ckSave.UseVisualStyleBackColor = True
         '
         'm_lblStartYear
         '
-        Me.m_lblStartYear.AutoSize = True
-        Me.m_lblStartYear.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lblStartYear.Location = New System.Drawing.Point(470, 0)
+        resources.ApplyResources(Me.m_lblStartYear, "m_lblStartYear")
         Me.m_lblStartYear.Name = "m_lblStartYear"
-        Me.m_lblStartYear.Size = New System.Drawing.Size(55, 23)
-        Me.m_lblStartYear.TabIndex = 6
-        Me.m_lblStartYear.Text = "Start &year:"
-        Me.m_lblStartYear.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_tlpTop
         '
-        Me.m_tlpTop.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tlpTop.ColumnCount = 11
-        Me.m_tlpTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-        Me.m_tlpTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-        Me.m_tlpTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-        Me.m_tlpTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.m_tlpTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-        Me.m_tlpTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.m_tlpTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-        Me.m_tlpTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-        Me.m_tlpTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.m_tlpTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-        Me.m_tlpTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
+        resources.ApplyResources(Me.m_tlpTop, "m_tlpTop")
         Me.m_tlpTop.Controls.Add(Me.m_lblStartYear, 9, 0)
         Me.m_tlpTop.Controls.Add(Me.m_btnStop, 1, 0)
         Me.m_tlpTop.Controls.Add(Me.m_btnShowHide, 2, 0)
@@ -164,44 +107,26 @@ Partial Class frmMSE
         Me.m_tlpTop.Controls.Add(Me.m_lblNumTrials, 6, 0)
         Me.m_tlpTop.Controls.Add(Me.m_ckSave, 4, 0)
         Me.m_tlpTop.Controls.Add(Me.m_nudNumTrials, 7, 0)
-        Me.m_tlpTop.Location = New System.Drawing.Point(5, 5)
         Me.m_tlpTop.Name = "m_tlpTop"
-        Me.m_tlpTop.RowCount = 1
-        Me.m_tlpTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpTop.Size = New System.Drawing.Size(635, 23)
-        Me.m_tlpTop.TabIndex = 0
         '
         'm_nudStartYear
         '
-        Me.m_nudStartYear.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_nudStartYear.Location = New System.Drawing.Point(531, 0)
-        Me.m_nudStartYear.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
+        resources.ApplyResources(Me.m_nudStartYear, "m_nudStartYear")
         Me.m_nudStartYear.Name = "m_nudStartYear"
-        Me.m_nudStartYear.Size = New System.Drawing.Size(103, 20)
-        Me.m_nudStartYear.TabIndex = 7
         '
         'm_nudNumTrials
         '
-        Me.m_nudNumTrials.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_nudNumTrials.Location = New System.Drawing.Point(395, 0)
-        Me.m_nudNumTrials.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
+        resources.ApplyResources(Me.m_nudNumTrials, "m_nudNumTrials")
         Me.m_nudNumTrials.Name = "m_nudNumTrials"
-        Me.m_nudNumTrials.Size = New System.Drawing.Size(100, 20)
-        Me.m_nudNumTrials.TabIndex = 5
         '
         'frmMSE
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.AutoScroll = True
-        Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(649, 470)
         Me.Controls.Add(Me.m_tlpTop)
         Me.Controls.Add(Me.m_zgc)
         Me.Controls.Add(Me.m_hdrOutputs)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.Name = "frmMSE"
-        Me.Text = "Run MSE"
         Me.m_tlpTop.ResumeLayout(False)
         Me.m_tlpTop.PerformLayout()
         CType(Me.m_nudStartYear, System.ComponentModel.ISupportInitialize).EndInit()
