@@ -1426,7 +1426,15 @@ Namespace DataSources
 
                     ' Is valid stanza?
                     iLifeStage = CInt(Me.m_db.GetValue(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0})", CInt(rdStanza("StanzaID")))))
-                    'If (iLifeStage > 0) Then
+
+                    ' JS 11May2010: Stanza configs without stanza groups are now loaded.
+                    '               This *could* screw up the core calculations, but in a way
+                    '               it already did by allowing empty stanza groups to be defined
+                    '               in the system by allowing stanzaDS.nGroups to be non-zero,
+                    '               even if stanzaDS.MaxStanza were 0. Based on this behaviour
+                    '               there seems little harm by allowing the empty stanza group
+                    '               names to be available in the core and to an interface.
+                    ''If (iLifeStage > 0) Then
 
                     ' Read this stanza
                     iStanza += 1
@@ -1484,11 +1492,13 @@ Namespace DataSources
 
                     ' Update number of groups in this stanza
                     stanzaDS.Nstanza(iStanza) = iLifeStage
-                    'Debug.Assert(iLifeStage >= 1, String.Format("Stanza group {0}, ID {1} has no life stages!", stanzaDS.StanzaName(iStanza), stanzaDS.StanzaDBID(iStanza)))
-                    'Else
-                    'Me.LogMessage(String.Format("Stanza group {0}, ID {1} has no life stages. This group is not read", rdStanza("StanzaName"), rdStanza("StanzaID")), eMessageType.Any, eMessageImportance.Maintenance)
-                    'stanzaDS.Nsplit -= 1
-                    'End If
+
+                    ' JS11May2010 disabled (see iLifestage > 0 test above)
+                    ''Debug.Assert(iLifeStage >= 1, String.Format("Stanza group {0}, ID {1} has no life stages!", stanzaDS.StanzaName(iStanza), stanzaDS.StanzaDBID(iStanza)))
+                    ''Else
+                    ''Me.LogMessage(String.Format("Stanza group {0}, ID {1} has no life stages. This group is not read", rdStanza("StanzaName"), rdStanza("StanzaID")), eMessageType.Any, eMessageImportance.Maintenance)
+                    ''stanzaDS.Nsplit -= 1
+                    ''End If
 
                 End While
 
