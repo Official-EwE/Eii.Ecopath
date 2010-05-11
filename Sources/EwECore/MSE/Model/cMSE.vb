@@ -502,7 +502,7 @@ Namespace MSE
                     Dim DS As cTimeSeriesDataset
                     DS = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
                     For Each ts As cTimeSeries In DS
-                        If ts.TimeSeriesType = eTimeSeriesType.FishingMortality Then
+                        If ts.TimeSeriesType = eTimeSeriesType.FishingMortality And ts.Enabled = True Then
                             'there is an F in time series, so turn it off. 
                             ts.Enabled = False
                             bDataUnloaded = True
