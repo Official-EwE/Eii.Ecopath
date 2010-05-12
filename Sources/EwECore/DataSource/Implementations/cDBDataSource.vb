@@ -7412,7 +7412,7 @@ Namespace DataSources
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
 
-            Return Me.AddEcospaceRegion(strRegionName, iScenarioID, iScenarioID)
+            Return Me.AddEcospaceRegion(strRegionName, iScenarioID, iRegionID)
 
         End Function
 
