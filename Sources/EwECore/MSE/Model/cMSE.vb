@@ -1282,12 +1282,12 @@ Namespace MSE
 
             Next i
 
+            'Store the Biomass estimation difference
             Dim val As Single
             For igrp As Integer = 1 To Me.m_esData.nGroups
                 val = Biomass(igrp) / Me.m_data.Bestimate(igrp)
                 Me.m_data.BioEstStats.AddValue(igrp, Me.m_curYear, val)
             Next igrp
-
 
             Try
                 Me.m_core.PluginManager.MSEDoAssessment(Biomass)
