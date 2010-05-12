@@ -138,11 +138,11 @@ Namespace Database
             ''' the writer; the writer is left open for further database operations.
             ''' </summary>
             ''' ---------------------------------------------------------------
-            Public Sub Commit()
+            Public Function Commit() As Boolean
 
                 ' Optimizations
-                If Not Me.IsConnected Then Return
-                If Not Me.m_ds.HasChanges() Then Return
+                If Not Me.IsConnected Then Return False
+                If Not Me.m_ds.HasChanges() Then Return True
 
                 If Me.m_dtSchema IsNot Nothing Then
                     ' Fix unwanted nulls in new and modified rows
@@ -153,9 +153,9 @@ Namespace Database
                         End If
                     Next
                 End If
-                Me.m_db.CommitDataSet(Me.m_ds, Me.m_apt, Me.m_strTable)
+                Return Me.m_db.CommitDataSet(Me.m_ds, Me.m_apt, Me.m_strTable)
 
-            End Sub
+            End Function
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -164,23 +164,26 @@ Namespace Database
             ''' <param name="bSaveChanges">States whether changes need to be saved (true)
             ''' or discarded (false).</param>
             ''' ---------------------------------------------------------------
-            Public Sub Disconnect(Optional ByVal bSaveChanges As Boolean = True)
+            Public Function Disconnect(Optional ByVal bSaveChanges As Boolean = True) As Boolean
 
-                If Not Me.IsConnected Then Return
+                Dim bSucces As Boolean = False
+                If Not Me.IsConnected Then Return bSucces
 
                 If bSaveChanges Then
-                    Me.Commit()
+                    bSucces = Me.Commit()
                 End If
 
-                Me.m_db.ReleaseDataSet(Me.m_ds)
-                Me.m_db.ReleaseAdapter(Me.m_apt)
+                bSucces = bSucces And Me.m_db.ReleaseDataSet(Me.m_ds)
+                bSucces = bSucces And Me.m_db.ReleaseAdapter(Me.m_apt)
 
                 Me.m_dt = Nothing
                 Me.m_ds = Nothing
                 Me.m_apt = Nothing
                 Me.m_db = Nothing
                 Me.m_strTable = ""
-            End Sub
+
+                Return bSucces
+            End Function
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -801,8 +804,7 @@ Namespace Database
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ReleaseWriter(ByRef writer As cEwEDbWriter, Optional ByVal bSaveChanges As Boolean = True) As Boolean
-            writer.Disconnect(bSaveChanges)
-            Return True
+            Return writer.Disconnect(bSaveChanges)
         End Function
 
         ''' -------------------------------------------------------------------
