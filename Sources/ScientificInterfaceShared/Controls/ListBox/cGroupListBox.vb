@@ -79,7 +79,7 @@ Namespace Controls
         ''' </summary>
         ''' ---------------------------------------------------------------------------
         Protected Class cGroupItem
-            Inherits cCoreInputOutputListboxItem
+            Inherits cCoreInputOutputControlItem
 
             ''' <summary>A value to sort by.</summary>
             Private m_sValue As Single = 0.0

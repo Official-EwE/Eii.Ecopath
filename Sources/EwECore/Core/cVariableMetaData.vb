@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: cVariableMetaData.vb,v $
-' Revision 1.2  2009/06/20 20:57:33  jeroens
-' Fixed comments
-'
-' Revision 1.1  2008/09/26 07:30:13  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 
 ''' ---------------------------------------------------------------------------
@@ -35,7 +24,7 @@ Public Class cVariableMetaData
     ''' <summary>Allowed length of string values.</summary>
     Private m_iLength As Integer = 0
 
-#Region "Constructors"
+#Region " Constructors "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -86,7 +75,7 @@ Public Class cVariableMetaData
         Me.m_nullvalue = sValueDefault
     End Sub
 
-#End Region
+#End Region ' Constructors
 
 #Region " Operators "
 

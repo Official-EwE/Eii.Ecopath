@@ -130,7 +130,7 @@ Namespace Controls
         Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnAdd.Click, m_lbAvailableGroupsFleets.DoubleClick
 
-            Dim item As cCoreInputOutputListboxItem = DirectCast(Me.m_lbAvailableGroupsFleets.SelectedItem, cCoreInputOutputListboxItem)
+            Dim item As cCoreInputOutputControlItem = DirectCast(Me.m_lbAvailableGroupsFleets.SelectedItem, cCoreInputOutputControlItem)
             If (item IsNot Nothing) Then
                 Me.Add(item.Source)
             End If
@@ -219,7 +219,7 @@ Namespace Controls
             For iIndex = 1 To m_uic.Core.nGroups
                 obj = m_uic.Core.EcoPathGroupInputs(iIndex)
                 If (Me.m_grid.Find(obj) = False) Then
-                    Me.m_lbAvailableGroupsFleets.Items.Add(New cCoreInputOutputListboxItem(obj))
+                    Me.m_lbAvailableGroupsFleets.Items.Add(New cCoreInputOutputControlItem(obj))
                     If Object.ReferenceEquals(obj, objSelected) Then iSelectedIndex = m_lbAvailableGroupsFleets.Items.Count - 1
                 End If
             Next
@@ -227,7 +227,7 @@ Namespace Controls
             For iIndex = 1 To m_uic.Core.nFleets
                 obj = m_uic.Core.FleetInputs(iIndex)
                 If (Me.m_grid.Find(obj) = False) Then
-                    Me.m_lbAvailableGroupsFleets.Items.Add(New cCoreInputOutputListboxItem(obj))
+                    Me.m_lbAvailableGroupsFleets.Items.Add(New cCoreInputOutputControlItem(obj))
                     If Object.ReferenceEquals(obj, objSelected) Then iSelectedIndex = m_lbAvailableGroupsFleets.Items.Count - 1
                 End If
             Next

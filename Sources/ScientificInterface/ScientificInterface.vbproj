@@ -907,6 +907,9 @@
       <DependentUpon>frmApplyMedPrimaryProducer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRegion.resx">
+      <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSE\frmMSERecruitment.resx">
       <DependentUpon>frmMSERecruitment.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1127,6 +1130,12 @@
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedPrimaryProducer.vb">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRegion.Designer.vb">
+      <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRegion.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Tools\MSE\frmMSERecruitment.Designer.vb">
       <DependentUpon>frmMSERecruitment.vb</DependentUpon>

@@ -40,7 +40,7 @@ Public Class cEcospaceLayerIntegerNxM
                    ByVal varName As eVarNameFlags, _
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
                    Optional ByVal meta As cVariableMetaData = Nothing)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, iIndex, meta)
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, iIndex, GetType(Integer), meta)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -61,8 +61,7 @@ Public Class cEcospaceLayerIntegerNxM
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
                    Optional ByVal meta As cVariableMetaData = Nothing)
 
-        MyBase.New(theCore, iDBID, manager, varName, iIndex, meta)
-
+        MyBase.New(theCore, iDBID, manager, varName, iIndex, GetType(Integer), meta)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -76,7 +75,7 @@ Public Class cEcospaceLayerIntegerNxM
                    ByVal data As Integer(,), _
                    Optional ByVal meta As cVariableMetaData = Nothing)
 
-        MyBase.New(theCore, CObj(data), meta)
+        MyBase.New(theCore, CObj(data), GetType(Integer), meta)
 
     End Sub
 
@@ -180,7 +179,7 @@ Public Class cEcospaceLayerSingleNxM
     Public Sub New(ByRef theCore As cCore, ByRef manager As cEcospaceBasemap, _
             ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
             Optional ByVal meta As cVariableMetaData = Nothing)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, iIndex, meta)
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, iIndex, GetType(Single), meta)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -201,7 +200,7 @@ Public Class cEcospaceLayerSingleNxM
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
                    Optional ByVal meta As cVariableMetaData = Nothing)
 
-        MyBase.New(theCore, iDBID, manager, varName, iIndex, meta)
+        MyBase.New(theCore, iDBID, manager, varName, iIndex, GetType(Single), meta)
 
     End Sub
 
@@ -212,10 +211,11 @@ Public Class cEcospaceLayerSingleNxM
     ''' <param name="theCore"></param>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef theCore As cCore, ByRef data As Single(,), _
+    Public Sub New(ByRef theCore As cCore, _
+                   ByRef data As Single(,), _
                    Optional ByVal meta As cVariableMetaData = Nothing)
 
-        MyBase.New(theCore, CObj(data), meta)
+        MyBase.New(theCore, CObj(data), GetType(Single), meta)
 
     End Sub
 

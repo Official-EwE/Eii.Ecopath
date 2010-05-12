@@ -462,7 +462,7 @@ Public Class frmEcotracerOutput
             'only populate the region list if space is enabled
             Me.m_cmbRegions.Items.Add(My.Resources.HEADER_REGIONS_UNDEFINED)
             For irgn As Integer = 1 To Me.Core.nRegions
-                Me.m_cmbRegions.Items.Add(New cCoreInputOutputListboxItem(Me.Core.EcospaceRegions(irgn)))
+                Me.m_cmbRegions.Items.Add(New cCoreInputOutputControlItem(Me.Core.EcospaceRegions(irgn)))
             Next
             Me.m_cmbRegions.Items.Add(My.Resources.HEADER_REGIONS_ALL)
 

@@ -14,7 +14,7 @@ Namespace Controls
     ''' or combobox.
     ''' </summary>
     ''' =======================================================================
-    Public Class cCoreInputOutputListboxItem
+    Public Class cCoreInputOutputControlItem
 
         ''' <summary>The object that is wrapped.</summary>
         Private m_source As cCoreInputOutputBase = Nothing

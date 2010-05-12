@@ -16,7 +16,7 @@ Namespace Ecospace.Basemap.Layers
     ''' layers.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public MustInherit Class cLayerEditor
+    Public Class cLayerEditor
 
 #Region " Private vars "
 

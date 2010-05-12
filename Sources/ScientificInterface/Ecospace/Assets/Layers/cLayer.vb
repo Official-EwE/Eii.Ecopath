@@ -242,10 +242,10 @@ Namespace Ecospace.Basemap.Layers
             Me.m_editor = editor
             Me.m_valueSet = objValueSet
             Me.m_valueClear = objValueClear
+            Me.m_valueType = data.ValueType
             Me.m_propName = Me.m_uic.PropertyManager.GetProperty(source, varName)
 
             If (m_propName IsNot Nothing) Then
-                Me.m_valueType = m_propName.GetValueType()
                 AddHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
             End If
 
