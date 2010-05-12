@@ -39,8 +39,6 @@ Public Class cCoreController
         Me.m_monitor = monitor
     End Sub
 
-    Private m_bInUpdate As Boolean = False
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Check whether the EwE Core running state matches a given state, and if
@@ -63,9 +61,6 @@ Public Class cCoreController
         If (Me.m_monitor.IsExecutionStateSuperceded(iState)) And (bForceState = False) Then
             Return bSucces
         End If
-
-        If Me.m_bInUpdate Then Return bSucces
-        Me.m_bInUpdate = True
 
         Select Case iState
 
@@ -97,8 +92,6 @@ Public Class cCoreController
 
         End Select
 
-        Me.m_bInUpdate = False
-
         Return bSucces
 
     End Function
@@ -121,9 +114,6 @@ Public Class cCoreController
 #End Region ' Public access
 
 #Region " Private members "
-
-    ' TODO_JS: nov18o8 Use core mechanism to auto-update to desired run state. Do not run core models from this class, because plug-ins will need this too
-    ' TODO_JB: nov18o8 Buid core mechanism to auto-update to desired run state
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -205,7 +195,7 @@ Public Class cCoreController
         Dim appl As AppLauncher = AppLauncher.GetInstance()
 
         ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecospace model to load.
-        If LoadState(eCoreExecutionState.EcosimInitialized) Then
+        If LoadState(eCoreExecutionState.EcosimLoaded) Then
             ' Let AppLauncher perform the load as it sees fit
             bSuccess = appl.LoadEcospaceScenario(True)
         End If
