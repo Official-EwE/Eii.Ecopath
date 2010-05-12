@@ -1372,8 +1372,12 @@ Public Class cEcospaceDataStructures
     ''' <param name="nIndexes">Number of time steps the user defined to summarize the data over</param>
     ''' <remarks></remarks>
     Private Sub getStartEndSumIndex(ByRef startIndex As Integer, ByRef endIndex As Integer, ByRef nIndexes As Integer)
-        startIndex = CInt(Me.SumStart(0) * Me.NumStep) + 1
-        endIndex = CInt(Me.SumStart(1) * Me.NumStep) + 1
+
+        Dim nSteps As Integer = CInt(1.0 / Me.TimeStep)
+        startIndex = CInt(Me.SumStart(0) * nSteps) + 1
+        endIndex = CInt(Me.SumStart(1) * nSteps) + 1
+        If startIndex > Me.nTimeSteps Then startIndex = 1
+        If endIndex > Me.nTimeSteps Then endIndex = Me.nTimeSteps - Me.NumStep
         nIndexes = Me.NumStep
     End Sub
 
