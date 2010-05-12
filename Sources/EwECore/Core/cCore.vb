@@ -10894,6 +10894,8 @@ Public Class cCore
                         'user has changed the number of ecospace time steps per year
                         'resize the output data Ecospace will take care of itself
 
+                        Me.m_EcoSpaceData.setDefaultSummaryPeriod()
+
                         ' ToDo_JS: Test if core counter has been updated prior to calling this!
                         For Each objOutput As cEcospaceGroupOutput In m_EcospaceGroupOuputs
                             objOutput.Resize()
