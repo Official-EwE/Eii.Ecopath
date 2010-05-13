@@ -50,7 +50,7 @@ Namespace Ecosim
                 'Me(i, 0).Behaviors.Add(m_RowColClick)
 
                 ' # Group name row header cells
-                Me(i, 1) = New EwERowHeaderCell(source.Name)
+                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 'Me(i, 1).Behaviors.Add(m_RowColClick)
 
                 If source.PP < 1 Then

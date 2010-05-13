@@ -43,7 +43,7 @@ Namespace Ecopath.Output
             For iGroup = 1 To Core.nLivingGroups
                 group = Core.EcoPathGroupOutputs(iGroup)
                 Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
-                Me(iGroup, 1) = New EwERowHeaderCell(group.Name)
+                Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Next iGroup
 
             Me.FixedColumns = 2

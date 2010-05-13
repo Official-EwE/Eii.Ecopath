@@ -81,7 +81,7 @@ Namespace Ecospace
                 source = Me.Core.EcospaceGroups(i)
                 Me(i, 0) = New EwERowHeaderCell(i)
                 ' # Group name row header cells
-                Me(i, 1) = New EwERowHeaderCell(source.Name)
+                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
             'Row header cell - Habitat area

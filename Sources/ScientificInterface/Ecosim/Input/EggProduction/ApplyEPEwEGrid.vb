@@ -5,6 +5,7 @@ Option Strict On
 
 Imports EwECore
 Imports SourceGrid2
+Imports EwEUtils.Core
 
 #End Region
 
@@ -159,7 +160,7 @@ Namespace Ecosim
                 sg = Me.Core.StanzaGroups(pair.iStanzaGroup)
 
                 Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(iRow)
-                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(sg.Name)
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, sg, eVarNameFlags.Name)
 
                 ' Combo box with strings, no text box
                 If pair.ShapeID < 0 Then

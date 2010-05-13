@@ -49,7 +49,7 @@ Namespace Ecospace
                 source = Me.Core.EcospaceFleets(i)
                 Me(i, 0) = New EwERowHeaderCell(i)
                 '# Fleet name header 
-                Me(i, 1) = New EwERowHeaderCell(source.Name)
+                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
             'Dynamic column header - Habitats and MPAs

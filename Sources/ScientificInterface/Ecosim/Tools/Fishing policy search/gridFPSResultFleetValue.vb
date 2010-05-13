@@ -6,6 +6,7 @@ Option Explicit On
 Imports EwECore
 Imports EwECore.FishingPolicy
 Imports SourceGrid2.Cells.Real
+Imports EwEUtils.Core
 
 #End Region
 
@@ -51,9 +52,8 @@ Namespace Ecosim
             Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_PROFIT)
 
             For i As Integer = 1 To Core.nFleets
-                Dim fltName As String = Core.FleetInputs(i).Name
-                Me(i, 0) = New EwERowHeaderCell(fltName)
-                Me(0, i + 2) = New EwEColumnHeaderCell(fltName)
+                Me(i, 0) = New PropertyRowHeaderCell(Me.PropertyManager, Core.FleetInputs(i), eVarNameFlags.Name)
+                Me(0, i + 2) = New PropertyColumnHeaderCell(Me.PropertyManager, Core.FleetInputs(i), eVarNameFlags.Name)
             Next
 
         End Sub
