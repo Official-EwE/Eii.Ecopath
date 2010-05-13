@@ -172,15 +172,13 @@ Public Class gridSelectColorBlock
 
     Protected Overrides Sub InitStyle()
 
-        ' ToDo: localize this method
-
         If Me.m_parentSelector Is Nothing Then Return
 
         MyBase.InitStyle()
 
         Me.Redim(2, Me.m_parentSelector.NumBlocks + 1)
-        Me(0, 0) = New EwERowHeaderCell("CV")
-        Me(1, 0) = New EwERowHeaderCell("Color")
+        Me(0, 0) = New EwERowHeaderCell(My.Resources.HEADER_CV)
+        Me(1, 0) = New EwERowHeaderCell(My.Resources.HEADER_COLOR)
 
         'hide the first row
         ' JB: sourcegrid will explode if you try to edit the first row so hide it and put the cv values in the second row
