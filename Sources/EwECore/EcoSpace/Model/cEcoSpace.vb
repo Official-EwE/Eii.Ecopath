@@ -1394,8 +1394,9 @@ Public Class cEcoSpace
             SetHabGrad()
 
             m_Data.PredictEffort = True 'from EwE5
-            'mData.PredictEffort set in InitToDefaults()
-            '        'If chkPredictEffort.Value = Checked Then PredictEffort = 1 Else PredictEffort = 0
+
+            'jb 12-Ma7-2010 do a full initialization of Ecosim. This should have been handled by the framework...but sometimes it gets dropped
+            Me.m_Ecosim.Init(True)
 
             'first set density map for all pools to no movement equilibrium
             SetBiomassesEcospace()
