@@ -628,6 +628,10 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcotracerScenarioDefinitions()
             bSucces = bSucces And Me.LoadTimeSeriesDatasets()
 
+            ecopathDS.ActiveEcosimScenario = -1
+            ecopathDS.ActiveEcospaceScenario = -1
+            ecopathDS.ActiveEcotracerScenario = -1
+
             ' Clear changed admin
             Me.ClearChanged(s_EcopathComponents)
 
@@ -3034,6 +3038,7 @@ Namespace DataSources
 
             ' Set active scenario
             ecopathDS.ActiveEcosimScenario = Array.IndexOf(ecopathDS.EcosimScenarioDBID, iScenarioID)
+            ecopathDS.ActiveEcospaceScenario = -1
 
             bSucces = bSucces And Me.LoadEcosimGroups(iScenarioID)
             bSucces = bSucces And Me.LoadEcosimFleets(iScenarioID)
