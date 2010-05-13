@@ -38,7 +38,7 @@ Namespace Controls
         ''' </summary>
         Protected Class cCurveInfo
 
-            ' == Auto-properties ==
+            ' == Contextual properties ==
 
             Private m_source As ICoreInterface = Nothing
             Private m_iGroup As Integer = cCore.NULL_VALUE
@@ -50,6 +50,7 @@ Namespace Controls
             Private m_strLabel As String = ""
             Private m_colour As Color = Color.Aqua
             Private m_lineType As eLineType = eLineType.ModelData
+            Private m_liOffset As LineItem = Nothing
 
             ' == Status flags ==
 
@@ -221,6 +222,31 @@ Namespace Controls
                 End Set
             End Property
 
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the offset line that a given line was added to
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Property Offset() As LineItem
+                Get
+                    Return Me.m_liOffset
+                End Get
+                Set(ByVal value As LineItem)
+                    Me.m_liOffset = value
+                End Set
+            End Property
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get whether this line is cumulative to an <see cref="Offset">offset line</see>.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public ReadOnly Property IsCumulative() As Boolean
+                Get
+                    Return (Me.m_liOffset IsNot Nothing)
+                End Get
+            End Property
+
         End Class
 
 #End Region ' Helper classes
@@ -243,9 +269,9 @@ Namespace Controls
         Private m_bShowLegend As Boolean = True
 
         ' == Cursor ==
-        Private m_bShowCursor() As Boolean
-        Private m_sCursorPos() As Single
-        Private m_liCursor() As LineItem
+        Private m_abShowCursor() As Boolean
+        Private m_asCursorPos() As Single
+        Private m_aliCursors() As LineItem
 
         ' == Cumulative ==
         Private m_bCumulative() As Boolean
@@ -339,9 +365,9 @@ Namespace Controls
                 Me.m_zgc.MasterPane.PaneList.RemoveAt(iNumPanels)
             End While
 
-            ReDim Me.m_bShowCursor(iNumPanels)
-            ReDim Me.m_liCursor(iNumPanels)
-            ReDim Me.m_sCursorPos(iNumPanels)
+            ReDim Me.m_abShowCursor(iNumPanels)
+            ReDim Me.m_aliCursors(iNumPanels)
+            ReDim Me.m_asCursorPos(iNumPanels)
             ReDim Me.m_bCumulative(iNumPanels)
 
             AddHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
@@ -703,7 +729,7 @@ Namespace Controls
                                             ' thus stored with increasing indices in the list
                                             Dim iLastLine As Integer = Me.FindLastCurvePos(eLineType.ModelData, iPane)
 
-                                            If iLastLine > -1 Then
+                                            If (iLastLine > -1) Then
                                                 Me.SumLines(DirectCast(.CurveList(iLastLine), LineItem), li)
                                             End If
 
@@ -1067,66 +1093,6 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Find the next curve of a given <see cref="eLineType">type</see>.
-        ''' </summary>
-        ''' <param name="curvetype">The <see cref="eLineType">type</see> of the
-        ''' curve to locate.</param>
-        ''' <param name="iPane">Index of the graph pane to look into.</param>
-        ''' <param name="iStart">Search start index, 0 by default.</param>
-        ''' <returns>Index of the curve that matches the line type, or -1 if
-        ''' no such curve could be found.</returns>
-        ''' -------------------------------------------------------------------
-        Public Function FindNextCurvePos(ByVal curvetype As eLineType, _
-                                         Optional ByVal iPane As Integer = 1, _
-                                         Optional ByVal iStart As Integer = 0) As Integer
-
-            Dim pane As GraphPane = Me.GetPane(iPane)
-            Dim ci As CurveItem = Nothing
-
-            If (pane Is Nothing) Then Return -1
-
-            For iCurve As Integer = iStart To pane.CurveList.Count - 1
-                ci = pane.CurveList(iCurve)
-                If Me.CurveType(ci) = curvetype Then Return iCurve
-            Next
-            Return -1
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Find the previous curve of a given <see cref="eLineType">type</see>.
-        ''' </summary>
-        ''' <param name="curvetype">The <see cref="eLineType">type</see> of the
-        ''' curve to locate.</param>
-        ''' <param name="iPane">Index of the graph pane to look into.</param>
-        ''' <param name="iStart">Search start index, provide -1 to start searching
-        ''' at the end of the curve list.</param>
-        ''' <returns>Index of the curve that matches the line type, or -1 if
-        ''' no such curve could be found.</returns>
-        ''' -------------------------------------------------------------------
-        Public Function FindLastCurvePos(ByVal curvetype As eLineType, _
-                                          Optional ByVal iPane As Integer = 1, _
-                                          Optional ByVal iStart As Integer = -1) As Integer
-
-            Dim pane As GraphPane = Me.GetPane(iPane)
-            Dim ci As CurveItem = Nothing
-
-            If (pane Is Nothing) Then Return -1
-
-            ' Fix default
-            If (iStart = -1) Then iStart = pane.CurveList.Count
-
-            For iCurve As Integer = Math.Min(iStart, pane.CurveList.Count - 1) To 0 Step -1
-                ci = pane.CurveList(iCurve)
-                If Me.CurveType(ci) = curvetype Then Return iCurve
-            Next
-            Return -1
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Return the <see cref="eLineType">type</see> of a curve.
         ''' </summary>
         ''' <param name="ci">The curve to extract information for.</param>
@@ -1319,16 +1285,16 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Property ShowCursor(Optional ByVal iPane As Integer = 1) As Boolean
             Get
-                Return Me.m_bShowCursor(iPane)
+                Return Me.m_abShowCursor(iPane)
             End Get
             Set(ByVal value As Boolean)
                 Dim gp As GraphPane = Me.GetPane(iPane)
-                If (value <> Me.m_bShowCursor(iPane)) Then
+                If (value <> Me.m_abShowCursor(iPane)) Then
                     Me.RemoveCursor(iPane)
-                    Me.m_bShowCursor(iPane) = value
+                    Me.m_abShowCursor(iPane) = value
                     Me.SetCursor(iPane)
                 End If
-                Me.m_zgc.IsEnableZoom = (Me.m_bShowCursor(iPane) = False)
+                Me.m_zgc.IsEnableZoom = (Me.m_abShowCursor(iPane) = False)
                 Me.m_zgc.Cursor = DirectCast(IIf(value, Cursors.Hand, Cursors.Default), Cursor)
             End Set
         End Property
@@ -1344,13 +1310,13 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Property CursorPos(Optional ByVal iPane As Integer = 1) As Single
             Get
-                Return Me.m_sCursorPos(iPane)
+                Return Me.m_asCursorPos(iPane)
             End Get
             Set(ByVal value As Single)
-                If (value <> Me.m_sCursorPos(iPane)) Then
+                If (value <> Me.m_asCursorPos(iPane)) Then
                     Me.RemoveCursor(iPane)
-                    If value <> Me.m_sCursorPos(iPane) Then
-                        Me.m_sCursorPos(iPane) = value
+                    If value <> Me.m_asCursorPos(iPane) Then
+                        Me.m_asCursorPos(iPane) = value
                         RaiseEvent OnCursorPos(Me, iPane, value)
                     End If
                     Me.SetCursor(iPane)
@@ -1372,21 +1338,40 @@ Namespace Controls
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim sw As StreamWriter = Nothing
+            Dim model As cEwEModel = Me.Core.EwEModel
             Dim strFN As String = ""
+            Dim strBit As String = ""
 
+            ' Concoct file name for graph
+            strFN = model.Name & "_graph"
+            If Me.NumPanes = 1 Then
+                strBit = Me.GetPane(1).Title.Text
+            Else
+                strBit = Me.m_zgc.MasterPane.Title.Text
+            End If
+            If Not String.IsNullOrEmpty(strBit) Then strFN &= "_" & strBit
             If Me.m_zgc.MasterPane.PaneList.Count = 1 Then
-                strFN = FileUtilities.ToValidFileName(Me.m_zgc.MasterPane.Title.Text, False)
+                strFN = FileUtilities.ToValidFileName(strFN, False)
             End If
 
             cmdFS.Invoke(strFN, My.Resources.FILEFILTER_CSV, 0)
 
             If cmdFS.Result = DialogResult.OK Then
-                sw = New StreamWriter(cmdFS.FileName)
-                If (sw IsNot Nothing) Then
-                    ' Code to write the stream goes here.
-                    sw.Write(ExtractData(Me.m_zgc))
-                    sw.Close()
-                End If
+                Try
+                    sw = New StreamWriter(cmdFS.FileName, False)
+                    If (sw IsNot Nothing) Then
+                        Try
+                            ' Write the stream
+                            sw.Write(Me.ExtractData())
+                        Catch ex As Exception
+                            ' Woops
+                        End Try
+                        ' Always close
+                        sw.Close()
+                    End If
+                Catch ex As Exception
+
+                End Try
             End If
 
             Return True
@@ -1397,48 +1382,63 @@ Namespace Controls
         ''' <summary>
         ''' Extract the data in the graph to a comma-separated string.
         ''' </summary>
-        ''' <param name="z">The graph to extract the data from.</param>
         ''' <returns>A massive string. Format to be described</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function ExtractData(ByVal z As ZedGraphControl) As String
+        Public Function ExtractData() As String
 
             Dim cult As CultureInfo = Thread.CurrentThread.CurrentUICulture
             Dim nfi As NumberFormatInfo = DirectCast(cult.NumberFormat.Clone(), NumberFormatInfo)
-            Dim sb As New StringBuilder
+            Dim sb As New StringBuilder()
+            Dim bIncludeCurve As Boolean = False
+            Dim info As cCurveInfo = Nothing
             Dim sbX As StringBuilder = Nothing
             Dim sbY As StringBuilder = Nothing
+            Dim dValue As Double = 0.0#
             Dim gp As GraphPane = Nothing
 
             nfi.NumberDecimalSeparator = "."
 
-            ' Safety first
-            If z IsNot Nothing Then
-                ' Each Zedgraph Plane
-                For Each p As ZedGraph.PaneBase In z.MasterPane.PaneList
-                    ' Check if it's a graphpane
-                    If TypeOf (p) Is GraphPane Then
-                        gp = DirectCast(p, GraphPane)
+            ' For each pane
+            For iPane As Integer = 1 To Me.NumPanes
+                ' Get pane
+                gp = Me.GetPane(iPane)
+                ' Print the title
+                sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), gp.Title.Text))
+                ' For each curve
+                For Each ci As CurveItem In gp.CurveList
+                    ' Get curve info
+                    info = Me.CurveInfo(ci)
+                    ' Skip cursors
+                    bIncludeCurve = (Array.IndexOf(Me.m_aliCursors, ci) = -1)
+                    ' ToDo: filter lines by line type?
 
-                        ' Print the title
-                        sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), p.Title.Text))
-                        For Each ci As CurveItem In gp.CurveList
-                            ' Print Item
-                            sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), ci.Label.Text))
-                            sbX = New StringBuilder("x")
-                            sbY = New StringBuilder("y")
-                            For i As Integer = 0 To ci.NPts - 1
-                                sbX.Append(", ")
-                                sbX.Append(Convert.ToString(ci.Points(i).X, nfi))
-                                sbY.Append(", ")
-                                sbY.Append(Convert.ToString(ci.Points(i).Y, nfi))
-                            Next
+                    ' Should curve be included?
+                    If bIncludeCurve Then
 
-                            sb.AppendLine(sbX.ToString())
-                            sb.AppendLine(sbY.ToString())
+                        ' Print Item
+                        sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), ci.Label.Text))
+                        sbX = New StringBuilder("x")
+                        sbY = New StringBuilder("y")
+                        For i As Integer = 0 To ci.NPts - 1
+                            sbX.Append(", ")
+                            sbX.Append(Convert.ToString(ci.Points(i).X, nfi))
+                            sbY.Append(", ")
+
+                            ' JS 13May10: Addressed issue 645 - do not export as cumulative data
+                            dValue = ci.Points(i).Y
+                            If (info IsNot Nothing) Then
+                                If (info.IsCumulative) Then
+                                    dValue -= info.Offset.Points(i).Y
+                                End If
+                            End If
+                            sbY.Append(Convert.ToString(dValue, nfi))
                         Next
+
+                        sb.AppendLine(sbX.ToString())
+                        sb.AppendLine(sbY.ToString())
                     End If
                 Next
-            End If
+            Next
 
             Return sb.ToString()
         End Function
@@ -1554,7 +1554,7 @@ Namespace Controls
                 'End If
 
                 ' Cursor?
-                If Me.m_bShowCursor(iPane) Then
+                If Me.m_abShowCursor(iPane) Then
                     Me.CursorPos = GraphToScale(New PointF(args.Location.X, args.Location.Y)).X
                     Return True
                 End If
@@ -1579,7 +1579,7 @@ Namespace Controls
                 'End If
 
                 ' Cursor?
-                If Me.m_bShowCursor(iPane) Then
+                If Me.m_abShowCursor(iPane) Then
                     Me.CursorPos = GraphToScale(New PointF(args.Location.X, args.Location.Y)).X
                     Return True
                 End If
@@ -1591,7 +1591,7 @@ Namespace Controls
         Private Function OnMouseUpEvent(ByVal zg As ZedGraphControl, ByVal args As MouseEventArgs) As Boolean
             Dim iPanel As Integer = GetPaneAtPoint(args.Location)
             If iPanel > -1 Then
-                If Me.m_bShowCursor(iPanel) Then
+                If Me.m_abShowCursor(iPanel) Then
                     Me.CursorPos = CSng(Math.Round(Me.CursorPos))
                     Return True
                 End If
@@ -1646,6 +1646,106 @@ Namespace Controls
             Return li
 
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Find the next curve of a given <see cref="eLineType">type</see>.
+        ''' </summary>
+        ''' <param name="curvetype">The <see cref="eLineType">type</see> of the
+        ''' curve to locate.</param>
+        ''' <param name="iPane">Index of the graph pane to look into.</param>
+        ''' <param name="iStart">Search start index, 0 by default.</param>
+        ''' <returns>Index of the curve that matches the line type, or -1 if
+        ''' no such curve could be found.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Function FindNextCurvePos(ByVal curvetype As eLineType, _
+                                         Optional ByVal iPane As Integer = 1, _
+                                         Optional ByVal iStart As Integer = 0) As Integer
+
+            Dim pane As GraphPane = Me.GetPane(iPane)
+            Dim ci As CurveItem = Nothing
+
+            If (pane Is Nothing) Then Return -1
+
+            For iCurve As Integer = iStart To pane.CurveList.Count - 1
+                ci = pane.CurveList(iCurve)
+                If Me.CurveType(ci) = curvetype Then Return iCurve
+            Next
+            Return -1
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Find the previous curve of a given <see cref="eLineType">type</see>.
+        ''' </summary>
+        ''' <param name="curvetype">The <see cref="eLineType">type</see> of the
+        ''' curve to locate.</param>
+        ''' <param name="iPane">Index of the graph pane to look into.</param>
+        ''' <param name="iStart">Search start index, provide -1 to start searching
+        ''' at the end of the curve list.</param>
+        ''' <returns>Index of the curve that matches the line type, or -1 if
+        ''' no such curve could be found.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Function FindLastCurvePos(ByVal curvetype As eLineType, _
+                                          Optional ByVal iPane As Integer = 1, _
+                                          Optional ByVal iStart As Integer = -1) As Integer
+
+            Dim pane As GraphPane = Me.GetPane(iPane)
+            Dim ci As CurveItem = Nothing
+
+            If (pane Is Nothing) Then Return -1
+
+            ' Fix default
+            If (iStart = -1) Then iStart = pane.CurveList.Count
+
+            For iCurve As Integer = Math.Min(iStart, pane.CurveList.Count - 1) To 0 Step -1
+                ci = pane.CurveList(iCurve)
+                If Me.CurveType(ci) = curvetype Then Return iCurve
+            Next
+            Return -1
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return all <see cref="LineItem">line items</see> of a given 
+        ''' <see cref="eLineType">line type</see>.
+        ''' </summary>
+        ''' <param name="curvetype">The <see cref="eLineType">line type</see> of
+        ''' lines to retrieve.</param>
+        ''' <param name="iPane">Index of the pane to obtain lines from.</param>
+        ''' <returns>An array of <see cref="LineItem">line item</see> instances.</returns>
+        ''' <remarks>Lines that do not have <see cref="cCurveInfo">curve info</see>
+        ''' will be returned when line type <see cref="eLineType.NotSet">NotSet</see>
+        ''' is specified.</remarks>
+        ''' ------------------------------------------------------------------- 
+        Protected Function GetLineItems(ByVal curvetype As eLineType, _
+                                        Optional ByVal iPane As Integer = 1) As LineItem()
+
+            Dim lLines As New List(Of LineItem)
+            Dim li As LineItem = Nothing
+            Dim info As cCurveInfo = Nothing
+
+            For Each ci As CurveItem In Me.GetPane(iPane).CurveList
+                If (TypeOf ci Is LineItem) Then
+                    li = DirectCast(ci, LineItem)
+                    info = Me.CurveInfo(ci)
+                    If (info Is Nothing) Then
+                        If (curvetype = eLineType.NotSet) Then
+                            lLines.Add(li)
+                        End If
+                    Else
+                        If (curvetype = info.LineType) Then
+                            lLines.Add(li)
+                        End If
+                    End If
+                End If
+            Next
+            Return lLines.ToArray
+
+        End Function
+
 
 #Region " Styling "
 
@@ -1849,11 +1949,14 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Protected Overridable Sub SumLines(ByVal liOffset As LineItem, ByVal lTarget As LineItem)
 
+            Dim ci As cCurveInfo = Me.CurveInfo(lTarget)
+
             If (liOffset Is Nothing) Or (lTarget Is Nothing) Then Return
 
             For iPt As Integer = 0 To lTarget.Points.Count - 1
                 lTarget(iPt).Y += liOffset.Points(iPt).Y
             Next
+            ci.Offset = liOffset
 
         End Sub
 
@@ -1870,31 +1973,31 @@ Namespace Controls
         End Function
 
         Protected Sub RemoveCursor(ByVal iPane As Integer)
-            If Me.m_bShowCursor(iPane) Then
-                Me.GetPane(iPane).CurveList.Remove(Me.m_liCursor(iPane))
-                Me.m_liCursor(iPane) = Nothing
+            If Me.m_abShowCursor(iPane) Then
+                Me.GetPane(iPane).CurveList.Remove(Me.m_aliCursors(iPane))
+                Me.m_aliCursors(iPane) = Nothing
                 Me.m_zgc.Invalidate()
             End If
         End Sub
 
         Protected Sub SetCursor(ByVal iPane As Integer)
-            If Me.m_bShowCursor(iPane) Then
+            If Me.m_abShowCursor(iPane) Then
 
                 Dim gp As GraphPane = Me.GetPane(iPane)
                 Dim dYMin As Double = gp.YAxis.Scale.Min
                 Dim dYMax As Double = gp.YAxis.Scale.Max
 
                 ' Clean up if necessary
-                If Me.m_liCursor(iPane) IsNot Nothing Then Me.RemoveCursor(iPane)
+                If Me.m_aliCursors(iPane) IsNot Nothing Then Me.RemoveCursor(iPane)
                 ' Set cursor
-                Me.m_liCursor(iPane) = New LineItem(My.Resources.GENERIC_TEXT_CURSOR, _
-                        New Double() {Me.m_sCursorPos(iPane), Me.m_sCursorPos(iPane)}, _
+                Me.m_aliCursors(iPane) = New LineItem(My.Resources.GENERIC_TEXT_CURSOR, _
+                        New Double() {Me.m_asCursorPos(iPane), Me.m_asCursorPos(iPane)}, _
                         New Double() {dYMin, dYMax}, _
                         Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), _
                         SymbolType.None, _
                         3)
 
-                gp.CurveList.Add(Me.m_liCursor(iPane))
+                gp.CurveList.Add(Me.m_aliCursors(iPane))
                 Me.m_zgc.Invalidate()
             End If
         End Sub
