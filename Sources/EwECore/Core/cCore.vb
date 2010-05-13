@@ -2328,6 +2328,10 @@ Public Class cCore
         ' Update core state
         If Not Me.SaveChanges() Then Return False
 
+        Me.m_EcoPathData.ActiveEcosimScenario = -1
+        Me.m_EcoPathData.ActiveEcospaceScenario = -1
+        Me.m_EcoPathData.ActiveEcotracerScenario = -1
+
         'm_bCoreIsInit was set in InitCore()
         If Not m_bCoreIsInit Then
             'core has not been initialized this can not be run
@@ -4888,7 +4892,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSimScenario">Scenario</see> to load.</param>
     ''' <returns>True if succesful.</returns>
-    Public Function LoadEcosimScenario(ByRef scenario As cEcoSimScenario) As Boolean
+    Public Function LoadEcosimScenario(ByVal scenario As cEcoSimScenario) As Boolean
         Return LoadEcosimScenario(scenario.Index)
     End Function
 
@@ -4989,6 +4993,9 @@ Public Class cCore
 
             ' Update core state
             Me.m_StateMonitor.SetEcoSimLoaded(False)
+            Me.m_EcoPathData.ActiveEcosimScenario = -1
+            Me.m_EcoPathData.ActiveEcospaceScenario = -1
+            Me.m_EcoPathData.ActiveEcotracerScenario = -1
 
             If Not m_bEcoSimIsInit Then
                 Debug.Assert(False, "Failed to LoadScenario(). EcoSim must be initialized first.")
@@ -5090,7 +5097,9 @@ Public Class cCore
 
             ' Update core state
             Me.m_StateMonitor.SetEcoSimLoaded(True)
-            Me.m_StateMonitor.SetEcoSimInitialized()
+
+            ' JS12May10: EcosimLoaded implies EcosimInitialized
+            'Me.m_StateMonitor.SetEcoSimInitialized()
 
             Return True
 
@@ -7292,7 +7301,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSpaceScenario">Scenario</see> to load.</param>
     ''' <returns>True if succesful.</returns>
-    Public Function LoadEcospaceScenario(ByRef scenario As cEcospaceScenario) As Boolean
+    Public Function LoadEcospaceScenario(ByVal scenario As cEcospaceScenario) As Boolean
         Return LoadEcospaceScenario(scenario.Index)
     End Function
 
@@ -7314,17 +7323,17 @@ Public Class cCore
 
         Try
 
-
             'For an Ecospace scenario to load there must be an Ecosim scenario loaded
             If Not Me.m_StateMonitor.HasEcosimLoaded() Then
                 'No implicit running of Ecosim because we do not know which Ecosim scenario to run
                 Debug.Assert(False, "LoadEcospaceScenario() Load  Ecosim first. This is temporary.")
-                SendEcospaceLoadMessage(iScenario, "Load Ecosim first. This is temporary.")
+                'SendEcospaceLoadMessage(iScenario, "Load Ecosim first. This is temporary.")
                 Return False
             End If
 
             ' Update core state
             Me.m_StateMonitor.SetEcospaceLoaded(False)
+            Me.m_EcoPathData.ActiveEcospaceScenario = -1
 
             ds = DirectCast(DataSource, IEcospaceDatasource)
             If Not ds.LoadEcospaceScenario(Me.m_EcoPathData.EcospaceScenarioDBID(iScenario)) Then
