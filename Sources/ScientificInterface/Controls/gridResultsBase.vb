@@ -12,6 +12,10 @@ Imports ScientificInterfaceShared.Style
 
 Namespace Controls
 
+    ''' <summary>
+    ''' Grid base class for presenting model outputs. The grid offers built-in
+    ''' support for totalling columns.
+    ''' </summary>
     <CLSCompliant(False)> _
     Public MustInherit Class gridResultsBase
         : Inherits EwEGrid
@@ -27,7 +31,7 @@ Namespace Controls
         ''' <param name="astrNames"></param>
         ''' <param name="aiCalc">Array with column indices to render as computed.</param>
         ''' <remarks></remarks>
-        Protected Sub InitCells(ByVal iRow As Integer, ByRef astrNames() As String, ByVal aiCalc() As Integer)
+        Protected Sub InitCells(ByVal iRow As Integer, ByVal astrNames() As String, ByVal aiCalc() As Integer)
 
             Dim cell As EwECell = Nothing
             Dim cnt As Integer = Me.RowsCount - 1
