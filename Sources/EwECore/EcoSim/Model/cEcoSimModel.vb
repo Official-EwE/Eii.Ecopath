@@ -1178,8 +1178,6 @@ Namespace Ecosim
 
             Derivt(t + DeltaT, yt, dyt)
 
-            '  Derivt t, b(), dydx()
-            'may have to call deriv here again to reset consumption and loss rates?
             For i = 1 To nGroups 'N
                 'jb set loss to the loss after the first call the Derivt()
                 'loss is then used by SplitUpdate()
@@ -1194,8 +1192,13 @@ Namespace Ecosim
                 End If
             Next
 
-            'ToDo_jb 23-April-2010 Added call to derivt with Blast + BThis / 2 (average B)
-            'when in subtimesteps to compute mPred() with reasonable biomass
+            'Are we running with more than 12 timesteps per year
+            If Me.m_Data.StepsPerMonth > 1 Then
+                'Yes call Derivt() to recompute mPred() with biomass at end of timestep
+                Me.Derivt(t + DeltaT, B, dydx)
+                'reset loss to start value for SplitUpdate() after Derivt()
+                For i = 1 To nGroups : m_Data.loss(i) = LossSt(i) : Next
+            End If
 
             'average biomass and loss to a monthly value for SplitUpdate
             avgMonthlyStanzaVars(B, UpdateStanzaGroups)
