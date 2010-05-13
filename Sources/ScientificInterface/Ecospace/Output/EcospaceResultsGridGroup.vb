@@ -102,10 +102,10 @@ Namespace Ecospace
 
             Me.m_iNumVisibleGroups = 0
             For iGroup As Integer = 1 To core.nGroups
-                If Me.StyleGuide.GroupVisible(iGroup) Then
-                    lName.Add(core.EcospaceGroupOutput(iGroup).Name)
-                    m_iNumVisibleGroups += 1
-                End If
+                'If Me.StyleGuide.GroupVisible(iGroup) Then
+                lName.Add(core.EcospaceGroupOutput(iGroup).Name)
+                m_iNumVisibleGroups += 1
+                ' End If
 
             Next
 
@@ -128,39 +128,39 @@ Namespace Ecospace
             For iGroup As Integer = 1 To core.nGroups
 
                 'Only display selected groups
-                If Me.StyleGuide.GroupVisible(iGroup) Then
-                    irow += 1
-                    source = core.EcospaceGroupOutput(iGroup)
+                'If Me.StyleGuide.GroupVisible(iGroup) Then
+                irow += 1
+                source = core.EcospaceGroupOutput(iGroup)
 
-                    SetCellValue(irow, 2, source.BiomassStart, totalValue)
-                    SetCellValue(irow, 3, source.BiomassEnd, totalValue)
+                SetCellValue(irow, 2, source.BiomassStart, totalValue)
+                SetCellValue(irow, 3, source.BiomassEnd, totalValue)
 
-                    'The logic was pulled out from EwE5
-                    If source.BiomassStart > 0 And source.BiomassEnd > 0 Then
-                        SetCellValue(irow, 4, CSng(source.BiomassEnd / source.BiomassStart), totalValue)
-                    End If
-
-                    Dim fCS As Single = source.CatchStart(Me.SelFleetIndex)
-                    SetCellValue(irow, 5, fCS, totalValue)
-
-                    Dim fCE As Single = source.CatchEnd(Me.SelFleetIndex)
-                    SetCellValue(irow, 6, fCE, totalValue)
-
-                    If fCS > 0 And fCE > 0 Then
-                        SetCellValue(irow, 7, CSng(fCE / fCS), totalValue)
-                    End If
-
-                    Dim fVS As Single = source.ValueStart(Me.SelFleetIndex)
-                    SetCellValue(irow, 8, fVS, totalValue)
-
-                    Dim fVE As Single = source.ValueEnd(Me.SelFleetIndex)
-                    SetCellValue(irow, 9, fVE, totalValue)
-
-                    If fVS > 0 And fVE > 0 Then
-                        SetCellValue(irow, 10, CSng(fVE / fVS), totalValue)
-                    End If
-
+                'The logic was pulled out from EwE5
+                If source.BiomassStart > 0 And source.BiomassEnd > 0 Then
+                    SetCellValue(irow, 4, CSng(source.BiomassEnd / source.BiomassStart), totalValue)
                 End If
+
+                Dim fCS As Single = source.CatchStart(Me.SelFleetIndex)
+                SetCellValue(irow, 5, fCS, totalValue)
+
+                Dim fCE As Single = source.CatchEnd(Me.SelFleetIndex)
+                SetCellValue(irow, 6, fCE, totalValue)
+
+                If fCS > 0 And fCE > 0 Then
+                    SetCellValue(irow, 7, CSng(fCE / fCS), totalValue)
+                End If
+
+                Dim fVS As Single = source.ValueStart(Me.SelFleetIndex)
+                SetCellValue(irow, 8, fVS, totalValue)
+
+                Dim fVE As Single = source.ValueEnd(Me.SelFleetIndex)
+                SetCellValue(irow, 9, fVE, totalValue)
+
+                If fVS > 0 And fVE > 0 Then
+                    SetCellValue(irow, 10, CSng(fVE / fVS), totalValue)
+                End If
+
+                'End If
 
             Next
 
