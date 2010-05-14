@@ -152,20 +152,19 @@ Public Class frmMSE
     Private Sub runMSE()
 
         Try
+            If Me.m_MSE.ValidateRun() Then
+                Me.m_MSE.Connect(AddressOf Me.onMSECallBack, Nothing)
 
-            Me.m_MSE.Connect(AddressOf Me.onMSECallBack, Nothing)
+                cApplicationStatusNotifier.SetStatusText("Initializing MSE...")
 
-            Me.m_MSE.ValidateRun()
+                'init the graphs for a new run
+                Me.m_plotter.Clear()
 
-            cApplicationStatusNotifier.SetStatusText("Initializing MSE...")
-
-            'init the graphs for a new run
-            Me.m_plotter.Clear()
-
-            Me.m_MSE.Run()
+                Me.m_MSE.Run()
+            End If
 
         Catch ex As Exception
-
+            System.Console.WriteLine(Me.ToString & ".runMSE() Exeption: " & ex.Message)
         End Try
 
     End Sub
