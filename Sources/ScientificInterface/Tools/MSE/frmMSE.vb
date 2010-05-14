@@ -271,7 +271,8 @@ Public Class frmMSE
     End Sub
 
 
-    Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
+    Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnStop.Click
         Me.m_MSE.ModelParameters.StopRun = True
     End Sub
 
