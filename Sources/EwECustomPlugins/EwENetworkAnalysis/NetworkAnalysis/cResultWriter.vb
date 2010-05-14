@@ -112,8 +112,11 @@ Public Class cResultWriter
         Dim sb As New StringBuilder()
         Dim asValues(cNUMCOLS) As Single
         Dim iMonth As Integer = 0
+        Dim iYear As Integer = 0
         Dim bLineAdded As Boolean = False
 
+        sb.Append(My.Resources.COL_HDR_YEAR)
+        sb.Append(", ")
         sb.Append(My.Resources.COL_HDR_THROUGHPUT)
         sb.Append(", ")
         sb.Append(My.Resources.COL_HDR_CAPACITY_ECOSIM)
@@ -168,6 +171,8 @@ Public Class cResultWriter
 
             ' Calc month
             iMonth = (i - 1) Mod cCore.N_MONTHS
+            iYear = CInt(Me.m_manager.Core.EcosimFirstYear + Math.Floor((i - 1) / cCore.N_MONTHS))
+
             bLineAdded = False
 
             ' For every var to output
@@ -213,12 +218,22 @@ Public Class cResultWriter
                     If (iMonth = (cCore.N_MONTHS - 1)) Then
                         ' #Yes: average value and add it
                         asValues(j) /= cCore.N_MONTHS
+                        ' Add year label first
+                        If (j = 1) Then
+                            sb.Append(iYear)
+                            sb.Append(", ")
+                        End If
                         sb.Append(cStringUtils.FormatSingle(asValues(j)))
                         sb.Append(", ")
                         bLineAdded = True
                     End If
                 Else
-                    ' #No: add value
+                    ' #No: add year label
+                    If (j = 1) Then
+                        sb.Append(iYear & ":" & (iMonth + 1))
+                        sb.Append(", ")
+                    End If
+                    ' Add value
                     sb.Append(cStringUtils.FormatSingle(asValues(j)))
                     sb.Append(", ")
                     bLineAdded = True
@@ -242,8 +257,11 @@ Public Class cResultWriter
         Dim sb As New StringBuilder()
         Dim asValues(cNUMCOLS) As Single
         Dim iMonth As Integer = 0
+        Dim iYear As Integer = 0
         Dim bLineAdded As Boolean = False
 
+        sb.Append(My.Resources.COL_HDR_YEAR)
+        sb.Append(", ")
         sb.Append(My.Resources.COL_HDR_THROUGHPUT)
         sb.Append(", ")
         sb.Append(My.Resources.COL_HDR_CAPACITY_ECOSIM)
@@ -301,6 +319,8 @@ Public Class cResultWriter
 
             ' Calc month
             iMonth = (i - 1) Mod cCore.N_MONTHS
+            iYear = CInt(Me.m_manager.Core.EcosimFirstYear + Math.Floor((i - 1) / cCore.N_MONTHS))
+
             bLineAdded = False
 
             ' For every var to output
@@ -346,14 +366,25 @@ Public Class cResultWriter
                 If (bAnnualAverage) Then
                     ' #Yes: processing december?
                     If (iMonth = (cCore.N_MONTHS - 1)) Then
-                        ' #Yes: average value and add it
+                        ' #Yes: add year label first
+                        If (j = 1) Then
+                            sb.Append(iYear)
+                            sb.Append(", ")
+                        End If
+                        ' Add average value and add it
                         asValues(j) /= cCore.N_MONTHS
                         sb.Append(cStringUtils.FormatSingle(asValues(j)))
                         sb.Append(", ")
                         bLineAdded = True
                     End If
                 Else
-                    ' #No: add value
+                    ' #No: 
+                    ' First add year
+                    If (j = 1) Then
+                        sb.Append(iYear & ":" & (iMonth + 1))
+                        sb.Append(", ")
+                    End If
+                    ' Add value
                     sb.Append(cStringUtils.FormatSingle(asValues(j)))
                     sb.Append(", ")
                     bLineAdded = True
