@@ -57,6 +57,11 @@ Namespace MSE
         'ToDo_jb 6-May-2010 cMSE Histogram can deal with zero values
         'ToDo_jb 6-May-2010 cMSE Plugin data is used for value when selected
 
+        'ToDo_jb 13-May-2010 cMSE Plugin points need xml comments
+        'ToDo_jb 13-May-2010 cMSE No reg options should ask...
+
+
+
         Private Enum eResultsData
             GroupQuota
             FleetQuota
