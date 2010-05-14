@@ -1563,7 +1563,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Both Fixed Escapement and Quota Options have been set for group(s) &apos;{0}&apos; only the Fixed Escapement regulations will be used..
+        '''  Looks up a localized string similar to Fixed escapement, fixed fishing mortalities and  have all been set for group(s) &apos;{0}&apos; only the Fixed Escapement regulations will be used..
         '''</summary>
         Friend Shared ReadOnly Property MSE_VALIDATION_FIXEDESCAPEMENT() As String
             Get
@@ -1572,7 +1572,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to No regulatory options have been set. Please set a Quota regulation in the Regulatory options form for at least one fleet..
+        '''  Looks up a localized string similar to No regulatory control types have been set. Do you want to cancel the run?.
         '''</summary>
         Friend Shared ReadOnly Property MSE_VALIDATION_QUOTAS() As String
             Get

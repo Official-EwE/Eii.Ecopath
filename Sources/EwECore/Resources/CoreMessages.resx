@@ -797,11 +797,11 @@ System Error: {0}</value>
     <comment>{0}=fleet names</comment>
   </data>
   <data name="MSE_VALIDATION_FIXEDESCAPEMENT" xml:space="preserve">
-    <value>Both Fixed Escapement and Quota Options have been set for group(s) '{0}' only the Fixed Escapement regulations will be used.</value>
+    <value>Fixed escapement, fixed fishing mortalities and  have all been set for group(s) '{0}' only the Fixed Escapement regulations will be used.</value>
     <comment>{0}=group names</comment>
   </data>
   <data name="MSE_VALIDATION_QUOTAS" xml:space="preserve">
-    <value>No regulatory options have been set. Please set a Quota regulation in the Regulatory options form for at least one fleet.</value>
+    <value>No regulatory control types have been set. Do you want to cancel the run?</value>
     <comment>No Quota options have been selected</comment>
   </data>
   <data name="DATABASE_BACKUP_PROMPT" xml:space="preserve">
