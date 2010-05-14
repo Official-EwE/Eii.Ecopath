@@ -326,15 +326,12 @@ Namespace MSE
 
         Public Function ValidateRun() As Boolean
 
-            ' ToDo_JS: globalize this method
-
             ' Should this method not use Feedback messages where the user can opt to
             ' cancel the run if data is going to get affected too much?
 
             Dim bOK As Boolean = True
             'If using Quota regulations and any type of effort
-            'make sure there is at least one type of Quota Option set
-            'warn the user if both a Quota option and Fixed Escapement are set as both can not run on the same group
+            'make sure there is at least one type of Control has been set
             If Me.ModelParameters.RegulatoryMode = eMSERegulationMode.UseRegulations Then
                 'xxxxxxxxxxxxxxxxxxxxxxx
                 'check the Quota type
@@ -343,52 +340,66 @@ Namespace MSE
                 For iFlt As Integer = 1 To Me.m_core.nFleets
                     If Me.FleetInputs(iFlt).QuotaType <> eQuotaTypes.NotUsed Then
                         bNoQuotaSet = False
-                        bOK = False
                         Exit For
                     End If
                 Next
 
                 If bNoQuotaSet Then
-                    Me.m_core.Messages.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.MSE_VALIDATION_QUOTAS), _
-                                                                eMessageType.DataValidation, eCoreComponentType.MSE, eMessageImportance.Warning))
+                    'no control type has been set for any fleet(s)
+                    'ask the user what to do
+                    Dim response As cFeedbackMessage.eReply
+                    Dim fbMess As New cFeedbackMessage(String.Format(My.Resources.CoreMessages.MSE_VALIDATION_QUOTAS), _
+                                                                       eCoreComponentType.MSE, eMessageType.DataValidation, _
+                                                                       eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO)
+                    Me.m_core.Messages.SendMessage(fbMess)
+                    response = fbMess.Reply
 
-                End If
-
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                'Check for fixed escapement
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                Dim fixedGroups As String
-                For igrp As Integer = 1 To Me.m_core.nGroups
-                    If Me.m_core.MSEManager.GroupInputs(igrp).FixedEscapement > 0 Then
-                        'Fixed escapement has been set for this group
-
-                        'check the Quota options for this group
-                        For iFlt As Integer = 1 To Me.m_core.nFleets
-                            If Me.m_core.FleetInputs(iFlt).Landings(igrp) > 0 Then
-                                If Me.FleetInputs(iFlt).QuotaType <> eQuotaTypes.NotUsed Then
-                                    'this group has both Fixed Escapement and Quota option set
-                                    'Only Fixed Escapement will be used
-
-                                    fixedGroups = fixedGroups & "'" & Me.m_core.MSEManager.GroupInputs(igrp).Name & "', "
-
-                                End If
-                            End If
-                        Next
-
+                    If response = cFeedbackMessage.eReply.YES Then
+                        Return False
                     End If
-                Next
-
-                If Not String.IsNullOrEmpty(fixedGroups) Then
-
-                    fixedGroups = fixedGroups.Remove(fixedGroups.Length - 2)
-
-                    Me.m_core.Messages.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.MSE_VALIDATION_FIXEDESCAPEMENT, fixedGroups), _
-                            eMessageType.DataValidation, eCoreComponentType.MSE, eMessageImportance.Warning))
                 End If
 
+            End If
+
+            '14-May-2010 jb no need for this either
+            '
+            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            ''Check for fixed escapement
+            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Dim fixedGroups As String
+            'Dim fixed As Single
+            'For igrp As Integer = 1 To Me.m_core.nGroups
+            '    fixed = Me.m_core.MSEManager.GroupInputs(igrp).FixedEscapement + Me.m_core.MSEManager.GroupInputs(igrp).FixedF
+            '    If fixed > 0 Then
+            '        'Fixed escapement has been set for this group
+
+            '        'check the Quota options for this group
+            '        For iFlt As Integer = 1 To Me.m_core.nFleets
+            '            If Me.m_core.FleetInputs(iFlt).Landings(igrp) > 0 Then
+            '                If Me.FleetInputs(iFlt).QuotaType <> eQuotaTypes.NotUsed Then
+            '                    'this group has both Fixed Escapement and Quota option set
+            '                    'Only Fixed Escapement will be used
+
+            '                    fixedGroups = fixedGroups & "'" & Me.m_core.MSEManager.GroupInputs(igrp).Name & "', "
+
+            '                End If
+            '            End If
+            '        Next
+
+            '    End If
+            'Next
+
+            'If Not String.IsNullOrEmpty(fixedGroups) Then
+
+            '    fixedGroups = fixedGroups.Remove(fixedGroups.Length - 2)
+
+            '    Me.m_core.Messages.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.MSE_VALIDATION_FIXEDESCAPEMENT, fixedGroups), _
+            '            eMessageType.DataValidation, eCoreComponentType.MSE, eMessageImportance.Warning))
+            'End If
 
 
-            End If ' If Me.m_MSE.ModelParameters.EffortMode = eMSEEffortMode.PredictUseQuota Or _
+
+            ' End If ' If Me.m_MSE.ModelParameters.EffortMode = eMSEEffortMode.PredictUseQuota Or _
 
             'jb 15-April-2010 Don't need to do this anymore Effort is set by MSE if EffortSource = NoCap
             ''If Ecosim Effort and Quota options are set
