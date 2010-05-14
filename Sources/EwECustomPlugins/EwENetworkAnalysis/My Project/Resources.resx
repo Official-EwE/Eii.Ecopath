@@ -685,4 +685,7 @@
   <data name="COL_HDR_TLc" xml:space="preserve">
     <value>TL of catch</value>
   </data>
+  <data name="COL_HDR_YEAR" xml:space="preserve">
+    <value>Year</value>
+  </data>
 </root>
