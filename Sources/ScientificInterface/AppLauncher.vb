@@ -46,6 +46,7 @@ Public Class AppLauncher
     Private m_mhEcosim As cMessageHandler = Nothing
     Private m_mhEcospace As cMessageHandler = Nothing
     Private m_mhEcotracer As cMessageHandler = Nothing
+    Private m_mhTimeseries As cMessageHandler = Nothing
 
     Private m_pluginManager As cPluginManager = Nothing
     Private m_pluginMenuHandler As cPluginMenuHandler = Nothing
@@ -488,18 +489,22 @@ Public Class AppLauncher
 
         ' Config state monitor
         Me.Core.StateMonitor.SyncObject = Me
-        Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_uic.SyncObject)
-        Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
-        Me.m_mhEcotracer = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Ecotracer, eMessageType.Any, Me.m_uic.SyncObject)
+        Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
+        Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
+        Me.m_mhEcotracer = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Ecotracer, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
+        Me.m_mhTimeseries = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.TimeSeries, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
 
 #If DEBUG Then
         Me.m_mhEcosim.Name = "ApplSim"
         Me.m_mhEcospace.Name = "ApplSpace"
         Me.m_mhEcotracer.Name = "ApplTracer"
+        Me.m_mhTimeseries.Name = "ApplTS"
 #End If
+
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcotracer)
+        Me.Core.Messages.AddMessageHandler(Me.m_mhTimeseries)
 
         ' Create plugin manager for this GUI
         Me.m_pluginManager = New cPluginManager()
@@ -704,6 +709,7 @@ Public Class AppLauncher
         Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
         Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
         Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhTimeseries)
 
         RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
@@ -1129,16 +1135,33 @@ Public Class AppLauncher
             For i As Integer = 1 To Me.Core.EcosimScenarioCount
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcosimScenarios(i).Name
-                tsmi.Tag = i
-                AddHandler tsmi.Click, AddressOf OnLoadEcosimScenario
+                tsmi.Tag = Me.Core.EcosimScenarios(i)
+                AddHandler tsmi.Click, AddressOf OnLoadEcosimScenarioOrDataset
                 Me.m_tsbEcosim.DropDownItems.Add(tsmi)
             Next
+
+            ' List available Ecosim time series datasets
+            For i As Integer = 1 To Me.Core.nTimeSeriesDatasets
+
+                ' Is first dataset?
+                If (i = 1) Then
+                    ' #Yes: add a separtor
+                    Me.m_tsbEcosim.DropDownItems.Add(New ToolStripSeparator())
+                End If
+
+                tsmi = New ToolStripMenuItem()
+                tsmi.Text = Me.Core.TimeSeriesDataset(i).Name
+                tsmi.Tag = Me.Core.TimeSeriesDataset(i)
+                AddHandler tsmi.Click, AddressOf OnLoadEcosimScenarioOrDataset
+                Me.m_tsbEcosim.DropDownItems.Add(tsmi)
+
+            Next i
 
             ' List available Ecospace scenarios
             For i As Integer = 1 To Me.Core.EcospaceScenarioCount
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcospaceScenarios(i).Name
-                tsmi.Tag = i
+                tsmi.Tag = Me.Core.EcospaceScenarios(i)
                 AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenario
                 Me.m_tsbEcospace.DropDownItems.Add(tsmi)
             Next
@@ -1147,7 +1170,7 @@ Public Class AppLauncher
             For i As Integer = 1 To Me.Core.EcotracerScenarioCount
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcotracerScenarios(i).Name
-                tsmi.Tag = i
+                tsmi.Tag = Me.Core.EcotracerScenarios(i)
                 AddHandler tsmi.Click, AddressOf OnLoadEcotracerScenario
                 Me.m_tsbEcotracer.DropDownItems.Add(tsmi)
             Next
@@ -1163,23 +1186,25 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Private Sub ClearScenarioDropdowns()
 
-        Dim tsmi As ToolStripMenuItem = Nothing
+        Dim tsi As ToolStripItem = Nothing
 
         ' Properly release sim menu items
-        For Each tsmi In Me.m_tsbEcosim.DropDownItems
-            RemoveHandler tsmi.Click, AddressOf OnLoadEcosimScenario
+        For Each tsi In Me.m_tsbEcosim.DropDownItems
+            If Not (TypeOf tsi Is ToolStripSeparator) Then
+                RemoveHandler tsi.Click, AddressOf OnLoadEcosimScenarioOrDataset
+            End If
         Next
         Me.m_tsbEcosim.DropDownItems.Clear()
 
         ' Properly release space menu items
-        For Each tsmi In Me.m_tsbEcospace.DropDownItems
-            RemoveHandler tsmi.Click, AddressOf OnLoadEcospaceScenario
+        For Each tsi In Me.m_tsbEcospace.DropDownItems
+            RemoveHandler tsi.Click, AddressOf OnLoadEcospaceScenario
         Next
         Me.m_tsbEcospace.DropDownItems.Clear()
 
         ' Properly release tracer menu items
-        For Each tsmi In Me.m_tsbEcotracer.DropDownItems
-            RemoveHandler tsmi.Click, AddressOf OnLoadEcotracerScenario
+        For Each tsi In Me.m_tsbEcotracer.DropDownItems
+            RemoveHandler tsi.Click, AddressOf OnLoadEcotracerScenario
         Next
         Me.m_tsbEcotracer.DropDownItems.Clear()
 
@@ -2916,12 +2941,19 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
-    ''' Command handler; invokes the load time series dialog.
+    ''' Command handler; invokes the load time series dialog, or loads a time
+    ''' series dataset if this dataset is provided as a tag to the command.
     ''' </summary>
     Private Sub m_cmdLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdLoadTimeSeries.OnInvoke
 
-        Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Load)
+        If Not Me.m_coreController.LoadState(eCoreExecutionState.EcosimLoaded) Then Return
+
+        If (Me.m_cmdLoadTimeSeries.Tag Is Nothing) Then
+            Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Load)
+        ElseIf (TypeOf Me.m_cmdLoadTimeSeries.Tag Is cTimeSeriesDataset) Then
+            Me.Core.LoadTimeSeries(DirectCast(Me.m_cmdLoadTimeSeries.Tag, cTimeSeriesDataset))
+        End If
 
     End Sub
 
@@ -2931,7 +2963,7 @@ Public Class AppLauncher
     Private Sub m_cmdLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdLoadTimeSeries.OnUpdate
 
-        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded()
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
 
     End Sub
 
@@ -3539,29 +3571,34 @@ Public Class AppLauncher
         Me.LoadEcopathModel(strFileName, eLoadSourceType.MRU)
     End Sub
 
-    Private Sub OnLoadEcosimScenario(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnLoadEcosimScenarioOrDataset(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        Dim iScenario As Integer = CInt(mnuItem.Tag)
 
-        Me.m_cmdLoadEcosimScenario.Tag = Me.Core.EcosimScenarios(iScenario)
-        Me.m_cmdLoadEcosimScenario.Invoke()
-        Me.m_cmdLoadEcosimScenario.Tag = Nothing
+        If (mnuItem.Tag Is Nothing) Then Return
+
+        If (TypeOf mnuItem.Tag Is cEcoSimScenario) Then
+            ' Tag! You're it
+            Me.m_cmdLoadEcosimScenario.Tag = mnuItem.Tag
+            Me.m_cmdLoadEcosimScenario.Invoke()
+            Me.m_cmdLoadEcosimScenario.Tag = Nothing
+        ElseIf (TypeOf mnuItem.Tag Is cTimeSeriesDataset) Then
+            Me.m_cmdLoadTimeSeries.Tag = DirectCast(mnuItem.Tag, cTimeSeriesDataset)
+            Me.m_cmdLoadTimeSeries.Invoke()
+            Me.m_cmdLoadTimeSeries.Tag = Nothing
+        End If
+
     End Sub
 
     Private Sub OnLoadEcospaceScenario(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        Dim iScenario As Integer = CInt(mnuItem.Tag)
-
-        Me.m_cmdLoadEcospaceScenario.Tag = Me.Core.EcospaceScenarios(iScenario)
+        Me.m_cmdLoadEcospaceScenario.Tag = mnuItem.Tag
         Me.m_cmdLoadEcospaceScenario.Invoke()
         Me.m_cmdLoadEcospaceScenario.Tag = Nothing
     End Sub
 
     Private Sub OnLoadEcotracerScenario(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        Dim iScenario As Integer = CInt(mnuItem.Tag)
-
-        Me.m_cmdLoadEcotracerScenario.Tag = Me.Core.EcotracerScenarios(iScenario)
+        Me.m_cmdLoadEcotracerScenario.Tag = mnuItem.Tag
         Me.m_cmdLoadEcotracerScenario.Invoke()
         Me.m_cmdLoadEcotracerScenario.Tag = Nothing
     End Sub
@@ -3636,7 +3673,8 @@ Public Class AppLauncher
         If msg.Type = eMessageType.DataAddedOrRemoved Then
             If (msg.DataType = eDataTypes.EcoSimScenario) Or _
                (msg.DataType = eDataTypes.EcoSpaceScenario) Or _
-               (msg.DataType = eDataTypes.EcotracerScenario) Then
+               (msg.DataType = eDataTypes.EcotracerScenario) Or _
+               (msg.DataType = eDataTypes.TimeSeriesDataset) Then
                 Me.PopulateScenarioDropdowns()
             End If
         End If
