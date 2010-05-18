@@ -335,6 +335,7 @@ Namespace FitToTimeSeries
 
             ReDim PSen(nLiving)
 
+            m_lstSSResults.Clear()
 
             Try
 
@@ -436,6 +437,10 @@ Namespace FitToTimeSeries
                 'see cSensitivityToVulResults.CompareTo()
                 m_lstSSResults.Sort()
 
+                'clear out the old data
+                Array.Clear(VblockCode, 0, VblockCode.Length)
+
+
                 'now update the VblockCode() with the sorted sensitivities
                 Select Case Me.m_lastRunSens
 
@@ -455,6 +460,7 @@ Namespace FitToTimeSeries
                                 'all the prey of this predator
                                 ipred = m_esdata.jlink(ii)
                                 If ssObj.iPred = ipred Then
+                                    'Debug.Assert(VblockCode(ii) = 0)
                                     VblockCode(ii) = icell
                                 End If
                             Next ii
