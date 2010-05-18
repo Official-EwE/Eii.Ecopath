@@ -901,7 +901,7 @@ Namespace Controls
             End Get
             Set(ByVal value As Double)
                 Me.GetPane(iPane).YAxis.Scale.Min = value
-                RescaleAndRedraw(iPane)
+                Me.RescaleAndRedraw(iPane)
             End Set
         End Property
 
@@ -911,7 +911,7 @@ Namespace Controls
             End Get
             Set(ByVal value As Double)
                 Me.GetPane(iPane).XAxis.Scale.Max = value
-                RescaleAndRedraw(iPane)
+                Me.RescaleAndRedraw(iPane)
             End Set
         End Property
 
