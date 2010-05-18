@@ -4054,12 +4054,16 @@ Namespace DataSources
                         drow = writer.NewRow()
                         ' Populate key
                         drow("ScenarioID") = iScenarioID
-                        drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iGroup))
+                        drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
                         drow("TimeYear") = iYear
                         ' Write dynamic bit
                         drow("CVBiom") = mseDS.CVBiomT(iGroup, iYear)
-                        ' Add new row to the writer
-                        writer.AddRow(drow)
+                        Try
+                            ' Add new row to the writer
+                            writer.AddRow(drow)
+                        Catch ex As Exception
+
+                        End Try
                     Next iYear
                 Next iGroup
                 ' Done
