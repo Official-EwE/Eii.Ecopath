@@ -12,7 +12,9 @@ Imports EwECore.MSE
 Public Class frmMSEAssessFleets
 
     Public Sub New()
+        MyBase.New()
         Me.InitializeComponent()
+        Me.Grid = Me.m_grid
     End Sub
 
     Public Overrides Property UIContext() As cUIContext
@@ -21,19 +23,22 @@ Public Class frmMSEAssessFleets
         End Get
         Set(ByVal value As cUIContext)
             MyBase.UIContext = value
-            Me.GridFishingCV1.UIContext = value
+            Me.m_grid.UIContext = value
             Me.m_blocks.UIContext = value
         End Set
     End Property
 
-    Private Sub frmMSEAssessFleets_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Overrides ReadOnly Property ToolStrip() As System.Windows.Forms.ToolStrip
+        Get
+            Return Me.m_tsMain
+        End Get
+    End Property
 
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
         Dim ds As New cMSEFishingColorBlockDataSource(Me.UIContext)
-
         'load the datasource and the block selector into the ucPolicyColorBlocks
         Me.m_blocks.Attach(ds, New ucCVBlockSelector)
-        '  Me.m_blocks.ParmBlockCodes.NumBlocks = ds.TotalBlocks
-
     End Sub
 
 End Class
