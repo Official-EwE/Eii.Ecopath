@@ -1386,17 +1386,14 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Public Function ExtractData() As String
 
-            Dim cult As CultureInfo = Thread.CurrentThread.CurrentUICulture
-            Dim nfi As NumberFormatInfo = DirectCast(cult.NumberFormat.Clone(), NumberFormatInfo)
             Dim sb As New StringBuilder()
             Dim bIncludeCurve As Boolean = False
+            Dim bIsCumulative As Boolean = False
             Dim info As cCurveInfo = Nothing
             Dim sbX As StringBuilder = Nothing
             Dim sbY As StringBuilder = Nothing
             Dim dValue As Double = 0.0#
             Dim gp As GraphPane = Nothing
-
-            nfi.NumberDecimalSeparator = "."
 
             ' For each pane
             For iPane As Integer = 1 To Me.NumPanes
@@ -1408,9 +1405,14 @@ Namespace Controls
                 For Each ci As CurveItem In gp.CurveList
                     ' Get curve info
                     info = Me.CurveInfo(ci)
-                    ' Skip cursors
-                    bIncludeCurve = (Array.IndexOf(Me.m_aliCursors, ci) = -1)
-                    ' ToDo: filter lines by line type?
+
+                    If (info IsNot Nothing) Then
+                        bIncludeCurve = info.LineType = eLineType.ModelData
+                        bIsCumulative = info.IsCumulative
+                    Else
+                        bIncludeCurve = False
+                        bIsCumulative = False
+                    End If
 
                     ' Should curve be included?
                     If bIncludeCurve Then
@@ -1421,17 +1423,15 @@ Namespace Controls
                         sbY = New StringBuilder("y")
                         For i As Integer = 0 To ci.NPts - 1
                             sbX.Append(", ")
-                            sbX.Append(Convert.ToString(ci.Points(i).X, nfi))
+                            sbX.Append(cStringUtils.FormatDouble(ci.Points(i).X))
                             sbY.Append(", ")
 
                             ' JS 13May10: Addressed issue 645 - do not export as cumulative data
                             dValue = ci.Points(i).Y
-                            If (info IsNot Nothing) Then
-                                If (info.IsCumulative) Then
-                                    dValue -= info.Offset.Points(i).Y
-                                End If
+                            If (bIsCumulative) Then
+                                dValue -= info.Offset.Points(i).Y
                             End If
-                            sbY.Append(Convert.ToString(dValue, nfi))
+                            sbY.Append(cStringUtils.FormatDouble(dValue))
                         Next
 
                         sb.AppendLine(sbX.ToString())
