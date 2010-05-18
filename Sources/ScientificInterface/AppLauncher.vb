@@ -2952,7 +2952,7 @@ Public Class AppLauncher
         If (Me.m_cmdLoadTimeSeries.Tag Is Nothing) Then
             Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Load)
         ElseIf (TypeOf Me.m_cmdLoadTimeSeries.Tag Is cTimeSeriesDataset) Then
-            Me.Core.LoadTimeSeries(DirectCast(Me.m_cmdLoadTimeSeries.Tag, cTimeSeriesDataset))
+            Me.Core.LoadTimeSeries(DirectCast(Me.m_cmdLoadTimeSeries.Tag, cTimeSeriesDataset), True)
         End If
 
     End Sub
