@@ -40,13 +40,15 @@ Namespace Ecosim
         Private m_lpplIteration As New List(Of PointPairList)
 
         ''' <summary>
-        '''  Local counter for the number of trials run
+        ''' Local counter for the number of trials run
         ''' </summary>
         ''' <remarks>Zeroed when the MC completes its run MonteCarloCompletedHandler(), incremented in newRun(). 
         ''' We can not use the MC counter because it is not zeroed until the run is started by the MC. 
         ''' We need to know what run it about to happen before the run so we can store the local data.
         ''' </remarks>
         Private m_nTrials As Integer
+
+        Private m_sYMax As Single = 1.0!
 
 #End Region ' Private vars
 
@@ -104,8 +106,8 @@ Namespace Ecosim
             Me.m_plothelper.Attach(Me.UIContext, Me.m_graph)
             Me.m_plothelper.ShowMultipleRuns = True
 
-            Me.m_plothelper.ConfigurePane("Monte carlo trials", "Time", "Biomass", False)
-            Me.m_plothelper.AutoScaleYOption() = cZedGraphHelper.eScaleOptionTypes.Both
+            Me.m_plothelper.ConfigurePane(My.Resources.HEADER_MCTRIALS, My.Resources.HEADER_TIME, My.Resources.HEADER_BIOMASS, False)
+            Me.m_plothelper.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.Both
 
             ' Configure grids
             Me.m_gridB.UIContext = Me.UIContext
@@ -221,7 +223,7 @@ Namespace Ecosim
                 Me.UpdateGraphHighlights()
 
                 'get ready for the next run if there isn't one then on big deal the data will not be used
-                Me.newRun()
+                Me.NewIteration()
 
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
@@ -279,12 +281,14 @@ Namespace Ecosim
                 ' Store results
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     ppl = Me.m_lpplIteration(iGroup - 1)
-                    ppl.Add(New PointPair(Me.Core.EcosimFirstYear + CInt(lTime), results.Biomass(iGroup)))
+                    ppl.Add(New PointPair(Me.Core.EcosimFirstYear + CSng(lTime / cCore.N_MONTHS), results.Biomass(iGroup)))
+                    Me.m_sYMax = Math.Max(Me.m_sYMax, results.Biomass(iGroup))
                 Next
 
             Catch ex As Exception
 
             End Try
+
         End Sub
 
 #End Region ' MC Run callbacks
@@ -316,13 +320,14 @@ Namespace Ecosim
             Me.m_fpERun.Value = 0
             Me.m_fpSS.Value = 0.0!
             Me.m_fpSSBest.Value = 0.0!
+            Me.m_sYMax = 1.0!
 
             cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_INITIALIZING, TriState.True)
 
-            'clear out the old data
+            ' Clear out the old data
             Me.m_plothelper.Clear()
 
-            Me.newRun()
+            Me.NewIteration()
             Me.m_mcmanager.Run()
 
         End Sub
@@ -415,7 +420,8 @@ Namespace Ecosim
                     Me.m_plothelper.Highlight(Me.m_lbGroups.GroupIndex(i), -1)
                 Next
 
-                Me.m_graph.Invalidate()
+                Me.m_plothelper.YScaleMax = Me.m_sYMax
+                Me.m_plothelper.Redraw()
 
             End If
 
@@ -425,13 +431,12 @@ Namespace Ecosim
 
 #Region " Internals "
 
-        Private Sub newRun()
+        Private Sub NewIteration()
 
-            ' ToDo: globalize this method
             Dim lLines As New List(Of LineItem)
 
             Me.m_nTrials += 1
-            Me.m_plothelper.CreateRun(String.Format("Iteration {0}", Me.m_nTrials))
+            Me.m_plothelper.CreateRun(String.Format(My.Resources.MC_LABEL_RUN, Me.m_nTrials))
             Me.m_lpplIteration.Clear()
 
             If (Me.m_mcmanager.bShowPlot = True) Then
@@ -445,7 +450,8 @@ Namespace Ecosim
                 Next iGroup
 
             End If
-            Me.m_plothelper.PlotLines(lLines.ToArray)
+            Me.m_plothelper.YScaleMax = Me.m_sYMax
+            Me.m_plothelper.PlotLines(lLines.ToArray, 1, True, False)
 
         End Sub
 
