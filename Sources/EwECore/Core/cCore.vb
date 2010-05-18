@@ -2032,7 +2032,7 @@ Public Class cCore
                             Dim msg As cMessage = Nothing
 
                             ' Create backup
-                            If FileUtilities.CreateBackup(strSrc, strDest) Then
+                            If cFileUtils.CreateBackup(strSrc, strDest) Then
                                 msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_SUCCESS, strDest), _
                                                         eMessageType.DataImport, _
                                                         eCoreComponentType.DataSource, _

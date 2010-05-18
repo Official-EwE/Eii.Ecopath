@@ -292,7 +292,7 @@ Partial Class dlgManageTimeSeries
         Me.m_spTimeSeriesPreview.ShowXMark = False
         Me.m_spTimeSeriesPreview.Size = New System.Drawing.Size(407, 204)
         Me.m_spTimeSeriesPreview.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Dots
-        Me.m_spTimeSeriesPreview.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
+        Me.m_spTimeSeriesPreview.Editable = False
         Me.m_spTimeSeriesPreview.TabIndex = 0
         Me.m_spTimeSeriesPreview.UIContext = Nothing
         Me.m_spTimeSeriesPreview.XMarkLabel = ""

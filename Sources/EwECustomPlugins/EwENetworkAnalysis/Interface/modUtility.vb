@@ -87,7 +87,7 @@ Public Module modUtility
         If Not strExtension.StartsWith(".") Then sbFileName.Append(".")
         sbFileName.Append(strExtension)
 
-        Return FileUtilities.MakeTempFile(FileUtilities.ToValidFileName(sbFileName.ToString(), False))
+        Return cFileUtils.MakeTempFile(cFileUtils.ToValidFileName(sbFileName.ToString(), False))
 
     End Function
 

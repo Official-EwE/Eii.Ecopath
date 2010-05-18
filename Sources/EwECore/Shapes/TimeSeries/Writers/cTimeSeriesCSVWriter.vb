@@ -59,7 +59,7 @@ Public Class cTimeSeriesCSVWriter
             ' Is dataset available?
             If (ds Is Nothing) Then Return ""
             ' 
-            Return Path.Combine(Me.m_core.OutputPath, FileUtilities.ToValidFileName(ds.Name, True)) & ".csv"
+            Return Path.Combine(Me.m_core.OutputPath, cFileUtils.ToValidFileName(ds.Name, True)) & ".csv"
         End Get
     End Property
 

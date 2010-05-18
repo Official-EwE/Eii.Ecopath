@@ -451,7 +451,7 @@ Public Class frmEwEGrid
         End Sub
 
         Private Function GetCSVFileName() As String
-            Return FileUtilities.ToValidFileName(Me.m_form.Core.EwEModel.Name & "-" & Me.m_form.Text, False)
+            Return cFileUtils.ToValidFileName(Me.m_form.Core.EwEModel.Name & "-" & Me.m_form.Text, False)
         End Function
 
         Private Sub ImportFromCSV()

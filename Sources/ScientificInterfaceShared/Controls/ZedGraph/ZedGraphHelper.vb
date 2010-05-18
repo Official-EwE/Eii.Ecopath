@@ -1351,7 +1351,7 @@ Namespace Controls
             End If
             If Not String.IsNullOrEmpty(strBit) Then strFN &= "_" & strBit
             If Me.m_zgc.MasterPane.PaneList.Count = 1 Then
-                strFN = FileUtilities.ToValidFileName(strFN, False)
+                strFN = cFileUtils.ToValidFileName(strFN, False)
             End If
 
             cmdFS.Invoke(strFN, My.Resources.FILEFILTER_CSV, 0)

@@ -15,7 +15,7 @@ Namespace Utilities
     ''' Helper class offering miscellaneous file-related functionalities.
     ''' </summary>
     ''' =======================================================================
-    Public Class FileUtilities
+    Public Class cFileUtils
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -111,7 +111,7 @@ Namespace Utilities
                 Dim strFile As String = Path.GetFileNameWithoutExtension(strSrc)
                 Dim strExt As String = Path.GetExtension(strSrc)
                 Dim strDate As String = Date.Now.ToShortDateString
-                Dim strFileNameNew As String = FileUtilities.ToValidFileName(String.Format("{0}_{1}", strFile, strDate), False)
+                Dim strFileNameNew As String = cFileUtils.ToValidFileName(String.Format("{0}_{1}", strFile, strDate), False)
 
                 strDest = Path.Combine(strDir, strFileNameNew + strExt)
             End If

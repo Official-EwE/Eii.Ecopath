@@ -171,7 +171,7 @@ Public Class frmFlowDiagramPlugin
 
     Private Sub SDF_btn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SDF_btn.Click
         Try
-            Dim OutputFile As String = FileUtilities.MakeTempFile(Me.m_Parent.Core.EwEModel.Name & ".flw")
+            Dim OutputFile As String = cFileUtils.MakeTempFile(Me.m_Parent.Core.EwEModel.Name & ".flw")
 
             If System.IO.File.Exists(OutputFile) Then
                 ' File exist, prompt user

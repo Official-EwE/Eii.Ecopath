@@ -53,7 +53,7 @@ Public Class cXMLLogWriter
 
     Public Sub New(ByVal strFileName As String, ByVal strModelName As String)
 
-        Me.m_strLogFileName = FileUtilities.ToValidFileName(strFileName, True)
+        Me.m_strLogFileName = cFileUtils.ToValidFileName(strFileName, True)
         Me.m_strModelName = strModelName
 
     End Sub

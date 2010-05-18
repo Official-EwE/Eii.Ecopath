@@ -140,7 +140,7 @@ Namespace Import
             ''' <returns></returns>
             ''' -----------------------------------------------------------------------
             Private Function ToEwE6ModelName(ByVal strEwE5Model As String) As String
-                Return FileUtilities.ToValidFileName(strEwE5Model, False)
+                Return cFileUtils.ToValidFileName(strEwE5Model, False)
             End Function
 
         End Class
