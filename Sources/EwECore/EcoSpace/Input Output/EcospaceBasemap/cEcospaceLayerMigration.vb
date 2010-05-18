@@ -29,6 +29,7 @@ Public Class cEcospaceLayerMigration
     Public Sub New(ByRef theCore As cCore, ByVal manager As cEcospaceBasemap, _
             ByVal varName As eVarNameFlags)
         MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, cCore.NULL_VALUE, Nothing)
+        Me.m_dataType = eDataTypes.EcospaceLayerMigration
     End Sub
 
 #End Region ' Construction
