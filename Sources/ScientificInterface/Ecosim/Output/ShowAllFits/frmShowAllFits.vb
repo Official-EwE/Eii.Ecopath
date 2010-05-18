@@ -9,6 +9,7 @@ Imports EwEUtils.Commands
 Imports System.Windows.Forms
 Imports System.IO
 Imports ScientificInterface.Other
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -462,7 +463,7 @@ Namespace Ecosim
 
         Private Sub SaveToCSV(ByVal strPath As String)
 
-            Dim strFileName As String = String.Empty
+            Dim strFileName As String = Me.Core.EwEModel.Name
             Dim strTargetPath As String = ""
             Dim ts As cTimeSeries = Nothing
             Dim plot As cShowAllFitsPlotData = Nothing
@@ -480,14 +481,13 @@ Namespace Ecosim
             For i As Integer = 1 To 3
                 Select Case i
                     Case 1
-                        strFileName = "EwE6_Allfit_Biomass.csv"
+                        strFileName &= "_Allfit_Biomass.csv"
                     Case 2 'Mortality Data
-                        strFileName = "EwE6_Allfit_Mortality.csv"
+                        strFileName &= "_Allfit_Mortality.csv"
                     Case 3 'Catch Data
-                        strFileName = "EwE6_Allfit_Catches.csv"
+                        strFileName &= "_Allfit_Catches.csv"
                 End Select
-
-                strTargetPath = Path.Combine(strPath, strFileName)
+                strTargetPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False))
 
                 Try
                     sw = New StreamWriter(strTargetPath, False)
@@ -515,21 +515,21 @@ Namespace Ecosim
                                     If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
                                         sw.Write("Predicted " & ts.Name)
                                         sw.Write(",")
-                                        sw.Write("TS " & ts.Name)
+                                        sw.Write("Observed " & ts.Name)
                                         sw.Write(",")
                                     End If
                                 Case 2
                                     If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
                                         sw.Write(String.Format("Predicted {0} Z", ts.Name))
                                         sw.Write(",")
-                                        sw.Write(String.Format("TS {0} Z", ts.Name))
+                                        sw.Write(String.Format("Observed {0} Z", ts.Name))
                                         sw.Write(",")
                                     End If
                                 Case 3
                                     If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
                                         sw.Write(String.Format("Predicted {0} Yield", ts.Name))
                                         sw.Write(",")
-                                        sw.Write(String.Format("TS {0} Yield", ts.Name))
+                                        sw.Write(String.Format("Observed {0} Yield", ts.Name))
                                         sw.Write(",")
                                     End If
                             End Select
@@ -551,44 +551,33 @@ Namespace Ecosim
                                             sw.Write(plot.SimData(iPt))
                                             sw.Write(",")
                                             If ts.ShapeData(k) > 0 Then
-                                                If ts.DataQ > 0 Then
-                                                    sw.Write(ts.ShapeData(k) / ts.DataQ)
-                                                Else
-                                                    sw.Write(ts.ShapeData(k))
-                                                End If
-                                                sw.Write(",")
+                                                sw.Write(ts.ShapeData(k) * plot.TSDataScale)
                                             Else
                                                 sw.Write(" ")
-                                                sw.Write(",")
                                             End If
+                                            sw.Write(",")
                                         End If
                                     Case 2
                                         If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
                                             sw.Write(plot.SimData(iPt))
                                             sw.Write(",")
                                             If ts.ShapeData(k) > 0 Then
-                                                If ts.DataQ > 0 Then
-                                                    sw.Write(ts.ShapeData(k) / ts.DataQ)
-                                                Else
-                                                    sw.Write(ts.ShapeData(k))
-                                                End If
-                                                sw.Write(",")
+                                                sw.Write(ts.ShapeData(k) * plot.TSDataScale)
                                             Else
                                                 sw.Write(" ")
-                                                sw.Write(",")
                                             End If
+                                            sw.Write(",")
                                         End If
                                     Case 3
                                         If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
                                             sw.Write(plot.SimData(iPt))
                                             sw.Write(",")
                                             If ts.ShapeData(k) > 0 Then
-                                                sw.Write(ts.ShapeData(k))
-                                                sw.Write(",")
+                                                sw.Write(ts.ShapeData(k) * plot.TSDataScale)
                                             Else
                                                 sw.Write(" ")
-                                                sw.Write(",")
                                             End If
+                                            sw.Write(",")
                                         End If
                                 End Select
 
