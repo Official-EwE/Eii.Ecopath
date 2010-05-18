@@ -26,23 +26,8 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOK.Click
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
-        End Sub
-
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
-            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.Close()
-        End Sub
-
-        Private Sub OnReset(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnReset.Click
-            For Each plot As cShowAllFitsPlotData In Me.m_lplots
-                plot.YMax = plot.YMaxDefault
-            Next
-        End Sub
-
-        Private Sub DoLoad(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
             Dim plot As cShowAllFitsPlotData = Nothing
             Dim ts As cTimeSeries = Nothing
@@ -58,6 +43,22 @@ Namespace Ecosim
             If m_lbAllPlots.Items.Count > 0 Then
                 m_lbAllPlots.SelectedIndex = 0
             End If
+        End Sub
+
+        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOK.Click
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Close()
+        End Sub
+
+        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.Close()
+        End Sub
+
+        Private Sub OnReset(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnReset.Click
+            For Each plot As cShowAllFitsPlotData In Me.m_lplots
+                plot.YMax = plot.YMaxDefault
+            Next
         End Sub
 
         Private Sub lbAllPlots_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_lbAllPlots.SelectedIndexChanged
