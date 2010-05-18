@@ -895,7 +895,7 @@ System Error: {0}</value>
     <value>Ecospace has run out of memory. Please try reducing the number of Regions and/or Timesteps.</value>
   </data>
   <data name="MEDIATION_ZERO_BASE" xml:space="preserve">
-    <value>One or more mediation files cannot be used. Please edit your data.</value>
+    <value>One or more mediation shapes cannot be used. Please edit your data.</value>
   </data>
   <data name="MSE_FIXF_FIXESC_FAILEDVALIDATION" xml:space="preserve">
     <value>Failed to set the value. Fix F and Fixed escapement cannot both contain a value.</value>
