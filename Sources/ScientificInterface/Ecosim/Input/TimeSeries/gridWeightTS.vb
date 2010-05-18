@@ -71,6 +71,8 @@ Public Class gridWeightTS
         Dim ts As cTimeSeries = Nothing
         Dim strTarget As String = ""
 
+        If (Me.UIContext Is Nothing) Then Return
+
         cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
 
         For iDS As Integer = 1 To Me.UIContext.Core.nTimeSeriesDatasets

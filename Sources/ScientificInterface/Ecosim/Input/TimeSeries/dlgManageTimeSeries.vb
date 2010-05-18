@@ -48,8 +48,6 @@ Public Class dlgManageTimeSeries
     Private m_strDataset As String = ""
     Private m_bInitialized As Boolean = False
 
-    Private m_gridEnableTS As gridWeightTS = Nothing
-
     Private m_tr As cTimeSeriesTextReader = Nothing
     Private m_strImportFileName As String = String.Empty
     Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
@@ -66,14 +64,8 @@ Public Class dlgManageTimeSeries
         Me.m_tr = New cTimeSeriesCSVReader(Me.m_uic.Core)
 
         ' -- Enable --
-        ' Prepare grid
-        Me.m_gridEnableTS = New gridWeightTS()
-        Me.m_gridEnableTS.UIContext = Me.m_uic
-
-        ' Show grid
-        Me.m_plEnableTimeSeries.Controls.Add(Me.m_gridEnableTS)
-        ' CFG
-        Me.m_gridEnableTS.ResetData()
+        Me.m_gridWeights.UIContext = Me.m_uic
+        Me.m_gridWeights.ResetData()
 
         ' -- IMPORT --
         'Me.m_strImportDecimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator
@@ -191,11 +183,11 @@ Public Class dlgManageTimeSeries
 #Region " Apply "
 
     Private Sub OnApplyCheckAll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnApplyCheckAll.Click
-        Me.m_gridEnableTS.CheckAll(True)
+        Me.m_gridWeights.CheckAll(True)
     End Sub
 
     Private Sub OnApplyCheckNone(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnApplyCheckNone.Click
-        Me.m_gridEnableTS.CheckAll(False)
+        Me.m_gridWeights.CheckAll(False)
     End Sub
 
 #End Region ' Apply
@@ -447,7 +439,7 @@ Public Class dlgManageTimeSeries
 #Region " Weight "
 
     Private Function UpdateWeightsPage(Optional ByVal bAutoApply As Boolean = False) As Boolean
-        Me.m_gridEnableTS.ResetData()
+        Me.m_gridWeights.ResetData()
         Return True
     End Function
 
@@ -457,7 +449,7 @@ Public Class dlgManageTimeSeries
     ''' </summary>
     ''' -------------------------------------------------------------------
     Private Function ApplyTimeSeries(Optional ByVal bApplyAll As Boolean = False) As Boolean
-        Me.m_gridEnableTS.Apply(bApplyAll)
+        Me.m_gridWeights.Apply(bApplyAll)
     End Function
 
 #End Region ' Weight

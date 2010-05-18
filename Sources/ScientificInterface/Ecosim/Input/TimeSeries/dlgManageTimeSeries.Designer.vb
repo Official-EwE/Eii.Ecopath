@@ -63,7 +63,6 @@ Partial Class dlgManageTimeSeries
         Me.m_btnImportBrowse = New System.Windows.Forms.Button
         Me.m_rbImportSourceTextFile = New System.Windows.Forms.RadioButton
         Me.m_tpWeights = New System.Windows.Forms.TabPage
-        Me.m_plEnableTimeSeries = New System.Windows.Forms.Panel
         Me.m_btnApplyCheckNone = New System.Windows.Forms.Button
         Me.m_btnApplyCheckAll = New System.Windows.Forms.Button
         Me.m_tpLoad = New System.Windows.Forms.TabPage
@@ -73,6 +72,7 @@ Partial Class dlgManageTimeSeries
         Me.m_colLoaded = New System.Windows.Forms.ColumnHeader
         Me.m_colDescription = New System.Windows.Forms.ColumnHeader
         Me.m_tcMain = New System.Windows.Forms.TabControl
+        Me.m_gridWeights = New ScientificInterface.gridWeightTS
         Me.m_tpDelete.SuspendLayout()
         Me.m_tpImport.SuspendLayout()
         Me.m_tcPreview.SuspendLayout()
@@ -280,6 +280,7 @@ Partial Class dlgManageTimeSeries
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_spTimeSeriesPreview.BackColor = System.Drawing.SystemColors.Window
         Me.m_spTimeSeriesPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_spTimeSeriesPreview.Cursor = System.Windows.Forms.Cursors.Cross
         Me.m_spTimeSeriesPreview.DisplayAxis = True
         Me.m_spTimeSeriesPreview.Editable = False
         Me.m_spTimeSeriesPreview.Handler = Nothing
@@ -291,7 +292,9 @@ Partial Class dlgManageTimeSeries
         Me.m_spTimeSeriesPreview.ShowXMark = False
         Me.m_spTimeSeriesPreview.Size = New System.Drawing.Size(407, 204)
         Me.m_spTimeSeriesPreview.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Dots
+        Me.m_spTimeSeriesPreview.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
         Me.m_spTimeSeriesPreview.TabIndex = 0
+        Me.m_spTimeSeriesPreview.UIContext = Nothing
         Me.m_spTimeSeriesPreview.XMarkLabel = ""
         Me.m_spTimeSeriesPreview.XMarkValue = -9999.0!
         Me.m_spTimeSeriesPreview.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
@@ -492,6 +495,7 @@ Partial Class dlgManageTimeSeries
         'm_btnImportBrowse
         '
         Me.m_btnImportBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_btnImportBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.m_btnImportBrowse.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.m_btnImportBrowse.Location = New System.Drawing.Point(422, 2)
         Me.m_btnImportBrowse.Name = "m_btnImportBrowse"
@@ -515,7 +519,7 @@ Partial Class dlgManageTimeSeries
         '
         'm_tpWeights
         '
-        Me.m_tpWeights.Controls.Add(Me.m_plEnableTimeSeries)
+        Me.m_tpWeights.Controls.Add(Me.m_gridWeights)
         Me.m_tpWeights.Controls.Add(Me.m_btnApplyCheckNone)
         Me.m_tpWeights.Controls.Add(Me.m_btnApplyCheckAll)
         Me.m_tpWeights.ImageIndex = 1
@@ -526,16 +530,6 @@ Partial Class dlgManageTimeSeries
         Me.m_tpWeights.TabIndex = 1
         Me.m_tpWeights.Text = "Weights"
         Me.m_tpWeights.UseVisualStyleBackColor = True
-        '
-        'm_plEnableTimeSeries
-        '
-        Me.m_plEnableTimeSeries.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_plEnableTimeSeries.Location = New System.Drawing.Point(3, 3)
-        Me.m_plEnableTimeSeries.Name = "m_plEnableTimeSeries"
-        Me.m_plEnableTimeSeries.Size = New System.Drawing.Size(420, 510)
-        Me.m_plEnableTimeSeries.TabIndex = 0
         '
         'm_btnApplyCheckNone
         '
@@ -640,6 +634,40 @@ Partial Class dlgManageTimeSeries
         Me.m_tcMain.Size = New System.Drawing.Size(507, 549)
         Me.m_tcMain.TabIndex = 0
         '
+        'm_gridWeights
+        '
+        Me.m_gridWeights.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_gridWeights.AutoSizeMinHeight = 10
+        Me.m_gridWeights.AutoSizeMinWidth = 10
+        Me.m_gridWeights.AutoStretchColumnsToFitWidth = False
+        Me.m_gridWeights.AutoStretchRowsToFitHeight = False
+        Me.m_gridWeights.BackColor = System.Drawing.Color.White
+        Me.m_gridWeights.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_gridWeights.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_gridWeights.CustomSort = False
+        Me.m_gridWeights.FixedColumnWidths = False
+        Me.m_gridWeights.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_gridWeights.GridToolTipActive = True
+        Me.m_gridWeights.Location = New System.Drawing.Point(3, 3)
+        Me.m_gridWeights.Name = "m_gridWeights"
+        Me.m_gridWeights.Size = New System.Drawing.Size(420, 510)
+        Me.m_gridWeights.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                    Or SourceGrid2.GridSpecialKeys.Delete) _
+                    Or SourceGrid2.GridSpecialKeys.Arrows) _
+                    Or SourceGrid2.GridSpecialKeys.Tab) _
+                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                    Or SourceGrid2.GridSpecialKeys.Enter) _
+                    Or SourceGrid2.GridSpecialKeys.Escape) _
+                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_gridWeights.TabIndex = 0
+        Me.m_gridWeights.TrackPropertySelection = True
+        Me.m_gridWeights.UIContext = Nothing
+        '
         'dlgManageTimeSeries
         '
         Me.AcceptButton = Me.m_btnOk
@@ -707,7 +735,7 @@ Partial Class dlgManageTimeSeries
     Private WithEvents m_btnImportBrowse As System.Windows.Forms.Button
     Private WithEvents m_rbImportSourceTextFile As System.Windows.Forms.RadioButton
     Private WithEvents m_tpWeights As System.Windows.Forms.TabPage
-    Private WithEvents m_plEnableTimeSeries As System.Windows.Forms.Panel
+    Private WithEvents m_gridWeights As gridWeightTS
     Private WithEvents m_btnApplyCheckNone As System.Windows.Forms.Button
     Private WithEvents m_btnApplyCheckAll As System.Windows.Forms.Button
     Private WithEvents m_tpLoad As System.Windows.Forms.TabPage
