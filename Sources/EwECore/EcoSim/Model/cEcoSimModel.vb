@@ -1582,7 +1582,7 @@ Namespace Ecosim
                 Catch ex As Exception
                     'swallow any errors so ecosim can keep running
                     cLog.Write(ex)
-                    Debug.Assert(False, "Ecosim Error: the interface Ecosim Time Step handler through an error that was not handled.")
+                    Debug.Assert(False, "Ecosim Error: the interface Ecosim Time Step handler threw an error that was not handled.")
                 End Try
 
             End If
