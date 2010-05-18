@@ -742,10 +742,11 @@ Public Class cCore
                 End If
 
                 ' Reload restructured data
+                ' JS 17 May 2010: If a scenario does not need reloading then the scenario is explicitly discarded.
                 If (Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecopath) Then Me.LoadModel(DataSource)
-                If (iEcosimScenarioToLoad >= 0) Then Me.LoadEcosimScenario(iEcosimScenarioToLoad)
-                If (iEcospaceScenarioToLoad >= 0) Then Me.LoadEcospaceScenario(iEcospaceScenarioToLoad)
-                If (iEcotracerScenarioToLoad >= 0) Then Me.LoadEcotracerScenario(iEcotracerScenarioToLoad)
+                If (iEcosimScenarioToLoad >= 0) Then Me.LoadEcosimScenario(iEcosimScenarioToLoad) Else Me.m_StateMonitor.SetEcoSimLoaded(False)
+                If (iEcospaceScenarioToLoad >= 0) Then Me.LoadEcospaceScenario(iEcospaceScenarioToLoad) Else Me.m_StateMonitor.SetEcospaceLoaded(False)
+                If (iEcotracerScenarioToLoad >= 0) Then Me.LoadEcotracerScenario(iEcotracerScenarioToLoad) Else Me.m_StateMonitor.SetEcotracerLoaded(False)
 
                 If (Me.m_batchChangeLevel <= eBatchChangeLevelFlags.TimeSeries) Then
                     Me.InitAndLoadEcosimTimeSeriesDatasets()
@@ -1437,14 +1438,14 @@ Public Class cCore
             Else
                 strText = String.Format(My.Resources.CoreMessages.TIMESERIES_LOAD_SUCCESS, strDataset)
             End If
-            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.TimeSeries, eMessageImportance.Information)
+            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.TimeSeries, eMessageImportance.Information, eDataTypes.TimeSeriesDataset)
         Else
             If String.IsNullOrEmpty(strDataset) Then
                 strText = String.Format(My.Resources.CoreMessages.TIMESERIES_UNLOAD_FAILED, strError)
             Else
                 strText = String.Format(My.Resources.CoreMessages.TIMESERIES_LOAD_FAILED, strDataset, strError)
             End If
-            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.TimeSeries, eMessageImportance.Warning)
+            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.TimeSeries, eMessageImportance.Warning, eDataTypes.TimeSeriesDataset)
         End If
 
         Me.m_publisher.AddMessage(msg)
@@ -1771,7 +1772,7 @@ Public Class cCore
             If ds.AppendTimeSeriesDataset(strName, strDescription, strAuthor, strContact, iFirstYear, iNumYears, iDatasetID) Then
 
                 Me.InitAndLoadEcosimTimeSeriesDatasets()
-                Me.DataAddedOrRemovedMessage("Number of time series datasets has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
+                Me.DataAddedOrRemovedMessage("Number of time series datasets has changed.", eCoreComponentType.TimeSeries, eDataTypes.TimeSeriesDataset)
                 iDataset = Array.IndexOf(Me.m_TSData.iDatasetDBID, iDatasetID)
                 'If Me.LoadTimeSeries(iDataset, False) Then
                 '    ' Update enabled TS
