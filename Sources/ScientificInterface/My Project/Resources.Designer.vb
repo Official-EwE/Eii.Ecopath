@@ -3504,6 +3504,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Monte carlo trials.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MCTRIALS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MCTRIALS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Mean.
         '''</summary>
         Friend ReadOnly Property HEADER_MEAN() As String
@@ -4811,6 +4820,15 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("Lenfest_Logo_50px", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Iteration {0}.
+        '''</summary>
+        Friend ReadOnly Property MC_LABEL_RUN() As String
+            Get
+                Return ResourceManager.GetString("MC_LABEL_RUN", resourceCulture)
             End Get
         End Property
         

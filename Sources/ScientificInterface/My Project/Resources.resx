@@ -2654,4 +2654,11 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="PROMPT_STANZA_MISSING_LIFESTAGES" xml:space="preserve">
     <value>One or more stanza configurations do not have life stages assigned. Do you want to do this now?</value>
   </data>
+  <data name="HEADER_MCTRIALS" xml:space="preserve">
+    <value>Monte carlo trials</value>
+  </data>
+  <data name="MC_LABEL_RUN" xml:space="preserve">
+    <value>Iteration {0}</value>
+    <comment>{0}: iteration number</comment>
+  </data>
 </root>
