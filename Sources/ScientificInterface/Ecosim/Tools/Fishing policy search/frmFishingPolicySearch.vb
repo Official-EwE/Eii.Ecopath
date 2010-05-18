@@ -66,9 +66,11 @@ Namespace Ecosim
 
             Me.m_gridSystemObjectives = New gridFPSResultSystemObjectives()
             Me.m_gridSystemObjectives.UIContext = Me.UIContext
+            Me.m_gridSystemObjectives.Dock = DockStyle.Fill
 
             Me.m_gridSystemObjectivesMulti = New gridFPSResultSystemObjectives()
             Me.m_gridSystemObjectivesMulti.UIContext = Me.UIContext
+            Me.m_gridSystemObjectivesMulti.Dock = DockStyle.Fill
 
             Me.m_gridFleetValue = New gridFPSResultFleetValue()
             Me.m_gridFleetValue.UIContext = Me.UIContext
@@ -318,7 +320,7 @@ Namespace Ecosim
             If CInt(m_nudNumberOfRuns.Value) > 1 Then
                 m_scIterResultMultiRun.Panel2Collapsed = False
                 m_scIterResultMultiRun.Panel2.Controls.Clear()
-                m_scIterResultMultiRun.Panel2.Controls.Add(m_gridSystemObjectivesMulti)
+                m_scIterResultMultiRun.Panel2.Controls.Add(Me.m_gridSystemObjectivesMulti)
                 m_gridSystemObjectivesMulti.InsertColumns(m_manager.nSearchBlocks)
             Else
                 m_scIterResultMultiRun.Panel2Collapsed = True
@@ -337,8 +339,9 @@ Namespace Ecosim
             cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, -1.0!)
 
         End Sub
+
         Private Sub cbIncludeCCosts_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-    Handles m_chkIncludeCCosts.CheckedChanged
+            Handles m_chkIncludeCCosts.CheckedChanged
 
             ' Check to discard premature events
             If Me.m_manager Is Nothing Then Return

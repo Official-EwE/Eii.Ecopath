@@ -63,9 +63,7 @@ Namespace Ecosim
             Me.m_scIterResult = New System.Windows.Forms.SplitContainer
             Me.m_scIterResultMultiRun = New System.Windows.Forms.SplitContainer
             Me.m_tpPlots = New System.Windows.Forms.TabPage
-            Me.m_splcPlotResults = New System.Windows.Forms.SplitContainer
             Me.m_graphResults = New ZedGraph.ZedGraphControl
-            Me.m_graphKite = New ZedGraph.ZedGraphControl
             Me.m_scTopBits.Panel1.SuspendLayout()
             Me.m_scTopBits.Panel2.SuspendLayout()
             Me.m_scTopBits.SuspendLayout()
@@ -88,9 +86,6 @@ Namespace Ecosim
             Me.m_scIterResult.SuspendLayout()
             Me.m_scIterResultMultiRun.SuspendLayout()
             Me.m_tpPlots.SuspendLayout()
-            Me.m_splcPlotResults.Panel1.SuspendLayout()
-            Me.m_splcPlotResults.Panel2.SuspendLayout()
-            Me.m_splcPlotResults.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_scTopBits
@@ -411,10 +406,12 @@ Namespace Ecosim
             Me.m_blocks.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_blocks.ControlPanelVisible = True
             Me.m_blocks.CurColor = System.Drawing.Color.Empty
             Me.m_blocks.Location = New System.Drawing.Point(271, 0)
             Me.m_blocks.Margin = New System.Windows.Forms.Padding(0)
             Me.m_blocks.Name = "m_blocks"
+            Me.m_blocks.ParmBlockCodes = Nothing
             Me.m_blocks.Size = New System.Drawing.Size(718, 377)
             Me.m_blocks.TabIndex = 2
             Me.m_blocks.UIContext = Nothing
@@ -463,6 +460,8 @@ Namespace Ecosim
             '
             Me.m_gridObjWeights.AutoSizeMinHeight = 10
             Me.m_gridObjWeights.AutoSizeMinWidth = 10
+            Me.m_gridObjWeights.AutoStretchColumnsToFitWidth = False
+            Me.m_gridObjWeights.AutoStretchRowsToFitHeight = False
             Me.m_gridObjWeights.BackColor = System.Drawing.Color.White
             Me.m_gridObjWeights.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridObjWeights.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -513,6 +512,8 @@ Namespace Ecosim
             '
             Me.m_gridObjFleet.AutoSizeMinHeight = 10
             Me.m_gridObjFleet.AutoSizeMinWidth = 10
+            Me.m_gridObjFleet.AutoStretchColumnsToFitWidth = False
+            Me.m_gridObjFleet.AutoStretchRowsToFitHeight = False
             Me.m_gridObjFleet.BackColor = System.Drawing.Color.White
             Me.m_gridObjFleet.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridObjFleet.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -545,6 +546,8 @@ Namespace Ecosim
             '
             Me.m_gridObjGroup.AutoSizeMinHeight = 10
             Me.m_gridObjGroup.AutoSizeMinWidth = 10
+            Me.m_gridObjGroup.AutoStretchColumnsToFitWidth = False
+            Me.m_gridObjGroup.AutoStretchRowsToFitHeight = False
             Me.m_gridObjGroup.BackColor = System.Drawing.Color.White
             Me.m_gridObjGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridObjGroup.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -608,7 +611,7 @@ Namespace Ecosim
             '
             'm_tpPlots
             '
-            Me.m_tpPlots.Controls.Add(Me.m_splcPlotResults)
+            Me.m_tpPlots.Controls.Add(Me.m_graphResults)
             Me.m_tpPlots.Location = New System.Drawing.Point(4, 22)
             Me.m_tpPlots.Name = "m_tpPlots"
             Me.m_tpPlots.Padding = New System.Windows.Forms.Padding(3)
@@ -617,28 +620,11 @@ Namespace Ecosim
             Me.m_tpPlots.Text = "Plot results"
             Me.m_tpPlots.UseVisualStyleBackColor = True
             '
-            'm_splcPlotResults
-            '
-            Me.m_splcPlotResults.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_splcPlotResults.Location = New System.Drawing.Point(3, 3)
-            Me.m_splcPlotResults.Name = "m_splcPlotResults"
-            '
-            'm_splcPlotResults.Panel1
-            '
-            Me.m_splcPlotResults.Panel1.Controls.Add(Me.m_graphKite)
-            '
-            'm_splcPlotResults.Panel2
-            '
-            Me.m_splcPlotResults.Panel2.Controls.Add(Me.m_graphResults)
-            Me.m_splcPlotResults.Size = New System.Drawing.Size(975, 266)
-            Me.m_splcPlotResults.SplitterDistance = 259
-            Me.m_splcPlotResults.TabIndex = 10
-            '
             'm_graphResults
             '
             Me.m_graphResults.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_graphResults.IsAutoScrollRange = True
-            Me.m_graphResults.Location = New System.Drawing.Point(0, 0)
+            Me.m_graphResults.Location = New System.Drawing.Point(3, 3)
             Me.m_graphResults.Name = "m_graphResults"
             Me.m_graphResults.ScrollGrace = 0
             Me.m_graphResults.ScrollMaxX = 0
@@ -647,24 +633,8 @@ Namespace Ecosim
             Me.m_graphResults.ScrollMinX = 0
             Me.m_graphResults.ScrollMinY = 0
             Me.m_graphResults.ScrollMinY2 = 0
-            Me.m_graphResults.Size = New System.Drawing.Size(712, 266)
+            Me.m_graphResults.Size = New System.Drawing.Size(975, 266)
             Me.m_graphResults.TabIndex = 8
-            '
-            'm_graphKite
-            '
-            Me.m_graphKite.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_graphKite.IsAutoScrollRange = True
-            Me.m_graphKite.Location = New System.Drawing.Point(0, 0)
-            Me.m_graphKite.Name = "m_graphKite"
-            Me.m_graphKite.ScrollGrace = 0
-            Me.m_graphKite.ScrollMaxX = 0
-            Me.m_graphKite.ScrollMaxY = 0
-            Me.m_graphKite.ScrollMaxY2 = 0
-            Me.m_graphKite.ScrollMinX = 0
-            Me.m_graphKite.ScrollMinY = 0
-            Me.m_graphKite.ScrollMinY2 = 0
-            Me.m_graphKite.Size = New System.Drawing.Size(259, 266)
-            Me.m_graphKite.TabIndex = 9
             '
             'frmFishingPolicySearch
             '
@@ -699,9 +669,6 @@ Namespace Ecosim
             Me.m_scIterResult.ResumeLayout(False)
             Me.m_scIterResultMultiRun.ResumeLayout(False)
             Me.m_tpPlots.ResumeLayout(False)
-            Me.m_splcPlotResults.Panel1.ResumeLayout(False)
-            Me.m_splcPlotResults.Panel2.ResumeLayout(False)
-            Me.m_splcPlotResults.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -710,7 +677,6 @@ Namespace Ecosim
         Friend WithEvents m_lblSearchUsing As System.Windows.Forms.Label
         Friend WithEvents btnStop As System.Windows.Forms.Button
         Friend WithEvents btnSearch As System.Windows.Forms.Button
-        Private WithEvents m_graphKite As ZedGraph.ZedGraphControl
         Private WithEvents m_graphResults As ZedGraph.ZedGraphControl
         Private WithEvents m_tlpRunStop As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblOptmApproach As System.Windows.Forms.Label
@@ -747,6 +713,5 @@ Namespace Ecosim
         Private WithEvents m_gridObjWeights As gridSearchObjectivesWeight
         Private WithEvents m_gridObjFleet As gridSearchObjectivesFleet
         Private WithEvents m_gridObjGroup As gridSearchObjectivesGroup
-        Private WithEvents m_splcPlotResults As System.Windows.Forms.SplitContainer
     End Class
 End Namespace
