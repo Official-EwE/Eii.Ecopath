@@ -74,8 +74,10 @@ Public Class frmEwEGrid
         ''' items will be added to the toolstrip.</para>
         ''' </summary>
         ''' <param name="frm">The GridContentPanel to connect to.</param>
+        ''' <param name="ts">The ToolStrip to connect to, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Attach(ByVal frm As frmEwEGrid)
+        Public Sub Attach(ByVal frm As frmEwEGrid, _
+                          Optional ByVal ts As ToolStrip = Nothing)
 
             Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
 
@@ -92,6 +94,10 @@ Public Class frmEwEGrid
 
             ' Init
             Me.m_bToolStripCreated = False
+
+            If (ts IsNot Nothing) Then
+                Me.m_ts = ts
+            End If
 
             ' Attempt to find toolstrip
             If Me.m_ts Is Nothing Then
@@ -582,6 +588,12 @@ Public Class frmEwEGrid
         End Set
     End Property
 
+    Protected Overridable ReadOnly Property ToolStrip() As ToolStrip
+        Get
+            Return Nothing
+        End Get
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns a persistent name for instances of this class. Instances are 
@@ -685,7 +697,7 @@ Public Class frmEwEGrid
         If bSet Then
             If (Me.m_qeHandler Is Nothing) Then
                 Me.m_qeHandler = New cQuickEditHandler()
-                Me.m_qeHandler.Attach(Me)
+                Me.m_qeHandler.Attach(Me, Me.ToolStrip)
             End If
         Else
             If (Me.m_qeHandler IsNot Nothing) Then
