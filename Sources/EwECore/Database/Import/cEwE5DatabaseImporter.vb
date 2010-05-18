@@ -1935,7 +1935,7 @@ Namespace Database
                                     eMessageType.DataImport, eMessageImportance.Information, True)
                         Else
                             ' #No: remember how shape was imported
-                            Me.HashKey(shapeDataType, CStr(iShapeNumber), eDataTypes.EcoSimScenario, iScenarioID) = Me.m_iNextShapeID
+                            Me.HashKey(shapeDataType, CStr(iShapeNumber), eDataTypes.EcoSimScenario, iScenarioID) = iAssignedShapeID
                             ' Was imported as a new shape?
                             If (iAssignedShapeID = Me.m_iNextShapeID) Then
                                 ' #Yes: prepare next ID
