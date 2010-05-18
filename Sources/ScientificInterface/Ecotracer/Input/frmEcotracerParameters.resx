@@ -639,63 +639,6 @@
   <data name="m_gbInit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;rbSpace.Name" xml:space="preserve">
-    <value>rbSpace</value>
-  </data>
-  <data name="&gt;&gt;rbSpace.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbSpace.Parent" xml:space="preserve">
-    <value>m_gbInit</value>
-  </data>
-  <data name="&gt;&gt;rbSpace.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;rbSim.Name" xml:space="preserve">
-    <value>rbSim</value>
-  </data>
-  <data name="&gt;&gt;rbSim.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbSim.Parent" xml:space="preserve">
-    <value>m_gbInit</value>
-  </data>
-  <data name="&gt;&gt;rbSim.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;rbDisabled.Name" xml:space="preserve">
-    <value>rbDisabled</value>
-  </data>
-  <data name="&gt;&gt;rbDisabled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbDisabled.Parent" xml:space="preserve">
-    <value>m_gbInit</value>
-  </data>
-  <data name="&gt;&gt;rbDisabled.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_gbInit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 311</value>
-  </data>
-  <data name="m_gbInit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>791, 93</value>
-  </data>
-  <data name="m_gbInit.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_gbInit.Name" xml:space="preserve">
-    <value>m_gbInit</value>
-  </data>
-  <data name="&gt;&gt;m_gbInit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbInit.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gbInit.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="rbSpace.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -777,6 +720,27 @@
   <data name="&gt;&gt;rbDisabled.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="m_gbInit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 311</value>
+  </data>
+  <data name="m_gbInit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>791, 93</value>
+  </data>
+  <data name="m_gbInit.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_gbInit.Name" xml:space="preserve">
+    <value>m_gbInit</value>
+  </data>
+  <data name="&gt;&gt;m_gbInit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gbInit.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gbInit.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -790,12 +754,12 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>frmEcotracerParameters</value>
+    <value>Ecotracer parameters</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmEcotracerParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.123, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.513, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>
