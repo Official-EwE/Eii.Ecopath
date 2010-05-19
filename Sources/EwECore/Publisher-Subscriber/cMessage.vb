@@ -104,6 +104,24 @@ Public Class cMessage
     End Function
 
     ''' <summary>
+    ''' Returns whether a message has a given variable attached.
+    ''' </summary>
+    ''' <param name="Variable"></param>
+    ''' <returns></returns>
+    Public Function HasVariable(ByVal Variable As cVariableStatus) As Boolean
+        For Each vs As cVariableStatus In Me.Variables
+            If (ReferenceEquals(vs.Source, Variable.Source)) And _
+               (vs.Index = Variable.Index) And _
+               (vs.Status = Variable.Status) And _
+               String.Compare(vs.Message, Variable.Message, True) = 0 Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
+
+
+    ''' <summary>
     ''' Get or set message Text.
     ''' </summary>
     Public Property Message() As String
@@ -181,8 +199,7 @@ Public Class cMessage
             ' Compare main msg properties
             Dim bEquals As Boolean = (msg.DataType = Me.DataType) And (msg.Importance = Me.Importance) And _
                    (msg.Source = Me.Source) And (msg.Type = Me.Type) And (msg.Message = Me.Message)
-            ' For now, don't perform in-depth comparison of variables.
-            bEquals = bEquals And (msg.Variables.Count = 0 And Me.Variables.Count = 0)
+
             ' Return comparison result
             Return bEquals
         Else

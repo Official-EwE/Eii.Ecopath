@@ -254,9 +254,21 @@ Public Class cMessagePublisher
     ''' True if the queue contains a duplicate of the test message, False otherwise.
     ''' </returns>
     Private Function FindDuplicateMessage(ByVal msg As cMessage) As Boolean
+
         ' Check if similar message not already in the list
         For Each msgQueued As cMessage In Me.m_msglist
-            If msg.Equals(msgQueued) Then Return True
+            ' Message already found?
+            If msg.Equals(msgQueued) Then
+                ' #Yes: copy all new variables from msg to msqQueued
+                For Each vs As cVariableStatus In msg.Variables
+                    ' Variable not already present?
+                    If Not msgQueued.HasVariable(vs) Then
+                        ' #Yes: add message
+                        msgQueued.Variables.Add(vs)
+                    End If
+                Next
+                Return True
+            End If
         Next
         Return False
     End Function
