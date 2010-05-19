@@ -223,7 +223,7 @@
     <value>m_gridB</value>
   </data>
   <data name="&gt;&gt;m_gridB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.0.518, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridB.Parent" xml:space="preserve">
     <value>m_tbpB</value>
@@ -271,7 +271,7 @@
     <value>m_gridPB</value>
   </data>
   <data name="&gt;&gt;m_gridPB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.0.518, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridPB.Parent" xml:space="preserve">
     <value>m_tbpBP</value>
@@ -319,7 +319,7 @@
     <value>m_gridEE</value>
   </data>
   <data name="&gt;&gt;m_gridEE.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.0.518, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridEE.Parent" xml:space="preserve">
     <value>m_tbpEE</value>
@@ -367,7 +367,7 @@
     <value>m_gridBA</value>
   </data>
   <data name="&gt;&gt;m_gridBA.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.0.518, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridBA.Parent" xml:space="preserve">
     <value>m_tbpBA</value>
@@ -463,7 +463,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.518, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.519, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_spPlot.Panel2</value>
@@ -580,7 +580,7 @@
     <value>m_gridBestFit</value>
   </data>
   <data name="&gt;&gt;m_gridBestFit.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.MCRunOutputGrid, EwE6, Version=6.1.0.518, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.MCRunOutputGrid, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridBestFit.Parent" xml:space="preserve">
     <value>m_tbpBestTrial</value>
@@ -1197,76 +1197,76 @@
   <data name="&gt;&gt;lbSSOrg.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="m_lblInputOpt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrInputOpt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblInputOpt.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrInputOpt.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblInputOpt.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrInputOpt.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblInputOpt.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrInputOpt.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 5</value>
   </data>
-  <data name="m_lblInputOpt.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrInputOpt.Size" type="System.Drawing.Size, System.Drawing">
     <value>456, 18</value>
   </data>
-  <data name="m_lblInputOpt.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrInputOpt.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="m_lblInputOpt.Text" xml:space="preserve">
+  <data name="m_hdrInputOpt.Text" xml:space="preserve">
     <value>Input</value>
   </data>
-  <data name="m_lblInputOpt.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrInputOpt.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblInputOpt.Name" xml:space="preserve">
-    <value>m_lblInputOpt</value>
+  <data name="&gt;&gt;m_hdrInputOpt.Name" xml:space="preserve">
+    <value>m_hdrInputOpt</value>
   </data>
-  <data name="&gt;&gt;m_lblInputOpt.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrInputOpt.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblInputOpt.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrInputOpt.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblInputOpt.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrInputOpt.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_lblOutputParam.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrOutputParam.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_lblOutputParam.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrOutputParam.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblOutputParam.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrOutputParam.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblOutputParam.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrOutputParam.Location" type="System.Drawing.Point, System.Drawing">
     <value>470, 5</value>
   </data>
-  <data name="m_lblOutputParam.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrOutputParam.Size" type="System.Drawing.Size, System.Drawing">
     <value>256, 18</value>
   </data>
-  <data name="m_lblOutputParam.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrOutputParam.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="m_lblOutputParam.Text" xml:space="preserve">
+  <data name="m_hdrOutputParam.Text" xml:space="preserve">
     <value>Output</value>
   </data>
-  <data name="m_lblOutputParam.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrOutputParam.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblOutputParam.Name" xml:space="preserve">
-    <value>m_lblOutputParam</value>
+  <data name="&gt;&gt;m_hdrOutputParam.Name" xml:space="preserve">
+    <value>m_hdrOutputParam</value>
   </data>
-  <data name="&gt;&gt;m_lblOutputParam.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrOutputParam.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblOutputParam.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrOutputParam.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblOutputParam.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrOutputParam.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_tlpOutputs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1327,6 +1327,6 @@
     <value>MCRun</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.518, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>

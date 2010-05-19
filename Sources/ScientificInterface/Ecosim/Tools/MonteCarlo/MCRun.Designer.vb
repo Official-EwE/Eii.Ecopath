@@ -62,8 +62,8 @@ Namespace Ecosim
             Me.lblValueSSOrg = New System.Windows.Forms.Label
             Me.lblValueTrial = New System.Windows.Forms.Label
             Me.lbSSOrg = New System.Windows.Forms.Label
-            Me.m_lblInputOpt = New System.Windows.Forms.Label
-            Me.m_lblOutputParam = New System.Windows.Forms.Label
+            Me.m_hdrInputOpt = New cEwEHeaderLabel
+            Me.m_hdrOutputParam = New cEwEHeaderLabel
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel
             Me.m_tcOutput.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
@@ -443,19 +443,15 @@ Namespace Ecosim
             resources.ApplyResources(Me.lbSSOrg, "lbSSOrg")
             Me.lbSSOrg.Name = "lbSSOrg"
             '
-            'm_lblInputOpt
+            'm_hdrInputOpt
             '
-            resources.ApplyResources(Me.m_lblInputOpt, "m_lblInputOpt")
-            Me.m_lblInputOpt.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblInputOpt.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblInputOpt.Name = "m_lblInputOpt"
+            resources.ApplyResources(Me.m_hdrInputOpt, "m_hdrInputOpt")
+            Me.m_hdrInputOpt.Name = "m_hdrInputOpt"
             '
-            'm_lblOutputParam
+            'm_hdrOutputParam
             '
-            resources.ApplyResources(Me.m_lblOutputParam, "m_lblOutputParam")
-            Me.m_lblOutputParam.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblOutputParam.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblOutputParam.Name = "m_lblOutputParam"
+            resources.ApplyResources(Me.m_hdrOutputParam, "m_hdrOutputParam")
+            Me.m_hdrOutputParam.Name = "m_hdrOutputParam"
             '
             'm_tlpOutputs
             '
@@ -477,8 +473,8 @@ Namespace Ecosim
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_tlpOutputs)
-            Me.Controls.Add(Me.m_lblOutputParam)
-            Me.Controls.Add(Me.m_lblInputOpt)
+            Me.Controls.Add(Me.m_hdrOutputParam)
+            Me.Controls.Add(Me.m_hdrInputOpt)
             Me.Controls.Add(Me.nudNumTrials)
             Me.Controls.Add(Me.btnTS)
             Me.Controls.Add(Me.lblNumTrials)
@@ -519,8 +515,8 @@ Namespace Ecosim
         Private WithEvents btApply As System.Windows.Forms.Button
         Private WithEvents btnTS As System.Windows.Forms.Button
         Private WithEvents nudNumTrials As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_lblInputOpt As System.Windows.Forms.Label
-        Private WithEvents m_lblOutputParam As System.Windows.Forms.Label
+        Private WithEvents m_hdrInputOpt As cEwEHeaderLabel
+        Private WithEvents m_hdrOutputParam As cEwEHeaderLabel
         Private WithEvents m_tcOutput As System.Windows.Forms.TabControl
         Private WithEvents lblValueERun As System.Windows.Forms.Label
         Private WithEvents lblValueSSBest As System.Windows.Forms.Label

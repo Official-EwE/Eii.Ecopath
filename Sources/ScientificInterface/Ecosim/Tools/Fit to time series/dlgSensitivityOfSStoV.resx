@@ -142,7 +142,7 @@
     <value>m_ucVulBlocks</value>
   </data>
   <data name="&gt;&gt;m_ucVulBlocks.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.ucVulnerabiltyBlocks, EwE6, Version=6.0.7.320, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.ucVulnerabiltyBlocks, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_ucVulBlocks.Parent" xml:space="preserve">
     <value>$this</value>
@@ -360,73 +360,73 @@
   <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="m_lblSearch.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrSearch.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblSearch.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrSearch.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 12</value>
   </data>
-  <data name="m_lblSearch.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_hdrSearch.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_lblSearch.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrSearch.Size" type="System.Drawing.Size, System.Drawing">
     <value>186, 18</value>
   </data>
-  <data name="m_lblSearch.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrSearch.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_lblSearch.Text" xml:space="preserve">
+  <data name="m_hdrSearch.Text" xml:space="preserve">
     <value>Search</value>
   </data>
-  <data name="m_lblSearch.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrSearch.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblSearch.Name" xml:space="preserve">
-    <value>m_lblSearch</value>
+  <data name="&gt;&gt;m_hdrSearch.Name" xml:space="preserve">
+    <value>m_hdrSearch</value>
   </data>
-  <data name="&gt;&gt;m_lblSearch.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSearch.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblSearch.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSearch.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblSearch.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSearch.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="m_lblTransfer.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrTransfer.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblTransfer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrTransfer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblTransfer.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrTransfer.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 118</value>
   </data>
-  <data name="m_lblTransfer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_hdrTransfer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_lblTransfer.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrTransfer.Size" type="System.Drawing.Size, System.Drawing">
     <value>186, 18</value>
   </data>
-  <data name="m_lblTransfer.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrTransfer.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_lblTransfer.Text" xml:space="preserve">
+  <data name="m_hdrTransfer.Text" xml:space="preserve">
     <value>Transfer</value>
   </data>
-  <data name="m_lblTransfer.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrTransfer.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblTransfer.Name" xml:space="preserve">
-    <value>m_lblTransfer</value>
+  <data name="&gt;&gt;m_hdrTransfer.Name" xml:space="preserve">
+    <value>m_hdrTransfer</value>
   </data>
-  <data name="&gt;&gt;m_lblTransfer.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrTransfer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblTransfer.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrTransfer.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblTransfer.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrTransfer.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

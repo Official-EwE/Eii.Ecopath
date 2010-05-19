@@ -50,7 +50,7 @@ Namespace Ecosim
             Me.m_nudNumberOfRuns = New System.Windows.Forms.NumericUpDown
             Me.m_lblMaxNumEval = New System.Windows.Forms.Label
             Me.m_lblNumOfRuns = New System.Windows.Forms.Label
-            Me.lblInitializationHeader = New System.Windows.Forms.Label
+            Me.m_hdrParms = New cEwEHeaderLabel
             Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks
             Me.m_tcMain = New System.Windows.Forms.TabControl
             Me.m_tabObjectives = New System.Windows.Forms.TabPage
@@ -174,7 +174,7 @@ Namespace Ecosim
             Me.m_plRunParams.Controls.Add(Me.m_nudNumberOfRuns)
             Me.m_plRunParams.Controls.Add(Me.m_lblMaxNumEval)
             Me.m_plRunParams.Controls.Add(Me.m_lblNumOfRuns)
-            Me.m_plRunParams.Controls.Add(Me.lblInitializationHeader)
+            Me.m_plRunParams.Controls.Add(Me.m_hdrParms)
             Me.m_plRunParams.Location = New System.Drawing.Point(0, 0)
             Me.m_plRunParams.Margin = New System.Windows.Forms.Padding(0)
             Me.m_plRunParams.Name = "m_plRunParams"
@@ -386,20 +386,16 @@ Namespace Ecosim
             Me.m_lblNumOfRuns.TabIndex = 4
             Me.m_lblNumOfRuns.Text = "&Number of runs:"
             '
-            'lblInitializationHeader
+            'm_hdrParms
             '
-            Me.lblInitializationHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_hdrParms.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.lblInitializationHeader.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblInitializationHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-            Me.lblInitializationHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblInitializationHeader.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.lblInitializationHeader.Location = New System.Drawing.Point(0, 0)
-            Me.lblInitializationHeader.Name = "lblInitializationHeader"
-            Me.lblInitializationHeader.Size = New System.Drawing.Size(265, 18)
-            Me.lblInitializationHeader.TabIndex = 0
-            Me.lblInitializationHeader.Text = "Parameters"
-            Me.lblInitializationHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.m_hdrParms.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_hdrParms.Location = New System.Drawing.Point(0, 0)
+            Me.m_hdrParms.Name = "m_hdrParms"
+            Me.m_hdrParms.Size = New System.Drawing.Size(265, 18)
+            Me.m_hdrParms.TabIndex = 0
+            Me.m_hdrParms.Text = "Parameters"
             '
             'm_blocks
             '
@@ -672,11 +668,10 @@ Namespace Ecosim
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents m_scTopBits As System.Windows.Forms.SplitContainer
-        Friend WithEvents lblInitializationHeader As System.Windows.Forms.Label
-        Friend WithEvents m_lblSearchUsing As System.Windows.Forms.Label
-        Friend WithEvents btnStop As System.Windows.Forms.Button
-        Friend WithEvents btnSearch As System.Windows.Forms.Button
+        Private WithEvents m_scTopBits As System.Windows.Forms.SplitContainer
+        Private WithEvents m_lblSearchUsing As System.Windows.Forms.Label
+        Private WithEvents btnStop As System.Windows.Forms.Button
+        Private WithEvents btnSearch As System.Windows.Forms.Button
         Private WithEvents m_graphResults As ZedGraph.ZedGraphControl
         Private WithEvents m_tlpRunStop As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblOptmApproach As System.Windows.Forms.Label
@@ -713,5 +708,6 @@ Namespace Ecosim
         Private WithEvents m_gridObjWeights As gridSearchObjectivesWeight
         Private WithEvents m_gridObjFleet As gridSearchObjectivesFleet
         Private WithEvents m_gridObjGroup As gridSearchObjectivesGroup
+        Private WithEvents m_hdrParms As cEwEHeaderLabel
     End Class
 End Namespace

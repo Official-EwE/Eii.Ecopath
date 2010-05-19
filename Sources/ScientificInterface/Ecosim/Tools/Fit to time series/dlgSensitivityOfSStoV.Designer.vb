@@ -32,8 +32,8 @@ Partial Class dlgSensitivityOfSStoV
         Me.m_nudNumBlocks = New System.Windows.Forms.NumericUpDown
         Me.m_btnCancel = New System.Windows.Forms.Button
         Me.m_btnOk = New System.Windows.Forms.Button
-        Me.m_lblSearch = New System.Windows.Forms.Label
-        Me.m_lblTransfer = New System.Windows.Forms.Label
+        Me.m_hdrSearch = New cEwEHeaderLabel
+        Me.m_hdrTransfer = New cEwEHeaderLabel
         CType(Me.m_nudNumBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -97,19 +97,17 @@ Partial Class dlgSensitivityOfSStoV
         Me.m_btnOk.Name = "m_btnOk"
         Me.m_btnOk.UseVisualStyleBackColor = True
         '
-        'm_lblSearch
+        'm_hdrSearch
         '
-        Me.m_lblSearch.BackColor = System.Drawing.SystemColors.ControlDark
-        resources.ApplyResources(Me.m_lblSearch, "m_lblSearch")
-        Me.m_lblSearch.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.m_lblSearch.Name = "m_lblSearch"
+        Me.m_hdrSearch.BackColor = System.Drawing.SystemColors.ControlDark
+        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
+        Me.m_hdrSearch.Name = "m_hdrSearch"
         '
-        'm_lblTransfer
+        'm_hdrTransfer
         '
-        Me.m_lblTransfer.BackColor = System.Drawing.SystemColors.ControlDark
-        resources.ApplyResources(Me.m_lblTransfer, "m_lblTransfer")
-        Me.m_lblTransfer.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.m_lblTransfer.Name = "m_lblTransfer"
+        Me.m_hdrTransfer.BackColor = System.Drawing.SystemColors.ControlDark
+        resources.ApplyResources(Me.m_hdrTransfer, "m_hdrTransfer")
+        Me.m_hdrTransfer.Name = "m_hdrTransfer"
         '
         'dlgSensitivityOfSStoV
         '
@@ -121,9 +119,9 @@ Partial Class dlgSensitivityOfSStoV
         Me.Controls.Add(Me.m_lblNumCategories)
         Me.Controls.Add(Me.m_btnSearch)
         Me.Controls.Add(Me.m_rbSearchPredPrey)
-        Me.Controls.Add(Me.m_lblTransfer)
+        Me.Controls.Add(Me.m_hdrTransfer)
         Me.Controls.Add(Me.m_rbSearchPred)
-        Me.Controls.Add(Me.m_lblSearch)
+        Me.Controls.Add(Me.m_hdrSearch)
         Me.Controls.Add(Me.m_progress)
         Me.Controls.Add(Me.m_ucVulBlocks)
         Me.Controls.Add(Me.m_btnCancel)
@@ -144,8 +142,8 @@ Partial Class dlgSensitivityOfSStoV
     Friend WithEvents m_btnCancel As System.Windows.Forms.Button
     Friend WithEvents m_btnOk As System.Windows.Forms.Button
     Friend WithEvents m_nudNumBlocks As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_lblSearch As System.Windows.Forms.Label
-    Private WithEvents m_lblTransfer As System.Windows.Forms.Label
+    Private WithEvents m_hdrSearch As cEwEHeaderLabel
+    Private WithEvents m_hdrTransfer As cEwEHeaderLabel
     Private WithEvents m_ucVulBlocks As ScientificInterface.Ecosim.ucVulnerabiltyBlocks
     Private WithEvents m_btnSearch As System.Windows.Forms.Button
     Private WithEvents m_progress As System.Windows.Forms.ProgressBar
