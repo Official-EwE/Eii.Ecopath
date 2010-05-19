@@ -36,8 +36,8 @@ Namespace Ecospace
             Me.m_lbNumThreads = New System.Windows.Forms.Label
             Me.m_nudNumThreads = New System.Windows.Forms.NumericUpDown
             Me.lbPacketsMultiplier = New System.Windows.Forms.Label
-            Me.m_lblInitializationHeader = New System.Windows.Forms.Label
-            Me.m_lblModelHeader = New System.Windows.Forms.Label
+            Me.m_hdrInitialization = New cEwEHeaderLabel
+            Me.m_hdrModel = New cEwEHeaderLabel
             Me.m_tlpModelTop = New System.Windows.Forms.TableLayoutPanel
             Me.m_gbThreading = New System.Windows.Forms.GroupBox
             Me.m_tbNumPackets = New System.Windows.Forms.TextBox
@@ -62,7 +62,7 @@ Namespace Ecospace
             Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.m_lblDescription = New System.Windows.Forms.Label
             Me.m_lbScenarioName = New System.Windows.Forms.Label
-            Me.m_lblScenario = New System.Windows.Forms.Label
+            Me.m_hdrScenario = New cEwEHeaderLabel
             Me.m_plBiomass = New System.Windows.Forms.Panel
             m_gbModel = New System.Windows.Forms.GroupBox
             m_gbModel.SuspendLayout()
@@ -141,19 +141,15 @@ Namespace Ecospace
             resources.ApplyResources(Me.lbPacketsMultiplier, "lbPacketsMultiplier")
             Me.lbPacketsMultiplier.Name = "lbPacketsMultiplier"
             '
-            'm_lblInitializationHeader
+            'm_hdrInitialization
             '
-            resources.ApplyResources(Me.m_lblInitializationHeader, "m_lblInitializationHeader")
-            Me.m_lblInitializationHeader.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblInitializationHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblInitializationHeader.Name = "m_lblInitializationHeader"
+            resources.ApplyResources(Me.m_hdrInitialization, "m_hdrInitialization")
+            Me.m_hdrInitialization.Name = "m_hdrInitialization"
             '
-            'm_lblModelHeader
+            'm_hdrModel
             '
-            resources.ApplyResources(Me.m_lblModelHeader, "m_lblModelHeader")
-            Me.m_lblModelHeader.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblModelHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblModelHeader.Name = "m_lblModelHeader"
+            resources.ApplyResources(Me.m_hdrModel, "m_hdrModel")
+            Me.m_hdrModel.Name = "m_hdrModel"
             '
             'm_tlpModelTop
             '
@@ -300,12 +296,10 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_lbScenarioName, "m_lbScenarioName")
             Me.m_lbScenarioName.Name = "m_lbScenarioName"
             '
-            'm_lblScenario
+            'm_hdrScenario
             '
-            resources.ApplyResources(Me.m_lblScenario, "m_lblScenario")
-            Me.m_lblScenario.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblScenario.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblScenario.Name = "m_lblScenario"
+            resources.ApplyResources(Me.m_hdrScenario, "m_hdrScenario")
+            Me.m_hdrScenario.Name = "m_hdrScenario"
             '
             'm_plBiomass
             '
@@ -321,15 +315,15 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_plBiomass)
             Me.Controls.Add(Me.m_tbContact)
             Me.Controls.Add(Me.m_tbAuthor)
-            Me.Controls.Add(Me.m_lblScenario)
+            Me.Controls.Add(Me.m_hdrScenario)
             Me.Controls.Add(Me.m_lbContact)
             Me.Controls.Add(Me.m_gbRunTime)
             Me.Controls.Add(Me.m_lbAuthor)
             Me.Controls.Add(Me.m_tlpModelTop)
             Me.Controls.Add(Me.m_tbName)
-            Me.Controls.Add(Me.m_lblModelHeader)
+            Me.Controls.Add(Me.m_hdrModel)
             Me.Controls.Add(Me.m_tbDescription)
-            Me.Controls.Add(Me.m_lblInitializationHeader)
+            Me.Controls.Add(Me.m_hdrInitialization)
             Me.Controls.Add(Me.m_lblDescription)
             Me.Controls.Add(Me.m_lbScenarioName)
             Me.Name = "EcospaceParameters"
@@ -348,10 +342,10 @@ Namespace Ecospace
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents lbPacketsMultiplier As System.Windows.Forms.Label
+        Private WithEvents lbPacketsMultiplier As System.Windows.Forms.Label
         Private WithEvents m_plBiomass As System.Windows.Forms.Panel
         Private WithEvents m_lbScenarioName As System.Windows.Forms.Label
-        Private WithEvents m_lblScenario As System.Windows.Forms.Label
+        Private WithEvents m_hdrScenario As cEwEHeaderLabel
         Private WithEvents m_tbName As System.Windows.Forms.TextBox
         Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
         Private WithEvents m_tbContact As System.Windows.Forms.TextBox
@@ -359,10 +353,10 @@ Namespace Ecospace
         Private WithEvents m_lbContact As System.Windows.Forms.Label
         Private WithEvents m_lbAuthor As System.Windows.Forms.Label
         Private WithEvents m_lblDescription As System.Windows.Forms.Label
-        Private WithEvents m_lblInitializationHeader As System.Windows.Forms.Label
+        Private WithEvents m_hdrInitialization As cEwEHeaderLabel
         Private WithEvents m_rbBaseBiomass As System.Windows.Forms.RadioButton
         Private WithEvents m_rbAdjustedBiomass As System.Windows.Forms.RadioButton
-        Private WithEvents m_lblModelHeader As System.Windows.Forms.Label
+        Private WithEvents m_hdrModel As cEwEHeaderLabel
         Private WithEvents m_tlpModelTop As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_gbThreading As System.Windows.Forms.GroupBox
         Private WithEvents m_rbNewStanzaModel As System.Windows.Forms.RadioButton
