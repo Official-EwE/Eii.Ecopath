@@ -615,8 +615,8 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_split1)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmFitToTimeSeries"
-            Me.TabText = "Form1"
-            Me.Text = "Form1"
+            Me.TabText = "Fit to time series"
+            Me.Text = "Fit to time series"
             Me.m_split1.Panel1.ResumeLayout(False)
             Me.m_split1.Panel1.PerformLayout()
             Me.m_split1.Panel2.ResumeLayout(False)
