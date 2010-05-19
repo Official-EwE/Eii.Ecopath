@@ -744,9 +744,9 @@ Public Class cCore
                 ' Reload restructured data
                 ' JS 17 May 2010: If a scenario does not need reloading then the scenario is explicitly discarded.
                 If (Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecopath) Then Me.LoadModel(DataSource)
-                If (iEcosimScenarioToLoad >= 0) Then Me.LoadEcosimScenario(iEcosimScenarioToLoad) Else Me.m_StateMonitor.SetEcoSimLoaded(False)
-                If (iEcospaceScenarioToLoad >= 0) Then Me.LoadEcospaceScenario(iEcospaceScenarioToLoad) Else Me.m_StateMonitor.SetEcospaceLoaded(False)
-                If (iEcotracerScenarioToLoad >= 0) Then Me.LoadEcotracerScenario(iEcotracerScenarioToLoad) Else Me.m_StateMonitor.SetEcotracerLoaded(False)
+                If (iEcosimScenarioToLoad >= 0) Then Me.LoadEcosimScenario(iEcosimScenarioToLoad) Else Me.m_StateMonitor.SetEcoSimLoaded(Me.m_batchChangeLevel >= eBatchChangeLevelFlags.Ecosim)
+                If (iEcospaceScenarioToLoad >= 0) Then Me.LoadEcospaceScenario(iEcospaceScenarioToLoad) Else Me.m_StateMonitor.SetEcospaceLoaded(Me.m_batchChangeLevel >= eBatchChangeLevelFlags.Ecospace)
+                If (iEcotracerScenarioToLoad >= 0) Then Me.LoadEcotracerScenario(iEcotracerScenarioToLoad) Else Me.m_StateMonitor.SetEcotracerLoaded(Me.m_batchChangeLevel >= eBatchChangeLevelFlags.Ecotracer)
 
                 If (Me.m_batchChangeLevel <= eBatchChangeLevelFlags.TimeSeries) Then
                     Me.InitAndLoadEcosimTimeSeriesDatasets()
