@@ -280,6 +280,7 @@ Namespace Ecosim
             '
             'm_graph
             '
+            Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
             Me.m_graph.ScrollGrace = 0
@@ -292,6 +293,8 @@ Namespace Ecosim
             '
             'm_lbGroups
             '
+            Me.m_lbGroups.AllGroupsItemColor = System.Drawing.Color.Transparent
+            Me.m_lbGroups.AllGroupsItemText = "(All)"
             resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
             Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbGroups.FormattingEnabled = True
