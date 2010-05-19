@@ -22,12 +22,12 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimResults))
-            Me.Label3 = New System.Windows.Forms.Label
+            Me.m_lblNumTimeSteps = New System.Windows.Forms.Label
             Me.udNumTimeSteps = New System.Windows.Forms.NumericUpDown
             Me.txtSumEnd = New System.Windows.Forms.TextBox
             Me.txtSumStart = New System.Windows.Forms.TextBox
-            Me.Label1 = New System.Windows.Forms.Label
-            Me.Label2 = New System.Windows.Forms.Label
+            Me.m_lblBegin = New System.Windows.Forms.Label
+            Me.m_lblEnd = New System.Windows.Forms.Label
             Me.cbGears = New System.Windows.Forms.ComboBox
             Me.rbGroup = New System.Windows.Forms.RadioButton
             Me.rbIndices = New System.Windows.Forms.RadioButton
@@ -38,10 +38,10 @@ Namespace Ecosim
             CType(Me.udNumTimeSteps, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
-            'Label3
+            'm_lblNumTimeSteps
             '
-            resources.ApplyResources(Me.Label3, "Label3")
-            Me.Label3.Name = "Label3"
+            resources.ApplyResources(Me.m_lblNumTimeSteps, "m_lblNumTimeSteps")
+            Me.m_lblNumTimeSteps.Name = "m_lblNumTimeSteps"
             '
             'udNumTimeSteps
             '
@@ -58,15 +58,15 @@ Namespace Ecosim
             resources.ApplyResources(Me.txtSumStart, "txtSumStart")
             Me.txtSumStart.Name = "txtSumStart"
             '
-            'Label1
+            'm_lblBegin
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_lblBegin, "m_lblBegin")
+            Me.m_lblBegin.Name = "m_lblBegin"
             '
-            'Label2
+            'm_lblEnd
             '
-            resources.ApplyResources(Me.Label2, "Label2")
-            Me.Label2.Name = "Label2"
+            resources.ApplyResources(Me.m_lblEnd, "m_lblEnd")
+            Me.m_lblEnd.Name = "m_lblEnd"
             '
             'cbGears
             '
@@ -121,7 +121,7 @@ Namespace Ecosim
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_lblShow)
             Me.Controls.Add(Me.cbGears)
-            Me.Controls.Add(Me.Label3)
+            Me.Controls.Add(Me.m_lblNumTimeSteps)
             Me.Controls.Add(Me.rbGroup)
             Me.Controls.Add(Me.m_lblYear)
             Me.Controls.Add(Me.rbIndices)
@@ -130,8 +130,8 @@ Namespace Ecosim
             Me.Controls.Add(Me.txtSumEnd)
             Me.Controls.Add(Me.txtSumStart)
             Me.Controls.Add(Me.plResultsGrid)
-            Me.Controls.Add(Me.Label1)
-            Me.Controls.Add(Me.Label2)
+            Me.Controls.Add(Me.m_lblBegin)
+            Me.Controls.Add(Me.m_lblEnd)
             Me.Name = "EcosimResults"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
@@ -140,15 +140,15 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents Label1 As System.Windows.Forms.Label
-        Friend WithEvents Label2 As System.Windows.Forms.Label
+        Friend WithEvents m_lblBegin As System.Windows.Forms.Label
+        Friend WithEvents m_lblEnd As System.Windows.Forms.Label
         Friend WithEvents rbGroup As System.Windows.Forms.RadioButton
         Friend WithEvents rbIndices As System.Windows.Forms.RadioButton
         Friend WithEvents rbGear As System.Windows.Forms.RadioButton
         Friend WithEvents plResultsGrid As System.Windows.Forms.Panel
         Friend WithEvents txtSumEnd As System.Windows.Forms.TextBox
         Friend WithEvents txtSumStart As System.Windows.Forms.TextBox
-        Friend WithEvents Label3 As System.Windows.Forms.Label
+        Friend WithEvents m_lblNumTimeSteps As System.Windows.Forms.Label
         Friend WithEvents udNumTimeSteps As System.Windows.Forms.NumericUpDown
         Friend WithEvents m_lblYear As System.Windows.Forms.Label
         Friend WithEvents m_lblShow As System.Windows.Forms.Label

@@ -180,7 +180,18 @@ Namespace Ecosim
         End Sub
 
         Private Sub UpdateControls()
+
+            Dim bNeedsYearRange As Boolean = (Me.DisplayMode <> eDisplayModeTypes.Indices)
+
             Me.cbGears.Enabled = (Me.DisplayMode = eDisplayModeTypes.Groups)
+
+            Me.m_lblBegin.Enabled = bNeedsYearRange
+            Me.m_fpStartSum.Enabled = bNeedsYearRange
+            Me.m_lblEnd.Enabled = bNeedsYearRange
+            Me.m_fpEndSum.Enabled = bNeedsYearRange
+            Me.m_lblNumTimeSteps.Enabled = bNeedsYearRange
+            Me.m_fpNumSteps.Enabled = bNeedsYearRange
+
         End Sub
 
 #End Region ' Private stuff

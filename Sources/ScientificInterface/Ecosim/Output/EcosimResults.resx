@@ -118,32 +118,32 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblNumTimeSteps.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblNumTimeSteps.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 86</value>
   </data>
-  <data name="Label3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblNumTimeSteps.Size" type="System.Drawing.Size, System.Drawing">
     <value>109, 13</value>
   </data>
-  <data name="Label3.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblNumTimeSteps.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="Label3.Text" xml:space="preserve">
+  <data name="m_lblNumTimeSteps.Text" xml:space="preserve">
     <value>Number of time steps:</value>
   </data>
-  <data name="&gt;&gt;Label3.Name" xml:space="preserve">
-    <value>Label3</value>
+  <data name="&gt;&gt;m_lblNumTimeSteps.Name" xml:space="preserve">
+    <value>m_lblNumTimeSteps</value>
   </data>
-  <data name="&gt;&gt;Label3.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblNumTimeSteps.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblNumTimeSteps.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblNumTimeSteps.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="udNumTimeSteps.Location" type="System.Drawing.Point, System.Drawing">
@@ -209,58 +209,58 @@
   <data name="&gt;&gt;txtSumStart.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblBegin.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblBegin.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 36</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblBegin.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblBegin.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
+  <data name="m_lblBegin.Text" xml:space="preserve">
     <value>Begin:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="&gt;&gt;m_lblBegin.Name" xml:space="preserve">
+    <value>m_lblBegin</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblBegin.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblBegin.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblBegin.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblEnd.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblEnd.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 61</value>
   </data>
-  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblEnd.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
   </data>
-  <data name="Label2.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblEnd.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="Label2.Text" xml:space="preserve">
+  <data name="m_lblEnd.Text" xml:space="preserve">
     <value>End:</value>
   </data>
-  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
-    <value>Label2</value>
+  <data name="&gt;&gt;m_lblEnd.Name" xml:space="preserve">
+    <value>m_lblEnd</value>
   </data>
-  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblEnd.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblEnd.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblEnd.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
   <data name="cbGears.Location" type="System.Drawing.Point, System.Drawing">
@@ -481,6 +481,6 @@
     <value>EcosimResults</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.320, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.518, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>
