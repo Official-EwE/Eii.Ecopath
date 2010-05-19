@@ -5333,6 +5333,9 @@ Public Class cCore
             group.SalinityOpt = m_EcoSimData.SalOpt(iGroup)
             group.SalinitySpreadLeft = m_EcoSimData.SdSalLeft(iGroup)
             group.SalinitySpreadRight = m_EcoSimData.SdSalRight(iGroup)
+            group.TemperatureOpt = m_EcoSimData.TempOpt(iGroup)
+            group.TemperatureSpreadLeft = m_EcoSimData.TempLeft(iGroup)
+            group.TemperatureSpreadRight = m_EcoSimData.TempRight(iGroup)
 
             Try
                 For iPred = 1 To nGroups
@@ -5738,6 +5741,9 @@ Public Class cCore
             m_EcoSimData.SdSalLeft(iGroup) = group.SalinitySpreadLeft
             m_EcoSimData.SdSalRight(iGroup) = group.SalinitySpreadRight
             m_EcoSimData.SalOpt(iGroup) = group.SalinityOpt
+            m_EcoSimData.TempOpt(iGroup) = group.TemperatureOpt
+            m_EcoSimData.TempLeft(iGroup) = group.TemperatureSpreadLeft
+            m_EcoSimData.TempRight(iGroup) = group.TemperatureSpreadRight
 
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
@@ -11071,7 +11077,8 @@ Public Class cCore
                      eDataTypes.EcospaceLayerRelCin, _
                      eDataTypes.EcospaceLayerRelPP, _
                      eDataTypes.EcospaceLayerPort, _
-                     eDataTypes.EcospaceLayerSail
+                     eDataTypes.EcospaceLayerSail, _
+                     eDataTypes.EcospaceLayerMigration
                     DirectCast(obj, cEcospaceLayer).Invalidate()
                     Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
 
