@@ -900,4 +900,7 @@ System Error: {0}</value>
   <data name="MSE_FIXF_FIXESC_FAILEDVALIDATION" xml:space="preserve">
     <value>Failed to set the value. Fix F and Fixed escapement cannot both contain a value.</value>
   </data>
+  <data name="MONTECARLO_RESTORE_FAILED" xml:space="preserve">
+    <value>Warning: Monte Carlo failed to set Ecopath back to its original state. You may need to close the model without saving to restore your original data.</value>
+  </data>
 </root>
