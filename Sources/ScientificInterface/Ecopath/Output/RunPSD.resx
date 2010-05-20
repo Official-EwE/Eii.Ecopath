@@ -120,25 +120,129 @@
   <metadata name="m_sep1.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_sep1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
   <metadata name="m_sep666.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
+  <data name="m_sep666.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
   <metadata name="m_sep2.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
+  <data name="m_sep2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
   <metadata name="m_sep3.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
+  <data name="m_sep3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
   <metadata name="m_sep4.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
+  <data name="m_sep4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
   <metadata name="m_sep5.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
+  <data name="m_sep5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
   <metadata name="m_tsRunPSD.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_tsmiGroupPB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiGroupPB.Text" xml:space="preserve">
+    <value>Group P/B </value>
+  </data>
+  <data name="m_tsmiLorenzen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiLorenzen.Text" xml:space="preserve">
+    <value>Lorenzen-variable </value>
+  </data>
+  <data name="m_tsmiMeanLat.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiMeanLat.Text" xml:space="preserve">
+    <value>Mean lat:</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_tscbxMeanLat.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_tscbxMeanLat.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Standard</value>
+  </data>
+  <data name="m_tscbxMeanLat.Items" xml:space="preserve">
+    <value>&gt;0 and &lt;30</value>
+  </data>
+  <data name="m_tscbxMeanLat.Items1" xml:space="preserve">
+    <value>&gt;30 and &lt;60</value>
+  </data>
+  <data name="m_tscbxMeanLat.Items2" xml:space="preserve">
+    <value>&gt;60 and &lt;90</value>
+  </data>
+  <data name="m_tscbxMeanLat.Size" type="System.Drawing.Size, System.Drawing">
+    <value>86, 21</value>
+  </data>
+  <data name="m_tsddTotalMortality.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsddTotalMortality.Size" type="System.Drawing.Size, System.Drawing">
+    <value>105, 22</value>
+  </data>
+  <data name="m_tsddTotalMortality.Text" xml:space="preserve">
+    <value>Total mortality</value>
+  </data>
+  <data name="m_tsbnShowHideGroups.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnShowHideGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 22</value>
+  </data>
+  <data name="m_tsbnShowHideGroups.Text" xml:space="preserve">
+    <value>Select groups ...</value>
+  </data>
+  <data name="m_tslblNoOfPointsPSD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 22</value>
+  </data>
+  <data name="m_tslblNoOfPointsPSD.Text" xml:space="preserve">
+    <value>No. of wt. classes:</value>
+  </data>
+  <data name="m_tstbxNoOfPointsPSD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 25</value>
+  </data>
+  <data name="m_tslblMinWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 22</value>
+  </data>
+  <data name="m_tslblMinWeight.Text" xml:space="preserve">
+    <value>Lowest wt. class (g):</value>
+  </data>
+  <data name="m_tstbxMinWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 25</value>
+  </data>
+  <data name="m_tslblNoOfPointsMovAvg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 22</value>
+  </data>
+  <data name="m_tslblNoOfPointsMovAvg.Text" xml:space="preserve">
+    <value>No. of pts. for moving avg.:</value>
+  </data>
+  <data name="m_tstbxNoOfPointsMovAvg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 25</value>
+  </data>
+  <data name="m_tsbtnRun.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="m_tsbtnRun.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -154,7 +258,199 @@
         s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="m_tsbtnRun.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbtnRun.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 22</value>
+  </data>
+  <data name="m_tsbtnRun.Text" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="m_tsRunPSD.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsRunPSD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>869, 25</value>
+  </data>
+  <data name="m_tsRunPSD.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_tsRunPSD.Text" xml:space="preserve">
+    <value>ToolStrip1</value>
+  </data>
+  <data name="&gt;&gt;m_tsRunPSD.Name" xml:space="preserve">
+    <value>m_tsRunPSD</value>
+  </data>
+  <data name="&gt;&gt;m_tsRunPSD.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.1.0.519, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsRunPSD.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tsRunPSD.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_zedgraph.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_zedgraph.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="m_zedgraph.Size" type="System.Drawing.Size, System.Drawing">
+    <value>869, 241</value>
+  </data>
+  <data name="m_zedgraph.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_zedgraph.Name" xml:space="preserve">
+    <value>m_zedgraph</value>
+  </data>
+  <data name="&gt;&gt;m_zedgraph.Type" xml:space="preserve">
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.17508, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+  </data>
+  <data name="&gt;&gt;m_zedgraph.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_zedgraph.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>42</value>
   </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>869, 266</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Run particle size distribution</value>
+  </data>
+  <data name="&gt;&gt;m_sep1.Name" xml:space="preserve">
+    <value>m_sep1</value>
+  </data>
+  <data name="&gt;&gt;m_sep1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_sep666.Name" xml:space="preserve">
+    <value>m_sep666</value>
+  </data>
+  <data name="&gt;&gt;m_sep666.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_sep2.Name" xml:space="preserve">
+    <value>m_sep2</value>
+  </data>
+  <data name="&gt;&gt;m_sep2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_sep3.Name" xml:space="preserve">
+    <value>m_sep3</value>
+  </data>
+  <data name="&gt;&gt;m_sep3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_sep4.Name" xml:space="preserve">
+    <value>m_sep4</value>
+  </data>
+  <data name="&gt;&gt;m_sep4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_sep5.Name" xml:space="preserve">
+    <value>m_sep5</value>
+  </data>
+  <data name="&gt;&gt;m_sep5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsddTotalMortality.Name" xml:space="preserve">
+    <value>m_tsddTotalMortality</value>
+  </data>
+  <data name="&gt;&gt;m_tsddTotalMortality.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiGroupPB.Name" xml:space="preserve">
+    <value>m_tsmiGroupPB</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiGroupPB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiLorenzen.Name" xml:space="preserve">
+    <value>m_tsmiLorenzen</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiLorenzen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiMeanLat.Name" xml:space="preserve">
+    <value>m_tsmiMeanLat</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiMeanLat.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tscbxMeanLat.Name" xml:space="preserve">
+    <value>m_tscbxMeanLat</value>
+  </data>
+  <data name="&gt;&gt;m_tscbxMeanLat.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnShowHideGroups.Name" xml:space="preserve">
+    <value>m_tsbnShowHideGroups</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnShowHideGroups.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tslblNoOfPointsPSD.Name" xml:space="preserve">
+    <value>m_tslblNoOfPointsPSD</value>
+  </data>
+  <data name="&gt;&gt;m_tslblNoOfPointsPSD.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tstbxNoOfPointsPSD.Name" xml:space="preserve">
+    <value>m_tstbxNoOfPointsPSD</value>
+  </data>
+  <data name="&gt;&gt;m_tstbxNoOfPointsPSD.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tslblMinWeight.Name" xml:space="preserve">
+    <value>m_tslblMinWeight</value>
+  </data>
+  <data name="&gt;&gt;m_tslblMinWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tstbxMinWeight.Name" xml:space="preserve">
+    <value>m_tstbxMinWeight</value>
+  </data>
+  <data name="&gt;&gt;m_tstbxMinWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tslblNoOfPointsMovAvg.Name" xml:space="preserve">
+    <value>m_tslblNoOfPointsMovAvg</value>
+  </data>
+  <data name="&gt;&gt;m_tslblNoOfPointsMovAvg.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tstbxNoOfPointsMovAvg.Name" xml:space="preserve">
+    <value>m_tstbxNoOfPointsMovAvg</value>
+  </data>
+  <data name="&gt;&gt;m_tstbxNoOfPointsMovAvg.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsbtnRun.Name" xml:space="preserve">
+    <value>m_tsbtnRun</value>
+  </data>
+  <data name="&gt;&gt;m_tsbtnRun.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>RunPSD</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+  </data>
 </root>

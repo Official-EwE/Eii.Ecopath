@@ -28,13 +28,13 @@ Namespace Ecopath.Output
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SizeWeightPlot))
             Me.zgcZedGraphCntl = New ZedGraph.ZedGraphControl
             Me.SuspendLayout()
             '
             'zgcZedGraphCntl
             '
-            Me.zgcZedGraphCntl.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.zgcZedGraphCntl.Location = New System.Drawing.Point(0, 0)
+            resources.ApplyResources(Me.zgcZedGraphCntl, "zgcZedGraphCntl")
             Me.zgcZedGraphCntl.Name = "zgcZedGraphCntl"
             Me.zgcZedGraphCntl.ScrollGrace = 0
             Me.zgcZedGraphCntl.ScrollMaxX = 0
@@ -43,17 +43,13 @@ Namespace Ecopath.Output
             Me.zgcZedGraphCntl.ScrollMinX = 0
             Me.zgcZedGraphCntl.ScrollMinY = 0
             Me.zgcZedGraphCntl.ScrollMinY2 = 0
-            Me.zgcZedGraphCntl.Size = New System.Drawing.Size(535, 445)
-            Me.zgcZedGraphCntl.TabIndex = 0
             '
             'SizeWeightPlot
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(535, 445)
             Me.Controls.Add(Me.zgcZedGraphCntl)
             Me.Name = "SizeWeightPlot"
-            Me.Text = "SizeWeightPlot"
             Me.ResumeLayout(False)
 
         End Sub

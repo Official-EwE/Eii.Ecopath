@@ -28,9 +28,10 @@ Namespace Ecopath.Output
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(PSDPlotByGroup))
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.m_lblGroups = New System.Windows.Forms.Label
+            Me.m_hdrGroups = New cEwEHeaderLabel
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
@@ -39,9 +40,7 @@ Namespace Ecopath.Output
             '
             'SplitContainer1
             '
-            Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.SplitContainer1.Location = New System.Drawing.Point(0, 0)
-            Me.SplitContainer1.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.SplitContainer1, "SplitContainer1")
             Me.SplitContainer1.Name = "SplitContainer1"
             '
             'SplitContainer1.Panel1
@@ -50,17 +49,12 @@ Namespace Ecopath.Output
             '
             'SplitContainer1.Panel2
             '
-            Me.SplitContainer1.Panel2.Controls.Add(Me.m_lblGroups)
+            Me.SplitContainer1.Panel2.Controls.Add(Me.m_hdrGroups)
             Me.SplitContainer1.Panel2.Controls.Add(Me.m_lbGroups)
-            Me.SplitContainer1.Size = New System.Drawing.Size(588, 463)
-            Me.SplitContainer1.SplitterDistance = 451
-            Me.SplitContainer1.TabIndex = 0
             '
             'm_graph
             '
-            Me.m_graph.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_graph.Location = New System.Drawing.Point(0, 0)
-            Me.m_graph.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
             Me.m_graph.ScrollGrace = 0
             Me.m_graph.ScrollMaxX = 0
@@ -69,54 +63,34 @@ Namespace Ecopath.Output
             Me.m_graph.ScrollMinX = 0
             Me.m_graph.ScrollMinY = 0
             Me.m_graph.ScrollMinY2 = 0
-            Me.m_graph.Size = New System.Drawing.Size(451, 463)
-            Me.m_graph.TabIndex = 0
             '
-            'm_lblGroups
+            'm_hdrGroups
             '
-            Me.m_lblGroups.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_lblGroups.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblGroups.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.m_lblGroups.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-            Me.m_lblGroups.Location = New System.Drawing.Point(0, 0)
-            Me.m_lblGroups.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_lblGroups.Name = "m_lblGroups"
-            Me.m_lblGroups.Size = New System.Drawing.Size(133, 18)
-            Me.m_lblGroups.TabIndex = 2
-            Me.m_lblGroups.Text = "Groups"
-            Me.m_lblGroups.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
+            Me.m_hdrGroups.Name = "m_hdrGroups"
             '
             'm_lbGroups
             '
-            Me.m_lbGroups.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lbGroups.AllGroupsItemColor = System.Drawing.Color.Transparent
+            Me.m_lbGroups.AllGroupsItemText = "(All)"
+            resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
             Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbGroups.FormattingEnabled = True
             Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
             Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.LivingGroups
-            Me.m_lbGroups.IntegralHeight = False
-            Me.m_lbGroups.Location = New System.Drawing.Point(0, 18)
-            Me.m_lbGroups.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lbGroups.Name = "m_lbGroups"
             Me.m_lbGroups.SelectedGroup = Nothing
             Me.m_lbGroups.SelectedGroupIndex = -1
             Me.m_lbGroups.ShowAllGroupsItem = False
-            Me.m_lbGroups.Size = New System.Drawing.Size(133, 445)
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
-            Me.m_lbGroups.TabIndex = 0
             '
             'PSDPlotByGroup
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(588, 463)
             Me.Controls.Add(Me.SplitContainer1)
-            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "PSDPlotByGroup"
-            Me.Text = "PSDPlotByGroup"
             Me.SplitContainer1.Panel1.ResumeLayout(False)
             Me.SplitContainer1.Panel2.ResumeLayout(False)
             Me.SplitContainer1.ResumeLayout(False)
@@ -126,7 +100,7 @@ Namespace Ecopath.Output
         Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
-        Private WithEvents m_lblGroups As System.Windows.Forms.Label
+        Private WithEvents m_hdrGroups As cEwEHeaderLabel
     End Class
 
 End Namespace
