@@ -38,15 +38,15 @@ Partial Class dlgEditLayer
             Me.m_tcLayerView = New System.Windows.Forms.TabControl
             Me.m_tbAppearance = New System.Windows.Forms.TabPage
             Me.m_scDetails = New System.Windows.Forms.SplitContainer
-            Me.lblDescription = New System.Windows.Forms.Label
+            Me.m_hdrDescription = New cEwEHeaderLabel
             Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel
             Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.m_lblWeight = New System.Windows.Forms.Label
             Me.m_lblDescription = New System.Windows.Forms.Label
             Me.m_nudWeight = New System.Windows.Forms.NumericUpDown
-            Me.lblAppearance = New System.Windows.Forms.Label
+            Me.m_hdrAppearance = New cEwEHeaderLabel
             Me.m_tpData = New System.Windows.Forms.TabPage
-            Me.m_lblStaticData = New System.Windows.Forms.Label
+            Me.m_hdrStaticData = New cEwEHeaderLabel
             Me.m_grid = New ScientificInterface.gridLayerData
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
@@ -150,20 +150,18 @@ Partial Class dlgEditLayer
             '
             'm_scDetails.Panel1
             '
-            Me.m_scDetails.Panel1.Controls.Add(Me.lblDescription)
+            Me.m_scDetails.Panel1.Controls.Add(Me.m_hdrDescription)
             Me.m_scDetails.Panel1.Controls.Add(Me.m_tlpDetails)
             '
             'm_scDetails.Panel2
             '
-            Me.m_scDetails.Panel2.Controls.Add(Me.lblAppearance)
+            Me.m_scDetails.Panel2.Controls.Add(Me.m_hdrAppearance)
             Me.m_scDetails.Panel2.Controls.Add(Me.m_plEditVisualStyle)
             '
-            'lblDescription
+            'm_hdrDescription
             '
-            resources.ApplyResources(Me.lblDescription, "lblDescription")
-            Me.lblDescription.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblDescription.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-            Me.lblDescription.Name = "lblDescription"
+            resources.ApplyResources(Me.m_hdrDescription, "m_hdrDescription")
+            Me.m_hdrDescription.Name = "m_hdrDescription"
             '
             'm_tlpDetails
             '
@@ -198,16 +196,14 @@ Partial Class dlgEditLayer
             resources.ApplyResources(Me.m_nudWeight, "m_nudWeight")
             Me.m_nudWeight.Name = "m_nudWeight"
             '
-            'lblAppearance
+            'm_hdrAppearance
             '
-            resources.ApplyResources(Me.lblAppearance, "lblAppearance")
-            Me.lblAppearance.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblAppearance.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-            Me.lblAppearance.Name = "lblAppearance"
+            resources.ApplyResources(Me.m_hdrAppearance, "m_hdrAppearance")
+            Me.m_hdrAppearance.Name = "m_hdrAppearance"
             '
             'm_tpData
             '
-            Me.m_tpData.Controls.Add(Me.m_lblStaticData)
+            Me.m_tpData.Controls.Add(Me.m_hdrStaticData)
             Me.m_tpData.Controls.Add(Me.m_btnDataExport)
             Me.m_tpData.Controls.Add(Me.m_btnDataImport)
             Me.m_tpData.Controls.Add(Me.m_grid)
@@ -215,18 +211,18 @@ Partial Class dlgEditLayer
             Me.m_tpData.Name = "m_tpData"
             Me.m_tpData.UseVisualStyleBackColor = True
             '
-            'm_lblStaticData
+            'm_hdrStaticData
             '
-            resources.ApplyResources(Me.m_lblStaticData, "m_lblStaticData")
-            Me.m_lblStaticData.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblStaticData.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-            Me.m_lblStaticData.Name = "m_lblStaticData"
+            resources.ApplyResources(Me.m_hdrStaticData, "m_hdrStaticData")
+            Me.m_hdrStaticData.Name = "m_hdrStaticData"
             '
             'm_grid
             '
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
             Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
             Me.m_grid.CustomSort = False
             Me.m_grid.FixedColumnWidths = True
@@ -243,6 +239,8 @@ Partial Class dlgEditLayer
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TrackPropertySelection = False
+            Me.m_grid.UIContext = Nothing
             '
             'dlgEditLayer
             '
@@ -286,15 +284,15 @@ Partial Class dlgEditLayer
         Private WithEvents m_tcLayerView As System.Windows.Forms.TabControl
         Private WithEvents m_tbAppearance As System.Windows.Forms.TabPage
         Private WithEvents m_tpData As System.Windows.Forms.TabPage
-        Private WithEvents m_lblStaticData As System.Windows.Forms.Label
+        Private WithEvents m_hdrStaticData As cEwEHeaderLabel
         Private WithEvents m_grid As gridLayerData
-        Private WithEvents lblAppearance As System.Windows.Forms.Label
-        Private WithEvents lblDescription As System.Windows.Forms.Label
-        Friend WithEvents m_tlpDetails As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents m_tbDescription As System.Windows.Forms.TextBox
-        Friend WithEvents m_lblDescription As System.Windows.Forms.Label
-        Friend WithEvents m_lblWeight As System.Windows.Forms.Label
-        Friend WithEvents m_nudWeight As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_hdrAppearance As cEwEHeaderLabel
+        Private WithEvents m_hdrDescription As cEwEHeaderLabel
+        Private WithEvents m_tlpDetails As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
+        Private WithEvents m_lblDescription As System.Windows.Forms.Label
+        Private WithEvents m_lblWeight As System.Windows.Forms.Label
+        Private WithEvents m_nudWeight As System.Windows.Forms.NumericUpDown
         Private WithEvents m_scDetails As System.Windows.Forms.SplitContainer
 
     End Class

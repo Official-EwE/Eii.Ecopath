@@ -136,7 +136,7 @@
     <value>m_zoomContainer</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.ucZoomBaseMap, EwE6, Version=6.0.7.307, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.Ecospace.ucZoomBaseMap, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -192,43 +192,43 @@
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="lblLayers.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_hdrLayers.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblLayers.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_hdrLayers.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="lblLayers.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrLayers.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="lblLayers.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrLayers.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 40</value>
   </data>
-  <data name="lblLayers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_hdrLayers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="lblLayers.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrLayers.Size" type="System.Drawing.Size, System.Drawing">
     <value>186, 21</value>
   </data>
-  <data name="lblLayers.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrLayers.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="lblLayers.Text" xml:space="preserve">
+  <data name="m_hdrLayers.Text" xml:space="preserve">
     <value>Layers</value>
   </data>
-  <data name="lblLayers.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrLayers.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;lblLayers.Name" xml:space="preserve">
-    <value>lblLayers</value>
+  <data name="&gt;&gt;m_hdrLayers.Name" xml:space="preserve">
+    <value>m_hdrLayers</value>
   </data>
-  <data name="&gt;&gt;lblLayers.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrLayers.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblLayers.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrLayers.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
   </data>
-  <data name="&gt;&gt;lblLayers.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrLayers.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <metadata name="tsEditBasemapThingies.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -367,7 +367,7 @@
     <value>0</value>
   </data>
   <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="plLayers" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblLayers" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tsEditBasemapThingies" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plEditor" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,40,Absolute,21,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="plLayers" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrLayers" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tsEditBasemapThingies" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plEditor" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,40,Absolute,21,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;SplitContainer1.Panel2.Name" xml:space="preserve">
     <value>SplitContainer1.Panel2</value>
@@ -448,6 +448,6 @@
     <value>Basemap</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.307, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>

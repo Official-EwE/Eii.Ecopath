@@ -43,17 +43,17 @@ Namespace Ecospace
             Me.m_cbInvertColor = New System.Windows.Forms.CheckBox
             Me.m_cmbLabelPos = New System.Windows.Forms.ComboBox
             Me.m_cbShowLabels = New System.Windows.Forms.CheckBox
-            Me.m_lblLabelOptions = New System.Windows.Forms.Label
+            Me.m_hdrLabelOptions = New cEwEHeaderLabel
             Me.m_lblProgress = New System.Windows.Forms.Label
             Me.m_plDistribution = New System.Windows.Forms.Panel
             Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton
             Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton
             Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton
-            Me.m_lblDist = New System.Windows.Forms.Label
+            Me.m_hdrDist = New cEwEHeaderLabel
             Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton
             Me.m_plDisplayOptions = New System.Windows.Forms.Panel
             Me.m_btnDisplayGroups = New System.Windows.Forms.Button
-            Me.m_lblDispOpt = New System.Windows.Forms.Label
+            Me.m_hdrDispOpt = New cEwEHeaderLabel
             Me.m_cbMPA = New System.Windows.Forms.CheckBox
             Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel
             Me.m_tcOutputs = New System.Windows.Forms.TabControl
@@ -171,7 +171,7 @@ Namespace Ecospace
             Me.m_plLabelOptions.Controls.Add(Me.m_cbInvertColor)
             Me.m_plLabelOptions.Controls.Add(Me.m_cmbLabelPos)
             Me.m_plLabelOptions.Controls.Add(Me.m_cbShowLabels)
-            Me.m_plLabelOptions.Controls.Add(Me.m_lblLabelOptions)
+            Me.m_plLabelOptions.Controls.Add(Me.m_hdrLabelOptions)
             Me.m_plLabelOptions.Name = "m_plLabelOptions"
             '
             'm_cbInvertColor
@@ -196,12 +196,10 @@ Namespace Ecospace
             Me.m_cbShowLabels.Name = "m_cbShowLabels"
             Me.m_cbShowLabels.UseVisualStyleBackColor = True
             '
-            'm_lblLabelOptions
+            'm_hdrLabelOptions
             '
-            resources.ApplyResources(Me.m_lblLabelOptions, "m_lblLabelOptions")
-            Me.m_lblLabelOptions.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblLabelOptions.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblLabelOptions.Name = "m_lblLabelOptions"
+            resources.ApplyResources(Me.m_hdrLabelOptions, "m_hdrLabelOptions")
+            Me.m_hdrLabelOptions.Name = "m_hdrLabelOptions"
             '
             'm_lblProgress
             '
@@ -214,7 +212,7 @@ Namespace Ecospace
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayRelBiomass)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayFishingEffort)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayContaminantC)
-            Me.m_plDistribution.Controls.Add(Me.m_lblDist)
+            Me.m_plDistribution.Controls.Add(Me.m_hdrDist)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayCoverB)
             Me.m_plDistribution.Name = "m_plDistribution"
             '
@@ -238,12 +236,10 @@ Namespace Ecospace
             Me.m_rbDisplayContaminantC.Name = "m_rbDisplayContaminantC"
             Me.m_rbDisplayContaminantC.UseVisualStyleBackColor = True
             '
-            'm_lblDist
+            'm_hdrDist
             '
-            resources.ApplyResources(Me.m_lblDist, "m_lblDist")
-            Me.m_lblDist.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblDist.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblDist.Name = "m_lblDist"
+            resources.ApplyResources(Me.m_hdrDist, "m_hdrDist")
+            Me.m_hdrDist.Name = "m_hdrDist"
             '
             'm_rbDisplayCoverB
             '
@@ -256,7 +252,7 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_plDisplayOptions, "m_plDisplayOptions")
             Me.m_plDisplayOptions.Controls.Add(Me.m_btnDisplayGroups)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowAll)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_lblDispOpt)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_hdrDispOpt)
             Me.m_plDisplayOptions.Controls.Add(Me.m_cbMPA)
             Me.m_plDisplayOptions.Controls.Add(Me.m_cbOverlay)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
@@ -270,12 +266,10 @@ Namespace Ecospace
             Me.m_btnDisplayGroups.Name = "m_btnDisplayGroups"
             Me.m_btnDisplayGroups.UseVisualStyleBackColor = True
             '
-            'm_lblDispOpt
+            'm_hdrDispOpt
             '
-            resources.ApplyResources(Me.m_lblDispOpt, "m_lblDispOpt")
-            Me.m_lblDispOpt.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblDispOpt.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblDispOpt.Name = "m_lblDispOpt"
+            resources.ApplyResources(Me.m_hdrDispOpt, "m_hdrDispOpt")
+            Me.m_hdrDispOpt.Name = "m_hdrDispOpt"
             '
             'm_cbMPA
             '
@@ -371,8 +365,8 @@ Namespace Ecospace
         Private WithEvents m_tabSmallMultiples As System.Windows.Forms.TabPage
         Private WithEvents m_tabPlot As System.Windows.Forms.TabPage
         Private WithEvents m_tlpRun As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_lblDispOpt As System.Windows.Forms.Label
-        Private WithEvents m_lblDist As System.Windows.Forms.Label
+        Private WithEvents m_hdrDispOpt As cEwEHeaderLabel
+        Private WithEvents m_hdrDist As cEwEHeaderLabel
         Private WithEvents m_plDisplayOptions As System.Windows.Forms.Panel
         Private WithEvents m_zgPlotLarge As ZedGraphControl
         Private WithEvents m_btnDisplayGroups As System.Windows.Forms.Button
@@ -383,7 +377,7 @@ Namespace Ecospace
         Private WithEvents m_rbDisplayCoverB As System.Windows.Forms.RadioButton
         Private WithEvents m_cbMPA As System.Windows.Forms.CheckBox
         Private WithEvents m_lblProgress As System.Windows.Forms.Label
-        Private WithEvents m_lblLabelOptions As System.Windows.Forms.Label
+        Private WithEvents m_hdrLabelOptions As cEwEHeaderLabel
         Private WithEvents m_cmbLabelPos As System.Windows.Forms.ComboBox
         Private WithEvents m_cbShowLabels As System.Windows.Forms.CheckBox
         Private WithEvents m_plLabelOptions As System.Windows.Forms.Panel

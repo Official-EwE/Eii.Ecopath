@@ -33,8 +33,8 @@ Namespace Ecospace
             Me.m_rbGroup = New System.Windows.Forms.RadioButton
             Me.m_rbRegion = New System.Windows.Forms.RadioButton
             Me.m_rbFleet = New System.Windows.Forms.RadioButton
-            Me.m_lblYear = New System.Windows.Forms.Label
-            Me.m_lblShow = New System.Windows.Forms.Label
+            Me.m_hdrYear = New cEwEHeaderLabel
+            Me.m_hdrShow = New cEwEHeaderLabel
             Me.m_lblNumSteps = New System.Windows.Forms.Label
             CType(Me.m_nudSumLength, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -104,19 +104,16 @@ Namespace Ecospace
             Me.m_rbFleet.TabStop = True
             Me.m_rbFleet.UseVisualStyleBackColor = True
             '
-            'm_lblYear
+            'm_hdrYear
             '
-            Me.m_lblYear.BackColor = System.Drawing.SystemColors.ButtonShadow
-            resources.ApplyResources(Me.m_lblYear, "m_lblYear")
-            Me.m_lblYear.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblYear.Name = "m_lblYear"
+            Me.m_hdrYear.BackColor = System.Drawing.SystemColors.ButtonShadow
+            resources.ApplyResources(Me.m_hdrYear, "m_hdrYear")
+            Me.m_hdrYear.Name = "m_hdrYear"
             '
-            'm_lblShow
+            'm_hdrShow
             '
-            resources.ApplyResources(Me.m_lblShow, "m_lblShow")
-            Me.m_lblShow.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblShow.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblShow.Name = "m_lblShow"
+            resources.ApplyResources(Me.m_hdrShow, "m_hdrShow")
+            Me.m_hdrShow.Name = "m_hdrShow"
             '
             'm_lblNumSteps
             '
@@ -128,8 +125,8 @@ Namespace Ecospace
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_lblNumSteps)
-            Me.Controls.Add(Me.m_lblShow)
-            Me.Controls.Add(Me.m_lblYear)
+            Me.Controls.Add(Me.m_hdrShow)
+            Me.Controls.Add(Me.m_hdrYear)
             Me.Controls.Add(Me.m_cmbRegions)
             Me.Controls.Add(Me.m_cmbGears)
             Me.Controls.Add(Me.m_rbGroup)
@@ -147,17 +144,17 @@ Namespace Ecospace
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents m_plResultsGrid As System.Windows.Forms.Panel
-        Friend WithEvents m_nudSumLength As System.Windows.Forms.NumericUpDown
-        Friend WithEvents m_tbSumEndTime As System.Windows.Forms.TextBox
-        Friend WithEvents m_lblSumStartTime As System.Windows.Forms.Label
-        Friend WithEvents m_lblSumEndTime As System.Windows.Forms.Label
-        Friend WithEvents m_cmbRegions As System.Windows.Forms.ComboBox
-        Friend WithEvents m_cmbGears As System.Windows.Forms.ComboBox
-        Friend WithEvents m_rbGroup As System.Windows.Forms.RadioButton
-        Friend WithEvents m_lblYear As System.Windows.Forms.Label
-        Friend WithEvents m_lblShow As System.Windows.Forms.Label
-        Friend WithEvents m_lblNumSteps As System.Windows.Forms.Label
+        Private WithEvents m_plResultsGrid As System.Windows.Forms.Panel
+        Private WithEvents m_nudSumLength As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_tbSumEndTime As System.Windows.Forms.TextBox
+        Private WithEvents m_lblSumStartTime As System.Windows.Forms.Label
+        Private WithEvents m_lblSumEndTime As System.Windows.Forms.Label
+        Private WithEvents m_cmbRegions As System.Windows.Forms.ComboBox
+        Private WithEvents m_cmbGears As System.Windows.Forms.ComboBox
+        Private WithEvents m_rbGroup As System.Windows.Forms.RadioButton
+        Private WithEvents m_hdrYear As cEwEHeaderLabel
+        Private WithEvents m_hdrShow As cEwEHeaderLabel
+        Private WithEvents m_lblNumSteps As System.Windows.Forms.Label
         Private WithEvents m_rbFleet As System.Windows.Forms.RadioButton
         Private WithEvents m_tbSumStartTime As System.Windows.Forms.TextBox
         Private WithEvents m_rbRegion As System.Windows.Forms.RadioButton

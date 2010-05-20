@@ -31,11 +31,11 @@ Namespace Ecospace
             Me.m_btnKeep = New System.Windows.Forms.Button
             Me.m_btnHabToRegion = New System.Windows.Forms.Button
             Me.m_btnFromCells = New System.Windows.Forms.Button
-            Me.m_lbEdit = New System.Windows.Forms.Label
-            Me.m_lblGenerate = New System.Windows.Forms.Label
+            Me.m_hdrEdit = New cEwEHeaderLabel
+            Me.m_hdrGenerate = New cEwEHeaderLabel
             Me.m_btnMPAtoRegion = New System.Windows.Forms.Button
             Me.m_btnSelectEmpty = New System.Windows.Forms.Button
-            Me.m_lblSelect = New System.Windows.Forms.Label
+            Me.m_hdrSelect = New cEwEHeaderLabel
             Me.m_btnSelectAll = New System.Windows.Forms.Button
             Me.m_btnSelectNone = New System.Windows.Forms.Button
             Me.TableLayoutPanel1.SuspendLayout()
@@ -116,19 +116,15 @@ Namespace Ecospace
             Me.m_btnFromCells.Name = "m_btnFromCells"
             Me.m_btnFromCells.UseVisualStyleBackColor = True
             '
-            'm_lbEdit
+            'm_hdrEdit
             '
-            resources.ApplyResources(Me.m_lbEdit, "m_lbEdit")
-            Me.m_lbEdit.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lbEdit.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.m_lbEdit.Name = "m_lbEdit"
+            resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
+            Me.m_hdrEdit.Name = "m_hdrEdit"
             '
-            'm_lblGenerate
+            'm_hdrGenerate
             '
-            resources.ApplyResources(Me.m_lblGenerate, "m_lblGenerate")
-            Me.m_lblGenerate.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lblGenerate.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.m_lblGenerate.Name = "m_lblGenerate"
+            resources.ApplyResources(Me.m_hdrGenerate, "m_hdrGenerate")
+            Me.m_hdrGenerate.Name = "m_hdrGenerate"
             '
             'm_btnMPAtoRegion
             '
@@ -142,12 +138,10 @@ Namespace Ecospace
             Me.m_btnSelectEmpty.Name = "m_btnSelectEmpty"
             Me.m_btnSelectEmpty.UseVisualStyleBackColor = True
             '
-            'm_lblSelect
+            'm_hdrSelect
             '
-            resources.ApplyResources(Me.m_lblSelect, "m_lblSelect")
-            Me.m_lblSelect.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lblSelect.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.m_lblSelect.Name = "m_lblSelect"
+            resources.ApplyResources(Me.m_hdrSelect, "m_hdrSelect")
+            Me.m_hdrSelect.Name = "m_hdrSelect"
             '
             'm_btnSelectAll
             '
@@ -167,9 +161,9 @@ Namespace Ecospace
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
-            Me.Controls.Add(Me.m_lblGenerate)
-            Me.Controls.Add(Me.m_lblSelect)
-            Me.Controls.Add(Me.m_lbEdit)
+            Me.Controls.Add(Me.m_hdrGenerate)
+            Me.Controls.Add(Me.m_hdrSelect)
+            Me.Controls.Add(Me.m_hdrEdit)
             Me.Controls.Add(Me.m_btnFromCells)
             Me.Controls.Add(Me.m_btnMPAtoRegion)
             Me.Controls.Add(Me.m_btnHabToRegion)
@@ -199,11 +193,11 @@ Namespace Ecospace
         Private WithEvents m_btnFromCells As System.Windows.Forms.Button
         Private WithEvents m_btnHabToRegion As System.Windows.Forms.Button
         Private WithEvents m_grid As gridEditRegions
-        Private WithEvents m_lbEdit As System.Windows.Forms.Label
-        Private WithEvents m_lblGenerate As System.Windows.Forms.Label
+        Private WithEvents m_hdrEdit As cEwEHeaderLabel
+        Private WithEvents m_hdrGenerate As cEwEHeaderLabel
         Private WithEvents m_btnMPAtoRegion As System.Windows.Forms.Button
         Private WithEvents m_btnSelectEmpty As System.Windows.Forms.Button
-        Private WithEvents m_lblSelect As System.Windows.Forms.Label
+        Private WithEvents m_hdrSelect As cEwEHeaderLabel
         Private WithEvents m_btnSelectAll As System.Windows.Forms.Button
         Private WithEvents m_btnSelectNone As System.Windows.Forms.Button
 

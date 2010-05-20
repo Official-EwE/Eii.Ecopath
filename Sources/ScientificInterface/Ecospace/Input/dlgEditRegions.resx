@@ -136,7 +136,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridEditRegions, EwE6, Version=6.0.7.409, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.gridEditRegions, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -213,57 +213,6 @@
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Name" xml:space="preserve">
-    <value>OK_Button</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Name" xml:space="preserve">
-    <value>Cancel_Button</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>179, 438</value>
-  </data>
-  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 29</value>
-  </data>
-  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="OK_Button" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Cancel_Button" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
   <data name="OK_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
@@ -329,6 +278,33 @@
   </data>
   <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>179, 438</value>
+  </data>
+  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 29</value>
+  </data>
+  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
+    <value>TableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="OK_Button" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Cancel_Button" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_btnKeep.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -435,76 +411,76 @@
   <data name="&gt;&gt;m_btnFromCells.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_lbEdit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrEdit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_lbEdit.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrEdit.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lbEdit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrEdit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lbEdit.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrEdit.Location" type="System.Drawing.Point, System.Drawing">
     <value>280, 127</value>
   </data>
-  <data name="m_lbEdit.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrEdit.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 18</value>
   </data>
-  <data name="m_lbEdit.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrEdit.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="m_lbEdit.Text" xml:space="preserve">
+  <data name="m_hdrEdit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="m_lbEdit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrEdit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lbEdit.Name" xml:space="preserve">
-    <value>m_lbEdit</value>
+  <data name="&gt;&gt;m_hdrEdit.Name" xml:space="preserve">
+    <value>m_hdrEdit</value>
   </data>
-  <data name="&gt;&gt;m_lbEdit.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lbEdit.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lbEdit.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrEdit.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_lblGenerate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrGenerate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_lblGenerate.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrGenerate.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblGenerate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrGenerate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblGenerate.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrGenerate.Location" type="System.Drawing.Point, System.Drawing">
     <value>280, 242</value>
   </data>
-  <data name="m_lblGenerate.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrGenerate.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 18</value>
   </data>
-  <data name="m_lblGenerate.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrGenerate.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="m_lblGenerate.Text" xml:space="preserve">
+  <data name="m_hdrGenerate.Text" xml:space="preserve">
     <value>Generate</value>
   </data>
-  <data name="m_lblGenerate.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrGenerate.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblGenerate.Name" xml:space="preserve">
-    <value>m_lblGenerate</value>
+  <data name="&gt;&gt;m_hdrGenerate.Name" xml:space="preserve">
+    <value>m_hdrGenerate</value>
   </data>
-  <data name="&gt;&gt;m_lblGenerate.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrGenerate.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblGenerate.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrGenerate.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblGenerate.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrGenerate.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_btnMPAtoRegion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -579,40 +555,40 @@
   <data name="&gt;&gt;m_btnSelectEmpty.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="m_lblSelect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrSelect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_lblSelect.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrSelect.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblSelect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrSelect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblSelect.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrSelect.Location" type="System.Drawing.Point, System.Drawing">
     <value>280, 12</value>
   </data>
-  <data name="m_lblSelect.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrSelect.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 18</value>
   </data>
-  <data name="m_lblSelect.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrSelect.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_lblSelect.Text" xml:space="preserve">
+  <data name="m_hdrSelect.Text" xml:space="preserve">
     <value>Select</value>
   </data>
-  <data name="m_lblSelect.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrSelect.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblSelect.Name" xml:space="preserve">
-    <value>m_lblSelect</value>
+  <data name="&gt;&gt;m_hdrSelect.Name" xml:space="preserve">
+    <value>m_hdrSelect</value>
   </data>
-  <data name="&gt;&gt;m_lblSelect.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSelect.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblSelect.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSelect.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblSelect.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSelect.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_btnSelectAll.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">

@@ -28,7 +28,7 @@ Partial Class Basemap
             Me.plLayers = New System.Windows.Forms.Panel
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.lblLayers = New System.Windows.Forms.Label
+            Me.m_hdrLayers = New cEwEHeaderLabel
             Me.tsEditBasemapThingies = New System.Windows.Forms.ToolStrip
             Me.tsbEditBasemap = New System.Windows.Forms.ToolStripButton
             Me.tsbEditHabitats = New System.Windows.Forms.ToolStripButton
@@ -48,6 +48,7 @@ Partial Class Basemap
             resources.ApplyResources(Me.m_zoomContainer, "m_zoomContainer")
             Me.m_zoomContainer.Name = "m_zoomContainer"
             Me.m_zoomContainer.PositionMode = ScientificInterface.Ecospace.ucZoomBaseMap.ePositionModeTypes.Center
+            Me.m_zoomContainer.UIContext = Nothing
             '
             'plLayers
             '
@@ -72,17 +73,17 @@ Partial Class Basemap
             '
             resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
             Me.TableLayoutPanel1.Controls.Add(Me.plLayers, 0, 2)
-            Me.TableLayoutPanel1.Controls.Add(Me.lblLayers, 0, 1)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_hdrLayers, 0, 1)
             Me.TableLayoutPanel1.Controls.Add(Me.tsEditBasemapThingies, 0, 0)
             Me.TableLayoutPanel1.Controls.Add(Me.m_plEditor, 0, 3)
             Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
             '
-            'lblLayers
+            'm_hdrLayers
             '
-            resources.ApplyResources(Me.lblLayers, "lblLayers")
-            Me.lblLayers.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblLayers.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblLayers.Name = "lblLayers"
+            resources.ApplyResources(Me.m_hdrLayers, "m_hdrLayers")
+            Me.m_hdrLayers.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_hdrLayers.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_hdrLayers.Name = "m_hdrLayers"
             '
             'tsEditBasemapThingies
             '
@@ -138,17 +139,17 @@ Partial Class Basemap
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents plLayers As System.Windows.Forms.Panel
-        Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents lblLayers As System.Windows.Forms.Label
-        Friend WithEvents tsEditBasemapThingies As System.Windows.Forms.ToolStrip
-        Friend WithEvents tsbEditBasemap As System.Windows.Forms.ToolStripButton
-        Friend WithEvents tsbEditHabitats As System.Windows.Forms.ToolStripButton
-        Friend WithEvents tsbEditRegion As System.Windows.Forms.ToolStripButton
-        Friend WithEvents tsbEditMPA As System.Windows.Forms.ToolStripButton
-        Friend WithEvents m_plEditor As System.Windows.Forms.Panel
+        Private WithEvents plLayers As System.Windows.Forms.Panel
+        Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
+        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents tsEditBasemapThingies As System.Windows.Forms.ToolStrip
+        Private WithEvents tsbEditBasemap As System.Windows.Forms.ToolStripButton
+        Private WithEvents tsbEditHabitats As System.Windows.Forms.ToolStripButton
+        Private WithEvents tsbEditRegion As System.Windows.Forms.ToolStripButton
+        Private WithEvents tsbEditMPA As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_plEditor As System.Windows.Forms.Panel
         Private WithEvents m_zoomContainer As ScientificInterface.Ecospace.ucZoomBaseMap
+        Private WithEvents m_hdrLayers As cEwEHeaderLabel
 
     End Class
 

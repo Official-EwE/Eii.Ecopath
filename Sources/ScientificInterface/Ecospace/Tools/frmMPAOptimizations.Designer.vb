@@ -30,7 +30,7 @@ Namespace Ecospace
             Me.m_ucZoom = New ScientificInterface.Ecospace.ucZoomBaseMap
             Me.m_tlbLayers = New System.Windows.Forms.TableLayoutPanel
             Me.m_plLayers = New System.Windows.Forms.Panel
-            Me.m_lblLayers = New System.Windows.Forms.Label
+            Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tsMap = New System.Windows.Forms.ToolStrip
             Me.m_tsbMPA = New System.Windows.Forms.ToolStripDropDownButton
             Me.m_tsmClearMPA = New System.Windows.Forms.ToolStripMenuItem
@@ -42,7 +42,7 @@ Namespace Ecospace
             Me.m_cmbMPA = New System.Windows.Forms.ComboBox
             Me.m_rbRandom = New System.Windows.Forms.RadioButton
             Me.m_rbEcoseed = New System.Windows.Forms.RadioButton
-            Me.m_lblParameters = New System.Windows.Forms.Label
+            Me.m_hdrParameters = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_lbMPA = New System.Windows.Forms.Label
             Me.m_lblEndYear = New System.Windows.Forms.Label
             Me.m_nudIterations = New System.Windows.Forms.NumericUpDown
@@ -64,7 +64,7 @@ Namespace Ecospace
             Me.m_btnResetMPAs = New System.Windows.Forms.Button
             Me.m_btnConvertToMpa = New System.Windows.Forms.Button
             Me.m_nudBestPercentile = New System.Windows.Forms.NumericUpDown
-            Me.m_lblOutput = New System.Windows.Forms.Label
+            Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_lblSearchType = New System.Windows.Forms.Label
             Me.m_tlbParameters = New System.Windows.Forms.TableLayoutPanel
             Me.m_lblMinArea = New System.Windows.Forms.Label
@@ -89,9 +89,9 @@ Namespace Ecospace
             Me.m_gridObjectives = New ScientificInterface.Ecosim.gridSearchObjectivesWeight
             Me.m_lbFleet = New System.Windows.Forms.Label
             Me.m_lblGroup = New System.Windows.Forms.Label
-            Me.lblParam = New System.Windows.Forms.Label
+            Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tabMap = New System.Windows.Forms.TabPage
-            Me.m_lblMap = New System.Windows.Forms.Label
+            Me.m_hdrMap = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_scContent = New System.Windows.Forms.SplitContainer
             Me.PictureBox1 = New System.Windows.Forms.PictureBox
             Me.PictureBox2 = New System.Windows.Forms.PictureBox
@@ -128,293 +128,169 @@ Namespace Ecospace
             '
             'm_btnRun
             '
-            Me.m_btnRun.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnRun.Location = New System.Drawing.Point(634, 23)
+            resources.ApplyResources(Me.m_btnRun, "m_btnRun")
             Me.m_btnRun.Name = "m_btnRun"
-            Me.m_btnRun.Size = New System.Drawing.Size(60, 23)
-            Me.m_btnRun.TabIndex = 3
-            Me.m_btnRun.Text = "&Run"
             Me.m_btnRun.UseVisualStyleBackColor = True
             '
             'm_btnStop
             '
-            Me.m_btnStop.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_btnStop, "m_btnStop")
             Me.m_btnStop.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.m_btnStop.Location = New System.Drawing.Point(700, 23)
             Me.m_btnStop.Name = "m_btnStop"
-            Me.m_btnStop.Size = New System.Drawing.Size(60, 23)
-            Me.m_btnStop.TabIndex = 4
-            Me.m_btnStop.Text = "&Stop"
             Me.m_btnStop.UseVisualStyleBackColor = True
             '
             'm_ucZoom
             '
-            Me.m_ucZoom.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucZoom.Location = New System.Drawing.Point(0, 0)
+            resources.ApplyResources(Me.m_ucZoom, "m_ucZoom")
             Me.m_ucZoom.Name = "m_ucZoom"
             Me.m_ucZoom.PositionMode = ScientificInterface.Ecospace.ucZoomBaseMap.ePositionModeTypes.Center
-            Me.m_ucZoom.Size = New System.Drawing.Size(649, 466)
-            Me.m_ucZoom.TabIndex = 0
+            Me.m_ucZoom.UIContext = Nothing
             '
             'm_tlbLayers
             '
-            Me.m_tlbLayers.ColumnCount = 1
-            Me.m_tlbLayers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            resources.ApplyResources(Me.m_tlbLayers, "m_tlbLayers")
             Me.m_tlbLayers.Controls.Add(Me.m_plLayers, 0, 2)
-            Me.m_tlbLayers.Controls.Add(Me.m_lblLayers, 0, 1)
+            Me.m_tlbLayers.Controls.Add(Me.m_hdrLayers, 0, 1)
             Me.m_tlbLayers.Controls.Add(Me.m_tsMap, 0, 0)
-            Me.m_tlbLayers.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_tlbLayers.Location = New System.Drawing.Point(0, 0)
             Me.m_tlbLayers.Name = "m_tlbLayers"
-            Me.m_tlbLayers.RowCount = 3
-            Me.m_tlbLayers.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.m_tlbLayers.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-            Me.m_tlbLayers.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlbLayers.Size = New System.Drawing.Size(161, 466)
-            Me.m_tlbLayers.TabIndex = 2
             '
             'm_plLayers
             '
             Me.m_plLayers.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_plLayers.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plLayers.Location = New System.Drawing.Point(0, 59)
-            Me.m_plLayers.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
+            resources.ApplyResources(Me.m_plLayers, "m_plLayers")
             Me.m_plLayers.Name = "m_plLayers"
-            Me.m_plLayers.Size = New System.Drawing.Size(161, 407)
-            Me.m_plLayers.TabIndex = 2
             '
-            'm_lblLayers
+            'm_hdrLayers
             '
-            Me.m_lblLayers.AutoSize = True
-            Me.m_lblLayers.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblLayers.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblLayers.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-            Me.m_lblLayers.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblLayers.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblLayers.Location = New System.Drawing.Point(0, 36)
-            Me.m_lblLayers.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_lblLayers.Name = "m_lblLayers"
-            Me.m_lblLayers.Size = New System.Drawing.Size(161, 20)
-            Me.m_lblLayers.TabIndex = 1
-            Me.m_lblLayers.Text = "Layers"
-            Me.m_lblLayers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            resources.ApplyResources(Me.m_hdrLayers, "m_hdrLayers")
+            Me.m_hdrLayers.Name = "m_hdrLayers"
             '
             'm_tsMap
             '
-            Me.m_tsMap.AutoSize = False
-            Me.m_tsMap.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_tsMap, "m_tsMap")
             Me.m_tsMap.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbMPA, Me.m_tsbSeed, Me.m_tsbEditLayers})
-            Me.m_tsMap.Location = New System.Drawing.Point(0, 0)
             Me.m_tsMap.Name = "m_tsMap"
-            Me.m_tsMap.Size = New System.Drawing.Size(161, 36)
-            Me.m_tsMap.TabIndex = 0
-            Me.m_tsMap.Text = "m_tsLayers"
             '
             'm_tsbMPA
             '
             Me.m_tsbMPA.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearMPA, Me.m_tsmSetAllMPA})
             Me.m_tsbMPA.Image = Global.ScientificInterface.My.Resources.Resources.MPA1
-            Me.m_tsbMPA.ImageTransparentColor = System.Drawing.Color.Magenta
+            resources.ApplyResources(Me.m_tsbMPA, "m_tsbMPA")
             Me.m_tsbMPA.Name = "m_tsbMPA"
-            Me.m_tsbMPA.Size = New System.Drawing.Size(41, 33)
-            Me.m_tsbMPA.Text = "MPA"
-            Me.m_tsbMPA.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
             '
             'm_tsmClearMPA
             '
             Me.m_tsmClearMPA.Name = "m_tsmClearMPA"
-            Me.m_tsmClearMPA.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D1), System.Windows.Forms.Keys)
-            Me.m_tsmClearMPA.Size = New System.Drawing.Size(255, 22)
-            Me.m_tsmClearMPA.Text = "&Clear MPA cells"
+            resources.ApplyResources(Me.m_tsmClearMPA, "m_tsmClearMPA")
             '
             'm_tsmSetAllMPA
             '
             Me.m_tsmSetAllMPA.Name = "m_tsmSetAllMPA"
-            Me.m_tsmSetAllMPA.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D2), System.Windows.Forms.Keys)
-            Me.m_tsmSetAllMPA.Size = New System.Drawing.Size(255, 22)
-            Me.m_tsmSetAllMPA.Text = "&Set all cells to selected MPA"
+            resources.ApplyResources(Me.m_tsmSetAllMPA, "m_tsmSetAllMPA")
             '
             'm_tsbSeed
             '
             Me.m_tsbSeed.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearSeed, Me.m_tsmSetAllSeed})
             Me.m_tsbSeed.Image = Global.ScientificInterface.My.Resources.Resources.Seed
-            Me.m_tsbSeed.ImageTransparentColor = System.Drawing.Color.Magenta
+            resources.ApplyResources(Me.m_tsbSeed, "m_tsbSeed")
             Me.m_tsbSeed.Name = "m_tsbSeed"
-            Me.m_tsbSeed.Size = New System.Drawing.Size(44, 33)
-            Me.m_tsbSeed.Text = "Seed"
-            Me.m_tsbSeed.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-            Me.m_tsbSeed.ToolTipText = "Ecoseed layers"
             '
             'm_tsmClearSeed
             '
             Me.m_tsmClearSeed.Name = "m_tsmClearSeed"
-            Me.m_tsmClearSeed.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D3), System.Windows.Forms.Keys)
-            Me.m_tsmClearSeed.Size = New System.Drawing.Size(214, 22)
-            Me.m_tsmClearSeed.Text = "&Clear all seed cells"
+            resources.ApplyResources(Me.m_tsmClearSeed, "m_tsmClearSeed")
             '
             'm_tsmSetAllSeed
             '
             Me.m_tsmSetAllSeed.Name = "m_tsmSetAllSeed"
-            Me.m_tsmSetAllSeed.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D4), System.Windows.Forms.Keys)
-            Me.m_tsmSetAllSeed.Size = New System.Drawing.Size(214, 22)
-            Me.m_tsmSetAllSeed.Text = "&Set all cells to seed"
+            resources.ApplyResources(Me.m_tsmSetAllSeed, "m_tsmSetAllSeed")
             '
             'm_tsbEditLayers
             '
             Me.m_tsbEditLayers.Image = Global.ScientificInterface.My.Resources.Resources.Importance
-            Me.m_tsbEditLayers.ImageTransparentColor = System.Drawing.Color.Magenta
+            resources.ApplyResources(Me.m_tsbEditLayers, "m_tsbEditLayers")
             Me.m_tsbEditLayers.Name = "m_tsbEditLayers"
-            Me.m_tsbEditLayers.Size = New System.Drawing.Size(29, 33)
-            Me.m_tsbEditLayers.Text = "Imp"
-            Me.m_tsbEditLayers.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-            Me.m_tsbEditLayers.ToolTipText = "Importance layers"
             '
             'm_cmbMPA
             '
-            Me.m_cmbMPA.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_cmbMPA, "m_cmbMPA")
             Me.m_cmbMPA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbMPA.FormattingEnabled = True
-            Me.m_cmbMPA.Location = New System.Drawing.Point(66, 72)
             Me.m_cmbMPA.Name = "m_cmbMPA"
-            Me.m_cmbMPA.Size = New System.Drawing.Size(133, 21)
-            Me.m_cmbMPA.TabIndex = 7
             '
             'm_rbRandom
             '
-            Me.m_rbRandom.AutoSize = True
-            Me.m_rbRandom.Location = New System.Drawing.Point(152, 26)
+            resources.ApplyResources(Me.m_rbRandom, "m_rbRandom")
             Me.m_rbRandom.Name = "m_rbRandom"
-            Me.m_rbRandom.Size = New System.Drawing.Size(103, 17)
-            Me.m_rbRandom.TabIndex = 2
-            Me.m_rbRandom.Text = "Importance layer"
             Me.m_rbRandom.UseVisualStyleBackColor = True
             '
             'm_rbEcoseed
             '
-            Me.m_rbEcoseed.AutoSize = True
-            Me.m_rbEcoseed.Location = New System.Drawing.Point(77, 26)
+            resources.ApplyResources(Me.m_rbEcoseed, "m_rbEcoseed")
             Me.m_rbEcoseed.Name = "m_rbEcoseed"
-            Me.m_rbEcoseed.Size = New System.Drawing.Size(69, 17)
-            Me.m_rbEcoseed.TabIndex = 1
-            Me.m_rbEcoseed.Text = "Seed cell"
             Me.m_rbEcoseed.UseVisualStyleBackColor = True
             '
-            'm_lblParameters
+            'm_hdrParameters
             '
-            Me.m_lblParameters.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_lblParameters.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lblParameters.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.m_lblParameters.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblParameters.Location = New System.Drawing.Point(0, 0)
-            Me.m_lblParameters.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_lblParameters.Name = "m_lblParameters"
-            Me.m_lblParameters.Size = New System.Drawing.Size(828, 18)
-            Me.m_lblParameters.TabIndex = 0
-            Me.m_lblParameters.Text = "Search types"
-            Me.m_lblParameters.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            resources.ApplyResources(Me.m_hdrParameters, "m_hdrParameters")
+            Me.m_hdrParameters.Name = "m_hdrParameters"
             '
             'm_lbMPA
             '
-            Me.m_lbMPA.AutoSize = True
-            Me.m_lbMPA.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lbMPA.Location = New System.Drawing.Point(3, 69)
+            resources.ApplyResources(Me.m_lbMPA, "m_lbMPA")
             Me.m_lbMPA.Name = "m_lbMPA"
-            Me.m_lbMPA.Size = New System.Drawing.Size(57, 23)
-            Me.m_lbMPA.TabIndex = 6
-            Me.m_lbMPA.Text = "&MPA:"
-            Me.m_lbMPA.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_lblEndYear
             '
-            Me.m_lblEndYear.AutoSize = True
-            Me.m_lblEndYear.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblEndYear.Location = New System.Drawing.Point(3, 23)
+            resources.ApplyResources(Me.m_lblEndYear, "m_lblEndYear")
             Me.m_lblEndYear.Name = "m_lblEndYear"
-            Me.m_lblEndYear.Size = New System.Drawing.Size(57, 23)
-            Me.m_lblEndYear.TabIndex = 2
-            Me.m_lblEndYear.Text = "&End year:"
-            Me.m_lblEndYear.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_nudIterations
             '
-            Me.m_nudIterations.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_nudIterations.Location = New System.Drawing.Point(388, 72)
+            resources.ApplyResources(Me.m_nudIterations, "m_nudIterations")
             Me.m_nudIterations.Name = "m_nudIterations"
-            Me.m_nudIterations.Size = New System.Drawing.Size(133, 20)
-            Me.m_nudIterations.TabIndex = 15
             '
             'm_nudStep
             '
-            Me.m_nudStep.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudStep.Location = New System.Drawing.Point(388, 49)
+            resources.ApplyResources(Me.m_nudStep, "m_nudStep")
             Me.m_nudStep.Name = "m_nudStep"
-            Me.m_nudStep.Size = New System.Drawing.Size(133, 20)
-            Me.m_nudStep.TabIndex = 13
             Me.m_nudStep.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
             'm_nudEndYear
             '
-            Me.m_nudEndYear.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudEndYear.Location = New System.Drawing.Point(66, 26)
+            resources.ApplyResources(Me.m_nudEndYear, "m_nudEndYear")
             Me.m_nudEndYear.Name = "m_nudEndYear"
-            Me.m_nudEndYear.Size = New System.Drawing.Size(133, 20)
-            Me.m_nudEndYear.TabIndex = 3
             '
             'm_lblStartYear
             '
-            Me.m_lblStartYear.AutoSize = True
-            Me.m_lblStartYear.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblStartYear.Location = New System.Drawing.Point(3, 0)
+            resources.ApplyResources(Me.m_lblStartYear, "m_lblStartYear")
             Me.m_lblStartYear.Name = "m_lblStartYear"
-            Me.m_lblStartYear.Size = New System.Drawing.Size(57, 23)
-            Me.m_lblStartYear.TabIndex = 0
-            Me.m_lblStartYear.Text = "&Start year:"
-            Me.m_lblStartYear.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_nudStartYear
             '
-            Me.m_nudStartYear.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudStartYear.Location = New System.Drawing.Point(66, 3)
+            resources.ApplyResources(Me.m_nudStartYear, "m_nudStartYear")
             Me.m_nudStartYear.Name = "m_nudStartYear"
-            Me.m_nudStartYear.Size = New System.Drawing.Size(133, 20)
-            Me.m_nudStartYear.TabIndex = 1
             '
             'm_tcResults
             '
-            Me.m_tcResults.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_tcResults, "m_tcResults")
             Me.m_tcResults.Controls.Add(Me.m_tpProgress)
             Me.m_tcResults.Controls.Add(Me.m_tpResults)
-            Me.m_tcResults.Location = New System.Drawing.Point(0, 24)
             Me.m_tcResults.Name = "m_tcResults"
             Me.m_tcResults.SelectedIndex = 0
-            Me.m_tcResults.Size = New System.Drawing.Size(826, 245)
-            Me.m_tcResults.TabIndex = 1
             '
             'm_tpProgress
             '
             Me.m_tpProgress.Controls.Add(Me.m_graphProgress)
             Me.m_tpProgress.Controls.Add(Me.m_gridProgress)
-            Me.m_tpProgress.Location = New System.Drawing.Point(4, 22)
+            resources.ApplyResources(Me.m_tpProgress, "m_tpProgress")
             Me.m_tpProgress.Name = "m_tpProgress"
-            Me.m_tpProgress.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tpProgress.Size = New System.Drawing.Size(818, 219)
-            Me.m_tpProgress.TabIndex = 0
-            Me.m_tpProgress.Text = "Progress"
             Me.m_tpProgress.UseVisualStyleBackColor = True
             '
             'm_graphProgress
             '
-            Me.m_graphProgress.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_graphProgress, "m_graphProgress")
             Me.m_graphProgress.IsAutoScrollRange = True
-            Me.m_graphProgress.Location = New System.Drawing.Point(256, 0)
             Me.m_graphProgress.Name = "m_graphProgress"
             Me.m_graphProgress.ScrollGrace = 0
             Me.m_graphProgress.ScrollMaxX = 0
@@ -423,13 +299,10 @@ Namespace Ecospace
             Me.m_graphProgress.ScrollMinX = 0
             Me.m_graphProgress.ScrollMinY = 0
             Me.m_graphProgress.ScrollMinY2 = 0
-            Me.m_graphProgress.Size = New System.Drawing.Size(562, 200)
-            Me.m_graphProgress.TabIndex = 1
             '
             'm_gridProgress
             '
-            Me.m_gridProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_gridProgress, "m_gridProgress")
             Me.m_gridProgress.AutoSizeMinHeight = 10
             Me.m_gridProgress.AutoSizeMinWidth = 10
             Me.m_gridProgress.AutoStretchColumnsToFitWidth = True
@@ -443,9 +316,7 @@ Namespace Ecospace
             Me.m_gridProgress.FixedColumnWidths = False
             Me.m_gridProgress.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridProgress.GridToolTipActive = True
-            Me.m_gridProgress.Location = New System.Drawing.Point(0, 0)
             Me.m_gridProgress.Name = "m_gridProgress"
-            Me.m_gridProgress.Size = New System.Drawing.Size(250, 228)
             Me.m_gridProgress.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -455,7 +326,6 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridProgress.TabIndex = 0
             Me.m_gridProgress.TrackPropertySelection = True
             Me.m_gridProgress.UIContext = Nothing
             '
@@ -470,55 +340,36 @@ Namespace Ecospace
             Me.m_tpResults.Controls.Add(Me.m_btnResetMPAs)
             Me.m_tpResults.Controls.Add(Me.m_btnConvertToMpa)
             Me.m_tpResults.Controls.Add(Me.m_nudBestPercentile)
-            Me.m_tpResults.Location = New System.Drawing.Point(4, 22)
+            resources.ApplyResources(Me.m_tpResults, "m_tpResults")
             Me.m_tpResults.Name = "m_tpResults"
-            Me.m_tpResults.Size = New System.Drawing.Size(818, 219)
-            Me.m_tpResults.TabIndex = 2
-            Me.m_tpResults.Text = "Results"
             Me.m_tpResults.UseVisualStyleBackColor = True
             '
             'm_cmbAreaClosed
             '
             Me.m_cmbAreaClosed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbAreaClosed.FormattingEnabled = True
-            Me.m_cmbAreaClosed.Location = New System.Drawing.Point(95, 5)
+            resources.ApplyResources(Me.m_cmbAreaClosed, "m_cmbAreaClosed")
             Me.m_cmbAreaClosed.Name = "m_cmbAreaClosed"
-            Me.m_cmbAreaClosed.Size = New System.Drawing.Size(80, 21)
-            Me.m_cmbAreaClosed.TabIndex = 1
             '
             'm_btnSave
             '
-            Me.m_btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.m_btnSave.Location = New System.Drawing.Point(506, 3)
+            resources.ApplyResources(Me.m_btnSave, "m_btnSave")
             Me.m_btnSave.Name = "m_btnSave"
-            Me.m_btnSave.Size = New System.Drawing.Size(99, 23)
-            Me.m_btnSave.TabIndex = 4
-            Me.m_btnSave.Text = "&Save..."
             Me.m_btnSave.UseVisualStyleBackColor = True
             '
             'm_lblAreaClosed
             '
-            Me.m_lblAreaClosed.AutoSize = True
-            Me.m_lblAreaClosed.Location = New System.Drawing.Point(3, 8)
+            resources.ApplyResources(Me.m_lblAreaClosed, "m_lblAreaClosed")
             Me.m_lblAreaClosed.Name = "m_lblAreaClosed"
-            Me.m_lblAreaClosed.Size = New System.Drawing.Size(86, 13)
-            Me.m_lblAreaClosed.TabIndex = 0
-            Me.m_lblAreaClosed.Text = "&Area closed  (%):"
             '
             'm_lblBestPercentile
             '
-            Me.m_lblBestPercentile.AutoSize = True
-            Me.m_lblBestPercentile.Location = New System.Drawing.Point(181, 8)
+            resources.ApplyResources(Me.m_lblBestPercentile, "m_lblBestPercentile")
             Me.m_lblBestPercentile.Name = "m_lblBestPercentile"
-            Me.m_lblBestPercentile.Size = New System.Drawing.Size(48, 13)
-            Me.m_lblBestPercentile.TabIndex = 2
-            Me.m_lblBestPercentile.Text = "&Best (%):"
             '
             'm_gridResults
             '
-            Me.m_gridResults.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_gridResults, "m_gridResults")
             Me.m_gridResults.AutoSizeMinHeight = 10
             Me.m_gridResults.AutoSizeMinWidth = 10
             Me.m_gridResults.AutoStretchColumnsToFitWidth = True
@@ -532,9 +383,7 @@ Namespace Ecospace
             Me.m_gridResults.FixedColumnWidths = False
             Me.m_gridResults.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridResults.GridToolTipActive = True
-            Me.m_gridResults.Location = New System.Drawing.Point(611, 32)
             Me.m_gridResults.Name = "m_gridResults"
-            Me.m_gridResults.Size = New System.Drawing.Size(207, 187)
             Me.m_gridResults.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -544,17 +393,13 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridResults.TabIndex = 8
             Me.m_gridResults.TrackPropertySelection = True
             Me.m_gridResults.UIContext = Nothing
             '
             'm_graphResults
             '
-            Me.m_graphResults.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_graphResults, "m_graphResults")
             Me.m_graphResults.IsAutoScrollRange = True
-            Me.m_graphResults.Location = New System.Drawing.Point(0, 32)
             Me.m_graphResults.Name = "m_graphResults"
             Me.m_graphResults.ScrollGrace = 0
             Me.m_graphResults.ScrollMaxX = 0
@@ -563,77 +408,38 @@ Namespace Ecospace
             Me.m_graphResults.ScrollMinX = 0
             Me.m_graphResults.ScrollMinY = 0
             Me.m_graphResults.ScrollMinY2 = 0
-            Me.m_graphResults.Size = New System.Drawing.Size(605, 187)
-            Me.m_graphResults.TabIndex = 7
             '
             'm_btnResetMPAs
             '
-            Me.m_btnResetMPAs.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnResetMPAs.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.m_btnResetMPAs.Location = New System.Drawing.Point(722, 3)
+            resources.ApplyResources(Me.m_btnResetMPAs, "m_btnResetMPAs")
             Me.m_btnResetMPAs.Name = "m_btnResetMPAs"
-            Me.m_btnResetMPAs.Size = New System.Drawing.Size(96, 23)
-            Me.m_btnResetMPAs.TabIndex = 6
-            Me.m_btnResetMPAs.Text = "&Reset MPAs"
             Me.m_btnResetMPAs.UseVisualStyleBackColor = True
             '
             'm_btnConvertToMpa
             '
-            Me.m_btnConvertToMpa.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnConvertToMpa.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.m_btnConvertToMpa.Location = New System.Drawing.Point(611, 3)
+            resources.ApplyResources(Me.m_btnConvertToMpa, "m_btnConvertToMpa")
             Me.m_btnConvertToMpa.Name = "m_btnConvertToMpa"
-            Me.m_btnConvertToMpa.Size = New System.Drawing.Size(105, 23)
-            Me.m_btnConvertToMpa.TabIndex = 5
-            Me.m_btnConvertToMpa.Text = "&Convert to MPA"
             Me.m_btnConvertToMpa.UseVisualStyleBackColor = True
             '
             'm_nudBestPercentile
             '
-            Me.m_nudBestPercentile.Location = New System.Drawing.Point(235, 6)
+            resources.ApplyResources(Me.m_nudBestPercentile, "m_nudBestPercentile")
             Me.m_nudBestPercentile.Name = "m_nudBestPercentile"
-            Me.m_nudBestPercentile.Size = New System.Drawing.Size(65, 20)
-            Me.m_nudBestPercentile.TabIndex = 3
             Me.m_nudBestPercentile.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
-            'm_lblOutput
+            'm_hdrOutput
             '
-            Me.m_lblOutput.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_lblOutput.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lblOutput.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.m_lblOutput.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblOutput.Location = New System.Drawing.Point(0, 0)
-            Me.m_lblOutput.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_lblOutput.Name = "m_lblOutput"
-            Me.m_lblOutput.Size = New System.Drawing.Size(826, 18)
-            Me.m_lblOutput.TabIndex = 0
-            Me.m_lblOutput.Text = "Output"
-            Me.m_lblOutput.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            resources.ApplyResources(Me.m_hdrOutput, "m_hdrOutput")
+            Me.m_hdrOutput.Name = "m_hdrOutput"
             '
             'm_lblSearchType
             '
-            Me.m_lblSearchType.AutoSize = True
-            Me.m_lblSearchType.Location = New System.Drawing.Point(4, 28)
+            resources.ApplyResources(Me.m_lblSearchType, "m_lblSearchType")
             Me.m_lblSearchType.Name = "m_lblSearchType"
-            Me.m_lblSearchType.Size = New System.Drawing.Size(67, 13)
-            Me.m_lblSearchType.TabIndex = 0
-            Me.m_lblSearchType.Text = "&Search type:"
-            Me.m_lblSearchType.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_tlbParameters
             '
-            Me.m_tlbParameters.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tlbParameters.ColumnCount = 8
-            Me.m_tlbParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.m_tlbParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.00063!))
-            Me.m_tlbParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.50031!))
-            Me.m_tlbParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.m_tlbParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.00063!))
-            Me.m_tlbParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.50031!))
-            Me.m_tlbParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-            Me.m_tlbParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.99813!))
+            resources.ApplyResources(Me.m_tlbParameters, "m_tlbParameters")
             Me.m_tlbParameters.Controls.Add(Me.m_lblStartYear, 0, 0)
             Me.m_tlbParameters.Controls.Add(Me.m_lblEndYear, 0, 1)
             Me.m_tlbParameters.Controls.Add(Me.m_nudStartYear, 1, 0)
@@ -654,144 +460,72 @@ Namespace Ecospace
             Me.m_tlbParameters.Controls.Add(Me.m_nudDiscRate, 7, 0)
             Me.m_tlbParameters.Controls.Add(Me.m_nudGenDiscRate, 7, 1)
             Me.m_tlbParameters.Controls.Add(Me.m_lblGenDiscRate, 6, 1)
-            Me.m_tlbParameters.Location = New System.Drawing.Point(0, 25)
-            Me.m_tlbParameters.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tlbParameters.Name = "m_tlbParameters"
-            Me.m_tlbParameters.RowCount = 4
-            Me.m_tlbParameters.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-            Me.m_tlbParameters.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-            Me.m_tlbParameters.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-            Me.m_tlbParameters.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-            Me.m_tlbParameters.Size = New System.Drawing.Size(820, 92)
-            Me.m_tlbParameters.TabIndex = 0
             '
             'm_lblMinArea
             '
-            Me.m_lblMinArea.AutoSize = True
-            Me.m_lblMinArea.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblMinArea.Location = New System.Drawing.Point(274, 0)
+            resources.ApplyResources(Me.m_lblMinArea, "m_lblMinArea")
             Me.m_lblMinArea.Name = "m_lblMinArea"
-            Me.m_lblMinArea.Size = New System.Drawing.Size(108, 23)
-            Me.m_lblMinArea.TabIndex = 8
-            Me.m_lblMinArea.Text = "Area closed (m&in, %):"
-            Me.m_lblMinArea.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_lblMaxArea
             '
-            Me.m_lblMaxArea.AutoSize = True
-            Me.m_lblMaxArea.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblMaxArea.Location = New System.Drawing.Point(274, 23)
+            resources.ApplyResources(Me.m_lblMaxArea, "m_lblMaxArea")
             Me.m_lblMaxArea.Name = "m_lblMaxArea"
-            Me.m_lblMaxArea.Size = New System.Drawing.Size(108, 23)
-            Me.m_lblMaxArea.TabIndex = 10
-            Me.m_lblMaxArea.Text = "Area closed (m&ax, %):"
-            Me.m_lblMaxArea.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_nudMinArea
             '
-            Me.m_nudMinArea.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudMinArea.Location = New System.Drawing.Point(388, 3)
+            resources.ApplyResources(Me.m_nudMinArea, "m_nudMinArea")
             Me.m_nudMinArea.Name = "m_nudMinArea"
-            Me.m_nudMinArea.Size = New System.Drawing.Size(133, 20)
-            Me.m_nudMinArea.TabIndex = 9
             '
             'm_nudMaxArea
             '
-            Me.m_nudMaxArea.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudMaxArea.Location = New System.Drawing.Point(388, 26)
+            resources.ApplyResources(Me.m_nudMaxArea, "m_nudMaxArea")
             Me.m_nudMaxArea.Name = "m_nudMaxArea"
-            Me.m_nudMaxArea.Size = New System.Drawing.Size(133, 20)
-            Me.m_nudMaxArea.TabIndex = 11
             '
             'm_lblStep
             '
-            Me.m_lblStep.AutoSize = True
-            Me.m_lblStep.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblStep.Location = New System.Drawing.Point(274, 46)
+            resources.ApplyResources(Me.m_lblStep, "m_lblStep")
             Me.m_lblStep.Name = "m_lblStep"
-            Me.m_lblStep.Size = New System.Drawing.Size(108, 23)
-            Me.m_lblStep.TabIndex = 12
-            Me.m_lblStep.Text = "S&tep (%):"
-            Me.m_lblStep.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_nudBaseYear
             '
-            Me.m_nudBaseYear.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudBaseYear.Location = New System.Drawing.Point(66, 49)
+            resources.ApplyResources(Me.m_nudBaseYear, "m_nudBaseYear")
             Me.m_nudBaseYear.Name = "m_nudBaseYear"
-            Me.m_nudBaseYear.Size = New System.Drawing.Size(133, 20)
-            Me.m_nudBaseYear.TabIndex = 5
             '
             'm_lblBaseYear
             '
-            Me.m_lblBaseYear.AutoSize = True
-            Me.m_lblBaseYear.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblBaseYear.Location = New System.Drawing.Point(3, 46)
+            resources.ApplyResources(Me.m_lblBaseYear, "m_lblBaseYear")
             Me.m_lblBaseYear.Name = "m_lblBaseYear"
-            Me.m_lblBaseYear.Size = New System.Drawing.Size(57, 23)
-            Me.m_lblBaseYear.TabIndex = 4
-            Me.m_lblBaseYear.Text = "&Base year:"
-            Me.m_lblBaseYear.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_lblIterations
             '
-            Me.m_lblIterations.AutoSize = True
-            Me.m_lblIterations.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblIterations.Location = New System.Drawing.Point(274, 69)
+            resources.ApplyResources(Me.m_lblIterations, "m_lblIterations")
             Me.m_lblIterations.Name = "m_lblIterations"
-            Me.m_lblIterations.Size = New System.Drawing.Size(108, 23)
-            Me.m_lblIterations.TabIndex = 14
-            Me.m_lblIterations.Text = "&Iterations:"
-            Me.m_lblIterations.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_lblDiscRate
             '
-            Me.m_lblDiscRate.AutoSize = True
-            Me.m_lblDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblDiscRate.Location = New System.Drawing.Point(596, 0)
+            resources.ApplyResources(Me.m_lblDiscRate, "m_lblDiscRate")
             Me.m_lblDiscRate.Name = "m_lblDiscRate"
-            Me.m_lblDiscRate.Size = New System.Drawing.Size(79, 23)
-            Me.m_lblDiscRate.TabIndex = 16
-            Me.m_lblDiscRate.Text = "&Discount rate:"
-            Me.m_lblDiscRate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_nudDiscRate
             '
-            Me.m_nudDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_nudDiscRate.Location = New System.Drawing.Point(681, 3)
+            resources.ApplyResources(Me.m_nudDiscRate, "m_nudDiscRate")
             Me.m_nudDiscRate.Name = "m_nudDiscRate"
-            Me.m_nudDiscRate.Size = New System.Drawing.Size(136, 20)
-            Me.m_nudDiscRate.TabIndex = 17
             '
             'm_nudGenDiscRate
             '
-            Me.m_nudGenDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_nudGenDiscRate.Location = New System.Drawing.Point(681, 26)
+            resources.ApplyResources(Me.m_nudGenDiscRate, "m_nudGenDiscRate")
             Me.m_nudGenDiscRate.Name = "m_nudGenDiscRate"
-            Me.m_nudGenDiscRate.Size = New System.Drawing.Size(136, 20)
-            Me.m_nudGenDiscRate.TabIndex = 19
             '
             'm_lblGenDiscRate
             '
-            Me.m_lblGenDiscRate.AutoSize = True
-            Me.m_lblGenDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblGenDiscRate.Location = New System.Drawing.Point(596, 23)
+            resources.ApplyResources(Me.m_lblGenDiscRate, "m_lblGenDiscRate")
             Me.m_lblGenDiscRate.Name = "m_lblGenDiscRate"
-            Me.m_lblGenDiscRate.Size = New System.Drawing.Size(79, 23)
-            Me.m_lblGenDiscRate.TabIndex = 18
-            Me.m_lblGenDiscRate.Text = "&Gen. disc. rate:"
-            Me.m_lblGenDiscRate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_scMap
             '
-            Me.m_scMap.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_scMap, "m_scMap")
             Me.m_scMap.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
-            Me.m_scMap.Location = New System.Drawing.Point(3, 19)
             Me.m_scMap.Name = "m_scMap"
             '
             'm_scMap.Panel1
@@ -801,72 +535,40 @@ Namespace Ecospace
             'm_scMap.Panel2
             '
             Me.m_scMap.Panel2.Controls.Add(Me.m_tlbLayers)
-            Me.m_scMap.Size = New System.Drawing.Size(814, 466)
-            Me.m_scMap.SplitterDistance = 649
-            Me.m_scMap.TabIndex = 6
             '
             'm_tcConfiguration
             '
             Me.m_tcConfiguration.Controls.Add(Me.m_tabParameters)
             Me.m_tcConfiguration.Controls.Add(Me.m_tabMap)
-            Me.m_tcConfiguration.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_tcConfiguration.Location = New System.Drawing.Point(0, 0)
+            resources.ApplyResources(Me.m_tcConfiguration, "m_tcConfiguration")
             Me.m_tcConfiguration.Multiline = True
             Me.m_tcConfiguration.Name = "m_tcConfiguration"
             Me.m_tcConfiguration.SelectedIndex = 0
-            Me.m_tcConfiguration.Size = New System.Drawing.Size(828, 509)
-            Me.m_tcConfiguration.TabIndex = 0
             '
             'm_tabParameters
             '
             Me.m_tabParameters.Controls.Add(Me.m_tlbParameters)
             Me.m_tabParameters.Controls.Add(Me.m_tlpObjectives)
-            Me.m_tabParameters.Controls.Add(Me.lblParam)
-            Me.m_tabParameters.Location = New System.Drawing.Point(4, 22)
+            Me.m_tabParameters.Controls.Add(Me.m_hdrConfig)
+            resources.ApplyResources(Me.m_tabParameters, "m_tabParameters")
             Me.m_tabParameters.Name = "m_tabParameters"
-            Me.m_tabParameters.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tabParameters.Size = New System.Drawing.Size(820, 483)
-            Me.m_tabParameters.TabIndex = 0
-            Me.m_tabParameters.Text = "Configuration"
             Me.m_tabParameters.UseVisualStyleBackColor = True
             '
             'm_tlpObjectives
             '
-            Me.m_tlpObjectives.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tlpObjectives.ColumnCount = 5
-            Me.m_tlpObjectives.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.57143!))
-            Me.m_tlpObjectives.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 6.0!))
-            Me.m_tlpObjectives.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.57143!))
-            Me.m_tlpObjectives.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 6.0!))
-            Me.m_tlpObjectives.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.85714!))
+            resources.ApplyResources(Me.m_tlpObjectives, "m_tlpObjectives")
             Me.m_tlpObjectives.Controls.Add(Me.m_lblObjectives, 0, 0)
             Me.m_tlpObjectives.Controls.Add(Me.m_gridGroup, 4, 1)
             Me.m_tlpObjectives.Controls.Add(Me.m_gridFleet, 2, 1)
             Me.m_tlpObjectives.Controls.Add(Me.m_gridObjectives, 0, 1)
             Me.m_tlpObjectives.Controls.Add(Me.m_lbFleet, 2, 0)
             Me.m_tlpObjectives.Controls.Add(Me.m_lblGroup, 4, 0)
-            Me.m_tlpObjectives.Location = New System.Drawing.Point(3, 121)
-            Me.m_tlpObjectives.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tlpObjectives.Name = "m_tlpObjectives"
-            Me.m_tlpObjectives.RowCount = 2
-            Me.m_tlpObjectives.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18.0!))
-            Me.m_tlpObjectives.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpObjectives.Size = New System.Drawing.Size(817, 362)
-            Me.m_tlpObjectives.TabIndex = 6
             '
             'm_lblObjectives
             '
-            Me.m_lblObjectives.AutoSize = True
-            Me.m_lblObjectives.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblObjectives.Location = New System.Drawing.Point(0, 0)
-            Me.m_lblObjectives.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.m_lblObjectives, "m_lblObjectives")
             Me.m_lblObjectives.Name = "m_lblObjectives"
-            Me.m_lblObjectives.Size = New System.Drawing.Size(230, 18)
-            Me.m_lblObjectives.TabIndex = 0
-            Me.m_lblObjectives.Text = "Objectives"
-            Me.m_lblObjectives.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_gridGroup
             '
@@ -880,14 +582,12 @@ Namespace Ecospace
                         Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridGroup.CustomSort = False
-            Me.m_gridGroup.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_gridGroup, "m_gridGroup")
             Me.m_gridGroup.FixedColumnWidths = False
             Me.m_gridGroup.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridGroup.GridToolTipActive = True
-            Me.m_gridGroup.Location = New System.Drawing.Point(475, 21)
             Me.m_gridGroup.Manager = Nothing
             Me.m_gridGroup.Name = "m_gridGroup"
-            Me.m_gridGroup.Size = New System.Drawing.Size(339, 338)
             Me.m_gridGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -897,7 +597,6 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridGroup.TabIndex = 5
             Me.m_gridGroup.TrackPropertySelection = True
             Me.m_gridGroup.UIContext = Nothing
             '
@@ -913,15 +612,13 @@ Namespace Ecospace
                         Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridFleet.CustomSort = False
-            Me.m_gridFleet.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_gridFleet, "m_gridFleet")
             Me.m_gridFleet.FixedColumnWidths = False
             Me.m_gridFleet.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridFleet.GridToolTipActive = True
             Me.m_gridFleet.IsMaximizeByFleetValue = False
-            Me.m_gridFleet.Location = New System.Drawing.Point(239, 21)
             Me.m_gridFleet.Manager = Nothing
             Me.m_gridFleet.Name = "m_gridFleet"
-            Me.m_gridFleet.Size = New System.Drawing.Size(224, 338)
             Me.m_gridFleet.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -931,7 +628,6 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridFleet.TabIndex = 4
             Me.m_gridFleet.TrackPropertySelection = True
             Me.m_gridFleet.UIContext = Nothing
             '
@@ -947,16 +643,14 @@ Namespace Ecospace
                         Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridObjectives.CustomSort = False
-            Me.m_gridObjectives.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_gridObjectives, "m_gridObjectives")
             Me.m_gridObjectives.FixedColumnWidths = False
             Me.m_gridObjectives.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridObjectives.GridToolTipActive = True
-            Me.m_gridObjectives.Location = New System.Drawing.Point(3, 21)
             Me.m_gridObjectives.Manager = Nothing
             Me.m_gridObjectives.Name = "m_gridObjectives"
             Me.m_gridObjectives.ShowMaxPortUtil = False
             Me.m_gridObjectives.ShowMPAOptParams = False
-            Me.m_gridObjectives.Size = New System.Drawing.Size(224, 338)
             Me.m_gridObjectives.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -966,85 +660,41 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridObjectives.TabIndex = 3
             Me.m_gridObjectives.TrackPropertySelection = True
             Me.m_gridObjectives.UIContext = Nothing
             '
             'm_lbFleet
             '
-            Me.m_lbFleet.AutoSize = True
-            Me.m_lbFleet.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lbFleet.Location = New System.Drawing.Point(236, 0)
-            Me.m_lbFleet.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.m_lbFleet, "m_lbFleet")
             Me.m_lbFleet.Name = "m_lbFleet"
-            Me.m_lbFleet.Size = New System.Drawing.Size(230, 18)
-            Me.m_lbFleet.TabIndex = 1
-            Me.m_lbFleet.Text = "Fleet"
-            Me.m_lbFleet.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_lblGroup
             '
-            Me.m_lblGroup.AutoSize = True
-            Me.m_lblGroup.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblGroup.Location = New System.Drawing.Point(472, 0)
-            Me.m_lblGroup.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.m_lblGroup, "m_lblGroup")
             Me.m_lblGroup.Name = "m_lblGroup"
-            Me.m_lblGroup.Size = New System.Drawing.Size(345, 18)
-            Me.m_lblGroup.TabIndex = 2
-            Me.m_lblGroup.Text = "Group"
-            Me.m_lblGroup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'lblParam
+            'm_hdrConfig
             '
-            Me.lblParam.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.lblParam.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.lblParam.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.lblParam.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblParam.Location = New System.Drawing.Point(0, 0)
-            Me.lblParam.Margin = New System.Windows.Forms.Padding(0)
-            Me.lblParam.Name = "lblParam"
-            Me.lblParam.Size = New System.Drawing.Size(820, 18)
-            Me.lblParam.TabIndex = 0
-            Me.lblParam.Text = "Configuration"
-            Me.lblParam.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            resources.ApplyResources(Me.m_hdrConfig, "m_hdrConfig")
+            Me.m_hdrConfig.Name = "m_hdrConfig"
             '
             'm_tabMap
             '
             Me.m_tabMap.Controls.Add(Me.m_scMap)
-            Me.m_tabMap.Controls.Add(Me.m_lblMap)
-            Me.m_tabMap.Location = New System.Drawing.Point(4, 22)
+            Me.m_tabMap.Controls.Add(Me.m_hdrMap)
+            resources.ApplyResources(Me.m_tabMap, "m_tabMap")
             Me.m_tabMap.Name = "m_tabMap"
-            Me.m_tabMap.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tabMap.Size = New System.Drawing.Size(820, 483)
-            Me.m_tabMap.TabIndex = 1
-            Me.m_tabMap.Text = "Map Input"
             Me.m_tabMap.UseVisualStyleBackColor = True
             '
-            'm_lblMap
+            'm_hdrMap
             '
-            Me.m_lblMap.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_lblMap.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lblMap.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.m_lblMap.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblMap.Location = New System.Drawing.Point(0, 0)
-            Me.m_lblMap.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_lblMap.Name = "m_lblMap"
-            Me.m_lblMap.Size = New System.Drawing.Size(820, 18)
-            Me.m_lblMap.TabIndex = 0
-            Me.m_lblMap.Text = "Map input"
-            Me.m_lblMap.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            resources.ApplyResources(Me.m_hdrMap, "m_hdrMap")
+            Me.m_hdrMap.Name = "m_hdrMap"
             '
             'm_scContent
             '
-            Me.m_scContent.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_scContent.Location = New System.Drawing.Point(0, 47)
-            Me.m_scContent.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.m_scContent, "m_scContent")
             Me.m_scContent.Name = "m_scContent"
-            Me.m_scContent.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
             'm_scContent.Panel1
             '
@@ -1052,72 +702,50 @@ Namespace Ecospace
             '
             'm_scContent.Panel2
             '
-            Me.m_scContent.Panel2.Controls.Add(Me.m_lblOutput)
+            Me.m_scContent.Panel2.Controls.Add(Me.m_hdrOutput)
             Me.m_scContent.Panel2.Controls.Add(Me.m_tcResults)
-            Me.m_scContent.Size = New System.Drawing.Size(828, 782)
-            Me.m_scContent.SplitterDistance = 509
-            Me.m_scContent.TabIndex = 6
             '
             'PictureBox1
             '
-            Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.PictureBox1, "PictureBox1")
             Me.PictureBox1.BackColor = System.Drawing.Color.White
-            Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-            Me.PictureBox1.Location = New System.Drawing.Point(424, 21)
             Me.PictureBox1.Name = "PictureBox1"
-            Me.PictureBox1.Size = New System.Drawing.Size(137, 27)
-            Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-            Me.PictureBox1.TabIndex = 7
             Me.PictureBox1.TabStop = False
             '
             'PictureBox2
             '
-            Me.PictureBox2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.PictureBox2, "PictureBox2")
             Me.PictureBox2.BackColor = System.Drawing.Color.White
             Me.PictureBox2.Image = Global.ScientificInterface.My.Resources.Resources.Lenfest_Logo_50px
-            Me.PictureBox2.Location = New System.Drawing.Point(567, 22)
             Me.PictureBox2.Name = "PictureBox2"
-            Me.PictureBox2.Size = New System.Drawing.Size(61, 26)
-            Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-            Me.PictureBox2.TabIndex = 8
             Me.PictureBox2.TabStop = False
             '
             'm_bntReset
             '
-            Me.m_bntReset.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_bntReset.Location = New System.Drawing.Point(766, 23)
+            resources.ApplyResources(Me.m_bntReset, "m_bntReset")
             Me.m_bntReset.Name = "m_bntReset"
-            Me.m_bntReset.Size = New System.Drawing.Size(60, 23)
-            Me.m_bntReset.TabIndex = 5
-            Me.m_bntReset.Text = "&Reset"
             Me.m_bntReset.UseVisualStyleBackColor = True
             '
             'frmMPAOptimizations
             '
             Me.AcceptButton = Me.m_btnRun
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.AutoScroll = True
-            Me.AutoScrollMinSize = New System.Drawing.Size(600, 800)
             Me.CancelButton = Me.m_btnStop
-            Me.ClientSize = New System.Drawing.Size(827, 830)
             Me.Controls.Add(Me.m_bntReset)
             Me.Controls.Add(Me.m_btnRun)
             Me.Controls.Add(Me.m_btnStop)
             Me.Controls.Add(Me.m_scContent)
             Me.Controls.Add(Me.m_rbRandom)
-            Me.Controls.Add(Me.m_lblParameters)
+            Me.Controls.Add(Me.m_hdrParameters)
             Me.Controls.Add(Me.m_lblSearchType)
             Me.Controls.Add(Me.m_rbEcoseed)
             Me.Controls.Add(Me.PictureBox2)
             Me.Controls.Add(Me.PictureBox1)
             Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcospaceLoaded
             Me.DoubleBuffered = True
-            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmMPAOptimizations"
-            Me.Text = "MPA optimizations"
             Me.m_tlbLayers.ResumeLayout(False)
-            Me.m_tlbLayers.PerformLayout()
             Me.m_tsMap.ResumeLayout(False)
             Me.m_tsMap.PerformLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1154,7 +782,7 @@ Namespace Ecospace
 
         End Sub
         Private WithEvents m_tlbLayers As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_lblLayers As System.Windows.Forms.Label
+        Private WithEvents m_hdrLayers As cEwEHeaderLabel
         Private WithEvents m_tsMap As System.Windows.Forms.ToolStrip
         Private WithEvents m_tsbMPA As System.Windows.Forms.ToolStripDropDownButton
         Private WithEvents m_tsmClearMPA As System.Windows.Forms.ToolStripMenuItem
@@ -1181,7 +809,7 @@ Namespace Ecospace
         Private WithEvents m_graphResults As ZedGraph.ZedGraphControl
         Private WithEvents m_gridResults As ScientificInterface.gridMPAOptimizations
         Private WithEvents m_lblSearchType As System.Windows.Forms.Label
-        Private WithEvents m_lblParameters As System.Windows.Forms.Label
+        Private WithEvents m_hdrParameters As cEwEHeaderLabel
         Private WithEvents m_lblEndYear As System.Windows.Forms.Label
         Private WithEvents m_lblStartYear As System.Windows.Forms.Label
         Private WithEvents m_tlbParameters As System.Windows.Forms.TableLayoutPanel
@@ -1192,7 +820,7 @@ Namespace Ecospace
         Private WithEvents m_btnRun As System.Windows.Forms.Button
         Private WithEvents m_btnStop As System.Windows.Forms.Button
         Private WithEvents m_graphProgress As ZedGraph.ZedGraphControl
-        Private WithEvents m_lblOutput As System.Windows.Forms.Label
+        Private WithEvents m_hdrOutput As cEwEHeaderLabel
         Private WithEvents m_tabParameters As System.Windows.Forms.TabPage
         Private WithEvents m_tabMap As System.Windows.Forms.TabPage
         Private WithEvents m_tcConfiguration As System.Windows.Forms.TabControl
@@ -1209,14 +837,14 @@ Namespace Ecospace
         Private WithEvents m_lblGroup As System.Windows.Forms.Label
         Private WithEvents m_gridFleet As gridSearchObjectivesFleet
         Private WithEvents m_gridObjectives As gridSearchObjectivesWeight
-        Private WithEvents lblParam As System.Windows.Forms.Label
+        Private WithEvents m_hdrConfig As cEwEHeaderLabel
         Private WithEvents m_btnSave As System.Windows.Forms.Button
         Private WithEvents m_lblAreaClosed As System.Windows.Forms.Label
         Private WithEvents m_nudBaseYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblBaseYear As System.Windows.Forms.Label
         Private WithEvents m_cmbAreaClosed As System.Windows.Forms.ComboBox
         Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
-        Private WithEvents m_lblMap As System.Windows.Forms.Label
+        Private WithEvents m_hdrMap As cEwEHeaderLabel
         Private WithEvents m_lblDiscRate As System.Windows.Forms.Label
         Private WithEvents m_nudDiscRate As System.Windows.Forms.NumericUpDown
         Private WithEvents m_nudGenDiscRate As System.Windows.Forms.NumericUpDown

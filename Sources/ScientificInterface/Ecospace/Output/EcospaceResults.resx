@@ -399,73 +399,73 @@
   <data name="&gt;&gt;m_rbFleet.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_lblYear.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrYear.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblYear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrYear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblYear.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrYear.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 9</value>
   </data>
-  <data name="m_lblYear.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrYear.Size" type="System.Drawing.Size, System.Drawing">
     <value>187, 18</value>
   </data>
-  <data name="m_lblYear.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrYear.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_lblYear.Text" xml:space="preserve">
+  <data name="m_hdrYear.Text" xml:space="preserve">
     <value>Year</value>
   </data>
-  <data name="m_lblYear.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrYear.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblYear.Name" xml:space="preserve">
-    <value>m_lblYear</value>
+  <data name="&gt;&gt;m_hdrYear.Name" xml:space="preserve">
+    <value>m_hdrYear</value>
   </data>
-  <data name="&gt;&gt;m_lblYear.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrYear.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblYear.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrYear.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblYear.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrYear.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_lblShow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrShow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblShow.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrShow.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblShow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrShow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblShow.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrShow.Location" type="System.Drawing.Point, System.Drawing">
     <value>221, 9</value>
   </data>
-  <data name="m_lblShow.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrShow.Size" type="System.Drawing.Size, System.Drawing">
     <value>486, 18</value>
   </data>
-  <data name="m_lblShow.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrShow.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="m_lblShow.Text" xml:space="preserve">
+  <data name="m_hdrShow.Text" xml:space="preserve">
     <value>Show</value>
   </data>
-  <data name="m_lblShow.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrShow.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblShow.Name" xml:space="preserve">
-    <value>m_lblShow</value>
+  <data name="&gt;&gt;m_hdrShow.Name" xml:space="preserve">
+    <value>m_hdrShow</value>
   </data>
-  <data name="&gt;&gt;m_lblShow.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrShow.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblShow.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrShow.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblShow.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrShow.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_lblNumSteps.AutoSize" type="System.Boolean, mscorlib">
@@ -517,6 +517,6 @@
     <value>cFormEcospaceResults</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.7.304, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>
