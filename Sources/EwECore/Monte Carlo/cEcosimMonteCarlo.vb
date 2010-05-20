@@ -170,6 +170,8 @@ Public Class cEcosimMonteCarlo
     ''' </summary>
     Dim startValues(,) As Single 'copy of the original values used to restore to original state
 
+    Dim orgVul(,) As Single
+
 
     Public Sub New(ByRef theCore As cCore)
 
@@ -197,6 +199,7 @@ Public Class cEcosimMonteCarlo
             ReDim Pmean(6, m_core.nGroups)
             ReDim startValues(6, m_core.nGroups)
             ReDim BestFit(6, m_core.nGroups)
+            ReDim orgVul(m_core.nGroups, m_core.nGroups)
 
             For igrp As Integer = 1 To m_core.nGroups
                 Pmean(eMCParams.Biomass, igrp) = m_epdata.B(igrp)
@@ -258,6 +261,9 @@ Public Class cEcosimMonteCarlo
             'make a copy of the original values so the user can restore the values
             Array.Copy(Pmean, startValues, Pmean.Length)
 
+            'vulnerabilities 
+            Array.Copy(m_core.m_EcoSimData.VulMult, Me.orgVul, m_core.m_EcoSimData.VulMult.Length)
+
             CalculateUpperLowerLimits(True)
 
 #If 0 Then
@@ -311,7 +317,7 @@ Public Class cEcosimMonteCarlo
         'Dim MCthread As cMonteCarloThread
 
         Dim st As Double = Microsoft.VisualBasic.Timer
-        System.Console.WriteLine("Starting Monte Carlo")
+        System.Console.WriteLine("----------Starting Monte Carlo----------")
         Try
             initForRun()
 
@@ -358,7 +364,6 @@ Public Class cEcosimMonteCarlo
                     'VC Sep 2008 found that it would increase vulnerabilities to get certain groups to increase initially,
                     'while instead it should have increased the initial biomass, so letting it get started before 
                     'changing vulnerabilities
-                    'If itrial > Ntrials / 10 Then 
                     ChangeVulnerabilities(Pmean, CVpar)
 
                     'For Each MCthread In MCthreadList
@@ -427,53 +432,16 @@ Public Class cEcosimMonteCarlo
                 'TrialProgress(itrial * nThreads, iter)
                 TrialProgress(iTrial, iter)
                 EcopathIterationsProgress(iter)
-                'Console.WriteLine(itrial & ", " & " best: " & SSBestFit.ToString & ", " & m_esdata.SS.ToString)
-                'If RunsSinceLastWithLowerSS > 100 And iTrial Mod 100 = 0 Then Console.WriteLine("Total trials: " & iTrial.ToString & " since last: " & RunsSinceLastWithLowerSS.ToString)
 
                 If RunsSinceLastWithLowerSS > 2000 Then Exit For
             Next iTrial
-            'sw.WriteLine(iTrial.ToString)
-            'sw.Close()
-            'End Using
 
-            'set the parameters back to the original values
-            'if the user wants to Apply the new parameter they will have to do that explicitly
-            'If m_core.Villy Then
-            '    'It's Villy running Ecobio
-            '    For i As Integer = 1 To Me.m_epdata.NumLiving
-            '        If m_epdata.BHinput(i) > 0 Then m_epdata.BHinput(i) = BestFit(eMCParams.Biomass, i)
-            '        If m_epdata.PBinput(i) > 0 Then m_epdata.PBinput(i) = BestFit(eMCParams.PB, i)
-            '        If m_epdata.EEinput(i) > 0 Then m_epdata.EEinput(i) = BestFit(eMCParams.EE, i)
-            '        '     m_epdata.QB(i) = startValues(eMCParams.QB, i)
-            '        m_epdata.BA(i) = BestFit(eMCParams.BA, i)
-            '        'vc sep 2008: adding vulnerability to MC
-            '        m_esdata.VulnerabilityPredator(i) = BestFit(eMCParams.Vulnerability, i)
-            '        For iPrey As Integer = 1 To m_core.nGroups
-            '            m_esdata.VulMult(iPrey, i) = BestFit(eMCParams.Vulnerability, i)
-            '        Next
-            '    Next
-            'Else        'its a user
-            'VC Oct 02. below was setting, b, pb, ee, ba, but it needs to set input parameters,
-            'so I've changed this
-            For i As Integer = 1 To Me.m_epdata.NumLiving
-                If m_epdata.BHinput(i) > 0 Then m_epdata.BHinput(i) = startValues(eMCParams.Biomass, i)
-                If m_epdata.PBinput(i) > 0 Then m_epdata.PBinput(i) = startValues(eMCParams.PB, i)
-                If m_epdata.EEinput(i) > 0 Then m_epdata.EEinput(i) = startValues(eMCParams.EE, i)
-                '     m_epdata.QB(i) = startValues(eMCParams.QB, i)
-                m_epdata.BA(i) = startValues(eMCParams.BA, i)
-                'vc sep 2008: adding vulnerability to MC
-                m_esdata.VulnerabilityPredator(i) = startValues(eMCParams.Vulnerability, i)
-                For iPrey As Integer = 1 To m_core.nGroups
-                    m_esdata.VulMult(iPrey, i) = startValues(eMCParams.Vulnerability, i)
-                Next
-            Next
-            'End If
+            'restore ecopath back to its original state
+            Me.restoreOriginalState()
 
             System.Console.WriteLine("Finished Monte Carlo. Run time = " & CStr(Microsoft.VisualBasic.Timer - st))
 
-            If dlgMonteCarloCompletedHandler IsNot Nothing Then
-                Me.dlgMonteCarloCompletedHandler()
-            End If
+            Me.CompletedCallback()
 
             m_ecopath.suppressMessages = False
 
@@ -483,6 +451,51 @@ Public Class cEcosimMonteCarlo
             m_ecopath.suppressMessages = False
             Throw New ApplicationException(Me.ToString & ".Run", ex)
         End Try
+    End Sub
+
+    ''' <summary>
+    ''' Restore Ecopath to its original state
+    ''' </summary>
+    ''' <remarks>The Monte Carlo changed to basic input data of Ecopath this will set it back to the state it was in when the Monte Carlo was run.</remarks>
+    Private Sub restoreOriginalState()
+        Dim bSuccess As Boolean
+
+        Try
+
+            'Set Ecopath inputs back to original values
+            'VC Oct 02. below was setting, b, pb, ee, ba, but it needs to set input parameters,so I've changed this
+            For i As Integer = 1 To Me.m_epdata.NumLiving
+                If m_epdata.Binput(i) > 0 Then m_epdata.Binput(i) = startValues(eMCParams.Biomass, i)
+                If m_epdata.PBinput(i) > 0 Then m_epdata.PBinput(i) = startValues(eMCParams.PB, i)
+                If m_epdata.EEinput(i) > 0 Then m_epdata.EEinput(i) = startValues(eMCParams.EE, i)
+                m_epdata.BA(i) = startValues(eMCParams.BA, i)
+                'vc sep 2008: adding vulnerability to MC
+                m_esdata.VulnerabilityPredator(i) = startValues(eMCParams.Vulnerability, i)
+            Next
+
+            'set vulnerabilities back 
+            Array.Copy(Me.orgVul, m_core.m_EcoSimData.VulMult, m_core.m_EcoSimData.VulMult.Length)
+
+            'copy the data from the input parameters into the modeling parameters
+            Me.m_epdata.CopyInputToModelArrays()
+
+            'run Ecopath with the original values to reset computed variables
+            bSuccess = Me.m_ecopath.Run()
+
+            'init stanza groups back to the original values
+            Me.m_ecosim.InitStanza()
+
+            Me.m_ecosim.Init(True)
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            bSuccess = False
+        End Try
+
+        If Not bSuccess Then
+            Me.m_core.Messages.AddMessage(New cMessage(My.Resources.CoreMessages.MONTECARLO_RESTORE_FAILED, eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning))
+        End If
+
     End Sub
 
 
@@ -516,6 +529,18 @@ Public Class cEcosimMonteCarlo
             cLog.Write(ex)
         End Try
 
+
+    End Sub
+
+
+    Private Sub CompletedCallback()
+        Try
+            If dlgMonteCarloCompletedHandler IsNot Nothing Then
+                Me.dlgMonteCarloCompletedHandler()
+            End If
+        Catch ex As Exception
+            Debug.Assert(False, "Monte Carlo CompletedCallback Exception: " & ex.Message)
+        End Try
 
     End Sub
 
@@ -752,7 +777,7 @@ Public Class cEcosimMonteCarlo
         'Dim cvFactor As Double = 0.02 ' 0.01 + 0.5 * Math.Log10(RunsSinceLastWithLowerSS) ' IIf(isCrashed, 2, 1)
 
 
-        Debug.Assert(ParMin <> ParMax, Me.ToString & ".ChooseFeasiblePar() ParMax = ParMin!!!!!")
+        ' Debug.Assert(ParMin <> ParMax, Me.ToString & ".ChooseFeasiblePar() ParMax = ParMin!!!!!")
 
         Do
             X = xbar * (1 + 0.02 * CV * RandomNormal())
