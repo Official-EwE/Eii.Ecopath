@@ -3666,13 +3666,13 @@ Namespace Database
 
                             ' Copy Rel. PP for deep cell
                             If astrRelPP.Length > iCell Then
-                                sCellValue = cStringUtils.ConvertToSingle(astrRelPP(iCell), 0)
+                                sCellValue = cStringUtils.ConvertToSingle(astrRelPP(iCell), 1.0!)
                                 drow("RelPP") = sCellValue
                             End If
 
                             ' Copy Rel. Cin for deep cell
                             If astrRelCin.Length > iCell Then
-                                sCellValue = cStringUtils.ConvertToSingle(astrRelCin(iCell), 0)
+                                sCellValue = cStringUtils.ConvertToSingle(astrRelCin(iCell), 1.0!)
                                 drow("RelCin") = sCellValue
                             End If
 
