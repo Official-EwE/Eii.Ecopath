@@ -198,7 +198,7 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent as a solid colour
                     renderer = New cLayerRendererValue(vs)
-                    editor = New cLayerEditorTwoState()
+                    editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerRelCin
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerRelCin)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_RELCIN

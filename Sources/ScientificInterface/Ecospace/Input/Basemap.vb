@@ -137,7 +137,6 @@ Namespace Ecospace.Basemap
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-
             RemoveHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
 
             ' Detach from message sources
@@ -209,18 +208,10 @@ Namespace Ecospace.Basemap
         End Sub
 
         Private Sub OnContaminantTracingChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
-            If ((cf And cProperty.eChangeFlags.Value) = cf) Then
-                If CBool(prop.GetValue()) Then
-                    If (Me.m_layerRelCin Is Nothing) Then
-                        Me.m_layerRelCin = cLayerFactory.GetLayers(Me.UIContext, eVarNameFlags.LayerRelCin)(0)
-                        Me.AddLayer(Me.m_layerRelCin, cLayerFactory.GetLayerGroup(eVarNameFlags.LayerRelCin))
-                    End If
-                Else
-                    If (Me.m_layerRelCin IsNot Nothing) Then
-                        Me.RemoveLayer(Me.m_layerRelCin)
-                        Me.m_layerRelCin = Nothing
-                    End If
-                End If
+            If ((cf And cProperty.eChangeFlags.Value) = cf) And _
+               (Me.m_layerRelCin IsNot Nothing) Then
+                Me.m_layerRelCin.Editor.IsEditable = CBool(prop.GetValue())
+                Console.WriteLine("LayerCIn editable " & Me.m_layerRelCin.Editor.IsEditable)
             End If
         End Sub
 
@@ -245,7 +236,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerSail, False)
             Me.AddData(eVarNameFlags.LayerMigration)
             Me.AddData(eVarNameFlags.LayerRelPP, False)
-            'Me.AddData(eVarNameFlags.LayerRelCin) ' Added when property changes
+            Me.AddData(eVarNameFlags.LayerRelCin)
             Me.AddData(eVarNameFlags.LayerRegion)
             Me.AddData(eVarNameFlags.LayerHabitat)
             Me.AddData(eVarNameFlags.LayerDepth)
@@ -271,6 +262,10 @@ Namespace Ecospace.Basemap
             ' Define group
             Me.m_ucLayers.AddGroup(strGroup, True, bClearGroup)
 
+            If varName = eVarNameFlags.LayerRelCin Then
+                Me.m_layerRelCin = alayers(0)
+            End If
+
             For iLayer As Integer = 0 To alayers.Length - 1
                 Me.AddLayer(alayers(iLayer), strGroup)
             Next
@@ -287,6 +282,7 @@ Namespace Ecospace.Basemap
             For Each layer As cLayer In alayers
                 Me.RemoveLayer(layer)
             Next
+            Me.m_layerRelCin = Nothing
         End Sub
 
         ''' -------------------------------------------------------------------

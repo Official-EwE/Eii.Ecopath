@@ -295,7 +295,14 @@ Namespace Ecospace.Basemap.Layers
                 Return bEditable
             End Get
             Set(ByVal value As Boolean)
-                Me.m_bEditable = value And Not Me.IsReadOnly
+                Dim bEditable As Boolean = value And Not Me.IsReadOnly
+                If (bEditable <> Me.m_bEditable) Then
+                    Me.m_bEditable = bEditable
+                    ' Send out change notification
+                    If (Me.m_layer IsNot Nothing) Then
+                        Me.m_layer.Update(cLayer.eChangeFlags.Editable)
+                    End If
+                End If
             End Set
         End Property
 
