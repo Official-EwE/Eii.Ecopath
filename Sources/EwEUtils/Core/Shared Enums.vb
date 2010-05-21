@@ -1291,6 +1291,13 @@ Namespace Core
         TLPM
         FIBPM
 
+        EcopathFirstYear
+        EcopathNumYears
+        LatMin
+        LatMax
+        LonMin
+        LonMax
+
     End Enum
 
 #End Region ' Variable names

@@ -54,6 +54,36 @@ Public Class cEwEModel
             val = New cValue(New Integer, eVarNameFlags.NumDigits, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
             m_values.Add(val.varName, val)
 
+            ' FirstYear
+            meta = New cVariableMetaData(0, 10, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
+            val = New cValue(New Integer, eVarNameFlags.EcopathFirstYear, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
+            m_values.Add(val.varName, val)
+
+            ' NumYears
+            meta = New cVariableMetaData(0, 10, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
+            val = New cValue(New Integer, eVarNameFlags.EcopathNumYears, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
+            m_values.Add(val.varName, val)
+
+            ' LatMin
+            meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            val = New cValue(New Single, eVarNameFlags.LatMin, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' LatMax
+            meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            val = New cValue(New Single, eVarNameFlags.LatMax, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' LonMin
+            meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            val = New cValue(New Single, eVarNameFlags.LonMin, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' LonMax
+            meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            val = New cValue(New Single, eVarNameFlags.LonMax, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' GroupDigits
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.GroupDigits, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.GroupDigits))
@@ -228,6 +258,84 @@ Public Class cEwEModel
 
         Set(ByVal str As String)
             SetVariable(eVarNameFlags.UnitMonetaryCustomText, str)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the first year that a model represents.
+    ''' </summary>
+    Public Property FirstYear() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.EcopathFirstYear))
+        End Get
+
+        Set(ByVal value As Integer)
+            Me.SetVariable(eVarNameFlags.EcopathFirstYear, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the number of years that a model represents.
+    ''' </summary>
+    Public Property NumYears() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.EcopathNumYears))
+        End Get
+
+        Set(ByVal value As Integer)
+            Me.SetVariable(eVarNameFlags.EcopathNumYears, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the southern extent of the model bounding box.
+    ''' </summary>
+    Public Property LatMin() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.LatMin))
+        End Get
+
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.LatMin, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the northern extent of the model bounding box.
+    ''' </summary>
+    Public Property LatMax() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.LatMax))
+        End Get
+
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.LatMax, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the western extent of the model bounding box.
+    ''' </summary>
+    Public Property LonMin() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.LatMax))
+        End Get
+
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.LatMax, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the eastern extent of the model bounding box.
+    ''' </summary>
+    Public Property LonMax() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.LatMax))
+        End Get
+
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.LatMax, value)
         End Set
     End Property
 

@@ -707,6 +707,13 @@ Namespace DataSources
                 Me.m_core.m_EwEModelUnitTimeCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
                 Me.m_core.m_EwEModelUnitMonetary = DirectCast(Me.ReadSafe(reader, "UnitMonetary", eUnitMonetaryType.EUR), eUnitMonetaryType)
                 'Me.m_core.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
+                Me.m_core.m_EwEModelFirstYear = CInt(Me.ReadSafe(reader, "FirstYear", cCore.NULL_VALUE))
+                Me.m_core.m_EwEModelNumYears = CInt(Me.ReadSafe(reader, "NumYears", 1))
+                Me.m_core.m_EwEModelLatMin = CInt(Me.ReadSafe(reader, "LatMin", cCore.NULL_VALUE))
+                Me.m_core.m_EwEModelLatMax = CInt(Me.ReadSafe(reader, "LatMax", cCore.NULL_VALUE))
+                Me.m_core.m_EwEModelLonMin = CInt(Me.ReadSafe(reader, "LonMin", cCore.NULL_VALUE))
+                Me.m_core.m_EwEModelLonMax = CInt(Me.ReadSafe(reader, "LonMax", cCore.NULL_VALUE))
+                Me.m_core.m_EwEModelDescription = CStr(reader("Description"))
                 Me.m_core.m_EwEModelLastSaved = CSng(Me.ReadSafe(reader, "LastSaved", 0))
 
             Catch ex As Exception
@@ -761,6 +768,12 @@ Namespace DataSources
                 drow("UnitTime") = Me.m_core.m_EwEModelUnitTime
                 drow("UnitTimeCustom") = Me.m_core.m_EwEModelUnitTimeCustom
                 drow("UnitMonetary") = Me.m_core.m_EwEModelUnitMonetary
+                drow("FirstYear") = Me.m_core.m_EwEModelFirstYear
+                drow("NumYears") = Me.m_core.m_EwEModelNumYears
+                drow("LatMin") = Me.m_core.m_EwEModelLatMin
+                drow("LatMax") = Me.m_core.m_EwEModelLatMax
+                drow("LonMin") = Me.m_core.m_EwEModelLonMin
+                drow("LonMax") = Me.m_core.m_EwEModelLonMax
                 drow("LastSaved") = cDBDataSource.GetJulianDate()
 
                 If bNewRow Then
