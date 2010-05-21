@@ -9698,7 +9698,7 @@ Public Class cCore
 
     Private Sub InitEcotracerOutputs()
         Me.m_EcotracerGroupOutput = New cEcotracerGroupOutput(Me)
-        Me.m_EcotracerRegionGroupOutput = New cEcotracerRegionGroupOutput(Me)
+        Me.m_EcotracerRegionGroupOutput = New cEcotracerRegionGroupOutput(Me, Me.m_tracerData)
     End Sub
 
     Public ReadOnly Property EcotracerGroupResults() As cEcotracerGroupOutput
@@ -9957,20 +9957,20 @@ Public Class cCore
             If m_tracerData.EcoSpaceConSimOn Then
                 Debug.Assert(Me.m_EcotracerRegionGroupOutput IsNot Nothing, "Ecotracer can not load results.")
 
-                For irgn As Integer = 0 To nRegions
-                    For it As Integer = 1 To nEcospaceTimeSteps
+                'For irgn As Integer = 0 To nRegions
+                '    For it As Integer = 1 To nEcospaceTimeSteps
 
-                        For igrp As Integer = 1 To nGroups
-                            m_EcotracerRegionGroupOutput.Concentration(irgn, igrp, it) = m_tracerData.TracerConcByRegion(irgn, igrp, it)
-                            m_EcotracerRegionGroupOutput.CB(irgn, igrp, it) = m_tracerData.TracerCBRegion(irgn, igrp, it)
-                        Next igrp
+                '        'For igrp As Integer = 1 To nGroups
+                '        '    m_EcotracerRegionGroupOutput.Concentration(irgn, igrp, it) = m_tracerData.TracerConcByRegion(irgn, igrp, it)
+                '        '    m_EcotracerRegionGroupOutput.CB(irgn, igrp, it) = m_tracerData.TracerCBRegion(irgn, igrp, it)
+                '        'Next igrp
 
-                        'environment values are stored in the zero group element
-                        m_EcotracerRegionGroupOutput.CEnvironment(irgn, it) = m_tracerData.TracerConcByRegion(irgn, 0, it)
-                        m_EcotracerRegionGroupOutput.CBEnvironment(irgn, it) = m_tracerData.TracerCBRegion(irgn, 0, it)
+                '        ''environment values are stored in the zero group element
+                '        'm_EcotracerRegionGroupOutput.CEnvironment(irgn, it) = m_tracerData.TracerConcByRegion(irgn, 0, it)
+                '        'm_EcotracerRegionGroupOutput.CBEnvironment(irgn, it) = m_tracerData.TracerCBRegion(irgn, 0, it)
 
-                    Next it
-                Next irgn
+                '    Next it
+                'Next irgn
             End If 'If m_tracerData.EcoSpaceConSimOn Then
 
         Catch ex As Exception
@@ -10703,6 +10703,12 @@ Public Class cCore
                         'toggle contaminant tracing OFF in ecosim
                         If CBool(value.Value) = True Then
                             Me.EcoSimModelParameters.ContaminantTracing = False
+
+                            If Me.EcospaceModelParameters.NumberOfTimeStepsPerYear <> 12 Then
+                                'Ecospace must have monthly timestep for Contaminant tracing
+                                Me.EcospaceModelParameters.NumberOfTimeStepsPerYear = 12
+                                msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.NumTimeStepsPerYear))
+                            End If
                         End If
 
                 End Select 'Select Case value.varName

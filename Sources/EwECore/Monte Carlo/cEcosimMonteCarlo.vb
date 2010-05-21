@@ -777,7 +777,7 @@ Public Class cEcosimMonteCarlo
         'Dim cvFactor As Double = 0.02 ' 0.01 + 0.5 * Math.Log10(RunsSinceLastWithLowerSS) ' IIf(isCrashed, 2, 1)
 
 
-        ' Debug.Assert(ParMin <> ParMax, Me.ToString & ".ChooseFeasiblePar() ParMax = ParMin!!!!!")
+        Debug.Assert(ParMin <> ParMax, Me.ToString & ".ChooseFeasiblePar() ParMax = ParMin!!!!!")
 
         Do
             X = xbar * (1 + 0.02 * CV * RandomNormal())

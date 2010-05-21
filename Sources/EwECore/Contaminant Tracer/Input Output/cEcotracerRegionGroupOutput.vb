@@ -28,15 +28,16 @@ Imports EwEUtils.Core
 Public Class cEcotracerRegionGroupOutput
     Inherits cCoreInputOutputBase
 
-    Private m_data(,,) As Single
-    Private m_cb(,,) As Single
+    'Private m_data(,,) As Single
+    'Private m_cb(,,) As Single
+    Private m_TracerData As cContaminantTracerDataStructures
     Private m_nRegions As Integer = 0
     Private m_nGroups As Integer = 0
     Private m_nTimeSteps As Integer = 0
 
 #Region "Constructor"
 
-    Public Sub New(ByRef TheCore As cCore)
+    Public Sub New(ByRef TheCore As cCore, ByVal TracerData As cContaminantTracerDataStructures)
         MyBase.New(TheCore)
 
         Dim val As cValue
@@ -46,22 +47,24 @@ Public Class cEcotracerRegionGroupOutput
         Me.DBID = 1
         Me.Index = 1
 
+        Me.m_TracerData = TracerData
+
         ' Add dummy values
-        val = New cValue()
-        Me.m_values.Add(eVarNameFlags.Concentration, val)
-        Me.m_values.Add(eVarNameFlags.CEnvironment, val)
-        Me.m_values.Add(eVarNameFlags.CSum, val)
+        'val = New cValue()
+        'Me.m_values.Add(eVarNameFlags.Concentration, val)
+        'Me.m_values.Add(eVarNameFlags.CEnvironment, val)
+        'Me.m_values.Add(eVarNameFlags.CSum, val)
 
-        Me.m_nGroups = TheCore.GetCoreCounter(eCoreCounterTypes.nGroups)
-        Me.m_nRegions = TheCore.GetCoreCounter(eCoreCounterTypes.nRegions)
-        Me.m_nTimeSteps = TheCore.GetCoreCounter(eCoreCounterTypes.nEcospaceTimeSteps)
+        'Me.m_nGroups = TheCore.GetCoreCounter(eCoreCounterTypes.nGroups)
+        'Me.m_nRegions = TheCore.GetCoreCounter(eCoreCounterTypes.nRegions)
+        'Me.m_nTimeSteps = TheCore.GetCoreCounter(eCoreCounterTypes.nEcospaceTimeSteps)
 
-        Try
-            ReDim m_data(Me.m_nRegions, Me.m_nGroups + 1, Me.m_nTimeSteps)
-            ReDim m_cb(Me.m_nRegions, Me.m_nGroups + 1, Me.m_nTimeSteps)
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString & ".New() Exception: " & ex.Message)
-        End Try
+        'Try
+        '    ReDim m_data(Me.m_nRegions, Me.m_nGroups + 1, Me.m_nTimeSteps)
+        '    ReDim m_cb(Me.m_nRegions, Me.m_nGroups + 1, Me.m_nTimeSteps)
+        'Catch ex As Exception
+        '    System.Console.WriteLine(Me.ToString & ".New() Exception: " & ex.Message)
+        'End Try
 
     End Sub
 
@@ -74,15 +77,16 @@ Public Class cEcotracerRegionGroupOutput
         Try
             Select Case varName
                 Case eVarNameFlags.Concentration
-                    Return m_data(iRegion, iGroup, iTimeStep)
+                    Return Me.m_TracerData.TracerConcByRegion(iRegion, iGroup, iTimeStep)
                 Case eVarNameFlags.CEnvironment
-                    Return m_data(iRegion, 0, iTimeStep)
-                Case eVarNameFlags.CBEnvironment
-                    Return m_cb(iRegion, 0, iTimeStep)
+                    Return Me.m_TracerData.TracerConcByRegion(iRegion, 0, iTimeStep)
                 Case eVarNameFlags.CSum
-                    Return m_data(iRegion, Me.m_nGroups + 1, iTimeStep)
+                    Return Me.m_TracerData.TracerConcByRegion(iRegion, Me.m_nGroups + 1, iTimeStep)
                 Case eVarNameFlags.ConcBio
-                    Return m_cb(iRegion, iGroup, iTimeStep)
+                    Return Me.m_TracerData.TracerCBRegion(iRegion, iGroup, iTimeStep)
+                Case eVarNameFlags.CBEnvironment
+                    Return Me.m_TracerData.TracerCBRegion(iRegion, 0, iTimeStep)
+
             End Select
 
         Catch ex As Exception
@@ -97,18 +101,18 @@ Public Class cEcotracerRegionGroupOutput
 
         Try
 
-            Select Case varName
-                Case eVarNameFlags.Concentration
-                    m_data(iRegion, iGroup, iTimeStep) = newValue
-                Case eVarNameFlags.CEnvironment
-                    m_data(iRegion, 0, iTimeStep) = newValue
-                Case eVarNameFlags.CSum
-                    m_data(iRegion, Me.m_nGroups + 1, iTimeStep) = newValue
-                Case eVarNameFlags.ConcBio
-                    m_cb(iRegion, iGroup, iTimeStep) = newValue
-                Case eVarNameFlags.CBEnvironment
-                    m_cb(iRegion, 0, iTimeStep) = newValue
-            End Select
+            'Select Case varName
+            '    Case eVarNameFlags.Concentration
+            '        m_data(iRegion, iGroup, iTimeStep) = newValue
+            '    Case eVarNameFlags.CEnvironment
+            '        m_data(iRegion, 0, iTimeStep) = newValue
+            '    Case eVarNameFlags.CSum
+            '        m_data(iRegion, Me.m_nGroups + 1, iTimeStep) = newValue
+            '    Case eVarNameFlags.ConcBio
+            '        m_cb(iRegion, iGroup, iTimeStep) = newValue
+            '    Case eVarNameFlags.CBEnvironment
+            '        m_cb(iRegion, 0, iTimeStep) = newValue
+            'End Select
 
             Return True
 
