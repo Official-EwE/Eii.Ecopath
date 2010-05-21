@@ -62,8 +62,6 @@ Public Class frmEcotracerOutput
     Private m_plottype As ePlotTypes = ePlotTypes.NotSet
     ''' <summary>Thing to gather the data for the form.</summary>
     Private m_DisplayHelper As IDisplayModeHelper = Nothing
-    ''' <summary>Run progress ratio [0, 1].</summary>
-    Private m_sProgress As Single = 0.0!
     ''' <summary>Update loop prevention flag.</summary>
     Private m_bInUpdate As Boolean = False
 
@@ -285,10 +283,9 @@ Public Class frmEcotracerOutput
     ''' -----------------------------------------------------------------------
     Private Sub UpdateProgess(ByVal sProgress As Single)
 
-        Me.m_sProgress = sProgress
-
-        If (Me.m_sProgress < 1.0!) Then
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOTRACER_RUNNING, TriState.UseDefault, Me.m_sProgress)
+        'the rounding is for Ecospace it never actually get to 1
+        If (Math.Round(sProgress, 3) < 0.999F) Then
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOTRACER_RUNNING, TriState.UseDefault, sProgress)
         Else
             cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault)
         End If
@@ -358,21 +355,25 @@ Public Class frmEcotracerOutput
 
         Dim modeNew As eDisplayModeTypes = Me.DisplayMode
 
-        'build the correct display mode helper based on the new display mode flag from getDisplayMode
-        Me.m_DisplayHelper = Me.DisplayHelperFactory(modeNew)
+        Try
+            'build the correct display mode helper based on the new display mode flag from getDisplayMode
+            Me.m_DisplayHelper = Me.DisplayHelperFactory(modeNew)
 
-        'refresh the display mode helper
-        'if no new displayhelper was built this will refresh the current one based on the core state
-        Me.m_DisplayHelper.Refresh()
+            'refresh the display mode helper
+            'if no new displayhelper was built this will refresh the current one based on the core state
+            Me.m_DisplayHelper.Refresh()
 
-        'keep the display mode for next time 
-        'it is used in DisplayHelperFactory()
-        Me.m_curDisplayMode = modeNew
+            'keep the display mode for next time 
+            'it is used in DisplayHelperFactory()
+            Me.m_curDisplayMode = modeNew
 
-        'get the sort order for the groups list box
-        Me.SortGroupList()
-        Me.UpdateRegions()
-        Me.UpdateControls()
+            'get the sort order for the groups list box
+            Me.SortGroupList()
+            Me.UpdateRegions()
+            Me.UpdateControls()
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
 
     End Sub
 
@@ -417,41 +418,56 @@ Public Class frmEcotracerOutput
 
         If Not Me.m_DisplayHelper.bCanPlot Then Return
 
-        ' Iterate over all selected listbox items
-        For Each iListboxItem As Integer In Me.m_lbGroups.SelectedIndices
-            ' Get source at this item
-            source = Me.m_lbGroups.GetGroupAt(iListboxItem)
-            ' Is environment node?
-            If (source Is Nothing) Then
-                ' #Yes: get environment lines
-                aLinesGroup = Me.m_DisplayHelper.GetGroupLines(0)
-            Else
-                ' #No: get group lines
-                aLinesGroup = Me.m_DisplayHelper.GetGroupLines(source.Index)
-            End If
-            ' Add all lines
-            For Each li As LineItem In aLinesGroup
-                ' Is a line?
-                If (li IsNot Nothing) Then
-                    ' #Yes: add it
-                    lLinesPlot.Add(li)
-                End If
-            Next
-        Next
+        Try
 
-        ' Plot all encountered lines
-        Me.m_zgh.PlotLines(lLinesPlot.ToArray)
+            ' Iterate over all selected listbox items
+            For Each iListboxItem As Integer In Me.m_lbGroups.SelectedIndices
+                ' Get source at this item
+                source = Me.m_lbGroups.GetGroupAt(iListboxItem)
+                ' Is environment node?
+                If (source Is Nothing) Then
+                    ' #Yes: get environment lines
+                    aLinesGroup = Me.m_DisplayHelper.GetGroupLines(0)
+                Else
+                    ' #No: get group lines
+                    aLinesGroup = Me.m_DisplayHelper.GetGroupLines(source.Index)
+                End If
+                ' Add all lines
+                For Each li As LineItem In aLinesGroup
+                    ' Is a line?
+                    If (li IsNot Nothing) Then
+                        ' #Yes: add it
+                        lLinesPlot.Add(li)
+                    End If
+                Next
+            Next
+
+            ' Plot all encountered lines
+            Me.m_zgh.PlotLines(lLinesPlot.ToArray)
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
 
     End Sub
 
     Private Sub EcosimCallback(ByVal iTime As Long, ByVal data As cEcoSimResults)
         'Ecosim callback()
-        UpdateProgess(CSng(iTime / (Me.m_DisplayHelper.nYears * cCore.N_MONTHS)))
+        Try
+            UpdateProgess(CSng(iTime / Me.m_DisplayHelper.nStepPerYear))
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
     End Sub
 
     Private Sub EcospaceCallback(ByRef EcospaceResults As cEcospaceTimestep)
         'Ecospace callback()
-        UpdateProgess(CSng(EcospaceResults.TimeStepinYears / Me.m_DisplayHelper.nYears))
+        Try
+            UpdateProgess(CSng(EcospaceResults.TimeStepinYears / Me.m_DisplayHelper.nYears))
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
     End Sub
 
     Private Sub UpdateRegions()
@@ -611,6 +627,11 @@ Public Class frmEcotracerOutput
         ''' </summary>
         WriteOnly Property RegionIndex() As Integer
 
+        ''' <summary>
+        ''' Number of time steps per year in the current model
+        ''' </summary>
+        ReadOnly Property nStepPerYear() As Integer
+
 
     End Interface
 
@@ -732,6 +753,11 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
+        Public ReadOnly Property nStepPerYear() As Integer Implements IDisplayModeHelper.nStepPerYear
+            Get
+                Return 0
+            End Get
+        End Property
     End Class
 
 #End Region
@@ -950,6 +976,12 @@ Public Class frmEcotracerOutput
             Implements IDisplayModeHelper.bCanPlot
             Get
                 Return True
+            End Get
+        End Property
+
+        Public ReadOnly Property nStepPerYear() As Integer Implements IDisplayModeHelper.nStepPerYear
+            Get
+                Return cCore.N_MONTHS
             End Get
         End Property
     End Class
@@ -1210,6 +1242,15 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
+        Public ReadOnly Property nStepPerYear() As Integer Implements IDisplayModeHelper.nStepPerYear
+            Get
+                Try
+                    Return Me.Core.nEcospaceTimeSteps \ Me.Core.nEcospaceYears
+                Catch ex As Exception
+                    Return 0
+                End Try
+            End Get
+        End Property
     End Class
 
 #End Region
