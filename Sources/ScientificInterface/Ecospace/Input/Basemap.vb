@@ -236,7 +236,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerSail, False)
             Me.AddData(eVarNameFlags.LayerMigration)
             Me.AddData(eVarNameFlags.LayerRelPP, False)
-            Me.AddData(eVarNameFlags.LayerRelCin)
+            Me.AddData(eVarNameFlags.LayerRelCin, False)
             Me.AddData(eVarNameFlags.LayerRegion)
             Me.AddData(eVarNameFlags.LayerHabitat)
             Me.AddData(eVarNameFlags.LayerDepth)
