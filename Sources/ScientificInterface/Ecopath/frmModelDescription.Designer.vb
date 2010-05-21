@@ -71,15 +71,15 @@ Partial Class frmModelDescription
         Me.m_nudFirstYear = New System.Windows.Forms.NumericUpDown
         Me.Label1 = New System.Windows.Forms.Label
         Me.m_nudNumYears = New System.Windows.Forms.NumericUpDown
-        Me.m_lblSpatExtent = New System.Windows.Forms.Label
+        Me.m_lblLocation = New System.Windows.Forms.Label
         Me.m_nudLatMin = New System.Windows.Forms.NumericUpDown
         Me.m_nudLatMax = New System.Windows.Forms.NumericUpDown
         Me.m_nudLonMin = New System.Windows.Forms.NumericUpDown
         Me.m_nudLonMax = New System.Windows.Forms.NumericUpDown
-        Me.m_lblLatMin = New System.Windows.Forms.Label
-        Me.m_lblLonMin = New System.Windows.Forms.Label
-        Me.m_lblLonMax = New System.Windows.Forms.Label
-        Me.m_lblLatMax = New System.Windows.Forms.Label
+        Me.m_lblNorth = New System.Windows.Forms.Label
+        Me.m_lblWest = New System.Windows.Forms.Label
+        Me.m_lblEast = New System.Windows.Forms.Label
+        Me.m_lblSouth = New System.Windows.Forms.Label
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -378,10 +378,10 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_nudNumYears, "m_nudNumYears")
         Me.m_nudNumYears.Name = "m_nudNumYears"
         '
-        'm_lblSpatExtent
+        'm_lblLocation
         '
-        resources.ApplyResources(Me.m_lblSpatExtent, "m_lblSpatExtent")
-        Me.m_lblSpatExtent.Name = "m_lblSpatExtent"
+        resources.ApplyResources(Me.m_lblLocation, "m_lblLocation")
+        Me.m_lblLocation.Name = "m_lblLocation"
         '
         'm_nudLatMin
         '
@@ -403,25 +403,25 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_nudLonMax, "m_nudLonMax")
         Me.m_nudLonMax.Name = "m_nudLonMax"
         '
-        'm_lblLatMin
+        'm_lblNorth
         '
-        resources.ApplyResources(Me.m_lblLatMin, "m_lblLatMin")
-        Me.m_lblLatMin.Name = "m_lblLatMin"
+        resources.ApplyResources(Me.m_lblNorth, "m_lblNorth")
+        Me.m_lblNorth.Name = "m_lblNorth"
         '
-        'm_lblLonMin
+        'm_lblWest
         '
-        resources.ApplyResources(Me.m_lblLonMin, "m_lblLonMin")
-        Me.m_lblLonMin.Name = "m_lblLonMin"
+        resources.ApplyResources(Me.m_lblWest, "m_lblWest")
+        Me.m_lblWest.Name = "m_lblWest"
         '
-        'm_lblLonMax
+        'm_lblEast
         '
-        resources.ApplyResources(Me.m_lblLonMax, "m_lblLonMax")
-        Me.m_lblLonMax.Name = "m_lblLonMax"
+        resources.ApplyResources(Me.m_lblEast, "m_lblEast")
+        Me.m_lblEast.Name = "m_lblEast"
         '
-        'm_lblLatMax
+        'm_lblSouth
         '
-        resources.ApplyResources(Me.m_lblLatMax, "m_lblLatMax")
-        Me.m_lblLatMax.Name = "m_lblLatMax"
+        resources.ApplyResources(Me.m_lblSouth, "m_lblSouth")
+        Me.m_lblSouth.Name = "m_lblSouth"
         '
         'frmModelDescription
         '
@@ -440,11 +440,11 @@ Partial Class frmModelDescription
         Me.Controls.Add(Me.m_lblAreaUnit)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.m_lblArea)
-        Me.Controls.Add(Me.m_lblLatMax)
-        Me.Controls.Add(Me.m_lblLonMax)
-        Me.Controls.Add(Me.m_lblLonMin)
-        Me.Controls.Add(Me.m_lblLatMin)
-        Me.Controls.Add(Me.m_lblSpatExtent)
+        Me.Controls.Add(Me.m_lblSouth)
+        Me.Controls.Add(Me.m_lblEast)
+        Me.Controls.Add(Me.m_lblWest)
+        Me.Controls.Add(Me.m_lblNorth)
+        Me.Controls.Add(Me.m_lblLocation)
         Me.Controls.Add(Me.m_lblFirstYear)
         Me.Controls.Add(Me.m_tbArea)
         Me.Controls.Add(Me.m_tbAuthor)
@@ -523,13 +523,13 @@ Partial Class frmModelDescription
     Private WithEvents m_nudFirstYear As System.Windows.Forms.NumericUpDown
     Private WithEvents Label1 As System.Windows.Forms.Label
     Private WithEvents m_nudNumYears As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_lblSpatExtent As System.Windows.Forms.Label
+    Private WithEvents m_lblLocation As System.Windows.Forms.Label
     Private WithEvents m_nudLatMin As System.Windows.Forms.NumericUpDown
     Private WithEvents m_nudLatMax As System.Windows.Forms.NumericUpDown
     Private WithEvents m_nudLonMin As System.Windows.Forms.NumericUpDown
     Private WithEvents m_nudLonMax As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_lblLatMin As System.Windows.Forms.Label
-    Private WithEvents m_lblLonMin As System.Windows.Forms.Label
-    Private WithEvents m_lblLonMax As System.Windows.Forms.Label
-    Private WithEvents m_lblLatMax As System.Windows.Forms.Label
+    Private WithEvents m_lblNorth As System.Windows.Forms.Label
+    Private WithEvents m_lblWest As System.Windows.Forms.Label
+    Private WithEvents m_lblEast As System.Windows.Forms.Label
+    Private WithEvents m_lblSouth As System.Windows.Forms.Label
 End Class

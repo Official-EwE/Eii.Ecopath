@@ -412,13 +412,13 @@
     <value>True</value>
   </data>
   <data name="m_lblFirstYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 275</value>
+    <value>12, 249</value>
   </data>
   <data name="m_lblFirstYear.Size" type="System.Drawing.Size, System.Drawing">
     <value>52, 13</value>
   </data>
   <data name="m_lblFirstYear.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>9</value>
   </data>
   <data name="m_lblFirstYear.Text" xml:space="preserve">
     <value>First &amp;year:</value>
@@ -439,13 +439,13 @@
     <value>True</value>
   </data>
   <data name="m_lblArea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 250</value>
+    <value>12, 277</value>
   </data>
   <data name="m_lblArea.Size" type="System.Drawing.Size, System.Drawing">
     <value>32, 13</value>
   </data>
   <data name="m_lblArea.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>13</value>
   </data>
   <data name="m_lblArea.Text" xml:space="preserve">
     <value>A&amp;rea:</value>
@@ -463,7 +463,7 @@
     <value>12</value>
   </data>
   <data name="m_tbArea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 247</value>
+    <value>102, 274</value>
   </data>
   <data name="m_tbArea.MaxLength" type="System.Int32, mscorlib">
     <value>60</value>
@@ -472,7 +472,7 @@
     <value>92, 20</value>
   </data>
   <data name="m_tbArea.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;m_tbArea.Name" xml:space="preserve">
     <value>m_tbArea</value>
@@ -487,13 +487,13 @@
     <value>19</value>
   </data>
   <data name="m_lblAreaUnit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 250</value>
+    <value>200, 277</value>
   </data>
   <data name="m_lblAreaUnit.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 17</value>
   </data>
   <data name="m_lblAreaUnit.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>15</value>
   </data>
   <data name="m_lblAreaUnit.Text" xml:space="preserve">
     <value>km²</value>
@@ -912,6 +912,15 @@
   <data name="&gt;&gt;m_gbCurrencyUnit.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="txbTimeOther.Location" type="System.Drawing.Point, System.Drawing">
+    <value>93, 67</value>
+  </data>
+  <data name="txbTimeOther.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 20</value>
+  </data>
+  <data name="txbTimeOther.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
   <data name="&gt;&gt;txbTimeOther.Name" xml:space="preserve">
     <value>txbTimeOther</value>
   </data>
@@ -923,6 +932,24 @@
   </data>
   <data name="&gt;&gt;txbTimeOther.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="rbTimeOther.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="rbTimeOther.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="rbTimeOther.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 68</value>
+  </data>
+  <data name="rbTimeOther.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 17</value>
+  </data>
+  <data name="rbTimeOther.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="rbTimeOther.Text" xml:space="preserve">
+    <value>other unit:</value>
   </data>
   <data name="&gt;&gt;rbTimeOther.Name" xml:space="preserve">
     <value>rbTimeOther</value>
@@ -936,6 +963,24 @@
   <data name="&gt;&gt;rbTimeOther.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="rbDay.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="rbDay.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="rbDay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 45</value>
+  </data>
+  <data name="rbDay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>42, 17</value>
+  </data>
+  <data name="rbDay.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="rbDay.Text" xml:space="preserve">
+    <value>day</value>
+  </data>
   <data name="&gt;&gt;rbDay.Name" xml:space="preserve">
     <value>rbDay</value>
   </data>
@@ -947,6 +992,24 @@
   </data>
   <data name="&gt;&gt;rbDay.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="rbYear.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="rbYear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="rbYear.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 22</value>
+  </data>
+  <data name="rbYear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 17</value>
+  </data>
+  <data name="rbYear.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="rbYear.Text" xml:space="preserve">
+    <value>year *)</value>
   </data>
   <data name="&gt;&gt;rbYear.Name" xml:space="preserve">
     <value>rbYear</value>
@@ -990,6 +1053,21 @@
   <data name="&gt;&gt;m_gbTimeUnits.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_lblMonetaryUnit.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblMonetaryUnit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 21</value>
+  </data>
+  <data name="m_lblMonetaryUnit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 13</value>
+  </data>
+  <data name="m_lblMonetaryUnit.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_lblMonetaryUnit.Text" xml:space="preserve">
+    <value>&amp;Unit:</value>
+  </data>
   <data name="&gt;&gt;m_lblMonetaryUnit.Name" xml:space="preserve">
     <value>m_lblMonetaryUnit</value>
   </data>
@@ -1001,6 +1079,21 @@
   </data>
   <data name="&gt;&gt;m_lblMonetaryUnit.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_cmbMonetaryUnit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_cmbMonetaryUnit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>93, 18</value>
+  </data>
+  <data name="m_cmbMonetaryUnit.MaxDropDownItems" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="m_cmbMonetaryUnit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 21</value>
+  </data>
+  <data name="m_cmbMonetaryUnit.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_cmbMonetaryUnit.Name" xml:space="preserve">
     <value>m_cmbMonetaryUnit</value>
@@ -1131,171 +1224,6 @@
   <data name="m_tlpUnits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_gbCurrencyUnit" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_gbTimeUnits" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_gbMonetaryUnits" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_gbNumFormatting" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,54.71407,Percent,45.28593" /&gt;&lt;Rows Styles="Percent,50,Absolute,195,Absolute,194" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="txbTimeOther.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 67</value>
-  </data>
-  <data name="txbTimeOther.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 20</value>
-  </data>
-  <data name="txbTimeOther.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;txbTimeOther.Name" xml:space="preserve">
-    <value>txbTimeOther</value>
-  </data>
-  <data name="&gt;&gt;txbTimeOther.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txbTimeOther.Parent" xml:space="preserve">
-    <value>m_gbTimeUnits</value>
-  </data>
-  <data name="&gt;&gt;txbTimeOther.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="rbTimeOther.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbTimeOther.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rbTimeOther.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 68</value>
-  </data>
-  <data name="rbTimeOther.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 17</value>
-  </data>
-  <data name="rbTimeOther.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="rbTimeOther.Text" xml:space="preserve">
-    <value>other unit:</value>
-  </data>
-  <data name="&gt;&gt;rbTimeOther.Name" xml:space="preserve">
-    <value>rbTimeOther</value>
-  </data>
-  <data name="&gt;&gt;rbTimeOther.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbTimeOther.Parent" xml:space="preserve">
-    <value>m_gbTimeUnits</value>
-  </data>
-  <data name="&gt;&gt;rbTimeOther.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="rbDay.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbDay.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rbDay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 45</value>
-  </data>
-  <data name="rbDay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>42, 17</value>
-  </data>
-  <data name="rbDay.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="rbDay.Text" xml:space="preserve">
-    <value>day</value>
-  </data>
-  <data name="&gt;&gt;rbDay.Name" xml:space="preserve">
-    <value>rbDay</value>
-  </data>
-  <data name="&gt;&gt;rbDay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbDay.Parent" xml:space="preserve">
-    <value>m_gbTimeUnits</value>
-  </data>
-  <data name="&gt;&gt;rbDay.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="rbYear.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbYear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rbYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 22</value>
-  </data>
-  <data name="rbYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 17</value>
-  </data>
-  <data name="rbYear.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="rbYear.Text" xml:space="preserve">
-    <value>year *)</value>
-  </data>
-  <data name="&gt;&gt;rbYear.Name" xml:space="preserve">
-    <value>rbYear</value>
-  </data>
-  <data name="&gt;&gt;rbYear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbYear.Parent" xml:space="preserve">
-    <value>m_gbTimeUnits</value>
-  </data>
-  <data name="&gt;&gt;rbYear.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_lblMonetaryUnit.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblMonetaryUnit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 21</value>
-  </data>
-  <data name="m_lblMonetaryUnit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 13</value>
-  </data>
-  <data name="m_lblMonetaryUnit.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_lblMonetaryUnit.Text" xml:space="preserve">
-    <value>&amp;Unit:</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonetaryUnit.Name" xml:space="preserve">
-    <value>m_lblMonetaryUnit</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonetaryUnit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonetaryUnit.Parent" xml:space="preserve">
-    <value>m_gbMonetaryUnits</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonetaryUnit.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_cmbMonetaryUnit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_cmbMonetaryUnit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 18</value>
-  </data>
-  <data name="m_cmbMonetaryUnit.MaxDropDownItems" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="m_cmbMonetaryUnit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 21</value>
-  </data>
-  <data name="m_cmbMonetaryUnit.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_cmbMonetaryUnit.Name" xml:space="preserve">
-    <value>m_cmbMonetaryUnit</value>
-  </data>
-  <data name="&gt;&gt;m_cmbMonetaryUnit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cMonetaryUnitComboBox, ScientificInterfaceShared, Version=6.1.0.520, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_cmbMonetaryUnit.Parent" xml:space="preserve">
-    <value>m_gbMonetaryUnits</value>
-  </data>
-  <data name="&gt;&gt;m_cmbMonetaryUnit.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_chkPSD.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1417,13 +1345,13 @@
     <value>24</value>
   </data>
   <data name="m_nudFirstYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 273</value>
+    <value>102, 247</value>
   </data>
   <data name="m_nudFirstYear.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
   </data>
   <data name="m_nudFirstYear.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;m_nudFirstYear.Name" xml:space="preserve">
     <value>m_nudFirstYear</value>
@@ -1444,13 +1372,13 @@
     <value>NoControl</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>228, 275</value>
+    <value>233, 249</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 13</value>
   </data>
   <data name="Label1.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>11</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
     <value>No. of years:</value>
@@ -1468,13 +1396,13 @@
     <value>11</value>
   </data>
   <data name="m_nudNumYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>310, 273</value>
+    <value>306, 247</value>
   </data>
   <data name="m_nudNumYears.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
   </data>
   <data name="m_nudNumYears.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>12</value>
   </data>
   <data name="&gt;&gt;m_nudNumYears.Name" xml:space="preserve">
     <value>m_nudNumYears</value>
@@ -1488,38 +1416,38 @@
   <data name="&gt;&gt;m_nudNumYears.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_lblSpatExtent.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblLocation.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblSpatExtent.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblLocation.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblSpatExtent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 304</value>
+  <data name="m_lblLocation.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 304</value>
   </data>
-  <data name="m_lblSpatExtent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 13</value>
+  <data name="m_lblLocation.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 13</value>
   </data>
-  <data name="m_lblSpatExtent.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblLocation.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
-  <data name="m_lblSpatExtent.Text" xml:space="preserve">
-    <value>&amp;Spatial extent:</value>
+  <data name="m_lblLocation.Text" xml:space="preserve">
+    <value>&amp;Model location:</value>
   </data>
-  <data name="&gt;&gt;m_lblSpatExtent.Name" xml:space="preserve">
-    <value>m_lblSpatExtent</value>
+  <data name="&gt;&gt;m_lblLocation.Name" xml:space="preserve">
+    <value>m_lblLocation</value>
   </data>
-  <data name="&gt;&gt;m_lblSpatExtent.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblLocation.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblSpatExtent.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblLocation.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblSpatExtent.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblLocation.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
   <data name="m_nudLatMin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 327</value>
+    <value>203, 320</value>
   </data>
   <data name="m_nudLatMin.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
@@ -1540,13 +1468,13 @@
     <value>4</value>
   </data>
   <data name="m_nudLatMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 353</value>
+    <value>203, 373</value>
   </data>
   <data name="m_nudLatMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
   </data>
   <data name="m_nudLatMax.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>24</value>
   </data>
   <data name="&gt;&gt;m_nudLatMax.Name" xml:space="preserve">
     <value>m_nudLatMax</value>
@@ -1561,13 +1489,13 @@
     <value>2</value>
   </data>
   <data name="m_nudLonMin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>310, 327</value>
+    <value>102, 346</value>
   </data>
   <data name="m_nudLonMin.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
   </data>
   <data name="m_nudLonMin.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
+    <value>20</value>
   </data>
   <data name="&gt;&gt;m_nudLonMin.Name" xml:space="preserve">
     <value>m_nudLonMin</value>
@@ -1582,13 +1510,13 @@
     <value>3</value>
   </data>
   <data name="m_nudLonMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>310, 353</value>
+    <value>306, 346</value>
   </data>
   <data name="m_nudLonMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
   </data>
   <data name="m_nudLonMax.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+    <value>22</value>
   </data>
   <data name="&gt;&gt;m_nudLonMax.Name" xml:space="preserve">
     <value>m_nudLonMax</value>
@@ -1602,124 +1530,124 @@
   <data name="&gt;&gt;m_nudLonMax.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_lblLatMin.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblNorth.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblLatMin.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblNorth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblLatMin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>44, 329</value>
+  <data name="m_lblNorth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>161, 322</value>
   </data>
-  <data name="m_lblLatMin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 13</value>
+  <data name="m_lblNorth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 13</value>
   </data>
-  <data name="m_lblLatMin.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblNorth.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="m_lblLatMin.Text" xml:space="preserve">
-    <value>Lat min:</value>
+  <data name="m_lblNorth.Text" xml:space="preserve">
+    <value>North:</value>
   </data>
-  <data name="&gt;&gt;m_lblLatMin.Name" xml:space="preserve">
-    <value>m_lblLatMin</value>
+  <data name="&gt;&gt;m_lblNorth.Name" xml:space="preserve">
+    <value>m_lblNorth</value>
   </data>
-  <data name="&gt;&gt;m_lblLatMin.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblNorth.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblLatMin.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblNorth.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblLatMin.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblNorth.ZOrder" xml:space="preserve">
     <value>16</value>
   </data>
-  <data name="m_lblLonMin.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblWest.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblLonMin.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblWest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblLonMin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>228, 329</value>
+  <data name="m_lblWest.Location" type="System.Drawing.Point, System.Drawing">
+    <value>61, 348</value>
   </data>
-  <data name="m_lblLonMin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 13</value>
+  <data name="m_lblWest.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 13</value>
   </data>
-  <data name="m_lblLonMin.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="m_lblLonMin.Text" xml:space="preserve">
-    <value>Lon min:</value>
-  </data>
-  <data name="&gt;&gt;m_lblLonMin.Name" xml:space="preserve">
-    <value>m_lblLonMin</value>
-  </data>
-  <data name="&gt;&gt;m_lblLonMin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblLonMin.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblLonMin.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="m_lblLonMax.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblLonMax.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblLonMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>228, 355</value>
-  </data>
-  <data name="m_lblLonMax.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 13</value>
-  </data>
-  <data name="m_lblLonMax.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="m_lblLonMax.Text" xml:space="preserve">
-    <value>Lon max:</value>
-  </data>
-  <data name="&gt;&gt;m_lblLonMax.Name" xml:space="preserve">
-    <value>m_lblLonMax</value>
-  </data>
-  <data name="&gt;&gt;m_lblLonMax.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblLonMax.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblLonMax.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="m_lblLatMax.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblLatMax.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblLatMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>45, 355</value>
-  </data>
-  <data name="m_lblLatMax.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 13</value>
-  </data>
-  <data name="m_lblLatMax.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblWest.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
-  <data name="m_lblLatMax.Text" xml:space="preserve">
-    <value>Lat max:</value>
+  <data name="m_lblWest.Text" xml:space="preserve">
+    <value>West:</value>
   </data>
-  <data name="&gt;&gt;m_lblLatMax.Name" xml:space="preserve">
-    <value>m_lblLatMax</value>
+  <data name="&gt;&gt;m_lblWest.Name" xml:space="preserve">
+    <value>m_lblWest</value>
   </data>
-  <data name="&gt;&gt;m_lblLatMax.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblWest.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblLatMax.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblWest.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblLatMax.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblWest.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="m_lblEast.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblEast.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblEast.Location" type="System.Drawing.Point, System.Drawing">
+    <value>269, 348</value>
+  </data>
+  <data name="m_lblEast.Size" type="System.Drawing.Size, System.Drawing">
+    <value>31, 13</value>
+  </data>
+  <data name="m_lblEast.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="m_lblEast.Text" xml:space="preserve">
+    <value>East:</value>
+  </data>
+  <data name="&gt;&gt;m_lblEast.Name" xml:space="preserve">
+    <value>m_lblEast</value>
+  </data>
+  <data name="&gt;&gt;m_lblEast.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblEast.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblEast.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="m_lblSouth.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblSouth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblSouth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>159, 375</value>
+  </data>
+  <data name="m_lblSouth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 13</value>
+  </data>
+  <data name="m_lblSouth.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="m_lblSouth.Text" xml:space="preserve">
+    <value>South:</value>
+  </data>
+  <data name="&gt;&gt;m_lblSouth.Name" xml:space="preserve">
+    <value>m_lblSouth</value>
+  </data>
+  <data name="&gt;&gt;m_lblSouth.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblSouth.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblSouth.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
