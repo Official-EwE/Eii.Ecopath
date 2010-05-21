@@ -329,6 +329,8 @@ Public Class cContaminantTracerDataStructures
     ''' <summary>Ecospace tracer enabled state flag.</summary>
     Friend m_bEcoSpaceConSimOn As Boolean
 
+
+
     Friend Sub RedimByNGroups(ByVal nGroups As Integer)
         'redimension variables needed for contaminant tracking
         ReDim Czero(nGroups)
