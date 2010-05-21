@@ -59,7 +59,6 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             Dim fleet As cEcosimFleetOutput = Nothing
-            rbGear.Checked = True
 
             'summary
             Me.m_fpStartSum = New cPropertyFormatProvider(Me.UIContext, Me.txtSumStart, Me.Core.EcoSimModelParameters, eVarNameFlags.EcosimSumStart)
@@ -74,6 +73,7 @@ Namespace Ecosim
             cbGears.SelectedIndex = 0
 
             m_displayMode = eDisplayModeTypes.Fleets
+            rbGear.Checked = True
             UpdateControls()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
