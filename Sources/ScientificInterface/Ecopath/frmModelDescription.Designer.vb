@@ -27,15 +27,15 @@ Partial Class frmModelDescription
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmModelDescription))
         Me.m_udNumDigits = New System.Windows.Forms.NumericUpDown
         Me.lbNumDigits = New System.Windows.Forms.Label
-        Me.m_lblOptions = New cEwEHeaderLabel
+        Me.m_lblOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_lbDescription = New System.Windows.Forms.Label
         Me.m_lbScenarioName = New System.Windows.Forms.Label
-        Me.m_lblModel = New cEwEHeaderLabel
+        Me.m_lblModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_tbName = New System.Windows.Forms.TextBox
         Me.m_lbAuthor = New System.Windows.Forms.Label
         Me.m_tbAuthor = New System.Windows.Forms.TextBox
         Me.m_lbContact = New System.Windows.Forms.Label
-        Me.m_lblFile = New System.Windows.Forms.Label
+        Me.m_lblFirstYear = New System.Windows.Forms.Label
         Me.m_lblArea = New System.Windows.Forms.Label
         Me.m_tbArea = New System.Windows.Forms.TextBox
         Me.m_lblAreaUnit = New System.Windows.Forms.Label
@@ -65,16 +65,33 @@ Partial Class frmModelDescription
         Me.m_gbNumFormatting = New System.Windows.Forms.GroupBox
         Me.m_cbGroupDigits = New System.Windows.Forms.CheckBox
         Me.m_chkPSD = New System.Windows.Forms.CheckBox
-        Me.m_tbxFile = New System.Windows.Forms.TextBox
         Me.m_tbContact = New System.Windows.Forms.RichTextBox
         Me.m_tbDescription = New System.Windows.Forms.RichTextBox
-        Me.m_hdrExecution = New cEwEHeaderLabel
+        Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_nudFirstYear = New System.Windows.Forms.NumericUpDown
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.m_nudNumYears = New System.Windows.Forms.NumericUpDown
+        Me.m_lblSpatExtent = New System.Windows.Forms.Label
+        Me.m_nudLatMin = New System.Windows.Forms.NumericUpDown
+        Me.m_nudLatMax = New System.Windows.Forms.NumericUpDown
+        Me.m_nudLonMin = New System.Windows.Forms.NumericUpDown
+        Me.m_nudLonMax = New System.Windows.Forms.NumericUpDown
+        Me.m_lblLatMin = New System.Windows.Forms.Label
+        Me.m_lblLonMin = New System.Windows.Forms.Label
+        Me.m_lblLonMax = New System.Windows.Forms.Label
+        Me.m_lblLatMax = New System.Windows.Forms.Label
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
         Me.m_gbTimeUnits.SuspendLayout()
         Me.m_gbMonetaryUnits.SuspendLayout()
         Me.m_gbNumFormatting.SuspendLayout()
+        CType(Me.m_nudFirstYear, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudLatMin, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudLatMax, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudLonMin, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudLonMax, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_udNumDigits
@@ -128,10 +145,10 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_lbContact, "m_lbContact")
         Me.m_lbContact.Name = "m_lbContact"
         '
-        'm_lblFile
+        'm_lblFirstYear
         '
-        resources.ApplyResources(Me.m_lblFile, "m_lblFile")
-        Me.m_lblFile.Name = "m_lblFile"
+        resources.ApplyResources(Me.m_lblFirstYear, "m_lblFirstYear")
+        Me.m_lblFirstYear.Name = "m_lblFirstYear"
         '
         'm_lblArea
         '
@@ -331,12 +348,6 @@ Partial Class frmModelDescription
         Me.m_chkPSD.Name = "m_chkPSD"
         Me.m_chkPSD.UseVisualStyleBackColor = True
         '
-        'm_tbxFile
-        '
-        resources.ApplyResources(Me.m_tbxFile, "m_tbxFile")
-        Me.m_tbxFile.Name = "m_tbxFile"
-        Me.m_tbxFile.ReadOnly = True
-        '
         'm_tbContact
         '
         resources.ApplyResources(Me.m_tbContact, "m_tbContact")
@@ -352,18 +363,89 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_hdrExecution, "m_hdrExecution")
         Me.m_hdrExecution.Name = "m_hdrExecution"
         '
+        'm_nudFirstYear
+        '
+        resources.ApplyResources(Me.m_nudFirstYear, "m_nudFirstYear")
+        Me.m_nudFirstYear.Name = "m_nudFirstYear"
+        '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
+        '
+        'm_nudNumYears
+        '
+        resources.ApplyResources(Me.m_nudNumYears, "m_nudNumYears")
+        Me.m_nudNumYears.Name = "m_nudNumYears"
+        '
+        'm_lblSpatExtent
+        '
+        resources.ApplyResources(Me.m_lblSpatExtent, "m_lblSpatExtent")
+        Me.m_lblSpatExtent.Name = "m_lblSpatExtent"
+        '
+        'm_nudLatMin
+        '
+        resources.ApplyResources(Me.m_nudLatMin, "m_nudLatMin")
+        Me.m_nudLatMin.Name = "m_nudLatMin"
+        '
+        'm_nudLatMax
+        '
+        resources.ApplyResources(Me.m_nudLatMax, "m_nudLatMax")
+        Me.m_nudLatMax.Name = "m_nudLatMax"
+        '
+        'm_nudLonMin
+        '
+        resources.ApplyResources(Me.m_nudLonMin, "m_nudLonMin")
+        Me.m_nudLonMin.Name = "m_nudLonMin"
+        '
+        'm_nudLonMax
+        '
+        resources.ApplyResources(Me.m_nudLonMax, "m_nudLonMax")
+        Me.m_nudLonMax.Name = "m_nudLonMax"
+        '
+        'm_lblLatMin
+        '
+        resources.ApplyResources(Me.m_lblLatMin, "m_lblLatMin")
+        Me.m_lblLatMin.Name = "m_lblLatMin"
+        '
+        'm_lblLonMin
+        '
+        resources.ApplyResources(Me.m_lblLonMin, "m_lblLonMin")
+        Me.m_lblLonMin.Name = "m_lblLonMin"
+        '
+        'm_lblLonMax
+        '
+        resources.ApplyResources(Me.m_lblLonMax, "m_lblLonMax")
+        Me.m_lblLonMax.Name = "m_lblLonMax"
+        '
+        'm_lblLatMax
+        '
+        resources.ApplyResources(Me.m_lblLatMax, "m_lblLatMax")
+        Me.m_lblLatMax.Name = "m_lblLatMax"
+        '
         'frmModelDescription
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_nudNumYears)
+        Me.Controls.Add(Me.m_nudLonMax)
+        Me.Controls.Add(Me.m_nudLatMax)
+        Me.Controls.Add(Me.m_nudLonMin)
+        Me.Controls.Add(Me.m_nudLatMin)
+        Me.Controls.Add(Me.m_nudFirstYear)
         Me.Controls.Add(Me.m_tbDescription)
         Me.Controls.Add(Me.m_tbContact)
-        Me.Controls.Add(Me.m_tbxFile)
         Me.Controls.Add(Me.m_chkPSD)
         Me.Controls.Add(Me.m_tlpUnits)
         Me.Controls.Add(Me.m_lblAreaUnit)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.m_lblArea)
-        Me.Controls.Add(Me.m_lblFile)
+        Me.Controls.Add(Me.m_lblLatMax)
+        Me.Controls.Add(Me.m_lblLonMax)
+        Me.Controls.Add(Me.m_lblLonMin)
+        Me.Controls.Add(Me.m_lblLatMin)
+        Me.Controls.Add(Me.m_lblSpatExtent)
+        Me.Controls.Add(Me.m_lblFirstYear)
         Me.Controls.Add(Me.m_tbArea)
         Me.Controls.Add(Me.m_tbAuthor)
         Me.Controls.Add(Me.m_lblModel)
@@ -385,6 +467,12 @@ Partial Class frmModelDescription
         Me.m_gbMonetaryUnits.PerformLayout()
         Me.m_gbNumFormatting.ResumeLayout(False)
         Me.m_gbNumFormatting.PerformLayout()
+        CType(Me.m_nudFirstYear, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudLatMin, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudLatMax, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudLonMin, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudLonMax, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -399,7 +487,7 @@ Partial Class frmModelDescription
     Private WithEvents m_tbAuthor As System.Windows.Forms.TextBox
     Private WithEvents m_lbContact As System.Windows.Forms.Label
     Private WithEvents m_lbAuthor As System.Windows.Forms.Label
-    Private WithEvents m_lblFile As System.Windows.Forms.Label
+    Private WithEvents m_lblFirstYear As System.Windows.Forms.Label
     Private WithEvents m_lblArea As System.Windows.Forms.Label
     Private WithEvents m_tbArea As System.Windows.Forms.TextBox
     Private WithEvents m_lblAreaUnit As System.Windows.Forms.Label
@@ -429,8 +517,19 @@ Partial Class frmModelDescription
     Private WithEvents m_cbGroupDigits As System.Windows.Forms.CheckBox
     Private WithEvents m_gbMonetaryUnits As System.Windows.Forms.GroupBox
     Private WithEvents m_gbNumFormatting As System.Windows.Forms.GroupBox
-    Private WithEvents m_tbxFile As System.Windows.Forms.TextBox
     Private WithEvents m_tbContact As System.Windows.Forms.RichTextBox
     Private WithEvents m_tbDescription As System.Windows.Forms.RichTextBox
     Private WithEvents m_hdrExecution As cEwEHeaderLabel
+    Private WithEvents m_nudFirstYear As System.Windows.Forms.NumericUpDown
+    Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_nudNumYears As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_lblSpatExtent As System.Windows.Forms.Label
+    Private WithEvents m_nudLatMin As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudLatMax As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudLonMin As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudLonMax As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_lblLatMin As System.Windows.Forms.Label
+    Private WithEvents m_lblLonMin As System.Windows.Forms.Label
+    Private WithEvents m_lblLonMax As System.Windows.Forms.Label
+    Private WithEvents m_lblLatMax As System.Windows.Forms.Label
 End Class

@@ -13,6 +13,12 @@ Public Class frmModelDescription
     Private m_fpNumDigits As cEwEFormatProvider = Nothing
     Private m_fpGroupDigits As cEwEFormatProvider = Nothing
     Private m_fpPSD As cEwEFormatProvider = Nothing
+    Private m_fpFirstYear As cEwEFormatProvider = Nothing
+    Private m_fpNumYears As cEwEFormatProvider = Nothing
+    Private m_fpLatMin As cEwEFormatProvider = Nothing
+    Private m_fpLatMax As cEwEFormatProvider = Nothing
+    Private m_fpLonMin As cEwEFormatProvider = Nothing
+    Private m_fpLonMax As cEwEFormatProvider = Nothing
 
     ' Unit properties
     Private m_propUnitCurrency As cIntegerProperty = Nothing
@@ -21,26 +27,9 @@ Public Class frmModelDescription
     Private m_propUnitTimeText As cStringProperty = Nothing
     Private m_propUnitMonetary As cIntegerProperty = Nothing
 
-    Private m_csm As cCoreStateMonitor = Nothing
-
     Public Sub New()
         Me.InitializeComponent()
     End Sub
-
-    Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
-        Get
-            Return MyBase.UIContext
-        End Get
-        Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
-            If Me.UIContext IsNot Nothing Then
-                Me.m_csm = Nothing
-            End If
-            MyBase.UIContext = value
-            If Me.UIContext IsNot Nothing Then
-                Me.m_csm = Me.UIContext.Core.StateMonitor()
-            End If
-        End Set
-    End Property
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
@@ -60,6 +49,12 @@ Public Class frmModelDescription
         Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, Me.m_tbArea, eweModel, eVarNameFlags.Area)
         Me.m_fpNumDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_udNumDigits, eweModel, eVarNameFlags.NumDigits)
         Me.m_fpGroupDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
+        Me.m_fpFirstYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstYear, eweModel, eVarNameFlags.EcopathFirstYear)
+        Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumYears, eweModel, eVarNameFlags.EcopathNumYears)
+        Me.m_fpLatMin = New cPropertyFormatProvider(Me.UIContext, Me.m_nudLatMin, eweModel, eVarNameFlags.LatMin)
+        Me.m_fpLatMax = New cPropertyFormatProvider(Me.UIContext, Me.m_nudLatMax, eweModel, eVarNameFlags.LatMax)
+        Me.m_fpLonMin = New cPropertyFormatProvider(Me.UIContext, Me.m_nudLonMin, eweModel, eVarNameFlags.LonMin)
+        Me.m_fpLonMax = New cPropertyFormatProvider(Me.UIContext, Me.m_nudLonMax, eweModel, eVarNameFlags.LonMax)
 
         Me.m_fpPSD = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPSD, psdParms, eVarNameFlags.PSDEnabled)
 
@@ -78,14 +73,10 @@ Public Class frmModelDescription
         Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitMonetary), cIntegerProperty)
         AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
 
-        Me.m_tbxFile.Text = appl.SelectedFileName()
         Me.m_cmbMonetaryUnit.UIContext = Me.UIContext
 
         ' Listen to shapes data added or removed messages
         Me.CoreComponents = Nothing
-
-        ' Listen to core state monitor
-        AddHandler Me.m_csm.CoreDataStateEvent, AddressOf m_csm_CoreDataStateEvent
 
         Me.PatchCurrencyUnitRadioButtonText(Me.rbWetWeight, eUnitCurrencyType.WetWeight)
         Me.PatchCurrencyUnitRadioButtonText(Me.rbCalorie, eUnitCurrencyType.Calorie)
@@ -114,12 +105,15 @@ Public Class frmModelDescription
         Me.m_fpNumDigits.Release()
         Me.m_fpGroupDigits.Release()
         Me.m_fpPSD.Release()
+        Me.m_fpFirstYear.Release()
+        Me.m_fpNumYears.Release()
+        Me.m_fpLatMin.Release()
+        Me.m_fpLatMax.Release()
+        Me.m_fpLonMin.Release()
+        Me.m_fpLonMax.Release()
 
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
         Me.CoreComponents = Nothing
-
-        RemoveHandler Me.m_csm.CoreDataStateEvent, AddressOf m_csm_CoreDataStateEvent
-        Me.m_csm = Nothing
 
         RemoveHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnUnitCurrencyChanged
         Me.m_propUnitCurrency = Nothing
@@ -138,11 +132,6 @@ Public Class frmModelDescription
 
         MyBase.OnFormClosed(e)
 
-    End Sub
-
-    Private Sub m_csm_CoreDataStateEvent(ByVal coreStateMonitor As EwECore.cCoreStateMonitor)
-        Dim appl As AppLauncher = AppLauncher.GetInstance()
-        Me.m_tbxFile.Text = appl.SelectedFileName()
     End Sub
 
 #Region " Unit handling "

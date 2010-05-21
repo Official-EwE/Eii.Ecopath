@@ -681,6 +681,8 @@ Namespace DataSources
         Private Function LoadModelInfo() As Boolean
 
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathModel")
+            Dim sVal1 As Single = 0.0!
+            Dim sVal2 As Single = 0.0!
             Dim bSucces As Boolean = True
 
             ' Crash prevention check
@@ -709,11 +711,17 @@ Namespace DataSources
                 'Me.m_core.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
                 Me.m_core.m_EwEModelFirstYear = CInt(Me.ReadSafe(reader, "FirstYear", cCore.NULL_VALUE))
                 Me.m_core.m_EwEModelNumYears = CInt(Me.ReadSafe(reader, "NumYears", 1))
-                Me.m_core.m_EwEModelLatMin = CInt(Me.ReadSafe(reader, "LatMin", cCore.NULL_VALUE))
-                Me.m_core.m_EwEModelLatMax = CInt(Me.ReadSafe(reader, "LatMax", cCore.NULL_VALUE))
-                Me.m_core.m_EwEModelLonMin = CInt(Me.ReadSafe(reader, "LonMin", cCore.NULL_VALUE))
-                Me.m_core.m_EwEModelLonMax = CInt(Me.ReadSafe(reader, "LonMax", cCore.NULL_VALUE))
-                Me.m_core.m_EwEModelDescription = CStr(reader("Description"))
+
+                sVal1 = CSng(Me.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
+                sVal2 = CSng(Me.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
+                Me.m_core.m_EwEModelMinLat = Math.Min(sVal1, sVal2)
+                Me.m_core.m_EwEModelMaxLat = Math.Max(sVal1, sVal2)
+
+                sVal1 = CSng(Me.ReadSafe(reader, "MinLon", cCore.NULL_VALUE))
+                sVal2 = CSng(Me.ReadSafe(reader, "MaxLon", cCore.NULL_VALUE))
+                Me.m_core.m_EwEModelMinLon = Math.Min(sVal1, sVal2)
+                Me.m_core.m_EwEModelMaxLon = Math.Max(sVal1, sVal2)
+
                 Me.m_core.m_EwEModelLastSaved = CSng(Me.ReadSafe(reader, "LastSaved", 0))
 
             Catch ex As Exception
@@ -770,10 +778,10 @@ Namespace DataSources
                 drow("UnitMonetary") = Me.m_core.m_EwEModelUnitMonetary
                 drow("FirstYear") = Me.m_core.m_EwEModelFirstYear
                 drow("NumYears") = Me.m_core.m_EwEModelNumYears
-                drow("LatMin") = Me.m_core.m_EwEModelLatMin
-                drow("LatMax") = Me.m_core.m_EwEModelLatMax
-                drow("LonMin") = Me.m_core.m_EwEModelLonMin
-                drow("LonMax") = Me.m_core.m_EwEModelLonMax
+                drow("MinLat") = Me.m_core.m_EwEModelMinLat
+                drow("MaxLat") = Me.m_core.m_EwEModelMaxLat
+                drow("MinLon") = Me.m_core.m_EwEModelMinLon
+                drow("MaxLon") = Me.m_core.m_EwEModelMaxLon
                 drow("LastSaved") = cDBDataSource.GetJulianDate()
 
                 If bNewRow Then

@@ -55,12 +55,12 @@ Public Class cEwEModel
             m_values.Add(val.varName, val)
 
             ' FirstYear
-            meta = New cVariableMetaData(0, 10, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
+            meta = New cVariableMetaData(0, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
             val = New cValue(New Integer, eVarNameFlags.EcopathFirstYear, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
             m_values.Add(val.varName, val)
 
             ' NumYears
-            meta = New cVariableMetaData(0, 10, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
+            meta = New cVariableMetaData(1, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
             val = New cValue(New Integer, eVarNameFlags.EcopathNumYears, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
             m_values.Add(val.varName, val)
 
@@ -318,11 +318,11 @@ Public Class cEwEModel
     ''' </summary>
     Public Property LonMin() As Single
         Get
-            Return CSng(Me.GetVariable(eVarNameFlags.LatMax))
+            Return CSng(Me.GetVariable(eVarNameFlags.LonMin))
         End Get
 
         Set(ByVal value As Single)
-            Me.SetVariable(eVarNameFlags.LatMax, value)
+            Me.SetVariable(eVarNameFlags.LonMin, value)
         End Set
     End Property
 
@@ -331,11 +331,11 @@ Public Class cEwEModel
     ''' </summary>
     Public Property LonMax() As Single
         Get
-            Return CSng(Me.GetVariable(eVarNameFlags.LatMax))
+            Return CSng(Me.GetVariable(eVarNameFlags.LonMax))
         End Get
 
         Set(ByVal value As Single)
-            Me.SetVariable(eVarNameFlags.LatMax, value)
+            Me.SetVariable(eVarNameFlags.LonMax, value)
         End Set
     End Property
 
