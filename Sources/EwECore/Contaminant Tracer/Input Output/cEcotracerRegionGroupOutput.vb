@@ -28,8 +28,6 @@ Imports EwEUtils.Core
 Public Class cEcotracerRegionGroupOutput
     Inherits cCoreInputOutputBase
 
-    'Private m_data(,,) As Single
-    'Private m_cb(,,) As Single
     Private m_TracerData As cContaminantTracerDataStructures
     Private m_nRegions As Integer = 0
     Private m_nGroups As Integer = 0
@@ -40,7 +38,6 @@ Public Class cEcotracerRegionGroupOutput
     Public Sub New(ByRef TheCore As cCore, ByVal TracerData As cContaminantTracerDataStructures)
         MyBase.New(TheCore)
 
-        Dim val As cValue
         Me.m_dataType = eDataTypes.EcotracerSimOutput
         Me.m_coreComponent = eCoreComponentType.Ecotracer
 
@@ -48,23 +45,6 @@ Public Class cEcotracerRegionGroupOutput
         Me.Index = 1
 
         Me.m_TracerData = TracerData
-
-        ' Add dummy values
-        'val = New cValue()
-        'Me.m_values.Add(eVarNameFlags.Concentration, val)
-        'Me.m_values.Add(eVarNameFlags.CEnvironment, val)
-        'Me.m_values.Add(eVarNameFlags.CSum, val)
-
-        'Me.m_nGroups = TheCore.GetCoreCounter(eCoreCounterTypes.nGroups)
-        'Me.m_nRegions = TheCore.GetCoreCounter(eCoreCounterTypes.nRegions)
-        'Me.m_nTimeSteps = TheCore.GetCoreCounter(eCoreCounterTypes.nEcospaceTimeSteps)
-
-        'Try
-        '    ReDim m_data(Me.m_nRegions, Me.m_nGroups + 1, Me.m_nTimeSteps)
-        '    ReDim m_cb(Me.m_nRegions, Me.m_nGroups + 1, Me.m_nTimeSteps)
-        'Catch ex As Exception
-        '    System.Console.WriteLine(Me.ToString & ".New() Exception: " & ex.Message)
-        'End Try
 
     End Sub
 
@@ -100,22 +80,8 @@ Public Class cEcotracerRegionGroupOutput
     Public Overloads Function SetVariable(ByVal varName As eVarNameFlags, ByVal newValue As Single, ByVal iRegion As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Boolean
 
         Try
-
-            'Select Case varName
-            '    Case eVarNameFlags.Concentration
-            '        m_data(iRegion, iGroup, iTimeStep) = newValue
-            '    Case eVarNameFlags.CEnvironment
-            '        m_data(iRegion, 0, iTimeStep) = newValue
-            '    Case eVarNameFlags.CSum
-            '        m_data(iRegion, Me.m_nGroups + 1, iTimeStep) = newValue
-            '    Case eVarNameFlags.ConcBio
-            '        m_cb(iRegion, iGroup, iTimeStep) = newValue
-            '    Case eVarNameFlags.CBEnvironment
-            '        m_cb(iRegion, 0, iTimeStep) = newValue
-            'End Select
-
-            Return True
-
+            Debug.Assert(False, "cEcotracerRegionGroupOutput.setVaraible() not supported at this time.")
+            Return False
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
             Return False
@@ -216,26 +182,6 @@ Public Class cEcotracerRegionGroupOutput
         End Set
 
     End Property
-
-    'Public Property CSum(ByVal iRegion As Integer, ByVal iTimeStep As Integer) As Single
-    '    Get
-    '        Try
-    '            Return GetVariable(eVarNameFlags.CEnvironment, iRegion, Me.m_nGroups + 1, iTimeStep)
-    '        Catch ex As Exception
-    '            Debug.Assert(False, ex.Message)
-    '            Return cCore.NULL_VALUE
-    '        End Try
-
-    '    End Get
-
-    '    Set(ByVal value As Single)
-    '        Try
-    '            SetVariable(eVarNameFlags.CEnvironment, value, iRegion, Me.m_nGroups + 1, iTimeStep)
-    '        Catch ex As Exception
-    '            Debug.Assert(False, ex.Message)
-    '        End Try
-    '    End Set
-    'End Property
 
 #End Region
 
