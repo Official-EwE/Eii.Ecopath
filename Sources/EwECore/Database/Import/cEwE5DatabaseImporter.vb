@@ -3609,9 +3609,9 @@ Namespace Database
                 ' MPA: 2 formats encountered, '##' and '# '
                 astrMPA = SplitNumberListString(CStr(Me.FixValue(reader, "MPA", "0")), CChar(" "), 2)
                 ' RelPP: 2 formats encountered, '#######' and '###### '
-                astrRelPP = SplitNumberListString(CStr(Me.FixValue(reader, "RelPP", "0")), CChar(" "), 7)
+                astrRelPP = SplitNumberListString(CStr(Me.FixValue(reader, "RelPP", "1.0")), CChar(" "), 7)
                 ' RelCin: no live data encountered, but spec'ed as 7 digits in length in EwE5 sources
-                astrRelCin = SplitNumberListString(CStr(Me.FixValue(reader, "RelCin", "0")), CChar(" "), 7)
+                astrRelCin = SplitNumberListString(CStr(Me.FixValue(reader, "RelCin", "1.0")), CChar(" "), 7)
 
                 ' Reset cell counter
                 iCell = 0
