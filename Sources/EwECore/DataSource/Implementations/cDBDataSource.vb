@@ -6765,6 +6765,7 @@ Namespace DataSources
                         drow("InCol") = j
                         drow("Depth") = 1
                         drow("RelPP") = 1 ' Fixes bug 410
+                        drow("RelCin") = 1 ' Fixes bug 744
                         writer.AddRow(drow)
                     Next
                 Next
