@@ -4412,6 +4412,11 @@ Namespace Ecosim
                     m_Data.CatchSim(TimeStep) += fCatch
                     totalTL += m_Data.TLSim(i) * fCatch
                 Next
+
+                'vc100522: Calculation of FiB index is wrong. it should be based on the catch for each functional group as follows:
+                'FiB = [Catch(iGrp, iTime) ^ (TL(igrp)-1)] / [Catch(iGrp, 0) ^ (TL(igrp)-1)] assuming first timestep is 0 (or is it 1?, below both are set to fib = 1
+                'I presume that we somewhere later convert to math.log10(FiB) as it has to be scaled this way.
+
                 If m_Data.CatchSim(0) > 0 Then
                     m_Data.TLC(TimeStep) = totalTL / m_Data.CatchSim(TimeStep)
                     'Calculate FIB-index:
