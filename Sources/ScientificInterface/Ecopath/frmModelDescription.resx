@@ -1446,88 +1446,88 @@
   <data name="&gt;&gt;m_lblLocation.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="m_nudLatMin.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_nudNorth.Location" type="System.Drawing.Point, System.Drawing">
     <value>203, 320</value>
   </data>
-  <data name="m_nudLatMin.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_nudNorth.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
   </data>
-  <data name="m_nudLatMin.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_nudNorth.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
   </data>
-  <data name="&gt;&gt;m_nudLatMin.Name" xml:space="preserve">
-    <value>m_nudLatMin</value>
+  <data name="&gt;&gt;m_nudNorth.Name" xml:space="preserve">
+    <value>m_nudNorth</value>
   </data>
-  <data name="&gt;&gt;m_nudLatMin.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_nudNorth.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_nudLatMin.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_nudNorth.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_nudLatMin.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_nudNorth.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="m_nudLatMax.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_nudSouth.Location" type="System.Drawing.Point, System.Drawing">
     <value>203, 373</value>
   </data>
-  <data name="m_nudLatMax.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_nudSouth.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
   </data>
-  <data name="m_nudLatMax.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_nudSouth.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
   </data>
-  <data name="&gt;&gt;m_nudLatMax.Name" xml:space="preserve">
-    <value>m_nudLatMax</value>
+  <data name="&gt;&gt;m_nudSouth.Name" xml:space="preserve">
+    <value>m_nudSouth</value>
   </data>
-  <data name="&gt;&gt;m_nudLatMax.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_nudSouth.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_nudLatMax.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_nudSouth.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_nudLatMax.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_nudSouth.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_nudLonMin.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_nudWest.Location" type="System.Drawing.Point, System.Drawing">
     <value>102, 346</value>
   </data>
-  <data name="m_nudLonMin.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_nudWest.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
   </data>
-  <data name="m_nudLonMin.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_nudWest.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
   </data>
-  <data name="&gt;&gt;m_nudLonMin.Name" xml:space="preserve">
-    <value>m_nudLonMin</value>
+  <data name="&gt;&gt;m_nudWest.Name" xml:space="preserve">
+    <value>m_nudWest</value>
   </data>
-  <data name="&gt;&gt;m_nudLonMin.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_nudWest.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_nudLonMin.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_nudWest.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_nudLonMin.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_nudWest.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_nudLonMax.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_nudEast.Location" type="System.Drawing.Point, System.Drawing">
     <value>306, 346</value>
   </data>
-  <data name="m_nudLonMax.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_nudEast.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
   </data>
-  <data name="m_nudLonMax.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_nudEast.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
   </data>
-  <data name="&gt;&gt;m_nudLonMax.Name" xml:space="preserve">
-    <value>m_nudLonMax</value>
+  <data name="&gt;&gt;m_nudEast.Name" xml:space="preserve">
+    <value>m_nudEast</value>
   </data>
-  <data name="&gt;&gt;m_nudLonMax.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_nudEast.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_nudLonMax.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_nudEast.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_nudLonMax.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_nudEast.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_lblNorth.AutoSize" type="System.Boolean, mscorlib">

@@ -72,10 +72,10 @@ Partial Class frmModelDescription
         Me.Label1 = New System.Windows.Forms.Label
         Me.m_nudNumYears = New System.Windows.Forms.NumericUpDown
         Me.m_lblLocation = New System.Windows.Forms.Label
-        Me.m_nudLatMin = New System.Windows.Forms.NumericUpDown
-        Me.m_nudLatMax = New System.Windows.Forms.NumericUpDown
-        Me.m_nudLonMin = New System.Windows.Forms.NumericUpDown
-        Me.m_nudLonMax = New System.Windows.Forms.NumericUpDown
+        Me.m_nudNorth = New System.Windows.Forms.NumericUpDown
+        Me.m_nudSouth = New System.Windows.Forms.NumericUpDown
+        Me.m_nudWest = New System.Windows.Forms.NumericUpDown
+        Me.m_nudEast = New System.Windows.Forms.NumericUpDown
         Me.m_lblNorth = New System.Windows.Forms.Label
         Me.m_lblWest = New System.Windows.Forms.Label
         Me.m_lblEast = New System.Windows.Forms.Label
@@ -88,10 +88,10 @@ Partial Class frmModelDescription
         Me.m_gbNumFormatting.SuspendLayout()
         CType(Me.m_nudFirstYear, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_nudLatMin, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_nudLatMax, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_nudLonMin, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_nudLonMax, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_udNumDigits
@@ -383,25 +383,25 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_lblLocation, "m_lblLocation")
         Me.m_lblLocation.Name = "m_lblLocation"
         '
-        'm_nudLatMin
+        'm_nudNorth
         '
-        resources.ApplyResources(Me.m_nudLatMin, "m_nudLatMin")
-        Me.m_nudLatMin.Name = "m_nudLatMin"
+        resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
+        Me.m_nudNorth.Name = "m_nudNorth"
         '
-        'm_nudLatMax
+        'm_nudSouth
         '
-        resources.ApplyResources(Me.m_nudLatMax, "m_nudLatMax")
-        Me.m_nudLatMax.Name = "m_nudLatMax"
+        resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
+        Me.m_nudSouth.Name = "m_nudSouth"
         '
-        'm_nudLonMin
+        'm_nudWest
         '
-        resources.ApplyResources(Me.m_nudLonMin, "m_nudLonMin")
-        Me.m_nudLonMin.Name = "m_nudLonMin"
+        resources.ApplyResources(Me.m_nudWest, "m_nudWest")
+        Me.m_nudWest.Name = "m_nudWest"
         '
-        'm_nudLonMax
+        'm_nudEast
         '
-        resources.ApplyResources(Me.m_nudLonMax, "m_nudLonMax")
-        Me.m_nudLonMax.Name = "m_nudLonMax"
+        resources.ApplyResources(Me.m_nudEast, "m_nudEast")
+        Me.m_nudEast.Name = "m_nudEast"
         '
         'm_lblNorth
         '
@@ -428,10 +428,10 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_nudNumYears)
-        Me.Controls.Add(Me.m_nudLonMax)
-        Me.Controls.Add(Me.m_nudLatMax)
-        Me.Controls.Add(Me.m_nudLonMin)
-        Me.Controls.Add(Me.m_nudLatMin)
+        Me.Controls.Add(Me.m_nudEast)
+        Me.Controls.Add(Me.m_nudSouth)
+        Me.Controls.Add(Me.m_nudWest)
+        Me.Controls.Add(Me.m_nudNorth)
         Me.Controls.Add(Me.m_nudFirstYear)
         Me.Controls.Add(Me.m_tbDescription)
         Me.Controls.Add(Me.m_tbContact)
@@ -469,10 +469,10 @@ Partial Class frmModelDescription
         Me.m_gbNumFormatting.PerformLayout()
         CType(Me.m_nudFirstYear, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_nudLatMin, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_nudLatMax, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_nudLonMin, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_nudLonMax, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -524,10 +524,10 @@ Partial Class frmModelDescription
     Private WithEvents Label1 As System.Windows.Forms.Label
     Private WithEvents m_nudNumYears As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblLocation As System.Windows.Forms.Label
-    Private WithEvents m_nudLatMin As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudLatMax As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudLonMin As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudLonMax As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudNorth As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudSouth As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudWest As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudEast As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblNorth As System.Windows.Forms.Label
     Private WithEvents m_lblWest As System.Windows.Forms.Label
     Private WithEvents m_lblEast As System.Windows.Forms.Label

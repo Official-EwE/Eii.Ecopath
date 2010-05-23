@@ -51,10 +51,10 @@ Public Class frmModelDescription
         Me.m_fpGroupDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
         Me.m_fpFirstYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstYear, eweModel, eVarNameFlags.EcopathFirstYear)
         Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumYears, eweModel, eVarNameFlags.EcopathNumYears)
-        Me.m_fpLatMin = New cPropertyFormatProvider(Me.UIContext, Me.m_nudLatMin, eweModel, eVarNameFlags.LatMin)
-        Me.m_fpLatMax = New cPropertyFormatProvider(Me.UIContext, Me.m_nudLatMax, eweModel, eVarNameFlags.LatMax)
-        Me.m_fpLonMin = New cPropertyFormatProvider(Me.UIContext, Me.m_nudLonMin, eweModel, eVarNameFlags.LonMin)
-        Me.m_fpLonMax = New cPropertyFormatProvider(Me.UIContext, Me.m_nudLonMax, eweModel, eVarNameFlags.LonMax)
+        Me.m_fpLatMax = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNorth, eweModel, eVarNameFlags.LatMax)
+        Me.m_fpLatMin = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSouth, eweModel, eVarNameFlags.LatMin)
+        Me.m_fpLonMin = New cPropertyFormatProvider(Me.UIContext, Me.m_nudWest, eweModel, eVarNameFlags.LonMin)
+        Me.m_fpLonMax = New cPropertyFormatProvider(Me.UIContext, Me.m_nudEast, eweModel, eVarNameFlags.LonMax)
 
         Me.m_fpPSD = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPSD, psdParms, eVarNameFlags.PSDEnabled)
 
