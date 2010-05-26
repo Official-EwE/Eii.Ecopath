@@ -186,7 +186,7 @@ Public Class cLog
 
         Catch ex As Exception
 
-            'Debug.Assert(False, ex.Message)
+            Debug.Assert(False, ex.Message)
             If Not xmlStrm Is Nothing Then
                 xmlStrm.Close()
             End If
