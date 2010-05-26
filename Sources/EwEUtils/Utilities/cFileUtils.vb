@@ -42,7 +42,11 @@ Namespace Utilities
                 If String.IsNullOrEmpty(strPath) Then
                     bProtectPath = False
                 Else
-                    strText = strText.Substring(strPath.Length + 1)
+                    ' Do not use SubString here; if strText contains a 8.3 path, which
+                    ' Path.GetDirectoryName will revert to a full path, will cause the
+                    ' string-based extraction to fail.
+                    'strText = strText.Substring(strPath.Length + 1)
+                    strText = Path.GetFileName(strPath)
                 End If
             End If
 
