@@ -68,7 +68,8 @@ Namespace ExternalData
                 System.Console.WriteLine("cEconomicDataSource.getInstance() Error: " & ex.Message)
             End Try
 
-            Debug.Assert(dataSource IsNot Nothing, "cEconomicDataSource.getInstance() Failed to create instance.")
+            'JS 26May10: disabled assert; plug-in may not be available on purpose
+            'Debug.Assert(dataSource IsNot Nothing, "cEconomicDataSource.getInstance() Failed to create instance.")
 
             Return dataSource
 
