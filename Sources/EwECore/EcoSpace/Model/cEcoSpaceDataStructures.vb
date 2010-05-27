@@ -56,12 +56,14 @@ Public Class cEcospaceDataStructures
     Public chkMPA As Boolean
 
   
-    ''' <summary>
-    ''' Current Model time step
-    ''' </summary>
-    ''' <remarks>This is the time in years not the array index</remarks>
+    ''' <summary>Current Model time step.</summary>
+    ''' <remarks>This is the time in years, not the array index</remarks>
     Public TimeNow As Single
     Public TimeStep As Single
+    ''' <summary>Current year that is being executed.</summary>
+    Public YearNow As Integer = 0
+    ''' <summary>Current month that is being executed.</summary>
+    Public MonthNow As Integer = 0
 
     'jb ??? this may be temporary
     'setting of default values need to have access to Stanza and Ecosim data
@@ -276,6 +278,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>Number of MPAs</summary>
     Public MPAno As Integer
     Public MPAname() As String
+    ''' <summary>MPA closed state (Month, nMPA), true when open for fishing.</summary>
     Public MPAmonth(,) As Boolean
     Public MPAfishery(,) As Boolean
 

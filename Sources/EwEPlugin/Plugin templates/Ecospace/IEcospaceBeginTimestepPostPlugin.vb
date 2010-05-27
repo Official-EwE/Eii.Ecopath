@@ -9,6 +9,11 @@
 Public Interface IEcospaceBeginTimestepPostPlugin
     Inherits IPlugin
 
+    ''' <summary>
+    ''' Begin of an Ecospace time step, invoked after all <see cref="IEcosimBeginTimestepPlugin.EcosimBeginTimeStep">IEcosimBeginTimestepPlugin.EcosimBeginTimeStep</see> calls have been made.
+    ''' </summary>
+    ''' <param name="EcospaceDatastructures">Ecospace data structures.</param>
+    ''' <param name="iTime">Cumulative time step.</param>
     Sub EcospaceBeginTimeStepPost(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer)
 
 End Interface

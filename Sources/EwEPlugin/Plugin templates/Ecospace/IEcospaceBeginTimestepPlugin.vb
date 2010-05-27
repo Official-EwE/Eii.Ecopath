@@ -8,6 +8,11 @@
 Public Interface IEcospaceBeginTimestepPlugin
     Inherits IPlugin
 
+    ''' <summary>
+    ''' Begin of an Ecospace time step.
+    ''' </summary>
+    ''' <param name="EcospaceDatastructures">Ecospace data structures.</param>
+    ''' <param name="iTime">Cumulative time step.</param>
     Sub EcospaceBeginTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer)
 
 End Interface

@@ -510,8 +510,6 @@ Public Class cEcoSpace
     Private Sub FindSpatialEquilibrium()
         'this routine attempts to seek spatial equilibrium in ecosim biomasses, given mpa pattern
         'and start density map based on no movement
-        Dim iYear As Integer
-        Dim imonth As Integer
         Dim i As Integer
         Dim j As Integer
         Dim ip As Integer
@@ -590,18 +588,18 @@ Public Class cEcoSpace
 
                 Debug.Assert(itt <= nEcospaceTimeSteps, "itt > nEcospaceTimeSteps")
 
-                'make sure the time loop indexes do not get larger then the data they reference
+                'make sure the time loop indexes do not get larger than the data they reference
                 If itt > nEcospaceTimeSteps Then itt = nEcospaceTimeSteps
                 If its > m_SimData.ForcePoints Then its = m_SimData.ForcePoints 'HACK  bump back the index
 
-                imonth = 1 + (its - 1) Mod 12
-                iYear = 1 + Math.Truncate(m_Data.TimeNow + 0.001)  'iYear will be truncated to the integer part of timenow
-                If imonth = 1 Then
+                m_Data.MonthNow = 1 + (its - 1) Mod 12
+                m_Data.YearNow = 1 + Math.Truncate(m_Data.TimeNow + 0.001)  'iYear will be truncated to the integer part of timenow
+                If m_Data.MonthNow = 1 Then
                     bAccumulateData = True 'new year collect the model fitting data after the six month
                 End If
 
                 'Tell Ecoseed that we are at the start of a timestep
-                Me.EcoseedBeginTimeStep(imonth, iYear, Btime)
+                Me.EcoseedBeginTimeStep(m_Data.MonthNow, m_Data.YearNow, Btime)
 
                 'Ecospace has been stopped
                 If Me.m_StopRun Then
@@ -609,11 +607,11 @@ Public Class cEcoSpace
                 End If
 
                 'do any external processing at the start of the time step
-                BeginTimeStep(Fgear, its, imonth, iYear, Btime, RelFopt, m_Data.TimeNow)
+                BeginTimeStep(Fgear, its, m_Data.MonthNow, m_Data.YearNow, Btime, RelFopt, m_Data.TimeNow)
 
                 If m_search.bInSearch Then
                     For i = 1 To m_EPdata.NumFleet
-                        If m_search.FblockCode(i, iYear) > 0 Then
+                        If m_search.FblockCode(i, m_Data.YearNow) > 0 Then
                             m_SimData.FishRateGear(i, its) = Fgear(i)
                         End If
                         m_SimData.FishRateGear(i, 0) = Fgear(i) 'm_Data.FishRateGear(i, itime)
@@ -627,8 +625,8 @@ Public Class cEcoSpace
                         For j = 0 To m_Data.InCol + 1
                             'jb Xv() are dimmed when the current field are read in
                             'which is not happening yet so if this crashes that is probable the problem
-                            m_Data.Xvel(i, j) = m_Data.Xv(i, j, imonth)
-                            m_Data.Yvel(i, j) = m_Data.Yv(i, j, imonth)
+                            m_Data.Xvel(i, j) = m_Data.Xv(i, j, m_Data.MonthNow)
+                            m_Data.Yvel(i, j) = m_Data.Yv(i, j, m_Data.MonthNow)
                         Next j
                     Next i
 
@@ -645,7 +643,7 @@ Public Class cEcoSpace
                 'jb storing of the time series data still  needs to be implemented
                 '            StoreTimeSeriesData = IIf(imonth = 1 And SpDatYear > 0, True, False)
 
-                VaryMovementParameters2(imonth)
+                VaryMovementParameters2(m_Data.MonthNow)
                 'If useMigratoryGrad Then
                 'VaryMigMovementParameters(imonth)
                 'Else
@@ -674,9 +672,9 @@ Public Class cEcoSpace
                 ''TN is a pointer being used to decide which sum to work with
                 ' SetSummaryTimeStep(Tn)
 
-                If m_Data.PredictEffort Then PredictEffortDistribution(imonth, its)
+                If m_Data.PredictEffort Then PredictEffortDistribution(m_Data.MonthNow, its)
 
-                If m_pluginManager IsNot Nothing Then m_pluginManager.EcospacePostFishingEffortModTimestep(m_Data, m_Data.TimeNow)
+                If m_pluginManager IsNot Nothing Then m_pluginManager.EcospacePostFishingEffortModTimestep(m_Data, itt)
 
                 ReDim Btime(m_Data.NGroups) 'this clears out btime
                 ReDim ConTotal(m_Data.NGroups)
@@ -684,7 +682,7 @@ Public Class cEcoSpace
                 '*************
                 'UPDATE SOLVERS WITH NON REFERENCED TIMESTEP DATA (itt, etc)
                 '*************
-                UpdateSpaceSolverThreads(iYear)
+                UpdateSpaceSolverThreads(m_Data.YearNow)
 
                 slvET2 = Microsoft.VisualBasic.Timer
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -799,19 +797,19 @@ Public Class cEcoSpace
                 End If
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                If imonth >= 6 And bAccumulateData Then
+                If m_Data.MonthNow >= 6 And bAccumulateData Then
                     'make sure AccumulateDataInfo only gets called once a year
                     'if the user has set the time step to a value other the one month imonth may never = 6 or it may = 6 for multiple time steps
 
                     'jb loss needs to change to average loss over all the water cells
-                    m_Ecosim.AccumulateDataInfo(iYear, Btime, loss)
+                    m_Ecosim.AccumulateDataInfo(m_Data.YearNow, Btime, loss)
                     bAccumulateData = False
                 End If
 
-                summarizeTimeStepData(itt, imonth)
+                summarizeTimeStepData(itt, m_Data.MonthNow)
 
-                If m_search.bInSearch And iYear = m_search.BaseYear And imonth = 12 Then
-                    m_search.calcBaseYearCost(iYear, m_Data.nWaterCells)
+                If m_search.bInSearch And m_Data.YearNow = m_search.BaseYear And m_Data.MonthNow = 12 Then
+                    m_search.calcBaseYearCost(m_Data.YearNow, m_Data.nWaterCells)
                 End If
 
                 Dim slvET3 As Single = Microsoft.VisualBasic.Timer
@@ -820,7 +818,7 @@ Public Class cEcoSpace
                 onTimeStep(itt)
                 timeStepTimer = timeStepTimer + (Microsoft.VisualBasic.Timer - slvET3)
 
-                If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceEndTimeStep(m_Data, m_Data.TimeNow)
+                If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceEndTimeStep(m_Data, itt)
 
             Next m_Data.TimeNow
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -888,7 +886,7 @@ Public Class cEcoSpace
         Try
             Dim nYears As Integer = CInt(m_Data.TotalTime)
 
-            If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceBeginTimeStep(m_Data, m_Data.TimeNow)
+            If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceBeginTimeStep(m_Data, itt)
 
             If imonth = 1 Then
                 'if we are in the first month then this is a new year
