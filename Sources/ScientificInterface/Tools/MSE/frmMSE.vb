@@ -177,23 +177,23 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub onMSECallBack(ByVal CallBackType As MSE.eCallBackTypes)
+    Private Sub onMSECallBack(ByVal CallBackType As MSE.eMSERunStates)
 
         Dim state As eMSEStates
         Select Case CallBackType
 
-            Case eCallBackTypes.Started
+            Case eMSERunStates.Started
                 state = eMSEStates.Running
 
-            Case eCallBackTypes.IterationStarted
+            Case eMSERunStates.IterationStarted
                 state = eMSEStates.Running
 
-            Case eCallBackTypes.IterationCompleted
+            Case eMSERunStates.IterationCompleted
                 Me.onMSEProgress()
                 Me.AddLineToGraph()
                 state = eMSEStates.Running
 
-            Case eCallBackTypes.RunCompleted
+            Case eMSERunStates.RunCompleted
                 Me.AddMeanLineToGraph()
                 Me.onMSECompleted()
                 state = eMSEStates.Completed
