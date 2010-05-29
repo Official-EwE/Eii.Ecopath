@@ -875,7 +875,7 @@ Namespace MSE
         ''' </summary>
         ''' <param name="CallBackType"></param>
         ''' <remarks></remarks>
-        Private Sub OnMSECallBack(ByVal CallBackType As eCallBackTypes)
+        Private Sub OnMSECallBack(ByVal CallBackType As eMSERunStates)
             'this is called on the MSE worker thread
             'so even if the main thread has called Wait() and is blocking this code will be processed and the MSE can continue 
 
@@ -906,7 +906,7 @@ Namespace MSE
         Private Sub fireCallBack(ByVal obj As Object)
             Try
                 Debug.Assert(m_SyncOb IsNot Nothing And m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
-                Dim cbType As eCallBackTypes = DirectCast(obj, eCallBackTypes)
+                Dim cbType As eMSERunStates = DirectCast(obj, eMSERunStates)
                 m_MSECallback.Invoke(cbType)
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & " Error sending message to interface.")
@@ -914,22 +914,22 @@ Namespace MSE
         End Sub
 
 
-        Private Sub ProcessCallBack(ByVal CallBackType As eCallBackTypes)
+        Private Sub ProcessCallBack(ByVal CallBackType As eMSERunStates)
 
             System.Console.WriteLine(Me.ToString & " Callback type = " & CallBackType.ToString)
 
             Select Case CallBackType
 
-                Case eCallBackTypes.IterationCompleted
+                Case eMSERunStates.IterationCompleted
 
                     'populate output objects for this iteration
                     Me.LoadOutputs()
 
-                Case eCallBackTypes.IterationStarted
+                Case eMSERunStates.IterationStarted
 
-                Case eCallBackTypes.Started
+                Case eMSERunStates.Started
 
-                Case eCallBackTypes.RunCompleted
+                Case eMSERunStates.RunCompleted
 
                     Me.LoadOutputs()
                     'the thread has completed its task
@@ -947,11 +947,11 @@ Namespace MSE
                     Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSECatchByGroupStats))
                     Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEEffortStats))
 
-                    Try
-                        Me.m_core.PluginManager.MSERunCompleted()
-                    Catch ex As Exception
-                        System.Console.WriteLine(Me.ToString & ".ProcessCallBack() Exception thrown from PluginManager. " & ex.Message)
-                    End Try
+                    'Try
+                    '    Me.m_core.PluginManager.MSERunCompleted()
+                    'Catch ex As Exception
+                    '    System.Console.WriteLine(Me.ToString & ".ProcessCallBack() Exception thrown from PluginManager. " & ex.Message)
+                    'End Try
 
             End Select
 
