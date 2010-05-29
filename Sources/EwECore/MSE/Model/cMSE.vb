@@ -12,7 +12,10 @@ Imports System.Text
 Namespace MSE
 
 #Region "Public definitions"
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Class cMSYProgressArgs
         Public Iteration As Integer
         Public FleetIndex As Integer
@@ -24,15 +27,18 @@ Namespace MSE
         End Sub
     End Class
 
-
-    Public Enum eCallBackTypes
+    ''' <summary>
+    ''' Run states of the MSE 
+    ''' </summary>
+    ''' <remarks>Passed out via the MSEProgressDelegate</remarks>
+    Public Enum eMSERunStates
         Started
         RunCompleted
         IterationCompleted
         IterationStarted
     End Enum
 
-    Public Delegate Sub MSEProgressDelegate(ByVal CallBackType As eCallBackTypes)
+    Public Delegate Sub MSEProgressDelegate(ByVal RunStateType As eMSERunStates)
     Public Delegate Sub MSYProgressDelegate(ByVal MSYProgress As cMSYProgressArgs)
 
 #End Region
@@ -62,7 +68,7 @@ Namespace MSE
         'ToDo_jb 13-May-2010 cMSE Plugin points need xml comments
         'ToDo_jb 13-May-2010 cMSE No reg options should ask...
 
-
+        'ToDo_jb 28-May-2010 check that changes to run order of plugin and interface calls did not messup the results
 
         Private Enum eResultsData
             GroupQuota
@@ -84,7 +90,7 @@ Namespace MSE
 
         Private m_nTrials As Integer
 
-        Private m_CallbackDelegate As MSEProgressDelegate
+        Private m_ProgressDelegate As MSEProgressDelegate
 
         Private BestTime() As Single
         Private EcoValueBase As Single, ManValueBase As Single
@@ -93,11 +99,6 @@ Namespace MSE
         Private m_pluginManager As cPluginManager
         Private m_orgPredictEffort As Boolean
         Private m_orgUsePlugin As Boolean = False
-
-        'jb 6-May-2010 Replace FtargetT() with FTarget() in UpdateQuota() FtargetT() is never used outside UpdateQuota
-        'fishing mortality at the current time step
-        'calc in UpdateQuotas() using the estimated biomass
-        'Private FtargetT() As Single
 
         Private WithEvents m_EconomicData As cEconomicDataSource
 
@@ -184,7 +185,7 @@ Namespace MSE
         End Sub
 
         Public Sub Connect(ByRef MSECallBack As MSEProgressDelegate, ByRef MSYCallBack As MSYProgressDelegate)
-            Me.m_CallbackDelegate = MSECallBack
+            Me.m_ProgressDelegate = MSECallBack
             Me.m_MSYCallBack = MSYCallBack
         End Sub
 
@@ -593,7 +594,7 @@ Namespace MSE
 
             Try
 
-                PostMessage(eCallBackTypes.Started)
+                PostMessage(eMSERunStates.Started)
 
                 'keep the original value of PredictEffort so we can set it back at the end of the run
                 m_orgPredictEffort = Me.m_esData.PredictSimEffort
@@ -634,10 +635,11 @@ Namespace MSE
 
                     m_data.CurrentIteration = itr
                     Me.AddIteration()
-                    Me.PostMessage(eCallBackTypes.IterationStarted)
 
                     'Set MSE data back to initial values for a new run
                     m_data.InitForTrial()
+
+                    Me.PostMessage(eMSERunStates.IterationStarted)
 
                     'run ecosim
                     Me.m_Ecosim.Run()
@@ -649,7 +651,7 @@ Namespace MSE
                     Me.PostPluginData()
 
                     Me.SumValues()
-                    Me.PostMessage(eCallBackTypes.IterationCompleted)
+                    Me.PostMessage(eMSERunStates.IterationCompleted)
 
                     SetEffortToBaseValue()
 
@@ -665,7 +667,7 @@ Namespace MSE
                 Me.m_core.Messages.SendMessage(New cMessage("Error while calculating MSE. " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
             End Try
 
-            PostMessage(eCallBackTypes.RunCompleted)
+            PostMessage(eMSERunStates.RunCompleted)
 
             'turn off the search
             Me.m_Search.SearchMode = eSearchModes.NotInSearch
@@ -954,22 +956,32 @@ Namespace MSE
 
 
 
-        Private Sub PostMessage(ByVal CallBackType As eCallBackTypes)
+        Private Sub PostMessage(ByVal CurrentState As eMSERunStates)
 
             Try
 
-                Select Case CallBackType
+                Try
+                    Me.m_ProgressDelegate(CurrentState)
+                Catch ex As Exception
+                    System.Console.WriteLine("MSE handled exception from progress delegate = " & ex.Message)
+                    cLog.Write(ex)
+                End Try
 
-                    Case eCallBackTypes.IterationStarted
+                Select Case CurrentState
+
+                    Case eMSERunStates.IterationStarted
                         Me.m_core.PluginManager.MSEIterationStarted()
-                    Case eCallBackTypes.IterationCompleted
+
+                    Case eMSERunStates.IterationCompleted
                         Me.m_core.PluginManager.MSEIterationCompleted()
-                    Case eCallBackTypes.RunCompleted
+
+                    Case eMSERunStates.RunCompleted
                         Me.FinalizeRun()
+                        Me.m_core.PluginManager.MSERunCompleted()
+
                 End Select
 
-                System.Console.WriteLine("MSE Callback = " & CallBackType.ToString)
-                Me.m_CallbackDelegate(CallBackType)
+                System.Console.WriteLine("MSE State = " & CurrentState.ToString)
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -1262,7 +1274,7 @@ Namespace MSE
         End Sub
 
         ''' <summary>
-        ''' Populates Bestimate() for regulated fisheries
+        ''' Populates Bestimate() and KalmanGain() for regulated fisheries
         ''' </summary>
         ''' <remarks></remarks>
         Friend Sub DoAssessment(ByVal Biomass() As Single)
@@ -1275,7 +1287,7 @@ Namespace MSE
             For i As Integer = 1 To Me.m_epdata.NumGroups
                 Me.m_data.BestimateLast(i) = Me.m_data.Bestimate(i) * CSng(Math.Exp(-Me.m_data.CatchYearGroup(i) / Me.m_data.Bestimate(i))) ' Me.m_Search.CatchYear(i)
                 Me.m_data.CatchYearGroup(i) = 0
-                'the true biomass is the actual Ecosim biomass = Biomass()
+                'Biomass() passed in is the biomass calculated by Ecosim
                 'Bobs is the observed biomass which is the true biomass with a random factor added
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
 
@@ -1284,10 +1296,16 @@ Namespace MSE
                 Me.m_data.KalmanGain(i) = CSng(vPred / (vPred + Me.m_data.CVbiomEst(i) ^ 2))
                 'and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
                 'VC091107 fixed problem in eq below
-                'Me.m_data.KalmanGain(i) = 0.6
                 Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + RstockPred)
 
             Next i
+
+            Try
+                'give the plugins a shot at 
+                Me.m_core.PluginManager.MSEDoAssessment(Biomass)
+            Catch ex As Exception
+                System.Console.WriteLine(Me.ToString & ".DoAssessment()PluginManager.MSEDoAssessment Exception: " & ex.Message)
+            End Try
 
             'Store the Biomass estimation difference
             Dim val As Single
@@ -1296,19 +1314,17 @@ Namespace MSE
                 Me.m_data.BioEstStats.AddValue(igrp, Me.m_curYear, val)
             Next igrp
 
-            Try
-                Me.m_core.PluginManager.MSEDoAssessment(Biomass)
-            Catch ex As Exception
-                System.Console.WriteLine(Me.ToString & ".DoAssessment()PluginManager.MSEDoAssessment Exception: " & ex.Message)
-            End Try
-
         End Sub
 
 
         ''' <summary>
         ''' Update fishing quotas for regulated fisheries
         ''' </summary>
-        ''' <remarks></remarks>
+        ''' <remarks>
+        ''' Populates <see cref="cMSEDataStructures.QuotaTime">cMSEDataStructures.QuotaTime(ngroups)</see> 
+        ''' with the quota for this year based on <see cref="cMSEDataStructures.Bestimate">cMSEDataStructures.Bestimate(ngroups)</see> 
+        ''' , biomass from the stock assessment model.
+        ''' </remarks>
         Friend Sub UpdateQuotas(ByVal Biomass() As Single)
             Dim iflt As Integer, igrp As Integer
             Dim tQuota() As Single
