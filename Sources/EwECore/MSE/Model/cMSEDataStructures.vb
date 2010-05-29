@@ -129,7 +129,16 @@ Namespace MSE
 
         Public BioEstStats As cMSESummaryStats
 
+        ''' <summary>
+        ''' Biomass estimated for the current year.
+        ''' </summary>
+        ''' <remarks>Calculated via the Stock Assessment model in <see cref="MSE.cMSE.DoAssessment">DoAssessment()</see></remarks>
         Public Bestimate() As Single
+
+        ''' <summary>
+        ''' Estimated biomass from the last year
+        ''' </summary>
+        ''' <remarks>Set to Bestimate() for the previous year.</remarks>
         Public BestimateLast() As Single
 
         ''' <summary>Regulatory Mode</summary>
@@ -210,6 +219,10 @@ Namespace MSE
         ''' <remarks>Sums to one across all fleets for a group</remarks>
         Public Quotashare(,) As Single
 
+        ''' <summary>
+        ''' Quota for the current year by fleet/group updated at the start of a year by <see cref="MSE.cMSE.UpdateQuotas">cMSE.UpdateQuotas</see>
+        ''' </summary>
+        ''' <remarks>Used by <see cref="MSE.cMSE.DoRegulations">DoRegulations()</see> to do fisheries regulations based on user selected controls.</remarks>
         Public QuotaTime(,) As Single
 
         Public CatchYearGroup() As Single
