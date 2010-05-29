@@ -244,10 +244,10 @@ Public Class cEcosimDatastructures
     Friend GroupFishRateNoDBID() As Integer
 
     ''' <summary>
-    ''' Fishing Effort multiplier by Fleet, Time.
+    ''' Fishing Effort multiplier relative to Ecopath base, by Fleet, Time.
     ''' </summary>
     ''' <remarks>Zero removes all fishing, one sets fishing effort to Ecopath value, two would double the fishing mortality for all groups fished by this fleet.
-    '''  Used to scale the FishRateNo() for all the groups fished by a fleet,</remarks>
+    '''  Used to scale the FishRateNo() for all the groups fished by a fleet.</remarks>
     Public FishRateGear(,) As Single
     Public FishRateGearBasis() As Single
     Public FishRateGearDBID() As Integer
