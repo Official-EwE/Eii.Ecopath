@@ -76,8 +76,9 @@
     <Compile Include="Commands\cControlHandler.vb" />
     <Compile Include="Core\ICoreFleetFilter.vb" />
     <Compile Include="Core\ICoreGroupFilter.vb" />
-    <Compile Include="Core\INetworkAnalysisData.vb" />
-    <Compile Include="Core\IEconomicData.vb" />
+    <Compile Include="Core\Data\INetworkAnalysisData.vb" />
+    <Compile Include="Core\Data\IEconomicData.vb" />
+    <Compile Include="Core\Data\ITaxonData.vb" />
     <Compile Include="Core\IRunType.vb" />
     <Compile Include="Core\Shared Enums.vb" />
     <Compile Include="Database\cEwEDatabase.vb" />
