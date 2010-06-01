@@ -31,6 +31,7 @@ Public Class cPluginPoint
     Private m_bInitOK As Boolean = False
     Private m_form As frmMain = Nothing
     Private m_data As cData = Nothing
+    Private m_bIsEnabled As Boolean = True
     Private m_model As cModel = Nothing
     Private m_result As cResults = Nothing
     Private m_mhEcopath As cMessageHandler = Nothing
@@ -458,7 +459,7 @@ Public Class cPluginPoint
 
     Private Sub BroadcastResults(ByVal iTimeStep As Integer)
 
-        If (Me.m_dataBroadcaster IsNot Nothing) Then
+        If (Me.m_dataBroadcaster IsNot Nothing) And (Me.m_bIsEnabled = True) Then
 
             ' Fill exchange data based on the type of computed results
             Select Case Me.m_result.RunType
@@ -513,7 +514,7 @@ Public Class cPluginPoint
 
     End Sub
 
-    Public Function IsDataAvailable(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
+    Public Function IsDataAvailable(ByVal strDataName As String, Optional ByVal runType As IRunType = Nothing) As Boolean _
         Implements EwEPlugin.Data.IDataProducerPlugin.IsDataAvailable
 
         Dim bIsAvailable As Boolean = False
@@ -526,7 +527,7 @@ Public Class cPluginPoint
 
     End Function
 
-    Public Function IsDataAvailable(ByVal typeData As System.Type, ByVal runType As IRunType) As Boolean _
+    Public Function IsDataAvailable(ByVal typeData As System.Type, Optional ByVal runType As IRunType = Nothing) As Boolean _
         Implements EwEPlugin.Data.IDataProducerPlugin.IsDataAvailable
 
         Dim bIsAvailable As Boolean = False
@@ -562,14 +563,6 @@ Public Class cPluginPoint
         End If
 
         Return (data IsNot Nothing)
-
-    End Function
-
-    Public Function IsEnabled(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
-         Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
-
-        If (String.Compare(strDataName, Me.Name, True) <> 0) Then Return False
-        Return Me.IsEnabled(GetType(IEconomicData), runType)
 
     End Function
 
@@ -627,6 +620,15 @@ Public Class cPluginPoint
 
     End Sub
 
+    Public Function IsEnabled1() As Boolean _
+        Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
+        Return Me.m_bIsEnabled
+    End Function
+
+    Public Function SetEnabled1(ByVal bEnable As Boolean) As Boolean _
+        Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+        Me.m_bIsEnabled = bEnable
+    End Function
 #End Region ' Data exchange
 
 #Region " Search "

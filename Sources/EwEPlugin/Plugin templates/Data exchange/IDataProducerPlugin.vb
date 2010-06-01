@@ -46,7 +46,7 @@ Namespace Data
         ''' <see cref="IRunType">Run type</see> of the data to request.
         ''' </param>
         ''' -----------------------------------------------------------------------
-        Function IsDataAvailable(ByVal typeData As Type, ByVal runType As IRunType) As Boolean
+        Function IsDataAvailable(ByVal typeData As Type, Optional ByVal runType As IRunType = Nothing) As Boolean
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -58,7 +58,7 @@ Namespace Data
         ''' <see cref="IRunType">Run type</see> of the data to request.
         ''' </param>
         ''' -----------------------------------------------------------------------
-        Function IsDataAvailable(ByVal strDataName As String, ByVal runType As IRunType) As Boolean
+        Function IsDataAvailable(ByVal strDataName As String, Optional ByVal runType As IRunType = Nothing) As Boolean
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -96,14 +96,17 @@ Namespace Data
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get whether a plug-in distributes data for a given run type.
+        ''' Get whether a data producer is allowed to distribute data.
         ''' </summary>
-        ''' <param name="strDataName">Name of the data to interact with.</param>
-        ''' <param name="runType">
-        ''' <see cref="IRunType">Run type</see> of the data to enable or disable.
-        ''' </param>
         ''' -----------------------------------------------------------------------
-        Function IsEnabled(ByVal strDataName As String, ByVal runType As IRunType) As Boolean
+        Function IsEnabled() As Boolean
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Set whether a data producer is allowed to distribute data.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Function SetEnabled(ByVal bEnable As Boolean) As Boolean
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

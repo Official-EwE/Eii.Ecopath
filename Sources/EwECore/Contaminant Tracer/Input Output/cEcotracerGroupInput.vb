@@ -1,32 +1,3 @@
-'==============================================================================
-'
-' $Log: cEcotracerGroupInput.vb,v $
-' Revision 1.2  2009/01/16 18:30:25  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:10  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/05/29 22:22:45  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.2  2008/01/06 11:00:12  jeroens
-' * Changed Excretion rate value upper limit to 1
-'
-' Revision 1.1  2007/12/08 00:56:25  jeroens
-' * Renamed file
-'
-' Revision 1.3  2007/11/26 02:07:19  jeroens
-' + Added CExcretionRate + Status
-'
-' Revision 1.2  2007/11/25 02:14:49  jeroens
-' * Set correct message source, datatype
-'
-' Revision 1.1  2007/11/25 00:33:08  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core

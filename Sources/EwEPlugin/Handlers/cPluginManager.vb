@@ -88,17 +88,20 @@ Public Class cPluginManager
         Private m_strMethod As String = ""
         Private m_aArgs() As Object = Nothing
         Private m_invocation As eInvocationType = eInvocationType.All
+        Private m_coll As ICollection(Of cPluginContext) = Nothing
         Private m_bResult As Boolean = False
 
         Public Sub New(ByVal typePlugin As Type, _
                        ByVal strMethod As String, _
                        ByVal aArgs() As Object, _
-                       ByVal invocation As eInvocationType)
+                       ByVal invocation As eInvocationType, _
+                       ByVal coll As ICollection(Of cPluginContext))
 
             Me.m_typePlugin = typePlugin
             Me.m_strMethod = strMethod
             Me.m_aArgs = aArgs
             Me.m_invocation = invocation
+            Me.m_coll = coll
 
         End Sub
 
@@ -123,6 +126,12 @@ Public Class cPluginManager
         Public ReadOnly Property Invocation() As eInvocationType
             Get
                 Return Me.m_invocation
+            End Get
+        End Property
+
+        ReadOnly Property Plugins() As ICollection(Of cPluginContext)
+            Get
+                Return Me.m_coll
             End Get
         End Property
 
@@ -572,7 +581,7 @@ Public Class cPluginManager
 
         ' Invoke all IDisposedPlugin plug-ins
         Try
-            collPlugins = Me.GetPlugins(GetType(IDisposedPlugin), pa)
+            collPlugins = Me.GetPluginDefs(GetType(IDisposedPlugin), pa)
             For Each ipc As cPluginContext In collPlugins
                 Try
                     DirectCast(ipc.Plugin, IDisposedPlugin).Dispose()
@@ -1286,7 +1295,7 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     Public Function GetData(ByVal strDataName As String) As IPluginData()
 
-        Dim coll As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataProducerPlugin))
+        Dim coll As ICollection(Of cPluginContext) = Me.GetPluginDefs(GetType(IDataProducerPlugin))
         Dim data As IPluginData = Nothing
         Dim lData As New List(Of IPluginData)
 
@@ -1321,7 +1330,7 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     Public Function GetData(ByVal dataType As Type) As IPluginData()
 
-        Dim coll As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataProducerPlugin))
+        Dim coll As ICollection(Of cPluginContext) = Me.GetPluginDefs(GetType(IDataProducerPlugin))
         Dim data As IPluginData = Nothing
         Dim lData As New List(Of IPluginData)
 
@@ -1369,6 +1378,32 @@ Public Class cPluginManager
                                       "SetEnabled", _
                                       New Object() {dataType, runType, value}, _
                                       eInvocationType.Any)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enable or disable a specific data producer.
+    ''' </summary>
+    ''' <param name="strProducer">The name of the producer to enable or disable.</param>
+    ''' <param name="bEnable">Enable flag.</param>
+    ''' <returns>True if the requested producer is enabled.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Property EnableDataProducer(ByVal strProducer As String, ByVal bEnable As Boolean) As Boolean
+        Get
+
+            Return Me.TryInvokeMethod(GetType(IDataProducerPlugin), _
+                                      "IsEnabled", _
+                                      New Object() {}, _
+                                      eInvocationType.Any, _
+                                      Me.GetPluginDefs(strProducer))
+        End Get
+        Set(ByVal value As Boolean)
+            Me.TryInvokeMethod(GetType(IDataProducerPlugin), _
+                                      "SetEnabled", _
+                                      New Object() {strProducer, bEnable}, _
+                                      eInvocationType.Any, _
+                                      Me.GetPluginDefs(strProducer))
         End Set
     End Property
 
@@ -1520,8 +1555,8 @@ Public Class cPluginManager
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Returns a collection of <see cref="IPlugin">plug-ins</see> of a given 
-    ''' <see cref="Type">Type</see>.
+    ''' Returns a collection of <see cref="cPluginContext">plug-in definitions</see>
+    ''' of a given <see cref="Type">Type</see>.
     ''' </summary>
     ''' <param name="t">The <see cref="Type">Type</see> of the plugins to retrieve.</param>
     ''' <param name="pa">The <see cref="cPluginAssembly">plug-in assembly</see> to search.
@@ -1529,8 +1564,8 @@ Public Class cPluginManager
     ''' <returns>A collection of <see cref="cPluginContext">plug-in contexts</see>
     ''' linking to plug-ins of the given type.</returns>
     ''' ---------------------------------------------------------------------------
-    Friend Function GetPlugins(ByVal t As Type, _
-                               Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of cPluginContext)
+    Friend Function GetPluginDefs(ByVal t As Type, _
+                                   Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of cPluginContext)
 
         Dim collPlugins As New List(Of cPluginContext)
         Dim lpa As New List(Of cPluginAssembly)
@@ -1540,6 +1575,34 @@ Public Class cPluginManager
             For Each pi As IPlugin In pa.Plugins(t)
                 collPlugins.Add(New cPluginContext(pi, pa))
             Next pi
+        Next pa
+        Return collPlugins
+
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a collection of <see cref="cPluginContext">plug-in definitions</see>
+    ''' of a given <see cref="IPlugin.Name">name</see>.
+    ''' </summary>
+    ''' <param name="strName">The <see cref="Type">Type</see> of the plugins to retrieve.</param>
+    ''' <param name="pa">The <see cref="cPluginAssembly">plug-in assembly</see> to search.
+    ''' If not specified, all plug-in assemblies will be searched.</param>
+    ''' <returns>A collection of <see cref="cPluginContext">plug-in contexts</see>
+    ''' linking to plug-ins of the given type.</returns>
+    ''' ---------------------------------------------------------------------------
+    Friend Function GetPluginDefs(ByVal strName As String, _
+                                   Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of cPluginContext)
+
+        Dim collPlugins As New List(Of cPluginContext)
+        Dim lpa As New List(Of cPluginAssembly)
+
+        If (pa IsNot Nothing) Then lpa.Add(pa) Else lpa.AddRange(Me.PluginAssemblies)
+        For Each pa In lpa
+            Dim pi As IPlugin = pa.Plugin(strName)
+            If pi IsNot Nothing Then
+                collPlugins.Add(New cPluginContext(pi, pa))
+            End If
         Next pa
         Return collPlugins
 
@@ -1569,6 +1632,57 @@ Public Class cPluginManager
         Next
         Return collPlugins
 
+    End Function
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns all <see cref="IPlugin">plug-ins</see> with a given type.
+    ''' </summary>
+    ''' <param name="t">Type of the plugin to return.</param>
+    ''' <returns>A collection of <see cref="IPlugin">plug-ins</see> with the 
+    ''' given name.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function GetPlugins(ByVal t As Type, _
+                               Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of IPlugin)
+
+        Dim collPlugins As New List(Of IPlugin)
+        Dim lpa As New List(Of cPluginAssembly)
+
+        If (pa IsNot Nothing) Then lpa.Add(pa) Else lpa.AddRange(Me.PluginAssemblies)
+        For Each pa In lpa
+            For Each pi As IPlugin In pa.Plugins(t)
+                collPlugins.Add(pi)
+            Next pi
+        Next
+        Return collPlugins
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a list of available producers that produce data of a given
+    ''' <paramref name="typeData">type</paramref>.
+    ''' </summary>
+    ''' <param name="typeData">The <see cref="Type">type</see> of data to test.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function DataProducers(ByVal typeData As Type) As ICollection(Of IDataProducerPlugin)
+
+        Dim pa As cPluginAssembly = Nothing
+        Dim pi As IPlugin = Nothing
+        Dim dp As IDataProducerPlugin = Nothing
+        Dim lpa As New List(Of IDataProducerPlugin)
+
+        For Each pa In Me.PluginAssemblies
+            For Each pi In pa.Plugins(GetType(IDataProducerPlugin))
+                dp = DirectCast(pi, IDataProducerPlugin)
+                If dp.IsDataAvailable(typeData) Then
+                    lpa.Add(dp)
+                End If
+            Next
+        Next
+        Return lpa
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -1681,7 +1795,7 @@ Public Class cPluginManager
             RaiseEvent PluginEnabled(DirectCast(ip, IGUIPlugin), bEnable)
         Else
             'For all GUI plugins
-            collPlugins = Me.GetPlugins(GetType(IGUIPlugin))
+            collPlugins = Me.GetPluginDefs(GetType(IGUIPlugin))
             For Each ipc As cPluginContext In collPlugins
                 ' Check if plugin can execute
                 bEnable = Me.m_dlgtCoreState.Invoke(DirectCast(ipc.Plugin, IGUIPlugin).EnabledState)
@@ -1785,7 +1899,8 @@ Public Class cPluginManager
     Private Function TryInvokeMethod(ByVal typePlugin As Type, _
                                     ByVal strMethod As String, _
                                     Optional ByVal aArgs() As Object = Nothing, _
-                                    Optional ByVal invocation As eInvocationType = eInvocationType.All) As Boolean
+                                    Optional ByVal invocation As eInvocationType = eInvocationType.All, _
+                                    Optional ByVal coll As ICollection(Of cPluginContext) = Nothing) As Boolean
 
 
         ' Fix arguments
@@ -1825,7 +1940,7 @@ Public Class cPluginManager
             ' Has sync object?
             If (Me.m_sync IsNot Nothing) Then
                 ' #Yes: build info to cross over
-                Dim inf As New cInvokeMethodInfo(typePlugin, strMethod, aArgs, invocation)
+                Dim inf As New cInvokeMethodInfo(typePlugin, strMethod, aArgs, invocation, coll)
                 ' Yo Maurice
                 Me.m_sync.Send(New SendOrPostCallback(AddressOf Me.MarshallInvokeMethod), inf)
                 ' Return result
@@ -1833,7 +1948,7 @@ Public Class cPluginManager
             End If
         End If
 
-        Return Me.InvokeMethod(typePlugin, strMethod, aArgs, invocation)
+        Return Me.InvokeMethod(typePlugin, strMethod, aArgs, invocation, coll)
 
     End Function
 
@@ -1850,7 +1965,7 @@ Public Class cPluginManager
         If Not (TypeOf (state) Is cInvokeMethodInfo) Then Return
 
         Dim info As cInvokeMethodInfo = DirectCast(state, cInvokeMethodInfo)
-        info.Result = Me.InvokeMethod(info.PluginType, info.MethodName, info.Arguments, info.Invocation)
+        info.Result = Me.InvokeMethod(info.PluginType, info.MethodName, info.Arguments, info.Invocation, info.Plugins)
 
     End Sub
 
@@ -1861,14 +1976,24 @@ Public Class cPluginManager
     ''' <param name="typePlugin">The <see cref="Type">Type</see> of the plugin.</param>
     ''' <param name="strMethod">The name of the method to invoke.</param>
     ''' <param name="aArgs">The arguments to pass to the method to invoke.</param>
+    ''' <param name="invocation">Flag stating whether the plug-in point is exclusive.
+    ''' Exclusive plug-in points are meant to replace core functionality. The first
+    ''' plug-in point encountered is invoked in which case True is returned. If no
+    ''' suitable plug-in point is found, a return value of False is expected.
+    ''' </param>
+    ''' <param name="collPlugins">Collection of plugins to test, if any.</param>
     ''' <returns>True if the method could be found for the given type.</returns>
     ''' -----------------------------------------------------------------------
     Private Function InvokeMethod(ByVal typePlugin As Type, _
                                   ByVal strMethod As String, _
                                   ByVal aArgs() As Object, _
-                                  ByVal invocation As eInvocationType) As Boolean
+                                  ByVal invocation As eInvocationType, _
+                                  ByVal collPlugins As ICollection(Of cPluginContext)) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(typePlugin)
+        If (collPlugins Is Nothing) Then
+            collPlugins = Me.GetPluginDefs(typePlugin)
+        End If
+
         Dim bSucces As Boolean = True
 
         Select Case invocation

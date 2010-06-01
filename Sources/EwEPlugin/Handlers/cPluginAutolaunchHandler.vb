@@ -60,7 +60,7 @@ Public Class cPluginAutolaunchHandler
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub LaunchPlugins()
-        Dim collPlugins As ICollection(Of cPluginManager.cPluginContext) = Me.PluginManager.GetPlugins(GetType(IAutolaunchPlugin))
+        Dim collPlugins As ICollection(Of cPluginManager.cPluginContext) = Me.PluginManager.GetPluginDefs(GetType(IAutolaunchPlugin))
         For Each ipc As cPluginManager.cPluginContext In collPlugins
             Dim ip As IAutolaunchPlugin = DirectCast(ipc.Plugin, IAutolaunchPlugin)
             If ip.Autolaunch Then

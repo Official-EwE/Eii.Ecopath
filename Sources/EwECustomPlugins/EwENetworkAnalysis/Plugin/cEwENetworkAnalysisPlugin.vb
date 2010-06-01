@@ -29,6 +29,7 @@ Public Class cEwENetworkAnalysisPlugin
     Private m_uic As cUIContext = Nothing
     Private m_core As cCore = Nothing
     Private m_bInitOK As Boolean = False
+    Private m_bDataEnabled As Boolean = True
 
     ''' <summary>
     ''' Network Analysis manager. Provide access to Network Analysis methods.
@@ -394,7 +395,7 @@ Public Class cEwENetworkAnalysisPlugin
         Me.m_broadcaster = broadcaster
     End Sub
 
-    Public Function IsDataAvailable(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
+    Public Function IsDataAvailable(ByVal strDataName As String, Optional ByVal runType As IRunType = Nothing) As Boolean _
         Implements IDataProducerPlugin.IsDataAvailable
         Dim bIsAvailable As Boolean = False
         Try
@@ -405,9 +406,17 @@ Public Class cEwENetworkAnalysisPlugin
         Return bIsAvailable
     End Function
 
-    Public Function ProducesData(ByVal typeData As System.Type, ByVal runType As IRunType) As Boolean _
+    Public Function ProducesData(ByVal typeData As System.Type, Optional ByVal runType As IRunType = Nothing) As Boolean _
         Implements IDataProducerPlugin.IsDataAvailable
         Return (typeData Is GetType(INetworkAnalysisData))
+    End Function
+
+    Public Function IsEnabled1() As Boolean Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
+        Return m_bDataEnabled
+    End Function
+
+    Public Function SetEnabled1(ByVal bEnable As Boolean) As Boolean Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+        Me.m_bDataEnabled = bEnable
     End Function
 
     Public Sub SetEnabled(ByVal typeData As System.Type, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
@@ -433,14 +442,6 @@ Public Class cEwENetworkAnalysisPlugin
         End If
 
     End Sub
-
-    Public Function IsEnabled(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
-        Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
-
-        If (String.Compare(strDataName, Me.Name, True) <> 0) Then Return False
-        Return Me.IsEnabled(GetType(IEconomicData), runType)
-
-    End Function
 
     Public Function IsEnabled(ByVal typeData As System.Type, ByVal runType As IRunType) As Boolean _
         Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
@@ -534,7 +535,7 @@ Public Class cEwENetworkAnalysisPlugin
 
     Private Sub BroadcastResults()
 
-        If (Me.m_broadcaster IsNot Nothing) Then
+        If (Me.m_broadcaster IsNot Nothing) And (Me.m_bDataEnabled = True) Then
             Me.PopulateData()
             Me.m_broadcaster.BroadcastData(Me.Name, Me.m_ddx)
         End If
