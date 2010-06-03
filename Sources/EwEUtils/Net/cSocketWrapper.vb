@@ -20,7 +20,7 @@ Imports System.Collections.Generic
 '   1: Main info, main failures
 '   2: Status updates
 '   3: Data details (for the hardcore debuggers)
-#Const VERBOSE_LEVEL = 0
+#Const VERBOSE_LEVEL = 1
 
 Namespace NetUtilities
 
