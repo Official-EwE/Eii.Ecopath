@@ -83,12 +83,17 @@ Namespace Controls
 
         End Sub
 
-        Protected Sub SetCellValue(ByVal iRow As Integer, ByVal iCol As Integer, ByVal sValue As Single, ByVal asValueTotal() As Single)
+        Protected Sub SetCellValue(ByVal iRow As Integer, ByVal iCol As Integer, _
+                                   ByVal sValue As Single, ByVal asValueTotal() As Single, _
+                                   Optional ByVal styleExtra As cStyleGuide.eStyleFlags = 0)
+
+            Dim cell As EwECell = DirectCast(Me(iRow, iCol), EwECell)
 
             If sValue >= 0 Then
-                Me(iRow, iCol).Value = sValue
+                cell.Value = sValue
                 asValueTotal(iCol) += sValue
             End If
+            cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed Or styleExtra
 
         End Sub
 

@@ -72,13 +72,17 @@ Namespace Ecosim
         Friend Sub updateData()
 
             Dim source As cEcosimFleetOutput = Nothing
+            Dim ts As cTimeSeries = Nothing
+            'Dim bForcedCatch As Boolean = False
+            Dim styleCost As cStyleGuide.eStyleFlags = 0
 
             Dim totalValue(0 To 11) As Single
             Me.InitTotalArray(totalValue)
 
             For fleetIndex As Integer = 1 To core.nFleets
 
-                source = core.EcosimFleetOutput(fleetIndex)
+                source = Core.EcosimFleetOutput(fleetIndex)
+
                 If source.CatchStart > 0 Then SetCellValue(fleetIndex, 2, source.CatchStart, totalValue)
                 If source.CatchEnd > 0 Then SetCellValue(fleetIndex, 3, source.CatchEnd, totalValue)
 
@@ -93,11 +97,21 @@ Namespace Ecosim
                     SetCellValue(fleetIndex, 7, CSng(source.ValueEnd / source.ValueStart), totalValue)
                 End If
 
-                If source.CostStart > 0 Then SetCellValue(fleetIndex, 8, source.CostStart, totalValue)
-                If source.CostEnd > 0 Then SetCellValue(fleetIndex, 9, source.CostEnd, totalValue)
+                ' Test whether this fleet has any forced catches
+                'bForcedCatch = False
+                styleCost = 0
+                For iTS As Integer = 1 To Me.Core.nTimeSeries
+                    ts = Me.Core.EcosimTimeSeries(iTS)
+                    If (ts.TimeSeriesType = eTimeSeriesType.CatchesForcing) Then
+                        'bForcedCatch = True
+                        styleCost = cStyleGuide.eStyleFlags.InvalidModelResult
+                    End If
+                Next
 
+                If source.CostStart > 0 Then SetCellValue(fleetIndex, 8, source.CostStart, totalValue, styleCost)
+                If source.CostEnd > 0 Then SetCellValue(fleetIndex, 9, source.CostEnd, totalValue, styleCost)
                 If source.CostStart > 0 And source.CostEnd > 0 Then
-                    SetCellValue(fleetIndex, 10, CSng(source.CostEnd / source.CostStart), totalValue)
+                    SetCellValue(fleetIndex, 10, CSng(source.CostEnd / source.CostStart), totalValue, styleCost)
                 End If
 
                 'jb feb??08 cEcosimFleetSummary.Effort is endEffort/StartEffort
