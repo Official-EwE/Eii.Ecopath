@@ -1299,12 +1299,17 @@ Public Class AppLauncher
         Dim alMRU As ArrayList = My.Settings.MdbRecentlyUsedList
         Dim iNumItems As Integer = Math.Min(alMRU.Count - 1, My.Settings.MdbRecentlyUsedCount)
         Dim item As ToolStripMenuItem = Nothing
+        Dim bHasMRU As Boolean = False
 
         ' Clear MRU list
         Me.ClearMRUDropdown()
 
+        If (alMRU IsNot Nothing) Then
+            bHasMRU = (alMRU.Count > 1)
+        End If
+
         ' No recently accessed files yet?
-        If (alMRU.Count <= 1) Then
+        If (bHasMRU = False) Then
             ' Always have 'None' item
             item = New ToolStripMenuItem()
             item.Text = My.Resources.GENERIC_VALUE_NONE
