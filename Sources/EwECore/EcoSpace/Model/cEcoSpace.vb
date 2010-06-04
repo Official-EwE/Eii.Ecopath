@@ -1813,7 +1813,7 @@ Public Class cEcoSpace
         Try
 
             'redim new stanza stuff
-
+            GC.Collect()
             Me.m_Data.allocate(m_Data.PredCell, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
             Me.m_Data.allocate(m_Data.IFDweight, m_Data.InRow, m_Data.InCol, m_Data.NGroups)
             Me.m_Data.allocate(RelFitness, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
@@ -1823,18 +1823,6 @@ Public Class cEcoSpace
             Me.m_Data.allocate(CNomig, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
             Me.m_Data.allocate(dNomig, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
             Me.m_Data.allocate(Enomig, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-
-            GC.Collect()
-            'ReDim m_Data.PredCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
-            'ReDim m_Data.IFDweight(m_Data.InRow, m_Data.InCol, m_Data.NGroups)
-            'ReDim RelFitness(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
-            'ReDim F(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-            'ReDim AMm(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-
-            'ReDim BcwNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-            'ReDim CNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-            'ReDim dNomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-            'ReDim Enomig(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
             ReDim m_Data.ByPassIntegrate(m_Data.nvartot)
             ReDim m_Data.BBase(m_Data.NGroups)

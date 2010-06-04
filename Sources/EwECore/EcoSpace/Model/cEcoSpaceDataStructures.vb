@@ -862,43 +862,48 @@ Public Class cEcospaceDataStructures
         ReDim Me.RegionName(NoRegions)
     End Sub
 
+    ''' <summary>
+    ''' Allocate memory for an array with 4 dimensions
+    ''' </summary>
+    ''' <remarks>Done in a function to call garbage collection when resizing a map to make sure the old memory is free before allocation more.</remarks>
     Friend Sub allocate(ByRef array(,,,) As Single, ByVal d1 As Integer, ByVal d2 As Integer, ByVal d3 As Integer, ByVal d4 As Integer)
         Erase array
         array = Nothing
         GC.Collect()
-
         ReDim array(d1, d2, d3, d4)
     End Sub
 
-
-    Friend Sub allocate(ByRef array(,,) As Single, ByVal nRows As Integer, ByVal nCols As Integer, ByVal ngroups As Integer)
+    ''' <summary>
+    ''' Allocate memory for an array with 3 dimensions
+    ''' </summary>
+    ''' <remarks>Done in a function to call garbage collection when resizing a map to make sure the old memory is free before allocation more.</remarks>
+    Friend Sub allocate(ByRef array(,,) As Single, ByVal d1 As Integer, ByVal d2 As Integer, ByVal d3 As Integer)
         Erase array
         array = Nothing
         GC.Collect()
-        Try
-            ReDim array(nRows, nCols, ngroups)
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
-
+        ReDim array(d1, d2, d3)
     End Sub
 
-
-    Friend Sub allocate(ByRef array(,) As Single, ByVal nRows As Integer, ByVal nCols As Integer)
+    ''' <summary>
+    ''' Allocate memory for an array with 2 dimensions
+    ''' </summary>
+    ''' <remarks>Done in a function to call garbage collection when resizing a map to make sure the old memory is free before allocation more.</remarks>
+    Friend Sub allocate(ByRef array(,) As Single, ByVal d1 As Integer, ByVal d2 As Integer)
         Erase array
         array = Nothing
         GC.Collect()
-
-        ReDim array(nRows, nCols)
+        ReDim array(d1, d2)
     End Sub
 
-
-    Friend Sub allocate(ByRef array(,) As Integer, ByVal nRows As Integer, ByVal nCols As Integer)
+    ''' <summary>
+    ''' Allocate memory for an array of integers with 2 dimensions
+    ''' </summary>
+    ''' <remarks>Done in a function to call garbage collection when resizing a map to make sure the old memory is free before allocation more.</remarks>
+    Friend Sub allocate(ByRef array(,) As Integer, ByVal d1 As Integer, ByVal d2 As Integer)
         Erase array
         array = Nothing
         GC.Collect()
-
-        ReDim array(nRows, nCols)
+        ReDim array(d1, d2)
     End Sub
 
 
@@ -949,47 +954,9 @@ Public Class cEcospaceDataStructures
             Me.allocate(RelPPorig, InRow + 1, InCol + 1)      'for use with habitat change
             Me.allocate(RelCinorig, InRow + 1, InCol + 1)     'for use with habitat change
             Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
-
             Me.allocate(GroupDetritus, InRow + 1, InCol + 1, nvartot)
 
             ReDim Port(nFleets, InRow + 1, InCol + 1)
-
-
-
-            'ReDim (AMm(InRow + 1, InCol + 1, nvartot))
-            'ReDim Bcell(InRow + 1, InCol + 1, nvartot)
-            'ReDim Bcw(InRow + 1, InCol + 1, nvartot)
-            'ReDim Blast(InRow + 1, InCol + 1, nvartot)
-            'ReDim C(InRow + 1, InCol + 1, nvartot)
-            'ReDim d(InRow + 1, InCol + 1, nvartot)
-            'ReDim Depth(InRow + 1, InCol + 1)
-            'ReDim DepthA(InRow + 1, InCol + 1)
-            'ReDim Xvel(InRow + 1, InCol + 1), Yvel(InRow + 1, InCol + 1)
-            'ReDim Xvloc(InRow + 1, InCol + 1), Yvloc(InRow + 1, InCol + 1)
-            'ReDim UpVel(InRow + 1, InCol + 1)
-            'ReDim E(InRow + 1, InCol + 1, nvartot)
-            'ReDim BcwNomig(InRow + 1, InCol + 1, nvartot)
-            'ReDim CNomig(InRow + 1, InCol + 1, nvartot)
-            'ReDim dNomig(InRow + 1, InCol + 1, nvartot)
-            'ReDim Enomig(InRow + 1, InCol + 1, nvartot)
-            'ReDim F(InRow + 1, InCol + 1, nvartot)
-            'ReDim HabType(InRow + 1, InCol + 1)
-            'ReDim Region(InRow + 1, InCol + 1)
-            'ReDim MPA(InRow + 1, InCol + 1)
-            'ReDim RelPP(InRow + 1, InCol + 1)
-            'ReDim RelCin(InRow + 1, InCol + 1)
-            'ReDim DepthOrig(InRow + 1, InCol + 1)   'for use with habitat change
-            'ReDim HabTypeorig(InRow + 1, InCol + 1)  'for use with habitat change
-            'ReDim MPAorig(InRow + 1, InCol + 1)      'for use with habitat change
-            'ReDim RelPPorig(InRow + 1, InCol + 1)      'for use with habitat change
-            'ReDim RelCinorig(InRow + 1, InCol + 1)     'for use with habitat change
-            'ReDim Sail(nFleets, InRow + 1, InCol + 1)
-            'ReDim Port(nFleets, InRow + 1, InCol + 1)
-
-            'ReDim GroupDetritus(InRow + 1, InCol + 1, nvartot)
-
-            'must redim the seed var here too abmpa
-            ' ReDim MPASeed(Inrow + 1, InCol + 1)
 
             ImportanceLayers.Clear()
             For i = 0 To nImportanceLayers - 1
@@ -998,7 +965,6 @@ Public Class cEcospaceDataStructures
 
             ReDim MPAfishery(nFleets, 1)
             ReDim MPAmonth(12, 1)
-
 
             ''jb move this here to set a few defaults this will have to change
             For i = 1 To NGroups                            'CJW had nvar not n1
@@ -1016,8 +982,6 @@ Public Class cEcospaceDataStructures
                     Next
                 Next
             Next
-
-            GC.Collect()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ReDimMapDims() Error: " & ex.Message)
@@ -1067,14 +1031,6 @@ Public Class cEcospaceDataStructures
 
             Me.allocate(ResultsRegionGroup, NoRegions, NGroups, NumberOfTimeSteps)
             Me.allocate(ResultsCatchRegionGearGroup, NoRegions, nFleets, NGroups, NumberOfTimeSteps)
-
-            GC.Collect()
-            'ReDim Me.ResultsByGroup(N_RESULTS_GROUPS, m_ngroups, NumberOfTimeSteps)
-            'ReDim Me.ResultsByFleet(N_RESULTS_FLEETS, nFleets, NumberOfTimeSteps)
-            'ReDim Me.ResultsByFleetGroup(N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
-
-            'ReDim Me.ResultsRegionGroup(NoRegions, NGroups, NumberOfTimeSteps)
-            'ReDim Me.ResultsCatchRegionGearGroup(NoRegions, nFleets, NGroups, NumberOfTimeSteps)
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".redimTimeStepResults() Out of memory: " & ex.Message)
