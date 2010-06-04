@@ -30,8 +30,14 @@ Namespace Other
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            ' Disable button if there is nothing to clear
-            Me.m_btnClearMRU.Enabled = (My.Settings.MdbRecentlyUsedList.Count <= 1)
+            Dim bHasMRU As Boolean = False
+
+            If (My.Settings.MdbRecentlyUsedList IsNot Nothing) Then
+                bHasMRU = (My.Settings.MdbRecentlyUsedList.Count <= 1)
+            End If
+
+            ' Enable button if there is something to clear
+            Me.m_btnClearMRU.Enabled = bHasMRU
 
             Me.m_nudMRU.Value = CInt(Math.Min(Me.m_nudMRU.Maximum, _
                                      Math.Max(Me.m_nudMRU.Minimum, My.Settings.MdbRecentlyUsedCount)))
