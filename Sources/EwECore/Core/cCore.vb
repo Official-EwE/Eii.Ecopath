@@ -7767,15 +7767,18 @@ Public Class cCore
         If ds.ResizeEcospaceBasemap(InRow, InCol) Then
 
             ' Reload the scenario
-            Me.LoadEcospaceScenario(Me.ActiveEcospaceScenarioIndex)
+            If Me.LoadEcospaceScenario(Me.ActiveEcospaceScenarioIndex) Then
 
-            ' Egg
-            Dim r As New Random()
-            If CInt(r.NextDouble * 42) = 13 Then
-                Me.m_publisher.AddMessage(New cMessage("Map has been resized; a tsunami warning has been issued.", _
-                    eMessageType.NotSet, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+                ' Egg
+                Dim r As New Random()
+                If CInt(r.NextDouble * 42) = 13 Then
+                    Me.m_publisher.AddMessage(New cMessage("Map has been resized; a tsunami warning has been issued.", _
+                        eMessageType.NotSet, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+                End If
+
+                bSucces = True
+
             End If
-
         End If
 
         ' Decrease batch count, stating what has been changed
