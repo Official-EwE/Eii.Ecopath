@@ -665,7 +665,7 @@ Public Class dlgManageTimeSeries
         If (bSucces And Me.m_cbImportEnableOnImport.Checked) Then
             ' Reload time series
             cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
-            Me.m_uic.Core.LoadTimeSeries(iDataset)
+            Me.m_uic.Core.LoadTimeSeries(iDataset, True)
             cApplicationStatusNotifier.SetStatusText("", TriState.False)
         End If
 
