@@ -865,7 +865,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Allocate memory for an array with 4 dimensions
     ''' </summary>
-    ''' <remarks>Done in a function to call garbage collection when resizing a map to make sure the old memory is free before allocation more.</remarks>
+    ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
     Friend Sub allocate(ByRef array(,,,) As Single, ByVal d1 As Integer, ByVal d2 As Integer, ByVal d3 As Integer, ByVal d4 As Integer)
         Erase array
         array = Nothing
@@ -876,7 +876,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Allocate memory for an array with 3 dimensions
     ''' </summary>
-    ''' <remarks>Done in a function to call garbage collection when resizing a map to make sure the old memory is free before allocation more.</remarks>
+    ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
     Friend Sub allocate(ByRef array(,,) As Single, ByVal d1 As Integer, ByVal d2 As Integer, ByVal d3 As Integer)
         Erase array
         array = Nothing
@@ -887,7 +887,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Allocate memory for an array with 2 dimensions
     ''' </summary>
-    ''' <remarks>Done in a function to call garbage collection when resizing a map to make sure the old memory is free before allocation more.</remarks>
+    ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
     Friend Sub allocate(ByRef array(,) As Single, ByVal d1 As Integer, ByVal d2 As Integer)
         Erase array
         array = Nothing
@@ -898,7 +898,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Allocate memory for an array of integers with 2 dimensions
     ''' </summary>
-    ''' <remarks>Done in a function to call garbage collection when resizing a map to make sure the old memory is free before allocation more.</remarks>
+    ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
     Friend Sub allocate(ByRef array(,) As Integer, ByVal d1 As Integer, ByVal d2 As Integer)
         Erase array
         array = Nothing
