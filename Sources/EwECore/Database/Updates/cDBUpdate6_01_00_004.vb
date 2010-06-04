@@ -65,7 +65,7 @@ Friend Class cDBUpdate6_01_00_004
 
         Dim bSucces As Boolean = True
 
-        bSucces = bSucces And db.Execute("CREATE TABLE EcopathGroupTaxon (TaxonID LONG, EcopathGroupID LONG, CodeISCAAP TEXT(3), CodeTaxon TEXT(14), Code3A TEXT(3), ClassName TEXT(50), OrderName TEXT(50), FamilyName TEXT(50), GenusName TEXT(50), SpeciesName TEXT(50), CommonName TEXT(50), Proportion SINGLE, SourceName TEXT(50), SourceKey MEMO, LastUpdated SINGLE)")
+        bSucces = bSucces And db.Execute("CREATE TABLE EcopathGroupTaxon (TaxonID LONG, EcopathGroupID LONG, CodeISCAAP TEXT(3), CodeTaxon TEXT(14), Code3A TEXT(4), ClassName TEXT(50), OrderName TEXT(50), FamilyName TEXT(50), GenusName TEXT(50), SpeciesName TEXT(50), CommonName TEXT(50), Proportion SINGLE, SourceName TEXT(50), SourceKey MEMO, LastUpdated SINGLE)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupTaxon ADD CONSTRAINT PK_INDEX PRIMARY KEY (TaxonID)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupTaxon ADD FOREIGN KEY (EcopathGroupID) REFERENCES EcopathGroup(GroupID)")
 
