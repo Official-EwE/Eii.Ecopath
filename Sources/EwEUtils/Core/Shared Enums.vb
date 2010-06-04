@@ -1297,6 +1297,7 @@ Namespace Core
         LatMax
         LonMin
         LonMax
+        AreaName
 
     End Enum
 

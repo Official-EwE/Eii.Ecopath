@@ -80,6 +80,7 @@ Partial Class frmModelDescription
         Me.m_lblWest = New System.Windows.Forms.Label
         Me.m_lblEast = New System.Windows.Forms.Label
         Me.m_lblSouth = New System.Windows.Forms.Label
+        Me.m_tbModelAreaName = New System.Windows.Forms.TextBox
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -423,6 +424,11 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_lblSouth, "m_lblSouth")
         Me.m_lblSouth.Name = "m_lblSouth"
         '
+        'm_tbModelAreaName
+        '
+        resources.ApplyResources(Me.m_tbModelAreaName, "m_tbModelAreaName")
+        Me.m_tbModelAreaName.Name = "m_tbModelAreaName"
+        '
         'frmModelDescription
         '
         resources.ApplyResources(Me, "$this")
@@ -446,6 +452,7 @@ Partial Class frmModelDescription
         Me.Controls.Add(Me.m_lblNorth)
         Me.Controls.Add(Me.m_lblLocation)
         Me.Controls.Add(Me.m_lblFirstYear)
+        Me.Controls.Add(Me.m_tbModelAreaName)
         Me.Controls.Add(Me.m_tbArea)
         Me.Controls.Add(Me.m_tbAuthor)
         Me.Controls.Add(Me.m_lblModel)
@@ -532,4 +539,5 @@ Partial Class frmModelDescription
     Private WithEvents m_lblWest As System.Windows.Forms.Label
     Private WithEvents m_lblEast As System.Windows.Forms.Label
     Private WithEvents m_lblSouth As System.Windows.Forms.Label
+    Private WithEvents m_tbModelAreaName As System.Windows.Forms.TextBox
 End Class

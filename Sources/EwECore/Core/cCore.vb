@@ -2182,7 +2182,7 @@ Public Class cCore
 
 #End Region ' Datasource
 
-#Region "EwEModel"
+#Region " EwEModel "
 
     ''' <summary>
     ''' Returns the <see cref="cEwEModel">EwE model</see> for the current loaded datasource.
@@ -2208,6 +2208,7 @@ Public Class cCore
     Friend m_EwEModelAuthor As String = ""
     Friend m_EwEModelContact As String = ""
     Friend m_EwEModelLastSaved As Single = 0
+    Friend m_EwEModelAreaName As String = ""
     Friend m_EwEModelMinLat As Single = 0
     Friend m_EwEModelMaxLat As Single = 0
     Friend m_EwEModelMinLon As Single = 0
@@ -2240,6 +2241,7 @@ Public Class cCore
         Me.m_EwEModel.UnitMonetaryCustomText = Me.m_EwEModelUnitMonetaryCustom
         Me.m_EwEModel.FirstYear = Me.m_EwEModelFirstYear
         Me.m_EwEModel.NumYears = Me.m_EwEModelNumYears
+        Me.m_EwEModel.AreaName = Me.m_EwEModelAreaName
         Me.m_EwEModel.LatMin = Me.m_EwEModelMinLat
         Me.m_EwEModel.LatMax = Me.m_EwEModelMaxLat
         Me.m_EwEModel.LonMin = Me.m_EwEModelMinLon
@@ -2270,6 +2272,7 @@ Public Class cCore
         Me.m_EwEModelUnitMonetaryCustom = Me.m_EwEModel.UnitMonetaryCustomText
         Me.m_EwEModelFirstYear = Me.m_EwEModel.FirstYear
         Me.m_EwEModelNumYears = Me.m_EwEModel.NumYears
+        Me.m_EwEModelAreaName = Me.m_EwEModel.AreaName
         Me.m_EwEModelMinLat = Me.m_EwEModel.LatMin
         Me.m_EwEModelMaxLat = Me.m_EwEModel.LatMax
         Me.m_EwEModelMinLon = Me.m_EwEModel.LonMin

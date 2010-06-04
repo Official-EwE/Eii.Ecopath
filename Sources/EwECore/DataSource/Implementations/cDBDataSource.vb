@@ -721,7 +721,7 @@ Namespace DataSources
                 sVal2 = CSng(Me.ReadSafe(reader, "MaxLon", cCore.NULL_VALUE))
                 Me.m_core.m_EwEModelMinLon = Math.Min(sVal1, sVal2)
                 Me.m_core.m_EwEModelMaxLon = Math.Max(sVal1, sVal2)
-
+                Me.m_core.m_EwEModelAreaName = CStr(Me.ReadSafe(reader, "AreaName", ""))
                 Me.m_core.m_EwEModelLastSaved = CSng(Me.ReadSafe(reader, "LastSaved", 0))
 
             Catch ex As Exception
@@ -782,6 +782,7 @@ Namespace DataSources
                 drow("MaxLat") = Me.m_core.m_EwEModelMaxLat
                 drow("MinLon") = Me.m_core.m_EwEModelMinLon
                 drow("MaxLon") = Me.m_core.m_EwEModelMaxLon
+                drow("AreaName") = Me.m_core.m_EwEModelAreaName
                 drow("LastSaved") = cDBDataSource.GetJulianDate()
 
                 If bNewRow Then

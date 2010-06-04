@@ -84,6 +84,12 @@ Public Class cEwEModel
             val = New cValue(New Single, eVarNameFlags.LonMax, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' Author
+            meta = New cVariableMetaData(254)
+            val = New cValue(New String(desc), eVarNameFlags.AreaName, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' GroupDigits
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.GroupDigits, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.GroupDigits))
@@ -336,6 +342,19 @@ Public Class cEwEModel
 
         Set(ByVal value As Single)
             Me.SetVariable(eVarNameFlags.LonMax, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the name to represent the model area.
+    ''' </summary>
+    Public Property AreaName() As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.AreaName))
+        End Get
+
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.AreaName, value)
         End Set
     End Property
 

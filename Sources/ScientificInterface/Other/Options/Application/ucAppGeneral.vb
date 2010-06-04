@@ -85,6 +85,8 @@ Namespace Other
 
         Private Sub ClearFileList(ByVal fileList As ArrayList)
 
+            If (fileList Is Nothing) Then Return
+
             If MessageBox.Show(My.Resources.GENERIC_PROMPT_CLEAR_MRU, Me.Text, _
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = DialogResult.OK Then
                 ' Clear confirmed
