@@ -235,23 +235,33 @@ Public Class ucResults
 
     Private Sub OnInvokeRunEcopath(ByVal cmd As EwEUtils.Commands.cCommand)
 
-        cApplicationStatusNotifier.SetStatusText("Running value chain for Ecopath, please wait...", TriState.True)
+        Dim bOldRunFlag As Boolean = Me.m_data.Parameters.RunWithEcopath
 
         ' Switch to manual run mode
         Me.m_model.IsManualRunMode = True
+        Me.m_data.Parameters.RunWithEcopath = True
 
-        ' Reset results and prepare for receiving Ecopath results
-        '    In manual mode the calling process becomes responsible for resetting results
-        Me.m_result.Reset(cModel.eRunTypes.Ecopath)
-        ' Prepare to display Ecopath results
-        Me.SetViewMode(eViewModeType.Ecopath)
-        ' Run Ecopath
-        Me.m_data.Core.RunEcoPath()
-        ' Reflect results
-        Me.UpdateResults()
+        cApplicationStatusNotifier.SetStatusText("Running value chain for Ecopath, please wait...", TriState.True)
+
+        Try
+
+            ' Reset results and prepare for receiving Ecopath results
+            '    In manual mode the calling process becomes responsible for resetting results
+            Me.m_result.Reset(cModel.eRunTypes.Ecopath)
+            ' Prepare to display Ecopath results
+            Me.SetViewMode(eViewModeType.Ecopath)
+            ' Run Ecopath
+            Me.m_data.Core.RunEcoPath()
+            ' Reflect results
+            Me.UpdateResults()
+
+        Catch ex As Exception
+
+        End Try
 
         ' Switch back to auto run mode
         Me.m_model.IsManualRunMode = False
+        Me.m_data.Parameters.RunWithEcopath = bOldRunFlag
 
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
@@ -264,23 +274,33 @@ Public Class ucResults
 
     Private Sub OnInvokeRunEcosim(ByVal cmd As EwEUtils.Commands.cCommand)
 
+        Dim bOldRunFlag As Boolean = Me.m_data.Parameters.RunWithEcosim
+
         cApplicationStatusNotifier.SetStatusText("Running value chain for Ecosim, please wait...", TriState.True)
 
         ' Switch to manual run mode
         Me.m_model.IsManualRunMode = True
+        Me.m_data.Parameters.RunWithEcosim = True
 
-        ' Reset cached results
-        '    In manual mode the calling process becomes responsible for resetting results
-        Me.m_result.Reset(cModel.eRunTypes.Ecosim)
-        ' Prepare view
-        Me.SetViewMode(eViewModeType.Ecosim)
-        ' Run Ecosim
-        Me.m_data.Core.RunEcoSim(AddressOf EcosimTimestepHandler)
-        ' Update results
-        Me.UpdateResults()
+        Try
+
+            ' Reset cached results
+            '    In manual mode the calling process becomes responsible for resetting results
+            Me.m_result.Reset(cModel.eRunTypes.Ecosim)
+            ' Prepare view
+            Me.SetViewMode(eViewModeType.Ecosim)
+            ' Run Ecosim
+            Me.m_data.Core.RunEcoSim(AddressOf EcosimTimestepHandler)
+            ' Update results
+            Me.UpdateResults()
+
+        Catch ex As Exception
+
+        End Try
 
         ' Switch back to auto run mode
         Me.m_model.IsManualRunMode = False
+        Me.m_data.Parameters.RunWithEcosim = bOldRunFlag
 
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
