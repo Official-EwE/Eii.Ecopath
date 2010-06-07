@@ -172,6 +172,10 @@ Public Class cEcospaceBasemap
                 Me.SetVariable(eVarNameFlags.LayerIBMPackets, New cEcospaceLayerIBMPackets(theCore, Me, i), i)
             Next
 
+            layer = New cEcospaceLayerDistribution(theCore, Me)
+            Me.Layers(eVarNameFlags.LayerDistribution) = layer
+
+
             'set status flags to default values
             ResetStatusFlags()
 
@@ -495,6 +499,12 @@ Public Class cEcospaceBasemap
         End Get
     End Property
 
+    Public ReadOnly Property LayerDistribution() As cEcospaceLayerDistribution
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerDistribution), cEcospaceLayerDistribution)
+        End Get
+    End Property
+
     Friend Function GetLayerData(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As Object
         Select Case varName
             Case eVarNameFlags.LayerDepth
@@ -527,6 +537,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.Port
             Case eVarNameFlags.LayerSail
                 Return Me.m_core.m_EcoSpaceData.Sail
+            Case eVarNameFlags.LayerDistribution
+                Return Me.m_core.m_EcoSpaceData.DistributionEnvelope
         End Select
         Return Nothing
     End Function

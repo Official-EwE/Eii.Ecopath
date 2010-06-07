@@ -1377,18 +1377,6 @@ Public Class cEcoSpace
             ReDim m_Data.SpatialFieldStdLeft(m_Data.nLiving, m_Data.nSpatialFields)
             ReDim m_Data.SpatialFieldStdRight(m_Data.nLiving, m_Data.nSpatialFields)
 
-            'VC Hobart Sep 2008 next is for reading of distribution envelopes, 
-            ReDim m_Data.DistributionEnvelope(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)  'dimensioning detritus as well
-
-            For iRo As Integer = 0 To m_Data.InRow + 1
-                For iCo As Integer = 0 To m_Data.InCol + 1
-                    For iGr As Integer = 1 To m_Data.NGroups
-                        m_Data.DistributionEnvelope(iRo, iCo, iGr) = True
-                    Next
-                Next
-            Next
-
-
             SetHabGrad()
 
             m_Data.PredictEffort = True 'from EwE5

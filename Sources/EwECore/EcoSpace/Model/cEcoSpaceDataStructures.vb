@@ -956,7 +956,9 @@ Public Class cEcospaceDataStructures
             Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
             Me.allocate(GroupDetritus, InRow + 1, InCol + 1, nvartot)
 
+            'Boolean maps
             ReDim Port(nFleets, InRow + 1, InCol + 1)
+            ReDim DistributionEnvelope(InRow + 1, InCol + 1, NGroups)
 
             ImportanceLayers.Clear()
             For i = 0 To nImportanceLayers - 1
@@ -980,6 +982,12 @@ Public Class cEcospaceDataStructures
                     For K As Integer = 1 To nFleets
                         Sail(K, i, j) = 1
                     Next
+
+                    'All groups in distributed over the total map extent
+                    For igrp As Integer = 1 To NGroups
+                        DistributionEnvelope(i, j, igrp) = True
+                    Next
+
                 Next
             Next
 

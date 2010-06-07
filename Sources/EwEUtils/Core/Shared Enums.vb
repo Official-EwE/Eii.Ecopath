@@ -493,6 +493,8 @@ Namespace Core
         LayerPort
         ''' <summary>Ecospace sailing cost.</summary>
         LayerSail
+        ''' <summary>Ecospace distribution envelope.</summary>
+        LayerDistribution
         ''' <summary>Ecospace/MPA importance weight of the weight layer.</summary>
         ImportanceWeight
         ''' <summary>Proportion of total habitat area by Habitat type.</summary>
@@ -1760,7 +1762,12 @@ Namespace Core
         ''' </summary>
         Auxillary = 83
 
-        MSEBioEstStats
+        MSEBioEstStats = 84
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace Distribution envelope layer.
+        ''' </summary>
+        EcospaceLayerDistribution = 85
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
