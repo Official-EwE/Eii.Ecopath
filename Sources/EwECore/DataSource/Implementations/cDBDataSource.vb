@@ -615,6 +615,7 @@ Namespace DataSources
             If bSucces = False Then Return False
 
             bSucces = bSucces And Me.LoadEcopathGroups()
+            bSucces = bSucces And Me.LoadEcopathTaxa()
             bSucces = bSucces And Me.LoadEcopathFleetInfo()
             bSucces = bSucces And Me.LoadParticleSizeDistribution()
             bSucces = bSucces And Me.LoadAuxillaryData()
@@ -649,6 +650,7 @@ Namespace DataSources
             ' Start saving
             bSucces = Me.SaveModelInfo()
             bSucces = bSucces And Me.SaveEcopathGroups()
+            bSucces = bSucces And Me.SaveEcopathTaxa()
             bSucces = bSucces And Me.SaveEcopathFleetInfo()
             bSucces = bSucces And Me.SaveParticleSizeDistribution()
             bSucces = bSucces And Me.SaveEcosimScenarioDefinitions()
@@ -2963,6 +2965,206 @@ Namespace DataSources
         End Function
 
 #End Region ' Datasets
+
+#Region " Taxa "
+
+#Region " Load "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Loads Ecopath taxonomy information.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function LoadEcopathTaxa() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupTaxon")
+            Dim iTaxon As Integer = 1
+            Dim iGroup As Integer = 1
+            Dim bSucces As Boolean = True
+
+            ' Init data structure
+            ecopathDS.NumTaxon = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroupTaxon"))
+
+            ' Allocate space
+            ecopathDS.RedimTaxon()
+
+            While reader.Read()
+
+                Try
+                    ecopathDS.TaxonDBID(iTaxon) = CInt(reader("TaxonID"))
+                    iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("EcopathGroupID")))
+                    If iGroup > 0 Then
+                        ecopathDS.TaxonDBID(iTaxon) = CInt(reader("TaxonID"))
+                        ecopathDS.TaxonGroup(iGroup) = iTaxon
+                        ecopathDS.TaxonGroupProp(iGroup) = CSng(reader("Proportion"))
+                        ecopathDS.TaxonCodeISCAAP(iTaxon) = CStr(Me.ReadSafe(reader, "CodeISCAAP", ""))
+                        ecopathDS.TaxonCodeTaxon(iTaxon) = CStr(Me.ReadSafe(reader, "CodeTaxon", ""))
+                        ecopathDS.TaxonCode3A(iTaxon) = CStr(Me.ReadSafe(reader, "Code3A", ""))
+                        ecopathDS.TaxonClass(iTaxon) = CStr(Me.ReadSafe(reader, "ClassName", ""))
+                        ecopathDS.TaxonOrder(iTaxon) = CStr(Me.ReadSafe(reader, "OrderName", ""))
+                        ecopathDS.TaxonFamily(iTaxon) = CStr(Me.ReadSafe(reader, "FamilyName", ""))
+                        ecopathDS.TaxonGenus(iTaxon) = CStr(Me.ReadSafe(reader, "GenusName", ""))
+                        ecopathDS.TaxonSpecies(iTaxon) = CStr(Me.ReadSafe(reader, "SpeciesName", ""))
+                        ecopathDS.TaxonCommonName(iTaxon) = CStr(Me.ReadSafe(reader, "CommonName", ""))
+                        ecopathDS.TaxonSource(iTaxon) = CStr(Me.ReadSafe(reader, "SourceName", ""))
+                        ecopathDS.TaxonSourceKey(iTaxon) = CStr(Me.ReadSafe(reader, "SourceKey", ""))
+                        ecopathDS.TaxonLastUpdated(iTaxon) = CSng(Me.ReadSafe(reader, "LastUpdated", ""))
+                        iTaxon += 1
+                    End If
+
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, ecopathDS.TaxonCommonName(iTaxon)))
+                    bSucces = False
+                End Try
+
+            End While
+
+            Debug.Assert(iTaxon - 1 = ecopathDS.NumTaxon)
+
+            Me.m_db.ReleaseReader(reader)
+            reader = Nothing
+
+            Return bSucces
+
+        End Function
+
+#End Region ' Load
+
+#Region " Save "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update group info in the datasource.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function SaveEcopathTaxa() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim nTaxonSaved As Integer = 0
+            Dim bSucces As Boolean = True
+
+            Try
+                bSucces = Me.m_db.Execute("DELETE FROM EcopathGroupTaxon")
+                writer = Me.m_db.GetWriter("EcopathGroupTaxon")
+
+                For iTaxon As Integer = 1 To ecopathDS.NumTaxon
+
+                    Debug.Assert(iTaxon > 0)
+
+                    drow = writer.NewRow()
+                    drow("TaxonID") = ecopathDS.TaxonDBID(iTaxon)
+                    drow("EcopathGroupID") = ecopathDS.GroupDBID(iTaxon)
+                    drow("Proportion") = ecopathDS.TaxonGroupProp(iTaxon)
+                    drow("CodeISCAAP") = ecopathDS.TaxonCodeISCAAP(iTaxon)
+                    drow("CodeTaxon") = ecopathDS.TaxonCodeTaxon(iTaxon)
+                    drow("Code3A") = ecopathDS.TaxonCode3A(iTaxon)
+                    drow("ClassName") = ecopathDS.TaxonClass(iTaxon)
+                    drow("OrderName") = ecopathDS.TaxonOrder(iTaxon)
+                    drow("FamilyName") = ecopathDS.TaxonFamily(iTaxon)
+                    drow("GenusName") = ecopathDS.TaxonGenus(iTaxon)
+                    drow("SpeciesName") = ecopathDS.TaxonSpecies(iTaxon)
+                    drow("CommonName") = ecopathDS.TaxonCommonName(iTaxon)
+                    drow("SourceName") = ecopathDS.TaxonSource(iTaxon)
+                    drow("SourceKey") = ecopathDS.TaxonSourceKey(iTaxon)
+                    drow("LastUpdated") = ecopathDS.TaxonLastUpdated(iTaxon)
+                    writer.AddRow(drow)
+
+                    nTaxonSaved += 1
+                Next iTaxon
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathTaxa", ex.Message))
+                bSucces = False
+            End Try
+
+            Debug.Assert(nTaxonSaved = ecopathDS.NumTaxon)
+
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, True)
+
+            Return bSucces
+
+        End Function
+
+#End Region ' Save
+
+#Region " Modify "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="IEcopathDataSource.AddTaxon" />
+        ''' -------------------------------------------------------------------
+        Public Function AddTaxon(ByVal iGroupID As Integer, _
+                                 ByVal data As ITaxonData, _
+                                 ByVal sProportion As Single, _
+                                 ByRef iDBID As Integer) As Boolean _
+            Implements IEcopathDataSource.AddTaxon
+
+            If (data Is Nothing) Then Return False
+
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            Try
+                ' MPAID unique for all scenarios
+                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(TaxonID) FROM EcopathGroupTaxon")) + 1
+            Catch ex As Exception
+                iDBID = 1
+            End Try
+
+            writer = Me.m_db.GetWriter("EcopathGroupTaxon")
+
+            drow = writer.NewRow()
+            drow("TaxonID") = iDBID
+            drow("EcopathGroupID") = iGroupID
+            drow("Proportion") = sProportion
+            drow("CodeISCAAP") = data.CodeISSCAAP
+            drow("CodeTaxon") = data.CodeTaxon
+            drow("Code3A") = data.Code3A
+            drow("ClassName") = data.Class
+            drow("OrderName") = data.Order
+            drow("FamilyName") = data.Family
+            drow("GenusName") = data.Genus
+            drow("SpeciesName") = data.Species
+            drow("CommonName") = data.Common
+            drow("SourceName") = data.Source
+            drow("SourceKey") = data.SourceKey
+            drow("LastUpdated") = cDBDataSource.GetJulianDate()
+            writer.AddRow(drow)
+
+            Me.m_db.ReleaseWriter(writer)
+
+            Return bSucces
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="IEcopathDataSource.RemoveTaxon" />
+        ''' -------------------------------------------------------------------
+        Public Function RemoveTaxon(ByVal iTaxonID As Integer) As Boolean _
+            Implements IEcopathDataSource.RemoveTaxon
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim bSucces As Boolean = True
+
+            Try
+                Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupTaxon WHERE (TaxonID={1})", iTaxonID))
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace taxon {1}", ex.Message, iTaxonID))
+                bSucces = False
+            End Try
+            Return bSucces
+
+        End Function
+
+#End Region ' Modify
+
+#End Region ' Taxa
 
 #End Region ' Ecopath
 

@@ -1301,6 +1301,20 @@ Namespace Core
         LonMax
         AreaName
 
+        TaxonGroup
+        TaxonProp
+        [Class]
+        Order
+        Family
+        Genus
+        Species
+        CodeISSCAAP
+        CodeTaxon
+        Code3A
+        Source
+        SourceKey
+        LastUpdated
+
     End Enum
 
 #End Region ' Variable names
@@ -1770,6 +1784,11 @@ Namespace Core
         EcospaceLayerDistribution = 85
 
         ''' <summary>
+        ''' Data belongs to a taxonomy definition.
+        ''' </summary>
+        Taxon = 85
+
+        ''' <summary>
         ''' Data belongs to an external, unspecified source.
         ''' </summary>
         External = 777
@@ -1872,6 +1891,9 @@ Namespace Core
 
         ''' <summary>The number of iterations running in the game.</summary>
         nGameIterations
+
+        ''' <summary>The number of taxonomy groups.</summary>
+        nTaxon
 
     End Enum
 

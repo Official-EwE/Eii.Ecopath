@@ -109,6 +109,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdEditGroups As cCommand = Nothing
     Private WithEvents m_cmdEditMultiStanza As cCommand = Nothing
     Private WithEvents m_cmdEditFleets As cCommand = Nothing
+    Private WithEvents m_cmdEditTaxa As cCommand = Nothing
     Private WithEvents m_cmdEditBasemap As cCommand = Nothing
     Private WithEvents m_cmdEditHabitats As cCommand = Nothing
     Private WithEvents m_cmdEditRegions As cCommand = Nothing
@@ -380,6 +381,9 @@ Public Class AppLauncher
         'Create and configure EditFleets command
         Me.m_cmdEditFleets = New cCommand(cmdh, "EditFleets")
         Me.m_cmdEditFleets.AddControl(Me.m_tsmiEcopathEditFleets)
+
+        Me.m_cmdEditTaxa = New cCommand(cmdh, "EditTaxa")
+        Me.m_cmdEditTaxa.AddControl(Me.m_tsmiEcopathEditTaxa)
 
         Me.m_cmdEditBasemap = New cCommand(cmdh, "EditBasemap")
         Me.m_cmdEditBasemap.AddControl(Me.m_tsmiEcospaceEditMap)
@@ -2735,6 +2739,17 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateEditFleets(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdEditFleets.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
+    End Sub
+
+    Private Sub OnEditTaxa(ByVal cmd As cCommand) _
+        Handles m_cmdEditTaxa.OnInvoke
+        Dim dlg As New EditGroupTaxon(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
+        dlg.ShowDialog(Me)
+    End Sub
+
+    Private Sub OnUpdateEditTaxa(ByVal cmd As cCommand) _
+        Handles m_cmdEditTaxa.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
     End Sub
 

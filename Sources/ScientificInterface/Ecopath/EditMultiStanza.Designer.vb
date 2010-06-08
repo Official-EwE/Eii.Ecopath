@@ -26,7 +26,7 @@ Namespace Ecopath
             Me.m_btnCalculate = New System.Windows.Forms.Button
             Me.m_btnOK = New System.Windows.Forms.Button
             Me.m_btnCancel = New System.Windows.Forms.Button
-            Me.m_grid = New ScientificInterface.EditMultiStanzaEwEGrid
+            Me.m_grid = New ScientificInterface.gridEditMultiStanza
             Me.m_lblStanzaGroups = New System.Windows.Forms.Label
             Me.m_lblK = New System.Windows.Forms.Label
             Me.m_lblRecPwr = New System.Windows.Forms.Label
@@ -214,7 +214,7 @@ Namespace Ecopath
         Private WithEvents m_cmbFF As System.Windows.Forms.ComboBox
         Private WithEvents m_zgc As ZedGraph.ZedGraphControl
         Private WithEvents m_cbFFecun As System.Windows.Forms.CheckBox
-        Private WithEvents m_grid As EditMultiStanzaEwEGrid
+        Private WithEvents m_grid As gridEditMultiStanza
         Private WithEvents m_btnCalculate As System.Windows.Forms.Button
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_btnCancel As System.Windows.Forms.Button

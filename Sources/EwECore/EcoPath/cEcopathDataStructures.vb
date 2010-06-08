@@ -253,8 +253,41 @@ Public Class cEcopathDataStructures
     Public PedigreeLevelConfidence() As Single
     Public PedigreeLevelDescription() As String
 
+    ''' <summary>Total number of taxonomy codes.</summary>
+    Public NumTaxon As Integer = 0
+    ''' <summary>Taxonomy code DBID (xNumTaxa).</summary>
+    Public TaxonDBID() As Integer
+    ''' <summary>Group taxon assignments (xNumTaxa) -> iGroup</summary>
+    Public TaxonGroup() As Integer
+    ''' <summary>Group taxon proportions (xNumTaxa)</summary>
+    Public TaxonGroupProp() As Single
+    ''' <summary>Taxonomy class names (xNumTaxa).</summary>
+    Public TaxonClass() As String
+    ''' <summary>Taxonomy order names (xNumTaxa).</summary>
+    Public TaxonOrder() As String
+    ''' <summary>Taxonomy family names (xNumTaxa).</summary>
+    Public TaxonFamily() As String
+    ''' <summary>Taxonomy genus names (xNumTaxa).</summary>
+    Public TaxonGenus() As String
+    ''' <summary>Taxonomy species names (xNumTaxa).</summary>
+    Public TaxonSpecies() As String
+    ''' <summary>Taxonomy common names (xNumTaxa).</summary>
+    Public TaxonCommonName() As String
+    ''' <summary>Taxonomy ISCAAP codes (xNumTaxa).</summary>
+    Public TaxonCodeISCAAP() As String
+    ''' <summary>Taxonomy taxon names (xNumTaxa).</summary>
+    Public TaxonCodeTaxon() As String
+    ''' <summary>Taxonomy 3A names (xNumTaxa).</summary>
+    Public TaxonCode3A() As String
+    ''' <summary>Taxonomy source names where Taxon information was derived from (xNumTaxa).</summary>
+    Public TaxonSource() As String
+    ''' <summary>Taxonomy source keys to access Taxon information in <see cref="TaxonSource">a source</see>(xNumTaxa).</summary>
+    Public TaxonSourceKey() As String
+    ''' <summary>Taxonomy last updated dates (xNumTaxa) in julian day format.</summary>
+    Public TaxonLastUpdated() As Single
+
     ''' <summary>
-    ''' Number of missing varaibles per groups
+    ''' Number of missing variables per groups
     ''' </summary>
     ''' <remarks>These are the variables that need to be computed be Ecopath</remarks>
     Public mis() As Integer
@@ -283,6 +316,7 @@ Public Class cEcopathDataStructures
 
             redimGroupVariables() 'just ngroup variables
             RedimFleetVariables(True) 'fleets clear out the values
+            RedimTaxon()
             Return True
 
         Catch ex As Exception
@@ -525,8 +559,29 @@ Public Class cEcopathDataStructures
 
     End Sub
 
+    Public Sub RedimTaxon()
+
+        ReDim Me.TaxonDBID(Me.NumTaxon)
+        ReDim Me.TaxonGroup(Me.NumTaxon)
+        ReDim Me.TaxonGroupProp(Me.NumTaxon)
+        ReDim Me.TaxonClass(Me.NumTaxon)
+        ReDim Me.TaxonCode3A(Me.NumTaxon)
+        ReDim Me.TaxonCodeISCAAP(Me.NumTaxon)
+        ReDim Me.TaxonCodeTaxon(Me.NumTaxon)
+        ReDim Me.TaxonCommonName(Me.NumTaxon)
+        ReDim Me.TaxonFamily(Me.NumTaxon)
+        ReDim Me.TaxonGenus(Me.NumTaxon)
+        ReDim Me.TaxonOrder(Me.NumTaxon)
+        ReDim Me.TaxonSourceKey(Me.NumTaxon)
+        ReDim Me.TaxonSource(Me.NumTaxon)
+        ReDim Me.TaxonSpecies(Me.NumTaxon)
+        ReDim Me.TaxonLastUpdated(Me.NumTaxon)
+
+    End Sub
+
     Public Sub Clear()
         Me.NumGroups = 0
+        Me.NumTaxon = 0
         Me.NumFleet = 0
         Me.NumLiving = 0
         Me.NumDetrit = 0

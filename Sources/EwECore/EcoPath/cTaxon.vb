@@ -1,0 +1,250 @@
+﻿Option Strict On
+Imports EwECore.ValueWrapper
+Imports EwEUtils.Core
+
+''' <summary>
+''' Taxonomy definition that contributes to a functional group.
+''' </summary>
+Public Class cTaxon
+    Inherits cCoreInputOutputBase
+
+#Region " Construction and Intialization "
+
+    Friend Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
+        MyBase.New(theCore)
+
+        Dim val As cValue = Nothing
+        Dim meta As cVariableMetaData = Nothing
+        Dim cbuf() As Char
+        Dim validator As cValidatorDefault
+
+        Me.AllowValidation = False
+
+        Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_dataType = eDataTypes.Taxon
+        Me.DBID = DBID
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, Me.m_coreComponent, Index, cCore.NULL_VALUE)
+
+        ' Taxon group
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.TaxonGroup, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(250)
+        val = New cValue(New String(cbuf), eVarNameFlags.Class, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(250)
+        val = New cValue(New String(cbuf), eVarNameFlags.Order, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(250)
+        val = New cValue(New String(cbuf), eVarNameFlags.Family, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(250)
+        val = New cValue(New String(cbuf), eVarNameFlags.Genus, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(250)
+        val = New cValue(New String(cbuf), eVarNameFlags.Species, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(2)
+        val = New cValue(New String(cbuf), eVarNameFlags.CodeISSCAAP, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(13)
+        val = New cValue(New String(cbuf), eVarNameFlags.CodeTaxon, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(3)
+        val = New cValue(New String(cbuf), eVarNameFlags.Code3A, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(250)
+        val = New cValue(New String(cbuf), eVarNameFlags.Source, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(1024)
+        val = New cValue(New String(cbuf), eVarNameFlags.SourceKey, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        'proportion
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.TaxonProp, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonProp))
+        m_values.Add(val.varName, val)
+
+        ' Last updated julian date
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Single, eVarNameFlags.LastUpdated, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastUpdated))
+        m_values.Add(val.varName, val)
+
+        Me.AllowValidation = True
+
+    End Sub
+
+#End Region
+
+#Region " Variables via dot (.) operator "
+
+    ''' <summary>
+    ''' Get/set the index of the Ecopath group that a taxonomy definition contributes to.
+    ''' </summary>
+    Public Property Group() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.TaxonGroup))
+        End Get
+        Set(ByVal value As Integer)
+            Me.SetVariable(eVarNameFlags.TaxonGroup, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the proportion that a taxonomy definition contributes to a <see cref="Group">group</see>.
+    ''' </summary>
+    Public Property Proportion() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.TaxonProp))
+        End Get
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.TaxonProp, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the class of a taxonomy definition.
+    ''' </summary>
+    Public Property [Class]() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.Class))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.Class, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the order of a taxonomy definition.
+    ''' </summary>
+    Public Property Order() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.Order))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.Order, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the family of a taxonomy definition.
+    ''' </summary>
+    Public Property Family() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.Family))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.Family, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the genus of a taxonomy definition.
+    ''' </summary>
+    Public Property Genus() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.Genus))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.Genus, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the species of a taxonomy definition.
+    ''' </summary>
+    Public Property Species() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.Species))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.Species, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the 2 digit ISSCAAP code of a taxonomy definition.
+    ''' </summary>
+    Public Property CodeISSCAAP() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.CodeISSCAAP))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.CodeISSCAAP, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the 10 digit Taxonomy code of a taxonomy definition.
+    ''' </summary>
+    Public Property CodeTaxon() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.CodeTaxon))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.CodeTaxon, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the 3 character 3A code of a taxonomy definition.
+    ''' </summary>
+    Public Property Code3A() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.Code3A))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.Code3A, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the name of the source that a taxonomy definition was obtained from.
+    ''' </summary>
+    Public Property Source() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.Source))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.Source, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the key to refresh a taxonomy definition from the <see cref="Source">source</see>.
+    ''' </summary>
+    Public Property SourceKey() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.SourceKey))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.SourceKey, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the Julian date the taxonomy definition was last updated.
+    ''' </summary>
+    Public Property LastUpdated() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.LastUpdated))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.LastUpdated, value)
+        End Set
+    End Property
+
+#End Region
+
+End Class

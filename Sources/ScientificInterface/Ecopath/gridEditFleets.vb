@@ -14,7 +14,7 @@ Imports ScientificInterface.Other
 ''' </summary>
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
-   Public Class EditFleetsEwEGrid
+   Public Class gridEditFleets
     : Inherits EwEGrid
 
 #Region " Private vars "

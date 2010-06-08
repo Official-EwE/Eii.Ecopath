@@ -9,7 +9,7 @@ Imports EwEUtils.Core
 #End Region
 
 <CLSCompliant(False)> _
-Public Class EditMultiStanzaEwEGrid
+Public Class gridEditMultiStanza
     : Inherits EwEGrid
 
 #Region "Private variables"

@@ -196,26 +196,24 @@ Public Class cCore
                     Return Me.nImportanceLayers
                     ' Case eCoreCounterTypes.nTrophicLevels
                     '     Return m_NetworkManager.nTrophicLevels
-
                 Case eCoreCounterTypes.nRows
                     If m_EcospaceBasemap IsNot Nothing Then
                         Return Me.m_EcospaceBasemap.InRow
                     Else
                         Return 0
                     End If
-
                 Case eCoreCounterTypes.nCols
                     If m_EcospaceBasemap IsNot Nothing Then
                         Return Me.m_EcospaceBasemap.InCol
                     Else
                         Return 0
                     End If
-
                 Case eCoreCounterTypes.nEcopathAgeSteps
                     Return Me.nAgeSteps
-
                 Case eCoreCounterTypes.nWeightClasses
                     Return Me.nWeightClasses
+                Case eCoreCounterTypes.nTaxon
+                    Return Me.nTaxon
 
                 Case Else
                     'Debug.Assert(False, String.Format("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
@@ -482,6 +480,18 @@ Public Class cCore
     Public ReadOnly Property nWeightClasses() As Integer
         Get
             Return m_PSDData.NWeightClasses
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Get the number of taxonomy groups.
+    ''' </summary>
+    ''' <remarks>
+    ''' See <see cref="eCoreCounterTypes.nTaxon">eCoreCounterTypes.nTaxon</see>.
+    ''' </remarks>
+    Public ReadOnly Property nTaxon() As Integer
+        Get
+            Return Me.m_EcoPathData.NumTaxon
         End Get
     End Property
 
@@ -2287,22 +2297,20 @@ Public Class cCore
 
 #End Region 'EwEModel
 
-#Region "EcoPath"
+#Region " EcoPath "
 
-#Region " Variables"
+#Region " Variables "
 
     'Private EcoPath Model Variables
     Friend m_EcoPath As Ecopath.cEcoPathModel ' the EcoPath model
     Friend m_EcoPathData As cEcopathDataStructures = Nothing 'Parameters read for datasource for EcoPath
-    '  Friend m_EcoPathInputs As New cCoreInputOutputList(Of cEcoPathGroupInput)(eDataTypes.EcoPathGroupInput, 1)
-    '  Friend m_EcoPathOutputs As New cCoreInputOutputList(Of cEcoPathGroupOutput)(eDataTypes.EcoPathGroupOutput, 1)
 
     Friend m_EcoPathInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoPathGroupInput, 1)
     Friend m_EcoPathOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoPathGroupOutput, 1)
-
     Friend m_EcopathFleetsInput As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.FleetInput, 1)
+    Friend m_EcopathTaxon As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.Taxon, 1)
+
     Private m_postEcoPathMessage As CoreMessageDelegate
-    'Private bEcoPathInitializing As Boolean
     Friend m_PSDData As cPSDDatastructures
     Private m_PSDParameters As cPSDParameters
     Private m_psdModel As cPSDModel
@@ -2409,6 +2417,7 @@ Public Class cCore
 
                 'build input and output objects
                 bsuccess = bsuccess And InitEcoPathGroups()
+                bsuccess = bsuccess And InitTaxa()
 
                 'build the Stanza Groups for the interface
                 bsuccess = bsuccess And InitStanzas()
@@ -3125,6 +3134,186 @@ Public Class cCore
     End Function
 
 #End Region ' Groups
+
+#Region " Taxon "
+
+    Private Function InitTaxa() As Boolean
+
+        Dim bSucces As Boolean = True
+        Try
+
+            Me.m_EcopathTaxon.Clear()
+            For iTaxon As Integer = 1 To m_EcoPathData.NumFleet
+                Me.m_EcopathTaxon.Add(New cTaxon(Me, m_EcoPathData.TaxonDBID(iTaxon)))
+            Next iTaxon
+            Me.LoadTaxa()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".InitFleets() Error: " & ex.Message)
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadTaxa() As Boolean
+
+        Dim iTaxon As Integer = 0
+
+        Try
+
+            For Each taxon As cTaxon In Me.m_EcopathTaxon
+
+                taxon.AllowValidation = False
+
+                iTaxon = Array.IndexOf(Me.m_EcoPathData.TaxonDBID, taxon.DBID)
+
+                Debug.Assert(iTaxon > 0 And iTaxon <= m_EcoPathData.NumTaxon, "Failed to find Taxon index for database ID " & taxon.DBID)
+
+                taxon.Resize()
+
+                taxon.Index = iTaxon
+                taxon.DBID = Me.m_EcoPathData.TaxonDBID(iTaxon)
+                taxon.Group = Me.m_EcoPathData.TaxonGroup(iTaxon)
+                taxon.Proportion = Me.m_EcoPathData.TaxonGroupProp(iTaxon)
+                taxon.Name = Me.m_EcoPathData.TaxonCommonName(iTaxon)
+                taxon.Class = Me.m_EcoPathData.TaxonClass(iTaxon)
+                taxon.Order = Me.m_EcoPathData.TaxonOrder(iTaxon)
+                taxon.Family = Me.m_EcoPathData.TaxonFamily(iTaxon)
+                taxon.Genus = Me.m_EcoPathData.TaxonGenus(iTaxon)
+                taxon.Species = Me.m_EcoPathData.TaxonSpecies(iTaxon)
+                taxon.Code3A = Me.m_EcoPathData.TaxonCode3A(iTaxon)
+                taxon.CodeISSCAAP = Me.m_EcoPathData.TaxonCodeISCAAP(iTaxon)
+                taxon.CodeTaxon = Me.m_EcoPathData.TaxonCodeTaxon(iTaxon)
+                taxon.Source = Me.m_EcoPathData.TaxonSource(iTaxon)
+                taxon.SourceKey = Me.m_EcoPathData.TaxonSourceKey(iTaxon)
+                taxon.LastUpdated = Me.m_EcoPathData.TaxonLastUpdated(iTaxon)
+
+                taxon.ResetStatusFlags()
+                taxon.AllowValidation = True
+            Next
+
+            Return True
+
+        Catch ex As Exception
+
+            cLog.Write(Me.ToString() & ".LoadTaxon() Error: " & ex.Message)
+            Debug.Assert(False, Me.ToString & ".LoadTaxon() Error: " & ex.Message)
+            Return False
+
+        End Try
+
+    End Function
+
+    Private Function UpdateTaxon(ByVal iDBID As Integer) As Boolean
+
+        Dim iTaxon As Integer = Array.IndexOf(Me.m_EcoPathData.TaxonDBID, iDBID)
+        Debug.Assert(iTaxon > 0 And iTaxon <= m_EcoPathData.NumTaxon, "Failed to find Taxon index for database ID " & iDBID)
+
+        Dim taxon As cTaxon = Me.Taxon(iTaxon)
+
+        Me.m_EcoPathData.TaxonGroup(iTaxon) = taxon.Group
+        Me.m_EcoPathData.TaxonGroupProp(iTaxon) = taxon.Proportion
+        Me.m_EcoPathData.TaxonCommonName(iTaxon) = taxon.Name
+        Me.m_EcoPathData.TaxonClass(iTaxon) = taxon.Class
+        Me.m_EcoPathData.TaxonOrder(iTaxon) = taxon.Order
+        Me.m_EcoPathData.TaxonFamily(iTaxon) = taxon.Family
+        Me.m_EcoPathData.TaxonGenus(iTaxon) = taxon.Genus
+        Me.m_EcoPathData.TaxonSpecies(iTaxon) = taxon.Species
+        Me.m_EcoPathData.TaxonCode3A(iTaxon) = taxon.Code3A
+        Me.m_EcoPathData.TaxonCodeISCAAP(iTaxon) = taxon.CodeISSCAAP
+        Me.m_EcoPathData.TaxonCodeTaxon(iTaxon) = taxon.CodeTaxon
+        Me.m_EcoPathData.TaxonSource(iTaxon) = taxon.Source
+        Me.m_EcoPathData.TaxonSourceKey(iTaxon) = taxon.SourceKey
+        Me.m_EcoPathData.TaxonLastUpdated(iTaxon) = taxon.LastUpdated
+
+        Return True
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get a <see cref="cTaxon">taxon</see> for a given index.
+    ''' </summary>
+    ''' <param name="iTaxon">The index to obtain the Taxon definition for.</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Taxon(ByVal iTaxon As Integer) As cTaxon
+        Get
+            ' List will handle index / item index offsets
+            Return DirectCast(Me.m_EcopathTaxon(iTaxon), cTaxon)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Add a taxonomy definition to an Ecopath group.
+    ''' </summary>
+    ''' <param name="iGroup">Group index to add the taxonomy definition to.</param>
+    ''' <param name="data">Taxonomy data to add.</param>
+    ''' <param name="sProportion">Proportion that this taxonomy definition contributes to the entire group.</param>
+    ''' <param name="iDBID">Database ID for the new taxonomy definition.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function AddTaxon(ByVal iGroup As Integer, _
+                             ByVal data As ITaxonData, _
+                             ByVal sProportion As Single, _
+                             ByRef iDBID As Integer) As Boolean
+
+        Dim bSucces As Boolean = False
+
+        ' Sanity checks
+        If DataSource Is Nothing Then Return False
+        If Not TypeOf (DataSource) Is IEcopathDataSource Then Return False
+
+        ' Increase batch count
+        If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
+
+        ' Start the actual work. The datasource will ensure the new fleet will be added througout models and scenarios
+        If (DirectCast(DataSource, IEcopathDataSource).AddTaxon(Me.m_EcoPathData.GroupDBID(iGroup), data, sProportion, iDBID)) Then
+            Me.DataAddedOrRemovedMessage("Ecopath number of taxa has changed.", eCoreComponentType.EcoPath, eDataTypes.Taxon)
+            bSucces = True
+        End If
+
+        ' Decrease batch count
+        Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecopath)
+
+        Return bSucces
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Remove a taxonomy definition from an Ecopath group.
+    ''' </summary>
+    ''' <param name="iTaxon">Index of the taxonomy definition to remove.</param>
+    ''' -----------------------------------------------------------------------
+    Public Function RemoveTaxon(ByVal iTaxon As Integer) As Boolean
+
+        Dim bSucces As Boolean = False
+        Dim ds As IEcopathDataSource = Nothing
+
+        ' Sanity checks
+        If DataSource Is Nothing Then Return False
+        If Not TypeOf (DataSource) Is IEcopathDataSource Then Return False
+
+        ' Increase batch count
+        If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
+
+        ds = DirectCast(DataSource, IEcopathDataSource)
+        If ds.RemoveTaxon(Me.m_EcoPathData.TaxonDBID(iTaxon)) Then
+            Me.DataAddedOrRemovedMessage("Ecopath number of taxa has changed.", eCoreComponentType.EcoPath, eDataTypes.Taxon)
+            bSucces = True
+        End If
+
+        ' Decrease batch count
+        Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecopath)
+
+        Return bSucces
+
+    End Function
+
+#End Region ' Taxon
 
 #Region " Fleets "
 
@@ -10127,23 +10316,22 @@ Public Class cCore
 
                 Case eDataTypes.EcoPathGroupInput
                     If bValidatedOk Then Me.UpdateEcopathInput(idAffected)
-
-                    ' Special cases: name and colour changes will not the Ecopath execution state!
+                    ' Special cases: name and colour changes will not affect the Ecopath execution state!
                     ' Reroute these changes to the model itself
                     If vs.VarName = eVarNameFlags.Name Or vs.VarName = eVarNameFlags.PoolColor Then
                         msAffected = eCoreComponentType.DataSource
                     End If
 
-                Case eDataTypes.EcoPathGroupOutput
-                    ' Values other than Name cannot be changed by user
-                    Debug.Assert(value.varName = eVarNameFlags.Name, "Should not receive validation updates on output objects!")
+                Case eDataTypes.Taxon
+                    If bValidatedOk Then Me.UpdateTaxon(idAffected)
 
                 Case eDataTypes.FleetInput
                     If bValidatedOk Then Me.UpdateFleetInput(idAffected)
-
-                    'Case eDataTypes.FleetOutput
-                    '    ' Values other than Name cannot be changed by user
-                    '    Debug.Assert(value.varName = eVarNameFlags.Name, "Should not receive validation updates on output objects!")
+                    ' Special cases: name and colour changes will not affect the Ecopath execution state!
+                    ' Reroute these changes to the model itself
+                    If vs.VarName = eVarNameFlags.Name Or vs.VarName = eVarNameFlags.PoolColor Then
+                        msAffected = eCoreComponentType.DataSource
+                    End If
 
                 Case eDataTypes.Stanza
                     If bValidatedOk Then Me.UpdateStanza(idAffected)

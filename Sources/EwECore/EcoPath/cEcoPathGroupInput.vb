@@ -35,10 +35,9 @@ Public Class cEcoPathGroupInput
 
     Sub New(ByRef core As cCore, ByVal DBID As Integer)
         MyBase.New(core)
-        Dim val As cValue
-        Dim meta As cVariableMetaData
 
-        m_core = core
+        Dim val As cValue = Nothing
+        Dim meta As cVariableMetaData = Nothing
 
         ' JS Mar-29-07: Private vars not used outside constructor. No system is in place to updated these with core counter changes.
         '               To prevent confusion later on it may be better to explicitly disable this logic until needed. If ever.
@@ -47,12 +46,12 @@ Public Class cEcoPathGroupInput
         ''jb June-09-06 added m_ndetritus to the constructor so that detritus fate could be dimensioned
         'm_nDetritus = m_core.getCoreCounter(eCoreCounterTypes.nDetritus)
 
-        m_dataType = eDataTypes.EcoPathGroupInput
-        m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_dataType = eDataTypes.EcoPathGroupInput
+        Me.m_coreComponent = eCoreComponentType.EcoPath
 
         'create and set the status object to this source and OK
-        m_ValidationStatus = New cVariableStatus
-        m_ValidationStatus.CoreDataObject = Me
+        Me.m_ValidationStatus = New cVariableStatus
+        Me.m_ValidationStatus.CoreDataObject = Me
         Me.AllowValidation = False
 
         Me.DBID = DBID

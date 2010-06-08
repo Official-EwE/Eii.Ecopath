@@ -1,38 +1,3 @@
-'==============================================================================
-'
-' $Log: cEwEScenario.vb,v $
-' Revision 1.2  2009/01/16 18:30:11  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:12  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.8  2008/08/15 17:14:09  jeroens
-' Cannot delete a loaded scenario
-'
-' Revision 1.7  2008/05/29 22:22:47  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.6  2008/05/08 00:50:18  jeroens
-' Fixed bug 467
-'
-' Revision 1.5  2008/02/13 03:53:41  jeroens
-' Added IsLoaded()
-'
-' Revision 1.4  2008/01/11 09:53:44  jeroens
-' LastSaved date changed to Single to include time
-'
-' Revision 1.3  2008/01/08 23:13:29  jeroens
-' Added LastSaved date
-'
-' Revision 1.2  2007/12/09 22:12:46  jeroens
-' * Uses new dataentity Datasource
-'
-' Revision 1.1  2007/12/07 14:40:44  jeroens
-' Initial version, bundles all replicated code across three different scenario classes
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core

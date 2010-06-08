@@ -148,7 +148,7 @@ Namespace DataSources
         ''' Adds a stanza group to the datasource.
         ''' </summary>
         ''' <param name="strStanzaName">Name to assign to new stanza group.</param>
-        ''' <param name="iGroupID">Array of DBIDs of <see cref="cEcoPathGroupInput">Ecopath group</see>
+        ''' <param name="aiGroupID">Array of DBIDs of <see cref="cEcoPathGroupInput">Ecopath group</see>
         ''' to assign to this mutli-stanza configuration.</param>
         ''' <param name="iGroupAges">Array of start ages to assign to these groups.</param>
         ''' <param name="iDBID">Database ID assigned to the new stanza group.</param>
@@ -157,7 +157,7 @@ Namespace DataSources
         ''' is defined without having any groups. To avoid this situation, this method
         ''' requires a valid <paramref name="iGroupID">group ID</paramref>.</remarks>
         ''' -------------------------------------------------------------------
-        Function AppendStanza(ByVal strStanzaName As String, ByVal iGroupID() As Integer, ByVal iGroupAges() As Integer, _
+        Function AppendStanza(ByVal strStanzaName As String, ByVal aiGroupID() As Integer, ByVal iGroupAges() As Integer, _
                 ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
@@ -238,6 +238,34 @@ Namespace DataSources
         Function MovePedigreeLevel(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean
 
 #End Region ' Pedigree
+
+#Region " Taxa "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Adds a taxonomy definition to the datasource.
+        ''' </summary>
+        ''' <param name="iGroupID">DBIDs of <see cref="cEcoPathGroupInput">Ecopath group</see>
+        ''' to assign this taxon to.</param>
+        ''' <param name="data">Data to populate taxonomy definition with.</param>
+        ''' <param name="sProportion">Proportion this taxon contributes to the group.</param>
+        ''' <param name="iDBID">Database ID assigned to the new taxon.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function AddTaxon(ByVal iGroupID As Integer, _
+                          ByVal data As ITaxonData, _
+                          ByVal sProportion As Single, _
+                          ByRef iDBID As Integer) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Removes a taxonomy definition from the datasource.
+        ''' </summary>
+        ''' <param name="iTaxonID">Database ID of the taxon to remove.</param>
+        ''' -------------------------------------------------------------------
+        Function RemoveTaxon(ByVal iTaxonID As Integer) As Boolean
+
+#End Region ' Taxa
 
     End Interface
 

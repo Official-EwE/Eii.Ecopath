@@ -17,7 +17,7 @@ Imports SourceGrid2
 ''' </summary>
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
-Public Class EditGroupsEwEGrid
+Public Class gridEditGroups
     Inherits EwEGrid
 
 #Region " Private vars "
@@ -361,7 +361,7 @@ Public Class EditGroupsEwEGrid
             Get
                 If (Me.m_stanza Is Nothing) Then
                     If (Me.m_group Is Nothing) Then
-                        Return EditGroupsEwEGrid.sVBK
+                        Return gridEditGroups.sVBK
                     Else
                         Return Me.m_group.VBK
                     End If
@@ -417,7 +417,7 @@ Public Class EditGroupsEwEGrid
         ''' <summary>List of groups in this stanza configuration.</summary>
         Private m_alGroups As New List(Of cGroupInfo)
         ''' <summary>VBK value of a stanza group.</summary>
-        Private m_sVBK As Single = EditGroupsEwEGrid.sVBK
+        Private m_sVBK As Single = gridEditGroups.sVBK
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -447,7 +447,7 @@ Public Class EditGroupsEwEGrid
         Public Sub New(ByVal strName As String)
             Me.m_sg = Nothing
             Me.m_strName = strName
-            Me.m_sVBK = EditGroupsEwEGrid.sVBK
+            Me.m_sVBK = gridEditGroups.sVBK
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -1499,6 +1499,7 @@ Public Class EditGroupsEwEGrid
         Next iRow
 
     End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Finds <see cref="cStanzaInfo">StanzaInfo</see> with the given name in 

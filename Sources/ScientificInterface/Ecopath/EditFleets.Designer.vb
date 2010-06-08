@@ -38,7 +38,7 @@ Namespace Ecopath
             Me.m_hdrColors = New cEwEHeaderLabel
             Me.m_hdrOrder = New cEwEHeaderLabel
             Me.m_hdrEdit = New cEwEHeaderLabel
-            Me.m_grid = New EditFleetsEwEGrid
+            Me.m_grid = New gridEditFleets
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -187,7 +187,7 @@ Namespace Ecopath
         Private WithEvents m_btnInsert As System.Windows.Forms.Button
         Private WithEvents m_hdrEdit As cEwEHeaderLabel
         Private WithEvents m_hdrOrder As cEwEHeaderLabel
-        Private WithEvents m_grid As EditFleetsEwEGrid
+        Private WithEvents m_grid As gridEditFleets
         Private WithEvents m_btnDefaultAll As System.Windows.Forms.Button
         Private WithEvents m_hdrColors As cEwEHeaderLabel
         Private WithEvents m_btnDefaultCurrent As System.Windows.Forms.Button
