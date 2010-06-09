@@ -972,8 +972,8 @@ Namespace MSE
 
         Public ReadOnly Property Variance(ByVal Index As Integer) As Single
             Get
-                'Dim ss As Single
-                'Dim n As Single
+                Dim ss As Single = 0
+                Dim n As Single = 0
                 Try
 
                     Debug.Assert(Index <= Me.m_lstValues.Count, "MSE Statistics Variance index out of bounds.")
