@@ -1,16 +1,4 @@
-'==============================================================================
-'
-' $Log: EwEHierarchyGridCell.vb,v $
-' Revision 1.3  2009/05/28 12:37:30  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.2  2009/03/30 17:09:33  jeroens
-' Split cells
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Properties
@@ -19,13 +7,27 @@ Imports SourceGrid2
 
 Namespace Controls.EwEGrid
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Parent grid cell for collapsing and expanding a collection of child rows.
+    ''' </summary>
+    ''' <remarks>
+    ''' Cells of this type maintain a list of child rows that can be collapsed
+    ''' or expanded via <see cref="EwEHierarchyGridCell.Expanded">Expanded</see>.
+    ''' Add child rows via <see cref="EwEHierarchyGridCell.AddChildRow">AddChildRow</see>.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
     Public Class EwEHierarchyGridCell
         : Inherits EwECellBase
 
+#Region " Private vars "
+
         Private m_bExpanded As Boolean = True
         Private m_viz As New cVisualizerEwECollapseExpandRowHeader()
         Private m_liChildRows As New List(Of Integer)
+
+#End Region ' Private vars
 
         Public Sub New()
             MyBase.New("", GetType(String))
@@ -56,6 +58,15 @@ Namespace Controls.EwEGrid
             End While
             Me.m_liChildRows.Insert(iPos, iRow)
         End Sub
+
+        ''' <summary>
+        ''' Get the number of child rows.
+        ''' </summary>
+        Public ReadOnly Property NumChildRows() As Integer
+            Get
+                Return Me.m_liChildRows.Count
+            End Get
+        End Property
 
         Private Sub ShowHideChildren()
             Dim g As GridVirtual = Me.Grid
