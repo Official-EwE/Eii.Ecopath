@@ -77,7 +77,7 @@ Imports ScientificInterface.Other
         ''' <summary>Flag stating whether a user action is confirmed</summary>
         Private m_bConfirmed As Boolean = True
         ''' <summary>The status of a Fleet in the interface.</summary>
-        Private m_status As AddRemoveItemStatus = AddRemoveItemStatus.Original
+        Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -92,7 +92,7 @@ Imports ScientificInterface.Other
             Me.m_fleet = fleet
             Me.m_strName = fleet.Name
             Me.m_iColor = fleet.PoolColor
-            Me.m_status = AddRemoveItemStatus.Original
+            Me.m_status = eItemStatusTypes.Original
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -105,7 +105,7 @@ Imports ScientificInterface.Other
             Me.m_fleet = Nothing
             Me.m_strName = strName
             Me.m_iColor = 0
-            Me.m_status = AddRemoveItemStatus.Added
+            Me.m_status = eItemStatusTypes.Added
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -151,11 +151,11 @@ Imports ScientificInterface.Other
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="AddRemoveItemStatus">add/remove item status</see>
-        ''' for the fleet object.
+        ''' Get the <see cref="eItemStatusTypes">item status</see> for the fleet 
+        ''' object.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Status() As AddRemoveItemStatus
+        Public ReadOnly Property Status() As eItemStatusTypes
             Get
                 Return Me.m_status
             End Get
@@ -197,20 +197,20 @@ Imports ScientificInterface.Other
         ''' -------------------------------------------------------------------
         Public Property FlaggedForDeletion() As Boolean
             Get
-                Return Me.m_status = AddRemoveItemStatus.Removed
+                Return Me.m_status = eItemStatusTypes.Removed
             End Get
             Set(ByVal bDelete As Boolean)
                 If Me.m_fleet IsNot Nothing Then
                     If bDelete Then
-                        Me.m_status = AddRemoveItemStatus.Removed
+                        Me.m_status = eItemStatusTypes.Removed
                     Else
-                        Me.m_status = AddRemoveItemStatus.Original
+                        Me.m_status = eItemStatusTypes.Original
                     End If
                 Else
                     If bDelete Then
-                        Me.m_status = AddRemoveItemStatus.Invalid
+                        Me.m_status = eItemStatusTypes.Invalid
                     Else
-                        Me.m_status = AddRemoveItemStatus.Added
+                        Me.m_status = eItemStatusTypes.Added
                     End If
                 End If
             End Set
@@ -407,13 +407,13 @@ Imports ScientificInterface.Other
         aCells(eColumnTypes.FleetColor).SetValue(pos, clr)
 
         Select Case fi.Status
-            Case AddRemoveItemStatus.Original
+            Case eItemStatusTypes.Original
                 vm = Me.m_vmOriginal
                 strText = ""
-            Case AddRemoveItemStatus.Added
+            Case eItemStatusTypes.Added
                 vm = Me.m_vmAdded
                 strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
-            Case AddRemoveItemStatus.Removed
+            Case eItemStatusTypes.Removed
                 vm = Me.m_vmRemoved
                 strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
         End Select
@@ -583,19 +583,19 @@ Imports ScientificInterface.Other
         ' Check to see what is to happen to the Fleet now
         Select Case fi.Status
 
-            Case AddRemoveItemStatus.Original
+            Case eItemStatusTypes.Original
                 ' Clear removed status of the Fleet
                 Me.m_lfiFleetsRemoved.Remove(Me.m_lfiFleets(iFleet))
 
-            Case AddRemoveItemStatus.Added
+            Case eItemStatusTypes.Added
                 ' Clear removed status of the Fleet
                 Me.m_lfiFleetsRemoved.Remove(Me.m_lfiFleets(iFleet))
 
-            Case AddRemoveItemStatus.Removed
+            Case eItemStatusTypes.Removed
                 ' Set removed status
                 Me.m_lfiFleetsRemoved.Add(Me.m_lfiFleets(iFleet))
 
-            Case AddRemoveItemStatus.Invalid
+            Case eItemStatusTypes.Invalid
                 ' Set removed status
                 Me.m_lfiFleets.RemoveAt(iFleet)
 

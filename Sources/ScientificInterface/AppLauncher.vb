@@ -2556,7 +2556,7 @@ Public Class AppLauncher
     ''' Command update handler; manages the <see cref="m_cmdViewStartPanel">View Start Page command</see> state.
     ''' </summary>
     Private Sub OnUpdateViewStartPage(ByVal cmd As cCommand) Handles m_cmdViewStartPanel.OnUpdate
-        cmd.Checked = Not m_StartPage.IsDisposed()
+        cmd.Checked = Not m_StartPage.IsDisposed() And Me.m_StartPage.Visible
     End Sub
 
     ''' <summary>

@@ -84,7 +84,7 @@ Namespace Ecospace
             ''' <summary>Flag stating whether a user action is confirmed</summary>
             Private m_bConfirmed As Boolean = True
             ''' <summary>The status of a Region in the interface.</summary>
-            Private m_status As AddRemoveItemStatus = AddRemoveItemStatus.Original
+            Private m_status As eItemStatusTypes = eItemStatusTypes.Original
             ''' <summary>Habitat to allocate this region to, if any</summary>
             Private m_hab As cEcospaceHabitat = Nothing
             ''' <summary>MPA to allocate this region to, if any</summary>
@@ -106,7 +106,7 @@ Namespace Ecospace
                 Debug.Assert(Region IsNot Nothing)
                 Me.m_Region = Region
                 Me.m_strName = Region.Name
-                Me.m_status = AddRemoveItemStatus.Original
+                Me.m_status = eItemStatusTypes.Original
                 Me.m_iNumCells = Region.NumCells
             End Sub
 
@@ -119,7 +119,7 @@ Namespace Ecospace
             Public Sub New(ByVal strName As String)
                 Me.m_Region = Nothing
                 Me.m_strName = strName
-                Me.m_status = AddRemoveItemStatus.Added
+                Me.m_status = eItemStatusTypes.Added
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -150,11 +150,11 @@ Namespace Ecospace
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Get the <see cref="AddRemoveItemStatus">add/remove item status</see>
+            ''' Get the <see cref="eItemStatusTypes">item status</see>
             ''' for the region object.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property Status() As AddRemoveItemStatus
+            Public ReadOnly Property Status() As eItemStatusTypes
                 Get
                     Return Me.m_status
                 End Get
@@ -207,20 +207,20 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Property FlaggedForDeletion() As Boolean
                 Get
-                    Return Me.m_status = AddRemoveItemStatus.Removed
+                    Return Me.m_status = eItemStatusTypes.Removed
                 End Get
                 Set(ByVal bDelete As Boolean)
                     If Not Me.IsNew Then
                         If bDelete Then
-                            Me.m_status = AddRemoveItemStatus.Removed
+                            Me.m_status = eItemStatusTypes.Removed
                         Else
-                            Me.m_status = AddRemoveItemStatus.Original
+                            Me.m_status = eItemStatusTypes.Original
                         End If
                     Else
                         If bDelete Then
-                            Me.m_status = AddRemoveItemStatus.Invalid
+                            Me.m_status = eItemStatusTypes.Invalid
                         Else
-                            Me.m_status = AddRemoveItemStatus.Added
+                            Me.m_status = eItemStatusTypes.Added
                         End If
                     End If
                 End Set
@@ -422,13 +422,13 @@ Namespace Ecospace
             aCells(eColumnTypes.RegionCellCount).SetValue(pos, ri.NumCells)
 
             Select Case ri.Status
-                Case AddRemoveItemStatus.Original
+                Case eItemStatusTypes.Original
                     vm = Me.m_vmOriginal
                     strText = ""
-                Case AddRemoveItemStatus.Added
+                Case eItemStatusTypes.Added
                     vm = Me.m_vmAdded
                     strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
-                Case AddRemoveItemStatus.Removed
+                Case eItemStatusTypes.Removed
                     vm = Me.m_vmRemoved
                     strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
             End Select
@@ -835,19 +835,19 @@ Namespace Ecospace
             ' Check to see what is to happen to the Region now
             Select Case ri.Status
 
-                Case AddRemoveItemStatus.Original
+                Case eItemStatusTypes.Original
                     ' Clear removed status of the Region
                     Me.m_alRegionsRemoved.Remove(ri)
 
-                Case AddRemoveItemStatus.Added
+                Case eItemStatusTypes.Added
                     ' Clear removed status of the Region
                     Me.m_alRegionsRemoved.Remove(ri)
 
-                Case AddRemoveItemStatus.Removed
+                Case eItemStatusTypes.Removed
                     ' Set removed status
                     Me.m_alRegionsRemoved.Add(ri)
 
-                Case AddRemoveItemStatus.Invalid
+                Case eItemStatusTypes.Invalid
                     ' Set removed status
                     Me.m_lregions.Remove(ri)
 

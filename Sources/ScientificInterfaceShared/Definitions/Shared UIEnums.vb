@@ -10,7 +10,7 @@ Namespace Definitions
     ''' updating the list in a batch operation.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Enum AddRemoveItemStatus As Integer
+    Public Enum eItemStatusTypes As Integer
         ''' <summary>Item belongs to the original list.</summary>
         Original = 0
         ''' <summary>Item is flagged to be added to the list.</summary>

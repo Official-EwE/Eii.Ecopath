@@ -124,7 +124,7 @@ Public Class gridEditGroups
         ''' <summary>Flag stating whether a user action is confirmed</summary>
         Private m_bConfirmed As Boolean = True
         ''' <summary>The status of a group in the interface.</summary>
-        Private m_status As AddRemoveItemStatus = AddRemoveItemStatus.Original
+        Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -140,7 +140,7 @@ Public Class gridEditGroups
             Me.m_strName = group.Name
             Me.m_sPP = group.PP
             Me.m_iColor = group.PoolColor
-            Me.m_status = AddRemoveItemStatus.Original
+            Me.m_status = eItemStatusTypes.Original
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -154,7 +154,7 @@ Public Class gridEditGroups
             Me.m_strName = strName
             Me.m_sPP = CSng(ePrimaryProductionTypes.Consumer)
             Me.m_iColor = 0
-            Me.m_status = AddRemoveItemStatus.Added
+            Me.m_status = eItemStatusTypes.Added
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -228,7 +228,7 @@ Public Class gridEditGroups
             End Set
         End Property
 
-        Public ReadOnly Property Status() As AddRemoveItemStatus
+        Public ReadOnly Property Status() As eItemStatusTypes
             Get
                 Return Me.m_status
             End Get
@@ -378,20 +378,20 @@ Public Class gridEditGroups
         ''' -------------------------------------------------------------------
         Public Property FlaggedForDeletion() As Boolean
             Get
-                Return Me.m_status = AddRemoveItemStatus.Removed
+                Return Me.m_status = eItemStatusTypes.Removed
             End Get
             Set(ByVal bDelete As Boolean)
                 If Me.m_group IsNot Nothing Then
                     If bDelete Then
-                        Me.m_status = AddRemoveItemStatus.Removed
+                        Me.m_status = eItemStatusTypes.Removed
                     Else
-                        Me.m_status = AddRemoveItemStatus.Original
+                        Me.m_status = eItemStatusTypes.Original
                     End If
                 Else
                     If bDelete Then
-                        Me.m_status = AddRemoveItemStatus.Invalid
+                        Me.m_status = eItemStatusTypes.Invalid
                     Else
-                        Me.m_status = AddRemoveItemStatus.Added
+                        Me.m_status = eItemStatusTypes.Added
                     End If
                 End If
             End Set
@@ -940,13 +940,13 @@ Public Class gridEditGroups
         Me(iRow, eColumnTypes.GroupColor).SetValue(pos, clr)
 
         Select Case gi.Status
-            Case AddRemoveItemStatus.Original
+            Case eItemStatusTypes.Original
                 vm = Me.m_vmOriginal
                 strText = ""
-            Case AddRemoveItemStatus.Added
+            Case eItemStatusTypes.Added
                 vm = Me.m_vmAdded
                 strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
-            Case AddRemoveItemStatus.Removed
+            Case eItemStatusTypes.Removed
                 vm = Me.m_vmRemoved
                 strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
         End Select
@@ -1024,7 +1024,7 @@ Public Class gridEditGroups
         ' Determine if group has stanza info
         bHasStanza = (gi.Stanza IsNot Nothing)
         ' Can only edit stanza groups that are active and are no detritus groups
-        bCanEditStanza = (gi.Status <> AddRemoveItemStatus.Removed) And (gi.PP <> ePrimaryProductionTypes.Detritus)
+        bCanEditStanza = (gi.Status <> eItemStatusTypes.Removed) And (gi.PP <> ePrimaryProductionTypes.Detritus)
 
         ' Sanity check
         Debug.Assert(aCells IsNot Nothing)
@@ -1251,11 +1251,11 @@ Public Class gridEditGroups
         ' Check to see what is to happen to the group now
         Select Case gi.Status
 
-            Case AddRemoveItemStatus.Original, AddRemoveItemStatus.Added
+            Case eItemStatusTypes.Original, eItemStatusTypes.Added
                 ' Clear removed status of the group, if any
                 Me.m_lgiGroupsRemoved.Remove(gi)
 
-            Case AddRemoveItemStatus.Removed, AddRemoveItemStatus.Invalid
+            Case eItemStatusTypes.Removed, eItemStatusTypes.Invalid
                 ' Get connected stanza info, if any
                 si = gi.Stanza
                 ' Part of a stanza config?

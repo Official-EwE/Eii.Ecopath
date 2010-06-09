@@ -74,7 +74,7 @@ Namespace Ecospace
             ''' <summary>Flag stating whether a user action is confirmed</summary>
             Private m_bConfirmed As Boolean = True
             ''' <summary>The status of a Layer in the interface.</summary>
-            Private m_status As AddRemoveItemStatus = AddRemoveItemStatus.Original
+            Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -90,7 +90,7 @@ Namespace Ecospace
                 Me.m_strName = Layer.Name
                 Me.m_strDescription = Layer.Description
                 Me.m_sWeight = Layer.Weight
-                Me.m_status = AddRemoveItemStatus.Original
+                Me.m_status = eItemStatusTypes.Original
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -104,7 +104,7 @@ Namespace Ecospace
                 Me.m_strName = strName
                 Me.m_strDescription = strDescription
                 Me.m_sWeight = sWeight
-                Me.m_status = AddRemoveItemStatus.Added
+                Me.m_status = eItemStatusTypes.Added
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -163,11 +163,11 @@ Namespace Ecospace
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Get the <see cref="AddRemoveItemStatus">add/remove item status</see>
+            ''' Get the <see cref="eItemStatusTypes">item status</see>
             ''' for the layer object.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property Status() As AddRemoveItemStatus
+            Public ReadOnly Property Status() As eItemStatusTypes
                 Get
                     Return Me.m_status
                 End Get
@@ -222,20 +222,20 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Property FlaggedForDeletion() As Boolean
                 Get
-                    Return Me.m_status = AddRemoveItemStatus.Removed
+                    Return Me.m_status = eItemStatusTypes.Removed
                 End Get
                 Set(ByVal bDelete As Boolean)
                     If Me.m_Layer IsNot Nothing Then
                         If bDelete Then
-                            Me.m_status = AddRemoveItemStatus.Removed
+                            Me.m_status = eItemStatusTypes.Removed
                         Else
-                            Me.m_status = AddRemoveItemStatus.Original
+                            Me.m_status = eItemStatusTypes.Original
                         End If
                     Else
                         If bDelete Then
-                            Me.m_status = AddRemoveItemStatus.Invalid
+                            Me.m_status = eItemStatusTypes.Invalid
                         Else
-                            Me.m_status = AddRemoveItemStatus.Added
+                            Me.m_status = eItemStatusTypes.Added
                         End If
                     End If
                 End Set
@@ -439,13 +439,13 @@ Namespace Ecospace
             aCells(eColumnTypes.LayerWeight).SetValue(pos, CSng(li.Weight))
 
             Select Case li.Status
-                Case AddRemoveItemStatus.Original
+                Case eItemStatusTypes.Original
                     vm = Me.m_vmOriginal
                     strText = ""
-                Case AddRemoveItemStatus.Added
+                Case eItemStatusTypes.Added
                     vm = Me.m_vmAdded
                     strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
-                Case AddRemoveItemStatus.Removed
+                Case eItemStatusTypes.Removed
                     vm = Me.m_vmRemoved
                     strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
             End Select
@@ -585,19 +585,19 @@ Namespace Ecospace
             ' Check to see what is to happen to the Layer now
             Select Case li.Status
 
-                Case AddRemoveItemStatus.Original
+                Case eItemStatusTypes.Original
                     ' Clear removed status of the Layer
                     Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
 
-                Case AddRemoveItemStatus.Added
+                Case eItemStatusTypes.Added
                     ' Clear removed status of the Layer
                     Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
 
-                Case AddRemoveItemStatus.Removed
+                Case eItemStatusTypes.Removed
                     ' Set removed status
                     Me.m_alLayersRemoved.Add(Me.m_alLayers(iLayer))
 
-                Case AddRemoveItemStatus.Invalid
+                Case eItemStatusTypes.Invalid
                     ' Set removed status
                     Me.m_alLayers.RemoveAt(iLayer)
 

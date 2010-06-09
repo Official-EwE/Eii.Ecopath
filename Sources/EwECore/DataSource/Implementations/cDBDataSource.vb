@@ -541,10 +541,6 @@ Namespace DataSources
 
         End Class
 
-        Private Shared Function GetJulianDate() As Single
-            Return CSng(Date.Now().ToOADate())
-        End Function
-
 #End Region ' Private helper bits
 
 #Region " Messages "
@@ -785,7 +781,7 @@ Namespace DataSources
                 drow("MinLon") = Me.m_core.m_EwEModelMinLon
                 drow("MaxLon") = Me.m_core.m_EwEModelMaxLon
                 drow("AreaName") = Me.m_core.m_EwEModelAreaName
-                drow("LastSaved") = cDBDataSource.GetJulianDate()
+                drow("LastSaved") = cDateUtils.GetJulianDate()
 
                 If bNewRow Then
                     writer.AddRow(drow)
@@ -2911,7 +2907,7 @@ Namespace DataSources
                     drow("Contact") = strContact
                     drow("FirstYear") = iFirstYear
                     drow("NumYears") = iNumYears
-                    'drow("LastSaved") = cDBDataSource.GetJulianDate()
+                    'drow("LastSaved") = cDateUtils.GetJulianDate()
                     writer.AddRow(drow)
 
                     Me.m_db.ReleaseWriter(writer)
@@ -2997,8 +2993,8 @@ Namespace DataSources
                     iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("EcopathGroupID")))
                     If iGroup > 0 Then
                         ecopathDS.TaxonDBID(iTaxon) = CInt(reader("TaxonID"))
-                        ecopathDS.TaxonGroup(iGroup) = iTaxon
-                        ecopathDS.TaxonGroupProp(iGroup) = CSng(reader("Proportion"))
+                        ecopathDS.TaxonGroup(iTaxon) = iGroup
+                        ecopathDS.TaxonGroupProp(iTaxon) = CSng(reader("Proportion"))
                         ecopathDS.TaxonCodeISCAAP(iTaxon) = CStr(Me.ReadSafe(reader, "CodeISCAAP", ""))
                         ecopathDS.TaxonCodeTaxon(iTaxon) = CStr(Me.ReadSafe(reader, "CodeTaxon", ""))
                         ecopathDS.TaxonCode3A(iTaxon) = CStr(Me.ReadSafe(reader, "Code3A", ""))
@@ -3134,7 +3130,7 @@ Namespace DataSources
             drow("CommonName") = data.Common
             drow("SourceName") = data.Source
             drow("SourceKey") = data.SourceKey
-            drow("LastUpdated") = cDBDataSource.GetJulianDate()
+            drow("LastUpdated") = cDateUtils.GetJulianDate()
             writer.AddRow(drow)
 
             Me.m_db.ReleaseWriter(writer)
@@ -3370,7 +3366,7 @@ Namespace DataSources
                 drow("TemperatureForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.TemperatureForceNo)
                 drow("NutPBmax") = ecosimDS.NutPBmax
                 'drow("UseVarPQ") = ecosimDS.UseVarPQ
-                drow("LastSaved") = cDBDataSource.GetJulianDate()
+                drow("LastSaved") = cDateUtils.GetJulianDate()
 
                 ' Save changes
                 Me.m_db.ReleaseWriter(writer)
@@ -3448,7 +3444,7 @@ Namespace DataSources
                 drow("Description") = strDescription
                 drow("Author") = strAuthor
                 drow("Contact") = strContact
-                drow("LastSaved") = cDBDataSource.GetJulianDate()
+                drow("LastSaved") = cDateUtils.GetJulianDate()
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)
@@ -6867,7 +6863,7 @@ Namespace DataSources
                 If Me.m_sVersion >= 6.01 Then
                     drow("Tolerance") = ecospaceDS.Tol
                 End If
-                drow("LastSaved") = cDBDataSource.GetJulianDate()
+                drow("LastSaved") = cDateUtils.GetJulianDate()
 
                 drow.EndEdit()
 
@@ -6948,7 +6944,7 @@ Namespace DataSources
                 drow("Description") = strDescription
                 drow("Author") = strAuthor
                 drow("Contact") = strContact
-                drow("LastSaved") = cDBDataSource.GetJulianDate()
+                drow("LastSaved") = cDateUtils.GetJulianDate()
                 drow("InRow") = InRow
                 drow("InCol") = InCol
                 drow("ModelType") = 2
@@ -9208,7 +9204,7 @@ Namespace DataSources
                 drow("Coutflow") = tracerDS.CoutFlow(0)
                 drow("Cdecay") = tracerDS.cdecay(0)
                 drow("ConForcingShapeID") = ecosimDS.ForcingDBIDs(tracerDS.ConForceNumber)
-                drow("LastSaved") = cDBDataSource.GetJulianDate()
+                drow("LastSaved") = cDateUtils.GetJulianDate()
                 drow.EndEdit()
 
                 ' Save changes
@@ -9317,7 +9313,7 @@ Namespace DataSources
                 drow("Description") = strDescription
                 drow("Author") = strAuthor
                 drow("Contact") = strContact
-                drow("LastSaved") = cDBDataSource.GetJulianDate()
+                drow("LastSaved") = cDateUtils.GetJulianDate()
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)

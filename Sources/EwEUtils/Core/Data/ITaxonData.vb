@@ -24,7 +24,8 @@ Namespace Core
         ReadOnly Property Code3A() As String
         ReadOnly Property Source() As String
         ReadOnly Property SourceKey() As String
-        ReadOnly Property LastUpdated() As Date
+        ''' <summary>Julian date when this Taxon was last updated.</summary>
+        ReadOnly Property LastUpdated() As Single
 
     End Interface
 
