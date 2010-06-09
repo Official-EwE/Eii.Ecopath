@@ -3143,13 +3143,13 @@ Public Class cCore
         Try
 
             Me.m_EcopathTaxon.Clear()
-            For iTaxon As Integer = 1 To m_EcoPathData.NumFleet
+            For iTaxon As Integer = 1 To m_EcoPathData.NumTaxon
                 Me.m_EcopathTaxon.Add(New cTaxon(Me, m_EcoPathData.TaxonDBID(iTaxon)))
             Next iTaxon
             Me.LoadTaxa()
 
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".InitFleets() Error: " & ex.Message)
+            Debug.Assert(False, Me.ToString & ".InitTaxa() Error: " & ex.Message)
             bSucces = False
         End Try
 
