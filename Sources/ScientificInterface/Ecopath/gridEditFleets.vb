@@ -782,39 +782,7 @@ Imports ScientificInterface.Other
 
 #Region " Selection extension "
 
-    Public Function SelectedRow() As Integer
-
-        Dim iSelectedRow As Integer = -1
-        Dim selection As SourceGrid2.Selection = Me.Selection
-        Dim arSelection As SourceGrid2.Range = Nothing
-
-        If selection Is Nothing Then Return iSelectedRow
-        If selection.Count = 0 Then Return iSelectedRow
-
-        arSelection = selection.Item(0)
-        iSelectedRow = arSelection.Start.Row
-        Return iSelectedRow
-
-    End Function
-
-    Private Sub SelectRow(ByVal iRow As Integer)
-
-        ' Clear current selection
-        If Me.Selection IsNot Nothing Then
-            Dim r As SourceGrid2.Range = Me.Selection.GetRange()
-            If Not r.IsEmpty Then
-                Me.Selection.RemoveRange(r)
-            End If
-            Me.Selection.AddRange(New SourceGrid2.Range(iRow, 0, iRow, Me.ColumnsCount - 1))
-
-            ' Make sure selected row is visible
-            Me.ShowCell(New Position(iRow, 0))
-            Me.RaiseSelectionChangeEvent()
-        End If
-
-    End Sub
-
-    Private Sub SelectRow(ByVal fi As cFleetInfo)
+    Private Overloads Sub SelectRow(ByVal fi As cFleetInfo)
         For iFleet As Integer = 0 To Me.m_lfiFleets.Count - 1
             If Object.ReferenceEquals(Me.m_lfiFleets(iFleet), fi) Then
                 Me.SelectRow(iFleet + iFIRSTFLEETROW)

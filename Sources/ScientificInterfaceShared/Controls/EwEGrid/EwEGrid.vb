@@ -947,6 +947,36 @@ Namespace Controls.EwEGrid
             Return m_lpropertySelected.ToArray()
         End Function
 
+        Public Function SelectedRow() As Integer
+
+            Dim iSelectedRow As Integer = -1
+            Dim selection As SourceGrid2.Selection = Me.Selection
+            Dim arSelection As SourceGrid2.Range = Nothing
+
+            If selection Is Nothing Then Return iSelectedRow
+            If selection.Count = 0 Then Return iSelectedRow
+
+            arSelection = selection.Item(0)
+            iSelectedRow = arSelection.Start.Row
+            Return iSelectedRow
+
+        End Function
+
+        Public Sub SelectRow(ByVal iRow As Integer)
+
+            ' Clear current selection
+            If Me.Selection IsNot Nothing Then
+                Dim r As SourceGrid2.Range = Me.Selection.GetRange()
+                If Not r.IsEmpty Then
+                    Me.Selection.RemoveRange(r)
+                End If
+            End If
+            Me.Selection.AddRange(New SourceGrid2.Range(iRow, 0, iRow, Me.ColumnsCount))
+
+            ' Make sure selected row is visible
+            Me.ShowCell(New Position(iRow, 0))
+        End Sub
+
         Public Function ReadContent(ByVal sr As StreamReader) As Boolean
 
             Dim strLine As String = ""

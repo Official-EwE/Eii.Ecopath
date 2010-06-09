@@ -26,15 +26,11 @@ Partial Class EditGroupTaxon
         Me.m_btnAdd = New System.Windows.Forms.Button
         Me.m_btnRemove = New System.Windows.Forms.Button
         Me.m_btnUpdate = New System.Windows.Forms.Button
-        Me.m_grid = New ScientificInterface.gridEditGroupTaxon
-        Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_btnKeep = New System.Windows.Forms.Button
         Me.m_btnMoveDown = New System.Windows.Forms.Button
         Me.m_btnMoveUp = New System.Windows.Forms.Button
-        Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
-        Me.m_hdrContent = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_btnUpdateAll = New System.Windows.Forms.Button
         Me.m_lbCommon = New System.Windows.Forms.Label
         Me.m_tbCommon = New System.Windows.Forms.TextBox
@@ -51,7 +47,11 @@ Partial Class EditGroupTaxon
         Me.m_lbExternalSrc = New System.Windows.Forms.Label
         Me.m_cmbSource = New System.Windows.Forms.ComboBox
         Me.m_btnConfigure = New System.Windows.Forms.Button
-        Me.Button1 = New System.Windows.Forms.Button
+        Me.m_btnSearch = New System.Windows.Forms.Button
+        Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_hdrContent = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_grid = New ScientificInterface.gridEditGroupTaxon
         Me.SuspendLayout()
         '
         'm_btnAdd
@@ -72,40 +72,6 @@ Partial Class EditGroupTaxon
         Me.m_btnUpdate.Name = "m_btnUpdate"
         Me.m_btnUpdate.UseVisualStyleBackColor = True
         '
-        'm_grid
-        '
-        resources.ApplyResources(Me.m_grid, "m_grid")
-        Me.m_grid.AutoSizeMinHeight = 10
-        Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
-        Me.m_grid.AutoStretchRowsToFitHeight = False
-        Me.m_grid.BackColor = System.Drawing.Color.White
-        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_grid.CustomSort = False
-        Me.m_grid.FixedColumnWidths = False
-        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_grid.GridToolTipActive = True
-        Me.m_grid.Name = "m_grid"
-        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.TrackPropertySelection = True
-        Me.m_grid.UIContext = Nothing
-        '
-        'm_hdrOrder
-        '
-        resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
-        Me.m_hdrOrder.Name = "m_hdrOrder"
-        '
         'm_btnKeep
         '
         resources.ApplyResources(Me.m_btnKeep, "m_btnKeep")
@@ -124,11 +90,6 @@ Partial Class EditGroupTaxon
         Me.m_btnMoveUp.Name = "m_btnMoveUp"
         Me.m_btnMoveUp.UseVisualStyleBackColor = True
         '
-        'm_hdrEdit
-        '
-        resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
-        Me.m_hdrEdit.Name = "m_hdrEdit"
-        '
         'Cancel_Button
         '
         resources.ApplyResources(Me.Cancel_Button, "Cancel_Button")
@@ -139,11 +100,6 @@ Partial Class EditGroupTaxon
         '
         resources.ApplyResources(Me.OK_Button, "OK_Button")
         Me.OK_Button.Name = "OK_Button"
-        '
-        'm_hdrContent
-        '
-        resources.ApplyResources(Me.m_hdrContent, "m_hdrContent")
-        Me.m_hdrContent.Name = "m_hdrContent"
         '
         'm_btnUpdateAll
         '
@@ -235,11 +191,55 @@ Partial Class EditGroupTaxon
         Me.m_btnConfigure.Name = "m_btnConfigure"
         Me.m_btnConfigure.UseVisualStyleBackColor = True
         '
-        'Button1
+        'm_btnSearch
         '
-        resources.ApplyResources(Me.Button1, "Button1")
-        Me.Button1.Name = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnSearch, "m_btnSearch")
+        Me.m_btnSearch.Name = "m_btnSearch"
+        Me.m_btnSearch.UseVisualStyleBackColor = True
+        '
+        'm_hdrOrder
+        '
+        resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
+        Me.m_hdrOrder.Name = "m_hdrOrder"
+        '
+        'm_hdrEdit
+        '
+        resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
+        Me.m_hdrEdit.Name = "m_hdrEdit"
+        '
+        'm_hdrContent
+        '
+        resources.ApplyResources(Me.m_hdrContent, "m_hdrContent")
+        Me.m_hdrContent.Name = "m_hdrContent"
+        '
+        'm_grid
+        '
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_grid.CustomSort = False
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                    Or SourceGrid2.GridSpecialKeys.Delete) _
+                    Or SourceGrid2.GridSpecialKeys.Arrows) _
+                    Or SourceGrid2.GridSpecialKeys.Tab) _
+                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                    Or SourceGrid2.GridSpecialKeys.Enter) _
+                    Or SourceGrid2.GridSpecialKeys.Escape) _
+                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_grid.TrackPropertySelection = True
+        Me.m_grid.UIContext = Nothing
         '
         'EditGroupTaxon
         '
@@ -270,7 +270,7 @@ Partial Class EditGroupTaxon
         Me.Controls.Add(Me.m_btnMoveUp)
         Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_btnConfigure)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.m_btnSearch)
         Me.Controls.Add(Me.m_btnUpdateAll)
         Me.Controls.Add(Me.m_btnUpdate)
         Me.Controls.Add(Me.m_btnRemove)
@@ -312,7 +312,7 @@ Partial Class EditGroupTaxon
     Private WithEvents m_lbExternalSrc As System.Windows.Forms.Label
     Private WithEvents m_cmbSource As System.Windows.Forms.ComboBox
     Private WithEvents m_btnConfigure As System.Windows.Forms.Button
-    Private WithEvents Button1 As System.Windows.Forms.Button
+    Private WithEvents m_btnSearch As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
 
 End Class
