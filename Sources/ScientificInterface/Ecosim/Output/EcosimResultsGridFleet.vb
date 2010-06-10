@@ -97,17 +97,6 @@ Namespace Ecosim
                     SetCellValue(fleetIndex, 7, CSng(source.ValueEnd / source.ValueStart), totalValue)
                 End If
 
-                ' Test whether this fleet has any forced catches
-                'bForcedCatch = False
-                styleCost = 0
-                For iTS As Integer = 1 To Me.Core.nTimeSeries
-                    ts = Me.Core.EcosimTimeSeries(iTS)
-                    If (ts.TimeSeriesType = eTimeSeriesType.CatchesForcing) Then
-                        'bForcedCatch = True
-                        styleCost = cStyleGuide.eStyleFlags.InvalidModelResult
-                    End If
-                Next
-
                 If source.CostStart > 0 Then SetCellValue(fleetIndex, 8, source.CostStart, totalValue, styleCost)
                 If source.CostEnd > 0 Then SetCellValue(fleetIndex, 9, source.CostEnd, totalValue, styleCost)
                 If source.CostStart > 0 And source.CostEnd > 0 Then
