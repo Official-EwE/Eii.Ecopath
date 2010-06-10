@@ -494,6 +494,32 @@ Public Class cTimeSeriesDataStructures
 
     End Sub
 
+    ''' <summary>
+    ''' Is there a timeseries of a data type loaded for a group/fleet
+    ''' </summary>
+    ''' <param name="TSDataType">Type of data to test for</param>
+    ''' <param name="iGroupIndex">Index of Group or Fleet</param>
+    ''' <returns>True if there is data loaded for this datatype, group</returns>
+    Friend Function DataLoadedForTypeGroup(ByVal TSDataType As eTimeSeriesType, ByVal iGroupIndex As Integer) As Boolean
+
+        Try
+            For its As Integer = 1 To Me.NdatType
+                If Me.DatType(its) = TSDataType Then
+                    If Me.DatPool(its) = iGroupIndex Then
+                        Return True
+                    End If
+                End If
+            Next
+            Return False
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+
+        Return False
+
+    End Function
+
+
 
 End Class
 
@@ -551,5 +577,8 @@ Public Class cEcospaceTimeSeriesDataStructures
         DoDatValCalculations(EcospaceData)
 
     End Sub
+
+
+
 
 End Class
