@@ -5686,6 +5686,22 @@ Public Class cCore
                 fleet.CostStart = sVal * (m_EcoPathData.cost(iFlt, eCostIndex.CUPE) + m_EcoPathData.cost(iFlt, eCostIndex.Sail)) + m_EcoPathData.cost(iFlt, eCostIndex.Fixed)
                 fleet.CostEnd = endVal * (m_EcoPathData.cost(iFlt, eCostIndex.CUPE) + m_EcoPathData.cost(iFlt, eCostIndex.Sail)) + m_EcoPathData.cost(iFlt, eCostIndex.Fixed)
 
+                'If there is forced catches for any group caught by this fleet then Cost is not valid.
+                'Cost is calculated from Ecopath input values and Effort Not Catch. 
+                'If catch is forced we have no way of knowing what effort created the catch so no cost.
+                Dim bCatchTS As Boolean = False
+                For igrp As Integer = 1 To Me.nGroups
+                    If Me.m_EcoPathData.Landing(iFlt, igrp) > 0 Then
+                        If Me.m_TSData.DataLoadedForTypeGroup(eTimeSeriesType.CatchesForcing, igrp) Then
+                            'cost is never stored in the core so we can only set the values in the interface
+                            fleet.CostStart = cCore.NULL_VALUE
+                            fleet.CostEnd = cCore.NULL_VALUE
+                            bCatchTS = True
+                        End If
+                    End If
+                    If bCatchTS Then Exit For
+                Next
+
                 fleet.Effort = 0.0F
                 If sVal <> 0 Then
                     fleet.Effort = endVal / sVal
