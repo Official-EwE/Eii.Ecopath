@@ -1,10 +1,11 @@
 ﻿#Region " Imports "
 
 Option Strict On
-Imports SourceGrid2
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwEPlugin.Data
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
+Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -87,6 +88,7 @@ Public Class gridEditGroupTaxon
             Me.m_iGroup = group.Index
             Me.m_sProportion = 1.0!
             Me.m_strCommon = group.Name
+            Me.m_status = eItemStatusTypes.Added
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -109,6 +111,7 @@ Public Class gridEditGroupTaxon
             Me.m_strSpecies = taxon.Species
             Me.m_iGroup = taxon.Group
             Me.m_sProportion = taxon.Proportion
+            Me.m_status = eItemStatusTypes.Original
             Me.m_bUpdated = False
         End Sub
 
@@ -265,7 +268,8 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property [Class]() As String Implements EwEUtils.Core.ITaxonData.Class
+        Public Property [Class]() As String _
+            Implements ITaxonData.Class
             Get
                 Return m_strClass
             End Get
@@ -274,7 +278,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property Code3A() As String Implements EwEUtils.Core.ITaxonData.Code3A
+        Public Property Code3A() As String Implements ITaxonData.Code3A
             Get
                 Return m_strCode3A
             End Get
@@ -283,7 +287,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property CodeISSCAAP() As String Implements EwEUtils.Core.ITaxonData.CodeISSCAAP
+        Public Property CodeISSCAAP() As String Implements ITaxonData.CodeISSCAAP
             Get
                 Return m_strCodeISSCAAP
             End Get
@@ -292,7 +296,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property CodeTaxon() As String Implements EwEUtils.Core.ITaxonData.CodeTaxon
+        Public Property CodeTaxon() As String Implements ITaxonData.CodeTaxon
             Get
                 Return Me.m_strCodeTaxon
             End Get
@@ -301,7 +305,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property Common() As String Implements EwEUtils.Core.ITaxonData.Common
+        Public Property Common() As String Implements ITaxonData.Common
             Get
                 Return Me.m_strCommon
             End Get
@@ -310,7 +314,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property Family() As String Implements EwEUtils.Core.ITaxonData.Family
+        Public Property Family() As String Implements ITaxonData.Family
             Get
                 Return Me.m_strFamily
             End Get
@@ -319,7 +323,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property Genus() As String Implements EwEUtils.Core.ITaxonData.Genus
+        Public Property Genus() As String Implements ITaxonData.Genus
             Get
                 Return Me.m_strGenus
             End Get
@@ -328,7 +332,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property LastUpdated() As Single Implements EwEUtils.Core.ITaxonData.LastUpdated
+        Public Property LastUpdated() As Single Implements ITaxonData.LastUpdated
             Get
                 Return 0L
             End Get
@@ -337,7 +341,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property Order() As String Implements EwEUtils.Core.ITaxonData.Order
+        Public Property Order() As String Implements ITaxonData.Order
             Get
                 Return Me.m_strOrder
             End Get
@@ -346,7 +350,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property Source() As String Implements EwEUtils.Core.ITaxonData.Source
+        Public Property Source() As String Implements ITaxonData.Source
             Get
                 Return Me.m_strSource
             End Get
@@ -355,7 +359,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property SourceKey() As String Implements EwEUtils.Core.ITaxonData.SourceKey
+        Public Property SourceKey() As String Implements ITaxonData.SourceKey
             Get
                 Return Me.m_strKey
             End Get
@@ -364,7 +368,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property Species() As String Implements EwEUtils.Core.ITaxonData.Species
+        Public Property Species() As String Implements ITaxonData.Species
             Get
                 Return Me.m_strSpecies
             End Get
@@ -373,6 +377,26 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
+        Public ReadOnly Property AssemblyName() As String _
+            Implements EwEPlugin.Data.IPluginData.AssemblyName
+            Get
+                Return ""
+            End Get
+        End Property
+
+        Public ReadOnly Property PluginName() As String _
+            Implements EwEPlugin.Data.IPluginData.PluginName
+            Get
+                Return ""
+            End Get
+        End Property
+
+        Public ReadOnly Property RunType() As EwEUtils.Core.IRunType _
+            Implements EwEPlugin.Data.IPluginData.RunType
+            Get
+                Return Nothing
+            End Get
+        End Property
     End Class
 
 #End Region ' Private helper classes
@@ -530,8 +554,9 @@ Public Class gridEditGroupTaxon
                     hgcGroup.AddChildRow(iRow)
                     Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell(hgcGroup.NumChildRows)
                     Me(iRow, eColumnTypes.Hierarchy).Tag = ti
-                    Me(iRow, eColumnTypes.Name) = New EwECell(ti.Common, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                    Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(ti.Common)
                     Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.Proportion, GetType(Single))
+                    Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.m_bm)
                     Me(iRow, eColumnTypes.LastUpdated) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 End If
@@ -582,7 +607,7 @@ Public Class gridEditGroupTaxon
 
         ' Lst updated
         If (ti.LastUpdated > 0) Then
-            strText = String.Format("{0:g}", cDateUtils.FromJulianDate(ti.LastUpdated))
+            strText = String.Format("{0:g}", cDateUtils.JulianToDate(ti.LastUpdated))
         Else
             strText = ""
         End If
@@ -646,10 +671,22 @@ Public Class gridEditGroupTaxon
     ''' -----------------------------------------------------------------------
     Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
 
+        ' Can only be proportion
+        Dim ti As cTaxonInfo = Me.TaxonInfo(p.Row)
+        If ti Is Nothing Then Return False
+        ti.Proportion = CSng(Me(p.Row, p.Column).Value)
         Return True
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, obtains the taxon info for a given row.
+    ''' </summary>
+    ''' <param name="iRow"></param>
+    ''' <returns>A cTaxonInfo instance, or nothing if the row did not contain
+    ''' a taxoninfo link.</returns>
+    ''' -----------------------------------------------------------------------
     Private Function TaxonInfo(ByVal iRow As Integer) As cTaxonInfo
         Dim tag As Object = Nothing
         If (iRow <= 1) Then Return Nothing
@@ -668,7 +705,7 @@ Public Class gridEditGroupTaxon
         End Get
         Set(ByVal taxon As ITaxonData)
             If Not (TypeOf taxon Is cTaxonInfo) Then Return
-            For iRow As Integer = 1 To Me.RowsCount
+            For iRow As Integer = 1 To Me.RowsCount - 1
                 If Object.ReferenceEquals(TaxonInfo(iRow), taxon) Then
                     Me.SelectRow(iRow)
                     Return
@@ -691,15 +728,89 @@ Public Class gridEditGroupTaxon
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Add a taxon for the selected group.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Sub AddTaxon()
         Dim ti As New cTaxonInfo(Me.SelectedGroup)
         Me.m_lTaxonInfo.Add(ti)
         Me.UpdateGrid()
         Me.SelectedTaxon = ti
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Move a taxon to a different group.
+    ''' </summary>
+    ''' <param name="iDirection"></param>
+    ''' -----------------------------------------------------------------------
+    Public Sub MoveTaxon(ByVal iDirection As Integer)
+        Dim ti As cTaxonInfo = Me.TaxonInfo(Me.SelectedRow)
+        If (ti Is Nothing) Then Return
+        ti.Group += iDirection
+        Me.UpdateGrid()
+        Me.SelectedTaxon = ti
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Delete a row from the grid
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub ToggleDeleteRow()
+
+        Dim ti As cTaxonInfo = Me.TaxonInfo(Me.SelectedRow)
+
+        If ti Is Nothing Then Return
+
+        ti.FlaggedForDeletion = Not ti.FlaggedForDeletion
+
+        ' Check to see what is to happen to the MPA now
+        Select Case ti.Status
+
+            Case eItemStatusTypes.Original
+                ' Clear removed status 
+                Me.m_lTaxonInfoRemoved.Remove(ti)
+
+            Case eItemStatusTypes.Added
+                ' Remove new item
+                Me.m_lTaxonInfo.Remove(ti)
+
+            Case eItemStatusTypes.Removed
+                ' Set removed status
+                Me.m_lTaxonInfoRemoved.Add(ti)
+
+            Case eItemStatusTypes.Invalid
+                ' Set removed status
+                Me.m_lTaxonInfo.Remove(ti)
+
+        End Select
+
+        Me.UpdateGrid()
+        Me.SelectedTaxon = ti
+
+    End Sub
+
+    ''' <summary>
+    ''' States whether the taxon info row is flagged for deletion.
+    ''' </summary>
+    Public Function IsFlaggedForDeletionRow() As Boolean
+        Dim ti As cTaxonInfo = Me.TaxonInfo(Me.SelectedRow)
+        If (ti Is Nothing) Then Return False
+        Return ti.FlaggedForDeletion
+    End Function
+
+    Public Sub UpdateSelectedTaxonRow()
+        Me.UpdateRow(Me.SelectedRow())
+    End Sub
+
+    Public ReadOnly Property Taxa() As ITaxonData()
+        Get
+            Return Me.m_lTaxonInfo.ToArray
+        End Get
+    End Property
 
 #End Region ' Public bits
 

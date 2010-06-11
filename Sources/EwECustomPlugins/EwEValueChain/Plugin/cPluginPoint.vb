@@ -8,6 +8,7 @@ Imports System.Reflection
 Imports System.Threading
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports EwEPlugin.Data
 
 #End Region ' Imports
 
@@ -514,19 +515,6 @@ Public Class cPluginPoint
 
     End Sub
 
-    Public Function IsDataAvailable(ByVal strDataName As String, Optional ByVal runType As IRunType = Nothing) As Boolean _
-        Implements EwEPlugin.Data.IDataProducerPlugin.IsDataAvailable
-
-        Dim bIsAvailable As Boolean = False
-        Try
-            bIsAvailable = (String.Compare(strDataName, Me.Name, True) = 0)
-        Catch ex As Exception
-            bIsAvailable = False
-        End Try
-        Return bIsAvailable
-
-    End Function
-
     Public Function IsDataAvailable(ByVal typeData As System.Type, Optional ByVal runType As IRunType = Nothing) As Boolean _
         Implements EwEPlugin.Data.IDataProducerPlugin.IsDataAvailable
 
@@ -537,19 +525,6 @@ Public Class cPluginPoint
             bIsAvailable = False
         End Try
         Return bIsAvailable
-
-    End Function
-
-    Public Function GetDataByName(ByVal strDataName As String, _
-                                  ByRef data As EwEPlugin.Data.IPluginData) As Boolean _
-        Implements EwEPlugin.Data.IDataProducerPlugin.GetDataByName
-
-        data = Nothing
-        If String.Compare(strDataName, Me.Name, True) = 0 Then
-            data = Me.m_ddx
-        End If
-
-        Return (data IsNot Nothing)
 
     End Function
 
@@ -589,15 +564,6 @@ Public Class cPluginPoint
         Return False
 
     End Function
-
-    Public Sub SetEnabled(ByVal strDataName As String, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
-        Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
-
-        If (String.Compare(strDataName, Me.Name, True) = 0) Then
-            Me.SetEnabled(GetType(IEconomicData), runType, bEnabled)
-        End If
-
-    End Sub
 
     Public Sub SetEnabled(ByVal typeData As System.Type, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
         Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled

@@ -31,11 +31,19 @@ Namespace ExternalData
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event that get fired when ITaxonData is available
+        ''' Event that gets fired when ITaxonData is available.
         ''' </summary>
         ''' <param name="TaxonData"></param>
         ''' -----------------------------------------------------------------------
         Public Event OnTaxonData(ByVal TaxonData As ITaxonData)
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event that gets fired when IDataSearchResults are available.
+        ''' </summary>
+        ''' <param name="data"></param>
+        ''' -----------------------------------------------------------------------
+        Public Event OnTaxonSearchResults(ByVal data As IDataSearchResults)
 
 #End Region ' Public events
 
@@ -154,6 +162,14 @@ Namespace ExternalData
             End Try
         End Sub
 
+        Private Sub FireOnTaxonSearchResults(ByVal data As IDataSearchResults)
+            Try
+                RaiseEvent OnTaxonSearchResults(data)
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & "FireOnTaxonSearchResults() Error: " & ex.Message)
+            End Try
+        End Sub
+
         Private Shared ReadOnly Property InternalName() As String
             Get
                 Return GetType(cTaxonDataSource).ToString
@@ -169,9 +185,15 @@ Namespace ExternalData
 
             Try
                 If TypeOf data Is ITaxonData Then
-                    Dim ecoData As ITaxonData = DirectCast(data, ITaxonData)
-                    Me.FireOnTaxonData(ecoData)
+                    Dim taxon As ITaxonData = DirectCast(data, ITaxonData)
+                    Me.FireOnTaxonData(taxon)
+                ElseIf TypeOf data Is IDataSearchResults Then
+                    Dim results As IDataSearchResults = DirectCast(data, IDataSearchResults)
+                    If TypeOf results.SearchTerm Is ITaxonData Then
+                        Me.FireOnTaxonSearchResults(results)
+                    End If
                 End If
+
             Catch ex As Exception
                 'make sure all exceptions are handled here and not thrown back to the PluginManager
                 cLog.Write(ex)
@@ -196,7 +218,7 @@ Namespace ExternalData
         Public ReadOnly Property Description() As String _
             Implements EwEPlugin.IPlugin.Description
             Get
-                Return "Core plugin to provide taxon data from an external source."
+                Return "Core plugin to receive taxon data from an external source."
             End Get
         End Property
 

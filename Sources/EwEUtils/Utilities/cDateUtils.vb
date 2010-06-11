@@ -22,7 +22,7 @@ Namespace Utilities
         ''' <param name="dt">The date to return the Julian date for.</param>
         ''' <returns>A Julian date.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetJulianDate(Optional ByVal dt As Date = Nothing) As Single
+        Public Shared Function DateToJulian(Optional ByVal dt As Date = Nothing) As Single
             If dt = Nothing Then dt = Date.Now
             Return CSng(dt.ToOADate())
         End Function
@@ -34,7 +34,7 @@ Namespace Utilities
         ''' <param name="sJulian">The Julian date to return a Date instance for.</param>
         ''' <returns>A Date instance.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FromJulianDate(ByVal sJulian As Single) As Date
+        Public Shared Function JulianToDate(ByVal sJulian As Single) As Date
             Return Date.FromOADate(CDbl(sJulian))
         End Function
 

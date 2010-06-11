@@ -17,6 +17,7 @@ Imports EwECore.Database
 Imports System.IO
 Imports EwEUtils.Utilities
 Imports EwECore.ExternalData
+Imports EwEPlugin.Data
 
 #End Region ' Imports
 

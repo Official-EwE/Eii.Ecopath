@@ -1,10 +1,11 @@
 ﻿#Region " Imports "
 
 Option Strict On
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Namespace Core
+Namespace Data
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -12,6 +13,7 @@ Namespace Core
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Interface ITaxonData
+        Inherits IPluginData
 
         ''' <summary>Class name.</summary>
         Property [Class]() As String

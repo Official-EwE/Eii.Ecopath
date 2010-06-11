@@ -1287,41 +1287,6 @@ Public Class cPluginManager
     ''' <summary>
     ''' Get all <see cref="IPluginData">plug-in data</see> from loaded
     ''' <see cref="IDataProducerPlugin">IDataProducerPlugin</see>
-    ''' instances that expose data under a given name.
-    ''' </summary>
-    ''' <param name="strDataName">The name of the data to match.</param>
-    ''' <returns>An array of data, or an empty array if an error occurred.</returns>
-    ''' <remarks>This method is not thread-safe.</remarks>
-    ''' -----------------------------------------------------------------------
-    Public Function GetData(ByVal strDataName As String) As IPluginData()
-
-        Dim coll As ICollection(Of cPluginContext) = Me.GetPluginDefs(GetType(IDataProducerPlugin))
-        Dim data As IPluginData = Nothing
-        Dim lData As New List(Of IPluginData)
-
-        Try
-            For Each ipc As cPluginContext In coll
-                Try
-                    If DirectCast(ipc.Plugin, IDataProducerPlugin).GetDataByName(strDataName, data) Then
-                        If (data IsNot Nothing) Then
-                            lData.Add(data)
-                        End If
-                    End If
-                Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "GetDataByName", ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-        End Try
-
-        Return lData.ToArray()
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get all <see cref="IPluginData">plug-in data</see> from loaded
-    ''' <see cref="IDataProducerPlugin">IDataProducerPlugin</see>
     ''' instances that expose data of a given <see cref="Type">Type</see>.
     ''' </summary>
     ''' <param name="dataType">The type of the data to match.</param>

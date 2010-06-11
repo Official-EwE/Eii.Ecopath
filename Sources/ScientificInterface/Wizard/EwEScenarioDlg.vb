@@ -340,7 +340,7 @@ Namespace Wizard
             End If
             ' - last saved date
             If (scenario.LastSaved > 0) Then
-                astrColumns(eColumnTypes.LastSaved) = String.Format("{0:g}", cDateUtils.FromJulianDate(scenario.LastSaved))
+                astrColumns(eColumnTypes.LastSaved) = String.Format("{0:g}", cDateUtils.JulianToDate(scenario.LastSaved))
             Else
                 astrColumns(eColumnTypes.LastSaved) = ""
             End If

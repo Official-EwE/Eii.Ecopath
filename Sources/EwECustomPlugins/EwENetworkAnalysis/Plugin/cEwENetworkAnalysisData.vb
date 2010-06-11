@@ -9,7 +9,7 @@ Imports EwEUtils.Core
 
 Friend Class cEwENetworkAnalysisData
     Implements EwEPlugin.Data.IPluginData
-    Implements EwEUtils.Core.INetworkAnalysisData
+    Implements INetworkAnalysisData
 
     Private m_strAssemblyName As String = ""
     Private m_strPluginName As String = ""

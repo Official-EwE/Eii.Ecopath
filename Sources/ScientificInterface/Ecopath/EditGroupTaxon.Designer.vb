@@ -50,7 +50,8 @@ Partial Class EditGroupTaxon
         Me.m_btnSearch = New System.Windows.Forms.Button
         Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_hdrContent = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_hdrExternal = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_hdrTaxon = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_grid = New ScientificInterface.gridEditGroupTaxon
         Me.SuspendLayout()
         '
@@ -122,6 +123,7 @@ Partial Class EditGroupTaxon
         resources.ApplyResources(Me.m_cmbClass, "m_cmbClass")
         Me.m_cmbClass.FormattingEnabled = True
         Me.m_cmbClass.Name = "m_cmbClass"
+        Me.m_cmbClass.Sorted = True
         '
         'm_lbClass
         '
@@ -138,6 +140,7 @@ Partial Class EditGroupTaxon
         resources.ApplyResources(Me.m_cmbOrder, "m_cmbOrder")
         Me.m_cmbOrder.FormattingEnabled = True
         Me.m_cmbOrder.Name = "m_cmbOrder"
+        Me.m_cmbOrder.Sorted = True
         '
         'm_lbFamily
         '
@@ -159,18 +162,21 @@ Partial Class EditGroupTaxon
         resources.ApplyResources(Me.m_cmbFamily, "m_cmbFamily")
         Me.m_cmbFamily.FormattingEnabled = True
         Me.m_cmbFamily.Name = "m_cmbFamily"
+        Me.m_cmbFamily.Sorted = True
         '
         'm_cmbGenus
         '
         resources.ApplyResources(Me.m_cmbGenus, "m_cmbGenus")
         Me.m_cmbGenus.FormattingEnabled = True
         Me.m_cmbGenus.Name = "m_cmbGenus"
+        Me.m_cmbGenus.Sorted = True
         '
         'm_cmbSpecies
         '
         resources.ApplyResources(Me.m_cmbSpecies, "m_cmbSpecies")
         Me.m_cmbSpecies.FormattingEnabled = True
         Me.m_cmbSpecies.Name = "m_cmbSpecies"
+        Me.m_cmbSpecies.Sorted = True
         '
         'm_lbExternalSrc
         '
@@ -207,10 +213,15 @@ Partial Class EditGroupTaxon
         resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
         Me.m_hdrEdit.Name = "m_hdrEdit"
         '
-        'm_hdrContent
+        'm_hdrExternal
         '
-        resources.ApplyResources(Me.m_hdrContent, "m_hdrContent")
-        Me.m_hdrContent.Name = "m_hdrContent"
+        resources.ApplyResources(Me.m_hdrExternal, "m_hdrExternal")
+        Me.m_hdrExternal.Name = "m_hdrExternal"
+        '
+        'm_hdrTaxon
+        '
+        resources.ApplyResources(Me.m_hdrTaxon, "m_hdrTaxon")
+        Me.m_hdrTaxon.Name = "m_hdrTaxon"
         '
         'm_grid
         '
@@ -229,6 +240,7 @@ Partial Class EditGroupTaxon
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.Name = "m_grid"
+        Me.m_grid.SelectedTaxon = Nothing
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                     Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                     Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -260,7 +272,8 @@ Partial Class EditGroupTaxon
         Me.Controls.Add(Me.m_tbCommon)
         Me.Controls.Add(Me.m_lbClass)
         Me.Controls.Add(Me.m_lbCommon)
-        Me.Controls.Add(Me.m_hdrContent)
+        Me.Controls.Add(Me.m_hdrTaxon)
+        Me.Controls.Add(Me.m_hdrExternal)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.m_hdrEdit)
@@ -295,7 +308,7 @@ Partial Class EditGroupTaxon
     Private WithEvents m_hdrEdit As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents Cancel_Button As System.Windows.Forms.Button
     Private WithEvents OK_Button As System.Windows.Forms.Button
-    Private WithEvents m_hdrContent As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_hdrExternal As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_btnUpdateAll As System.Windows.Forms.Button
     Private WithEvents m_lbCommon As System.Windows.Forms.Label
     Private WithEvents m_tbCommon As System.Windows.Forms.TextBox
@@ -314,5 +327,6 @@ Partial Class EditGroupTaxon
     Private WithEvents m_btnConfigure As System.Windows.Forms.Button
     Private WithEvents m_btnSearch As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
+    Private WithEvents m_hdrTaxon As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
 End Class

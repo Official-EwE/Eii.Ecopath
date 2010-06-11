@@ -7,6 +7,7 @@ Imports EwECore.ExternalData
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports EwEPlugin
+Imports EwEPlugin.Data
 Imports System.Text
 
 Namespace MSE
@@ -2307,7 +2308,7 @@ Namespace MSE
         ''' </summary>
         ''' <param name="EconomicData"></param>
         ''' <remarks></remarks>
-        Private Sub onEconomicData(ByVal EconomicData As EwEUtils.Core.IEconomicData) Handles m_EconomicData.onEconomicData
+        Private Sub onEconomicData(ByVal EconomicData As IEconomicData) Handles m_EconomicData.onEconomicData
 
             Try
 

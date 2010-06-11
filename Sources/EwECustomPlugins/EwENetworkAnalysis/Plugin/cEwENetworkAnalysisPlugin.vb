@@ -395,17 +395,6 @@ Public Class cEwENetworkAnalysisPlugin
         Me.m_broadcaster = broadcaster
     End Sub
 
-    Public Function IsDataAvailable(ByVal strDataName As String, Optional ByVal runType As IRunType = Nothing) As Boolean _
-        Implements IDataProducerPlugin.IsDataAvailable
-        Dim bIsAvailable As Boolean = False
-        Try
-            bIsAvailable = (String.Compare(strDataName, Me.Name, True) = 0)
-        Catch ex As Exception
-            bIsAvailable = False
-        End Try
-        Return bIsAvailable
-    End Function
-
     Public Function ProducesData(ByVal typeData As System.Type, Optional ByVal runType As IRunType = Nothing) As Boolean _
         Implements IDataProducerPlugin.IsDataAvailable
         Return (typeData Is GetType(INetworkAnalysisData))
@@ -415,7 +404,7 @@ Public Class cEwENetworkAnalysisPlugin
         Return m_bDataEnabled
     End Function
 
-    Public Function SetEnabled1(ByVal bEnable As Boolean) As Boolean Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+    Public Function SetEnabled(ByVal bEnable As Boolean) As Boolean Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
         Me.m_bDataEnabled = bEnable
     End Function
 
@@ -434,15 +423,6 @@ Public Class cEwENetworkAnalysisPlugin
 
     End Sub
 
-    Public Sub SetEnabled(ByVal strDataName As String, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
-        Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
-
-        If (String.Compare(strDataName, Me.Name, True) = 0) Then
-            Me.SetEnabled(GetType(INetworkAnalysisData), runType, bEnabled)
-        End If
-
-    End Sub
-
     Public Function IsEnabled(ByVal typeData As System.Type, ByVal runType As IRunType) As Boolean _
         Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
 
@@ -455,22 +435,6 @@ Public Class cEwENetworkAnalysisPlugin
         If TypeOf runType Is cEcosimRunType Then
             Return Me.m_manager.RunWithEcosim
         End If
-
-    End Function
-
-    Public Function GetDataByName(ByVal strDataName As String, ByRef data As IPluginData) As Boolean _
-            Implements IDataProducerPlugin.GetDataByName
-
-        Try
-            If String.Compare(strDataName, Me.Name, True) = 0 Then
-                Me.PopulateData()
-                data = Me.m_ddx
-            End If
-        Catch ex As Exception
-            data = Nothing
-        End Try
-
-        Return (data IsNot Nothing)
 
     End Function
 

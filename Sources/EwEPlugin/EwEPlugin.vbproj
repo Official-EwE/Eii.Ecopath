@@ -75,6 +75,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\IEconomicData.vb" />
+    <Compile Include="Data\INetworkAnalysisData.vb" />
+    <Compile Include="Data\ITaxonData.vb" />
     <Compile Include="Handlers\cPluginAutolaunchHandler.vb" />
     <Compile Include="Handlers\cPluginGUICommand.vb" />
     <Compile Include="Handlers\cPluginGUIHandler.vb" />
@@ -89,6 +92,8 @@
     <Compile Include="Plugin templates\Core\IDataValidatedPlugin.vb" />
     <Compile Include="Plugin templates\Data exchange\IDataBroadcaster.vb" />
     <Compile Include="Plugin templates\Data exchange\IDataProducerPlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\IDataSearchProducerPlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\IDataSearchResults.vb" />
     <Compile Include="Plugin templates\Data exchange\IPluginData.vb" />
     <Compile Include="Plugin templates\Database\IDatabasePlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathClosedPlugin.vb" />
@@ -121,6 +126,7 @@
     <Compile Include="Plugin templates\Ecotracer\IEcotracerInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecotracer\IEcotracerPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IAutolaunchPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IConfigurablePlugin.vb" />
     <Compile Include="Plugin templates\GUI\IDockStatePlugin.vb" />
     <Compile Include="Plugin templates\GUI\INavigationTreeItemPlugin.vb" />
     <Compile Include="Handlers\cPluginAssembly.vb" />

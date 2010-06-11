@@ -50,18 +50,6 @@ Namespace Data
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Requests whether data with a given <see cref="Type">Type</see> and
-        ''' <see cref="IRunType">run type</see> is provided by this plug-in.
-        ''' </summary>
-        ''' <param name="strDataName">Name of the data to request.</param>
-        ''' <param name="runType">
-        ''' <see cref="IRunType">Run type</see> of the data to request.
-        ''' </param>
-        ''' -----------------------------------------------------------------------
-        Function IsDataAvailable(ByVal strDataName As String, Optional ByVal runType As IRunType = Nothing) As Boolean
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Request data from this plug-in for a data with a specific
         ''' <see cref="Type">Type</see>.
         ''' </summary>
@@ -71,28 +59,6 @@ Namespace Data
         ''' <returns>True if requested data is available.</returns>
         ''' -----------------------------------------------------------------------
         Function GetDataByType(ByVal typeData As Type, ByRef data As IPluginData) As Boolean
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Request data from this plug-in for data with a specific name.
-        ''' </summary>
-        ''' <param name="strDataName">Name of the data to request.</param>
-        ''' <param name="data">The <see cref="IPluginData">data</see> offered by 
-        ''' the plug-in.</param>
-        ''' <returns>True if requested data is available.</returns>
-        ''' -----------------------------------------------------------------------
-        Function GetDataByName(ByVal strDataName As String, ByRef data As IPluginData) As Boolean
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Set whether a plug-in distributes data for a given run type.
-        ''' </summary>
-        ''' <param name="strDataName">Name of the data to interact with.</param>
-        ''' <param name="runType">
-        ''' <see cref="IRunType">Run type</see> of the data to enable or disable.
-        ''' </param>
-        ''' -----------------------------------------------------------------------
-        Sub SetEnabled(ByVal strDataName As String, ByVal runType As IRunType, ByVal bEnable As Boolean)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

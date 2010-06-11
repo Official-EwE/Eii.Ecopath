@@ -1,4 +1,11 @@
-﻿Namespace Core
+﻿#Region " Imports "
+
+Option Strict On
+Imports EwEUtils.Core
+
+#End Region ' Imports
+
+Namespace Data
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

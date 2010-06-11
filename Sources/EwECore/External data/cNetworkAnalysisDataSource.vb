@@ -2,10 +2,11 @@
 
 Option Strict On
 
-Imports EwEPlugin
-Imports EwEUtils.Database
 Imports System.Data
+Imports EwEPlugin
+Imports EwEPlugin.Data
 Imports EwEUtils.Core
+Imports EwEUtils.Database
 
 #End Region ' Imports
 

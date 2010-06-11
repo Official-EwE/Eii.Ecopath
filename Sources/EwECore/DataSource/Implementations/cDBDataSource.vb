@@ -8,6 +8,7 @@ Imports EwECore.Auxiliary
 Imports System.Data
 Imports System.Text
 Imports EwEPlugin
+Imports EwEPlugin.Data
 Imports EwEUtils.Utilities
 Imports EwEUtils.Database
 Imports EwEUtils.Core
@@ -781,7 +782,7 @@ Namespace DataSources
                 drow("MinLon") = Me.m_core.m_EwEModelMinLon
                 drow("MaxLon") = Me.m_core.m_EwEModelMaxLon
                 drow("AreaName") = Me.m_core.m_EwEModelAreaName
-                drow("LastSaved") = cDateUtils.GetJulianDate()
+                drow("LastSaved") = cDateUtils.DateToJulian()
 
                 If bNewRow Then
                     writer.AddRow(drow)
@@ -3130,7 +3131,7 @@ Namespace DataSources
             drow("CommonName") = data.Common
             drow("SourceName") = data.Source
             drow("SourceKey") = data.SourceKey
-            drow("LastUpdated") = cDateUtils.GetJulianDate()
+            drow("LastUpdated") = cDateUtils.DateToJulian()
             writer.AddRow(drow)
 
             Me.m_db.ReleaseWriter(writer)
@@ -3366,7 +3367,7 @@ Namespace DataSources
                 drow("TemperatureForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.TemperatureForceNo)
                 drow("NutPBmax") = ecosimDS.NutPBmax
                 'drow("UseVarPQ") = ecosimDS.UseVarPQ
-                drow("LastSaved") = cDateUtils.GetJulianDate()
+                drow("LastSaved") = cDateUtils.DateToJulian()
 
                 ' Save changes
                 Me.m_db.ReleaseWriter(writer)
@@ -3444,7 +3445,7 @@ Namespace DataSources
                 drow("Description") = strDescription
                 drow("Author") = strAuthor
                 drow("Contact") = strContact
-                drow("LastSaved") = cDateUtils.GetJulianDate()
+                drow("LastSaved") = cDateUtils.DateToJulian()
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)
@@ -6863,7 +6864,7 @@ Namespace DataSources
                 If Me.m_sVersion >= 6.01 Then
                     drow("Tolerance") = ecospaceDS.Tol
                 End If
-                drow("LastSaved") = cDateUtils.GetJulianDate()
+                drow("LastSaved") = cDateUtils.DateToJulian()
 
                 drow.EndEdit()
 
@@ -6944,7 +6945,7 @@ Namespace DataSources
                 drow("Description") = strDescription
                 drow("Author") = strAuthor
                 drow("Contact") = strContact
-                drow("LastSaved") = cDateUtils.GetJulianDate()
+                drow("LastSaved") = cDateUtils.DateToJulian()
                 drow("InRow") = InRow
                 drow("InCol") = InCol
                 drow("ModelType") = 2
@@ -9204,7 +9205,7 @@ Namespace DataSources
                 drow("Coutflow") = tracerDS.CoutFlow(0)
                 drow("Cdecay") = tracerDS.cdecay(0)
                 drow("ConForcingShapeID") = ecosimDS.ForcingDBIDs(tracerDS.ConForceNumber)
-                drow("LastSaved") = cDateUtils.GetJulianDate()
+                drow("LastSaved") = cDateUtils.DateToJulian()
                 drow.EndEdit()
 
                 ' Save changes
@@ -9313,7 +9314,7 @@ Namespace DataSources
                 drow("Description") = strDescription
                 drow("Author") = strAuthor
                 drow("Contact") = strContact
-                drow("LastSaved") = cDateUtils.GetJulianDate()
+                drow("LastSaved") = cDateUtils.DateToJulian()
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)

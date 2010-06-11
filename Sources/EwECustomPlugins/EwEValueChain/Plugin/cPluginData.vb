@@ -237,7 +237,7 @@ Public Class cPluginData
         End Get
     End Property
 
-    Public ReadOnly Property RunType() As EwEUtils.Core.IRunType _
+    Public ReadOnly Property RunType() As IRunType _
         Implements IPluginData.RunType
         Get
             Return m_runType
@@ -265,7 +265,7 @@ Public Class cPluginData
     ''' Get a subtotal block.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Subtotal(ByVal iFleet As Integer) As EwEUtils.Core.IEData _
+    Public ReadOnly Property Subtotal(ByVal iFleet As Integer) As IEData _
         Implements IEconomicData.Subtotal
         Get
             Debug.Assert(iFleet >= 0 And iFleet < Me.m_subtotals.Count)
@@ -279,7 +279,7 @@ Public Class cPluginData
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property NumSubtotals() As Integer _
-        Implements EwEUtils.Core.IEconomicData.NumSubtotals
+        Implements IEconomicData.NumSubtotals
         Get
             Return Me.m_subtotals.Count
         End Get
@@ -290,8 +290,8 @@ Public Class cPluginData
     ''' Get total economic values.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Total() As EwEUtils.Core.IEData _
-    Implements EwEUtils.Core.IEconomicData.Total
+    Public ReadOnly Property Total() As IEData _
+    Implements IEconomicData.Total
         Get
             Return Me.m_totals
         End Get
@@ -302,8 +302,8 @@ Public Class cPluginData
     ''' Get the core counter that represents the grouping of subtotals.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property SubtotalCounter() As EwEUtils.Core.eCoreCounterTypes _
-         Implements EwEUtils.Core.IEconomicData.SubtotalCounter
+    Public ReadOnly Property SubtotalCounter() As eCoreCounterTypes _
+         Implements IEconomicData.SubtotalCounter
         Get
             Return eCoreCounterTypes.nFleets
         End Get
