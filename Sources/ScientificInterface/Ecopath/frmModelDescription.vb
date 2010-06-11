@@ -2,6 +2,7 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SAUPUtil.Misc.GeoCode
 
 Public Class frmModelDescription
 
@@ -277,5 +278,26 @@ Public Class frmModelDescription
 #End Region ' Monetary
 
 #End Region ' Unit handling
+
+#Region " Events "
+
+    Private Sub m_btnLookup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnLookup.Click
+
+        Dim lookup As New cGoogleMapsLookup()
+
+        If lookup.FindLocation(Me.m_tbModelAreaName.Text) Then
+            If MsgBox("Found '" & lookup.Term & "', do you want to use this?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                Me.m_tbModelAreaName.Text = lookup.Term
+                Me.m_nudSouth.Value = CDec(lookup.LatMin)
+                Me.m_nudNorth.Value = CDec(lookup.LatMax)
+                Me.m_nudWest.Value = CDec(lookup.LonMin)
+                Me.m_nudEast.Value = CDec(lookup.LonMax)
+            End If
+        End If
+
+    End Sub
+
+#End Region ' Events
 
 End Class

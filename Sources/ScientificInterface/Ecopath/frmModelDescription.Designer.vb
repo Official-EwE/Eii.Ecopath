@@ -81,6 +81,7 @@ Partial Class frmModelDescription
         Me.m_lblEast = New System.Windows.Forms.Label
         Me.m_lblSouth = New System.Windows.Forms.Label
         Me.m_tbModelAreaName = New System.Windows.Forms.TextBox
+        Me.m_btnLookup = New System.Windows.Forms.Button
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -429,10 +430,18 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_tbModelAreaName, "m_tbModelAreaName")
         Me.m_tbModelAreaName.Name = "m_tbModelAreaName"
         '
+        'm_btnLookup
+        '
+        resources.ApplyResources(Me.m_btnLookup, "m_btnLookup")
+        Me.m_btnLookup.Image = Global.ScientificInterface.My.Resources.Resources.google
+        Me.m_btnLookup.Name = "m_btnLookup"
+        Me.m_btnLookup.UseVisualStyleBackColor = True
+        '
         'frmModelDescription
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_btnLookup)
         Me.Controls.Add(Me.m_nudNumYears)
         Me.Controls.Add(Me.m_nudEast)
         Me.Controls.Add(Me.m_nudSouth)
@@ -540,4 +549,5 @@ Partial Class frmModelDescription
     Private WithEvents m_lblEast As System.Windows.Forms.Label
     Private WithEvents m_lblSouth As System.Windows.Forms.Label
     Private WithEvents m_tbModelAreaName As System.Windows.Forms.TextBox
+    Private WithEvents m_btnLookup As System.Windows.Forms.Button
 End Class

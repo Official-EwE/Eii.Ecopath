@@ -1535,6 +1535,7 @@
     <None Include="Resources\glyph_blue9.PNG" />
     <None Include="Resources\Importance.png" />
     <None Include="Resources\InsertPictureHS.png" />
+    <None Include="Resources\google.ico" />
     <Content Include="Resources\Lenfest Logo_50px.jpg" />
     <None Include="Resources\NavForward.png" />
     <None Include="Resources\NotEditable.png" />
