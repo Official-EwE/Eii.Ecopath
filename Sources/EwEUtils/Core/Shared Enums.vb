@@ -1295,10 +1295,10 @@ Namespace Core
 
         EcopathFirstYear
         EcopathNumYears
-        LatMin
-        LatMax
-        LonMin
-        LonMax
+        South
+        North
+        West
+        East
         AreaName
 
         TaxonGroup

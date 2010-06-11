@@ -713,13 +713,13 @@ Namespace DataSources
 
                 sVal1 = CSng(Me.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
                 sVal2 = CSng(Me.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
-                Me.m_core.m_EwEModelMinLat = Math.Min(sVal1, sVal2)
-                Me.m_core.m_EwEModelMaxLat = Math.Max(sVal1, sVal2)
+                Me.m_core.m_EwEModelSouth = Math.Min(sVal1, sVal2)
+                Me.m_core.m_EwEModelNorth = Math.Max(sVal1, sVal2)
 
                 sVal1 = CSng(Me.ReadSafe(reader, "MinLon", cCore.NULL_VALUE))
                 sVal2 = CSng(Me.ReadSafe(reader, "MaxLon", cCore.NULL_VALUE))
-                Me.m_core.m_EwEModelMinLon = Math.Min(sVal1, sVal2)
-                Me.m_core.m_EwEModelMaxLon = Math.Max(sVal1, sVal2)
+                Me.m_core.m_EwEModelWest = Math.Min(sVal1, sVal2)
+                Me.m_core.m_EwEModelEast = Math.Max(sVal1, sVal2)
                 Me.m_core.m_EwEModelAreaName = CStr(Me.ReadSafe(reader, "AreaName", ""))
                 Me.m_core.m_EwEModelLastSaved = CSng(Me.ReadSafe(reader, "LastSaved", 0))
 
@@ -777,10 +777,10 @@ Namespace DataSources
                 drow("UnitMonetary") = Me.m_core.m_EwEModelUnitMonetary
                 drow("FirstYear") = Me.m_core.m_EwEModelFirstYear
                 drow("NumYears") = Me.m_core.m_EwEModelNumYears
-                drow("MinLat") = Me.m_core.m_EwEModelMinLat
-                drow("MaxLat") = Me.m_core.m_EwEModelMaxLat
-                drow("MinLon") = Me.m_core.m_EwEModelMinLon
-                drow("MaxLon") = Me.m_core.m_EwEModelMaxLon
+                drow("MinLat") = Me.m_core.m_EwEModelSouth
+                drow("MaxLat") = Me.m_core.m_EwEModelNorth
+                drow("MinLon") = Me.m_core.m_EwEModelWest
+                drow("MaxLon") = Me.m_core.m_EwEModelEast
                 drow("AreaName") = Me.m_core.m_EwEModelAreaName
                 drow("LastSaved") = cDateUtils.DateToJulian()
 

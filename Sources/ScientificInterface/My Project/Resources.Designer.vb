@@ -5579,6 +5579,15 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Found match &apos;{0}&apos;, do you want to use this value?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_VALIDATE_SEARCH() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_VALIDATE_SEARCH", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property ProtectFormHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ProtectFormHS", resourceCulture)

@@ -16,10 +16,11 @@ Public Class frmModelDescription
     Private m_fpPSD As cEwEFormatProvider = Nothing
     Private m_fpFirstYear As cEwEFormatProvider = Nothing
     Private m_fpNumYears As cEwEFormatProvider = Nothing
-    Private m_fpLatMin As cEwEFormatProvider = Nothing
-    Private m_fpLatMax As cEwEFormatProvider = Nothing
-    Private m_fpLonMin As cEwEFormatProvider = Nothing
-    Private m_fpLonMax As cEwEFormatProvider = Nothing
+    Private m_fpAreaName As cEwEFormatProvider = Nothing
+    Private m_fpSouth As cEwEFormatProvider = Nothing
+    Private m_fpNorth As cEwEFormatProvider = Nothing
+    Private m_fpWest As cEwEFormatProvider = Nothing
+    Private m_fpEast As cEwEFormatProvider = Nothing
 
     ' Unit properties
     Private m_propUnitCurrency As cIntegerProperty = Nothing
@@ -52,10 +53,11 @@ Public Class frmModelDescription
         Me.m_fpGroupDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
         Me.m_fpFirstYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstYear, eweModel, eVarNameFlags.EcopathFirstYear)
         Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumYears, eweModel, eVarNameFlags.EcopathNumYears)
-        Me.m_fpLatMax = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNorth, eweModel, eVarNameFlags.LatMax)
-        Me.m_fpLatMin = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSouth, eweModel, eVarNameFlags.LatMin)
-        Me.m_fpLonMin = New cPropertyFormatProvider(Me.UIContext, Me.m_nudWest, eweModel, eVarNameFlags.LonMin)
-        Me.m_fpLonMax = New cPropertyFormatProvider(Me.UIContext, Me.m_nudEast, eweModel, eVarNameFlags.LonMax)
+        Me.m_fpAreaName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbModelAreaName, eweModel, eVarNameFlags.AreaName)
+        Me.m_fpNorth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNorth, eweModel, eVarNameFlags.North)
+        Me.m_fpSouth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSouth, eweModel, eVarNameFlags.South)
+        Me.m_fpWest = New cPropertyFormatProvider(Me.UIContext, Me.m_nudWest, eweModel, eVarNameFlags.West)
+        Me.m_fpEast = New cPropertyFormatProvider(Me.UIContext, Me.m_nudEast, eweModel, eVarNameFlags.East)
 
         Me.m_fpPSD = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPSD, psdParms, eVarNameFlags.PSDEnabled)
 
@@ -108,10 +110,10 @@ Public Class frmModelDescription
         Me.m_fpPSD.Release()
         Me.m_fpFirstYear.Release()
         Me.m_fpNumYears.Release()
-        Me.m_fpLatMin.Release()
-        Me.m_fpLatMax.Release()
-        Me.m_fpLonMin.Release()
-        Me.m_fpLonMax.Release()
+        Me.m_fpSouth.Release()
+        Me.m_fpNorth.Release()
+        Me.m_fpWest.Release()
+        Me.m_fpEast.Release()
 
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
         Me.CoreComponents = Nothing
@@ -285,14 +287,16 @@ Public Class frmModelDescription
         Handles m_btnLookup.Click
 
         Dim lookup As New cGoogleMapsLookup()
+        Dim eweModel As cEwEModel = Me.UIContext.Core.EwEModel()
 
         If lookup.FindLocation(Me.m_tbModelAreaName.Text) Then
-            If MsgBox("Found '" & lookup.Term & "', do you want to use this?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                Me.m_tbModelAreaName.Text = lookup.Term
-                Me.m_nudSouth.Value = CDec(lookup.LatMin)
-                Me.m_nudNorth.Value = CDec(lookup.LatMax)
-                Me.m_nudWest.Value = CDec(lookup.LonMin)
-                Me.m_nudEast.Value = CDec(lookup.LonMax)
+            ' No need to use feedback messages here
+            If MsgBox(String.Format(My.Resources.PROMPT_VALIDATE_SEARCH, lookup.Term), MsgBoxStyle.YesNo Or MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                eweModel.AreaName = lookup.Term
+                eweModel.South = lookup.South
+                eweModel.North = lookup.North
+                eweModel.West = lookup.West
+                eweModel.East = lookup.East
             End If
         End If
 

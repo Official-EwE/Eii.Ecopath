@@ -2220,10 +2220,10 @@ Public Class cCore
     Friend m_EwEModelContact As String = ""
     Friend m_EwEModelLastSaved As Single = 0
     Friend m_EwEModelAreaName As String = ""
-    Friend m_EwEModelMinLat As Single = 0
-    Friend m_EwEModelMaxLat As Single = 0
-    Friend m_EwEModelMinLon As Single = 0
-    Friend m_EwEModelMaxLon As Single = 0
+    Friend m_EwEModelSouth As Single = 0
+    Friend m_EwEModelNorth As Single = 0
+    Friend m_EwEModelWest As Single = 0
+    Friend m_EwEModelEast As Single = 0
     Friend m_EwEModelFirstYear As Integer = Date.Now.Year
     Friend m_EwEModelNumYears As Integer = 1
 
@@ -2253,10 +2253,10 @@ Public Class cCore
         Me.m_EwEModel.FirstYear = Me.m_EwEModelFirstYear
         Me.m_EwEModel.NumYears = Me.m_EwEModelNumYears
         Me.m_EwEModel.AreaName = Me.m_EwEModelAreaName
-        Me.m_EwEModel.LatMin = Me.m_EwEModelMinLat
-        Me.m_EwEModel.LatMax = Me.m_EwEModelMaxLat
-        Me.m_EwEModel.LonMin = Me.m_EwEModelMinLon
-        Me.m_EwEModel.LonMax = Me.m_EwEModelMaxLon
+        Me.m_EwEModel.South = Me.m_EwEModelSouth
+        Me.m_EwEModel.North = Me.m_EwEModelNorth
+        Me.m_EwEModel.West = Me.m_EwEModelWest
+        Me.m_EwEModel.East = Me.m_EwEModelEast
         Me.m_EwEModel.LastSaved = Me.m_EwEModelLastSaved
         Me.m_EwEModel.AllowValidation = True
 
@@ -2284,10 +2284,10 @@ Public Class cCore
         Me.m_EwEModelFirstYear = Me.m_EwEModel.FirstYear
         Me.m_EwEModelNumYears = Me.m_EwEModel.NumYears
         Me.m_EwEModelAreaName = Me.m_EwEModel.AreaName
-        Me.m_EwEModelMinLat = Me.m_EwEModel.LatMin
-        Me.m_EwEModelMaxLat = Me.m_EwEModel.LatMax
-        Me.m_EwEModelMinLon = Me.m_EwEModel.LonMin
-        Me.m_EwEModelMaxLon = Me.m_EwEModel.LonMax
+        Me.m_EwEModelSouth = Me.m_EwEModel.South
+        Me.m_EwEModelNorth = Me.m_EwEModel.North
+        Me.m_EwEModelWest = Me.m_EwEModel.West
+        Me.m_EwEModelEast = Me.m_EwEModel.East
         ' Do not update LastSaved; exclusively set by core
 
         ' Update relevant unit(s) in Ecopath

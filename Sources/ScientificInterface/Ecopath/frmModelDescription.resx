@@ -516,6 +516,270 @@
   <data name="m_tlpUnits.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="&gt;&gt;m_gbCurrencyUnit.Name" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;m_gbCurrencyUnit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gbCurrencyUnit.Parent" xml:space="preserve">
+    <value>m_tlpUnits</value>
+  </data>
+  <data name="&gt;&gt;m_gbCurrencyUnit.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_gbTimeUnits.Name" xml:space="preserve">
+    <value>m_gbTimeUnits</value>
+  </data>
+  <data name="&gt;&gt;m_gbTimeUnits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gbTimeUnits.Parent" xml:space="preserve">
+    <value>m_tlpUnits</value>
+  </data>
+  <data name="&gt;&gt;m_gbTimeUnits.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_gbMonetaryUnits.Name" xml:space="preserve">
+    <value>m_gbMonetaryUnits</value>
+  </data>
+  <data name="&gt;&gt;m_gbMonetaryUnits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gbMonetaryUnits.Parent" xml:space="preserve">
+    <value>m_tlpUnits</value>
+  </data>
+  <data name="&gt;&gt;m_gbMonetaryUnits.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_gbNumFormatting.Name" xml:space="preserve">
+    <value>m_gbNumFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_gbNumFormatting.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gbNumFormatting.Parent" xml:space="preserve">
+    <value>m_tlpUnits</value>
+  </data>
+  <data name="&gt;&gt;m_gbNumFormatting.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_tlpUnits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 448</value>
+  </data>
+  <data name="m_tlpUnits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpUnits.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_tlpUnits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>633, 278</value>
+  </data>
+  <data name="m_tlpUnits.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="&gt;&gt;m_tlpUnits.Name" xml:space="preserve">
+    <value>m_tlpUnits</value>
+  </data>
+  <data name="&gt;&gt;m_tlpUnits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpUnits.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tlpUnits.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="m_tlpUnits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_gbCurrencyUnit" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_gbTimeUnits" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_gbMonetaryUnits" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_gbNumFormatting" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,54.71407,Percent,45.28593" /&gt;&lt;Rows Styles="Percent,50,Absolute,195,Absolute,194" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="&gt;&gt;tbCurrencyNutrientOther.Name" xml:space="preserve">
+    <value>tbCurrencyNutrientOther</value>
+  </data>
+  <data name="&gt;&gt;tbCurrencyNutrientOther.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbCurrencyNutrientOther.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;tbCurrencyNutrientOther.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;rbNitrogen.Name" xml:space="preserve">
+    <value>rbNitrogen</value>
+  </data>
+  <data name="&gt;&gt;rbNitrogen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbNitrogen.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;rbNitrogen.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;rbNutrientOther.Name" xml:space="preserve">
+    <value>rbNutrientOther</value>
+  </data>
+  <data name="&gt;&gt;rbNutrientOther.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbNutrientOther.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;rbNutrientOther.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;rbPhosporus.Name" xml:space="preserve">
+    <value>rbPhosporus</value>
+  </data>
+  <data name="&gt;&gt;rbPhosporus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbPhosporus.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;rbPhosporus.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;tbCurrencyEnergyOther.Name" xml:space="preserve">
+    <value>tbCurrencyEnergyOther</value>
+  </data>
+  <data name="&gt;&gt;tbCurrencyEnergyOther.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbCurrencyEnergyOther.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;tbCurrencyEnergyOther.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;rbCurrencyEnergyOther.Name" xml:space="preserve">
+    <value>rbCurrencyEnergyOther</value>
+  </data>
+  <data name="&gt;&gt;rbCurrencyEnergyOther.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbCurrencyEnergyOther.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;rbCurrencyEnergyOther.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_lblNutrientRelated.Name" xml:space="preserve">
+    <value>m_lblNutrientRelated</value>
+  </data>
+  <data name="&gt;&gt;m_lblNutrientRelated.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblNutrientRelated.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;m_lblNutrientRelated.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_lblEnergyRelated.Name" xml:space="preserve">
+    <value>m_lblEnergyRelated</value>
+  </data>
+  <data name="&gt;&gt;m_lblEnergyRelated.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblEnergyRelated.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;m_lblEnergyRelated.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;rbWetWeight.Name" xml:space="preserve">
+    <value>rbWetWeight</value>
+  </data>
+  <data name="&gt;&gt;rbWetWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbWetWeight.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;rbWetWeight.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;rbJoules.Name" xml:space="preserve">
+    <value>rbJoules</value>
+  </data>
+  <data name="&gt;&gt;rbJoules.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbJoules.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;rbJoules.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;rbCalorie.Name" xml:space="preserve">
+    <value>rbCalorie</value>
+  </data>
+  <data name="&gt;&gt;rbCalorie.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbCalorie.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;rbCalorie.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;rbCarbon.Name" xml:space="preserve">
+    <value>rbCarbon</value>
+  </data>
+  <data name="&gt;&gt;rbCarbon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbCarbon.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;rbCarbon.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;rbDryWeight.Name" xml:space="preserve">
+    <value>rbDryWeight</value>
+  </data>
+  <data name="&gt;&gt;rbDryWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbDryWeight.Parent" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;rbDryWeight.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="m_gbCurrencyUnit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_gbCurrencyUnit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 86</value>
+  </data>
+  <data name="m_gbCurrencyUnit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 3, 0</value>
+  </data>
+  <data name="m_gbCurrencyUnit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>343, 192</value>
+  </data>
+  <data name="m_gbCurrencyUnit.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_gbCurrencyUnit.Text" xml:space="preserve">
+    <value>C&amp;urrency units</value>
+  </data>
+  <data name="&gt;&gt;m_gbCurrencyUnit.Name" xml:space="preserve">
+    <value>m_gbCurrencyUnit</value>
+  </data>
+  <data name="&gt;&gt;m_gbCurrencyUnit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gbCurrencyUnit.Parent" xml:space="preserve">
+    <value>m_tlpUnits</value>
+  </data>
+  <data name="&gt;&gt;m_gbCurrencyUnit.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="tbCurrencyNutrientOther.Location" type="System.Drawing.Point, System.Drawing">
     <value>243, 92</value>
   </data>
@@ -882,35 +1146,83 @@
   <data name="&gt;&gt;rbDryWeight.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="m_gbCurrencyUnit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;txbTimeOther.Name" xml:space="preserve">
+    <value>txbTimeOther</value>
   </data>
-  <data name="m_gbCurrencyUnit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 86</value>
+  <data name="&gt;&gt;txbTimeOther.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_gbCurrencyUnit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 3, 0</value>
+  <data name="&gt;&gt;txbTimeOther.Parent" xml:space="preserve">
+    <value>m_gbTimeUnits</value>
   </data>
-  <data name="m_gbCurrencyUnit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>343, 192</value>
+  <data name="&gt;&gt;txbTimeOther.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="m_gbCurrencyUnit.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;rbTimeOther.Name" xml:space="preserve">
+    <value>rbTimeOther</value>
+  </data>
+  <data name="&gt;&gt;rbTimeOther.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbTimeOther.Parent" xml:space="preserve">
+    <value>m_gbTimeUnits</value>
+  </data>
+  <data name="&gt;&gt;rbTimeOther.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_gbCurrencyUnit.Text" xml:space="preserve">
-    <value>C&amp;urrency units</value>
+  <data name="&gt;&gt;rbDay.Name" xml:space="preserve">
+    <value>rbDay</value>
   </data>
-  <data name="&gt;&gt;m_gbCurrencyUnit.Name" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
+  <data name="&gt;&gt;rbDay.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_gbCurrencyUnit.Type" xml:space="preserve">
+  <data name="&gt;&gt;rbDay.Parent" xml:space="preserve">
+    <value>m_gbTimeUnits</value>
+  </data>
+  <data name="&gt;&gt;rbDay.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;rbYear.Name" xml:space="preserve">
+    <value>rbYear</value>
+  </data>
+  <data name="&gt;&gt;rbYear.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbYear.Parent" xml:space="preserve">
+    <value>m_gbTimeUnits</value>
+  </data>
+  <data name="&gt;&gt;rbYear.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_gbTimeUnits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_gbTimeUnits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>349, 86</value>
+  </data>
+  <data name="m_gbTimeUnits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 0, 0</value>
+  </data>
+  <data name="m_gbTimeUnits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>284, 192</value>
+  </data>
+  <data name="m_gbTimeUnits.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_gbTimeUnits.Text" xml:space="preserve">
+    <value>&amp;Time units</value>
+  </data>
+  <data name="&gt;&gt;m_gbTimeUnits.Name" xml:space="preserve">
+    <value>m_gbTimeUnits</value>
+  </data>
+  <data name="&gt;&gt;m_gbTimeUnits.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_gbCurrencyUnit.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_gbTimeUnits.Parent" xml:space="preserve">
     <value>m_tlpUnits</value>
   </data>
-  <data name="&gt;&gt;m_gbCurrencyUnit.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;m_gbTimeUnits.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="txbTimeOther.Location" type="System.Drawing.Point, System.Drawing">
     <value>93, 67</value>
@@ -1023,35 +1335,59 @@
   <data name="&gt;&gt;rbYear.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_gbTimeUnits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="&gt;&gt;m_lblMonetaryUnit.Name" xml:space="preserve">
+    <value>m_lblMonetaryUnit</value>
+  </data>
+  <data name="&gt;&gt;m_lblMonetaryUnit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblMonetaryUnit.Parent" xml:space="preserve">
+    <value>m_gbMonetaryUnits</value>
+  </data>
+  <data name="&gt;&gt;m_lblMonetaryUnit.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMonetaryUnit.Name" xml:space="preserve">
+    <value>m_cmbMonetaryUnit</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMonetaryUnit.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cMonetaryUnitComboBox, ScientificInterfaceShared, Version=6.1.0.610, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMonetaryUnit.Parent" xml:space="preserve">
+    <value>m_gbMonetaryUnits</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMonetaryUnit.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_gbMonetaryUnits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_gbTimeUnits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>349, 86</value>
+  <data name="m_gbMonetaryUnits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>349, 0</value>
   </data>
-  <data name="m_gbTimeUnits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 0, 0</value>
+  <data name="m_gbMonetaryUnits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 0, 3</value>
   </data>
-  <data name="m_gbTimeUnits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>284, 192</value>
+  <data name="m_gbMonetaryUnits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>284, 80</value>
   </data>
-  <data name="m_gbTimeUnits.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="m_gbMonetaryUnits.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="m_gbTimeUnits.Text" xml:space="preserve">
-    <value>&amp;Time units</value>
+  <data name="m_gbMonetaryUnits.Text" xml:space="preserve">
+    <value>&amp;Monetary units</value>
   </data>
-  <data name="&gt;&gt;m_gbTimeUnits.Name" xml:space="preserve">
-    <value>m_gbTimeUnits</value>
+  <data name="&gt;&gt;m_gbMonetaryUnits.Name" xml:space="preserve">
+    <value>m_gbMonetaryUnits</value>
   </data>
-  <data name="&gt;&gt;m_gbTimeUnits.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_gbMonetaryUnits.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_gbTimeUnits.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_gbMonetaryUnits.Parent" xml:space="preserve">
     <value>m_tlpUnits</value>
   </data>
-  <data name="&gt;&gt;m_gbTimeUnits.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;m_gbMonetaryUnits.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_lblMonetaryUnit.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1107,51 +1443,6 @@
   <data name="&gt;&gt;m_cmbMonetaryUnit.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_gbMonetaryUnits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_gbMonetaryUnits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>349, 0</value>
-  </data>
-  <data name="m_gbMonetaryUnits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 0, 3</value>
-  </data>
-  <data name="m_gbMonetaryUnits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>284, 80</value>
-  </data>
-  <data name="m_gbMonetaryUnits.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_gbMonetaryUnits.Text" xml:space="preserve">
-    <value>&amp;Monetary units</value>
-  </data>
-  <data name="&gt;&gt;m_gbMonetaryUnits.Name" xml:space="preserve">
-    <value>m_gbMonetaryUnits</value>
-  </data>
-  <data name="&gt;&gt;m_gbMonetaryUnits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbMonetaryUnits.Parent" xml:space="preserve">
-    <value>m_tlpUnits</value>
-  </data>
-  <data name="&gt;&gt;m_gbMonetaryUnits.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_cbGroupDigits.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbGroupDigits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 47</value>
-  </data>
-  <data name="m_cbGroupDigits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 17</value>
-  </data>
-  <data name="m_cbGroupDigits.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_cbGroupDigits.Text" xml:space="preserve">
-    <value>&amp;Group digits</value>
-  </data>
   <data name="&gt;&gt;m_cbGroupDigits.Name" xml:space="preserve">
     <value>m_cbGroupDigits</value>
   </data>
@@ -1194,35 +1485,32 @@
   <data name="&gt;&gt;m_gbNumFormatting.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_tlpUnits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 448</value>
+  <data name="m_cbGroupDigits.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="m_tlpUnits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="m_cbGroupDigits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 47</value>
   </data>
-  <data name="m_tlpUnits.RowCount" type="System.Int32, mscorlib">
+  <data name="m_cbGroupDigits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 17</value>
+  </data>
+  <data name="m_cbGroupDigits.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_tlpUnits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>633, 278</value>
+  <data name="m_cbGroupDigits.Text" xml:space="preserve">
+    <value>&amp;Group digits</value>
   </data>
-  <data name="m_tlpUnits.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
+  <data name="&gt;&gt;m_cbGroupDigits.Name" xml:space="preserve">
+    <value>m_cbGroupDigits</value>
   </data>
-  <data name="&gt;&gt;m_tlpUnits.Name" xml:space="preserve">
-    <value>m_tlpUnits</value>
+  <data name="&gt;&gt;m_cbGroupDigits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tlpUnits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_cbGroupDigits.Parent" xml:space="preserve">
+    <value>m_gbNumFormatting</value>
   </data>
-  <data name="&gt;&gt;m_tlpUnits.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpUnits.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="m_tlpUnits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_gbCurrencyUnit" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_gbTimeUnits" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_gbMonetaryUnits" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_gbNumFormatting" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,54.71407,Percent,45.28593" /&gt;&lt;Rows Styles="Percent,50,Absolute,195,Absolute,194" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="&gt;&gt;m_cbGroupDigits.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_chkPSD.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1682,9 +1970,6 @@
   </data>
   <data name="m_btnLookup.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
-  </data>
-  <data name="m_btnLookup.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
   </data>
   <data name="m_btnLookup.Location" type="System.Drawing.Point, System.Drawing">
     <value>550, 298</value>

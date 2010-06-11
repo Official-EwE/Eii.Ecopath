@@ -2664,4 +2664,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="google" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\google.ico;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PROMPT_VALIDATE_SEARCH" xml:space="preserve">
+    <value>Found match '{0}', do you want to use this value?</value>
+    <comment>{0}: match text</comment>
+  </data>
 </root>

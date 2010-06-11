@@ -20,7 +20,7 @@ Public Class cEwEModel
         Try
 
             m_dataType = eDataTypes.EwEModel
-            m_coreComponent = eCoreComponentType.Core
+            m_coreComponent = eCoreComponentType.EcoPath
 
             'default OK status used for setVariable
             'see comment setVariable(...)
@@ -64,24 +64,24 @@ Public Class cEwEModel
             val = New cValue(New Integer, eVarNameFlags.EcopathNumYears, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
             m_values.Add(val.varName, val)
 
-            ' LatMin
+            ' South
             meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            val = New cValue(New Single, eVarNameFlags.LatMin, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.South, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            ' LatMax
+            ' North
             meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            val = New cValue(New Single, eVarNameFlags.LatMax, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            ' LonMin
+            ' West
             meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            val = New cValue(New Single, eVarNameFlags.LonMin, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            ' LonMax
+            ' East
             meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            val = New cValue(New Single, eVarNameFlags.LonMax, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.East, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' Author
@@ -296,52 +296,52 @@ Public Class cEwEModel
     ''' <summary>
     ''' Get/set the southern extent of the model bounding box.
     ''' </summary>
-    Public Property LatMin() As Single
+    Public Property South() As Single
         Get
-            Return CSng(Me.GetVariable(eVarNameFlags.LatMin))
+            Return CSng(Me.GetVariable(eVarNameFlags.South))
         End Get
 
         Set(ByVal value As Single)
-            Me.SetVariable(eVarNameFlags.LatMin, value)
+            Me.SetVariable(eVarNameFlags.South, value)
         End Set
     End Property
 
     ''' <summary>
     ''' Get/set the northern extent of the model bounding box.
     ''' </summary>
-    Public Property LatMax() As Single
+    Public Property North() As Single
         Get
-            Return CSng(Me.GetVariable(eVarNameFlags.LatMax))
+            Return CSng(Me.GetVariable(eVarNameFlags.North))
         End Get
 
         Set(ByVal value As Single)
-            Me.SetVariable(eVarNameFlags.LatMax, value)
+            Me.SetVariable(eVarNameFlags.North, value)
         End Set
     End Property
 
     ''' <summary>
     ''' Get/set the western extent of the model bounding box.
     ''' </summary>
-    Public Property LonMin() As Single
+    Public Property West() As Single
         Get
-            Return CSng(Me.GetVariable(eVarNameFlags.LonMin))
+            Return CSng(Me.GetVariable(eVarNameFlags.West))
         End Get
 
         Set(ByVal value As Single)
-            Me.SetVariable(eVarNameFlags.LonMin, value)
+            Me.SetVariable(eVarNameFlags.West, value)
         End Set
     End Property
 
     ''' <summary>
     ''' Get/set the eastern extent of the model bounding box.
     ''' </summary>
-    Public Property LonMax() As Single
+    Public Property East() As Single
         Get
-            Return CSng(Me.GetVariable(eVarNameFlags.LonMax))
+            Return CSng(Me.GetVariable(eVarNameFlags.East))
         End Get
 
         Set(ByVal value As Single)
-            Me.SetVariable(eVarNameFlags.LonMax, value)
+            Me.SetVariable(eVarNameFlags.East, value)
         End Set
     End Property
 
