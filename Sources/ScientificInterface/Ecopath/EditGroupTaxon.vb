@@ -34,13 +34,13 @@ Public Class EditGroupTaxon
     ''' -----------------------------------------------------------------------
     Private Class cDataProducerSearchItem
 
-        Private m_prod As IDataProducerSearchPlugin = Nothing
+        Private m_prod As IDataSearchProducerPlugin = Nothing
 
-        Public Sub New(ByVal prod As IDataProducerSearchPlugin)
+        Public Sub New(ByVal prod As IDataSearchProducerPlugin)
             Me.m_prod = prod
         End Sub
 
-        Public ReadOnly Property Producer() As IDataProducerSearchPlugin
+        Public ReadOnly Property Producer() As IDataSearchProducerPlugin
             Get
                 Return Me.m_prod
             End Get
@@ -272,7 +272,7 @@ Public Class EditGroupTaxon
 
         Dim prod As IDataProducerPlugin = Me.SelectedDataProducer
         If prod IsNot Nothing Then
-            bCanSearch = (TypeOf prod Is IDataProducerSearchPlugin) And (prod.IsDataAvailable(GetType(ITaxonData)))
+            bCanSearch = (TypeOf prod Is IDataSearchProducerPlugin) And (prod.IsDataAvailable(GetType(ITaxonData)))
             If TypeOf prod Is IConfigurablePlugin Then
                 bCanSearch = bCanSearch And DirectCast(prod, IConfigurablePlugin).IsConfigured
             End If
@@ -335,7 +335,7 @@ Public Class EditGroupTaxon
 
         Dim pm As cPluginManager = Me.m_uic.Core.PluginManager
         Dim pi As IPlugin = Nothing
-        Dim dpi As IDataProducerSearchPlugin = Nothing
+        Dim dpi As IDataSearchProducerPlugin = Nothing
         Dim coll As ICollection(Of IPlugin) = Nothing
         Dim bHasItems As Boolean = False
 
@@ -344,11 +344,11 @@ Public Class EditGroupTaxon
 
         If (pm Is Nothing) Then Return
 
-        coll = pm.GetPlugins(GetType(IDataProducerSearchPlugin))
+        coll = pm.GetPlugins(GetType(IDataSearchProducerPlugin))
 
         ' Only show data producers that provide taxon data
         For Each pi In coll
-            dpi = DirectCast(pi, IDataProducerSearchPlugin)
+            dpi = DirectCast(pi, IDataSearchProducerPlugin)
             If (dpi.IsDataAvailable(GetType(ITaxonData))) Then
                 Me.m_cmbSource.Items.Add(New cDataProducerSearchItem(dpi))
                 bHasItems = True
@@ -367,7 +367,7 @@ Public Class EditGroupTaxon
 
     End Sub
 
-    Private ReadOnly Property SelectedDataProducer() As IDataProducerSearchPlugin
+    Private ReadOnly Property SelectedDataProducer() As IDataSearchProducerPlugin
         Get
             Dim item As cDataProducerSearchItem = DirectCast(Me.m_cmbSource.SelectedItem, cDataProducerSearchItem)
             If item Is Nothing Then Return Nothing
@@ -377,7 +377,7 @@ Public Class EditGroupTaxon
 
     Private Sub ConfigureSelectedDataProducer()
 
-        Dim dsp As IDataProducerSearchPlugin = Me.SelectedDataProducer
+        Dim dsp As IDataSearchProducerPlugin = Me.SelectedDataProducer
         Dim frm As Form = Nothing
         If (dsp Is Nothing) Then Return
         If Not (TypeOf dsp Is IConfigurablePlugin) Then Return

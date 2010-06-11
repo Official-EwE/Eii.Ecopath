@@ -10,7 +10,7 @@ Namespace Data
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Interface for building a container for plug-in search results provided
-    ''' by <see cref="IDataProducerSearchPlugin">data search plug-ins.</see>
+    ''' by <see cref="IDataSearchProducerPlugin">data search plug-ins.</see>
     ''' </summary>
     ''' -------------------------------------------------------------------
     Public Interface IDataSearchResults
@@ -29,6 +29,13 @@ Namespace Data
         ''' </summary>
         ''' -------------------------------------------------------------------
         ReadOnly Property SearchResults() As Object()
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get an array of score results for the matches.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property SearchScores() As Single()
 
     End Interface
 

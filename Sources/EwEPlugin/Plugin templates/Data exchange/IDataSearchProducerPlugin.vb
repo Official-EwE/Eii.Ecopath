@@ -13,7 +13,7 @@ Namespace Data
     ''' Plug-in interface for data providers that allow data to be searched.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public Interface IDataProducerSearchPlugin
+    Public Interface IDataSearchProducerPlugin
         Inherits IDataProducerPlugin
 
         ''' -------------------------------------------------------------------
