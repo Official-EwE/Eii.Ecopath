@@ -55,7 +55,10 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, PublicKeyToken=7f98ec142b9ee40a, processorArchitecture=x86" />
+    <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, PublicKeyToken=7f98ec142b9ee40a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Includes\SAUPUtil.dll</HintPath>
+    </Reference>
     <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL" />
     <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87" />
     <Reference Include="System" />
@@ -81,6 +84,8 @@
     <Compile Include="Controls\ColorDialog\cEwEColorDialog.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\EwEGrid\cPropertyInfoHelper.vb" />
+    <Compile Include="Controls\EwEGrid\PropertyInfoCell.vb" />
     <Compile Include="Controls\EwEGrid\PropertyRowHeaderChildCell.vb" />
     <Compile Include="Controls\EwEGrid\PropertyRowHeaderParentCell.vb" />
     <Compile Include="Controls\EwEGrid\PropertyCell.vb" />
@@ -461,7 +466,6 @@
     <None Include="ScientificInterfaceShared.snk" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Includes\SAUPUtil.dll" />
     <Content Include="Includes\shapelib.dll" />
     <Content Include="Includes\SourceGrid2.dll" />
     <Content Include="Includes\SourceLibrary.dll" />
