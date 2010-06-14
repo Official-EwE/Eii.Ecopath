@@ -156,6 +156,7 @@ Public Class ShapeValueGrid
         End Select
 
         Me.FixedColumnWidths = False
+        Me.AllowBlockSelect = False
 
     End Sub
 
@@ -234,16 +235,6 @@ Public Class ShapeValueGrid
         MyBase.FinishStyle()
         ' No need for fixed columns
         Me.FixedColumns = 0
-    End Sub
-
-    Protected Overrides Sub bm_rowSelectClick(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
-        ' Do not allow col selections
-        'MyBase.bm_rowSelectClick(sender, e)
-    End Sub
-
-    Protected Overrides Sub bm_tlCellClick(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
-        ' Do not allow entire grid selections
-        'MyBase.bm_tlCellClick(sender, e)
     End Sub
 
 #End Region ' Grid overrides
