@@ -303,6 +303,7 @@ Namespace Controls.EwEGrid
             AddHandler Me.Selection.ClipboardCut, AddressOf OnClipboardCut
             AddHandler Me.Selection.ClipboardPaste, AddressOf OnClipboardPaste
             AddHandler Me.Selection.ClearCells, AddressOf OnClearCells
+            AddHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
 
             Me.TrackPropertySelection = True
         End Sub
@@ -420,6 +421,13 @@ Namespace Controls.EwEGrid
 
 #Region " EwE events "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event that is raised whenever the selection in the grid is modified,
+        ''' either via code of by user interaction.
+        ''' </summary>
+        ''' <param name="selection">The newly selected cells.</param>
+        ''' -------------------------------------------------------------------
         Public Event OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
 
         Protected Sub RaiseSelectionChangeEvent()
@@ -487,7 +495,7 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Provides a grid with starndard EwE appearances and behaviours.
+        ''' Provides a grid with standard EwE appearances and behaviours.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overridable Sub InitStyle()
@@ -567,12 +575,14 @@ Namespace Controls.EwEGrid
             ' NOP
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Flag, states whether columns are fixed in width and height.
         ''' </summary>
         ''' <remarks>
         ''' When True, the header row is set to a fixed height of 45 (shudder)
         ''' </remarks>
+        ''' -------------------------------------------------------------------
         <Browsable(True), Description("States whether columns are fixed in width and height")> _
         Public Property FixedColumnWidths() As Boolean
             Get
@@ -601,6 +611,7 @@ Namespace Controls.EwEGrid
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Flag, states whether the grid will maintain a list of 
         ''' <see cref="SelectedProperties">selected properties</see>.
@@ -608,21 +619,16 @@ Namespace Controls.EwEGrid
         ''' <remarks>
         ''' It is advised to set this setting to False for larger grids.
         ''' </remarks>
-        <Browsable(True), Description("States whether the grid maintains a list of selected cProperty instances.")> _
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         Description("States whether the grid maintains a list of selected cProperty instances."), _
+         DefaultValue(True)> _
       Public Property TrackPropertySelection() As Boolean
             Get
                 Return Me.m_bTrackPropertySelection
             End Get
             Set(ByVal value As Boolean)
-                If Me.m_bTrackPropertySelection <> value Then
-                    If Me.m_bTrackPropertySelection Then
-                        RemoveHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
-                    End If
-                    Me.m_bTrackPropertySelection = value
-                    If Me.m_bTrackPropertySelection Then
-                        AddHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
-                    End If
-                End If
+                Me.m_bTrackPropertySelection = value
             End Set
         End Property
 
@@ -724,9 +730,13 @@ Namespace Controls.EwEGrid
 
 #Region " Selection behavior "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' FStates whether the grid allows row, column and entire content selections.
+        ''' States whether the grid allows block selections, which occur when the
+        ''' user clicks a row header, a column header or the (0, 0) cell to select
+        ''' the entire grid.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         <Browsable(True), _
          Description("States whether the grid allows row, column and entire content selections.")> _
         Public Property AllowBlockSelect() As Boolean
@@ -764,6 +774,7 @@ Namespace Controls.EwEGrid
             End If
 
             Me.Selection.AddRange(New Range(iFirstRow, 0, iLastRow, Me.ColumnsCount - 1))
+
         End Sub
 
         Protected Overridable Sub OnSelectColumn(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
@@ -857,7 +868,7 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Clipboard cut.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub OnClipboardCut(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -936,29 +947,33 @@ Namespace Controls.EwEGrid
             Dim sc As cPropertySelectionCommand = Nothing
             Dim c As SourceGrid2.Cells.ICell = Nothing
 
-            Me.m_lpropertySelected.Clear()
+            If Me.m_bTrackPropertySelection Then
 
-            If e.EventType <> SelectionChangeEventType.Clear Then
+                Me.m_lpropertySelected.Clear()
 
-                ' Get properties from selected cells
-                For Each p As Position In Me.Selection.GetCellsPositions
-                    c = Me(p.Row, p.Column)
-                    If c IsNot Nothing Then
-                        ' Is property cell?
-                        If TypeOf c Is PropertyCell Then
-                            ' #Yes: add to list of selected cells
-                            Me.m_lpropertySelected.Add(DirectCast(c, PropertyCell).GetProperty())
+                If e.EventType <> SelectionChangeEventType.Clear Then
+
+                    ' Get properties from selected cells
+                    For Each p As Position In Me.Selection.GetCellsPositions
+                        c = Me(p.Row, p.Column)
+                        If c IsNot Nothing Then
+                            ' Is property cell?
+                            If TypeOf c Is PropertyCell Then
+                                ' #Yes: add to list of selected cells
+                                Me.m_lpropertySelected.Add(DirectCast(c, PropertyCell).GetProperty())
+                            End If
                         End If
-                    End If
-                Next
+                    Next
 
-            End If
-
-            If cmd IsNot Nothing Then
-                If (TypeOf cmd Is cPropertySelectionCommand) Then
-                    sc = DirectCast(cmd, cPropertySelectionCommand)
-                    sc.Invoke(Me.m_lpropertySelected)
                 End If
+
+                If cmd IsNot Nothing Then
+                    If (TypeOf cmd Is cPropertySelectionCommand) Then
+                        sc = DirectCast(cmd, cPropertySelectionCommand)
+                        sc.Invoke(Me.m_lpropertySelected)
+                    End If
+                End If
+
             End If
 
             Try
@@ -969,10 +984,28 @@ Namespace Controls.EwEGrid
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns an array of selected properties.
+        ''' </summary>
+        ''' <returns>An array of selected properties</returns>
+        ''' <remarks>
+        ''' Note that the grid will only track selected properties when
+        ''' <see cref="TrackPropertySelection">TrackPropertySelection</see> is
+        ''' set to <see cref="Boolean">True</see>.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Function SelectedProperties() As cProperty()
             Return m_lpropertySelected.ToArray()
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the index of the current selected row, or when the grid is in
+        ''' multi-selection mode, the index of the first selected row.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Function SelectedRow() As Integer
 
             Dim iSelectedRow As Integer = -1
@@ -988,6 +1021,16 @@ Namespace Controls.EwEGrid
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set the current selected row to a specific row index.
+        ''' </summary>
+        ''' <param name="iRow">The index of the row to select.</param>
+        ''' <remarks>
+        ''' Note that this method only works when the grid supports multiple
+        ''' selections. An assertion may occur otherwise.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Sub SelectRow(ByVal iRow As Integer)
 
             ' Clear current selection
@@ -1003,6 +1046,18 @@ Namespace Controls.EwEGrid
             Me.ShowCell(New Position(iRow, 0))
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Populate the grid content from a stream reader.
+        ''' </summary>
+        ''' <param name="sr">The <see cref="StreamReader">stream reader</see> to 
+        ''' read the grid content from.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' This method does not affect read-only cells, and attempts to convert 
+        ''' values encountered in the stream reader to the proper cell value types. 
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Function ReadContent(ByVal sr As StreamReader) As Boolean
 
             Dim strLine As String = ""
@@ -1058,6 +1113,14 @@ Namespace Controls.EwEGrid
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Write the content of the grid content to a stream writer.
+        ''' </summary>
+        ''' <param name="sw">The <see cref="StreamWriter">stream writer</see> to
+        ''' write grid values to.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
         Public Function WriteContent(ByVal sw As StreamWriter) As Boolean
 
             Dim cell As ICell = Nothing
