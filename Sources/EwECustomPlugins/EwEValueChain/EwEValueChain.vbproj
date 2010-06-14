@@ -108,7 +108,6 @@
     <Compile Include="Data\Flow elements\Units\cUnit.vb" />
     <Compile Include="Data\Parameters\cParameters.vb" />
     <Compile Include="Data\Results\cResults.vb" />
-    <Compile Include="Interface\Controls\PropertyInfoCell.vb" />
     <Compile Include="Interface\Controls\ucDefault.vb">
       <SubType>UserControl</SubType>
     </Compile>
@@ -203,7 +202,6 @@
     </Compile>
     <Compile Include="Plugin\cPluginData.vb" />
     <Compile Include="Plugin\cPluginPoint.vb" />
-    <Compile Include="Utils\cPropertyInfoHelper.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -354,6 +352,9 @@
   <ItemGroup>
     <None Include="EwEValueChain.snk" />
     <None Include="Resources\ThumbnailLoadingHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
