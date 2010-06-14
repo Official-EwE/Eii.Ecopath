@@ -110,8 +110,10 @@ Public Class EditGroupTaxon
 
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        If Me.m_grid.Apply Then
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Close()
+        End If
     End Sub
 
     Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -162,8 +164,7 @@ Public Class EditGroupTaxon
 
     Private Sub OnSearch(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnSearch.Click
-        If (Me.SelectedDataProducer Is Nothing) Then Return
-        Me.SelectedDataProducer.StartSearch(Me.m_grid.SelectedTaxon)
+        Me.SearchTaxon(Me.m_grid.SelectedTaxon)
     End Sub
 
     Private Sub OnSourceChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -248,13 +249,35 @@ Public Class EditGroupTaxon
 
     End Sub
 
-    Private Sub OnTaxonSearchResults(ByVal data As IDataSearchResults)
+    Private Sub OnTaxonSearchResults(ByVal results As IDataSearchResults)
+
         ' Is a search result that we fired ourselves?
-        If Object.ReferenceEquals(data.SearchTerm, Me.m_grid.SelectedTaxon) Then
-            ' #Yes: process!
-            ' Hmm, what to do here?
-            MsgBox("Search returned " & data.SearchResults.Count & " results")
+        If Not Object.ReferenceEquals(results.SearchTerm, Me.m_grid.SelectedTaxon) Then
+            ' #No: Ignore this event
+            Return
         End If
+
+        Select Case results.SearchResults.Count
+            Case 0
+                MsgBox("Your search did not produce any results")
+
+            Case 1
+                ' Apply the first result
+                Me.ApplyTaxon(DirectCast(results.SearchResults(0), ITaxonData))
+
+            Case Else
+                ' Show selected results
+                Dim dlg As New frmSearchResults(Me.m_uic, results)
+                If dlg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                    Select Case dlg.Choice
+                        Case frmSearchResults.eChoiceTypes.UseSelected
+                            Me.ApplyTaxon(DirectCast(dlg.SelectedResult, ITaxonData))
+                        Case frmSearchResults.eChoiceTypes.SearchWithSelected
+                            Me.SearchTaxon(DirectCast(dlg.SelectedResult, ITaxonData))
+                    End Select
+                End If
+        End Select
+
     End Sub
 
 #End Region ' Events
@@ -392,6 +415,36 @@ Public Class EditGroupTaxon
 
         Me.UpdateControls()
 
+    End Sub
+
+    Private Sub ApplyTaxon(ByVal taxon As ITaxonData)
+        Me.m_grid.UpdateSelectedTaxon(taxon)
+    End Sub
+
+    Private Sub SearchTaxon(ByVal taxon As ITaxonData)
+        If (Me.SelectedDataProducer Is Nothing) Then Return
+        Try
+            ' Clear search key to initiate a full search
+            taxon.SourceKey = ""
+            ' Start searching
+            Me.SelectedDataProducer.StartSearch(taxon)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub RefreshTaxon(ByVal taxon As ITaxonData)
+        If (Me.SelectedDataProducer Is Nothing) Then Return
+        Try
+            ' Has a search key for this specific producer?
+            If (Not String.IsNullOrEmpty(taxon.SourceKey)) And _
+               (String.Compare(taxon.Source, Me.SelectedDataProducer.Name, True) = 0) Then
+                ' #Yes: Start searching (expected to return only one result)
+                Me.SelectedDataProducer.StartSearch(taxon)
+            End If
+        Catch ex As Exception
+            ' Woops
+        End Try
     End Sub
 
 #End Region ' Internals

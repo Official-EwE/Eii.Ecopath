@@ -225,6 +225,7 @@ Partial Class EditGroupTaxon
         '
         'm_grid
         '
+        Me.m_grid.AllowBlockSelect = False
         resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10

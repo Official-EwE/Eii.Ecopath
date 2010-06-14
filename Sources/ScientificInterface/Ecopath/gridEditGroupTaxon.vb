@@ -6,6 +6,7 @@ Imports EwEPlugin.Data
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports SourceGrid2
+Imports System.ComponentModel
 
 #End Region ' Imports
 
@@ -29,10 +30,6 @@ Public Class gridEditGroupTaxon
     ''' to trap cell edit events locally in this grid. These events are essential
     ''' for keeping the local administration up to date.</summary>
     Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
-    ''' <summary>Update lock, used to distinguish between code updates and
-    ''' user updates of grid cells. When grid cells are updated from within
-    ''' the code, an update lock should be active to prevent edit/update recursion.</summary>
-    Private m_iUpdateLock As Integer = 0
     ''' <summary>Visual model to display original groups.</summary>
     Private m_vmOriginal As VisualModels.Common = New VisualModels.Common(False)
     ''' <summary>Visual model to display newly created groups.</summary>
@@ -53,22 +50,23 @@ Public Class gridEditGroupTaxon
 
 #Region " Private helper classes "
 
+    <TypeConverter(GetType(cPropertySorter))> _
     Private Class cTaxonInfo
         Implements ITaxonData
 
         Private m_taxon As cTaxon = Nothing
-        Private m_strCode3A As String
-        Private m_strCodeISSCAAP As String
-        Private m_strCodeTaxon As String
-        Private m_strClass As String
-        Private m_strOrder As String
-        Private m_strGenus As String
-        Private m_strFamily As String
-        Private m_strSpecies As String
-        Private m_strCommon As String
-        Private m_strSource As String
-        Private m_strKey As String
-        Private m_sProportion As Single
+        Private m_strCode3A As String = ""
+        Private m_strCodeISSCAAP As String = ""
+        Private m_strCodeTaxon As String = ""
+        Private m_strClass As String = ""
+        Private m_strOrder As String = ""
+        Private m_strGenus As String = ""
+        Private m_strFamily As String = ""
+        Private m_strSpecies As String = ""
+        Private m_strCommon As String = ""
+        Private m_strSource As String = ""
+        Private m_strKey As String = ""
+        Private m_sProportion As Single = 0.0!
         ''' <summary>Index of the ecopath group that this taxon contributes to.</summary>
         Private m_iGroup As Integer = Nothing
 
@@ -115,6 +113,9 @@ Public Class gridEditGroupTaxon
             Me.m_bUpdated = False
         End Sub
 
+        Public Sub New()
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Update this unit with new Taxonomy data.
@@ -142,6 +143,7 @@ Public Class gridEditGroupTaxon
         ''' with this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public ReadOnly Property Taxon() As cTaxon
             Get
                 Return Me.m_taxon
@@ -167,6 +169,7 @@ Public Class gridEditGroupTaxon
         ''' <returns>
         ''' </returns>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public ReadOnly Property IsChanged() As Boolean
             Get
                 If (Me.IsNew()) Then Return False
@@ -192,6 +195,7 @@ Public Class gridEditGroupTaxon
         ''' for the layer object.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public ReadOnly Property Status() As eItemStatusTypes
             Get
                 Return Me.m_status
@@ -203,6 +207,7 @@ Public Class gridEditGroupTaxon
         ''' Get/set whether the user has confirmed an action on this object.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public Property Confirmed() As Boolean
             Get
                 Return Me.m_bConfirmed
@@ -218,6 +223,7 @@ Public Class gridEditGroupTaxon
         ''' will update the <see cref="Status">Status</see> of the item.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public Property FlaggedForDeletion() As Boolean
             Get
                 Return Me.m_status = eItemStatusTypes.Removed
@@ -244,6 +250,7 @@ Public Class gridEditGroupTaxon
         ''' Get/set the group of this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public Property Group() As Integer
             Get
                 Return Me.m_iGroup
@@ -259,6 +266,7 @@ Public Class gridEditGroupTaxon
         ''' a functional group.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public Property Proportion() As Single
             Get
                 Return Me.m_sProportion
@@ -268,6 +276,13 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         DisplayName("Class name")> _
         Public Property [Class]() As String _
             Implements ITaxonData.Class
             Get
@@ -278,6 +293,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
+        <Browsable(False)> _
         Public Property Code3A() As String Implements ITaxonData.Code3A
             Get
                 Return m_strCode3A
@@ -287,6 +303,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
+        <Browsable(False)> _
         Public Property CodeISSCAAP() As String Implements ITaxonData.CodeISSCAAP
             Get
                 Return m_strCodeISSCAAP
@@ -296,6 +313,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
+        <Browsable(False)> _
         Public Property CodeTaxon() As String Implements ITaxonData.CodeTaxon
             Get
                 Return Me.m_strCodeTaxon
@@ -305,7 +323,14 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property Common() As String Implements ITaxonData.Common
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         DisplayName("Common name")> _
+       Public Property Common() As String Implements ITaxonData.Common
             Get
                 Return Me.m_strCommon
             End Get
@@ -314,6 +339,13 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         DisplayName("Family name")> _
         Public Property Family() As String Implements ITaxonData.Family
             Get
                 Return Me.m_strFamily
@@ -323,24 +355,13 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property Genus() As String Implements ITaxonData.Genus
-            Get
-                Return Me.m_strGenus
-            End Get
-            Set(ByVal value As String)
-                Me.m_strGenus = value
-            End Set
-        End Property
-
-        Public Property LastUpdated() As Single Implements ITaxonData.LastUpdated
-            Get
-                Return 0L
-            End Get
-            Set(ByVal value As Single)
-                ' NOP
-            End Set
-        End Property
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         DisplayName("Order")> _
         Public Property Order() As String Implements ITaxonData.Order
             Get
                 Return Me.m_strOrder
@@ -350,6 +371,33 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         DisplayName("Genus name")> _
+        Public Property Genus() As String Implements ITaxonData.Genus
+            Get
+                Return Me.m_strGenus
+            End Get
+            Set(ByVal value As String)
+                Me.m_strGenus = value
+            End Set
+        End Property
+
+        <Browsable(False)> _
+        Public Property LastUpdated() As Single Implements ITaxonData.LastUpdated
+            Get
+                Return 0L
+            End Get
+            Set(ByVal value As Single)
+                ' NOP
+            End Set
+        End Property
+
+        <Browsable(False)> _
         Public Property Source() As String Implements ITaxonData.Source
             Get
                 Return Me.m_strSource
@@ -359,7 +407,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property SourceKey() As String Implements ITaxonData.SourceKey
+        <Browsable(False)> _
+        Public Property SourceKey() As String _
+            Implements ITaxonData.SourceKey
             Get
                 Return Me.m_strKey
             End Get
@@ -368,7 +418,15 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Property Species() As String Implements ITaxonData.Species
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         DisplayName("Species name")> _
+        Public Property Species() As String _
+           Implements ITaxonData.Species
             Get
                 Return Me.m_strSpecies
             End Get
@@ -377,6 +435,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
+        <Browsable(False)> _
         Public ReadOnly Property AssemblyName() As String _
             Implements EwEPlugin.Data.IPluginData.AssemblyName
             Get
@@ -384,6 +443,7 @@ Public Class gridEditGroupTaxon
             End Get
         End Property
 
+        <Browsable(False)> _
         Public ReadOnly Property PluginName() As String _
             Implements EwEPlugin.Data.IPluginData.PluginName
             Get
@@ -391,12 +451,35 @@ Public Class gridEditGroupTaxon
             End Get
         End Property
 
+        <Browsable(False)> _
         Public ReadOnly Property RunType() As EwEUtils.Core.IRunType _
             Implements EwEPlugin.Data.IPluginData.RunType
             Get
                 Return Nothing
             End Get
         End Property
+
+        Public Sub ApplyChanges()
+            If Me.IsChanged Then
+                With Me.Taxon
+                    .Name = Me.m_strCommon
+                    .Group = Me.m_iGroup
+                    .Proportion = Me.m_sProportion
+                    .Code3A = Me.m_strCode3A
+                    .CodeISSCAAP = Me.m_strCodeISSCAAP
+                    .CodeTaxon = Me.m_strCodeTaxon
+                    .Species = Me.m_strSpecies
+                    .Family = Me.m_strFamily
+                    .Genus = Me.m_strGenus
+                    .Order = Me.m_strOrder
+                    .Class = Me.m_strClass
+                    .Source = Me.m_strSource
+                    .SourceKey = Me.m_strKey
+                    .LastUpdated = cDateUtils.DateToJulian()
+                End With
+            End If
+        End Sub
+
     End Class
 
 #End Region ' Private helper classes
@@ -811,6 +894,120 @@ Public Class gridEditGroupTaxon
             Return Me.m_lTaxonInfo.ToArray
         End Get
     End Property
+
+    Public Sub UpdateSelectedTaxon(ByVal taxon As ITaxonData)
+        Dim ti As cTaxonInfo = Me.TaxonInfo(Me.SelectedRow)
+        If (ti Is Nothing) Then Return
+        ti.Update(taxon)
+    End Sub
+
+#Region " Apply changes "
+
+    Public Function Apply() As Boolean
+
+        Dim strPrompt As String = ""
+        Dim bConfigurationChanged As Boolean = False
+        Dim ti As cTaxonInfo = Nothing
+        Dim taxon As cTaxon = Nothing
+        Dim iTaxon As Integer = 0
+        Dim bSuccess As Boolean = True
+
+        ' Assess Taxon changes
+        For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
+            ti = DirectCast(Me.m_lTaxonInfo(iTaxon), cTaxonInfo)
+            ' Check this Taxon is newly added
+            If Object.ReferenceEquals(ti.Taxon, Nothing) Then
+                bConfigurationChanged = True
+            End If
+            ' Check if this Taxon is an existing Taxon that has been moved
+            If Not Object.ReferenceEquals(ti.Taxon, Nothing) Then
+                If ((iTaxon + 1) <> ti.Taxon.Index) Then
+                    bConfigurationChanged = True
+                End If
+            End If
+        Next iTaxon
+
+        ' Assess Taxons to remove
+        strPrompt = ""
+        For iTaxon = 0 To Me.m_lTaxonInfoRemoved.Count - 1
+            ti = DirectCast(Me.m_lTaxonInfoRemoved(iTaxon), cTaxonInfo)
+            If (Not Object.ReferenceEquals(ti.Taxon, Nothing)) Then
+
+                strPrompt = String.Format("Are you sure you want to delete taxonomy entry '{0}'?", ti.Common)
+
+                Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
+                    Case MsgBoxResult.Cancel
+                        ' Abort Apply process
+                        Return False
+                    Case MsgBoxResult.No
+                        ' Do not delete this Taxon
+                        ti.Confirmed = False
+                    Case MsgBoxResult.Yes
+                        ' Delete this Taxon
+                        ti.Confirmed = True
+                        bConfigurationChanged = True
+                    Case Else
+                        ' Unexpected anwer: assert
+                        Debug.Assert(False)
+                End Select
+
+            End If
+        Next iTaxon
+
+        ' Handle added and removed items
+        If (bConfigurationChanged) Then
+
+            If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
+
+            cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+
+            Dim htTaxonID As New Dictionary(Of cTaxonInfo, Integer)
+            Dim iDBID As Integer = Nothing
+
+            ' Add new Taxons
+            For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
+                ti = Me.m_lTaxonInfo(iTaxon)
+                If (ti.IsNew) Then
+                    Dim igt As Integer = iTaxon + 1
+                    bSuccess = bSuccess And Me.Core.AddTaxon(ti.Group, ti, ti.Proportion, iDBID)
+                    ' Map this new ID during update
+                    htTaxonID.Add(ti, iDBID)
+                End If
+            Next
+
+            ' Remove deleted (and confirmed) Taxons
+            Dim iTaxonRemove As Integer = 0
+            For iTaxon = 0 To Me.m_lTaxonInfoRemoved.Count - 1
+                ti = DirectCast(Me.m_lTaxonInfoRemoved(iTaxonRemove), cTaxonInfo)
+                If (Not Object.ReferenceEquals(ti.Taxon, Nothing)) And (ti.Confirmed = True) Then
+                    If (Me.Core.RemoveTaxon(ti.Taxon.Index)) Then
+                        Me.m_lTaxonInfo.Remove(ti)
+                        Me.m_lTaxonInfoRemoved.Remove(ti)
+                    Else
+                        bSuccess = False
+                        iTaxonRemove += 1
+                    End If
+                End If
+            Next
+
+            ' The core will reload now
+            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+
+            ' Test whether new Taxons were loaded correctly
+            Debug.Assert(Me.m_lTaxonInfo.Count = Me.Core.nTaxon, "Dialog and core out of sync on Taxons")
+        End If
+
+        ' Update any changed taxa
+        For Each ti In Me.m_lTaxonInfo
+            ti.ApplyChanges()
+        Next
+
+        Return bSuccess
+
+    End Function
+
+#End Region ' Apply changes
 
 #End Region ' Public bits
 
