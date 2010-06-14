@@ -419,6 +419,8 @@ Public Class EditGroupTaxon
 
     Private Sub ApplyTaxon(ByVal taxon As ITaxonData)
         Me.m_grid.UpdateSelectedTaxon(taxon)
+        Me.m_grid.UpdateSelectedTaxonRow()
+        Me.UpdateControls()
     End Sub
 
     Private Sub SearchTaxon(ByVal taxon As ITaxonData)
