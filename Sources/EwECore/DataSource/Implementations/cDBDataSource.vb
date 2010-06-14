@@ -3055,7 +3055,7 @@ Namespace DataSources
 
                     drow = writer.NewRow()
                     drow("TaxonID") = ecopathDS.TaxonDBID(iTaxon)
-                    drow("EcopathGroupID") = ecopathDS.GroupDBID(iTaxon)
+                    drow("EcopathGroupID") = ecopathDS.GroupDBID(ecopathDS.TaxonGroup(iTaxon))
                     drow("Proportion") = ecopathDS.TaxonGroupProp(iTaxon)
                     drow("CodeISCAAP") = ecopathDS.TaxonCodeISCAAP(iTaxon)
                     drow("CodeTaxon") = ecopathDS.TaxonCodeTaxon(iTaxon)
