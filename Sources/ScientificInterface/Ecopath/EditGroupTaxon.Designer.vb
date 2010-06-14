@@ -251,7 +251,6 @@ Partial Class EditGroupTaxon
                     Or SourceGrid2.GridSpecialKeys.Enter) _
                     Or SourceGrid2.GridSpecialKeys.Escape) _
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.TrackPropertySelection = True
         Me.m_grid.UIContext = Nothing
         '
         'EditGroupTaxon

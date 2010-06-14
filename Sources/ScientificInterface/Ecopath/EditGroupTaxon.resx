@@ -826,7 +826,7 @@
     <value>112, 313</value>
   </data>
   <data name="m_cmbSource.Size" type="System.Drawing.Size, System.Drawing">
-    <value>272, 21</value>
+    <value>254, 21</value>
   </data>
   <data name="m_cmbSource.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -853,16 +853,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnConfigure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>390, 311</value>
+    <value>372, 311</value>
   </data>
   <data name="m_btnConfigure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 23</value>
+    <value>75, 23</value>
   </data>
   <data name="m_btnConfigure.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
   <data name="m_btnConfigure.Text" xml:space="preserve">
-    <value>&amp;Set up...</value>
+    <value>&amp;Configure...</value>
   </data>
   <data name="&gt;&gt;m_btnConfigure.Name" xml:space="preserve">
     <value>m_btnConfigure</value>
