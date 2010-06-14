@@ -74,7 +74,7 @@ Public Class frmSearchResults
     End Sub
 
     Private Sub OnSearchSelected(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles m_btnUse.Click
+        Handles m_btnSearch.Click
         Me.m_choice = eChoiceTypes.SearchWithSelected
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
