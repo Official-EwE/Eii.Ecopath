@@ -276,6 +276,8 @@ Namespace Controls.EwEGrid
 
         ''' <summary>Flag stating if this grid should track and distribute property selections.</summary>
         Private m_bTrackPropertySelection As Boolean = False
+        ''' <summary>Flag stating if this grid allows row, column and all content selections.</summary>
+        Private m_bAllowBlockSelect As Boolean = True
 
         ''' <summary>List of selected properties in the grid, if any.</summary>
         Private m_lpropertySelected As New List(Of cProperty)
@@ -290,11 +292,11 @@ Namespace Controls.EwEGrid
         Public Sub New()
             MyBase.New()
 
-            Me.m_pehTLCell = New SourceGrid2.PositionEventHandler(AddressOf bm_tlCellClick)
+            Me.m_pehTLCell = New SourceGrid2.PositionEventHandler(AddressOf OnSelectEntireGrid)
             AddHandler m_ceCellClick.Click, Me.m_pehTLCell
-            Me.m_pehRowHeader = New SourceGrid2.PositionEventHandler(AddressOf bm_rowSelectClick)
+            Me.m_pehRowHeader = New SourceGrid2.PositionEventHandler(AddressOf OnSelectRow)
             AddHandler m_ceRowSelect.Click, Me.m_pehRowHeader
-            Me.m_pehColHeader = New SourceGrid2.PositionEventHandler(AddressOf bm_colSelectClick)
+            Me.m_pehColHeader = New SourceGrid2.PositionEventHandler(AddressOf OnSelectColumn)
             AddHandler m_ceColSelect.Click, Me.m_pehColHeader
 
             AddHandler Me.Selection.ClipboardCopy, AddressOf OnClipboardCopy
@@ -722,15 +724,36 @@ Namespace Controls.EwEGrid
 
 #Region " Selection behavior "
 
+        ''' <summary>
+        ''' FStates whether the grid allows row, column and entire content selections.
+        ''' </summary>
+        <Browsable(True), _
+         Description("States whether the grid allows row, column and entire content selections.")> _
+        Public Property AllowBlockSelect() As Boolean
+            Get
+                Return Me.m_bAllowBlockSelect
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bAllowBlockSelect = value
+            End Set
+        End Property
+
         ' ToDo_JS 05aug07: fix [SHIFT]+key nav selection logic to select a range, not just select a cell
 
-        Protected Overridable Sub bm_tlCellClick(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        Protected Overridable Sub OnSelectEntireGrid(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+
+            If Not Me.m_bAllowBlockSelect Then Return
+
             ' JS 05aug07: no need to process keys here; shift and ctrl modifiers behave just fine
             ' JS 05aug07: on second thought: it doesn't. [SHIFT]+[CTRL] click should ADD to a selection, not replace it
             Me.Selection.AddRange(New Range(0, 0, Me.RowsCount - 1, Me.ColumnsCount - 1))
+
         End Sub
 
-        Protected Overridable Sub bm_rowSelectClick(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        Protected Overridable Sub OnSelectRow(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+
+            If Not Me.m_bAllowBlockSelect Then Return
+
             ' JS 05aug 07: select range of rows if shift pressed
             Dim iFirstRow As Integer = e.Position.Row
             Dim iLastRow As Integer = e.Position.Row
@@ -743,7 +766,10 @@ Namespace Controls.EwEGrid
             Me.Selection.AddRange(New Range(iFirstRow, 0, iLastRow, Me.ColumnsCount - 1))
         End Sub
 
-        Protected Overridable Sub bm_colSelectClick(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        Protected Overridable Sub OnSelectColumn(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+
+            If Not Me.m_bAllowBlockSelect Then Return
+
             ' JS 05aug07: select range of columns if shift pressed
             Dim iFirstCol As Integer = e.Position.Column
             Dim iLastCol As Integer = e.Position.Column
