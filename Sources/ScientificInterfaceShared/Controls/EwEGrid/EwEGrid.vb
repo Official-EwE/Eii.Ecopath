@@ -275,15 +275,14 @@ Namespace Controls.EwEGrid
         Private m_ceColSelect As New BehaviorModels.CustomEvents
 
         ''' <summary>Flag stating if this grid should track and distribute property selections.</summary>
-        Private m_bTrackPropertySelection As Boolean = False
-        ''' <summary>Flag stating if this grid allows row, column and all content selections.</summary>
-        Private m_bAllowBlockSelect As Boolean = True
-
+        Private m_bTrackPropertySelection As Boolean = True
         ''' <summary>List of selected properties in the grid, if any.</summary>
         Private m_lpropertySelected As New List(Of cProperty)
 
         ''' <summary>Flag stating to use fixed col widths and heights.</summary>
         Private m_bFixedColumnWidths As Boolean = True
+        ''' <summary>Flag stating if this grid allows row, column and all content selections.</summary>
+        Private m_bAllowBlockSelect As Boolean = True
 
 #End Region ' Variables
 
@@ -305,7 +304,6 @@ Namespace Controls.EwEGrid
             AddHandler Me.Selection.ClearCells, AddressOf OnClearCells
             AddHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
 
-            Me.TrackPropertySelection = True
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -949,8 +947,8 @@ Namespace Controls.EwEGrid
 
             If Me.m_bTrackPropertySelection Then
 
+                ' Clean up
                 Me.m_lpropertySelected.Clear()
-
                 If e.EventType <> SelectionChangeEventType.Clear Then
 
                     ' Get properties from selected cells
@@ -970,7 +968,7 @@ Namespace Controls.EwEGrid
                 If cmd IsNot Nothing Then
                     If (TypeOf cmd Is cPropertySelectionCommand) Then
                         sc = DirectCast(cmd, cPropertySelectionCommand)
-                        sc.Invoke(Me.m_lpropertySelected)
+                        sc.Invoke(Me.m_lpropertySelected, e.EventType)
                     End If
                 End If
 
