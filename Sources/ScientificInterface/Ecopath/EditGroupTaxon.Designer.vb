@@ -53,6 +53,8 @@ Partial Class EditGroupTaxon
         Me.m_hdrExternal = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_hdrTaxon = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_grid = New ScientificInterface.gridEditGroupTaxon
+        Me.m_cbIncludeExtent = New System.Windows.Forms.CheckBox
+        Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.SuspendLayout()
         '
         'm_btnAdd
@@ -253,11 +255,23 @@ Partial Class EditGroupTaxon
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
         '
+        'm_cbIncludeExtent
+        '
+        resources.ApplyResources(Me.m_cbIncludeExtent, "m_cbIncludeExtent")
+        Me.m_cbIncludeExtent.Name = "m_cbIncludeExtent"
+        Me.m_cbIncludeExtent.UseVisualStyleBackColor = True
+        '
+        'm_hdrSearch
+        '
+        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
+        Me.m_hdrSearch.Name = "m_hdrSearch"
+        '
         'EditGroupTaxon
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_cbIncludeExtent)
         Me.Controls.Add(Me.m_cmbSource)
         Me.Controls.Add(Me.m_cmbSpecies)
         Me.Controls.Add(Me.m_cmbGenus)
@@ -272,6 +286,7 @@ Partial Class EditGroupTaxon
         Me.Controls.Add(Me.m_tbCommon)
         Me.Controls.Add(Me.m_lbClass)
         Me.Controls.Add(Me.m_lbCommon)
+        Me.Controls.Add(Me.m_hdrSearch)
         Me.Controls.Add(Me.m_hdrTaxon)
         Me.Controls.Add(Me.m_hdrExternal)
         Me.Controls.Add(Me.Cancel_Button)
@@ -328,5 +343,7 @@ Partial Class EditGroupTaxon
     Private WithEvents m_btnSearch As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
     Private WithEvents m_hdrTaxon As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_cbIncludeExtent As System.Windows.Forms.CheckBox
+    Private WithEvents m_hdrSearch As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
 End Class

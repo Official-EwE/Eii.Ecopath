@@ -48,7 +48,7 @@ Public Class EditGroupTaxon
 
         Public Overrides Function ToString() As String
             If Me.m_prod IsNot Nothing Then Return Me.m_prod.Name
-            Return "Manually entered"
+            Return ""
         End Function
 
     End Class
@@ -147,15 +147,15 @@ Public Class EditGroupTaxon
         Me.m_grid.MoveTaxon(1)
     End Sub
 
-    Private Sub OnUpdateCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnUpdate.Click
-        ' Hmm
-    End Sub
+    'Private Sub OnUpdateCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    '    Handles m_btnUpdate.Click
+    '    ' Hmm
+    'End Sub
 
-    Private Sub OnUpdateAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnUpdateAll.Click
-        ' Hmm
-    End Sub
+    'Private Sub OnUpdateAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    '    Handles m_btnUpdateAll.Click
+    '    ' Hmm
+    'End Sub
 
     Private Sub OnConfigure(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnConfigure.Click
@@ -424,29 +424,52 @@ Public Class EditGroupTaxon
     End Sub
 
     Private Sub SearchTaxon(ByVal taxon As ITaxonData)
+
         If (Me.SelectedDataProducer Is Nothing) Then Return
+
         Try
+            Dim taxonSearch As ITaxonData = Me.m_grid.GetSearchTerm(taxon)
+
             ' Clear search key to initiate a full search
-            taxon.SourceKey = ""
+            taxonSearch.SourceKey = ""
+
+            ' Set bounding box if necessary
+            If Me.m_cbIncludeExtent.Checked Then
+                Dim model As cEwEModel = Me.m_uic.Core.EwEModel
+                taxonSearch.North = model.North
+                taxonSearch.South = model.South
+                taxonSearch.East = model.East
+                taxonSearch.West = model.West
+            Else
+                taxonSearch.North = cCore.NULL_VALUE
+                taxonSearch.South = cCore.NULL_VALUE
+                taxonSearch.East = cCore.NULL_VALUE
+                taxonSearch.West = cCore.NULL_VALUE
+            End If
+
             ' Start searching
-            Me.SelectedDataProducer.StartSearch(taxon)
+            Me.SelectedDataProducer.StartSearch(taxonSearch)
         Catch ex As Exception
 
         End Try
+
     End Sub
 
     Private Sub RefreshTaxon(ByVal taxon As ITaxonData)
+
         If (Me.SelectedDataProducer Is Nothing) Then Return
+
         Try
             ' Has a search key for this specific producer?
             If (Not String.IsNullOrEmpty(taxon.SourceKey)) And _
                (String.Compare(taxon.Source, Me.SelectedDataProducer.Name, True) = 0) Then
                 ' #Yes: Start searching (expected to return only one result)
-                Me.SelectedDataProducer.StartSearch(taxon)
+                Me.SelectedDataProducer.StartSearch(Me.m_grid.GetSearchTerm(taxon))
             End If
         Catch ex As Exception
             ' Woops
         End Try
+
     End Sub
 
 #End Region ' Internals

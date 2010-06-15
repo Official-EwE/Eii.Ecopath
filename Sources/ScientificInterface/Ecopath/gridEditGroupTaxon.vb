@@ -36,6 +36,11 @@ Public Class gridEditGroupTaxon
     ''' <summary>Visual model to display groups that are about be deleted.</summary>
     Private m_vmRemoved As VisualModels.Common = New VisualModels.Common(False)
 
+    ''' <summary>Search term for public use.</summary>
+    Private m_tiSearch As ITaxonData = Nothing
+    ''' <summary>Internal item linked to the search term.</summary>
+    Private m_tiSearchLinked As ITaxonData = Nothing
+
     ''' <summary>Enumerated type defining the columns in this grid.</summary>
     Private Enum eColumnTypes
         Hierarchy = 0
@@ -92,6 +97,7 @@ Public Class gridEditGroupTaxon
             Me.m_sProportion = 1.0!
             Me.m_strCommon = group.Name
             Me.m_status = eItemStatusTypes.Added
+            Me.m_sLastUpdated = cDateUtils.DateToJulian()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -101,24 +107,29 @@ Public Class gridEditGroupTaxon
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal taxon As cTaxon)
             Me.m_taxon = taxon
-            Me.m_strClass = taxon.Class
+            Me.m_iGroup = taxon.Group
+            Me.m_sProportion = taxon.Proportion
             Me.m_strCode3A = taxon.Code3A
             Me.m_strCodeISSCAAP = taxon.CodeISSCAAP
             Me.m_strCodeTaxon = taxon.CodeTaxon
             Me.m_strCommon = taxon.Name
+            Me.m_strClass = taxon.Class
+            Me.m_strOrder = taxon.Order
             Me.m_strFamily = taxon.Family
             Me.m_strGenus = taxon.Genus
-            Me.m_strKey = taxon.SourceKey
-            Me.m_strOrder = taxon.Order
-            Me.m_strSource = taxon.Source
             Me.m_strSpecies = taxon.Species
-            Me.m_iGroup = taxon.Group
-            Me.m_sProportion = taxon.Proportion
+            Me.m_sNorth = taxon.North
+            Me.m_sSouth = taxon.South
+            Me.m_sEast = taxon.East
+            Me.m_sWest = taxon.West
+            Me.m_strSource = taxon.Source
+            Me.m_strKey = taxon.SourceKey
             Me.m_status = eItemStatusTypes.Original
             Me.m_sLastUpdated = taxon.LastUpdated
         End Sub
 
-        Public Sub New()
+        Public Sub New(ByVal taxon As ITaxonData)
+            Me.Update(taxon)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -128,17 +139,21 @@ Public Class gridEditGroupTaxon
         ''' <param name="taxon"></param>
         ''' -------------------------------------------------------------------
         Public Sub Update(ByVal taxon As ITaxonData)
-            Me.m_strClass = taxon.Class
             Me.m_strCode3A = taxon.Code3A
             Me.m_strCodeISSCAAP = taxon.CodeISSCAAP
             Me.m_strCodeTaxon = taxon.CodeTaxon
             Me.m_strCommon = taxon.Common
+            Me.m_strClass = taxon.Class
+            Me.m_strOrder = taxon.Order
             Me.m_strFamily = taxon.Family
             Me.m_strGenus = taxon.Genus
-            Me.m_strKey = taxon.SourceKey
-            Me.m_strOrder = taxon.Order
-            Me.m_strSource = taxon.Source
             Me.m_strSpecies = taxon.Species
+            Me.m_sNorth = taxon.North
+            Me.m_sSouth = taxon.South
+            Me.m_sEast = taxon.East
+            Me.m_sWest = taxon.West
+            Me.m_strKey = taxon.SourceKey
+            Me.m_strSource = taxon.Source
             Me.m_sLastUpdated = taxon.LastUpdated
         End Sub
 
@@ -475,6 +490,8 @@ Public Class gridEditGroupTaxon
 
 #End Region ' Private helper classes
 
+#Region " Constructor "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Create the grid
@@ -505,7 +522,9 @@ Public Class gridEditGroupTaxon
 
     End Sub
 
-#Region " Grid interaction "
+#End Region ' Constructor
+
+#Region " Internals "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -593,7 +612,7 @@ Public Class gridEditGroupTaxon
     ''' the local administration.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub UpdateGrid()
+    Private Sub UpdateGrid()
 
         Dim grp As cEcoPathGroupInput = Nothing
         Dim ti As cTaxonInfo = Nothing
@@ -769,9 +788,11 @@ Public Class gridEditGroupTaxon
         Return DirectCast(tag, cTaxonInfo)
     End Function
 
-#End Region ' Grid interaction
+#End Region ' Internals
 
 #Region " Public bits "
+
+#Region " Data "
 
     Public Property SelectedTaxon() As ITaxonData
         Get
@@ -799,6 +820,17 @@ Public Class gridEditGroupTaxon
             If (TypeOf tag Is cTaxonInfo) Then Return Me.Core.EcoPathGroupInputs(DirectCast(tag, cTaxonInfo).Group)
             If (TypeOf tag Is cEcoPathGroupInput) Then Return DirectCast(tag, cEcoPathGroupInput)
             Return Nothing
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns an array of all available taxa.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Taxa() As ITaxonData()
+        Get
+            Return Me.m_lTaxonInfo.ToArray
         End Get
     End Property
 
@@ -867,30 +899,73 @@ Public Class gridEditGroupTaxon
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' States whether the taxon info row is flagged for deletion.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Function IsFlaggedForDeletionRow() As Boolean
         Dim ti As cTaxonInfo = Me.TaxonInfo(Me.SelectedRow)
         If (ti Is Nothing) Then Return False
         Return ti.FlaggedForDeletion
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Refresh the grid row for the current selected taxon.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Sub UpdateSelectedTaxonRow()
         Me.UpdateRow(Me.SelectedRow())
     End Sub
 
-    Public ReadOnly Property Taxa() As ITaxonData()
-        Get
-            Return Me.m_lTaxonInfo.ToArray
-        End Get
-    End Property
-
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Populate the selected taxon with new data.
+    ''' </summary>
+    ''' <param name="taxon"></param>
+    ''' -----------------------------------------------------------------------
     Public Sub UpdateSelectedTaxon(ByVal taxon As ITaxonData)
         Dim ti As cTaxonInfo = Me.TaxonInfo(Me.SelectedRow)
         If (ti Is Nothing) Then Return
         ti.Update(taxon)
     End Sub
+
+#End Region ' Data
+
+#Region " Search "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a search term for the current selected taxon.
+    ''' </summary>
+    ''' <param name="taxonSearch">Taxon to create a search term for.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function GetSearchTerm(Optional ByVal taxonSearch As ITaxonData = Nothing) As ITaxonData
+
+        Me.m_tiSearchLinked = Me.SelectedTaxon
+
+        If taxonSearch Is Nothing Then taxonSearch = Me.m_tiSearchLinked
+        Me.m_tiSearch = New cTaxonInfo(taxonSearch)
+
+        Return Me.m_tiSearch
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' States whether a specific taxon is the last created search term.
+    ''' </summary>
+    ''' <param name="taxon"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsSearchTerm(ByVal taxon As ITaxonData) As Boolean
+        Return (Object.ReferenceEquals(taxon, Me.m_tiSearch)) And _
+               (Object.ReferenceEquals(Me.SelectedTaxon, Me.m_tiSearchLinked))
+    End Function
+
+#End Region ' Search
 
 #Region " Apply changes "
 
