@@ -285,6 +285,14 @@ Public Class cEcopathDataStructures
     Public TaxonSourceKey() As String
     ''' <summary>Taxonomy last updated dates (xNumTaxa) in julian day format.</summary>
     Public TaxonLastUpdated() As Single
+    ''' <summary>Northern limit of taxon occurrence bounding box</summary>
+    Public TaxonNorth() As Single
+    ''' <summary>Southern limit of taxon occurrence bounding box</summary>
+    Public TaxonSouth() As Single
+    ''' <summary>Eastern limit of taxon occurrence bounding box</summary>
+    Public TaxonEast() As Single
+    ''' <summary>Western limit of taxon occurrence bounding box</summary>
+    Public TaxonWest() As Single
 
     ''' <summary>
     ''' Number of missing variables per groups
@@ -575,6 +583,10 @@ Public Class cEcopathDataStructures
         ReDim Me.TaxonSourceKey(Me.NumTaxon)
         ReDim Me.TaxonSource(Me.NumTaxon)
         ReDim Me.TaxonSpecies(Me.NumTaxon)
+        ReDim Me.TaxonNorth(Me.NumTaxon)
+        ReDim Me.TaxonSouth(Me.NumTaxon)
+        ReDim Me.TaxonEast(Me.NumTaxon)
+        ReDim Me.TaxonWest(Me.NumTaxon)
         ReDim Me.TaxonLastUpdated(Me.NumTaxon)
 
     End Sub

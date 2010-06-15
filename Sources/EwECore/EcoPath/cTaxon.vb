@@ -70,6 +70,26 @@ Public Class cTaxon
         val = New cValue(New String(cbuf), eVarNameFlags.SourceKey, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
         m_values.Add(val.varName, val)
 
+        ' North
+        meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        ' South
+        meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.South, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        ' East
+        meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.East, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        ' West
+        meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
         'proportion
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.TaxonProp, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonProp))
@@ -229,6 +249,58 @@ Public Class cTaxon
         End Get
         Set(ByVal value As String)
             Me.SetVariable(eVarNameFlags.SourceKey, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the southern extent of the model bounding box.
+    ''' </summary>
+    Public Property South() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.South))
+        End Get
+
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.South, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the northern extent of the model bounding box.
+    ''' </summary>
+    Public Property North() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.North))
+        End Get
+
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.North, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the western extent of the model bounding box.
+    ''' </summary>
+    Public Property West() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.West))
+        End Get
+
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.West, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the eastern extent of the model bounding box.
+    ''' </summary>
+    Public Property East() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.East))
+        End Get
+
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.East, value)
         End Set
     End Property
 
