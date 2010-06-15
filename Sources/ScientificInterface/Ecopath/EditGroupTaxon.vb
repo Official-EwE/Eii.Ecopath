@@ -25,7 +25,7 @@ Public Class EditGroupTaxon
 
 #End Region ' Private vars
 
-#Region " Private class "
+#Region " Private classes "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -53,7 +53,28 @@ Public Class EditGroupTaxon
 
     End Class
 
-#End Region ' Private class
+    Private Class cWaitForSearch
+
+        Private m_ui As EditGroupTaxon = Nothing
+        Private m_producer As IDataSearchProducerPlugin = Nothing
+        Private m_results As IDataSearchResults = Nothing
+
+        Public Sub New(ByVal form As EditGroupTaxon, ByVal prod As IDataSearchProducerPlugin, ByVal res As IDataSearchResults)
+            Me.m_ui = form
+            Me.m_producer = prod
+            Me.m_results = res
+        End Sub
+
+        Public Sub Wait()
+            While m_producer.IsSeaching
+                ' NOP
+            End While
+            Me.m_ui.OnProcessSearchResults(Me.m_results)
+        End Sub
+
+    End Class
+
+#End Region ' Private classes
 
 #Region " Constructor "
 
@@ -249,11 +270,31 @@ Public Class EditGroupTaxon
 
     End Sub
 
+    Private m_wait As cWaitForSearch = Nothing
+
     Private Sub OnTaxonSearchResults(ByVal results As IDataSearchResults)
 
+        ' Ignore search terms of different data types
+        If Not TypeOf results.SearchTerm Is ITaxonData Then Return
+
         ' Is a search result that we fired ourselves?
-        If Not Object.ReferenceEquals(results.SearchTerm, Me.m_grid.SelectedTaxon) Then
-            ' #No: Ignore this event
+        If Not Me.m_grid.IsSearchTerm(DirectCast(results.SearchTerm, ITaxonData)) Then Return
+
+        ' Wait!
+        Me.m_wait = New cWaitForSearch(Me, Me.SelectedDataProducer, results)
+
+        ' Handle this in a separate thread to allow the search to complete without stalling
+        Dim thr As New Threading.Thread(AddressOf Me.m_wait.Wait)
+        thr.Start()
+
+    End Sub
+
+    Protected Delegate Sub OnProcessSearchResultsDelegate(ByVal results As IDataSearchResults)
+
+    Friend Sub OnProcessSearchResults(ByVal results As IDataSearchResults)
+
+        If Me.InvokeRequired Then
+            Me.Invoke(New OnProcessSearchResultsDelegate(AddressOf OnProcessSearchResults), New Object() {results})
             Return
         End If
 
