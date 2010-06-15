@@ -721,7 +721,7 @@ Namespace DataSources
                 Me.m_core.m_EwEModelWest = Math.Min(sVal1, sVal2)
                 Me.m_core.m_EwEModelEast = Math.Max(sVal1, sVal2)
                 Me.m_core.m_EwEModelAreaName = CStr(Me.ReadSafe(reader, "AreaName", ""))
-                Me.m_core.m_EwEModelLastSaved = CSng(Me.ReadSafe(reader, "LastSaved", 0))
+                Me.m_core.m_EwEModelLastSaved = CDbl(Me.ReadSafe(reader, "LastSaved", 0))
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading EcopathModel", ex.Message))
@@ -831,7 +831,7 @@ Namespace DataSources
                     ecopathDS.EcosimScenarioDescription(iScenario) = CStr(reader("Description"))
                     ecopathDS.EcosimScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
                     ecopathDS.EcosimScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
-                    ecopathDS.EcosimScenarioLastSaved(iScenario) = CSng(Me.ReadSafe(reader, "LastSaved", 0))
+                    ecopathDS.EcosimScenarioLastSaved(iScenario) = CDbl(Me.ReadSafe(reader, "LastSaved", 0))
                     iScenario += 1
                 End While
             Catch ex As Exception
@@ -922,7 +922,7 @@ Namespace DataSources
                     ecopathDS.EcospaceScenarioDescription(iScenario) = CStr(reader("Description"))
                     ecopathDS.EcospaceScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
                     ecopathDS.EcospaceScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
-                    ecopathDS.EcospaceScenarioLastSaved(iScenario) = CSng(Me.ReadSafe(reader, "LastSaved", 0))
+                    ecopathDS.EcospaceScenarioLastSaved(iScenario) = CDbl(Me.ReadSafe(reader, "LastSaved", 0))
                     iScenario += 1
                 End While
             Catch ex As Exception
@@ -1012,7 +1012,7 @@ Namespace DataSources
                     ecopathDS.EcotracerScenarioDescription(iScenario) = CStr(reader("Description"))
                     ecopathDS.EcotracerScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
                     ecopathDS.EcotracerScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
-                    ecopathDS.EcotracerScenarioLastSaved(iScenario) = CSng(Me.ReadSafe(reader, "LastSaved", 0))
+                    ecopathDS.EcotracerScenarioLastSaved(iScenario) = CDbl(Me.ReadSafe(reader, "LastSaved", 0))
                     iScenario += 1
                 End While
             Catch ex As Exception
@@ -3007,7 +3007,7 @@ Namespace DataSources
                         ecopathDS.TaxonCommonName(iTaxon) = CStr(Me.ReadSafe(reader, "CommonName", ""))
                         ecopathDS.TaxonSource(iTaxon) = CStr(Me.ReadSafe(reader, "SourceName", ""))
                         ecopathDS.TaxonSourceKey(iTaxon) = CStr(Me.ReadSafe(reader, "SourceKey", ""))
-                        ecopathDS.TaxonLastUpdated(iTaxon) = CSng(Me.ReadSafe(reader, "LastUpdated", ""))
+                        ecopathDS.TaxonLastUpdated(iTaxon) = CDbl(Me.ReadSafe(reader, "LastUpdated", ""))
                         iTaxon += 1
                     End If
 

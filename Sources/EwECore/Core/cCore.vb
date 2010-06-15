@@ -2218,7 +2218,7 @@ Public Class cCore
     Friend m_EwEModelUnitMonetaryCustom As String = ""
     Friend m_EwEModelAuthor As String = ""
     Friend m_EwEModelContact As String = ""
-    Friend m_EwEModelLastSaved As Single = 0
+    Friend m_EwEModelLastSaved As Double = 0
     Friend m_EwEModelAreaName As String = ""
     Friend m_EwEModelSouth As Single = 0
     Friend m_EwEModelNorth As Single = 0

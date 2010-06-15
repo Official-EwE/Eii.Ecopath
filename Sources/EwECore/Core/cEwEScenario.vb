@@ -101,12 +101,12 @@ Public MustInherit Class cEwEScenario
     ''' <summary>
     ''' Get/set the Julian date the scenario was last saved.
     ''' </summary>
-    Public Property LastSaved() As Single
+    Public Property LastSaved() As Double
         Get
-            Return CSng(GetVariable(eVarNameFlags.LastSaved))
+            Return CDbl(GetVariable(eVarNameFlags.LastSaved))
         End Get
 
-        Set(ByVal value As Single)
+        Set(ByVal value As Double)
             SetVariable(eVarNameFlags.LastSaved, value)
         End Set
     End Property

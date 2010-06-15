@@ -41,7 +41,7 @@ Friend Class cDBUpdate6_01_00_004
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added Ecopath taxonomy support"
+            Return "Added Ecopath taxonomy support" & vbNewLine & "Added Ecopath model area" & vbNewLine & "Fixed date columns to Float"
         End Get
     End Property
 
@@ -50,6 +50,7 @@ Friend Class cDBUpdate6_01_00_004
         Dim bSucces As Boolean = Me.DiscardSpeciesTable(db)
         bSucces = bSucces And Me.CreateTaxonTable(db)
         bSucces = bSucces And Me.AddModelAreaName(db)
+        bSucces = bSucces And Me.FixJulianDates(db)
 
         Return bSucces
 
@@ -65,7 +66,7 @@ Friend Class cDBUpdate6_01_00_004
 
         Dim bSucces As Boolean = True
 
-        bSucces = bSucces And db.Execute("CREATE TABLE EcopathGroupTaxon (TaxonID LONG, EcopathGroupID LONG, CodeISCAAP TEXT(3), CodeTaxon TEXT(14), Code3A TEXT(4), ClassName TEXT(50), OrderName TEXT(50), FamilyName TEXT(50), GenusName TEXT(50), SpeciesName TEXT(50), CommonName TEXT(50), Proportion SINGLE, SourceName TEXT(50), SourceKey MEMO, LastUpdated SINGLE)")
+        bSucces = bSucces And db.Execute("CREATE TABLE EcopathGroupTaxon (TaxonID LONG, EcopathGroupID LONG, CodeISCAAP TEXT(3), CodeTaxon TEXT(14), Code3A TEXT(4), ClassName TEXT(50), OrderName TEXT(50), FamilyName TEXT(50), GenusName TEXT(50), SpeciesName TEXT(50), CommonName TEXT(50), Proportion SINGLE, SourceName TEXT(50), SourceKey MEMO, LastUpdated FLOAT)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupTaxon ADD CONSTRAINT PK_INDEX PRIMARY KEY (TaxonID)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupTaxon ADD FOREIGN KEY (EcopathGroupID) REFERENCES EcopathGroup(GroupID)")
 
@@ -76,6 +77,19 @@ Friend Class cDBUpdate6_01_00_004
     Private Function AddModelAreaName(ByVal db As cEwEDatabase) As Boolean
 
         Return db.Execute("ALTER TABLE EcopathModel ADD COLUMN AreaName TEXT(255)")
+
+    End Function
+
+    Private Function FixJulianDates(ByVal db As cEwEDatabase) As Boolean
+
+        Dim bSucces As Boolean = True
+
+        bSucces = bSucces And db.Execute("ALTER TABLE EcopathModel ALTER COLUMN LastSaved FLOAT")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenario ALTER COLUMN LastSaved FLOAT")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenario ALTER COLUMN LastSaved FLOAT")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcotracerScenario ALTER COLUMN LastSaved FLOAT")
+
+        Return bSucces
 
     End Function
 

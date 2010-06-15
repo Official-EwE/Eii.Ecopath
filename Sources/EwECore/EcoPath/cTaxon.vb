@@ -307,12 +307,12 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the Julian date the taxonomy definition was last updated.
     ''' </summary>
-    Public Property LastUpdated() As Single
+    Public Property LastUpdated() As Double
         Get
-            Return CSng(GetVariable(eVarNameFlags.LastUpdated))
+            Return CDbl(GetVariable(eVarNameFlags.LastUpdated))
         End Get
 
-        Set(ByVal value As Single)
+        Set(ByVal value As Double)
             SetVariable(eVarNameFlags.LastUpdated, value)
         End Set
     End Property

@@ -31,7 +31,7 @@ Public Class cEcopathDataStructures
     ''' <summary>Array of Ecosim scenario contacts.</summary>
     Public EcosimScenarioContact() As String
     ''' <summary>Array of Ecosim scenario save dates (in julian day format).</summary>
-    Public EcosimScenarioLastSaved() As Single
+    Public EcosimScenarioLastSaved() As Double
     ''' <summary>Index of active Ecosim scenario.</summary>
     Public ActiveEcosimScenario As Integer = cCore.NULL_VALUE
 
@@ -48,7 +48,7 @@ Public Class cEcopathDataStructures
     ''' <summary>Array of Ecospace scenario contacts.</summary>
     Public EcospaceScenarioContact() As String
     ''' <summary>Array of Ecospace scenario save dates (in julian day format).</summary>
-    Public EcospaceScenarioLastSaved() As Single
+    Public EcospaceScenarioLastSaved() As Double
     ''' <summary>Index of active Ecospace scenario.</summary>
     Public ActiveEcospaceScenario As Integer = cCore.NULL_VALUE
 
@@ -65,7 +65,7 @@ Public Class cEcopathDataStructures
     ''' <summary>Array of Ecotracer scenario contacts.</summary>
     Public EcotracerScenarioContact() As String
     ''' <summary>Array of Ecotracer scenario save dates (in julian day format).</summary>
-    Public EcotracerScenarioLastSaved() As Single
+    Public EcotracerScenarioLastSaved() As Double
     ''' <summary>Index of active Ecotracer scenario.</summary>
     Public ActiveEcotracerScenario As Integer = cCore.NULL_VALUE
 
@@ -284,7 +284,7 @@ Public Class cEcopathDataStructures
     ''' <summary>Taxonomy source keys to access Taxon information in <see cref="TaxonSource">a source</see>(xNumTaxa).</summary>
     Public TaxonSourceKey() As String
     ''' <summary>Taxonomy last updated dates (xNumTaxa) in julian day format.</summary>
-    Public TaxonLastUpdated() As Single
+    Public TaxonLastUpdated() As Double
     ''' <summary>Northern limit of taxon occurrence bounding box</summary>
     Public TaxonNorth() As Single
     ''' <summary>Southern limit of taxon occurrence bounding box</summary>

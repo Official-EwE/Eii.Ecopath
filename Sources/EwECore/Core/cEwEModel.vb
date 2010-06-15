@@ -129,8 +129,8 @@ Public Class cEwEModel
             m_values.Add(val.varName, val)
 
             ' Last saved julian date
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastSaved))
+            meta = New cVariableMetaData(0, Double.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(New Double, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastSaved))
             m_values.Add(val.varName, val)
 
             'set status flags to their default values
@@ -361,12 +361,12 @@ Public Class cEwEModel
     ''' <summary>
     ''' Get/set the Julian date the model was last saved.
     ''' </summary>
-    Public Property LastSaved() As Single
+    Public Property LastSaved() As Double
         Get
-            Return CSng(GetVariable(eVarNameFlags.LastSaved))
+            Return CDbl(GetVariable(eVarNameFlags.LastSaved))
         End Get
 
-        Set(ByVal value As Single)
+        Set(ByVal value As Double)
             SetVariable(eVarNameFlags.LastSaved, value)
         End Set
     End Property
