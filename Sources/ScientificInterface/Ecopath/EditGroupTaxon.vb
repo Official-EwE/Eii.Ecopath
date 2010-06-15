@@ -300,7 +300,8 @@ Public Class EditGroupTaxon
 
         Select Case results.SearchResults.Count
             Case 0
-                MsgBox("Your search did not produce any results")
+                Dim msg As New cMessage("Your search did not produce any results", eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
+                Me.m_uic.Core.Messages.SendMessage(msg)
 
             Case 1
                 ' Apply the first result
