@@ -47,7 +47,7 @@ Namespace Core
         ''' <summary>Western limit of the bounding box where this taxon occurs.</summary>
         Property West() As Single
         ''' <summary>Julian date when this taxon was last updated.</summary>
-        Property LastUpdated() As Single
+        Property LastUpdated() As Double
 
     End Interface
 
