@@ -22,20 +22,20 @@ Namespace Utilities
         ''' <param name="dt">The date to return the Julian date for.</param>
         ''' <returns>A Julian date.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function DateToJulian(Optional ByVal dt As Date = Nothing) As Single
+        Public Shared Function DateToJulian(Optional ByVal dt As Date = Nothing) As Double
             If dt = Nothing Then dt = Date.Now
-            Return CSng(dt.ToOADate())
+            Return dt.ToOADate()
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get a <see cref="Date">date</see> for a Julian date value.
         ''' </summary>
-        ''' <param name="sJulian">The Julian date to return a Date instance for.</param>
+        ''' <param name="dJulian">The Julian date to return a Date instance for.</param>
         ''' <returns>A Date instance.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function JulianToDate(ByVal sJulian As Single) As Date
-            Return Date.FromOADate(CDbl(sJulian))
+        Public Shared Function JulianToDate(ByVal dJulian As Double) As Date
+            Return Date.FromOADate(dJulian)
         End Function
 
     End Class
