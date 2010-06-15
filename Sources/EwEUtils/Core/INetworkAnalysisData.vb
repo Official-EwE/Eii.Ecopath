@@ -5,7 +5,7 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Namespace Data
+Namespace Core
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

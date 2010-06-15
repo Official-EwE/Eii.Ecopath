@@ -6,7 +6,6 @@ Imports EwEPlugin.Data
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports SourceGrid2
-Imports System.ComponentModel
 
 #End Region ' Imports
 
@@ -50,9 +49,10 @@ Public Class gridEditGroupTaxon
 
 #Region " Private helper classes "
 
-    <TypeConverter(GetType(cPropertySorter))> _
     Private Class cTaxonInfo
         Implements ITaxonData
+
+#Region " Private vars "
 
         Private m_taxon As cTaxon = Nothing
         Private m_strCode3A As String = ""
@@ -66,6 +66,10 @@ Public Class gridEditGroupTaxon
         Private m_strCommon As String = ""
         Private m_strSource As String = ""
         Private m_strKey As String = ""
+        Private m_sNorth As Single = cCore.NULL_VALUE
+        Private m_sSouth As Single = cCore.NULL_VALUE
+        Private m_sWest As Single = cCore.NULL_VALUE
+        Private m_sEast As Single = cCore.NULL_VALUE
         Private m_sProportion As Single = 0.0!
         ''' <summary>Index of the ecopath group that this taxon contributes to.</summary>
         Private m_iGroup As Integer = Nothing
@@ -74,8 +78,9 @@ Public Class gridEditGroupTaxon
         Private m_bConfirmed As Boolean = True
         ''' <summary>The status of a Layer in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
-        ''' <summary>States whether this info has been updated from an external source</summary>
-        Private m_bUpdated As Boolean = False
+        Private m_sLastUpdated As Single = 0L
+
+#End Region ' Private vars
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -110,7 +115,7 @@ Public Class gridEditGroupTaxon
             Me.m_iGroup = taxon.Group
             Me.m_sProportion = taxon.Proportion
             Me.m_status = eItemStatusTypes.Original
-            Me.m_bUpdated = False
+            Me.m_sLastUpdated = taxon.LastUpdated
         End Sub
 
         Public Sub New()
@@ -134,7 +139,7 @@ Public Class gridEditGroupTaxon
             Me.m_strOrder = taxon.Order
             Me.m_strSource = taxon.Source
             Me.m_strSpecies = taxon.Species
-            Me.m_bUpdated = True
+            Me.m_sLastUpdated = taxon.LastUpdated
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -143,7 +148,6 @@ Public Class gridEditGroupTaxon
         ''' with this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
         Public ReadOnly Property Taxon() As cTaxon
             Get
                 Return Me.m_taxon
@@ -169,7 +173,6 @@ Public Class gridEditGroupTaxon
         ''' <returns>
         ''' </returns>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
         Public ReadOnly Property IsChanged() As Boolean
             Get
                 If (Me.IsNew()) Then Return False
@@ -195,7 +198,6 @@ Public Class gridEditGroupTaxon
         ''' for the layer object.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
         Public ReadOnly Property Status() As eItemStatusTypes
             Get
                 Return Me.m_status
@@ -207,7 +209,6 @@ Public Class gridEditGroupTaxon
         ''' Get/set whether the user has confirmed an action on this object.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
         Public Property Confirmed() As Boolean
             Get
                 Return Me.m_bConfirmed
@@ -223,7 +224,6 @@ Public Class gridEditGroupTaxon
         ''' will update the <see cref="Status">Status</see> of the item.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
         Public Property FlaggedForDeletion() As Boolean
             Get
                 Return Me.m_status = eItemStatusTypes.Removed
@@ -250,7 +250,6 @@ Public Class gridEditGroupTaxon
         ''' Get/set the group of this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
         Public Property Group() As Integer
             Get
                 Return Me.m_iGroup
@@ -266,7 +265,6 @@ Public Class gridEditGroupTaxon
         ''' a functional group.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
         Public Property Proportion() As Single
             Get
                 Return Me.m_sProportion
@@ -276,13 +274,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         DisplayName("Class name")> _
+        ''' <inheritdocs cref="ITaxonData.[Class]"/>
         Public Property [Class]() As String _
             Implements ITaxonData.Class
             Get
@@ -293,8 +285,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        <Browsable(False)> _
-        Public Property Code3A() As String Implements ITaxonData.Code3A
+        ''' <inheritdocs cref="ITaxonData.Code3A"/>
+        Public Property Code3A() As String _
+            Implements ITaxonData.Code3A
             Get
                 Return m_strCode3A
             End Get
@@ -303,8 +296,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        <Browsable(False)> _
-        Public Property CodeISSCAAP() As String Implements ITaxonData.CodeISSCAAP
+        ''' <inheritdocs cref="ITaxonData.CodeISSCAAP"/>
+        Public Property CodeISSCAAP() As String _
+            Implements ITaxonData.CodeISSCAAP
             Get
                 Return m_strCodeISSCAAP
             End Get
@@ -313,8 +307,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        <Browsable(False)> _
-        Public Property CodeTaxon() As String Implements ITaxonData.CodeTaxon
+        ''' <inheritdocs cref="ITaxonData.CodeTaxon"/>
+        Public Property CodeTaxon() As String _
+            Implements ITaxonData.CodeTaxon
             Get
                 Return Me.m_strCodeTaxon
             End Get
@@ -323,14 +318,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         DisplayName("Common name")> _
-       Public Property Common() As String Implements ITaxonData.Common
+        ''' <inheritdocs cref="ITaxonData.Common"/>
+        Public Property Common() As String _
+            Implements ITaxonData.Common
             Get
                 Return Me.m_strCommon
             End Get
@@ -339,14 +329,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         DisplayName("Family name")> _
-        Public Property Family() As String Implements ITaxonData.Family
+        ''' <inheritdocs cref="ITaxonData.Family"/>
+        Public Property Family() As String _
+            Implements ITaxonData.Family
             Get
                 Return Me.m_strFamily
             End Get
@@ -355,14 +340,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         DisplayName("Order")> _
-        Public Property Order() As String Implements ITaxonData.Order
+        ''' <inheritdocs cref="ITaxonData.Order"/>
+        Public Property Order() As String _
+            Implements ITaxonData.Order
             Get
                 Return Me.m_strOrder
             End Get
@@ -371,14 +351,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         DisplayName("Genus name")> _
-        Public Property Genus() As String Implements ITaxonData.Genus
+        ''' <inheritdocs cref="ITaxonData.Genus"/>
+        Public Property Genus() As String _
+            Implements ITaxonData.Genus
             Get
                 Return Me.m_strGenus
             End Get
@@ -387,8 +362,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        <Browsable(False)> _
-        Public Property LastUpdated() As Single Implements ITaxonData.LastUpdated
+        ''' <inheritdocs cref="ITaxonData.LastUpdated"/>
+        Public Property LastUpdated() As Single _
+            Implements ITaxonData.LastUpdated
             Get
                 Return 0L
             End Get
@@ -397,8 +373,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        <Browsable(False)> _
-        Public Property Source() As String Implements ITaxonData.Source
+        ''' <inheritdocs cref="ITaxonData.Source"/>
+        Public Property Source() As String _
+            Implements ITaxonData.Source
             Get
                 Return Me.m_strSource
             End Get
@@ -407,7 +384,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        <Browsable(False)> _
+        ''' <inheritdocs cref="ITaxonData.SourceKey"/>
         Public Property SourceKey() As String _
             Implements ITaxonData.SourceKey
             Get
@@ -418,13 +395,7 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         DisplayName("Species name")> _
+        ''' <inheritdocs cref="ITaxonData.Species"/>
         Public Property Species() As String _
            Implements ITaxonData.Species
             Get
@@ -435,28 +406,48 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        <Browsable(False)> _
-        Public ReadOnly Property AssemblyName() As String _
-            Implements EwEPlugin.Data.IPluginData.AssemblyName
+        ''' <inheritdocs cref="ITaxonData.North"/>
+        Public Property North() As Single _
+            Implements ITaxonData.North
             Get
-                Return ""
+                Return Me.m_sNorth
             End Get
+            Set(ByVal value As Single)
+                Me.m_sNorth = value
+            End Set
         End Property
 
-        <Browsable(False)> _
-        Public ReadOnly Property PluginName() As String _
-            Implements EwEPlugin.Data.IPluginData.PluginName
+        ''' <inheritdocs cref="ITaxonData.South"/>
+        Public Property South() As Single _
+            Implements ITaxonData.South
             Get
-                Return ""
+                Return Me.m_sSouth
             End Get
+            Set(ByVal value As Single)
+                Me.m_sSouth = value
+            End Set
         End Property
 
-        <Browsable(False)> _
-        Public ReadOnly Property RunType() As EwEUtils.Core.IRunType _
-            Implements EwEPlugin.Data.IPluginData.RunType
+        ''' <inheritdocs cref="ITaxonData.East"/>
+        Public Property East() As Single _
+            Implements ITaxonData.East
             Get
-                Return Nothing
+                Return Me.m_sEast
             End Get
+            Set(ByVal value As Single)
+                Me.m_sEast = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonData.West"/>
+        Public Property West() As Single _
+            Implements ITaxonData.West
+            Get
+                Return Me.m_sWest
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sWest = value
+            End Set
         End Property
 
         Public Sub ApplyChanges()

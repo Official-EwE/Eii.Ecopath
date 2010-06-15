@@ -75,9 +75,6 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\IEconomicData.vb" />
-    <Compile Include="Data\INetworkAnalysisData.vb" />
-    <Compile Include="Data\ITaxonData.vb" />
     <Compile Include="Handlers\cPluginAutolaunchHandler.vb" />
     <Compile Include="Handlers\cPluginGUICommand.vb" />
     <Compile Include="Handlers\cPluginGUIHandler.vb" />

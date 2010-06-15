@@ -3,11 +3,10 @@
 Option Strict On
 
 Imports EwEPlugin.Data
-Imports System.Reflection
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports SourceGrid2
-Imports System.ComponentModel
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
