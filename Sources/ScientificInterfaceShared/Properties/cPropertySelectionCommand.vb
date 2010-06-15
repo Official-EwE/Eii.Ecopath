@@ -5,6 +5,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -24,6 +25,8 @@ Namespace Properties
 
         ''' <summary>The properties broadcasted by this command</summary>
         Private m_lprop As New List(Of cProperty)
+        ''' <summary>The event that occurred.</summary>
+        Private m_event As SelectionChangeEventType = SelectionChangeEventType.Clear
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -116,12 +119,15 @@ Namespace Properties
         ''' </summary>
         ''' <param name="lprop">List of <see cref="cProperty">cProperty</see> 
         ''' instances that were selected.</param>
+        ''' <param name="event">The Sourcegrid event that fired this command.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal lprop As List(Of cProperty))
+        Public Overloads Sub Invoke(ByVal lprop As List(Of cProperty), _
+                                    ByVal [event] As SelectionChangeEventType)
             ' Clear list of props
             Me.m_lprop.Clear()
             ' Store prop
             Me.m_lprop.AddRange(lprop)
+            Me.m_event = [event]
             ' Fire the command
             MyBase.Invoke()
         End Sub
@@ -138,6 +144,11 @@ Namespace Properties
             End Get
         End Property
 
+        Public ReadOnly Property EventType() As SelectionChangeEventType
+            Get
+                Return Me.m_event
+            End Get
+        End Property
     End Class
 
 End Namespace ' Properties
