@@ -3189,6 +3189,10 @@ Public Class cCore
                 taxon.CodeTaxon = Me.m_EcoPathData.TaxonCodeTaxon(iTaxon)
                 taxon.Source = Me.m_EcoPathData.TaxonSource(iTaxon)
                 taxon.SourceKey = Me.m_EcoPathData.TaxonSourceKey(iTaxon)
+                taxon.North = Me.m_EcoPathData.TaxonNorth(iTaxon)
+                taxon.South = Me.m_EcoPathData.TaxonSouth(iTaxon)
+                taxon.East = Me.m_EcoPathData.TaxonEast(iTaxon)
+                taxon.West = Me.m_EcoPathData.TaxonWest(iTaxon)
                 taxon.LastUpdated = Me.m_EcoPathData.TaxonLastUpdated(iTaxon)
 
                 taxon.ResetStatusFlags()
