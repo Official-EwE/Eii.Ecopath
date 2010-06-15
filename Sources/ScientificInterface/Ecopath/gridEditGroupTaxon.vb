@@ -83,7 +83,7 @@ Public Class gridEditGroupTaxon
         Private m_bConfirmed As Boolean = True
         ''' <summary>The status of a Layer in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
-        Private m_sLastUpdated As Single = 0L
+        Private m_dLastUpdated As Double = 0.0
 
 #End Region ' Private vars
 
@@ -97,7 +97,7 @@ Public Class gridEditGroupTaxon
             Me.m_sProportion = 1.0!
             Me.m_strCommon = group.Name
             Me.m_status = eItemStatusTypes.Added
-            Me.m_sLastUpdated = cDateUtils.DateToJulian()
+            Me.m_dLastUpdated = cDateUtils.DateToJulian()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -125,7 +125,7 @@ Public Class gridEditGroupTaxon
             Me.m_strSource = taxon.Source
             Me.m_strKey = taxon.SourceKey
             Me.m_status = eItemStatusTypes.Original
-            Me.m_sLastUpdated = taxon.LastUpdated
+            Me.m_dLastUpdated = taxon.LastUpdated
         End Sub
 
         Public Sub New(ByVal taxon As ITaxonData)
@@ -154,7 +154,7 @@ Public Class gridEditGroupTaxon
             Me.m_sWest = taxon.West
             Me.m_strKey = taxon.SourceKey
             Me.m_strSource = taxon.Source
-            Me.m_sLastUpdated = taxon.LastUpdated
+            Me.m_dLastUpdated = taxon.LastUpdated
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -378,12 +378,12 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' <inheritdocs cref="ITaxonData.LastUpdated"/>
-        Public Property LastUpdated() As Single _
+        Public Property LastUpdated() As Double _
             Implements ITaxonData.LastUpdated
             Get
-                Return 0L
+                Return Me.m_dLastUpdated
             End Get
-            Set(ByVal value As Single)
+            Private Set(ByVal value As Double)
                 ' NOP
             End Set
         End Property
