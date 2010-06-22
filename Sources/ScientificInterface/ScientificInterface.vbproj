@@ -1785,6 +1785,10 @@
       <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
       <Name>EwENetworkAnalysisPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj">
+      <Project>{0913D0AE-BDEC-4C3E-9551-D0A314BE9DE6}</Project>
+      <Name>EwEResultsExtractorPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
       <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>
       <Name>EwEValueChain %28EwE custom plugins\EwEValueChain\EwEValueChain%29</Name>
