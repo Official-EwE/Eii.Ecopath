@@ -442,7 +442,7 @@ Public Class cPluginManager
             ' Create plugin assembly
             plugAssem = New cPluginAssembly(nameAssembly)
 
-            ' Set compatible flag
+            ' Set compatible flag for EwE assemblies
             plugAssem.Compatibility = Me.GetCompatibility(clsAssembly)
 
             ' Look for appropriate types
@@ -2074,6 +2074,8 @@ Public Class cPluginManager
         Dim anameLoaded As AssemblyName = Nothing
         ' Assume all is well
         Dim compatibility As cPluginAssembly.ePluginCompatibilityTypes = cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible
+        ' Running total per assembly
+        Dim dtAssemblyCompatibility As New Dictionary(Of String, cPluginAssembly.ePluginCompatibilityTypes)
 
         ' For every expected assembly search its loaded counterpart
         For Each anExpected As AssemblyName In aanameExpected
@@ -2088,31 +2090,42 @@ Public Class cPluginManager
                     ' Revision difference?
                     If anExpected.Version.Revision <> anameLoaded.Version.Revision Then
                         ' #Yes: assume compatible
-                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible), cPluginAssembly.ePluginCompatibilityTypes)
+                        compatibility = cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible
                     End If
 
                     ' Build difference?
                     If anExpected.Version.Build <> anameLoaded.Version.Build Then
                         ' #Yes: take caution
-                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution), cPluginAssembly.ePluginCompatibilityTypes)
+                        compatibility = cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution
                     End If
 
                     ' Minor version number difference?
                     If anExpected.Version.Minor <> anameLoaded.Version.Minor Then
                         ' #Yes: take caution
-                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution), cPluginAssembly.ePluginCompatibilityTypes)
+                        compatibility = cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution
                     End If
 
                     ' Major version number difference?
                     If anExpected.Version.Major <> anameLoaded.Version.Major Then
                         ' #Yes: assume incompatible
-                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible), cPluginAssembly.ePluginCompatibilityTypes)
+                        compatibility = cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible
                     End If
 
                 End If
+
+                ' Some plug-in assemblies may be referenced more than once. Just remember the most compatible version
+                If dtAssemblyCompatibility.ContainsKey(anExpected.Name) Then
+                    compatibility = DirectCast(Math.Min(compatibility, dtAssemblyCompatibility(anExpected.Name)), cPluginAssembly.ePluginCompatibilityTypes)
+                End If
+                dtAssemblyCompatibility(anExpected.Name) = compatibility
             Next
         Next
 
+        ' Reasses overall compatibility
+        compatibility = cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible
+        For Each strAssem As String In dtAssemblyCompatibility.Keys
+            compatibility = DirectCast(Math.Max(compatibility, dtAssemblyCompatibility(strAssem)), cPluginAssembly.ePluginCompatibilityTypes)
+        Next
         Return compatibility
 
     End Function
