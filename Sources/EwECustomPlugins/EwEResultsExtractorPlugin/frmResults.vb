@@ -1,17 +1,14 @@
-﻿
-Option Strict On
-#Region "Imports"
+﻿#Region "Imports"
 
+Option Strict On
 Imports EwEPlugin
 Imports EwEResultsExtractor
 Imports EwECore
-Imports EwENetworkAnalysis
 Imports EwEUtils.Core
 Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms
 Imports System.Collections
-Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports Microsoft.Office.Interop
 
 #End Region
