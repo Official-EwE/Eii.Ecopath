@@ -11432,7 +11432,7 @@ Public Class cCore
         Handles m_pluginManager.AssemblyAdded
 
         Me.m_publisher.SendMessage(New cMessage(String.Format("Plug-in module '{0}' loaded", paAdded.Filename), eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
-        AddHandler paAdded.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
+        'AddHandler paAdded.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -11445,7 +11445,7 @@ Public Class cCore
         Handles m_pluginManager.AssemblyRemoved
 
         m_publisher.SendMessage(New cMessage(String.Format("Plugin module '{0}' unloaded", paRemoved.Filename), eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
-        RemoveHandler paRemoved.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
+        'RemoveHandler paRemoved.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
     End Sub
 
     Private Sub OnPluginAssemblyStateChanged(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
