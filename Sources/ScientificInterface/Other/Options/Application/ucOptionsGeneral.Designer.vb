@@ -3,7 +3,7 @@ Imports ScientificInterfaceShared
 Namespace Other
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class ucAppGeneral
+Partial Class ucOptionsGeneral
         Inherits System.Windows.Forms.UserControl
 
         'UserControl overrides dispose to clean up the component list.
@@ -23,7 +23,7 @@ Partial Class ucAppGeneral
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucAppGeneral))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsGeneral))
             Me.m_gpMRU = New System.Windows.Forms.GroupBox
             Me.m_nudMRU = New System.Windows.Forms.NumericUpDown
             Me.m_btnClearMRU = New System.Windows.Forms.Button

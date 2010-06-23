@@ -3,7 +3,7 @@ Imports ScientificInterfaceShared.Controls
 Namespace Other
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class ucAppColors
+    Partial Class ucOptionsColors
         Inherits System.Windows.Forms.UserControl
 
         'UserControl overrides dispose to clean up the component list.
@@ -23,7 +23,7 @@ Namespace Other
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucAppColors))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsColors))
             Me.m_lbItems = New System.Windows.Forms.ListBox
             Me.m_btnResetAll = New System.Windows.Forms.Button
             Me.m_lblItemForeColor = New System.Windows.Forms.Label

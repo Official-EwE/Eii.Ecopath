@@ -2668,4 +2668,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Found match '{0}', do you want to use this value?</value>
     <comment>{0}: match text</comment>
   </data>
+  <data name="PROMPT_CHANGES_RESTART" xml:space="preserve">
+    <value>Some of the changes that you made will only be effective after Ecopath with Ecosim has restarted.</value>
+  </data>
 </root>

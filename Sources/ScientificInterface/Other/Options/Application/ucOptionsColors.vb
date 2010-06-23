@@ -14,7 +14,8 @@ Namespace Other
     ''' User control; implements the Options > Color settings interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class ucAppColors
+    Public Class ucOptionsColors
+        Implements IOptionsPage
 
 #Region " Helper classes "
 
@@ -610,7 +611,8 @@ Namespace Other
         ''' Save colour selections back to the style guide.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Save()
+        Public Function Apply() As IOptionsPage.eApplyResultType _
+            Implements IOptionsPage.Apply
 
             Dim ci As cColorItem = Nothing
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
@@ -629,8 +631,9 @@ Namespace Other
             Next
 
             sg.ResumeEvents()
+            Return IOptionsPage.eApplyResultType.Success
 
-        End Sub
+        End Function
 
 #End Region ' Public methods
 

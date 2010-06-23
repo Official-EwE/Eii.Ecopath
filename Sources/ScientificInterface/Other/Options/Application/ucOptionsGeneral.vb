@@ -15,7 +15,8 @@ Namespace Other
     ''' User control; implements the Options > General settings interface
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class ucAppGeneral
+    Public Class ucOptionsGeneral
+        Implements IOptionsPage
 
 #Region " Constructors "
 
@@ -56,11 +57,19 @@ Namespace Other
 
 #Region " Public access "
 
-        Public Sub Save()
+        Public Function Apply() As IOptionsPage.eApplyResultType _
+            Implements IOptionsPage.Apply
+
+            Dim bRestart As Boolean = (My.Settings.AutoUpdatePlugins <> Me.m_cbDownloadUpdates.Checked)
+
             My.Settings.MdbRecentlyUsedCount = CInt(Me.m_nudMRU.Value)
             My.Settings.FeedbackMessageLogSize = CInt(Me.m_nudMaxNumMessages.Value)
             My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
-        End Sub
+
+            If bRestart Then Return IOptionsPage.eApplyResultType.Success_restart
+            Return IOptionsPage.eApplyResultType.Success
+
+        End Function
 
 #End Region ' Public access
 

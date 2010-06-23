@@ -22,13 +22,13 @@ Namespace Other
         ''' <summary></summary>
         Private m_uic As cUIContext = Nothing
         ''' <summary></summary>
-        Private m_ucAppColors As ucAppColors
+        Private m_ucAppColors As ucOptionsColors
         ''' <summary></summary>
-        Private m_ucAppGeneral As ucAppGeneral
+        Private m_ucAppGeneral As ucOptionsGeneral
         ''' <summary></summary>
-        Private m_ucAppPlugins As ucAppPlugins
+        Private m_ucAppPlugins As ucOptionsPlugins
         ''' <summary></summary>
-        Private m_ucAppGraphsCharts As ucAppGraphs
+        Private m_ucAppGraphsCharts As ucOptionsGraphs
         ''' <summary>Current page.</summary>
         Private m_ucCurrent As UserControl = Nothing
 
@@ -45,16 +45,16 @@ Namespace Other
             Me.m_uic = uic
             Me.m_tvOptions.ExpandAll()
 
-            Me.m_ucAppColors = New ucAppColors(uic)
+            Me.m_ucAppColors = New ucOptionsColors(uic)
             Me.m_ucAppColors.Dock = DockStyle.Fill
 
-            Me.m_ucAppGeneral = New ucAppGeneral(uic)
+            Me.m_ucAppGeneral = New ucOptionsGeneral(uic)
             Me.m_ucAppGeneral.Dock = DockStyle.Fill
 
-            Me.m_ucAppPlugins = New ucAppPlugins(uic)
+            Me.m_ucAppPlugins = New ucOptionsPlugins(uic)
             Me.m_ucAppPlugins.Dock = DockStyle.Fill
 
-            Me.m_ucAppGraphsCharts = New ucAppGraphs(uic)
+            Me.m_ucAppGraphsCharts = New ucOptionsGraphs(uic)
             Me.m_ucAppGraphsCharts.Dock = DockStyle.Fill
 
             Me.SelectPage("")
@@ -69,23 +69,19 @@ Namespace Other
 
         Private Sub Apply()
 
-            Dim bRequiresRestart As Boolean = False
-            Dim bAutoUpdatePrev As Boolean = My.Settings.AutoUpdatePlugins
+            Dim bRestart As Boolean = False
 
-            Me.m_ucAppPlugins.Save()
-            Me.m_ucAppColors.Save()
-            Me.m_ucAppGraphsCharts.Save()
-            Me.m_ucAppGeneral.Save()
+            bRestart = bRestart Or (Me.m_ucAppGeneral.Apply() = IOptionsPage.eApplyResultType.Success_restart)
+            bRestart = bRestart Or (Me.m_ucAppPlugins.Apply() = IOptionsPage.eApplyResultType.Success_restart)
+            bRestart = bRestart Or (Me.m_ucAppColors.Apply() = IOptionsPage.eApplyResultType.Success_restart)
+            bRestart = bRestart Or (Me.m_ucAppGraphsCharts.Apply() = IOptionsPage.eApplyResultType.Success_restart)
+
             My.Settings.Save()
 
-            ' Check if user may need to restart
-            bRequiresRestart = (My.Settings.AutoUpdatePlugins = True) And (bAutoUpdatePrev = False)
-
             ' Need to restart for changes to be effective?
-            If bRequiresRestart Then
+            If bRestart Then
                 ' #Yeah: notify user
-                ' ToDo: localize this
-                MsgBox("Some changes that you made will come in effect after the program has been restarted.", MsgBoxStyle.Information)
+                MsgBox(My.Resources.PROMPT_CHANGES_RESTART, MsgBoxStyle.Information)
             End If
 
         End Sub

@@ -14,7 +14,8 @@ Namespace Other
     ''' User control; implements the Options > Graph settings interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class ucAppGraphs
+    Public Class ucOptionsGraphs
+        Implements IOptionsPage
 
 #Region " Helper classes "
 
@@ -271,7 +272,7 @@ Namespace Other
         ''' Save graph settings back to the style guide.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Save()
+        Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
 
             Dim fti As cFontTypeItem = Nothing
             Dim tsShowLegends As TriState = TriState.UseDefault
@@ -299,7 +300,9 @@ Namespace Other
             Me.m_uic.StyleGuide.ResumeEvents()
             Me.m_uic.StyleGuide.FontsChanged()
 
-        End Sub
+            Return IOptionsPage.eApplyResultType.Success
+
+        End Function
 
 #End Region ' Public methods
 

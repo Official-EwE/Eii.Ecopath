@@ -18,15 +18,16 @@ Namespace Other
     ''' User control; implements the Options > Plug-in options interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class ucAppPlugins
+    Public Class ucOptionsPlugins
         Implements IUIElement
+        Implements IOptionsPage
+
+#Region " Helper classes "
 
         Const cIMAGE_CORE As Integer = 0
         Const cIMAGE_ENABLED As Integer = 1
         Const cIMAGE_DISABLED As Integer = 2
         Const cIMAGE_CONFLICT As Integer = 3
-
-#Region " Helper classes "
 
         Private Class cPluginAssemblyInfo
 
@@ -51,6 +52,18 @@ Namespace Other
                 Set(ByVal bEnabled As Boolean)
                     Me.m_bEnabled = bEnabled
                 End Set
+            End Property
+
+            Public ReadOnly Property AlwaysEnabled() As Boolean
+                Get
+                    Return Me.m_pa.AlwaysEnabled
+                End Get
+            End Property
+
+            Public ReadOnly Property Compatible() As Boolean
+                Get
+                    Return Me.m_pa.IsCompatible
+                End Get
             End Property
 
         End Class
@@ -93,23 +106,45 @@ Namespace Other
 
 #Region " Public interfaces "
 
-        Public Sub Save()
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update which plug-ins to disable after a restart.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Function Apply() As IOptionsPage.eApplyResultType _
+            Implements IOptionsPage.Apply
 
             Dim alDisabledPlugins As New ArrayList()
-            For Each info As cPluginAssemblyInfo In Me.m_dictPluginAssemblyInfo.Values
-                info.Enabled = info.PluginAssembly.Enabled
+            Dim bChanged As Boolean = False
 
+            ' Build list of plugins to disable
+            For Each info As cPluginAssemblyInfo In Me.m_dictPluginAssemblyInfo.Values
                 If (info.Enabled = False) Then
                     alDisabledPlugins.Add(info.PluginAssembly.Filename)
                 End If
             Next
+
+            ' Detect changes that may require a restart
+            If (My.Settings.DisabledPlugins IsNot Nothing) Then
+                For Each strFN As String In alDisabledPlugins
+                    bChanged = bChanged Or Not My.Settings.DisabledPlugins.Contains(strFN)
+                Next
+                For Each strFN As String In My.Settings.DisabledPlugins
+                    bChanged = bChanged Or Not alDisabledPlugins.Contains(strFN)
+                Next
+            Else
+                bChanged = (alDisabledPlugins.Count > 0)
+            End If
+
+            ' Update settings
             My.Settings.DisabledPlugins = alDisabledPlugins
             My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
 
-            ' Do not save settings; the master options dialog will take care of this
-            'My.Settings.Save()
+            ' Convey result
+            If bChanged Then Return IOptionsPage.eApplyResultType.Success_restart
+            Return IOptionsPage.eApplyResultType.Success
 
-        End Sub
+        End Function
 
 #End Region ' Public interfaces
 
@@ -119,6 +154,7 @@ Namespace Other
             MyBase.OnLoad(e)
 
             Dim collPA As ICollection(Of cPluginAssembly) = Nothing
+            Dim info As cPluginAssemblyInfo = Nothing
             Dim pa As cPluginAssembly = Nothing
             Dim tnPA As TreeNode = Nothing
             Dim p As IPlugin = Nothing
@@ -128,13 +164,14 @@ Namespace Other
 
             collPA = Me.m_pm.PluginAssemblies
             For Each pa In collPA
+
+                info = New cPluginAssemblyInfo(pa)
+
                 tnPA = New TreeNode(Path.GetFileNameWithoutExtension(pa.Filename))
                 tnPA.Tag = pa
-                tnPA.ImageIndex = Me.GetPluginAssemblyImageIndex(pa)
-                tnPA.SelectedImageIndex = Me.GetPluginAssemblyImageIndex(pa)
-
-                AddHandler pa.AssemblyEnabled, AddressOf OnHandlePluginAssemblyEnabled
-                Me.m_dictPluginAssemblyInfo(pa) = New cPluginAssemblyInfo(pa)
+                tnPA.ImageIndex = Me.GetImageIndex(info)
+                tnPA.SelectedImageIndex = tnPA.ImageIndex
+                Me.m_dictPluginAssemblyInfo(pa) = info
 
                 For Each p In pa.Plugins(Nothing, True)
 
@@ -171,6 +208,7 @@ Namespace Other
             End If
 
             Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
+            Me.UpdateControls()
 
         End Sub
 
@@ -178,8 +216,8 @@ Namespace Other
             Try
                 If disposing Then
                     For Each pa As cPluginAssembly In Me.m_dictPluginAssemblyInfo.Keys
-                        ' Stop listening to plugin assembly
-                        RemoveHandler pa.AssemblyEnabled, AddressOf OnHandlePluginAssemblyEnabled
+                        '' Stop listening to plugin assembly
+                        'RemoveHandler pa.AssemblyEnabled, AddressOf OnHandlePluginAssemblyEnabled
                         ' Restore enabled state
                         pa.Enabled = Me.m_dictPluginAssemblyInfo(pa).Enabled
                     Next
@@ -195,30 +233,56 @@ Namespace Other
             End Try
         End Sub
 
-        Private Sub m_tvPlugins_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles m_tvPlugins.AfterSelect
+        Private Sub OnAfterSelectNode(ByVal sender As System.Object, ByVal e As TreeViewEventArgs) _
+            Handles m_tvPlugins.AfterSelect
             Me.UpdateDetails()
         End Sub
 
-        Private Sub OnHandlePluginAssemblyEnabled(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
-            Dim tn As TreeNode = Me.FindPluginAssemblyNode(pa)
-            Dim iIndex As Integer = Me.GetPluginAssemblyImageIndex(pa)
+        Private Sub OnEnableCheckChanged(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_cbEnablePlugin.CheckedChanged
 
-            If tn IsNot Nothing Then
-                tn.ImageIndex = iIndex
-                tn.SelectedImageIndex = iIndex
+            Dim pa As cPluginAssembly = Me.SelectedPluginAssembly
+            Dim info As cPluginAssemblyInfo = Me.m_dictPluginAssemblyInfo(pa)
+            If (pa IsNot Nothing) Then
+                info.Enabled = Me.m_cbEnablePlugin.Checked
+                Me.UpdatePluginImage(info)
             End If
         End Sub
-
-        Private Function GetPluginAssemblyImageIndex(ByVal pa As cPluginAssembly) As Integer
-            If (pa.Enabled = False) Then Return cIMAGE_DISABLED
-            If (pa.IsCompatible = False) Then Return cIMAGE_CONFLICT
-            If (pa.AlwaysEnabled = True) Then Return cIMAGE_CORE
-            Return cIMAGE_ENABLED
-        End Function
 
 #End Region ' Events
 
 #Region " Private implementations "
+
+        Private Function FindPluginAssemblyNode(ByVal pa As cPluginAssembly) As TreeNode
+            If pa Is Nothing Then Return Nothing
+            For Each tn As TreeNode In Me.m_tvPlugins.Nodes
+                If (TypeOf tn.Tag Is cPluginAssembly) Then
+                    If Object.ReferenceEquals(DirectCast(tn.Tag, cPluginAssembly), pa) Then
+                        Return tn
+                    End If
+                End If
+            Next
+            Return Nothing
+        End Function
+
+        Private ReadOnly Property SelectedPluginAssembly() As cPluginAssembly
+            Get
+                Dim tn As TreeNode = Me.m_tvPlugins.SelectedNode
+                If (TypeOf tn.Tag Is cPluginAssembly) Then
+                    Return DirectCast(tn.Tag, cPluginAssembly)
+                ElseIf (TypeOf tn.Tag Is IPlugin) Then
+                    Return DirectCast(tn.Parent.Tag, cPluginAssembly)
+                End If
+                Return Nothing
+            End Get
+        End Property
+
+        Private Function GetImageIndex(ByVal info As cPluginAssemblyInfo) As Integer
+            If (info.Enabled = False) Then Return cIMAGE_DISABLED
+            If (info.Compatible = False) Then Return cIMAGE_CONFLICT
+            If (info.AlwaysEnabled = True) Then Return cIMAGE_CORE
+            Return cIMAGE_ENABLED
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -231,10 +295,10 @@ Namespace Other
             Dim ctrl As UserControl = Nothing
 
             If (TypeOf tn.Tag Is cPluginAssembly) Then
-                ctrl = New ucAppPluginAssemblyDetails(DirectCast(tn.Tag, cPluginAssembly))
+                ctrl = New ucOptionsPluginAssemblyDetails(DirectCast(tn.Tag, cPluginAssembly))
             ElseIf (TypeOf tn.Tag Is IPlugin) Then
                 ' Hackerdihack
-                ctrl = New ucAppPluginDetails(Me.UIContext, _
+                ctrl = New ucOptionsPluginDetails(Me.UIContext, _
                                               DirectCast(tn.Tag, IPlugin), _
                                               DirectCast(tn.Parent.Tag, cPluginAssembly))
             End If
@@ -248,19 +312,36 @@ Namespace Other
             End If
 
             Me.m_split.ResumeLayout()
+            Me.UpdateControls()
 
         End Sub
 
-        Private Function FindPluginAssemblyNode(ByVal pa As cPluginAssembly) As TreeNode
-            For Each tn As TreeNode In Me.m_tvPlugins.Nodes
-                If (TypeOf tn.Tag Is cPluginAssembly) Then
-                    If Object.ReferenceEquals(DirectCast(tn.Tag, cPluginAssembly), pa) Then
-                        Return tn
-                    End If
-                End If
-            Next
-            Return Nothing
-        End Function
+        Private Sub UpdatePluginImage(ByVal info As cPluginAssemblyInfo)
+            Dim tn As TreeNode = Me.FindPluginAssemblyNode(info.PluginAssembly)
+            Dim iIndex As Integer = Me.GetImageIndex(info)
+
+            If tn IsNot Nothing Then
+                tn.ImageIndex = iIndex
+                tn.SelectedImageIndex = iIndex
+            End If
+        End Sub
+
+        Private Sub UpdateControls()
+
+            Dim pa As cPluginAssembly = Me.SelectedPluginAssembly
+
+            Dim bEnabled As Boolean = False
+            Dim bCanDisable As Boolean = False
+
+            If (pa IsNot Nothing) Then
+                bEnabled = pa.Enabled
+                bCanDisable = (pa.AlwaysEnabled = False)
+            End If
+
+            Me.m_cbEnablePlugin.Enabled = bCanDisable
+            Me.m_cbEnablePlugin.Checked = bEnabled
+
+        End Sub
 
 #End Region ' Private implementations
 

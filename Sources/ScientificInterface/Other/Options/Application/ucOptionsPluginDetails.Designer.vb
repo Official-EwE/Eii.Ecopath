@@ -1,5 +1,5 @@
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class ucAppPluginDetails
+Partial Class ucOptionsPluginDetails
     Inherits System.Windows.Forms.UserControl
 
     'UserControl overrides dispose to clean up the component list.
@@ -28,7 +28,6 @@ Partial Class ucAppPluginDetails
         Me.m_tbName = New System.Windows.Forms.TextBox
         Me.m_tbDescription = New System.Windows.Forms.TextBox
         Me.m_tbAuthor = New System.Windows.Forms.TextBox
-        Me.m_cbEnabled = New System.Windows.Forms.CheckBox
         Me.m_llContact = New System.Windows.Forms.LinkLabel
         Me.SuspendLayout()
         '
@@ -81,7 +80,7 @@ Partial Class ucAppPluginDetails
         Me.m_tbDescription.Name = "m_tbDescription"
         Me.m_tbDescription.ReadOnly = True
         Me.m_tbDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.m_tbDescription.Size = New System.Drawing.Size(282, 156)
+        Me.m_tbDescription.Size = New System.Drawing.Size(282, 180)
         Me.m_tbDescription.TabIndex = 6
         Me.m_tbDescription.Text = "Description"
         '
@@ -96,17 +95,6 @@ Partial Class ucAppPluginDetails
         Me.m_tbAuthor.Size = New System.Drawing.Size(222, 13)
         Me.m_tbAuthor.TabIndex = 3
         '
-        'm_cbEnabled
-        '
-        Me.m_cbEnabled.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.m_cbEnabled.AutoSize = True
-        Me.m_cbEnabled.Location = New System.Drawing.Point(6, 240)
-        Me.m_cbEnabled.Name = "m_cbEnabled"
-        Me.m_cbEnabled.Size = New System.Drawing.Size(149, 17)
-        Me.m_cbEnabled.TabIndex = 10
-        Me.m_cbEnabled.Text = "&Enable this plug-in module"
-        Me.m_cbEnabled.UseVisualStyleBackColor = True
-        '
         'm_llContact
         '
         Me.m_llContact.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -116,19 +104,18 @@ Partial Class ucAppPluginDetails
         Me.m_llContact.Size = New System.Drawing.Size(225, 34)
         Me.m_llContact.TabIndex = 11
         '
-        'ucAppPluginDetails
+        'ucOptionsPluginDetails
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_llContact)
-        Me.Controls.Add(Me.m_cbEnabled)
         Me.Controls.Add(Me.m_tbAuthor)
         Me.Controls.Add(Me.m_tbName)
         Me.Controls.Add(Me.m_tbDescription)
         Me.Controls.Add(Me.m_lblContact)
         Me.Controls.Add(Me.m_lblAuthor)
         Me.Controls.Add(Me.m_lblName)
-        Me.Name = "ucAppPluginDetails"
+        Me.Name = "ucOptionsPluginDetails"
         Me.Size = New System.Drawing.Size(291, 261)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -140,7 +127,6 @@ Partial Class ucAppPluginDetails
     Private WithEvents m_tbName As System.Windows.Forms.TextBox
     Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
     Private WithEvents m_tbAuthor As System.Windows.Forms.TextBox
-    Private WithEvents m_cbEnabled As System.Windows.Forms.CheckBox
     Private WithEvents m_llContact As System.Windows.Forms.LinkLabel
 
 End Class

@@ -3,7 +3,7 @@ Imports ScientificInterfaceShared
 Namespace Other
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class ucAppGraphs
+    Partial Class ucOptionsGraphs
         Inherits System.Windows.Forms.UserControl
 
         'UserControl overrides dispose to clean up the component list.
@@ -23,7 +23,7 @@ Namespace Other
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucAppGraphs))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsGraphs))
             Me.m_hdr1 = New cEwEHeaderLabel
             Me.m_lblThumbnailSize = New System.Windows.Forms.Label
             Me.m_nudThumbnailSize = New System.Windows.Forms.NumericUpDown

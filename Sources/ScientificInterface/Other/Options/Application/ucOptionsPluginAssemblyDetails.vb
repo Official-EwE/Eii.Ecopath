@@ -10,7 +10,7 @@ Imports EwEPlugin
 
 #End Region ' Imports
 
-Public Class ucAppPluginAssemblyDetails
+Public Class ucOptionsPluginAssemblyDetails
 
     Private m_pa As cPluginAssembly = Nothing
 
@@ -31,14 +31,8 @@ Public Class ucAppPluginAssemblyDetails
         Me.m_tbVersion.Text = pa.Version
 
         Me.m_pa = pa
-        Me.m_cbEnabled.Checked = pa.Enabled
-        Me.m_cbEnabled.Enabled = (pa.AlwaysEnabled = False)
 
-    End Sub
 
-    Private Sub OnCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles m_cbEnabled.CheckedChanged
-        Me.m_pa.Enabled = Me.m_cbEnabled.Checked
     End Sub
 
 End Class

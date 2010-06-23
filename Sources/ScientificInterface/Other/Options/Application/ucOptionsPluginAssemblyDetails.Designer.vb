@@ -1,5 +1,5 @@
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class ucAppPluginAssemblyDetails
+Partial Class ucOptionsPluginAssemblyDetails
     Inherits System.Windows.Forms.UserControl
 
     'UserControl overrides dispose to clean up the component list.
@@ -26,7 +26,6 @@ Partial Class ucAppPluginAssemblyDetails
         Me.m_lblCompany = New System.Windows.Forms.Label
         Me.m_lblVersion = New System.Windows.Forms.Label
         Me.m_lblFile = New System.Windows.Forms.Label
-        Me.m_cbEnabled = New System.Windows.Forms.CheckBox
         Me.m_tbFile = New System.Windows.Forms.TextBox
         Me.m_tbVersion = New System.Windows.Forms.TextBox
         Me.m_tbCompany = New System.Windows.Forms.TextBox
@@ -69,17 +68,6 @@ Partial Class ucAppPluginAssemblyDetails
         Me.m_lblFile.Size = New System.Drawing.Size(26, 13)
         Me.m_lblFile.TabIndex = 0
         Me.m_lblFile.Text = "File:"
-        '
-        'm_cbEnabled
-        '
-        Me.m_cbEnabled.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.m_cbEnabled.AutoSize = True
-        Me.m_cbEnabled.Location = New System.Drawing.Point(6, 240)
-        Me.m_cbEnabled.Name = "m_cbEnabled"
-        Me.m_cbEnabled.Size = New System.Drawing.Size(149, 17)
-        Me.m_cbEnabled.TabIndex = 9
-        Me.m_cbEnabled.Text = "&Enable this plug-in module"
-        Me.m_cbEnabled.UseVisualStyleBackColor = True
         '
         'm_tbFile
         '
@@ -133,11 +121,11 @@ Partial Class ucAppPluginAssemblyDetails
         Me.m_tbDescription.Multiline = True
         Me.m_tbDescription.Name = "m_tbDescription"
         Me.m_tbDescription.ReadOnly = True
-        Me.m_tbDescription.Size = New System.Drawing.Size(434, 156)
+        Me.m_tbDescription.Size = New System.Drawing.Size(434, 180)
         Me.m_tbDescription.TabIndex = 8
         Me.m_tbDescription.Text = "Description"
         '
-        'ucAppPluginAssemblyDetails
+        'ucOptionsPluginAssemblyDetails
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -146,12 +134,11 @@ Partial Class ucAppPluginAssemblyDetails
         Me.Controls.Add(Me.m_tbVersion)
         Me.Controls.Add(Me.m_tbDescription)
         Me.Controls.Add(Me.m_tbFile)
-        Me.Controls.Add(Me.m_cbEnabled)
         Me.Controls.Add(Me.m_lblCopyright)
         Me.Controls.Add(Me.m_lblCompany)
         Me.Controls.Add(Me.m_lblVersion)
         Me.Controls.Add(Me.m_lblFile)
-        Me.Name = "ucAppPluginAssemblyDetails"
+        Me.Name = "ucOptionsPluginAssemblyDetails"
         Me.Size = New System.Drawing.Size(443, 261)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -161,7 +148,6 @@ Partial Class ucAppPluginAssemblyDetails
     Friend WithEvents m_lblCompany As System.Windows.Forms.Label
     Friend WithEvents m_lblVersion As System.Windows.Forms.Label
     Friend WithEvents m_lblFile As System.Windows.Forms.Label
-    Friend WithEvents m_cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents m_tbFile As System.Windows.Forms.TextBox
     Friend WithEvents m_tbVersion As System.Windows.Forms.TextBox
     Friend WithEvents m_tbCompany As System.Windows.Forms.TextBox
