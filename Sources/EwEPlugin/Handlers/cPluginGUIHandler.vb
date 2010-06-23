@@ -55,11 +55,11 @@ Public MustInherit Class cPluginGUIHandler
             If (pm Is Me.m_pm) Then Return
 
             If (Me.m_pm IsNot Nothing) Then
-                ' Stop observing events originating from current plugin manager:
-                ' - Assemblies added event
-                RemoveHandler m_pm.AssemblyAdded, AddressOf OnAssemblyAdded
-                ' - Assemblies removed event
-                RemoveHandler m_pm.AssemblyRemoved, AddressOf OnAssemblyRemoved
+                '' Stop observing events originating from current plugin manager:
+                '' - Assemblies added event
+                'RemoveHandler m_pm.AssemblyAdded, AddressOf OnAssemblyAdded
+                '' - Assemblies removed event
+                'RemoveHandler m_pm.AssemblyRemoved, AddressOf OnAssemblyRemoved
                 ' - Plugin enabled state event
                 RemoveHandler m_pm.PluginEnabled, AddressOf EnablePlugin
                 ' Manually remove existing assemblies
@@ -110,9 +110,9 @@ Public MustInherit Class cPluginGUIHandler
     ''' <param name="pa">The added plugin assembly.</param>
     ''' -----------------------------------------------------------------------
     Private Sub OnAssemblyAdded(ByVal pa As cPluginAssembly)
-        ' Start listening to events originating from this assembly
-        ' - Assembly enabled state changed event
-        AddHandler pa.AssemblyEnabled, AddressOf ActivateAssembly
+        '' Start listening to events originating from this assembly
+        '' - Assembly enabled state changed event
+        'AddHandler pa.AssemblyEnabled, AddressOf ActivateAssembly
         Me.ActivateAssembly(pa, pa.Enabled)
     End Sub
 
@@ -126,9 +126,9 @@ Public MustInherit Class cPluginGUIHandler
     Private Sub OnAssemblyRemoved(ByVal pa As cPluginAssembly)
         ' Remove the assembly
         Me.ActivateAssembly(pa, False)
-        ' Stop listening to assemble enabled events
-        ' - Assembly enabled state changed event
-        RemoveHandler pa.AssemblyEnabled, AddressOf ActivateAssembly
+        '' Stop listening to assemble enabled events
+        '' - Assembly enabled state changed event
+        'RemoveHandler pa.AssemblyEnabled, AddressOf ActivateAssembly
     End Sub
 
     ''' -----------------------------------------------------------------------
