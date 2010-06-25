@@ -352,6 +352,9 @@
   <ItemGroup>
     <None Include="EwEValueChain.snk" />
     <None Include="Resources\ThumbnailLoadingHS.png" />
+    <None Include="UserGuide\ChristensenValueChainMS.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utils\" />
