@@ -138,7 +138,6 @@ Namespace Other
 
             ' Update settings
             My.Settings.DisabledPlugins = alDisabledPlugins
-            My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
 
             ' Convey result
             If bChanged Then Return IOptionsPage.eApplyResultType.Success_restart
@@ -207,7 +206,6 @@ Namespace Other
                 Me.UpdateDetails()
             End If
 
-            Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
             Me.UpdateControls()
 
         End Sub
