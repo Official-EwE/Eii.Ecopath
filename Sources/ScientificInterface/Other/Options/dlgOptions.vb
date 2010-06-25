@@ -32,6 +32,8 @@ Namespace Other
         ''' <summary>Current page.</summary>
         Private m_ucCurrent As UserControl = Nothing
 
+        Private m_bHasFiredRestartPrompt As Boolean = False
+
 #End Region ' Private variables
 
 #Region " Constructor "
@@ -79,9 +81,10 @@ Namespace Other
             My.Settings.Save()
 
             ' Need to restart for changes to be effective?
-            If bRestart Then
+            If bRestart And Not Me.m_bHasFiredRestartPrompt Then
                 ' #Yeah: notify user
                 MsgBox(My.Resources.PROMPT_CHANGES_RESTART, MsgBoxStyle.Information)
+                Me.m_bHasFiredRestartPrompt = True
             End If
 
         End Sub
