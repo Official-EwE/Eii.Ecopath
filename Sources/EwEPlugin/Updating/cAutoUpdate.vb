@@ -177,7 +177,11 @@ Friend Class cAutoUpdate
         If String.IsNullOrEmpty(Me.m_strPluginToken) Then
             Return Me.HasMigration()
         Else
-            Return Me.HasUpdate()
+            If Me.HasUpdate() = eUpdateStatusTypes.Success Then
+                Return eUpdateStatusTypes.Info_CanUpdate
+            Else
+                Return eUpdateStatusTypes.Error_Connection
+            End If
         End If
 
     End Function
