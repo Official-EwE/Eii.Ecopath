@@ -3582,8 +3582,8 @@ NextPivot:
             ReDim RelativeCatchPPR(m_esdata.NTimes)
             ReDim RelativeCatchDetReq(m_esdata.NTimes)
 
-            'RaiseToPP() and RaiseToDet() where computed in the network anylysis 
-            'that has to have been run before the network analysis for ecosim can be initialized
+            'RaiseToPP() and RaiseToDet() were computed in the network anylysis 
+            'which has to have been run before the network analysis for ecosim can be initialized
             OrigPPR(0) = RaiseToPP(0)
             OrigPPR(1) = RaiseToDet(0)
 
