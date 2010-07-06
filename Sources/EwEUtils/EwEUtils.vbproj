@@ -104,6 +104,7 @@
     <Compile Include="Net\cSerializableObject.vb" />
     <Compile Include="System\cAssemblyInfo.vb" />
     <Compile Include="System\SystemUtilities.vb" />
+    <Compile Include="Utilities\cColorUtils.vb" />
     <Compile Include="Utilities\cDateUtils.vb" />
     <Compile Include="Utilities\cFileUtils.vb" />
     <Compile Include="Utilities\cRegistryUtils.vb" />
