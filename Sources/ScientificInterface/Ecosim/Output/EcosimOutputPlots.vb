@@ -11,6 +11,7 @@ Imports EwEUtils.Commands
 Imports ZedGraph
 Imports System.IO
 Imports System.Text
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -358,6 +359,7 @@ Namespace Ecosim
             Dim ppt As PointPairList = Nothing
             Dim ts As cTimeSeries = Nothing
             Dim gts As cGroupTimeSeries = Nothing
+            Dim iNumLine As Integer = 0
 
             For i As Integer = 1 To Me.UIContext.Core.nTimeSeries
                 ts = Me.UIContext.Core.EcosimTimeSeries(i)
@@ -365,7 +367,8 @@ Namespace Ecosim
                     If TypeOf ts Is cGroupTimeSeries Then
                         gts = DirectCast(ts, cGroupTimeSeries)
                         If (gts.GroupIndex = iGroup) And gts.Enabled() Then
-                            lli.Add(Me.ToTimeSeriesLineItem(gts, clr))
+                            lli.Add(Me.ToTimeSeriesLineItem(gts, cColorUtils.GetVariant(clr, iNumLine)))
+                            iNumLine += 1
                         End If
                     End If
                 End If
@@ -379,6 +382,7 @@ Namespace Ecosim
 
             Dim ppt As New PointPairList
             Dim dScale As Single = 1.0F
+            Dim li As LineItem = Nothing
 
             If gts.TimeSeriesType = eTimeSeriesType.BiomassRel Or _
                     gts.TimeSeriesType = eTimeSeriesType.AverageWeight Then
@@ -395,7 +399,7 @@ Namespace Ecosim
                     ppt.Add(Me.UIContext.Core.EcosimFirstYear + j - 0.5, da(j) * dScale)
                 End If
             Next
-            Return Me.m_zgh.CreateLineItem(gts, ppt)
+            Return Me.m_zgh.CreateLineItem(gts.Name, eLineType.ReferenceData, clr, ppt)
 
         End Function
 
