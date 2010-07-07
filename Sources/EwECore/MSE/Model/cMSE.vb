@@ -2280,7 +2280,6 @@ Namespace MSE
         ''' <param name="data"></param>
         ''' <remarks></remarks>
         Private Sub onEcosimTimestep(ByVal iTime As Long, ByVal data As cEcoSimResults)
-            'ToDo_jb get the Mean Min and Max values of all variables that will have stats from the MSE
             Try
 
                 If Me.m_Search.SearchMode <> eSearchModes.MSE Then
