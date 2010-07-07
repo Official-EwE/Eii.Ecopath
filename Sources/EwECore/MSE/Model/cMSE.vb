@@ -807,7 +807,7 @@ Namespace MSE
                     Try
                         buff = New StringBuilder()
                         For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-                            If (igrp > 1) Then buff.Append(", ")
+                            If (its > 1) Then buff.Append(", ")
                             buff.Append(cStringUtils.FormatSingle(m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, its)))
                         Next
 
@@ -827,7 +827,7 @@ Namespace MSE
                         If Me.m_epdata.fCatch(igrp) > 0 Then
                             buff = New StringBuilder()
                             For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-                                If (igrp > 1) Then buff.Append(", ")
+                                If (its > 1) Then buff.Append(", ")
                                 buff.Append(cStringUtils.FormatSingle(m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, its)))
                             Next
 
@@ -849,7 +849,7 @@ Namespace MSE
                         If Me.m_epdata.fCatch(igrp) > 0 Then
                             buff = New StringBuilder()
                             For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-                                If (igrp > 1) Then buff.Append(", ")
+                                If (its > 1) Then buff.Append(", ")
                                 buff.Append(cStringUtils.FormatSingle(data(igrp, its)))
                             Next
 
@@ -889,7 +889,7 @@ Namespace MSE
                     Try
                         buff = New StringBuilder()
                         For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-                            If iflt > 1 Then buff.Append(", ")
+                            If its > 1 Then buff.Append(", ")
                             buff.Append(cStringUtils.FormatSingle(m_esData.ResultsEffort(iflt, its)))
                         Next
 
