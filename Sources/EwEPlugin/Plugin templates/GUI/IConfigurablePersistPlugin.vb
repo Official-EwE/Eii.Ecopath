@@ -22,7 +22,7 @@ Public Interface IConfigurablePersistPlugin
     ''' </summary>
     ''' <param name="node">The node to read configuration information from.</param>
     ''' -----------------------------------------------------------------------
-    Sub Read(ByVal node As XmlNode)
+    Sub ReadConfiguration(ByVal node As XmlNode)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -31,6 +31,6 @@ Public Interface IConfigurablePersistPlugin
     ''' </summary>
     ''' <param name="node">The node to write configuration information to.</param>
     ''' -----------------------------------------------------------------------
-    Sub Write(ByVal node As XmlNode)
+    Sub WriteConfiguration(ByVal node As XmlNode)
 
 End Interface
