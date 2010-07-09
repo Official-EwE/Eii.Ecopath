@@ -55,8 +55,8 @@ Namespace ExternalData
         ''' </summary>
         ''' <returns>The only instance of cTaxonDataSource. Otherwise nothing</returns>
         ''' <remarks>An instance of this class is loaded from the Core via the Plugin 
-        ''' manager. This allows classes in the core to retrieve an instance of 
-        ''' cTaxonDataSource for Economic data.</remarks>
+        ''' manager. This allows classes other objects to retrieve an instance of 
+        ''' cTaxonDataSource for receiving taxonomy data notifications.</remarks>
         ''' -----------------------------------------------------------------------
         Public Shared Function GetInstance() As cTaxonDataSource
 
@@ -180,10 +180,20 @@ Namespace ExternalData
 
 #Region " IDataConsumerPlugin implementation "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Data comsumption handling; dispatches both incoming taxonomy data or
+        ''' taxonomy search results.
+        ''' </summary>
+        ''' <param name="strDataName">Name of incoming data (not used).</param>
+        ''' <param name="data">Actual incoming data.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
         Public Function ReceiveData(ByVal strDataName As String, ByVal data As EwEPlugin.Data.IPluginData) As Boolean _
             Implements EwEPlugin.Data.IDataConsumerPlugin.ReceiveData
 
             Try
+
                 If TypeOf data Is ITaxonData Then
                     Dim taxon As ITaxonData = DirectCast(data, ITaxonData)
                     Me.FireOnTaxonData(taxon)
