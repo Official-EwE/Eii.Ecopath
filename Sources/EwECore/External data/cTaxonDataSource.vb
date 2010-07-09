@@ -12,13 +12,17 @@ Imports EwEUtils.Database
 
 Namespace ExternalData
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Implemention of IDataConsumerPlugin that fires an event when ever taxonomy data is available.
+    ''' Implemention of IDataConsumerPlugin that fires an event whenever 
+    ''' taxonomy data or taxonomy data search results are available.
     ''' </summary>
-    ''' <remarks>This could be extented to be a source for any data the is broadcasted via the IDataBroadcaster plugin interface </remarks>
+    ''' <remarks>This could be extented to be a source for any data that is 
+    ''' broadcasted via IDataBroadcaster plugin interfaces.</remarks>
+    ''' -----------------------------------------------------------------------
     Public Class cTaxonDataSource
-        Implements Data.IDataConsumerPlugin
-        Implements IExternalData
+        Implements IDataConsumerPlugin
+        Implements IExternalDataSource
 
 #Region " Private vars "
 
@@ -97,7 +101,7 @@ Namespace ExternalData
         ''' <param name="runtype"></param>
         ''' -----------------------------------------------------------------------
         Public Property EnableData(ByVal runtype As IRunType) As Boolean _
-            Implements IExternalData.EnableData
+            Implements IExternalDataSource.EnableData
             Get
                 Return s_core.PluginManager.EnableData(GetType(ITaxonData), runtype)
             End Get
@@ -114,7 +118,7 @@ Namespace ExternalData
         ''' <returns>True if available.</returns>
         ''' -----------------------------------------------------------------------
         Public Function IsDataAvailable(ByVal runtype As EwEUtils.Core.IRunType) As Boolean _
-              Implements IExternalData.IsDataAvailable
+              Implements IExternalDataSource.IsDataAvailable
             Return s_core.PluginManager.IsDataAvailable(GetType(ITaxonData), runtype)
         End Function
 

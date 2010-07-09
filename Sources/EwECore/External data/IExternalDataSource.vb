@@ -12,7 +12,7 @@ Namespace ExternalData
     ''' Interface for implementing external data sources.
     ''' </summary>
     ''' ===========================================================================
-    Public Interface IExternalData
+    Public Interface IExternalDataSource
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

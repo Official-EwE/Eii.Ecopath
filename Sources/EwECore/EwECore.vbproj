@@ -307,8 +307,10 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerPort.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerSail.vb" />
     <Compile Include="External data\cNetworkAnalysisDataSource.vb" />
-    <Compile Include="External data\cTaxonDataSource.vb" />
-    <Compile Include="External data\IExternalData.vb" />
+    <Compile Include="External data\cTaxonDataSource.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="External data\IExternalDataSource.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptManager.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptOutput.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptParameters.vb" />

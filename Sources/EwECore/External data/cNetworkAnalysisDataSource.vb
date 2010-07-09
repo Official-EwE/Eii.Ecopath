@@ -17,7 +17,7 @@ Namespace ExternalData
     ''' </summary>
     Public Class cNetworkAnalysisDataSource
         Implements Data.IDataConsumerPlugin
-        Implements IExternalData
+        Implements IExternalDataSource
 
 #Region " Private vars "
 
@@ -86,7 +86,7 @@ Namespace ExternalData
         ''' <param name="runtype"></param>
         ''' -----------------------------------------------------------------------
         Public Property EnableData(ByVal runtype As IRunType) As Boolean _
-            Implements IExternalData.EnableData
+            Implements IExternalDataSource.EnableData
             Get
                 Return s_core.PluginManager.EnableData(GetType(INetworkAnalysisData), runtype)
             End Get
@@ -103,7 +103,7 @@ Namespace ExternalData
         ''' <returns>True if available.</returns>
         ''' -----------------------------------------------------------------------
         Public Function IsDataAvailable(ByVal runtype As EwEUtils.Core.IRunType) As Boolean _
-              Implements IExternalData.IsDataAvailable
+              Implements IExternalDataSource.IsDataAvailable
             Return s_core.PluginManager.IsDataAvailable(GetType(IEconomicData), runtype)
         End Function
 
