@@ -2671,4 +2671,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="PROMPT_CHANGES_RESTART" xml:space="preserve">
     <value>Some of the changes that you made will only be effective after Ecopath with Ecosim has restarted.</value>
   </data>
+  <data name="PROMPT_SEARCH_NORESULTS" xml:space="preserve">
+    <value>Your search did not produce any results</value>
+  </data>
 </root>

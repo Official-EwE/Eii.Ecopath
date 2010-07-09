@@ -19,8 +19,11 @@ Public Class EditGroupTaxon
 
 #Region " Private vars "
 
+    ''' <summary>UI context to connect to.</summary>
     Private m_uic As cUIContext = Nothing
+    ''' <summary>Datasource delivering taxonomy data.</summary>
     Private m_tds As cTaxonDataSource = Nothing
+    ''' <summary>Looped update prevention flag.</summary>
     Private m_bInUpdate As Boolean = False
 
 #End Region ' Private vars
@@ -53,10 +56,18 @@ Public Class EditGroupTaxon
 
     End Class
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper class to wait for search results to be formatted and delivered.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Class cWaitForSearch
 
+        ''' <summary>UI to notify when search complete.</summary>
         Private m_ui As EditGroupTaxon = Nothing
+        ''' <summary>Data producer that is searching.</summary>
         Private m_producer As IDataSearchProducerPlugin = Nothing
+        ''' <summary>Search results.</summary>
         Private m_results As IDataSearchResults = Nothing
 
         Public Sub New(ByVal form As EditGroupTaxon, ByVal prod As IDataSearchProducerPlugin, ByVal res As IDataSearchResults)
@@ -300,7 +311,8 @@ Public Class EditGroupTaxon
 
         Select Case results.SearchResults.Count
             Case 0
-                Dim msg As New cMessage("Your search did not produce any results", eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
+                Dim msg As New cMessage(My.Resources.PROMPT_SEARCH_NORESULTS, _
+                                        eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
                 Me.m_uic.Core.Messages.SendMessage(msg)
 
             Case 1

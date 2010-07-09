@@ -5544,6 +5544,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Your search did not produce any results.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_SEARCH_NORESULTS() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SEARCH_NORESULTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to One or more stanza configurations do not have life stages assigned. Do you want to do this now?.
         '''</summary>
         Friend ReadOnly Property PROMPT_STANZA_MISSING_LIFESTAGES() As String
