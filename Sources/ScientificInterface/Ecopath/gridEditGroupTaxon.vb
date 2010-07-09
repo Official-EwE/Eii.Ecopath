@@ -554,7 +554,7 @@ Public Class gridEditGroupTaxon
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Overridden to first create a snapshot of the group/stanza configuration
+    ''' Overridden to first create a snapshot of the group taxon configuration
     ''' in the current EwE model. The grid will be populated from this local
     ''' administration.
     ''' </summary>
