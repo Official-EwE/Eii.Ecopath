@@ -8,29 +8,23 @@ Imports System.Xml
 
 ''' ===========================================================================
 ''' <summary>
-''' Plugin point that allows a configurabe plug-in to store and retrieve its
-''' settings
+''' Plugin point that allows a plug-in to store and retrieve persistent 
+''' configuration settings.
 ''' </summary>
 ''' ===========================================================================
 Public Interface IConfigurablePersistPlugin
-    Inherits IConfigurablePlugin
+    Inherits IPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Enables a configurable plug-in to read its configuration from an XML
-    ''' node. This node will have the same name as the plug-in.
+    ''' Initializes the configurable plug-in with an xml document and node for
+    ''' storing and retrieving persistent configuration.
     ''' </summary>
-    ''' <param name="node">The node to read configuration information from.</param>
+    ''' <param name="doc">The XML document, provided by the EwE framework, where
+    ''' the plug-in can store and retrieve its persistent configuration from.</param>
+    ''' <param name="node">The XML node the plug-in should operate onto.</param>
+    ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Sub ReadConfiguration(ByVal node As XmlNode)
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Enables a configurable plug-in to write its configuration to an XML
-    ''' node. This node will have the same name as the plug-in.
-    ''' </summary>
-    ''' <param name="node">The node to write configuration information to.</param>
-    ''' -----------------------------------------------------------------------
-    Sub WriteConfiguration(ByVal node As XmlNode)
+    Function SetConfigutationNode(ByVal doc As XmlDocument, ByVal node As XmlNode) As Boolean
 
 End Interface

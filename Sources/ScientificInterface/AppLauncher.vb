@@ -514,6 +514,7 @@ Public Class AppLauncher
         Me.m_pluginManager = New cPluginManager()
         Me.m_pluginManager.UIContext = Me.UIContext
         Me.m_pluginManager.SyncObject = Me.UIContext.SyncObject
+        Me.m_pluginManager.Settings = My.Settings.PluginConfiguration
 
         ' Config plugin manager
         Me.m_pluginManager.Core = Me.Core
@@ -932,7 +933,7 @@ Public Class AppLauncher
         Next
 
         My.Settings.DisabledPlugins = alDisabledPlugins
-        My.Settings.Save()
+        Me.SaveSettings()
 
     End Sub
 
@@ -1226,6 +1227,15 @@ Public Class AppLauncher
         Me.m_uic.FormPositionSettings.Store(Me, False)
         Me.m_styleguideupdater.Save()
         My.Settings.FormPositions = Me.m_uic.FormPositionSettings.Setting
+        Me.SaveSettings()
+
+    End Sub
+
+    Private Sub SaveSettings()
+
+        If (Me.m_pluginManager IsNot Nothing) Then
+            My.Settings.PluginConfiguration = Me.m_pluginManager.Settings
+        End If
         My.Settings.Save()
 
     End Sub
@@ -1289,7 +1299,7 @@ Public Class AppLauncher
 
         ' Update system settings
         My.Settings.MdbRecentlyUsedList = alMDBmru
-        My.Settings.Save()
+        Me.SaveSettings()
 
     End Sub
 
@@ -2179,7 +2189,7 @@ Public Class AppLauncher
             fsc.FileName = dlgSave.FileName
             fsc.FilterIndex = dlgSave.FilterIndex
             Me.m_strLastSelectedPath = Path.GetDirectoryName(dlgSave.FileName)
-            My.Settings.Save()
+            Me.SaveSettings()
         End If
 
     End Sub
@@ -2403,7 +2413,7 @@ Public Class AppLauncher
     Private Sub OnSave(ByVal cmd As cCommand) Handles m_cmdSave.OnInvoke
         Me.SetStatusText(My.Resources.STATUS_MODEL_SAVING, TriState.True)
         Me.Core.Save()
-        My.Settings.Save()
+        Me.SaveSettings()
         Me.SetStatusText("", TriState.False)
     End Sub
 
@@ -2634,6 +2644,7 @@ Public Class AppLauncher
         ' FG Nov 15, 2006: Should not use Show instead of using ShowDialog and specify its owner so it will
         ' be displayed at the specified location
         dlgOptions.ShowDialog(Me)
+        Me.SaveSettings()
 
     End Sub
 

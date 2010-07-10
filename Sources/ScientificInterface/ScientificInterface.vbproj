@@ -1774,6 +1774,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwESAUPTaxonPlugin\EwESAUPTaxonPlugin.vbproj">
+      <Project>{46DC10D8-71E8-4C3B-8E27-BD573BA55006}</Project>
+      <Name>EwESAUPTaxonPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>

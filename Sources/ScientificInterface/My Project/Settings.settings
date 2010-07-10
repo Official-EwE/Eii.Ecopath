@@ -107,13 +107,16 @@
     <Setting Name="UseTransparentBackgrounds" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="AutoUpdatePlugins" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="MdbRecentlyUsedCount" Roaming="true" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">16</Value>
     </Setting>
     <Setting Name="SuppressedOverwritePrompts" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AutoUpdatePlugins" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="PluginConfiguration" Type="System.Xml.XmlDocument" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

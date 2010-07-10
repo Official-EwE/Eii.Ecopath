@@ -78,8 +78,6 @@ Namespace Other
             bRestart = bRestart Or (Me.m_ucAppColors.Apply() = IOptionsPage.eApplyResultType.Success_restart)
             bRestart = bRestart Or (Me.m_ucAppGraphsCharts.Apply() = IOptionsPage.eApplyResultType.Success_restart)
 
-            My.Settings.Save()
-
             ' Need to restart for changes to be effective?
             If bRestart And Not Me.m_bHasFiredRestartPrompt Then
                 ' #Yeah: notify user

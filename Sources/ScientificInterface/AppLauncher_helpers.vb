@@ -391,8 +391,6 @@ Partial Public Class AppLauncher
             My.Settings.FontLegend = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Legend)
             My.Settings.FontScale = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Scale)
 
-            My.Settings.Save()
-
         End Sub
 
         Private Sub StringToFontSetting(ByVal strSetting As String, ByVal ft As cStyleGuide.eApplicationFontType)

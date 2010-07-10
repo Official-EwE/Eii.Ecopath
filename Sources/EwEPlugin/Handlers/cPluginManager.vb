@@ -12,6 +12,8 @@ Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEPlugin.Data
+Imports System.Xml
+Imports System.Text
 
 #End Region ' Imports
 
@@ -146,6 +148,71 @@ Public Class cPluginManager
 
     End Class
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper class to locate and create XML nodes for a configurable persist 
+    ''' plug-in in the settings XML document.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Class cPluginConfiguration
+
+        Public Shared Sub ProvideSettings(ByVal doc As XmlDocument, ByVal pi As IPlugin)
+
+            ' Sanity check
+            Debug.Assert(doc IsNot Nothing)
+
+            If Not (TypeOf pi Is IConfigurablePersistPlugin) Then Return
+
+            Try
+                Dim cpi As IConfigurablePersistPlugin = DirectCast(pi, IConfigurablePersistPlugin)
+                cpi.SetConfigutationNode(doc, GetSettings(doc, cpi))
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+        Public Shared Function DefaultDocument() As XmlDocument
+            Dim doc As New XmlDocument()
+            doc.AppendChild(doc.CreateXmlDeclaration("1.0", "utf-8", "yes"))
+            Return doc
+        End Function
+
+        ''' <summary>
+        ''' Returns the settings node for a given IConfigurablePersistPlugin plug-in.
+        ''' </summary>
+        ''' <param name="pi"></param>
+        ''' <returns></returns>
+        Private Shared Function GetSettings(ByVal doc As XmlDocument, _
+                                            ByVal pi As IConfigurablePersistPlugin) As XmlNode
+
+            Dim node As XmlNode = Nothing
+            Dim strName As String = ToValidNodeName(pi.Name)
+
+            For Each node In doc.ChildNodes
+                If (String.Compare(node.Name, strName, True) = 0) Then
+                    Return node
+                End If
+            Next
+
+            node = doc.CreateElement(strName)
+            doc.AppendChild(node)
+            Return node
+
+        End Function
+
+        Private Shared Function ToValidNodeName(ByVal strName As String) As String
+            Dim sb As New StringBuilder()
+            Dim c As Char
+            For i As Integer = 0 To strName.Length - 1
+                c = strName(i)
+                If Char.IsLetterOrDigit(c) Then sb.Append(c)
+            Next
+            Return sb.ToString
+        End Function
+
+    End Class
+
 #End Region ' Helper classes
 
 #Region " Private variables "
@@ -160,7 +227,9 @@ Public Class cPluginManager
     ''' <summary>Sync object to marshall plug-in calls across threads.</summary>
     Private m_sync As System.Threading.SynchronizationContext = Nothing
     ''' <summary>Id of the thread that create the plugin manager used to decide if the sync object should be used to marshall plug-in calls across threads.</summary>
-    Private m_ThreadID As Integer
+    Private m_ThreadID As Integer = 0
+    ''' <summary>Plug-in settings document</summary>
+    Private m_settingsDoc As XmlDocument = cPluginConfiguration.DefaultDocument
 
 #End Region ' Private variables
 
@@ -472,6 +541,7 @@ Public Class cPluginManager
                                     Try
                                         ' Initialize plugin
                                         ip.Initialize(Me.m_core)
+                                        cPluginConfiguration.ProvideSettings(Me.m_settingsDoc, ip)
                                     Catch ex As Exception
                                         ' Disable the plugin entirely
                                         plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
@@ -1513,6 +1583,24 @@ Public Class cPluginManager
     End Function
 
 #End Region ' MSE and MSY
+
+#Region " Settings "
+
+    Public Property Settings() As XmlDocument
+        Get
+            Return Me.m_settingsDoc
+        End Get
+        Set(ByVal value As XmlDocument)
+            Me.m_settingsDoc = value
+
+            If (value Is Nothing) Then
+
+            End If
+
+        End Set
+    End Property
+
+#End Region ' Settings
 
 #End Region ' Plugin invocation
 
