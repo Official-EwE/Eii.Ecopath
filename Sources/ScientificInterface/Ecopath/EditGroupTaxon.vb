@@ -454,18 +454,24 @@ Public Class EditGroupTaxon
 
     Private Sub ConfigureSelectedDataProducer()
 
-        Dim dsp As IDataSearchProducerPlugin = Me.SelectedDataProducer
+        Dim prod As IDataSearchProducerPlugin = Me.SelectedDataProducer
         Dim frm As Form = Nothing
-        If (dsp Is Nothing) Then Return
-        If Not (TypeOf dsp Is IConfigurablePlugin) Then Return
+        If (prod Is Nothing) Then Return
+        If Not (TypeOf prod Is IConfigurablePlugin) Then Return
 
-        frm = DirectCast(dsp, IConfigurablePlugin).GetConfigUI()
+        frm = DirectCast(prod, IConfigurablePlugin).GetConfigUI()
 
         If (frm Is Nothing) Then Return
 
-        frm.ShowInTaskbar = False
-        frm.ShowIcon = False
-        frm.ShowDialog(Me)
+        Try
+
+            frm.ShowInTaskbar = False
+            frm.ShowIcon = False
+            frm.ShowDialog(Me)
+
+        Catch ex As Exception
+
+        End Try
 
         Me.UpdateControls()
 
