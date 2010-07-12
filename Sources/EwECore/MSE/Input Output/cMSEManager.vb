@@ -672,7 +672,6 @@ Namespace MSE
 
                 m_parameters.UseEconomicPlugin = Me.m_search.MSEUseEconomicPlugin
                 m_parameters.NTrials = Me.m_MSEdata.NTrials
-                'm_parameters.RegFeedBack = Me.m_MSEdata.bDoQuotaRegulation
                 m_parameters.RegulatoryMode = Me.m_MSEdata.RegulationMode
                 m_parameters.EffortSource = Me.m_MSEdata.EffortSource
                 m_parameters.StopRun = Me.m_MSEdata.StopRun
@@ -682,6 +681,9 @@ Namespace MSE
                 m_parameters.MSYRunSilent = Me.m_MSEdata.MSYRunSilent
                 m_parameters.MSYEvaluateValue = Me.m_MSEdata.MSYEvaluateValue
                 m_parameters.MSEStartYear = Me.m_MSEdata.StartYear
+
+                m_parameters.MSEResultsStartYear = Me.m_MSEdata.ResultsStartYear
+                m_parameters.MSEResultsEndYear = Me.m_MSEdata.ResultsEndYear
 
                 m_parameters.ResetStatusFlags()
 
@@ -786,11 +788,9 @@ Namespace MSE
                         Me.m_MSEdata.SaveOutput = Me.m_parameters.Save
                         Me.m_MSEdata.StartYear = Me.m_parameters.MSEStartYear
                         Me.m_MSEdata.MSYStartTimeIndex = Me.m_parameters.MSYStartTimeIndex
-
-
+                        Me.m_MSEdata.ResultsStartYear = Me.m_parameters.MSEResultsStartYear
                         Me.m_MSEdata.MSYEvaluateValue = Me.m_parameters.MSYEvaluateValue
                         Me.m_MSEdata.MSYRunSilent = Me.m_parameters.MSYRunSilent
-                        Me.m_MSEdata.MSYStartTimeIndex = Me.m_parameters.MSYStartTimeIndex
 
                         Me.m_search.MSEUseEconomicPlugin = Me.m_parameters.UseEconomicPlugin
 

@@ -124,6 +124,15 @@ Namespace MSE
             val.Stored = False
             m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(New Integer, eVarNameFlags.MSEResultsStartYear, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEResultsStartYear))
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Integer, eVarNameFlags.MSEResultsEndYear, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEResultsEndYear))
+            val.Stored = False
+            m_values.Add(val.varName, val)
 
             ResetStatusFlags()
             AllowValidation = True
@@ -263,6 +272,32 @@ Namespace MSE
             End Set
         End Property
 
+        ''' <summary>
+        ''' NOT IMPLEMENTED 
+        ''' </summary>
+        Public Property MSEResultsStartYear() As Integer
+            Get
+                Return CInt(GetVariable(eVarNameFlags.MSEResultsStartYear))
+            End Get
+
+            Set(ByVal value As Integer)
+                SetVariable(eVarNameFlags.MSEResultsStartYear, value)
+            End Set
+        End Property
+
+        ''' <summary>
+        '''  NOT IMPLEMENTED 
+        ''' </summary>
+        Public Property MSEResultsEndYear() As Integer
+            Get
+                Return CInt(GetVariable(eVarNameFlags.MSEResultsEndYear))
+            End Get
+
+            Set(ByVal value As Integer)
+                SetVariable(eVarNameFlags.MSEResultsEndYear, value)
+            End Set
+        End Property
+
 #End Region
 
 #Region "Status Properties"
@@ -348,6 +383,28 @@ Namespace MSE
 
             Set(ByVal value As eStatusFlags)
                 SetStatus(eVarNameFlags.MSEAssessMethod, value)
+            End Set
+        End Property
+
+
+        Public Property MSEResultsStartYearStatus() As eStatusFlags
+            Get
+                Return GetStatus(eVarNameFlags.MSEResultsStartYear)
+            End Get
+
+            Set(ByVal value As eStatusFlags)
+                SetStatus(eVarNameFlags.MSEResultsStartYear, value)
+            End Set
+        End Property
+
+
+        Public Property MSEResultsEndYearStatus() As eStatusFlags
+            Get
+                Return GetStatus(eVarNameFlags.MSEResultsEndYear)
+            End Get
+
+            Set(ByVal value As eStatusFlags)
+                SetStatus(eVarNameFlags.MSEResultsEndYear, value)
             End Set
         End Property
 

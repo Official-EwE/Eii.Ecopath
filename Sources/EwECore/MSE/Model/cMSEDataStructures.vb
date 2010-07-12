@@ -190,6 +190,15 @@ Namespace MSE
         ''' <remarks>This is in years the model runs on timesteps</remarks>
         Public StartYear As Integer
 
+        ''' <summary>
+        ''' NOT IMPLEMENTED YET
+        ''' </summary>
+        Public ResultsStartYear As Integer
+        ''' <summary>
+        ''' NOT IMPLEMENTED YET
+        ''' </summary>
+        Public ResultsEndYear As Integer
+
         Public Bbase() As Single
         Public Blim() As Single
         Public Fopt() As Single
@@ -295,12 +304,12 @@ Namespace MSE
                 Me.CatchFleetStats = New cMSESummaryStats(Me, Me.CatchFleetBounds, nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
                 Me.EffortStats = New cMSESummaryStats(Me, Me.EffortFleetBounds, nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
 
-                'yearly time steps
-                Me.BioEstStats = New cMSESummaryStats(Me, Me.BioEstBounds, NGroups, 1, eCoreCounterTypes.nEcosimYears, AddressOf theCore.GetCoreCounter)
-
                 Me.ProfitSum = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
                 Me.JobsSum = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
                 Me.CostSum = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+
+                'yearly time steps
+                Me.BioEstStats = New cMSESummaryStats(Me, Me.BioEstBounds, NGroups, 1, eCoreCounterTypes.nEcosimYears, AddressOf theCore.GetCoreCounter)
 
                 'default values for MSY 
                 'these values can be overridden by an MSE or MSY plugin
@@ -981,25 +990,6 @@ Namespace MSE
                         Return 0
                     End If
 
-                    'Dim m As Single = Me.Mean(Index)
-
-
-                    'Dim lstGrouping As List(Of Single()) = Me.m_lstValues.Item(Index - 1)
-                    'For Each iterVals As Single() In lstGrouping
-
-                    '    For it As Integer = 1 To Me.m_mseData.nTimeSteps
-                    '        ss += CSng((iterVals(it) - m) ^ 2.0F)
-                    '        n += 1
-                    '    Next
-                    'Next
-
-                    'If n <= 1 Then Return 0
-                    'Return ss / (n - 1)
-
-
-
-                    ''Debug.Assert(n > 1, "MSE Statistics Variance No data to compute.")
-                    ''how many values are there?
                     Index -= 1
                     Dim iCnt As Integer = Me.m_n(Index)
                     If iCnt <= 1 Then Return 0
@@ -1015,7 +1005,6 @@ Namespace MSE
                     cLog.Write(ex)
                     System.Console.WriteLine(ex.ToString)
                 End Try
-
 
             End Get
 

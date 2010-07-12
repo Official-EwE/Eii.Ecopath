@@ -1122,6 +1122,8 @@ Namespace Core
         MSEBioEstBelowLimit
 
         MSEStartYear
+        MSEResultsStartYear
+        MSEResultsEndYear
 
         MSYRunSilent
         MSYEvalValue

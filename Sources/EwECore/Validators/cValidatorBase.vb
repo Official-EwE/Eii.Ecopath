@@ -428,6 +428,11 @@ Public Class cValidatorManager
         validator = New cValidatorCounter(theCore, eCoreCounterTypes.nEcosimYears)
         m_validators.Add(eVarNameFlags.SearchBaseYear, validator)
 
+        'MSE Results and Run start and end year use core counter
+        m_validators.Add(eVarNameFlags.MSEResultsStartYear, validator)
+        m_validators.Add(eVarNameFlags.MSEResultsEndYear, validator)
+        m_validators.Add(eVarNameFlags.MSEStartYear, validator)
+
         'PSD validator(s)
         validator = New cValidatorOddEven(True)
         m_validators.Add(eVarNameFlags.NumPtsMovAvg, validator)
