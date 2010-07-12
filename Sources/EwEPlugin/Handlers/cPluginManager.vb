@@ -158,11 +158,7 @@ Public Class cPluginManager
 
         Public Shared Sub ProvideSettings(ByVal doc As XmlDocument, ByVal pi As IPlugin)
 
-            ' Sanity check
-            If (doc Is Nothing) Then
-                Debug.Assert(False, "Settings document should be provided")
-                Return
-            End If
+            If (doc Is Nothing) Then Return
 
             If Not (TypeOf pi Is IConfigurablePersistPlugin) Then Return
 
@@ -1594,9 +1590,7 @@ Public Class cPluginManager
             Return Me.m_settingsDoc
         End Get
         Set(ByVal value As XmlDocument)
-            If (value IsNot Nothing) Then
-                Me.m_settingsDoc = value
-            End If
+            Me.m_settingsDoc = value
         End Set
     End Property
 
