@@ -514,7 +514,11 @@ Public Class AppLauncher
         Me.m_pluginManager = New cPluginManager()
         Me.m_pluginManager.UIContext = Me.UIContext
         Me.m_pluginManager.SyncObject = Me.UIContext.SyncObject
-        Me.m_pluginManager.Settings = My.Settings.PluginConfiguration
+        Try
+            Me.m_pluginManager.Settings = My.Settings.PluginConfiguration
+        Catch ex As Exception
+            Me.m_pluginManager.Settings = Nothing
+        End Try
 
         ' Config plugin manager
         Me.m_pluginManager.Core = Me.Core
