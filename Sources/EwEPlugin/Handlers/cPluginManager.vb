@@ -227,8 +227,10 @@ Public Class cPluginManager
     Private m_sync As System.Threading.SynchronizationContext = Nothing
     ''' <summary>Id of the thread that create the plugin manager used to decide if the sync object should be used to marshall plug-in calls across threads.</summary>
     Private m_ThreadID As Integer = 0
-    ''' <summary>Plug-in settings document</summary>
+    ''' <summary>Plug-in settings document.</summary>
     Private m_settingsDoc As XmlDocument = cPluginConfiguration.DefaultDocument
+    ''' <summary>Flag stating whether plug-ins have been loaded.</summary>
+    Private m_bLoaded As Boolean = False
 
 #End Region ' Private variables
 
@@ -453,6 +455,9 @@ Public Class cPluginManager
 
         Dim di As DirectoryInfo = Nothing
         Dim afi() As FileInfo = Nothing
+
+        ' Sanity checks - load only once
+        If (Me.m_bLoaded) Then Return
 
         'Get the location of the plugin manager assembly
         Dim pluginAssembly As Assembly = System.Reflection.Assembly.GetAssembly(GetType(cPluginManager))
@@ -1585,11 +1590,25 @@ Public Class cPluginManager
 
 #Region " Settings "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Provide the plug-in manager with an XML document for 
+    ''' <see cref="IConfigurablePersistPlugin">configurable plug-ins</see> to 
+    ''' store and retrieve persistent settings.
+    ''' </summary>
+    ''' <remarks>
+    ''' Note that XML document should be provided before any plug-ins are loaded.
+    ''' The current implementation does NOT cascade a new settings document to
+    ''' already loaded plug-ins; such dynamics would make writing plug-ins even
+    ''' more daunting.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Property Settings() As XmlDocument
         Get
             Return Me.m_settingsDoc
         End Get
         Set(ByVal value As XmlDocument)
+            Debug.Assert(Not Me.m_bLoaded, "Settings should be configured before any plug-in is loaded")
             Me.m_settingsDoc = value
         End Set
     End Property
