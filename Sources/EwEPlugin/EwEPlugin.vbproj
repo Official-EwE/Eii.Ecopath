@@ -123,7 +123,7 @@
     <Compile Include="Plugin templates\Ecotracer\IEcotracerInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecotracer\IEcotracerPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IAutolaunchPlugin.vb" />
-    <Compile Include="Plugin templates\GUI\IConfigurablePersistPlugin.vb" />
+    <Compile Include="Plugin templates\Core\ISettingsPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IConfigurablePlugin.vb" />
     <Compile Include="Plugin templates\GUI\IDockStatePlugin.vb" />
     <Compile Include="Plugin templates\GUI\INavigationTreeItemPlugin.vb" />

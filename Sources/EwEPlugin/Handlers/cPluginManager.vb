@@ -150,21 +150,21 @@ Public Class cPluginManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper class to locate and create XML nodes for a configurable persist 
-    ''' plug-in in the settings XML document.
+    ''' Helper class to create and return XML nodes for any <see cref="ISettingsPlugin">ISettingsPlugin</see>
+    ''' in the framework managed settings XML document.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Class cPluginConfiguration
+    Private Class cPluginSettings
 
         Public Shared Sub ProvideSettings(ByVal doc As XmlDocument, ByVal pi As IPlugin)
 
             If (doc Is Nothing) Then Return
 
-            If Not (TypeOf pi Is IConfigurablePersistPlugin) Then Return
+            If Not (TypeOf pi Is ISettingsPlugin) Then Return
 
             Try
-                Dim cpi As IConfigurablePersistPlugin = DirectCast(pi, IConfigurablePersistPlugin)
-                cpi.SetConfigutationNode(doc, GetSettings(doc, cpi))
+                Dim cpi As ISettingsPlugin = DirectCast(pi, ISettingsPlugin)
+                cpi.InitializeSettings(doc, GetSettings(doc, cpi))
             Catch ex As Exception
 
             End Try
@@ -183,7 +183,7 @@ Public Class cPluginManager
         ''' <param name="pi"></param>
         ''' <returns></returns>
         Private Shared Function GetSettings(ByVal doc As XmlDocument, _
-                                            ByVal pi As IConfigurablePersistPlugin) As XmlNode
+                                            ByVal pi As ISettingsPlugin) As XmlNode
 
             Dim node As XmlNode = Nothing
             Dim strName As String = ToValidNodeName(pi.Name)
@@ -228,7 +228,7 @@ Public Class cPluginManager
     ''' <summary>Id of the thread that create the plugin manager used to decide if the sync object should be used to marshall plug-in calls across threads.</summary>
     Private m_ThreadID As Integer = 0
     ''' <summary>Plug-in settings document.</summary>
-    Private m_settingsDoc As XmlDocument = cPluginConfiguration.DefaultDocument
+    Private m_settingsDoc As XmlDocument = cPluginSettings.DefaultDocument
     ''' <summary>Flag stating whether plug-ins have been loaded.</summary>
     Private m_bLoaded As Boolean = False
 
@@ -545,7 +545,7 @@ Public Class cPluginManager
                                     Try
                                         ' Initialize plugin
                                         ip.Initialize(Me.m_core)
-                                        cPluginConfiguration.ProvideSettings(Me.m_settingsDoc, ip)
+                                        cPluginSettings.ProvideSettings(Me.m_settingsDoc, ip)
                                     Catch ex As Exception
                                         ' Disable the plugin entirely
                                         plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
@@ -1592,9 +1592,8 @@ Public Class cPluginManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Provide the plug-in manager with an XML document for 
-    ''' <see cref="IConfigurablePersistPlugin">configurable plug-ins</see> to 
-    ''' store and retrieve persistent settings.
+    ''' Provide the plug-in manager with an XML document for <see cref="ISettingsPlugin">settings plug-ins</see> 
+    ''' to store and retrieve persistent settings.
     ''' </summary>
     ''' <remarks>
     ''' Note that XML document should be provided before any plug-ins are loaded.
