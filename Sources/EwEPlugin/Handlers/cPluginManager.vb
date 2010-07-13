@@ -158,9 +158,10 @@ Public Class cPluginManager
 
         Public Shared Sub ProvideSettings(ByVal doc As XmlDocument, ByVal pi As IPlugin)
 
-            If (doc Is Nothing) Then Return
-
+            ' Only for support plug-ins
             If Not (TypeOf pi Is ISettingsPlugin) Then Return
+            ' Only when plug-in manager has a valid XML document provided for storing settings
+            If (doc Is Nothing) Then Return
 
             Try
                 Dim cpi As ISettingsPlugin = DirectCast(pi, ISettingsPlugin)
@@ -171,22 +172,30 @@ Public Class cPluginManager
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a default XML document for storing settings.
+        ''' </summary>
+        ''' <returns>A default XML document for storing settings.</returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function DefaultDocument() As XmlDocument
             Dim doc As New XmlDocument()
             doc.AppendChild(doc.CreateXmlDeclaration("1.0", "utf-8", "yes"))
             Return doc
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns the settings node for a given IConfigurablePersistPlugin plug-in.
         ''' </summary>
         ''' <param name="pi"></param>
         ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Private Shared Function GetSettings(ByVal doc As XmlDocument, _
                                             ByVal pi As ISettingsPlugin) As XmlNode
 
             Dim node As XmlNode = Nothing
-            Dim strName As String = ToValidNodeName(pi.Name)
+            Dim strName As String = ToValidNodeName(pi)
 
             For Each node In doc.ChildNodes
                 If (String.Compare(node.Name, strName, True) = 0) Then
@@ -200,9 +209,17 @@ Public Class cPluginManager
 
         End Function
 
-        Private Shared Function ToValidNodeName(ByVal strName As String) As String
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generate a name for a plug-in name.
+        ''' </summary>
+        ''' <param name="ip">Settings plug-in to return a node name for.</param>
+        ''' <returns>A node name</returns>
+        ''' -------------------------------------------------------------------
+        Private Shared Function ToValidNodeName(ByVal ip As ISettingsPlugin) As String
             Dim sb As New StringBuilder()
             Dim c As Char
+            Dim strName As String = ip.Name
             For i As Integer = 0 To strName.Length - 1
                 c = strName(i)
                 If Char.IsLetterOrDigit(c) Then sb.Append(c)
