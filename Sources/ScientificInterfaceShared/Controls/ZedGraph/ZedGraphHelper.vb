@@ -282,11 +282,13 @@ Namespace Controls
         Private m_bTrackVisibility As Boolean = True
 
         ' == Context menu ==
+        ' Menu items to add to the context menu. The menu items are member vars so eventhandlers 
+        ' can be properly detached preventing memory leaks.
 
-        ''' <summary>Menu items to add to the context menu. The menu items are
-        ''' member vars so eventhandlers can be properly detached preventing
-        ''' memory leaks.</summary>
+        ''' <summary>Save to CSV menu item.</summary>
         Private m_menuitemSaveToCSV As ToolStripMenuItem = Nothing
+        ''' <summary>Show legend menu item.</summary>
+        Private m_menuitemShowLegend As ToolStripMenuItem = Nothing
 
         ''' <summary>To set the max and min auto options.</summary>
         Public Enum eScaleOptionTypes
@@ -423,6 +425,11 @@ Namespace Controls
                 RemoveHandler Me.m_menuitemSaveToCSV.Click, AddressOf OnExtractToCSV
                 Me.m_menuitemSaveToCSV.Dispose()
                 Me.m_menuitemSaveToCSV = Nothing
+            End If
+            If (Me.m_menuitemShowLegend IsNot Nothing) Then
+                RemoveHandler Me.m_menuitemShowLegend.Click, AddressOf OnShowHideLegend
+                Me.m_menuitemShowLegend.Dispose()
+                Me.m_menuitemShowLegend = Nothing
             End If
 
             Me.m_zgc = Nothing
@@ -2033,27 +2040,45 @@ Namespace Controls
             If (Me.m_menuitemSaveToCSV Is Nothing) Then
                 ' #Yes: create it
                 Me.m_menuitemSaveToCSV = New ToolStripMenuItem()
-                ' Add tag to recognize the item later on
-                Me.m_menuitemSaveToCSV.Tag = "extract_to_csv"
                 ' Set menu item text
                 Me.m_menuitemSaveToCSV.Text = My.Resources.MENU_EXTRACT_TO_CSV
                 ' Add a handler that will respond when that menu item is selected
                 ' ** Note that this handler needs to be removed manually to ensure the menu item is released
                 AddHandler Me.m_menuitemSaveToCSV.Click, AddressOf OnExtractToCSV
             End If
-
-            ' Add the menu item to the menu
             menuStrip.Items.Add(Me.m_menuitemSaveToCSV)
+
+            ' Show legend menu item not used yet?
+            If (Me.m_menuitemShowLegend Is Nothing) Then
+                ' #Yes: create it
+                Me.m_menuitemShowLegend = New ToolStripMenuItem()
+                ' Set menu item text
+                Me.m_menuitemShowLegend.Text = My.Resources.MENU_SHOW_LEGEND
+                ' Add a handler that will respond when that menu item is selected
+                ' ** Note that this handler needs to be removed manually to ensure the menu item is released
+                AddHandler Me.m_menuitemShowLegend.Click, AddressOf OnShowHideLegend
+            End If
+            Me.m_menuitemShowLegend.Checked = Me.IsLegendVisible
+            menuStrip.Items.Add(Me.m_menuitemShowLegend)
 
         End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Event handler for extracting data to a CSV file.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Sub OnExtractToCSV(ByVal sender As Object, ByVal e As System.EventArgs)
+        Protected Sub OnExtractToCSV(ByVal sender As Object, ByVal e As EventArgs)
             Me.ExtractDataToCSV()
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler for toggling legend visibility.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Sub OnShowHideLegend(ByVal sender As Object, ByVal e As EventArgs)
+            Me.IsLegendVisible = Not Me.IsLegendVisible
         End Sub
 
 #End Region ' Context menu
