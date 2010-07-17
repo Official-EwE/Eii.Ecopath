@@ -546,9 +546,6 @@
   <data name="m_hdrLabelOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_hdrLabelOptions.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
   <data name="m_hdrLabelOptions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -574,7 +571,7 @@
     <value>m_hdrLabelOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.715, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Parent" xml:space="preserve">
     <value>m_plLabelOptions</value>
@@ -723,9 +720,6 @@
   <data name="m_hdrDist.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_hdrDist.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
   <data name="m_hdrDist.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -748,7 +742,7 @@
     <value>m_hdrDist</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.715, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Parent" xml:space="preserve">
     <value>m_plDistribution</value>
@@ -843,9 +837,6 @@
   <data name="m_hdrDispOpt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_hdrDispOpt.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
   <data name="m_hdrDispOpt.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -871,7 +862,7 @@
     <value>m_hdrDispOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.715, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Parent" xml:space="preserve">
     <value>m_plDisplayOptions</value>
@@ -1012,13 +1003,13 @@
     <value>Fill</value>
   </data>
   <data name="m_zgPlotLarge.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>0, 0</value>
   </data>
   <data name="m_zgPlotLarge.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_zgPlotLarge.Size" type="System.Drawing.Size, System.Drawing">
-    <value>576, 570</value>
+    <value>582, 576</value>
   </data>
   <data name="m_zgPlotLarge.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1038,8 +1029,8 @@
   <data name="m_tabPlot.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
   </data>
-  <data name="m_tabPlot.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
+  <data name="m_tabPlot.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_tabPlot.Size" type="System.Drawing.Size, System.Drawing">
     <value>582, 576</value>
@@ -1064,6 +1055,9 @@
   </data>
   <data name="m_tcOutputs.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 5</value>
+  </data>
+  <data name="m_tcOutputs.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_tcOutputs.Size" type="System.Drawing.Size, System.Drawing">
     <value>590, 605</value>
@@ -1135,6 +1129,6 @@
     <value>RunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.715, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>

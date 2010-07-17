@@ -43,17 +43,17 @@ Namespace Ecospace
             Me.m_cbInvertColor = New System.Windows.Forms.CheckBox
             Me.m_cmbLabelPos = New System.Windows.Forms.ComboBox
             Me.m_cbShowLabels = New System.Windows.Forms.CheckBox
-            Me.m_hdrLabelOptions = New cEwEHeaderLabel
+            Me.m_hdrLabelOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_lblProgress = New System.Windows.Forms.Label
             Me.m_plDistribution = New System.Windows.Forms.Panel
             Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton
             Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton
             Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton
-            Me.m_hdrDist = New cEwEHeaderLabel
+            Me.m_hdrDist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton
             Me.m_plDisplayOptions = New System.Windows.Forms.Panel
             Me.m_btnDisplayGroups = New System.Windows.Forms.Button
-            Me.m_hdrDispOpt = New cEwEHeaderLabel
+            Me.m_hdrDispOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_cbMPA = New System.Windows.Forms.CheckBox
             Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel
             Me.m_tcOutputs = New System.Windows.Forms.TabControl
@@ -313,6 +313,7 @@ Namespace Ecospace
             '
             'm_zgPlotLarge
             '
+            Me.m_zgPlotLarge.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             resources.ApplyResources(Me.m_zgPlotLarge, "m_zgPlotLarge")
             Me.m_zgPlotLarge.Name = "m_zgPlotLarge"
             Me.m_zgPlotLarge.ScrollGrace = 0
