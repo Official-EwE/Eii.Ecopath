@@ -1895,6 +1895,7 @@ Namespace Ecosim
             Try
 
                 'find the year index in the reference data for this Ecosim model year
+                'this assumes the first year in the reference data is the first year of the Ecosim run and ignores the Ecopath year
                 For i = 1 To m_RefData.NdatYear
                     If m_RefData.DatYear(i) - m_RefData.DatYear(1) = iyear Then iDyear = i : Exit For
                 Next
