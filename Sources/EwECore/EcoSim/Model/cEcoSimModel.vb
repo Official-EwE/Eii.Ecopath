@@ -1872,7 +1872,13 @@ Namespace Ecosim
             RandomNormal = CSng(X)
         End Function
 
-
+        ''' <summary>
+        ''' Compute stats used for SS for this Ecosim year
+        ''' </summary>
+        ''' <param name="iyear">Ecosim year index, one based index.</param>
+        ''' <param name="BB">Ecosim predicted biomass for this year</param>
+        ''' <param name="loss">Ecosim predicted loss for this year</param>
+        ''' <remarks>Called once a year in the middle of the year </remarks>
         Public Sub AccumulateDataInfo(ByVal iyear As Integer, ByVal BB() As Single, ByRef loss() As Single)
             'accumulates statistical information for comparing model to data
             'for simulation year iyear (1=first simulation year)
@@ -1888,21 +1894,15 @@ Namespace Ecosim
 
             Try
 
-                'find out which data file year line represents this simulation year
+                'find the year index in the reference data for this Ecosim model year
                 For i = 1 To m_RefData.NdatYear
                     If m_RefData.DatYear(i) - m_RefData.DatYear(1) = iyear Then iDyear = i : Exit For
                 Next
 
                 If iDyear = 0 Then Exit Sub 'no data for this year, don't need to proceed
-                '  System.Console.WriteLine("AccumulateDataInfo() year = " & iyear.ToString)
-
-                'VC Sep 2008 Fixing EcosimMonteCarlo:
-                'Oh no you don't
-                ' m_RefData.Iobs = 0
 
                 'now accumulate z statistics for any observations available this year
                 For j = 1 To m_RefData.NdatType
-                    'If Math.Abs(m_RefData.DatVal(iDyear, j)) > 0 And (m_RefData.DatType(j) = 0 Or m_RefData.DatType(j) = 1 Or m_RefData.DatType(j) = 5 Or Math.Abs(m_RefData.DatType(j)) = 6 Or m_RefData.DatType(j) = 7) Then
                     If m_RefData.DatVal(iDyear, j) > 0 And _
                                     (m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or _
                                      m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Or _
@@ -1960,14 +1960,16 @@ Namespace Ecosim
                             Case Else
                         End Select
 
-                        'count this stat
                         'increment counters
                         NobsTime(iDyear) += 1
-                        m_RefData.Wt(m_RefData.Iobs) = m_RefData.WtType(j)
-
-                        m_RefData.Erpred(m_RefData.Iobs) = Zstat
                         DatNobs(j) = DatNobs(j) + 1
+
+                        m_RefData.Wt(m_RefData.Iobs) = m_RefData.WtType(j)
+                        'log prediction error by observation
+                        m_RefData.Erpred(m_RefData.Iobs) = Zstat
+                        'sum of log prediction error by datatype
                         DatSumZ(j) = DatSumZ(j) + Zstat
+                        'squared sum of log prediction error by datatype
                         DatSumZ2(j) = DatSumZ2(j) + Zstat * Zstat
 
                     ElseIf m_TracerData.EcoSimConSimOn And m_RefData.DatVal(iDyear, j) > 0 And (m_RefData.DatType(j) = 8 Or m_RefData.DatType(j) = 9) Then
@@ -1994,7 +1996,7 @@ Namespace Ecosim
                 Debug.Assert(False, ex.StackTrace)
                 Throw New ApplicationException(Me.ToString & ".AccumulateDataInfo() ", ex)
             End Try
-            'System.Console.WriteLine("Year = " & iDyear.ToString & ", iSD = " & sd.ToString)
+
         End Sub
 
 
