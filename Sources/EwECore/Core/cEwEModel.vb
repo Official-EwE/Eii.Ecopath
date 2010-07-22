@@ -60,7 +60,7 @@ Public Class cEwEModel
             m_values.Add(val.varName, val)
 
             ' NumYears
-            meta = New cVariableMetaData(1, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
+            meta = New cVariableMetaData(0, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
             val = New cValue(New Integer, eVarNameFlags.EcopathNumYears, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
             m_values.Add(val.varName, val)
 
