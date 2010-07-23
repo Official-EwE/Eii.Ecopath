@@ -450,7 +450,7 @@ Namespace Controls.EwEGrid
 
             Dim bIsUIContent As Boolean = (Me.UIContext IsNot Nothing)
             Dim bIsDesigning As Boolean = (Me.DesignMode = True)
-            Dim bIsLife As Boolean = bIsUIContent And Not bIsDesigning
+            Dim bIsLive As Boolean = bIsUIContent And Not bIsDesigning
 
             Me.SuspendLayoutGrid()
 
@@ -463,14 +463,14 @@ Namespace Controls.EwEGrid
 
             Try
                 ' Style the grid only when designing OR fully live
-                If bIsDesigning Or bIsLife Then
+                If bIsDesigning Or bIsLive Then
                     Me.InitStyle()
                 End If
             Catch ex As Exception
                 Debug.Assert(False, "Exception " & ex.Message & " in InitStyle: check if grid is using a missing UI context")
             End Try
 
-            If (bIsLife) Then
+            If (bIsLive) Then
                 Try
                     Me.FillData()
                 Catch ex As Exception
@@ -480,7 +480,7 @@ Namespace Controls.EwEGrid
 
             Try
                 ' Style the grid only when designing OR fully live
-                If bIsDesigning Or bIsLife Then
+                If bIsDesigning Or bIsLive Then
                     Me.FinishStyle()
                 End If
             Catch ex As Exception
