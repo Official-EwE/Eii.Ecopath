@@ -709,7 +709,7 @@ Namespace DataSources
                 Me.m_core.m_EwEModelUnitMonetary = DirectCast(Me.ReadSafe(reader, "UnitMonetary", eUnitMonetaryType.EUR), eUnitMonetaryType)
                 'Me.m_core.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
                 Me.m_core.m_EwEModelFirstYear = CInt(Me.ReadSafe(reader, "FirstYear", cCore.NULL_VALUE))
-                Me.m_core.m_EwEModelNumYears = CInt(Me.ReadSafe(reader, "NumYears", 1))
+                Me.m_core.m_EwEModelNumYears = Math.Max(1, CInt(Me.ReadSafe(reader, "NumYears", 1)))
 
                 sVal1 = CSng(Me.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
                 sVal2 = CSng(Me.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
