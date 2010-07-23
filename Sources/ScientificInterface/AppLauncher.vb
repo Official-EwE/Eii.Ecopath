@@ -1145,6 +1145,7 @@ Public Class AppLauncher
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcosimScenarios(i).Name
                 tsmi.Tag = Me.Core.EcosimScenarios(i)
+                tsmi.Checked = (Me.Core.ActiveEcosimScenarioIndex = i)
                 AddHandler tsmi.Click, AddressOf OnLoadEcosimScenarioOrDataset
                 Me.m_tsbEcosim.DropDownItems.Add(tsmi)
             Next
@@ -1161,6 +1162,8 @@ Public Class AppLauncher
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.TimeSeriesDataset(i).Name
                 tsmi.Tag = Me.Core.TimeSeriesDataset(i)
+                tsmi.Checked = (Me.Core.ActiveTimeSeriesDatasetIndex = i)
+
                 AddHandler tsmi.Click, AddressOf OnLoadEcosimScenarioOrDataset
                 Me.m_tsbEcosim.DropDownItems.Add(tsmi)
 
@@ -1171,6 +1174,7 @@ Public Class AppLauncher
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcospaceScenarios(i).Name
                 tsmi.Tag = Me.Core.EcospaceScenarios(i)
+                tsmi.Checked = (Me.Core.ActiveEcospaceScenarioIndex = i)
                 AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenario
                 Me.m_tsbEcospace.DropDownItems.Add(tsmi)
             Next
@@ -1180,6 +1184,7 @@ Public Class AppLauncher
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcotracerScenarios(i).Name
                 tsmi.Tag = Me.Core.EcotracerScenarios(i)
+                tsmi.Checked = (Me.Core.ActiveEcotracerScenarioIndex = i)
                 AddHandler tsmi.Click, AddressOf OnLoadEcotracerScenario
                 Me.m_tsbEcotracer.DropDownItems.Add(tsmi)
             Next
@@ -3702,6 +3707,7 @@ Public Class AppLauncher
 
     Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
         Me.UpdateModelControls()
+        Me.PopulateScenarioDropdowns()
     End Sub
 
     Private Sub OnCoreMessage(ByRef msg As cMessage)
