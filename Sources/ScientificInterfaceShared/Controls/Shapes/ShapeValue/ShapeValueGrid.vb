@@ -91,6 +91,9 @@ Public Class ShapeValueGrid
     ''' </summary>
     ''' <param name="iNumValues">Number of values to retrieve, or -1 to obtain
     ''' all possible values.</param>
+    ''' <remarks>
+    ''' Values returned are in the same format as <see cref="cShapeData.ShapeData">the shape data</see>.
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Values(Optional ByVal iNumValues As Integer = -1) As Single()
         Get
@@ -101,6 +104,13 @@ Public Class ShapeValueGrid
 
             If (iNumValues <= 0) Then iNumValues = Me.m_iNumValues
             iNumValues = Math.Min(iNumValues, Me.RowsCount)
+
+            ' Add (or preserve) zero data point
+            If Me.m_shape Is Nothing Then
+                lValues.Add(0.0!)
+            Else
+                lValues.Add(Me.m_shape.ShapeData(0))
+            End If
 
             For iCell As Integer = 1 To iNumValues
                 cell = DirectCast(Me(iCell, iValueCol), EwECell)
@@ -163,6 +173,7 @@ Public Class ShapeValueGrid
     Protected Overrides Sub FillData()
 
         Dim cell As EwECell = Nothing
+        ' StartIndex used for display purposes only, has no effect on data whatsoever
         Dim iStartIndex As Integer = Me.Core.EcosimFirstYear
         Dim sValue As Single = 0.0!
 
@@ -170,9 +181,9 @@ Public Class ShapeValueGrid
 
         For iValue As Integer = 1 To Me.m_iNumValues
 
+            ' Determine value for given time point
             sValue = 0.0!
-
-            If Me.m_shape IsNot Nothing Then
+            If (Me.m_shape IsNot Nothing) Then
                 If iValue <= Me.m_shape.XMax Then
                     sValue = Me.m_shape.ShapeData(iValue)
                 End If
