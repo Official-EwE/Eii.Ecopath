@@ -1289,7 +1289,7 @@ Namespace MSE
                 Me.m_data.BestimateLast(i) = Me.m_data.Bestimate(i) * CSng(Math.Exp(-Me.m_data.CatchYearGroup(i) / Me.m_data.Bestimate(i))) ' Me.m_Search.CatchYear(i)
                 Me.m_data.CatchYearGroup(i) = 0
                 'Biomass() passed in is the biomass calculated by Ecosim
-                'Bobs is the observed biomass which is the true biomass with a random factor added
+                'Bobs is the observed biomass(Ecosim biomass + random variation)
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
 
                 RstockPred = CSng(m_data.Rmax(i) * Me.m_data.BestimateLast(i) / (m_data.BhalfT(i) + Me.m_data.BestimateLast(i)))
@@ -1302,7 +1302,7 @@ Namespace MSE
             Next i
 
             Try
-                'give the plugins a shot at 
+                'give the plugins a shot
                 Me.m_core.PluginManager.MSEDoAssessment(Biomass)
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DoAssessment()PluginManager.MSEDoAssessment Exception: " & ex.Message)
