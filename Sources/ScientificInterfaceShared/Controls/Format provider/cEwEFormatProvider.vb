@@ -53,15 +53,15 @@ Namespace Controls
 
                 ' Wrapper supported Windows controls
                 If TypeOf (ctrl) Is TextBox Or TypeOf (ctrl) Is RichTextBox Then
-                    wrapper = New TextBoxWrapper
+                    wrapper = New cTextBoxWrapper
                 ElseIf TypeOf (ctrl) Is Label Then
-                    wrapper = New LabelWrapper
+                    wrapper = New cLabelWrapper
                 ElseIf TypeOf (ctrl) Is CheckBox Then
-                    wrapper = New CheckboxWrapper
+                    wrapper = New cCheckboxWrapper
                 ElseIf TypeOf (ctrl) Is ComboBox Then
-                    wrapper = New ComboBoxWrapper
+                    wrapper = New cComboBoxWrapper
                 ElseIf TypeOf (ctrl) Is NumericUpDown Then
-                    wrapper = New NumericUpDownWrapper
+                    wrapper = New cNumericUpDownWrapper
                 End If
 
                 ' Development time sanity check
@@ -171,7 +171,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Class TextBoxWrapper
+        Private Class cTextBoxWrapper
             Implements IControlWrapper
 
 #Region " Private variables "
@@ -350,7 +350,7 @@ Namespace Controls
         ''' Helper class; wraps a NumericUpDown control for interaction with a Property.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Class NumericUpDownWrapper
+        Private Class cNumericUpDownWrapper
             Implements IControlWrapper
 
 #Region " Private variables "
@@ -425,7 +425,7 @@ Namespace Controls
                     Me.m_provider = provider
                     ' Apply metadata
                     If (metadata IsNot Nothing) Then
-                        Me.m_ud.Minimum = CDec(Math.Max(-10000000000, metadata.Min))
+                        Me.m_ud.Minimum = CDec(Math.Max(-10000000000, CSng(metadata.Min)))
                         Me.m_ud.Maximum = CDec(Math.Min(10000000000, CSng(metadata.Max)))
                     End If
                     ' Config control
@@ -478,7 +478,7 @@ Namespace Controls
 
                 ' Update control
                 ' - Set value
-                Me.m_ud.Value = Convert.ToDecimal(objValue)
+                Me.m_ud.Value = Math.Max(Me.m_ud.Minimum, Math.Min(Me.m_ud.Maximum, Convert.ToDecimal(objValue)))
                 ' - Set colours
                 Me.m_sg.GetStyleColors(style, Me.m_ud.ForeColor, Me.m_ud.BackColor)
                 ' - Set read-only state
@@ -558,7 +558,7 @@ Namespace Controls
         ''' update the value into the parent <see cref="cEwEFormatProvider">cEwEFormatProvider</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Class ComboBoxWrapper
+        Private Class cComboBoxWrapper
             Implements IControlWrapper
 
 #Region " Private variables "
@@ -765,7 +765,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Class CheckboxWrapper
+        Private Class cCheckboxWrapper
             Implements IControlWrapper
 
 #Region " Private variables "
@@ -919,7 +919,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Class LabelWrapper
+        Private Class cLabelWrapper
             Implements IControlWrapper
 
 #Region " Private variables "
