@@ -349,6 +349,13 @@ Namespace Controls
         ''' <summary>
         ''' Helper class; wraps a NumericUpDown control for interaction with a Property.
         ''' </summary>
+        ''' <remarks>
+        ''' Note that the up/down control is not truely suitable for handling EwE
+        ''' variables; it cannot be emptied (to reflect NULL status values) and its
+        ''' value ranges cannot be limited to reflect values such as 'greater than' and
+        ''' 'less than' making the control unsuitable for displaying a range of EwE
+        ''' values.
+        ''' </remarks>
         ''' -----------------------------------------------------------------------
         Private Class cNumericUpDownWrapper
             Implements IControlWrapper
@@ -477,7 +484,8 @@ Namespace Controls
                 If objValue Is Nothing Then Return
 
                 ' Update control
-                ' - Set value
+                ' - Set value truncated to min and max ranges. Note that value_none is not
+                '   explicitly supported here!
                 Me.m_ud.Value = Math.Max(Me.m_ud.Minimum, Math.Min(Me.m_ud.Maximum, Convert.ToDecimal(objValue)))
                 ' - Set colours
                 Me.m_sg.GetStyleColors(style, Me.m_ud.ForeColor, Me.m_ud.BackColor)
