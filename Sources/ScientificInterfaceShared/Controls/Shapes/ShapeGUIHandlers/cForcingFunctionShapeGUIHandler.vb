@@ -353,7 +353,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Private Sub ChangeFFShape()
             Dim dlg As New dlgChangeShape(Me.UIContext, DirectCast(Me.SelectedShape, cForcingFunction))
-            dlg.ShowDialog()
+            dlg.ShowDialog(Me.UIContext.FormMain)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -395,7 +395,7 @@ Namespace Controls
             Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
 
             Dim dlg As New frmShapeValue(Me.UIContext, shape)
-            dlg.ShowDialog()
+            dlg.ShowDialog(Me.UIContext.FormMain)
 
         End Sub
 

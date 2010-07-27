@@ -489,7 +489,7 @@ Public Class AppLauncher
 
         core.InitCore()
 
-        Me.UIContext = New cUIContext(core, sg, pm, cmdh, fps, help, so)
+        Me.UIContext = New cUIContext(core, sg, pm, cmdh, Me, fps, help, so)
 
         ' Config state monitor
         Me.Core.StateMonitor.SyncObject = Me

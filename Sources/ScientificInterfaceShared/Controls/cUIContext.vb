@@ -32,6 +32,8 @@ Namespace Controls
         Private m_propman As cPropertyManager = Nothing
         ''' <summary>The command handler that a UI can interact with.</summary>
         Private m_cmdhandler As cCommandHandler = Nothing
+        ''' <summary>The EwE main form.</summary>
+        Private m_frmMain As Form = Nothing
         ''' <summary>The form positions settings that a UI can interact with.</summary>
         Private m_formpos As cFormPositionSettings = Nothing
         ''' <summary>Application help.</summary>
@@ -54,6 +56,7 @@ Namespace Controls
                        ByVal sg As cStyleGuide, _
                        ByVal propman As cPropertyManager, _
                        ByVal cmdhandler As cCommandHandler, _
+                       ByVal frmMain As Form, _
                        ByVal formpos As cFormPositionSettings, _
                        ByVal help As cHelp, _
                        ByVal syncObj As SynchronizationContext)
@@ -62,6 +65,7 @@ Namespace Controls
             Me.m_sg = sg
             Me.m_propman = propman
             Me.m_cmdhandler = cmdhandler
+            Me.m_frmMain = frmMain
             Me.m_formpos = formpos
             Me.m_help = help
             Me.m_syncObj = syncObj
@@ -112,6 +116,18 @@ Namespace Controls
         Public ReadOnly Property CommandHandler() As cCommandHandler
             Get
                 Return m_cmdhandler
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the main EwE form for centering pop-up dialogs, obtaining the
+        ''' form title, etc.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property FormMain() As Form
+            Get
+                Return Me.m_frmMain
             End Get
         End Property
 
