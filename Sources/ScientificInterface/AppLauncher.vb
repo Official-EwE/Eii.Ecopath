@@ -1338,15 +1338,14 @@ Public Class AppLauncher
             item.Text = My.Resources.GENERIC_VALUE_NONE
             item.Enabled = False
             Me.m_tsmiFileRecent.DropDownItems.Add(item)
-
             Return
         End If
 
         For i As Integer = 0 To iNumItems - 1
 
-            item = New ToolStripMenuItem()
-
             Dim str As String() = CStr(alMRU.Item(i)).Split(New Char() {";"c})
+
+            item = New ToolStripMenuItem()
             item.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i + 1, str(0))
             item.Tag = str(0)
 
@@ -1354,6 +1353,16 @@ Public Class AppLauncher
             AddHandler item.Click, AddressOf OnMRUItemClicked
 
             Me.m_tsmiFileRecent.DropDownItems.Add(item)
+
+            item = New ToolStripMenuItem()
+            item.Text = str(0)
+            item.Tag = str(0)
+            item.Checked = (String.Compare(str(0), Me.SelectedFileName, True) = 0)
+
+            'Add event handler to invoke the model
+            AddHandler item.Click, AddressOf OnMRUItemClicked
+
+            Me.m_tsbEcopath.DropDownItems.Add(item)
         Next
 
     End Sub
@@ -1373,9 +1382,17 @@ Public Class AppLauncher
                 RemoveHandler item.Click, AddressOf OnMRUItemClicked
             End If
         Next
-
         ' Eradicate menu items
         Me.m_tsmiFileRecent.DropDownItems.Clear()
+
+
+        For Each item In Me.m_tsbEcopath.DropDownItems
+            If (item.Tag IsNot Nothing) Then
+                ' Remove dangling event handler
+                RemoveHandler item.Click, AddressOf OnMRUItemClicked
+            End If
+        Next
+        Me.m_tsbEcopath.DropDownItems.Clear()
 
     End Sub
 
@@ -1682,6 +1699,7 @@ Public Class AppLauncher
             Me.UpdateSelectedNode("", True)
             ' Keep at it, Maurice
             Me.UpdateModelControls()
+            Me.PopulateMRUDropdown()
             Me.PopulateScenarioDropdowns()
 
             Return True
@@ -3707,6 +3725,7 @@ Public Class AppLauncher
 
     Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
         Me.UpdateModelControls()
+        Me.PopulateMRUDropdown()
         Me.PopulateScenarioDropdowns()
     End Sub
 

@@ -84,6 +84,7 @@
         Me.m_tsmiEcopathEditGroups = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcopathEditMultiStanza = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcopathEditFleets = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcopathEditTaxa = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuEcosim = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimNew = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimLoad = New System.Windows.Forms.ToolStripMenuItem
@@ -106,12 +107,11 @@
         Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-        Me.m_tsbEcopath = New System.Windows.Forms.ToolStripButton
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar
-        Me.m_tsmiEcopathEditTaxa = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsbEcopath = New System.Windows.Forms.ToolStripSplitButton
         m_tssModel1 = New System.Windows.Forms.ToolStripSeparator
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator
@@ -477,6 +477,11 @@
         Me.m_tsmiEcopathEditFleets.Name = "m_tsmiEcopathEditFleets"
         resources.ApplyResources(Me.m_tsmiEcopathEditFleets, "m_tsmiEcopathEditFleets")
         '
+        'm_tsmiEcopathEditTaxa
+        '
+        Me.m_tsmiEcopathEditTaxa.Name = "m_tsmiEcopathEditTaxa"
+        resources.ApplyResources(Me.m_tsmiEcopathEditTaxa, "m_tsmiEcopathEditTaxa")
+        '
         'MenuEcosim
         '
         Me.MenuEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, Me.m_tsmiEcosimDelete, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesExport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights, m_tssEcosim3, Me.m_tsmiExportBiomassToCSV, Me.m_tsmiEcosimEstimateVs})
@@ -610,12 +615,6 @@
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
         resources.ApplyResources(Me.ToolStripSeparator2, "ToolStripSeparator2")
         '
-        'm_tsbEcopath
-        '
-        Me.m_tsbEcopath.Image = Global.ScientificInterface.My.Resources.Resources.Ecopath_32x32
-        resources.ApplyResources(Me.m_tsbEcopath, "m_tsbEcopath")
-        Me.m_tsbEcopath.Name = "m_tsbEcopath"
-        '
         'm_tsbEcosim
         '
         Me.m_tsbEcosim.BackColor = System.Drawing.SystemColors.Control
@@ -643,10 +642,11 @@
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
-        'm_tsmiEcopathEditTaxa
+        'm_tsbEcopath
         '
-        Me.m_tsmiEcopathEditTaxa.Name = "m_tsmiEcopathEditTaxa"
-        resources.ApplyResources(Me.m_tsmiEcopathEditTaxa, "m_tsmiEcopathEditTaxa")
+        Me.m_tsbEcopath.Image = Global.ScientificInterface.My.Resources.Resources.Ecopath_32x32
+        resources.ApplyResources(Me.m_tsbEcopath, "m_tsbEcopath")
+        Me.m_tsbEcopath.Name = "m_tsbEcopath"
         '
         'AppLauncher
         '
@@ -699,7 +699,6 @@
     Private WithEvents m_tsmiEcotracerSave As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcotracerSaveAs As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcotracerNew As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbEcosim As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsbEcospace As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiTimeSeriesEditWeights As System.Windows.Forms.ToolStripMenuItem
@@ -740,6 +739,7 @@
     Private WithEvents m_tsbEcotracer As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiEcotracerDelete As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcopathEditTaxa As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripSplitButton
 
 End Class
 

@@ -737,7 +737,7 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsbEcopath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 21</value>
+    <value>78, 21</value>
   </data>
   <data name="m_tsbEcopath.Text" xml:space="preserve">
     <value>Ecopath</value>
@@ -788,7 +788,7 @@
     <value>m_tsModel</value>
   </data>
   <data name="&gt;&gt;m_tsModel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cModelPathToolStrip, ScientificInterfaceShared, Version=6.1.0.606, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cModelPathToolStrip, ScientificInterfaceShared, Version=6.1.0.726, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsModel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -812,7 +812,7 @@
     <value>m_ssMain</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
-    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.1.0.606, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.1.0.726, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -6163,6 +6163,12 @@
   <data name="&gt;&gt;m_tsmiEcopathEditFleets.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsmiEcopathEditTaxa.Name" xml:space="preserve">
+    <value>m_tsmiEcopathEditTaxa</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcopathEditTaxa.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;MenuEcosim.Name" xml:space="preserve">
     <value>MenuEcosim</value>
   </data>
@@ -6289,12 +6295,6 @@
   <data name="&gt;&gt;ToolStripSeparator2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsbEcopath.Name" xml:space="preserve">
-    <value>m_tsbEcopath</value>
-  </data>
-  <data name="&gt;&gt;m_tsbEcopath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_tsbEcosim.Name" xml:space="preserve">
     <value>m_tsbEcosim</value>
   </data>
@@ -6313,11 +6313,11 @@
   <data name="&gt;&gt;m_tsbEcotracer.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSplitButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsmiEcopathEditTaxa.Name" xml:space="preserve">
-    <value>m_tsmiEcopathEditTaxa</value>
+  <data name="&gt;&gt;m_tsbEcopath.Name" xml:space="preserve">
+    <value>m_tsbEcopath</value>
   </data>
-  <data name="&gt;&gt;m_tsmiEcopathEditTaxa.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tsbEcopath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSplitButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AppLauncher</value>
