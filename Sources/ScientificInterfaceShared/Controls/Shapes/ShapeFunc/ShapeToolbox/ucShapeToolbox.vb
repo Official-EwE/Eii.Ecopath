@@ -412,6 +412,14 @@ Namespace Controls
 
         End Sub
 
+        ''' <summary>
+        ''' Modify shape data.
+        ''' </summary>
+        Private Sub lvShapes_ItemActivate(ByVal sender As Object, ByVal e As System.EventArgs) _
+                    Handles lvShapes.ItemActivate
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Modify, Me.Selection)
+        End Sub
+
         Private Sub lvShapes_ItemChecked(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckedEventArgs) _
             Handles lvShapes.ItemChecked
 
@@ -456,9 +464,7 @@ Namespace Controls
         ''' </summary>
         Private Sub DuplicateShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles DuplicateToolStripMenuItem.Click
-
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Duplicate, Me.Selection)
-
         End Sub
 
         ''' <summary>
