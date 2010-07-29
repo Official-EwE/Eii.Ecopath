@@ -5,6 +5,7 @@ Imports EwECore
 Imports System.Windows.Forms
 Imports System.Globalization
 Imports EwEUtils.Commands
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -35,11 +36,18 @@ Public Class dlgManageTimeSeries
 
 #End Region ' Helper classes
 
+    ''' <summary>
+    ''' Enumerator, identifying the different interaction modes that the Manage 
+    ''' Time Series interface supports.
+    ''' </summary>
     Public Enum eModeType As Integer
+        ''' <summary>Load a time series dataset.</summary>
         Load = 0
+        ''' <summary>Weight a time series dataset.</summary>
         Weight
+        ''' <summary>Import a time series dataset.</summary>
         Import
-        ' Export
+        ''' <summary>Delete time series datasets.</summary>
         Delete
     End Enum
 
@@ -49,7 +57,7 @@ Public Class dlgManageTimeSeries
     Private m_bInitialized As Boolean = False
 
     Private m_tr As cTimeSeriesTextReader = Nothing
-    Private m_strImportFileName As String = String.Empty
+    Private m_strImportFileName As String = ""
     Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
 
     Public Sub New(ByVal uic As cUIContext, ByVal mode As eModeType)
@@ -89,6 +97,8 @@ Public Class dlgManageTimeSeries
 
     End Sub
 
+#Region " Form overrides "
+
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
     End Sub
@@ -98,6 +108,8 @@ Public Class dlgManageTimeSeries
         Me.m_tsh = Nothing
         MyBase.OnFormClosed(e)
     End Sub
+
+#End Region ' Form overrides
 
 #Region " Events "
 
@@ -594,6 +606,7 @@ Public Class dlgManageTimeSeries
         Dim bCreateNewSet As Boolean = False
         Dim bSucces As Boolean = True
         Dim iDataset As Integer = 0
+        Dim fmsg As cFeedbackMessage = Nothing
 
         If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return
 
@@ -621,20 +634,29 @@ Public Class dlgManageTimeSeries
                 For Each ts As cTimeSeriesImport In Me.m_tr
 
                     If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing) Then
-                        ' ToDo: use cFeedback message
-                        ' ToDo: localize this
-                        Select Case MsgBox(String.Format("Do you wish to import '{0}' as monthly forcing data?", ts.Name), _
-                                              MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
 
-                            Case MsgBoxResult.Yes
+                        fmsg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_TIMESERIES_IMPORT_AS_MONTHLY, ts.Name), _
+                                                    eCoreComponentType.TimeSeries, _
+                                                    eMessageType.DataImport, _
+                                                    eMessageImportance.Warning, _
+                                                    cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, _
+                                                    eDataTypes.NotSet, _
+                                                    cFeedbackMessage.eReply.YES)
+                        fmsg.Suppressable = False
+                        Me.m_uic.Core.Messages.SendMessage(fmsg)
+
+                        Select Case fmsg.Reply
+
+                            Case cFeedbackMessage.eReply.YES
                                 ts.IsMonthly = True
-                            Case MsgBoxResult.No
+                            Case cFeedbackMessage.eReply.NO
                                 ts.IsMonthly = False
-                            Case MsgBoxResult.Cancel
+                            Case cFeedbackMessage.eReply.CANCEL
                                 bSucces = False
                                 Exit For
 
                         End Select
+
                     End If
 
                     If Me.m_uic.Core.ImportEcosimTimeSeries(ts, iDataset) Then
@@ -651,6 +673,7 @@ Public Class dlgManageTimeSeries
                     Else
                         bSucces = False
                     End If
+
                 Next
             Catch ex As Exception
                 bSucces = False

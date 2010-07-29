@@ -2674,4 +2674,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="PROMPT_SEARCH_NORESULTS" xml:space="preserve">
     <value>Your search did not produce any results</value>
   </data>
+  <data name="PROMPT_TIMESERIES_IMPORT_AS_MONTHLY" xml:space="preserve">
+    <value>Do you wish to import '{0}' as monthly forcing data?</value>
+    <comment>{0}: name of dataset</comment>
+  </data>
 </root>
