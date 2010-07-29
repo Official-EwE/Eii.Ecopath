@@ -103,7 +103,7 @@ Public Class ShapeValueGrid
             Dim cell As EwECell = Nothing
 
             If (iNumValues <= 0) Then iNumValues = Me.m_iNumValues
-            iNumValues = Math.Min(iNumValues, Me.RowsCount)
+            iNumValues = Math.Min(iNumValues, Me.RowsCount - 1)
 
             ' Add (or preserve) zero data point
             If Me.m_shape Is Nothing Then
@@ -177,8 +177,6 @@ Public Class ShapeValueGrid
         Dim iStartIndex As Integer = Me.Core.EcosimFirstYear
         Dim sValue As Single = 0.0!
 
-        If iStartIndex > 0 Then iStartIndex -= 1
-
         For iValue As Integer = 1 To Me.m_iNumValues
 
             ' Determine value for given time point
@@ -193,7 +191,7 @@ Public Class ShapeValueGrid
 
                 Case frmShapeValue.eDisplayMode.Index
 
-                    cell = New EwECell(CStr(iValue + 1), GetType(String))
+                    cell = New EwECell(CStr(iValue), GetType(String))
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 0) = cell
 
@@ -203,7 +201,7 @@ Public Class ShapeValueGrid
 
                 Case frmShapeValue.eDisplayMode.Yearly
 
-                    cell = New EwECell(CStr(iValue + iStartIndex), GetType(String))
+                    cell = New EwECell(CStr(iValue + iStartIndex - 1), GetType(String))
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 0) = cell
 
@@ -216,7 +214,7 @@ Public Class ShapeValueGrid
 
                     Dim strLabel0 As String = ""
                     Dim strLabel1 As String = ""
-                    Dim iYear As Integer = iStartIndex + CInt(Math.Floor(iValue / 12))
+                    Dim iYear As Integer = iStartIndex + CInt(Math.Floor((iValue - 1) / 12))
                     Dim iMonth As Integer = 1 + ((iValue - 1) Mod 12)
                     Dim d As New Date(1, iMonth, 1)
 
