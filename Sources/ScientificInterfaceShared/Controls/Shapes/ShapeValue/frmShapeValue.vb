@@ -181,6 +181,8 @@ Public Class frmShapeValue
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
+        Me.CenterToParent()
+
         ' Kick off
         If Me.m_shape Is Nothing Then
             Me.NumPoints = cNUMROWS_EMTPY
@@ -191,6 +193,7 @@ Public Class frmShapeValue
                 Me.NumPoints = Me.m_shape.XMax
             End If
         End If
+
         Me.FillDataGrid()
         Me.UpdateControls()
 
