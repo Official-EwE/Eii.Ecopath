@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: SearchManager.vb,v $
-' Revision 1.5  2009/04/22 20:53:17  joeb
-' made Load() and Update() return the correct values
-'
-' Revision 1.4  2009/04/02 21:01:15  jeroens
-' Added header
-'
-'==============================================================================
-
 Imports EwEUtils.Core
 
 Namespace SearchObjectives
@@ -278,7 +267,6 @@ Namespace SearchObjectives
 #End Region
 
 End Namespace
-
 
 #Region "Thread Wait Base Class"
 
