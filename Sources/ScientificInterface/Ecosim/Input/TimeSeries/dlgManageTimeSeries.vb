@@ -613,7 +613,7 @@ Public Class dlgManageTimeSeries
         ' Determine if need to create a new dataset
         For Each ts As cTimeSeriesImport In Me.m_tr
             ' Create new dataset if it will contain one of more TS
-            bCreateNewSet = bCreateNewSet Or (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) <> cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing)
+            bCreateNewSet = bCreateNewSet Or (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) <> eTimeSeriesCategoryType.Forcing)
         Next
 
         ' Need to create a new dataset?
@@ -633,7 +633,7 @@ Public Class dlgManageTimeSeries
             Try
                 For Each ts As cTimeSeriesImport In Me.m_tr
 
-                    If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing) Then
+                    If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Forcing) Then
 
                         fmsg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_TIMESERIES_IMPORT_AS_MONTHLY, ts.Name), _
                                                     eCoreComponentType.TimeSeries, _
@@ -662,11 +662,11 @@ Public Class dlgManageTimeSeries
                     If Me.m_uic.Core.ImportEcosimTimeSeries(ts, iDataset) Then
                         Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
 
-                            Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing
+                            Case eTimeSeriesCategoryType.Forcing
                                 clf = DirectCast(Math.Min(clf, cCore.eBatchChangeLevelFlags.Ecosim), cCore.eBatchChangeLevelFlags)
 
-                            Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group, _
-                                 cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+                            Case eTimeSeriesCategoryType.Group, _
+                                 eTimeSeriesCategoryType.Fleet
                                 clf = DirectCast(Math.Min(clf, cCore.eBatchChangeLevelFlags.Ecosim), cCore.eBatchChangeLevelFlags)
 
                         End Select

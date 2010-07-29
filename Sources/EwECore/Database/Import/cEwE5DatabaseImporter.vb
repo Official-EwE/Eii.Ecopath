@@ -2837,7 +2837,7 @@ Namespace Database
                 '             to the actual time series data in EcosimTimeSeries.
                 Select Case cTimeSeriesFactory.TimeSeriesCategory(eType)
 
-                    Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing
+                    Case eTimeSeriesCategoryType.Forcing
 
                         ' Check for duplicates
                         Dim fsd As New cForcingShapeData()
@@ -2872,7 +2872,7 @@ Namespace Database
 
                         End If
 
-                    Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+                    Case eTimeSeriesCategoryType.Fleet
 
                         iDatasetID = Me.HashKey(eDataTypes.TimeSeriesDataset, CStr(reader("Dataset")))
                         iFleetID = Me.PoolCodeID(eDataTypes.FleetInput, CInt(reader("Pool")))
@@ -2910,7 +2910,7 @@ Namespace Database
 
                         End If
 
-                    Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
+                    Case eTimeSeriesCategoryType.Group
 
                         iDatasetID = Me.HashKey(eDataTypes.TimeSeriesDataset, CStr(reader("Dataset")))
                         iGroupID = Me.PoolCodeID(eDataTypes.EcoPathGroupInput, CInt(reader("Pool")))
@@ -2948,7 +2948,7 @@ Namespace Database
                             writerGroup.AddRow(drow)
                         End If
 
-                    Case cTimeSeriesFactory.eTimeSeriesCategoryType.NotSet
+                    Case eTimeSeriesCategoryType.NotSet
                         'Trying to import unkown time series type - ignore this TS
                         Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESTYPE, _
                                 Me.FixValue(reader, "DatName", ""), _

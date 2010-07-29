@@ -446,10 +446,10 @@ Public Class frmShapeValue
 
         'Assign the time series pool code to fleet index or group index
         Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
-            Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+            Case eTimeSeriesCategoryType.Fleet
                 fts = CType(ts, cFleetTimeSeries)
                 fts.FleetIndex = iPoolCode
-            Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
+            Case eTimeSeriesCategoryType.Group
                 gts = CType(ts, cGroupTimeSeries)
                 gts.GroupIndex = iPoolCode
         End Select
@@ -606,7 +606,7 @@ Public Class frmShapeValue
         cmbPoolCode.Items.Clear()
         'Load pool code combo box based on the selected time series type
         Select Case cTimeSeriesFactory.TimeSeriesCategory(SelectedTimeSeriesType())
-            Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+            Case eTimeSeriesCategoryType.Fleet
                 lblPoolCode.Text = My.Resources.LABEL_FLEET
                 For i As Integer = 1 To Me.m_uic.Core.nFleets
                     cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, Me.m_uic.Core.FleetInputs(i).Name))
@@ -617,7 +617,7 @@ Public Class frmShapeValue
                         cmbPoolCode.SelectedIndex = fts.FleetIndex - 1
                     End If
                 End If
-            Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
+            Case eTimeSeriesCategoryType.Group
                 lblPoolCode.Text = My.Resources.LABEL_GROUP
                 For i As Integer = 1 To Me.m_uic.Core.nGroups
                     cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, Me.m_uic.Core.EcoPathGroupInputs(i).Name))
@@ -628,7 +628,7 @@ Public Class frmShapeValue
                         cmbPoolCode.SelectedIndex = gts.GroupIndex - 1
                     End If
                 End If
-            Case cTimeSeriesFactory.eTimeSeriesCategoryType.NotSet
+            Case eTimeSeriesCategoryType.NotSet
         End Select
     End Sub
 

@@ -280,6 +280,7 @@
     <Compile Include="Database\Updates\cDBUpdate6_01_00_002.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_01_00_003.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_01_00_004.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_01_00_005.vb" />
     <Compile Include="DataSource\cDatasourceFactory.vb" />
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
@@ -331,6 +332,10 @@
     <Compile Include="Particle size distribution\Model\cPSDModel.vb" />
     <Compile Include="Search\SearchInputOutput.vb" />
     <Compile Include="Search\SearchManager.vb" />
+    <Compile Include="Shapes\TimeSeries\cFleetTimeSeries.vb" />
+    <Compile Include="Shapes\TimeSeries\cGroupTimeSeries.vb" />
+    <Compile Include="Shapes\TimeSeries\cTimeSeriesFactory.vb" />
+    <Compile Include="Shapes\TimeSeries\cTimeSeriesImport.vb" />
     <Compile Include="Shapes\TimeSeries\Writers\cTimeSeriesCSVWriter.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesDataset.vb" />
     <None Include="Database\Compact\_compacters_.cd" />
@@ -344,6 +349,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="Class Diagrams\Time Series.cd" />
     <EmbeddedResource Include="Resources\EwE6.accdb" />
   </ItemGroup>
   <ItemGroup>

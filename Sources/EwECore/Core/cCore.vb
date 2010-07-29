@@ -1280,7 +1280,6 @@ Public Class cCore
                     ts.DatVal(iYear) = Me.m_TSData.sValues(iYear, ts.Index)
                 Next iYear
 
-                ts.CustomVariableName = Me.m_TSData.strCustomVariableName(ts.Index)
                 ts.Enabled = Me.m_TSData.bEnable(ts.Index)
                 ts.UnlockUpdates(False)
 
@@ -1344,12 +1343,11 @@ Public Class cCore
             For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
 
                 ' Validate whether TS will remain in its category (group)
-                Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = cTimeSeriesFactory.eTimeSeriesCategoryType.Group, "Cannot change TS to a different category")
+                Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Group, "Cannot change TS to a different category")
                 Me.m_TSData.TimeSeriesType(ts.Index) = ts.TimeSeriesType
                 Me.m_TSData.strName(ts.Index) = ts.Name
                 Me.m_TSData.iPool(ts.Index) = ts.DatPool
                 Me.m_TSData.sWeight(ts.Index) = ts.WtType
-                Me.m_TSData.strCustomVariableName(ts.Index) = DirectCast(ts, cGroupTimeSeries).CustomVariableName
 
                 'DatSS and DatQ are computed so they are not updated from the interface
                 'Me.m_TSData.datass(ts.Index) = ts.DataQ
@@ -1381,7 +1379,7 @@ Public Class cCore
             For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet
 
                 ' Validate whether TS will remain in its category (fleet)
-                Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet, "Cannot change TS to a different category")
+                Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Fleet, "Cannot change TS to a different category")
                 Me.m_TSData.TimeSeriesType(ts.Index) = ts.TimeSeriesType
 
                 Me.m_TSData.strName(ts.Index) = ts.Name

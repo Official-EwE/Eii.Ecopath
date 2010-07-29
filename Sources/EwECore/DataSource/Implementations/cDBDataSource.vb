@@ -5878,12 +5878,12 @@ Namespace DataSources
               Implements IEcosimDatasource.ImportTimeSeries
 
             Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
-                Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group, _
-                     cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+                Case eTimeSeriesCategoryType.Group, _
+                     eTimeSeriesCategoryType.Fleet
                     Return Me.AddAsTimeSeries(ts, iDataset)
-                Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing
+                Case eTimeSeriesCategoryType.Forcing
                     Return Me.AddAsForcingFunction(ts)
-                Case cTimeSeriesFactory.eTimeSeriesCategoryType.NotSet
+                Case eTimeSeriesCategoryType.NotSet
                     Debug.Assert(False)
                     Return False
             End Select
@@ -6050,9 +6050,9 @@ Namespace DataSources
             Me.m_db.ReleaseWriter(writer, True)
 
             Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
-                Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
+                Case eTimeSeriesCategoryType.Group
                     bSucces = bSucces And Me.AddGroupTimeSeries(ts, iTimeSeriesID)
-                Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+                Case eTimeSeriesCategoryType.Fleet
                     bSucces = bSucces And Me.AddFleetTimeSeries(ts, iTimeSeriesID)
             End Select
 
@@ -6086,7 +6086,6 @@ Namespace DataSources
                 drow = writerGroup.NewRow()
                 drow("TimeSeriesID") = iTimeSeriesID
                 drow("GroupID") = ecopathDS.GroupDBID(ts.DatPool)
-                drow("VariableName") = ts.CustomVariableName()
                 writerGroup.AddRow(drow)
                 Me.m_db.ReleaseWriter(writerGroup, True)
             Catch ex As Exception
@@ -6199,19 +6198,18 @@ Namespace DataSources
 
                     Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
 
-                        Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
+                        Case eTimeSeriesCategoryType.Group
                             readerSub = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimTimeSeriesGroup WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
                             Try
                                 readerSub.Read()
                                 iIndex = Array.IndexOf(ecopathDS.GroupDBID, CInt(readerSub("GroupID")))
-                                tsDS.strCustomVariableName(iSeries) = CStr(readerSub("VariableName"))
                             Catch ex As Exception
                                 iIndex = -1
                             End Try
                             Me.m_db.ReleaseReader(readerSub)
                             readerSub = Nothing
 
-                        Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+                        Case eTimeSeriesCategoryType.Fleet
                             readerSub = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimTimeSeriesFleet WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
                             Try
                                 readerSub.Read()
@@ -6222,11 +6220,11 @@ Namespace DataSources
                             Me.m_db.ReleaseReader(readerSub)
                             readerSub = Nothing
 
-                        Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing
+                        Case eTimeSeriesCategoryType.Forcing
                             Debug.Assert(False, String.Format("Time series {0} should have been imported as a forcing function", reader("TimeSeriesID")))
                             bSucces = False
 
-                        Case cTimeSeriesFactory.eTimeSeriesCategoryType.NotSet
+                        Case eTimeSeriesCategoryType.NotSet
                             Debug.Assert(False, String.Format("Time series {0} is of an unknown type", reader("TimeSeriesID")))
                             bSucces = False
 
@@ -6313,7 +6311,7 @@ Namespace DataSources
 
                     Select Case cTimeSeriesFactory.TimeSeriesCategory(DirectCast(tsDS.TimeSeriesType(iTS), eTimeSeriesType))
 
-                        Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+                        Case eTimeSeriesCategoryType.Fleet
 
                             drow = dtFleets.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
                             bHasRow = (Object.ReferenceEquals(drow, Nothing) = False)
@@ -6329,7 +6327,7 @@ Namespace DataSources
 
                             If bHasRow Then drow.EndEdit() Else writerFleets.AddRow(drow)
 
-                        Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
+                        Case eTimeSeriesCategoryType.Group
 
                             drow = dtGroups.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
                             bHasRow = (Object.ReferenceEquals(drow, Nothing) = False)
@@ -6343,10 +6341,9 @@ Namespace DataSources
                             End If
 
                             drow("GroupID") = iPoolID
-                            drow("VariableName") = tsDS.strCustomVariableName(iTS)
                             If bHasRow Then drow.EndEdit() Else writerGroups.AddRow(drow)
 
-                        Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing, cTimeSeriesFactory.eTimeSeriesCategoryType.NotSet
+                        Case eTimeSeriesCategoryType.Forcing, eTimeSeriesCategoryType.NotSet
                             Debug.Assert(False)
 
                     End Select
@@ -6434,7 +6431,7 @@ Namespace DataSources
 
                 Select Case cTimeSeriesFactory.TimeSeriesCategory(timeSeriesType)
 
-                    Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+                    Case eTimeSeriesCategoryType.Fleet
                         writerSub = Me.m_db.GetWriter("EcosimTimeSeriesFleet")
                         drowSub = writerSub.NewRow()
                         drowSub("TimeSeriesID") = iShapeID
@@ -6442,7 +6439,7 @@ Namespace DataSources
                         writerSub.AddRow(drowSub)
                         Me.m_db.ReleaseWriter(writerSub)
 
-                    Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
+                    Case eTimeSeriesCategoryType.Group
                         writerSub = Me.m_db.GetWriter("EcosimTimeSeriesGroup")
                         drowSub = writerSub.NewRow()
                         drowSub("TimeSeriesID") = iShapeID

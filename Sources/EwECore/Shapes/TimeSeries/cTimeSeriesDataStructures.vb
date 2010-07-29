@@ -5,16 +5,6 @@ Option Strict On
 ''' </summary>
 Public Class cTimeSeriesDataStructures
 
-    ''' <summary>New to EwE6: a custom group-related variable that each time series should apply to.</summary>
-    ''' <remarks>
-    ''' This flag is added with future extensions to the time series system in mind. With this flag,
-    ''' users can design and import time series for any group-related variable, which is nice, but 
-    ''' will be fully responsible for writing the code that applies the time series. Hey, we can only
-    ''' cater so much! At least there is a generic structure now that allows users to store their
-    ''' own time series in the underlying datasource, transparently managed by the EwE core.
-    ''' </remarks>
-    Public strCustomVariableName() As String
-
     Public nGroups As Integer = 0
 
     ' ------------------------------------------------
@@ -167,7 +157,6 @@ Public Class cTimeSeriesDataStructures
         ReDim sWeight(nNumTimeSeries)
         ReDim TimeSeriesType(nNumTimeSeries)
         ReDim sValues(nMaxYears + 1, nNumTimeSeries)
-        ReDim strCustomVariableName(nNumTimeSeries)
         ReDim sDatSS(nNumTimeSeries)
         ReDim sDatQ(nNumTimeSeries)
         ReDim sEDatQ(nNumTimeSeries)

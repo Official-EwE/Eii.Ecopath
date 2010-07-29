@@ -481,19 +481,19 @@ Public MustInherit Class cTimeSeriesTextReader
                 ' Validate if encountered pool code fits the corresponding core counter
                 Select Case cTimeSeriesFactory.TimeSeriesCategory(aiType(i - 1))
 
-                    Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
+                    Case eTimeSeriesCategoryType.Group
                         ' Group index cannot exceed core nGroups
                         If aiDatPool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups) Then
                             Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, aiDatPool(i - 1), astrNames(i - 1)), iLineNumber - 1)
                         End If
 
-                    Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+                    Case eTimeSeriesCategoryType.Fleet
                         'Fleet index cannot exceed core nFleets
                         If aiDatPool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nFleets) Then
                             Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, aiDatPool(i - 1), astrNames(i - 1)), iLineNumber - 1)
                         End If
 
-                    Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing
+                    Case eTimeSeriesCategoryType.Forcing
                         ' All good
 
                 End Select

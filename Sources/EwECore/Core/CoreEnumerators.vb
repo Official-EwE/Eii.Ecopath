@@ -491,6 +491,25 @@ End Enum
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
+''' Enumerated type stating whether a time series is 
+''' <see cref="cGroupTimeSeries">group-related</see>,  
+''' <see cref="cFleetTimeSeries">fleet-related</see> or is a
+''' <see cref="cForcingFunction">forcing function</see>.
+''' </summary>
+''' -----------------------------------------------------------------------
+Public Enum eTimeSeriesCategoryType
+    ''' <summary>Unknown time series category.</summary>
+    NotSet = 0
+    ''' <summary>Group-related time series category.</summary>
+    Group
+    ''' <summary>Fleet-related time series category.</summary>
+    Fleet
+    ''' <summary>Forcing function time series category.</summary>
+    Forcing
+End Enum
+
+''' -----------------------------------------------------------------------
+''' <summary>
 ''' Enumerated type, defining aliases for <see cref="eTimeSeriesType">time series types</see>.
 ''' </summary>
 ''' -----------------------------------------------------------------------
