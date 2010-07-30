@@ -31,39 +31,43 @@ Namespace Utilities
         Public Shared Function ToValidFileName(ByVal strText As String, ByVal bProtectPath As Boolean) As String
 
             Dim strPath As String = ""
+            Dim strFile As String = ""
+
+            If String.IsNullOrEmpty(strText) Then Return ""
 
             ' 1. Strip off path part
             If bProtectPath Then
+
                 Try
-                    strPath = Path.GetDirectoryName(strText)
+                    ' Find path\file separator position
+                    Dim iLastSep As Integer = strText.LastIndexOf("\"c)
+                    If iLastSep = -1 Then iLastSep = strText.LastIndexOf("/"c)
+                    strPath = strText.Substring(0, iLastSep + 1)
+                    strFile = strText.Substring(iLastSep + 1)
                 Catch ex As Exception
                     strPath = ""
+                    strFile = strText
                 End Try
-                If String.IsNullOrEmpty(strPath) Then
-                    bProtectPath = False
-                Else
-                    ' Do not use SubString here; if strText contains a 8.3 path, which
-                    ' Path.GetDirectoryName will revert to a full path, will cause the
-                    ' string-based extraction to fail.
-                    'strText = strText.Substring(strPath.Length + 1)
-                    strText = Path.GetFileName(strPath)
-                End If
+
+                bProtectPath = Not String.IsNullOrEmpty(strPath)
+            Else
+                strFile = strText
             End If
 
             ' Clean up
-            'strText = strText.Replace(" ", "_") ' Spaces are definitely allowed under 32 bit ;-)
-            strText = strText.Replace("\", "-")
-            strText = strText.Replace("/", "-")
+            'strFile = strText.Replace(" ", "_") ' Spaces are definitely allowed under 32 bit ;-)
+            strFile = strFile.Replace("\", "-")
+            strFile = strFile.Replace("/", "-")
 
             ' Replace invalid file name chars with hyphens
             For Each c As Char In Path.GetInvalidFileNameChars
-                If strText.IndexOf(c) > -1 Then
-                    strText = strText.Replace(c, "-"c)
+                If strFile.IndexOf(c) > -1 Then
+                    strFile = strFile.Replace(c, "-"c)
                 End If
             Next
 
-            If (bProtectPath And Not String.IsNullOrEmpty(strPath)) Then
-                strText = Path.Combine(strPath, strText)
+            If bProtectPath Then
+                strText = Path.Combine(strPath, strFile)
             End If
 
             Return strText
