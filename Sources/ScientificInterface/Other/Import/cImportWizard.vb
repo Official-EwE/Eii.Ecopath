@@ -352,7 +352,8 @@ Namespace Import
                                        ByVal format As eDataSourceTypes) As String
             Dim strModel As String = Path.Combine(Me.m_strOutputFolder, setting.EwE6ModelName)
             strModel += cDataSourceFactory.GetDefaultExtension(format)
-            Return strModel
+            Return cFileUtils.ToValidFileName(strModel, True)
+
         End Function
 
 #End Region ' Internals
