@@ -2947,11 +2947,13 @@ Namespace Ecosim
 
                 Next
             Next
-            Dim LogL As Single
-            For j = 1 To m_RefData.NdatType
-                If m_RefData.DatSS(j) > 0 Then LogL = LogL + m_RefData.WtType(j) * (DatNobs(j) - 1) * Math.Log(m_RefData.DatSS(j))
-            Next
-            LogL = LogL / 2
+
+            ' JS 02Aug10: LogL is not used anymore
+            'Dim LogL As Single
+            'For j = 1 To m_RefData.NdatType
+            '    If m_RefData.DatSS(j) > 0 Then LogL = LogL + m_RefData.WtType(j) * (DatNobs(j) - 1) * Math.Log(m_RefData.DatSS(j))
+            'Next
+            'LogL = LogL / 2
 
             'vc sep 2008, adding an option for increasing SS with a fishing mortality penalty
             'if doing a fit to time series, and there are any fmax in the fishing policy screen,
