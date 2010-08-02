@@ -1599,9 +1599,10 @@ Public Class cCore
     Public Function UpdateTimeSeries() As Boolean
         Dim lstEffortToReset As New List(Of Integer)
 
-        ' Update enable flags
+        ' Update enable flags and weights
         For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
             Me.m_TSData.bEnable(ts.Index) = ts.Enabled
+            Me.m_TSData.sWeight(ts.Index) = ts.WtType
         Next
 
         For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet
