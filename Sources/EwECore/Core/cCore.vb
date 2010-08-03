@@ -1597,11 +1597,15 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function UpdateTimeSeries() As Boolean
+
         Dim lstEffortToReset As New List(Of Integer)
+        Dim bChanged As Boolean = False
 
         ' Update enable flags and weights
         For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
+            bChanged = bChanged Or (Me.m_TSData.bEnable(ts.Index) <> ts.Enabled)
             Me.m_TSData.bEnable(ts.Index) = ts.Enabled
+            bChanged = bChanged Or (Me.m_TSData.sWeight(ts.Index) <> ts.WtType)
             Me.m_TSData.sWeight(ts.Index) = ts.WtType
         Next
 
@@ -1644,7 +1648,12 @@ Public Class cCore
         Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
         Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
-        Me.DataAddedOrRemovedMessage("Time Series have been updated", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
+        If (bChanged) Then
+            Me.DataAddedOrRemovedMessage("Time Series have been updated", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
+            DataSource.SetChanged(eCoreComponentType.TimeSeries)
+            Me.m_StateMonitor.UpdateDataState(DataSource)
+        End If
+
         Me.Messages.sendAllMessages()
 
         Return True
