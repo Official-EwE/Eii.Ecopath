@@ -4165,6 +4165,8 @@ Public Class cCore
         Dim bLockQB As Boolean = False
         Dim bLockPB As Boolean = False
         Dim bLockBA As Boolean = False
+        Dim bClearPB As Boolean = False
+        Dim bClearQB As Boolean = False
 
         Dim bIsPartOfStanza As Boolean = obj.isMultiStanza()
         Dim bIsDetritus As Boolean = (obj.PP > 1.1)
@@ -4179,7 +4181,9 @@ Public Class cCore
             ' Detritus: block all
             bLockGE = True
             bLockQB = True
+            bClearQB = True
             bLockPB = True
+            bClearPB = True
         ElseIf bIsProducer Then
             ' Producer: block all non-PB
             bLockGE = True
@@ -4204,10 +4208,22 @@ Public Class cCore
             obj.ClearStatusFlags(eVarNameFlags.QBInput, eStatusFlags.NotEditable)
         End If
 
-        If bLockPB Then
+        If bLockQB Then
+            obj.SetStatusFlags(eVarNameFlags.PBInput, eStatusFlags.Null)
+        Else
+            obj.ClearStatusFlags(eVarNameFlags.PBInput, eStatusFlags.Null)
+        End If
+
+        If bClearPB Then
             obj.SetStatusFlags(eVarNameFlags.PBInput, eStatusFlags.NotEditable)
         Else
             obj.ClearStatusFlags(eVarNameFlags.PBInput, eStatusFlags.NotEditable)
+        End If
+
+        If bClearQB Then
+            obj.SetStatusFlags(eVarNameFlags.QBInput, eStatusFlags.Null)
+        Else
+            obj.ClearStatusFlags(eVarNameFlags.QBInput, eStatusFlags.Null)
         End If
 
         If bLockBA Then
