@@ -1596,7 +1596,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function UpdateTimeSeries() As Boolean
+    Public Function UpdateTimeSeries(Optional ByVal bDirtyDatasource As Boolean = False) As Boolean
 
         ' ToDo: merge this functionality with TS handling in OnChanged. We now 
         '       have two separate pathways for processing TS changes which 
@@ -1652,7 +1652,7 @@ Public Class cCore
         Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
         Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
-        If (bChanged) Then
+        If (bChanged And bDirtyDatasource) Then
             Me.DataAddedOrRemovedMessage("Time Series have been updated", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
             DataSource.SetChanged(eCoreComponentType.TimeSeries)
             Me.m_StateMonitor.UpdateDataState(DataSource)

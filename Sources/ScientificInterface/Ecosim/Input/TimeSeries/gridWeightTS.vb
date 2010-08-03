@@ -49,7 +49,7 @@ Public Class gridWeightTS
             ' Weight
             ts.WtType = CSng(Me(iRow, CInt(eColumnTypes.Weight)).Value)
         Next
-        Me.UIContext.Core.UpdateTimeSeries()
+        Me.UIContext.Core.UpdateTimeSeries(True)
     End Function
 
     Protected Overrides Sub InitStyle()

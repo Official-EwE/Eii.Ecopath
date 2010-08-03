@@ -167,6 +167,7 @@ Namespace Ecosim
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
             Me.m_sketchPad.ShowXMark = False
             Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.OK
             Me.m_sketchPad.UIContext = Nothing
             Me.m_sketchPad.XMarkLabel = ""
             Me.m_sketchPad.XMarkValue = -9999.0!
@@ -201,6 +202,7 @@ Namespace Ecosim
             '
             'm_ts
             '
+            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.tslblSSValue, Me.tsblbSS, ToolStripSeparator5, Me.m_tsdrpdnbtnContent, Me.m_tsddPlotType, ToolStripSeparator2, Me.m_tssbExplore, Me.ToolStripSeparator3, Me.m_tsddGraphOptions})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
@@ -422,6 +424,8 @@ Namespace Ecosim
             '
             'm_lbGroups
             '
+            Me.m_lbGroups.AllGroupsItemColor = System.Drawing.Color.Transparent
+            Me.m_lbGroups.AllGroupsItemText = "(All)"
             resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
             Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbGroups.FormattingEnabled = True
