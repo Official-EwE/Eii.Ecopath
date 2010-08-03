@@ -1598,6 +1598,10 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Function UpdateTimeSeries() As Boolean
 
+        ' ToDo: merge this functionality with TS handling in OnChanged. We now 
+        '       have two separate pathways for processing TS changes which 
+        '       should be merged
+
         Dim lstEffortToReset As New List(Of Integer)
         Dim bChanged As Boolean = False
 
