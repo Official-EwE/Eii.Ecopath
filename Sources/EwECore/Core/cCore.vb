@@ -2977,6 +2977,15 @@ Public Class cCore
                 output.PP = m_EcoPathData.PP(iGroup)
 
                 'output variables
+
+                If output.IsDetritus Then
+                    output.PBOutput = cCore.NULL_VALUE
+                    output.QBOutput = cCore.NULL_VALUE
+                Else
+                    output.PBOutput = CSng(m_EcoPathData.PB(iGroup))
+                    output.QBOutput = CSng(m_EcoPathData.QB(iGroup))
+                End If
+
                 output.PBOutput = CSng(m_EcoPathData.PB(iGroup))
                 output.QBOutput = CSng(m_EcoPathData.QB(iGroup))
                 output.EEOutput = CSng(m_EcoPathData.EE(iGroup))
