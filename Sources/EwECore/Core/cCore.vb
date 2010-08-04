@@ -4208,16 +4208,16 @@ Public Class cCore
             obj.ClearStatusFlags(eVarNameFlags.QBInput, eStatusFlags.NotEditable)
         End If
 
-        If bLockQB Then
-            obj.SetStatusFlags(eVarNameFlags.PBInput, eStatusFlags.Null)
-        Else
-            obj.ClearStatusFlags(eVarNameFlags.PBInput, eStatusFlags.Null)
-        End If
-
-        If bClearPB Then
+        If bLockPB Then
             obj.SetStatusFlags(eVarNameFlags.PBInput, eStatusFlags.NotEditable)
         Else
             obj.ClearStatusFlags(eVarNameFlags.PBInput, eStatusFlags.NotEditable)
+        End If
+
+        If bClearPB Then
+            obj.SetStatusFlags(eVarNameFlags.PBInput, eStatusFlags.Null)
+        Else
+            obj.ClearStatusFlags(eVarNameFlags.PBInput, eStatusFlags.Null)
         End If
 
         If bClearQB Then
@@ -4269,7 +4269,6 @@ Public Class cCore
 
         Return True
     End Function
-
 
     Friend Function Set_EE_Flags(ByVal obj As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
 
