@@ -26,8 +26,20 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Sub New()
-            ' NOP
+            Me.Text = "Header"
         End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="Label.DefaultSize">default size</see> for a new
+        ''' cEwEGroupLabel control.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides ReadOnly Property DefaultSize() As System.Drawing.Size
+            Get
+                Return New Size(100, 18)
+            End Get
+        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
