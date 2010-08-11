@@ -4204,6 +4204,9 @@ Public Class cCore
             bLockPB = bLockPB Or (sQB > 0.0 And sGE > 0.0)
         End If
 
+        bClearPB = bClearPB Or (sPB <= 0)
+        bClearQB = bClearQB Or (sQB <= 0)
+
         ' Update status flags
         If bLockGE Then
             obj.SetStatusFlags(eVarNameFlags.GEInput, eStatusFlags.NotEditable)
