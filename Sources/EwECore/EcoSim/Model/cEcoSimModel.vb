@@ -1946,7 +1946,10 @@ Namespace Ecosim
                                 If m_Data.ResultsOverTime IsNot Nothing Then
                                     Dim iti As Integer = iDyear * 12 - 7
 
-                                    Zest = m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_stanza.EcopathCode(i, j), iti)
+                                    ' JS 11Aug10: EcopathCode maps a stanza group to a functional group, and is not related to the number of TS
+                                    '             Instead, the average weight of DatPool(j), the targer group, should be obtained here.
+                                    'Zest = m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_stanza.EcopathCode(i, j), iti)
+                                    Zest = m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_RefData.DatPool(j), iti)
                                     If Zest > 0 Then
                                         Zstat = Math.Log(m_RefData.DatVal(iDyear, j) / Zest)
                                         m_RefData.Yhat(m_RefData.Iobs) = Math.Log(Zest)
