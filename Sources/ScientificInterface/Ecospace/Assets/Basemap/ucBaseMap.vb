@@ -134,8 +134,7 @@ Namespace Ecospace
         ''' Paint handler; selectively redraws the bitmap.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ucBaseMap_Paint(ByVal sender As System.Object, ByVal e As PaintEventArgs) _
-            Handles MyBase.Paint
+        Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
 
             If Object.ReferenceEquals(Me.m_bmp, Nothing) Then Return
 
@@ -153,8 +152,7 @@ Namespace Ecospace
         ''' Mouse down handler; intializes map drawing.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ucBaseMap_MouseDown(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
-            Handles MyBase.MouseDown
+        Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs) 
 
             Dim bShiftPressed As Boolean = (User32.GetAsyncKeyState(&H10) < 0)
             Dim ptCellCur As Point = Me.GetCellIndex(New Point(e.X, e.Y))
@@ -178,8 +176,7 @@ Namespace Ecospace
         ''' Mouse move handler; performs a map drawing step.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ucBaseMap_MouseMove(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
-            Handles MyBase.MouseMove
+        Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs) 
 
             If (Me.CanEdit = False) Then Return
             If (Me.Capture = False) Then Return
@@ -193,8 +190,7 @@ Namespace Ecospace
         ''' Mouse up handler; finalizes map drawing.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ucBaseMap_MouseUp(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
-            Handles MyBase.MouseUp
+        Protected Overrides Sub OnMouseUp(ByVal e As MouseEventArgs) 
 
             If (Me.CanEdit = False) Then Return
             If (Me.Capture = False) Then Return
