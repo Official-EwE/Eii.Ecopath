@@ -487,6 +487,8 @@ Namespace Core
         LayerMigration
         ''' <summary>Ecospace cell advection assignments</summary>
         LayerAdvection
+        ''' <summary>Ecospace transport rate layer.</summary>
+        LayerTransportRate
         ''' <summary>Ecospace MPA importance.</summary>
         LayerImportance
         ''' <summary>Ecospace cell port assignments.</summary>
