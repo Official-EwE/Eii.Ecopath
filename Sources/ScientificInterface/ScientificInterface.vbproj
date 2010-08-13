@@ -916,6 +916,21 @@
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRegion.resx">
       <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Advection\ucMap.resx">
+      <DependentUpon>ucMap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Advection\ucUpwelling.resx">
+      <DependentUpon>ucUpwelling.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Advection\ucMLD.resx">
+      <DependentUpon>ucMLD.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Advection\frmAdvection.resx">
+      <DependentUpon>frmAdvection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Advection\ucWind.resx">
+      <DependentUpon>ucWind.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSE\frmMSERecruitment.resx">
       <DependentUpon>frmMSERecruitment.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1159,6 +1174,36 @@
       <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRegion.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\ucMap.Designer.vb">
+      <DependentUpon>ucMap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\ucMap.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\ucUpwelling.Designer.vb">
+      <DependentUpon>ucUpwelling.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\ucUpwelling.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\ucMLD.Designer.vb">
+      <DependentUpon>ucMLD.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\ucMLD.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\frmAdvection.Designer.vb">
+      <DependentUpon>frmAdvection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\frmAdvection.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\ucWind.Designer.vb">
+      <DependentUpon>ucWind.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\ucWind.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\Options\Application\IOptionsPage.vb" />
