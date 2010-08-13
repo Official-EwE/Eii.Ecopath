@@ -55,23 +55,14 @@ Namespace Ecospace.Basemap
 
 #Region " Public properties "
 
-        Private Property Basemap() As cEcospaceBasemap
-
+        Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
             Get
-                Return Me.m_basemapData
+                Return MyBase.UIContext
             End Get
-
-            Set(ByVal value As cEcospaceBasemap)
-
-                ' Store ref
-                Me.m_basemapData = value
-                ' Initalize the m_ucBasemap
-                Me.m_ucBasemap.Basemap = value
-                ' Initialize layers from core data
-                Me.LoadCoreValuesToBasemap()
-
+            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+                MyBase.UIContext = value
+                Me.m_zoomContainer.UIContext = value
             End Set
-
         End Property
 
 #End Region ' Public properties
@@ -88,7 +79,6 @@ Namespace Ecospace.Basemap
 
             ' Initalize m_ucBasemap
             Me.m_ucBasemap = Me.m_zoomContainer.Map()
-            Me.m_zoomContainer.UIContext = Me.UIContext
 
             ' Add LayersControl
             Me.m_ucLayers = New ucLayersControl(Me.UIContext)
@@ -315,6 +305,25 @@ Namespace Ecospace.Basemap
 #End Region ' Load core helpers
 
 #Region " Internals "
+
+        Private Property Basemap() As cEcospaceBasemap
+
+            Get
+                Return Me.m_basemapData
+            End Get
+
+            Set(ByVal value As cEcospaceBasemap)
+
+                ' Store ref
+                Me.m_basemapData = value
+                ' Initalize the m_ucBasemap
+                Me.m_ucBasemap.Basemap = value
+                ' Initialize layers from core data
+                Me.LoadCoreValuesToBasemap()
+
+            End Set
+
+        End Property
 
         ''' <summary>The layer currently selected by the user.</summary>
         Private m_layerSelected As cLayer = Nothing

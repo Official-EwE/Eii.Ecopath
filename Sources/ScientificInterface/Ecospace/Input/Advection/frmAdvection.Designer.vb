@@ -25,17 +25,25 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmAdvection))
             Me.m_tlpMaps = New System.Windows.Forms.TableLayoutPanel
-            Me.m_ucTransportRate = New ScientificInterface.Ecospace.Advection.ucTransportRate
-            Me.m_ucTansportVelocity = New System.Windows.Forms.Panel
-            Me.m_ucMixedLayerDepths = New System.Windows.Forms.Panel
-            Me.m_ucUpwellingVelocities = New System.Windows.Forms.Panel
+            Me.m_ucWind = New ScientificInterface.Ecospace.Advection.ucWind
+            Me.m_ucMLD = New ScientificInterface.Ecospace.Advection.ucMLD
+            Me.m_ucMap = New ScientificInterface.Ecospace.Advection.ucMap
+            Me.m_ucUpwelling = New ScientificInterface.Ecospace.Advection.ucUpwelling
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_hdrOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
+            Me.m_tsmiShowOptions = New System.Windows.Forms.ToolStripButton
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tsmiTransportRate = New System.Windows.Forms.ToolStripLabel
+            Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox
+            Me.m_tsmiReset = New System.Windows.Forms.ToolStripButton
             Me.m_tlpMaps.SuspendLayout()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
+            Me.ToolStrip1.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tlpMaps
@@ -43,56 +51,65 @@
             Me.m_tlpMaps.ColumnCount = 2
             Me.m_tlpMaps.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.m_tlpMaps.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.m_tlpMaps.Controls.Add(Me.m_ucTransportRate, 1, 0)
-            Me.m_tlpMaps.Controls.Add(Me.m_ucTansportVelocity, 0, 0)
-            Me.m_tlpMaps.Controls.Add(Me.m_ucMixedLayerDepths, 0, 1)
-            Me.m_tlpMaps.Controls.Add(Me.m_ucUpwellingVelocities, 1, 1)
+            Me.m_tlpMaps.Controls.Add(Me.m_ucWind, 1, 0)
+            Me.m_tlpMaps.Controls.Add(Me.m_ucMLD, 0, 1)
+            Me.m_tlpMaps.Controls.Add(Me.m_ucMap, 0, 0)
+            Me.m_tlpMaps.Controls.Add(Me.m_ucUpwelling, 1, 1)
             Me.m_tlpMaps.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_tlpMaps.Location = New System.Drawing.Point(0, 0)
             Me.m_tlpMaps.Name = "m_tlpMaps"
             Me.m_tlpMaps.RowCount = 2
             Me.m_tlpMaps.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.m_tlpMaps.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.m_tlpMaps.Size = New System.Drawing.Size(626, 568)
+            Me.m_tlpMaps.Size = New System.Drawing.Size(626, 540)
             Me.m_tlpMaps.TabIndex = 0
             '
-            'm_ucTransportRate
+            'm_ucWind
             '
-            Me.m_ucTransportRate.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucTransportRate.Location = New System.Drawing.Point(316, 3)
-            Me.m_ucTransportRate.Name = "m_ucTransportRate"
-            Me.m_ucTransportRate.Size = New System.Drawing.Size(307, 278)
-            Me.m_ucTransportRate.TabIndex = 1
-            Me.m_ucTransportRate.UIContext = Nothing
+            Me.m_ucWind.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_ucWind.Location = New System.Drawing.Point(316, 0)
+            Me.m_ucWind.Margin = New System.Windows.Forms.Padding(3, 0, 0, 3)
+            Me.m_ucWind.Name = "m_ucWind"
+            Me.m_ucWind.Size = New System.Drawing.Size(310, 267)
+            Me.m_ucWind.TabIndex = 0
+            Me.m_ucWind.UIContext = Nothing
             '
-            'm_ucTansportVelocity
+            'm_ucMLD
             '
-            Me.m_ucTansportVelocity.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucTansportVelocity.Location = New System.Drawing.Point(3, 3)
-            Me.m_ucTansportVelocity.Name = "m_ucTansportVelocity"
-            Me.m_ucTansportVelocity.Size = New System.Drawing.Size(307, 278)
-            Me.m_ucTansportVelocity.TabIndex = 0
+            Me.m_ucMLD.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_ucMLD.Location = New System.Drawing.Point(0, 273)
+            Me.m_ucMLD.Margin = New System.Windows.Forms.Padding(0, 3, 3, 0)
+            Me.m_ucMLD.Name = "m_ucMLD"
+            Me.m_ucMLD.Size = New System.Drawing.Size(310, 267)
+            Me.m_ucMLD.TabIndex = 1
+            Me.m_ucMLD.UIContext = Nothing
             '
-            'm_ucMixedLayerDepths
+            'm_ucMap
             '
-            Me.m_ucMixedLayerDepths.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucMixedLayerDepths.Location = New System.Drawing.Point(3, 287)
-            Me.m_ucMixedLayerDepths.Name = "m_ucMixedLayerDepths"
-            Me.m_ucMixedLayerDepths.Size = New System.Drawing.Size(307, 278)
-            Me.m_ucMixedLayerDepths.TabIndex = 2
+            Me.m_ucMap.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_ucMap.Location = New System.Drawing.Point(0, 0)
+            Me.m_ucMap.Margin = New System.Windows.Forms.Padding(0, 0, 3, 3)
+            Me.m_ucMap.Name = "m_ucMap"
+            Me.m_ucMap.Size = New System.Drawing.Size(310, 267)
+            Me.m_ucMap.TabIndex = 2
+            Me.m_ucMap.UIContext = Nothing
             '
-            'm_ucUpwellingVelocities
+            'm_ucUpwelling
             '
-            Me.m_ucUpwellingVelocities.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucUpwellingVelocities.Location = New System.Drawing.Point(316, 287)
-            Me.m_ucUpwellingVelocities.Name = "m_ucUpwellingVelocities"
-            Me.m_ucUpwellingVelocities.Size = New System.Drawing.Size(307, 278)
-            Me.m_ucUpwellingVelocities.TabIndex = 3
+            Me.m_ucUpwelling.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_ucUpwelling.Location = New System.Drawing.Point(316, 273)
+            Me.m_ucUpwelling.Margin = New System.Windows.Forms.Padding(3, 3, 0, 0)
+            Me.m_ucUpwelling.Name = "m_ucUpwelling"
+            Me.m_ucUpwelling.Size = New System.Drawing.Size(310, 267)
+            Me.m_ucUpwelling.TabIndex = 3
+            Me.m_ucUpwelling.UIContext = Nothing
             '
             'm_scMain
             '
-            Me.m_scMain.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_scMain.Location = New System.Drawing.Point(3, 3)
+            Me.m_scMain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_scMain.Location = New System.Drawing.Point(3, 31)
             Me.m_scMain.Name = "m_scMain"
             '
             'm_scMain.Panel1
@@ -102,7 +119,7 @@
             'm_scMain.Panel2
             '
             Me.m_scMain.Panel2.Controls.Add(Me.m_tlpMaps)
-            Me.m_scMain.Size = New System.Drawing.Size(798, 568)
+            Me.m_scMain.Size = New System.Drawing.Size(798, 540)
             Me.m_scMain.SplitterDistance = 168
             Me.m_scMain.TabIndex = 0
             '
@@ -110,18 +127,64 @@
             '
             Me.m_hdrOptions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_hdrOptions.Location = New System.Drawing.Point(3, 3)
+            Me.m_hdrOptions.Location = New System.Drawing.Point(0, 0)
+            Me.m_hdrOptions.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrOptions.Name = "m_hdrOptions"
-            Me.m_hdrOptions.Size = New System.Drawing.Size(162, 18)
+            Me.m_hdrOptions.Size = New System.Drawing.Size(168, 18)
             Me.m_hdrOptions.TabIndex = 0
             Me.m_hdrOptions.Text = "Options"
             Me.m_hdrOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'ToolStrip1
+            '
+            Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiShowOptions, Me.ToolStripSeparator1, Me.m_tsmiTransportRate, Me.ToolStripTextBox1, Me.m_tsmiReset})
+            Me.ToolStrip1.Location = New System.Drawing.Point(3, 3)
+            Me.ToolStrip1.Name = "ToolStrip1"
+            Me.ToolStrip1.Size = New System.Drawing.Size(798, 25)
+            Me.ToolStrip1.TabIndex = 1
+            Me.ToolStrip1.Text = "ToolStrip1"
+            '
+            'm_tsmiShowOptions
+            '
+            Me.m_tsmiShowOptions.CheckOnClick = True
+            Me.m_tsmiShowOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsmiShowOptions.Image = CType(resources.GetObject("m_tsmiShowOptions.Image"), System.Drawing.Image)
+            Me.m_tsmiShowOptions.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsmiShowOptions.Name = "m_tsmiShowOptions"
+            Me.m_tsmiShowOptions.Size = New System.Drawing.Size(75, 22)
+            Me.m_tsmiShowOptions.Text = "Show options"
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+            '
+            'm_tsmiTransportRate
+            '
+            Me.m_tsmiTransportRate.Name = "m_tsmiTransportRate"
+            Me.m_tsmiTransportRate.Size = New System.Drawing.Size(81, 22)
+            Me.m_tsmiTransportRate.Text = "Transport rate:"
+            '
+            'ToolStripTextBox1
+            '
+            Me.ToolStripTextBox1.Name = "ToolStripTextBox1"
+            Me.ToolStripTextBox1.Size = New System.Drawing.Size(100, 25)
+            '
+            'm_tsmiReset
+            '
+            Me.m_tsmiReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsmiReset.Image = CType(resources.GetObject("m_tsmiReset.Image"), System.Drawing.Image)
+            Me.m_tsmiReset.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsmiReset.Name = "m_tsmiReset"
+            Me.m_tsmiReset.Size = New System.Drawing.Size(39, 22)
+            Me.m_tsmiReset.Text = "Reset"
             '
             'frmAdvection
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(804, 574)
+            Me.Controls.Add(Me.ToolStrip1)
             Me.Controls.Add(Me.m_scMain)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -136,16 +199,25 @@
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
+            Me.ToolStrip1.ResumeLayout(False)
+            Me.ToolStrip1.PerformLayout()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_tlpMaps As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_ucTansportVelocity As System.Windows.Forms.Panel
-        Private WithEvents m_ucTransportRate As ucTransportRate
-        Private WithEvents m_ucMixedLayerDepths As System.Windows.Forms.Panel
-        Private WithEvents m_ucUpwellingVelocities As System.Windows.Forms.Panel
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_hdrOptions As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_ucMLD As ScientificInterface.Ecospace.Advection.ucMLD
+        Private WithEvents m_ucUpwelling As ScientificInterface.Ecospace.Advection.ucUpwelling
+        Private WithEvents m_ucWind As ScientificInterface.Ecospace.Advection.ucWind
+        Private WithEvents m_ucMap As ScientificInterface.Ecospace.Advection.ucMap
+        Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsmiShowOptions As System.Windows.Forms.ToolStripButton
+        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tsmiTransportRate As System.Windows.Forms.ToolStripLabel
+        Friend WithEvents ToolStripTextBox1 As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_tsmiReset As System.Windows.Forms.ToolStripButton
 
     End Class
 
