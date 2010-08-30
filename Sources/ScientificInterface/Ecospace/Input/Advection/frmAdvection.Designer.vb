@@ -33,17 +33,17 @@
             Me.m_ucUpwelling = New ScientificInterface.Ecospace.Advection.ucUpwelling
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_hdrOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
+            Me.m_tsControls = New System.Windows.Forms.ToolStrip
             Me.m_tsmiShowOptions = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsmiTransportRate = New System.Windows.Forms.ToolStripLabel
-            Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox
-            Me.m_tsmiReset = New System.Windows.Forms.ToolStripButton
+            Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tslMonth = New System.Windows.Forms.ToolStripLabel
+            Me.m_tscmMonth = New System.Windows.Forms.ToolStripComboBox
+            Me.m_ucZoomToolbar = New ScientificInterface.Ecospace.ucMapZoomToolbar
             Me.m_tlpMaps.SuspendLayout()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
-            Me.ToolStrip1.SuspendLayout()
+            Me.m_tsControls.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tlpMaps
@@ -135,14 +135,18 @@
             Me.m_hdrOptions.Text = "Options"
             Me.m_hdrOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'ToolStrip1
+            'm_tsControls
             '
-            Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiShowOptions, Me.ToolStripSeparator1, Me.m_tsmiTransportRate, Me.ToolStripTextBox1, Me.m_tsmiReset})
-            Me.ToolStrip1.Location = New System.Drawing.Point(3, 3)
-            Me.ToolStrip1.Name = "ToolStrip1"
-            Me.ToolStrip1.Size = New System.Drawing.Size(798, 25)
-            Me.ToolStrip1.TabIndex = 1
-            Me.ToolStrip1.Text = "ToolStrip1"
+            Me.m_tsControls.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_tsControls.AutoSize = False
+            Me.m_tsControls.Dock = System.Windows.Forms.DockStyle.None
+            Me.m_tsControls.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiShowOptions, Me.m_sep1, Me.m_tslMonth, Me.m_tscmMonth})
+            Me.m_tsControls.Location = New System.Drawing.Point(3, 3)
+            Me.m_tsControls.Name = "m_tsControls"
+            Me.m_tsControls.Size = New System.Drawing.Size(485, 25)
+            Me.m_tsControls.TabIndex = 1
+            Me.m_tsControls.Text = "ToolStrip1"
             '
             'm_tsmiShowOptions
             '
@@ -156,35 +160,40 @@
             '
             'ToolStripSeparator1
             '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+            Me.m_sep1.Name = "ToolStripSeparator1"
+            Me.m_sep1.Size = New System.Drawing.Size(6, 25)
             '
-            'm_tsmiTransportRate
+            'm_tslMonth
             '
-            Me.m_tsmiTransportRate.Name = "m_tsmiTransportRate"
-            Me.m_tsmiTransportRate.Size = New System.Drawing.Size(81, 22)
-            Me.m_tsmiTransportRate.Text = "Transport rate:"
+            Me.m_tslMonth.Name = "m_tslMonth"
+            Me.m_tslMonth.Size = New System.Drawing.Size(70, 22)
+            Me.m_tslMonth.Text = "Show month:"
             '
-            'ToolStripTextBox1
+            'm_tscmMonth
             '
-            Me.ToolStripTextBox1.Name = "ToolStripTextBox1"
-            Me.ToolStripTextBox1.Size = New System.Drawing.Size(100, 25)
+            Me.m_tscmMonth.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmMonth.Name = "m_tscmMonth"
+            Me.m_tscmMonth.Size = New System.Drawing.Size(75, 25)
             '
-            'm_tsmiReset
+            'm_ucZoomToolbar
             '
-            Me.m_tsmiReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsmiReset.Image = CType(resources.GetObject("m_tsmiReset.Image"), System.Drawing.Image)
-            Me.m_tsmiReset.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsmiReset.Name = "m_tsmiReset"
-            Me.m_tsmiReset.Size = New System.Drawing.Size(39, 22)
-            Me.m_tsmiReset.Text = "Reset"
+            Me.m_ucZoomToolbar.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_ucZoomToolbar.AutoSize = True
+            Me.m_ucZoomToolbar.Location = New System.Drawing.Point(491, 3)
+            Me.m_ucZoomToolbar.MinimumSize = New System.Drawing.Size(100, 25)
+            Me.m_ucZoomToolbar.Name = "m_ucZoomToolbar"
+            Me.m_ucZoomToolbar.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
+            Me.m_ucZoomToolbar.Size = New System.Drawing.Size(310, 25)
+            Me.m_ucZoomToolbar.TabIndex = 2
+            Me.m_ucZoomToolbar.UIContext = Nothing
             '
             'frmAdvection
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(804, 574)
-            Me.Controls.Add(Me.ToolStrip1)
+            Me.Controls.Add(Me.m_ucZoomToolbar)
+            Me.Controls.Add(Me.m_tsControls)
             Me.Controls.Add(Me.m_scMain)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -199,8 +208,8 @@
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
-            Me.ToolStrip1.ResumeLayout(False)
-            Me.ToolStrip1.PerformLayout()
+            Me.m_tsControls.ResumeLayout(False)
+            Me.m_tsControls.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -212,12 +221,12 @@
         Private WithEvents m_ucUpwelling As ScientificInterface.Ecospace.Advection.ucUpwelling
         Private WithEvents m_ucWind As ScientificInterface.Ecospace.Advection.ucWind
         Private WithEvents m_ucMap As ScientificInterface.Ecospace.Advection.ucMap
-        Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsControls As System.Windows.Forms.ToolStrip
         Private WithEvents m_tsmiShowOptions As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents m_tsmiTransportRate As System.Windows.Forms.ToolStripLabel
-        Friend WithEvents ToolStripTextBox1 As System.Windows.Forms.ToolStripTextBox
-        Private WithEvents m_tsmiReset As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tslMonth As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_tscmMonth As System.Windows.Forms.ToolStripComboBox
+        Private WithEvents m_ucZoomToolbar As ScientificInterface.Ecospace.ucMapZoomToolbar
 
     End Class
 

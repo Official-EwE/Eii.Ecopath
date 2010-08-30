@@ -24,17 +24,18 @@ Partial Class Basemap
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Basemap))
-            Me.m_zoomContainer = New ScientificInterface.Ecospace.ucZoomBaseMap
+            Me.m_zoomContainer = New ScientificInterface.Ecospace.ucMapZoom
             Me.plLayers = New System.Windows.Forms.Panel
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.m_hdrLayers = New cEwEHeaderLabel
+            Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.tsEditBasemapThingies = New System.Windows.Forms.ToolStrip
             Me.tsbEditBasemap = New System.Windows.Forms.ToolStripButton
             Me.tsbEditHabitats = New System.Windows.Forms.ToolStripButton
             Me.tsbEditMPA = New System.Windows.Forms.ToolStripButton
             Me.tsbEditRegion = New System.Windows.Forms.ToolStripButton
             Me.m_plEditor = New System.Windows.Forms.Panel
+            Me.m_zoomToolbar = New ScientificInterface.Ecospace.ucMapZoomToolbar
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -44,10 +45,10 @@ Partial Class Basemap
             '
             'm_zoomContainer
             '
-            Me.m_zoomContainer.BackColor = System.Drawing.SystemColors.ButtonShadow
             resources.ApplyResources(Me.m_zoomContainer, "m_zoomContainer")
+            Me.m_zoomContainer.BackColor = System.Drawing.SystemColors.ButtonShadow
             Me.m_zoomContainer.Name = "m_zoomContainer"
-            Me.m_zoomContainer.PositionMode = ScientificInterface.Ecospace.ucZoomBaseMap.ePositionModeTypes.Center
+            Me.m_zoomContainer.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
             Me.m_zoomContainer.UIContext = Nothing
             '
             'plLayers
@@ -63,6 +64,7 @@ Partial Class Basemap
             '
             'SplitContainer1.Panel1
             '
+            Me.SplitContainer1.Panel1.Controls.Add(Me.m_zoomToolbar)
             Me.SplitContainer1.Panel1.Controls.Add(Me.m_zoomContainer)
             '
             'SplitContainer1.Panel2
@@ -81,8 +83,6 @@ Partial Class Basemap
             'm_hdrLayers
             '
             resources.ApplyResources(Me.m_hdrLayers, "m_hdrLayers")
-            Me.m_hdrLayers.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_hdrLayers.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.m_hdrLayers.Name = "m_hdrLayers"
             '
             'tsEditBasemapThingies
@@ -120,6 +120,14 @@ Partial Class Basemap
             resources.ApplyResources(Me.m_plEditor, "m_plEditor")
             Me.m_plEditor.Name = "m_plEditor"
             '
+            'm_zoomToolbar
+            '
+            resources.ApplyResources(Me.m_zoomToolbar, "m_zoomToolbar")
+            Me.m_zoomToolbar.MinimumSize = New System.Drawing.Size(100, 25)
+            Me.m_zoomToolbar.Name = "m_zoomToolbar"
+            Me.m_zoomToolbar.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
+            Me.m_zoomToolbar.UIContext = Nothing
+            '
             'Basemap
             '
             resources.ApplyResources(Me, "$this")
@@ -130,10 +138,10 @@ Partial Class Basemap
             Me.ShowInTaskbar = False
             Me.TabText = "Define habitats"
             Me.SplitContainer1.Panel1.ResumeLayout(False)
+            Me.SplitContainer1.Panel1.PerformLayout()
             Me.SplitContainer1.Panel2.ResumeLayout(False)
             Me.SplitContainer1.ResumeLayout(False)
             Me.TableLayoutPanel1.ResumeLayout(False)
-            Me.TableLayoutPanel1.PerformLayout()
             Me.tsEditBasemapThingies.ResumeLayout(False)
             Me.tsEditBasemapThingies.PerformLayout()
             Me.ResumeLayout(False)
@@ -148,8 +156,9 @@ Partial Class Basemap
         Private WithEvents tsbEditRegion As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbEditMPA As System.Windows.Forms.ToolStripButton
         Private WithEvents m_plEditor As System.Windows.Forms.Panel
-        Private WithEvents m_zoomContainer As ScientificInterface.Ecospace.ucZoomBaseMap
+        Private WithEvents m_zoomContainer As ScientificInterface.Ecospace.ucMapZoom
         Private WithEvents m_hdrLayers As cEwEHeaderLabel
+        Private WithEvents m_zoomToolbar As ScientificInterface.Ecospace.ucMapZoomToolbar
 
     End Class
 

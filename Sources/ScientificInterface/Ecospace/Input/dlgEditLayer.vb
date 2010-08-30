@@ -37,9 +37,9 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>Work layer (a copy of the original) for this dialog to work on.</summary>
         Private m_layerWork As cLayer = Nothing
         '''' <summary>Basemap zoom wrapper</summary>
-        Private m_ucZoomControl As ucZoomBaseMap = Nothing
+        Private m_ucZoomControl As ucMapZoom = Nothing
         '''' <summary>Preview pane</summary>
-        Private m_ucPreview As ucBaseMap = Nothing
+        Private m_ucPreview As ucMap = Nothing
         ''' <summary>Editor to transmogrify the representation of the layer.</summary>
         Private m_ucEditVisualStyle As ucEditVisualStyle = Nothing
 
@@ -92,7 +92,7 @@ Namespace Ecospace.Basemap.Layers
             MyBase.OnLoad(e)
 
             ' Hook up preview Layer to user control
-            Me.m_ucZoomControl = New ucZoomBaseMap()
+            Me.m_ucZoomControl = New ucMapZoom()
             Me.m_ucZoomControl.Dock = DockStyle.Fill
             Me.m_ucZoomControl.UIContext = Me.m_uic
 
@@ -106,8 +106,8 @@ Namespace Ecospace.Basemap.Layers
 
             ' Add basemap to Panel
             Me.pnBasemap.Controls.Add(Me.m_ucZoomControl)
-            Me.m_ucZoomControl.PositionMode = ucZoomBaseMap.ePositionModeTypes.Center
-            Me.m_ucZoomControl.Zoom(ucZoomBaseMap.eZoomTypes.ZoomReset)
+            Me.m_ucZoomControl.PositionMode = ucMapZoom.ePositionModeTypes.Center
+            Me.m_ucZoomControl.ZoomPercentage = 1.0!
 
             Me.m_grid.UIContext = Me.m_uic
 

@@ -27,7 +27,7 @@ Namespace Ecospace
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMPAOptimizations))
             Me.m_btnRun = New System.Windows.Forms.Button
             Me.m_btnStop = New System.Windows.Forms.Button
-            Me.m_ucZoom = New ScientificInterface.Ecospace.ucZoomBaseMap
+            Me.m_ucZoom = New ScientificInterface.Ecospace.ucMapZoom
             Me.m_tlbLayers = New System.Windows.Forms.TableLayoutPanel
             Me.m_plLayers = New System.Windows.Forms.Panel
             Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -143,7 +143,7 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.m_ucZoom, "m_ucZoom")
             Me.m_ucZoom.Name = "m_ucZoom"
-            Me.m_ucZoom.PositionMode = ScientificInterface.Ecospace.ucZoomBaseMap.ePositionModeTypes.Center
+            Me.m_ucZoom.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
             Me.m_ucZoom.UIContext = Nothing
             '
             'm_tlbLayers
@@ -815,7 +815,7 @@ Namespace Ecospace
         Private WithEvents m_tlbParameters As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lbMPA As System.Windows.Forms.Label
         Private WithEvents m_scMap As System.Windows.Forms.SplitContainer
-        Private WithEvents m_ucZoom As ScientificInterface.Ecospace.ucZoomBaseMap
+        Private WithEvents m_ucZoom As ScientificInterface.Ecospace.ucMapZoom
         Private WithEvents m_plLayers As System.Windows.Forms.Panel
         Private WithEvents m_btnRun As System.Windows.Forms.Button
         Private WithEvents m_btnStop As System.Windows.Forms.Button

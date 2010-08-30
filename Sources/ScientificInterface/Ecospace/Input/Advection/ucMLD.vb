@@ -35,6 +35,12 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
+        Public ReadOnly Property ZoomCtrl() As ucMapZoom
+            Get
+                Return Me.m_zoomctrl
+            End Get
+        End Property
+
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
             If Me.m_uic Is Nothing Then Return
@@ -43,7 +49,7 @@ Namespace Ecospace.Advection
 
         Private Sub PopulateMap()
 
-            Me.m_map.Basemap = Me.m_uic.Core.EcospaceBasemap
+            Me.m_zoomctrl.Map.Basemap = Me.m_uic.Core.EcospaceBasemap
             Me.AddLayers(eVarNameFlags.LayerDepth, False)
             Me.AddLayers(eVarNameFlags.LayerAdvection, True)
 
@@ -53,20 +59,20 @@ Namespace Ecospace.Advection
 
             Me.RemoveLayers(eVarNameFlags.LayerDepth)
             Me.RemoveLayers(eVarNameFlags.LayerAdvection)
-            Me.m_map.Basemap = Nothing
+            Me.m_zoomctrl.Map.Basemap = Nothing
 
         End Sub
 
         Private Sub AddLayers(ByVal vn As eVarNameFlags, ByVal bEditable As Boolean)
             For Each l As cLayer In cLayerFactory.GetLayers(Me.m_uic, vn)
                 l.Editor.IsReadOnly = Not bEditable
-                Me.m_map.AddLayer(l)
+                Me.m_zoomctrl.Map.AddLayer(l)
             Next l
         End Sub
 
         Private Sub RemoveLayers(ByVal vn As eVarNameFlags)
             For Each l As cLayer In cLayerFactory.GetLayers(Me.m_uic, vn)
-                Me.m_map.RemoveLayer(l)
+                Me.m_zoomctrl.Map.RemoveLayer(l)
             Next l
         End Sub
 

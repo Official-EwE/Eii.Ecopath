@@ -31,7 +31,7 @@ Namespace Ecospace.Basemap
         ''' <summary>The one and only administration of layers.</summary>
         Private m_layers As New List(Of cLayer)
         ''' <summary>The one and only control that renders the basemap.</summary>
-        Private m_ucBasemap As ucBaseMap = Nothing
+        Private m_ucBasemap As ucMap = Nothing
         ''' <summary>The one and only control that provides the layers interface.</summary>
         Private m_ucLayers As ucLayersControl = Nothing
         ''' <summary>Contaminant tracing on/off property.</summary>
@@ -62,6 +62,7 @@ Namespace Ecospace.Basemap
             Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
                 MyBase.UIContext = value
                 Me.m_zoomContainer.UIContext = value
+                Me.m_zoomToolbar.UIContext = value
             End Set
         End Property
 
@@ -86,6 +87,7 @@ Namespace Ecospace.Basemap
 
             Me.Basemap = Me.Core.EcospaceBasemap
             Me.m_ucBasemap.Editable = True
+            Me.m_zoomToolbar.AddZoomContainer(Me.m_zoomContainer)
 
             Me.m_cmdEditBasemap = cmdh.GetCommand("EditBasemap")
             If (Not Object.ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then

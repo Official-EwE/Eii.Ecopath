@@ -199,12 +199,6 @@
     <Compile Include="Ecopath\Input\DietComp.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\Basemap\ucZoomBasemap.designer.vb">
-      <DependentUpon>ucZoomBasemap.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Assets\Basemap\ucZoomBasemap.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Ecospace\Tools\frmMPAOptimizations.Designer.vb">
       <DependentUpon>frmMPAOptimizations.vb</DependentUpon>
     </Compile>
@@ -395,16 +389,16 @@
     <Compile Include="Search\gridSearchObjectivesWeight.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayerGroup.Designer.vb">
+    <Compile Include="Ecospace\Assets\Map\Layer Controls\ucLayerGroup.Designer.vb">
       <DependentUpon>ucLayerGroup.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayerGroup.vb">
+    <Compile Include="Ecospace\Assets\Map\Layer Controls\ucLayerGroup.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\Basemap\ucBaseMap.Designer.vb">
-      <DependentUpon>ucBaseMap.vb</DependentUpon>
+    <Compile Include="Ecospace\Assets\Map\ucMap.Designer.vb">
+      <DependentUpon>ucMap.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\Basemap\ucBaseMap.vb">
+    <Compile Include="Ecospace\Assets\Map\ucMap.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\EcospaceScenarioDlg.vb">
@@ -426,16 +420,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRenderer.vb" />
-    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayer.Designer.vb">
+    <Compile Include="Ecospace\Assets\Map\Layer Controls\ucLayer.Designer.vb">
       <DependentUpon>ucLayer.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayer.vb">
+    <Compile Include="Ecospace\Assets\Map\Layer Controls\ucLayer.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayersControl.Designer.vb">
+    <Compile Include="Ecospace\Assets\Map\Layer Controls\ucLayersControl.Designer.vb">
       <DependentUpon>ucLayersControl.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayersControl.vb">
+    <Compile Include="Ecospace\Assets\Map\Layer Controls\ucLayersControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgEditBasemap.Designer.vb">
@@ -913,6 +907,12 @@
       <DependentUpon>frmApplyMedPrimaryProducer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Assets\Map\ucMapZoomToolbar.resx">
+      <DependentUpon>ucMapZoomToolbar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Assets\Map\ucMapZoom.resx">
+      <DependentUpon>ucMapZoom.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRegion.resx">
       <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
     </EmbeddedResource>
@@ -1169,6 +1169,18 @@
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedPrimaryProducer.vb">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Assets\Map\ucMapZoomToolbar.Designer.vb">
+      <DependentUpon>ucMapZoomToolbar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\Map\ucMapZoomToolbar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Assets\Map\ucMapZoom.designer.vb">
+      <DependentUpon>ucMapZoom.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\Map\ucMapZoom.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRegion.Designer.vb">
       <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
@@ -1683,12 +1695,12 @@
       <SubType>Designer</SubType>
       <DependentUpon>ucVulnerabiltyBlocks.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\Basemap\Layer Controls\ucLayerGroup.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Map\Layer Controls\ucLayerGroup.resx">
       <DependentUpon>ucLayerGroup.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\Basemap\ucBaseMap.resx">
-      <DependentUpon>ucBaseMap.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Assets\Map\ucMap.resx">
+      <DependentUpon>ucMap.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Basemap.resx">
@@ -1699,16 +1711,12 @@
       <DependentUpon>dlgEditLayer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\Basemap\Layer Controls\ucLayer.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Map\Layer Controls\ucLayer.resx">
       <DependentUpon>ucLayer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\Basemap\Layer Controls\ucLayersControl.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Map\Layer Controls\ucLayersControl.resx">
       <DependentUpon>ucLayersControl.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\Basemap\ucZoomBasemap.resx">
-      <DependentUpon>ucZoomBasemap.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgEditBasemap.resx">

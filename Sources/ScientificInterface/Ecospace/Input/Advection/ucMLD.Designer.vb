@@ -24,24 +24,22 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_map = New ScientificInterface.Ecospace.ucBaseMap
+            Me.m_zoomctrl = New ScientificInterface.Ecospace.ucMapZoom
             Me.m_hdrTitle = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.SuspendLayout()
             '
-            'm_map
+            'm_zoomctrl
             '
-            Me.m_map.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Me.m_zoomctrl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_map.BackColor = System.Drawing.Color.White
-            Me.m_map.Basemap = Nothing
-            Me.m_map.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_map.Editable = False
-            Me.m_map.Location = New System.Drawing.Point(0, 18)
-            Me.m_map.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_map.Name = "m_map"
-            Me.m_map.Size = New System.Drawing.Size(360, 383)
-            Me.m_map.TabIndex = 0
+            Me.m_zoomctrl.BackColor = System.Drawing.Color.White
+            Me.m_zoomctrl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_zoomctrl.Location = New System.Drawing.Point(0, 18)
+            Me.m_zoomctrl.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_zoomctrl.Name = "m_zoomctrl"
+            Me.m_zoomctrl.Size = New System.Drawing.Size(360, 383)
+            Me.m_zoomctrl.TabIndex = 0
             '
             'm_hdrTitle
             '
@@ -60,13 +58,13 @@
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_hdrTitle)
-            Me.Controls.Add(Me.m_map)
+            Me.Controls.Add(Me.m_zoomctrl)
             Me.Name = "ucMLD"
             Me.Size = New System.Drawing.Size(360, 401)
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents m_map As ScientificInterface.Ecospace.ucBaseMap
+        Private WithEvents m_zoomctrl As ScientificInterface.Ecospace.ucMapZoom
         Private WithEvents m_hdrTitle As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
     End Class
