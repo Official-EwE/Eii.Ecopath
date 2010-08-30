@@ -62,6 +62,14 @@ Namespace Database
             End If
 
             Try
+                ' Absolutely lovely... the following code will not compile if
+                ' you do not have the Access interop assemblies installed on 
+                ' your system. To our best knowledge there is no work-around
+                ' to include or exclude code via preprocessor directives
+                ' based on the availability of referenced assemblies. Please
+                ' let us know when you find a solution that does not entail
+                ' eradicating these lines of code from your system!
+
                 ' Create engine
                 Dim engine As Dao.DBEngine = New Dao.DBEngine()
 
