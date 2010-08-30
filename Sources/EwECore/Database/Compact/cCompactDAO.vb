@@ -64,7 +64,7 @@ Namespace Database
             Try
                 ' Absolutely lovely... the following code will not compile if
                 ' you do not have the Access interop assemblies installed on 
-                ' your system. To our best knowledge there is no work-around
+                ' your system. To our best knowledge VS does not provide a way
                 ' to include or exclude code via preprocessor directives
                 ' based on the availability of referenced assemblies. Please
                 ' let us know when you find a solution that does not entail
