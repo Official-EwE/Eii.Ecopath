@@ -269,9 +269,17 @@ Namespace Ecospace
             ptMap.X = CInt(IIf(ptCentered.X > 0, ptCentered.X, ptScroll.X))
             ptMap.Y = CInt(IIf(ptCentered.Y > 0, ptCentered.Y, ptScroll.Y))
 
+            ' Hold all blinking etc
+            Me.SuspendLayout()
+
+            ' Apply all
             Me.m_map.Location = ptMap
+            Me.UpdateControls()
 
             RaiseEvent OnPositionChanged(Me)
+
+            ' Resume rendering
+            Me.ResumeLayout()
 
         End Sub
 
@@ -282,15 +290,20 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Private Sub UpdateControls()
 
-            If Me.PositionMode = ePositionModeTypes.Stretch Then
+            ' In stretch mode zooming and scrolling is disabled since
+            ' the map fills the entire available area. When the zoom percentage is 
+            ' less that 100%, scrolling is not required. As such, in both cases, 
+            ' scrollbars are hidden and the map occupies the entire area.
+
+            If (Me.PositionMode = ePositionModeTypes.Stretch) Or (Me.ZoomPercentage <= 100.0!) Then
                 Me.m_sbHorz.Visible = False
                 Me.m_sbVert.Visible = False
                 Me.m_plZoom.Size = Me.Size
             Else
                 Me.m_sbHorz.Visible = True
                 Me.m_sbVert.Visible = True
-                Me.m_plZoom.Size = New Size(Me.Size.Width - Me.m_sbVert.Width, _
-                                            Me.Size.Height - Me.m_sbHorz.Height)
+                Me.m_plZoom.Size = New Size(Me.m_sbVert.Location.X, _
+                                            Me.m_sbHorz.Location.Y)
             End If
 
         End Sub
