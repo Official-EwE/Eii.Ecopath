@@ -41,6 +41,7 @@ Namespace Ecospace
             Me.SetStyle(ControlStyles.UserPaint, True)
 
             Me.BackColor = Color.White
+            Me.BorderStyle = Windows.Forms.BorderStyle.FixedSingle
 
         End Sub
 
