@@ -63,7 +63,7 @@ Namespace Ecospace
 #Region " Constructor "
 
         Public Sub New()
-            InitializeComponent()
+            Me.InitializeComponent()
         End Sub
 
 #End Region ' Constructor
@@ -191,11 +191,9 @@ Namespace Ecospace
             Select Case Me.PositionMode
                 Case ePositionModeTypes.Stretch
                     Me.m_map.Dock = DockStyle.Fill
-                    ' ToDo: hide scrollbars, repos content
 
                 Case ePositionModeTypes.Center
                     Me.m_map.Dock = DockStyle.None
-                    ' ToDo: show scrollbars, repos content
 
             End Select
 
@@ -211,6 +209,8 @@ Namespace Ecospace
         Private Sub SetZoomLevel()
 
             If Object.ReferenceEquals(Me.m_map, Nothing) Then Return
+
+            Me.UpdateControls()
 
             ' Get map size at 100% in current view mode
             Dim szfSizeMap As SizeF = Me.GetFittedMapSize()
@@ -261,6 +261,8 @@ Namespace Ecospace
 
             If Object.ReferenceEquals(Me.m_map, Nothing) Then Return
 
+            Me.UpdateControls()
+
             ' Get zoom area
             Dim szZoom As Size = Me.GetZoomSize()
             ' Get centered map pos 
@@ -277,7 +279,6 @@ Namespace Ecospace
 
             ' Apply all
             Me.m_map.Location = ptMap
-            Me.UpdateControls()
 
             If Not Me.m_bInUpdate Then RaiseEvent OnPositionChanged(Me)
 
@@ -301,7 +302,7 @@ Namespace Ecospace
             If (Me.PositionMode = ePositionModeTypes.Stretch) Or (Me.ZoomPercentage <= 100.0!) Then
                 Me.m_sbHorz.Visible = False
                 Me.m_sbVert.Visible = False
-                Me.m_plZoom.Size = Me.Size
+                Me.m_plZoom.Size = Me.ClientRectangle.Size
             Else
                 Me.m_sbHorz.Visible = True
                 Me.m_sbVert.Visible = True
