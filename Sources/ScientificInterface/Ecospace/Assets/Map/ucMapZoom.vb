@@ -102,8 +102,10 @@ Namespace Ecospace
             End Get
 
             Set(ByVal value As ePositionModeTypes)
+                Me.m_bInUpdate = True
                 Me.m_positionMode = value
                 Me.SetPositionMode()
+                Me.m_bInUpdate = False
             End Set
 
         End Property
@@ -118,8 +120,10 @@ Namespace Ecospace
                 Return Me.m_sZoom * 100.0!
             End Get
             Set(ByVal value As Single)
+                Me.m_bInUpdate = True
                 Me.m_sZoom = value * 0.01!
                 Me.SetZoomLevel()
+                Me.m_bInUpdate = False
             End Set
         End Property
 
@@ -256,7 +260,6 @@ Namespace Ecospace
         Private Sub UpdatePosition()
 
             If Object.ReferenceEquals(Me.m_map, Nothing) Then Return
-            If Me.m_bInUpdate Then Return
 
             ' Get zoom area
             Dim szZoom As Size = Me.GetZoomSize()
@@ -276,7 +279,7 @@ Namespace Ecospace
             Me.m_map.Location = ptMap
             Me.UpdateControls()
 
-            RaiseEvent OnPositionChanged(Me)
+            If Not Me.m_bInUpdate Then RaiseEvent OnPositionChanged(Me)
 
             ' Resume rendering
             Me.ResumeLayout()

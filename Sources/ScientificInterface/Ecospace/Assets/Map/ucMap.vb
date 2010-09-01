@@ -14,9 +14,14 @@ Imports EwEUtils.Core
 
 Namespace Ecospace
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' ucBasemap renders an image of a series core data layers.
+    ''' Control that provides an interface to a series core data map layers.
     ''' </summary>
+    ''' <remarks>
+    ''' To provide zoom functionality, use <see cref="ucMapZoom">ucMapZoom</see>.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Class ucMap
 
         ''' <summary>The bitmap to draw on.</summary>
