@@ -46,7 +46,7 @@ Namespace Ecospace
             Me.m_plZoom.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_plZoom.BackColor = System.Drawing.SystemColors.AppWorkspace
+            Me.m_plZoom.BackColor = System.Drawing.SystemColors.Control
             Me.m_plZoom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_plZoom.Controls.Add(Me.m_map)
             Me.m_plZoom.Location = New System.Drawing.Point(0, 0)
@@ -59,6 +59,7 @@ Namespace Ecospace
             '
             Me.m_map.BackColor = System.Drawing.SystemColors.Window
             Me.m_map.Basemap = Nothing
+            Me.m_map.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_map.Editable = False
             Me.m_map.Location = New System.Drawing.Point(0, 0)
             Me.m_map.Margin = New System.Windows.Forms.Padding(0)
