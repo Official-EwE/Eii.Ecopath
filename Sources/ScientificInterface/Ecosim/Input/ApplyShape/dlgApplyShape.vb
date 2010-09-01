@@ -151,14 +151,14 @@ Namespace Ecosim
             ' Load Prey and predator pair name
             Select Case m_editMode
                 Case eEditMode.PredPrey
-                    txbPreyName.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, m_iSelPrey, m_strSelPreyName)
-                    txbPredName.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, m_iSelPredIndex, m_strSelPredName)
+                    m_txbPreyName.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, m_iSelPrey, m_strSelPreyName)
+                    m_txbPredName.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, m_iSelPredIndex, m_strSelPredName)
                 Case eEditMode.Prey
-                    lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_PREY, m_iSelPrey, m_strSelPreyName)
+                    m_lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_PREY, m_iSelPrey, m_strSelPreyName)
                 Case eEditMode.Predator
-                    lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_PRED, m_iSelPredIndex, m_strSelPredName)
+                    m_lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_PRED, m_iSelPredIndex, m_strSelPredName)
                 Case eEditMode.All
-                    lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_ALL)
+                    m_lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_ALL)
             End Select
 
             UpdateControls()
@@ -205,7 +205,7 @@ Namespace Ecosim
 
         Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
-            Dim iNumApplied As Integer = lvAppliedShapes.Items.Count
+            Dim iNumApplied As Integer = m_lvAppliedShapes.Items.Count
             Dim lvItem As ListViewItem = Nothing
             Dim shape As cForcingFunction = Nothing
             Dim iApplication As Integer = 0
@@ -232,7 +232,7 @@ Namespace Ecosim
 
                     For iApplicationSlot As Integer = 1 To ppi.MaxNumShapes
                         If iApplicationSlot <= iNumApplied Then ' The shape is being applied
-                            lvItem = lvAppliedShapes.Items(iApplicationSlot - 1)
+                            lvItem = m_lvAppliedShapes.Items(iApplicationSlot - 1)
                             shape = DirectCast(lvItem.Tag, cForcingFunction)
 
                             ffappl = GetTypeFromMultiplier(lvItem.SubItems(1).Text)
@@ -260,40 +260,40 @@ Namespace Ecosim
             Me.Close()
         End Sub
 
-        Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles btnAdd.Click
+        Private Sub OnAdd(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnAdd.Click
             Me.AddShape()
         End Sub
 
-        Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles btnRemove.Click
+        Private Sub OnRemove(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnRemove.Click
             Me.RemoveShape()
         End Sub
 
         Private Sub SetMultiplier(ByVal sender As System.Object, ByVal e As System.EventArgs) _
          '   Handles rbVulArea.CheckedChanged, rbVul.CheckedChanged, rbSearchRate.CheckedChanged, rbArea.CheckedChanged
 
-            Dim colSelected As ListView.SelectedIndexCollection = lvAppliedShapes.SelectedIndices
+            Dim colSelected As ListView.SelectedIndexCollection = m_lvAppliedShapes.SelectedIndices
 
             If colSelected.Count > 0 Then
-                Dim item As ListViewItem = lvAppliedShapes.Items(colSelected(0))
+                Dim item As ListViewItem = m_lvAppliedShapes.Items(colSelected(0))
                 item.SubItems(1).Text = GetMultiplier()
             End If
 
         End Sub
 
         Private Sub lvAppliedShapes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles lvAppliedShapes.SelectedIndexChanged
+            Handles m_lvAppliedShapes.SelectedIndexChanged
             Me.UpdateControls()
         End Sub
 
         Private Sub lvAllShapes_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles lvAllShapes.DoubleClick
+            Handles m_lvAllShapes.DoubleClick
             Me.AddShape()
         End Sub
 
         Private Sub lvAppliedShapes_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles lvAppliedShapes.DoubleClick
+            Handles m_lvAppliedShapes.DoubleClick
             Me.RemoveShape()
         End Sub
 
@@ -324,7 +324,7 @@ Namespace Ecosim
 
         Private Sub AddShape()
 
-            Dim colSelected As ListView.SelectedIndexCollection = lvAllShapes.SelectedIndices
+            Dim colSelected As ListView.SelectedIndexCollection = m_lvAllShapes.SelectedIndices
             Dim shapeSelected As cForcingFunction = Nothing
             Dim shapeTest As cForcingFunction = Nothing
             Dim item As ListViewItem = Nothing
@@ -332,14 +332,14 @@ Namespace Ecosim
             If colSelected.Count > 0 Then
 
                 'Get the shape data
-                item = Me.lvAllShapes.Items(colSelected(0))
+                item = Me.m_lvAllShapes.Items(colSelected(0))
                 shapeSelected = Shape(item)
 
                 ' Sanity check
                 Debug.Assert(shapeSelected IsNot Nothing, "Unable to locate applied forcing function")
 
                 ' Find duplicate
-                For Each itemTest As ListViewItem In lvAppliedShapes.Items
+                For Each itemTest As ListViewItem In m_lvAppliedShapes.Items
                     shapeTest = Shape(itemTest)
                     If Object.ReferenceEquals(shapeSelected, shapeTest) Then Return
                 Next
@@ -350,20 +350,20 @@ Namespace Ecosim
                 item.SubItems.Add(CStr(shapeSelected.Index))
                 item.Tag = shapeSelected
 
-                lvAppliedShapes.Items.Add(item)
+                m_lvAppliedShapes.Items.Add(item)
             End If
 
             UpdateControls()
         End Sub
 
         Public Sub RemoveShape()
-            Dim colSelected As ListView.SelectedIndexCollection = lvAppliedShapes.SelectedIndices
+            Dim colSelected As ListView.SelectedIndexCollection = m_lvAppliedShapes.SelectedIndices
             If colSelected.Count > 0 Then
-                lvAppliedShapes.Items.RemoveAt(colSelected(0))
+                m_lvAppliedShapes.Items.RemoveAt(colSelected(0))
             End If
 
-            If lvAppliedShapes.Items.Count > 0 Then
-                lvAppliedShapes.Items(lvAppliedShapes.Items.Count - 1).Selected = True
+            If m_lvAppliedShapes.Items.Count > 0 Then
+                m_lvAppliedShapes.Items(m_lvAppliedShapes.Items.Count - 1).Selected = True
             End If
 
             UpdateControls()
@@ -371,16 +371,16 @@ Namespace Ecosim
 
         Private Sub UpdateControls()
 
-            Dim colSelected As ListView.SelectedIndexCollection = lvAppliedShapes.SelectedIndices
+            Dim colSelected As ListView.SelectedIndexCollection = m_lvAppliedShapes.SelectedIndices
             Dim lvi As ListViewItem = Nothing
             Dim shape As cShapeData = Nothing
             Dim bAppliedSelected As Boolean = False
             Dim bOnlyAllowedAppliedSelected As Boolean = True
-            Dim nApplied As Integer = lvAppliedShapes.Items.Count
+            Dim nApplied As Integer = m_lvAppliedShapes.Items.Count
 
             ' Determine if Applied shape selection consists of ONLY allowed shapes
             For Each iIndex As Integer In colSelected
-                lvi = lvAppliedShapes.Items(iIndex)
+                lvi = m_lvAppliedShapes.Items(iIndex)
                 shape = DirectCast(lvi.Tag, cShapeData)
                 bAppliedSelected = True
                 bOnlyAllowedAppliedSelected = bOnlyAllowedAppliedSelected And (Me.IsAllowedShape(shape))
@@ -388,38 +388,38 @@ Namespace Ecosim
 
             'Add button is disabled when the count of AppliedShape for the current Pred-Prey pair is >=5
             ' ToDo_JS: obtain '5' from a constant in cPPIManager?
-            btnAdd.Enabled = (nApplied < 5)
+            m_btnAdd.Enabled = (nApplied < 5)
             'Remove button is disabled when no appliedShape is selected for the current Pred-Prey pair
-            btnRemove.Enabled = bAppliedSelected And bOnlyAllowedAppliedSelected
+            m_btnRemove.Enabled = bAppliedSelected And bOnlyAllowedAppliedSelected
 
             If (Me.m_editMode = eEditMode.PredPrey) Then
-                lblPrey.Visible = True
-                txbPreyName.Visible = True
-                lblPred.Visible = True
-                txbPredName.Visible = True
-                lblTitle.Visible = False
+                m_lblPrey.Visible = True
+                m_txbPreyName.Visible = True
+                m_lblPred.Visible = True
+                m_txbPredName.Visible = True
+                m_lblTitle.Visible = False
             Else
-                lblTitle.Location = lblPrey.Location
-                lblPrey.Visible = False
-                txbPreyName.Visible = False
-                lblPred.Visible = False
-                txbPredName.Visible = False
-                lblTitle.Visible = True
+                m_lblTitle.Location = m_lblPrey.Location
+                m_lblPrey.Visible = False
+                m_txbPreyName.Visible = False
+                m_lblPred.Visible = False
+                m_txbPredName.Visible = False
+                m_lblTitle.Visible = True
             End If
 
         End Sub
 
         Private Function GetMultiplier() As String
 
-            If rbSearchRate.Checked Then
+            If m_rbSearchRate.Checked Then
                 Return My.Resources.SHAPE_MULTIPLIER_1
-            ElseIf rbVul.Checked Then
+            ElseIf m_rbVul.Checked Then
                 Return My.Resources.SHAPE_MULTIPLIER_2
-            ElseIf rbArea.Checked Then
+            ElseIf m_rbArea.Checked Then
                 Return My.Resources.SHAPE_MULTIPLIER_3
-            ElseIf rbVulArea.Checked Then
+            ElseIf m_rbVulArea.Checked Then
                 Return My.Resources.SHAPE_MULTIPLIER_4
-            ElseIf rbProdRate.Checked Then
+            ElseIf m_rbProdRate.Checked Then
                 Return My.Resources.SHAPE_MULTIPLIER_5
             End If
 
@@ -503,7 +503,7 @@ Namespace Ecosim
             Dim item As ListViewItem = Nothing
             Dim i As Integer = 0
 
-            lvAllShapes.Items.Clear()
+            m_lvAllShapes.Items.Clear()
 
             If m_lFFs.Count > 0 Then
 
@@ -514,17 +514,17 @@ Namespace Ecosim
                         item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, ff.Index, ff.Name))
                         item.ImageIndex = FindImageIndex(ff)
                         item.Tag = ff
-                        lvAllShapes.Items.Add(item)
+                        m_lvAllShapes.Items.Add(item)
 
                         ' Next
                         i += 1
                     End If
                 Next
 
-                lvAllShapes.View = View.SmallIcon
-                lvAllShapes.Items(0).Selected = True
-                lvAllShapes.LargeImageList = Me.m_ilLarge
-                lvAllShapes.SmallImageList = Me.m_ilSmall
+                m_lvAllShapes.View = View.SmallIcon
+                m_lvAllShapes.Items(0).Selected = True
+                m_lvAllShapes.LargeImageList = Me.m_ilLarge
+                m_lvAllShapes.SmallImageList = Me.m_ilSmall
 
             End If
 
@@ -557,14 +557,14 @@ Namespace Ecosim
                         item.ForeColor = SystemColors.GrayText
                     End If
 
-                    lvAppliedShapes.Items.Add(item)
+                    m_lvAppliedShapes.Items.Add(item)
 
                 Next
             End If
 
-            lvAppliedShapes.View = View.Details
-            lvAppliedShapes.LargeImageList = m_ilLarge
-            lvAppliedShapes.SmallImageList = m_ilSmall
+            m_lvAppliedShapes.View = View.Details
+            m_lvAppliedShapes.LargeImageList = m_ilLarge
+            m_lvAppliedShapes.SmallImageList = m_ilSmall
 
         End Sub
 
@@ -580,18 +580,18 @@ Namespace Ecosim
 
             Select Case Me.m_targetType
                 Case eApplyTargetTypes.Consumer
-                    rbProdRate.Visible = False : rbProdRate.Enabled = False : rbProdRate.Checked = False
-                    rbSearchRate.Visible = True : rbSearchRate.Enabled = True : rbSearchRate.Checked = True
-                    rbVul.Visible = True : rbVul.Enabled = True
-                    rbVulArea.Visible = True : rbVulArea.Enabled = True
-                    rbArea.Visible = True : rbArea.Enabled = True
+                    m_rbProdRate.Visible = False : m_rbProdRate.Enabled = False : m_rbProdRate.Checked = False
+                    m_rbSearchRate.Visible = True : m_rbSearchRate.Enabled = True : m_rbSearchRate.Checked = True
+                    m_rbVul.Visible = True : m_rbVul.Enabled = True
+                    m_rbVulArea.Visible = True : m_rbVulArea.Enabled = True
+                    m_rbArea.Visible = True : m_rbArea.Enabled = True
 
                 Case eApplyTargetTypes.PrimaryProducer
-                    rbProdRate.Visible = True : rbProdRate.Enabled = True : rbProdRate.Checked = True
-                    rbSearchRate.Visible = False : rbSearchRate.Enabled = False
-                    rbVul.Visible = False : rbVul.Enabled = False
-                    rbVulArea.Visible = False : rbVulArea.Enabled = False
-                    rbArea.Visible = False : rbArea.Enabled = False
+                    m_rbProdRate.Visible = True : m_rbProdRate.Enabled = True : m_rbProdRate.Checked = True
+                    m_rbSearchRate.Visible = False : m_rbSearchRate.Enabled = False
+                    m_rbVul.Visible = False : m_rbVul.Enabled = False
+                    m_rbVulArea.Visible = False : m_rbVulArea.Enabled = False
+                    m_rbArea.Visible = False : m_rbArea.Enabled = False
 
                 Case eApplyTargetTypes.NotSet
                     Debug.Assert(False)

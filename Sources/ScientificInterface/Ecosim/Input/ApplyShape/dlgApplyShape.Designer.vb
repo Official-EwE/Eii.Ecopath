@@ -22,40 +22,31 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgApplyShape))
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.lblPred = New System.Windows.Forms.Label
-            Me.lblPrey = New System.Windows.Forms.Label
-            Me.lblAvailableFF = New System.Windows.Forms.Label
+            Me.m_lblPred = New System.Windows.Forms.Label
+            Me.m_lblPrey = New System.Windows.Forms.Label
+            Me.m_lblAvailableFF = New System.Windows.Forms.Label
             Me.lblSearchRate = New System.Windows.Forms.Label
-            Me.txbPreyName = New System.Windows.Forms.TextBox
-            Me.txbPredName = New System.Windows.Forms.TextBox
-            Me.gbMultipliers = New System.Windows.Forms.GroupBox
-            Me.rbSearchRate = New System.Windows.Forms.RadioButton
-            Me.rbVulArea = New System.Windows.Forms.RadioButton
-            Me.rbProdRate = New System.Windows.Forms.RadioButton
-            Me.rbArea = New System.Windows.Forms.RadioButton
-            Me.rbVul = New System.Windows.Forms.RadioButton
-            Me.btnAdd = New System.Windows.Forms.Button
-            Me.lvAppliedShapes = New System.Windows.Forms.ListView
-            Me.chShape = New System.Windows.Forms.ColumnHeader
-            Me.chModifier = New System.Windows.Forms.ColumnHeader
-            Me.chIndex = New System.Windows.Forms.ColumnHeader
-            Me.lvAllShapes = New System.Windows.Forms.ListView
-            Me.btnRemove = New System.Windows.Forms.Button
-            Me.lblTitle = New System.Windows.Forms.Label
-            Me.lblAppliedFF = New System.Windows.Forms.Label
-            Me.TableLayoutPanel1.SuspendLayout()
-            Me.gbMultipliers.SuspendLayout()
+            Me.m_txbPreyName = New System.Windows.Forms.TextBox
+            Me.m_txbPredName = New System.Windows.Forms.TextBox
+            Me.m_gbMultipliers = New System.Windows.Forms.GroupBox
+            Me.m_rbSearchRate = New System.Windows.Forms.RadioButton
+            Me.m_rbVulArea = New System.Windows.Forms.RadioButton
+            Me.m_rbProdRate = New System.Windows.Forms.RadioButton
+            Me.m_rbArea = New System.Windows.Forms.RadioButton
+            Me.m_rbVul = New System.Windows.Forms.RadioButton
+            Me.m_btnAdd = New System.Windows.Forms.Button
+            Me.m_lvAppliedShapes = New System.Windows.Forms.ListView
+            Me.m_colhdrShape = New System.Windows.Forms.ColumnHeader
+            Me.m_colhdrModifier = New System.Windows.Forms.ColumnHeader
+            Me.m_colhdrIndex = New System.Windows.Forms.ColumnHeader
+            Me.m_lvAllShapes = New System.Windows.Forms.ListView
+            Me.m_btnRemove = New System.Windows.Forms.Button
+            Me.m_lblTitle = New System.Windows.Forms.Label
+            Me.m_lblAppliedFF = New System.Windows.Forms.Label
+            Me.m_gbMultipliers.SuspendLayout()
             Me.SuspendLayout()
-            '
-            'TableLayoutPanel1
-            '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
             '
             'OK_Button
             '
@@ -68,138 +59,138 @@ Namespace Ecosim
             Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Cancel_Button.Name = "Cancel_Button"
             '
-            'lblPred
+            'm_lblPred
             '
-            resources.ApplyResources(Me.lblPred, "lblPred")
-            Me.lblPred.Name = "lblPred"
+            resources.ApplyResources(Me.m_lblPred, "m_lblPred")
+            Me.m_lblPred.Name = "m_lblPred"
             '
-            'lblPrey
+            'm_lblPrey
             '
-            resources.ApplyResources(Me.lblPrey, "lblPrey")
-            Me.lblPrey.Name = "lblPrey"
+            resources.ApplyResources(Me.m_lblPrey, "m_lblPrey")
+            Me.m_lblPrey.Name = "m_lblPrey"
             '
-            'lblAvailableFF
+            'm_lblAvailableFF
             '
-            resources.ApplyResources(Me.lblAvailableFF, "lblAvailableFF")
-            Me.lblAvailableFF.Name = "lblAvailableFF"
+            resources.ApplyResources(Me.m_lblAvailableFF, "m_lblAvailableFF")
+            Me.m_lblAvailableFF.Name = "m_lblAvailableFF"
             '
             'lblSearchRate
             '
             resources.ApplyResources(Me.lblSearchRate, "lblSearchRate")
             Me.lblSearchRate.Name = "lblSearchRate"
             '
-            'txbPreyName
+            'm_txbPreyName
             '
-            resources.ApplyResources(Me.txbPreyName, "txbPreyName")
-            Me.txbPreyName.Name = "txbPreyName"
-            Me.txbPreyName.ReadOnly = True
+            resources.ApplyResources(Me.m_txbPreyName, "m_txbPreyName")
+            Me.m_txbPreyName.Name = "m_txbPreyName"
+            Me.m_txbPreyName.ReadOnly = True
             '
-            'txbPredName
+            'm_txbPredName
             '
-            resources.ApplyResources(Me.txbPredName, "txbPredName")
-            Me.txbPredName.Name = "txbPredName"
-            Me.txbPredName.ReadOnly = True
+            resources.ApplyResources(Me.m_txbPredName, "m_txbPredName")
+            Me.m_txbPredName.Name = "m_txbPredName"
+            Me.m_txbPredName.ReadOnly = True
             '
-            'gbMultipliers
+            'm_gbMultipliers
             '
-            resources.ApplyResources(Me.gbMultipliers, "gbMultipliers")
-            Me.gbMultipliers.Controls.Add(Me.rbSearchRate)
-            Me.gbMultipliers.Controls.Add(Me.rbVulArea)
-            Me.gbMultipliers.Controls.Add(Me.rbProdRate)
-            Me.gbMultipliers.Controls.Add(Me.rbArea)
-            Me.gbMultipliers.Controls.Add(Me.rbVul)
-            Me.gbMultipliers.Controls.Add(Me.lblSearchRate)
-            Me.gbMultipliers.Name = "gbMultipliers"
-            Me.gbMultipliers.TabStop = False
+            resources.ApplyResources(Me.m_gbMultipliers, "m_gbMultipliers")
+            Me.m_gbMultipliers.Controls.Add(Me.m_rbSearchRate)
+            Me.m_gbMultipliers.Controls.Add(Me.m_rbVulArea)
+            Me.m_gbMultipliers.Controls.Add(Me.m_rbProdRate)
+            Me.m_gbMultipliers.Controls.Add(Me.m_rbArea)
+            Me.m_gbMultipliers.Controls.Add(Me.m_rbVul)
+            Me.m_gbMultipliers.Controls.Add(Me.lblSearchRate)
+            Me.m_gbMultipliers.Name = "m_gbMultipliers"
+            Me.m_gbMultipliers.TabStop = False
             '
-            'rbSearchRate
+            'm_rbSearchRate
             '
-            resources.ApplyResources(Me.rbSearchRate, "rbSearchRate")
-            Me.rbSearchRate.Name = "rbSearchRate"
-            Me.rbSearchRate.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbSearchRate, "m_rbSearchRate")
+            Me.m_rbSearchRate.Name = "m_rbSearchRate"
+            Me.m_rbSearchRate.UseVisualStyleBackColor = True
             '
-            'rbVulArea
+            'm_rbVulArea
             '
-            resources.ApplyResources(Me.rbVulArea, "rbVulArea")
-            Me.rbVulArea.Name = "rbVulArea"
-            Me.rbVulArea.TabStop = True
-            Me.rbVulArea.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbVulArea, "m_rbVulArea")
+            Me.m_rbVulArea.Name = "m_rbVulArea"
+            Me.m_rbVulArea.TabStop = True
+            Me.m_rbVulArea.UseVisualStyleBackColor = True
             '
-            'rbProdRate
+            'm_rbProdRate
             '
-            resources.ApplyResources(Me.rbProdRate, "rbProdRate")
-            Me.rbProdRate.Checked = True
-            Me.rbProdRate.Name = "rbProdRate"
-            Me.rbProdRate.TabStop = True
-            Me.rbProdRate.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbProdRate, "m_rbProdRate")
+            Me.m_rbProdRate.Checked = True
+            Me.m_rbProdRate.Name = "m_rbProdRate"
+            Me.m_rbProdRate.TabStop = True
+            Me.m_rbProdRate.UseVisualStyleBackColor = True
             '
-            'rbArea
+            'm_rbArea
             '
-            resources.ApplyResources(Me.rbArea, "rbArea")
-            Me.rbArea.Name = "rbArea"
-            Me.rbArea.TabStop = True
-            Me.rbArea.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbArea, "m_rbArea")
+            Me.m_rbArea.Name = "m_rbArea"
+            Me.m_rbArea.TabStop = True
+            Me.m_rbArea.UseVisualStyleBackColor = True
             '
-            'rbVul
+            'm_rbVul
             '
-            resources.ApplyResources(Me.rbVul, "rbVul")
-            Me.rbVul.Name = "rbVul"
-            Me.rbVul.TabStop = True
-            Me.rbVul.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbVul, "m_rbVul")
+            Me.m_rbVul.Name = "m_rbVul"
+            Me.m_rbVul.TabStop = True
+            Me.m_rbVul.UseVisualStyleBackColor = True
             '
-            'btnAdd
+            'm_btnAdd
             '
-            Me.btnAdd.Image = Global.ScientificInterface.My.Resources.Resources.arrow_right
-            resources.ApplyResources(Me.btnAdd, "btnAdd")
-            Me.btnAdd.Name = "btnAdd"
-            Me.btnAdd.UseVisualStyleBackColor = True
+            Me.m_btnAdd.Image = Global.ScientificInterface.My.Resources.Resources.arrow_right
+            resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
+            Me.m_btnAdd.Name = "m_btnAdd"
+            Me.m_btnAdd.UseVisualStyleBackColor = True
             '
-            'lvAppliedShapes
+            'm_lvAppliedShapes
             '
-            resources.ApplyResources(Me.lvAppliedShapes, "lvAppliedShapes")
-            Me.lvAppliedShapes.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chShape, Me.chModifier, Me.chIndex})
-            Me.lvAppliedShapes.FullRowSelect = True
-            Me.lvAppliedShapes.HideSelection = False
-            Me.lvAppliedShapes.MultiSelect = False
-            Me.lvAppliedShapes.Name = "lvAppliedShapes"
-            Me.lvAppliedShapes.UseCompatibleStateImageBehavior = False
+            resources.ApplyResources(Me.m_lvAppliedShapes, "m_lvAppliedShapes")
+            Me.m_lvAppliedShapes.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.m_colhdrShape, Me.m_colhdrModifier, Me.m_colhdrIndex})
+            Me.m_lvAppliedShapes.FullRowSelect = True
+            Me.m_lvAppliedShapes.HideSelection = False
+            Me.m_lvAppliedShapes.MultiSelect = False
+            Me.m_lvAppliedShapes.Name = "m_lvAppliedShapes"
+            Me.m_lvAppliedShapes.UseCompatibleStateImageBehavior = False
             '
-            'chShape
+            'm_colhdrShape
             '
-            resources.ApplyResources(Me.chShape, "chShape")
+            resources.ApplyResources(Me.m_colhdrShape, "m_colhdrShape")
             '
-            'chModifier
+            'm_colhdrModifier
             '
-            resources.ApplyResources(Me.chModifier, "chModifier")
+            resources.ApplyResources(Me.m_colhdrModifier, "m_colhdrModifier")
             '
-            'chIndex
+            'm_colhdrIndex
             '
-            resources.ApplyResources(Me.chIndex, "chIndex")
+            resources.ApplyResources(Me.m_colhdrIndex, "m_colhdrIndex")
             '
-            'lvAllShapes
+            'm_lvAllShapes
             '
-            resources.ApplyResources(Me.lvAllShapes, "lvAllShapes")
-            Me.lvAllShapes.HideSelection = False
-            Me.lvAllShapes.MultiSelect = False
-            Me.lvAllShapes.Name = "lvAllShapes"
-            Me.lvAllShapes.UseCompatibleStateImageBehavior = False
+            resources.ApplyResources(Me.m_lvAllShapes, "m_lvAllShapes")
+            Me.m_lvAllShapes.HideSelection = False
+            Me.m_lvAllShapes.MultiSelect = False
+            Me.m_lvAllShapes.Name = "m_lvAllShapes"
+            Me.m_lvAllShapes.UseCompatibleStateImageBehavior = False
             '
-            'btnRemove
+            'm_btnRemove
             '
-            Me.btnRemove.Image = Global.ScientificInterface.My.Resources.Resources.delete
-            resources.ApplyResources(Me.btnRemove, "btnRemove")
-            Me.btnRemove.Name = "btnRemove"
-            Me.btnRemove.UseVisualStyleBackColor = True
+            Me.m_btnRemove.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
+            resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
+            Me.m_btnRemove.Name = "m_btnRemove"
+            Me.m_btnRemove.UseVisualStyleBackColor = True
             '
-            'lblTitle
+            'm_lblTitle
             '
-            resources.ApplyResources(Me.lblTitle, "lblTitle")
-            Me.lblTitle.Name = "lblTitle"
+            resources.ApplyResources(Me.m_lblTitle, "m_lblTitle")
+            Me.m_lblTitle.Name = "m_lblTitle"
             '
-            'lblAppliedFF
+            'm_lblAppliedFF
             '
-            resources.ApplyResources(Me.lblAppliedFF, "lblAppliedFF")
-            Me.lblAppliedFF.Name = "lblAppliedFF"
+            resources.ApplyResources(Me.m_lblAppliedFF, "m_lblAppliedFF")
+            Me.m_lblAppliedFF.Name = "m_lblAppliedFF"
             '
             'dlgApplyShape
             '
@@ -207,56 +198,55 @@ Namespace Ecosim
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
-            Me.Controls.Add(Me.txbPredName)
-            Me.Controls.Add(Me.lblPred)
-            Me.Controls.Add(Me.txbPreyName)
-            Me.Controls.Add(Me.lvAppliedShapes)
-            Me.Controls.Add(Me.lvAllShapes)
-            Me.Controls.Add(Me.lblPrey)
-            Me.Controls.Add(Me.btnRemove)
-            Me.Controls.Add(Me.lblTitle)
-            Me.Controls.Add(Me.btnAdd)
-            Me.Controls.Add(Me.gbMultipliers)
-            Me.Controls.Add(Me.lblAppliedFF)
-            Me.Controls.Add(Me.lblAvailableFF)
-            Me.Controls.Add(Me.TableLayoutPanel1)
+            Me.Controls.Add(Me.Cancel_Button)
+            Me.Controls.Add(Me.OK_Button)
+            Me.Controls.Add(Me.m_txbPredName)
+            Me.Controls.Add(Me.m_lblPred)
+            Me.Controls.Add(Me.m_txbPreyName)
+            Me.Controls.Add(Me.m_lvAppliedShapes)
+            Me.Controls.Add(Me.m_lvAllShapes)
+            Me.Controls.Add(Me.m_lblPrey)
+            Me.Controls.Add(Me.m_btnRemove)
+            Me.Controls.Add(Me.m_lblTitle)
+            Me.Controls.Add(Me.m_btnAdd)
+            Me.Controls.Add(Me.m_gbMultipliers)
+            Me.Controls.Add(Me.m_lblAppliedFF)
+            Me.Controls.Add(Me.m_lblAvailableFF)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "dlgApplyShape"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
-            Me.TableLayoutPanel1.ResumeLayout(False)
-            Me.gbMultipliers.ResumeLayout(False)
-            Me.gbMultipliers.PerformLayout()
+            Me.m_gbMultipliers.ResumeLayout(False)
+            Me.m_gbMultipliers.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents OK_Button As System.Windows.Forms.Button
-        Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-        Friend WithEvents lblPred As System.Windows.Forms.Label
-        Friend WithEvents lblPrey As System.Windows.Forms.Label
-        Friend WithEvents lblAvailableFF As System.Windows.Forms.Label
-        Friend WithEvents lblSearchRate As System.Windows.Forms.Label
-        Friend WithEvents txbPreyName As System.Windows.Forms.TextBox
-        Friend WithEvents txbPredName As System.Windows.Forms.TextBox
-        Friend WithEvents gbMultipliers As System.Windows.Forms.GroupBox
-        Friend WithEvents btnAdd As System.Windows.Forms.Button
-        Friend WithEvents lvAppliedShapes As System.Windows.Forms.ListView
-        Friend WithEvents lvAllShapes As System.Windows.Forms.ListView
-        Friend WithEvents chShape As System.Windows.Forms.ColumnHeader
-        Friend WithEvents chModifier As System.Windows.Forms.ColumnHeader
-        Friend WithEvents btnRemove As System.Windows.Forms.Button
-        Friend WithEvents rbSearchRate As System.Windows.Forms.RadioButton
-        Friend WithEvents rbVulArea As System.Windows.Forms.RadioButton
-        Friend WithEvents rbArea As System.Windows.Forms.RadioButton
-        Friend WithEvents rbVul As System.Windows.Forms.RadioButton
-        Friend WithEvents chIndex As System.Windows.Forms.ColumnHeader
-        Friend WithEvents rbProdRate As System.Windows.Forms.RadioButton
-        Friend WithEvents lblTitle As System.Windows.Forms.Label
-        Friend WithEvents lblAppliedFF As System.Windows.Forms.Label
+        Private WithEvents OK_Button As System.Windows.Forms.Button
+        Private WithEvents Cancel_Button As System.Windows.Forms.Button
+        Private WithEvents m_lblPred As System.Windows.Forms.Label
+        Private WithEvents m_lblPrey As System.Windows.Forms.Label
+        Private WithEvents lblSearchRate As System.Windows.Forms.Label
+        Private WithEvents m_txbPreyName As System.Windows.Forms.TextBox
+        Private WithEvents m_txbPredName As System.Windows.Forms.TextBox
+        Private WithEvents m_gbMultipliers As System.Windows.Forms.GroupBox
+        Private WithEvents m_btnAdd As System.Windows.Forms.Button
+        Private WithEvents m_lvAppliedShapes As System.Windows.Forms.ListView
+        Private WithEvents m_lvAllShapes As System.Windows.Forms.ListView
+        Private WithEvents m_colhdrShape As System.Windows.Forms.ColumnHeader
+        Private WithEvents m_colhdrModifier As System.Windows.Forms.ColumnHeader
+        Private WithEvents m_btnRemove As System.Windows.Forms.Button
+        Private WithEvents m_rbSearchRate As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbVulArea As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbArea As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbVul As System.Windows.Forms.RadioButton
+        Private WithEvents m_colhdrIndex As System.Windows.Forms.ColumnHeader
+        Private WithEvents m_rbProdRate As System.Windows.Forms.RadioButton
+        Private WithEvents m_lblTitle As System.Windows.Forms.Label
+        Private WithEvents m_lblAvailableFF As System.Windows.Forms.Label
+        Private WithEvents m_lblAppliedFF As System.Windows.Forms.Label
 
     End Class
 

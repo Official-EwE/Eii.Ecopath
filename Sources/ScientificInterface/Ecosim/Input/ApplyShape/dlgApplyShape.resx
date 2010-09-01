@@ -118,23 +118,17 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="TableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
   <data name="OK_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>None</value>
+    <value>Bottom, Right</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="OK_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>361, 318</value>
   </data>
   <data name="OK_Button.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>75, 23</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="OK_Button.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -148,19 +142,19 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>None</value>
+    <value>Bottom, Right</value>
   </data>
   <data name="Cancel_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>76, 3</value>
+    <value>442, 318</value>
   </data>
   <data name="Cancel_Button.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>75, 23</value>
   </data>
   <data name="Cancel_Button.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -175,124 +169,97 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>371, 310</value>
-  </data>
-  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 29</value>
-  </data>
-  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="OK_Button" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Cancel_Button" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="lblPred.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblPred.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblPred.Location" type="System.Drawing.Point, System.Drawing">
-    <value>242, 9</value>
-  </data>
-  <data name="lblPred.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 13</value>
-  </data>
-  <data name="lblPred.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="lblPred.Text" xml:space="preserve">
-    <value>Predator:</value>
-  </data>
-  <data name="&gt;&gt;lblPred.Name" xml:space="preserve">
-    <value>lblPred</value>
-  </data>
-  <data name="&gt;&gt;lblPred.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblPred.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblPred.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="lblPrey.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblPrey.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblPrey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 9</value>
-  </data>
-  <data name="lblPrey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 13</value>
-  </data>
-  <data name="lblPrey.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="lblPrey.Text" xml:space="preserve">
-    <value>Prey:</value>
-  </data>
-  <data name="&gt;&gt;lblPrey.Name" xml:space="preserve">
-    <value>lblPrey</value>
-  </data>
-  <data name="&gt;&gt;lblPrey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblPrey.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblPrey.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="lblAvailableFF.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblPred.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblAvailableFF.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 38</value>
+  <data name="m_lblPred.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="lblAvailableFF.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 13</value>
+  <data name="m_lblPred.Location" type="System.Drawing.Point, System.Drawing">
+    <value>242, 9</value>
   </data>
-  <data name="lblAvailableFF.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="m_lblPred.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 13</value>
   </data>
-  <data name="lblAvailableFF.Text" xml:space="preserve">
-    <value>A&amp;vailable shape functions:</value>
+  <data name="m_lblPred.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="&gt;&gt;lblAvailableFF.Name" xml:space="preserve">
-    <value>lblAvailableFF</value>
+  <data name="m_lblPred.Text" xml:space="preserve">
+    <value>Predator:</value>
   </data>
-  <data name="&gt;&gt;lblAvailableFF.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblPred.Name" xml:space="preserve">
+    <value>m_lblPred</value>
+  </data>
+  <data name="&gt;&gt;m_lblPred.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblAvailableFF.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblPred.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblAvailableFF.ZOrder" xml:space="preserve">
-    <value>11</value>
+  <data name="&gt;&gt;m_lblPred.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_lblPrey.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblPrey.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblPrey.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 9</value>
+  </data>
+  <data name="m_lblPrey.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 13</value>
+  </data>
+  <data name="m_lblPrey.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_lblPrey.Text" xml:space="preserve">
+    <value>Prey:</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrey.Name" xml:space="preserve">
+    <value>m_lblPrey</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrey.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrey.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="m_lblAvailableFF.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblAvailableFF.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 38</value>
+  </data>
+  <data name="m_lblAvailableFF.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 13</value>
+  </data>
+  <data name="m_lblAvailableFF.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_lblAvailableFF.Text" xml:space="preserve">
+    <value>A&amp;vailable functions:</value>
+  </data>
+  <data name="&gt;&gt;m_lblAvailableFF.Name" xml:space="preserve">
+    <value>m_lblAvailableFF</value>
+  </data>
+  <data name="&gt;&gt;m_lblAvailableFF.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblAvailableFF.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblAvailableFF.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
   <data name="lblSearchRate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -313,391 +280,451 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblSearchRate.Parent" xml:space="preserve">
-    <value>gbMultipliers</value>
+    <value>m_gbMultipliers</value>
   </data>
   <data name="&gt;&gt;lblSearchRate.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="txbPreyName.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_txbPreyName.Location" type="System.Drawing.Point, System.Drawing">
     <value>51, 6</value>
   </data>
-  <data name="txbPreyName.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_txbPreyName.Size" type="System.Drawing.Size, System.Drawing">
     <value>156, 20</value>
   </data>
-  <data name="txbPreyName.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_txbPreyName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;txbPreyName.Name" xml:space="preserve">
-    <value>txbPreyName</value>
+  <data name="&gt;&gt;m_txbPreyName.Name" xml:space="preserve">
+    <value>m_txbPreyName</value>
   </data>
-  <data name="&gt;&gt;txbPreyName.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_txbPreyName.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txbPreyName.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_txbPreyName.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;txbPreyName.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;m_txbPreyName.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
-  <data name="txbPredName.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_txbPredName.Location" type="System.Drawing.Point, System.Drawing">
     <value>307, 6</value>
   </data>
-  <data name="txbPredName.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_txbPredName.Size" type="System.Drawing.Size, System.Drawing">
     <value>156, 20</value>
   </data>
-  <data name="txbPredName.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_txbPredName.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;txbPredName.Name" xml:space="preserve">
-    <value>txbPredName</value>
+  <data name="&gt;&gt;m_txbPredName.Name" xml:space="preserve">
+    <value>m_txbPredName</value>
   </data>
-  <data name="&gt;&gt;txbPredName.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_txbPredName.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txbPredName.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_txbPredName.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;txbPredName.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="gbMultipliers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="rbSearchRate.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbSearchRate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 19</value>
-  </data>
-  <data name="rbSearchRate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 17</value>
-  </data>
-  <data name="rbSearchRate.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="rbSearchRate.Text" xml:space="preserve">
-    <value>Search rate (a)</value>
-  </data>
-  <data name="&gt;&gt;rbSearchRate.Name" xml:space="preserve">
-    <value>rbSearchRate</value>
-  </data>
-  <data name="&gt;&gt;rbSearchRate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbSearchRate.Parent" xml:space="preserve">
-    <value>gbMultipliers</value>
-  </data>
-  <data name="&gt;&gt;rbSearchRate.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="rbVulArea.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbVulArea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>341, 19</value>
-  </data>
-  <data name="rbVulArea.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 17</value>
-  </data>
-  <data name="rbVulArea.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="rbVulArea.Text" xml:space="preserve">
-    <value>Vul (v) and area (A)</value>
-  </data>
-  <data name="&gt;&gt;rbVulArea.Name" xml:space="preserve">
-    <value>rbVulArea</value>
-  </data>
-  <data name="&gt;&gt;rbVulArea.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbVulArea.Parent" xml:space="preserve">
-    <value>gbMultipliers</value>
-  </data>
-  <data name="&gt;&gt;rbVulArea.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="rbProdRate.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbProdRate.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="rbProdRate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 19</value>
-  </data>
-  <data name="rbProdRate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 17</value>
-  </data>
-  <data name="rbProdRate.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="rbProdRate.Text" xml:space="preserve">
-    <value>Prod. rate</value>
-  </data>
-  <data name="rbProdRate.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;rbProdRate.Name" xml:space="preserve">
-    <value>rbProdRate</value>
-  </data>
-  <data name="&gt;&gt;rbProdRate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbProdRate.Parent" xml:space="preserve">
-    <value>gbMultipliers</value>
-  </data>
-  <data name="&gt;&gt;rbProdRate.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_txbPredName.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="rbArea.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_gbMultipliers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
   </data>
-  <data name="rbArea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>233, 19</value>
+  <data name="&gt;&gt;m_rbSearchRate.Name" xml:space="preserve">
+    <value>m_rbSearchRate</value>
   </data>
-  <data name="rbArea.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 17</value>
-  </data>
-  <data name="rbArea.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="rbArea.Text" xml:space="preserve">
-    <value>Arena area (A)</value>
-  </data>
-  <data name="&gt;&gt;rbArea.Name" xml:space="preserve">
-    <value>rbArea</value>
-  </data>
-  <data name="&gt;&gt;rbArea.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbSearchRate.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;rbArea.Parent" xml:space="preserve">
-    <value>gbMultipliers</value>
+  <data name="&gt;&gt;m_rbSearchRate.Parent" xml:space="preserve">
+    <value>m_gbMultipliers</value>
   </data>
-  <data name="&gt;&gt;rbArea.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;m_rbSearchRate.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="rbVul.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;m_rbVulArea.Name" xml:space="preserve">
+    <value>m_rbVulArea</value>
   </data>
-  <data name="rbVul.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 19</value>
-  </data>
-  <data name="rbVul.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 17</value>
-  </data>
-  <data name="rbVul.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="rbVul.Text" xml:space="preserve">
-    <value>Vulnerability (v)</value>
-  </data>
-  <data name="&gt;&gt;rbVul.Name" xml:space="preserve">
-    <value>rbVul</value>
-  </data>
-  <data name="&gt;&gt;rbVul.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbVulArea.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;rbVul.Parent" xml:space="preserve">
-    <value>gbMultipliers</value>
+  <data name="&gt;&gt;m_rbVulArea.Parent" xml:space="preserve">
+    <value>m_gbMultipliers</value>
   </data>
-  <data name="&gt;&gt;rbVul.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbVulArea.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_rbProdRate.Name" xml:space="preserve">
+    <value>m_rbProdRate</value>
+  </data>
+  <data name="&gt;&gt;m_rbProdRate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbProdRate.Parent" xml:space="preserve">
+    <value>m_gbMultipliers</value>
+  </data>
+  <data name="&gt;&gt;m_rbProdRate.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_rbArea.Name" xml:space="preserve">
+    <value>m_rbArea</value>
+  </data>
+  <data name="&gt;&gt;m_rbArea.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbArea.Parent" xml:space="preserve">
+    <value>m_gbMultipliers</value>
+  </data>
+  <data name="&gt;&gt;m_rbArea.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_rbVul.Name" xml:space="preserve">
+    <value>m_rbVul</value>
+  </data>
+  <data name="&gt;&gt;m_rbVul.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbVul.Parent" xml:space="preserve">
+    <value>m_gbMultipliers</value>
+  </data>
+  <data name="&gt;&gt;m_rbVul.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="gbMultipliers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 260</value>
+  <data name="m_gbMultipliers.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 268</value>
   </data>
-  <data name="gbMultipliers.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_gbMultipliers.Size" type="System.Drawing.Size, System.Drawing">
     <value>505, 44</value>
   </data>
-  <data name="gbMultipliers.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_gbMultipliers.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="gbMultipliers.Text" xml:space="preserve">
+  <data name="m_gbMultipliers.Text" xml:space="preserve">
     <value>Apply multiplier to</value>
   </data>
-  <data name="&gt;&gt;gbMultipliers.Name" xml:space="preserve">
-    <value>gbMultipliers</value>
+  <data name="&gt;&gt;m_gbMultipliers.Name" xml:space="preserve">
+    <value>m_gbMultipliers</value>
   </data>
-  <data name="&gt;&gt;gbMultipliers.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_gbMultipliers.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;gbMultipliers.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_gbMultipliers.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;gbMultipliers.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>213, 115</value>
-  </data>
-  <data name="btnAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>26, 23</value>
-  </data>
-  <data name="btnAdd.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;btnAdd.Name" xml:space="preserve">
-    <value>btnAdd</value>
-  </data>
-  <data name="&gt;&gt;btnAdd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnAdd.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnAdd.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="lvAppliedShapes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="chShape.Text" xml:space="preserve">
-    <value>Shape</value>
-  </data>
-  <data name="chShape.Width" type="System.Int32, mscorlib">
-    <value>160</value>
-  </data>
-  <data name="chModifier.Text" xml:space="preserve">
-    <value>Modifier</value>
-  </data>
-  <data name="chModifier.Width" type="System.Int32, mscorlib">
-    <value>96</value>
-  </data>
-  <data name="chIndex.Text" xml:space="preserve">
-    <value>Index</value>
-  </data>
-  <data name="chIndex.Width" type="System.Int32, mscorlib">
-    <value>45</value>
-  </data>
-  <data name="lvAppliedShapes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 54</value>
-  </data>
-  <data name="lvAppliedShapes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>272, 200</value>
-  </data>
-  <data name="lvAppliedShapes.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;lvAppliedShapes.Name" xml:space="preserve">
-    <value>lvAppliedShapes</value>
-  </data>
-  <data name="&gt;&gt;lvAppliedShapes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lvAppliedShapes.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lvAppliedShapes.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="lvAllShapes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left</value>
-  </data>
-  <data name="lvAllShapes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 54</value>
-  </data>
-  <data name="lvAllShapes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 200</value>
-  </data>
-  <data name="lvAllShapes.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;lvAllShapes.Name" xml:space="preserve">
-    <value>lvAllShapes</value>
-  </data>
-  <data name="&gt;&gt;lvAllShapes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lvAllShapes.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lvAllShapes.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="btnRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>213, 144</value>
-  </data>
-  <data name="btnRemove.Size" type="System.Drawing.Size, System.Drawing">
-    <value>26, 23</value>
-  </data>
-  <data name="btnRemove.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;btnRemove.Name" xml:space="preserve">
-    <value>btnRemove</value>
-  </data>
-  <data name="&gt;&gt;btnRemove.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnRemove.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnRemove.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="lblTitle.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="lblTitle.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblTitle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 318</value>
-  </data>
-  <data name="lblTitle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 13</value>
-  </data>
-  <data name="lblTitle.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;m_gbMultipliers.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="lblTitle.Text" xml:space="preserve">
-    <value>&lt;title&gt;</value>
-  </data>
-  <data name="lblTitle.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;lblTitle.Name" xml:space="preserve">
-    <value>lblTitle</value>
-  </data>
-  <data name="&gt;&gt;lblTitle.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblTitle.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblTitle.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="lblAppliedFF.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_rbSearchRate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblAppliedFF.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_rbSearchRate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 19</value>
   </data>
-  <data name="lblAppliedFF.Location" type="System.Drawing.Point, System.Drawing">
-    <value>242, 38</value>
+  <data name="m_rbSearchRate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
   </data>
-  <data name="lblAppliedFF.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 13</value>
+  <data name="m_rbSearchRate.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="lblAppliedFF.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+  <data name="m_rbSearchRate.Text" xml:space="preserve">
+    <value>Search rate (a)</value>
   </data>
-  <data name="lblAppliedFF.Text" xml:space="preserve">
-    <value>A&amp;pplied shape functions:</value>
+  <data name="&gt;&gt;m_rbSearchRate.Name" xml:space="preserve">
+    <value>m_rbSearchRate</value>
   </data>
-  <data name="&gt;&gt;lblAppliedFF.Name" xml:space="preserve">
-    <value>lblAppliedFF</value>
+  <data name="&gt;&gt;m_rbSearchRate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblAppliedFF.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_rbSearchRate.Parent" xml:space="preserve">
+    <value>m_gbMultipliers</value>
   </data>
-  <data name="&gt;&gt;lblAppliedFF.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_rbSearchRate.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_rbVulArea.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbVulArea.Location" type="System.Drawing.Point, System.Drawing">
+    <value>341, 19</value>
+  </data>
+  <data name="m_rbVulArea.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 17</value>
+  </data>
+  <data name="m_rbVulArea.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_rbVulArea.Text" xml:space="preserve">
+    <value>Vul (v) and area (A)</value>
+  </data>
+  <data name="&gt;&gt;m_rbVulArea.Name" xml:space="preserve">
+    <value>m_rbVulArea</value>
+  </data>
+  <data name="&gt;&gt;m_rbVulArea.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbVulArea.Parent" xml:space="preserve">
+    <value>m_gbMultipliers</value>
+  </data>
+  <data name="&gt;&gt;m_rbVulArea.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_rbProdRate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbProdRate.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_rbProdRate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 19</value>
+  </data>
+  <data name="m_rbProdRate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 17</value>
+  </data>
+  <data name="m_rbProdRate.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_rbProdRate.Text" xml:space="preserve">
+    <value>Prod. rate</value>
+  </data>
+  <data name="m_rbProdRate.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;m_rbProdRate.Name" xml:space="preserve">
+    <value>m_rbProdRate</value>
+  </data>
+  <data name="&gt;&gt;m_rbProdRate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbProdRate.Parent" xml:space="preserve">
+    <value>m_gbMultipliers</value>
+  </data>
+  <data name="&gt;&gt;m_rbProdRate.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_rbArea.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbArea.Location" type="System.Drawing.Point, System.Drawing">
+    <value>233, 19</value>
+  </data>
+  <data name="m_rbArea.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 17</value>
+  </data>
+  <data name="m_rbArea.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_rbArea.Text" xml:space="preserve">
+    <value>Arena area (A)</value>
+  </data>
+  <data name="&gt;&gt;m_rbArea.Name" xml:space="preserve">
+    <value>m_rbArea</value>
+  </data>
+  <data name="&gt;&gt;m_rbArea.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbArea.Parent" xml:space="preserve">
+    <value>m_gbMultipliers</value>
+  </data>
+  <data name="&gt;&gt;m_rbArea.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_rbVul.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbVul.Location" type="System.Drawing.Point, System.Drawing">
+    <value>115, 19</value>
+  </data>
+  <data name="m_rbVul.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 17</value>
+  </data>
+  <data name="m_rbVul.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_rbVul.Text" xml:space="preserve">
+    <value>Vulnerability (v)</value>
+  </data>
+  <data name="&gt;&gt;m_rbVul.Name" xml:space="preserve">
+    <value>m_rbVul</value>
+  </data>
+  <data name="&gt;&gt;m_rbVul.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbVul.Parent" xml:space="preserve">
+    <value>m_gbMultipliers</value>
+  </data>
+  <data name="&gt;&gt;m_rbVul.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_btnAdd.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 115</value>
+  </data>
+  <data name="m_btnAdd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 23</value>
+  </data>
+  <data name="m_btnAdd.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_btnAdd.Name" xml:space="preserve">
+    <value>m_btnAdd</value>
+  </data>
+  <data name="&gt;&gt;m_btnAdd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnAdd.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblAppliedFF.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
     <value>10</value>
+  </data>
+  <data name="m_lvAppliedShapes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_lvAppliedShapes.Location" type="System.Drawing.Point, System.Drawing">
+    <value>245, 54</value>
+  </data>
+  <data name="m_lvAppliedShapes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>272, 208</value>
+  </data>
+  <data name="m_lvAppliedShapes.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;m_lvAppliedShapes.Name" xml:space="preserve">
+    <value>m_lvAppliedShapes</value>
+  </data>
+  <data name="&gt;&gt;m_lvAppliedShapes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lvAppliedShapes.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lvAppliedShapes.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_colhdrShape.Text" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="m_colhdrShape.Width" type="System.Int32, mscorlib">
+    <value>160</value>
+  </data>
+  <data name="m_colhdrModifier.Text" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="m_colhdrModifier.Width" type="System.Int32, mscorlib">
+    <value>96</value>
+  </data>
+  <data name="m_colhdrIndex.Text" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="m_colhdrIndex.Width" type="System.Int32, mscorlib">
+    <value>45</value>
+  </data>
+  <data name="m_lvAllShapes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left</value>
+  </data>
+  <data name="m_lvAllShapes.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 54</value>
+  </data>
+  <data name="m_lvAllShapes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 208</value>
+  </data>
+  <data name="m_lvAllShapes.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_lvAllShapes.Name" xml:space="preserve">
+    <value>m_lvAllShapes</value>
+  </data>
+  <data name="&gt;&gt;m_lvAllShapes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lvAllShapes.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lvAllShapes.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_btnRemove.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 144</value>
+  </data>
+  <data name="m_btnRemove.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 23</value>
+  </data>
+  <data name="m_btnRemove.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;m_btnRemove.Name" xml:space="preserve">
+    <value>m_btnRemove</value>
+  </data>
+  <data name="&gt;&gt;m_btnRemove.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnRemove.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnRemove.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="m_lblTitle.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="m_lblTitle.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblTitle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 323</value>
+  </data>
+  <data name="m_lblTitle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 13</value>
+  </data>
+  <data name="m_lblTitle.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="m_lblTitle.Text" xml:space="preserve">
+    <value>&lt;title&gt;</value>
+  </data>
+  <data name="m_lblTitle.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;m_lblTitle.Name" xml:space="preserve">
+    <value>m_lblTitle</value>
+  </data>
+  <data name="&gt;&gt;m_lblTitle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblTitle.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblTitle.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="m_lblAppliedFF.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblAppliedFF.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblAppliedFF.Location" type="System.Drawing.Point, System.Drawing">
+    <value>242, 38</value>
+  </data>
+  <data name="m_lblAppliedFF.Size" type="System.Drawing.Size, System.Drawing">
+    <value>91, 13</value>
+  </data>
+  <data name="m_lblAppliedFF.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_lblAppliedFF.Text" xml:space="preserve">
+    <value>A&amp;pplied functions:</value>
+  </data>
+  <data name="&gt;&gt;m_lblAppliedFF.Name" xml:space="preserve">
+    <value>m_lblAppliedFF</value>
+  </data>
+  <data name="&gt;&gt;m_lblAppliedFF.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblAppliedFF.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblAppliedFF.ZOrder" xml:space="preserve">
+    <value>12</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -717,22 +744,22 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Apply forcing and mediation functions</value>
   </data>
-  <data name="&gt;&gt;chShape.Name" xml:space="preserve">
-    <value>chShape</value>
+  <data name="&gt;&gt;m_colhdrShape.Name" xml:space="preserve">
+    <value>m_colhdrShape</value>
   </data>
-  <data name="&gt;&gt;chShape.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_colhdrShape.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;chModifier.Name" xml:space="preserve">
-    <value>chModifier</value>
+  <data name="&gt;&gt;m_colhdrModifier.Name" xml:space="preserve">
+    <value>m_colhdrModifier</value>
   </data>
-  <data name="&gt;&gt;chModifier.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_colhdrModifier.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;chIndex.Name" xml:space="preserve">
-    <value>chIndex</value>
+  <data name="&gt;&gt;m_colhdrIndex.Name" xml:space="preserve">
+    <value>m_colhdrIndex</value>
   </data>
-  <data name="&gt;&gt;chIndex.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_colhdrIndex.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
