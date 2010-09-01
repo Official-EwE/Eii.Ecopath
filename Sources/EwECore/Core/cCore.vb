@@ -1467,13 +1467,14 @@ Public Class cCore
     ''' Load (and optionally apply) a single time series dataset
     ''' </summary>
     ''' <param name="tsd">The dataset to load. Provide 'nothing' to unload any dataset.</param>
-    ''' <param name="bApply">Flag stating whether loaded time series should be applied immediately.</param>
+    ''' <param name="bEnable">Flag stating whether loaded time series should be enabled immediately.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function LoadTimeSeries(ByVal tsd As cTimeSeriesDataset, Optional ByVal bApply As Boolean = False) As Boolean
+    Public Function LoadTimeSeries(ByVal tsd As cTimeSeriesDataset, _
+                                   Optional ByVal bEnable As Boolean = False) As Boolean
         Dim iIndex As Integer = 0
         If tsd IsNot Nothing Then iIndex = tsd.Index
-        Return Me.LoadTimeSeries(iIndex, bApply)
+        Return Me.LoadTimeSeries(iIndex, bEnable)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -1481,10 +1482,11 @@ Public Class cCore
     ''' Load (and optionally apply) a single time series dataset
     ''' </summary>
     ''' <param name="iDataset">Index of the dataset to load. Provide 0 to unload any dataset.</param>
-    ''' <param name="bApply">Flag stating whether loaded time series should be applied immediately.</param>
+    ''' <param name="bEnable">Flag stating whether loaded time series should be enabled immediately.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function LoadTimeSeries(ByVal iDataset As Integer, Optional ByVal bApply As Boolean = False) As Boolean
+    Public Function LoadTimeSeries(ByVal iDataset As Integer, _
+                                   Optional ByVal bEnable As Boolean = False) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -1507,7 +1509,7 @@ Public Class cCore
                     ' #Yes: Can populate core interface objects succesfully?
                     If (Me.LoadEcosimTimeSeries()) Then
                         ' Need to apply too?
-                        If (bApply = True) Then
+                        If (bEnable = True) Then
                             ' #Yes: Apply
                             For Each ts As cTimeSeries In Me.m_timeSeriesGroup : ts.Enabled = True : Next
                             For Each ts As cTimeSeries In Me.m_timeSeriesFleet : ts.Enabled = True : Next
