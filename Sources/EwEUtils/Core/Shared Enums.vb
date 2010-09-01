@@ -2312,11 +2312,11 @@ Namespace Core
     Public Enum eDataSourceTypes
         ''' <summary>No support.</summary>
         NotSet = 0
-        ''' <summary>Datasource capable of handling EII-formatted data.</summary>
+        ''' <summary>Datasource capable of handling EII formatted data.</summary>
         EII
-        ''' <summary>Datasource capable of handling MDB-formatted data.</summary>
+        ''' <summary>Datasource capable of handling MDB formatted data.</summary>
         MDB
-        ''' <summary>Datasource capable of handling ACCDB-formatted data.</summary>
+        ''' <summary>Datasource capable of handling ACCDB and MDB formatted data.</summary>
         ACCDB
     End Enum
 
