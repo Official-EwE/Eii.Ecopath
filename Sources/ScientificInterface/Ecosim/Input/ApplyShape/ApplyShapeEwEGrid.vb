@@ -21,7 +21,7 @@ Namespace Ecosim
 
         Private m_RowColClick As New BehaviorModels.CustomEvents
         Private m_BehaviorClick As BehaviorModels.CustomEvents
-        Private m_Cellfunc As DataModels.EditorTextBox
+        Private m_editor As DataModels.EditorTextBox
         Private m_PPIManager As cPPIManager
         Private m_applyTargetMode As eApplyTargetTypes = eApplyTargetTypes.NotSet
         Private m_applyShapeMode As eApplyShapeTypes = eApplyShapeTypes.NotSet
@@ -31,7 +31,7 @@ Namespace Ecosim
         Public Sub New()
             MyBase.New()
 
-            Me.m_Cellfunc = New DataModels.EditorTextBox(GetType(Integer))
+            Me.m_editor = New DataModels.EditorTextBox(GetType(Integer))
             Me.m_BehaviorClick = New BehaviorModels.CustomEvents()
             AddHandler m_RowColClick.Click, New SourceGrid2.PositionEventHandler(AddressOf bm_RowColClick)
             AddHandler m_BehaviorClick.Click, AddressOf CellClick
@@ -40,10 +40,10 @@ Namespace Ecosim
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             MyBase.Dispose(disposing)
 
-            If Me.m_Cellfunc IsNot Nothing Then
+            If Me.m_editor IsNot Nothing Then
                 RemoveHandler m_RowColClick.Click, New SourceGrid2.PositionEventHandler(AddressOf bm_RowColClick)
                 RemoveHandler m_BehaviorClick.Click, AddressOf CellClick
-                Me.m_Cellfunc = Nothing
+                Me.m_editor = Nothing
                 Me.m_BehaviorClick = Nothing
             End If
 
@@ -249,7 +249,7 @@ Namespace Ecosim
                         End If
 
                         Me(rowIndex, iCol) = New Cells.Real.Cell(sb.ToString)
-                        Me(rowIndex, iCol).DataModel = m_Cellfunc
+                        Me(rowIndex, iCol).DataModel = m_editor
                         Me(rowIndex, iCol).Behaviors.Add(m_BehaviorClick)
 
                     Else
