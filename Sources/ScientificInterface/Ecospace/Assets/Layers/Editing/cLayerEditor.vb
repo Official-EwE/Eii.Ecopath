@@ -184,8 +184,11 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>
         ''' User has started editing the layer.
         ''' </summary>
+        ''' <param name="ptClick">The cell position that was clicked.</param>
+        ''' <param name="args">Click <see cref="MouseEventArgs">mouse state</see>
+        ''' information.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub StartEdit(ByVal ptClick As Point, ByVal buttons As MouseEventArgs)
+        Public Overridable Sub StartEdit(ByVal ptClick As Point, ByVal args As MouseEventArgs)
             ' Notify the editor GUI, if any
             If Me.GUI IsNot Nothing Then
                 Me.GUI.StartEdit()
@@ -196,11 +199,20 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>
         ''' Edit the layer from one point to a next.
         ''' </summary>
-        ''' <param name="ptFrom"></param>
-        ''' <param name="ptTo"></param>
+        ''' <param name="ptFrom">The mouse location to edit from.</param>
+        ''' <param name="ptTo">The mouse location to edit to.</param>
+        ''' <param name="args">Click <see cref="MouseEventArgs">mouse state</see>
+        ''' information.</param>
+        ''' <param name="ptUpdateMin">Top-left cell position affected by
+        ''' the edit operation.</param>
+        ''' <param name="ptUpdateMax">Bottom-right cell position affected by
+        ''' the edit operation.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Edit(ByVal ptFrom As Point, ByVal ptTo As Point, _
-                                    ByRef ptUpdateMin As Point, ByRef ptUpdateMax As Point)
+        Public Overridable Sub Edit(ByVal ptFrom As Point, _
+                                    ByVal ptTo As Point, _
+                                    ByVal args As MouseEventArgs, _
+                                    ByRef ptUpdateMin As Point, _
+                                    ByRef ptUpdateMax As Point)
 
             ' Calc positions between current and last draw point
             Dim iNumSteps As Integer = Math.Max(1, Math.Max(Math.Abs(ptFrom.X - ptTo.X), Math.Abs(ptFrom.Y - ptTo.Y)))
@@ -227,7 +239,7 @@ Namespace Ecospace.Basemap.Layers
                         If (Math.Sqrt(ptfCursor.X * ptfCursor.X + ptfCursor.Y * ptfCursor.Y) <= (Me.CursorSize / 2)) Then
 
                             ptCell = New Point(CInt(Math.Floor(dX + ptfCursor.X)), CInt(Math.Floor(dY + ptfCursor.Y)))
-                            Me.SetCellValue(Layer, ptCell, New Point(iX, iY))
+                            Me.SetCellValue(ptCell, New Point(iX, iY))
 
                             ptUpdateMin.X = Math.Min(ptCell.X, ptUpdateMin.X)
                             ptUpdateMin.Y = Math.Min(ptCell.Y, ptUpdateMin.Y)
@@ -248,7 +260,7 @@ Namespace Ecospace.Basemap.Layers
         ''' Pick up the cell value at a given point, and store this value in the
         ''' layer editor as the next value that will be set.
         ''' </summary>
-        ''' <param name="pt"></param>
+        ''' <param name="pt">The cell location to pick up a value from.</param>
         ''' -------------------------------------------------------------------
         Public Overridable Sub Pickup(ByVal pt As Point)
 
@@ -271,10 +283,17 @@ Namespace Ecospace.Basemap.Layers
             End If
         End Sub
 
-        Protected Overridable Sub SetCellValue(ByVal layer As cLayer, _
-                                           ByVal ptSet As Point, _
-                                           ByVal ptClick As Point)
-            layer.Value(ptSet.Y, ptSet.X) = Me.CellValue
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set the value of a cell in the current layer with the designated 
+        ''' <see cref="CellValue">set value</see>.
+        ''' </summary>
+        ''' <param name="ptSet">The cell location to set.</param>
+        ''' <param name="ptClick">The cell location in the cursor.</param>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub SetCellValue(ByVal ptSet As Point, _
+                                               ByVal ptClick As Point)
+            Me.Layer.Value(ptSet.Y, ptSet.X) = Me.CellValue
         End Sub
 
 #End Region ' Editing
