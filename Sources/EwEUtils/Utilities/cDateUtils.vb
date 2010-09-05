@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports System
+Imports System.Diagnostics
 
 #End Region ' Imports
 
@@ -36,6 +37,28 @@ Namespace Utilities
         ''' -------------------------------------------------------------------
         Public Shared Function JulianToDate(ByVal dJulian As Double) As Date
             Return Date.FromOADate(dJulian)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the textual representation for a month number.
+        ''' </summary>
+        ''' <param name="iMonth">The month to format [1, 12]</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetMonthName(ByVal iMonth As Integer, _
+                                            Optional ByVal bFullName As Boolean = True) As String
+            Try
+                Dim dt As New DateTime(1, iMonth, 1)
+                If bFullName Then
+                    Return dt.ToString("MMMM")
+                Else
+                    Return dt.ToString("MMM")
+                End If
+            Catch ex As Exception
+                Debug.Assert(False, "Month out of range")
+            End Try
+            Return ""
         End Function
 
     End Class
