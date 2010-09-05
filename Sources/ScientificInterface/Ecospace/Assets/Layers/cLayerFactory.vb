@@ -306,9 +306,32 @@ Namespace Ecospace.Basemap.Layers
 
                     renderer = New cLayerRendererArrow(vs)
                     editor = New cLayerEditorAdvection()
-                    If layerData Is Nothing Then layerData = bmd.LayerMigration
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMigration)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_MIGRATION
+                    If layerData Is Nothing Then layerData = bmd.LayerAdvection
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerAdvection)
+                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_ADVECTION
+
+                    lLayers.Add(layer)
+
+                Case eVarNameFlags.LayerWind
+
+                    key = New cValueID(eDataTypes.EcospaceLayerWind, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
+
+                    ' Get or create Visual Style
+                    vs = ad.VisualStyle
+                    If vs Is Nothing Then
+                        vs = New cVisualStyle()
+                        vs.ForeColour = Color.Black
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
+                    End If
+
+                    renderer = New cLayerRendererWind(vs)
+                    editor = New cLayerEditor(Nothing)
+                    If layerData Is Nothing Then layerData = bmd.layerWind
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerWind)
+                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_WIND
 
                     lLayers.Add(layer)
 

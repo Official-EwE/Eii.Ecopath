@@ -404,7 +404,7 @@ Namespace Ecospace
             Dim cmd As cCommand = cmdh.GetCommand("ExportLayerData")
             Dim lLayers As New List(Of cLayer)
             Dim layerTmp As cLayer = Nothing
-            Dim ldataTmp As cEcospaceLayerIntegerNxM = Nothing
+            Dim ldataTmp As cEcospaceLayerInteger = Nothing
             Dim iAreaClosed As Integer = 0
             Dim iNumResults As Integer = 0
 
@@ -416,7 +416,7 @@ Namespace Ecospace
                 ' Get area closed
                 iAreaClosed = CInt(Me.m_cmbAreaClosed.Items(iLevel))
                 ' Wrap this in a core map layer to handle projections
-                ldataTmp = New cEcospaceLayerIntegerNxM(Me.UIContext.Core, _
+                ldataTmp = New cEcospaceLayerInteger(Me.UIContext.Core, _
                                     Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
                 layerTmp = New cLayer(Me.UIContext, ldataTmp, Nothing, Nothing)
@@ -980,7 +980,7 @@ Namespace Ecospace
         Private Sub InitMapFeedback()
 
             Dim strGroup As String = ""
-            Dim datalayerTemp As cEcospaceLayerIntegerNxM = Nothing
+            Dim datalayerTemp As cEcospaceLayerInteger = Nothing
             Dim l As cLayer = Nothing
             Dim alayers As cLayer() = Nothing
             Dim lRunStateLayers As New List(Of cLayer)
@@ -992,7 +992,7 @@ Namespace Ecospace
                 ' Redim data
                 ReDim Me.m_aiFeedback(Me.m_basemap.InRow, Me.m_basemap.InCol)
                 ' Create layer to use for showing the data
-                datalayerTemp = New cEcospaceLayerIntegerNxM(Me.UIContext.Core, Me.m_aiFeedback)
+                datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_aiFeedback)
 
                 Select Case Me.SearchType
 
@@ -1420,16 +1420,16 @@ Namespace Ecospace
                 For iCol = 1 To Me.m_basemap.InCol
 
                     ' Only consider water cells
-                    If (layerDepth.Cell(iRow, iCol) > 0) Then
+                    If (CSng(layerDepth.Cell(iRow, iCol)) > 0) Then
 
                         ' Clear existing target MPA cells
-                        If (layerMPA.Cell(iRow, iCol) = iMPA) Then
+                        If (CInt(layerMPA.Cell(iRow, iCol)) = iMPA) Then
                             layerMPA.Cell(iRow, iCol) = 0
                         End If
 
                         ' Only consider cells that can be converted to MPA:
                         ' when MPA=0 (not currently part of an mpa)
-                        If (layerMPA.Cell(iRow, iCol) = 0) Then
+                        If (CInt(layerMPA.Cell(iRow, iCol)) = 0) Then
                             ' Get hit count value for this cell
                             iIndex = aiMap(iRow, iCol)
 

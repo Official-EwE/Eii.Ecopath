@@ -50,14 +50,14 @@ Namespace Ecospace.Advection
 
             Me.m_zoomctrl.Map.Basemap = Me.m_uic.Core.EcospaceBasemap
             Me.AddLayers(eVarNameFlags.LayerDepth, False)
-            Me.AddLayers(eVarNameFlags.LayerAdvection, True)
+            'Me.AddLayers(eVarNameFlags.LayerAdvection, True)
 
         End Sub
 
         Private Sub ClearMap()
 
             Me.RemoveLayers(eVarNameFlags.LayerDepth)
-            Me.RemoveLayers(eVarNameFlags.LayerAdvection)
+            'Me.RemoveLayers(eVarNameFlags.LayerAdvection)
             Me.m_zoomctrl.Map.Basemap = Nothing
 
         End Sub

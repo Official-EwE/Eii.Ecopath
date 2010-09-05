@@ -90,7 +90,7 @@ Public Class gridLayerData
         ' Grab the data
         data = Me.m_layer.Data
         ' Grab the type of the data
-        If TypeOf data Is cEcospaceLayerIntegerNxM Then
+        If TypeOf data Is cEcospaceLayerInteger Then
             tCell = GetType(Integer)
         Else
             ' Assume single
@@ -173,7 +173,7 @@ Public Class gridLayerData
         For iRow As Integer = 1 To Me.m_basemap.InRow
             For iCol As Integer = 1 To Me.m_basemap.InCol
                 ' Get original value
-                sOrg = data.Cell(iRow, iCol)
+                sOrg = CSng(data.Cell(iRow, iCol))
                 ' Get grid value
                 p = New SourceGrid2.Position(iRow, iCol)
                 sNew = CSng(Me(iRow, iCol).GetValue(p))

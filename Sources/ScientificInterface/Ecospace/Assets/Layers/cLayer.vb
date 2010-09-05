@@ -505,7 +505,10 @@ Namespace Ecospace.Basemap.Layers
             Get
                 If Object.ReferenceEquals(Me.m_valueSet, Nothing) Then Return False
 
-                ' ToDo_JS: Build smartness to detect dimension of layer type
+                ' Composed value types are too horrendous to test - just assuma a value is there
+                ' until a better idea is conconcted.
+                If TypeOf (Me.Value(iRow, iCol)) Is Array Then Return True
+
                 Dim cellValue As Single = CSng(Me.Value(iRow, iCol))
 
                 If Me.m_valueSet.Equals(cCore.NULL_VALUE) Then

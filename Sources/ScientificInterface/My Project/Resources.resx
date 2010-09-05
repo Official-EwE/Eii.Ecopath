@@ -2678,4 +2678,13 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Do you wish to import '{0}' as monthly forcing data?</value>
     <comment>{0}: name of dataset</comment>
   </data>
+  <data name="ECOSPACE_BASEMAP_LAYERS_ADVECTION" xml:space="preserve">
+    <value>Advection</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_LAYERS_TRANSPORTRATE" xml:space="preserve">
+    <value>Transport rate</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_LAYERS_WIND" xml:space="preserve">
+    <value>Wind</value>
+  </data>
 </root>
