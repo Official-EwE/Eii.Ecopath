@@ -34,8 +34,10 @@ Namespace Ecospace.Basemap.Layers
             Me.CellValueMin = CDec(Math.Min(layer.ValueSet, layer.ValueClear))
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cLayerEditor.StartEdit"/>
-        Public Overrides Sub StartEdit(ByVal ptClick As Point)
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub StartEdit(ByVal ptClick As Point, ByVal buttons As MouseEventArgs)
 
             ' Clicked on data cell?
             If Object.Equals(Layer.Value(ptClick.Y, ptClick.X), Layer.ValueSet) Then

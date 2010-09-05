@@ -3,6 +3,7 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -38,6 +39,11 @@ Namespace Ecospace.Advection
             Me.m_ucZoomToolbar.AddZoomContainer(Me.m_ucWind.ZoomCtrl)
             Me.m_ucZoomToolbar.AddZoomContainer(Me.m_ucMLD.ZoomCtrl)
             Me.m_ucZoomToolbar.AddZoomContainer(Me.m_ucUpwelling.ZoomCtrl)
+
+            Me.m_tscmMonth.Items.Clear()
+            For i As Integer = 1 To cCore.N_MONTHS
+                Me.m_tscmMonth.Items.Add(cDateUtils.GetMonthName(i))
+            Next
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
             Me.UpdateControls()

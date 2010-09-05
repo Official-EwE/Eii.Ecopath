@@ -185,7 +185,7 @@ Namespace Ecospace.Basemap.Layers
         ''' User has started editing the layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub StartEdit(ByVal ptClick As Point)
+        Public Overridable Sub StartEdit(ByVal ptClick As Point, ByVal buttons As MouseEventArgs)
             ' Notify the editor GUI, if any
             If Me.GUI IsNot Nothing Then
                 Me.GUI.StartEdit()

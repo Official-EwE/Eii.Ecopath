@@ -289,7 +289,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.[Class]"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.[Class]"/>
+        ''' -------------------------------------------------------------------
         Public Property [Class]() As String _
             Implements ITaxonData.Class
             Get
@@ -300,7 +302,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.Code3A"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.Code3A"/>
+        ''' -------------------------------------------------------------------
         Public Property Code3A() As String _
             Implements ITaxonData.Code3A
             Get
@@ -311,7 +315,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.CodeISSCAAP"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.CodeISSCAAP"/>
+        ''' -------------------------------------------------------------------
         Public Property CodeISSCAAP() As String _
             Implements ITaxonData.CodeISSCAAP
             Get
@@ -322,7 +328,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.CodeTaxon"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.CodeTaxon"/>
+        ''' -------------------------------------------------------------------
         Public Property CodeTaxon() As String _
             Implements ITaxonData.CodeTaxon
             Get
@@ -333,7 +341,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.Common"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.Common"/>
+        ''' -------------------------------------------------------------------
         Public Property Common() As String _
             Implements ITaxonData.Common
             Get
@@ -344,7 +354,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.Family"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.Family"/>
+        ''' -------------------------------------------------------------------
         Public Property Family() As String _
             Implements ITaxonData.Family
             Get
@@ -355,7 +367,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.Order"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.Order"/>
+        ''' -------------------------------------------------------------------
         Public Property Order() As String _
             Implements ITaxonData.Order
             Get
@@ -366,7 +380,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.Genus"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.Genus"/>
+        ''' -------------------------------------------------------------------
         Public Property Genus() As String _
             Implements ITaxonData.Genus
             Get
@@ -377,7 +393,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.LastUpdated"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.LastUpdated"/>
+        ''' -------------------------------------------------------------------
         Public Property LastUpdated() As Double _
             Implements ITaxonData.LastUpdated
             Get
@@ -388,7 +406,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.Source"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.Source"/>
+        ''' -------------------------------------------------------------------
         Public Property Source() As String _
             Implements ITaxonData.Source
             Get
@@ -399,7 +419,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.SourceKey"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.SourceKey"/>
+        ''' -------------------------------------------------------------------
         Public Property SourceKey() As String _
             Implements ITaxonData.SourceKey
             Get
@@ -410,7 +432,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.Species"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.Species"/>
+        ''' -------------------------------------------------------------------
         Public Property Species() As String _
            Implements ITaxonData.Species
             Get
@@ -421,7 +445,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.North"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.North"/>
+        ''' -------------------------------------------------------------------
         Public Property North() As Single _
             Implements ITaxonData.North
             Get
@@ -432,7 +458,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.South"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.South"/>
+        ''' -------------------------------------------------------------------
         Public Property South() As Single _
             Implements ITaxonData.South
             Get
@@ -443,7 +471,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.East"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.East"/>
+        ''' -------------------------------------------------------------------
         Public Property East() As Single _
             Implements ITaxonData.East
             Get
@@ -454,7 +484,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonData.West"/>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.West"/>
+        ''' -------------------------------------------------------------------
         Public Property West() As Single _
             Implements ITaxonData.West
             Get

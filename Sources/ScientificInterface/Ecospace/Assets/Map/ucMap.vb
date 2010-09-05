@@ -169,7 +169,7 @@ Namespace Ecospace
             If Not bShiftPressed Then Me.m_ptScreenPrevious = Nothing
 
             ' Start editing
-            Me.m_layerSelected.Editor.StartEdit(ptCellCur)
+            Me.m_layerSelected.Editor.StartEdit(ptCellCur, e)
 
             Me.ProcessMouseInput(e)
 
