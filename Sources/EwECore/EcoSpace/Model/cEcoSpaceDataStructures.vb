@@ -909,7 +909,7 @@ Public Class cEcospaceDataStructures
 
     Public Sub ReDimMapDims()
         'NvarTot = nvar + 2 * npairs
-        Dim i As Integer, j As Integer
+        Dim i As Integer, j As Integer, k As Integer
 
         Debug.Assert(StanzaGroups IsNot Nothing, Me.ToString & ".ReDimMapDims() Stanzagroups needs to be set.")
 
@@ -958,13 +958,7 @@ Public Class cEcospaceDataStructures
             Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)
             Me.allocate(Yv, InRow + 1, InCol + 1, cCore.N_MONTHS)
 
-            Dim r As New Random
-            For i = 1 To InRow
-                For j = 1 To InCol
-                    Xv(i, j, 1) = CSng(r.NextDouble * 10 - 5)
-                    Yv(i, j, 1) = CSng(r.NextDouble * 10 - 5)
-                Next
-            Next
+            For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 
             'Boolean maps
             ReDim Port(nFleets, InRow + 1, InCol + 1)
