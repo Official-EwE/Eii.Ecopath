@@ -13,6 +13,13 @@ Public Class cEcospaceLayerWind
     Inherits cEcospaceLayerVector
     Implements ICoreMonthFilter
 
+#Region " Private vars "
+
+    ''' <summary>Month [1, 12] to operate on.</summary>
+    Private m_iMonth As Integer = 1
+
+#End Region ' Private vars
+
 #Region " Construction "
 
     ''' -----------------------------------------------------------------------
@@ -33,9 +40,9 @@ Public Class cEcospaceLayerWind
 
 #Region " Cell interaction "
 
-    Private m_iMonth As Integer = 1
-
-    ''' <inheritdocs cref="ICoreMonthFilter.Month"/>
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdoc cref="ICoreMonthFilter.Month"/>
+    ''' -----------------------------------------------------------------------
     Public Property Month() As Integer _
         Implements EwEUtils.Core.ICoreMonthFilter.Month
         Get
@@ -50,9 +57,11 @@ Public Class cEcospaceLayerWind
 
 #Region " Private bits "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get X velocity data
+    ''' Get X velocity data.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Overrides Property XVelocity(ByVal iRow As Integer, ByVal iCol As Integer) As Single
         Get
             Return DirectCast(Me.Data, Single()(,,))(0)(iRow, iCol, Me.m_iMonth)
@@ -62,9 +71,11 @@ Public Class cEcospaceLayerWind
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get Y velocity data
+    ''' Get Y velocity data.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Overrides Property YVelocity(ByVal iRow As Integer, ByVal iCol As Integer) As Single
         Get
             Return DirectCast(Me.Data, Single()(,,))(1)(iRow, iCol, Me.m_iMonth)
