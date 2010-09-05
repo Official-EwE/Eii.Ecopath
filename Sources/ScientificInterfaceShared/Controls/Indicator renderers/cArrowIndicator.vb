@@ -5,15 +5,16 @@ Namespace Controls
 
     ''' ===========================================================================
     ''' <summary>
-    ''' Helper class, draws an arrow on a designated 
+    ''' Helper class, draws an arrow. Yippee.
     ''' </summary>
     ''' ===========================================================================
     Public Class cArrowIndicator
 
 #Region " Private vars "
 
-        ''' <summary>Graphics path holding the entire arrow</summary>
-        Private m_gpArrow As GraphicsPath
+        ''' <summary>Single existing graphics path holding the arrow to draw.</summary>
+        ''' <remarks>This path is created on the first use.</remarks>
+        Private m_gpArrow As GraphicsPath = Nothing
 
 #End Region ' Private vars
 
@@ -42,11 +43,15 @@ Namespace Controls
         ''' <param name="g">Graphics to draw onto.</param>
         ''' <param name="clr">Colour of the arrow to draw.</param>
         ''' <param name="rc">Rectangle to draw the arrow into.</param>
-        ''' <param name="sAngle">Clockwise angle for the arrow. 0 is straight up.</param>
+        ''' <param name="sAngle">Clockwise angle (in degrees, NOT radians) for the arrow. 0 is straight up.</param>
         ''' <param name="sSize">Size of the angle. [0, 1], 0 is smallest size, 1 will
         ''' size the arrow to optimally fit in the rectangle with 1 pixel margin.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub DrawArrow(ByVal g As Graphics, ByVal clr As Color, ByVal rc As Rectangle, ByVal sAngle As Single, ByVal sSize As Single)
+        Public Shared Sub DrawArrow(ByVal g As Graphics, _
+                                    ByVal clr As Color, _
+                                    ByVal rc As Rectangle, _
+                                    ByVal sAngle As Single, _
+                                    ByVal sSize As Single)
 
             Dim matOrg As Matrix = g.Transform
             Dim matArr As New Matrix()
