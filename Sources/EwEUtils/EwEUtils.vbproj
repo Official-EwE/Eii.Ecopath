@@ -74,6 +74,7 @@
     <Compile Include="Commands\Predefined commands\cCommand.vb" />
     <Compile Include="Commands\cCommandHandler.vb" />
     <Compile Include="Commands\cControlHandler.vb" />
+    <Compile Include="Core\ICoreMonthFilter.vb" />
     <Compile Include="Core\IEconomicData.vb" />
     <Compile Include="Core\INetworkAnalysisData.vb" />
     <Compile Include="Core\ITaxonData.vb" />

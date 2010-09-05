@@ -1,16 +1,16 @@
 ﻿Namespace Core
 
     ''' <summary>
-    ''' Interface for objects that can be filtered by month.
+    ''' Interface for objects that can be filtered by fleet.
     ''' </summary>
-    Public Interface ICoreMonthFilter
+    Public Interface ICoreFleetFilter
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the month to filter by.
+        ''' Get/set the fleet to filter by.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Property Month() As Integer
+        Property Fleet() As Integer
 
     End Interface
 
