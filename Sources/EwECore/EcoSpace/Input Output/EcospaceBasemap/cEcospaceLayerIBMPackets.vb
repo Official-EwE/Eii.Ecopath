@@ -10,7 +10,7 @@ Imports EwEUtils.Core
 ''' Layer providing access to Ecospace IBM packets data.
 ''' </summary>
 Public Class cEcospaceLayerIBMPackets
-    Inherits cEcospaceLayerIntegerNxM
+    Inherits cEcospaceLayerInteger
 
     ''' <summary>Layer data cache (row, col) = iStage</summary>
     Private m_aiPositions As Integer(,)
@@ -31,14 +31,14 @@ Public Class cEcospaceLayerIBMPackets
         End Get
     End Property
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Single
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
             If Me.m_aiPositions Is Nothing Then
                 Me.Refresh()
             End If
             Return Me.m_aiPositions(iRow, iCol)
         End Get
-        Set(ByVal value As Single)
+        Set(ByVal value As Object)
             ' Cannot set
         End Set
     End Property

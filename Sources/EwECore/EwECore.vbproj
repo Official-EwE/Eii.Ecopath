@@ -115,7 +115,7 @@
     <Compile Include="FitToTimeSeries\Model\cF2TSDataStructures.vb" />
     <Compile Include="FitToTimeSeries\Model\cF2TSModel.vb" />
     <Compile Include="HelperClasses\cXMLLogWriter.vb" />
-    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayer.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayer.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceFleet.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceFleetOutput.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceGroup.vb" />
@@ -291,22 +291,25 @@
     <Compile Include="EcoSim\Input Output\cEcosimResultWriter.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFleetInput.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceRegion.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerVector.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerAdvection.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDistribution.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerImportance.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceBasemap.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerInteger.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerMigration.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerMPA.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerRegion.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerRelPP.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDepth.vb" />
-    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayeHabitat.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerHabitat.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerMPASeed.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerRelCin.vb" />
-    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceNxNLayer.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerSingle.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerIBMPackets.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerPort.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerSail.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerWind.vb" />
     <Compile Include="External data\cNetworkAnalysisDataSource.vb" />
     <Compile Include="External data\cTaxonDataSource.vb">
       <SubType>Code</SubType>

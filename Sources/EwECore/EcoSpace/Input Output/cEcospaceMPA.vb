@@ -54,7 +54,7 @@ Public Class cEcospaceMPA
 
             For iRow As Integer = 1 To bm.InRow
                 For iCol As Integer = 1 To bm.InCol
-                    If l.Cell(iRow, iCol) = iIndex Then
+                    If CInt(l.Cell(iRow, iCol)) = iIndex Then
                         iNumCells += 1
                     End If
                 Next

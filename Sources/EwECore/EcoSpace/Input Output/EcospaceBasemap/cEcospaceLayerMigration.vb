@@ -56,19 +56,20 @@ Public Class cEcospaceLayerMigration
         End Set
     End Property
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Single
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
             If Me.m_asData Is Nothing Then
                 Me.Refresh()
             End If
             Return Me.m_asData(iRow, iCol)
         End Get
-        Set(ByVal value As Single)
-            Debug.Assert(value >= Me.m_iMinValue)
-            Debug.Assert(value <= Me.m_iMaxValue)
+        Set(ByVal value As Object)
+            Dim i As Integer = CInt(value)
+            Debug.Assert(i >= Me.m_iMinValue)
+            Debug.Assert(i <= Me.m_iMaxValue)
 
-            Me.PrefRow(Me.m_iGroup, CInt(value)) = iRow
-            Me.PrefCol(Me.m_iGroup, CInt(value)) = iCol
+            Me.PrefRow(Me.m_iGroup, i) = iRow
+            Me.PrefCol(Me.m_iGroup, i) = iCol
             Me.Invalidate()
         End Set
     End Property

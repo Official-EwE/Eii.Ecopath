@@ -113,6 +113,17 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerSail, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' Advection interface
+            ' LayerAdvection
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerAdvection, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' LayerWind
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerWind, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' ----------------
             ' Init layers
             ' ----------------
@@ -120,34 +131,34 @@ Public Class cEcospaceBasemap
             ' Depth layer
             meta = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             layer = New cEcospaceLayerDepth(theCore, Me, meta)
-            Me.Layers(eVarNameFlags.LayerDepth) = layer
+            Me.Layers(layer.VarName) = layer
 
             ' Habitat layer
             meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nHabitats), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             layer = New cEcospaceLayerHabitat(theCore, Me, meta)
-            Me.Layers(eVarNameFlags.LayerHabitat) = layer
+            Me.Layers(layer.VarName) = layer
 
             ' MPA layer
             meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nMPAs), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             layer = New cEcospaceLayerMPA(theCore, Me, meta)
-            Me.Layers(eVarNameFlags.LayerMPA) = layer
+            Me.Layers(layer.VarName) = layer
 
             ' Region layer
             meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nRegions), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             layer = New cEcospaceLayerRegion(theCore, Me)
-            Me.Layers(eVarNameFlags.LayerRegion) = layer
+            Me.Layers(layer.VarName) = layer
 
             ' RelPP layer
             layer = New cEcospaceLayerRelPP(theCore, Me)
-            Me.Layers(eVarNameFlags.LayerRelPP) = layer
+            Me.Layers(layer.VarName) = layer
 
             ' RelCin layer
             layer = New cEcospaceLayerRelCin(theCore, Me)
-            Me.Layers(eVarNameFlags.LayerRelCin) = layer
+            Me.Layers(layer.VarName) = layer
 
             ' MPA Seed
             layer = New cEcospaceLayerMPASeed(theCore, Me)
-            Me.Layers(eVarNameFlags.LayerMPASeed) = layer
+            Me.Layers(layer.VarName) = layer
 
             ' Importance layers
             For i As Integer = 0 To Me.m_core.nImportanceLayers - 1
@@ -157,15 +168,15 @@ Public Class cEcospaceBasemap
 
             ' Migration
             layer = New cEcospaceLayerMigration(theCore, Me, eVarNameFlags.LayerMigration)
-            Me.Layers(eVarNameFlags.LayerMigration) = layer
+            Me.Layers(layer.VarName) = layer
 
             ' Port
             layer = New cEcospaceLayerPort(theCore, Me)
-            Me.Layers(eVarNameFlags.LayerPort) = layer
+            Me.Layers(layer.VarName) = layer
 
             ' Sailing cost
             layer = New cEcospaceLayerSail(theCore, Me)
-            Me.Layers(eVarNameFlags.LayerSail) = layer
+            Me.Layers(layer.VarName) = layer
 
             ' IBM layers
             For i As Integer = 1 To Me.m_core.nStanzas
@@ -173,8 +184,14 @@ Public Class cEcospaceBasemap
             Next
 
             layer = New cEcospaceLayerDistribution(theCore, Me)
-            Me.Layers(eVarNameFlags.LayerDistribution) = layer
+            Me.Layers(layer.VarName) = layer
 
+            ' Advection
+            layer = New cEcospaceLayerAdvection(theCore, Me)
+            Me.Layers(layer.VarName) = layer
+
+            layer = New cEcospaceLayerWind(theCore, Me, eVarNameFlags.LayerWind)
+            Me.Layers(layer.VarName) = layer
 
             'set status flags to default values
             ResetStatusFlags()
@@ -457,6 +474,21 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get the Wind layer in Ecospace.
+    ''' </summary>
+    ''' <remarks>
+    ''' This layer is a tricky one since it provides uniform access to
+    ''' two amplitude components, XVel and YVel. See the actual layer for details.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerWind() As cEcospaceLayerVector
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerWind), cEcospaceLayerVector)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -523,8 +555,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.MPAOptData.MPASeed
             Case eVarNameFlags.LayerMigration
                 Return New Integer()(,) {Me.m_core.m_EcoSpaceData.PrefRow, Me.m_core.m_EcoSpaceData.Prefcol}
-            Case eVarNameFlags.LayerAdvection
-                'Return New Single()() {Me.m_core.m_EcoSpaceData.AdvectSpeed}
+            Case eVarNameFlags.LayerWind
+                Return New Single()(,,) {Me.m_core.m_EcoSpaceData.Xv, Me.m_core.m_EcoSpaceData.Yv}
             Case eVarNameFlags.LayerImportance
                 If iIndex < 0 Or iIndex > Me.m_core.m_EcoSpaceData.ImportanceLayers.Count - 1 Then
                     Debug.Assert(True, "cCore message: Index out of bounds error for ImportanceLayers")

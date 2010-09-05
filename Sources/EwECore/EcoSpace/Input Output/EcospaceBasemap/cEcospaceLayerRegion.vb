@@ -9,7 +9,7 @@ Imports EwEUtils.Core
 ''' Layer providing access to Ecospace region data.
 ''' </summary>
 Public Class cEcospaceLayerRegion
-    Inherits cEcospaceLayerIntegerNxM
+    Inherits cEcospaceLayerInteger
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
         MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerRegion)

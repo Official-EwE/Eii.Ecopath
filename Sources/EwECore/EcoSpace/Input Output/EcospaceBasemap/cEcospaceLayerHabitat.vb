@@ -6,14 +6,14 @@ Imports EwEUtils.Core
 #End Region ' Imports
 
 ''' <summary>
-''' Layer providing access to Ecospace migration data.
+''' Layer providing access to Ecospace habitat data.
 ''' </summary>
-Public Class cEcospaceLayerMPA
+Public Class cEcospaceLayerHabitat
     Inherits cEcospaceLayerInteger
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal meta As cVariableMetaData)
-        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerMPA, cCore.NULL_VALUE, meta)
-        Me.m_dataType = eDataTypes.EcospaceLayerMPA
+        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerHabitat, cCore.NULL_VALUE, meta)
+        Me.m_dataType = eDataTypes.EcospaceLayerHabitat
     End Sub
 
 End Class

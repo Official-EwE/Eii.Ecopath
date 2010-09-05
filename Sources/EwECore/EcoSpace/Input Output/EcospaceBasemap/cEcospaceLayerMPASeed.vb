@@ -9,7 +9,7 @@ Imports EwEUtils.Core
 ''' Layer providing access to Ecospace MPA seed data.
 ''' </summary>
 Public Class cEcospaceLayerMPASeed
-    Inherits cEcospaceLayerIntegerNxM
+    Inherits cEcospaceLayerInteger
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
         MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerMPASeed, cCore.NULL_VALUE)

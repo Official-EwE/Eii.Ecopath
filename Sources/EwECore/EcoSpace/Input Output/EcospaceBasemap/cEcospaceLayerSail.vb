@@ -9,7 +9,7 @@ Imports EwEUtils.Core
 ''' Layer providing access to Ecospace sailing cost data.
 ''' </summary>
 Public Class cEcospaceLayerSail
-    Inherits cEcospaceLayerSingleNxM
+    Inherits cEcospaceLayerSingle
     Implements ICoreFleetFilter
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
@@ -49,14 +49,14 @@ Public Class cEcospaceLayerSail
     ''' <see cref="Fleet">fleet index</see>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Single
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
             Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
             Return data(Me.m_iFleet, iRow, iCol)
         End Get
-        Set(ByVal value As Single)
+        Set(ByVal value As Object)
             Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
-            data(Me.m_iFleet, iRow, iCol) = value
+            data(Me.m_iFleet, iRow, iCol) = CSng(value)
         End Set
     End Property
 

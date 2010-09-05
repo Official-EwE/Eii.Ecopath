@@ -10,7 +10,7 @@ Imports EwEUtils.Core
 ''' Layer providing access to Ecospace importance data.
 ''' </summary>
 Public Class cEcospaceLayerImportance
-    Inherits cEcospaceLayerSingleNxM
+    Inherits cEcospaceLayerSingle
 
 #Region " Constructor "
 

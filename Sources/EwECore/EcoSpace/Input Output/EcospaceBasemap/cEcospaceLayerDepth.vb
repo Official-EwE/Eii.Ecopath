@@ -9,7 +9,7 @@ Imports EwEUtils.Core
 ''' Layer providing access to Ecospace depth data.
 ''' </summary>
 Public Class cEcospaceLayerDepth
-    Inherits cEcospaceLayerIntegerNxM
+    Inherits cEcospaceLayerInteger
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal meta As cVariableMetaData)
         MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerDepth, cCore.NULL_VALUE, meta)
@@ -17,11 +17,11 @@ Public Class cEcospaceLayerDepth
     End Sub
 
     Public Function IsWaterCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
-        Return Me.Cell(iRow, iCol) > 0
+        Return CInt(Me.Cell(iRow, iCol)) > 0
     End Function
 
     Public Function IsLandCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
-        Return Me.Cell(iRow, iCol) <= 0
+        Return CInt(Me.Cell(iRow, iCol)) <= 0
     End Function
 
 End Class

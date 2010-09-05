@@ -955,6 +955,16 @@ Public Class cEcospaceDataStructures
             Me.allocate(RelCinorig, InRow + 1, InCol + 1)     'for use with habitat change
             Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
             Me.allocate(GroupDetritus, InRow + 1, InCol + 1, nvartot)
+            Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)
+            Me.allocate(Yv, InRow + 1, InCol + 1, cCore.N_MONTHS)
+
+            Dim r As New Random
+            For i = 1 To InRow
+                For j = 1 To InCol
+                    Xv(i, j, 1) = CSng(r.NextDouble * 10 - 5)
+                    Yv(i, j, 1) = CSng(r.NextDouble * 10 - 5)
+                Next
+            Next
 
             'Boolean maps
             ReDim Port(nFleets, InRow + 1, InCol + 1)

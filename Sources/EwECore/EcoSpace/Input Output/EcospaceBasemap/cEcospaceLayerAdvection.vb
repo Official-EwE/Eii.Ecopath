@@ -10,7 +10,7 @@ Imports EwEUtils.Core
 ''' Layer providing access to Ecospace advection data.
 ''' </summary>
 Public Class cEcospaceLayerAdvection
-    Inherits cEcospaceLayerSingleNxM
+    Inherits cEcospaceLayerSingle
 
 #Region " Construction "
 
@@ -21,11 +21,9 @@ Public Class cEcospaceLayerAdvection
     ''' </summary>
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
-    ''' <param name="varName"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef theCore As cCore, ByVal manager As cEcospaceBasemap, _
-            ByVal varName As eVarNameFlags)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, cCore.NULL_VALUE, Nothing)
+    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, eVarNameFlags.LayerAdvection, cCore.NULL_VALUE, Nothing)
     End Sub
 
 #End Region ' Construction
