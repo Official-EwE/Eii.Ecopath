@@ -489,6 +489,8 @@ Namespace Core
         LayerAdvection
         ''' <summary>Ecospace transport rate layer.</summary>
         LayerTransportRate
+        ''' <summary>Ecospace wind layer.</summary>
+        LayerWind
         ''' <summary>Ecospace MPA importance.</summary>
         LayerImportance
         ''' <summary>Ecospace cell port assignments.</summary>
@@ -1791,6 +1793,16 @@ Namespace Core
         ''' Data belongs to a taxonomy definition.
         ''' </summary>
         Taxon = 85
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace wind layer.
+        ''' </summary>
+        EcospaceLayerWind = 83
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace transport rate layer.
+        ''' </summary>
+        EcospaceLayerTransportRate = 82
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
