@@ -983,8 +983,8 @@ Public Class cEcospaceDataStructures
                     HabType(i, j) = 1
                     RelPP(i, j) = 1
                     RelCin(i, j) = 1
-                    For K As Integer = 1 To nFleets
-                        Sail(K, i, j) = 1
+                    For k = 1 To nFleets
+                        Sail(k, i, j) = 1
                     Next
 
                     'All groups in distributed over the total map extent
