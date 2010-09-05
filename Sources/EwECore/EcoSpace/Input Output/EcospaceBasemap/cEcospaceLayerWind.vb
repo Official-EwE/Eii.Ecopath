@@ -11,6 +11,7 @@ Imports EwEUtils.Core
 ''' </summary>
 Public Class cEcospaceLayerWind
     Inherits cEcospaceLayerVector
+    Implements ICoreMonthFilter
 
 #Region " Construction "
 
@@ -35,12 +36,14 @@ Public Class cEcospaceLayerWind
 
     Private m_iMonth As Integer = 1
 
-    Public Property Month() As Integer
+    ''' <inheritdocs cref="ICoreMonthFilter.Month"/>
+    Public Property Month() As Integer _
+        Implements EwEUtils.Core.ICoreMonthFilter.Month
         Get
             Return Me.m_iMonth
         End Get
         Set(ByVal value As Integer)
-            Me.m_iMonth = value
+            Me.m_iMonth = Math.Max(1, Math.Min(cCore.N_MONTHS, value))
         End Set
     End Property
 
