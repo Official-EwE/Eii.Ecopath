@@ -17,8 +17,7 @@ Public Class cEcospaceLayerWind
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor for an NxN layer that derives its data and identity from 
-    ''' a manager.
+    ''' Constructor for the wind layer.
     ''' </summary>
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
