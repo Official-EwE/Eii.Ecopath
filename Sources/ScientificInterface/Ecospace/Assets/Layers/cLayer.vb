@@ -534,7 +534,7 @@ Namespace Ecospace.Basemap.Layers
                 Return Me.m_data.Cell(iRow, iCol)
             End Get
             Set(ByVal value As Object)
-                Me.m_data.Cell(iRow, iCol) = CSng(value)
+                Me.m_data.Cell(iRow, iCol) = value
             End Set
         End Property
 

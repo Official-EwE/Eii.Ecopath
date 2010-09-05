@@ -239,7 +239,7 @@ Namespace Ecospace.Basemap.Layers
                         If (Math.Sqrt(ptfCursor.X * ptfCursor.X + ptfCursor.Y * ptfCursor.Y) <= (Me.CursorSize / 2)) Then
 
                             ptCell = New Point(CInt(Math.Floor(dX + ptfCursor.X)), CInt(Math.Floor(dY + ptfCursor.Y)))
-                            Me.SetCellValue(ptCell, New Point(iX, iY))
+                            Me.SetCellValue(ptCell, args, New Point(iX, iY))
 
                             ptUpdateMin.X = Math.Min(ptCell.X, ptUpdateMin.X)
                             ptUpdateMin.Y = Math.Min(ptCell.Y, ptUpdateMin.Y)
@@ -288,10 +288,11 @@ Namespace Ecospace.Basemap.Layers
         ''' Set the value of a cell in the current layer with the designated 
         ''' <see cref="CellValue">set value</see>.
         ''' </summary>
-        ''' <param name="ptSet">The cell location to set.</param>
-        ''' <param name="ptClick">The cell location in the cursor.</param>
+        ''' <param name="ptSet">The cell location (Col, Row) to set.</param>
+        ''' <param name="ptClick">The cell location (Col, Row) in the cursor.</param>
         ''' -------------------------------------------------------------------
         Protected Overridable Sub SetCellValue(ByVal ptSet As Point, _
+                                               ByVal e As MouseEventArgs, _
                                                ByVal ptClick As Point)
             Me.Layer.Value(ptSet.Y, ptSet.X) = Me.CellValue
         End Sub
@@ -364,12 +365,12 @@ Namespace Ecospace.Basemap.Layers
         ''' This value is persistent across layer editors.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property CellValue() As Decimal
+        Public Overridable Property CellValue() As Object
             Get
                 Return cLayerEditor.s_decValue
             End Get
-            Set(ByVal value As Decimal)
-                cLayerEditor.s_decValue = Math.Max(Math.Min(value, Me.m_decValueMax), Me.m_decValueMin)
+            Set(ByVal value As Object)
+                cLayerEditor.s_decValue = Math.Max(Math.Min(CDec(value), Me.m_decValueMax), Me.m_decValueMin)
                 If (Me.m_gui IsNot Nothing) Then
                     Me.m_gui.UpdateContent()
                 End If

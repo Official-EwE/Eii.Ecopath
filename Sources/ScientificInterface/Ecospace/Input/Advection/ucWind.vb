@@ -49,29 +49,27 @@ Namespace Ecospace.Advection
         Private Sub PopulateMap()
 
             Me.m_zoomctrl.Map.Basemap = Me.m_uic.Core.EcospaceBasemap
+            Me.m_zoomctrl.Map.Editable = True
+
             Me.AddLayers(eVarNameFlags.LayerDepth, False)
             Me.AddLayers(eVarNameFlags.LayerWind, True)
 
         End Sub
 
         Private Sub ClearMap()
-
-            Me.RemoveLayers(eVarNameFlags.LayerDepth)
-            Me.RemoveLayers(eVarNameFlags.LayerWind)
+            Me.m_zoomctrl.Map.Clear()
             Me.m_zoomctrl.Map.Basemap = Nothing
-
         End Sub
 
         Private Sub AddLayers(ByVal vn As eVarNameFlags, ByVal bEditable As Boolean)
             For Each l As cLayer In cLayerFactory.GetLayers(Me.m_uic, vn)
-                l.Editor.IsReadOnly = Not bEditable
+                If bEditable Then
+                    l.Editor.IsReadOnly = False
+                    l.IsSelected = True
+                Else
+                    l.Editor.IsReadOnly = True
+                End If
                 Me.m_zoomctrl.Map.AddLayer(l)
-            Next l
-        End Sub
-
-        Private Sub RemoveLayers(ByVal vn As eVarNameFlags)
-            For Each l As cLayer In cLayerFactory.GetLayers(Me.m_uic, vn)
-                Me.m_zoomctrl.Map.RemoveLayer(l)
             Next l
         End Sub
 

@@ -514,6 +514,10 @@ Namespace Ecospace
             End If
 
             AddHandler layer.LayerChanged, AddressOf Me.OnLayerChanged
+
+            ' Manually update selected state on new layers
+            If layer.IsSelected Then Me.UpdateSelection(layer)
+
         End Sub
 
         ''' -------------------------------------------------------------------
