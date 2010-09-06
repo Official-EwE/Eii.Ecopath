@@ -1170,7 +1170,9 @@
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedPrimaryProducer.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorVector.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererWind.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererWindEwE5.vb" />
     <Compile Include="Ecospace\Assets\Map\ucMapZoomToolbar.Designer.vb">
       <DependentUpon>ucMapZoomToolbar.vb</DependentUpon>
     </Compile>

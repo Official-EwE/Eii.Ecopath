@@ -19,6 +19,14 @@ Namespace Ecospace.Basemap.Layers
     Public Class cLayerEditorVector
         Inherits cLayerEditor
 
+#Region " Private vars "
+
+        Private m_ptfDelta As PointF = Nothing
+        Private m_szfCell As SizeF = Nothing
+        Private m_sScaleFactor As Single = 25
+
+#End Region ' Private vars
+
 #Region " Construction "
 
         Public Sub New()
@@ -45,10 +53,17 @@ Namespace Ecospace.Basemap.Layers
         ''' -------------------------------------------------------------------
         Public Overrides Sub Edit(ByVal ptFrom As Point, _
                                   ByVal ptTo As Point, _
+                                  ByVal ptDeltaMouse As Point, _
+                                  ByVal szfCell As SizeF, _
                                   ByVal args As MouseEventArgs, _
                                   ByRef ptUpdateMin As Point, _
                                   ByRef ptUpdateMax As Point)
-            MyBase.Edit(ptFrom, ptTo, args, ptUpdateMin, ptUpdateMax)
+
+            Me.m_ptfDelta = New PointF(ptDeltaMouse.X, ptDeltaMouse.Y)
+            Me.m_szfCell = New SizeF(szfCell.Width, szfCell.Height)
+
+            MyBase.Edit(ptFrom, ptTo, ptDeltaMouse, szfCell, args, ptUpdateMin, ptUpdateMax)
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -62,15 +77,23 @@ Namespace Ecospace.Basemap.Layers
                                              ByVal e As MouseEventArgs, _
                                              ByVal ptClick As Point)
 
-            Dim r As New Random
-            Me.Layer.Value(ptSet.Y, ptSet.X) = New Single() {CSng(r.NextDouble * 10) - 5.0!, CSng(r.NextDouble * 10) - 5.0!}
+            ' Distance mouse has travelled
+            Dim dx As Single = CSng(Math.Sqrt(Me.m_ptfDelta.X * Me.m_ptfDelta.X + Me.m_ptfDelta.Y * Me.m_ptfDelta.Y))
+
+            If dx < 4 Then Return
+
+            Me.Layer.Value(ptSet.Y, ptSet.X) = New Single() {Me.m_ptfDelta.X * Me.m_sScaleFactor / Me.m_szfCell.Width, _
+                                                             Me.m_ptfDelta.Y * Me.m_sScaleFactor / Me.m_szfCell.Height}
+
         End Sub
 
         Public Overrides Property CellValue() As Object
             Get
+                Debug.Assert(False, "Code should be bypassed for vector layers")
                 Return New Single() {1, -1}
             End Get
             Set(ByVal value As Object)
+                Debug.Assert(False, "Code should be bypassed for vector layers")
                 'MyBase.CellValue = value
             End Set
         End Property

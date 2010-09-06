@@ -17,10 +17,8 @@ Namespace Ecospace.Basemap.Layers
     ''' Layer renderer that draws cells as a wind indicator.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerRendererWind
+    Public Class cLayerRendererWindEwE5
         Inherits cLayerRenderer
-
-        Private Const s_R2D As Single = 180.0! / Math.PI
 
         Public Sub New(ByVal vs As cVisualStyle)
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
@@ -30,8 +28,7 @@ Namespace Ecospace.Basemap.Layers
                                            ByVal rc As Rectangle, _
                                            ByVal layer As cEcospaceLayer)
             If Me.IsStyleValid Then
-                'g.FillRectangle(Brushes.White, rc)
-                Me.RenderCell(g, rc, layer, 45, cStyleGuide.eStyleFlags.OK)
+                Me.RenderCell(g, rc, layer, New Single() {5, 5}, cStyleGuide.eStyleFlags.OK)
             Else
                 Me.RenderError(g, rc)
             End If
@@ -55,43 +52,35 @@ Namespace Ecospace.Basemap.Layers
                                         ByVal style As cStyleGuide.eStyleFlags)
 
             Dim asValues As Single() = Nothing
-            Dim sAngle As Single
-            Dim sScale As Single
+            Dim ptfCenter As PointF = Nothing
+            Dim szfHalfArrow As SizeF = Nothing
 
             If TypeOf value Is Single() Then
                 asValues = DirectCast(value, Single())
-                If asValues.Length > 0 Then
+                If asValues.Length = 2 Then
+
+                    ' Leave a margin
+                    rc.Inflate(-2, -2)
+                    ' Calc center
+                    ptfCenter = New PointF(CSng(rc.X + rc.Width / 2), CSng(rc.Y + rc.Height / 2))
+                    ' Calc arrow size
+                    szfHalfArrow = New SizeF(rc.Width * asValues(0) / (2 * layer.MaxValue), rc.Height * asValues(1) / (2 * layer.MaxValue))
+
+                    Using p As New Pen(Me.VisualStyle.ForeColour, 0.001!)
+                        g.DrawEllipse(p, ptfCenter.X + szfHalfArrow.Width - 1, ptfCenter.Y + szfHalfArrow.Height - 1, 2, 2)
+                        g.DrawLine(p, _
+                                   ptfCenter.X - szfHalfArrow.Width, ptfCenter.Y - szfHalfArrow.Height, _
+                                   ptfCenter.X + szfHalfArrow.Width, ptfCenter.Y + szfHalfArrow.Height)
+                    End Using
+
                     '        'If Depth(i, j + 1) > 0 Then Vxp = Xvloc(i, j) Else Vxp = 0
                     '        'If Depth(i + 1, j) > 0 Then Vyp = Yvloc(i, j) Else Vyp = 0
                     'WF.Circle (j + 0.5 + Vxp / Xmax, i + 0.5 + Vyp / Xmax), 0.03
                     'WF.Line (j + 0.5, i + 0.5)-Step(Vxp / Xmax, Vyp / Xmax)
-                    If layer.MaxValue = 0 Then
-                        sAngle = 0
-                        sScale = 0
-                    Else
-                        If asValues(1) = 0 Then
-                            If asValues(0) >= 0 Then
-                                sAngle = 90
-                            Else
-                                sAngle = 270
-                            End If
-                        Else
-                            sAngle = CSng(Math.Atan(asValues(0) / -asValues(1)))
-                            ' Find quadrant
-                            If asValues(1) > 0 Then
-                                sAngle += 180
-                            Else
-                                If asValues(0) < 0 Then
-                                    sAngle += 360
-                                End If
-                            End If
-                        End If
-                        sScale = CSng(Math.Sqrt(asValues(0) * asValues(0) + asValues(1) * asValues(1)) / layer.MaxValue)
-                    End If
+
                 End If
             End If
 
-            cArrowIndicator.DrawArrow(g, Me.VisualStyle.ForeColour, rc, sAngle, sScale)
         End Sub
 
         Protected Overrides Function IsStyleValid() As Boolean

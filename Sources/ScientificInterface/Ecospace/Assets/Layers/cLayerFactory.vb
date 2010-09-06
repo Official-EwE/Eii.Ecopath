@@ -327,7 +327,7 @@ Namespace Ecospace.Basemap.Layers
                         ad.AllowValidation = True
                     End If
 
-                    renderer = New cLayerRendererWind(vs)
+                    renderer = New cLayerRendererWindEwE5(vs)
                     editor = New cLayerEditorVector()
                     If layerData Is Nothing Then layerData = bmd.layerWind
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerWind)

@@ -290,7 +290,11 @@ Namespace Ecospace
                 Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X), Math.Min(ptCellFrom.Y, ptCellTo.Y))
                 Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X), Math.Max(ptCellFrom.Y, ptCellTo.Y))
 
-                Me.m_layerSelected.Editor.Edit(ptCellFrom, ptCellTo, e, ptUpdateMin, ptUpdateMax)
+                Me.m_layerSelected.Editor.Edit(ptCellFrom, ptCellTo, _
+                                               New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y), _
+                                               Me.GetCellSize(), _
+                                               e, _
+                                               ptUpdateMin, ptUpdateMax)
 
                 ' Flag layer as changed
                 Me.m_layerSelected.IsModified = True
