@@ -201,6 +201,7 @@ Namespace Ecospace.Basemap.Layers
         ''' </summary>
         ''' <param name="ptFrom">The mouse location to edit from.</param>
         ''' <param name="ptTo">The mouse location to edit to.</param>
+        ''' <param name="ptDelta">Mouse distance travelled since the last edit operation.</param>
         ''' <param name="args">Click <see cref="MouseEventArgs">mouse state</see>
         ''' information.</param>
         ''' <param name="ptUpdateMin">Top-left cell position affected by
@@ -210,6 +211,7 @@ Namespace Ecospace.Basemap.Layers
         ''' -------------------------------------------------------------------
         Public Overridable Sub Edit(ByVal ptFrom As Point, _
                                     ByVal ptTo As Point, _
+                                    ByVal ptDelta As Point, _
                                     ByVal args As MouseEventArgs, _
                                     ByRef ptUpdateMin As Point, _
                                     ByRef ptUpdateMax As Point)
