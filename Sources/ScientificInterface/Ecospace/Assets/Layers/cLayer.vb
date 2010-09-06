@@ -368,8 +368,15 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>
         ''' Call this whenever properties and visual aspects of the layer have changed.
         ''' </summary>
+        ''' <param name="updateType">Bitwise <see cref="eChangeFlags">flag</see>
+        ''' indicating which aspects of the layer have changed.</param>
+        ''' <param name="bNotifyCore">Flag stating whether this change should be
+        ''' passed to the Core. This flag should be true if the method was called
+        ''' to commit a layer data change to the core, and should be false if the 
+        ''' layer is responding to a core layer change message.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub Update(ByVal updateType As eChangeFlags)
+        Public Sub Update(ByVal updateType As eChangeFlags, _
+                          Optional ByVal bNotifyCore As Boolean = True)
 
             ' Prevent looped updates
             If Me.m_bInUpdate = True Then Return
@@ -384,15 +391,17 @@ Namespace Ecospace.Basemap.Layers
                     Me.m_data.Invalidate()
 
                     ' Is a core layer?
-                    If Me.m_data.DataType <> eDataTypes.NotSet Then
-                        ' #Yes: inform the core
-                        If (Me.m_uic IsNot Nothing) And (Me.AllowValidation) Then
-                            Me.m_uic.Core.onChanged(Me.m_data)
-                        End If
-                    Else
-                        ' #No: Fire off property change to make other copies of non-core layers respond
-                        If (Me.m_propName IsNot Nothing) Then
-                            Me.m_propName.FireChangeNotification(cProperty.eChangeFlags.Custom)
+                    If bNotifyCore Then
+                        If Me.m_data.DataType <> eDataTypes.NotSet Then
+                            ' #Yes: inform the core
+                            If (Me.m_uic IsNot Nothing) And (Me.AllowValidation) Then
+                                Me.m_uic.Core.onChanged(Me.m_data)
+                            End If
+                        Else
+                            ' #No: Fire off property change to make other copies of non-core layers respond
+                            If (Me.m_propName IsNot Nothing) Then
+                                Me.m_propName.FireChangeNotification(cProperty.eChangeFlags.Custom)
+                            End If
                         End If
                     End If
 
@@ -623,11 +632,8 @@ Namespace Ecospace.Basemap.Layers
         Private Sub EcospaceMessageHandler(ByRef msg As cMessage)
 
             If msg.DataType = Me.m_data.DataType Then
-
-                ' Prevent looped updates
-                If Me.m_bInUpdate Then Return
                 ' Trigger update
-                Me.Update(eChangeFlags.Map)
+                Me.Update(eChangeFlags.Map, False)
             End If
 
         End Sub
