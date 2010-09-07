@@ -685,6 +685,7 @@ End Class
 Public Class cGroupShapePair
 
     Private m_iStanza As Integer
+    ''' <summary>Index of a shape in the cEggProductionManager.Item() list</summary>
     Private m_iManager As Integer
     Private m_shape As cForcingFunction
     Private m_manager As cEggProductionManager
