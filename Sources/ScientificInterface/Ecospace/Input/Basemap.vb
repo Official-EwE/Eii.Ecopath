@@ -203,7 +203,7 @@ Namespace Ecospace.Basemap
             If ((cf And cProperty.eChangeFlags.Value) = cf) And _
                (Me.m_layerRelCin IsNot Nothing) Then
                 Me.m_layerRelCin.Editor.IsEditable = CBool(prop.GetValue())
-                Console.WriteLine("LayerCIn editable " & Me.m_layerRelCin.Editor.IsEditable)
+                'Console.WriteLine("LayerCIn editable " & Me.m_layerRelCin.Editor.IsEditable)
             End If
         End Sub
 
