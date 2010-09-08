@@ -275,6 +275,8 @@ Namespace MSEBatchManager
 
             End Select
 
+            Return ""
+
         End Function
 
         Public ReadOnly Property DataDir() As String
@@ -597,6 +599,8 @@ Namespace MSEBatchManager
                     Return cStringUtils.FormatSingle(Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, igrp, iTime))
 
             End Select
+
+            Return ""
 
         End Function
 
