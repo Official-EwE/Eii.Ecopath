@@ -131,8 +131,13 @@ Namespace Ecospace.Basemap.Layers
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Optional GUI to allow the user to parameterize the edit process.
+        ''' Create a <see cref="ucLayerEditor">layer editor control</see> to 
+        ''' allow a user to parameterize the edit process.
         ''' </summary>
+        ''' <remarks>
+        ''' Do not forget to destroy any control created with this method via 
+        ''' <see cref="DestroyEditorControl">DestroyEditorControl</see>.
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Overridable Function CreateEditorControl() As ucLayerEditor
 
@@ -154,8 +159,12 @@ Namespace Ecospace.Basemap.Layers
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Optional GUI to allow the user to parameterize the edit process.
+        ''' Destroys a <see cref="ucLayerEditor">layer editor control</see>.
         ''' </summary>
+        ''' <remarks>
+        ''' Only use this method on controls created with 
+        ''' <see cref="CreateEditorControl">CreateEditorControl</see>.
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Overridable Sub DestroyEditorControl()
 

@@ -32,6 +32,10 @@
             Me.m_ucMap = New ScientificInterface.Ecospace.Advection.ucMap
             Me.m_ucUpwelling = New ScientificInterface.Ecospace.Advection.ucUpwelling
             Me.m_scMain = New System.Windows.Forms.SplitContainer
+            Me.m_nudValue = New System.Windows.Forms.NumericUpDown
+            Me.m_lblValue = New System.Windows.Forms.Label
+            Me.m_lblCursor = New System.Windows.Forms.Label
+            Me.m_sliderCursor = New ScientificInterfaceShared.Controls.ucSlider
             Me.m_hdrOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tsControls = New System.Windows.Forms.ToolStrip
             Me.m_tsmiShowOptions = New System.Windows.Forms.ToolStripButton
@@ -43,6 +47,7 @@
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
+            CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tsControls.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -114,6 +119,10 @@
             '
             'm_scMain.Panel1
             '
+            Me.m_scMain.Panel1.Controls.Add(Me.m_nudValue)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblValue)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblCursor)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_sliderCursor)
             Me.m_scMain.Panel1.Controls.Add(Me.m_hdrOptions)
             '
             'm_scMain.Panel2
@@ -122,6 +131,49 @@
             Me.m_scMain.Size = New System.Drawing.Size(798, 540)
             Me.m_scMain.SplitterDistance = 168
             Me.m_scMain.TabIndex = 0
+            '
+            'm_nudValue
+            '
+            Me.m_nudValue.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_nudValue.Location = New System.Drawing.Point(54, 516)
+            Me.m_nudValue.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.m_nudValue.Name = "m_nudValue"
+            Me.m_nudValue.Size = New System.Drawing.Size(111, 20)
+            Me.m_nudValue.TabIndex = 4
+            Me.m_nudValue.ThousandsSeparator = True
+            Me.m_nudValue.Value = New Decimal(New Integer() {25, 0, 0, 0})
+            '
+            'm_lblValue
+            '
+            Me.m_lblValue.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_lblValue.AutoSize = True
+            Me.m_lblValue.Location = New System.Drawing.Point(4, 518)
+            Me.m_lblValue.Name = "m_lblValue"
+            Me.m_lblValue.Size = New System.Drawing.Size(37, 13)
+            Me.m_lblValue.TabIndex = 3
+            Me.m_lblValue.Text = "&Value:"
+            '
+            'm_lblCursor
+            '
+            Me.m_lblCursor.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_lblCursor.AutoSize = True
+            Me.m_lblCursor.Location = New System.Drawing.Point(3, 492)
+            Me.m_lblCursor.Name = "m_lblCursor"
+            Me.m_lblCursor.Size = New System.Drawing.Size(40, 13)
+            Me.m_lblCursor.TabIndex = 2
+            Me.m_lblCursor.Text = "&Cursor:"
+            '
+            'm_sliderCursor
+            '
+            Me.m_sliderCursor.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_sliderCursor.Location = New System.Drawing.Point(54, 492)
+            Me.m_sliderCursor.Maximum = 5
+            Me.m_sliderCursor.Minimum = 1
+            Me.m_sliderCursor.Name = "m_sliderCursor"
+            Me.m_sliderCursor.Size = New System.Drawing.Size(111, 20)
+            Me.m_sliderCursor.TabIndex = 1
+            Me.m_sliderCursor.Value = 1
             '
             'm_hdrOptions
             '
@@ -158,9 +210,9 @@
             Me.m_tsmiShowOptions.Size = New System.Drawing.Size(75, 22)
             Me.m_tsmiShowOptions.Text = "Show options"
             '
-            'ToolStripSeparator1
+            'm_sep1
             '
-            Me.m_sep1.Name = "ToolStripSeparator1"
+            Me.m_sep1.Name = "m_sep1"
             Me.m_sep1.Size = New System.Drawing.Size(6, 25)
             '
             'm_tslMonth
@@ -206,8 +258,10 @@
             Me.Text = "frmAdvection"
             Me.m_tlpMaps.ResumeLayout(False)
             Me.m_scMain.Panel1.ResumeLayout(False)
+            Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
+            CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tsControls.ResumeLayout(False)
             Me.m_tsControls.PerformLayout()
             Me.ResumeLayout(False)
@@ -227,6 +281,10 @@
         Private WithEvents m_tslMonth As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tscmMonth As System.Windows.Forms.ToolStripComboBox
         Private WithEvents m_ucZoomToolbar As ScientificInterface.Ecospace.ucMapZoomToolbar
+        Private WithEvents m_lblCursor As System.Windows.Forms.Label
+        Private WithEvents m_sliderCursor As ScientificInterfaceShared.Controls.ucSlider
+        Private WithEvents m_lblValue As System.Windows.Forms.Label
+        Private WithEvents m_nudValue As System.Windows.Forms.NumericUpDown
 
     End Class
 

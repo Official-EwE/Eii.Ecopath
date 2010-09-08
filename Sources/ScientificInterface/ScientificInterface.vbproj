@@ -907,6 +907,9 @@
       <DependentUpon>frmApplyMedPrimaryProducer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorVector.resx">
+      <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Map\ucMapZoomToolbar.resx">
       <DependentUpon>ucMapZoomToolbar.vb</DependentUpon>
     </EmbeddedResource>
@@ -1171,7 +1174,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorVector.vb" />
-    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererWind.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorVector.Designer.vb">
+      <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorVector.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererWindEwE5.vb" />
     <Compile Include="Ecospace\Assets\Map\ucMapZoomToolbar.Designer.vb">
       <DependentUpon>ucMapZoomToolbar.vb</DependentUpon>

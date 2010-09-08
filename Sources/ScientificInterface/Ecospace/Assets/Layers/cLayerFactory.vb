@@ -328,7 +328,7 @@ Namespace Ecospace.Basemap.Layers
                     End If
 
                     renderer = New cLayerRendererWindEwE5(vs)
-                    editor = New cLayerEditorVector()
+                    editor = New cLayerEditorVector(GetType(ucLayerEditorVector))
                     If layerData Is Nothing Then layerData = bmd.layerWind
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerWind)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_WIND

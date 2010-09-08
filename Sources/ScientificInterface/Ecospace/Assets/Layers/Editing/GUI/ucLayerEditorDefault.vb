@@ -35,6 +35,7 @@ Namespace Ecospace.Basemap.Layers
 
             Me.Editor.CursorSize = CInt(Me.m_ucSlider.Value)
             Me.RaiseChangedEvent()
+
         End Sub
 
     End Class

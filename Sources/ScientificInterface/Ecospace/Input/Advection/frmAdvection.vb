@@ -4,6 +4,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterface.Ecospace.Basemap.Layers
 
 #End Region ' Imports
 
@@ -78,13 +79,26 @@ Namespace Ecospace.Advection
             Me.UpdateControls()
         End Sub
 
-        Private Sub UpdateControls()
-            Me.m_tsmiShowOptions.Checked = Not Me.m_scMain.Panel1Collapsed
-        End Sub
-
         Private Sub OnShowMonth(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tscmMonth.SelectedIndexChanged
 
+        End Sub
+
+        Private Sub OnLayerPropertiesChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_sliderCursor.ValueChanged, m_nudValue.ValueChanged
+
+            If Me.UIContext Is Nothing Then Return
+
+            With DirectCast(Me.m_ucWind.LayerWind.Editor, cLayerEditorVector)
+                .CursorSize = CInt(Me.m_sliderCursor.Value)
+                .ScaleFactor = CSng(Me.m_nudValue.Value)
+            End With
+            Me.m_ucWind.ZoomCtrl.Map.UpdateCursorFeedback()
+
+        End Sub
+
+        Private Sub UpdateControls()
+            Me.m_tsmiShowOptions.Checked = Not Me.m_scMain.Panel1Collapsed
         End Sub
 
     End Class
