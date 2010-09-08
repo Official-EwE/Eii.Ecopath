@@ -559,7 +559,7 @@ Public Class cEcospaceBasemap
                 Return New Single()(,,) {Me.m_core.m_EcoSpaceData.Xv, Me.m_core.m_EcoSpaceData.Yv}
             Case eVarNameFlags.LayerImportance
                 If iIndex < 0 Or iIndex > Me.m_core.m_EcoSpaceData.ImportanceLayers.Count - 1 Then
-                    Debug.Assert(True, "cCore message: Index out of bounds error for ImportanceLayers")
+                    Debug.Assert(False, "cCore message: Index out of bounds error for ImportanceLayers")
                     Return Nothing
                 End If
                 Return Me.m_core.m_EcoSpaceData.ImportanceLayers(iIndex).Data

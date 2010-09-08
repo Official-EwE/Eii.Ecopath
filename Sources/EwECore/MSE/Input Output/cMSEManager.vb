@@ -42,6 +42,8 @@ Namespace MSE
         Private m_search As cSearchDatastructures
         Private m_searchObjective As cSearchObjective
 
+        Private m_Batch As MSEBatchManager.cMSEBatchManager
+
         Private m_MSECallback As MSEProgressDelegate
         Private m_MSYCallback As MSYProgressDelegate
         Private m_SyncOb As System.Threading.SynchronizationContext
@@ -238,6 +240,8 @@ Namespace MSE
             Me.m_MSE = New cMSE(theCore)
             Me.m_MSEdata = data
 
+            Me.m_Batch = New MSEBatchManager.cMSEBatchManager()
+
             Me.m_VarToStat.Add(eVarNameFlags.MSEBiomassHistogram, eMSEStatNames.PercentageHistogram)
             Me.m_VarToStat.Add(eVarNameFlags.MSEBiomassMeanValues, eMSEStatNames.MeanRun)
             Me.m_VarToStat.Add(eVarNameFlags.MSEBiomassMin, eMSEStatNames.Min)
@@ -286,7 +290,6 @@ Namespace MSE
             Me.m_VarToStat.Add(eVarNameFlags.MSENTrials, eMSEStatNames.nIterations)
 
         End Sub
-
 
         Public Function Run() As Boolean
 
@@ -338,7 +341,7 @@ Namespace MSE
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 Dim bNoQuotaSet As Boolean = True
                 For iFlt As Integer = 1 To Me.m_core.nFleets
-                    If Me.FleetInputs(iFlt).QuotaType <> eQuotaTypes.NotUsed Then
+                    If Me.FleetInputs(iFlt).QuotaType <> eQuotaTypes.NoControls Then
                         bNoQuotaSet = False
                         Exit For
                     End If
@@ -478,19 +481,23 @@ Namespace MSE
             'cMSEDataStructures are not part of the core!!!!!
             'Only the MSEManager and model know about them 
             'this may have to change when the input/output object are created
-            m_MSEdata.Init(theCore)
+            Me.m_MSEdata.Init(theCore)
 
-            m_MSE.Init(m_MSEdata, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData, Me.m_core.PluginManager)
+            Me.m_MSE.Init(m_MSEdata, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData, Me.m_core.PluginManager)
+
+            'Initialize the Batch manager
+            Me.m_Batch.Init(Me.m_core, Me.m_MSE)
+
             'set CV to the first timestep
-            m_MSE.setTime(1, 1)
-            m_MSE.InitAssessment()
+            Me.m_MSE.setTime(1, 1)
+            Me.m_MSE.InitAssessment()
 
             'connect the MSE model to the manager
-            m_MSE.Connect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
+            Me.m_MSE.Connect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
 
             'set the MSE model in Ecosim
             'Ecosim calls MSE.AssessFs() if the Search is turned On
-            m_core.m_EcoSim.InitMSE(m_MSE)
+            Me.m_core.m_EcoSim.InitMSE(m_MSE)
 
             'build the Input and Output objects
             Me.m_lstGroupInputs.Clear()
@@ -565,11 +572,13 @@ Namespace MSE
                     mseGrp.ForcastGain = Me.m_MSEdata.RstockRatio(iGroup)
 
                     mseGrp.FixedF = Me.m_MSEdata.FixedF(iGroup)
+                    mseGrp.TAC = Me.m_MSEdata.TAC(iGroup)
                     mseGrp.RecruitmentCV = Me.m_MSEdata.cvRec(iGroup)
 
                     mseGrp.BLim = Me.m_MSEdata.Blim(iGroup)
                     mseGrp.BBase = Me.m_MSEdata.Bbase(iGroup)
                     mseGrp.FOpt = Me.m_MSEdata.Fopt(iGroup)
+                    mseGrp.Fmin = Me.m_MSEdata.Fmin(iGroup)
 
                     For it As Integer = 1 To Me.m_MSEdata.nYears
                         mseGrp.BiomassCV(it) = Me.m_MSEdata.CVBiomT(iGroup, it)
@@ -727,10 +736,12 @@ Namespace MSE
                             Me.m_MSEdata.RstockRatio(iGroup) = mseGrp.ForcastGain
                             Me.m_MSEdata.cvRec(iGroup) = mseGrp.RecruitmentCV
                             Me.m_MSEdata.FixedF(iGroup) = mseGrp.FixedF
+                            Me.m_MSEdata.TAC(iGroup) = mseGrp.TAC
 
                             Me.m_MSEdata.Blim(iGroup) = mseGrp.BLim
                             Me.m_MSEdata.Bbase(iGroup) = mseGrp.BBase
                             Me.m_MSEdata.Fopt(iGroup) = mseGrp.FOpt
+                            Me.m_MSEdata.Fmin(iGroup) = mseGrp.Fmin
 
                             For it As Integer = 1 To Me.m_MSEdata.nYears
                                 Me.m_MSEdata.CVBiomT(iGroup, it) = mseGrp.BiomassCV(it)
@@ -916,7 +927,7 @@ Namespace MSE
 
         Private Sub ProcessCallBack(ByVal CallBackType As eMSERunStates)
 
-            System.Console.WriteLine(Me.ToString & " Callback type = " & CallBackType.ToString)
+            ' System.Console.WriteLine(Me.ToString & " Callback type = " & CallBackType.ToString)
 
             Select Case CallBackType
 

@@ -36,6 +36,8 @@ Namespace MSE
 
         Public NTrials As Integer
 
+        Public bInBatch As Boolean
+
         ''' <summary>
         ''' Importance weight of a fleet on a group
         ''' </summary>
@@ -190,6 +192,13 @@ Namespace MSE
         ''' <remarks>This is in years the model runs on timesteps</remarks>
         Public StartYear As Integer
 
+
+        ''' <summary>
+        ''' Year to stop the regulations on
+        ''' </summary>
+        ''' <remarks>This is cumulative years and the model supplies cumulative time steps(months)</remarks>
+        Public EndYear As Integer
+
         ''' <summary>
         ''' NOT IMPLEMENTED YET
         ''' </summary>
@@ -199,11 +208,38 @@ Namespace MSE
         ''' </summary>
         Public ResultsEndYear As Integer
 
+        ''' <summary>
+        ''' Biomass of group when fishing mortality is at Fopt(igroup)(max mortality) 
+        ''' </summary>
         Public Bbase() As Single
+
+        ''' <summary>
+        ''' Biomass of group when fishing mortality is at zero or Fmin(igroup)
+        ''' </summary>
         Public Blim() As Single
+
+        ''' <summary>
+        ''' Max fishing mortality
+        ''' </summary>
         Public Fopt() As Single
+
+        ''' <summary>
+        ''' Fishing mortality when biomass(igroup) is at Blim(igroup) Minimum fishing mortality
+        ''' </summary>
+        ''' <remarks>This is only set to none zero from the batch manager for all other runs it is zero</remarks>
+        Public Fmin() As Single
+
         Public FixedEscapement() As Single
 
+        ''' <summary>
+        ''' Total allowable catch
+        ''' </summary>
+        Public TAC() As Single
+
+
+        ''' <summary>
+        ''' Fixed fishing mortality
+        ''' </summary>
         Public FixedF() As Single
 
         ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort  (by gear)</summary>
@@ -317,9 +353,11 @@ Namespace MSE
                 Me.MSYEvaluateValue = True
                 Me.MSYStartTimeIndex = 2
                 Me.StartYear = 1
+                Me.EndYear = cCore.NULL_VALUE 'Values < 0 will stop the end year from being used
                 Me.ResultsStartYear = 1
                 Me.ResultsEndYear = theCore.nEcosimYears
                 Me.EffortSource = eMSEEffortSource.NoCap
+
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -428,15 +466,16 @@ Namespace MSE
             ReDim Blim(NGroups)
             ReDim Bbase(NGroups)
             ReDim Fopt(NGroups)
+            ReDim Fmin(NGroups)
             ReDim FixedEscapement(NGroups)
             ReDim FixedF(NGroups)
+            ReDim TAC(NGroups)
 
             For i As Integer = 1 To NGroups
                 Blim(i) = cCore.NULL_VALUE
                 Bbase(i) = cCore.NULL_VALUE
                 Fopt(i) = cCore.NULL_VALUE
-                FixedEscapement(i) = 0
-                FixedF(i) = 0
+                Fmin(i) = 0
             Next
 
             'Setting regulatory values to NULL will cause them to be set to a default value if the database does not contain values
@@ -606,6 +645,8 @@ Namespace MSE
             ReDim Me.CatchYearGroup(Me.NGroups)
             For iGrp = 1 To Me.NGroups
                 Me.CatchYearGroup(iGrp) = Me.m_EPData.fCatch(iGrp)
+                'make sure Fmin did not get set to some strange value
+                If Me.Fmin(iGrp) < 0 Then Me.Fmin(iGrp) = 0
             Next
 
         End Sub
@@ -681,8 +722,13 @@ Namespace MSE
                     Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4!
                     Fopt(igrp) = Me.m_EPData.fCatch(igrp) / (Me.m_EPData.B(igrp) + 1.0E-10F) 'Ecopath base F
                     Me.RHalfB0Ratio(igrp) = 0.2
-                Next
-            Next
+
+                    Me.FixedF(igrp) = 0
+                    Me.FixedEscapement(igrp) = 0
+                    Me.TAC(igrp) = 0
+
+                Next igrp
+            Next iflt
 
             'set Quota share to Ecopath landings and discards
             Me.setDefaultQuotaShare()
@@ -944,6 +990,7 @@ Namespace MSE
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".ComputeStats() in calculation of histogram!")
+                cLog.Write(ex)
             End Try
 
 
@@ -973,6 +1020,7 @@ Namespace MSE
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".ComputeStats() in calculation of Means!")
+                cLog.Write(ex)
             End Try
 
         End Sub
@@ -1148,6 +1196,7 @@ Namespace MSE
 
                     m_nBins(GroupingIndex) = 100 'CInt(Me.m_n(GroupingIndex) / 100.0F) 'number of bins 
                     m_binWidth(GroupingIndex) = (max - min) / m_nBins(GroupingIndex) 'bin width
+                    If m_binWidth(GroupingIndex) = 0 Then m_binWidth(GroupingIndex) = Single.Epsilon
                     'alternative bin width algo some number of bins (10) for one standard deviation
                     'm_binWidth(GroupingIndex) = CSng(Me.Std(GroupingIndex + 1) / 10)
                     'm_nBins(GroupingIndex) = CInt((max - min) / m_binWidth(GroupingIndex))
@@ -1181,7 +1230,7 @@ Namespace MSE
                             pTot += hist(i)
                         Next
 
-                        System.Console.WriteLine("Total probability for index " & GroupingIndex.ToString & " = " & pTot.ToString)
+                        'System.Console.WriteLine("Total probability for index " & GroupingIndex.ToString & " = " & pTot.ToString)
 
                     End If
 

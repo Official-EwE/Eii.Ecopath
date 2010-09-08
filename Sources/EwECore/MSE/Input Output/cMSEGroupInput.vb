@@ -98,6 +98,12 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.MSERecruitmentCV, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSERecruitmentCV))
             m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSETAC, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETAC))
+            m_values.Add(val.varName, val)
+
+
+
 
             ''Quota per species
             'meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
@@ -115,6 +121,11 @@ Namespace MSE
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.MSEFmax, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFmax))
             m_values.Add(val.varName, val)
+            'Fmin
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSEFmin, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFmin))
+            m_values.Add(val.varName, val)
+
 
 
             Me.AllowValidation = True
@@ -319,6 +330,26 @@ Namespace MSE
             End Set
         End Property
 
+        Public Property Fmin() As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEFmin))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEFmin, value)
+            End Set
+        End Property
+
+        Public Property TAC() As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSETAC))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSETAC, value)
+            End Set
+        End Property
+
         Public Property FixedFStatus() As eStatusFlags
             Get
                 Return DirectCast(GetStatus(eVarNameFlags.MSEFixedF), eStatusFlags)
@@ -425,6 +456,7 @@ Namespace MSE
             If tcatch = 0.0! Then
                 Me.SetStatusFlags(eVarNameFlags.MSEFixedEscapement, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.SetStatusFlags(eVarNameFlags.MSEFixedF, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSETAC, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.SetStatusFlags(eVarNameFlags.MSEBioCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
 
                 Me.SetStatusFlags(eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.Null Or eStatusFlags.NotEditable)
@@ -437,10 +469,12 @@ Namespace MSE
                 Me.SetStatusFlags(eVarNameFlags.MSEBBase, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.SetStatusFlags(eVarNameFlags.MSEBLim, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.SetStatusFlags(eVarNameFlags.MSEFmax, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSEFmin, eStatusFlags.Null Or eStatusFlags.NotEditable)
 
             Else
                 Me.ClearStatusFlags(eVarNameFlags.MSEFixedEscapement, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.ClearStatusFlags(eVarNameFlags.MSEFixedF, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSETAC, eStatusFlags.Null Or eStatusFlags.NotEditable)
                 Me.ClearStatusFlags(eVarNameFlags.MSEBioCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
 
                 Me.ClearStatusFlags(eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.Null Or eStatusFlags.NotEditable)
@@ -460,6 +494,7 @@ Namespace MSE
                 Me.SetStatusFlags(eVarNameFlags.MSEBBase, eStatusFlags.NotEditable)
                 Me.SetStatusFlags(eVarNameFlags.MSEBLim, eStatusFlags.NotEditable)
                 Me.SetStatusFlags(eVarNameFlags.MSEFmax, eStatusFlags.NotEditable)
+                Me.SetStatusFlags(eVarNameFlags.MSEFmin, eStatusFlags.NotEditable)
             End If
 
             Me.AllowValidation = True

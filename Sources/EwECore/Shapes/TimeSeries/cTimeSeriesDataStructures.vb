@@ -346,7 +346,7 @@ Public Class cTimeSeriesDataStructures
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'CAUTION
-        'jb Ecosim.SetFFromGear() need to be call after this 
+        'jb Ecosim.SetFFromGear() needs to be call after this 
         'this works now because SetFFromGear() gets called when ecosim is initialized after the scenario is loaded
         'if this is moved to the interface SetFFromGear() will no longer be called
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

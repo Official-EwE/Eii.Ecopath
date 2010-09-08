@@ -157,7 +157,7 @@
     <value>Fill</value>
   </data>
   <data name="m_lblNumTrials.Location" type="System.Drawing.Point, System.Drawing">
-    <value>306, 0</value>
+    <value>630, 0</value>
   </data>
   <data name="m_lblNumTrials.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 23</value>
@@ -190,7 +190,7 @@
     <value>5, 31</value>
   </data>
   <data name="m_hdrOutputs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>635, 18</value>
+    <value>1124, 18</value>
   </data>
   <data name="m_hdrOutputs.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -205,7 +205,7 @@
     <value>m_hdrOutputs</value>
   </data>
   <data name="&gt;&gt;m_hdrOutputs.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.809, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOutputs.Parent" xml:space="preserve">
     <value>$this</value>
@@ -253,7 +253,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_zgc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>635, 412</value>
+    <value>1124, 412</value>
   </data>
   <data name="m_zgc.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -310,7 +310,7 @@
     <value>False</value>
   </data>
   <data name="m_ckSave.Location" type="System.Drawing.Point, System.Drawing">
-    <value>247, 3</value>
+    <value>409, 3</value>
   </data>
   <data name="m_ckSave.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 17</value>
@@ -340,7 +340,7 @@
     <value>Fill</value>
   </data>
   <data name="m_lblStartYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>470, 0</value>
+    <value>956, 0</value>
   </data>
   <data name="m_lblStartYear.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 23</value>
@@ -376,13 +376,13 @@
     <value>Fill</value>
   </data>
   <data name="m_nudStartYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>531, 0</value>
+    <value>1017, 0</value>
   </data>
   <data name="m_nudStartYear.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 3, 0</value>
   </data>
   <data name="m_nudStartYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 20</value>
+    <value>104, 20</value>
   </data>
   <data name="m_nudStartYear.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -403,7 +403,7 @@
     <value>Fill</value>
   </data>
   <data name="m_nudNumTrials.Location" type="System.Drawing.Point, System.Drawing">
-    <value>395, 0</value>
+    <value>719, 0</value>
   </data>
   <data name="m_nudNumTrials.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 3, 0</value>
@@ -433,7 +433,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>635, 23</value>
+    <value>1124, 23</value>
   </data>
   <data name="m_tlpTop.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -463,7 +463,7 @@
     <value>True</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>649, 470</value>
+    <value>1138, 470</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -475,6 +475,6 @@
     <value>frmMSE</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.809, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.816, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>

@@ -88,17 +88,22 @@ Public Class cPPIManager
 
     Public ReadOnly Property isPredPrey(ByVal PredIndex As Integer, ByVal PreyIndex As Integer) As Boolean
         Get
+            Try
 
-            'True for primary producer pairs
-            If PredIndex = PreyIndex And m_EPData.PP(PreyIndex) = 1 Then
-                Return True
-            End If
+                'True for primary producer pairs
+                If PredIndex = PreyIndex And m_EPData.PP(PreyIndex) = 1 Then
+                    Return True
+                End If
 
-            If m_EPData.DC(PredIndex, PreyIndex) > 0 Then
-                Return True
-            Else
+                If m_EPData.DC(PredIndex, PreyIndex) > 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
+            Catch ex As Exception
                 Return False
-            End If
+            End Try
+
         End Get
     End Property
 

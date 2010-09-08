@@ -288,12 +288,15 @@ Namespace Core
         '' Target fishing mortality policy vars
         '''' <summary>Quota for a species.</summary>
         'QuotaSpecies
-        ''' <summary>BBase for target fishing mortality policy.</summary>
+        ''' <summary>BBase for target fishing mortality policy. Upper biomass boundary.</summary>
         MSEBBase
-        ''' <summary>BLimit for target fishing mortality policy.</summary>
+        ''' <summary>BLimit for target fishing mortality policy. Lower biomass boundary.</summary>
         MSEBLim
         ''' <summary>Mortality/Fmsy for target fishing mortality policy.</summary>
         MSEFmax
+        ''' <summary>Mortality when biomass at or below BLim(lower boundry)</summary>
+        ''' <remarks>Added for MSEBatch command file.</remarks>
+        MSEFmin
 
         MSEFmaxPM
 
@@ -1017,6 +1020,8 @@ Namespace Core
         RHalfB0Ratio
         MSEFixedF
         MSERecruitmentCV
+        ''' <summary>Total allowable catch </summary>
+        MSETAC
 
         'data by iteration
         MSEBiomass
@@ -2299,16 +2304,16 @@ Namespace Core
 
     'enum values are hard coded so that they can be stored in the database 
     Public Enum eQuotaTypes
-        ''' <summary>Quota options are not used.</summary>
-        NotUsed
-        ''' <summary>Quota options apply to effort.</summary>
-        Effort
+        ''' <summary>No Quota controls are used.</summary>
+        NoControls
         ''' <summary>Quota options apply to the weakest stock.</summary>
         Weakest
         ''' <summary>Quota options apply to the strongest stock plus discards.</summary>
         HighestValue
         ''' <summary>Quota options apply to selective fishing.</summary>
         Selective
+        ''' <summary>Quota options apply to effort.</summary>
+        Effort
 
     End Enum
 

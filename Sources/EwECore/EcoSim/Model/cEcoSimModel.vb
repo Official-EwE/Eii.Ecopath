@@ -807,6 +807,8 @@ Namespace Ecosim
                         m_Data.tval(i) = m_Data.zscale(itt, i)
                     Next
 
+                    Me.m_MSE.VaryForcing(m_Data.tval)
+
                     'CJW email 04May00: in runmodel, m_refData.PoolForceBB loop has to be put in twice, 
                     'both before and after call to rk4 (otherwise Z calculation as loss/bb 
                     'is wrong later in time step
@@ -913,9 +915,6 @@ Namespace Ecosim
             'Set values back to defaults... StepsPerMonth = 1
             Me.m_Data.onEcosimRunCompleted()
 
-
-            ' System.Console.WriteLine("Sum Bio = " & sumBio.ToString & ", Sum Catch = " & sumCatch.ToString)
-
         End Sub
 
         '''' <summary>
@@ -987,7 +986,6 @@ Namespace Ecosim
                     If iYear <= Me.m_RefData.NdatYear And Me.m_RefData.PoolForceCatch(iGrp, iYear) > 0 Then
                         'Forced catch rates
                         'Was up to Sep 2008:
-                        ' Debug.Assert(iYear <> 53)
                         m_Data.FishTime(iGrp) = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
                         'Dim CBratio As Double = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
                         'VC Sep 2008. Based on discussion with CJW, we'll cap the FishTime to be a logistic function 
@@ -1862,7 +1860,7 @@ Namespace Ecosim
             Next
         End Sub
 
-        Friend Function RandomNormal() As Single
+        Private Function RandomNormal() As Single
             Dim i As Integer, X As Double
             Dim rnd As New Random(CInt(Microsoft.VisualBasic.Timer * 1000))
             X = -6

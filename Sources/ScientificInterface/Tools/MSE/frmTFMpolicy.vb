@@ -138,32 +138,43 @@ Namespace Ecosim
                 ' Group has data?
                 If (Me.m_group.GetStatus(eVarNameFlags.MSEBBase) And eStatusFlags.Null) = 0 Then
                     ' #Yes: plot stick
-
-                    ' Add points
-                    lpts.Add(0, 0)
-                    lpts.Add(Me.m_group.BLim, 0)
-                    lpts.Add(Me.m_group.BBase, Me.m_group.FOpt) ' Point order?
-                    lpts.Add(Me.m_group.BBase * 4, Me.m_group.FOpt) ' Max X value?
+                    Dim bsum As Single = Me.m_group.BLim + Me.m_group.BBase
+                    If bsum > 0 Then
+                        ' Add points
+                        lpts.Add(0, 0)
+                        lpts.Add(Me.m_group.BLim, 0)
+                        lpts.Add(Me.m_group.BBase, Me.m_group.FOpt) ' Point order?
+                        lpts.Add(Me.m_group.BBase * 4, Me.m_group.FOpt) ' Max X value?
+                    Else
+                        'Zero biomass values user has only entered F
+                        'draw a square line at zero up to F
+                        lpts.Add(-1, 0)
+                        lpts.Add(0, 0)
+                        lpts.Add(0, Me.m_group.FOpt) ' Point order?
+                        lpts.Add(4, Me.m_group.FOpt) ' Max X value?
+                    End If
 
                     line = New LineItem(Me.m_group.Name, _
-                                        lpts, _
-                                        Me.StyleGuide.GroupColor(Me.Core, Me.m_group.Index), _
-                                        SymbolType.Circle)
+                    lpts, _
+                    Me.StyleGuide.GroupColor(Me.Core, Me.m_group.Index), _
+                    SymbolType.Circle)
                     line.Line.Width = 2.0
 
                     lLines.Add(line)
-                End If
-            End If
 
-            If lLines.Count > 0 Then
-                ' Plot graph, but rescale ONLY when not dragging
-                Me.m_zgh.PlotLines(lLines.ToArray, 1, (Me.m_dragtype = eDragType.None))
-                Me.m_graph.Cursor = Cursors.Default
-            Else
-                ' Clear graph
-                Me.m_zgh.PlotLines(Nothing)
-                Me.m_graph.Cursor = Cursors.No
-            End If
+                End If
+
+                End If
+
+                If lLines.Count > 0 Then
+                    ' Plot graph, but rescale ONLY when not dragging
+                    Me.m_zgh.PlotLines(lLines.ToArray, 1, (Me.m_dragtype = eDragType.None))
+                    Me.m_graph.Cursor = Cursors.Default
+                Else
+                    ' Clear graph
+                    Me.m_zgh.PlotLines(Nothing)
+                    Me.m_graph.Cursor = Cursors.No
+                End If
 
         End Sub
 

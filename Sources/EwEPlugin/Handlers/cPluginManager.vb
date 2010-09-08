@@ -1577,6 +1577,16 @@ Public Class cPluginManager
     End Function
 
 
+    Public Function MSEBatchInitialized(ByVal MSEBatchManager As Object, _
+                                  ByVal MSEBatchDataStructure As Object) As Boolean
+
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSEBatch), "MSEBatchInitialized", _
+                                                    New Object() {MSEBatchManager, MSEBatchDataStructure})
+
+
+    End Function
+
+
     Public Function MSYRunStarted(ByVal MSEDataStructure As Object, _
                                   ByVal EcosimDatastructures As Object) As Boolean
 

@@ -114,7 +114,7 @@ Friend Class cDBUpdate6_00_06_003
                         drow("EcopathFleetID") = liFleets(iFleet)
                         drow("FishRateShapeID") = 0 ' To be fixed when the app reloads
                         drow("MaxEffort") = cCore.NULL_VALUE
-                        drow("QuotaType") = eQuotaTypes.NotUsed
+                        drow("QuotaType") = eQuotaTypes.NoControls
                         writer.AddRow(drow)
                     End If
                 Next iScenario

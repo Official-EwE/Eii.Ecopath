@@ -20,11 +20,12 @@ Public Class gridFixedEscapement
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        Me.Redim(1, 4)
+        Me.Redim(1, 5)
         Me(0, 0) = New EwEColumnHeaderCell("")
         Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
         Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_FIXEDESCAPE)
         Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_FIXEDF)
+        Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_TAC)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -52,6 +53,8 @@ Public Class gridFixedEscapement
             Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, MSEGrp, eVarNameFlags.Name)
             Me(iGroup, 2) = New PropertyCell(Me.PropertyManager, MSEGrp, eVarNameFlags.MSEFixedEscapement)
             Me(iGroup, 3) = New PropertyCell(Me.PropertyManager, MSEGrp, eVarNameFlags.MSEFixedF)
+            Me(iGroup, 4) = New PropertyCell(Me.PropertyManager, MSEGrp, eVarNameFlags.MSETAC)
+
         Next
 
     End Sub

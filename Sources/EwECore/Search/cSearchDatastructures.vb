@@ -816,8 +816,6 @@ Public Class cSearchDatastructures
 
         Debug.Assert(Me.SearchMode = eSearchModes.FishingPolicy, "Ecosim BUG warning: setting fishing effort to values computed by Fishing Policy Search when not in search!")
 
-        ' If Me.SearchMode = eSearchModes.FishingPolicy Then
-
         'in the Fishing policy search
         'If the search has set an effort then use that value to populate Fgear()
         For iFlt As Integer = 1 To m_ecopathData.NumFleet
@@ -833,16 +831,6 @@ Public Class cSearchDatastructures
             End If
 
         Next iFlt
-
-        'Else
-
-        'not in a search
-        'use fishing effort in FishRateGear()
-        'For iFlt As Integer = 1 To m_ecopathData.NumFleet
-        '    Fgear(iFlt) = m_ecosimData.FishRateGear(iFlt, 12 * iyf - 11)
-        'Next iFlt
-
-        'End If
 
     End Sub
 

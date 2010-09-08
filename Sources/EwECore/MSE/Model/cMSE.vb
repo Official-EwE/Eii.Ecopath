@@ -13,6 +13,7 @@ Imports System.Text
 Namespace MSE
 
 #Region "Public definitions"
+
     ''' <summary>
     ''' 
     ''' </summary>
@@ -71,7 +72,27 @@ Namespace MSE
 
         'ToDo_jb 28-May-2010 check that changes to run order of plugin and interface calls did not messup the results
 
-        Private Enum eResultsData
+        'ToDo_jb 1-Sept-2010 Email from Villy 
+        'Joe,
+        'It would be useful to have the option in the MSE to run it up to a certain point with whatever was in the Ecosim run, 
+        'and then only apply changes from the ‘start year’ (which already is in the MSE). 
+        'So, it should use forced catches, F, and whatever is there. Currently it will uncheck the forced catches but that should be from the start year only
+        '
+        'This cannot be accomplished by simply loading and unloaded the timeseries data in the middle of the run. I don't think...
+        'We will need to buffer any variables that could change between the two states(loaded and unloaded) then swap them during the run.
+        'We will also need to make sure that there is no initialization that needs to happen for the loaded and unloaded timeseries data
+        'FishRateNo(), FishForced(), PoolForceZ()?? See cTimeSeriesDataStructures.DoDatValCalculations(). I think Effort is already dealt with.
+
+
+        'Filenames prefixes for output file
+        Public Const BIOMASS_DATA As String = "MSE_Biomass_"
+        Public Const CATCH_DATA As String = "MSE_CatchByGroup_"
+        Public Const EFFORT_DATA As String = "MSE_Effort_"
+        Public Const FLEETCATCH_DATA As String = "MSE_CatchByFleet_"
+        Public Const QUOTAGROUP_DATA As String = "MSE_QuotaByGroup_"
+
+
+        Public Enum eResultsData
             GroupQuota
             FleetQuota
         End Enum
@@ -88,6 +109,12 @@ Namespace MSE
         Private m_esData As cEcosimDatastructures
 
         Private m_epdata As cEcopathDataStructures
+
+        Private m_batchManager As MSEBatchManager.cMSEBatchManager
+
+        Private m_output As IMSEOutputWriter
+
+        Dim rndGen As Random
 
         Private m_nTrials As Integer
 
@@ -108,12 +135,6 @@ Namespace MSE
 
         Private m_DataDir As String
 
-        'Filenames prefixes for output file
-        Private Const BIOMASS_DATA As String = "MSE_Biomass_"
-        Private Const CATCH_DATA As String = "MSE_CatchByGroup_"
-        Private Const EFFORT_DATA As String = "MSE_Effort_"
-        Private Const FLEETCATCH_DATA As String = "MSE_CatchByFleet_"
-        Private Const QUOTAGROUP_DATA As String = "MSE_QuotaByGroup_"
 
         ''' <summary>Dictionary of arrays that are use to store results that are gathered by the MSE.</summary>
         ''' <remarks>Use to store results that are not computed by Ecosim.</remarks>
@@ -135,6 +156,15 @@ Namespace MSE
             Get
                 Return Me.m_data
             End Get
+        End Property
+
+        Public Property BatchManager() As MSEBatchManager.cMSEBatchManager
+            Get
+                Return Me.m_batchManager
+            End Get
+            Set(ByVal value As MSEBatchManager.cMSEBatchManager)
+                Me.m_batchManager = value
+            End Set
         End Property
 
 #End Region
@@ -195,19 +225,46 @@ Namespace MSE
             Dim iGrp As Integer
 
             'ReDim Me.FtargetT(Me.m_esData.nGroups)
-
+            Me.rndGen = New Random(CInt(Microsoft.VisualBasic.Timer * 1000))
             For iGrp = 1 To Me.m_esData.nGroups
-                m_data.Bestimate(iGrp) = Me.m_esData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(iGrp) * Me.m_Ecosim.RandomNormal()))
+                m_data.Bestimate(iGrp) = Me.m_esData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(iGrp) * Me.RandomNormal()))
                 m_data.BestimateLast(iGrp) = m_data.Bestimate(iGrp)
             Next iGrp
 
         End Sub
 
+
         Public Sub InitForRun()
 
             Try
                 Dim igrp As Integer
+
+                'output
+                Me.m_output = Me.OutputWriterFactory
+                Me.m_output.Init()
+
                 ReDim BestTime(m_epdata.NumGroups)
+
+                Dim rndSeed As Integer
+                'is this a batch run
+                If Me.m_data.bInBatch Then
+                    'Yes batch run
+                    'if in batch run use the same random number sequence for each run
+                    rndSeed = 42
+                Else
+                    'No normal run
+                    'create a new random seed for each run
+                    rndSeed = CInt(Microsoft.VisualBasic.Timer * 1000)
+                    'make sure Fmin(igroup) and EndYear have not been set somehow....
+                    For igrp = 1 To Me.m_data.NGroups
+                        Me.m_data.Fmin(igrp) = 0
+                    Next
+                    Me.m_data.EndYear = cCore.NULL_VALUE
+                End If
+
+                'create a new random number generator for each run
+                'the seed will decide if the sequence is unique or not
+                Me.rndGen = New Random(rndSeed)
 
                 Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
                 If (ds IsNot Nothing) Then
@@ -243,7 +300,7 @@ Namespace MSE
                 'initialize Ecosim
                 m_Ecosim.Init(False)
 
-                Me.InitOutputFiles()
+                ' Me.InitOutputFiles()
 
                 Me.InitResults()
 
@@ -283,79 +340,85 @@ Namespace MSE
 
         End Sub
 
-        Private Function getOutputDirectory() As String
+        'Private Function getOutputDirectory() As String
 
-            Try
+        '    Try
 
-                Dim modelPath As String = DirectCast(Me.m_core.DataSource.Connection, Database.cEwEAccessDatabase).Name
-                If File.Exists(modelPath) Then
-                    Return Path.Combine(Path.GetDirectoryName(modelPath), "MSE\")
-                Else
-                    System.Console.WriteLine("MSE Failed to find database directory from the currently loaded model.")
-                    Return (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\"))
-                End If
-            Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".getOutputDirectory() Exception: " & ex.Message)
-            End Try
+        '        Dim modelPath As String = DirectCast(Me.m_core.DataSource.Connection, Database.cEwEAccessDatabase).Name
+        '        If File.Exists(modelPath) Then
+        '            Return Path.Combine(Path.GetDirectoryName(modelPath), "MSE\")
+        '        Else
+        '            System.Console.WriteLine("MSE Failed to find database directory from the currently loaded model.")
+        '            Return (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\"))
+        '        End If
+        '    Catch ex As Exception
+        '        Debug.Assert(False, Me.ToString & ".getOutputDirectory() Exception: " & ex.Message)
+        '    End Try
 
-            Return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\")
+        '    Return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\")
 
-        End Function
+        'End Function
 
 
-        Private Sub InitOutputFiles()
+        'Private Sub InitOutputFiles()
 
-            If Not Me.m_data.SaveOutput Then Exit Sub
+        '    Try
+        '        Me.m_output.Init()
+        '    Catch ex As Exception
 
-            'get the directory to dump the data to
-            Me.m_DataDir = Me.getOutputDirectory
+        '    End Try
 
-            Try
+        '    'If Not Me.m_data.SaveOutput Then Exit Sub
 
-                If Not Directory.Exists(Me.m_DataDir) Then
-                    Directory.CreateDirectory(Me.m_DataDir)
-                End If
+        '    ''get the directory to dump the data to
+        '    'Me.m_DataDir = Me.getOutputDirectory
 
-                'clear out any existing data files
-                For igrp As Integer = 1 To Me.m_data.NGroups
-                    Try
-                        File.Delete(Me.BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
-                        File.Delete(Me.BuildCSVFilename(CATCH_DATA, Me.m_epdata.GroupName(igrp)))
-                        File.Delete(Me.BuildCSVFilename(QUOTAGROUP_DATA, Me.m_epdata.GroupName(igrp)))
-                    Catch ex As Exception
-                        System.Console.WriteLine(ex.Message)
-                    End Try
-                Next igrp
+        '    'Try
 
-                For iflt As Integer = 1 To Me.m_data.nFleets
-                    Try
-                        File.Delete(Me.BuildCSVFilename(FLEETCATCH_DATA, Me.m_epdata.FleetName(iflt)))
-                        File.Delete(Me.BuildCSVFilename(EFFORT_DATA, Me.m_epdata.FleetName(iflt)))
-                    Catch ex As Exception
-                        System.Console.WriteLine()
-                    End Try
-                Next iflt
+        '    '    If Not Directory.Exists(Me.m_DataDir) Then
+        '    '        Directory.CreateDirectory(Me.m_DataDir)
+        '    '    End If
 
-                'Write output file headers
+        '    '    'clear out any existing data files
+        '    '    For igrp As Integer = 1 To Me.m_data.NGroups
+        '    '        Try
+        '    '            File.Delete(Me.BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
+        '    '            File.Delete(Me.BuildCSVFilename(CATCH_DATA, Me.m_epdata.GroupName(igrp)))
+        '    '            File.Delete(Me.BuildCSVFilename(QUOTAGROUP_DATA, Me.m_epdata.GroupName(igrp)))
+        '    '        Catch ex As Exception
+        '    '            System.Console.WriteLine(ex.Message)
+        '    '        End Try
+        '    '    Next igrp
 
-                For igrp As Integer = 1 To Me.m_data.NGroups
-                    Me.WriteOutputHeader("Biomass", Me.m_epdata.GroupName(igrp), BIOMASS_DATA)
-                    If Me.m_epdata.fCatch(igrp) > 0 Then
-                        Me.WriteOutputHeader("Catch by Group", Me.m_epdata.GroupName(igrp), CATCH_DATA)
-                        Me.WriteOutputHeader("Quota by Group", Me.m_epdata.GroupName(igrp), QUOTAGROUP_DATA)
-                    End If
-                Next
+        '    '    For iflt As Integer = 1 To Me.m_data.nFleets
+        '    '        Try
+        '    '            File.Delete(Me.BuildCSVFilename(FLEETCATCH_DATA, Me.m_epdata.FleetName(iflt)))
+        '    '            File.Delete(Me.BuildCSVFilename(EFFORT_DATA, Me.m_epdata.FleetName(iflt)))
+        '    '        Catch ex As Exception
+        '    '            System.Console.WriteLine()
+        '    '        End Try
+        '    '    Next iflt
 
-                For iflt As Integer = 1 To Me.m_data.nFleets
-                    Me.WriteOutputHeader("Catch by Fleet", Me.m_epdata.FleetName(iflt), FLEETCATCH_DATA)
-                    Me.WriteOutputHeader("Effort by Fleet", Me.m_epdata.FleetName(iflt), EFFORT_DATA)
-                Next iflt
+        '    '    'Write output file headers
 
-            Catch ex As Exception
+        '    '    For igrp As Integer = 1 To Me.m_data.NGroups
+        '    '        Me.WriteOutputHeader("Biomass", Me.m_epdata.GroupName(igrp), BIOMASS_DATA)
+        '    '        If Me.m_epdata.fCatch(igrp) > 0 Then
+        '    '            Me.WriteOutputHeader("Catch by Group", Me.m_epdata.GroupName(igrp), CATCH_DATA)
+        '    '            Me.WriteOutputHeader("Quota by Group", Me.m_epdata.GroupName(igrp), QUOTAGROUP_DATA)
+        '    '        End If
+        '    '    Next
 
-            End Try
+        '    '    For iflt As Integer = 1 To Me.m_data.nFleets
+        '    '        Me.WriteOutputHeader("Catch by Fleet", Me.m_epdata.FleetName(iflt), FLEETCATCH_DATA)
+        '    '        Me.WriteOutputHeader("Effort by Fleet", Me.m_epdata.FleetName(iflt), EFFORT_DATA)
+        '    '    Next iflt
 
-        End Sub
+        '    'Catch ex As Exception
+
+        '    'End Try
+
+        'End Sub
 
         Private Sub InitResults()
             Try
@@ -382,35 +445,41 @@ Namespace MSE
         End Sub
 
 
-        Private Sub WriteOutputHeader(ByVal DataDescription As String, ByVal GroupFleet As String, ByVal DataFileName As String)
+        'Private Sub WriteOutputHeader(ByVal DataDescription As String, ByVal GroupFleet As String, ByVal DataFileName As String)
 
-            Try
+        '    Try
+        '        Me.m_output.WriteOutputHeader(DataDescription, GroupFleet, DataFileName)
+        '    Catch ex As Exception
 
-                Dim header As StringBuilder
-                Dim strm As StreamWriter
+        '    End Try
 
-                header = New StringBuilder()
-                Dim d As DateTime = Date.Now
+        '    'Try
 
-                header.Append("MSE " & DataDescription & vbCrLf)
-                header.Append("Date, '" & d.ToLongDateString & " " & d.ToLongTimeString & vbCrLf)
-                header.Append("Group, '" & GroupFleet & "'" & vbCrLf)
-                header.Append("Rows = MSE Run, Columns = Time" & vbCrLf)
+        '    '    Dim header As StringBuilder
+        '    '    Dim strm As StreamWriter
 
-                For it As Integer = 1 To Me.m_core.nEcosimTimeSteps
-                    If it > 1 Then header.Append(", ")
-                    header.Append(cStringUtils.FormatInteger(it))
-                Next
+        '    '    header = New StringBuilder()
+        '    '    Dim d As DateTime = Date.Now
 
-                strm = New StreamWriter(BuildCSVFilename(DataFileName, GroupFleet), True)
-                strm.WriteLine(header)
-                strm.Close()
+        '    '    header.Append("MSE " & DataDescription & vbCrLf)
+        '    '    header.Append("Date, '" & d.ToLongDateString & " " & d.ToLongTimeString & vbCrLf)
+        '    '    header.Append("Group, '" & GroupFleet & "'" & vbCrLf)
+        '    '    header.Append("Rows = MSE Run, Columns = Time" & vbCrLf)
 
-            Catch ex As Exception
+        '    '    For it As Integer = 1 To Me.m_core.nEcosimTimeSteps
+        '    '        If it > 1 Then header.Append(", ")
+        '    '        header.Append(cStringUtils.FormatInteger(it))
+        '    '    Next
 
-            End Try
+        '    '    strm = New StreamWriter(BuildCSVFilename(DataFileName, GroupFleet), True)
+        '    '    strm.WriteLine(header)
+        '    '    strm.Close()
 
-        End Sub
+        '    'Catch ex As Exception
+
+        '    'End Try
+
+        'End Sub
 
 
 
@@ -542,12 +611,23 @@ Namespace MSE
                 'Only set Effort high if using controls and EffortSource is NoCap
                 If Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_data.EffortSource = eMSEEffortSource.NoCap Then
 
-                    Dim stime As Integer = (Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear + 1
+                    'set regulatory start and end year 
+                    Dim Stime As Integer = (Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear + 1
+                    Dim Endtime As Integer
+                    'is the endYear being used
+                    If Me.m_data.EndYear > 0 Then
+                        'yes set the last year regulations will be used
+                        Endtime = Me.m_data.EndYear * Me.m_esData.NumStepsPerYear
+                    Else
+                        'no let the regulation run to the end of the Ecosim run
+                        Endtime = Me.m_esData.NTimes
+                    End If
+
 
                     For iflt As Integer = 1 To Me.m_data.nFleets
                         'Only if this fleet is regulated
-                        If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed Then
-                            For it As Integer = stime To Me.m_data.nTimeSteps
+                        If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NoControls Then
+                            For it As Integer = Stime To Endtime
                                 Me.m_esData.FishRateGear(iflt, it) = DEFAULT_EFFORT
                             Next it
                         End If 'Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed
@@ -571,7 +651,7 @@ Namespace MSE
             Try
 
                 For iflt As Integer = 1 To Me.m_data.nFleets
-                    If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed Then
+                    If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NoControls Then
                         For it As Integer = Me.m_data.StartYear To Me.m_data.nTimeSteps
                             Me.m_esData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
                         Next it
@@ -586,15 +666,29 @@ Namespace MSE
         End Sub
 
 
+        Private Function OutputWriterFactory() As IMSEOutputWriter
+            Dim output As IMSEOutputWriter
+            If Me.m_data.bInBatch Then
+                output = Me.m_batchManager.OutputWriter
+            Else
+                output = New cMSECSVOutputWriter(Me.m_core, Me.m_data)
+            End If
+
+            Debug.Assert(output IsNot Nothing, Me.ToString & ".OutputFactory() Failed to create CSV output object.")
+            Return output
+
+        End Function
+
 #End Region
 
 #Region "Running and computational code"
 
-        Public Sub Run()
+        Public Function Run() As Boolean
             Dim itr As Integer
+            Dim bSuccess As Boolean = True
 
             Try
-
+                cLog.Write("MSE run started.")
                 PostMessage(eMSERunStates.Started)
 
                 'keep the original value of PredictEffort so we can set it back at the end of the run
@@ -643,7 +737,8 @@ Namespace MSE
                     Me.PostMessage(eMSERunStates.IterationStarted)
 
                     'run ecosim
-                    Me.m_Ecosim.Run()
+                    bSuccess = Me.m_Ecosim.Run()
+                    If Not bSuccess Then Exit For
 
                     Me.summarizeEcosimEconomicData()
 
@@ -663,6 +758,7 @@ Namespace MSE
                 Me.ComputeStats()
 
             Catch ex As Exception
+                bSuccess = False
                 cLog.Write(ex)
                 Debug.Assert(False, "MSE Exception: " & ex.Message)
                 Me.m_core.Messages.SendMessage(New cMessage("Error while calculating MSE. " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
@@ -673,7 +769,9 @@ Namespace MSE
             'turn off the search
             Me.m_Search.SearchMode = eSearchModes.NotInSearch
 
-        End Sub
+            Return bSuccess
+
+        End Function
 
         Private Sub ComputeStats()
 
@@ -713,17 +811,17 @@ Namespace MSE
 
             Try
 
-                If Me.m_data.EffortSource = eMSEEffortSource.EcosimEffort Or LastCall Then
-                    'if we are tracking the Ecosim effort and regulating it via the quota 
-                    'then we need to set effort to original input ecosim effort
-                    Dim n As Integer = Me.m_esData.FishRateGear.GetUpperBound(1)
-                    For iflt As Integer = 1 To m_core.nFleets
-                        For it As Integer = 1 To n
-                            Me.m_esData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
-                        Next
+                '   If Me.m_data.EffortSource = eMSEEffortSource.EcosimEffort Or LastCall Then
+                'if we are tracking the Ecosim effort and regulating it via the quota 
+                'then we need to set effort to original input ecosim effort
+                Dim n As Integer = Me.m_esData.FishRateGear.GetUpperBound(1)
+                For iflt As Integer = 1 To m_core.nFleets
+                    For it As Integer = 1 To n
+                        Me.m_esData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
                     Next
+                Next
 
-                ElseIf Me.m_data.EffortSource = eMSEEffortSource.NoCap Then
+                If Me.m_data.EffortSource = eMSEEffortSource.NoCap Then
 
                     Me.setEffortForRun()
 
@@ -739,6 +837,7 @@ Namespace MSE
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".SetEffortToBaseValue() Exception: " & ex.Message)
+                cLog.Write(ex)
             End Try
 
         End Sub
@@ -794,119 +893,125 @@ Namespace MSE
 
         Private Sub SaveIteration()
 
-            If Not Me.m_data.SaveOutput Then Return
-
-            Dim buff As StringBuilder = Nothing
-            Dim strm As StreamWriter = Nothing
-
             Try
-                'We could set this up so each type had a seperate flag for dumping
-
-                'Biomass
-                For igrp As Integer = 1 To Me.m_data.NGroups
-                    Try
-                        buff = New StringBuilder()
-                        For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-                            If (its > 1) Then buff.Append(", ")
-                            buff.Append(cStringUtils.FormatSingle(m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, its)))
-                        Next
-
-                        strm = New StreamWriter(BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)), True)
-                        strm.WriteLine(buff)
-                        strm.Close()
-                        buff = Nothing
-                    Catch ex As Exception
-                        ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
-                        System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)) & " Exception: " & ex.Message)
-                    End Try
-                Next
-
-                'Catch by group
-                For igrp As Integer = 1 To Me.m_data.NGroups
-                    Try
-                        If Me.m_epdata.fCatch(igrp) > 0 Then
-                            buff = New StringBuilder()
-                            For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-                                If (its > 1) Then buff.Append(", ")
-                                buff.Append(cStringUtils.FormatSingle(m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, its)))
-                            Next
-
-                            strm = New StreamWriter(BuildCSVFilename(CATCH_DATA, Me.m_epdata.GroupName(igrp)), True)
-                            strm.WriteLine(buff)
-                            strm.Close()
-                            buff = Nothing
-                        End If
-                    Catch ex As Exception
-                        ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
-                        System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)) & " Exception: " & ex.Message)
-                    End Try
-                Next
-
-                'Quota by group
-                For igrp As Integer = 1 To Me.m_data.NGroups
-                    Try
-                        Dim data(,) As Single = Me.m_lstData.Item(eResultsData.GroupQuota)
-                        If Me.m_epdata.fCatch(igrp) > 0 Then
-                            buff = New StringBuilder()
-                            For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-                                If (its > 1) Then buff.Append(", ")
-                                buff.Append(cStringUtils.FormatSingle(data(igrp, its)))
-                            Next
-
-                            strm = New StreamWriter(BuildCSVFilename(QUOTAGROUP_DATA, Me.m_epdata.GroupName(igrp)), True)
-                            strm.WriteLine(buff)
-                            strm.Close()
-                            buff = Nothing
-                        End If
-                    Catch ex As Exception
-                        ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
-                        System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)) & " Exception: " & ex.Message)
-                    End Try
-                Next
-
-                'Catch by fleet
-                For iflt As Integer = 1 To Me.m_data.nFleets
-                    Try
-                        buff = New StringBuilder()
-                        For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-                            If (its > 1) Then buff.Append(", ")
-                            buff.Append(cStringUtils.FormatSingle(m_esData.ResultsSumCatchByGear(iflt, its)))
-                        Next
-
-                        strm = New StreamWriter(BuildCSVFilename(FLEETCATCH_DATA, Me.m_epdata.FleetName(iflt)), True)
-                        strm.WriteLine(buff)
-                        strm.Close()
-                        buff = Nothing
-
-                    Catch ex As Exception
-                        'Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(CATCH_DATA, Me.m_epdata.FleetName(iflt)))
-                        System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(FLEETCATCH_DATA, Me.m_epdata.FleetName(iflt)) & " Exception: " & ex.Message)
-                    End Try
-                Next
-
-                'Effort by fleet
-                For iflt As Integer = 1 To Me.m_data.nFleets
-                    Try
-                        buff = New StringBuilder()
-                        For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-                            If its > 1 Then buff.Append(", ")
-                            buff.Append(cStringUtils.FormatSingle(m_esData.ResultsEffort(iflt, its)))
-                        Next
-
-                        strm = New StreamWriter(BuildCSVFilename(EFFORT_DATA, Me.m_epdata.FleetName(iflt)), True)
-                        strm.WriteLine(buff)
-                        strm.Close()
-                        buff = Nothing
-
-                    Catch ex As Exception
-                        ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(EFFORT_DATA, Me.m_epdata.GroupName(iflt)))
-                        System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(EFFORT_DATA, Me.m_epdata.FleetName(iflt)) & " Exception: " & ex.Message)
-                    End Try
-                Next
-
+                Me.m_output.saveIteration(Me.m_lstData)
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".SaveIteration() Exception: " & ex.Message)
             End Try
+
+            'If Not Me.m_data.SaveOutput Then Return
+
+            'Dim buff As StringBuilder = Nothing
+            'Dim strm As StreamWriter = Nothing
+
+            'Try
+            '    'We could set this up so each type had a seperate flag for dumping
+
+            '    'Biomass
+            '    For igrp As Integer = 1 To Me.m_data.NGroups
+            '        Try
+            '            buff = New StringBuilder()
+            '            For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
+            '                If (its > 1) Then buff.Append(", ")
+            '                buff.Append(cStringUtils.FormatSingle(m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, its)))
+            '            Next
+
+            '            strm = New StreamWriter(BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)), True)
+            '            strm.WriteLine(buff)
+            '            strm.Close()
+            '            buff = Nothing
+            '        Catch ex As Exception
+            '            ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
+            '            System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)) & " Exception: " & ex.Message)
+            '        End Try
+            '    Next
+
+            '    'Catch by group
+            '    For igrp As Integer = 1 To Me.m_data.NGroups
+            '        Try
+            '            If Me.m_epdata.fCatch(igrp) > 0 Then
+            '                buff = New StringBuilder()
+            '                For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
+            '                    If (its > 1) Then buff.Append(", ")
+            '                    buff.Append(cStringUtils.FormatSingle(m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, its)))
+            '                Next
+
+            '                strm = New StreamWriter(BuildCSVFilename(CATCH_DATA, Me.m_epdata.GroupName(igrp)), True)
+            '                strm.WriteLine(buff)
+            '                strm.Close()
+            '                buff = Nothing
+            '            End If
+            '        Catch ex As Exception
+            '            ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
+            '            System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)) & " Exception: " & ex.Message)
+            '        End Try
+            '    Next
+
+            '    'Quota by group
+            '    For igrp As Integer = 1 To Me.m_data.NGroups
+            '        Try
+            '            Dim data(,) As Single = Me.m_lstData.Item(eResultsData.GroupQuota)
+            '            If Me.m_epdata.fCatch(igrp) > 0 Then
+            '                buff = New StringBuilder()
+            '                For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
+            '                    If (its > 1) Then buff.Append(", ")
+            '                    buff.Append(cStringUtils.FormatSingle(data(igrp, its)))
+            '                Next
+
+            '                strm = New StreamWriter(BuildCSVFilename(QUOTAGROUP_DATA, Me.m_epdata.GroupName(igrp)), True)
+            '                strm.WriteLine(buff)
+            '                strm.Close()
+            '                buff = Nothing
+            '            End If
+            '        Catch ex As Exception
+            '            ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
+            '            System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)) & " Exception: " & ex.Message)
+            '        End Try
+            '    Next
+
+            '    'Catch by fleet
+            '    For iflt As Integer = 1 To Me.m_data.nFleets
+            '        Try
+            '            buff = New StringBuilder()
+            '            For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
+            '                If (its > 1) Then buff.Append(", ")
+            '                buff.Append(cStringUtils.FormatSingle(m_esData.ResultsSumCatchByGear(iflt, its)))
+            '            Next
+
+            '            strm = New StreamWriter(BuildCSVFilename(FLEETCATCH_DATA, Me.m_epdata.FleetName(iflt)), True)
+            '            strm.WriteLine(buff)
+            '            strm.Close()
+            '            buff = Nothing
+
+            '        Catch ex As Exception
+            '            'Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(CATCH_DATA, Me.m_epdata.FleetName(iflt)))
+            '            System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(FLEETCATCH_DATA, Me.m_epdata.FleetName(iflt)) & " Exception: " & ex.Message)
+            '        End Try
+            '    Next
+
+            '    'Effort by fleet
+            '    For iflt As Integer = 1 To Me.m_data.nFleets
+            '        Try
+            '            buff = New StringBuilder()
+            '            For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
+            '                If its > 1 Then buff.Append(", ")
+            '                buff.Append(cStringUtils.FormatSingle(m_esData.ResultsEffort(iflt, its)))
+            '            Next
+
+            '            strm = New StreamWriter(BuildCSVFilename(EFFORT_DATA, Me.m_epdata.FleetName(iflt)), True)
+            '            strm.WriteLine(buff)
+            '            strm.Close()
+            '            buff = Nothing
+
+            '        Catch ex As Exception
+            '            ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(EFFORT_DATA, Me.m_epdata.GroupName(iflt)))
+            '            System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(EFFORT_DATA, Me.m_epdata.FleetName(iflt)) & " Exception: " & ex.Message)
+            '        End Try
+            '    Next
+
+            'Catch ex As Exception
+            '    Debug.Assert(False, Me.ToString & ".SaveIteration() Exception: " & ex.Message)
+            'End Try
 
         End Sub
 
@@ -982,7 +1087,7 @@ Namespace MSE
 
                 End Select
 
-                System.Console.WriteLine("MSE State = " & CurrentState.ToString)
+                'System.Console.WriteLine("MSE State = " & CurrentState.ToString)
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -1149,6 +1254,23 @@ Namespace MSE
 
         End Sub
 
+
+        Friend Sub VaryForcing(ByVal tval() As Single)
+
+            Try
+
+                If Me.m_data.bInBatch Then
+                    Me.BatchManager.varyForcing(tval)
+                End If
+
+            Catch ex As Exception
+                'Don't try again....
+                Me.m_data.bInBatch = False
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Sub
+
         Private Sub CalcCatch(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
 
             Dim cloc As Single
@@ -1184,12 +1306,11 @@ Namespace MSE
             Dim i As Integer, ig As Integer, Elim As Single, Emax As Single
             Dim ci As Single
 
-            'is this timestep > start year
-            If Not t > ((Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear) Then
-                'don't regulate effort
-                System.Console.WriteLine("MSE RegulateEffort() t = " & t.ToString & " StartYear = " & Me.m_data.StartYear.ToString & " no regulation!")
+
+            If Not Me.CheckStartEndYear(t) Then
                 Exit Sub
             End If
+
 
             'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
             For ig = 1 To m_esData.nGear
@@ -1274,6 +1395,28 @@ Namespace MSE
 
         End Sub
 
+
+        Private Function CheckStartEndYear(ByVal t As Single) As Boolean
+            Dim tStart As Integer = (Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear
+            Dim tEnd As Integer
+
+            'EndYear is only set by the BatchManager for all other runs it will be -9999
+            If Me.m_data.EndYear > 0 Then
+                tEnd = Me.m_data.EndYear * Me.m_esData.NumStepsPerYear
+            Else
+                tEnd = Me.m_data.nTimeSteps
+            End If
+
+            'is this timestep > start year
+            If t > tStart And t <= tEnd Then
+                Return True
+            End If
+            'don't regulate effort
+            ' System.Console.WriteLine("MSE no regulation. Time step not in StartYear or EndYear.")
+            Return False
+
+        End Function
+
         ''' <summary>
         ''' Populates Bestimate() and KalmanGain() for regulated fisheries
         ''' </summary>
@@ -1290,7 +1433,7 @@ Namespace MSE
                 Me.m_data.CatchYearGroup(i) = 0
                 'Biomass() passed in is the biomass calculated by Ecosim
                 'Bobs is the observed biomass(Ecosim biomass + random variation)
-                Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
+                Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
 
                 RstockPred = CSng(m_data.Rmax(i) * Me.m_data.BestimateLast(i) / (m_data.BhalfT(i) + Me.m_data.BestimateLast(i)))
                 vPred = CSng((m_data.RstockRatio(i) * Me.m_data.cvRec(i)) ^ 2 / (1 - m_data.GstockPred(i) ^ 2))
@@ -1333,13 +1476,28 @@ Namespace MSE
 
             ReDim tQuota(Me.m_epdata.NumGroups)
             ReDim FTarget(Me.m_epdata.NumGroups)
-
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'HACK WARNING
+            'BatchMode (cMSEBatchManager) needs to be able to set FixedF() and TAC() values to zero and still have them considered a valid value
+            'It does this by setting values to Epsilon 1.401298E-45 when the user enters zero
+            'This is interpreted as >0 then rounded off too zero
+            'this allows the interface and database to remain the same Zero means TAC() and FixedF() are NOT USED.
+            'It would be tricky to fix this with a flag and not break existing models.
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+'
             '1 Set the quota via Fixed Escapement, Fixed Fishing Mortality or Target Fishing Mortality(hockey stick)
             '2 Apply uncertainty to the Quota
             '3 Share the Quota between the fleets
             For igrp = 1 To Me.m_epdata.NumGroups
 
-                If Me.m_data.FixedEscapement(igrp) > 0 Then
+                If Me.m_data.TAC(igrp) > 0 Then
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'Total Allowable Catch
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    Dim tac As Single = CSng(Math.Round(m_data.TAC(igrp), 5))
+                    tQuota(igrp) = tac
+
+                ElseIf Me.m_data.FixedEscapement(igrp) > 0 Then
                     'xxxxxxxxxxxxxxxxxxxxxxx
                     'Fixed Escapement
                     'xxxxxxxxxxxxxxxxxxxxxxx
@@ -1351,34 +1509,33 @@ Namespace MSE
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxx
                     'Fixed Mortality
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-                    tQuota(igrp) = m_data.FixedF(igrp) * Me.m_data.Bestimate(igrp)
+                    Dim f As Single = CSng(Math.Round(m_data.FixedF(igrp), 5))
+                    tQuota(igrp) = f * Me.m_data.Bestimate(igrp)
+                    If m_data.FixedF(igrp) = Single.Epsilon Then tQuota(igrp) = 0
 
                 Else
                     'xxxxxxxxxxxxxxxxxxxxxxxx
                     'Target Fishing Mortality
                     'xxxxxxxxxxxxxxxxxxxxxxxx
+                    Dim brange As Single = Me.m_data.Bbase(igrp) - Me.m_data.Blim(igrp)
+                    If brange <= 0 Then brange = 1.0E-20
 
-                    If m_data.Bbase(igrp) > 0 Then
+                    'VC to JB: I think the Biomass below should be Bestimate instead; talked to Carl and he agrees. will be a double wham, which is OK.
+                    FTarget(igrp) = Me.m_data.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_data.Blim(igrp)) / brange
 
-                        'Debug.Assert(Me.m_data.Bbase(igrp) > Me.m_data.Blim(igrp), "MSE UpdateQuotas() Bbase must be greater than Blim.")
+                    'constrain the fishing mortality to min and max values. 
+                    'Fmin(igrp) only gets set by the MSEBatchManager for all other runs it must be zero. 
+                    If FTarget(igrp) < Me.m_data.Fmin(igrp) Then FTarget(igrp) = Me.m_data.Fmin(igrp)
+                    If FTarget(igrp) > Me.m_data.Fopt(igrp) Then FTarget(igrp) = Me.m_data.Fopt(igrp)
 
-                        'note here that Bbase has to be set larger than Blim
-                        'VC to JB: I think the Biomass below should be Bestimate instead; talked to Carl and he agrees. will be a double wham, which is OK.
-                        FTarget(igrp) = Me.m_data.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_data.Blim(igrp)) / (Me.m_data.Bbase(igrp) - Me.m_data.Blim(igrp))
-                        If FTarget(igrp) < 0 Then FTarget(igrp) = 0
-                        If FTarget(igrp) > Me.m_data.Fopt(igrp) Then FTarget(igrp) = Me.m_data.Fopt(igrp)
-
-                        tQuota(igrp) = FTarget(igrp) * Me.m_data.Bestimate(igrp)
-
-                    End If
+                    tQuota(igrp) = FTarget(igrp) * Me.m_data.Bestimate(igrp)
 
                 End If
 
                 'Add uncertainty to the Quota set above
                 'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
                 'but assume uncertaint is smaller?????? not done here
-                tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * Me.m_Ecosim.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
+                tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
 
             Next igrp
 
@@ -1448,16 +1605,20 @@ Namespace MSE
 
         End Function
 
+        Function RandNormDist(ByVal mean As Single, ByVal stdev As Single) As Single
+            Return Normal() * stdev + mean
+        End Function
+
         ''' <summary>
         ''' Box-Muller normally distributed random number with a standard deviation of one
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function Normal() As Single
-            Dim V1 As Single, V2 As Single
+            Dim V1 As Double, V2 As Double
             Do
-                V1 = Rnd()
-                V2 = Rnd()
+                V1 = rndGen.NextDouble
+                V2 = rndGen.NextDouble
             Loop Until V1 > 0
             Return CSng(Math.Sqrt(-2 * Math.Log(V1)) * Math.Cos(2 * 3.14159 * V2))
         End Function
@@ -2262,7 +2423,7 @@ Namespace MSE
             Me.m_curT = itime
             Me.m_curYear = iyr
 
-            'CVbiomEst(ngroups) and CVFest(nfleets) are the cv that are used to vary biomass and fishing mortality
+            'CVbiomEst(ngroups) and CVFest(nfleets) is the cv that is used to vary biomass and fishing mortality
             For igrp As Integer = 1 To Me.m_data.NGroups
                 Me.m_data.CVbiomEst(igrp) = Me.m_data.CVBiomT(igrp, iyr)
             Next
@@ -2522,10 +2683,37 @@ Namespace MSE
             strm.Close()
         End Sub
 
+        ''' <summary>
+        ''' Normally distrubute random number between -1 and 1 
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Friend Function RandomNormal() As Single
+            Dim X As Double
+            Debug.Assert(rndGen IsNot Nothing, Me.ToString & ".RandomNormal() Random number generator has not been initialized!")
+            X = -6
+            For i As Integer = 1 To 12
+                X = X + rndGen.NextDouble
+            Next
+            Return CSng(X)
+        End Function
+
+
 #End Region
 
     End Class
 
 #End Region
+
+    Public Interface IMSEOutputWriter
+
+        'ReadOnly Property DataDir() As String
+
+        Sub Init()
+
+        Sub saveIteration(ByVal ListOfData As Dictionary(Of cMSE.eResultsData, Single(,)))
+
+    End Interface
+
 
 End Namespace

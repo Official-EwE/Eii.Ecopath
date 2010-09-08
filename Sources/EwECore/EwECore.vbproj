@@ -322,6 +322,11 @@
     <Compile Include="MPAOptimization\Model\cMPAOptDataStructures.vb" />
     <Compile Include="MPAOptimization\Model\cMPARandomSearch.vb" />
     <Compile Include="Game Server\cGameServerInterface.vb" />
+    <Compile Include="MSE\BatchAnalysis\cMSEBatchDataStructures.vb" />
+    <Compile Include="MSE\BatchAnalysis\cMSEBatchManager.vb" />
+    <Compile Include="MSE\BatchAnalysis\cMSEBatchOutputWriter.vb" />
+    <Compile Include="MSE\BatchAnalysis\cMSECommandFileReader.vb" />
+    <Compile Include="MSE\BatchAnalysis\ParameterObjects.vb" />
     <Compile Include="MSE\Input Output\cMSEFleetInput.vb" />
     <Compile Include="MSE\Input Output\cMSEGroupInput.vb" />
     <Compile Include="MSE\Input Output\cMSEManager.vb" />
@@ -329,6 +334,7 @@
     <Compile Include="MSE\Input Output\cMSEParameters.vb" />
     <Compile Include="External data\cEconomicDataSource.vb" />
     <Compile Include="MSE\Model\cMSE.vb" />
+    <Compile Include="MSE\Model\cMSECSVOutputWriter.vb" />
     <Compile Include="MSE\Model\cMSEDataStructures.vb" />
     <Compile Include="Particle size distribution\Input Output\cPSDParameters.vb" />
     <Compile Include="Particle size distribution\Model\cPSDDatastructures.vb" />
@@ -358,11 +364,11 @@
   <ItemGroup>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
-      <Name>EwEPlugin</Name>
+      <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils</Name>
+      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

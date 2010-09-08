@@ -127,7 +127,7 @@ Namespace Ecosim
             Me.AllowUpdates = False
 
             ' Set option checks
-            Me(iRow, eColumnTypes.OptionNotUsed).Value = (flt.QuotaType = eQuotaTypes.NotUsed)
+            Me(iRow, eColumnTypes.OptionNotUsed).Value = (flt.QuotaType = eQuotaTypes.NoControls)
             Me(iRow, eColumnTypes.OptionWeakest).Value = (flt.QuotaType = eQuotaTypes.Weakest)
             Me(iRow, eColumnTypes.OptionStrongest).Value = (flt.QuotaType = eQuotaTypes.HighestValue)
             Me(iRow, eColumnTypes.OptionSelective).Value = (flt.QuotaType = eQuotaTypes.Selective)
@@ -164,7 +164,7 @@ Namespace Ecosim
             Select Case DirectCast(p.Column, eColumnTypes)
 
                 Case eColumnTypes.OptionNotUsed
-                    flt.QuotaType = eQuotaTypes.NotUsed
+                    flt.QuotaType = eQuotaTypes.NoControls
                     Me.UpdateRow(p.Row)
 
                 Case eColumnTypes.OptionSelective
