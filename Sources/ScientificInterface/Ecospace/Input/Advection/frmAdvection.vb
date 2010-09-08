@@ -82,6 +82,10 @@ Namespace Ecospace.Advection
         Private Sub OnShowMonth(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tscmMonth.SelectedIndexChanged
 
+            Dim layer As cLayer = Me.m_ucWind.LayerWind
+            DirectCast(layer.Data, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+            layer.Update(cLayer.eChangeFlags.Map, False)
+
         End Sub
 
         Private Sub OnLayerPropertiesChanged(ByVal sender As Object, ByVal e As System.EventArgs) _

@@ -65,7 +65,9 @@ Namespace Ecospace.Basemap.Layers
                                         ByVal style As cStyleGuide.eStyleFlags)
 
             Dim sValMax As Single = layer.MaxValue
-            Dim sValMin As Single = layer.MinValue
+            Dim sValMin As Single = 0
+
+            If layer.MetadataCell IsNot Nothing Then sValMin = layer.MetadataCell.Min
 
             If Not Me.Autoscale Then
                 sValMax = Me.ScaleMax

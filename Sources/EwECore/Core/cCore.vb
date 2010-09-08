@@ -11358,9 +11358,16 @@ Public Class cCore
                      eDataTypes.EcospaceLayerRelPP, _
                      eDataTypes.EcospaceLayerPort, _
                      eDataTypes.EcospaceLayerSail, _
-                     eDataTypes.EcospaceLayerMigration
+                     eDataTypes.EcospaceLayerMigration, _
+                     eDataTypes.EcospaceLayerFlow
                     DirectCast(obj, cEcospaceLayer).Invalidate()
                     Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
+
+                Case eDataTypes.EcospaceLayerWind
+                    Me.m_Ecospace.CalculateAdvection()
+                    DirectCast(obj, cEcospaceLayer).Invalidate()
+                    Me.EcospaceBasemap.LayerFlow.Invalidate()
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace advection data changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
 
                 Case eDataTypes.EcospaceHabitat
 

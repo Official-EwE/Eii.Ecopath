@@ -15,12 +15,13 @@ Public MustInherit Class cEcospaceLayerVector
 
 #Region " Private variables "
 
-    Protected m_sMinValue As Single = 0.0!
+    ''' <summary>Layer max value.</summary>
     Protected m_sMaxValue As Single = 0.0!
-    ''' <summary>States whether min/max should be recalculated</summary>
+
+    ''' <summary>States whether layer max value should be recalculated.</summary>
     ''' <remarks>True at startup to make sure that min/max are properly calculated
     ''' when first queried.</remarks>
-    Private m_bInvalidateMinMax As Boolean = True
+    Private m_bInvalidateMax As Boolean = True
 
 #End Region ' Private variables
 
@@ -102,30 +103,20 @@ Public MustInherit Class cEcospaceLayerVector
     ''' </summary>
     Public Overrides ReadOnly Property MaxValue() As Single
         Get
-            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax()
+            If Me.m_bInvalidateMax Then Me.RecalcMax()
             Return Me.m_sMaxValue
         End Get
     End Property
 
-    ''' <summary>
-    ''' Get the min magnitude of all cells in the layer.
-    ''' </summary>
-    Public Overrides ReadOnly Property MinValue() As Single
-        Get
-            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax()
-            Return Me.m_sMinValue
-        End Get
-    End Property
-
     Public Overrides Sub Invalidate()
-        Me.m_bInvalidateMinMax = True
+        Me.m_bInvalidateMax = True
     End Sub
 
 #End Region ' Cell interaction
 
 #Region " Internals "
 
-    Protected Overridable Sub RecalcMinMax()
+    Protected Overridable Sub RecalcMax()
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim sX As Single = 0.0!
@@ -133,7 +124,6 @@ Public MustInherit Class cEcospaceLayerVector
         Dim s As Single
 
         Me.m_sMaxValue = Single.MinValue
-        Me.m_sMinValue = Single.MaxValue
 
         For iRow As Integer = 1 To bm.InRow
             For iCol As Integer = 1 To bm.InCol
@@ -141,12 +131,11 @@ Public MustInherit Class cEcospaceLayerVector
                 sY = Me.YVelocity(iRow, iCol)
                 If sX <> cCore.NULL_VALUE And sY <> cCore.NULL_VALUE Then
                     s = CSng(Math.Sqrt(sX * sX + sY * sY))
-                    Me.m_sMaxValue = Math.Max(s, Me.m_sMaxValue)
-                    Me.m_sMinValue = Math.Min(s, Me.m_sMinValue)
+                    Me.m_sMaxValue = Math.Max(Math.Abs(s), Me.m_sMaxValue)
                 End If
             Next iCol
         Next iRow
-        Me.m_bInvalidateMinMax = False
+        Me.m_bInvalidateMax = False
 
     End Sub
 

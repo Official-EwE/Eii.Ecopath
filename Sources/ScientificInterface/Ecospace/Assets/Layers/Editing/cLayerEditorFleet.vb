@@ -51,7 +51,7 @@ Namespace Ecospace.Basemap.Layers
                     ' #Yes: update fleet index in the underlying Ecospace layer
                     layer.Fleet = value
                     ' Force map update
-                    Me.Layer.Update(cLayer.eChangeFlags.Map)
+                    Me.Layer.Update(cLayer.eChangeFlags.Map, False)
                 End If
             End Set
         End Property

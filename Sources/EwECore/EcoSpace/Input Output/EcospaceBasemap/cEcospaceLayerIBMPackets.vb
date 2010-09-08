@@ -53,12 +53,6 @@ Public Class cEcospaceLayerIBMPackets
         End Get
     End Property
 
-    Public Overrides ReadOnly Property MinValue() As Single
-        Get
-            Return 1.0!
-        End Get
-    End Property
-
 #End Region ' Cell interaction
 
 #Region " Private bits "
@@ -81,7 +75,7 @@ Public Class cEcospaceLayerIBMPackets
             Next
         Next
 
-        For iLifeStage As Integer = CInt(Me.MinValue) To CInt(Me.MaxValue)
+        For iLifeStage As Integer = 1 To CInt(Me.MaxValue)
             For iPacket As Integer = 1 To data.Npackets
                 Dim iRow As Integer = CInt(data.iPacket(Me.m_iStanza, iLifeStage, iPacket))
                 Dim iCol As Integer = CInt(data.jPacket(Me.m_iStanza, iLifeStage, iPacket))

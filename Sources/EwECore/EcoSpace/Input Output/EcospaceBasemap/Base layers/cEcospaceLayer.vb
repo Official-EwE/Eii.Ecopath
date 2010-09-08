@@ -168,6 +168,11 @@ Public MustInherit Class cEcospaceLayer
     ' This function does not require a GetVariable/SetVariable counterpart
     Public MustOverride Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the metadata associated with the values for a cell.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property MetadataCell() As cVariableMetaData
         Get
             Return Me.m_mdData
@@ -177,9 +182,18 @@ Public MustInherit Class cEcospaceLayer
         End Set
     End Property
 
-    Public MustOverride ReadOnly Property MinValue() As Single
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the maximum value in a layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property MaxValue() As Single
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Invalidates the content of a layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public MustOverride Sub Invalidate()
 
 #End Region ' Cell manipulation

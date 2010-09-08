@@ -816,7 +816,6 @@ Public Class cEcospaceDataStructures
             ReDim RelVulBad(nvartot)
             '   ReDim VulPred(nvartot)
             ReDim IsAdvected(nGroups)
-
             'jb PrefHab() was redimed here and redimHabitatVariables()
             '        ReDim PrefHab(nGroups, NoHabitats)
 
@@ -937,6 +936,9 @@ Public Class cEcospaceDataStructures
             Me.allocate(Xvloc, InRow + 1, InCol + 1)
             Me.allocate(Yvloc, InRow + 1, InCol + 1)
             Me.allocate(UpVel, InRow + 1, InCol + 1)
+            Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)
+            Me.allocate(Yv, InRow + 1, InCol + 1, cCore.N_MONTHS)
+            Me.allocate(flow, InRow + 1, InCol + 1)
             Me.allocate(E, InRow + 1, InCol + 1, nvartot)
             Me.allocate(BcwNomig, InRow + 1, InCol + 1, nvartot)
             Me.allocate(CNomig, InRow + 1, InCol + 1, nvartot)
@@ -955,8 +957,6 @@ Public Class cEcospaceDataStructures
             Me.allocate(RelCinorig, InRow + 1, InCol + 1)     'for use with habitat change
             Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
             Me.allocate(GroupDetritus, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)
-            Me.allocate(Yv, InRow + 1, InCol + 1, cCore.N_MONTHS)
 
             For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 

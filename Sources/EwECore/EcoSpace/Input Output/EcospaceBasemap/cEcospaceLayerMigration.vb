@@ -12,9 +12,6 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerMigration
     Inherits cEcospaceLayer
 
-    Private m_iMinValue As Integer = 1
-    Private m_iMaxValue As Integer = cCore.N_MONTHS
-
 #Region " Construction "
 
     ''' -----------------------------------------------------------------------
@@ -65,8 +62,7 @@ Public Class cEcospaceLayerMigration
         End Get
         Set(ByVal value As Object)
             Dim i As Integer = CInt(value)
-            Debug.Assert(i >= Me.m_iMinValue)
-            Debug.Assert(i <= Me.m_iMaxValue)
+            Debug.Assert(i >= 1 And i <= cCore.N_MONTHS)
 
             Me.PrefRow(Me.m_iGroup, i) = iRow
             Me.PrefCol(Me.m_iGroup, i) = iCol
@@ -80,13 +76,7 @@ Public Class cEcospaceLayerMigration
 
     Public Overrides ReadOnly Property MaxValue() As Single
         Get
-            Return Me.m_iMaxValue
-        End Get
-    End Property
-
-    Public Overrides ReadOnly Property MinValue() As Single
-        Get
-            Return Me.m_iMinValue
+            Return cCore.N_MONTHS
         End Get
     End Property
 
@@ -118,7 +108,7 @@ Public Class cEcospaceLayerMigration
             Next
         Next
 
-        For iMonth As Integer = Me.m_iMinValue To Me.m_iMaxValue
+        For iMonth As Integer = 1 To cCore.N_MONTHS
             Dim iRow As Integer = CInt(aiPrefRow(Me.m_iGroup, iMonth))
             Dim iCol As Integer = CInt(aiPrefCol(Me.m_iGroup, iMonth))
             If Me.ValidateCellPosition(iRow, iCol) Then

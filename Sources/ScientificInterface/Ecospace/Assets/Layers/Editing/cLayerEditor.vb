@@ -294,6 +294,7 @@ Namespace Ecospace.Basemap.Layers
             If Me.GUI IsNot Nothing Then
                 Me.GUI.EndEdit()
             End If
+            Me.Layer.Update(cLayer.eChangeFlags.Map)
         End Sub
 
         ''' -------------------------------------------------------------------

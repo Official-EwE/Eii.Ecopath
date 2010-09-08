@@ -69,12 +69,6 @@ Public Class cEcospaceLayerPort
         End Get
     End Property
 
-    Public Overrides ReadOnly Property MinValue() As Single
-        Get
-            Return 0.0!
-        End Get
-    End Property
-
 #End Region ' Cell interaction
 
 End Class

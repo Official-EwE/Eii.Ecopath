@@ -503,6 +503,13 @@ Public Class cEcoSpace
 
     End Function
 
+    ''' <summary>
+    ''' Calculate the effects of changes in wind patterns.
+    ''' </summary>
+    Public Sub CalculateAdvection()
+        Me.SM_MapApparentUpwell(Me.m_Data.Xvel, Me.m_Data.Yvel)
+    End Sub
+
 #End Region
 
 #Region "Private modeling code"
@@ -3471,13 +3478,21 @@ exitline:
 
     End Sub
 
-
+    ''' <summary>
+    ''' Sets apparent upwelling/downwelling rates based only on flow forcing field 
+    ''' sketched by model user
+    ''' </summary>
+    ''' <param name="Xvloc"></param>
+    ''' <param name="Yvloc"></param>
     Public Sub SM_MapApparentUpwell(ByVal Xvloc(,) As Single, ByVal Yvloc(,) As Single)
-        'sets apparent upwelling/downwelling rates based only on flow forcing field
-        'sketched by model user
-        Dim Fl As Single, i As Integer, j As Integer, UpMax As Single, UpLoc As Single, Cl2 As Single
-        ReDim m_Data.flow(m_Data.InRow + 1, m_Data.InCol + 1)
-        Cl2 = 0.01 / m_Data.CellLength ' ^ 2
+
+        Dim Fl As Single
+        Dim i As Integer
+        Dim j As Integer
+
+        ' JS: Moved to UI
+        ' , UpMax As Single, UpLoc As Single, Cl2 As Single
+        'Cl2 = 0.01 / m_Data.CellLength ' ^ 2
 
         For i = 0 To m_Data.InRow
             For j = 0 To m_Data.InCol
@@ -3497,27 +3512,29 @@ exitline:
                 End If
             Next
         Next
-        UpMax = 0
-        For i = 1 To m_Data.InRow
-            For j = 1 To m_Data.InCol
-                If m_Data.Depth(i, j) > 0 Then
-                    If Math.Abs(m_Data.flow(i, j)) > UpMax Then UpMax = Math.Abs(m_Data.flow(i, j))
-                End If
-            Next
-        Next
-        UpMax = UpMax * Cl2
-        '  Up.Cls()
-        For i = 1 To m_Data.InRow
-            For j = 1 To m_Data.InCol
-                If m_Data.Depth(i, j) > 0 Then
-                    UpLoc = -m_Data.flow(i, j) * Cl2
-                    m_Data.UpVel(i, j) = UpLoc  'Added for this model  SM.
-                    'Up.Circle (j + 0.5, i + 0.5 - UpLoc / UpMax), 0.1
-                    'Up.Line (j + 0.5, i + 0.5)-Step(0, -UpLoc / UpMax)
-                End If
-            Next
-        Next
-        'UpCap.Caption = "Upwelling velocities, max=" + Format$(UpMax / CellLength, "###.##") + "km/yr"
+
+        ' JS: Moved to UI
+        'UpMax = 0
+        'For i = 1 To m_Data.InRow
+        '    For j = 1 To m_Data.InCol
+        '        If m_Data.Depth(i, j) > 0 Then
+        '            If Math.Abs(m_Data.flow(i, j)) > UpMax Then UpMax = Math.Abs(m_Data.flow(i, j))
+        '        End If
+        '    Next
+        'Next
+        'UpMax = UpMax * Cl2
+        ''  Up.Cls()
+        'For i = 1 To m_Data.InRow
+        '    For j = 1 To m_Data.InCol
+        '        If m_Data.Depth(i, j) > 0 Then
+        '            UpLoc = -m_Data.flow(i, j) * Cl2
+        '            m_Data.UpVel(i, j) = UpLoc  'Added for this model  SM.
+        '            'Up.Circle (j + 0.5, i + 0.5 - UpLoc / UpMax), 0.1
+        '            'Up.Line (j + 0.5, i + 0.5)-Step(0, -UpLoc / UpMax)
+        '        End If
+        '    Next
+        'Next
+        ''UpCap.Caption = "Upwelling velocities, max=" + Format$(UpMax / CellLength, "###.##") + "km/yr"
     End Sub
 
 

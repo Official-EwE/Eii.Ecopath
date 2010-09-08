@@ -34,6 +34,7 @@ Public Class cEcospaceLayerWind
                    ByVal manager As cEcospaceBasemap, _
                    ByVal varName As eVarNameFlags)
         MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, cCore.NULL_VALUE, Nothing)
+        Me.m_dataType = eDataTypes.EcospaceLayerWind
     End Sub
 
 #End Region ' Construction
@@ -49,7 +50,11 @@ Public Class cEcospaceLayerWind
             Return Me.m_iMonth
         End Get
         Set(ByVal value As Integer)
-            Me.m_iMonth = Math.Max(1, Math.Min(cCore.N_MONTHS, value))
+            value = Math.Max(1, Math.Min(cCore.N_MONTHS, value))
+            If (value <> Me.m_iMonth) Then
+                Me.m_iMonth = value
+                Me.Invalidate()
+            End If
         End Set
     End Property
 

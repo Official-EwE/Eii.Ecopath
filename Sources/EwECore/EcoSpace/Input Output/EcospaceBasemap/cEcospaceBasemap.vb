@@ -120,8 +120,13 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' LayerWind
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerWind, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' LayerFlow
+            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerFlow, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' ----------------
@@ -190,7 +195,12 @@ Public Class cEcospaceBasemap
             layer = New cEcospaceLayerAdvection(theCore, Me)
             Me.Layers(layer.VarName) = layer
 
+            ' Wind
             layer = New cEcospaceLayerWind(theCore, Me, eVarNameFlags.LayerWind)
+            Me.Layers(layer.VarName) = layer
+
+            ' Flow
+            layer = New cEcospaceLayerSingle(theCore, Me, eVarNameFlags.LayerFlow)
             Me.Layers(layer.VarName) = layer
 
             'set status flags to default values
@@ -484,6 +494,17 @@ Public Class cEcospaceBasemap
     Public ReadOnly Property LayerWind() As cEcospaceLayerVector
         Get
             Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerWind), cEcospaceLayerVector)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the flow layer in Ecospace for the current month.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerFlow() As cEcospaceLayerSingle
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerFlow), cEcospaceLayerSingle)
         End Get
     End Property
 

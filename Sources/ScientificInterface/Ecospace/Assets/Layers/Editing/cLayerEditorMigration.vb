@@ -48,7 +48,7 @@ Namespace Ecospace.Basemap.Layers
                     ' #Yes: update group index in the underlying Ecospace layer
                     layerMigration.Group = value
                     ' Force map update
-                    Me.Layer.Update(cLayer.eChangeFlags.Map)
+                    Me.Layer.Update(cLayer.eChangeFlags.Map, False)
                 End If
             End Set
         End Property

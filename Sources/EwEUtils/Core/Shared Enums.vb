@@ -494,6 +494,8 @@ Namespace Core
         LayerTransportRate
         ''' <summary>Ecospace wind layer.</summary>
         LayerWind
+        ''' <summary>Ecospace flow layer.</summary>
+        LayerFlow
         ''' <summary>Ecospace MPA importance.</summary>
         LayerImportance
         ''' <summary>Ecospace cell port assignments.</summary>
@@ -1802,12 +1804,14 @@ Namespace Core
         ''' <summary>
         ''' Data belongs to the Ecospace wind layer.
         ''' </summary>
-        EcospaceLayerWind = 83
+        EcospaceLayerWind = 86
 
         ''' <summary>
         ''' Data belongs to the Ecospace transport rate layer.
         ''' </summary>
-        EcospaceLayerTransportRate = 82
+        EcospaceLayerTransportRate = 87
+
+        EcospaceLayerFlow = 88
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
