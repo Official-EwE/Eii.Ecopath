@@ -953,14 +953,18 @@ Namespace Controls.EwEGrid
 
                     ' Get properties from selected cells
                     For Each p As Position In Me.Selection.GetCellsPositions
-                        c = Me(p.Row, p.Column)
-                        If c IsNot Nothing Then
-                            ' Is property cell?
-                            If TypeOf c Is PropertyCell Then
-                                ' #Yes: add to list of selected cells
-                                Me.m_lpropertySelected.Add(DirectCast(c, PropertyCell).GetProperty())
+                        Try
+                            c = Me(p.Row, p.Column)
+                            If c IsNot Nothing Then
+                                ' Is property cell?
+                                If TypeOf c Is PropertyCell Then
+                                    ' #Yes: add to list of selected cells
+                                    Me.m_lpropertySelected.Add(DirectCast(c, PropertyCell).GetProperty())
+                                End If
                             End If
-                        End If
+                        Catch ex As Exception
+
+                        End Try
                     Next
 
                 End If
@@ -1038,7 +1042,7 @@ Namespace Controls.EwEGrid
                     Me.Selection.RemoveRange(r)
                 End If
             End If
-            Me.Selection.AddRange(New SourceGrid2.Range(iRow, 0, iRow, Me.ColumnsCount))
+            Me.Selection.AddRange(New SourceGrid2.Range(iRow, 0, iRow, Me.ColumnsCount - 1))
 
             ' Make sure selected row is visible
             Me.ShowCell(New Position(iRow, 0))
