@@ -187,6 +187,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Draw() Exception: " & ex.Message)
+            cLog.Write(ex)
         End Try
 
     End Sub
@@ -198,18 +199,25 @@ Friend Class cMSEPlotter
     ''' <remarks></remarks>
     Public Sub AddData(ByVal ListOfData As List(Of cCoreGroupBase))
 
-        If Me.m_Data IsNot Nothing Then
-            Me.m_Data.Clear()
-        End If
-        Me.m_Data = ListOfData
+        Try
 
-        'if we are adding one line at a time
-        'and this is the first line then configure the panes
-        If Me.m_type = ePlotTypes.Line And Me.m_nLines = 0 Then
-            Me.configValuePanes()
-        End If
+            If Me.m_Data IsNot Nothing Then
+                Me.m_Data.Clear()
+            End If
+            Me.m_Data = ListOfData
 
-        Me.m_nLines += 1
+            'if we are adding one line at a time
+            'and this is the first line then configure the panes
+            If Me.m_type = ePlotTypes.Line And Me.m_nLines = 0 Then
+                Me.configValuePanes()
+            End If
+
+            Me.m_nLines += 1
+
+        Catch ex As Exception
+            System.Console.WriteLine(ex.Message)
+            cLog.Write(ex)
+        End Try
 
     End Sub
 
@@ -221,18 +229,23 @@ Friend Class cMSEPlotter
 
         Dim stats As cMSEStats
         Dim ipane As Integer
+        Try
 
-        'Only data added one line at a time should be plotted this way
-        If Me.m_type <> ePlotTypes.Line Then Exit Sub
+            'Only data added one line at a time should be plotted this way
+            If Me.m_type <> ePlotTypes.Line Then Exit Sub
 
-        For Each data As cCoreGroupBase In Me.m_Data
-            ipane += 1
-            stats = Me.m_manager.BiomassStats(data.Index)
-            '   Me.m_zgh.AutoScaleYOption(ipane) = cZedGraphHelper.eScaleOptionTypes.None
-            Me.plotMean(stats, ipane)
-        Next
+            For Each data As cCoreGroupBase In Me.m_Data
+                ipane += 1
+                stats = Me.m_manager.BiomassStats(data.Index)
+                '   Me.m_zgh.AutoScaleYOption(ipane) = cZedGraphHelper.eScaleOptionTypes.None
+                Me.plotMean(stats, ipane)
+            Next
 
-        '  Me.m_zgh.RescaleAndRedraw()
+        Catch ex As Exception
+            System.Console.WriteLine(ex.Message)
+            cLog.Write(ex)
+        End Try
+
 
     End Sub
 
@@ -249,23 +262,30 @@ Friend Class cMSEPlotter
     Private Sub plotRefLines()
         Dim ipane As Integer
 
-        'Reference lines are retrieved from MSEManager based on the type of data that is being plotted
-        'this should mean the reference lines are always in sync with the current data
-        For Each statobj As cCoreGroupBase In Me.m_Data
-            ipane += 1
-            'get the reference data from the core for this datatype
-            Dim RefPoint As cMSERefPoint = Me.getRefPoint(statobj.Index)
-            'Add the data to the graph pane, this will remove existing reference lines
-            Me.plotRefLine(RefPoint.LowerReference, RefPoint.UpperReference, Me.m_zgh.GetPane(ipane))
+        Try
 
-            'Do NOT rescale if this is a Histogram
-            If Me.m_type <> ePlotTypes.Histogram Then
-                ' Me.m_zgh.AutoscalePane(ipane) = True
-            End If
+            'Reference lines are retrieved from MSEManager based on the type of data that is being plotted
+            'this should mean the reference lines are always in sync with the current data
+            For Each statobj As cCoreGroupBase In Me.m_Data
+                ipane += 1
+                'get the reference data from the core for this datatype
+                Dim RefPoint As cMSERefPoint = Me.getRefPoint(statobj.Index)
+                'Add the data to the graph pane, this will remove existing reference lines
+                Me.plotRefLine(RefPoint.LowerReference, RefPoint.UpperReference, Me.m_zgh.GetPane(ipane))
 
-        Next
+                'Do NOT rescale if this is a Histogram
+                If Me.m_type <> ePlotTypes.Histogram Then
+                    ' Me.m_zgh.AutoscalePane(ipane) = True
+                End If
 
-        Me.m_zgh.Redraw()
+            Next
+
+            Me.m_zgh.Redraw()
+
+        Catch ex As Exception
+            System.Console.WriteLine(ex.Message)
+            cLog.Write(ex)
+        End Try
 
     End Sub
 
@@ -274,27 +294,34 @@ Friend Class cMSEPlotter
 
         Dim refPoint As cMSERefPoint = Nothing
 
-        Select Case Me.m_dataType
+        Try
+            Select Case Me.m_dataType
 
-            Case ePlotData.Biomass
-                Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
-                refPoint = New cMSERefPoint(grp.BiomassRefLower, grp.BiomassRefUpper)
+                Case ePlotData.Biomass
+                    Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
+                    refPoint = New cMSERefPoint(grp.BiomassRefLower, grp.BiomassRefUpper)
 
-            Case ePlotData.BioEst
-                Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
-                refPoint = New cMSERefPoint(grp.BiomassEstRefLower, grp.BiomassEstRefUpper)
+                Case ePlotData.BioEst
+                    Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
+                    refPoint = New cMSERefPoint(grp.BiomassEstRefLower, grp.BiomassEstRefUpper)
 
-            Case ePlotData.GroupCatch
-                Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
-                refPoint = New cMSERefPoint(grp.CatchRefLower, grp.CatchRefUpper)
-            Case ePlotData.FleetValue
-                Dim flt As cMSEFleetInput = Me.m_manager.FleetInputs(ItemIndex)
-                refPoint = New cMSERefPoint(flt.CatchRefLower, flt.CatchRefUpper)
-            Case ePlotData.Effort
-                Dim flt As cMSEFleetInput = Me.m_manager.FleetInputs(ItemIndex)
-                refPoint = New cMSERefPoint(flt.EffortRefLower, flt.EffortRefUpper)
+                Case ePlotData.GroupCatch
+                    Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
+                    refPoint = New cMSERefPoint(grp.CatchRefLower, grp.CatchRefUpper)
+                Case ePlotData.FleetValue
+                    Dim flt As cMSEFleetInput = Me.m_manager.FleetInputs(ItemIndex)
+                    refPoint = New cMSERefPoint(flt.CatchRefLower, flt.CatchRefUpper)
+                Case ePlotData.Effort
+                    Dim flt As cMSEFleetInput = Me.m_manager.FleetInputs(ItemIndex)
+                    refPoint = New cMSERefPoint(flt.EffortRefLower, flt.EffortRefUpper)
 
-        End Select
+            End Select
+
+        Catch ex As Exception
+            System.Console.WriteLine(ex.Message)
+            cLog.Write(ex)
+        End Try
+
 
         Return refPoint
 
@@ -488,6 +515,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".AddLineToGraph() Error: " & ex.Message)
+            cLog.Write(ex)
         End Try
 
     End Sub
@@ -537,6 +565,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".AddLineToGraph() Error: " & ex.Message)
+            cLog.Write(ex)
         End Try
 
     End Sub
@@ -578,6 +607,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".AddLineToGraph() Error: " & ex.Message)
+            cLog.Write(ex)
         End Try
 
     End Sub
