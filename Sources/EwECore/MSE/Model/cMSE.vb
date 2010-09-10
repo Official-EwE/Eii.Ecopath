@@ -306,6 +306,15 @@ Namespace MSE
 
                 Me.setEffortForRun()
 
+                'jb 10-sept-2010 HACK fix 
+                'some databases can contain -9999 for these values 
+                'this messes up the quota calculation so set them to zero
+                For igrp = 1 To Me.m_data.NGroups
+                    If Me.m_data.Fopt(igrp) < 0 Then Me.m_data.Fopt(igrp) = 0
+                    If Me.m_data.Blim(igrp) < 0 Then Me.m_data.Blim(igrp) = 0
+                    If Me.m_data.Bbase(igrp) < 0 Then Me.m_data.Bbase(igrp) = 0
+                Next
+
             Catch ex As Exception
                 cLog.Write(ex)
                 Throw New ApplicationException(Me.ToString & ".InitForRun() Error:" & ex.Message, ex)
@@ -340,85 +349,7 @@ Namespace MSE
 
         End Sub
 
-        'Private Function getOutputDirectory() As String
-
-        '    Try
-
-        '        Dim modelPath As String = DirectCast(Me.m_core.DataSource.Connection, Database.cEwEAccessDatabase).Name
-        '        If File.Exists(modelPath) Then
-        '            Return Path.Combine(Path.GetDirectoryName(modelPath), "MSE\")
-        '        Else
-        '            System.Console.WriteLine("MSE Failed to find database directory from the currently loaded model.")
-        '            Return (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\"))
-        '        End If
-        '    Catch ex As Exception
-        '        Debug.Assert(False, Me.ToString & ".getOutputDirectory() Exception: " & ex.Message)
-        '    End Try
-
-        '    Return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\")
-
-        'End Function
-
-
-        'Private Sub InitOutputFiles()
-
-        '    Try
-        '        Me.m_output.Init()
-        '    Catch ex As Exception
-
-        '    End Try
-
-        '    'If Not Me.m_data.SaveOutput Then Exit Sub
-
-        '    ''get the directory to dump the data to
-        '    'Me.m_DataDir = Me.getOutputDirectory
-
-        '    'Try
-
-        '    '    If Not Directory.Exists(Me.m_DataDir) Then
-        '    '        Directory.CreateDirectory(Me.m_DataDir)
-        '    '    End If
-
-        '    '    'clear out any existing data files
-        '    '    For igrp As Integer = 1 To Me.m_data.NGroups
-        '    '        Try
-        '    '            File.Delete(Me.BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
-        '    '            File.Delete(Me.BuildCSVFilename(CATCH_DATA, Me.m_epdata.GroupName(igrp)))
-        '    '            File.Delete(Me.BuildCSVFilename(QUOTAGROUP_DATA, Me.m_epdata.GroupName(igrp)))
-        '    '        Catch ex As Exception
-        '    '            System.Console.WriteLine(ex.Message)
-        '    '        End Try
-        '    '    Next igrp
-
-        '    '    For iflt As Integer = 1 To Me.m_data.nFleets
-        '    '        Try
-        '    '            File.Delete(Me.BuildCSVFilename(FLEETCATCH_DATA, Me.m_epdata.FleetName(iflt)))
-        '    '            File.Delete(Me.BuildCSVFilename(EFFORT_DATA, Me.m_epdata.FleetName(iflt)))
-        '    '        Catch ex As Exception
-        '    '            System.Console.WriteLine()
-        '    '        End Try
-        '    '    Next iflt
-
-        '    '    'Write output file headers
-
-        '    '    For igrp As Integer = 1 To Me.m_data.NGroups
-        '    '        Me.WriteOutputHeader("Biomass", Me.m_epdata.GroupName(igrp), BIOMASS_DATA)
-        '    '        If Me.m_epdata.fCatch(igrp) > 0 Then
-        '    '            Me.WriteOutputHeader("Catch by Group", Me.m_epdata.GroupName(igrp), CATCH_DATA)
-        '    '            Me.WriteOutputHeader("Quota by Group", Me.m_epdata.GroupName(igrp), QUOTAGROUP_DATA)
-        '    '        End If
-        '    '    Next
-
-        '    '    For iflt As Integer = 1 To Me.m_data.nFleets
-        '    '        Me.WriteOutputHeader("Catch by Fleet", Me.m_epdata.FleetName(iflt), FLEETCATCH_DATA)
-        '    '        Me.WriteOutputHeader("Effort by Fleet", Me.m_epdata.FleetName(iflt), EFFORT_DATA)
-        '    '    Next iflt
-
-        '    'Catch ex As Exception
-
-        '    'End Try
-
-        'End Sub
+       
 
         Private Sub InitResults()
             Try
@@ -443,44 +374,6 @@ Namespace MSE
             End Try
 
         End Sub
-
-
-        'Private Sub WriteOutputHeader(ByVal DataDescription As String, ByVal GroupFleet As String, ByVal DataFileName As String)
-
-        '    Try
-        '        Me.m_output.WriteOutputHeader(DataDescription, GroupFleet, DataFileName)
-        '    Catch ex As Exception
-
-        '    End Try
-
-        '    'Try
-
-        '    '    Dim header As StringBuilder
-        '    '    Dim strm As StreamWriter
-
-        '    '    header = New StringBuilder()
-        '    '    Dim d As DateTime = Date.Now
-
-        '    '    header.Append("MSE " & DataDescription & vbCrLf)
-        '    '    header.Append("Date, '" & d.ToLongDateString & " " & d.ToLongTimeString & vbCrLf)
-        '    '    header.Append("Group, '" & GroupFleet & "'" & vbCrLf)
-        '    '    header.Append("Rows = MSE Run, Columns = Time" & vbCrLf)
-
-        '    '    For it As Integer = 1 To Me.m_core.nEcosimTimeSteps
-        '    '        If it > 1 Then header.Append(", ")
-        '    '        header.Append(cStringUtils.FormatInteger(it))
-        '    '    Next
-
-        '    '    strm = New StreamWriter(BuildCSVFilename(DataFileName, GroupFleet), True)
-        '    '    strm.WriteLine(header)
-        '    '    strm.Close()
-
-        '    'Catch ex As Exception
-
-        '    'End Try
-
-        'End Sub
-
 
 
         Private Sub setBestTotalValue()
@@ -1511,7 +1404,6 @@ Namespace MSE
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxx
                     Dim f As Single = CSng(Math.Round(m_data.FixedF(igrp), 5))
                     tQuota(igrp) = f * Me.m_data.Bestimate(igrp)
-                    If m_data.FixedF(igrp) = Single.Epsilon Then tQuota(igrp) = 0
 
                 Else
                     'xxxxxxxxxxxxxxxxxxxxxxxx
