@@ -310,6 +310,8 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerPort.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerSail.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerWind.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerMLD.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerUpwelling.vb" />
     <Compile Include="External data\cNetworkAnalysisDataSource.vb" />
     <Compile Include="External data\cTaxonDataSource.vb">
       <SubType>Code</SubType>

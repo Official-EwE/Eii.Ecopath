@@ -28,18 +28,16 @@ Public Class cEcospaceLayerWind
     ''' </summary>
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
-    ''' <param name="varName"></param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal theCore As cCore, _
-                   ByVal manager As cEcospaceBasemap, _
-                   ByVal varName As eVarNameFlags)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, cCore.NULL_VALUE, Nothing)
+                   ByVal manager As cEcospaceBasemap)
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, eVarNameFlags.LayerWind, cCore.NULL_VALUE, Nothing)
         Me.m_dataType = eDataTypes.EcospaceLayerWind
     End Sub
 
 #End Region ' Construction
 
-#Region " Cell interaction "
+#Region " Filter "
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="ICoreMonthFilter.Month"/>
@@ -58,7 +56,7 @@ Public Class cEcospaceLayerWind
         End Set
     End Property
 
-#End Region ' Cell interaction
+#End Region ' Filter
 
 #Region " Private bits "
 

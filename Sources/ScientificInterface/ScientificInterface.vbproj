@@ -919,6 +919,9 @@
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRegion.resx">
       <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Advection\ucAdvectionMap.resx">
+      <DependentUpon>ucAdvectionMap.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Advection\ucMap.resx">
       <DependentUpon>ucMap.vb</DependentUpon>
     </EmbeddedResource>
@@ -1174,12 +1177,14 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorVector.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorMLD.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorVector.Designer.vb">
       <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorVector.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererUpwelling.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererWindEwE5.vb" />
     <Compile Include="Ecospace\Assets\Map\ucMapZoomToolbar.Designer.vb">
       <DependentUpon>ucMapZoomToolbar.vb</DependentUpon>
@@ -1197,6 +1202,12 @@
       <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRegion.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\ucAdvectionMap.Designer.vb">
+      <DependentUpon>ucAdvectionMap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Advection\ucAdvectionMap.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\Advection\ucMap.Designer.vb">

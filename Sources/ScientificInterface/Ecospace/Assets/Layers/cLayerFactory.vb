@@ -335,6 +335,52 @@ Namespace Ecospace.Basemap.Layers
 
                     lLayers.Add(layer)
 
+                Case eVarNameFlags.LayerUpwelling
+
+                    key = New cValueID(eDataTypes.EcospaceLayerFlow, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
+
+                    ' Get or create Visual Style
+                    vs = ad.VisualStyle
+                    If vs Is Nothing Then
+                        vs = New cVisualStyle()
+                        vs.ForeColour = Color.Black
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
+                    End If
+
+                    renderer = New cLayerRendererUpwelling(vs)
+                    editor = New cLayerEditorRange()
+                    If layerData Is Nothing Then layerData = bmd.LayerUpwelling
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerUpwelling)
+                    layer.Name = "Upwelling"
+
+                    lLayers.Add(layer)
+
+                Case eVarNameFlags.LayerMLD
+
+                    key = New cValueID(eDataTypes.EcospaceLayerMLD, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
+
+                    ' Get or create Visual Style
+                    vs = ad.VisualStyle
+                    If vs Is Nothing Then
+                        vs = New cVisualStyle()
+                        vs.ForeColour = Color.Black
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
+                    End If
+
+                    renderer = New cLayerRendererValue(vs)
+                    editor = New cLayerEditorMLD()
+                    If layerData Is Nothing Then layerData = bmd.LayerMixedLayerDepths
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, varName)
+                    layer.Name = "Mixed layer depths"
+
+                    lLayers.Add(layer)
+
                 Case eVarNameFlags.LayerPort
 
                     key = New cValueID(eDataTypes.EcospaceLayerPort, bmd.DBID, eVarNameFlags.Name)
@@ -408,6 +454,9 @@ Namespace Ecospace.Basemap.Layers
                         lLayers.Add(layer)
 
                     Next iLayer
+
+                Case Else
+                    Debug.Assert(False, "No layers available for this varname")
 
             End Select
 

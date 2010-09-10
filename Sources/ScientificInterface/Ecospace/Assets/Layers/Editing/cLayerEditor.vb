@@ -24,10 +24,8 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>The layer to operate on.</summary>
         Private m_layer As cLayer = Nothing
         ''' <summary>Flag stating whether the layer is editable.</summary>
-        ''' <remarks></remarks>
         Private m_bEditable As Boolean = True
         ''' <summary>Flag stating whether the layer is read-only.</summary>
-        ''' <remarks></remarks>
         Private m_bReadOnly As Boolean = False
         ''' <summary>The current value 'under the cursor'.</summary>
         Private Shared s_decValue As Decimal = Nothing
@@ -40,6 +38,7 @@ Namespace Ecospace.Basemap.Layers
         Private m_typeGUI As Type = Nothing
         ''' <summary>An instantiated GUI, if any.</summary>
         Private m_gui As ucLayerEditor = Nothing
+        ''' <summary>UI context to operate on.</summary>
         Private m_uic As cUIContext = Nothing
 
         ' === FEEDBACK SUPPORT ===
@@ -252,7 +251,7 @@ Namespace Ecospace.Basemap.Layers
                         If (Math.Sqrt(ptfCursor.X * ptfCursor.X + ptfCursor.Y * ptfCursor.Y) <= (Me.CursorSize / 2)) Then
 
                             ptCell = New Point(CInt(Math.Floor(dX + ptfCursor.X)), CInt(Math.Floor(dY + ptfCursor.Y)))
-                            Me.SetCellValue(ptCell, args, New Point(iX, iY))
+                            Me.SetCellValue(ptCell, Me.CellValue, args, New Point(iX, iY))
 
                             ptUpdateMin.X = Math.Min(ptCell.X, ptUpdateMin.X)
                             ptUpdateMin.Y = Math.Min(ptCell.Y, ptUpdateMin.Y)
@@ -306,9 +305,10 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="ptClick">The cell location (Col, Row) in the cursor.</param>
         ''' -------------------------------------------------------------------
         Protected Overridable Sub SetCellValue(ByVal ptSet As Point, _
+                                               ByVal value As Object, _
                                                ByVal e As MouseEventArgs, _
                                                ByVal ptClick As Point)
-            Me.Layer.Value(ptSet.Y, ptSet.X) = Me.CellValue
+            Me.Layer.Value(ptSet.Y, ptSet.X) = value
         End Sub
 
 #End Region ' Editing

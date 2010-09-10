@@ -116,17 +116,22 @@ Public Class cEcospaceBasemap
             ' Advection interface
             ' LayerAdvection
             meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(0, eVarNameFlags.LayerAdvection, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(0, eVarNameFlags.LayerAdvection, eStatusFlags.Null, eValueTypes.SingleArray, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' LayerWind
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(0, eVarNameFlags.LayerWind, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(0, eVarNameFlags.LayerWind, eStatusFlags.Null, eValueTypes.SingleArray, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            ' LayerFlow
+            ' LayerUpwelling
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(0, eVarNameFlags.LayerFlow, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(0, eVarNameFlags.LayerUpwelling, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' LayerMLD
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerMLD, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' ----------------
@@ -196,11 +201,15 @@ Public Class cEcospaceBasemap
             Me.Layers(layer.VarName) = layer
 
             ' Wind
-            layer = New cEcospaceLayerWind(theCore, Me, eVarNameFlags.LayerWind)
+            layer = New cEcospaceLayerWind(theCore, Me)
             Me.Layers(layer.VarName) = layer
 
-            ' Flow
-            layer = New cEcospaceLayerSingle(theCore, Me, eVarNameFlags.LayerFlow)
+            ' Upwelling
+            layer = New cEcospaceLayerUpwelling(theCore, Me)
+            Me.Layers(layer.VarName) = layer
+
+            ' MLD
+            layer = New cEcospaceLayerMLD(theCore, Me)
             Me.Layers(layer.VarName) = layer
 
             'set status flags to default values
@@ -484,16 +493,27 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the Wind layer in Ecospace.
+    ''' Get the Ecospace wind layer.
     ''' </summary>
     ''' <remarks>
     ''' This layer is a tricky one since it provides uniform access to
     ''' two amplitude components, XVel and YVel. See the actual layer for details.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerWind() As cEcospaceLayerVector
+    Public ReadOnly Property LayerWind() As cEcospaceLayerWind
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerWind), cEcospaceLayerVector)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerWind), cEcospaceLayerWind)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the Ecospace Mixed Layer Depths layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerMixedLayerDepths() As cEcospaceLayerSingle
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMLD), cEcospaceLayerSingle)
         End Get
     End Property
 
@@ -502,9 +522,9 @@ Public Class cEcospaceBasemap
     ''' Get the flow layer in Ecospace for the current month.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerFlow() As cEcospaceLayerSingle
+    Public ReadOnly Property LayerUpwelling() As cEcospaceLayerSingle
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerFlow), cEcospaceLayerSingle)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerUpwelling), cEcospaceLayerSingle)
         End Get
     End Property
 
@@ -578,6 +598,10 @@ Public Class cEcospaceBasemap
                 Return New Integer()(,) {Me.m_core.m_EcoSpaceData.PrefRow, Me.m_core.m_EcoSpaceData.Prefcol}
             Case eVarNameFlags.LayerWind
                 Return New Single()(,,) {Me.m_core.m_EcoSpaceData.Xv, Me.m_core.m_EcoSpaceData.Yv}
+            Case eVarNameFlags.LayerUpwelling
+                Return Me.m_core.m_EcoSpaceData.flow
+            Case eVarNameFlags.LayerMLD
+                Return Me.m_core.m_EcoSpaceData.DepthA
             Case eVarNameFlags.LayerImportance
                 If iIndex < 0 Or iIndex > Me.m_core.m_EcoSpaceData.ImportanceLayers.Count - 1 Then
                     Debug.Assert(False, "cCore message: Index out of bounds error for ImportanceLayers")

@@ -22,7 +22,11 @@ Namespace Ecospace.Basemap.Layers
 #Region " Construction "
 
         Public Sub New()
-            MyBase.New(GetType(ucLayerEditorRange))
+            Me.New(GetType(ucLayerEditorRange))
+        End Sub
+
+        Public Sub New(ByVal typeGUI As Type)
+            MyBase.New(typeGUI)
         End Sub
 
 #End Region ' Construction

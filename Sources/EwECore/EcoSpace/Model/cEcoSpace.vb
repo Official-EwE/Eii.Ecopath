@@ -504,10 +504,47 @@ Public Class cEcoSpace
     End Function
 
     ''' <summary>
-    ''' Calculate the effects of changes in wind patterns.
+    ''' Calculate advection for a given month.
     ''' </summary>
-    Public Sub CalculateAdvection()
-        Me.SM_MapApparentUpwell(Me.m_Data.Xvel, Me.m_Data.Yvel)
+    ''' <param name="iMonth">Month [1, 12] to calculate advection for.</param>
+    Public Sub CalcAdvection(ByVal iMonth As Integer)
+
+        Debug.Assert(iMonth > 0)
+
+        Try
+            For i As Integer = 0 To Me.m_Data.InRow
+                For j As Integer = 0 To Me.m_Data.InCol
+                    Me.m_Data.Xvloc(i, j) = Me.m_Data.Xv(i, j, iMonth)
+                    Me.m_Data.Yvloc(i, j) = Me.m_Data.Yv(i, j, iMonth)
+
+                    If Me.m_Data.Depth(i, j) > 0 Then
+                        If Me.m_Data.Depth(i + 1, j) > 0 Then
+                            If Me.m_Data.DepthA(i + 1, j) > Me.m_Data.DepthA(i, j) Then Me.m_Data.DepthY(i, j) = Me.m_Data.DepthA(i, j) Else Me.m_Data.DepthY(i, j) = Me.m_Data.DepthA(i + 1, j)
+                        End If
+                        If Me.m_Data.Depth(i, j + 1) > 0 Then
+                            If Me.m_Data.DepthA(i, j + 1) > Me.m_Data.DepthA(i, j) Then Me.m_Data.DepthX(i, j) = Me.m_Data.DepthA(i, j) Else Me.m_Data.DepthX(i, j) = Me.m_Data.DepthA(i, j + 1)
+                        End If
+                    End If
+                Next
+            Next
+        Catch ex As Exception
+
+        End Try
+
+        Try
+            For i As Integer = 0 To Me.m_Data.InRow + 1
+                For j As Integer = 0 To Me.m_Data.InCol + 1
+                    If Me.m_Data.Depth(i, j) > 0 Then
+                        Me.m_Data.Xvel(i, j) = Me.m_Data.Xvloc(i, j)
+                        Me.m_Data.Yvel(i, j) = Me.m_Data.Yvloc(i, j)
+                    End If
+                Next
+            Next
+        Catch ex As Exception
+
+        End Try
+
+        Me.SM_MapApparentUpwell()
     End Sub
 
 #End Region
@@ -639,7 +676,7 @@ Public Class cEcoSpace
 
                     'ToDo_jb FindSpatial....... velmaker
                     'Calculate Upwelling indicies
-                    SM_MapApparentUpwell(m_Data.Xvel, m_Data.Yvel)
+                    CalcAdvection(m_Data.MonthNow)
                     SetMovementParameters()
                 End If
                 '****************END of Martell*****************
@@ -3482,29 +3519,28 @@ exitline:
     ''' Sets apparent upwelling/downwelling rates based only on flow forcing field 
     ''' sketched by model user
     ''' </summary>
-    ''' <param name="Xvloc"></param>
-    ''' <param name="Yvloc"></param>
-    Public Sub SM_MapApparentUpwell(ByVal Xvloc(,) As Single, ByVal Yvloc(,) As Single)
+    Public Sub SM_MapApparentUpwell()
 
         Dim Fl As Single
         Dim i As Integer
         Dim j As Integer
 
+        For i = 0 To m_Data.InRow : For j = 0 To m_Data.InCol : m_Data.flow(i, j) = 0 : Next : Next
+
         ' JS: Moved to UI
         ' , UpMax As Single, UpLoc As Single, Cl2 As Single
         'Cl2 = 0.01 / m_Data.CellLength ' ^ 2
-
         For i = 0 To m_Data.InRow
             For j = 0 To m_Data.InCol
                 If m_Data.Depth(i, j) > 0 Then
                     If m_Data.Depth(i + 1, j) > 0 Then
-                        Fl = Yvloc(i, j) * m_Data.DepthY(i, j)
+                        Fl = m_Data.Yvloc(i, j) * m_Data.DepthY(i, j)
                         'Yvel(i, j) = Yvloc(i, j) '?????????????????????
-                        m_Data.flow(i, j) = m_Data.flow(i, j) - Fl
+                        m_Data.flow(i, j) -= Fl
                         m_Data.flow(i + 1, j) = m_Data.flow(i + 1, j) + Fl
                     End If
                     If m_Data.Depth(i, j + 1) > 0 Then
-                        Fl = Xvloc(i, j) * m_Data.DepthX(i, j)
+                        Fl = m_Data.Xvloc(i, j) * m_Data.DepthX(i, j)
                         'Xvel(i, j) = Xvloc(i, j) '??????????????????????????
                         m_Data.flow(i, j) = m_Data.flow(i, j) - Fl
                         m_Data.flow(i, j + 1) = m_Data.flow(i, j + 1) + Fl

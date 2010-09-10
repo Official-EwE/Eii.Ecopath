@@ -37,9 +37,11 @@ Public Class cEcospaceLayerSingle
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef theCore As cCore, ByRef manager As cEcospaceBasemap, _
-            ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
-            Optional ByVal meta As cVariableMetaData = Nothing)
+    Public Sub New(ByVal theCore As cCore, _
+                   ByVal manager As cEcospaceBasemap, _
+                   ByVal varName As eVarNameFlags, _
+                   Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
+                   Optional ByVal meta As cVariableMetaData = Nothing)
         MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, iIndex, GetType(Single), meta)
     End Sub
 

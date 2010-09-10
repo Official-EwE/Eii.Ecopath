@@ -11363,11 +11363,15 @@ Public Class cCore
                     DirectCast(obj, cEcospaceLayer).Invalidate()
                     Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
 
-                Case eDataTypes.EcospaceLayerWind
-                    Me.m_Ecospace.CalculateAdvection()
-                    DirectCast(obj, cEcospaceLayer).Invalidate()
-                    Me.EcospaceBasemap.LayerFlow.Invalidate()
-                    Me.m_publisher.AddMessage(New cMessage("Ecospace advection data changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
+                Case eDataTypes.EcospaceLayerWind, _
+                     eDataTypes.EcospaceLayerMLD
+
+                    ' Update advection fields
+                    Me.m_Ecospace.CalcAdvection(DirectCast(obj, ICoreMonthFilter).Month)
+                    ' Trigger layer to be recalculated
+                    Me.EcospaceBasemap.LayerUpwelling.Invalidate()
+                    ' Update visuals
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace advection data changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerUpwelling))
 
                 Case eDataTypes.EcospaceHabitat
 

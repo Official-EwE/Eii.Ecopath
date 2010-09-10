@@ -87,37 +87,34 @@ Namespace Ecospace.Basemap.Layers
             End Set
         End Property
 
-#Region " Locked out "
-
-        Public Overrides Property CellValue() As Object
-            Get
-                Debug.Assert(False, "Code should be bypassed for vector layers")
-                Return Nothing
-            End Get
-            Set(ByVal value As Object)
-                Debug.Assert(False, "Code should be bypassed for vector layers")
-            End Set
-        End Property
-
-#End Region ' Locked out
-
 #End Region ' Public interfaces
 
 #Region " Internal overrides "
 
         Protected Overrides Sub SetCellValue(ByVal ptSet As Point, _
+                                             ByVal value As Object, _
                                              ByVal e As MouseEventArgs, _
                                              ByVal ptClick As Point)
 
-            ' Distance mouse has travelled
+            ' Calc the distance the mouse has travelled
             Dim dx As Single = CSng(Math.Sqrt(Me.m_ptfDelta.X * Me.m_ptfDelta.X + Me.m_ptfDelta.Y * Me.m_ptfDelta.Y))
-
+            ' Only process significant changes
             If dx <= 2 Then Return
-
+            ' Ignore value
             Me.Layer.Value(ptSet.Y, ptSet.X) = New Single() {Me.m_ptfDelta.X * Me.m_sScaleFactor / dx, _
                                                              Me.m_ptfDelta.Y * Me.m_sScaleFactor / dx}
 
         End Sub
+
+        Public Overrides Property CellValue() As Object
+            Get
+                ' Bypass
+                Return Nothing
+            End Get
+            Set(ByVal value As Object)
+                ' Bypass
+            End Set
+        End Property
 
 #End Region ' Internal overrides
 

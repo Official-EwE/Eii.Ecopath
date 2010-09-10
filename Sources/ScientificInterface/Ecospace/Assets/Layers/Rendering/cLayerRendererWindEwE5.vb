@@ -73,10 +73,10 @@ Namespace Ecospace.Basemap.Layers
                                    ptfCenter.X + szfHalfArrow.Width, ptfCenter.Y + szfHalfArrow.Height)
                     End Using
 
-                    '        'If Depth(i, j + 1) > 0 Then Vxp = Xvloc(i, j) Else Vxp = 0
-                    '        'If Depth(i + 1, j) > 0 Then Vyp = Yvloc(i, j) Else Vyp = 0
-                    'WF.Circle (j + 0.5 + Vxp / Xmax, i + 0.5 + Vyp / Xmax), 0.03
-                    'WF.Line (j + 0.5, i + 0.5)-Step(Vxp / Xmax, Vyp / Xmax)
+                    ' If Depth(i, j + 1) > 0 Then Vxp = Xvloc(i, j) Else Vxp = 0
+                    ' If Depth(i + 1, j) > 0 Then Vyp = Yvloc(i, j) Else Vyp = 0
+                    ' WF.Circle (j + 0.5 + Vxp / Xmax, i + 0.5 + Vyp / Xmax), 0.03
+                    ' WF.Line (j + 0.5, i + 0.5)-Step(Vxp / Xmax, Vyp / Xmax)
 
                 End If
             End If

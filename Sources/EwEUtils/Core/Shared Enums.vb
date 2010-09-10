@@ -492,10 +492,12 @@ Namespace Core
         LayerAdvection
         ''' <summary>Ecospace transport rate layer.</summary>
         LayerTransportRate
+        ''' <summary>Ecospace MLD (mixed layer depths) layer.</summary>
+        LayerMLD
         ''' <summary>Ecospace wind layer.</summary>
         LayerWind
-        ''' <summary>Ecospace flow layer.</summary>
-        LayerFlow
+        ''' <summary>Ecospace upwelling layer.</summary>
+        LayerUpwelling
         ''' <summary>Ecospace MPA importance.</summary>
         LayerImportance
         ''' <summary>Ecospace cell port assignments.</summary>
@@ -1811,7 +1813,20 @@ Namespace Core
         ''' </summary>
         EcospaceLayerTransportRate = 87
 
+        ''' <summary>
+        ''' Data belongs to the Ecospace flow layer.
+        ''' </summary>
         EcospaceLayerFlow = 88
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace mixed layer depth layer.
+        ''' </summary>
+        EcospaceLayerMLD = 89
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace upwelling layer.
+        ''' </summary>
+        EcospaceLayerUpwelling = 90
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

@@ -931,6 +931,8 @@ Public Class cEcospaceDataStructures
             Me.allocate(d, InRow + 1, InCol + 1, nvartot)
             Me.allocate(Depth, InRow + 1, InCol + 1)
             Me.allocate(DepthA, InRow + 1, InCol + 1)
+            Me.allocate(DepthX, InRow + 1, InCol + 1)
+            Me.allocate(DepthY, InRow + 1, InCol + 1)
             Me.allocate(Xvel, InRow + 1, InCol + 1)
             Me.allocate(Yvel, InRow + 1, InCol + 1)
             Me.allocate(Xvloc, InRow + 1, InCol + 1)

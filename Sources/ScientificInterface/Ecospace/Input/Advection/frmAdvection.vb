@@ -16,19 +16,7 @@ Namespace Ecospace.Advection
             Me.InitializeComponent()
         End Sub
 
-        Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
-            Get
-                Return MyBase.UIContext
-            End Get
-            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
-                MyBase.UIContext = value
-                Me.m_ucZoomToolbar.UIContext = Me.UIContext
-                Me.m_ucMap.UIContext = Me.UIContext
-                Me.m_ucWind.UIContext = Me.UIContext
-                Me.m_ucMLD.UIContext = Me.UIContext
-                Me.m_ucUpwelling.UIContext = Me.UIContext
-            End Set
-        End Property
+#Region " Form overrides "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
@@ -36,34 +24,61 @@ Namespace Ecospace.Advection
             ' Design time bypass
             If Me.UIContext Is Nothing Then Return
 
-            Me.m_ucZoomToolbar.AddZoomContainer(Me.m_ucMap.ZoomCtrl)
-            Me.m_ucZoomToolbar.AddZoomContainer(Me.m_ucWind.ZoomCtrl)
-            Me.m_ucZoomToolbar.AddZoomContainer(Me.m_ucMLD.ZoomCtrl)
-            Me.m_ucZoomToolbar.AddZoomContainer(Me.m_ucUpwelling.ZoomCtrl)
+            ' Connect all layers to the zoom toolbar
+            For Each uc As ucAdvectionMap In Me.Maps
+                Me.m_ucZoomToolbar.AddZoomContainer(uc.ZoomCtrl)
+            Next
+            Me.m_ucZoomToolbar.PositionMode = ucMapZoom.ePositionModeTypes.Center
 
+            ' Populate month dropdown
             Me.m_tscmMonth.Items.Clear()
             For i As Integer = 1 To cCore.N_MONTHS
                 Me.m_tscmMonth.Items.Add(cDateUtils.GetMonthName(i))
             Next
+            Me.m_tscmMonth.SelectedIndex = 0
 
+            ' Initialize control values
+            Me.m_nudWind.Value = CDec(DirectCast(Me.m_ucWind.LayerEdit.Editor, cLayerEditorVector).ScaleFactor)
+            Me.m_nudDepth.Value = CDec(Me.m_ucMLD.LayerEdit.Editor.CellValue)
+
+            ' Config EwEForm
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
-            Me.UpdateControls()
 
             ' Kick off
-            Me.m_ucZoomToolbar.PositionMode = ucMapZoom.ePositionModeTypes.Center
+            Me.UpdateControls()
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-            Me.m_ucZoomToolbar.RemoveZoomContainer(Me.m_ucMap.ZoomCtrl)
-            Me.m_ucZoomToolbar.RemoveZoomContainer(Me.m_ucWind.ZoomCtrl)
-            Me.m_ucZoomToolbar.RemoveZoomContainer(Me.m_ucMLD.ZoomCtrl)
-            Me.m_ucZoomToolbar.RemoveZoomContainer(Me.m_ucUpwelling.ZoomCtrl)
+            For Each uc As ucAdvectionMap In Me.Maps
+                Me.m_ucZoomToolbar.RemoveZoomContainer(uc.ZoomCtrl)
+            Next
 
             MyBase.OnFormClosed(e)
 
         End Sub
+
+#End Region ' Form overrides
+
+#Region " Public bits "
+
+        Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+                MyBase.UIContext = value
+                Me.m_ucZoomToolbar.UIContext = Me.UIContext
+                For Each uc As ucAdvectionMap In Me.Maps
+                    uc.UIContext = value
+                Next
+            End Set
+        End Property
+
+#End Region ' Public bits
+
+#Region " Control events "
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             '' Refresh basemap on ANY data added or removed message from Ecospace
@@ -75,35 +90,81 @@ Namespace Ecospace.Advection
 
         Private Sub OnShowOptions(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiShowOptions.Click
+
+            ' Sanity check
+            If Me.UIContext Is Nothing Then Return
+
             Me.m_scMain.Panel1Collapsed = Not Me.m_scMain.Panel1Collapsed
             Me.UpdateControls()
+
         End Sub
 
         Private Sub OnShowMonth(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tscmMonth.SelectedIndexChanged
 
-            Dim layer As cLayer = Me.m_ucWind.LayerWind
+            ' Sanity check
+            If Me.UIContext Is Nothing Then Return
+
+            Dim layer As cLayer = Me.m_ucWind.LayerEdit
             DirectCast(layer.Data, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
             layer.Update(cLayer.eChangeFlags.Map, False)
 
         End Sub
 
-        Private Sub OnLayerPropertiesChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_sliderCursor.ValueChanged, m_nudValue.ValueChanged
+        Private Sub OnCursorSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_sliderCursor.ValueChanged
 
+            ' Sanity check
             If Me.UIContext Is Nothing Then Return
 
-            With DirectCast(Me.m_ucWind.LayerWind.Editor, cLayerEditorVector)
-                .CursorSize = CInt(Me.m_sliderCursor.Value)
-                .ScaleFactor = CSng(Me.m_nudValue.Value)
-            End With
-            Me.m_ucWind.ZoomCtrl.Map.UpdateCursorFeedback()
+            ' Get cursor size
+            Dim iCursorSize As Integer = CInt(Me.m_sliderCursor.Value)
+
+            ' Distribute cursor size
+            For Each uc As ucAdvectionMap In Me.Maps
+                If uc.LayerEdit IsNot Nothing Then
+                    uc.LayerEdit.Editor.CursorSize = iCursorSize
+                    uc.Map.UpdateCursorFeedback()
+                End If
+            Next
 
         End Sub
+
+        Private Sub OnWindValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_nudWind.ValueChanged
+
+            ' Sanity check
+            If Me.UIContext Is Nothing Then Return
+
+            With DirectCast(Me.m_ucWind.LayerEdit.Editor, cLayerEditorVector)
+                .ScaleFactor = CSng(Me.m_nudWind.Value)
+            End With
+
+        End Sub
+
+        Private Sub OnMLDValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_nudDepth.ValueChanged
+
+            ' Sanity check
+            If Me.UIContext Is Nothing Then Return
+
+            Me.m_ucMLD.LayerEdit.Editor.CellValue = CSng(Me.m_nudDepth.Value)
+
+        End Sub
+
+#End Region ' Control events
+
+#Region " Internals "
 
         Private Sub UpdateControls()
             Me.m_tsmiShowOptions.Checked = Not Me.m_scMain.Panel1Collapsed
         End Sub
+
+        Private Function Maps() As ucAdvectionMap()
+            Return New ucAdvectionMap() {Me.m_ucMap, Me.m_ucMLD, Me.m_ucUpwelling, Me.m_ucWind}
+        End Function
+
+#End Region ' Internals
 
     End Class
 
