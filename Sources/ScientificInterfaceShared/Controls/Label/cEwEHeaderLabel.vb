@@ -3,6 +3,9 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports System.ComponentModel
+Imports System.Globalization
+Imports System.Threading
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -27,6 +30,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Public Sub New()
             Me.Text = "Header"
+            Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -50,7 +54,7 @@ Namespace Controls
         <Browsable(False)> _
         Public Overrides Property BackColor() As System.Drawing.Color
             Get
-                Return SystemColors.ButtonShadow
+                Return SystemColors.ActiveCaption
             End Get
             Set(ByVal value As System.Drawing.Color)
                 ' NOP
@@ -150,22 +154,6 @@ Namespace Controls
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get the interited <see cref="Label.RightToLeft">reading order</see>
-        ''' of a cEwEGroupLabel control.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
-         Public Overrides Property RightToLeft() As System.Windows.Forms.RightToLeft
-            Get
-                Return Forms.RightToLeft.Inherit
-            End Get
-            Set(ByVal value As System.Windows.Forms.RightToLeft)
-                ' NOP
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Get the <see cref="Label.PreferredHeight">preferred height</see> of a 
         ''' new cEwEGroupLabel control.
         ''' </summary>
@@ -175,6 +163,56 @@ Namespace Controls
                 Return 18
             End Get
         End Property
+
+#Region " Internals "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Doodledidoodle.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+
+            Dim rcText As Rectangle = Me.ClientRectangle
+            Dim rcImage As Rectangle = Me.ClientRectangle
+            Dim bRightToLeft As Boolean = False
+
+            Select Case Me.RightToLeft
+                Case Forms.RightToLeft.Inherit
+                    bRightToLeft = Thread.CurrentThread.CurrentUICulture.TextInfo.IsRightToLeft
+                Case Forms.RightToLeft.Yes
+                    bRightToLeft = True
+                Case Forms.RightToLeft.No
+                    bRightToLeft = False
+                Case Else
+                    ' Huh?!
+                    Debug.Assert(False)
+            End Select
+
+            Using br As New SolidBrush(Me.BackColor)
+                e.Graphics.FillRectangle(br, Me.ClientRectangle)
+            End Using
+
+            If (Me.Image IsNot Nothing) Then
+                rcImage.Width = Math.Min(Image.Width, Me.ClientRectangle.Width - Me.Padding.Horizontal)
+                rcText.Width -= rcImage.Width
+
+                If (bRightToLeft) Then
+                    rcImage.X += (rcText.Width + Me.Padding.Horizontal)
+                Else
+                    rcText.X += (rcImage.Width + Me.Padding.Horizontal)
+                End If
+                Me.DrawImage(e.Graphics, Me.Image, rcImage, Me.ImageAlign)
+            End If
+
+            Using br As New SolidBrush(Me.ForeColor)
+                e.Graphics.DrawString(Me.Text, Me.Font, br, rcText, _
+                                      cDrawingUtils.ContentAlignmentToStringFormat(Me.TextAlign))
+            End Using
+
+        End Sub
+
+#End Region ' Internals
 
     End Class
 
