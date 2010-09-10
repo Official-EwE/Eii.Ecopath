@@ -176,6 +176,7 @@ Namespace Controls
             Dim rcText As Rectangle = Me.ClientRectangle
             Dim rcImage As Rectangle = Me.ClientRectangle
             Dim bRightToLeft As Boolean = False
+            Dim fmt As StringFormat = cDrawingUtils.ContentAlignmentToStringFormat(Me.TextAlign)
 
             Select Case Me.RightToLeft
                 Case Forms.RightToLeft.Inherit
@@ -206,8 +207,8 @@ Namespace Controls
             End If
 
             Using br As New SolidBrush(Me.ForeColor)
-                e.Graphics.DrawString(Me.Text, Me.Font, br, rcText, _
-                                      cDrawingUtils.ContentAlignmentToStringFormat(Me.TextAlign))
+                fmt.Trimming = StringTrimming.None
+                e.Graphics.DrawString(Me.Text, Me.Font, br, rcText, fmt)
             End Using
 
         End Sub
