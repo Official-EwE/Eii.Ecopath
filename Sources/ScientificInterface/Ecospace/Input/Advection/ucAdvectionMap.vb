@@ -131,8 +131,25 @@ Namespace Ecospace.Advection
             Return l
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update the state and content of local controls.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Protected Overridable Sub UpdateControls()
-            ' NOP
+            Dim img As Image = Nothing
+
+            If Me.Enabled Then
+                If Me.LayerEdit IsNot Nothing Then
+                    If Me.LayerEdit.Editor.IsEditable Then
+                        img = My.Resources.Editable
+                    Else
+                        img = My.Resources.NotEditable
+                    End If
+                End If
+            End If
+            Me.m_hdrTitle.Image = img
+
         End Sub
 
 #End Region ' Overridables
@@ -141,10 +158,16 @@ Namespace Ecospace.Advection
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+            Me.UpdateControls()
         End Sub
 
-        Private Sub OnLayerChanged(ByVal l As cLayer, ByVal changeFlags As cLayer.eChangeFlags)
-            If ((changeFlags And cLayer.eChangeFlags.Selected) > 0) Then Me.UpdateControls()
+        Protected Overrides Sub OnEnabledChanged(ByVal e As System.EventArgs)
+            MyBase.OnEnabledChanged(e)
+            Me.UpdateControls()
+        End Sub
+
+        Protected Overridable Sub OnLayerChanged(ByVal l As cLayer, ByVal changeFlags As cLayer.eChangeFlags)
+            If ((changeFlags And cLayer.eChangeFlags.Editable) > 0) Then Me.UpdateControls()
         End Sub
 
 #End Region ' Events
@@ -166,11 +189,23 @@ Namespace Ecospace.Advection
                 Me.m_zoomctrl.Map.Editable = False
             End If
 
+            ' Start observing layer changes
+            If (Me.m_layerEditable IsNot Nothing) Then
+                AddHandler Me.m_layerEditable.LayerChanged, AddressOf OnLayerChanged
+            End If
+
         End Sub
 
-        Private Sub ClearMap()
+        Protected Overridable Sub ClearMap()
+
+            If (Me.m_layerEditable IsNot Nothing) Then
+                RemoveHandler Me.m_layerEditable.LayerChanged, AddressOf OnLayerChanged
+                Me.m_layerEditable = Nothing
+            End If
+
             Me.m_zoomctrl.Map.Clear()
             Me.m_zoomctrl.Map.Basemap = Nothing
+
         End Sub
 
         Private Function AddLayer(ByVal vn As eVarNameFlags, ByVal bEditable As Boolean) As cLayer
@@ -187,10 +222,10 @@ Namespace Ecospace.Advection
             l = layers(0)
 
             If bEditable Then
-                l.Editor.IsReadOnly = False
+                l.Editor.IsEditable = True
                 l.IsSelected = True
             Else
-                l.Editor.IsReadOnly = True
+                l.Editor.IsEditable = False
             End If
             Me.m_zoomctrl.Map.AddLayer(l)
             Return l

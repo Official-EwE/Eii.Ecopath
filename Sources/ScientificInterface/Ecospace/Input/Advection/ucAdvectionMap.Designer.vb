@@ -38,19 +38,22 @@
             Me.m_zoomctrl.Location = New System.Drawing.Point(0, 18)
             Me.m_zoomctrl.Margin = New System.Windows.Forms.Padding(0)
             Me.m_zoomctrl.Name = "m_zoomctrl"
+            Me.m_zoomctrl.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
             Me.m_zoomctrl.Size = New System.Drawing.Size(360, 383)
             Me.m_zoomctrl.TabIndex = 0
+            Me.m_zoomctrl.UIContext = Nothing
+            Me.m_zoomctrl.ZoomPercentage = 100.0!
             '
             'm_hdrTitle
             '
             Me.m_hdrTitle.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
             Me.m_hdrTitle.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrTitle.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrTitle.Name = "m_hdrTitle"
             Me.m_hdrTitle.Size = New System.Drawing.Size(360, 18)
             Me.m_hdrTitle.TabIndex = 1
-            Me.m_hdrTitle.Text = ""
             Me.m_hdrTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'ucAdvectionMap
