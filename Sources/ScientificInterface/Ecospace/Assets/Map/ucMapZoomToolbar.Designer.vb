@@ -38,12 +38,12 @@
             Me.m_tscbZoomPercent = New System.Windows.Forms.ToolStripComboBox
             Me.m_tsbZoomReset = New System.Windows.Forms.ToolStripButton
             Me.m_cmsZoom = New System.Windows.Forms.ContextMenuStrip(Me.components)
+            Me.m_tsmiViewCenter2 = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiViewStretch2 = New System.Windows.Forms.ToolStripMenuItem
             Me.m_ts3 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsmiZoomIn = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiZoomOut = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiZoomReset = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiViewStretch2 = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiViewCenter2 = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsZoom.SuspendLayout()
             Me.m_cmsZoom.SuspendLayout()
             Me.SuspendLayout()
@@ -60,7 +60,7 @@
             'm_tsbSaveImage
             '
             Me.m_tsbSaveImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbSaveImage.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
+            Me.m_tsbSaveImage.Image = Global.ScientificInterface.My.Resources.Resources.InsertPictureHS
             Me.m_tsbSaveImage.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbSaveImage.Name = "m_tsbSaveImage"
             Me.m_tsbSaveImage.Size = New System.Drawing.Size(23, 22)
@@ -84,13 +84,13 @@
             'm_tsmiViewCenter1
             '
             Me.m_tsmiViewCenter1.Name = "m_tsmiViewCenter1"
-            Me.m_tsmiViewCenter1.Size = New System.Drawing.Size(152, 22)
+            Me.m_tsmiViewCenter1.Size = New System.Drawing.Size(120, 22)
             Me.m_tsmiViewCenter1.Text = "Center"
             '
             'm_tsmiViewStretch1
             '
             Me.m_tsmiViewStretch1.Name = "m_tsmiViewStretch1"
-            Me.m_tsmiViewStretch1.Size = New System.Drawing.Size(152, 22)
+            Me.m_tsmiViewStretch1.Size = New System.Drawing.Size(120, 22)
             Me.m_tsmiViewStretch1.Text = "Stretch"
             '
             'm_ts2
@@ -134,7 +134,19 @@
             '
             Me.m_cmsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewCenter2, Me.m_tsmiViewStretch2, Me.m_ts3, Me.m_tsmiZoomIn, Me.m_tsmiZoomOut, Me.m_tsmiZoomReset})
             Me.m_cmsZoom.Name = "m_cmsControl"
-            Me.m_cmsZoom.Size = New System.Drawing.Size(181, 142)
+            Me.m_cmsZoom.Size = New System.Drawing.Size(181, 120)
+            '
+            'm_tsmiViewCenter2
+            '
+            Me.m_tsmiViewCenter2.Name = "m_tsmiViewCenter2"
+            Me.m_tsmiViewCenter2.Size = New System.Drawing.Size(180, 22)
+            Me.m_tsmiViewCenter2.Text = "Center"
+            '
+            'm_tsmiViewStretch2
+            '
+            Me.m_tsmiViewStretch2.Name = "m_tsmiViewStretch2"
+            Me.m_tsmiViewStretch2.Size = New System.Drawing.Size(180, 22)
+            Me.m_tsmiViewStretch2.Text = "Stretch"
             '
             'm_ts3
             '
@@ -164,18 +176,6 @@
             Me.m_tsmiZoomReset.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
             Me.m_tsmiZoomReset.Size = New System.Drawing.Size(180, 22)
             Me.m_tsmiZoomReset.Text = "Reset zoom"
-            '
-            'm_tsmiViewStretch2
-            '
-            Me.m_tsmiViewStretch2.Name = "m_tsmiViewStretch2"
-            Me.m_tsmiViewStretch2.Size = New System.Drawing.Size(180, 22)
-            Me.m_tsmiViewStretch2.Text = "Stretch"
-            '
-            'm_tsmiViewCenter2
-            '
-            Me.m_tsmiViewCenter2.Name = "m_tsmiViewCenter2"
-            Me.m_tsmiViewCenter2.Size = New System.Drawing.Size(180, 22)
-            Me.m_tsmiViewCenter2.Text = "Center"
             '
             'ucMapZoomToolbar
             '
