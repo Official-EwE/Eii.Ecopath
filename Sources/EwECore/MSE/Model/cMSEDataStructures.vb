@@ -471,12 +471,6 @@ Namespace MSE
             ReDim FixedF(NGroups)
             ReDim TAC(NGroups)
 
-            For i As Integer = 1 To NGroups
-                Blim(i) = cCore.NULL_VALUE
-                Bbase(i) = cCore.NULL_VALUE
-                Fopt(i) = cCore.NULL_VALUE
-                Fmin(i) = 0
-            Next
 
             'Setting regulatory values to NULL will cause them to be set to a default value if the database does not contain values
             'see cEcosimModel.setDefaultValues

@@ -3935,7 +3935,7 @@ Namespace Ecosim
                     Ft = 0
                     For ig = 1 To m_Data.nGear
                         Debug.Assert(Math.Round(Me.m_MSEData.PropLandedTime(ig, i) + Me.m_MSEData.Propdiscardtime(ig, i), 3) <= 1.0!, _
-                                     Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
+                                    Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
 
                         Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_MSEData.PropLandedTime(ig, i) + Me.m_MSEData.Propdiscardtime(ig, i))
                     Next

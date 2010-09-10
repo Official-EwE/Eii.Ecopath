@@ -1849,6 +1849,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\MSEBatch\MSEBatch.vbproj">
+      <Project>{01FFB414-DF22-4DFE-B4BF-DDF03F6C119A}</Project>
+      <Name>MSEBatch</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
