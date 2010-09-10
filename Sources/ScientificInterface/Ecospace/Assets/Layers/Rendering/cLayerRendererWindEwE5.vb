@@ -67,7 +67,7 @@ Namespace Ecospace.Basemap.Layers
                     szfHalfArrow = New SizeF(rc.Width * asValues(0) / (2 * layer.MaxValue), rc.Height * asValues(1) / (2 * layer.MaxValue))
 
                     Using p As New Pen(Me.VisualStyle.ForeColour, 0.001!)
-                        g.DrawEllipse(p, ptfCenter.X + szfHalfArrow.Width - 1, ptfCenter.Y + szfHalfArrow.Height - 1, 2, 2)
+                        g.DrawEllipse(p, ptfCenter.X + szfHalfArrow.Width - 2, ptfCenter.Y + szfHalfArrow.Height - 2, 3, 3)
                         g.DrawLine(p, _
                                    ptfCenter.X - szfHalfArrow.Width, ptfCenter.Y - szfHalfArrow.Height, _
                                    ptfCenter.X + szfHalfArrow.Width, ptfCenter.Y + szfHalfArrow.Height)

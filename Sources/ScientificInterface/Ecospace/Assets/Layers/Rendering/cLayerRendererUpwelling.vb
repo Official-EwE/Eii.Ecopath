@@ -37,8 +37,8 @@ Namespace Ecospace.Basemap.Layers
             If layer.MaxValue > 0.0! Then sMax = layer.MaxValue
 
             If TypeOf value Is Single Then
-                ' Leave a margin
-                rc.Inflate(-2, -2)
+                '' Leave a margin
+                'rc.Inflate(-2, -2)
                 ' Get value to render
                 sValue = -CSng(value)
                 'Cl2 = 0.01 / CellLength ' ^ 2
@@ -46,13 +46,13 @@ Namespace Ecospace.Basemap.Layers
                 'Up.Circle (j + 0.5, i + 0.5 - UpLoc / UpMax), 0.1
                 'Up.Line (j + 0.5, i + 0.5)-Step(0, -UpLoc / UpMax)
 
-                ' Calc center
+                ' Calc cell center
                 ptfCenter = New PointF(CSng(rc.X + rc.Width / 2), CSng(rc.Y + rc.Height / 2))
                 ' Calc arrow size
                 sHalfArrow = rc.Height * sValue / (2 * sMax)
 
                 Using p As New Pen(Me.VisualStyle.ForeColour, 0.001!)
-                    g.DrawEllipse(p, ptfCenter.X, ptfCenter.Y + sHalfArrow - 1, 2, 2)
+                    g.DrawEllipse(p, ptfCenter.X - 2, ptfCenter.Y + sHalfArrow - 2, 3, 3)
                     g.DrawLine(p, _
                                ptfCenter.X, ptfCenter.Y - sHalfArrow, _
                                ptfCenter.X, ptfCenter.Y + sHalfArrow)
