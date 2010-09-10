@@ -73,7 +73,7 @@ Namespace Controls
                 If Me.Enabled Then
                     Return SystemColors.ActiveCaptionText
                 Else
-                    Return SystemColors.ButtonFace
+                    Return SystemColors.InactiveCaptionText
                 End If
             End Get
             Set(ByVal value As System.Drawing.Color)
