@@ -342,7 +342,7 @@ Namespace Ecospace.Basemap.Layers
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether the layer can be made editable at all
+        ''' Get/set whether the layer can be made editable at all.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Overridable Property IsReadOnly() As Boolean
