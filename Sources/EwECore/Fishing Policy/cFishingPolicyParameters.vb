@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: cFishingPolicyParameters.vb,v $
-' Revision 1.5  2009/05/26 22:02:34  jeroens
-' EconData availability variable value and status obtained from plug-in
-'
-' Revision 1.4  2009/05/26 20:17:07  jeroens
-' Variables no longer Stored
-'
-' Revision 1.3  2009/05/26 16:45:22  joeb
-' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
-'
-' Revision 1.2  2009/01/16 18:30:30  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:24  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core

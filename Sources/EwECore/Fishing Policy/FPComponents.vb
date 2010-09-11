@@ -1,58 +1,5 @@
-'==============================================================================
-'
-' $Log: FPComponents.vb,v $
-' Revision 1.1  2008/09/26 07:30:23  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.19  2008/05/12 18:58:35  joeb
-' Restructure of search objects to use ISearchObjective interface
-'
-' Revision 1.18  2008/04/15 15:21:05  joeb
-' Added Validation and Updating for BaseYear and SearchBlocks
-'
-' Revision 1.17  2008/02/27 19:29:28  joeb
-' Added FishingPolicySearch messagesource
-'
-' Revision 1.16  2007/11/21 16:15:12  jeroens
-' Ugh
-'
-' Revision 1.15  2007/11/21 14:39:32  jeroens
-' * Fixed enums
-'
-' Revision 1.14  2007/10/03 17:17:30  joeb
-' Bug Fixes
-'
-' Revision 1.13  2007/09/13 15:27:48  joeb
-' Changes to Delegate/Handlers
-'
-' Revision 1.12  2007/09/11 20:17:34  joeb
-' Hooking interface up to objects
-'
-' Revision 1.11  2007/09/10 22:54:47  joeb
-' more more more always more
-'
-' Revision 1.10  2007/09/10 22:31:46  joeb
-' Added SearchForBaseProfitability()
-'
-' Revision 1.9  2007/09/09 15:21:26  joeb
-' Still adding code
-'
-' Revision 1.8  2007/09/07 15:28:19  joeb
-' Tons O crap!
-'
-' Revision 1.7  2007/08/31 14:49:49  joeb
-' More more more.....
-'
-' Revision 1.6  2007/08/27 15:25:42  joeb
-' Added Log header
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
-
-
-
 
 #Region "Enumerators"
 
@@ -83,7 +30,6 @@ Public Enum eOptimizeApproachTypes
 End Enum
 
 #End Region
-
 
 #Region "Fishing Policy parameters"
 
