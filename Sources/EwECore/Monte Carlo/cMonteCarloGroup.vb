@@ -1,55 +1,9 @@
-'==============================================================================
-'
-' $Log: cMonteCarloGroup.vb,v $
-' Revision 1.2  2009/01/16 18:30:19  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:28  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.11  2008/09/26 00:22:50  villyc
-' updating ecosimMonteCarlo to pick vulnerabilities
-'
-' Revision 1.10  2008/07/02 01:55:25  jeroens
-' Added option to force status flag total reset (fixes bug 503)
-'
-' Revision 1.9  2008/05/29 22:22:49  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.8  2007/10/05 19:08:58  joeb
-' Mean and BestFit values notEditable
-'
-' Revision 1.7  2007/09/29 01:15:50  joeb
-' Bug fixes
-'
-' Revision 1.6  2007/08/07 19:20:53  joeb
-' Group Name update
-'
-' Revision 1.5  2007/08/01 21:37:29  joeb
-' Added Best Fitting variables
-'
-' Revision 1.4  2007/07/24 18:32:00  joeb
-' Set status flags
-'
-' Revision 1.3  2007/07/19 19:54:28  joeb
-' Updating of data on edit
-'
-' Revision 1.2  2007/06/25 21:30:35  joeb
-' A bunch of stuff
-'
-' Revision 1.1  2007/06/25 16:07:57  joeb
-' Added Monte Carlo
-'
-'
-'=====================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 Public Class cMonteCarloGroup
     Inherits cCoreGroupBase
-
 
 #Region "constructor"
 
@@ -581,8 +535,6 @@ Public Class cMonteCarloGroup
 #End Region
 
 End Class
-
-
 
 #Region "Not used"
 

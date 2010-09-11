@@ -1,137 +1,8 @@
-'==============================================================================
-'
-' $Log: cMonteCarloManager.vb,v $
-' Revision 1.10  2009/01/16 18:30:20  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.9  2008/11/28 16:54:14  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.8  2008/10/15 21:15:26  villyc
-' mc fixes
-'
-' Revision 1.7  2008/10/15 20:25:37  joeb
-' Added MonteCarlo handler to onChanged()
-'
-' Revision 1.6  2008/10/10 23:22:20  villyc
-' *** empty log message ***
-'
-' Revision 1.5  2008/10/04 01:10:30  villyc
-' mc stuff, SS after MC are not correct, so not loading all parameters
-'
-' Revision 1.4  2008/10/01 16:50:29  villyc
-' Ecosim monte carlo updates, plus ecosim plot bug fix
-'
-' Revision 1.3  2008/09/27 01:39:07  villyc
-' ecosim monte carlo running with vulnerability fitting
-'
-' Revision 1.2  2008/09/26 23:00:41  villyc
-' more ecosimmontecarlo fixing
-'
-' Revision 1.1  2008/09/26 07:30:28  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.30  2008/09/26 00:22:50  villyc
-' updating ecosimMonteCarlo to pick vulnerabilities
-'
-' Revision 1.29  2008/06/25 17:38:28  joeb
-' Fix bug 491 Initialization of Ecosim overwriting fishing mort with default
-'
-' Revision 1.28  2008/06/06 15:56:06  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.27  2008/05/12 18:59:02  joeb
-' Restructure of search objects to use ISearchObjective interface
-'
-' Revision 1.26  2008/05/06 20:04:25  joeb
-' Minor changes to cThreadedManagerBase
-'
-' Revision 1.25  2008/04/24 20:04:22  joeb
-' Now inherits from cThreadedManagerBase
-'
-' Revision 1.24  2008/04/02 21:26:42  joeb
-' Added Wait to the Monte Carlo manager
-'
-' Revision 1.23  2008/01/14 16:15:24  joeb
-' Minor edits to comments
-'
-' Revision 1.22  2007/10/05 19:09:00  joeb
-' Mean and BestFit values notEditable
-'
-' Revision 1.21  2007/09/29 01:15:50  joeb
-' Bug fixes
-'
-' Revision 1.20  2007/08/29 14:49:50  joeb
-' References are no longer stored when data is needed it is retrieved from the core.
-'
-' Revision 1.19  2007/08/24 20:06:53  joeb
-' Minor change
-'
-' Revision 1.18  2007/08/24 19:53:04  joeb
-' Changed communication between Model-Manager and Interface all interaction is now handled by the Manager
-'
-' Revision 1.17  2007/08/09 02:31:04  jeroens
-' + Added maintenance message to the end of LoadBestFitsToGroups() to
-'   inform GUI of changes
-'
-' Revision 1.16  2007/08/08 19:01:35  joeb
-' Added messages to manager
-'
-' Revision 1.15  2007/08/07 19:20:54  joeb
-' Group Name update
-'
-' Revision 1.14  2007/08/01 21:37:48  joeb
-' Added bShowPlot flag
-'
-' Revision 1.13  2007/07/31 17:19:04  joeb
-' Comments and ToDo
-'
-' Revision 1.12  2007/07/31 17:15:00  joeb
-' Added isRunning Flag
-'
-' Revision 1.11  2007/07/31 16:22:18  jeroens
-' + Added ResetStatusFlags after group update
-'
-' Revision 1.10  2007/07/31 16:02:52  joeb
-' Changed eCoreComponentType from Ecosim to EcosimMonteCarlo
-'
-' Revision 1.9  2007/07/24 18:32:20  joeb
-' Get ss to current data on load
-'
-' Revision 1.8  2007/07/24 16:55:49  joeb
-' Fixed Ecosim initialization bug
-'
-' Revision 1.7  2007/07/19 19:54:28  joeb
-' Updating of data on edit
-'
-' Revision 1.6  2007/07/18 17:27:43  joeb
-' Made the MonteCarloManager a ICoreInterface object
-' ApplyBestFits call cCore.OnChanged to tell the core that the manager has changed data
-'
-' Revision 1.5  2007/07/13 23:09:03  joeb
-' Bunch of crap
-'
-' Revision 1.4  2007/07/13 00:07:45  joeb
-' Bug fixes
-'
-' Revision 1.3  2007/06/26 22:26:00  joeb
-' more more more cooooode
-'
-' Revision 1.2  2007/06/25 21:30:36  joeb
-' A bunch of stuff
-'
-' Revision 1.1  2007/06/25 16:07:58  joeb
-' Added Monte Carlo
-'
-'
-'=====================================
-
 Imports EwECore.Ecopath
 Imports EwECore.EcoSim
 Imports System
 Imports System.Threading
 Imports EwEUtils.Core
-
 
 ''' <summary>
 ''' Manager to run the ecosim monte carlo object
@@ -147,10 +18,8 @@ Public Class cMonteCarloManager
 
     Private Delegate Sub dlgSendMessages()
 
-
     'ToDo_jb cMonteCarloManager FisForce flag in EwE5 the "Retain current Ecosim fishing rate pattern" check box sets fisforce to true for all groups
     'this never gets set back to the value computed in DoDatValCalculations. It should be able to reset fisforce() by calling the EwE6 equivalent of DoDatValCalculations when False
-
 
 #Region "Private variables"
 
