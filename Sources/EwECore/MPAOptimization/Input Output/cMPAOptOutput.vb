@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: cMPAOptOutput.vb,v $
-' Revision 1.7  2009/01/16 18:30:31  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.6  2008/11/13 18:40:06  joeb
-' Added AreaBoundary
-'
-' Revision 1.5  2008/11/12 22:21:45  joeb
-' Bug fixes from adding BiomassDiversity
-'
-' Revision 1.4  2008/11/12 20:22:21  joeb
-' Oppsss
-'
-' Revision 1.3  2008/11/12 20:20:57  joeb
-' added BiomassDiversity to MPA stuff
-'
-' Revision 1.2  2008/11/12 18:02:34  jeroens
-' Added Biomass Diversity search weight input + output
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core

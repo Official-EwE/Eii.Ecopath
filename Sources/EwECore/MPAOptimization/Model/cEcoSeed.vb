@@ -1,43 +1,4 @@
-'==============================================================================
-'
-' $Log: cEcoSeed.vb,v $
-' Revision 1.11  2009/04/02 20:54:35  jeroens
-' Uses eSearchResultCriteriaTypes
-'
-' Revision 1.10  2008/11/18 21:23:14  villyc
-' spatial optim seems to be working now, just a few interface troubles left
-'
-' Revision 1.9  2008/11/18 19:39:58  joeb
-' MPA Optm. Baseyear economic values set at the start of a search
-'
-' Revision 1.8  2008/11/17 16:23:36  jeroens
-' Fixed VC issue: only set water cells to seed or mpa
-'
-' Revision 1.7  2008/11/15 02:21:57  villyc
-' Ecoseed: Setting baseyear =1 when 0 to avoid error in setbaseyeareffort  where (12*baseyear-11) was negative
-'
-' Revision 1.6  2008/11/13 19:54:06  joeb
-' Added Biomass Diversity to output file
-'
-' Revision 1.5  2008/11/13 19:24:33  joeb
-' removed memory managment
-'
-' Revision 1.4  2008/11/13 18:40:07  joeb
-' Added AreaBoundary
-'
-' Revision 1.3  2008/11/12 22:21:45  joeb
-' Bug fixes from adding BiomassDiversity
-'
-' Revision 1.2  2008/11/12 19:14:15  joeb
-' CellSelectedMap now contains  PercentAreaClosedFilter
-'
-' Revision 1.1  2008/09/26 07:30:26  sherman
-' --== DELETED HISTORY ==--
-'
-'===================================================
-
 Option Strict On
-
 Imports EwECore
 Imports EwECore.cEcoSpace
 Imports EwEUtils.Core

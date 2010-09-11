@@ -1,8 +1,6 @@
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
-
 
 Public Class cMPAOptParameters
     Inherits cCoreInputOutputBase
@@ -10,9 +8,7 @@ Public Class cMPAOptParameters
     Public Sub New(ByRef m_core As cCore)
         MyBase.New(m_core)
 
-
         Try
-
             'no data validation at this time
             Me.AllowValidation = False
             m_coreComponent = eCoreComponentType.MPAOptimization
@@ -37,7 +33,6 @@ Public Class cMPAOptParameters
             meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.MPAOptStepSize, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptStepSize))
             m_values.Add(val.varName, val)
-
 
             'MPAOptIterations
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
@@ -65,7 +60,7 @@ Public Class cMPAOptParameters
             m_values.Add(val.varName, val)
 
             meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.MPAOptStartYear, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptStartYEar))
+            val = New cValue(New Integer, eVarNameFlags.MPAOptStartYear, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptStartYear))
             m_values.Add(val.varName, val)
 
             meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
@@ -80,9 +75,7 @@ Public Class cMPAOptParameters
 
         End Try
 
-
     End Sub
-
 
     Public Property SearchType() As eMPAOptimizationModels
         Get

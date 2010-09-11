@@ -1,61 +1,4 @@
-'==============================================================================
-'
-' $Log: cMPAOptManager.vb,v $
-' Revision 1.17  2009/01/16 18:30:31  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.16  2008/12/08 16:45:38  jeroens
-' Removed plug-ins
-'
-' Revision 1.15  2008/11/20 04:23:39  jeroens
-' CellSelectMap accepts TopPercentile as Single
-'
-' Revision 1.14  2008/11/19 23:28:55  joeb
-' Renamed onEcoSeedRunStateChanged to OnRunStateChanged
-'
-' Revision 1.13  2008/11/18 19:39:57  joeb
-' MPA Optm. Baseyear economic values set at the start of a search
-'
-' Revision 1.12  2008/11/18 15:44:31  jeroens
-' Removed base year, disc factor over-exposure
-'
-' Revision 1.11  2008/11/17 18:27:02  jeroens
-' Hooked up discount rates, base year
-'
-' Revision 1.10  2008/11/13 18:53:12  jeroens
-' Results not sorted by manager
-'
-' Revision 1.9  2008/11/13 18:40:05  joeb
-' Added AreaBoundary
-'
-' Revision 1.8  2008/11/12 23:21:37  joeb
-' Changed argument order of CellSelectedMap
-'
-' Revision 1.7  2008/11/12 22:28:36  jeroens
-' Opppssssss
-'
-' Revision 1.6  2008/11/12 22:21:44  joeb
-' Bug fixes from adding BiomassDiversity
-'
-' Revision 1.5  2008/11/12 20:39:45  sherman
-' Added Ecoseed null seed/mpa test.
-'
-' Revision 1.4  2008/11/12 20:20:57  joeb
-' added BiomassDiversity to MPA stuff
-'
-' Revision 1.3  2008/11/12 19:14:14  joeb
-' CellSelectedMap now contains  PercentAreaClosedFilter
-'
-' Revision 1.2  2008/10/31 17:25:46  jeroens
-' Uses MPA opt plugins
-'
-' Revision 1.1  2008/09/26 07:30:25  sherman
-' --== DELETED HISTORY ==--
-'
-'===================================================
-
 Option Strict On
-
 Imports EwECore.EcoSeed
 Imports System.Threading
 Imports EwECore.SearchObjectives
@@ -104,7 +47,6 @@ Public Delegate Sub SendMessageDelegate(ByVal message As EwECore.cMessage)
 #End Region
 
 #Region "Optimization Manager"
-
 
 Public Class cMPAOptManager
     Inherits cThreadWaitBase 'for thread blocking
