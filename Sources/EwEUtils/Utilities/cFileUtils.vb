@@ -146,6 +146,33 @@ Namespace Utilities
 
         End Function
 
+        Private Const cCHARS_NUMBER As String = "-0123456789E."
+        Private Const cCHARS_STRING As String = "-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$."
+        Private cSeparator As Char = CChar(" ")
+
+        Public Shared Function ReadNumber(ByRef sr As System.IO.TextReader) As Single
+            Dim ch(255) As Char ' Should be enough to hold one single number
+            Dim readCh(1) As Char
+            Dim nChar As Integer = 0
+
+            ' Read leading spaces
+            Do
+                sr.Read(readCh, 0, 1)
+            Loop Until (cCHARS_NUMBER.IndexOfAny(readCh) > -1) Or (sr.Peek() < 0)
+
+            If (sr.Peek() = -1) Then Throw New Exception("Unexpected end of file found while reading body")
+
+            ' Read digits
+            Do
+                ch(nChar) = readCh(0)
+                nChar += 1
+                sr.Read(readCh, 0, 1)
+            Loop Until (cCHARS_NUMBER.IndexOfAny(readCh) = -1) Or (sr.Peek() < 0)
+
+            Return Single.Parse(ch)
+
+        End Function
+
     End Class
 
 End Namespace
