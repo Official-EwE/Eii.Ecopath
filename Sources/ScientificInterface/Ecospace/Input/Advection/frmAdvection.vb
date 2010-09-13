@@ -12,6 +12,18 @@ Namespace Ecospace.Advection
 
     Public Class frmAdvection
 
+#Region " Private vars "
+
+        Private m_bSearching As Boolean = False
+
+        Private m_fpVX As cEwEFormatProvider = Nothing
+        Private m_fpVY As cEwEFormatProvider = Nothing
+        Private m_fpCoriolis As cEwEFormatProvider = Nothing
+        Private m_fpWind As cEwEFormatProvider = Nothing
+        Private m_fpMLD As cEwEFormatProvider = Nothing
+
+#End Region ' Private vars
+
         Public Sub New()
             Me.InitializeComponent()
         End Sub
@@ -23,6 +35,13 @@ Namespace Ecospace.Advection
 
             ' Design time bypass
             If Me.UIContext Is Nothing Then Return
+
+            ' Set up format providers
+            Me.m_fpVX = New cEwEFormatProvider(Me.UIContext, Me.m_nudVX, GetType(Single))
+            Me.m_fpVY = New cEwEFormatProvider(Me.UIContext, Me.m_nudYV, GetType(Single))
+            Me.m_fpCoriolis = New cEwEFormatProvider(Me.UIContext, Me.m_nudCoriolis, GetType(Single))
+            Me.m_fpWind = New cEwEFormatProvider(Me.UIContext, Me.m_nudWind, GetType(Single))
+            Me.m_fpMLD = New cEwEFormatProvider(Me.UIContext, Me.m_nudDepth, GetType(Integer))
 
             ' Connect all layers to the zoom toolbar
             For Each uc As ucAdvectionMap In Me.Maps
@@ -46,6 +65,7 @@ Namespace Ecospace.Advection
 
             ' Kick off
             Me.UpdateControls()
+            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
         End Sub
 
@@ -54,6 +74,14 @@ Namespace Ecospace.Advection
             For Each uc As ucAdvectionMap In Me.Maps
                 Me.m_ucZoomToolbar.RemoveZoomContainer(uc.ZoomCtrl)
             Next
+
+            Me.m_fpVX.Release()
+            Me.m_fpVY.Release()
+            Me.m_fpCoriolis.Release()
+            Me.m_fpWind.Release()
+            Me.m_fpMLD.Release()
+
+            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             MyBase.OnFormClosed(e)
 
@@ -80,16 +108,8 @@ Namespace Ecospace.Advection
 
 #Region " Control events "
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-            '' Refresh basemap on ANY data added or removed message from Ecospace
-            'If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
-            '    ' Refresh it all
-            '    Me.Basemap = Me.Core.EcospaceBasemap
-            'End If
-        End Sub
-
-        Private Sub OnShowOptions(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiShowOptions.Click
+        Private Sub OnToggleOptions(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiToggleOptions.Click
 
             ' Sanity check
             If Me.UIContext Is Nothing Then Return
@@ -152,12 +172,52 @@ Namespace Ecospace.Advection
 
         End Sub
 
+        Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnStart.Click
+
+        End Sub
+
+        Private Sub OnStopComputing(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnStop.Click
+
+        End Sub
+
+        Private Sub OnApplyVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnApplyVels.Click
+
+        End Sub
+
 #End Region ' Control events
+
+#Region " Event handlers "
+
+        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+            '' Refresh basemap on ANY data added or removed message from Ecospace
+            'If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
+            '    ' Refresh it all
+            '    Me.Basemap = Me.Core.EcospaceBasemap
+            'End If
+        End Sub
+
+        Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
+            Me.UpdateControls()
+        End Sub
+
+#End Region ' Event handlers
 
 #Region " Internals "
 
         Private Sub UpdateControls()
-            Me.m_tsmiShowOptions.Checked = Not Me.m_scMain.Panel1Collapsed
+
+            ' Gather stats
+            Dim bBusy As Boolean = Not Me.Core.StateMonitor.IsComputing
+
+            Me.m_btnStart.Enabled = Not bBusy And Not Me.m_bSearching
+            Me.m_btnStop.Enabled = Me.m_bSearching
+            Me.m_btnApplyVels.Enabled = Not bBusy
+
+            Me.m_tsmiToggleOptions.Checked = Not Me.m_scMain.Panel1Collapsed
+
         End Sub
 
         Private Function Maps() As ucAdvectionMap()
