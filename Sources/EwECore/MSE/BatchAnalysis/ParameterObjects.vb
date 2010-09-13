@@ -130,7 +130,7 @@ Namespace MSECommandFile
                 Return False
 
             Catch ex As Exception
-                Me.SendMessage("Error: reading tag '" & Me.m_DataTag & "' from command file.")
+                Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
                 Me.SendMessage(vbTab & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".Init() Exception: " & ex.Message)
             End Try
@@ -166,27 +166,27 @@ Namespace MSECommandFile
             Try
                 Dim lstIndexes As List(Of IMSEParameter) = Me.m_manager.getTagData(Me.m_IndexTag)
                 If lstIndexes.Count < 1 Then
-                    Me.SendMessage("Error: Tag '" & Me.m_IndexTag & "' failed to find tag in command file.")
+                    Me.SendMessage("ERROR: Tag '" & Me.m_IndexTag & "' failed to find tag in command file.")
                     Return False
                 End If
 
                 Dim Indexes() As Integer = lstIndexes.Item(0).getIndexes
                 If Indexes.Length > nParameters Then
-                    Me.SendMessage("Error: Tag '" & Me.m_IndexTag & "' number of enteries must not be greater than " & nParameters.ToString & ".")
-                    ' Me.SendMessage("Error: Constant F number of enteries must not be greater than number of groups.")
+                    Me.SendMessage("ERROR: Tag '" & Me.m_IndexTag & "' number of enteries must not be greater than " & nParameters.ToString & ".")
+                    ' Me.SendMessage("ERROR: Constant F number of enteries must not be greater than number of groups.")
                     Return False
                 End If
 
                 For Each igrp As Integer In Indexes
                     If igrp > nParameters Then
-                        Me.SendMessage("Error: Tag '" & Me.m_IndexTag & "' index in command file must not be greater than " & nParameters.ToString & ".")
-                        'Me.SendMessage("Error: Constant F invalid group index.")
+                        Me.SendMessage("ERROR: Tag '" & Me.m_IndexTag & "' index in command file must not be greater than " & nParameters.ToString & ".")
+                        'Me.SendMessage("ERROR: Constant F invalid group index.")
                         Return False
                     End If
                 Next
 
             Catch ex As Exception
-                Me.SendMessage("Error: Error during data validation.")
+                Me.SendMessage("ERROR: Error during data validation.")
                 Return False
             End Try
 
@@ -238,7 +238,7 @@ Namespace MSECommandFile
                 Return False
 
             Catch ex As Exception
-                Me.SendMessage("Error: reading tag '" & Me.m_DataTag & "' from command file.")
+                Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
                 Me.SendMessage(vbTab & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".Init() Exception: " & ex.Message)
             End Try
@@ -317,11 +317,11 @@ Namespace MSECommandFile
             Try
                 Directory.CreateDirectory(dir)
             Catch ex As Exception
-                Me.SendMessage("Error: Ouput Directory does not exist.")
+                Me.SendMessage("ERROR: Ouput Directory does not exist.")
                 Return False
             End Try
 
-            Me.SendMessage("Warning: Ouput Directory in command file has been created.")
+            Me.SendMessage("WARNING: Ouput Directory in command file has been created.")
             Return True
 
         End Function
@@ -398,7 +398,7 @@ Namespace MSECommandFile
 
         End Function
 
-      
+
     End Class
 
 
@@ -468,7 +468,7 @@ Namespace MSECommandFile
 
         End Sub
 
-      
+
         Public Shared Function CanRead(ByVal ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.RUNTYPE_DATA_TAG, ControlString)
@@ -560,27 +560,27 @@ Namespace MSECommandFile
             'Try
             '    Dim lstIndexes As List(Of IMSEParameter) = Me.m_manager.getTagData(Me.m_IndexTag)
             '    If lstIndexes.Count < 1 Then
-            '        Me.SendMessage("Error: Constant F failed to find index tag '" & Me.m_IndexTag & "' in command file.")
+            '        Me.SendMessage("ERROR: Constant F failed to find index tag '" & Me.m_IndexTag & "' in command file.")
             '        Return False
             '    End If
 
             '    Dim Indexes() As Integer = lstIndexes.Item(0).getIndexes
             '    If Indexes.Length > Me.Manager.nGroups Then
             '        'ValidationFailedMessage = "Constant F: Number of enteries must not be greater than number of groups."
-            '        Me.SendMessage("Error: Constant F number of enteries must not be greater than number of groups.")
+            '        Me.SendMessage("ERROR: Constant F number of enteries must not be greater than number of groups.")
             '        Return False
             '    End If
 
             '    For Each igrp As Integer In Indexes
             '        If igrp > Me.Manager.nGroups Then
             '            '   ValidationFailedMessage = "Constant F: Invalid group index."
-            '            Me.SendMessage("Error: Constant F invalid group index.")
+            '            Me.SendMessage("ERROR: Constant F invalid group index.")
             '            Return False
             '        End If
             '    Next
 
             'Catch ex As Exception
-            '    Me.SendMessage("Error: Error during data validation.")
+            '    Me.SendMessage("ERROR: Error during data validation.")
             '    Return False
             'End Try
 
@@ -639,14 +639,14 @@ Namespace MSECommandFile
             '    Dim Indexes() As Integer = Me.m_manager.getTagData(Me.m_IndexTag).Item(0).getIndexes
 
             '    If Indexes.Length > Me.Manager.nFleets Then
-            '        Me.SendMessage("Error: Control Type number of enteries must not be greater than number of fleets.")
+            '        Me.SendMessage("ERROR: Control Type number of enteries must not be greater than number of fleets.")
             '        'ValidationFailedMessage = "Control Type: Number of enteries must not be greater than number of fleets."
             '        Return False
             '    End If
 
             '    For igrp As Integer = 0 To Indexes.Length - 1
             '        If Indexes(igrp) > Me.Manager.nFleets Then
-            '            Me.SendMessage("Error: Control Type invalid fleet index.")
+            '            Me.SendMessage("ERROR: Control Type invalid fleet index.")
             '            '   ValidationFailedMessage = "Control Type: Invalid group index."
             '            Return False
             '        End If
@@ -760,7 +760,7 @@ Namespace MSECommandFile
 
 
             Catch ex As Exception
-                'Me.SendMessage("Error: reading tag '" & Me.m_DataTag & "' from command file.")
+                'Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
                 'Me.SendMessage(vbTab & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".Init() Exception: " & ex.Message)
             End Try
@@ -824,7 +824,7 @@ Namespace MSECommandFile
 
 
             Catch ex As Exception
-                Me.SendMessage("Error: reading tag '" & Me.m_DataTag & "' from command file.")
+                Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
                 Me.SendMessage(vbTab & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".Init() Exception: " & ex.Message)
             End Try
@@ -857,8 +857,8 @@ Namespace MSECommandFile
 
                 m_blims.Add(Single.Parse(values(ips)))
                 m_bbases.Add(Single.Parse(values(ips + 1)))
-                m_Fmaxs.Add(Single.Parse(values(ips + 2)))
-                m_Fmins.Add(Single.Parse(values(ips + 3)))
+                m_Fmins.Add(Single.Parse(values(ips + 2)))
+                m_Fmaxs.Add(Single.Parse(values(ips + 3)))
                 ips += nps
             Loop
 
@@ -915,29 +915,57 @@ Namespace MSECommandFile
 
         Public Overrides Function Validate() As Boolean '
 
+            Dim igrp As Integer
             Dim lstIndexes As List(Of IMSEParameter) = Me.m_manager.getTagData(Me.m_IndexTag)
-            If lstIndexes.Count < 1 Then
-                Me.SendMessage("Error: Tag '" & Me.m_IndexTag & "' failed to find tag in command file.")
-                Return False
-            End If
+            Dim bSuccess As Boolean = True
+            Try
 
-            Dim Indexes() As Integer = lstIndexes.Item(0).getIndexes
-
-            If Indexes.Length > Me.Manager.nGroups Then
-                ' ValidationFailedMessage = "Constant Yield: Number of enteries must not be greater than number of groups."
-                Me.SendMessage("Error: TFM Number of '" & Me.m_IndexTag & "'  enteries must not be greater than number of groups.")
-                Return False
-            End If
-
-            For igrp As Integer = 0 To Indexes.Length - 1
-                If Indexes(igrp) > Me.Manager.nGroups Then
-                    '  ValidationFailedMessage = "Constant Yield: Invalid group index."
-                    Me.SendMessage("Error: TFM Invalid group index.")
-                    Return False
+                If lstIndexes.Count < 1 Then
+                    Me.SendMessage("ERROR: Tag '" & Me.m_IndexTag & "' failed to find tag in command file.")
+                    bSuccess = False
                 End If
-            Next
 
-            Return True
+                Dim Indexes() As Integer = lstIndexes.Item(0).getIndexes
+
+                If Indexes.Length > Me.Manager.nGroups Then
+                    ' ValidationFailedMessage = "Constant Yield: Number of enteries must not be greater than number of groups."
+                    Me.SendMessage("ERROR: Tag '" & Me.m_IndexTag & "' enteries must not be greater than number of groups.")
+                    bSuccess = False
+                End If
+
+                For igrp = 0 To Indexes.Length - 1
+                    If Indexes(igrp) > Me.Manager.nGroups Then
+                        '  ValidationFailedMessage = "Constant Yield: Invalid group index."
+                        Me.SendMessage("ERROR: Tag '" & Me.m_IndexTag & "' invalid group index.")
+                        bSuccess = False
+                    End If
+                Next
+
+                Dim bBioFailed As Boolean
+                For igrp = 0 To Me.m_blims.Count - 1
+                    If Me.m_blims(igrp) > Me.m_bbases(igrp) Then
+                        bBioFailed = True
+                    End If
+                Next
+                If bBioFailed Then
+                    Me.SendMessage("WARNING: Tag '" & Me.m_DataTag & "' parameters Bbase must be greater than Blim. Inputs will be zero.")
+                End If
+
+                Dim bFfailed As Boolean
+                For igrp = 0 To Me.m_blims.Count - 1
+                    If Me.m_Fmins(igrp) > Me.m_Fmaxs(igrp) Then
+                        bFfailed = True
+                    End If
+                Next
+                If bFfailed Then
+                    Me.SendMessage("WARNING: Tag '" & Me.m_DataTag & "' parameters Fmin must be greater than Fmax. Please check your data.")
+                End If
+
+            Catch ex As Exception
+                bSuccess = False
+            End Try
+
+            Return bSuccess
 
         End Function
 
@@ -1082,7 +1110,7 @@ Namespace MSECommandFile
 
 
             Catch ex As Exception
-                Me.SendMessage("Error: reading tag '" & Me.m_DataTag & "' from command file.")
+                Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
                 Me.SendMessage(vbTab & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".Init() Exception: " & ex.Message)
             End Try
