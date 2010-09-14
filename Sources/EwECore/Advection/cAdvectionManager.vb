@@ -1,20 +1,27 @@
-﻿Option Strict On
+﻿#Region " Imports "
+
+Option Strict On
 Imports EwECore.Ecosim
 Imports System.Threading
 Imports EwEUtils.Core
 
+#End Region ' Imports
+
 Namespace Ecospace.Advection
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
     Public Class cAdvectionManager
         Inherits cThreadWaitBase 'provides the Wait() method
         Implements ICoreInterface
 
-        Friend Delegate Sub EcospaceAdvectionAddMessageHandler(ByVal message As cMessage)
-        Public Delegate Sub EcoSpaceAdvectionStartedDelegate()
-        Public Delegate Sub EcoSpaceAdvectionProgressDelegate(ByVal iIteration As Integer)
-        Public Delegate Sub EcoSpaceAdvectionCompletedDelegate(ByVal iIteration As Integer, ByVal bInterrupted As Boolean, ByVal bBadAdvection As Boolean)
+        'Friend Delegate Sub EcospaceAdvectionAddMessageHandler(ByVal message As cMessage)
+        Public Delegate Sub ComputationStartedDelegate()
+        Public Delegate Sub ComputationProgressDelegate(ByVal iIteration As Integer)
+        Public Delegate Sub ComputationCompletedDelegate(ByVal iIteration As Integer, ByVal bInterrupted As Boolean, ByVal bBadFlow As Boolean)
 
-#Region "Private Variables"
+#Region " Private Variables "
 
         Private m_comp As cAdvection = Nothing
         Private m_core As cCore = Nothing
@@ -23,53 +30,66 @@ Namespace Ecospace.Advection
         Private m_lstMessages As New List(Of cMessage)
 
         Private m_syncObject As System.ComponentModel.ISynchronizeInvoke
-        Private m_RunStartedDelegate As EcoSpaceAdvectionStartedDelegate
-        Private m_RunProgressDelegate As EcoSpaceAdvectionProgressDelegate
-        Private m_RunCompletedDelegate As EcoSpaceAdvectionCompletedDelegate
+        Private m_RunStartedDelegate As ComputationStartedDelegate
+        Private m_RunProgressDelegate As ComputationProgressDelegate
+        Private m_RunCompletedDelegate As ComputationCompletedDelegate
 
         Private Delegate Sub CallingThreadDelegate()
 
-#End Region
+#End Region ' Private Variables
 
-#Region "Construction and Initialization"
+#Region " Construction and Initialization "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Secretive constructor.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Friend Sub New()
 
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Connect an interface to the Advection calculations
+        ''' Connect to the Advection manager.
         ''' </summary>
-        ''' <param name="RunStartedCallBack">Callback a search run is about to start. If ModelParameters.nRun > 1 this will be call at the start of each run.</param>
-        ''' <param name="RunCompletedBack">Callback a search run has completed. If ModelParameters.nRun > 1 this will be call at the end of each run.</param>
-        ''' <param name="ProgressCallBack">Callback reports progress of the search</param>
+        ''' <param name="ComputationStartedCallBack">Callback a search run is about to start. If ModelParameters.nRun > 1 this will be call at the start of each run.</param>
+        ''' <param name="ComputationCompletedBack">Callback a search run has completed. If ModelParameters.nRun > 1 this will be call at the end of each run.</param>
+        ''' <param name="ComputationProgressCallBack">Callback reports progress of the run.</param>
+        ''' <remarks>Make sure to properly <see cref="Disconnect">Disconnect</see>
+        ''' when this manager is no longer needed.</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub Connect(ByVal RunStartedCallBack As EcoSpaceAdvectionStartedDelegate, _
-                           ByVal RunCompletedBack As EcoSpaceAdvectionCompletedDelegate, _
-                           ByVal ProgressCallBack As EcoSpaceAdvectionProgressDelegate)
+        Public Sub Connect(ByVal ComputationStartedCallBack As ComputationStartedDelegate, _
+                           ByVal ComputationCompletedBack As ComputationCompletedDelegate, _
+                           ByVal ComputationProgressCallBack As ComputationProgressDelegate)
 
-            Me.m_RunStartedDelegate = RunStartedCallBack
-            Me.m_RunCompletedDelegate = RunCompletedBack
-            Me.m_RunProgressDelegate = ProgressCallBack
+            Me.m_RunStartedDelegate = ComputationStartedCallBack
+            Me.m_RunCompletedDelegate = ComputationCompletedBack
+            Me.m_RunProgressDelegate = ComputationProgressCallBack
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Disconnect from the Advection manager previously connected via
+        ''' <see cref="Connect">Connect</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub Disconnect()
 
-            Me.m_comp.Interrupted = True
             Me.m_RunStartedDelegate = Nothing
             Me.m_RunProgressDelegate = Nothing
             Me.m_RunCompletedDelegate = Nothing
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Build interface objects
+        ''' Initialize the manager for operation.
         ''' </summary>
+        ''' <param name="theCore">Core instance to operate upon.</param>
+        ''' <param name="theEcospace">Ecospace instance to operate upon.</param>
+        ''' -------------------------------------------------------------------
         Friend Function Init(ByVal theCore As cCore, ByVal theEcospace As cEcoSpace) As Boolean
             Try
 
@@ -96,10 +116,12 @@ Namespace Ecospace.Advection
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Load data into existing interface objects
         ''' </summary>
         ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
         Friend Function Load() As Boolean
 
             Try
@@ -118,10 +140,12 @@ Namespace Ecospace.Advection
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Update the underlying data with values from the interface
         ''' </summary>
         ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
         Public Function Update() As Boolean
 
             Me.m_data.Coriolis = Me.m_parameters.Coriolis
@@ -132,40 +156,102 @@ Namespace Ecospace.Advection
 
         End Function
 
-#End Region
+#End Region '  Construction and Initialization
 
-#Region "Public Properties"
+#Region " Public Properties "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get configurable advection parameters.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property ModelParameters() As cAdvectionParameters
             Get
                 Return m_parameters
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Count of the Advection calculations run
+        ''' Count of the Advection calculations run.
         ''' </summary>
-        ''' <remarks>if isRunning = True then iRun will be the count of the current run out of ModelParameters.nRuns</remarks>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property Iteration() As Integer
             Get
                 Return Me.m_comp.Iteration
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Stop the Advection calculations run
+        ''' Stop the Advection calculations run.
         ''' </summary>
         ''' <remarks>This will not do anything if the search is not running</remarks>
+        ''' -------------------------------------------------------------------
         Public Sub StopRun()
             Me.m_comp.Interrupted = True
         End Sub
 
-#End Region
+#End Region ' Public Properties
 
-#Region "private handlers for search callbacks/delegates"
+#Region " Running "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Run the Advection computations.
+        ''' </summary>
+        ''' <param name="SyncObject"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function Run(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
+
+            Dim thrd As Thread = Nothing
+            Dim bSuccess As Boolean = True
+
+            Me.m_syncObject = SyncObject
+
+
+            If Me.IsRunning Then
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ADVECTION_ALREADY_RUNNING, _
+                                                            eMessageType.ErrorEncountered, _
+                                                            eCoreComponentType.EcoSpace, _
+                                                            eMessageImportance.Critical, _
+                                                            eDataTypes.MonteCarlo))
+                Return False
+            End If
+
+            Me.SetWait()
+            Try
+                Me.Update()
+
+                thrd = New Thread(AddressOf Me.m_comp.Run)
+                thrd.Start()
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message), _
+                                                         eMessageType.ErrorEncountered, _
+                                                         eCoreComponentType.EcoSpace, _
+                                                         eMessageImportance.Critical, _
+                                                         eDataTypes.FishingPolicyManager))
+
+                ' If an error has been thrown make sure the OnAdvectionCalcsCompletedHandler delegate is called
+                ' This way an interface can respond
+                Me.OnAdvectionCalcsCompletedHandler(Me.m_comp.Iteration, Me.m_comp.Interrupted, Me.m_comp.BadFlow)
+
+                bSuccess = False
+            End Try
+
+            'send any messages generated from starting the search
+            Me.OnSendCoreMessages()
+
+            Return bSuccess
+
+        End Function
+
+#End Region ' Running
+
+#Region " Events "
 
         Private Sub OnAdvectionCalcsStartedHandler()
             Dim ctd As CallingThreadDelegate = Nothing
@@ -186,10 +272,9 @@ Namespace Ecospace.Advection
         Private Sub OnAdvectionCalcsCompletedHandler(ByVal iIteration As Integer, ByVal bInterrupted As Boolean, ByVal bBadAdvection As Boolean)
 
             Try
-
                 m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
 
-                'release any waiting threads
+                ' Release any waiting threads
                 Me.ReleaseWait()
 
                 'send any messages that the model added to the managers list of messages
@@ -208,11 +293,9 @@ Namespace Ecospace.Advection
             Catch ex As Exception
                 cLog.Write(ex)
                 m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
-                Me.ReleaseWait()
             End Try
 
         End Sub
-
 
         Private Sub OnAdvectionCalcsProgressHandler(ByVal iInteration As Integer)
 
@@ -232,14 +315,12 @@ Namespace Ecospace.Advection
 
         End Sub
 
-
         Private Sub OnAddMessageHandler(ByVal message As cMessage)
             'add the message to the managers list of mesasges
             'these messages will be sent at the end of the run
             m_lstMessages.Add(message)
 
         End Sub
-
 
         Private Sub OnSendCoreMessages()
             Try
@@ -263,71 +344,35 @@ Namespace Ecospace.Advection
             End Try
         End Sub
 
-#End Region
+#End Region ' Events
 
-#Region "Running the model"
+#Region " ICoreInterface implementation "
 
-        Public Function Run(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
-
-            m_syncObject = SyncObject
-            Dim thrd As Thread
-            Dim bsuccess As Boolean
-
-            Try
-
-                If Me.IsRunning Then
-                    m_core.Messages.SendMessage(New cMessage("An advection computation is already running. Only one search can be run at a time.", eMessageType.ErrorEncountered, _
-                                                eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.MonteCarlo))
-                    Return False
-                End If
-
-                bsuccess = True
-
-                Me.setWait()
-
-                Me.Update()
-
-                thrd = New Thread(AddressOf Me.m_comp.Run)
-                thrd.Start()
-
-            Catch ex As Exception
-                cLog.Write(ex)
-                'unblock the thread before doing anything incase something has called Wait()
-
-                m_core.Messages.SendMessage(New cMessage("Error running the Advection calculations.", eMessageType.ErrorEncountered, _
-                                            eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
-
-                'if an error has been thrown make sure the SearchCompletedCallBack delegate is called
-                'this way an interface can responded 
-                Me.OnAdvectionCalcsCompletedHandler(Me.m_comp.Iteration, Me.m_comp.Interrupted, Me.m_comp.BadFlow)
-
-                bsuccess = False
-
-            End Try
-
-            'send any messages generated from starting the search
-            Me.OnSendCoreMessages()
-            Return bsuccess
-
-        End Function
-
-#End Region
-
-#Region "ICoreInterface implementation"
-
-        Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="DataType"/>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property DataType() As eDataTypes _
+            Implements ICoreInterface.DataType
             Get
                 Return eDataTypes.EcospaceAdvectionManager
             End Get
         End Property
 
-        Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="CoreComponent"/>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property CoreComponent() As eCoreComponentType _
+            Implements ICoreInterface.CoreComponent
             Get
                 Return eCoreComponentType.EcoSpace
             End Get
         End Property
 
-        Public Property DBID() As Integer Implements ICoreInterface.DBID
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="DBID"/>
+        ''' -------------------------------------------------------------------
+        Public Property DBID() As Integer _
+            Implements ICoreInterface.DBID
             Get
                 Return cCore.NULL_VALUE
             End Get
@@ -336,11 +381,19 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
-        Public Function GetID() As String Implements ICoreInterface.GetID
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="GetID"/>
+        ''' -------------------------------------------------------------------
+        Public Function GetID() As String _
+            Implements ICoreInterface.GetID
             Return Me.ToString
         End Function
 
-        Public Property Index() As Integer Implements ICoreInterface.Index
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="Index"/>
+        ''' -------------------------------------------------------------------
+        Public Property Index() As Integer _
+            Implements ICoreInterface.Index
             Get
                 Return cCore.NULL_VALUE
             End Get
@@ -349,7 +402,11 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
-        Public Property Name() As String Implements ICoreInterface.Name
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="Name"/>
+        ''' -------------------------------------------------------------------
+        Public Property Name() As String _
+            Implements ICoreInterface.Name
             Get
                 Return Me.ToString
             End Get
@@ -358,7 +415,7 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
-#End Region
+#End Region ' ICoreInterface implementation
 
     End Class
 

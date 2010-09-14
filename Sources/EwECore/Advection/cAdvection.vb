@@ -26,11 +26,11 @@ Namespace Ecospace.Advection
         Private m_data As cEcospaceDataStructures = Nothing
 
         ''' <summary>Delegate to notify that calculations have started.</summary>
-        Private m_RunStartedDelegate As EcoSpaceAdvectionStartedDelegate
+        Private m_RunStartedDelegate As ComputationStartedDelegate
         ''' <summary>Delegate to notify that calculations have progressed through another iteration.</summary>
-        Private m_RunProgressDelegate As EcoSpaceAdvectionProgressDelegate
+        Private m_RunProgressDelegate As ComputationProgressDelegate
         ''' <summary>Delegate to notify that calculations have ended.</summary>
-        Private m_RunCompletedDelegate As EcoSpaceAdvectionCompletedDelegate
+        Private m_RunCompletedDelegate As ComputationCompletedDelegate
 
         ''' <summary>Iteration counter.</summary>
         Private m_iter As Integer = 0
@@ -90,11 +90,11 @@ Namespace Ecospace.Advection
         ''' Get/set the delegate to call when a computations have started.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property RunStartedCallBack() As EcoSpaceAdvectionStartedDelegate
+        Public Property RunStartedCallBack() As ComputationStartedDelegate
             Get
                 Return Me.m_RunStartedDelegate
             End Get
-            Set(ByVal value As EcoSpaceAdvectionStartedDelegate)
+            Set(ByVal value As ComputationStartedDelegate)
                 Me.m_RunStartedDelegate = value
             End Set
         End Property
@@ -104,11 +104,11 @@ Namespace Ecospace.Advection
         ''' Get/set the delegate to call when a new iteration has been calculated.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property ProgressCallback() As EcoSpaceAdvectionProgressDelegate
+        Public Property ProgressCallback() As ComputationProgressDelegate
             Get
                 Return Me.m_RunProgressDelegate
             End Get
-            Set(ByVal value As EcoSpaceAdvectionProgressDelegate)
+            Set(ByVal value As ComputationProgressDelegate)
                 Me.m_RunProgressDelegate = value
             End Set
         End Property
@@ -118,11 +118,11 @@ Namespace Ecospace.Advection
         ''' Get/set the delegate to call when a computations have completed.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property RunCompletedCallback() As EcoSpaceAdvectionCompletedDelegate
+        Public Property RunCompletedCallback() As ComputationCompletedDelegate
             Get
                 Return Me.m_RunCompletedDelegate
             End Get
-            Set(ByVal value As EcoSpaceAdvectionCompletedDelegate)
+            Set(ByVal value As ComputationCompletedDelegate)
                 Me.m_RunCompletedDelegate = value
             End Set
         End Property
@@ -259,6 +259,9 @@ Namespace Ecospace.Advection
                 End Try
 
                 If Differ < 0.0000001 * xMax / Grav / Me.m_data.CellLength Then Exit Do
+
+                Threading.Thread.Sleep(100)
+
             Loop
 
             'check velocity field
