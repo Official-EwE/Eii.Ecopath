@@ -14,6 +14,12 @@ Namespace Ecospace.Advection
     ''' Map control for advection form.
     ''' </summary>
     Public Class ucMap
+        Inherits ucAdvectionMap
+
+        ''' <inheritdoc cref="BackgroundLayers"/>
+        Protected Overrides Function BackgroundLayers() As eVarNameFlags()
+            Return New eVarNameFlags() {eVarNameFlags.LayerAdvection}
+        End Function
 
     End Class
 

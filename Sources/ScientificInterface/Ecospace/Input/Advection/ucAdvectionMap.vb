@@ -121,14 +121,12 @@ Namespace Ecospace.Advection
         ''' background layers in the attached <see cref="Map">map</see>.
         ''' </summary>
         ''' <returns>
-        ''' A list of variable names. The default implementation returns just
-        ''' the <see cref="eVarNameFlags.LayerDepth">Ecospace depth layer</see>.
+        ''' A list of variable names to show on top of the already present
+        ''' <see cref="eVarNameFlags.LayerDepth">Ecospace depth layer</see>.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function BackgroundLayers() As List(Of eVarNameFlags)
-            Dim l As New List(Of eVarNameFlags)
-            l.Add(eVarNameFlags.LayerDepth)
-            Return l
+        Protected Overridable Function BackgroundLayers() As eVarNameFlags()
+            Return Nothing
         End Function
 
         ''' -------------------------------------------------------------------
@@ -178,9 +176,16 @@ Namespace Ecospace.Advection
 
             Me.m_zoomctrl.Map.Basemap = Me.m_uic.Core.EcospaceBasemap
 
-            For Each vn As eVarNameFlags In Me.BackgroundLayers
-                If vn <> eVarNameFlags.NotSet Then Me.AddLayer(vn, False)
-            Next
+            ' Always show depth layer
+            Me.AddLayer(eVarNameFlags.LayerDepth, False)
+            ' Add optional background layers
+            If (Me.BackgroundLayers IsNot Nothing) Then
+                For Each vn As eVarNameFlags In Me.BackgroundLayers
+                    If vn <> eVarNameFlags.NotSet Then
+                        Me.AddLayer(vn, False)
+                    End If
+                Next
+            End If
 
             If Me.EditableLayer <> eVarNameFlags.NotSet Then
                 Me.m_layerEditable = Me.AddLayer(Me.EditableLayer, True)
