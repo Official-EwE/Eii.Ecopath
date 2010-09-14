@@ -1,60 +1,95 @@
-﻿Option Strict On
+﻿#Region " Imports "
+
+Option Strict On
 Imports EwECore.Ecosim
 Imports EwEUtils.Core
 Imports EwECore.Ecospace.Advection.cAdvectionManager
 
+#End Region ' Imports
+
 Namespace Ecospace.Advection
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper class for calculating advection patterns.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Friend Class cAdvection
 
 #Region " Private vars "
 
+        ''' <summary>Core to operate on.</summary>
         Private m_core As cCore = Nothing
+        ''' <summary>Ecospace model to work with.</summary>
         Private m_ecospace As cEcoSpace = Nothing
+        ''' <summary>Ecospace data structures to operate on.</summary>
         Private m_data As cEcospaceDataStructures = Nothing
-        Private m_parameters As cAdvectionParameters = Nothing
 
-        Private m_AddMessageDelegate As EcospaceAdvectionAddMessageHandler
+        ''' <summary>Delegate to notify that calculations have started.</summary>
         Private m_RunStartedDelegate As EcoSpaceAdvectionStartedDelegate
-        Private m_RunCompletedDelegate As EcoSpaceAdvectionCompletedDelegate
+        ''' <summary>Delegate to notify that calculations have progressed through another iteration.</summary>
         Private m_RunProgressDelegate As EcoSpaceAdvectionProgressDelegate
+        ''' <summary>Delegate to notify that calculations have ended.</summary>
+        Private m_RunCompletedDelegate As EcoSpaceAdvectionCompletedDelegate
 
+        ''' <summary>Iteration counter.</summary>
         Private m_iter As Integer = 0
-        Private m_bStopped As Boolean = False
+        ''' <summary>Iteration interrupt flag.</summary>
+        Private m_bInterrupted As Boolean = False
+        ''' <summary>Iteration results quality flag.</summary>
         Private m_bBadFlow As Boolean = False
 
 #End Region ' Private vars
 
 #Region " Public access "
 
-        Public Sub Init(ByVal core As cCore, ByVal theEcospace As cEcoSpace)
+        Public Sub Init(ByVal core As cCore, ByVal ecospace As cEcoSpace)
             Me.m_core = core
-            Me.m_ecospace = theEcospace
             Me.m_data = core.m_EcoSpaceData
-            Me.m_parameters = core.AdvectionParameters
+            Me.m_ecospace = ecospace
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the current iteration that has been computed.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property Iteration() As Integer
             Get
                 Return Me.m_iter
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the calculations should be interrupted.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property Interrupted() As Boolean
             Get
-                Return Me.m_bStopped
+                Return Me.m_bInterrupted
             End Get
             Set(ByVal value As Boolean)
-                Me.m_bStopped = value
+                Me.m_bInterrupted = value
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get whether the calculations produced bad flows.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property BadFlow() As Boolean
             Get
                 Return Me.m_bBadFlow
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the delegate to call when a computations have started.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property RunStartedCallBack() As EcoSpaceAdvectionStartedDelegate
             Get
                 Return Me.m_RunStartedDelegate
@@ -64,6 +99,11 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the delegate to call when a new iteration has been calculated.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property ProgressCallback() As EcoSpaceAdvectionProgressDelegate
             Get
                 Return Me.m_RunProgressDelegate
@@ -73,6 +113,11 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the delegate to call when a computations have completed.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property RunCompletedCallback() As EcoSpaceAdvectionCompletedDelegate
             Get
                 Return Me.m_RunCompletedDelegate
@@ -82,21 +127,18 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
-        Public Property AddMessageCallback() As EcospaceAdvectionAddMessageHandler
-            Get
-                Return Me.m_AddMessageDelegate
-            End Get
-            Set(ByVal value As EcospaceAdvectionAddMessageHandler)
-                Me.m_AddMessageDelegate = value
-            End Set
-        End Property
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Run advection computations.
+        ''' </summary>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
         Public Function Run() As Boolean
 
-            Dim Vel(Me.m_Data.InRow + 1, Me.m_Data.InCol + 1) As Single
-            Dim VelNew(Me.m_Data.InRow + 1, Me.m_Data.InCol + 1) As Single
-            Dim XvTot(Me.m_Data.InRow + 1, Me.m_Data.InCol + 1) As Single
-            Dim YvTot(Me.m_Data.InRow + 1, Me.m_Data.InCol + 1) As Single
+            Dim Vel(Me.m_data.InRow + 1, Me.m_data.InCol + 1) As Single
+            Dim VelNew(Me.m_data.InRow + 1, Me.m_data.InCol + 1) As Single
+            Dim XvTot(Me.m_data.InRow + 1, Me.m_data.InCol + 1) As Single
+            Dim YvTot(Me.m_data.InRow + 1, Me.m_data.InCol + 1) As Single
 
             'iterates to find Xvel,Yvel velocity field at cell right boundaries
             'xvel(i,j) is velocity of flow from cell i,j to cell i,j+1
@@ -136,9 +178,9 @@ Namespace Ecospace.Advection
             ' Get ready for new run
             m_iter = 0
             m_bBadFlow = False
-            m_bStopped = False
+            m_bInterrupted = False
 
-            Do While m_iter < 10000 And m_bStopped = False
+            Do While m_iter < 10000 And m_bInterrupted = False
                 m_iter = m_iter + 1
                 Differ = 0
 
@@ -201,7 +243,10 @@ Namespace Ecospace.Advection
                     '                    Next
                     '                Next
                     'skipiter:
-                    SetVelocities(Vel, Me.m_data.SorWv, Grav, Upwell, XvTot, YvTot)
+
+                    ' Verify_JS 14Sep2010: Should SorWv not be Ecospace W (SOR)?
+                    Me.SetVelocities(Vel, Me.m_data.SorWv, Grav, Upwell, XvTot, YvTot)
+
                 Catch ex As Exception
                     ' Computation error
                     Return False
@@ -230,7 +275,7 @@ Namespace Ecospace.Advection
             Next
 
             Try
-                Me.m_RunCompletedDelegate.Invoke(Me.m_iter, Me.m_bStopped, Me.m_bBadFlow)
+                Me.m_RunCompletedDelegate.Invoke(Me.m_iter, Me.m_bInterrupted, Me.m_bBadFlow)
             Catch ex As Exception
                 Return False
             End Try
@@ -240,21 +285,34 @@ Namespace Ecospace.Advection
             'If m_bBadAdvection = True Then MsgBox("Inflows and outflows do not balance at cells shown in red; recommend not using this velocity field for simulations if ecospace shows strange behavior for these cells")
         End Function
 
+#End Region ' Public access
+
+#Region " Internals "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="XvTot"></param>
+        ''' <param name="YvTot"></param>
+        ''' <param name="Corio"></param>
+        ''' <param name="Hstress"></param>
+        ''' -------------------------------------------------------------------
         Private Sub SetVtot(ByVal XvTot(,) As Single, ByVal YvTot(,) As Single, ByVal Corio As Single, ByVal Hstress As Single)
             'sets total pressure in x and y directions for all cells
             Dim i As Integer, j As Integer
-            For i = 0 To Me.m_Data.InRow + 1
-                For j = 0 To Me.m_Data.InCol + 1
-                    If Me.m_Data.Depth(i, j) > 0 Then
-                        XvTot(i, j) = Me.m_Data.Xvloc(i, j)
-                        YvTot(i, j) = Me.m_Data.Yvloc(i, j)
+            For i = 0 To Me.m_data.InRow + 1
+                For j = 0 To Me.m_data.InCol + 1
+                    If Me.m_data.Depth(i, j) > 0 Then
+                        XvTot(i, j) = Me.m_data.Xvloc(i, j)
+                        YvTot(i, j) = Me.m_data.Yvloc(i, j)
                     End If
                 Next
             Next
             'add force components due to horizontal shear along box sides
-            For i = 1 To Me.m_Data.InRow
-                For j = 1 To Me.m_Data.InCol
-                    If Me.m_Data.Depth(i, j) > 0 Then
+            For i = 1 To Me.m_data.InRow
+                For j = 1 To Me.m_data.InCol
+                    If Me.m_data.Depth(i, j) > 0 Then
                         XvTot(i, j) = CSng(XvTot(i, j) - Corio * Me.m_data.Yvel(i, j) + Hstress * (Me.m_data.Xvel(i - 1, j) + Me.m_data.Xvel(i + 1, j) - 2.0# * Me.m_data.Xvel(i, j)))
                         YvTot(i, j) = CSng(YvTot(i, j) + Corio * Me.m_data.Xvel(i, j) + Hstress * (Me.m_data.Yvel(i, j - 1) + Me.m_data.Yvel(i, j + 1) - 2.0# * Me.m_data.Yvel(i, j)))
                     End If
@@ -262,26 +320,37 @@ Namespace Ecospace.Advection
             Next
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="vel"></param>
+        ''' <param name="SorWv"></param>
+        ''' <param name="Grav"></param>
+        ''' <param name="UpWell"></param>
+        ''' <param name="XvToT"></param>
+        ''' <param name="YvTot"></param>
+        ''' -------------------------------------------------------------------
         Private Sub SetVelocities(ByRef vel(,) As Single, _
                                   ByVal SorWv As Single, ByVal Grav As Single, ByVal UpWell As Single, _
                                   ByVal XvToT(,) As Single, ByVal YvTot(,) As Single)
             Dim i As Integer
             Dim j As Integer
-            For i = 0 To Me.m_Data.InRow
-                For j = 0 To Me.m_Data.InCol
-                    If Me.m_Data.Depth(i, j) > 0 Then
-                        If Me.m_Data.Depth(i, j + 1) > 0 Then Me.m_Data.Xvel(i, j) = (1 - SorWv) * Me.m_Data.Xvel(i, j) + SorWv * Me.m_Data.DepthX(i, j) * (XvToT(i, j) + Grav * (vel(i, j) - vel(i, j + 1))) Else Me.m_Data.Xvel(i, j) = 0
-                        If Me.m_Data.Depth(i + 1, j) > 0 Then Me.m_Data.Yvel(i, j) = (1 - SorWv) * Me.m_Data.Yvel(i, j) + SorWv * Me.m_Data.DepthY(i, j) * (YvTot(i, j) + Grav * (vel(i, j) - vel(i + 1, j))) Else Me.m_Data.Yvel(i, j) = 0
-                        Me.m_Data.UpVel(i, j) = -UpWell * Me.m_Data.DepthA(i, j) * vel(i, j)
+            For i = 0 To Me.m_data.InRow
+                For j = 0 To Me.m_data.InCol
+                    If Me.m_data.Depth(i, j) > 0 Then
+                        If Me.m_data.Depth(i, j + 1) > 0 Then Me.m_data.Xvel(i, j) = (1 - SorWv) * Me.m_data.Xvel(i, j) + SorWv * Me.m_data.DepthX(i, j) * (XvToT(i, j) + Grav * (vel(i, j) - vel(i, j + 1))) Else Me.m_data.Xvel(i, j) = 0
+                        If Me.m_data.Depth(i + 1, j) > 0 Then Me.m_data.Yvel(i, j) = (1 - SorWv) * Me.m_data.Yvel(i, j) + SorWv * Me.m_data.DepthY(i, j) * (YvTot(i, j) + Grav * (vel(i, j) - vel(i + 1, j))) Else Me.m_data.Yvel(i, j) = 0
+                        Me.m_data.UpVel(i, j) = -UpWell * Me.m_data.DepthA(i, j) * vel(i, j)
                     Else
-                        Me.m_Data.Xvel(i, j) = 0
-                        Me.m_Data.Yvel(i, j) = 0
+                        Me.m_data.Xvel(i, j) = 0
+                        Me.m_data.Yvel(i, j) = 0
                     End If
                 Next
             Next
         End Sub
 
-#End Region ' Public access
+#End Region ' Internals
 
     End Class
 

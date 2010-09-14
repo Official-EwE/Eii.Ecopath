@@ -8,9 +8,13 @@ Imports EwEUtils.Core
 
 Namespace Ecospace.Advection
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Inputs for Ecospace Advection calculations.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class cAdvectionParameters
         Inherits cCoreInputOutputBase
-
 
         Public Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
             MyBase.New(theCore)
@@ -23,7 +27,7 @@ Namespace Ecospace.Advection
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.FishingPolicyParameters, _
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.FishingPolicyParameters, _
                                                         eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
             Dim val As cValue
@@ -33,23 +37,23 @@ Namespace Ecospace.Advection
             meta = New cVariableMetaData(-1, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.Coriolis, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.Coriolis))
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' XVel
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.XVelocity, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.XVelocity))
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' YVel
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.YVelocity, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.YVelocity))
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             Me.ResetStatusFlags()
 
-            AllowValidation = True
+            Me.AllowValidation = True
 
         End Sub
 

@@ -78,7 +78,7 @@ Namespace Ecospace.Advection
                 'init the Fihsing Policy Search model
                 m_comp = New cAdvection()
                 m_comp.Init(theCore, theEcospace)
-                m_comp.AddMessageCallback = AddressOf OnAddMessageHandler
+                'm_comp.AddMessageCallback = AddressOf OnAddMessageHandler
                 m_comp.ProgressCallback = AddressOf OnAdvectionCalcsProgressHandler
                 m_comp.RunStartedCallBack = AddressOf OnAdvectionCalcsStartedHandler
                 m_comp.RunCompletedCallback = AddressOf OnAdvectionCalcsCompletedHandler
