@@ -54,6 +54,9 @@ Namespace Ecospace.Basemap.Layers
             Dim asValues As Single() = Nothing
             Dim ptfCenter As PointF = Nothing
             Dim szfHalfArrow As SizeF = Nothing
+            Dim sMax As Single = 1
+
+            If (layer.MaxValue > 0) Then sMax = layer.MaxValue
 
             If TypeOf value Is Single() Then
                 asValues = DirectCast(value, Single())
@@ -64,7 +67,7 @@ Namespace Ecospace.Basemap.Layers
                     ' Calc center
                     ptfCenter = New PointF(CSng(rc.X + rc.Width / 2), CSng(rc.Y + rc.Height / 2))
                     ' Calc arrow size
-                    szfHalfArrow = New SizeF(rc.Width * asValues(0) / (2 * layer.MaxValue), rc.Height * asValues(1) / (2 * layer.MaxValue))
+                    szfHalfArrow = New SizeF(rc.Width * asValues(0) / (2 * sMax), rc.Height * asValues(1) / (2 * sMax))
 
                     Using p As New Pen(Me.VisualStyle.ForeColour, 0.001!)
                         g.DrawLine(p, _
