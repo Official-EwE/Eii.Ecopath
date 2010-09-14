@@ -87,9 +87,8 @@ Friend Class cAutoUpdate
         Error_Download
         ''' <summary>Failed to replace a plug-in on the system.</summary>
         Error_Replace
-        ''' <summary>The updater was not properly initialized.</summary>
-        Error_Initialized
-
+        ''' <summary>A generic error occurred.</summary>
+        Error_Generic
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -143,11 +142,11 @@ Friend Class cAutoUpdate
     ''' <listheader><term>Flag</term><description>Description</description></listheader>
     ''' <item>
     ''' <term><see cref="eUpdateStatusTypes.Success">Success</see></term>
-    ''' <description>The file is in a proper state.</description>
+    ''' <description>Server was contacted successfully and no action is required.</description>
     ''' </item>
     ''' <item>
     ''' <term><see cref="eUpdateStatusTypes.Info_CanMigrate">Info_CanMigrate</see></term>
-    ''' <description>An migration from weak-named to strong-named is available.</description>
+    ''' <description>A migration from a weak-named to a strong-named assembly is available.</description>
     ''' </item>
     ''' <item>
     ''' <term><see cref="eUpdateStatusTypes.Info_CanUpdate">Info_CanUpdate</see></term>
@@ -158,15 +157,15 @@ Friend Class cAutoUpdate
     ''' <description>Connection to update server could not be established.</description>
     ''' </item>
     ''' <item>
-    ''' <term><see cref="eUpdateStatusTypes.Error_Initialized">Error_Generic</see></term>
-    ''' <description>The updater was not properly initialized.</description>
+    ''' <term><see cref="eUpdateStatusTypes.Error_Generic">Error_Generic</see></term>
+    ''' <description>Something else went wrong.</description>
     ''' </item>
     ''' </list>
     ''' -----------------------------------------------------------------------
     Public Function CheckForUpdate() As eUpdateStatusTypes
 
         If String.IsNullOrEmpty(Me.m_strPluginName) Then
-            Return eUpdateStatusTypes.Error_Initialized
+            Return eUpdateStatusTypes.Error_Generic
         End If
 
         ' Perform local version check first
@@ -174,15 +173,13 @@ Friend Class cAutoUpdate
             Return eUpdateStatusTypes.Success
         End If
 
+        ' For weak-named assemblies check for a likely migration
         If String.IsNullOrEmpty(Me.m_strPluginToken) Then
             Return Me.HasMigration()
-        Else
-            If Me.HasUpdate() = eUpdateStatusTypes.Success Then
-                Return eUpdateStatusTypes.Info_CanUpdate
-            Else
-                Return eUpdateStatusTypes.Error_Connection
-            End If
         End If
+
+        ' Return whether an update is available
+        Return Me.HasUpdate()
 
     End Function
 
@@ -220,7 +217,7 @@ Friend Class cAutoUpdate
 
 
         If String.IsNullOrEmpty(Me.m_strPluginName) Then
-            Return eUpdateStatusTypes.Error_Initialized
+            Return eUpdateStatusTypes.Error_Generic
         End If
 
         Try
@@ -292,9 +289,12 @@ Friend Class cAutoUpdate
     ''' file.
     ''' </summary>
     ''' <returns>
-    ''' <see cref="eUpdateStatusTypes.Info_CanMigrate">Info_CanMigrate</see>
-    ''' if a migration is available, <see cref="eUpdateStatusTypes.Error_Connection">Error_Connection</see>
-    ''' otherwise.
+    ''' <para>This method will return one of the following values:</para>
+    ''' <list type="table">
+    ''' <item><term><see cref="eUpdateStatusTypes.Error_Connection">Error_Connection</see></term><description>Server could not be connected.</description></item>
+    ''' <item><term><see cref="eUpdateStatusTypes.Success">Info_CanUpdate</see></term><description>Server was contacted and a migration is available.</description></item>
+    ''' <item><term><see cref="eUpdateStatusTypes.Success">Success</see></term><description>Server was contacted but no migration is available.</description></item>
+    ''' </list>
     ''' </returns>
     ''' <remarks>
     ''' Note that this check should only be performed on weak-named assemblies.
@@ -313,6 +313,8 @@ Friend Class cAutoUpdate
                 Return eUpdateStatusTypes.Info_CanMigrate
             End If
 
+            Return eUpdateStatusTypes.Success
+
         Catch ex As Exception
             ' Unable to connect to server
         End Try
@@ -326,9 +328,12 @@ Friend Class cAutoUpdate
     ''' Helper method, states if an update is available for a given assembly.
     ''' </summary>
     ''' <returns>
-    ''' <see cref="eUpdateStatusTypes.Success">Success</see>
-    ''' if a migration is available, <see cref="eUpdateStatusTypes.Error_Connection">Error_Connection</see>
-    ''' otherwise.
+    ''' <para>This method will return one of the following values:</para>
+    ''' <list type="table">
+    ''' <item><term><see cref="eUpdateStatusTypes.Error_Connection">Error_Connection</see></term><description>Server could not be connected.</description></item>
+    ''' <item><term><see cref="eUpdateStatusTypes.Success">Info_CanUpdate</see></term><description>Server was contacted and an update is available.</description></item>
+    ''' <item><term><see cref="eUpdateStatusTypes.Success">Success</see></term><description>Server was contacted but no update is available.</description></item>
+    ''' </list>
     ''' </returns>
     ''' -----------------------------------------------------------------------
     Private Function HasUpdate() As eUpdateStatusTypes
@@ -338,13 +343,13 @@ Friend Class cAutoUpdate
 
         Try
             If Me.m_service.CheckPluginUpdate(Me.m_verCore.ToString, Me.m_strPluginName, Me.m_strPluginToken, Me.m_verPlugin.ToString) Then
-                Return eUpdateStatusTypes.Success
+                Return eUpdateStatusTypes.Info_CanUpdate
             End If
-
+            Return eUpdateStatusTypes.Success
         Catch ex As Exception
             ' Unable to connect to server
+            Return eUpdateStatusTypes.Error_Connection
         End Try
-        Return eUpdateStatusTypes.Error_Connection
 
     End Function
 
