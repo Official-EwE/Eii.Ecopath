@@ -4,14 +4,13 @@ Imports System.Threading
 Imports EwEPlugin
 Imports EwECore.EcoSeed
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 
 ''' <summary>
-''' Definition of Time Step Delegate use for notification of an EcoSim time step
+''' Definition of Time Step Delegate used for notification of an Ecospace time step
 ''' </summary>
 Public Delegate Sub EcoSpaceTimeStepDelegate(ByVal iTime As Integer)
-
-
 
 Public Class cEcoSpace
 
@@ -59,7 +58,7 @@ Public Class cEcoSpace
     Private m_SimData As cEcosimDatastructures
     Private m_Data As cEcospaceDataStructures
     Private m_Stanza As cStanzaDatastructures
-    Private m_Ecosim As EcoSim.cEcoSimModel
+    Private m_Ecosim As Ecosim.cEcoSimModel
     Private m_search As cSearchDatastructures
     '  Private m_indic As Ecosim.cEcosimIndicies
     Private m_tracerData As cContaminantTracerDataStructures
@@ -226,7 +225,7 @@ Public Class cEcoSpace
 
 #End Region
 
-#Region "Varaibles from FindSpatialEqulibrium()"
+#Region "Variables from FindSpatialEqulibrium()"
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Variables that where local to FindSpatialEqulibrium() in EwE5
@@ -240,8 +239,6 @@ Public Class cEcoSpace
     ''' Init (InitSpatialEquilibrium), run (FindSpatialEquilibrium) ......
     ''' </remarks>
     Private PPScale As Single
-
-    Private jord(1000) As Integer
 
     Private Cper(,,) As Single
 
@@ -667,8 +664,6 @@ Public Class cEcoSpace
                 If m_Data.CurrentForce Then
                     For i = 0 To m_Data.InRow + 1
                         For j = 0 To m_Data.InCol + 1
-                            'jb Xv() are dimmed when the current field are read in
-                            'which is not happening yet so if this crashes that is probable the problem
                             m_Data.Xvel(i, j) = m_Data.Xv(i, j, m_Data.MonthNow)
                             m_Data.Yvel(i, j) = m_Data.Yv(i, j, m_Data.MonthNow)
                         Next j
@@ -1566,22 +1561,21 @@ Public Class cEcoSpace
             If m_Data.CurrentForce Then SetXYBoundaryDepths()
 
             'set some solvegrid solution parameters
-            Dim ihalf As Integer
             Dim iter As Double
             Dim TimeStep2 As Single
             'm_Data.W = 0.9
             'm_Data.Tol = 0.0001
             'm_Data.maxIter = 40
 
-            ihalf = Int(m_Data.InCol / 2)
+            Dim ihalf As Integer = Int(m_Data.InCol / 2)
             j = 0
             For i = ihalf To 1 Step -1
                 j = j + 1
-                jord(i) = j
+                Me.m_Data.jord(i) = j
             Next
             For i = ihalf + 1 To m_Data.InCol
                 j = j + 1
-                jord(i) = j
+                Me.m_Data.jord(i) = j
             Next
 
             iter = 0
@@ -1745,7 +1739,7 @@ Public Class cEcoSpace
                     End If
 
                     'init the grid solver object
-                    grdslvConSim.Init(m_Data.AMmTr, m_Data.Ftr, m_Data.Ccell, m_Data.InRow, m_Data.InCol, m_Data.Tol, jord, m_Data.W, Bcw, C, d, e, _
+                    grdslvConSim.Init(m_Data.AMmTr, m_Data.Ftr, m_Data.Ccell, m_Data.InRow, m_Data.InCol, m_Data.Tol, Me.m_Data.jord, m_Data.W, Bcw, C, d, e, _
                                        m_Data.Depth, m_ConBypassIntegrated, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, _
                                        m_Data.jEndCol, m_Data.IsMigratory, threadGroupsConSim, m_Data.UseExact)
 
@@ -3519,7 +3513,7 @@ exitline:
     ''' Sets apparent upwelling/downwelling rates based only on flow forcing field 
     ''' sketched by model user
     ''' </summary>
-    Public Sub SM_MapApparentUpwell()
+    Private Sub SM_MapApparentUpwell()
 
         Dim Fl As Single
         Dim i As Integer
@@ -3596,24 +3590,24 @@ exitline:
                 Dim i As Integer, j As Integer, InrowRead As Integer, IncolRead As Integer
                 Dim Xvl As Single, Yvl As Single, Xvv As Single, Yvv As Single, Vxp As Single, Vyp As Single, Upv As Single, Dep As Single
 
-                InrowRead = ReadNumber(sr)
-                IncolRead = ReadNumber(sr)
+                InrowRead = cFileUtils.ReadNumber(sr)
+                IncolRead = cFileUtils.ReadNumber(sr)
 
                 If InrowRead <> m_Data.InRow Or IncolRead <> m_Data.InCol Then
                     If MsgBox("Number of rows and columns in this advection file are not the same as your current map; try to read anyway?", vbYesNo) = vbNo Then Exit Sub
                 End If
 
-                Vxp = ReadNumber(sr)
-                Vyp = ReadNumber(sr)
+                Vxp = cFileUtils.ReadNumber(sr)
+                Vyp = cFileUtils.ReadNumber(sr)
 
                 For i = 0 To InrowRead + 1
                     For j = 0 To IncolRead + 1
-                        Xvl = ReadNumber(sr)
-                        Yvl = ReadNumber(sr)
-                        Xvv = ReadNumber(sr)
-                        Yvv = ReadNumber(sr)
-                        Upv = ReadNumber(sr)
-                        Dep = ReadNumber(sr)
+                        Xvl = cFileUtils.ReadNumber(sr)
+                        Yvl = cFileUtils.ReadNumber(sr)
+                        Xvv = cFileUtils.ReadNumber(sr)
+                        Yvv = cFileUtils.ReadNumber(sr)
+                        Upv = cFileUtils.ReadNumber(sr)
+                        Dep = cFileUtils.ReadNumber(sr)
                         If i <= m_Data.InRow + 1 And j <= m_Data.InCol + 1 Then
                             m_Data.Xvloc(i, j) = Xvl
                             m_Data.Yvloc(i, j) = Yvl
@@ -3632,33 +3626,50 @@ exitline:
 
     End Sub
 
-    Private Const cCHARS_NUMBER As String = "-0123456789E."
-    Private Const cCHARS_STRING As String = "-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$."
-    Private cSeparator As Char = CChar(" ")
+#If 0 Then
 
-    Protected Function ReadNumber(ByRef sr As System.IO.TextReader) As Single
-        Dim ch(255) As Char ' Should be enough to hold one single number
-        Dim readCh(1) As Char
-        Dim nChar As Integer = 0
+    Private Sub SetVtot(ByVal XvTot(,) As Single, ByVal YvTot(,) As Single, ByVal Corio As Single, ByVal Hstress As Single)
+        'sets total pressure in x and y directions for all cells
+        Dim i As Integer, j As Integer
+        For i = 0 To Me.m_Data.InRow + 1
+            For j = 0 To Me.m_Data.InCol + 1
+                If Me.m_Data.Depth(i, j) > 0 Then
+                    XvTot(i, j) = Me.m_Data.Xvloc(i, j)
+                    YvTot(i, j) = Me.m_Data.Yvloc(i, j)
+                End If
+            Next
+        Next
+        'add force components due to horizontal shear along box sides
+        For i = 1 To Me.m_Data.InRow
+            For j = 1 To Me.m_Data.InCol
+                If Me.m_Data.Depth(i, j) > 0 Then
+                    XvTot(i, j) = XvTot(i, j) - Corio * Me.m_Data.Yvel(i, j) + Hstress * (Me.m_Data.Xvel(i - 1, j) + Me.m_Data.Xvel(i + 1, j) - 2.0# * Me.m_Data.Xvel(i, j))
+                    YvTot(i, j) = YvTot(i, j) + Corio * Me.m_Data.Xvel(i, j) + Hstress * (Me.m_Data.Yvel(i, j - 1) + Me.m_Data.Yvel(i, j + 1) - 2.0# * Me.m_Data.Yvel(i, j))
+                End If
+            Next
+        Next
+    End Sub
 
-        ' Read leading spaces
-        Do
-            sr.Read(readCh, 0, 1)
-        Loop Until (cCHARS_NUMBER.IndexOfAny(readCh) > -1) Or (sr.Peek() < 0)
+    Private Sub SetVelocities(ByRef vel(,) As Single, _
+                              ByVal SorWv As Single, ByVal Grav As Single, ByVal UpWell As Single, _
+                              ByVal XvToT(,) As Single, ByVal YvTot(,) As Single)
+        Dim i As Integer
+        Dim j As Integer
+        For i = 0 To Me.m_Data.InRow
+            For j = 0 To Me.m_Data.InCol
+                If Me.m_Data.Depth(i, j) > 0 Then
+                    If Me.m_Data.Depth(i, j + 1) > 0 Then Me.m_Data.Xvel(i, j) = (1 - SorWv) * Me.m_Data.Xvel(i, j) + SorWv * Me.m_Data.DepthX(i, j) * (XvToT(i, j) + Grav * (vel(i, j) - vel(i, j + 1))) Else Me.m_Data.Xvel(i, j) = 0
+                    If Me.m_Data.Depth(i + 1, j) > 0 Then Me.m_Data.Yvel(i, j) = (1 - SorWv) * Me.m_Data.Yvel(i, j) + SorWv * Me.m_Data.DepthY(i, j) * (YvTot(i, j) + Grav * (vel(i, j) - vel(i + 1, j))) Else Me.m_Data.Yvel(i, j) = 0
+                    Me.m_Data.UpVel(i, j) = -UpWell * Me.m_Data.DepthA(i, j) * vel(i, j)
+                Else
+                    Me.m_Data.Xvel(i, j) = 0
+                    Me.m_Data.Yvel(i, j) = 0
+                End If
+            Next
+        Next
+    End Sub
 
-        If (sr.Peek() = -1) Then Throw New Exception("Unexpected end of file found while reading body")
-
-        ' Read digits
-        Do
-            ch(nChar) = readCh(0)
-            nChar += 1
-            sr.Read(readCh, 0, 1)
-        Loop Until (cCHARS_NUMBER.IndexOfAny(readCh) = -1) Or (sr.Peek() < 0)
-
-        Return Single.Parse(ch)
-
-    End Function
-
+#End If
 
 #End Region
 
@@ -3676,7 +3687,7 @@ exitline:
 
             For i As Integer = 1 To m_Data.nGridSolverThreads
                 solver = New cGridSolver(i)
-                solver.Init(AMm, F, m_Data.Bcell, m_Data.InRow, m_Data.InCol, m_Data.Tol, jord, m_Data.W, Bcw, C, d, e, m_Data.Depth, m_Data.ByPassIntegrate, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, m_Data.jEndCol, m_Data.IsMigratory, threadGroups, m_Data.UseExact)
+                solver.Init(AMm, F, m_Data.Bcell, m_Data.InRow, m_Data.InCol, m_Data.Tol, Me.m_Data.jord, m_Data.W, Bcw, C, d, e, m_Data.Depth, m_Data.ByPassIntegrate, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, m_Data.jEndCol, m_Data.IsMigratory, threadGroups, m_Data.UseExact)
                 m_gridSolvers.Add(solver)
             Next i
 

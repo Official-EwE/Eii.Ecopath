@@ -18,6 +18,7 @@ Imports System.IO
 Imports EwEUtils.Utilities
 Imports EwECore.ExternalData
 Imports EwEPlugin.Data
+Imports EwECore.Ecospace.Advection
 
 #End Region ' Imports
 
@@ -103,6 +104,8 @@ Public Class cCore
     Private m_PedigreeManagers As Dictionary(Of eVarNameFlags, cPedigreeManager) = Nothing
     Private m_MonteCarlo As cMonteCarloManager
     Private m_ConTracer As cContaminantTracer
+    Private m_AdvectionManager As cAdvectionManager
+    Private m_AdvectionParameters As cAdvectionParameters
 
     ''' <summary>Class to wrap stand alone functions for internal and external access.</summary>
     Private m_Functions As cEcoFunctions = Nothing
@@ -6887,6 +6890,8 @@ Public Class cCore
         'data need to initialize
         m_EcoSpaceData.StanzaGroups = Me.m_Stanza
         m_EcoSpaceData.EcoPathData = Me.m_EcoPathData
+        m_AdvectionManager = New cAdvectionManager
+        m_AdvectionParameters = New cAdvectionParameters(Me, -1)
 
         'counters needed 
         'this could change to get the counter from the above data structures
@@ -7645,6 +7650,10 @@ Public Class cCore
             Dim MPAOptManager As ISearchObjective = Me.m_SearchManagers.Item(eDataTypes.MPAOptManager)
             MPAOptManager.Init(Me)
             MPAOptManager.Load()
+
+            'Init advection
+            Me.m_AdvectionManager.Init(Me, Me.m_Ecospace)
+            Me.m_AdvectionManager.Load()
 
             bSuccess = InitEcospaceBasemap()
             bSuccess = bSuccess And InitEcospaceModelParameters()
@@ -9099,6 +9108,22 @@ Public Class cCore
     End Function
 
 #End Region ' Importance layers
+
+#Region " Advection "
+
+    Public ReadOnly Property AdvectionManager() As cAdvectionManager
+        Get
+            Return Me.m_AdvectionManager
+        End Get
+    End Property
+
+    Public ReadOnly Property AdvectionParameters() As cAdvectionParameters
+        Get
+            Return Me.m_AdvectionParameters
+        End Get
+    End Property
+
+#End Region ' Advection
 
 #End Region ' Ecospace
 

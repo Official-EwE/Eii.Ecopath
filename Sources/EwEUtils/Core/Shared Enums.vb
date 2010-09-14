@@ -1330,6 +1330,10 @@ Namespace Core
         SourceKey
         LastUpdated
 
+        Coriolis
+        XVelocity
+        YVelocity
+
     End Enum
 
 #End Region ' Variable names
@@ -1827,6 +1831,9 @@ Namespace Core
         ''' Data belongs to the Ecospace upwelling layer.
         ''' </summary>
         EcospaceLayerUpwelling = 90
+
+        EcospaceAdvectionManager = 91
+        EcospaceAdvectionParameters = 92
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

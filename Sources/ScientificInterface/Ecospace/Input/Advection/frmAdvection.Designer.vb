@@ -32,10 +32,10 @@
             Me.m_ucMap = New ScientificInterface.Ecospace.Advection.ucMap
             Me.m_ucUpwelling = New ScientificInterface.Ecospace.Advection.ucUpwelling
             Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_nudYV = New System.Windows.Forms.NumericUpDown
-            Me.m_lblYV = New System.Windows.Forms.Label
-            Me.m_nudVX = New System.Windows.Forms.NumericUpDown
-            Me.m_lblXV = New System.Windows.Forms.Label
+            Me.m_nudYVelocity = New System.Windows.Forms.NumericUpDown
+            Me.m_lblYVelocity = New System.Windows.Forms.Label
+            Me.m_nudXVelocity = New System.Windows.Forms.NumericUpDown
+            Me.m_lblXVelocity = New System.Windows.Forms.Label
             Me.m_tlpComputeControls = New System.Windows.Forms.TableLayoutPanel
             Me.m_btnStart = New System.Windows.Forms.Button
             Me.m_btnStop = New System.Windows.Forms.Button
@@ -60,8 +60,8 @@
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
-            CType(Me.m_nudYV, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_nudVX, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudYVelocity, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudXVelocity, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpComputeControls.SuspendLayout()
             CType(Me.m_nudCoriolis, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -141,10 +141,10 @@
             '
             'm_scMain.Panel1
             '
-            Me.m_scMain.Panel1.Controls.Add(Me.m_nudYV)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblYV)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_nudVX)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblXV)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_nudYVelocity)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblYVelocity)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_nudXVelocity)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblXVelocity)
             Me.m_scMain.Panel1.Controls.Add(Me.m_tlpComputeControls)
             Me.m_scMain.Panel1.Controls.Add(Me.m_btnApplyVels)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudCoriolis)
@@ -166,41 +166,41 @@
             Me.m_scMain.SplitterDistance = 132
             Me.m_scMain.TabIndex = 0
             '
-            'm_nudYV
+            'm_nudYVelocity
             '
-            Me.m_nudYV.Location = New System.Drawing.Point(54, 50)
-            Me.m_nudYV.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
-            Me.m_nudYV.Minimum = New Decimal(New Integer() {1000, 0, 0, -2147483648})
-            Me.m_nudYV.Name = "m_nudYV"
-            Me.m_nudYV.Size = New System.Drawing.Size(78, 20)
-            Me.m_nudYV.TabIndex = 4
+            Me.m_nudYVelocity.Location = New System.Drawing.Point(54, 50)
+            Me.m_nudYVelocity.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.m_nudYVelocity.Minimum = New Decimal(New Integer() {1000, 0, 0, -2147483648})
+            Me.m_nudYVelocity.Name = "m_nudYVelocity"
+            Me.m_nudYVelocity.Size = New System.Drawing.Size(78, 20)
+            Me.m_nudYVelocity.TabIndex = 4
             '
-            'm_lblYV
+            'm_lblYVelocity
             '
-            Me.m_lblYV.AutoSize = True
-            Me.m_lblYV.Location = New System.Drawing.Point(3, 52)
-            Me.m_lblYV.Name = "m_lblYV"
-            Me.m_lblYV.Size = New System.Drawing.Size(35, 13)
-            Me.m_lblYV.TabIndex = 3
-            Me.m_lblYV.Text = "Vel &Y:"
+            Me.m_lblYVelocity.AutoSize = True
+            Me.m_lblYVelocity.Location = New System.Drawing.Point(3, 52)
+            Me.m_lblYVelocity.Name = "m_lblYVelocity"
+            Me.m_lblYVelocity.Size = New System.Drawing.Size(35, 13)
+            Me.m_lblYVelocity.TabIndex = 3
+            Me.m_lblYVelocity.Text = "Vel &Y:"
             '
-            'm_nudVX
+            'm_nudXVelocity
             '
-            Me.m_nudVX.Location = New System.Drawing.Point(54, 24)
-            Me.m_nudVX.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
-            Me.m_nudVX.Minimum = New Decimal(New Integer() {1000, 0, 0, -2147483648})
-            Me.m_nudVX.Name = "m_nudVX"
-            Me.m_nudVX.Size = New System.Drawing.Size(78, 20)
-            Me.m_nudVX.TabIndex = 2
+            Me.m_nudXVelocity.Location = New System.Drawing.Point(54, 24)
+            Me.m_nudXVelocity.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.m_nudXVelocity.Minimum = New Decimal(New Integer() {1000, 0, 0, -2147483648})
+            Me.m_nudXVelocity.Name = "m_nudXVelocity"
+            Me.m_nudXVelocity.Size = New System.Drawing.Size(78, 20)
+            Me.m_nudXVelocity.TabIndex = 2
             '
-            'm_lblXV
+            'm_lblXVelocity
             '
-            Me.m_lblXV.AutoSize = True
-            Me.m_lblXV.Location = New System.Drawing.Point(3, 26)
-            Me.m_lblXV.Name = "m_lblXV"
-            Me.m_lblXV.Size = New System.Drawing.Size(35, 13)
-            Me.m_lblXV.TabIndex = 1
-            Me.m_lblXV.Text = "Vel &X:"
+            Me.m_lblXVelocity.AutoSize = True
+            Me.m_lblXVelocity.Location = New System.Drawing.Point(3, 26)
+            Me.m_lblXVelocity.Name = "m_lblXVelocity"
+            Me.m_lblXVelocity.Size = New System.Drawing.Size(35, 13)
+            Me.m_lblXVelocity.TabIndex = 1
+            Me.m_lblXVelocity.Text = "Vel &X:"
             '
             'm_tlpComputeControls
             '
@@ -436,8 +436,8 @@
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
-            CType(Me.m_nudYV, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_nudVX, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudYVelocity, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudXVelocity, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpComputeControls.ResumeLayout(False)
             CType(Me.m_nudCoriolis, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).EndInit()
@@ -474,10 +474,10 @@
         Private WithEvents m_tlpComputeControls As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_btnApplyVels As System.Windows.Forms.Button
         Private WithEvents m_btnStop As System.Windows.Forms.Button
-        Private WithEvents m_lblYV As System.Windows.Forms.Label
-        Private WithEvents m_nudYV As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_lblXV As System.Windows.Forms.Label
-        Private WithEvents m_nudVX As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblYVelocity As System.Windows.Forms.Label
+        Private WithEvents m_nudYVelocity As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblXVelocity As System.Windows.Forms.Label
+        Private WithEvents m_nudXVelocity As System.Windows.Forms.NumericUpDown
 
     End Class
 

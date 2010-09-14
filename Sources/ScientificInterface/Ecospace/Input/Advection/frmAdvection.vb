@@ -5,6 +5,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports EwECore.Ecospace.Advection
 
 #End Region ' Imports
 
@@ -14,13 +15,22 @@ Namespace Ecospace.Advection
 
 #Region " Private vars "
 
-        Private m_bSearching As Boolean = False
-
+        Private m_manager As cAdvectionManager = Nothing
+ 
         Private m_fpVX As cEwEFormatProvider = Nothing
         Private m_fpVY As cEwEFormatProvider = Nothing
         Private m_fpCoriolis As cEwEFormatProvider = Nothing
         Private m_fpWind As cEwEFormatProvider = Nothing
         Private m_fpMLD As cEwEFormatProvider = Nothing
+
+        Private m_dlgtStarted As cAdvectionManager.EcoSpaceAdvectionStartedDelegate = Nothing
+        Private m_dlgtProgress As cAdvectionManager.EcoSpaceAdvectionProgressDelegate = Nothing
+        Private m_dlgtStopped As cAdvectionManager.EcoSpaceAdvectionCompletedDelegate = Nothing
+
+        ''' <summary>Flag stating whether this form started a search.</summary>
+        Private m_bSearching As Boolean = False
+        ''' <summary>Flag stating whether a search was completed from this form.</summary>
+        Private m_bHasRun As Boolean = False
 
 #End Region ' Private vars
 
@@ -36,10 +46,12 @@ Namespace Ecospace.Advection
             ' Design time bypass
             If Me.UIContext Is Nothing Then Return
 
+            Me.m_manager = Me.Core.AdvectionManager
+
             ' Set up format providers
-            Me.m_fpVX = New cEwEFormatProvider(Me.UIContext, Me.m_nudVX, GetType(Single))
-            Me.m_fpVY = New cEwEFormatProvider(Me.UIContext, Me.m_nudYV, GetType(Single))
-            Me.m_fpCoriolis = New cEwEFormatProvider(Me.UIContext, Me.m_nudCoriolis, GetType(Single))
+            Me.m_fpCoriolis = New cPropertyFormatProvider(Me.UIContext, Me.m_nudCoriolis, Me.Core.AdvectionParameters, eVarNameFlags.Coriolis)
+            Me.m_fpVX = New cPropertyFormatProvider(Me.UIContext, Me.m_nudXVelocity, Me.Core.AdvectionParameters, eVarNameFlags.XVelocity)
+            Me.m_fpVY = New cPropertyFormatProvider(Me.UIContext, Me.m_nudYVelocity, Me.Core.AdvectionParameters, eVarNameFlags.YVelocity)
             Me.m_fpWind = New cEwEFormatProvider(Me.UIContext, Me.m_nudWind, GetType(Single))
             Me.m_fpMLD = New cEwEFormatProvider(Me.UIContext, Me.m_nudDepth, GetType(Integer))
 
@@ -65,11 +77,20 @@ Namespace Ecospace.Advection
 
             ' Kick off
             Me.UpdateControls()
-            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
+            Me.m_dlgtStarted = New cAdvectionManager.EcoSpaceAdvectionStartedDelegate(AddressOf OnCalcStarted)
+            Me.m_dlgtProgress = New cAdvectionManager.EcoSpaceAdvectionProgressDelegate(AddressOf OnCalcProgress)
+            Me.m_dlgtStopped = New cAdvectionManager.EcoSpaceAdvectionCompletedDelegate(AddressOf OnCalcStopped)
+            Me.m_manager.Connect(Me.m_dlgtStarted, Me.m_dlgtStopped, Me.m_dlgtProgress)
+
+            If Me.m_manager.isRunning Then Me.StartRun()
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+
+            ' Stop any pending run, just in case
+            Me.StopRun()
 
             For Each uc As ucAdvectionMap In Me.Maps
                 Me.m_ucZoomToolbar.RemoveZoomContainer(uc.ZoomCtrl)
@@ -80,8 +101,6 @@ Namespace Ecospace.Advection
             Me.m_fpCoriolis.Release()
             Me.m_fpWind.Release()
             Me.m_fpMLD.Release()
-
-            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             MyBase.OnFormClosed(e)
 
@@ -174,12 +193,12 @@ Namespace Ecospace.Advection
 
         Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnStart.Click
-
+            Me.StartRun()
         End Sub
 
         Private Sub OnStopComputing(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnStop.Click
-
+            Me.m_manager.StopRun()
         End Sub
 
         Private Sub OnApplyVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -191,16 +210,32 @@ Namespace Ecospace.Advection
 
 #Region " Event handlers "
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-            '' Refresh basemap on ANY data added or removed message from Ecospace
-            'If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
-            '    ' Refresh it all
-            '    Me.Basemap = Me.Core.EcospaceBasemap
-            'End If
+        'Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        '    '' Refresh basemap on ANY data added or removed message from Ecospace
+        '    'If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
+        '    '    ' Refresh it all
+        '    '    Me.Basemap = Me.Core.EcospaceBasemap
+        '    'End If
+        'End Sub
+
+        'Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
+        '    Me.UpdateControls()
+        'End Sub
+
+        Private Sub OnCalcStarted()
+            Me.m_bHasRun = False
+            Me.UpdateControls()
         End Sub
 
-        Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
-            Me.UpdateControls()
+        Private Sub OnCalcProgress(ByVal iIter As Integer)
+            cApplicationStatusNotifier.SetStatusText("Advection running iteration " & iIter, TriState.UseDefault, -1)
+            Me.m_ucMap.Invalidate()
+        End Sub
+
+        Private Sub OnCalcStopped(ByVal iIter As Integer, ByVal bInterrupted As Boolean, ByVal bBadFlow As Boolean)
+            Me.StopRun()
+            Me.m_ucMap.Invalidate()
+            Me.m_bHasRun = Not bBadFlow
         End Sub
 
 #End Region ' Event handlers
@@ -210,11 +245,11 @@ Namespace Ecospace.Advection
         Private Sub UpdateControls()
 
             ' Gather stats
-            Dim bBusy As Boolean = Not Me.Core.StateMonitor.IsComputing
+            Dim bBusy As Boolean = Me.m_manager.isRunning
 
             Me.m_btnStart.Enabled = Not bBusy And Not Me.m_bSearching
             Me.m_btnStop.Enabled = Me.m_bSearching
-            Me.m_btnApplyVels.Enabled = Not bBusy
+            Me.m_btnApplyVels.Enabled = Me.m_bHasRun
 
             Me.m_tsmiToggleOptions.Checked = Not Me.m_scMain.Panel1Collapsed
 
@@ -223,6 +258,32 @@ Namespace Ecospace.Advection
         Private Function Maps() As ucAdvectionMap()
             Return New ucAdvectionMap() {Me.m_ucMap, Me.m_ucMLD, Me.m_ucUpwelling, Me.m_ucWind}
         End Function
+
+        Private Sub StartRun()
+
+            ' Already running? Abort
+            If Me.m_bSearching Then Return
+
+            If Not Me.m_manager.isRunning Then Me.m_manager.Run(Me)
+            Me.m_bSearching = Me.m_manager.isRunning
+
+            If m_bSearching Then
+                cApplicationStatusNotifier.SetStatusText("Starting Advection computations...", TriState.True, -1)
+                Me.UpdateControls()
+            End If
+
+        End Sub
+
+        Private Sub StopRun()
+
+            If Not Me.m_bSearching Then Return
+
+            Me.m_bSearching = False
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            Me.m_manager.StopRun()
+            Me.UpdateControls()
+
+        End Sub
 
 #End Region ' Internals
 
