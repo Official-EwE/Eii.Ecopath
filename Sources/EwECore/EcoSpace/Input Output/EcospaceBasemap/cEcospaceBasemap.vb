@@ -594,6 +594,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.RelCin
             Case eVarNameFlags.LayerMPASeed
                 Return Me.m_core.MPAOptData.MPASeed
+            Case eVarNameFlags.LayerAdvection
+                Return New Single()(,) {Me.m_core.m_EcoSpaceData.Xvel, Me.m_core.m_EcoSpaceData.Yvel}
             Case eVarNameFlags.LayerMigration
                 Return New Integer()(,) {Me.m_core.m_EcoSpaceData.PrefRow, Me.m_core.m_EcoSpaceData.Prefcol}
             Case eVarNameFlags.LayerWind
