@@ -304,10 +304,9 @@ Namespace Ecospace.Basemap.Layers
                         ad.AllowValidation = True
                     End If
 
-                    renderer = New cLayerRendererArrow(vs)
-                    editor = New cLayerEditorAdvection()
+                    renderer = New cLayerRendererWindEwE5(vs)
                     If layerData Is Nothing Then layerData = bmd.LayerAdvection
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerAdvection)
+                    layer = New cLayer(uic, layerData, renderer, Nothing, bmd, eVarNameFlags.LayerAdvection)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_ADVECTION
 
                     lLayers.Add(layer)
