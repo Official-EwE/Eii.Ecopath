@@ -15,7 +15,7 @@ Namespace Ecospace.Advection
     ''' </summary>
     Public Class ucUpwelling
 
-        Protected Overrides Function EditableLayer() As EwEUtils.Core.eVarNameFlags
+        Protected Overrides Function DataLayerVariable() As EwEUtils.Core.eVarNameFlags
             Return eVarNameFlags.LayerUpwelling
         End Function
 

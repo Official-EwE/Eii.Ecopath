@@ -69,8 +69,8 @@ Namespace Ecospace.Advection
             Me.m_tscmMonth.SelectedIndex = 0
 
             ' Initialize control values
-            Me.m_nudWind.Value = CDec(DirectCast(Me.m_ucWind.LayerEdit.Editor, cLayerEditorVector).ScaleFactor)
-            Me.m_nudDepth.Value = CDec(Me.m_ucMLD.LayerEdit.Editor.CellValue)
+            Me.m_nudWind.Value = CDec(DirectCast(Me.m_ucWind.DataLayer.Editor, cLayerEditorVector).ScaleFactor)
+            Me.m_nudDepth.Value = CDec(Me.m_ucMLD.DataLayer.Editor.CellValue)
 
             ' Config EwEForm
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
@@ -144,7 +144,7 @@ Namespace Ecospace.Advection
             ' Sanity check
             If Me.UIContext Is Nothing Then Return
 
-            Dim layer As cLayer = Me.m_ucWind.LayerEdit
+            Dim layer As cLayer = Me.m_ucWind.DataLayer
             DirectCast(layer.Data, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
             layer.Update(cLayer.eChangeFlags.Map, False)
 
@@ -161,8 +161,8 @@ Namespace Ecospace.Advection
 
             ' Distribute cursor size
             For Each uc As ucAdvectionMap In Me.Maps
-                If uc.LayerEdit IsNot Nothing Then
-                    uc.LayerEdit.Editor.CursorSize = iCursorSize
+                If uc.DataLayer IsNot Nothing Then
+                    uc.DataLayer.Editor.CursorSize = iCursorSize
                     uc.Map.UpdateCursorFeedback()
                 End If
             Next
@@ -175,7 +175,7 @@ Namespace Ecospace.Advection
             ' Sanity check
             If Me.UIContext Is Nothing Then Return
 
-            With DirectCast(Me.m_ucWind.LayerEdit.Editor, cLayerEditorVector)
+            With DirectCast(Me.m_ucWind.DataLayer.Editor, cLayerEditorVector)
                 .ScaleFactor = CSng(Me.m_nudWind.Value)
             End With
 
@@ -187,7 +187,7 @@ Namespace Ecospace.Advection
             ' Sanity check
             If Me.UIContext Is Nothing Then Return
 
-            Me.m_ucMLD.LayerEdit.Editor.CellValue = CSng(Me.m_nudDepth.Value)
+            Me.m_ucMLD.DataLayer.Editor.CellValue = CSng(Me.m_nudDepth.Value)
 
         End Sub
 
@@ -228,8 +228,19 @@ Namespace Ecospace.Advection
         End Sub
 
         Private Sub OnCalcProgress(ByVal iIter As Integer)
+
+            ' Update app status
             cApplicationStatusNotifier.SetStatusText("Advection running iteration " & iIter, TriState.UseDefault, -1)
-            Me.m_ucMap.Invalidate()
+            ' Update data layer
+            Dim layer As cLayer = Me.m_ucMap.DataLayer
+            layer.Update(cLayer.eChangeFlags.Map, False)
+
+            'Dim iLeft As Integer = 0
+            'Math.DivRem(iIter, 10, iLeft)
+            'If iLeft = 0 Then
+            '    Me.m_ucMap.Refresh()
+            'End If
+
         End Sub
 
         Private Sub OnCalcStopped(ByVal iIter As Integer, ByVal bInterrupted As Boolean, ByVal bBadFlow As Boolean)

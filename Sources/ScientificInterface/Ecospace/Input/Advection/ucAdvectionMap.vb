@@ -22,7 +22,7 @@ Namespace Ecospace.Advection
         ''' <summary>UI context to operate on.</summary>
         Private m_uic As cUIContext = Nothing
         ''' <summary>The layer that can be edited in this map, if any.</summary>
-        Private m_layerEditable As cLayer = Nothing
+        Private m_layerData As cLayer = Nothing
         ''' <summary>The name of the map to display in the header.</summary>
         Private m_strMapName As String = "<header>"
 
@@ -77,9 +77,9 @@ Namespace Ecospace.Advection
         ''' Get the layer that the user can edit in this map.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property LayerEdit() As cLayer
+        Public ReadOnly Property DataLayer() As cLayer
             Get
-                Return Me.m_layerEditable
+                Return Me.m_layerData
             End Get
         End Property
 
@@ -111,22 +111,21 @@ Namespace Ecospace.Advection
         ''' <returns>A variable name, or <see cref="eVarNameFlags.NotSet">NotSet</see>
         ''' if the user cannot edit this map.</returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function EditableLayer() As eVarNameFlags
+        Protected Overridable Function DataLayerVariable() As eVarNameFlags
             Return eVarNameFlags.NotSet
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Specify the <see cref="eVarNameFlags">var names</see> identifying the
-        ''' background layers in the attached <see cref="Map">map</see>.
+        ''' Specify whether the <see cref="DataLayer">data layer</see> is
+        ''' editable.
         ''' </summary>
         ''' <returns>
-        ''' A list of variable names to show on top of the already present
-        ''' <see cref="eVarNameFlags.LayerDepth">Ecospace depth layer</see>.
+        ''' True by default.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function BackgroundLayers() As eVarNameFlags()
-            Return Nothing
+        Protected Overridable Function IsDataInput() As Boolean
+            Return True
         End Function
 
         ''' -------------------------------------------------------------------
@@ -138,8 +137,8 @@ Namespace Ecospace.Advection
             Dim img As Image = Nothing
 
             If Me.Enabled Then
-                If Me.LayerEdit IsNot Nothing Then
-                    If Me.LayerEdit.Editor.IsEditable Then
+                If Me.DataLayer IsNot Nothing Then
+                    If Me.DataLayer.Editor.IsEditable Then
                         img = My.Resources.Editable
                     Else
                         img = My.Resources.NotEditable
@@ -178,34 +177,24 @@ Namespace Ecospace.Advection
 
             ' Always show depth layer
             Me.AddLayer(eVarNameFlags.LayerDepth, False)
-            ' Add optional background layers
-            If (Me.BackgroundLayers IsNot Nothing) Then
-                For Each vn As eVarNameFlags In Me.BackgroundLayers
-                    If vn <> eVarNameFlags.NotSet Then
-                        Me.AddLayer(vn, False)
-                    End If
-                Next
+            ' Add data layer
+            If Me.DataLayerVariable <> eVarNameFlags.NotSet Then
+                Me.m_layerData = Me.AddLayer(Me.DataLayerVariable, Me.IsDataInput)
             End If
-
-            If Me.EditableLayer <> eVarNameFlags.NotSet Then
-                Me.m_layerEditable = Me.AddLayer(Me.EditableLayer, True)
-                Me.m_zoomctrl.Map.Editable = True
-            Else
-                Me.m_zoomctrl.Map.Editable = False
-            End If
+            Me.m_zoomctrl.Map.Editable = Me.IsDataInput
 
             ' Start observing layer changes
-            If (Me.m_layerEditable IsNot Nothing) Then
-                AddHandler Me.m_layerEditable.LayerChanged, AddressOf OnLayerChanged
+            If (Me.m_layerData IsNot Nothing) Then
+                AddHandler Me.m_layerData.LayerChanged, AddressOf OnLayerChanged
             End If
 
         End Sub
 
         Protected Overridable Sub ClearMap()
 
-            If (Me.m_layerEditable IsNot Nothing) Then
-                RemoveHandler Me.m_layerEditable.LayerChanged, AddressOf OnLayerChanged
-                Me.m_layerEditable = Nothing
+            If (Me.m_layerData IsNot Nothing) Then
+                RemoveHandler Me.m_layerData.LayerChanged, AddressOf OnLayerChanged
+                Me.m_layerData = Nothing
             End If
 
             Me.m_zoomctrl.Map.Clear()

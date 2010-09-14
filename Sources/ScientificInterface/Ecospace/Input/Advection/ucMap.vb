@@ -16,9 +16,14 @@ Namespace Ecospace.Advection
     Public Class ucMap
         Inherits ucAdvectionMap
 
-        ''' <inheritdoc cref="BackgroundLayers"/>
-        Protected Overrides Function BackgroundLayers() As eVarNameFlags()
-            Return New eVarNameFlags() {eVarNameFlags.LayerAdvection}
+        ''' <inheritdoc cref="DataLayer"/>
+        Protected Overrides Function DataLayerVariable() As EwEUtils.Core.eVarNameFlags
+            Return eVarNameFlags.LayerAdvection
+        End Function
+
+        ''' <inheritdoc cref="IsDataInput"/>
+        Protected Overrides Function IsDataInput() As Boolean
+            Return False
         End Function
 
     End Class
