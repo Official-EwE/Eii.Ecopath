@@ -6,21 +6,23 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Base layer providing access to Ecospace data as cells of single values.
+''' Base layer providing access to Ecospace data as cells, each representing a
+''' vector with a X and Y component.
 ''' </summary>
-
+''' ---------------------------------------------------------------------------
 Public MustInherit Class cEcospaceLayerVector
     Inherits cEcospaceLayer
 
 #Region " Private variables "
 
-    ''' <summary>Layer max value.</summary>
+    ''' <summary>Layer max vector value.</summary>
     Protected m_sMaxValue As Single = 0.0!
 
     ''' <summary>States whether layer max value should be recalculated.</summary>
-    ''' <remarks>True at startup to make sure that min/max are properly calculated
-    ''' when first queried.</remarks>
+    ''' <remarks>True at startup to make sure that the max vector size is properly 
+    ''' calculated when first queried.</remarks>
     Private m_bInvalidateMax As Boolean = True
 
 #End Region ' Private variables
@@ -116,23 +118,19 @@ Public MustInherit Class cEcospaceLayerVector
 
 #Region " Internals "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Calc max vector size in data layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Protected Overridable Sub RecalcMax()
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-        'Dim sX As Single = 0.0!
-        'Dim sY As Single
-        'Dim s As Single
 
         Me.m_sMaxValue = 0
 
         For iRow As Integer = 1 To bm.InRow
             For iCol As Integer = 1 To bm.InCol
-                'sX = Me.XVelocity(iRow, iCol)
-                'sY = Me.YVelocity(iRow, iCol)
-                'If sX <> cCore.NULL_VALUE And sY <> cCore.NULL_VALUE Then
-                '    s = CSng(Math.Sqrt(sX * sX + sY * sY))
-                '    Me.m_sMaxValue = Math.Max(Math.Abs(s), Me.m_sMaxValue)
-                'End If
                 Me.m_sMaxValue = Math.Max(Me.m_sMaxValue, _
                                           Math.Max(Math.Abs(Me.XVelocity(iRow, iCol)), _
                                                    Math.Abs(Me.YVelocity(iRow, iCol))))
