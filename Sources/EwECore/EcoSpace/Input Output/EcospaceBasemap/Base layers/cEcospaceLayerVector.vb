@@ -119,20 +119,23 @@ Public MustInherit Class cEcospaceLayerVector
     Protected Overridable Sub RecalcMax()
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-        Dim sX As Single = 0.0!
-        Dim sY As Single
-        Dim s As Single
+        'Dim sX As Single = 0.0!
+        'Dim sY As Single
+        'Dim s As Single
 
-        Me.m_sMaxValue = Single.MinValue
+        Me.m_sMaxValue = 0
 
         For iRow As Integer = 1 To bm.InRow
             For iCol As Integer = 1 To bm.InCol
-                sX = Me.XVelocity(iRow, iCol)
-                sY = Me.YVelocity(iRow, iCol)
-                If sX <> cCore.NULL_VALUE And sY <> cCore.NULL_VALUE Then
-                    s = CSng(Math.Sqrt(sX * sX + sY * sY))
-                    Me.m_sMaxValue = Math.Max(Math.Abs(s), Me.m_sMaxValue)
-                End If
+                'sX = Me.XVelocity(iRow, iCol)
+                'sY = Me.YVelocity(iRow, iCol)
+                'If sX <> cCore.NULL_VALUE And sY <> cCore.NULL_VALUE Then
+                '    s = CSng(Math.Sqrt(sX * sX + sY * sY))
+                '    Me.m_sMaxValue = Math.Max(Math.Abs(s), Me.m_sMaxValue)
+                'End If
+                Me.m_sMaxValue = Math.Max(Me.m_sMaxValue, _
+                                          Math.Max(Math.Abs(Me.XVelocity(iRow, iCol)), _
+                                                   Math.Abs(Me.YVelocity(iRow, iCol))))
             Next iCol
         Next iRow
         Me.m_bInvalidateMax = False
