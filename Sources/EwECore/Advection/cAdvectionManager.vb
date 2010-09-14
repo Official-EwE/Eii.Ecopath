@@ -217,9 +217,12 @@ Namespace Ecospace.Advection
         Private Sub OnAdvectionCalcsProgressHandler(ByVal iInteration As Integer)
 
             Try
+                Dim layer As cEcospaceLayer = Me.m_core.EcospaceBasemap.LayerAdvection
 
                 If m_RunProgressDelegate IsNot Nothing Then
-                    'call the delegate supplied by the interface
+                    ' Invalidate layer
+                    layer.Invalidate()
+                    ' Call the delegate supplied by the interface
                     m_syncObject.BeginInvoke(Me.m_RunProgressDelegate, New Object() {Me.m_comp.Iteration})
                 End If
 
