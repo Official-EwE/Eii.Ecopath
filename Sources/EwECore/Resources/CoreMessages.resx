@@ -903,4 +903,11 @@ System Error: {0}</value>
   <data name="MONTECARLO_RESTORE_FAILED" xml:space="preserve">
     <value>Warning: Monte Carlo failed to set Ecopath back to its original state. You may need to close the model without saving to restore your original data.</value>
   </data>
+  <data name="ADVECTION_ALREADY_RUNNING" xml:space="preserve">
+    <value>An advection computation is already running. Only one computation can run at a time.</value>
+  </data>
+  <data name="ADVECTION_ERROR" xml:space="preserve">
+    <value>An error occurred running the advection computations: {0}</value>
+    <comment>{0}=error message</comment>
+  </data>
 </root>
