@@ -812,7 +812,7 @@ Namespace Ecospace
         Private Sub HandleSeedCellCallback()
 
             ' Sanity check
-            If Not (Me.m_manager.isRunning()) Then Return
+            If Not (Me.m_manager.IsRunning()) Then Return
 
             Dim output As cMPAOptOutput = Me.m_manager.CurrentRowColResults
 
@@ -870,7 +870,7 @@ Namespace Ecospace
         Private Sub HandleNewCellSelected()
 
             ' Sanity check
-            Debug.Assert(Me.m_manager.isRunning())
+            Debug.Assert(Me.m_manager.IsRunning())
 
             Dim output As cMPAOptOutput = Me.m_manager.CurrentRowColResults
 
@@ -904,7 +904,7 @@ Namespace Ecospace
             Dim output As cMPAOptOutput = Me.m_manager.CurrentRowColResults
 
             ' Sanity check
-            Debug.Assert(Me.m_manager.isRunning())
+            Debug.Assert(Me.m_manager.IsRunning())
 
             Try
 
