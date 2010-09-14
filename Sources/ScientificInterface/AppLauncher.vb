@@ -812,9 +812,6 @@ Public Class AppLauncher
 
         ' ToDo_JS: Consider using a timer to clear any status text after a certain interval
 
-        ' Give app a chance to render
-        Application.DoEvents()
-
         ' Update wait cursor
         Select Case tsUseWaitCursor
 
