@@ -305,7 +305,7 @@ Public MustInherit Class cThreadWaitBase
     ''' Set the signaled state to non-signaled any thread the calls Wait() will be blocked until ReleaseWait() is called
     ''' </summary>
     ''' <remarks></remarks>
-    Protected Overridable Sub setWait()
+    Protected Overridable Sub SetWait()
         'set the isRunning flag
         m_bIsRunning = True
         'puts the ManualResetEvent into a non-signaled state
@@ -321,7 +321,7 @@ Public MustInherit Class cThreadWaitBase
         Me.m_SignalState.Set()
     End Sub
 
-    Public Overridable ReadOnly Property isRunning() As Boolean
+    Public Overridable ReadOnly Property IsRunning() As Boolean
         Get
             Return m_bIsRunning
         End Get
