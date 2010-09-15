@@ -343,7 +343,7 @@ Namespace Ecosim
 
             cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded() And _
                           Me.Core.HasAppliedTimeSeries() And _
-                          Not Me.m_mcmanager.isRunning
+                          Not Me.m_mcmanager.IsRunning
 
             If Me.Core.HasAppliedTimeSeries() Then
                 ' JS 11dec07: is this necessary?
@@ -369,7 +369,7 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub m_cmdStopMonteCarlo_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdStopMonteCarlo.OnUpdate
-            cmd.Enabled = Me.m_mcmanager.isRunning
+            cmd.Enabled = Me.m_mcmanager.IsRunning
         End Sub
 
         ''' -------------------------------------------------------------------
