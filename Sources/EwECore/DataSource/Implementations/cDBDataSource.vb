@@ -7116,6 +7116,7 @@ Namespace DataSources
             For i As Integer = 1 To ecospaceDS.InRow
                 For j As Integer = 1 To ecospaceDS.InCol
                     ecospaceDS.Depth(i, j) = 0
+                    ecospaceDS.DepthA(i, j) = 0
                 Next
             Next
 
@@ -7131,6 +7132,7 @@ Namespace DataSources
 
                         ' Read scalars
                         ecospaceDS.Depth(iRow, iCol) = CInt(reader("Depth"))
+                        ecospaceDS.DepthA(iRow, iCol) = ecospaceDS.Depth(iRow, iCol)
                         ecospaceDS.RelPP(iRow, iCol) = CSng(reader("RelPP"))
                         ecospaceDS.RelCin(iRow, iCol) = CSng(reader("RelCin"))
                         ' Read FKs
