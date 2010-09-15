@@ -23,9 +23,9 @@ Namespace Ecospace.Advection
         Private m_fpWind As cEwEFormatProvider = Nothing
         Private m_fpMLD As cEwEFormatProvider = Nothing
 
-        Private m_dlgtStarted As cAdvectionManager.EcoSpaceAdvectionStartedDelegate = Nothing
-        Private m_dlgtProgress As cAdvectionManager.EcoSpaceAdvectionProgressDelegate = Nothing
-        Private m_dlgtStopped As cAdvectionManager.EcoSpaceAdvectionCompletedDelegate = Nothing
+        Private m_dlgtStarted As cAdvectionManager.ComputationStartedDelegate = Nothing
+        Private m_dlgtProgress As cAdvectionManager.ComputationProgressDelegate = Nothing
+        Private m_dlgtStopped As cAdvectionManager.ComputationCompletedDelegate = Nothing
 
         ''' <summary>Flag stating whether this form started a search.</summary>
         Private m_bSearching As Boolean = False
@@ -78,9 +78,9 @@ Namespace Ecospace.Advection
             ' Kick off
             Me.UpdateControls()
 
-            Me.m_dlgtStarted = New cAdvectionManager.EcoSpaceAdvectionStartedDelegate(AddressOf OnCalcStarted)
-            Me.m_dlgtProgress = New cAdvectionManager.EcoSpaceAdvectionProgressDelegate(AddressOf OnCalcProgress)
-            Me.m_dlgtStopped = New cAdvectionManager.EcoSpaceAdvectionCompletedDelegate(AddressOf OnCalcStopped)
+            Me.m_dlgtStarted = New cAdvectionManager.ComputationStartedDelegate(AddressOf OnCalcStarted)
+            Me.m_dlgtProgress = New cAdvectionManager.ComputationProgressDelegate(AddressOf OnCalcProgress)
+            Me.m_dlgtStopped = New cAdvectionManager.ComputationCompletedDelegate(AddressOf OnCalcStopped)
             Me.m_manager.Connect(Me.m_dlgtStarted, Me.m_dlgtStopped, Me.m_dlgtProgress)
 
             If Me.m_manager.isRunning Then Me.StartRun()
