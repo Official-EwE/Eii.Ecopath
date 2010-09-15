@@ -127,9 +127,10 @@ Namespace Ecospace.Advection
             Try
                 m_parameters.AllowValidation = False
 
-                m_parameters.Coriolis = Me.m_data.Coriolis
                 m_parameters.XVelocity = Me.m_data.XVelocity
                 m_parameters.YVelocity = Me.m_data.YVelocity
+                m_parameters.Coriolis = Me.m_data.Coriolis
+                m_parameters.SorWv = Me.m_data.SorWv
 
                 m_parameters.ResetStatusFlags()
                 m_parameters.AllowValidation = True
@@ -148,9 +149,10 @@ Namespace Ecospace.Advection
         ''' -------------------------------------------------------------------
         Public Function Update() As Boolean
 
-            Me.m_data.Coriolis = Me.m_parameters.Coriolis
             Me.m_data.XVelocity = Me.m_parameters.XVelocity
             Me.m_data.YVelocity = Me.m_parameters.YVelocity
+            Me.m_data.Coriolis = Me.m_parameters.Coriolis
+            Me.m_data.SorWv = Me.m_parameters.SorWv
 
             Return True
 
