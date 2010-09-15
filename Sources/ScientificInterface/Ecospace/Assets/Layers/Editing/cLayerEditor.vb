@@ -36,8 +36,8 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>Runtime type of the <see cref="ucLayerEditor">layer editor GUI</see>
         ''' that implements the user interface controls to configure the editor.</summary>
         Private m_typeGUI As Type = Nothing
-        ''' <summary>An instantiated GUI, if any.</summary>
-        Private m_gui As ucLayerEditor = Nothing
+        ''' <summary>A GUI, if any.</summary>
+        Private m_gui As ILayerEditor = Nothing
         ''' <summary>UI context to operate on.</summary>
         Private m_uic As cUIContext = Nothing
 
@@ -69,7 +69,9 @@ Namespace Ecospace.Basemap.Layers
         Protected Overrides Sub Finalize()
 
             If (Me.m_gui IsNot Nothing) Then
-                Me.m_gui.Detach()
+                If (TypeOf Me.m_gui Is ucLayerEditor) Then
+                    DirectCast(Me.m_gui, ucLayerEditor).Detach()
+                End If
             End If
 
             Me.Layer = Nothing
@@ -140,20 +142,26 @@ Namespace Ecospace.Basemap.Layers
         ''' -------------------------------------------------------------------
         Public Overridable Function CreateEditorControl() As ucLayerEditor
 
+            Dim gui As ucLayerEditor = Nothing
+
             Debug.Assert(Me.m_gui Is Nothing)
 
             Try
                 Dim obj As Object = Activator.CreateInstance(Me.m_typeGUI, New Object() {})
                 ' Sanity check
                 Debug.Assert(TypeOf obj Is ucLayerEditor)
+
+                gui = DirectCast(obj, ucLayerEditor)
+                gui.Attach(Me.m_uic, Me)
+
                 ' Remember GUI
-                Me.m_gui = DirectCast(obj, ucLayerEditor)
-                Me.m_gui.Attach(Me.m_uic, Me)
+                Me.m_gui = gui
+
             Catch ex As Exception
                 Debug.Assert(False, "Failed to create layer editor interface")
             End Try
 
-            Return Me.m_gui
+            Return gui
         End Function
 
         ''' -------------------------------------------------------------------
@@ -169,8 +177,10 @@ Namespace Ecospace.Basemap.Layers
 
             Debug.Assert(Me.m_gui IsNot Nothing)
 
-            Me.m_gui.Detach()
-            Me.m_gui.Dispose()
+            If (TypeOf Me.m_gui Is ucLayerEditor) Then
+                DirectCast(Me.m_gui, ucLayerEditor).Detach()
+                DirectCast(Me.m_gui, ucLayerEditor).Dispose()
+            End If
             Me.m_gui = Nothing
 
         End Sub
@@ -183,6 +193,15 @@ Namespace Ecospace.Basemap.Layers
         Public Overridable Function Cursor(ByVal szCell As SizeF) As Cursor
             Return cLayerEditor.EditorCursor(Me.CursorSize, szCell)
         End Function
+
+        Public Property GUI() As ILayerEditor
+            Get
+                Return Me.m_gui
+            End Get
+            Set(ByVal value As ILayerEditor)
+                Me.m_gui = value
+            End Set
+        End Property
 
 #End Region ' GUI feedback
 
@@ -458,18 +477,7 @@ Namespace Ecospace.Basemap.Layers
             End Set
         End Property
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the editor user interface.
-        ''' </summary>
-        ''' <returns>A <see cref="ucLayerEditor">ucLayerEditor</see>-inherited
-        ''' user control.</returns>
-        ''' -----------------------------------------------------------------------
-        Protected Function GUI() As ucLayerEditor
-            Return Me.m_gui
-        End Function
-
-#End Region 'Internals 
+#End Region ' Internals 
 
     End Class
 

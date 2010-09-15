@@ -14,6 +14,7 @@ Namespace Ecospace.Basemap.Layers
     ''' -----------------------------------------------------------------------
     Public Class ucLayerEditor
         Implements IUIElement
+        Implements ILayerEditor
 
 #Region " Private vars "
 
@@ -76,7 +77,8 @@ Namespace Ecospace.Basemap.Layers
         ''' started editing the layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub StartEdit()
+        Public Overridable Sub StartEdit() _
+            Implements ILayerEditor.StartEdit
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -85,7 +87,8 @@ Namespace Ecospace.Basemap.Layers
         ''' finished editing the layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub EndEdit()
+        Public Overridable Sub EndEdit() _
+            Implements ILayerEditor.EndEdit
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -93,7 +96,8 @@ Namespace Ecospace.Basemap.Layers
         ''' Update the controls and caption of the editor.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub UpdateContent()
+        Public Overridable Sub UpdateContent() _
+            Implements ILayerEditor.UpdateContent
 
             Dim strLabel As String = ""
             Dim img As Image = My.Resources.ProtectFormHS

@@ -116,6 +116,30 @@ Namespace Ecospace.Basemap.Layers
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Pick up the cell value at a given point, and store this value in the
+        ''' layer editor as the next value that will be set.
+        ''' Overridden to pick up the scale factor at a given location.
+        ''' </summary>
+        ''' <param name="pt">The cell location to pick up a value from.</param>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub Pickup(ByVal pt As System.Drawing.Point)
+
+            Try
+                Dim asValue As Single() = DirectCast(Me.Layer.Value(pt.X, pt.Y), Single())
+                Me.m_sScaleFactor = CSng(Math.Sqrt(asValue(0) * asValue(0) + asValue(1) * asValue(1)))
+
+                ' Notify the editor GUI, if any
+                If Me.GUI IsNot Nothing Then
+                    Me.GUI.UpdateContent()
+                End If
+
+            Catch ex As Exception
+            End Try
+
+        End Sub
+
 #End Region ' Internal overrides
 
     End Class
