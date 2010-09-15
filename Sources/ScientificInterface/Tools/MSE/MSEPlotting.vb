@@ -544,7 +544,6 @@ Friend Class cMSEPlotter
                     x = Me.m_uic.Core.EcosimFirstYear
                     'add a point for each value
                     For iTime As Integer = 1 To data.nTimeSteps
-
                         ppl.Add(x, values(iTime))
                         x += dx
                     Next
@@ -614,30 +613,28 @@ Friend Class cMSEPlotter
 
     Private Sub plotMean(ByVal StatsData As cMSEStats, ByVal ipane As Integer)
         Dim x As Double, dx As Double
-
         Dim ppl As PointPairList = Nothing
         Dim li As LineItem = Nothing
-        Dim lines As New List(Of LineItem)
 
         'time varing mean
         ppl = New PointPairList()
         x = Me.m_uic.Core.EcosimFirstYear
         dx = 1 / StatsData.nStepsPerYear
         For iTime As Integer = 1 To StatsData.nTimeSteps
-
             ppl.Add(x, StatsData.Mean(iTime))
             x += dx
         Next
         li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Me.getLineColour(StatsData), ppl)
         li.Line.Width = 2
-        lines.Add(li)
+
+        Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
 
         'mean over all the data(solid blue line)
         ppl = New PointPairList()
         ppl.Add(0, StatsData.Mean)
         ppl.Add(x, StatsData.Mean)
         li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
-        lines.Add(li)
+        Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
 
         '2 standard deviation lines
         Dim std2 As Single = 2 * StatsData.Std
@@ -647,7 +644,7 @@ Friend Class cMSEPlotter
         li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
         li.Line.Style = Drawing2D.DashStyle.Dot
         li.Line.Width = 0.5
-        lines.Add(li)
+        Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
 
         ppl = New PointPairList()
         ppl.Add(0, StatsData.Mean - std2)
@@ -655,9 +652,7 @@ Friend Class cMSEPlotter
         li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
         li.Line.Style = Drawing2D.DashStyle.Dot
         li.Line.Width = 0.5
-        lines.Add(li)
-
-        Me.m_zgh.PlotLines(lines.ToArray(), ipane, False, False)
+        Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
 
     End Sub
 
