@@ -572,6 +572,7 @@ Public Class cEcospaceDataStructures
             For i = 1 To InRow
                 For j As Integer = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
+                    DepthA(i, j) = Depth(i, j)
                     HabType(i, j) = 1
                     RelPP(i, j) = 1
                     RelCin(i, j) = 1
@@ -987,6 +988,7 @@ Public Class cEcospaceDataStructures
             For i = 1 To InRow
                 For j = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
+                    DepthA(i, j) = Depth(i, j)
                     HabType(i, j) = 1
                     RelPP(i, j) = 1
                     RelCin(i, j) = 1
