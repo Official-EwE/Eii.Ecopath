@@ -1158,6 +1158,12 @@ Namespace Controls
 #Region " Value "
 
         ''' -------------------------------------------------------------------
+        ''' <summary>Event to notify that a value has changed.</summary>
+        ''' <param name="sender">The format provider that sent the event.</param>
+        ''' -------------------------------------------------------------------
+        Public Event OnValueChanged(ByVal sender As cEwEFormatProvider)
+
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the value of the control.
         ''' </summary>
@@ -1202,6 +1208,12 @@ Namespace Controls
 
                 ' Update
                 Me.UpdateContent()
+
+                Try
+                    RaiseEvent OnValueChanged(Me)
+                Catch ex As Exception
+                    ' Wow
+                End Try
 
             End Set
         End Property
