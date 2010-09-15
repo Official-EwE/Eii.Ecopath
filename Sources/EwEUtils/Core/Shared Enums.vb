@@ -1333,6 +1333,7 @@ Namespace Core
         Coriolis
         XVelocity
         YVelocity
+        SorWv
 
     End Enum
 
