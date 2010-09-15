@@ -12,21 +12,27 @@ Imports EwECore.Ecospace.Advection
 Namespace Ecospace.Advection
 
     Public Class frmAdvection
+        Implements ILayerEditor
 
 #Region " Private vars "
 
         Private m_manager As cAdvectionManager = Nothing
- 
+
         Private m_fpVXelocity As cEwEFormatProvider = Nothing
         Private m_fpVYelocity As cEwEFormatProvider = Nothing
         Private m_fpCoriolis As cEwEFormatProvider = Nothing
         Private m_fpSorWv As cEwEFormatProvider = Nothing
         Private m_fpWind As cEwEFormatProvider = Nothing
         Private m_fpMLD As cEwEFormatProvider = Nothing
+        Private m_fpUpwell As cEwEFormatProvider = Nothing
 
         Private m_dlgtStarted As cAdvectionManager.ComputationStartedDelegate = Nothing
         Private m_dlgtProgress As cAdvectionManager.ComputationProgressDelegate = Nothing
         Private m_dlgtStopped As cAdvectionManager.ComputationCompletedDelegate = Nothing
+
+        Private m_edtWind As cLayerEditorVector = Nothing
+        Private m_edtMLD As cLayerEditor = Nothing
+        Private m_edtUpwell As cLayerEditor = Nothing
 
         ''' <summary>Flag stating whether this form started a search.</summary>
         Private m_bSearching As Boolean = False
@@ -44,8 +50,9 @@ Namespace Ecospace.Advection
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            ' Design time bypass
+            ' Design time bypasses
             If Me.UIContext Is Nothing Then Return
+            If Me.DesignMode Then Return
 
             Me.m_manager = Me.Core.AdvectionManager
 
@@ -56,6 +63,7 @@ Namespace Ecospace.Advection
             Me.m_fpSorWv = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSorWv, Me.Core.AdvectionParameters, eVarNameFlags.SorWv)
             Me.m_fpWind = New cEwEFormatProvider(Me.UIContext, Me.m_nudWind, GetType(Single))
             Me.m_fpMLD = New cEwEFormatProvider(Me.UIContext, Me.m_nudDepth, GetType(Integer))
+            Me.m_fpUpwell = New cEwEFormatProvider(Me.UIContext, Me.m_nudWind, GetType(Single))
 
             ' Connect all layers to the zoom toolbar
             For Each uc As ucAdvectionMap In Me.Maps
@@ -70,24 +78,33 @@ Namespace Ecospace.Advection
             Next
             Me.m_tscmMonth.SelectedIndex = 0
 
-            ' Initialize control values
-            Me.m_nudWind.Value = CDec(DirectCast(Me.m_ucWind.DataLayer.Editor, cLayerEditorVector).ScaleFactor)
-            Me.m_nudDepth.Value = CDec(Me.m_ucMLD.DataLayer.Editor.CellValue)
-
-            ' Config EwEForm
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
-
-            ' Kick off
-            Me.UpdateControls()
+            ' Initialize editors
+            Me.m_edtWind = DirectCast(Me.m_ucWind.DataLayer.Editor, cLayerEditorVector)
+            Me.m_edtWind.GUI = Me
+            Me.m_edtMLD = Me.m_ucMLD.DataLayer.Editor
+            Me.m_edtMLD.GUI = Me
+            Me.m_edtUpwell = Me.m_ucUpwelling.DataLayer.Editor
+            Me.m_edtUpwell.GUI = Me
 
             Me.m_dlgtStarted = New cAdvectionManager.ComputationStartedDelegate(AddressOf OnCalcStarted)
             Me.m_dlgtProgress = New cAdvectionManager.ComputationProgressDelegate(AddressOf OnCalcProgress)
             Me.m_dlgtStopped = New cAdvectionManager.ComputationCompletedDelegate(AddressOf OnCalcStopped)
             Me.m_manager.Connect(Me.m_dlgtStarted, Me.m_dlgtStopped, Me.m_dlgtProgress)
 
+            ' Listen to format providers
             AddHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
             AddHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
+            AddHandler Me.m_fpWind.OnValueChanged, AddressOf OnWindValueChanged
+            AddHandler Me.m_fpMLD.OnValueChanged, AddressOf OnMLDValueChanged
+            AddHandler Me.m_fpUpwell.OnValueChanged, AddressOf OnUpwellingValueChanged
+
+            ' Config EwEForm
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+
+            ' Kick off
             Me.UpdateTransportVelocity()
+            Me.UpdateLayerEditorContent()
+            Me.UpdateControls()
 
             If Me.m_manager.IsRunning Then Me.StartRun()
 
@@ -98,12 +115,23 @@ Namespace Ecospace.Advection
             ' Stop any pending run, just in case
             Me.StopRun()
 
+            ' Unplug
+            Me.m_edtWind.GUI = Nothing
+            Me.m_edtWind = Nothing
+            Me.m_edtMLD.GUI = Nothing
+            Me.m_edtMLD = Nothing
+            Me.m_edtUpwell.GUI = Nothing
+            Me.m_edtUpwell = Nothing
+
             For Each uc As ucAdvectionMap In Me.Maps
                 Me.m_ucZoomToolbar.RemoveZoomContainer(uc.ZoomCtrl)
             Next
 
             RemoveHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
             RemoveHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
+            RemoveHandler Me.m_fpWind.OnValueChanged, AddressOf OnWindValueChanged
+            RemoveHandler Me.m_fpMLD.OnValueChanged, AddressOf OnMLDValueChanged
+            RemoveHandler Me.m_fpUpwell.OnValueChanged, AddressOf OnUpwellingValueChanged
 
             Me.m_fpVXelocity.Release()
             Me.m_fpVYelocity.Release()
@@ -111,6 +139,7 @@ Namespace Ecospace.Advection
             Me.m_fpSorWv.Release()
             Me.m_fpWind.Release()
             Me.m_fpMLD.Release()
+            Me.m_fpUpwell.Release()
 
             MyBase.OnFormClosed(e)
 
@@ -179,26 +208,16 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Sub OnWindValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_nudWind.ValueChanged, NumericUpDown1.ValueChanged
-
-            ' Sanity check
-            If Me.UIContext Is Nothing Then Return
-
-            With DirectCast(Me.m_ucWind.DataLayer.Editor, cLayerEditorVector)
-                .ScaleFactor = CSng(Me.m_nudWind.Value)
-            End With
-
+        Private Sub OnWindValueChanged(ByVal fp As cEwEFormatProvider)
+            Me.m_edtWind.ScaleFactor = CSng(Me.m_nudWind.Value)
         End Sub
 
-        Private Sub OnMLDValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_nudDepth.ValueChanged, NumericUpDown2.ValueChanged
+        Private Sub OnMLDValueChanged(ByVal fp As cEwEFormatProvider)
+            Me.m_edtMLD.CellValue = CSng(Me.m_nudDepth.Value)
+        End Sub
 
-            ' Sanity check
-            If Me.UIContext Is Nothing Then Return
-
-            Me.m_ucMLD.DataLayer.Editor.CellValue = CSng(Me.m_nudDepth.Value)
-
+        Private Sub OnUpwellingValueChanged(ByVal fp As cEwEFormatProvider)
+            'Me.m_edtUpwell.CellValue = CSng(Me.m_nudUpwell.Value)
         End Sub
 
         Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -260,6 +279,29 @@ Namespace Ecospace.Advection
         End Sub
 
 #End Region ' Event handlers
+
+#Region " ILayerEditor implementation "
+
+        Public Sub StartEdit() _
+            Implements Basemap.Layers.ILayerEditor.StartEdit
+
+        End Sub
+
+        Public Sub EndEdit() _
+            Implements Basemap.Layers.ILayerEditor.EndEdit
+
+        End Sub
+
+        Public Sub UpdateLayerEditorContent() _
+            Implements Basemap.Layers.ILayerEditor.UpdateContent
+
+            Me.m_nudWind.Value = CDec(Me.m_edtWind.ScaleFactor)
+            Me.m_nudDepth.Value = CDec(Me.m_edtMLD.CellValue)
+            'Me.m_nudUpwell.Value = CDec(Me.m_edtUpwell.CellValue)
+
+        End Sub
+
+#End Region ' ILayerEditor implementation
 
 #Region " Internals "
 
