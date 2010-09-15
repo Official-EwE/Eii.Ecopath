@@ -44,7 +44,9 @@
             Me.m_lblSorWv = New System.Windows.Forms.Label
             Me.m_nudCoriolis = New System.Windows.Forms.NumericUpDown
             Me.m_lblCoriolis = New System.Windows.Forms.Label
+            Me.m_nudUpwell = New System.Windows.Forms.NumericUpDown
             Me.m_nudDepth = New System.Windows.Forms.NumericUpDown
+            Me.m_lblUpwelling = New System.Windows.Forms.Label
             Me.m_lblDepth = New System.Windows.Forms.Label
             Me.m_nudWind = New System.Windows.Forms.NumericUpDown
             Me.m_lblWind = New System.Windows.Forms.Label
@@ -58,8 +60,6 @@
             Me.m_tslMonth = New System.Windows.Forms.ToolStripLabel
             Me.m_tscmMonth = New System.Windows.Forms.ToolStripComboBox
             Me.m_ucZoomToolbar = New ScientificInterface.Ecospace.ucMapZoomToolbar
-            Me.m_lblUpwelling = New System.Windows.Forms.Label
-            Me.m_nudUpwell = New System.Windows.Forms.NumericUpDown
             Me.m_tlpMaps.SuspendLayout()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -69,10 +69,10 @@
             Me.m_tlpComputeControls.SuspendLayout()
             CType(Me.m_nudSorWv, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudCoriolis, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudUpwell, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudWind, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tsControls.SuspendLayout()
-            CType(Me.m_nudUpwell, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_tlpMaps
@@ -97,7 +97,6 @@
             '
             Me.m_ucWind.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_ucWind.Location = New System.Drawing.Point(334, 0)
-            Me.m_ucWind.MapName = "Wind"
             Me.m_ucWind.Margin = New System.Windows.Forms.Padding(3, 0, 0, 3)
             Me.m_ucWind.Name = "m_ucWind"
             Me.m_ucWind.Size = New System.Drawing.Size(328, 283)
@@ -108,7 +107,6 @@
             '
             Me.m_ucMLD.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_ucMLD.Location = New System.Drawing.Point(0, 289)
-            Me.m_ucMLD.MapName = "Mixed Layer Depths"
             Me.m_ucMLD.Margin = New System.Windows.Forms.Padding(0, 3, 3, 0)
             Me.m_ucMLD.Name = "m_ucMLD"
             Me.m_ucMLD.Size = New System.Drawing.Size(328, 284)
@@ -119,7 +117,6 @@
             '
             Me.m_ucMap.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_ucMap.Location = New System.Drawing.Point(0, 0)
-            Me.m_ucMap.MapName = "Map"
             Me.m_ucMap.Margin = New System.Windows.Forms.Padding(0, 0, 3, 3)
             Me.m_ucMap.Name = "m_ucMap"
             Me.m_ucMap.Size = New System.Drawing.Size(328, 283)
@@ -130,7 +127,6 @@
             '
             Me.m_ucUpwelling.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_ucUpwelling.Location = New System.Drawing.Point(334, 289)
-            Me.m_ucUpwelling.MapName = "Upwelling"
             Me.m_ucUpwelling.Margin = New System.Windows.Forms.Padding(3, 3, 0, 0)
             Me.m_ucUpwelling.Name = "m_ucUpwelling"
             Me.m_ucUpwelling.Size = New System.Drawing.Size(328, 284)
@@ -307,9 +303,19 @@
             Me.m_lblCoriolis.TabIndex = 5
             Me.m_lblCoriolis.Text = "&Coriolis:"
             '
+            'm_nudUpwell
+            '
+            Me.m_nudUpwell.Increment = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_nudUpwell.Location = New System.Drawing.Point(54, 296)
+            Me.m_nudUpwell.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.m_nudUpwell.Minimum = New Decimal(New Integer() {1000, 0, 0, -2147483648})
+            Me.m_nudUpwell.Name = "m_nudUpwell"
+            Me.m_nudUpwell.Size = New System.Drawing.Size(78, 20)
+            Me.m_nudUpwell.TabIndex = 17
+            Me.m_nudUpwell.ThousandsSeparator = True
+            '
             'm_nudDepth
             '
-            Me.m_nudDepth.DecimalPlaces = 3
             Me.m_nudDepth.Increment = New Decimal(New Integer() {10, 0, 0, 0})
             Me.m_nudDepth.Location = New System.Drawing.Point(55, 270)
             Me.m_nudDepth.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
@@ -317,7 +323,16 @@
             Me.m_nudDepth.Size = New System.Drawing.Size(78, 20)
             Me.m_nudDepth.TabIndex = 15
             Me.m_nudDepth.ThousandsSeparator = True
-            Me.m_nudDepth.Value = New Decimal(New Integer() {2, 0, 0, 0})
+            Me.m_nudDepth.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            '
+            'm_lblUpwelling
+            '
+            Me.m_lblUpwelling.AutoSize = True
+            Me.m_lblUpwelling.Location = New System.Drawing.Point(3, 298)
+            Me.m_lblUpwelling.Name = "m_lblUpwelling"
+            Me.m_lblUpwelling.Size = New System.Drawing.Size(45, 13)
+            Me.m_lblUpwelling.TabIndex = 16
+            Me.m_lblUpwelling.Text = "&Upwell.:"
             '
             'm_lblDepth
             '
@@ -444,27 +459,6 @@
             Me.m_ucZoomToolbar.TabIndex = 1
             Me.m_ucZoomToolbar.UIContext = Nothing
             '
-            'm_lblUpwelling
-            '
-            Me.m_lblUpwelling.AutoSize = True
-            Me.m_lblUpwelling.Location = New System.Drawing.Point(3, 298)
-            Me.m_lblUpwelling.Name = "m_lblUpwelling"
-            Me.m_lblUpwelling.Size = New System.Drawing.Size(45, 13)
-            Me.m_lblUpwelling.TabIndex = 16
-            Me.m_lblUpwelling.Text = "&Upwell.:"
-            '
-            'm_nudUpwell
-            '
-            Me.m_nudUpwell.Increment = New Decimal(New Integer() {10, 0, 0, 0})
-            Me.m_nudUpwell.Location = New System.Drawing.Point(54, 296)
-            Me.m_nudUpwell.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
-            Me.m_nudUpwell.Minimum = New Decimal(New Integer() {1000, 0, 0, -2147483648})
-            Me.m_nudUpwell.Name = "m_nudUpwell"
-            Me.m_nudUpwell.Size = New System.Drawing.Size(78, 20)
-            Me.m_nudUpwell.TabIndex = 17
-            Me.m_nudUpwell.ThousandsSeparator = True
-            Me.m_nudUpwell.Value = New Decimal(New Integer() {2, 0, 0, 0})
-            '
             'frmAdvection
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -492,11 +486,11 @@
             Me.m_tlpComputeControls.ResumeLayout(False)
             CType(Me.m_nudSorWv, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudCoriolis, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudUpwell, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudWind, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tsControls.ResumeLayout(False)
             Me.m_tsControls.PerformLayout()
-            CType(Me.m_nudUpwell, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 

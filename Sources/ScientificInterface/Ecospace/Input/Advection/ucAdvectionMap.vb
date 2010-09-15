@@ -83,22 +83,6 @@ Namespace Ecospace.Advection
             End Get
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the name of the map to display in the header.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(True)> _
-        Public Property MapName() As String
-            Get
-                Return Me.m_strMapName
-            End Get
-            Set(ByVal value As String)
-                Me.m_strMapName = value
-                Me.m_hdrTitle.Text = Me.m_strMapName
-            End Set
-        End Property
-
 #End Region ' Public access
 
 #Region " Overridables "
@@ -146,18 +130,21 @@ Namespace Ecospace.Advection
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overridable Sub UpdateControls()
+
             Dim img As Image = Nothing
 
             If Me.Enabled Then
-                If Me.DataLayer IsNot Nothing Then
-                    If Me.DataLayer.Editor.IsEditable Then
-                        img = My.Resources.Editable
-                    Else
-                        img = My.Resources.NotEditable
-                    End If
+                If Me.DataLayer.Editor.IsEditable Then
+                    img = My.Resources.Editable
+                Else
+                    img = My.Resources.NotEditable
                 End If
             End If
+
+            ' Set pane icon to the editable state of the data layer
             Me.m_hdrTitle.Image = img
+            ' Set pane title to the name of the data layer
+            Me.m_hdrTitle.Text = Me.DataLayer.Name
 
         End Sub
 
@@ -167,6 +154,7 @@ Namespace Ecospace.Advection
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+            If (Me.DesignMode = True) Then Return
             Me.UpdateControls()
         End Sub
 
@@ -185,28 +173,28 @@ Namespace Ecospace.Advection
 
         Private Sub PopulateMap()
 
+            ' Sanity checks
+            Debug.Assert(Me.DataLayerVariable <> eVarNameFlags.NotSet)
+
+            ' Set basemap
             Me.m_zoomctrl.Map.Basemap = Me.m_uic.Core.EcospaceBasemap
 
             ' Add data layer
-            If Me.DataLayerVariable <> eVarNameFlags.NotSet Then
-                Me.m_layerData = Me.AddLayer(Me.DataLayerVariable, Me.IsDataInput)
-            End If
+            Me.m_layerData = Me.AddLayer(Me.DataLayerVariable, Me.IsDataInput)
             Me.m_zoomctrl.Map.Editable = Me.IsDataInput
 
-            ' Always show depth layer
+            ' Add depth layer
             Me.AddLayer(eVarNameFlags.LayerDepth, False)
 
-            ' Show additional background layers
+            ' Add additional background layers
             If (Me.BackgroundLayers IsNot Nothing) Then
                 For Each vn As eVarNameFlags In Me.BackgroundLayers
                     Me.AddLayer(vn, False)
                 Next
             End If
 
-            ' Start observing layer changes
-            If (Me.m_layerData IsNot Nothing) Then
-                AddHandler Me.m_layerData.LayerChanged, AddressOf OnLayerChanged
-            End If
+            ' Start observing data layer changes
+            AddHandler Me.m_layerData.LayerChanged, AddressOf OnLayerChanged
 
         End Sub
 
