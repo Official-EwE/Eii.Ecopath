@@ -17,9 +17,10 @@ Namespace Ecospace.Advection
 
         Private m_manager As cAdvectionManager = Nothing
  
-        Private m_fpVX As cEwEFormatProvider = Nothing
-        Private m_fpVY As cEwEFormatProvider = Nothing
+        Private m_fpVXelocity As cEwEFormatProvider = Nothing
+        Private m_fpVYelocity As cEwEFormatProvider = Nothing
         Private m_fpCoriolis As cEwEFormatProvider = Nothing
+        Private m_fpSorWv As cEwEFormatProvider = Nothing
         Private m_fpWind As cEwEFormatProvider = Nothing
         Private m_fpMLD As cEwEFormatProvider = Nothing
 
@@ -49,9 +50,10 @@ Namespace Ecospace.Advection
             Me.m_manager = Me.Core.AdvectionManager
 
             ' Set up format providers
+            Me.m_fpVXelocity = New cPropertyFormatProvider(Me.UIContext, Me.m_nudXVelocity, Me.Core.AdvectionParameters, eVarNameFlags.XVelocity)
+            Me.m_fpVYelocity = New cPropertyFormatProvider(Me.UIContext, Me.m_nudYVelocity, Me.Core.AdvectionParameters, eVarNameFlags.YVelocity)
             Me.m_fpCoriolis = New cPropertyFormatProvider(Me.UIContext, Me.m_nudCoriolis, Me.Core.AdvectionParameters, eVarNameFlags.Coriolis)
-            Me.m_fpVX = New cPropertyFormatProvider(Me.UIContext, Me.m_nudXVelocity, Me.Core.AdvectionParameters, eVarNameFlags.XVelocity)
-            Me.m_fpVY = New cPropertyFormatProvider(Me.UIContext, Me.m_nudYVelocity, Me.Core.AdvectionParameters, eVarNameFlags.YVelocity)
+            Me.m_fpSorWv = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSorWv, Me.Core.AdvectionParameters, eVarNameFlags.SorWv)
             Me.m_fpWind = New cEwEFormatProvider(Me.UIContext, Me.m_nudWind, GetType(Single))
             Me.m_fpMLD = New cEwEFormatProvider(Me.UIContext, Me.m_nudDepth, GetType(Integer))
 
@@ -83,7 +85,11 @@ Namespace Ecospace.Advection
             Me.m_dlgtStopped = New cAdvectionManager.ComputationCompletedDelegate(AddressOf OnCalcStopped)
             Me.m_manager.Connect(Me.m_dlgtStarted, Me.m_dlgtStopped, Me.m_dlgtProgress)
 
-            If Me.m_manager.isRunning Then Me.StartRun()
+            AddHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
+            AddHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
+            Me.UpdateTransportVelocity()
+
+            If Me.m_manager.IsRunning Then Me.StartRun()
 
         End Sub
 
@@ -96,9 +102,13 @@ Namespace Ecospace.Advection
                 Me.m_ucZoomToolbar.RemoveZoomContainer(uc.ZoomCtrl)
             Next
 
-            Me.m_fpVX.Release()
-            Me.m_fpVY.Release()
+            RemoveHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
+            RemoveHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
+
+            Me.m_fpVXelocity.Release()
+            Me.m_fpVYelocity.Release()
             Me.m_fpCoriolis.Release()
+            Me.m_fpSorWv.Release()
             Me.m_fpWind.Release()
             Me.m_fpMLD.Release()
 
@@ -151,7 +161,7 @@ Namespace Ecospace.Advection
         End Sub
 
         Private Sub OnCursorSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_sliderCursor.ValueChanged
+            Handles m_sliderCursor.ValueChanged, UcSlider1.ValueChanged
 
             ' Sanity check
             If Me.UIContext Is Nothing Then Return
@@ -170,7 +180,7 @@ Namespace Ecospace.Advection
         End Sub
 
         Private Sub OnWindValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_nudWind.ValueChanged
+            Handles m_nudWind.ValueChanged, NumericUpDown1.ValueChanged
 
             ' Sanity check
             If Me.UIContext Is Nothing Then Return
@@ -182,7 +192,7 @@ Namespace Ecospace.Advection
         End Sub
 
         Private Sub OnMLDValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_nudDepth.ValueChanged
+            Handles m_nudDepth.ValueChanged, NumericUpDown2.ValueChanged
 
             ' Sanity check
             If Me.UIContext Is Nothing Then Return
@@ -192,17 +202,17 @@ Namespace Ecospace.Advection
         End Sub
 
         Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnStart.Click
+            Handles m_btnStart.Click, Button2.Click
             Me.StartRun()
         End Sub
 
         Private Sub OnStopComputing(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnStop.Click
+            Handles m_btnStop.Click, Button3.Click
             Me.m_manager.StopRun()
         End Sub
 
         Private Sub OnApplyVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnApplyVels.Click
+            Handles m_btnApplyVels.Click, Button1.Click
 
         End Sub
 
@@ -222,6 +232,10 @@ Namespace Ecospace.Advection
         '    Me.UpdateControls()
         'End Sub
 
+        Private Sub OnVelocityChanged(ByVal sender As cEwEFormatProvider)
+            Me.UpdateTransportVelocity()
+        End Sub
+
         Private Sub OnCalcStarted()
             Me.m_bHasRun = False
             Me.UpdateControls()
@@ -231,15 +245,11 @@ Namespace Ecospace.Advection
 
             ' Update app status
             cApplicationStatusNotifier.SetStatusText("Advection running iteration " & iIter, TriState.UseDefault, -1)
+
             ' Update data layer
             Dim layer As cLayer = Me.m_ucMap.DataLayer
+            layer.IsModified = True
             layer.Update(cLayer.eChangeFlags.Map, False)
-
-            'Dim iLeft As Integer = 0
-            'Math.DivRem(iIter, 10, iLeft)
-            'If iLeft = 0 Then
-            '    Me.m_ucMap.Refresh()
-            'End If
 
         End Sub
 
@@ -256,7 +266,7 @@ Namespace Ecospace.Advection
         Private Sub UpdateControls()
 
             ' Gather stats
-            Dim bBusy As Boolean = Me.m_manager.isRunning
+            Dim bBusy As Boolean = Me.m_manager.IsRunning
 
             Me.m_btnStart.Enabled = Not bBusy And Not Me.m_bSearching
             Me.m_btnStop.Enabled = Me.m_bSearching
@@ -264,6 +274,13 @@ Namespace Ecospace.Advection
 
             Me.m_tsmiToggleOptions.Checked = Not Me.m_scMain.Panel1Collapsed
 
+        End Sub
+
+        Private Sub UpdateTransportVelocity()
+            Dim sVX As Single = CSng(Me.m_fpVXelocity.Value)
+            Dim sVY As Single = CSng(Me.m_fpVYelocity.Value)
+            Dim sVel As Single = CSng(Math.Sqrt(sVX * sVX + sVY * sVY))
+            Me.m_fpWind.Value = sVel
         End Sub
 
         Private Function Maps() As ucAdvectionMap()
@@ -275,8 +292,8 @@ Namespace Ecospace.Advection
             ' Already running? Abort
             If Me.m_bSearching Then Return
 
-            If Not Me.m_manager.isRunning Then Me.m_manager.Run(Me)
-            Me.m_bSearching = Me.m_manager.isRunning
+            If Not Me.m_manager.IsRunning Then Me.m_manager.Run(Me)
+            Me.m_bSearching = Me.m_manager.IsRunning
 
             If m_bSearching Then
                 cApplicationStatusNotifier.SetStatusText("Starting Advection computations...", TriState.True, -1)

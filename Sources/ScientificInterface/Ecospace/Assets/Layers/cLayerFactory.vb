@@ -372,7 +372,7 @@ Namespace Ecospace.Basemap.Layers
                         ad.AllowValidation = True
                     End If
 
-                    renderer = New cLayerRendererValue(vs)
+                    renderer = New cLayerRendererText(vs) ' MLD rendered as text on top of gradiented layers such as habitats, etc
                     editor = New cLayerEditorMLD()
                     If layerData Is Nothing Then layerData = bmd.LayerMixedLayerDepths
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, varName)

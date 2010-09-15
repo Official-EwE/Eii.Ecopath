@@ -130,6 +130,18 @@ Namespace Ecospace.Advection
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Specify which background layers to display in the map, in addition
+        ''' to the already present <see cref="eVarNameFlags.LayerDepth">depth layer</see>.
+        ''' </summary>
+        ''' <returns>An array of <see cref="eVarNameFlags">variable names</see>
+        ''' specifying additional background layers.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function BackgroundLayers() As eVarNameFlags()
+            Return New eVarNameFlags() {eVarNameFlags.LayerDepth}
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Update the state and content of local controls.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -175,13 +187,21 @@ Namespace Ecospace.Advection
 
             Me.m_zoomctrl.Map.Basemap = Me.m_uic.Core.EcospaceBasemap
 
-            ' Always show depth layer
-            Me.AddLayer(eVarNameFlags.LayerDepth, False)
             ' Add data layer
             If Me.DataLayerVariable <> eVarNameFlags.NotSet Then
                 Me.m_layerData = Me.AddLayer(Me.DataLayerVariable, Me.IsDataInput)
             End If
             Me.m_zoomctrl.Map.Editable = Me.IsDataInput
+
+            ' Always show depth layer
+            Me.AddLayer(eVarNameFlags.LayerDepth, False)
+
+            ' Show additional background layers
+            If (Me.BackgroundLayers IsNot Nothing) Then
+                For Each vn As eVarNameFlags In Me.BackgroundLayers
+                    Me.AddLayer(vn, False)
+                Next
+            End If
 
             ' Start observing layer changes
             If (Me.m_layerData IsNot Nothing) Then
@@ -208,20 +228,21 @@ Namespace Ecospace.Advection
             Dim l As cLayer = Nothing
 
             If (layers Is Nothing) Then Return Nothing
-            If (layers.Length <> 1) Then
-                Debug.Assert(False, "No such layers found")
+            If (layers.Length = 0) Then
+                Debug.Assert(False, "No layers found for varname " & vn)
                 Return Nothing
             End If
 
-            l = layers(0)
+            For Each l In layers
+                If bEditable Then
+                    l.Editor.IsEditable = True
+                    l.IsSelected = True
+                Else
+                    l.Editor.IsEditable = False
+                End If
+                Me.m_zoomctrl.Map.AddLayer(l)
+            Next
 
-            If bEditable Then
-                l.Editor.IsEditable = True
-                l.IsSelected = True
-            Else
-                l.Editor.IsEditable = False
-            End If
-            Me.m_zoomctrl.Map.AddLayer(l)
             Return l
 
         End Function

@@ -40,6 +40,8 @@
             Me.m_btnStart = New System.Windows.Forms.Button
             Me.m_btnStop = New System.Windows.Forms.Button
             Me.m_btnApplyVels = New System.Windows.Forms.Button
+            Me.m_nudSorWv = New System.Windows.Forms.NumericUpDown
+            Me.m_lblSorWv = New System.Windows.Forms.Label
             Me.m_nudCoriolis = New System.Windows.Forms.NumericUpDown
             Me.m_lblCoriolis = New System.Windows.Forms.Label
             Me.m_nudDepth = New System.Windows.Forms.NumericUpDown
@@ -56,6 +58,14 @@
             Me.m_tslMonth = New System.Windows.Forms.ToolStripLabel
             Me.m_tscmMonth = New System.Windows.Forms.ToolStripComboBox
             Me.m_ucZoomToolbar = New ScientificInterface.Ecospace.ucMapZoomToolbar
+            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.UcSlider1 = New ScientificInterfaceShared.Controls.ucSlider
+            Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown
+            Me.NumericUpDown2 = New System.Windows.Forms.NumericUpDown
+            Me.Button1 = New System.Windows.Forms.Button
+            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
+            Me.Button2 = New System.Windows.Forms.Button
+            Me.Button3 = New System.Windows.Forms.Button
             Me.m_tlpMaps.SuspendLayout()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -63,10 +73,14 @@
             CType(Me.m_nudYVelocity, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudXVelocity, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpComputeControls.SuspendLayout()
+            CType(Me.m_nudSorWv, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudCoriolis, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudWind, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tsControls.SuspendLayout()
+            CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tlpMaps
@@ -147,6 +161,8 @@
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblXVelocity)
             Me.m_scMain.Panel1.Controls.Add(Me.m_tlpComputeControls)
             Me.m_scMain.Panel1.Controls.Add(Me.m_btnApplyVels)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_nudSorWv)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblSorWv)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudCoriolis)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblCoriolis)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudDepth)
@@ -211,7 +227,7 @@
             Me.m_tlpComputeControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.m_tlpComputeControls.Controls.Add(Me.m_btnStart, 0, 0)
             Me.m_tlpComputeControls.Controls.Add(Me.m_btnStop, 1, 0)
-            Me.m_tlpComputeControls.Location = New System.Drawing.Point(0, 102)
+            Me.m_tlpComputeControls.Location = New System.Drawing.Point(1, 137)
             Me.m_tlpComputeControls.Name = "m_tlpComputeControls"
             Me.m_tlpComputeControls.RowCount = 1
             Me.m_tlpComputeControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -249,7 +265,7 @@
             Me.m_btnApplyVels.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnApplyVels.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.m_btnApplyVels.Location = New System.Drawing.Point(0, 128)
+            Me.m_btnApplyVels.Location = New System.Drawing.Point(1, 163)
             Me.m_btnApplyVels.Margin = New System.Windows.Forms.Padding(0)
             Me.m_btnApplyVels.Name = "m_btnApplyVels"
             Me.m_btnApplyVels.Size = New System.Drawing.Size(132, 23)
@@ -257,10 +273,30 @@
             Me.m_btnApplyVels.Text = "&Apply"
             Me.m_btnApplyVels.UseVisualStyleBackColor = True
             '
+            'm_nudSorWv
+            '
+            Me.m_nudSorWv.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
+            Me.m_nudSorWv.Location = New System.Drawing.Point(55, 102)
+            Me.m_nudSorWv.Maximum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudSorWv.Minimum = New Decimal(New Integer() {1, 0, 0, -2147483648})
+            Me.m_nudSorWv.Name = "m_nudSorWv"
+            Me.m_nudSorWv.Size = New System.Drawing.Size(78, 20)
+            Me.m_nudSorWv.TabIndex = 6
+            Me.m_nudSorWv.Value = New Decimal(New Integer() {5, 0, 0, 65536})
+            '
+            'm_lblSorWv
+            '
+            Me.m_lblSorWv.AutoSize = True
+            Me.m_lblSorWv.Location = New System.Drawing.Point(4, 104)
+            Me.m_lblSorWv.Name = "m_lblSorWv"
+            Me.m_lblSorWv.Size = New System.Drawing.Size(43, 13)
+            Me.m_lblSorWv.TabIndex = 5
+            Me.m_lblSorWv.Text = "&SorWv:"
+            '
             'm_nudCoriolis
             '
             Me.m_nudCoriolis.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
-            Me.m_nudCoriolis.Location = New System.Drawing.Point(54, 76)
+            Me.m_nudCoriolis.Location = New System.Drawing.Point(55, 76)
             Me.m_nudCoriolis.Maximum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudCoriolis.Minimum = New Decimal(New Integer() {1, 0, 0, -2147483648})
             Me.m_nudCoriolis.Name = "m_nudCoriolis"
@@ -281,10 +317,10 @@
             '
             Me.m_nudDepth.DecimalPlaces = 3
             Me.m_nudDepth.Increment = New Decimal(New Integer() {10, 0, 0, 0})
-            Me.m_nudDepth.Location = New System.Drawing.Point(54, 235)
+            Me.m_nudDepth.Location = New System.Drawing.Point(55, 270)
             Me.m_nudDepth.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudDepth.Name = "m_nudDepth"
-            Me.m_nudDepth.Size = New System.Drawing.Size(72, 20)
+            Me.m_nudDepth.Size = New System.Drawing.Size(78, 20)
             Me.m_nudDepth.TabIndex = 15
             Me.m_nudDepth.ThousandsSeparator = True
             Me.m_nudDepth.Value = New Decimal(New Integer() {2, 0, 0, 0})
@@ -292,7 +328,7 @@
             'm_lblDepth
             '
             Me.m_lblDepth.AutoSize = True
-            Me.m_lblDepth.Location = New System.Drawing.Point(3, 237)
+            Me.m_lblDepth.Location = New System.Drawing.Point(4, 272)
             Me.m_lblDepth.Name = "m_lblDepth"
             Me.m_lblDepth.Size = New System.Drawing.Size(33, 13)
             Me.m_lblDepth.TabIndex = 14
@@ -300,10 +336,10 @@
             '
             'm_nudWind
             '
-            Me.m_nudWind.Location = New System.Drawing.Point(54, 209)
+            Me.m_nudWind.Location = New System.Drawing.Point(55, 244)
             Me.m_nudWind.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudWind.Name = "m_nudWind"
-            Me.m_nudWind.Size = New System.Drawing.Size(72, 20)
+            Me.m_nudWind.Size = New System.Drawing.Size(78, 20)
             Me.m_nudWind.TabIndex = 13
             Me.m_nudWind.ThousandsSeparator = True
             Me.m_nudWind.Value = New Decimal(New Integer() {25, 0, 0, 0})
@@ -311,7 +347,7 @@
             'm_lblWind
             '
             Me.m_lblWind.AutoSize = True
-            Me.m_lblWind.Location = New System.Drawing.Point(3, 211)
+            Me.m_lblWind.Location = New System.Drawing.Point(4, 246)
             Me.m_lblWind.Name = "m_lblWind"
             Me.m_lblWind.Size = New System.Drawing.Size(35, 13)
             Me.m_lblWind.TabIndex = 12
@@ -320,7 +356,7 @@
             'm_lblCursor
             '
             Me.m_lblCursor.AutoSize = True
-            Me.m_lblCursor.Location = New System.Drawing.Point(3, 186)
+            Me.m_lblCursor.Location = New System.Drawing.Point(4, 221)
             Me.m_lblCursor.Name = "m_lblCursor"
             Me.m_lblCursor.Size = New System.Drawing.Size(40, 13)
             Me.m_lblCursor.TabIndex = 10
@@ -330,7 +366,7 @@
             '
             Me.m_sliderCursor.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_sliderCursor.Location = New System.Drawing.Point(54, 183)
+            Me.m_sliderCursor.Location = New System.Drawing.Point(55, 218)
             Me.m_sliderCursor.Maximum = 5
             Me.m_sliderCursor.Minimum = 1
             Me.m_sliderCursor.Name = "m_sliderCursor"
@@ -342,7 +378,7 @@
             '
             Me.m_hdrEditing.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_hdrEditing.Location = New System.Drawing.Point(0, 162)
+            Me.m_hdrEditing.Location = New System.Drawing.Point(1, 197)
             Me.m_hdrEditing.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrEditing.Name = "m_hdrEditing"
             Me.m_hdrEditing.Size = New System.Drawing.Size(132, 18)
@@ -414,6 +450,106 @@
             Me.m_ucZoomToolbar.TabIndex = 1
             Me.m_ucZoomToolbar.UIContext = Nothing
             '
+            'CEwEHeaderLabel1
+            '
+            Me.CEwEHeaderLabel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.CEwEHeaderLabel1.Location = New System.Drawing.Point(3, 174)
+            Me.CEwEHeaderLabel1.Margin = New System.Windows.Forms.Padding(0)
+            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+            Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(132, 18)
+            Me.CEwEHeaderLabel1.TabIndex = 9
+            Me.CEwEHeaderLabel1.Text = "Editing"
+            Me.CEwEHeaderLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'UcSlider1
+            '
+            Me.UcSlider1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.UcSlider1.Location = New System.Drawing.Point(57, 195)
+            Me.UcSlider1.Maximum = 5
+            Me.UcSlider1.Minimum = 1
+            Me.UcSlider1.Name = "UcSlider1"
+            Me.UcSlider1.Size = New System.Drawing.Size(75, 20)
+            Me.UcSlider1.TabIndex = 11
+            Me.UcSlider1.Value = 1
+            '
+            'NumericUpDown1
+            '
+            Me.NumericUpDown1.Location = New System.Drawing.Point(57, 221)
+            Me.NumericUpDown1.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.NumericUpDown1.Name = "NumericUpDown1"
+            Me.NumericUpDown1.Size = New System.Drawing.Size(78, 20)
+            Me.NumericUpDown1.TabIndex = 13
+            Me.NumericUpDown1.ThousandsSeparator = True
+            Me.NumericUpDown1.Value = New Decimal(New Integer() {25, 0, 0, 0})
+            '
+            'NumericUpDown2
+            '
+            Me.NumericUpDown2.DecimalPlaces = 3
+            Me.NumericUpDown2.Increment = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.NumericUpDown2.Location = New System.Drawing.Point(57, 247)
+            Me.NumericUpDown2.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
+            Me.NumericUpDown2.Name = "NumericUpDown2"
+            Me.NumericUpDown2.Size = New System.Drawing.Size(78, 20)
+            Me.NumericUpDown2.TabIndex = 15
+            Me.NumericUpDown2.ThousandsSeparator = True
+            Me.NumericUpDown2.Value = New Decimal(New Integer() {2, 0, 0, 0})
+            '
+            'Button1
+            '
+            Me.Button1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+            Me.Button1.Location = New System.Drawing.Point(3, 140)
+            Me.Button1.Margin = New System.Windows.Forms.Padding(0)
+            Me.Button1.Name = "Button1"
+            Me.Button1.Size = New System.Drawing.Size(132, 23)
+            Me.Button1.TabIndex = 8
+            Me.Button1.Text = "&Apply"
+            Me.Button1.UseVisualStyleBackColor = True
+            '
+            'TableLayoutPanel1
+            '
+            Me.TableLayoutPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.TableLayoutPanel1.ColumnCount = 2
+            Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.TableLayoutPanel1.Controls.Add(Me.Button2, 0, 0)
+            Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
+            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            Me.TableLayoutPanel1.RowCount = 1
+            Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+            Me.TableLayoutPanel1.Size = New System.Drawing.Size(200, 100)
+            Me.TableLayoutPanel1.TabIndex = 0
+            '
+            'Button2
+            '
+            Me.Button2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+            Me.Button2.Location = New System.Drawing.Point(0, 0)
+            Me.Button2.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
+            Me.Button2.Name = "Button2"
+            Me.Button2.Size = New System.Drawing.Size(97, 23)
+            Me.Button2.TabIndex = 0
+            Me.Button2.Text = "&Compute"
+            Me.Button2.UseVisualStyleBackColor = True
+            '
+            'Button3
+            '
+            Me.Button3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.Button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+            Me.Button3.Location = New System.Drawing.Point(103, 0)
+            Me.Button3.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+            Me.Button3.Name = "Button3"
+            Me.Button3.Size = New System.Drawing.Size(97, 23)
+            Me.Button3.TabIndex = 1
+            Me.Button3.Text = "&Stop"
+            Me.Button3.UseVisualStyleBackColor = True
+            '
             'frmAdvection
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -439,11 +575,15 @@
             CType(Me.m_nudYVelocity, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudXVelocity, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpComputeControls.ResumeLayout(False)
+            CType(Me.m_nudSorWv, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudCoriolis, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudWind, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tsControls.ResumeLayout(False)
             Me.m_tsControls.PerformLayout()
+            CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -478,6 +618,16 @@
         Private WithEvents m_nudYVelocity As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblXVelocity As System.Windows.Forms.Label
         Private WithEvents m_nudXVelocity As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_nudSorWv As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblSorWv As System.Windows.Forms.Label
+        Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents UcSlider1 As ScientificInterfaceShared.Controls.ucSlider
+        Private WithEvents NumericUpDown1 As System.Windows.Forms.NumericUpDown
+        Private WithEvents NumericUpDown2 As System.Windows.Forms.NumericUpDown
+        Private WithEvents Button1 As System.Windows.Forms.Button
+        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents Button2 As System.Windows.Forms.Button
+        Private WithEvents Button3 As System.Windows.Forms.Button
 
     End Class
 
