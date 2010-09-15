@@ -58,14 +58,8 @@
             Me.m_tslMonth = New System.Windows.Forms.ToolStripLabel
             Me.m_tscmMonth = New System.Windows.Forms.ToolStripComboBox
             Me.m_ucZoomToolbar = New ScientificInterface.Ecospace.ucMapZoomToolbar
-            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.UcSlider1 = New ScientificInterfaceShared.Controls.ucSlider
-            Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown
-            Me.NumericUpDown2 = New System.Windows.Forms.NumericUpDown
-            Me.Button1 = New System.Windows.Forms.Button
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.Button2 = New System.Windows.Forms.Button
-            Me.Button3 = New System.Windows.Forms.Button
+            Me.m_lblUpwelling = New System.Windows.Forms.Label
+            Me.m_nudUpwell = New System.Windows.Forms.NumericUpDown
             Me.m_tlpMaps.SuspendLayout()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -78,9 +72,7 @@
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudWind, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tsControls.SuspendLayout()
-            CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.TableLayoutPanel1.SuspendLayout()
+            CType(Me.m_nudUpwell, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_tlpMaps
@@ -165,7 +157,9 @@
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblSorWv)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudCoriolis)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblCoriolis)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_nudUpwell)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudDepth)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblUpwelling)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblDepth)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudWind)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblWind)
@@ -450,105 +444,26 @@
             Me.m_ucZoomToolbar.TabIndex = 1
             Me.m_ucZoomToolbar.UIContext = Nothing
             '
-            'CEwEHeaderLabel1
+            'm_lblUpwelling
             '
-            Me.CEwEHeaderLabel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.CEwEHeaderLabel1.Location = New System.Drawing.Point(3, 174)
-            Me.CEwEHeaderLabel1.Margin = New System.Windows.Forms.Padding(0)
-            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
-            Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(132, 18)
-            Me.CEwEHeaderLabel1.TabIndex = 9
-            Me.CEwEHeaderLabel1.Text = "Editing"
-            Me.CEwEHeaderLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.m_lblUpwelling.AutoSize = True
+            Me.m_lblUpwelling.Location = New System.Drawing.Point(3, 298)
+            Me.m_lblUpwelling.Name = "m_lblUpwelling"
+            Me.m_lblUpwelling.Size = New System.Drawing.Size(45, 13)
+            Me.m_lblUpwelling.TabIndex = 16
+            Me.m_lblUpwelling.Text = "&Upwell.:"
             '
-            'UcSlider1
+            'm_nudUpwell
             '
-            Me.UcSlider1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.UcSlider1.Location = New System.Drawing.Point(57, 195)
-            Me.UcSlider1.Maximum = 5
-            Me.UcSlider1.Minimum = 1
-            Me.UcSlider1.Name = "UcSlider1"
-            Me.UcSlider1.Size = New System.Drawing.Size(75, 20)
-            Me.UcSlider1.TabIndex = 11
-            Me.UcSlider1.Value = 1
-            '
-            'NumericUpDown1
-            '
-            Me.NumericUpDown1.Location = New System.Drawing.Point(57, 221)
-            Me.NumericUpDown1.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
-            Me.NumericUpDown1.Name = "NumericUpDown1"
-            Me.NumericUpDown1.Size = New System.Drawing.Size(78, 20)
-            Me.NumericUpDown1.TabIndex = 13
-            Me.NumericUpDown1.ThousandsSeparator = True
-            Me.NumericUpDown1.Value = New Decimal(New Integer() {25, 0, 0, 0})
-            '
-            'NumericUpDown2
-            '
-            Me.NumericUpDown2.DecimalPlaces = 3
-            Me.NumericUpDown2.Increment = New Decimal(New Integer() {10, 0, 0, 0})
-            Me.NumericUpDown2.Location = New System.Drawing.Point(57, 247)
-            Me.NumericUpDown2.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
-            Me.NumericUpDown2.Name = "NumericUpDown2"
-            Me.NumericUpDown2.Size = New System.Drawing.Size(78, 20)
-            Me.NumericUpDown2.TabIndex = 15
-            Me.NumericUpDown2.ThousandsSeparator = True
-            Me.NumericUpDown2.Value = New Decimal(New Integer() {2, 0, 0, 0})
-            '
-            'Button1
-            '
-            Me.Button1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.Button1.Location = New System.Drawing.Point(3, 140)
-            Me.Button1.Margin = New System.Windows.Forms.Padding(0)
-            Me.Button1.Name = "Button1"
-            Me.Button1.Size = New System.Drawing.Size(132, 23)
-            Me.Button1.TabIndex = 8
-            Me.Button1.Text = "&Apply"
-            Me.Button1.UseVisualStyleBackColor = True
-            '
-            'TableLayoutPanel1
-            '
-            Me.TableLayoutPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.TableLayoutPanel1.ColumnCount = 2
-            Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.TableLayoutPanel1.Controls.Add(Me.Button2, 0, 0)
-            Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-            Me.TableLayoutPanel1.RowCount = 1
-            Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-            Me.TableLayoutPanel1.Size = New System.Drawing.Size(200, 100)
-            Me.TableLayoutPanel1.TabIndex = 0
-            '
-            'Button2
-            '
-            Me.Button2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.Button2.Location = New System.Drawing.Point(0, 0)
-            Me.Button2.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
-            Me.Button2.Name = "Button2"
-            Me.Button2.Size = New System.Drawing.Size(97, 23)
-            Me.Button2.TabIndex = 0
-            Me.Button2.Text = "&Compute"
-            Me.Button2.UseVisualStyleBackColor = True
-            '
-            'Button3
-            '
-            Me.Button3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.Button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.Button3.Location = New System.Drawing.Point(103, 0)
-            Me.Button3.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
-            Me.Button3.Name = "Button3"
-            Me.Button3.Size = New System.Drawing.Size(97, 23)
-            Me.Button3.TabIndex = 1
-            Me.Button3.Text = "&Stop"
-            Me.Button3.UseVisualStyleBackColor = True
+            Me.m_nudUpwell.Increment = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_nudUpwell.Location = New System.Drawing.Point(54, 296)
+            Me.m_nudUpwell.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.m_nudUpwell.Minimum = New Decimal(New Integer() {1000, 0, 0, -2147483648})
+            Me.m_nudUpwell.Name = "m_nudUpwell"
+            Me.m_nudUpwell.Size = New System.Drawing.Size(78, 20)
+            Me.m_nudUpwell.TabIndex = 17
+            Me.m_nudUpwell.ThousandsSeparator = True
+            Me.m_nudUpwell.Value = New Decimal(New Integer() {2, 0, 0, 0})
             '
             'frmAdvection
             '
@@ -581,9 +496,7 @@
             CType(Me.m_nudWind, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tsControls.ResumeLayout(False)
             Me.m_tsControls.PerformLayout()
-            CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.TableLayoutPanel1.ResumeLayout(False)
+            CType(Me.m_nudUpwell, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -620,14 +533,8 @@
         Private WithEvents m_nudXVelocity As System.Windows.Forms.NumericUpDown
         Private WithEvents m_nudSorWv As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblSorWv As System.Windows.Forms.Label
-        Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Private WithEvents UcSlider1 As ScientificInterfaceShared.Controls.ucSlider
-        Private WithEvents NumericUpDown1 As System.Windows.Forms.NumericUpDown
-        Private WithEvents NumericUpDown2 As System.Windows.Forms.NumericUpDown
-        Private WithEvents Button1 As System.Windows.Forms.Button
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents Button2 As System.Windows.Forms.Button
-        Private WithEvents Button3 As System.Windows.Forms.Button
+        Private WithEvents m_nudUpwell As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblUpwelling As System.Windows.Forms.Label
 
     End Class
 

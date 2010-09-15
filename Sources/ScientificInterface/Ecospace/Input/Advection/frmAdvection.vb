@@ -190,7 +190,7 @@ Namespace Ecospace.Advection
         End Sub
 
         Private Sub OnCursorSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_sliderCursor.ValueChanged, UcSlider1.ValueChanged
+            Handles m_sliderCursor.ValueChanged
 
             ' Sanity check
             If Me.UIContext Is Nothing Then Return
@@ -217,21 +217,21 @@ Namespace Ecospace.Advection
         End Sub
 
         Private Sub OnUpwellingValueChanged(ByVal fp As cEwEFormatProvider)
-            'Me.m_edtUpwell.CellValue = CSng(Me.m_nudUpwell.Value)
+            Me.m_edtUpwell.CellValue = CSng(Me.m_nudUpwell.Value)
         End Sub
 
         Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnStart.Click, Button2.Click
+            Handles m_btnStart.Click
             Me.StartRun()
         End Sub
 
         Private Sub OnStopComputing(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnStop.Click, Button3.Click
+            Handles m_btnStop.Click
             Me.m_manager.StopRun()
         End Sub
 
         Private Sub OnApplyVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnApplyVels.Click, Button1.Click
+            Handles m_btnApplyVels.Click
 
         End Sub
 
@@ -297,7 +297,7 @@ Namespace Ecospace.Advection
 
             Me.m_nudWind.Value = CDec(Me.m_edtWind.ScaleFactor)
             Me.m_nudDepth.Value = CDec(Me.m_edtMLD.CellValue)
-            'Me.m_nudUpwell.Value = CDec(Me.m_edtUpwell.CellValue)
+            Me.m_nudUpwell.Value = CDec(Me.m_edtUpwell.CellValue)
 
         End Sub
 
