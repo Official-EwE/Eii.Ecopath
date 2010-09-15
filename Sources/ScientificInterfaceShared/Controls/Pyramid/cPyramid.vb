@@ -25,7 +25,14 @@ Public Class cPyramid
         Biomass = 2
     End Enum
 
-#Region " Internals "
+    Public Enum eRenderModeTypes As Byte
+        ''' <summary>Render two dimensional</summary>
+        Render2D
+        ''' <summary>Render three dimensional</summary>
+        Render3D
+    End Enum
+
+#Region " Private vars "
 
     Private m_strModel As String = ""
     Private m_bValid As Boolean = False
@@ -64,7 +71,7 @@ Public Class cPyramid
     Private m_sLowCutoff As Single = 4.0!
     Private m_sLowCutoffAngle As Single = 90.0!
 
-#End Region ' Internals
+#End Region ' Private vars
 
     Public Sub New()
         Me.CalculatePyramid()
@@ -98,12 +105,27 @@ Public Class cPyramid
 
 #Region " Public properties "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the name of the model that reflects the pyramid.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Model() As String
         Get
             Return Me.m_strModel
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get whether the data few to the pyramid is valid.
+    ''' </summary>
+    ''' <remarks>
+    ''' Simple validation is performed when reading pyramid data. For now, a
+    ''' pyramid is valid if more than one TL of data was provided, and all
+    ''' provided TL were successfully read.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property IsValid() As Boolean
         Get
             Return Me.m_bValid
@@ -129,12 +151,6 @@ Public Class cPyramid
             Return iTL
         End Get
     End Property
-
-    'Public ReadOnly Property Filename() As String
-    '    Get
-    '        Return Me.m_strFileName
-    '    End Get
-    'End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
