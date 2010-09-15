@@ -254,13 +254,12 @@ Namespace Ecospace.Advection
 
                 Try
                     Me.m_RunProgressDelegate.Invoke(m_iter)
+                    Threading.Thread.Sleep(10)
                 Catch ex As Exception
                     Return False
                 End Try
 
                 If Differ < 0.0000001 * xMax / Grav / Me.m_data.CellLength Then Exit Do
-
-                Threading.Thread.Sleep(100)
 
             Loop
 
