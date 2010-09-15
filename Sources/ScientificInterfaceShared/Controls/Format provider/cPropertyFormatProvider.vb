@@ -127,7 +127,11 @@ Namespace Controls
             End Get
             Set(ByVal value As Object)
                 If Me.m_prop Is Nothing Then Return
-                Me.m_prop.SetValue(value, TriState.UseDefault)
+                If Me.m_prop.SetValue(value, TriState.UseDefault) Then
+                    ' Ok, this is odd. Proper code should consult the underlying 
+                    ' property directly
+                    Me.RaiseChangeEvent()
+                End If
             End Set
         End Property
 

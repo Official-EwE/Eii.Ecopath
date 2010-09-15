@@ -1208,12 +1208,7 @@ Namespace Controls
 
                 ' Update
                 Me.UpdateContent()
-
-                Try
-                    RaiseEvent OnValueChanged(Me)
-                Catch ex As Exception
-                    ' Wow
-                End Try
+                Me.RaiseChangeEvent()
 
             End Set
         End Property
@@ -1273,6 +1268,7 @@ Namespace Controls
                 End If
             End Set
         End Property
+
 #End Region ' Value
 
 #Region " Updates "
@@ -1295,6 +1291,20 @@ Namespace Controls
             If Me.m_ctrlWrapper IsNot Nothing Then
                 Me.m_ctrlWrapper.UpdateContent()
             End If
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Raises the <see cref="OnValueChanged">OnValueChanged</see> ewvent.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Sub RaiseChangeEvent()
+            Try
+                RaiseEvent OnValueChanged(Me)
+            Catch ex As Exception
+                ' Wow
+            End Try
+
         End Sub
 
 #End Region ' Updates
