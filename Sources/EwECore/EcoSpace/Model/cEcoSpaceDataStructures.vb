@@ -106,8 +106,8 @@ Public Class cEcospaceDataStructures
     Public AdvectSpeed As Single
     Public Coriolis As Single = 0.5!
     Public SorWv As Single = 0.5!
-    Public XVelocity As Single = 100.0!
-    Public YVelocity As Single = 100.0!
+    Public XVelocity As Single = 1.0!
+    Public YVelocity As Single = 1.0!
     Public jord(1000) As Integer
 
     Public MoveScale As Single
