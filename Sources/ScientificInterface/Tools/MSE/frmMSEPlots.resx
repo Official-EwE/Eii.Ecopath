@@ -163,7 +163,7 @@
     <value>10</value>
   </data>
   <data name="rbBioEst.Text" xml:space="preserve">
-    <value>B/B &amp;estimated</value>
+    <value>B estimated/B</value>
   </data>
   <data name="&gt;&gt;rbBioEst.Name" xml:space="preserve">
     <value>rbBioEst</value>
@@ -496,6 +496,6 @@
     <value>frmMSEPlots</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.428, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.914, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>
