@@ -223,13 +223,17 @@ Namespace MSE
 
         Friend Sub InitAssessment()
             Dim iGrp As Integer
+            Try
 
-            'ReDim Me.FtargetT(Me.m_esData.nGroups)
-            Me.rndGen = New Random(CInt(Microsoft.VisualBasic.Timer * 1000))
-            For iGrp = 1 To Me.m_esData.nGroups
-                m_data.Bestimate(iGrp) = Me.m_esData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(iGrp) * Me.RandomNormal()))
-                m_data.BestimateLast(iGrp) = m_data.Bestimate(iGrp)
-            Next iGrp
+                For iGrp = 1 To Me.m_esData.nGroups
+                    m_data.Bestimate(iGrp) = Me.m_esData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(iGrp) * Me.RandomNormal()))
+                    m_data.BestimateLast(iGrp) = m_data.Bestimate(iGrp)
+                Next iGrp
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".InitAssessment() Exception: " & ex.Message)
+                cLog.Write(ex)
+            End Try
 
         End Sub
 
@@ -621,11 +625,10 @@ Namespace MSE
 
                 For itr = 1 To m_data.NTrials
 
+                    Me.InitForTrial()
+
                     m_data.CurrentIteration = itr
                     Me.AddIteration()
-
-                    'Set MSE data back to initial values for a new run
-                    m_data.InitForTrial()
 
                     Me.PostMessage(eMSERunStates.IterationStarted)
 
@@ -665,6 +668,15 @@ Namespace MSE
             Return bSuccess
 
         End Function
+
+
+        Private Sub InitForTrial()
+
+            Me.InitAssessment()
+            'Set MSE data back to initial values for a new run
+            m_data.InitForTrial()
+
+        End Sub
 
         Private Sub ComputeStats()
 
