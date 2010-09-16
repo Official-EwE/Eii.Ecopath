@@ -119,6 +119,9 @@ Namespace Ecospace.Basemap.Layers
                     g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
                     g.FillRectangle(Brushes.Transparent, New Rectangle(0, 0, bm.Width, bm.Height))
                     g.DrawEllipse(Pens.Gray, 0, 0, ptIconSize.Width, ptIconSize.Height)
+                    Using br As New SolidBrush(Color.FromArgb(45, 0, 0, 0))
+                        g.FillEllipse(br, 0, 0, ptIconSize.Width, ptIconSize.Height)
+                    End Using
                     cursor = New Cursor(bm.GetHicon())
                     g.Dispose()
                     bm.Dispose()
