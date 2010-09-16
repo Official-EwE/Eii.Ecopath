@@ -1347,7 +1347,7 @@ Namespace MSE
             'Store the Biomass estimation difference
             Dim val As Single
             For igrp As Integer = 1 To Me.m_esData.nGroups
-                val = Biomass(igrp) / Me.m_data.Bestimate(igrp)
+                val = Me.m_data.Bestimate(igrp) / (Biomass(igrp) + 1.0E-20F)
                 Me.m_data.BioEstStats.AddValue(igrp, Me.m_curYear, val)
             Next igrp
 
@@ -2312,17 +2312,24 @@ Namespace MSE
 
             If Me.m_Search.SearchMode <> eSearchModes.MSE Then Return
 
-            Me.m_curT = itime
-            Me.m_curYear = iyr
+            Try
 
-            'CVbiomEst(ngroups) and CVFest(nfleets) is the cv that is used to vary biomass and fishing mortality
-            For igrp As Integer = 1 To Me.m_data.NGroups
-                Me.m_data.CVbiomEst(igrp) = Me.m_data.CVBiomT(igrp, iyr)
-            Next
+                Me.m_curT = itime
+                Me.m_curYear = iyr
 
-            For iflt As Integer = 1 To Me.m_data.nFleets
-                Me.m_data.CVFest(iflt) = Me.m_data.CVFT(iflt, iyr)
-            Next
+                'CVbiomEst(ngroups) and CVFest(nfleets) is the cv that is used to vary biomass and fishing mortality
+                For igrp As Integer = 1 To Me.m_data.NGroups
+                    Me.m_data.CVbiomEst(igrp) = Me.m_data.CVBiomT(igrp, iyr)
+                Next
+
+                For iflt As Integer = 1 To Me.m_data.nFleets
+                    Me.m_data.CVFest(iflt) = Me.m_data.CVFT(iflt, iyr)
+                Next
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".setTime() Exception: " & ex.Message)
+                cLog.Write(ex)
+            End Try
 
         End Sub
 
