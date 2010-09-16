@@ -491,8 +491,11 @@ Namespace MSECommandFile
 
         Public Overrides Sub Update()
             Dim data As Single = Single.Parse(Me.m_data)
-            For i As Integer = 1 To Me.Manager.nGroups
-                Me.Manager.MSEData.CVbiomEst(i) = data
+
+            For iyr As Integer = 1 To Me.Manager.MSEData.CVBiomT.GetUpperBound(1)
+                For i As Integer = 1 To Me.Manager.nGroups
+                    Me.Manager.MSEData.CVBiomT(i, iyr) = data
+                Next
             Next
 
         End Sub
