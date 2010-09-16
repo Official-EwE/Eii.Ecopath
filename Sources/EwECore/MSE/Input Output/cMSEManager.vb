@@ -490,7 +490,6 @@ Namespace MSE
 
             'set CV to the first timestep
             Me.m_MSE.setTime(1, 1)
-            Me.m_MSE.InitAssessment()
 
             'connect the MSE model to the manager
             Me.m_MSE.Connect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
