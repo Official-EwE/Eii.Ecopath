@@ -1337,14 +1337,48 @@ Namespace Controls
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Extract the data in the ZedGraph to a comma-separated file.
+        ''' </summary>
+        ''' <param name="strFileName">The file to extract the data to.</param>
+        ''' <returns>
+        ''' True if successful.
+        ''' </returns>
+        ''' -----------------------------------------------------------------------
+        Public Function ExtractDataToCSV(ByVal strFileName As String) As Boolean
+
+            Dim sw As StreamWriter = Nothing
+
+            Try
+                sw = New StreamWriter(strFileName, False)
+                If (sw IsNot Nothing) Then
+                    Try
+                        ' Write the stream
+                        sw.Write(Me.ExtractData())
+                    Catch ex As Exception
+                        ' Woops
+                    End Try
+                    ' Always close
+                    sw.Close()
+                End If
+            Catch ex As Exception
+                Return False
+            End Try
+            Return True
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Extract the data in the ZedGraph to a comma-separated (.CSV) file.
         ''' </summary>
+        ''' <returns>
+        ''' True if successful.
+        ''' </returns>
         ''' -----------------------------------------------------------------------
         Public Function ExtractDataToCSV() As Boolean
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-            Dim sw As StreamWriter = Nothing
             Dim model As cEwEModel = Me.Core.EwEModel
             Dim strFN As String = ""
             Dim strBit As String = ""
@@ -1364,21 +1398,7 @@ Namespace Controls
             cmdFS.Invoke(strFN, My.Resources.FILEFILTER_CSV, 0)
 
             If cmdFS.Result = DialogResult.OK Then
-                Try
-                    sw = New StreamWriter(cmdFS.FileName, False)
-                    If (sw IsNot Nothing) Then
-                        Try
-                            ' Write the stream
-                            sw.Write(Me.ExtractData())
-                        Catch ex As Exception
-                            ' Woops
-                        End Try
-                        ' Always close
-                        sw.Close()
-                    End If
-                Catch ex As Exception
-
-                End Try
+                Return Me.ExtractDataToCSV(cmdFS.FileName)
             End If
 
             Return True
@@ -1389,7 +1409,7 @@ Namespace Controls
         ''' <summary>
         ''' Extract the data in the graph to a comma-separated string.
         ''' </summary>
-        ''' <returns>A massive string. Format to be described</returns>
+        ''' <returns>A massive string.</returns>
         ''' -----------------------------------------------------------------------
         Public Function ExtractData() As String
 
