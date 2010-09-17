@@ -11,7 +11,7 @@ Namespace Ecospace.Advection
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper class for calculating advection patterns.
+    ''' Advection patterns calculator class.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Friend Class cAdvection
