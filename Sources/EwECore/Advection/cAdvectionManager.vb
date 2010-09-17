@@ -9,16 +9,52 @@ Imports EwEUtils.Core
 
 Namespace Ecospace.Advection
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Manager for user interfaces to interact with the Ecospace Advection
+    ''' calculations.
     ''' </summary>
+    ''' <remarks>
+    ''' <para>Remote processes can <see cref="cAdvectionManager.Connect">connect</see>
+    ''' to this class, providing three delegates to track the progress of advection calculations:
+    ''' <list type="bullet">
+    ''' <item><description><see cref="cAdvectionManager.ComputationStartedDelegate">ComputationStartedDelegate</see></description></item>
+    ''' <item><description><see cref="cAdvectionManager.ComputationProgressDelegate">ComputationProgressDelegate</see></description></item>
+    ''' <item><description><see cref="cAdvectionManager.ComputationCompletedDelegate">ComputationCompletedDelegate</see></description></item>
+    ''' </list>
+    ''' Make sure to properly <see cref="cAdvectionManager.Disconnect">Disconnect</see>
+    ''' from the manager when it is no longer needed.</para>
+    ''' <para>Any remote process can parameterize the advection calculations
+    ''' via <see cref="cAdvectionManager.ModelParameters">ModelParameters</see>. The
+    ''' computations use a series of Ecospace layers for input, please see the
+    ''' internals of <see cref="cAdvection">cAdvection</see> for details.</para>
+    ''' <para>Advection computations are started via <see cref="cAdvectionManager.Run">Run</see>.
+    ''' Computed results are exposed by the Ecospace <see cref="cEcospaceLayerAdvection">advection layer</see>,
+    ''' which can be obtained via <see cref="cEcospaceBasemap.LayerAdvection">cEcospaceBasemap.LayerAdvection</see>.
+    ''' </para>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Class cAdvectionManager
         Inherits cThreadWaitBase 'provides the Wait() method
         Implements ICoreInterface
 
-        'Friend Delegate Sub EcospaceAdvectionAddMessageHandler(ByVal message As cMessage)
+        ''' -------------------------------------------------------------------
+        ''' <summary>Delegate that will be called when advection computations are about to start.</summary>
+        ''' -------------------------------------------------------------------
         Public Delegate Sub ComputationStartedDelegate()
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>Delegate that will be called at the end of each advection iteration.</summary>
+        ''' <param name="iIteration">The number of the iteration.</param>
+        ''' -------------------------------------------------------------------
         Public Delegate Sub ComputationProgressDelegate(ByVal iIteration As Integer)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>Delegate that will be called when advection computations have finished.</summary>
+        ''' <param name="iIteration">The number of completed iterations.</param>
+        ''' <param name="bInterrupted">Flag stating whether the iterations were interrupted by the user.</param>
+        ''' <param name="bBadFlow">Flag stating whether the computed flow was considered 'bad'.</param>
+        ''' -------------------------------------------------------------------
         Public Delegate Sub ComputationCompletedDelegate(ByVal iIteration As Integer, ByVal bInterrupted As Boolean, ByVal bBadFlow As Boolean)
 
 #Region " Private Variables "
@@ -42,7 +78,8 @@ Namespace Ecospace.Advection
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Secretive constructor.
+        ''' Hidden constructor; the manager should be created only once by the 
+        ''' EwE core.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Friend Sub New()
@@ -53,9 +90,13 @@ Namespace Ecospace.Advection
         ''' <summary>
         ''' Connect to the Advection manager.
         ''' </summary>
-        ''' <param name="ComputationStartedCallBack">Callback a search run is about to start. If ModelParameters.nRun > 1 this will be call at the start of each run.</param>
-        ''' <param name="ComputationCompletedBack">Callback a search run has completed. If ModelParameters.nRun > 1 this will be call at the end of each run.</param>
-        ''' <param name="ComputationProgressCallBack">Callback reports progress of the run.</param>
+        ''' <param name="ComputationStartedCallBack">Delegate that will be called when 
+        ''' advection computations are <see cref="ComputationStartedDelegate">about to start</see>.</param>
+        ''' <param name="ComputationCompletedBack">Delegate that will be called at the
+        ''' end of <see cref="ComputationProgressDelegate">each iteration</see> of 
+        ''' advection computations.</param>
+        ''' <param name="ComputationProgressCallBack">Delegate that will be called when 
+        ''' advection computations <see cref="ComputationCompletedDelegate">have completed</see>.</param>
         ''' <remarks>Make sure to properly <see cref="Disconnect">Disconnect</see>
         ''' when this manager is no longer needed.</remarks>
         ''' -------------------------------------------------------------------
