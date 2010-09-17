@@ -351,7 +351,7 @@ Namespace Ecospace.Advection
 #Region " ICoreInterface implementation "
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="DataType"/>
+        ''' <inheritdoc cref="ICoreInterface.DataType"/>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property DataType() As eDataTypes _
             Implements ICoreInterface.DataType
@@ -361,7 +361,7 @@ Namespace Ecospace.Advection
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="CoreComponent"/>
+        ''' <inheritdoc cref="ICoreInterface.CoreComponent"/>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property CoreComponent() As eCoreComponentType _
             Implements ICoreInterface.CoreComponent
@@ -371,7 +371,7 @@ Namespace Ecospace.Advection
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="DBID"/>
+        ''' <inheritdoc cref="ICoreInterface.DBID"/>
         ''' -------------------------------------------------------------------
         Public Property DBID() As Integer _
             Implements ICoreInterface.DBID
@@ -384,7 +384,7 @@ Namespace Ecospace.Advection
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="GetID"/>
+        ''' <inheritdoc cref="ICoreInterface.GetID"/>
         ''' -------------------------------------------------------------------
         Public Function GetID() As String _
             Implements ICoreInterface.GetID
@@ -392,7 +392,7 @@ Namespace Ecospace.Advection
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="Index"/>
+        ''' <inheritdoc cref="ICoreInterface.Index"/>
         ''' -------------------------------------------------------------------
         Public Property Index() As Integer _
             Implements ICoreInterface.Index
@@ -405,7 +405,7 @@ Namespace Ecospace.Advection
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="Name"/>
+        ''' <inheritdoc cref="ICoreInterface.Name"/>
         ''' -------------------------------------------------------------------
         Public Property Name() As String _
             Implements ICoreInterface.Name
