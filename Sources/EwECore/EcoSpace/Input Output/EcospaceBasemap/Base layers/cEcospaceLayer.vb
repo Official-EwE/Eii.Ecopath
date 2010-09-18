@@ -32,7 +32,7 @@ Public MustInherit Class cEcospaceLayer
     ''' <summary>Secundary index used to direct the manager how to get to the actual map data.</summary>
     Private m_iData As Integer = cCore.NULL_VALUE
     ''' <summary>Metadata to restrict values that can enter a layer.</summary>
-    Private m_mdData As cVariableMetaData = Nothing
+    Private m_metadata As cVariableMetaData = Nothing
     ''' <summary>If set, a hard-linked reference to an array.</summary>
     Private m_data As Object = Nothing
     ''' <summary>Type of the data.</summary>
@@ -56,7 +56,7 @@ Public MustInherit Class cEcospaceLayer
     ''' <param name="meta"><see cref="cVariableMetaData">Meta data</see> providing
     ''' value range limits.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub New(ByRef theCore As cCore, _
+    Protected Sub New(ByVal theCore As cCore, _
                       ByVal iDBID As Integer, _
                       ByVal manager As cEcospaceBasemap, _
                       ByVal vnData As eVarNameFlags, _
@@ -82,7 +82,7 @@ Public MustInherit Class cEcospaceLayer
     ''' <param name="meta"><see cref="cVariableMetaData">Meta data</see> providing
     ''' value range limits.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub New(ByRef theCore As cCore, _
+    Protected Sub New(ByVal theCore As cCore, _
                       ByVal data As Object, _
                       ByVal typeValue As Type, _
                       Optional ByVal meta As cVariableMetaData = Nothing)
@@ -93,21 +93,20 @@ Public MustInherit Class cEcospaceLayer
 
     End Sub
 
-    Private Sub New(ByRef theCore As cCore, _
+    Private Sub New(ByVal theCore As cCore, _
                     ByVal iDBID As Integer, _
                     ByVal typeValue As Type, _
-                    ByVal metaCellData As cVariableMetaData)
+                    ByVal meta As cVariableMetaData)
 
         MyBase.New(theCore)
 
         Dim val As cValue = Nothing
-        Dim meta As cVariableMetaData = Nothing
 
         Try
             Me.DBID = iDBID
             Me.m_dataType = eDataTypes.NotSet
             Me.m_coreComponent = eCoreComponentType.EcoSpace
-            Me.m_mdData = metaCellData
+            Me.m_metadata = meta
             Me.m_typeValue = typeValue
 
             Me.ResetStatusFlags()
@@ -130,14 +129,16 @@ Public MustInherit Class cEcospaceLayer
 
     Protected Function ValidateCellValue(ByVal value As Object) As Boolean
         Dim sValue As Single = 0.0
-        If Me.m_mdData Is Nothing Then Return True
+        Dim md As cVariableMetaData = Me.MetadataCell
+
+        If (md Is Nothing) Then Return True
         Try
             sValue = Convert.ToSingle(sValue)
         Catch ex As Exception
             Return False
         End Try
-        Return Me.m_mdData.MinOperator.Compare(sValue, Me.m_mdData.Min) And _
-               Me.m_mdData.MaxOperator.Compare(sValue, Me.m_mdData.Max)
+        Return md.MinOperator.Compare(sValue, md.Min) And _
+               md.MaxOperator.Compare(sValue, md.Max)
     End Function
 
     Protected ReadOnly Property Data() As Object
@@ -173,13 +174,12 @@ Public MustInherit Class cEcospaceLayer
     ''' Get/set the metadata associated with the values for a cell.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property MetadataCell() As cVariableMetaData
+    Public ReadOnly Property MetadataCell() As cVariableMetaData
         Get
-            Return Me.m_mdData
+            Dim d As cVariableMetaData = Me.m_metadata
+            If (d Is Nothing) Then d = Me.m_manager.GetVariableMetadata(Me.m_vnData)
+            Return d
         End Get
-        Friend Set(ByVal value As cVariableMetaData)
-            Me.m_mdData = value
-        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
