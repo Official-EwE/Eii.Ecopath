@@ -12,8 +12,8 @@
             Me.UIContext.Core.SetEcospaceAllCoastToPort(Me.FleetIndex)
         End Sub
 
-        Public Overrides Sub UpdateContent()
-            MyBase.UpdateContent()
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+            MyBase.UpdateContent(editor)
 
             Me.m_btnClear.Enabled = (Me.IsAttached)
             Me.m_btnSet.Enabled = (Me.IsAttached)

@@ -13,14 +13,14 @@ Namespace Ecospace.Basemap.Layers
             Me.InitializeComponent()
         End Sub
 
-        Public Overrides Sub UpdateContent()
-            MyBase.UpdateContent()
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+            MyBase.UpdateContent(editor)
 
             ' Sanity checks
             If (Me.Editor Is Nothing) Then Return
             If (Me.m_nudValue Is Nothing) Then Return
 
-            Me.m_nudValue.Value = Me.Editor.CursorSize
+            Me.m_nudValue.Value = editor.CursorSize
         End Sub
 
         Public Shadows Property Editor() As cLayerEditorVector

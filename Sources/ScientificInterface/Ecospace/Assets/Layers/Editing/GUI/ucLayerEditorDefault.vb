@@ -18,14 +18,14 @@ Namespace Ecospace.Basemap.Layers
             Me.InitializeComponent()
         End Sub
 
-        Public Overrides Sub UpdateContent()
-            MyBase.UpdateContent()
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+            MyBase.UpdateContent(editor)
 
             ' Sanity checks
             If (Me.Editor Is Nothing) Then Return
             If (Me.m_ucSlider Is Nothing) Then Return
 
-            Me.m_ucSlider.Value = Me.Editor.CursorSize
+            Me.m_ucSlider.Value = editor.CursorSize
         End Sub
 
         Private Sub OnSliderValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _

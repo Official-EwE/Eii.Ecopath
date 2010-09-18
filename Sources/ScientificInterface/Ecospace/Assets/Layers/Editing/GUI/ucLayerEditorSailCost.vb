@@ -2,8 +2,8 @@
 
     Public Class ucLayerEditorSailCost
 
-        Public Overrides Sub UpdateContent()
-            MyBase.UpdateContent()
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+            MyBase.UpdateContent(editor)
             Me.m_btnCalculate.Enabled = Me.IsAttached
         End Sub
 

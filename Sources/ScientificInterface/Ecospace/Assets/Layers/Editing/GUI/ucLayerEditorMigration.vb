@@ -24,9 +24,9 @@ Namespace Ecospace.Basemap.Layers
             Me.Editor.Group = Me.m_cmbGroup.SelectedIndex + 1
         End Sub
 
-        Public Overrides Sub EndEdit()
+        Public Overrides Sub EndEdit(ByVal editor As cLayerEditor)
             If Me.m_chkAutoRotate.Checked Then
-                Me.Editor.CellValue = CInt(CInt(Me.Editor.CellValue) Mod cCore.N_MONTHS) + 1
+                Me.Editor.CellValue = CInt(CInt(editor.CellValue) Mod cCore.N_MONTHS) + 1
             End If
         End Sub
 
@@ -47,11 +47,11 @@ Namespace Ecospace.Basemap.Layers
                 Me.m_cmbGroup.Items.Add(group.Name)
             Next iGroup
 
-            Me.UpdateContent()
+            Me.UpdateContent(Me.Editor)
         End Sub
 
-        Public Overrides Sub UpdateContent()
-            MyBase.UpdateContent()
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+            MyBase.UpdateContent(editor)
 
             If (Me.m_cmbGroup Is Nothing) Then Return
             If (Me.m_cmbMonth Is Nothing) Then Return

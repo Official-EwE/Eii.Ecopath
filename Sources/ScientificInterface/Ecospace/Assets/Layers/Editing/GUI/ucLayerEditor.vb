@@ -67,7 +67,7 @@ Namespace Ecospace.Basemap.Layers
             End Get
             Protected Set(ByVal editor As cLayerEditor)
                 Me.m_editor = editor
-                Me.UpdateContent()
+                Me.UpdateContent(editor)
             End Set
         End Property
 
@@ -77,7 +77,7 @@ Namespace Ecospace.Basemap.Layers
         ''' started editing the layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub StartEdit() _
+        Public Overridable Sub StartEdit(ByVal editor As cLayerEditor) _
             Implements ILayerEditor.StartEdit
         End Sub
 
@@ -87,7 +87,7 @@ Namespace Ecospace.Basemap.Layers
         ''' finished editing the layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub EndEdit() _
+        Public Overridable Sub EndEdit(ByVal editor As cLayerEditor) _
             Implements ILayerEditor.EndEdit
         End Sub
 
@@ -96,7 +96,7 @@ Namespace Ecospace.Basemap.Layers
         ''' Update the controls and caption of the editor.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub UpdateContent() _
+        Public Overridable Sub UpdateContent(ByVal editor As cLayerEditor) _
             Implements ILayerEditor.UpdateContent
 
             Dim strLabel As String = ""

@@ -40,8 +40,8 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Overrides "
 
-        Public Overrides Sub UpdateContent()
-            MyBase.UpdateContent()
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+            MyBase.UpdateContent(editor)
 
             ' Sanity check
             If (Me.m_nudValue Is Nothing) Then Return
@@ -69,7 +69,7 @@ Namespace Ecospace.Basemap.Layers
             If (Me.UIContext Is Nothing) Then Return
 
             AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            Me.UpdateContent()
+            Me.UpdateContent(Me.Editor)
         End Sub
 
         Private Sub OnValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
@@ -84,7 +84,7 @@ Namespace Ecospace.Basemap.Layers
 
         Private Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
             If ((cf And cStyleGuide.eChangeType.NumberFormatting) > 0) Then
-                Me.UpdateContent()
+                Me.UpdateContent(Me.Editor)
             End If
         End Sub
 
