@@ -11384,7 +11384,8 @@ Public Class cCore
                      eDataTypes.EcospaceLayerPort, _
                      eDataTypes.EcospaceLayerSail, _
                      eDataTypes.EcospaceLayerMigration, _
-                     eDataTypes.EcospaceLayerFlow
+                     eDataTypes.EcospaceLayerFlow, _
+                     eDataTypes.EcospaceLayerUpwelling
                     DirectCast(obj, cEcospaceLayer).Invalidate()
                     Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
 
