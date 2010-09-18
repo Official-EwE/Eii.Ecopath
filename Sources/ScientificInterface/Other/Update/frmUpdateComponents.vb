@@ -233,7 +233,6 @@ Public Class frmUpdateComponents
         Return CBool(Me.Invoke(New OverwritePromptDelegate(AddressOf OverwritePrompt), New Object() {strPlugin}))
     End Function
 
-
 #End Region ' Update thread
 
 End Class

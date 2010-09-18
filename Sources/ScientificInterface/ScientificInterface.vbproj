@@ -1178,7 +1178,7 @@
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorVector.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorMLD.vb" />
-    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ILayerEditor.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ILayerEditorGUI.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorVector.Designer.vb">
       <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
     </Compile>
