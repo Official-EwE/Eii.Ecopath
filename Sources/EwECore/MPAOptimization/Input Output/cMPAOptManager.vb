@@ -135,8 +135,8 @@ Public Class cMPAOptManager
 
     Private Function SearchModelFactory(ByVal SearchType As eMPAOptimizationModels) As IMPASearchModel
 
-        Debug.Assert(Me.isRunning = False, Me.ToString & " Cannot change the search type while a search is running.")
-        If Me.isRunning Then
+        Debug.Assert(Me.IsRunning = False, Me.ToString & " Cannot change the search type while a search is running.")
+        If Me.IsRunning Then
             Return Me.m_MPASearch
         End If
 
@@ -174,8 +174,8 @@ Public Class cMPAOptManager
         'if no search has been created then make sure the factory runs
         If Me.m_MPASearch IsNot Nothing Then
 
-            Debug.Assert(Me.isRunning = False, Me.ToString & " Can not change the search type while a search is running.")
-            If Me.isRunning Then
+            Debug.Assert(Me.IsRunning = False, Me.ToString & " Can not change the search type while a search is running.")
+            If Me.IsRunning Then
                 System.Console.WriteLine(Me.ToString & " tried to change the search model while a search is running. Sorry Dude!!!")
                 Exit Sub
             End If
@@ -269,7 +269,7 @@ Public Class cMPAOptManager
 
             m_MPASearch.Connect(AddressOf OnSearchIteration, AddressOf Me.OnRunStateChanged, AddressOf Me.OnSendMessage)
 
-            If Me.isRunning Then
+            If Me.IsRunning Then
                 Me.m_core.Messages.SendMessage(New cMessage("Optimization is already running. Only one evaluation can be run at a time.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
                 Return False
             End If
@@ -281,7 +281,7 @@ Public Class cMPAOptManager
                 If msg.Reply = cFeedbackMessage.eReply.CANCEL Or msg.Reply = cFeedbackMessage.eReply.NO Then Return False
             End If
 
-            Me.setWait()
+            Me.SetWait()
 
             'keep a copy of the original MPA configuration
             ReDim m_orgMPAConfig(Me.m_core.m_EcoSpaceData.InRow + 1, Me.m_core.m_EcoSpaceData.InCol + 1)

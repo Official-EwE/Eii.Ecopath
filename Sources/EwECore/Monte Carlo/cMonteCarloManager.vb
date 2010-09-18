@@ -110,7 +110,7 @@ Public Class cMonteCarloManager
                 If m_core.StateMonitor.HasEcosimLoaded Then
                     If m_core.m_TSData.NdatType > 0 Then
 
-                        Me.setWait()
+                        Me.SetWait()
 
                         Me.update()
 

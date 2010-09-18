@@ -523,7 +523,7 @@ Namespace FishingPolicy
 
             Try
 
-                If Me.isRunning Then
+                If Me.IsRunning Then
                     m_core.Messages.SendMessage(New cMessage("A Fishing Policy Search is already running. Only one search can be run at a time.", eMessageType.ErrorEncountered, _
                                                 eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.MonteCarlo))
                     Return False
@@ -531,7 +531,7 @@ Namespace FishingPolicy
 
                 bsuccess = True
 
-                Me.setWait()
+                Me.SetWait()
 
                 search.SearchMode = eSearchModes.FishingPolicy
                 Me.m_core.m_EcoSimData.bTimestepOutput = True
