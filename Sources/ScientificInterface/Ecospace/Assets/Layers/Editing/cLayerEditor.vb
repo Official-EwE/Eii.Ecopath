@@ -28,7 +28,7 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>Flag stating whether the layer is read-only.</summary>
         Private m_bReadOnly As Boolean = False
         ''' <summary>The current value 'under the cursor'.</summary>
-        Private Shared s_decValue As Decimal = Nothing
+        Private m_decValue As Decimal = Nothing
         Private m_decValueMax As Decimal = Decimal.MaxValue
         Private m_decValueMin As Decimal = 0
 
@@ -403,10 +403,10 @@ Namespace Ecospace.Basemap.Layers
         ''' -------------------------------------------------------------------
         Public Overridable Property CellValue() As Object
             Get
-                Return cLayerEditor.s_decValue
+                Return Me.m_decValue
             End Get
             Set(ByVal value As Object)
-                cLayerEditor.s_decValue = Math.Max(Math.Min(CDec(value), Me.m_decValueMax), Me.m_decValueMin)
+                Me.m_decValue = Math.Max(Math.Min(CDec(value), Me.m_decValueMax), Me.m_decValueMin)
                 If (Me.m_gui IsNot Nothing) Then
                     Me.m_gui.UpdateContent(Me)
                 End If
