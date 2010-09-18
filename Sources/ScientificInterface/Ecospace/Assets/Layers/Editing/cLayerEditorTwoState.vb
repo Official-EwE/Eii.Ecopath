@@ -52,7 +52,7 @@ Namespace Ecospace.Basemap.Layers
 
             If Me.GUI IsNot Nothing Then
                 ' Trigger GUI to update to the changes
-                Me.GUI.UpdateContent()
+                Me.GUI.UpdateContent(Me)
             End If
 
         End Sub

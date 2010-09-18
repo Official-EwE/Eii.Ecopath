@@ -14,7 +14,7 @@ Namespace Ecospace.Basemap.Layers
     ''' -----------------------------------------------------------------------
     Public Class ucLayerEditor
         Implements IUIElement
-        Implements ILayerEditor
+        Implements ILayerEditorGUI
 
 #Region " Private vars "
 
@@ -72,32 +72,24 @@ Namespace Ecospace.Basemap.Layers
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Overridable method to inform the editor GUI that the user has 
-        ''' started editing the layer.
-        ''' </summary>
+        ''' <inheritdoc cref="ILayerEditorGUI.StartEdit"/>
         ''' -------------------------------------------------------------------
         Public Overridable Sub StartEdit(ByVal editor As cLayerEditor) _
-            Implements ILayerEditor.StartEdit
+            Implements ILayerEditorGUI.StartEdit
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Overridable method to inform the editor GUI that the user has 
-        ''' finished editing the layer.
-        ''' </summary>
+        ''' <inheritdoc cref="ILayerEditorGUI.EndEdit"/>
         ''' -------------------------------------------------------------------
         Public Overridable Sub EndEdit(ByVal editor As cLayerEditor) _
-            Implements ILayerEditor.EndEdit
+            Implements ILayerEditorGUI.EndEdit
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Update the controls and caption of the editor.
-        ''' </summary>
+        ''' <inheritdoc cref="ILayerEditorGUI.UpdateContent"/>
         ''' -------------------------------------------------------------------
         Public Overridable Sub UpdateContent(ByVal editor As cLayerEditor) _
-            Implements ILayerEditor.UpdateContent
+            Implements ILayerEditorGUI.UpdateContent
 
             Dim strLabel As String = ""
             Dim img As Image = My.Resources.ProtectFormHS

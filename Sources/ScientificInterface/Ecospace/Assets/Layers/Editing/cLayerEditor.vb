@@ -37,7 +37,7 @@ Namespace Ecospace.Basemap.Layers
         ''' that implements the user interface controls to configure the editor.</summary>
         Private m_typeGUI As Type = Nothing
         ''' <summary>A GUI, if any.</summary>
-        Private m_gui As ILayerEditor = Nothing
+        Private m_gui As ILayerEditorGUI = Nothing
         ''' <summary>UI context to operate on.</summary>
         Private m_uic As cUIContext = Nothing
 
@@ -98,7 +98,7 @@ Namespace Ecospace.Basemap.Layers
 
         Private Sub OnLayerChanged(ByVal layer As cLayer, ByVal cf As cLayer.eChangeFlags)
             If Me.GUI IsNot Nothing Then
-                Me.GUI.UpdateContent()
+                Me.GUI.UpdateContent(Me)
             End If
         End Sub
 
@@ -197,11 +197,11 @@ Namespace Ecospace.Basemap.Layers
             Return cLayerEditor.EditorCursor(Me.CursorSize, szCell)
         End Function
 
-        Public Property GUI() As ILayerEditor
+        Public Property GUI() As ILayerEditorGUI
             Get
                 Return Me.m_gui
             End Get
-            Set(ByVal value As ILayerEditor)
+            Set(ByVal value As ILayerEditorGUI)
                 Me.m_gui = value
             End Set
         End Property
@@ -221,7 +221,7 @@ Namespace Ecospace.Basemap.Layers
         Public Overridable Sub StartEdit(ByVal ptClick As Point, ByVal args As MouseEventArgs)
             ' Notify the editor GUI, if any
             If Me.GUI IsNot Nothing Then
-                Me.GUI.StartEdit()
+                Me.GUI.StartEdit(Me)
             End If
         End Sub
 
@@ -291,6 +291,19 @@ Namespace Ecospace.Basemap.Layers
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' User is done editing the layer.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable Sub EndEdit()
+            ' Notify the editor GUI, if any
+            If Me.GUI IsNot Nothing Then
+                Me.GUI.EndEdit(Me)
+            End If
+            Me.Layer.Update(cLayer.eChangeFlags.Map)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Pick up the cell value at a given point, and store this value in the
         ''' layer editor as the next value that will be set.
         ''' </summary>
@@ -303,19 +316,6 @@ Namespace Ecospace.Basemap.Layers
             Catch ex As Exception
             End Try
 
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' User is done editing the layer.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Overridable Sub EndEdit()
-            ' Notify the editor GUI, if any
-            If Me.GUI IsNot Nothing Then
-                Me.GUI.EndEdit()
-            End If
-            Me.Layer.Update(cLayer.eChangeFlags.Map)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -408,10 +408,38 @@ Namespace Ecospace.Basemap.Layers
             Set(ByVal value As Object)
                 cLayerEditor.s_decValue = Math.Max(Math.Min(CDec(value), Me.m_decValueMax), Me.m_decValueMin)
                 If (Me.m_gui IsNot Nothing) Then
-                    Me.m_gui.UpdateContent()
+                    Me.m_gui.UpdateContent(Me)
                 End If
             End Set
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Configure the editor to adhere to given <see cref="cVariableMetaData">variable meta data</see>.
+        ''' </summary>
+        ''' <param name="md">
+        ''' The metadata to apply. If Nothing/Null this editor will need to be
+        ''' manually configured via <see cref="CellValueMax">CellValueMax</see> 
+        ''' and <see cref="CellValueMin">CellValueMin</see>.
+        ''' </param>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub ApplyMetadata(ByVal md As cVariableMetaData)
+            If (md IsNot Nothing) Then
+
+                If (md.Min < Convert.ToSingle(Decimal.MinValue)) Then
+                    Me.m_decValueMin = Decimal.MinValue
+                Else
+                    Me.m_decValueMin = Convert.ToDecimal(md.Min)
+                End If
+
+                If (md.Max > Convert.ToSingle(Decimal.MaxValue)) Then
+                    Me.m_decValueMax = Decimal.MaxValue
+                Else
+                    Me.m_decValueMax = Convert.ToDecimal(md.Min)
+                End If
+
+            End If
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -449,10 +477,11 @@ Namespace Ecospace.Basemap.Layers
             End Set
         End Property
 
-#End Region ' Properties
-
-#Region " Internals "
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the layer to attach to this Editor.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property Layer() As cLayer
             Get
                 Return Me.m_layer
@@ -460,12 +489,26 @@ Namespace Ecospace.Basemap.Layers
             Private Set(ByVal value As cLayer)
                 If Object.ReferenceEquals(value, Me.m_layer) Then Return
 
+                ' Already has a layer?
                 If Me.m_layer IsNot Nothing Then
+                    ' #Yes: stop listening to layer changes
                     RemoveHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
                 End If
+
+                ' Store new layer
                 Me.m_layer = value
+
+                ' Has a new layer?
                 If Me.m_layer IsNot Nothing Then
+                    ' #Yes: start listening to layer changes
                     AddHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
+                    ' Set metadata
+                    Dim d As cEcospaceLayer = Me.m_layer.Data
+                    Dim md As cVariableMetaData = Nothing
+
+                    If (d IsNot Nothing) Then md = d.MetadataCell
+                    Me.ApplyMetadata(md)
+
                 End If
 
             End Set
@@ -480,7 +523,7 @@ Namespace Ecospace.Basemap.Layers
             End Set
         End Property
 
-#End Region ' Internals 
+#End Region ' Properties
 
     End Class
 

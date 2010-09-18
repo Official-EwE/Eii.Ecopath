@@ -132,7 +132,7 @@ Namespace Ecospace.Basemap.Layers
 
                 ' Notify the editor GUI, if any
                 If Me.GUI IsNot Nothing Then
-                    Me.GUI.UpdateContent()
+                    Me.GUI.UpdateContent(Me)
                 End If
 
             Catch ex As Exception

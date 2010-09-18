@@ -45,7 +45,7 @@
             Me.m_nudCoriolis = New System.Windows.Forms.NumericUpDown
             Me.m_lblCoriolis = New System.Windows.Forms.Label
             Me.m_nudUpwell = New System.Windows.Forms.NumericUpDown
-            Me.m_nudDepth = New System.Windows.Forms.NumericUpDown
+            Me.m_nudMLD = New System.Windows.Forms.NumericUpDown
             Me.m_lblUpwelling = New System.Windows.Forms.Label
             Me.m_lblDepth = New System.Windows.Forms.Label
             Me.m_nudWind = New System.Windows.Forms.NumericUpDown
@@ -70,7 +70,7 @@
             CType(Me.m_nudSorWv, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudCoriolis, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudUpwell, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudMLD, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudWind, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tsControls.SuspendLayout()
             Me.SuspendLayout()
@@ -154,7 +154,7 @@
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudCoriolis)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblCoriolis)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudUpwell)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_nudDepth)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_nudMLD)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblUpwelling)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblDepth)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudWind)
@@ -314,16 +314,16 @@
             Me.m_nudUpwell.TabIndex = 17
             Me.m_nudUpwell.ThousandsSeparator = True
             '
-            'm_nudDepth
+            'm_nudMLD
             '
-            Me.m_nudDepth.Increment = New Decimal(New Integer() {10, 0, 0, 0})
-            Me.m_nudDepth.Location = New System.Drawing.Point(55, 270)
-            Me.m_nudDepth.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
-            Me.m_nudDepth.Name = "m_nudDepth"
-            Me.m_nudDepth.Size = New System.Drawing.Size(78, 20)
-            Me.m_nudDepth.TabIndex = 15
-            Me.m_nudDepth.ThousandsSeparator = True
-            Me.m_nudDepth.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudMLD.Increment = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_nudMLD.Location = New System.Drawing.Point(55, 270)
+            Me.m_nudMLD.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
+            Me.m_nudMLD.Name = "m_nudMLD"
+            Me.m_nudMLD.Size = New System.Drawing.Size(78, 20)
+            Me.m_nudMLD.TabIndex = 15
+            Me.m_nudMLD.ThousandsSeparator = True
+            Me.m_nudMLD.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
             'm_lblUpwelling
             '
@@ -487,7 +487,7 @@
             CType(Me.m_nudSorWv, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudCoriolis, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudUpwell, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudMLD, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudWind, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tsControls.ResumeLayout(False)
             Me.m_tsControls.PerformLayout()
@@ -512,7 +512,7 @@
         Private WithEvents m_sliderCursor As ScientificInterfaceShared.Controls.ucSlider
         Private WithEvents m_lblWind As System.Windows.Forms.Label
         Private WithEvents m_nudWind As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_nudDepth As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_nudMLD As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblDepth As System.Windows.Forms.Label
         Private WithEvents m_hdrEditing As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Friend WithEvents m_lblCoriolis As System.Windows.Forms.Label

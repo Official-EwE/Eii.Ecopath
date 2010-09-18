@@ -12,7 +12,7 @@ Imports EwECore.Ecospace.Advection
 Namespace Ecospace.Advection
 
     Public Class frmAdvection
-        Implements ILayerEditor
+        Implements ILayerEditorGUI
 
 #Region " Private vars "
 
@@ -62,8 +62,8 @@ Namespace Ecospace.Advection
             Me.m_fpCoriolis = New cPropertyFormatProvider(Me.UIContext, Me.m_nudCoriolis, Me.Core.AdvectionParameters, eVarNameFlags.Coriolis)
             Me.m_fpSorWv = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSorWv, Me.Core.AdvectionParameters, eVarNameFlags.SorWv)
             Me.m_fpWind = New cEwEFormatProvider(Me.UIContext, Me.m_nudWind, GetType(Single))
-            Me.m_fpMLD = New cEwEFormatProvider(Me.UIContext, Me.m_nudDepth, GetType(Integer))
-            Me.m_fpUpwell = New cEwEFormatProvider(Me.UIContext, Me.m_nudWind, GetType(Single))
+            Me.m_fpMLD = New cEwEFormatProvider(Me.UIContext, Me.m_nudMLD, GetType(Integer))
+            Me.m_fpUpwell = New cEwEFormatProvider(Me.UIContext, Me.m_nudUpwell, GetType(Single))
 
             ' Connect all layers to the zoom toolbar
             For Each uc As ucAdvectionMap In Me.Maps
@@ -94,16 +94,16 @@ Namespace Ecospace.Advection
             ' Listen to format providers
             AddHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
             AddHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
-            AddHandler Me.m_fpWind.OnValueChanged, AddressOf OnWindValueChanged
-            AddHandler Me.m_fpMLD.OnValueChanged, AddressOf OnMLDValueChanged
-            AddHandler Me.m_fpUpwell.OnValueChanged, AddressOf OnUpwellingValueChanged
+            'AddHandler Me.m_fpWind.OnValueChanged, AddressOf OnWindValueChanged
+            'AddHandler Me.m_fpMLD.OnValueChanged, AddressOf OnMLDValueChanged
+            'AddHandler Me.m_fpUpwell.OnValueChanged, AddressOf OnUpwellingValueChanged
 
             ' Config EwEForm
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
             ' Kick off
             Me.UpdateTransportVelocity()
-            Me.UpdateLayerEditorContent()
+            'Me.UpdateLayerEditorContent()
             Me.UpdateControls()
 
             If Me.m_manager.IsRunning Then Me.StartRun()
@@ -129,9 +129,9 @@ Namespace Ecospace.Advection
 
             RemoveHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
             RemoveHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
-            RemoveHandler Me.m_fpWind.OnValueChanged, AddressOf OnWindValueChanged
-            RemoveHandler Me.m_fpMLD.OnValueChanged, AddressOf OnMLDValueChanged
-            RemoveHandler Me.m_fpUpwell.OnValueChanged, AddressOf OnUpwellingValueChanged
+            'RemoveHandler Me.m_fpWind.OnValueChanged, AddressOf OnWindValueChanged
+            'RemoveHandler Me.m_fpMLD.OnValueChanged, AddressOf OnMLDValueChanged
+            'RemoveHandler Me.m_fpUpwell.OnValueChanged, AddressOf OnUpwellingValueChanged
 
             Me.m_fpVXelocity.Release()
             Me.m_fpVYelocity.Release()
@@ -208,17 +208,17 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Sub OnWindValueChanged(ByVal fp As cEwEFormatProvider)
-            Me.m_edtWind.ScaleFactor = CSng(Me.m_nudWind.Value)
-        End Sub
+        'Private Sub OnWindValueChanged(ByVal fp As cEwEFormatProvider)
+        '    Me.m_edtWind.ScaleFactor = CSng(Me.m_nudWind.Value)
+        'End Sub
 
-        Private Sub OnMLDValueChanged(ByVal fp As cEwEFormatProvider)
-            Me.m_edtMLD.CellValue = CSng(Me.m_nudDepth.Value)
-        End Sub
+        'Private Sub OnMLDValueChanged(ByVal fp As cEwEFormatProvider)
+        '    Me.m_edtMLD.CellValue = CSng(Me.m_nudDepth.Value)
+        'End Sub
 
-        Private Sub OnUpwellingValueChanged(ByVal fp As cEwEFormatProvider)
-            Me.m_edtUpwell.CellValue = CSng(Me.m_nudUpwell.Value)
-        End Sub
+        'Private Sub OnUpwellingValueChanged(ByVal fp As cEwEFormatProvider)
+        '    Me.m_edtUpwell.CellValue = CSng(Me.m_nudUpwell.Value)
+        'End Sub
 
         Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnStart.Click
@@ -282,22 +282,34 @@ Namespace Ecospace.Advection
 
 #Region " ILayerEditor implementation "
 
-        Public Sub StartEdit() _
-            Implements Basemap.Layers.ILayerEditor.StartEdit
+        Public Sub StartEdit(ByVal editor As cLayerEditor) _
+            Implements Basemap.Layers.ILayerEditorGUI.StartEdit
+
+            If (Object.ReferenceEquals(editor, Me.m_edtWind)) Then
+                Me.m_edtWind.ScaleFactor = CSng(Me.m_nudWind.Value)
+            ElseIf (Object.ReferenceEquals(editor, Me.m_edtUpwell)) Then
+                Me.m_edtUpwell.CellValue = CSng(Me.m_nudUpwell.Value)
+            ElseIf (Object.ReferenceEquals(editor, Me.m_edtMLD)) Then
+                Me.m_edtMLD.CellValue = CSng(Me.m_nudMLD.Value)
+            End If
 
         End Sub
 
-        Public Sub EndEdit() _
-            Implements Basemap.Layers.ILayerEditor.EndEdit
+        Public Sub EndEdit(ByVal editor As cLayerEditor) _
+            Implements Basemap.Layers.ILayerEditorGUI.EndEdit
 
         End Sub
 
-        Public Sub UpdateLayerEditorContent() _
-            Implements Basemap.Layers.ILayerEditor.UpdateContent
+        Public Sub UpdateLayerEditorContent(ByVal editor As cLayerEditor) _
+            Implements Basemap.Layers.ILayerEditorGUI.UpdateContent
 
-            Me.m_nudWind.Value = CDec(Me.m_edtWind.ScaleFactor)
-            Me.m_nudDepth.Value = CDec(Me.m_edtMLD.CellValue)
-            Me.m_nudUpwell.Value = CDec(Me.m_edtUpwell.CellValue)
+            If (Object.ReferenceEquals(editor, Me.m_edtWind)) Then
+                Me.m_nudWind.Value = CDec(Me.m_edtWind.ScaleFactor)
+            ElseIf (Object.ReferenceEquals(editor, Me.m_edtUpwell)) Then
+                Me.m_nudUpwell.Value = CDec(Me.m_edtUpwell.CellValue)
+            ElseIf (Object.ReferenceEquals(editor, Me.m_edtMLD)) Then
+                Me.m_nudMLD.Value = CDec(Me.m_edtMLD.CellValue)
+            End If
 
         End Sub
 
