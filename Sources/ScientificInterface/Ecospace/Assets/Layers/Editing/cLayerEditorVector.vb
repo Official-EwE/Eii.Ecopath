@@ -127,7 +127,8 @@ Namespace Ecospace.Basemap.Layers
         Public Overrides Sub Pickup(ByVal pt As System.Drawing.Point)
 
             Try
-                Dim asValue As Single() = DirectCast(Me.Layer.Value(pt.X, pt.Y), Single())
+                ' JS: pt(X,Y) translated to value(row, col); it never fails to confuse me. Even if I wrote this code...
+                Dim asValue As Single() = DirectCast(Me.Layer.Value(pt.Y, pt.X), Single())
                 Me.m_sScaleFactor = CSng(Math.Sqrt(asValue(0) * asValue(0) + asValue(1) * asValue(1)))
 
                 ' Notify the editor GUI, if any
