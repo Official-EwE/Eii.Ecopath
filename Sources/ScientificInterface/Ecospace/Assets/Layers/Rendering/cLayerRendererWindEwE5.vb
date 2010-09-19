@@ -55,6 +55,8 @@ Namespace Ecospace.Basemap.Layers
             Dim ptfCenter As PointF = Nothing
             Dim szfHalfArrow As SizeF = Nothing
             Dim sMax As Single = 1
+            Dim sScaleX As Single = 0.0!
+            Dim sScaleY As Single = 0.0!
 
             If (layer.MaxValue > 0) Then sMax = layer.MaxValue
 
@@ -66,8 +68,16 @@ Namespace Ecospace.Basemap.Layers
                     rc.Inflate(-2, -2)
                     ' Calc center
                     ptfCenter = New PointF(CSng(rc.X + rc.Width / 2), CSng(rc.Y + rc.Height / 2))
+                    ' Calc display scale, rounded to two decimals between -1 and 1
+                    Try
+                        sScaleX = CSng(Math.Max(-1, Math.Min(Math.Round(asValues(0) / sMax, 2), 1)))
+                        sScaleY = CSng(Math.Max(-1, Math.Min(Math.Round(asValues(1) / sMax, 2), 1)))
+                    Catch ex As Exception
+                        sScaleX = 0
+                        sScaleY = 0
+                    End Try
                     ' Calc arrow size
-                    szfHalfArrow = New SizeF(rc.Width * asValues(0) / (2 * sMax), rc.Height * asValues(1) / (2 * sMax))
+                    szfHalfArrow = New SizeF(rc.Width * sScaleX / 2.0!, rc.Height * sScaleY / 2.0!)
 
                     Using p As New Pen(Me.VisualStyle.ForeColour, 0.001!)
                         g.DrawLine(p, _
