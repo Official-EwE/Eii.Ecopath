@@ -135,7 +135,7 @@ Public MustInherit Class cEcospaceLayer
 
         If (md Is Nothing) Then Return True
         Try
-            sValue = Convert.ToSingle(sValue)
+            sValue = Convert.ToSingle(value)
         Catch ex As Exception
             Return False
         End Try
