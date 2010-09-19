@@ -12,7 +12,7 @@ Public Class cEcospaceLayerDepth
     Inherits cEcospaceLayerInteger
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal meta As cVariableMetaData)
-        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerDepth, cCore.NULL_VALUE, meta)
+        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerDepth, cCore.NULL_VALUE)
         Me.m_dataType = eDataTypes.EcospaceLayerDepth
     End Sub
 

@@ -71,7 +71,7 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' *************************************************************************************** '
-            ' Variables used to proved an achor point for tying remarks etc to derived basemap layers '
+            ' Variables for layers, providing metadata and an anchor point for remarks, visual styles '
             ' *************************************************************************************** '
 
             ' LayerRelPP
@@ -87,6 +87,16 @@ Public Class cEcospaceBasemap
             ' LayerDepth
             meta = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerDepth, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' LayerHabitat
+            meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nHabitats), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            val = New cValue(0, eVarNameFlags.LayerHabitat, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' LayerMPA
+            meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nMPAs), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            val = New cValue(0, eVarNameFlags.LayerMPA, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' LayerMigration
@@ -145,13 +155,11 @@ Public Class cEcospaceBasemap
             Me.Layers(layer.VarName) = layer
 
             ' Habitat layer
-            meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nHabitats), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            layer = New cEcospaceLayerHabitat(theCore, Me, meta)
+            layer = New cEcospaceLayerHabitat(theCore, Me)
             Me.Layers(layer.VarName) = layer
 
             ' MPA layer
-            meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nMPAs), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            layer = New cEcospaceLayerMPA(theCore, Me, meta)
+            layer = New cEcospaceLayerMPA(theCore, Me)
             Me.Layers(layer.VarName) = layer
 
             ' Region layer

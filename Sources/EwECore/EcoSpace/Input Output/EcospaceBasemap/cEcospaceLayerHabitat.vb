@@ -11,8 +11,8 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerHabitat
     Inherits cEcospaceLayerInteger
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal meta As cVariableMetaData)
-        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerHabitat, cCore.NULL_VALUE, meta)
+    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
+        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerHabitat, cCore.NULL_VALUE)
         Me.m_dataType = eDataTypes.EcospaceLayerHabitat
     End Sub
 

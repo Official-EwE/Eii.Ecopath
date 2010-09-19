@@ -23,7 +23,7 @@ Public Class cEcospaceLayerAdvection
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, eVarNameFlags.LayerAdvection, cCore.NULL_VALUE, Nothing)
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, eVarNameFlags.LayerAdvection, cCore.NULL_VALUE)
         Me.m_dataType = eDataTypes.EcospaceLayerAdvection
     End Sub
 

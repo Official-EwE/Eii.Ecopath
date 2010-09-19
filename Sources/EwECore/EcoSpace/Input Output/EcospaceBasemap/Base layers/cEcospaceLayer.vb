@@ -53,22 +53,26 @@ Public MustInherit Class cEcospaceLayer
     ''' from the manager.</param>
     ''' <param name="iIndex">Secundary index for obtaining the data.</param>
     ''' <param name="typeValue"><see cref="Type">Type</see> of layer values.</param>
-    ''' <param name="meta"><see cref="cVariableMetaData">Meta data</see> providing
-    ''' value range limits.</param>
     ''' -----------------------------------------------------------------------
     Protected Sub New(ByVal theCore As cCore, _
                       ByVal iDBID As Integer, _
                       ByVal manager As cEcospaceBasemap, _
                       ByVal vnData As eVarNameFlags, _
                       ByVal iIndex As Integer, _
-                      ByVal typeValue As Type, _
-                      Optional ByVal meta As cVariableMetaData = Nothing)
+                      ByVal typeValue As Type)
 
-        Me.New(theCore, iDBID, typeValue, meta)
+        Me.New(theCore, iDBID, typeValue, Nothing)
 
+        Debug.Assert(vnData <> eVarNameFlags.NotSet)
+
+        ' Store details
         Me.m_manager = manager
         Me.m_vnData = vnData
         Me.m_iData = iIndex
+
+        ' Complete layer
+        Me.m_data = Me.m_manager.GetLayerData(Me.m_vnData, Me.m_iData)
+        Me.m_metadata = Me.m_manager.GetVariableMetadata(Me.m_vnData)
 
     End Sub
 
@@ -79,8 +83,6 @@ Public MustInherit Class cEcospaceLayer
     ''' <param name="theCore">The core to notify of changes.</param>
     ''' <param name="data">The data to link to this layer.</param>
     ''' <param name="typeValue"><see cref="Type">Type</see> of layer values.</param>
-    ''' <param name="meta"><see cref="cVariableMetaData">Meta data</see> providing
-    ''' value range limits.</param>
     ''' -----------------------------------------------------------------------
     Protected Sub New(ByVal theCore As cCore, _
                       ByVal data As Object, _
@@ -143,9 +145,8 @@ Public MustInherit Class cEcospaceLayer
 
     Protected ReadOnly Property Data() As Object
         Get
-            Dim d As Object = Me.m_data
-            If (Me.m_data Is Nothing) Then d = Me.m_manager.GetLayerData(Me.m_vnData, Me.m_iData)
-            Return d
+            ' Return data
+            Return Me.m_data
         End Get
     End Property
 
@@ -176,9 +177,7 @@ Public MustInherit Class cEcospaceLayer
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property MetadataCell() As cVariableMetaData
         Get
-            Dim d As cVariableMetaData = Me.m_metadata
-            If (d Is Nothing) Then d = Me.m_manager.GetVariableMetadata(Me.m_vnData)
-            Return d
+            Return Me.m_metadata
         End Get
     End Property
 
