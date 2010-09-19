@@ -435,7 +435,7 @@ Namespace Ecospace.Basemap.Layers
                 If (md.Max > Convert.ToSingle(Decimal.MaxValue)) Then
                     Me.m_decValueMax = Decimal.MaxValue
                 Else
-                    Me.m_decValueMax = Convert.ToDecimal(md.Min)
+                    Me.m_decValueMax = Convert.ToDecimal(md.Max)
                 End If
 
             End If
