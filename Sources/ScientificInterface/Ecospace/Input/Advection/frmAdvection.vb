@@ -208,18 +208,6 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        'Private Sub OnWindValueChanged(ByVal fp As cEwEFormatProvider)
-        '    Me.m_edtWind.ScaleFactor = CSng(Me.m_nudWind.Value)
-        'End Sub
-
-        'Private Sub OnMLDValueChanged(ByVal fp As cEwEFormatProvider)
-        '    Me.m_edtMLD.CellValue = CSng(Me.m_nudDepth.Value)
-        'End Sub
-
-        'Private Sub OnUpwellingValueChanged(ByVal fp As cEwEFormatProvider)
-        '    Me.m_edtUpwell.CellValue = CSng(Me.m_nudUpwell.Value)
-        'End Sub
-
         Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnStart.Click
             Me.StartRun()
@@ -282,6 +270,11 @@ Namespace Ecospace.Advection
 
 #Region " ILayerEditor implementation "
 
+        Public Sub Initialize(ByVal editor As cLayerEditor) _
+            Implements ILayerEditorGUI.Initialize
+            ' NOP
+        End Sub
+
         Public Sub StartEdit(ByVal editor As cLayerEditor) _
             Implements Basemap.Layers.ILayerEditorGUI.StartEdit
 
@@ -297,7 +290,7 @@ Namespace Ecospace.Advection
 
         Public Sub EndEdit(ByVal editor As cLayerEditor) _
             Implements Basemap.Layers.ILayerEditorGUI.EndEdit
-
+            ' NOP
         End Sub
 
         Public Sub UpdateLayerEditorContent(ByVal editor As cLayerEditor) _
