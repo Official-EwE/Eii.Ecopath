@@ -120,7 +120,8 @@ Namespace Ecospace.Basemap.Layers
 
                     g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
                     g.FillRectangle(Brushes.Transparent, New Rectangle(0, 0, bm.Width, bm.Height))
-                    g.DrawEllipse(Pens.Gray, 0, 0, ptIconSize.Width, ptIconSize.Height)
+                    g.DrawEllipse(Pens.White, 1, 1, ptIconSize.Width - 2, ptIconSize.Height - 2)
+                    g.DrawEllipse(Pens.Black, 0, 0, ptIconSize.Width, ptIconSize.Height)
                     Using br As New SolidBrush(Color.FromArgb(45, 0, 0, 0))
                         g.FillEllipse(br, 0, 0, ptIconSize.Width, ptIconSize.Height)
                     End Using
