@@ -404,9 +404,6 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>
         ''' Get/set the value for the next cell that is to be edited.
         ''' </summary>
-        ''' <remarks>
-        ''' This value is persistent across layer editors.
-        ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Overridable Property CellValue() As Object
             Get

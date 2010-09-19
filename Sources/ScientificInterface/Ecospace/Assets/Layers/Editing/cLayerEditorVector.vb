@@ -13,7 +13,8 @@ Namespace Ecospace.Basemap.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer editor that supports selections of fleets.
+    ''' Layer editor that supports interactions with 
+    ''' <see cref="cEcospaceLayerVector">vector layers</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerEditorVector
@@ -91,6 +92,15 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Internal overrides "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Overidden to set a vector into a single cell.
+        ''' </summary>
+        ''' <param name="ptSet">The cell location (Col, Row) to set.</param>
+        ''' <param name="value">A array of 2 Single values</param>
+        ''' <param name="e">Mouse event args accompanying this action.</param>
+        ''' <param name="ptClick">The cell location (Col, Row) in the cursor.</param>
+        ''' -------------------------------------------------------------------
         Protected Overrides Sub SetCellValue(ByVal ptSet As Point, _
                                              ByVal value As Object, _
                                              ByVal e As MouseEventArgs, _
@@ -106,6 +116,15 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the value for the next cell that is to be edited. Overridden
+        ''' to cancel the effects of this property.
+        ''' </summary>
+        ''' <remarks>
+        ''' This property does not apply to vector layers.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Overrides Property CellValue() As Object
             Get
                 ' Bypass
