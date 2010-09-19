@@ -158,6 +158,7 @@ Namespace Ecospace.Basemap.Layers
 
                 gui = DirectCast(obj, ucLayerEditor)
                 gui.Attach(Me.m_uic, Me)
+                gui.Initialize(Me)
 
                 ' Remember GUI
                 Me.m_gui = gui
@@ -205,6 +206,9 @@ Namespace Ecospace.Basemap.Layers
             End Get
             Set(ByVal value As ILayerEditorGUI)
                 Me.m_gui = value
+                If Me.m_gui IsNot Nothing Then
+                    Me.m_gui.Initialize(Me)
+                End If
             End Set
         End Property
 

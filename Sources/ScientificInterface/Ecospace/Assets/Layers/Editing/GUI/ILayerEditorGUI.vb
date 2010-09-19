@@ -9,8 +9,17 @@
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Initialize an editor GUI to a layer.
+        ''' </summary>
+        ''' <param name="editor"></param>
+        ''' -------------------------------------------------------------------
+        Sub Initialize(ByVal editor As cLayerEditor)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Inform the editor GUI that the user has started editing the layer.
         ''' </summary>
+        ''' <param name="editor"></param>
         ''' -------------------------------------------------------------------
         Sub StartEdit(ByVal editor As cLayerEditor)
 
@@ -18,6 +27,7 @@
         ''' <summary>
         ''' Inform the editor GUI that the user has finished editing the layer.
         ''' </summary>
+        ''' <param name="editor"></param>
         ''' -------------------------------------------------------------------
         Sub EndEdit(ByVal editor As cLayerEditor)
 
@@ -27,6 +37,7 @@
         ''' underlying <see cref="ScientificInterface.Ecospace.Basemap.Layers.cLayer">layer</see> or
         ''' <see cref="cLayerEditor">layer editor</see> has changed.
         ''' </summary>
+        ''' <param name="editor"></param>
         ''' -------------------------------------------------------------------
         Sub UpdateContent(ByVal editor As cLayerEditor)
 

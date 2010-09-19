@@ -20,6 +20,7 @@ Namespace Ecospace.Basemap.Layers
 
         ''' <summary>Underlying editor.</summary>
         Private m_editor As cLayerEditor = Nothing
+        ''' <summary>Underlying UI context.</summary>
         Private m_uic As cUIContext = Nothing
 
 #End Region ' Private vars
@@ -70,6 +71,14 @@ Namespace Ecospace.Basemap.Layers
                 Me.UpdateContent(editor)
             End Set
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ILayerEditorGUI.Initialize"/>
+        ''' -------------------------------------------------------------------
+        Public Overridable Sub Initialize(ByVal editor As cLayerEditor) _
+            Implements ILayerEditorGUI.Initialize
+            ' NOP
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ILayerEditorGUI.StartEdit"/>

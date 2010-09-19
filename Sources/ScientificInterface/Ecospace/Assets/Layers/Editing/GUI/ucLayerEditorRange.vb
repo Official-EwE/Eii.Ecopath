@@ -40,12 +40,8 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Overrides "
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
-            MyBase.UpdateContent(editor)
-
-            ' Sanity check
-            If (Me.m_nudValue Is Nothing) Then Return
-            If (Me.UIContext Is Nothing) Then Return
+        Public Overrides Sub Initialize(ByVal editor As cLayerEditor)
+            MyBase.Initialize(editor)
 
             If Me.Editor.Layer.ValueType Is GetType(Integer) Then
                 Me.m_nudValue.DecimalPlaces = 0
@@ -53,9 +49,34 @@ Namespace Ecospace.Basemap.Layers
                 Me.m_nudValue.DecimalPlaces = Me.UIContext.StyleGuide.NumDigits
             End If
 
-            Me.m_nudValue.Maximum = Me.Editor.CellValueMax
-            Me.m_nudValue.Minimum = Me.Editor.CellValueMin
-            Me.m_nudValue.Value = Math.Max(Math.Min(CDec(Me.Editor.CellValue), Me.Editor.CellValueMax), Me.Editor.CellValueMin)
+            ' Set control max value
+            If Convert.ToSingle(Decimal.MaxValue) < Me.Editor.CellValueMax Then
+                Me.m_nudValue.Maximum = Decimal.MaxValue
+            Else
+                Me.m_nudValue.Maximum = Convert.ToDecimal(Me.Editor.CellValueMax)
+            End If
+
+            ' Set control min value
+            If Convert.ToSingle(Decimal.MinValue) > Me.Editor.CellValueMin Then
+                Me.m_nudValue.Minimum = Decimal.MaxValue
+            Else
+                Me.m_nudValue.Minimum = Convert.ToDecimal(Me.Editor.CellValueMin)
+            End If
+
+        End Sub
+
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+            MyBase.UpdateContent(editor)
+
+            ' Sanity check
+            If (Me.m_nudValue Is Nothing) Then Return
+            If (Me.UIContext Is Nothing) Then Return
+
+            ' Set control value
+            Dim sValue As Single = Math.Max(Math.Min(CSng(Me.Editor.CellValue), CSng(Me.m_nudValue.Maximum)), _
+                                            CSng(Me.m_nudValue.Minimum))
+
+            Me.m_nudValue.Value = Convert.ToDecimal(sValue)
 
         End Sub
 
