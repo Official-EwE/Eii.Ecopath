@@ -163,15 +163,23 @@ Namespace Ecospace
 
             If (Me.CanEdit = False) Then Return
 
-            Me.Capture = True
+            If ((e.Button And Windows.Forms.MouseButtons.Right) > 0) Then
 
-            ' If NOT Shift key pressed, release the last mouse pos
-            If Not bShiftPressed Then Me.m_ptScreenPrevious = Nothing
+                Me.m_layerSelected.Editor.Pickup(Me.GetCellIndex(e.Location))
+                Me.Capture = False
 
-            ' Start editing
-            Me.m_layerSelected.Editor.StartEdit(ptCellCur, e)
+            ElseIf ((e.Button And MouseButtons.Left) > 0) Then
 
-            Me.ProcessMouseInput(e)
+                Me.Capture = True
+
+                ' If NOT Shift key pressed, release the last mouse pos
+                If Not bShiftPressed Then Me.m_ptScreenPrevious = Nothing
+
+                ' Start editing
+                Me.m_layerSelected.Editor.StartEdit(ptCellCur, e)
+
+                Me.ProcessMouseInput(e)
+            End If
 
         End Sub
 
@@ -279,29 +287,21 @@ Namespace Ecospace
 
             If (Me.m_ptScreenPrevious = Nothing) Then Me.m_ptScreenPrevious = ptScreenCur
 
-            If ((e.Button And Windows.Forms.MouseButtons.Right) > 0) Then
-                Me.m_layerSelected.Editor.Pickup(Me.GetCellIndex(e.Location))
-            End If
+            Dim ptCellFrom As Point = Me.GetCellIndex(Me.m_ptScreenPrevious)
+            Dim ptCellTo As Point = Me.GetCellIndex(ptScreenCur)
+            Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X), Math.Min(ptCellFrom.Y, ptCellTo.Y))
+            Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X), Math.Max(ptCellFrom.Y, ptCellTo.Y))
 
-            If ((e.Button And MouseButtons.Left) > 0) Then
+            Me.m_layerSelected.Editor.Edit(ptCellFrom, ptCellTo, _
+                                           New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y), _
+                                           Me.GetCellSize(), _
+                                           e, _
+                                           ptUpdateMin, ptUpdateMax)
 
-                Dim ptCellFrom As Point = Me.GetCellIndex(Me.m_ptScreenPrevious)
-                Dim ptCellTo As Point = Me.GetCellIndex(ptScreenCur)
-                Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X), Math.Min(ptCellFrom.Y, ptCellTo.Y))
-                Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X), Math.Max(ptCellFrom.Y, ptCellTo.Y))
+            ' Flag layer as changed
+            Me.m_layerSelected.IsModified = True
 
-                Me.m_layerSelected.Editor.Edit(ptCellFrom, ptCellTo, _
-                                               New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y), _
-                                               Me.GetCellSize(), _
-                                               e, _
-                                               ptUpdateMin, ptUpdateMax)
-
-                ' Flag layer as changed
-                Me.m_layerSelected.IsModified = True
-
-                Me.UpdateMap(Me.m_bmp, ptUpdateMin, ptUpdateMax)
-
-            End If
+            Me.UpdateMap(Me.m_bmp, ptUpdateMin, ptUpdateMax)
 
             Me.m_ptScreenPrevious = ptScreenCur
 
