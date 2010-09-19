@@ -28,9 +28,11 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>Flag stating whether the layer is read-only.</summary>
         Private m_bReadOnly As Boolean = False
         ''' <summary>The current value 'under the cursor'.</summary>
-        Private m_decValue As Decimal = Nothing
-        Private m_decValueMax As Decimal = Decimal.MaxValue
-        Private m_decValueMin As Decimal = 0
+        Private m_sValue As Single = Nothing
+        ''' <summary>Max value for cursor.</summary>
+        Private m_sValueMax As Single = Single.MaxValue
+        ''' <summary>Min value for cursor.</summary>
+        Private m_sValueMin As Single = 0
 
         ' === GUI SUPPORT ===
         ''' <summary>Runtime type of the <see cref="ucLayerEditor">layer editor GUI</see>
@@ -403,12 +405,15 @@ Namespace Ecospace.Basemap.Layers
         ''' -------------------------------------------------------------------
         Public Overridable Property CellValue() As Object
             Get
-                Return Me.m_decValue
+                Return Me.m_sValue
             End Get
             Set(ByVal value As Object)
-                Me.m_decValue = Math.Max(Math.Min(CDec(value), Me.m_decValueMax), Me.m_decValueMin)
-                If (Me.m_gui IsNot Nothing) Then
-                    Me.m_gui.UpdateContent(Me)
+                Dim sValue As Single = Math.Max(Math.Min(CSng(value), Me.m_sValueMax), Me.m_sValueMin)
+                If (sValue <> Me.m_sValue) Then
+                    Me.m_sValue = sValue
+                    If (Me.m_gui IsNot Nothing) Then
+                        Me.m_gui.UpdateContent(Me)
+                    End If
                 End If
             End Set
         End Property
@@ -425,19 +430,8 @@ Namespace Ecospace.Basemap.Layers
         ''' -------------------------------------------------------------------
         Protected Overridable Sub ApplyMetadata(ByVal md As cVariableMetaData)
             If (md IsNot Nothing) Then
-
-                If (md.Min < Convert.ToSingle(Decimal.MinValue)) Then
-                    Me.m_decValueMin = Decimal.MinValue
-                Else
-                    Me.m_decValueMin = Convert.ToDecimal(md.Min)
-                End If
-
-                If (md.Max > Convert.ToSingle(Decimal.MaxValue)) Then
-                    Me.m_decValueMax = Decimal.MaxValue
-                Else
-                    Me.m_decValueMax = Convert.ToDecimal(md.Max)
-                End If
-
+                Me.m_sValueMin = md.Min
+                Me.m_sValueMax = md.Max
             End If
         End Sub
 
@@ -450,12 +444,12 @@ Namespace Ecospace.Basemap.Layers
         ''' the UI is required to manually control this property.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property CellValueMax() As Decimal
+        Public Property CellValueMax() As Single
             Get
-                Return Me.m_decValueMax
+                Return Me.m_sValueMax
             End Get
-            Set(ByVal value As Decimal)
-                Me.m_decValueMax = value
+            Set(ByVal value As Single)
+                Me.m_sValueMax = value
             End Set
         End Property
 
@@ -468,12 +462,12 @@ Namespace Ecospace.Basemap.Layers
         ''' the UI is required to manually control this property.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property CellValueMin() As Decimal
+        Public Property CellValueMin() As Single
             Get
-                Return Me.m_decValueMin
+                Return Me.m_sValueMin
             End Get
-            Set(ByVal value As Decimal)
-                Me.m_decValueMin = value
+            Set(ByVal value As Single)
+                Me.m_sValueMin = value
             End Set
         End Property
 
