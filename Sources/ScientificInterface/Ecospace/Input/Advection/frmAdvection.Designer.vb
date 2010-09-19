@@ -316,7 +316,7 @@
             '
             'm_nudMLD
             '
-            Me.m_nudMLD.Increment = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_nudMLD.Increment = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudMLD.Location = New System.Drawing.Point(55, 270)
             Me.m_nudMLD.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudMLD.Name = "m_nudMLD"
