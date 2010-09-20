@@ -39,14 +39,24 @@ Namespace Ecospace.Advection
         ''' <summary>Iteration results quality flag.</summary>
         Private m_bBadFlow As Boolean = False
 
+        Private m_XvelOrg(,) As Single
+        Private m_YvelOrg(,) As Single
+
 #End Region ' Private vars
 
 #Region " Public access "
 
         Public Sub Init(ByVal core As cCore, ByVal ecospace As cEcoSpace)
+
             Me.m_core = core
             Me.m_data = core.m_EcoSpaceData
             Me.m_ecospace = ecospace
+
+            ReDim Me.m_XvelOrg(Me.m_data.InRow + 1, Me.m_data.InCol + 1)
+            Array.Copy(Me.m_data.Xvel, Me.m_XvelOrg, Me.m_data.Xvel.LongLength)
+            ReDim Me.m_YvelOrg(Me.m_data.InRow + 1, Me.m_data.InCol + 1)
+            Array.Copy(Me.m_data.Yvel, Me.m_YvelOrg, Me.m_data.Yvel.LongLength)
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -254,7 +264,6 @@ Namespace Ecospace.Advection
 
                 Try
                     Me.m_RunProgressDelegate.Invoke(m_iter)
-                    Threading.Thread.Sleep(10)
                 Catch ex As Exception
                     Return False
                 End Try
@@ -285,6 +294,24 @@ Namespace Ecospace.Advection
             Return True
 
             'If m_bBadAdvection = True Then MsgBox("Inflows and outflows do not balance at cells shown in red; recommend not using this velocity field for simulations if ecospace shows strange behavior for these cells")
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Revert XVel and YVel to their initial state.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Revert() As Boolean
+
+            Try
+                Array.Copy(Me.m_XvelOrg, Me.m_data.Xvel, Me.m_data.Xvel.LongLength)
+                Array.Copy(Me.m_YvelOrg, Me.m_data.Yvel, Me.m_data.Yvel.LongLength)
+                Return True
+            Catch ex As Exception
+                Return False
+            End Try
+
         End Function
 
 #End Region ' Public access
