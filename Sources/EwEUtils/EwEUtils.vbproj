@@ -109,6 +109,7 @@
     <Compile Include="Utilities\cDateUtils.vb" />
     <Compile Include="Utilities\cFileUtils.vb" />
     <Compile Include="Utilities\cDrawingUtils.vb" />
+    <Compile Include="Utilities\cNumberUtils.vb" />
     <Compile Include="Utilities\cRegistryUtils.vb" />
     <Compile Include="Utilities\cResourceUtils.vb" />
     <Compile Include="Utilities\cSoundUtils.vb" />
