@@ -7,6 +7,7 @@ Imports SAUPUtil.Misc.Colours
 Imports System.Drawing.Drawing2D
 Imports System.Reflection
 Imports EwECore.Auxiliary
+Imports EwEUtils.Utilities
 
 #End Region 'Imports
 
@@ -70,8 +71,8 @@ Namespace Ecospace.Basemap.Layers
                     ptfCenter = New PointF(CSng(rc.X + rc.Width / 2), CSng(rc.Y + rc.Height / 2))
                     ' Calc display scale, rounded to two decimals between -1 and 1
                     Try
-                        sScaleX = CSng(Math.Max(-1, Math.Min(Math.Round(asValues(0) / sMax, 2), 1)))
-                        sScaleY = CSng(Math.Max(-1, Math.Min(Math.Round(asValues(1) / sMax, 2), 1)))
+                        sScaleX = Math.Max(-1, Math.Min(cNumberUtils.FixValue(CSng(Math.Round(asValues(0) / sMax, 2))), 1))
+                        sScaleY = Math.Max(-1, Math.Min(cNumberUtils.FixValue(CSng(Math.Round(asValues(1) / sMax, 2))), 1))
                     Catch ex As Exception
                         sScaleX = 0
                         sScaleY = 0
@@ -80,14 +81,18 @@ Namespace Ecospace.Basemap.Layers
                     szfHalfArrow = New SizeF(rc.Width * sScaleX / 2.0!, rc.Height * sScaleY / 2.0!)
 
                     Using p As New Pen(Me.VisualStyle.ForeColour, 0.001!)
-                        g.DrawLine(p, _
-                                   ptfCenter.X - szfHalfArrow.Width, ptfCenter.Y - szfHalfArrow.Height, _
-                                   ptfCenter.X + szfHalfArrow.Width, ptfCenter.Y + szfHalfArrow.Height)
-                        g.DrawEllipse(p, _
-                                      ptfCenter.X + szfHalfArrow.Width - rc.Width / 8.0!, _
-                                      ptfCenter.Y + szfHalfArrow.Height - rc.Height / 8.0!, _
-                                      rc.Width / 4.0!, _
-                                      rc.Height / 4.0!)
+                        Try
+                            g.DrawLine(p, _
+                                       ptfCenter.X - szfHalfArrow.Width, ptfCenter.Y - szfHalfArrow.Height, _
+                                       ptfCenter.X + szfHalfArrow.Width, ptfCenter.Y + szfHalfArrow.Height)
+                            g.DrawEllipse(p, _
+                                          ptfCenter.X + szfHalfArrow.Width - rc.Width / 8.0!, _
+                                          ptfCenter.Y + szfHalfArrow.Height - rc.Height / 8.0!, _
+                                          rc.Width / 4.0!, _
+                                          rc.Height / 4.0!)
+                        Catch ex As Exception
+                            ' NOP
+                        End Try
                     End Using
 
                     ' If Depth(i, j + 1) > 0 Then Vxp = Xvloc(i, j) Else Vxp = 0
