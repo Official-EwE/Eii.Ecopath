@@ -28,7 +28,7 @@ Partial Class ucOptionsGeneral
             Me.m_nudMRU = New System.Windows.Forms.NumericUpDown
             Me.m_btnClearMRU = New System.Windows.Forms.Button
             Me.lblMDB = New System.Windows.Forms.Label
-            Me.m_hdrCaption = New cEwEHeaderLabel
+            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_gpMsg = New System.Windows.Forms.GroupBox
             Me.m_nudMaxNumMessages = New System.Windows.Forms.NumericUpDown
             Me.m_lblMaxNumMessages = New System.Windows.Forms.Label
@@ -129,7 +129,7 @@ Partial Class ucOptionsGeneral
             Me.m_cbDownloadUpdates.Name = "m_cbDownloadUpdates"
             Me.m_cbDownloadUpdates.UseVisualStyleBackColor = True
             '
-            'ucAppGeneral
+            'ucOptionsGeneral
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -137,7 +137,7 @@ Partial Class ucOptionsGeneral
             Me.Controls.Add(Me.m_gpMsg)
             Me.Controls.Add(Me.m_hdrCaption)
             Me.Controls.Add(Me.m_gpMRU)
-            Me.Name = "ucAppGeneral"
+            Me.Name = "ucOptionsGeneral"
             Me.m_gpMRU.ResumeLayout(False)
             Me.m_gpMRU.PerformLayout()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).EndInit()

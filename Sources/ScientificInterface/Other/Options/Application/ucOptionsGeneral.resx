@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_nudMRU.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 20</value>
+    <value>183, 20</value>
   </data>
   <data name="m_nudMRU.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 20</value>
@@ -184,7 +184,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblMDB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 22</value>
+    <value>12, 22</value>
   </data>
   <data name="lblMDB.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 13</value>
@@ -234,9 +234,6 @@
   <data name="m_hdrCaption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
-  <data name="m_hdrCaption.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
   <data name="m_hdrCaption.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -259,7 +256,7 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.919, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>
@@ -271,7 +268,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_nudMaxNumMessages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 23</value>
+    <value>183, 23</value>
   </data>
   <data name="m_nudMaxNumMessages.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 20</value>
@@ -502,7 +499,7 @@
     <value>382, 328</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucAppGeneral</value>
+    <value>ucOptionsGeneral</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
