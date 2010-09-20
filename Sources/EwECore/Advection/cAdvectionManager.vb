@@ -253,12 +253,11 @@ Namespace Ecospace.Advection
 
             Me.m_syncObject = SyncObject
 
-
             If Me.IsRunning Then
                 Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ADVECTION_ALREADY_RUNNING, _
                                                             eMessageType.ErrorEncountered, _
                                                             eCoreComponentType.EcoSpace, _
-                                                            eMessageImportance.Critical, _
+                                                            eMessageImportance.Warning, _
                                                             eDataTypes.MonteCarlo))
                 Return False
             End If
@@ -292,6 +291,22 @@ Namespace Ecospace.Advection
 
         End Function
 
+        Public Function Revert() As Boolean
+
+            Me.m_comp.Revert()
+
+            Try
+                Dim layer As cEcospaceLayer = Me.m_core.EcospaceBasemap.LayerAdvection
+                ' Invalidate layer
+                layer.Invalidate()
+                Return True
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+            Return False
+
+        End Function
+
 #End Region ' Running
 
 #Region " Events "
@@ -304,6 +319,24 @@ Namespace Ecospace.Advection
                 If m_RunStartedDelegate IsNot Nothing Then
                     'call the delegate supplied by the interface
                     m_syncObject.BeginInvoke(Me.m_RunStartedDelegate, Nothing)
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+
+        End Sub
+
+        Private Sub OnAdvectionCalcsProgressHandler(ByVal iInteration As Integer)
+
+            Try
+                Dim layer As cEcospaceLayer = Me.m_core.EcospaceBasemap.LayerAdvection
+
+                If m_RunProgressDelegate IsNot Nothing Then
+                    ' Invalidate layer
+                    layer.Invalidate()
+                    ' Call the delegate supplied by the interface
+                    m_syncObject.BeginInvoke(Me.m_RunProgressDelegate, New Object() {Me.m_comp.Iteration})
                 End If
 
             Catch ex As Exception
@@ -336,24 +369,6 @@ Namespace Ecospace.Advection
             Catch ex As Exception
                 cLog.Write(ex)
                 m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
-            End Try
-
-        End Sub
-
-        Private Sub OnAdvectionCalcsProgressHandler(ByVal iInteration As Integer)
-
-            Try
-                Dim layer As cEcospaceLayer = Me.m_core.EcospaceBasemap.LayerAdvection
-
-                If m_RunProgressDelegate IsNot Nothing Then
-                    ' Invalidate layer
-                    layer.Invalidate()
-                    ' Call the delegate supplied by the interface
-                    m_syncObject.BeginInvoke(Me.m_RunProgressDelegate, New Object() {Me.m_comp.Iteration})
-                End If
-
-            Catch ex As Exception
-                cLog.Write(ex)
             End Try
 
         End Sub
