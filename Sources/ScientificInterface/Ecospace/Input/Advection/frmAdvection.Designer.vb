@@ -39,7 +39,7 @@
             Me.m_tlpComputeControls = New System.Windows.Forms.TableLayoutPanel
             Me.m_btnStart = New System.Windows.Forms.Button
             Me.m_btnStop = New System.Windows.Forms.Button
-            Me.m_btnApplyVels = New System.Windows.Forms.Button
+            Me.m_btnRevert = New System.Windows.Forms.Button
             Me.m_nudSorWv = New System.Windows.Forms.NumericUpDown
             Me.m_lblSorWv = New System.Windows.Forms.Label
             Me.m_nudCoriolis = New System.Windows.Forms.NumericUpDown
@@ -148,7 +148,7 @@
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudXVelocity)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblXVelocity)
             Me.m_scMain.Panel1.Controls.Add(Me.m_tlpComputeControls)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_btnApplyVels)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_btnRevert)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudSorWv)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblSorWv)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudCoriolis)
@@ -221,7 +221,7 @@
             Me.m_tlpComputeControls.Name = "m_tlpComputeControls"
             Me.m_tlpComputeControls.RowCount = 1
             Me.m_tlpComputeControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.m_tlpComputeControls.Size = New System.Drawing.Size(132, 23)
+            Me.m_tlpComputeControls.Size = New System.Drawing.Size(131, 23)
             Me.m_tlpComputeControls.TabIndex = 7
             '
             'm_btnStart
@@ -232,7 +232,7 @@
             Me.m_btnStart.Location = New System.Drawing.Point(0, 0)
             Me.m_btnStart.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
             Me.m_btnStart.Name = "m_btnStart"
-            Me.m_btnStart.Size = New System.Drawing.Size(63, 23)
+            Me.m_btnStart.Size = New System.Drawing.Size(62, 23)
             Me.m_btnStart.TabIndex = 0
             Me.m_btnStart.Text = "&Compute"
             Me.m_btnStart.UseVisualStyleBackColor = True
@@ -242,7 +242,7 @@
             Me.m_btnStop.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.m_btnStop.Location = New System.Drawing.Point(69, 0)
+            Me.m_btnStop.Location = New System.Drawing.Point(68, 0)
             Me.m_btnStop.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.m_btnStop.Name = "m_btnStop"
             Me.m_btnStop.Size = New System.Drawing.Size(63, 23)
@@ -250,18 +250,18 @@
             Me.m_btnStop.Text = "&Stop"
             Me.m_btnStop.UseVisualStyleBackColor = True
             '
-            'm_btnApplyVels
+            'm_btnRevert
             '
-            Me.m_btnApplyVels.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_btnRevert.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnApplyVels.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.m_btnApplyVels.Location = New System.Drawing.Point(1, 163)
-            Me.m_btnApplyVels.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_btnApplyVels.Name = "m_btnApplyVels"
-            Me.m_btnApplyVels.Size = New System.Drawing.Size(132, 23)
-            Me.m_btnApplyVels.TabIndex = 8
-            Me.m_btnApplyVels.Text = "&Apply"
-            Me.m_btnApplyVels.UseVisualStyleBackColor = True
+            Me.m_btnRevert.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+            Me.m_btnRevert.Location = New System.Drawing.Point(1, 163)
+            Me.m_btnRevert.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_btnRevert.Name = "m_btnRevert"
+            Me.m_btnRevert.Size = New System.Drawing.Size(131, 23)
+            Me.m_btnRevert.TabIndex = 8
+            Me.m_btnRevert.Text = "&Revert"
+            Me.m_btnRevert.UseVisualStyleBackColor = True
             '
             'm_nudSorWv
             '
@@ -316,7 +316,6 @@
             '
             'm_nudMLD
             '
-            Me.m_nudMLD.Increment = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudMLD.Location = New System.Drawing.Point(55, 270)
             Me.m_nudMLD.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudMLD.Name = "m_nudMLD"
@@ -519,7 +518,7 @@
         Private WithEvents m_nudCoriolis As System.Windows.Forms.NumericUpDown
         Private WithEvents m_btnStart As System.Windows.Forms.Button
         Private WithEvents m_tlpComputeControls As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_btnApplyVels As System.Windows.Forms.Button
+        Private WithEvents m_btnRevert As System.Windows.Forms.Button
         Private WithEvents m_btnStop As System.Windows.Forms.Button
         Private WithEvents m_lblYVelocity As System.Windows.Forms.Label
         Private WithEvents m_nudYVelocity As System.Windows.Forms.NumericUpDown

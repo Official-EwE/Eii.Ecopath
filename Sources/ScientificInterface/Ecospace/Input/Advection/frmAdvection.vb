@@ -94,9 +94,6 @@ Namespace Ecospace.Advection
             ' Listen to format providers
             AddHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
             AddHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
-            'AddHandler Me.m_fpWind.OnValueChanged, AddressOf OnWindValueChanged
-            'AddHandler Me.m_fpMLD.OnValueChanged, AddressOf OnMLDValueChanged
-            'AddHandler Me.m_fpUpwell.OnValueChanged, AddressOf OnUpwellingValueChanged
 
             ' Config EwEForm
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
@@ -129,9 +126,6 @@ Namespace Ecospace.Advection
 
             RemoveHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
             RemoveHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
-            'RemoveHandler Me.m_fpWind.OnValueChanged, AddressOf OnWindValueChanged
-            'RemoveHandler Me.m_fpMLD.OnValueChanged, AddressOf OnMLDValueChanged
-            'RemoveHandler Me.m_fpUpwell.OnValueChanged, AddressOf OnUpwellingValueChanged
 
             Me.m_fpVXelocity.Release()
             Me.m_fpVYelocity.Release()
@@ -218,26 +212,14 @@ Namespace Ecospace.Advection
             Me.m_manager.StopRun()
         End Sub
 
-        Private Sub OnApplyVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnApplyVels.Click
-
+        Private Sub OnRevertVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnRevert.Click
+            Me.Revert()
         End Sub
 
 #End Region ' Control events
 
 #Region " Event handlers "
-
-        'Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-        '    '' Refresh basemap on ANY data added or removed message from Ecospace
-        '    'If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
-        '    '    ' Refresh it all
-        '    '    Me.Basemap = Me.Core.EcospaceBasemap
-        '    'End If
-        'End Sub
-
-        'Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
-        '    Me.UpdateControls()
-        'End Sub
 
         Private Sub OnVelocityChanged(ByVal sender As cEwEFormatProvider)
             Me.UpdateTransportVelocity()
@@ -250,8 +232,12 @@ Namespace Ecospace.Advection
 
         Private Sub OnCalcProgress(ByVal iIter As Integer)
 
-            ' Update app status
-            cApplicationStatusNotifier.SetStatusText("Advection running iteration " & iIter, TriState.UseDefault, -1)
+            If iIter Mod 100 = 0 Then
+
+                ' Update app status
+                cApplicationStatusNotifier.SetStatusText("Advection running iteration " & iIter, TriState.UseDefault, -1)
+
+            End If
 
             ' Update data layer
             Dim layer As cLayer = Me.m_ucMap.DataLayer
@@ -263,7 +249,17 @@ Namespace Ecospace.Advection
         Private Sub OnCalcStopped(ByVal iIter As Integer, ByVal bInterrupted As Boolean, ByVal bBadFlow As Boolean)
             Me.StopRun()
             Me.m_ucMap.Invalidate()
-            Me.m_bHasRun = Not bBadFlow
+
+            If bBadFlow Then
+                ' ToDo_JS: globalize this
+                If MsgBox("Inflows and outflows do not balance; it is recommend not using this velocity field for simulations if ecospace shows strange behavior. Do you wish to revert the advection data to the previous state?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                    Me.Revert()
+                End If
+            End If
+
+            Me.m_bHasRun = True
+            Me.UpdateControls()
+
         End Sub
 
 #End Region ' Event handlers
@@ -317,7 +313,7 @@ Namespace Ecospace.Advection
 
             Me.m_btnStart.Enabled = Not bBusy And Not Me.m_bSearching
             Me.m_btnStop.Enabled = Me.m_bSearching
-            Me.m_btnApplyVels.Enabled = Me.m_bHasRun
+            Me.m_btnRevert.Enabled = Me.m_bHasRun
 
             Me.m_tsmiToggleOptions.Checked = Not Me.m_scMain.Panel1Collapsed
 
@@ -358,6 +354,16 @@ Namespace Ecospace.Advection
             Me.m_manager.StopRun()
             Me.UpdateControls()
 
+        End Sub
+
+        Private Sub Revert()
+            If Me.m_manager.Revert Then
+                Dim layer As cLayer = Me.m_ucMap.DataLayer
+                layer.IsModified = True
+                layer.Update(cLayer.eChangeFlags.Map, False)
+                Me.m_bHasRun = False
+                Me.UpdateControls()
+            End If
         End Sub
 
 #End Region ' Internals
