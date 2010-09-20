@@ -11799,6 +11799,32 @@ Public Class cCore
 
     End Function
 
+    Public Function MovePedigreeLevel(ByVal iLevel As Integer, ByVal iIndex As Integer) As Boolean
+        Dim bSucces As Boolean = False
+        Dim ds As IEcopathDataSource = Nothing
+
+        ' Sanity checks
+        If Me.DataSource Is Nothing Then Return False
+        If Not TypeOf (Me.DataSource) Is IEcopathDataSource Then Return False
+
+        ' Increase batch count
+        If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
+
+        ds = DirectCast(DataSource, IEcopathDataSource)
+        If ds.MovePedigreeLevel(Me.m_EcoPathData.PedigreeLevelDBID(iLevel), iIndex) Then
+
+            Me.DataAddedOrRemovedMessage("Ecopath pedigree order has changed.", eCoreComponentType.EcoPath, eDataTypes.PedigreeLevel)
+
+            bSucces = True
+        End If
+
+        ' Decrease batch count
+        ReleaseBatchLock(eBatchChangeLevelFlags.Ecopath)
+
+        Return bSucces
+
+    End Function
+
 #End Region ' Pedigree
 
 #Region "Game manager/interface"
