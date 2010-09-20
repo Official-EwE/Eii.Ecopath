@@ -9,6 +9,7 @@ Imports System.Collections.Generic
 
 Public Class cPedigreeManager
     Implements ICoreInterface
+    'Implements IEnumerable(Of cPedigreeLevel)
 
 #Region " Private classes "
 
@@ -82,8 +83,8 @@ Public Class cPedigreeManager
 
     End Function
 
-    Public Function MoveLevel(ByVal iPosFrom As Integer, ByVal iPosTo As Integer) As Boolean
-        ' Hih
+    Public Function MoveLevel(ByVal level As cPedigreeLevel, ByVal iPosTo As Integer) As Boolean
+        ' NOP for now
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -108,7 +109,14 @@ Public Class cPedigreeManager
 
     End Function
 
-#Region " Saving, loading and updating "
+    Public Sub Sort()
+        Me.m_levels.Sort(New cPedigreeLevelListSorter)
+        For i As Integer = 0 To Me.m_levels.Count - 1
+            Me.m_levels(i).ID = i
+        Next i
+    End Sub
+
+#Region " Internals "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -116,7 +124,7 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Load() As Boolean
+    Friend Overridable Function Load() As Boolean
         Try
             Dim level As cPedigreeLevel = Nothing
             Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -129,9 +137,9 @@ Public Class cPedigreeManager
 
                     level.AllowValidation = False
                     level.Index = iLevel
+                    level.Name = data.PedigreeLevelName(iLevel)
                     level.IndexValue = data.PedigreeLevelIndexValue(iLevel)
                     level.ConfidenceInterval = data.PedigreeLevelConfidence(iLevel)
-                    level.Description = data.PedigreeLevelDescription(iLevel)
                     level.AllowValidation = True
 
                     Me.m_levels.Add(level)
@@ -154,26 +162,23 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Update() As Boolean
+    Friend Overridable Function Update() As Boolean
 
         Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim level As cPedigreeLevel = Nothing
 
         Try
-            For iLevel As Integer = 1 To data.NumPedigreeLevels
-
-                level = Me.m_levels(iLevel)
+            For Each level In Me.m_levels
                 Try
+                    data.PedigreeLevelName(level.Index) = level.Name
                     data.PedigreeLevelIndexValue(level.Index) = level.IndexValue
                     data.PedigreeLevelConfidence(level.Index) = level.ConfidenceInterval
-                    data.PedigreeLevelDescription(level.Index) = level.Description
 
                 Catch ex As Exception
                     cLog.Write(Me.ToString & ".Update() level failed to update DBID=" & level.DBID)
                     Debug.Assert(False, Me.ToString & ".Update() level failed to update DBID=" & level.DBID)
                 End Try
-
-            Next iLevel
+            Next level
 
             Me.m_core.onChanged(Me, eMessageType.DataModified)
 
@@ -186,7 +191,23 @@ Public Class cPedigreeManager
 
     End Function
 
-#End Region ' Saving, loading and updating
+#End Region ' Internals
+
+#Region " Properties "
+
+    Public ReadOnly Property NumLevels() As Integer
+        Get
+            Return Me.m_levels.Count
+        End Get
+    End Property
+
+    Public ReadOnly Property Level(ByVal iLevel As Integer) As cPedigreeLevel
+        Get
+            Return Me.m_levels(iLevel)
+        End Get
+    End Property
+
+#End Region ' Properties
 
 #Region " ICoreInterface Implementation "
 
@@ -236,20 +257,120 @@ Public Class cPedigreeManager
 
 #End Region ' ICoreInterface Implementation
 
-#Region " Public methods "
+#Region " ICollection implementation "
+#If 0 Then
 
-    Public ReadOnly Property NumLevels() As Integer
+    ''' <summary>
+    ''' Add a cForcingFunction object to the list
+    ''' </summary>
+    ''' <param name="level"><see cref="cPedigreeLevel">pedigree level</see>
+    ''' or derived object to add to the manager and the underlying Ecopath data.</param>
+    ''' <returns>True if Successfull</returns>
+    Protected Overridable Overloads Function Add(ByVal level As cPedigreeLevel) As Boolean
+        Try
+            Me.m_levels.Add(level)
+            Me.UpdateIDs()
+            Return True
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            Return False
+        End Try
+
+    End Function
+
+    Public Overridable ReadOnly Property Item(ByVal iIndex As Integer) As cPedigreeLevel
+        Get
+            Try
+                Return Me.m_levels.Item(iIndex)
+            Catch ex As Exception
+                cLog.Write(Me.ToString & ".Add() Error: " & ex.Message)
+                Return Nothing
+            End Try
+
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Number of pedigrees in this manager.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>The collection is zero (0) based.</remarks>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Count() As Integer
         Get
             Return Me.m_levels.Count
         End Get
     End Property
 
-    Public ReadOnly Property Level(ByVal iLevel As Integer) As cPedigreeLevel
-        Get
-            Return Me.m_levels(iLevel)
-        End Get
-    End Property
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Implementation of IEnumerable.GetEnumerator provides access to the For Each statment
+    ''' </summary>
+    ''' <returns>The Enumerator of the List used by this object</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function GetEnumerator() As System.Collections.IEnumerator _
+        Implements System.Collections.IEnumerable.GetEnumerator
+        Return m_levels.GetEnumerator
+    End Function
 
-#End Region ' Public methods
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether this manager contain a given <see cref="cPedigreeLevel">pedigree level</see>.
+    ''' </summary>
+    ''' <param name="level">The <see cref="cPedigreeLevel">pedigree level</see> to test.</param>
+    ''' <returns>True if this manager contains the given level.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function Contains(ByRef level As cPedigreeLevel) As Boolean
+        Try
+            Return m_levels.Contains(level)
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Remove a pedigree level from the manager and the underlying Ecopath data.
+    ''' </summary>
+    ''' <param name="level">Level to remove</param>
+    ''' <returns>True if successful</returns>
+    ''' -----------------------------------------------------------------------
+    Public Overloads Function Remove(ByVal level As cPedigreeLevel) As Boolean
+        Try
+            If Not m_core.RemovePedigreeLevel(level.DBID) Then Return False
+
+            'Remove the shape from the shape managers memory
+            Me.m_levels.Remove(level)
+
+            Me.UpdateIDs()
+
+            'The structure of the underlying Ecopath data has changed because it was re-loaded above
+            m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
+
+        Catch ex As Exception
+            Debug.Assert(False)
+            Return False
+        End Try
+        Return True
+
+    End Function
+
+    Private Function GetEnumerator1() As IEnumerator(Of cPedigreeLevel) _
+        Implements IEnumerable(Of EwECore.cPedigreeLevel).GetEnumerator
+        Return Nothing
+    End Function
+
+    Protected Sub UpdateIDs()
+        Dim shape As cPedigreeLevel = Nothing
+        For iShape As Integer = 0 To Me.Count - 1
+            shape = Me.Level(iShape)
+            shape.ID = iShape
+        Next iShape
+    End Sub
+
+#End If
+#End Region ' IEnumerable implementation
 
 End Class
