@@ -10341,7 +10341,7 @@ Public Class cCore
 
         ' Create managers
         Me.m_PedigreeManagers = New Dictionary(Of eVarNameFlags, cPedigreeManager)
-        For Each vn As eVarNameFlags In cPedigreeManager.SupportVarNames
+        For Each vn As eVarNameFlags In cPedigreeManager.SupportVariables
             manager = New cPedigreeManager(Me, vn)
             manager.Load()
             Me.m_PedigreeManagers(vn) = manager
@@ -10350,6 +10350,13 @@ Public Class cCore
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the pedigree manager for a given variable name.
+    ''' </summary>
+    ''' <param name="varName"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Public Function GetPedigreeManager(ByVal varName As eVarNameFlags) As cPedigreeManager
         If Me.m_PedigreeManagers.ContainsKey(varName) Then Return Me.m_PedigreeManagers(varName)
         Return Nothing
@@ -11432,8 +11439,7 @@ Public Class cCore
                         eCoreComponentType.TimeSeries, eMessageImportance.Maintenance))
 
                 Case eDataTypes.PedigreeLevel
-
-                    ' Me.m_PedigreeManagers
+                    ' NOP
 
                 Case eDataTypes.MonteCarlo
                     Me.LoadEcopathInputs()
@@ -11756,14 +11762,41 @@ Public Class cCore
 
 #Region " Pedigree "
 
-    Public Function AddPedigreeLevel(ByVal varName As eVarNameFlags, ByVal iPosition As Integer, _
-            ByVal sIndexValue As Single, ByVal sConfidence As Single, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean
+    Public Function AddPedigreeLevel(ByVal varName As eVarNameFlags, _
+                                     ByVal iPosition As Integer, _
+                                     ByVal sIndexValue As Single, _
+                                     ByVal sConfidence As Single, _
+                                     ByVal strDescription As String, _
+                                     ByRef iDBID As Integer) As Boolean
 
-        Return False
+        Dim ds As IEcopathDataSource = Nothing
+
+        ' Sanity checks
+        If Me.DataSource Is Nothing Then Return False
+        If Not TypeOf (Me.DataSource) Is IEcopathDataSource Then Return False
+
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecopath) Then Return False
+
+        ds = DirectCast(Me.DataSource, IEcopathDataSource)
+
+        Return ds.AddPedigreeLevel(iPosition, varName, sIndexValue, sConfidence, strDescription, iDBID)
+
     End Function
 
     Public Function RemovePedigreeLevel(ByVal iDBID As Integer) As Boolean
-        Return False
+
+        Dim ds As IEcopathDataSource = Nothing
+
+        ' Sanity checks
+        If Me.DataSource Is Nothing Then Return False
+        If Not TypeOf (Me.DataSource) Is IEcopathDataSource Then Return False
+
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecopath) Then Return False
+
+        ds = DirectCast(Me.DataSource, IEcopathDataSource)
+
+        Return ds.RemovePedigreeLevel(iDBID)
+
     End Function
 
 #End Region ' Pedigree

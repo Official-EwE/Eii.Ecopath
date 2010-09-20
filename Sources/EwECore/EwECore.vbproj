@@ -223,7 +223,8 @@
     <Compile Include="Advection\cAdvectionManager.vb" />
     <Compile Include="Advection\cAdvection.vb" />
     <Compile Include="Advection\cAdvectionParameters.vb" />
-    <Compile Include="Auxiliary\cPedigreeManager.vb" />
+    <Compile Include="Pedigree\cPedigreeLevel.vb" />
+    <Compile Include="Pedigree\cPedigreeManager.vb" />
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerGroupInput.vb" />
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerModelParameters.vb" />
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerScenario.vb" />
