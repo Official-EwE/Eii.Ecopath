@@ -1104,7 +1104,7 @@ Namespace DataSources
                     ecopathDS.PedigreeLevelVarName(iLevel) = cin.GetVarName(CStr(reader("VarName")))
                     ecopathDS.PedigreeLevelIndexValue(iLevel) = CSng(reader("IndexValue"))
                     ecopathDS.PedigreeLevelConfidence(iLevel) = CSng(reader("Confidence"))
-                    ecopathDS.PedigreeLevelDescription(iLevel) = CStr(reader("Description"))
+                    ecopathDS.PedigreeLevelName(iLevel) = CStr(reader("Description"))
 
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading pedigree level {1}", ex.Message, iLevel))
@@ -1159,7 +1159,7 @@ Namespace DataSources
                     drow("VarName") = CStr(cin.GetVarName(ecopathDS.PedigreeLevelVarName(iLevel)))
                     drow("IndexValue") = ecopathDS.PedigreeLevelIndexValue(iLevel)
                     drow("Confidence") = ecopathDS.PedigreeLevelConfidence(iLevel)
-                    drow("Description") = ecopathDS.PedigreeLevelDescription(iLevel)
+                    drow("Description") = ecopathDS.PedigreeLevelName(iLevel)
 
                     drow.EndEdit()
 
@@ -1220,7 +1220,7 @@ Namespace DataSources
                 ' Get new row to add
                 drow = writer.NewRow()
                 drow("LevelID") = iPedigreeLevelID
-                drow("VarName") = CInt(varName)
+                drow("VarName") = varName.ToString
                 drow("IndexValue") = sIndexValue
                 drow("Confidence") = sConfidence
                 drow("Description") = strDescription
@@ -1234,7 +1234,7 @@ Namespace DataSources
                 bSucces = False
             End Try
 
-            bSucces = bSucces And Me.LoadPedigreeLevels()
+            'bSucces = bSucces And Me.LoadPedigreeLevels()
 
             Return bSucces
 
