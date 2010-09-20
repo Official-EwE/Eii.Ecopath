@@ -82,6 +82,7 @@ Partial Class frmModelDescription
         Me.m_lblSouth = New System.Windows.Forms.Label
         Me.m_tbModelAreaName = New System.Windows.Forms.TextBox
         Me.m_btnLookup = New System.Windows.Forms.Button
+        Me.m_lblNote = New System.Windows.Forms.Label
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -273,6 +274,7 @@ Partial Class frmModelDescription
         '
         'm_gbTimeUnits
         '
+        Me.m_gbTimeUnits.Controls.Add(Me.m_lblNote)
         Me.m_gbTimeUnits.Controls.Add(Me.txbTimeOther)
         Me.m_gbTimeUnits.Controls.Add(Me.rbTimeOther)
         Me.m_gbTimeUnits.Controls.Add(Me.rbDay)
@@ -437,6 +439,11 @@ Partial Class frmModelDescription
         Me.m_btnLookup.Name = "m_btnLookup"
         Me.m_btnLookup.UseVisualStyleBackColor = True
         '
+        'm_lblNote
+        '
+        resources.ApplyResources(Me.m_lblNote, "m_lblNote")
+        Me.m_lblNote.Name = "m_lblNote"
+        '
         'frmModelDescription
         '
         resources.ApplyResources(Me, "$this")
@@ -550,4 +557,5 @@ Partial Class frmModelDescription
     Private WithEvents m_lblSouth As System.Windows.Forms.Label
     Private WithEvents m_tbModelAreaName As System.Windows.Forms.TextBox
     Private WithEvents m_btnLookup As System.Windows.Forms.Button
+    Private WithEvents m_lblNote As System.Windows.Forms.Label
 End Class
