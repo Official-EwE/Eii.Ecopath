@@ -248,10 +248,11 @@ Public Class cEcopathDataStructures
 
     Public NumPedigreeLevels As Integer
     Public PedigreeLevelDBID() As Integer
+    Public PedigreeLevelName() As String
+    Public PedigreeLevelDescription() As String
     Public PedigreeLevelVarName() As eVarNameFlags
     Public PedigreeLevelIndexValue() As Single
     Public PedigreeLevelConfidence() As Single
-    Public PedigreeLevelName() As String
 
     ''' <summary>Total number of taxonomy codes.</summary>
     Public NumTaxon As Integer = 0
@@ -560,10 +561,11 @@ Public Class cEcopathDataStructures
     Public Sub RedimPedigreeLevels()
 
         ReDim Me.PedigreeLevelDBID(Me.NumPedigreeLevels)
+        ReDim Me.PedigreeLevelName(Me.NumPedigreeLevels)
+        ReDim Me.PedigreeLevelDescription(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelVarName(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelIndexValue(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelConfidence(Me.NumPedigreeLevels)
-        ReDim Me.PedigreeLevelName(Me.NumPedigreeLevels)
 
     End Sub
 
