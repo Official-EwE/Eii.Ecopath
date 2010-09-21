@@ -35,10 +35,6 @@ Namespace Ecosim
             OptionSelective
         End Enum
 
-        ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
-        ''' to trap cell edit events locally in this grid. These events are essential
-        ''' for keeping the local MPA administration up to date.</summary>
-        Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
         ''' <summary>Update lock, used to distinguish between code updates and
         ''' user updates of grid cells. When grid cells are updated from within
         ''' the code, an update lock should be active to prevent edit/update recursion.</summary>
@@ -85,16 +81,16 @@ Namespace Ecosim
                 Me(iFleet, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, fleetMSE, eVarNameFlags.Name)
 
                 Me(iFleet, eColumnTypes.OptionNotUsed) = New SourceGrid2.Cells.Real.CheckBox(True)
-                Me(iFleet, eColumnTypes.OptionNotUsed).Behaviors.Add(m_bm)
+                Me(iFleet, eColumnTypes.OptionNotUsed).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iFleet, eColumnTypes.OptionWeakest) = New SourceGrid2.Cells.Real.CheckBox(False)
-                Me(iFleet, eColumnTypes.OptionWeakest).Behaviors.Add(m_bm)
+                Me(iFleet, eColumnTypes.OptionWeakest).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iFleet, eColumnTypes.OptionStrongest) = New SourceGrid2.Cells.Real.CheckBox(False)
-                Me(iFleet, eColumnTypes.OptionStrongest).Behaviors.Add(m_bm)
+                Me(iFleet, eColumnTypes.OptionStrongest).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iFleet, eColumnTypes.OptionSelective) = New SourceGrid2.Cells.Real.CheckBox(False)
-                Me(iFleet, eColumnTypes.OptionSelective).Behaviors.Add(m_bm)
+                Me(iFleet, eColumnTypes.OptionSelective).Behaviors.Add(Me.EwEEditHandler)
 
                 Me.Rows(iFleet).Tag = fleetMSE
 

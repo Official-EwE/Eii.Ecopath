@@ -31,9 +31,6 @@ Namespace Import
             EwE6Model
         End Enum
 
-        ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
-        ''' to trap cell edit events locally in this grid.</summary>
-        Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
         ''' <summary>The attached import wizard that holds the import settings 
         ''' to display and edit in this grid.</summary>
         Private m_wizard As cImportWizard = Nothing
@@ -126,10 +123,10 @@ Namespace Import
                 Me(iRow, eColumnTypes.EwE5Model) = ewec
 
                 Me(iRow, eColumnTypes.Import) = New Cells.Real.CheckBox(imp.SelectedForImport)
-                Me(iRow, eColumnTypes.Import).Behaviors.Add(m_bm)
+                Me(iRow, eColumnTypes.Import).Behaviors.Add(Me.EwEEditHandler)
 
                 ewec = New EwECell("", GetType(String))
-                ewec.Behaviors.Add(Me.m_bm)
+                ewec.Behaviors.Add(Me.EwEEditHandler)
                 Me(iRow, eColumnTypes.EwE6Model) = ewec
 
                 Me.ImportSettings(iRow) = imp

@@ -22,21 +22,11 @@ Namespace Ecospace
         Private m_alHabitats As New List(Of HabitatInfo)
         ''' <summary>List of removed Habitats.</summary>
         Private m_alHabitatsRemoved As New List(Of HabitatInfo)
-        ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
-        ''' to trap cell edit events locally in this grid. These events are essential
-        ''' for keeping the local Habitat administration up to date.</summary>
-        Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
+
         ''' <summary>Update lock, used to distinguish between code updates and
         ''' user updates of grid cells. When grid cells are updated from within
         ''' the code, an update lock should be active to prevent edit/update recursion.</summary>
         Private m_iUpdateLock As Integer = 0
-
-        ''' <summary>Visual model to display original Habitats.</summary>
-        Private m_vmOriginal As VisualModels.Common = New VisualModels.Common(False)
-        ''' <summary>Visual model to display newly created Habitats.</summary>
-        Private m_vmAdded As VisualModels.Common = New VisualModels.Common(False)
-        ''' <summary>Visual model to display Habitats that are about be deleted.</summary>
-        Private m_vmRemoved As VisualModels.Common = New VisualModels.Common(False)
 
         ''' <summary>Enumerated type defining the columns in this grid.</summary>
         Private Enum eColumnTypes
@@ -215,25 +205,6 @@ Namespace Ecospace
 
             MyBase.New()
 
-            ' Set up visual models for reflecting Habitat modification status
-            With Me.m_vmOriginal
-                .ForeColor = Color.FromArgb(255, 0, 0, 0)
-                .TextAlignment = ContentAlignment.MiddleCenter
-                .MakeReadOnly()
-            End With
-
-            With Me.m_vmAdded
-                .ForeColor = Color.FromArgb(255, 8, 128, 12)
-                .TextAlignment = ContentAlignment.MiddleCenter
-                .MakeReadOnly()
-            End With
-
-            With Me.m_vmRemoved
-                .ForeColor = Color.FromArgb(255, 255, 22, 12)
-                .TextAlignment = ContentAlignment.MiddleCenter
-                .MakeReadOnly()
-            End With
-
         End Sub
 
 #Region " Grid interaction "
@@ -321,7 +292,7 @@ Namespace Ecospace
                 Me(iRow, eColumnTypes.HabitatIndex) = ewec
 
                 Me(iRow, eColumnTypes.HabitatName) = New Cells.Real.Cell("", GetType(String))
-                Me(iRow, eColumnTypes.HabitatName).Behaviors.Add(m_bm)
+                Me(iRow, eColumnTypes.HabitatName).Behaviors.Add(Me.EwEEditHandler)
 
                 ' Status
                 vm = New VisualModels.Common()
@@ -359,7 +330,7 @@ Namespace Ecospace
             Dim ri As RowInfo = Nothing
             Dim aCells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
-            Dim vm As VisualModels.Common = Nothing
+            Dim vm As VisualModels.IVisualModel = Nothing
             Dim strText As String = ""
 
             Me.AllowUpdates = False
@@ -378,13 +349,13 @@ Namespace Ecospace
 
             Select Case hi.Status
                 Case eItemStatusTypes.Original
-                    vm = Me.m_vmOriginal
+                    vm = Me.DefaultVisualOriginal
                     strText = ""
                 Case eItemStatusTypes.Added
-                    vm = Me.m_vmAdded
+                    vm = Me.DefaultVisualAdded
                     strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
                 Case eItemStatusTypes.Removed
-                    vm = Me.m_vmRemoved
+                    vm = Me.DefaultVisualRemoved
                     strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
             End Select
 

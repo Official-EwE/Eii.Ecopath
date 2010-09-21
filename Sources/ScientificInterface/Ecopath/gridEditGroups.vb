@@ -40,21 +40,10 @@ Public Class gridEditGroups
     Private m_lsiStanza As New List(Of cStanzaInfo)
     ''' <summary>List of removed stanza configurations.</summary>
     Private m_lsiStanzaRemoved As New List(Of cStanzaInfo)
-    ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
-    ''' to trap cell edit events locally in this grid. These events are essential
-    ''' for keeping the local group/stanza administration up to date.</summary>
-    Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
     ''' <summary>Update lock, used to distinguish between code updates and
     ''' user updates of grid cells. When grid cells are updated from within
     ''' the code, an update lock should be active to prevent edit/update recursion.</summary>
     Private m_iUpdateLock As Integer = 0
-
-    ''' <summary>Visual model to display original groups.</summary>
-    Private m_vmOriginal As VisualModels.Common = New VisualModels.Common(False)
-    ''' <summary>Visual model to display newly created groups.</summary>
-    Private m_vmAdded As VisualModels.Common = New VisualModels.Common(False)
-    ''' <summary>Visual model to display groups that are about be deleted.</summary>
-    Private m_vmRemoved As VisualModels.Common = New VisualModels.Common(False)
 
     ''' <summary>Enumerated type defining the columns in this grid.</summary>
     Private Enum eColumnTypes
@@ -655,25 +644,6 @@ Public Class gridEditGroups
 
         MyBase.New()
 
-        ' Set up visual models for reflecting group modification status
-        With Me.m_vmOriginal
-            .ForeColor = Color.FromArgb(255, 0, 0, 0)
-            .TextAlignment = ContentAlignment.MiddleCenter
-            .MakeReadOnly()
-        End With
-
-        With Me.m_vmAdded
-            .ForeColor = Color.FromArgb(255, 8, 128, 12)
-            .TextAlignment = ContentAlignment.MiddleCenter
-            .MakeReadOnly()
-        End With
-
-        With Me.m_vmRemoved
-            .ForeColor = Color.FromArgb(255, 255, 22, 12)
-            .TextAlignment = ContentAlignment.MiddleCenter
-            .MakeReadOnly()
-        End With
-
     End Sub
 
 #Region " Grid interaction "
@@ -842,29 +812,29 @@ Public Class gridEditGroups
             Me(iRow, eColumnTypes.GroupIndex) = ewec
 
             Me(iRow, eColumnTypes.GroupName) = New Cells.Real.Cell("", GetType(String))
-            Me(iRow, eColumnTypes.GroupName).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.GroupName).Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.GroupName).DataModel.EditableMode = EditableMode.Default
 
             Me(iRow, eColumnTypes.GroupPPConsumer) = New Cells.Real.CheckBox(False)
-            Me(iRow, eColumnTypes.GroupPPConsumer).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.GroupPPConsumer).Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.GroupPPProducer) = New Cells.Real.CheckBox(False)
-            Me(iRow, eColumnTypes.GroupPPProducer).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.GroupPPProducer).Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.GroupPPDetritus) = New Cells.Real.CheckBox(False)
-            Me(iRow, eColumnTypes.GroupPPDetritus).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.GroupPPDetritus).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iRow, eColumnTypes.GroupPP) = New EwECell(0, GetType(Single))
-            Me(iRow, eColumnTypes.GroupPP).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.GroupPP).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iRow, eColumnTypes.GroupColor) = New Cells.Real.Cell()
             Me(iRow, eColumnTypes.GroupColor).VisualModel = New cColorCellVisualizer()
-            Me(iRow, eColumnTypes.GroupColor).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.GroupColor).Behaviors.Add(Me.EwEEditHandler)
 
             Dim cmb As Cells.Real.ComboBox = New Cells.Real.ComboBox("", GetType(String), astrStanzaNames, False)
             cmb.EditableMode = EditableMode.SingleClick
             Me(iRow, eColumnTypes.StanzaName) = cmb
-            Me(iRow, eColumnTypes.StanzaName).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.StanzaName).Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.StanzaAge) = New Cells.Real.Cell(0)
-            Me(iRow, eColumnTypes.StanzaAge).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.StanzaAge).Behaviors.Add(Me.EwEEditHandler)
 
             ' Status
             vm = New VisualModels.Common()
@@ -902,7 +872,7 @@ Public Class gridEditGroups
         Dim ri As RowInfo = Nothing
         Dim ewec As EwECell = Nothing
         Dim pos As SourceGrid2.Position = Nothing
-        Dim vm As VisualModels.Common = Nothing
+        Dim vm As VisualModels.IVisualModel = Nothing
         Dim strText As String = ""
 
         Me.AllowUpdates = False
@@ -941,13 +911,13 @@ Public Class gridEditGroups
 
         Select Case gi.Status
             Case eItemStatusTypes.Original
-                vm = Me.m_vmOriginal
+                vm = Me.DefaultVisualOriginal
                 strText = ""
             Case eItemStatusTypes.Added
-                vm = Me.m_vmAdded
+                vm = Me.DefaultVisualAdded
                 strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
             Case eItemStatusTypes.Removed
-                vm = Me.m_vmRemoved
+                vm = Me.DefaultVisualRemoved
                 strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
         End Select
 

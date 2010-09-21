@@ -15,7 +15,6 @@ Public Class gridEditMultiStanza
 #Region "Private variables"
 
     Private m_stanzagroup As cStanzaGroup = Nothing
-    Private m_bm As SourceGrid2.BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
 
     Private Enum eColumnTypes
         Index = 0
@@ -113,14 +112,14 @@ Public Class gridEditMultiStanza
                 ewec.Style = cStyleGuide.eStyleFlags.OK
             End If
             Me(iRow, eColumnTypes.BiomassAreaInput) = ewec
-            Me(iRow, eColumnTypes.BiomassAreaInput).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.BiomassAreaInput).Behaviors.Add(Me.EwEEditHandler)
 
             'Total Mortality
             ewec = New EwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.Mortality(iStanza)
             Me(iRow, eColumnTypes.PBInput) = ewec
-            Me(iRow, eColumnTypes.PBInput).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.PBInput).Behaviors.Add(Me.EwEEditHandler)
 
             'Consumption/Biomass
             ewec = New EwECell(0, GetType(Single))
@@ -133,7 +132,7 @@ Public Class gridEditMultiStanza
                 ewec.Style = cStyleGuide.eStyleFlags.OK
             End If
             Me(iRow, eColumnTypes.QBInput) = ewec
-            Me(iRow, eColumnTypes.QBInput).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.QBInput).Behaviors.Add(Me.EwEEditHandler)
         Next
     End Sub
 

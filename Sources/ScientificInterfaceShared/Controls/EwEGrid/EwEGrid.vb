@@ -79,9 +79,13 @@ Namespace Controls.EwEGrid
         Inherits SourceGrid2.Grid
         Implements IUIElement
 
-#Region " Public helper classes "
+#Region " Private helper classes "
 
-        Public Class EndEditHandler
+        ''' <summary>
+        ''' Behaviour model that invokes key EwE grid methods when cell edits 
+        ''' are performed.
+        ''' </summary>
+        Private Class cEndEditHandler
             Implements BehaviorModels.IBehaviorModel
 
             ''' <summary></summary>
@@ -284,6 +288,9 @@ Namespace Controls.EwEGrid
         ''' <summary>Flag stating if this grid allows row, column and all content selections.</summary>
         Private m_bAllowBlockSelect As Boolean = True
 
+        ''' <summary>Generic edit behaviour.</summary>
+        Private m_bm As cEndEditHandler = Nothing
+
 #End Region ' Variables
 
 #Region " Constructor / destructor "
@@ -297,6 +304,8 @@ Namespace Controls.EwEGrid
             AddHandler m_ceRowSelect.Click, Me.m_pehRowHeader
             Me.m_pehColHeader = New SourceGrid2.PositionEventHandler(AddressOf OnSelectColumn)
             AddHandler m_ceColSelect.Click, Me.m_pehColHeader
+
+            Me.m_bm = New cEndEditHandler(Me)
 
             AddHandler Me.Selection.ClipboardCopy, AddressOf OnClipboardCopy
             AddHandler Me.Selection.ClipboardCut, AddressOf OnClipboardCut
@@ -412,6 +421,72 @@ Namespace Controls.EwEGrid
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
                 Return Me.UIContext.CommandHandler
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the model that implements typical EwE-style edit behaviour. Any
+        ''' new cell should receive this edit handler.
+        ''' </summary>
+        ''' <remarks>
+        ''' <para>Methods that are invoked by this editor upon cell edit are:</para>
+        ''' <list type="bullet">
+        ''' <item><term><see cref="OnCellClicked">OnCellClicked</see></term><description>A cell received focus</description></item>
+        ''' <item><term><see cref="OnCellValueChanged">OnCellValueChanged</see></term><description>A cell value has changed, and the grid has a chance to reject or accept the change.</description></item>
+        ''' <item><term><see cref="OnCellEdited">OnCellEdited</see></term><description>A cell value has been edited.</description></item>
+        ''' </list>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Protected ReadOnly Property EwEEditHandler() As BehaviorModels.IBehaviorModel
+            Get
+                If (Me.m_bm Is Nothing) Then Me.m_bm = New cEndEditHandler(Me)
+                Return Me.m_bm
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Visual model for reflecting 'Original' values.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected ReadOnly Property DefaultVisualOriginal() As VisualModels.IVisualModel
+            Get
+                Dim vm As VisualModels.Common = New VisualModels.Common(False)
+                vm.ForeColor = Color.FromArgb(255, 0, 0, 0)
+                vm.TextAlignment = ContentAlignment.MiddleCenter
+                vm.MakeReadOnly()
+                Return vm
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Visual model for reflecting 'Added' values.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected ReadOnly Property DefaultVisualAdded() As VisualModels.IVisualModel
+            Get
+                Dim vm As VisualModels.Common = New VisualModels.Common(False)
+                vm.ForeColor = Color.FromArgb(255, 8, 128, 12)
+                vm.TextAlignment = ContentAlignment.MiddleCenter
+                vm.MakeReadOnly()
+                Return vm
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Visual model for reflecting 'Removed' values.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected ReadOnly Property DefaultVisualRemoved() As VisualModels.IVisualModel
+            Get
+                Dim vm As VisualModels.Common = New VisualModels.Common(False)
+                vm.ForeColor = Color.FromArgb(255, 255, 22, 12)
+                vm.TextAlignment = ContentAlignment.MiddleCenter
+                vm.MakeReadOnly()
+                Return vm
             End Get
         End Property
 

@@ -13,10 +13,6 @@ Imports ScientificInterface.Ecospace.Basemap.Layers
 Public Class gridLayerData
     Inherits EwEGrid
 
-    ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
-    ''' to trap cell edit events locally in this grid. These events are essential
-    ''' for keeping the local Layer administration up to date.</summary>
-    Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
     Private m_basemap As cEcospaceBasemap = Nothing
     Private m_layer As cLayer = Nothing
 
@@ -114,7 +110,7 @@ Public Class gridLayerData
                 Else
                     cell = New EwECell(CSng(data.Cell(iRow, iCol)), tCell)
                 End If
-                cell.Behaviors.Add(Me.m_bm)
+                cell.Behaviors.Add(Me.EwEEditHandler)
                 'cell.SuppressZero(cCore.NULL_VALUE) = True
                 '' Highlight land cells
                 'If dataDepth.Cell(iRow, iCol) = 0 Then

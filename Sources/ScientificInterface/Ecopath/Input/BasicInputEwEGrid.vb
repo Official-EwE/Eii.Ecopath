@@ -20,12 +20,6 @@ Namespace Ecopath.Input
     Public Class BasicInputEwEGrid
         : Inherits EwEGrid
 
-#Region " Private variables "
-
-        Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
-
-#End Region ' Private variables
-
         Enum eColumnTypes As Integer
             Index = 0
             Name
@@ -154,28 +148,28 @@ Namespace Ecopath.Input
                     Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Area)
 
                     cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaInput)
-                    cell.Behaviors.Add(m_bm)
+                    cell.Behaviors.Add(Me.EwEEditHandler)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.BA) = cell
 
                     cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBInput)
-                    cell.Behaviors.Add(m_bm)
+                    cell.Behaviors.Add(Me.EwEEditHandler)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.Z) = cell
 
                     cell = New EwECell("", GetType(String))
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
-                    cell.Behaviors.Add(m_bm)
+                    cell.Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eColumnTypes.PB) = cell
 
                     cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.QBInput)
-                    cell.Behaviors.Add(m_bm)
+                    cell.Behaviors.Add(Me.EwEEditHandler)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.QB) = cell
 
                     Me(iRow, eColumnTypes.EE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EEInput)
                     Me(iRow, eColumnTypes.GE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GEInput)
-                    Me(iRow, eColumnTypes.GE).Behaviors.Add(m_bm)
+                    Me(iRow, eColumnTypes.GE).Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eColumnTypes.GS) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GS)
                     Me(iRow, eColumnTypes.DetImp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.DetImp)
 

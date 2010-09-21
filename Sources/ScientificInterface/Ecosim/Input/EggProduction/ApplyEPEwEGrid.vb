@@ -20,7 +20,6 @@ Namespace Ecosim
         Private m_EPManager As cEggProductionManager = Nothing
         Private m_astrShapes() As String = Nothing
         Private m_ceCellClick As New BehaviorModels.CustomEvents
-        Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
 
         Friend Enum eColumnTypes As Integer
             Index = 0
@@ -174,7 +173,7 @@ Namespace Ecosim
 
                 Me(iRow, eColumnTypes.Shape) = cmb
                 Me(iRow, eColumnTypes.Shape).Tag = pair
-                Me(iRow, eColumnTypes.Shape).Behaviors.Add(m_bm)
+                Me(iRow, eColumnTypes.Shape).Behaviors.Add(Me.EwEEditHandler)
 
                 iRow += 1
             Next

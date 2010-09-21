@@ -42,10 +42,6 @@ Namespace Ecosim
                                                       eColumnTypes.FMax_VwithFT, _
                                                       eColumnTypes.FMax_VwoFT}
 
-        ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
-        ''' to trap cell edit events locally in this grid. These events are essential
-        ''' for keeping the local Fleet administration up to date.</summary>
-        Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
         ''' <summary>Feedback style to use for selected vul cells.</summary>
         Private Const c_styleSelect As cStyleGuide.eStyleFlags = eStyleFlags.Highlight
 
@@ -186,19 +182,19 @@ Namespace Ecosim
 
                 If sPotGrowth >= 0 Then style = eStyleFlags.OK Else style = eStyleFlags.Null Or eStyleFlags.NotEditable
                 Me(iGroup, eColumnTypes.PotGrowth) = New EwECell(sPotGrowth, GetType(Single), style)
-                Me(iGroup, eColumnTypes.PotGrowth).Behaviors.Add(Me.m_bm)
+                Me(iGroup, eColumnTypes.PotGrowth).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iGroup, eColumnTypes.FMax) = New EwECell(sFMax, GetType(Single), eStyleFlags.OK)
-                Me(iGroup, eColumnTypes.FMax).Behaviors.Add(Me.m_bm)
+                Me(iGroup, eColumnTypes.FMax).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iGroup, eColumnTypes.PG_VwoFT) = New EwECell(estimates(0), GetType(Single), eStyleFlags.NotEditable)
-                Me(iGroup, eColumnTypes.PG_VwoFT).Behaviors.Add(Me.m_bm)
+                Me(iGroup, eColumnTypes.PG_VwoFT).Behaviors.Add(Me.EwEEditHandler)
                 Me(iGroup, eColumnTypes.FMax_VwoFT) = New EwECell(estimates(1), GetType(Single), eStyleFlags.NotEditable)
-                Me(iGroup, eColumnTypes.FMax_VwoFT).Behaviors.Add(Me.m_bm)
+                Me(iGroup, eColumnTypes.FMax_VwoFT).Behaviors.Add(Me.EwEEditHandler)
                 Me(iGroup, eColumnTypes.PG_VwithFT) = New EwECell(estimates(2), GetType(Single), eStyleFlags.NotEditable)
-                Me(iGroup, eColumnTypes.PG_VwithFT).Behaviors.Add(Me.m_bm)
+                Me(iGroup, eColumnTypes.PG_VwithFT).Behaviors.Add(Me.EwEEditHandler)
                 Me(iGroup, eColumnTypes.FMax_VwithFT) = New EwECell(estimates(3), GetType(Single), eStyleFlags.NotEditable)
-                Me(iGroup, eColumnTypes.FMax_VwithFT).Behaviors.Add(Me.m_bm)
+                Me(iGroup, eColumnTypes.FMax_VwithFT).Behaviors.Add(Me.EwEEditHandler)
 
                 Me.RecalcVulnerabilities(iGroup)
 

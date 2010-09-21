@@ -37,10 +37,6 @@ Public Class gridMapLayerToAttribute
 
             Private Const cVALUE_NONE As String = " "
 
-            ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
-            ''' to trap cell edit events locally in this grid.</summary>
-            Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
-
             ''' <summary>The layers to map upon.</summary>
             Private m_aLayers As cLayer()
             ''' <summary>The attribute names to map upon.</summary>
@@ -136,7 +132,7 @@ Public Class gridMapLayerToAttribute
                     cmb = New Cells.Real.ComboBox("", GetType(String), Me.m_astrAttributes, True)
                     cmb.EditableMode = EditableMode.SingleClick
                     Me(iLayer + 1, eColumnTypes.ColumnAttribute) = cmb
-                    Me(iLayer + 1, eColumnTypes.ColumnAttribute).Behaviors.Add(m_bm)
+                    Me(iLayer + 1, eColumnTypes.ColumnAttribute).Behaviors.Add(Me.EwEEditHandler)
 
                     Me.Rows(iLayer + 1).Tag = layer
 

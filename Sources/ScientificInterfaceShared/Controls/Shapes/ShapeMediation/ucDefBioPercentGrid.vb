@@ -21,9 +21,6 @@ Namespace Controls
     Public Class ucDefBioPercentGrid
         Inherits EwEGrid.EwEGrid
 
-        ''' <summary></summary>
-        Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' 
@@ -73,7 +70,7 @@ Namespace Controls
             Me(iRow, eColumnTypes.Name) = ewec
 
             Me(iRow, eColumnTypes.Weight) = New Cells.Real.Cell(sWeight, GetType(Single))
-            Me(iRow, eColumnTypes.Weight).Behaviors.Add(m_bm)
+            Me(iRow, eColumnTypes.Weight).Behaviors.Add(Me.EwEEditHandler)
 
             Me.RowItem(iRow) = obj
 

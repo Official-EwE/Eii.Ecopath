@@ -32,9 +32,6 @@ Public Class gridExportMappings
 
 #Region " Private vars "
 
-            ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
-            ''' to trap cell edit events locally in this grid.</summary>
-            Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
             ''' <summary>The layers to map upon.</summary>
             Private m_aLayers As cLayer()
             ''' <summary>Mappings. MAPPINGS!</summary>
@@ -122,7 +119,7 @@ Public Class gridExportMappings
                     Me(iLayer + 1, eColumnTypes.ColumnLayer) = ewec
 
                     ewec = New EwECell(layer.Name, GetType(String))
-                    ewec.Behaviors.Add(Me.m_bm)
+                    ewec.Behaviors.Add(Me.EwEEditHandler)
                     Me(iLayer + 1, eColumnTypes.ColumnAttribute) = ewec
 
                     Me.Rows(iLayer + 1).Tag = layer

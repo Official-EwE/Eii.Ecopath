@@ -22,21 +22,10 @@ Namespace Ecospace
         Private m_alMPAs As New List(Of MPAInfo)
         ''' <summary>List of removed MPAs.</summary>
         Private m_alMPAsRemoved As New List(Of MPAInfo)
-        ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
-        ''' to trap cell edit events locally in this grid. These events are essential
-        ''' for keeping the local MPA administration up to date.</summary>
-        Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
-        ''' <summary>Update lock, used to distinguish between code updates and
+         ''' <summary>Update lock, used to distinguish between code updates and
         ''' user updates of grid cells. When grid cells are updated from within
         ''' the code, an update lock should be active to prevent edit/update recursion.</summary>
         Private m_iUpdateLock As Integer = 0
-
-        ''' <summary>Visual model to display original MPAs.</summary>
-        Private m_vmOriginal As VisualModels.Common = New VisualModels.Common(False)
-        ''' <summary>Visual model to display newly created MPAs.</summary>
-        Private m_vmAdded As VisualModels.Common = New VisualModels.Common(False)
-        ''' <summary>Visual model to display MPAs that are about be deleted.</summary>
-        Private m_vmRemoved As VisualModels.Common = New VisualModels.Common(False)
 
         ''' <summary>Enumerated type defining the columns in this grid.</summary>
         Private Enum eColumnTypes
@@ -242,25 +231,6 @@ Namespace Ecospace
             MyBase.New()
             Me.FixedColumnWidths = False
 
-            ' Set up visual models for reflecting MPA modification status
-            With Me.m_vmOriginal
-                .ForeColor = Color.FromArgb(255, 0, 0, 0)
-                .TextAlignment = ContentAlignment.MiddleCenter
-                .MakeReadOnly()
-            End With
-
-            With Me.m_vmAdded
-                .ForeColor = Color.FromArgb(255, 8, 128, 12)
-                .TextAlignment = ContentAlignment.MiddleCenter
-                .MakeReadOnly()
-            End With
-
-            With Me.m_vmRemoved
-                .ForeColor = Color.FromArgb(255, 255, 22, 12)
-                .TextAlignment = ContentAlignment.MiddleCenter
-                .MakeReadOnly()
-            End With
-
         End Sub
 
 #Region " Grid interaction "
@@ -370,14 +340,14 @@ Namespace Ecospace
                 Me(iRow, eColumnTypes.MPAIndex) = ewec
 
                 Me(iRow, eColumnTypes.MPAName) = New Cells.Real.Cell("", GetType(String))
-                Me(iRow, eColumnTypes.MPAName).Behaviors.Add(m_bm)
+                Me(iRow, eColumnTypes.MPAName).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iRow, eColumnTypes.MPAAll) = New Cells.Real.CheckBox(False)
-                Me(iRow, eColumnTypes.MPAAll).Behaviors.Add(m_bm)
+                Me(iRow, eColumnTypes.MPAAll).Behaviors.Add(Me.EwEEditHandler)
 
                 For iMonth As Integer = 1 To cCore.N_MONTHS
                     Me(iRow, eColumnTypes.MPAJan - 1 + iMonth) = New Cells.Real.CheckBox(False)
-                    Me(iRow, eColumnTypes.MPAJan - 1 + iMonth).Behaviors.Add(m_bm)
+                    Me(iRow, eColumnTypes.MPAJan - 1 + iMonth).Behaviors.Add(Me.EwEEditHandler)
                 Next iMonth
 
                 ' Status
@@ -416,7 +386,7 @@ Namespace Ecospace
             Dim ri As RowInfo = Nothing
             Dim aCells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
-            Dim vm As VisualModels.Common = Nothing
+            Dim vm As VisualModels.IVisualModel = Nothing
             Dim strText As String = ""
             Dim iNumOpen As Integer = 0
 
@@ -449,13 +419,13 @@ Namespace Ecospace
 
             Select Case mi.Status
                 Case eItemStatusTypes.Original
-                    vm = Me.m_vmOriginal
+                    vm = Me.DefaultVisualOriginal
                     strText = ""
                 Case eItemStatusTypes.Added
-                    vm = Me.m_vmAdded
+                    vm = Me.DefaultVisualAdded
                     strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
                 Case eItemStatusTypes.Removed
-                    vm = Me.m_vmRemoved
+                    vm = Me.DefaultVisualRemoved
                     strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
             End Select
 

@@ -16,8 +16,6 @@ Public Class gridFitToTimeSeries
         TimeSeriesWeight = 1
     End Enum
 
-    Private m_bm As New EndEditHandler(Me)
-
     Public Sub New()
     End Sub
 
@@ -68,7 +66,7 @@ Public Class gridFitToTimeSeries
 
                 ewec = New EwECell(0, GetType(Single))
                 ewec.Value = ts.WtType
-                ewec.Behaviors.Add(Me.m_bm)
+                ewec.Behaviors.Add(Me.EwEEditHandler)
                 Me(iRow, eColumnTypes.TimeSeriesWeight) = ewec
 
                 iRow += 1
