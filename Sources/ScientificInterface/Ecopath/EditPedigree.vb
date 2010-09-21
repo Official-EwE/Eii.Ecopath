@@ -72,23 +72,20 @@ Namespace Ecopath
             Me.Close()
         End Sub
 
-        'Private Sub OnVariable(sender As Object, e As EventArgs) Handles Me.cm
+        Private Sub OnVariableSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbVariable.SelectedIndexChanged
+            Me.m_grid.VarName = DirectCast(Me.m_cmbVariable.SelectedItem, eVarNameFlags)
+        End Sub
+
         Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnInsert.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnMoveUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnMoveUp.Click
-            Me.m_grid.MoveRowUp()
-            Me.UpdateControls()
-        End Sub
-
-        Private Sub m_btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnMoveDown.Click
-            Me.m_grid.MoveRowDown()
-            Me.UpdateControls()
+        Private Sub OnSort(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnSort.Click
+            Me.m_grid.Sort()
         End Sub
 
         Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -113,22 +110,16 @@ Namespace Ecopath
 #Region " Updating "
 
         Private Sub UpdateControls()
-            Me.m_btnMoveUp.Enabled = Me.m_grid.CanMoveRowUp()
-            Me.m_btnMoveDown.Enabled = Me.m_grid.CanMoveRowDown()
-            Me.m_btnInsert.Enabled = Me.m_grid.CanInsertRow()
-            'Me.m_btnDelete.Enabled = Me.m_grid.IsPedigreeRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
-            'Me.m_btnKeep.Enabled = Me.m_grid.IsFleetRow() And Me.m_grid.IsFlaggedForDeletionRow()
 
-            'Me.m_btnDefaultCurrent.Enabled = Me.m_grid.IsFleetRow()
-            'Me.m_btnCustom.Enabled = Me.m_grid.IsFleetRow()
+            Me.m_btnSort.Enabled = Me.m_grid.CanSort()
+            Me.m_btnInsert.Enabled = Me.m_grid.CanInsertRow()
+            Me.m_btnDelete.Enabled = Me.m_grid.IsDataRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
+            Me.m_btnKeep.Enabled = Me.m_grid.IsDataRow() And Me.m_grid.IsFlaggedForDeletionRow()
+
         End Sub
 
 #End Region ' Updating
 
-        Private Sub OnVariableSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_cmbVariable.SelectedIndexChanged
-            Me.m_grid.VarName = DirectCast(Me.m_cmbVariable.SelectedItem, eVarNameFlags)
-        End Sub
     End Class
 
 End Namespace

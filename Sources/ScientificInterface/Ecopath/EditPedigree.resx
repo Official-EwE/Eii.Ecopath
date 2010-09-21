@@ -208,7 +208,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="OK_Button" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Cancel_Button" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -250,7 +250,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnKeep.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_btnDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -289,85 +289,46 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnDelete.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="m_btnMoveDown.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnMoveDown.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="m_btnMoveDown.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="m_btnMoveDown.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnMoveDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>600, 177</value>
-  </data>
-  <data name="m_btnMoveDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 23</value>
-  </data>
-  <data name="m_btnMoveDown.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="m_btnMoveDown.Text" xml:space="preserve">
-    <value>Move down</value>
-  </data>
-  <data name="m_btnMoveDown.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageBeforeText</value>
-  </data>
-  <data name="&gt;&gt;m_btnMoveDown.Name" xml:space="preserve">
-    <value>m_btnMoveDown</value>
-  </data>
-  <data name="&gt;&gt;m_btnMoveDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnMoveDown.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnMoveDown.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="m_btnMoveUp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnSort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnMoveUp.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="m_btnSort.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="m_btnMoveUp.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_btnSort.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="m_btnMoveUp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnSort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnMoveUp.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnSort.Location" type="System.Drawing.Point, System.Drawing">
     <value>600, 148</value>
   </data>
-  <data name="m_btnMoveUp.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnSort.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
   </data>
-  <data name="m_btnMoveUp.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnSort.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="m_btnMoveUp.Text" xml:space="preserve">
-    <value>Move up</value>
+  <data name="m_btnSort.Text" xml:space="preserve">
+    <value>Sort</value>
   </data>
-  <data name="m_btnMoveUp.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="m_btnSort.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
   </data>
-  <data name="&gt;&gt;m_btnMoveUp.Name" xml:space="preserve">
-    <value>m_btnMoveUp</value>
+  <data name="&gt;&gt;m_btnSort.Name" xml:space="preserve">
+    <value>m_btnSort</value>
   </data>
-  <data name="&gt;&gt;m_btnMoveUp.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnSort.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnMoveUp.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnSort.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnMoveUp.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="&gt;&gt;m_btnSort.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="m_btnInsert.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -406,7 +367,61 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnInsert.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
+  </data>
+  <data name="m_lblVariable.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblVariable.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblVariable.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 15</value>
+  </data>
+  <data name="m_lblVariable.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 13</value>
+  </data>
+  <data name="m_lblVariable.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="m_lblVariable.Text" xml:space="preserve">
+    <value>Variable:</value>
+  </data>
+  <data name="&gt;&gt;m_lblVariable.Name" xml:space="preserve">
+    <value>m_lblVariable</value>
+  </data>
+  <data name="&gt;&gt;m_lblVariable.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblVariable.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblVariable.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_cmbVariable.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_cmbVariable.Location" type="System.Drawing.Point, System.Drawing">
+    <value>66, 12</value>
+  </data>
+  <data name="m_cmbVariable.Size" type="System.Drawing.Size, System.Drawing">
+    <value>528, 21</value>
+  </data>
+  <data name="m_cmbVariable.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;m_cmbVariable.Name" xml:space="preserve">
+    <value>m_cmbVariable</value>
+  </data>
+  <data name="&gt;&gt;m_cmbVariable.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cmbVariable.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cmbVariable.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_hdrOrder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -439,7 +454,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_hdrEdit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -472,16 +487,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
-  <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="m_grid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 43</value>
+    <value>0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>582, 343</value>
+    <value>582, 196</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -493,60 +508,114 @@
     <value>ScientificInterface.gridEditPedigree, EwE6, Version=6.1.0.919, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_scYupi.Panel1</value>
   </data>
   <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>0</value>
   </data>
-  <data name="m_lblVariable.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_scYupi.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_scYupi.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 39</value>
+  </data>
+  <data name="m_scYupi.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
+    <value>Horizontal</value>
+  </data>
+  <data name="&gt;&gt;m_scYupi.Panel1.Name" xml:space="preserve">
+    <value>m_scYupi.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_scYupi.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_scYupi.Panel1.Parent" xml:space="preserve">
+    <value>m_scYupi</value>
+  </data>
+  <data name="&gt;&gt;m_scYupi.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="m_tbDescription.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblVariable.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 15</value>
+  <data name="m_tbDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>582, 145</value>
   </data>
-  <data name="m_lblVariable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 13</value>
-  </data>
-  <data name="m_lblVariable.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="m_lblVariable.Text" xml:space="preserve">
-    <value>Variable:</value>
-  </data>
-  <data name="&gt;&gt;m_lblVariable.Name" xml:space="preserve">
-    <value>m_lblVariable</value>
-  </data>
-  <data name="&gt;&gt;m_lblVariable.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblVariable.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblVariable.ZOrder" xml:space="preserve">
+  <data name="m_tbDescription.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_cmbVariable.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="&gt;&gt;m_tbDescription.Name" xml:space="preserve">
+    <value>m_tbDescription</value>
   </data>
-  <data name="m_cmbVariable.Location" type="System.Drawing.Point, System.Drawing">
-    <value>66, 12</value>
+  <data name="&gt;&gt;m_tbDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_cmbVariable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>528, 21</value>
+  <data name="&gt;&gt;m_tbDescription.Parent" xml:space="preserve">
+    <value>m_scYupi.Panel2</value>
   </data>
-  <data name="m_cmbVariable.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+  <data name="&gt;&gt;m_tbDescription.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;m_cmbVariable.Name" xml:space="preserve">
-    <value>m_cmbVariable</value>
+  <data name="m_lblDescription.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;m_cmbVariable.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_lblDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 6</value>
   </data>
-  <data name="&gt;&gt;m_cmbVariable.Parent" xml:space="preserve">
+  <data name="m_lblDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 13</value>
+  </data>
+  <data name="m_lblDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_lblDescription.Text" xml:space="preserve">
+    <value>&amp;Description:</value>
+  </data>
+  <data name="&gt;&gt;m_lblDescription.Name" xml:space="preserve">
+    <value>m_lblDescription</value>
+  </data>
+  <data name="&gt;&gt;m_lblDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblDescription.Parent" xml:space="preserve">
+    <value>m_scYupi.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_lblDescription.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_scYupi.Panel2.Name" xml:space="preserve">
+    <value>m_scYupi.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_scYupi.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_scYupi.Panel2.Parent" xml:space="preserve">
+    <value>m_scYupi</value>
+  </data>
+  <data name="&gt;&gt;m_scYupi.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_scYupi.Size" type="System.Drawing.Size, System.Drawing">
+    <value>582, 347</value>
+  </data>
+  <data name="m_scYupi.SplitterDistance" type="System.Int32, mscorlib">
+    <value>196</value>
+  </data>
+  <data name="m_scYupi.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;m_scYupi.Name" xml:space="preserve">
+    <value>m_scYupi</value>
+  </data>
+  <data name="&gt;&gt;m_scYupi.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_scYupi.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_cmbVariable.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_scYupi.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

@@ -29,15 +29,20 @@ Namespace Ecopath
             Me.Cancel_Button = New System.Windows.Forms.Button
             Me.m_btnKeep = New System.Windows.Forms.Button
             Me.m_btnDelete = New System.Windows.Forms.Button
-            Me.m_btnMoveDown = New System.Windows.Forms.Button
-            Me.m_btnMoveUp = New System.Windows.Forms.Button
+            Me.m_btnSort = New System.Windows.Forms.Button
             Me.m_btnInsert = New System.Windows.Forms.Button
+            Me.m_lblVariable = New System.Windows.Forms.Label
+            Me.m_cmbVariable = New System.Windows.Forms.ComboBox
             Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_grid = New ScientificInterface.gridEditPedigree
-            Me.m_lblVariable = New System.Windows.Forms.Label
-            Me.m_cmbVariable = New System.Windows.Forms.ComboBox
+            Me.m_scYupi = New System.Windows.Forms.SplitContainer
+            Me.m_lblDescription = New System.Windows.Forms.Label
+            Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.TableLayoutPanel1.SuspendLayout()
+            Me.m_scYupi.Panel1.SuspendLayout()
+            Me.m_scYupi.Panel2.SuspendLayout()
+            Me.m_scYupi.SuspendLayout()
             Me.SuspendLayout()
             '
             'TableLayoutPanel1
@@ -70,61 +75,17 @@ Namespace Ecopath
             Me.m_btnDelete.Name = "m_btnDelete"
             Me.m_btnDelete.UseVisualStyleBackColor = True
             '
-            'm_btnMoveDown
+            'm_btnSort
             '
-            resources.ApplyResources(Me.m_btnMoveDown, "m_btnMoveDown")
-            Me.m_btnMoveDown.Name = "m_btnMoveDown"
-            Me.m_btnMoveDown.UseVisualStyleBackColor = True
-            '
-            'm_btnMoveUp
-            '
-            resources.ApplyResources(Me.m_btnMoveUp, "m_btnMoveUp")
-            Me.m_btnMoveUp.Name = "m_btnMoveUp"
-            Me.m_btnMoveUp.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnSort, "m_btnSort")
+            Me.m_btnSort.Name = "m_btnSort"
+            Me.m_btnSort.UseVisualStyleBackColor = True
             '
             'm_btnInsert
             '
             resources.ApplyResources(Me.m_btnInsert, "m_btnInsert")
             Me.m_btnInsert.Name = "m_btnInsert"
             Me.m_btnInsert.UseVisualStyleBackColor = True
-            '
-            'm_hdrOrder
-            '
-            resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
-            Me.m_hdrOrder.Name = "m_hdrOrder"
-            '
-            'm_hdrEdit
-            '
-            resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
-            Me.m_hdrEdit.Name = "m_hdrEdit"
-            '
-            'm_grid
-            '
-            Me.m_grid.AllowBlockSelect = True
-            resources.ApplyResources(Me.m_grid, "m_grid")
-            Me.m_grid.AutoSizeMinHeight = 10
-            Me.m_grid.AutoSizeMinWidth = 10
-            Me.m_grid.AutoStretchColumnsToFitWidth = False
-            Me.m_grid.AutoStretchRowsToFitHeight = False
-            Me.m_grid.BackColor = System.Drawing.Color.White
-            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
-            Me.m_grid.CustomSort = False
-            Me.m_grid.FixedColumnWidths = False
-            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_grid.GridToolTipActive = True
-            Me.m_grid.Name = "m_grid"
-            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.UIContext = Nothing
-            Me.m_grid.VarName = EwEUtils.Core.eVarNameFlags.NotSet
             '
             'm_lblVariable
             '
@@ -138,12 +99,76 @@ Namespace Ecopath
             Me.m_cmbVariable.FormattingEnabled = True
             Me.m_cmbVariable.Name = "m_cmbVariable"
             '
+            'm_hdrOrder
+            '
+            resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
+            Me.m_hdrOrder.Name = "m_hdrOrder"
+            '
+            'm_hdrEdit
+            '
+            resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
+            Me.m_hdrEdit.Name = "m_hdrEdit"
+            '
+            'm_grid
+            '
+            Me.m_grid.AllowBlockSelect = False
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = True
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.BackColor = System.Drawing.Color.White
+            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+            Me.m_grid.CustomSort = False
+            resources.ApplyResources(Me.m_grid, "m_grid")
+            Me.m_grid.FixedColumnWidths = False
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
+            Me.m_grid.Name = "m_grid"
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TrackPropertySelection = False
+            Me.m_grid.UIContext = Nothing
+            Me.m_grid.VarName = EwEUtils.Core.eVarNameFlags.NotSet
+            '
+            'm_scYupi
+            '
+            resources.ApplyResources(Me.m_scYupi, "m_scYupi")
+            Me.m_scYupi.Name = "m_scYupi"
+            '
+            'm_scYupi.Panel1
+            '
+            Me.m_scYupi.Panel1.Controls.Add(Me.m_grid)
+            '
+            'm_scYupi.Panel2
+            '
+            Me.m_scYupi.Panel2.Controls.Add(Me.m_tbDescription)
+            Me.m_scYupi.Panel2.Controls.Add(Me.m_lblDescription)
+            '
+            'm_lblDescription
+            '
+            resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
+            Me.m_lblDescription.Name = "m_lblDescription"
+            '
+            'm_tbDescription
+            '
+            resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
+            Me.m_tbDescription.Name = "m_tbDescription"
+            '
             'dlgEditPedigree
             '
             Me.AcceptButton = Me.OK_Button
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.Controls.Add(Me.m_scYupi)
             Me.Controls.Add(Me.m_cmbVariable)
             Me.Controls.Add(Me.m_lblVariable)
             Me.Controls.Add(Me.m_hdrOrder)
@@ -151,15 +176,17 @@ Namespace Ecopath
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnDelete)
-            Me.Controls.Add(Me.m_grid)
-            Me.Controls.Add(Me.m_btnMoveDown)
-            Me.Controls.Add(Me.m_btnMoveUp)
+            Me.Controls.Add(Me.m_btnSort)
             Me.Controls.Add(Me.m_btnInsert)
             Me.Name = "dlgEditPedigree"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
             Me.TableLayoutPanel1.ResumeLayout(False)
+            Me.m_scYupi.Panel1.ResumeLayout(False)
+            Me.m_scYupi.Panel2.ResumeLayout(False)
+            Me.m_scYupi.Panel2.PerformLayout()
+            Me.m_scYupi.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -169,14 +196,16 @@ Namespace Ecopath
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
         Private WithEvents m_btnKeep As System.Windows.Forms.Button
         Private WithEvents m_btnDelete As System.Windows.Forms.Button
-        Private WithEvents m_btnMoveDown As System.Windows.Forms.Button
-        Private WithEvents m_btnMoveUp As System.Windows.Forms.Button
+        Private WithEvents m_btnSort As System.Windows.Forms.Button
         Private WithEvents m_btnInsert As System.Windows.Forms.Button
         Private WithEvents m_hdrEdit As cEwEHeaderLabel
         Private WithEvents m_hdrOrder As cEwEHeaderLabel
         Private WithEvents m_grid As gridEditPedigree
         Private WithEvents m_lblVariable As System.Windows.Forms.Label
         Private WithEvents m_cmbVariable As System.Windows.Forms.ComboBox
+        Private WithEvents m_scYupi As System.Windows.Forms.SplitContainer
+        Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
+        Private WithEvents m_lblDescription As System.Windows.Forms.Label
 
     End Class
 
