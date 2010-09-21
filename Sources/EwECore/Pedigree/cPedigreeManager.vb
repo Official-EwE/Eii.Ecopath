@@ -44,17 +44,18 @@ Public Class cPedigreeManager
     ''' <param name="sConfidence"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddLevel(ByVal strDescription As String, _
-                                         ByVal iPosition As Integer, _
-                                         ByVal varName As eVarNameFlags, _
-                                         ByVal sIndexValue As Single, _
-                                         ByVal sConfidence As Single, _
-                                         ByRef iDBID As Integer) As Boolean
+    Public Function AddLevel(ByVal strName As String, _
+                             ByVal strDescription As String, _
+                             ByVal iPosition As Integer, _
+                             ByVal varName As eVarNameFlags, _
+                             ByVal sIndexValue As Single, _
+                             ByVal sConfidence As Single, _
+                             ByRef iDBID As Integer) As Boolean
 
         Dim level As cPedigreeLevel = Nothing
         Dim bSucces As Boolean = True
 
-        If m_core.AddPedigreeLevel(varName, iPosition, sIndexValue, sConfidence, strDescription, iDBID) Then
+        If m_core.AddPedigreeLevel(varName, iPosition, strName, strDescription, sIndexValue, sConfidence, iDBID) Then
             ' Reload me
             bSucces = Me.Load()
             ' Give core a chance to respond

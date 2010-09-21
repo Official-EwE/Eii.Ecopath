@@ -105,12 +105,6 @@ Imports SourceGrid2.Cells
                 If Object.ReferenceEquals(fi.Level, Nothing) Then
                     Me.m_bConfigChanged = True
                 End If
-                ' Check if this Level is an existing Level that has been moved
-                If Not Object.ReferenceEquals(fi.Level, Nothing) Then
-                    If ((iLevel + 1) <> fi.Level.Index) Then
-                        Me.m_bConfigChanged = True
-                    End If
-                End If
                 Me.m_bLevelsChanged = Me.m_bLevelsChanged Or fi.IsChanged()
             Next iLevel
 
@@ -190,11 +184,8 @@ Imports SourceGrid2.Cells
                     fi = DirectCast(Me.m_lfiLevels(iLevel), cPedigreeLevelInfo)
                     If (Object.ReferenceEquals(fi.Level, Nothing)) Then
                         Dim igt As Integer = iLevel + 1
-                        bSuccess = bSuccess And Me.m_man.AddLevel(fi.Name, igt, Me.m_vn, fi.IndexValue, fi.ConfidenceInterval, iDBID)
-                    Else
-                        If ((iLevel + 1) <> fi.Level.Index) Then
-                            'bSuccess = bSuccess And Me.m_man.MoveLevel(fi.Level.Index, iLevel + 1)
-                        End If
+                        bSuccess = bSuccess And Me.m_man.AddLevel(fi.Name, fi.Description, _
+                                                                  igt, Me.m_vn, fi.IndexValue, fi.ConfidenceInterval, iDBID)
                     End If
                 Next
 
@@ -270,6 +261,7 @@ Imports SourceGrid2.Cells
         Private m_level As cPedigreeLevel = Nothing
         ''' <summary>Name for this level.</summary>
         Private m_strName As String = ""
+        Private m_strDescription As String = ""
         Private m_sIndex As Single = 0.0!
         Private m_sConfidenceInterval As Single = 0.0!
         ''' <summary>Flag stating whether a user action is confirmed</summary>
@@ -317,6 +309,20 @@ Imports SourceGrid2.Cells
             End Get
             Set(ByVal value As String)
                 Me.m_strName = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the description of this administrative unit.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property Description() As String
+            Get
+                Return Me.m_strDescription
+            End Get
+            Set(ByVal value As String)
+                Me.m_strDescription = value
             End Set
         End Property
 

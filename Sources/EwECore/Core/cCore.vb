@@ -6573,7 +6573,6 @@ Public Class cCore
             m_EcoSimRun.NutBaseFreeProp = m_EcoSim.m_Data.NutBaseFreeProp
             m_EcoSimRun.NutForceFunctionNumber = m_EcoSim.m_Data.NutForceNumber
             m_EcoSimRun.NutPBMax = m_EcoSim.m_Data.NutPBmax
-            m_EcoSimRun.Relaxation = m_EcoSim.m_Data.SorWt
             m_EcoSimRun.StepSize = m_EcoSim.m_Data.StepSize
             m_EcoSimRun.SystemRecovery = m_EcoSim.m_Data.SystemRecovery
             m_EcoSimRun.UseVarPQ = m_EcoSim.m_Data.UseVarPQ
@@ -6613,7 +6612,6 @@ Public Class cCore
             m_EcoSim.m_Data.NutBaseFreeProp = m_EcoSimRun.NutBaseFreeProp
             m_EcoSim.m_Data.NutForceNumber = m_EcoSimRun.NutForceFunctionNumber
             m_EcoSim.m_Data.NutPBmax = m_EcoSimRun.NutPBMax
-            m_EcoSim.m_Data.SorWt = m_EcoSimRun.Relaxation
             m_EcoSim.m_Data.StepSize = m_EcoSimRun.StepSize
             m_EcoSim.m_Data.SystemRecovery = m_EcoSimRun.SystemRecovery
             m_EcoSim.m_Data.UseVarPQ = m_EcoSimRun.UseVarPQ
@@ -11764,9 +11762,10 @@ Public Class cCore
 
     Public Function AddPedigreeLevel(ByVal varName As eVarNameFlags, _
                                      ByVal iPosition As Integer, _
+                                     ByVal strName As String, _
+                                     ByVal strDescription As String, _
                                      ByVal sIndexValue As Single, _
                                      ByVal sConfidence As Single, _
-                                     ByVal strDescription As String, _
                                      ByRef iDBID As Integer) As Boolean
 
         Dim ds As IEcopathDataSource = Nothing
@@ -11779,7 +11778,7 @@ Public Class cCore
 
         ds = DirectCast(Me.DataSource, IEcopathDataSource)
 
-        Return ds.AddPedigreeLevel(iPosition, varName, sIndexValue, sConfidence, strDescription, iDBID)
+        Return ds.AddPedigreeLevel(iPosition, strName, strDescription, varName, sIndexValue, sConfidence, iDBID)
 
     End Function
 

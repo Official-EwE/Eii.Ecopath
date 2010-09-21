@@ -202,19 +202,21 @@ Namespace DataSources
         ''' </summary>
         ''' <param name="iPosition">The position of the new pedigree level in
         ''' the level sequence.</param>
+        ''' <param name="strName">Name to assign to new pedigree level.</param>
+        ''' <param name="strDescription">Description to assign to new pedigree level.</param>
         ''' <param name="varName"><see cref="eVarNameFlags">Variable name</see> 
         ''' this pedigree level pertains to</param>
         ''' <param name="sIndexValue">Value [0, 1] indicating...</param>
         ''' <param name="sConfidence">Confidence interval for this pedigree level.</param>
-        ''' <param name="strDescription">Description to assign to new pedigree level.</param>
         ''' <param name="iDBID">Database ID assigned to the new pedigree level.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Function AddPedigreeLevel(ByVal iPosition As Integer, _
+                                  ByVal strName As String, _
+                                  ByVal strDescription As String, _
                                   ByVal varName As eVarNameFlags, _
                                   ByVal sIndexValue As Single, _
                                   ByVal sConfidence As Single, _
-                                  ByVal strDescription As String, _
                                   ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------

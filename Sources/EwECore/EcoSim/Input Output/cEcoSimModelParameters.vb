@@ -1,17 +1,10 @@
-'==============================================================================
-'
-' $Log: cEcoSimModelParameters.vb,v $
-' Revision 1.6  2009/04/04 14:10:21  jeroens
-' VarPQ no longer stored
-'
-' Revision 1.5  2009/04/04 14:09:30  jeroens
-' Added header
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+
+#End Region ' Imports
 
 ''' <summary>
 ''' Contains the Model Run Parameters for EcoSim
@@ -29,7 +22,6 @@ Public Class cEcoSimModelParameters
     Public Sub New(ByRef m_core As cCore)
         MyBase.New(m_core)
 
-
         Try
             'no data validation at this time
             Me.AllowValidation = False
@@ -44,11 +36,6 @@ Public Class cEcoSimModelParameters
             'StepSize
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.StepSize, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.StepSize))
-            m_values.Add(val.varName, val)
-
-            'Relaxation
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.Relaxation, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.Relaxation))
             m_values.Add(val.varName, val)
 
             'Discount
@@ -121,7 +108,6 @@ Public Class cEcoSimModelParameters
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.TemperatureForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.TemperatureForceFunctionNumber))
             m_values.Add(val.varName, val)
-
 
             'EcoSimNYears max 1000 year?!
             meta = New cVariableMetaData(0, cCore.MAX_RUN_LENGTH, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
@@ -387,28 +373,14 @@ Public Class cEcoSimModelParameters
 
     End Property
 
-
     Public Property NutPBMax() As Single
 
         Get
-            Return CType(getVariable(eVarNameFlags.NutPBMax), Single)
+            Return CType(GetVariable(eVarNameFlags.NutPBMax), Single)
         End Get
 
         Set(ByVal value As Single)
-            setVariable(eVarNameFlags.NutPBMax, value)
-        End Set
-
-    End Property
-
-
-    Public Property Relaxation() As Single
-
-        Get
-            Return CType(getVariable(eVarNameFlags.Relaxation), Single)
-        End Get
-
-        Set(ByVal value As Single)
-            setVariable(eVarNameFlags.Relaxation, value)
+            SetVariable(eVarNameFlags.NutPBMax, value)
         End Set
 
     End Property
@@ -416,11 +388,11 @@ Public Class cEcoSimModelParameters
     Public Property StepSize() As Single
 
         Get
-            Return CType(getVariable(eVarNameFlags.StepSize), Single)
+            Return CType(GetVariable(eVarNameFlags.StepSize), Single)
         End Get
 
         Set(ByVal value As Single)
-            setVariable(eVarNameFlags.StepSize, value)
+            SetVariable(eVarNameFlags.StepSize, value)
         End Set
 
     End Property
@@ -709,18 +681,6 @@ Public Class cEcoSimModelParameters
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.NutPBMax, value)
-        End Set
-
-    End Property
-
-    Public Property RelaxationStatus() As eStatusFlags
-
-        Get
-            Return GetStatus(eVarNameFlags.Relaxation)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Relaxation, value)
         End Set
 
     End Property

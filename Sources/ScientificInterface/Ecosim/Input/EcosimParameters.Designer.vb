@@ -26,12 +26,10 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimParameters))
             Me.m_nudNutBaseFreeProp = New System.Windows.Forms.NumericUpDown
             Me.m_nudNumberYears = New System.Windows.Forms.NumericUpDown
-            Me.m_nudRelaxation = New System.Windows.Forms.NumericUpDown
             Me.m_cmbSalinityForcing = New System.Windows.Forms.ComboBox
             Me.m_cmbNutForcing = New System.Windows.Forms.ComboBox
             Me.m_chkPredictEffort = New System.Windows.Forms.CheckBox
             Me.m_chkConTracing = New System.Windows.Forms.CheckBox
-            Me.m_lblRelaxation = New System.Windows.Forms.Label
             Me.m_lblSalinityForcing = New System.Windows.Forms.Label
             Me.m_lblNutForcing = New System.Windows.Forms.Label
             Me.m_lblNutBaseFreeProp = New System.Windows.Forms.Label
@@ -51,7 +49,6 @@ Namespace Ecosim
             Me.m_lblTempLoading = New System.Windows.Forms.Label
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_nudRelaxation, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_nudNutBaseFreeProp
@@ -63,11 +60,6 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_nudNumberYears, "m_nudNumberYears")
             Me.m_nudNumberYears.Name = "m_nudNumberYears"
-            '
-            'm_nudRelaxation
-            '
-            resources.ApplyResources(Me.m_nudRelaxation, "m_nudRelaxation")
-            Me.m_nudRelaxation.Name = "m_nudRelaxation"
             '
             'm_cmbSalinityForcing
             '
@@ -94,11 +86,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_chkConTracing, "m_chkConTracing")
             Me.m_chkConTracing.Name = "m_chkConTracing"
             Me.m_chkConTracing.UseVisualStyleBackColor = True
-            '
-            'm_lblRelaxation
-            '
-            resources.ApplyResources(Me.m_lblRelaxation, "m_lblRelaxation")
-            Me.m_lblRelaxation.Name = "m_lblRelaxation"
             '
             'm_lblSalinityForcing
             '
@@ -202,7 +189,6 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_tbContact)
             Me.Controls.Add(Me.m_nudNumberYears)
             Me.Controls.Add(Me.m_tbAuthor)
-            Me.Controls.Add(Me.m_nudRelaxation)
             Me.Controls.Add(Me.m_lblScenario)
             Me.Controls.Add(Me.m_cmbSalinityForcing)
             Me.Controls.Add(Me.m_lbContact)
@@ -213,7 +199,6 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_chkUseVarPQ)
             Me.Controls.Add(Me.m_chkConTracing)
             Me.Controls.Add(Me.m_tbName)
-            Me.Controls.Add(Me.m_lblRelaxation)
             Me.Controls.Add(Me.m_lbScenarioName)
             Me.Controls.Add(Me.m_lblSalinityForcing)
             Me.Controls.Add(Me.m_tbDescription)
@@ -224,7 +209,6 @@ Namespace Ecosim
             Me.Name = "EcosimParameters"
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_nudRelaxation, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -247,8 +231,6 @@ Namespace Ecosim
         Private WithEvents m_cmbSalinityForcing As System.Windows.Forms.ComboBox
         Private WithEvents m_lblSalinityForcing As System.Windows.Forms.Label
         Private WithEvents cmbTempLoading As System.Windows.Forms.ComboBox
-        Private WithEvents m_nudRelaxation As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_lblRelaxation As System.Windows.Forms.Label
         Private WithEvents m_lblTempLoading As System.Windows.Forms.Label
         Private WithEvents m_chkPredictEffort As System.Windows.Forms.CheckBox
         Private WithEvents m_chkConTracing As System.Windows.Forms.CheckBox

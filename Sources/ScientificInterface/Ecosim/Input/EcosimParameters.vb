@@ -30,7 +30,6 @@ Namespace Ecosim
         Private m_fpSalinityForceNumber As cEwEFormatProvider = Nothing
         Private m_fpTempForceNumber As cEwEFormatProvider = Nothing
         Private m_fpPredictEffort As cEwEFormatProvider = Nothing
-        Private m_fpRelaxation As cEwEFormatProvider = Nothing
         Private m_fpUseVarPQ As cEwEFormatProvider = Nothing
 
         Private m_propConTracing As cBooleanProperty = Nothing
@@ -58,7 +57,6 @@ Namespace Ecosim
             Me.m_fpSalinityForceNumber = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbSalinityForcing, ecosimModelParams, eVarNameFlags.SalinityForceFunctionNumber)
             Me.m_fpTempForceNumber = New cPropertyFormatProvider(Me.UIContext, Me.cmbTempLoading, ecosimModelParams, eVarNameFlags.TemperatureForceFunctionNumber)
             Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPredictEffort, ecosimModelParams, eVarNameFlags.PredictEffort)
-            Me.m_fpRelaxation = New cPropertyFormatProvider(Me.UIContext, Me.m_nudRelaxation, ecosimModelParams, eVarNameFlags.Relaxation)
             Me.m_fpUseVarPQ = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUseVarPQ, ecosimModelParams, eVarNameFlags.UseVarPQ)
 
             Me.m_propConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
@@ -87,8 +85,6 @@ Namespace Ecosim
             Me.m_fpNutrientForceNumber.Release()
             Me.m_fpSalinityForceNumber.Release()
             Me.m_fpPredictEffort.Release()
-            '       Me.m_fpRegulatoryFeedback.Release()
-            Me.m_fpRelaxation.Release()
             Me.m_fpUseVarPQ.Release()
             Me.m_fpTempForceNumber.Release()
 

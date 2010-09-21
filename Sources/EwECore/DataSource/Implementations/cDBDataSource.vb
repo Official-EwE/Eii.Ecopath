@@ -1101,10 +1101,11 @@ Namespace DataSources
 
                 Try
                     ecopathDS.PedigreeLevelDBID(iLevel) = CInt(reader("LevelID"))
+                    ecopathDS.PedigreeLevelName(iLevel) = CStr(reader("LevelName"))
+                    ecopathDS.PedigreeLevelDescription(iLevel) = CStr(reader("Description"))
                     ecopathDS.PedigreeLevelVarName(iLevel) = cin.GetVarName(CStr(reader("VarName")))
                     ecopathDS.PedigreeLevelIndexValue(iLevel) = CSng(reader("IndexValue"))
                     ecopathDS.PedigreeLevelConfidence(iLevel) = CSng(reader("Confidence"))
-                    ecopathDS.PedigreeLevelName(iLevel) = CStr(reader("Description"))
 
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading pedigree level {1}", ex.Message, iLevel))
@@ -1156,10 +1157,11 @@ Namespace DataSources
 
                     drow.BeginEdit()
                     drow("Sequence") = iLevel
+                    drow("LevelName") = ecopathDS.PedigreeLevelName(iLevel)
+                    drow("Description") = ecopathDS.PedigreeLevelDescription(iLevel)
                     drow("VarName") = CStr(cin.GetVarName(ecopathDS.PedigreeLevelVarName(iLevel)))
                     drow("IndexValue") = ecopathDS.PedigreeLevelIndexValue(iLevel)
                     drow("Confidence") = ecopathDS.PedigreeLevelConfidence(iLevel)
-                    drow("Description") = ecopathDS.PedigreeLevelName(iLevel)
 
                     drow.EndEdit()
 
@@ -1186,19 +1188,21 @@ Namespace DataSources
         ''' </summary>
         ''' <param name="iPosition">The position of the new pedigree level in
         ''' the level sequence.</param>
+        ''' <param name="strName">Name to assign to new pedigree level.</param>
+        ''' <param name="strDescription">Description to assign to new pedigree level.</param>
         ''' <param name="varName"><see cref="eVarNameFlags">Variable name</see> 
         ''' this pedigree level pertains to</param>
         ''' <param name="sIndexValue">Value [0, 1] indicating...</param>
         ''' <param name="sConfidence">Confidence interval for this pedigree level.</param>
-        ''' <param name="strDescription">Description to assign to new pedigree level.</param>
         ''' <param name="iPedigreeLevelID">Database ID assigned to the new pedigree level.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Public Function AddPedigreeLevel(ByVal iPosition As Integer, _
+                                         ByVal strName As String, _
+                                         ByVal strDescription As String, _
                                          ByVal varName As eVarNameFlags, _
                                          ByVal sIndexValue As Single, _
                                          ByVal sConfidence As Single, _
-                                         ByVal strDescription As String, _
                                          ByRef iPedigreeLevelID As Integer) As Boolean _
                 Implements IEcopathDataSource.AddPedigreeLevel
 
@@ -1220,10 +1224,11 @@ Namespace DataSources
                 ' Get new row to add
                 drow = writer.NewRow()
                 drow("LevelID") = iPedigreeLevelID
+                drow("LevelName") = strName
+                drow("Description") = strDescription
                 drow("VarName") = varName.ToString
                 drow("IndexValue") = sIndexValue
                 drow("Confidence") = sConfidence
-                drow("Description") = strDescription
                 drow("Sequence") = iPosition
 
                 ' Commit to db
