@@ -6,6 +6,7 @@ Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports ScientificInterface.Other
 Imports EwEUtils.Core
+Imports SourceGrid2.Cells
 
 #End Region ' Imports
 
@@ -26,21 +27,10 @@ Imports EwEUtils.Core
     Private m_dictConfigs As New Dictionary(Of eVarNameFlags, cPedigreeManagerInfo)
     Private m_vnActive As eVarNameFlags = eVarNameFlags.NotSet
 
-    ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
-    ''' to trap cell edit events locally in this grid. These events are essential
-    ''' for keeping the local Level administration up to date.</summary>
-    Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
     ''' <summary>Update lock, used to distinguish between code updates and
     ''' user updates of grid cells. When grid cells are updated from within
     ''' the code, an update lock should be active to prevent edit/update recursion.</summary>
     Private m_iUpdateLock As Integer = 0
-
-    ''' <summary>Visual model to display original Levels.</summary>
-    Private m_vmOriginal As VisualModels.Common = New VisualModels.Common(False)
-    ''' <summary>Visual model to display newly created Levels.</summary>
-    Private m_vmAdded As VisualModels.Common = New VisualModels.Common(False)
-    ''' <summary>Visual model to display Levels that are about be deleted.</summary>
-    Private m_vmRemoved As VisualModels.Common = New VisualModels.Common(False)
 
     ''' <summary>Enumerated type defining the columns in this grid.</summary>
     Private Enum eColumnTypes
@@ -55,6 +45,20 @@ Imports EwEUtils.Core
 
 #Region " Helper classes "
 
+    Private Class cPedigreeInfoListSorter
+        Implements IComparer(Of cPedigreeLevelInfo)
+
+        Public Function Compare(ByVal x As cPedigreeLevelInfo, ByVal y As cPedigreeLevelInfo) As Integer _
+            Implements IComparer(Of cPedigreeLevelInfo).Compare
+            If x.IndexValue < y.IndexValue Then Return -1
+            If x.IndexValue > y.IndexValue Then Return 1
+            If x.ConfidenceInterval < y.ConfidenceInterval Then Return -1
+            If x.ConfidenceInterval > y.ConfidenceInterval Then Return 1
+            Return 0
+        End Function
+
+    End Class
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Helper class wrapping a single <see cref="cPedigreeManager">pedigree manager</see>.
@@ -63,9 +67,9 @@ Imports EwEUtils.Core
     Protected Class cPedigreeManagerInfo
 
         ''' <summary>List of active levels.</summary>
-        Private m_lfiLevels As New List(Of cLevelInfo)
+        Private m_lfiLevels As New List(Of cPedigreeLevelInfo)
         ''' <summary>List of removed Levels.</summary>
-        Private m_lfiLevelsRemoved As New List(Of cLevelInfo)
+        Private m_lfiLevelsRemoved As New List(Of cPedigreeLevelInfo)
 
         Private m_vn As eVarNameFlags = eVarNameFlags.NotSet
         Private m_core As cCore = Nothing
@@ -80,7 +84,7 @@ Imports EwEUtils.Core
             Me.m_man = Me.m_core.GetPedigreeManager(Me.m_vn)
 
             For iLevel As Integer = 0 To Me.m_man.NumLevels - 1
-                Me.m_lfiLevels.Add(New cLevelInfo(Me.m_man.Level(iLevel)))
+                Me.m_lfiLevels.Add(New cPedigreeLevelInfo(Me.m_man.Level(iLevel)))
             Next
 
         End Sub
@@ -88,7 +92,7 @@ Imports EwEUtils.Core
         Public Function AssessChanges() As Boolean
 
             Dim iLevel As Integer = 0
-            Dim fi As cLevelInfo = Nothing
+            Dim fi As cPedigreeLevelInfo = Nothing
             Dim strPrompt As String = ""
 
             Me.m_bConfigChanged = False
@@ -96,7 +100,7 @@ Imports EwEUtils.Core
 
             ' Assess Level changes
             For iLevel = 0 To Me.m_lfiLevels.Count - 1
-                fi = DirectCast(Me.m_lfiLevels(iLevel), cLevelInfo)
+                fi = DirectCast(Me.m_lfiLevels(iLevel), cPedigreeLevelInfo)
                 ' Check this Level is newly added
                 If Object.ReferenceEquals(fi.Level, Nothing) Then
                     Me.m_bConfigChanged = True
@@ -113,7 +117,7 @@ Imports EwEUtils.Core
             ' Assess Levels to remove
             strPrompt = ""
             For iLevel = 0 To Me.m_lfiLevelsRemoved.Count - 1
-                fi = DirectCast(Me.m_lfiLevelsRemoved(iLevel), cLevelInfo)
+                fi = DirectCast(Me.m_lfiLevelsRemoved(iLevel), cPedigreeLevelInfo)
                 If (Not Object.ReferenceEquals(fi.Level, Nothing)) Then
 
                     strPrompt = String.Format("?", fi.Name)
@@ -152,21 +156,25 @@ Imports EwEUtils.Core
             End Get
         End Property
 
-        Public ReadOnly Property Levels() As List(Of cLevelInfo)
+        Public ReadOnly Property Levels() As List(Of cPedigreeLevelInfo)
             Get
                 Return Me.m_lfiLevels
             End Get
         End Property
 
-        Public ReadOnly Property LevelsRemoved() As List(Of cLevelInfo)
+        Public ReadOnly Property LevelsRemoved() As List(Of cPedigreeLevelInfo)
             Get
                 Return Me.m_lfiLevelsRemoved
             End Get
         End Property
 
+        Public Sub Sort()
+            Me.m_lfiLevels.Sort(New cPedigreeInfoListSorter)
+        End Sub
+
         Public Function ApplyConfigChanges() As Boolean
 
-            Dim fi As cLevelInfo = Nothing
+            Dim fi As cPedigreeLevelInfo = Nothing
             Dim Level As cPedigreeLevel = Nothing
             Dim iLevel As Integer = 0
             Dim bSuccess As Boolean = True
@@ -179,7 +187,7 @@ Imports EwEUtils.Core
                 ' Add new Levels
                 For iLevel = 0 To Me.m_lfiLevels.Count - 1
 
-                    fi = DirectCast(Me.m_lfiLevels(iLevel), cLevelInfo)
+                    fi = DirectCast(Me.m_lfiLevels(iLevel), cPedigreeLevelInfo)
                     If (Object.ReferenceEquals(fi.Level, Nothing)) Then
                         Dim igt As Integer = iLevel + 1
                         bSuccess = bSuccess And Me.m_man.AddLevel(fi.Name, igt, Me.m_vn, fi.IndexValue, fi.ConfidenceInterval, iDBID)
@@ -193,7 +201,7 @@ Imports EwEUtils.Core
                 ' Remove deleted (and confirmed) Levels
                 Dim iLevelRemove As Integer = 0
                 For iLevel = 0 To Me.m_lfiLevelsRemoved.Count - 1
-                    fi = DirectCast(Me.m_lfiLevelsRemoved(iLevelRemove), cLevelInfo)
+                    fi = DirectCast(Me.m_lfiLevelsRemoved(iLevelRemove), cPedigreeLevelInfo)
                     If (Not Object.ReferenceEquals(fi.Level, Nothing)) And (fi.Confirmed = True) Then
                         If (Me.m_man.RemoveLevel(fi.Level)) Then
                             Me.m_lfiLevels.Remove(fi)
@@ -220,15 +228,16 @@ Imports EwEUtils.Core
 
             ' Levels may have been reloaded
             If (Me.m_bLevelsChanged) Then
-                For Each li As cLevelInfo In Me.m_lfiLevels
-                    If li.IsChanged() Then
+                For Each pi As cPedigreeLevelInfo In Me.m_lfiLevels
+                    If pi.IsChanged() Then
                         bUpdated = False
-                        ' Find (possibly reloaded) level that matches this li
+                        ' Find (possibly reloaded) level that matches this pi
                         For iLevel As Integer = 0 To Me.m_man.NumLevels - 1
-                            If level.DBID = li.Level.DBID Then
-                                level.Name = li.Name
-                                level.IndexValue = li.IndexValue
-                                level.ConfidenceInterval = li.ConfidenceInterval
+                            level = Me.m_man.Level(iLevel)
+                            If level.DBID = pi.Level.DBID Then
+                                level.Name = pi.Name
+                                level.IndexValue = pi.IndexValue
+                                level.ConfidenceInterval = pi.ConfidenceInterval
                                 bUpdated = True
                             End If
                         Next
@@ -236,6 +245,8 @@ Imports EwEUtils.Core
                     End If
                 Next
             End If
+
+            Me.m_man.Update()
             Return bSuccess
 
         End Function
@@ -248,12 +259,12 @@ Imports EwEUtils.Core
     ''' </summary>
     ''' <remarks>
     ''' This class can represent existing and new Levels. If this class has its
-    ''' <see cref="cLevelInfo.Level">Level</see> parameter set, a real live
+    ''' <see cref="cPedigreeLevelInfo.Level">Level</see> parameter set, a real live
     ''' Level is represented. If this parameter is not set, a new Level is
     ''' represented.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Protected Class cLevelInfo
+    Protected Class cPedigreeLevelInfo
 
         ''' <summary><see cref="cPedigreeLevel">cPedigreeLevel</see> associated with this info, if any.</summary>
         Private m_level As cPedigreeLevel = Nothing
@@ -422,25 +433,6 @@ Imports EwEUtils.Core
 
         MyBase.New()
 
-        ' Set up visual models for reflecting Level modification status
-        With Me.m_vmOriginal
-            .ForeColor = Color.FromArgb(255, 0, 0, 0)
-            .TextAlignment = ContentAlignment.MiddleCenter
-            .MakeReadOnly()
-        End With
-
-        With Me.m_vmAdded
-            .ForeColor = Color.FromArgb(255, 8, 128, 12)
-            .TextAlignment = ContentAlignment.MiddleCenter
-            .MakeReadOnly()
-        End With
-
-        With Me.m_vmRemoved
-            .ForeColor = Color.FromArgb(255, 255, 22, 12)
-            .TextAlignment = ContentAlignment.MiddleCenter
-            .MakeReadOnly()
-        End With
-
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -525,9 +517,8 @@ Imports EwEUtils.Core
     ''' -----------------------------------------------------------------------
     Public Sub UpdateGrid()
 
-        Dim fi As cLevelInfo = Nothing
+        Dim fi As cPedigreeLevelInfo = Nothing
         Dim ri As RowInfo = Nothing
-        Dim cells() As Cells.ICellVirtual = Nothing
         Dim pos As SourceGrid2.Position = Nothing
         Dim vm As VisualModels.Common = Nothing
         Dim ewec As EwECell = Nothing
@@ -536,18 +527,22 @@ Imports EwEUtils.Core
         For iRow As Integer = Me.Rows.Count To Me.ActiveConfig.Levels.Count
             Me.AddRow()
 
-            ewec = New EwECell(0, GetType(Integer))
+            ewec = New EwECell(iRow, GetType(Integer))
             ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
             Me(iRow, eColumnTypes.LevelIndex) = ewec
 
-            Me(iRow, eColumnTypes.LevelName) = New Cells.Real.Cell("", GetType(String))
-            Me(iRow, eColumnTypes.LevelName).Behaviors.Add(m_bm)
+            ewec = New EwECell("", GetType(String))
+            ewec.Behaviors.Add(Me.EwEEditHandler)
+            Me(iRow, eColumnTypes.LevelName) = ewec
 
-            Me(iRow, eColumnTypes.LevelIndexValue) = New Cells.Real.Cell(0, GetType(Single))
-            Me(iRow, eColumnTypes.LevelIndexValue).Behaviors.Add(m_bm)
+            ewec = New EwECell(1.0!, GetType(Single))
+            ewec.NumDigits = 2
+            ewec.Behaviors.Add(Me.EwEEditHandler)
+            Me(iRow, eColumnTypes.LevelIndexValue) = ewec
 
-            Me(iRow, eColumnTypes.LevelConfidenceInterval) = New Cells.Real.Cell(0, GetType(Single))
-            Me(iRow, eColumnTypes.LevelConfidenceInterval).Behaviors.Add(m_bm)
+            ewec = New EwECell(75, GetType(Integer))
+            ewec.Behaviors.Add(Me.EwEEditHandler)
+            Me(iRow, eColumnTypes.LevelConfidenceInterval) = ewec
 
             ' Status
             vm = New VisualModels.Common()
@@ -587,48 +582,53 @@ Imports EwEUtils.Core
     ''' -----------------------------------------------------------------------
     Private Sub UpdateRow(ByVal iRow As Integer)
 
-        Dim fi As cLevelInfo = Nothing
+        Dim fi As cPedigreeLevelInfo = Nothing
         Dim ri As RowInfo = Nothing
         Dim aCells() As Cells.ICellVirtual = Nothing
         Dim pos As SourceGrid2.Position = Nothing
-        Dim vm As VisualModels.Common = Nothing
+        Dim vm As VisualModels.IVisualModel = Nothing
         Dim strText As String = ""
+        Dim ewec As ICell = Nothing
 
         Me.AllowUpdates = False
 
-        fi = DirectCast(Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW), cLevelInfo)
+        fi = DirectCast(Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW), cPedigreeLevelInfo)
         ri = Me.Rows(iRow)
 
         ri.Tag = fi
         aCells = ri.GetCells()
 
-        pos = New Position(iRow, eColumnTypes.LevelIndex)
-        aCells(eColumnTypes.LevelIndex).SetValue(pos, CInt(iRow))
+        ' No need to update since row number will not change
+        'pos = New Position(iRow, eColumnTypes.LevelIndex)
+        'aCells(eColumnTypes.LevelIndex).SetValue(pos, CInt(iRow))
 
-        pos = New Position(iRow, eColumnTypes.LevelName)
-        aCells(eColumnTypes.LevelName).SetValue(pos, fi.Name)
+        'pos = New Position(iRow, eColumnTypes.LevelName)
+        'aCells(eColumnTypes.LevelName).SetValue(pos, fi.Name)
+        Me(iRow, CInt(eColumnTypes.LevelName)).Value = fi.Name
 
-        pos = New Position(iRow, eColumnTypes.LevelIndexValue)
-        aCells(eColumnTypes.LevelIndexValue).SetValue(pos, fi.IndexValue)
+        'pos = New Position(iRow, eColumnTypes.LevelIndexValue)
+        'aCells(eColumnTypes.LevelIndexValue).SetValue(pos, fi.IndexValue)
+        Me(iRow, CInt(eColumnTypes.LevelIndexValue)).Value = fi.IndexValue
 
-        pos = New Position(iRow, eColumnTypes.LevelConfidenceInterval)
-        aCells(eColumnTypes.LevelConfidenceInterval).SetValue(pos, fi.ConfidenceInterval)
+        'pos = New Position(iRow, eColumnTypes.LevelConfidenceInterval)
+        'aCells(eColumnTypes.LevelConfidenceInterval).SetValue(pos, CInt(100 * fi.ConfidenceInterval))
+        ewec = Me(iRow, CInt(eColumnTypes.LevelConfidenceInterval))
+        ewec.Value = fi.ConfidenceInterval
 
         Select Case fi.Status
             Case eItemStatusTypes.Original
-                vm = Me.m_vmOriginal
+                vm = Me.DefaultVisualOriginal
                 strText = ""
             Case eItemStatusTypes.Added
-                vm = Me.m_vmAdded
+                vm = Me.DefaultVisualAdded
                 strText = My.Resources.GENERIC_ITEMSTATUS_CREATEPENDING
             Case eItemStatusTypes.Removed
-                vm = Me.m_vmRemoved
+                vm = Me.DefaultVisualRemoved
                 strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
         End Select
 
-        pos = New Position(iRow, eColumnTypes.LevelStatus)
-        aCells(eColumnTypes.LevelStatus).VisualModel = vm
-        aCells(eColumnTypes.LevelStatus).SetValue(pos, strText)
+        Me(iRow, CInt(eColumnTypes.LevelStatus)).VisualModel = vm
+        Me(iRow, CInt(eColumnTypes.LevelStatus)).Value = strText
 
         Me.AllowUpdates = True
 
@@ -653,7 +653,7 @@ Imports EwEUtils.Core
 
         If Not Me.AllowUpdates Then Return True
 
-        Dim fi As cLevelInfo = DirectCast(Me.ActiveConfig.Levels(p.Row - 1), cLevelInfo)
+        Dim fi As cPedigreeLevelInfo = DirectCast(Me.ActiveConfig.Levels(p.Row - 1), cPedigreeLevelInfo)
 
         Select Case DirectCast(p.Column, eColumnTypes)
 
@@ -661,7 +661,7 @@ Imports EwEUtils.Core
                 fi.IndexValue = CSng(cell.GetValue(p))
 
             Case eColumnTypes.LevelConfidenceInterval
-                fi.ConfidenceInterval = CSng(cell.GetValue(p))
+                fi.ConfidenceInterval = CSng(CInt(cell.GetValue(p)) / 100.0!)
 
         End Select
 
@@ -687,7 +687,7 @@ Imports EwEUtils.Core
 
         If Not Me.AllowUpdates Then Return True
 
-        Dim fi As cLevelInfo = DirectCast(Me.ActiveConfig.Levels(p.Row - 1), cLevelInfo)
+        Dim fi As cPedigreeLevelInfo = DirectCast(Me.ActiveConfig.Levels(p.Row - 1), cPedigreeLevelInfo)
 
         Select Case DirectCast(p.Column, eColumnTypes)
             Case eColumnTypes.LevelIndex
@@ -697,7 +697,7 @@ Imports EwEUtils.Core
                 Dim strName As String = CStr(cell.GetValue(p))
                 ' Check if name is unique
                 For iLevel As Integer = 0 To Me.ActiveConfig.Levels.Count - 1
-                    Dim giTemp As cLevelInfo = DirectCast(Me.ActiveConfig.Levels(iLevel), cLevelInfo)
+                    Dim giTemp As cPedigreeLevelInfo = DirectCast(Me.ActiveConfig.Levels(iLevel), cPedigreeLevelInfo)
                     ' Does name already exist?
                     If (Not Object.ReferenceEquals(giTemp, fi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                         ' Change is not allowed
@@ -733,12 +733,12 @@ Imports EwEUtils.Core
 
     Public Sub SelectLevel(ByVal Level As cPedigreeLevel)
 
-        Dim fi As cLevelInfo = Nothing
+        Dim fi As cPedigreeLevelInfo = Nothing
 
         If (Level Is Nothing) Then Return
 
         For iRow As Integer = iFIRSTDATAROW To Me.RowsCount - 1
-            fi = DirectCast(Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW), cLevelInfo)
+            fi = DirectCast(Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW), cPedigreeLevelInfo)
             If (Object.ReferenceEquals(fi.Level, Level)) Then
                 Me.SelectRow(iRow)
                 Return
@@ -758,13 +758,13 @@ Imports EwEUtils.Core
         If iRow = -1 Then iRow = Me.SelectedRow
 
         Dim iLevel As Integer = iRow - iFIRSTDATAROW
-        Dim fi As cLevelInfo = Nothing
+        Dim fi As cPedigreeLevelInfo = Nothing
         Dim strPrompt As String = ""
 
         ' Validate
         If iLevel < 0 Then Return
 
-        fi = DirectCast(Me.ActiveConfig.Levels(iLevel), cLevelInfo)
+        fi = DirectCast(Me.ActiveConfig.Levels(iLevel), cPedigreeLevelInfo)
         ' Toggle 'flagged for deletion' flag
         fi.FlaggedForDeletion = Not fi.FlaggedForDeletion
 
@@ -798,7 +798,7 @@ Imports EwEUtils.Core
     ''' </summary>
     ''' <param name="iRow"></param>
     ''' <returns></returns>
-    Public Function IsLevelRow(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function IsDataRow(Optional ByVal iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
         Return (iRow >= iFIRSTDATAROW) And (iRow < Me.RowsCount)
     End Function
@@ -808,13 +808,13 @@ Imports EwEUtils.Core
     ''' </summary>
     Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
-        If Not IsLevelRow(iRow) Then Return False
+        If Not IsDataRow(iRow) Then Return False
 
         Dim iLevel As Integer = iRow - iFIRSTDATAROW
-        Dim fi As cLevelInfo = Nothing
+        Dim fi As cPedigreeLevelInfo = Nothing
         Dim strPrompt As String = ""
 
-        fi = DirectCast(Me.ActiveConfig.Levels(iLevel), cLevelInfo)
+        fi = DirectCast(Me.ActiveConfig.Levels(iLevel), cPedigreeLevelInfo)
         Return fi.FlaggedForDeletion
     End Function
 
@@ -834,7 +834,7 @@ Imports EwEUtils.Core
     Private Sub CreateLevel(ByVal iRow As Integer)
 
         Dim iLevel As Integer = -1
-        Dim fi As cLevelInfo = Nothing
+        Dim fi As cPedigreeLevelInfo = Nothing
         Dim lstrLevelNames As New List(Of String)
 
         ' Make fit
@@ -849,7 +849,7 @@ Imports EwEUtils.Core
             lstrLevelNames.Add(Me.ActiveConfig.Levels(i).Name)
         Next i
 
-        fi = New cLevelInfo(String.Format("Estimate type {0}", _
+        fi = New cPedigreeLevelInfo(String.Format("Estimate type {0}", _
                 cStringUtils.GetNextNumber(lstrLevelNames.ToArray, "Estimate type {0}")))
         Me.ActiveConfig.Levels.Insert(iLevel, fi)
 
@@ -864,81 +864,14 @@ Imports EwEUtils.Core
         Return True
     End Function
 
-    ''' <summary>
-    ''' Move row up, switching positions with the row above it.
-    ''' </summary>
-    Public Sub MoveRowUp(Optional ByVal iRow As Integer = -1)
-        Dim bMoveSelection As Boolean = (iRow = -1)
-
-        If iRow = -1 Then iRow = Me.SelectedRow()
-        If Not CanMoveRowUp(iRow) Then Return
-        Me.MoveRow(iRow, iRow - 1)
-
-        If bMoveSelection Then
-            Me.SelectRow(iRow - 1)
-        End If
+    Public Sub Sort()
+        Me.ActiveConfig.Sort()
+        Me.UpdateGrid()
     End Sub
 
-    ''' <summary>
-    ''' States whether a row can be moved up.
-    ''' </summary>
-    Public Function CanMoveRowUp(Optional ByVal iRow As Integer = -1) As Boolean
-        If iRow = -1 Then iRow = Me.SelectedRow()
-        Return (Me.RowsCount > (iFIRSTDATAROW + 1)) And (iRow > iFIRSTDATAROW)
+    Public Function CanSort() As Boolean
+        Return (Me.ActiveConfig.Levels.Count >= 2)
     End Function
-
-    ''' <summary>
-    ''' Move row down, switching positions with the row below it.
-    ''' </summary>
-    Public Sub MoveRowDown(Optional ByVal iRow As Integer = -1)
-        Dim bMoveSelection As Boolean = (iRow = -1)
-
-        If iRow = -1 Then iRow = Me.SelectedRow()
-        If Not CanMoveRowDown(iRow) Then Return
-        Me.MoveRow(iRow, iRow + 1)
-
-        If bMoveSelection Then
-            Me.SelectRow(iRow + 1)
-        End If
-    End Sub
-
-    ''' <summary>
-    ''' States whether a row can be moved down.
-    ''' </summary>
-    Public Function CanMoveRowDown(Optional ByVal iRow As Integer = -1) As Boolean
-        If iRow = -1 Then iRow = Me.SelectedRow()
-        Return (Me.RowsCount > (iFIRSTDATAROW + 1)) And (iRow >= iFIRSTDATAROW) And (iRow < Me.RowsCount - 1)
-    End Function
-
-    ''' <summary>
-    ''' Move one row to another position.
-    ''' </summary>
-    Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
-
-        Dim objTemp As cLevelInfo = Nothing
-        Dim iStep As Integer = 1
-        Dim iFromLevel As Integer = iFromRow - iFIRSTDATAROW
-        Dim iToLevel As Integer = iToRow - iFIRSTDATAROW
-
-        ' Truncate
-        iFromLevel = Math.Max(0, Math.Min(Me.ActiveConfig.Levels.Count - 1, iFromLevel))
-        iToLevel = Math.Max(0, Math.Min(Me.ActiveConfig.Levels.Count - 1, iToLevel))
-
-        ' Nothing to do? abort
-        If iFromLevel = iToLevel Then Return
-        ' Determine direction of movement
-        If iFromLevel < iToLevel Then iStep = 1 Else iStep = -1
-
-        ' Swap Levels (but do not swap the Level at iTo because then we've gone 1 too far)
-        For iLevel As Integer = iFromLevel To iToLevel - iStep Step iStep
-            objTemp = Me.ActiveConfig.Levels(iLevel + iStep)
-            Me.ActiveConfig.Levels(iLevel + iStep) = Me.ActiveConfig.Levels(iLevel)
-            Me.ActiveConfig.Levels(iLevel) = objTemp
-            Me.UpdateRow(iLevel + iFIRSTDATAROW)
-            Me.UpdateRow(iLevel + iFIRSTDATAROW + iStep)
-        Next iLevel
-
-    End Sub
 
 #End Region ' Row manipulation 
 
@@ -976,7 +909,7 @@ Imports EwEUtils.Core
 
 #Region " Selection extension "
 
-    Private Overloads Sub SelectRow(ByVal fi As cLevelInfo)
+    Private Overloads Sub SelectRow(ByVal fi As cPedigreeLevelInfo)
         For iLevel As Integer = 0 To Me.ActiveConfig.Levels.Count - 1
             If Object.ReferenceEquals(Me.ActiveConfig.Levels(iLevel), fi) Then
                 Me.SelectRow(iLevel + iFIRSTDATAROW)
@@ -1020,8 +953,8 @@ Imports EwEUtils.Core
 
         If bLevelsChanged Then
 
-            For Each li As cPedigreeManagerInfo In Me.m_dictConfigs.Values
-                bSucces = bSucces And li.ApplyLevelChanges()
+            For Each mi As cPedigreeManagerInfo In Me.m_dictConfigs.Values
+                bSucces = bSucces And mi.ApplyLevelChanges()
             Next
 
         End If

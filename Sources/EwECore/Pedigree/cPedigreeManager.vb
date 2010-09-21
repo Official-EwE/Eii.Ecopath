@@ -11,24 +11,6 @@ Public Class cPedigreeManager
     Implements ICoreInterface
     'Implements IEnumerable(Of cPedigreeLevel)
 
-#Region " Private classes "
-
-    Private Class cPedigreeLevelListSorter
-        Implements IComparer(Of cPedigreeLevel)
-
-        Public Function Compare(ByVal x As cPedigreeLevel, ByVal y As cPedigreeLevel) As Integer _
-            Implements IComparer(Of cPedigreeLevel).Compare
-            If x.Index < y.Index Then Return -1
-            If x.Index > y.Index Then Return 1
-            If x.ConfidenceInterval < y.ConfidenceInterval Then Return -1
-            If x.ConfidenceInterval > y.ConfidenceInterval Then Return 1
-            Return 0
-        End Function
-
-    End Class
-
-#End Region ' Private classes
-
     Private Shared g_varNameSupported As eVarNameFlags() = {eVarNameFlags.Biomass, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp}
     Private m_core As cCore = Nothing
     Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
@@ -109,13 +91,6 @@ Public Class cPedigreeManager
 
     End Function
 
-    Public Sub Sort()
-        Me.m_levels.Sort(New cPedigreeLevelListSorter)
-        For i As Integer = 0 To Me.m_levels.Count - 1
-            Me.m_levels(i).ID = i
-        Next i
-    End Sub
-
 #Region " Internals "
 
     ''' -----------------------------------------------------------------------
@@ -138,6 +113,7 @@ Public Class cPedigreeManager
                     level.AllowValidation = False
                     level.Index = iLevel
                     level.Name = data.PedigreeLevelName(iLevel)
+                    level.Description = data.PedigreeLevelDescription(iLevel)
                     level.IndexValue = data.PedigreeLevelIndexValue(iLevel)
                     level.ConfidenceInterval = data.PedigreeLevelConfidence(iLevel)
                     level.AllowValidation = True
@@ -162,7 +138,7 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Friend Overridable Function Update() As Boolean
+    Public Function Update() As Boolean
 
         Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim level As cPedigreeLevel = Nothing
@@ -170,7 +146,9 @@ Public Class cPedigreeManager
         Try
             For Each level In Me.m_levels
                 Try
+
                     data.PedigreeLevelName(level.Index) = level.Name
+                    data.PedigreeLevelDescription(level.Index) = level.Description
                     data.PedigreeLevelIndexValue(level.Index) = level.IndexValue
                     data.PedigreeLevelConfidence(level.Index) = level.ConfidenceInterval
 

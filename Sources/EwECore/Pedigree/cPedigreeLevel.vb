@@ -12,18 +12,22 @@ Public Class cPedigreeLevel
 
     Private m_data As cEcopathDataStructures = Nothing
     Private m_manager As cPedigreeManager = Nothing
-    Private m_ID As Integer = 0
 
     Friend Sub New(ByVal core As cCore, ByVal manager As cPedigreeManager, ByVal iDBID As Integer)
         MyBase.New(core)
 
         Dim val As cValue
         Dim meta As cVariableMetaData
+        Dim desc() As Char
 
         Me.DBID = iDBID
         Me.m_data = core.m_EcoPathData
         Me.m_manager = manager
         Me.m_dataType = eDataTypes.PedigreeLevel
+        Me.m_coreComponent = eCoreComponentType.EcoPath
+
+        Me.m_ValidationStatus = New cVariableStatus
+        Me.m_ValidationStatus.CoreDataObject = Me
 
         'VarName
         meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
@@ -40,20 +44,13 @@ Public Class cPedigreeLevel
         val = New cValue(New Single, eVarNameFlags.ConfidenceInterval, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
+        ' Description
+        meta = New cVariableMetaData(60000)
+        val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
+                            meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
     End Sub
-
-    ''' <summary>
-    ''' Get/set the index of the level in its <see cref="cPedigreeManager">manager</see>.
-    ''' </summary>
-
-    Public Property ID() As Integer
-        Get
-            Return Me.m_ID
-        End Get
-        Set(ByVal value As Integer)
-            Me.m_ID = value
-        End Set
-    End Property
 
     Public Property VariableName() As eVarNameFlags
         Get
@@ -79,6 +76,15 @@ Public Class cPedigreeLevel
         End Get
         Set(ByVal value As Single)
             Me.SetVariable(eVarNameFlags.ConfidenceInterval, value)
+        End Set
+    End Property
+
+    Public Property Description() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.Description))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.Description, value)
         End Set
     End Property
 
