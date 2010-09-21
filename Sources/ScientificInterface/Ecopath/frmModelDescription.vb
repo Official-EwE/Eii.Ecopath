@@ -96,6 +96,9 @@ Public Class frmModelDescription
         Me.OnUnitTimeTextChanged(Me.m_propUnitTimeText, cProperty.eChangeFlags.All)
         Me.OnUnitMonetaryChanged(Me.m_propUnitMonetary, cProperty.eChangeFlags.All)
 
+        AddHandler Me.m_fpAreaName.OnValueChanged, AddressOf OnAreaNameChanged
+        Me.UpdateControls()
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -117,6 +120,8 @@ Public Class frmModelDescription
 
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
         Me.CoreComponents = Nothing
+
+        RemoveHandler Me.m_fpAreaName.OnValueChanged, AddressOf OnAreaNameChanged
 
         RemoveHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnUnitCurrencyChanged
         Me.m_propUnitCurrency = Nothing
@@ -283,6 +288,10 @@ Public Class frmModelDescription
 
 #Region " Events "
 
+    Private Sub OnAreaNameChanged(ByVal fp As cEwEFormatProvider)
+        Me.UpdateControls()
+    End Sub
+
     Private Sub m_btnLookup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnLookup.Click
 
@@ -303,5 +312,13 @@ Public Class frmModelDescription
     End Sub
 
 #End Region ' Events
+
+#Region " Internal implementation "
+
+    Private Sub UpdateControls()
+        Me.m_btnLookup.Enabled = Not String.IsNullOrEmpty(CStr(Me.m_fpAreaName.Value))
+    End Sub
+
+#End Region ' Internal implementation
 
 End Class

@@ -69,7 +69,7 @@ Partial Class frmModelDescription
         Me.m_tbDescription = New System.Windows.Forms.RichTextBox
         Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_nudFirstYear = New System.Windows.Forms.NumericUpDown
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.m_lblNumYears = New System.Windows.Forms.Label
         Me.m_nudNumYears = New System.Windows.Forms.NumericUpDown
         Me.m_lblLocation = New System.Windows.Forms.Label
         Me.m_nudNorth = New System.Windows.Forms.NumericUpDown
@@ -372,10 +372,10 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_nudFirstYear, "m_nudFirstYear")
         Me.m_nudFirstYear.Name = "m_nudFirstYear"
         '
-        'Label1
+        'm_lblNumYears
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
+        resources.ApplyResources(Me.m_lblNumYears, "m_lblNumYears")
+        Me.m_lblNumYears.Name = "m_lblNumYears"
         '
         'm_nudNumYears
         '
@@ -460,7 +460,7 @@ Partial Class frmModelDescription
         Me.Controls.Add(Me.m_chkPSD)
         Me.Controls.Add(Me.m_tlpUnits)
         Me.Controls.Add(Me.m_lblAreaUnit)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.m_lblNumYears)
         Me.Controls.Add(Me.m_lblArea)
         Me.Controls.Add(Me.m_lblSouth)
         Me.Controls.Add(Me.m_lblEast)
@@ -544,7 +544,7 @@ Partial Class frmModelDescription
     Private WithEvents m_tbDescription As System.Windows.Forms.RichTextBox
     Private WithEvents m_hdrExecution As cEwEHeaderLabel
     Private WithEvents m_nudFirstYear As System.Windows.Forms.NumericUpDown
-    Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_lblNumYears As System.Windows.Forms.Label
     Private WithEvents m_nudNumYears As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblLocation As System.Windows.Forms.Label
     Private WithEvents m_nudNorth As System.Windows.Forms.NumericUpDown
