@@ -82,27 +82,27 @@ Namespace Ecopath.Output
             Dim columnIndex As Integer = 2
             Dim rowCnt As Integer = Me.RowsCount
 
-            For groupIndex As Integer = 1 To core.nGroups
+            For iPred As Integer = 1 To core.nGroups
 
                 'Get the group output
-                source = core.EcoPathGroupOutputs(groupIndex)
+                source = core.EcoPathGroupOutputs(iPred)
                 If source.PP < 1 Or source.PP = 2 Then
 
                     alPropSumAll.Clear()
 
-                    For rowIndex As Integer = 1 To core.nGroups
+                    For iPrey As Integer = 1 To core.nGroups
                         ' Get the group output
-                        sourceSec = core.EcoPathGroupOutputs(rowIndex)
+                        sourceSec = core.EcoPathGroupOutputs(iPrey)
                         ' Get the indexed comsumption property by (rowIndex, columnIndex)
                         prop = pm.GetProperty(sourceSec, eVarNameFlags.Consumption, source)
                         cell = New PropertyCell(prop)
 
-                        If rowIndex = columnIndex - 1 Then
+                        If iPrey = iPred Then
                             cell.VisualModel = visDiagonal
                         End If
 
                         ' Add property to the cell
-                        Me(rowIndex, columnIndex) = cell
+                        Me(iPrey, columnIndex) = cell
                         ' Add the property to ArrayList for the sum cell
                         alPropSumAll.Add(prop)
                     Next
