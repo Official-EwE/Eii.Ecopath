@@ -20,6 +20,8 @@ Namespace Ecopath
     ''' -----------------------------------------------------------------------
     Public Class dlgEditPedigree
 
+        Private m_uic As cUIContext = Nothing
+
 #Region " Constructor "
 
         ''' -------------------------------------------------------------------
@@ -31,6 +33,7 @@ Namespace Ecopath
         Public Sub New(ByVal uic As cUIContext)
 
             Me.InitializeComponent()
+            Me.m_uic = uic
             Me.m_grid.UIContext = uic
 
         End Sub
@@ -105,16 +108,41 @@ Namespace Ecopath
             Me.UpdateControls()
         End Sub
 
+        Private Sub m_tbDescription_Validated(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tbDescription.Validated
+            Me.m_grid.SelectedLevelDescription = Me.m_tbDescription.Text
+        End Sub
+
+        Private Sub OnSetDefaults(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_btnDefaults.Click
+
+            'Dim strPrompt As String = ""
+            'Dim bHasLevels As Boolean = False
+
+            'For Each vn As eVarNameFlags In cPedigreeManager.SupportVariables
+            '    bHasLevels = bHasLevels Or (Me.m_uic.Core.GetPedigreeManager(vn).NumLevels > 0)
+            'Next
+
+            Me.m_grid.CreateDefaults()
+
+        End Sub
+
 #End Region ' Event handlers 
 
 #Region " Updating "
 
         Private Sub UpdateControls()
 
+            Dim bIsDataRow As Boolean = Me.m_grid.IsDataRow()
+            Dim bIsFlaggedForDeletion As Boolean = Me.m_grid.IsFlaggedForDeletionRow()
+
             Me.m_btnSort.Enabled = Me.m_grid.CanSort()
             Me.m_btnInsert.Enabled = Me.m_grid.CanInsertRow()
-            Me.m_btnDelete.Enabled = Me.m_grid.IsDataRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
-            Me.m_btnKeep.Enabled = Me.m_grid.IsDataRow() And Me.m_grid.IsFlaggedForDeletionRow()
+            Me.m_btnDelete.Enabled = bIsDataRow And (Not bIsFlaggedForDeletion)
+            Me.m_btnKeep.Enabled = bIsDataRow And bIsFlaggedForDeletion
+            Me.m_tbDescription.Enabled = bIsDataRow
+
+            Me.m_tbDescription.Text = Me.m_grid.SelectedLevelDescription
 
         End Sub
 

@@ -37,8 +37,10 @@ Namespace Ecopath
             Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_grid = New ScientificInterface.gridEditPedigree
             Me.m_scYupi = New System.Windows.Forms.SplitContainer
-            Me.m_lblDescription = New System.Windows.Forms.Label
             Me.m_tbDescription = New System.Windows.Forms.TextBox
+            Me.m_lblDescription = New System.Windows.Forms.Label
+            Me.m_hdrDefaults = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_btnDefaults = New System.Windows.Forms.Button
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_scYupi.Panel1.SuspendLayout()
             Me.m_scYupi.Panel2.SuspendLayout()
@@ -125,6 +127,7 @@ Namespace Ecopath
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.Name = "m_grid"
+            Me.m_grid.SelectedLevelDescription = ""
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -152,15 +155,26 @@ Namespace Ecopath
             Me.m_scYupi.Panel2.Controls.Add(Me.m_tbDescription)
             Me.m_scYupi.Panel2.Controls.Add(Me.m_lblDescription)
             '
+            'm_tbDescription
+            '
+            resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
+            Me.m_tbDescription.Name = "m_tbDescription"
+            '
             'm_lblDescription
             '
             resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
             Me.m_lblDescription.Name = "m_lblDescription"
             '
-            'm_tbDescription
+            'm_hdrDefaults
             '
-            resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
-            Me.m_tbDescription.Name = "m_tbDescription"
+            resources.ApplyResources(Me.m_hdrDefaults, "m_hdrDefaults")
+            Me.m_hdrDefaults.Name = "m_hdrDefaults"
+            '
+            'm_btnDefaults
+            '
+            resources.ApplyResources(Me.m_btnDefaults, "m_btnDefaults")
+            Me.m_btnDefaults.Name = "m_btnDefaults"
+            Me.m_btnDefaults.UseVisualStyleBackColor = True
             '
             'dlgEditPedigree
             '
@@ -172,7 +186,9 @@ Namespace Ecopath
             Me.Controls.Add(Me.m_cmbVariable)
             Me.Controls.Add(Me.m_lblVariable)
             Me.Controls.Add(Me.m_hdrOrder)
+            Me.Controls.Add(Me.m_hdrDefaults)
             Me.Controls.Add(Me.m_hdrEdit)
+            Me.Controls.Add(Me.m_btnDefaults)
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnDelete)
@@ -206,6 +222,8 @@ Namespace Ecopath
         Private WithEvents m_scYupi As System.Windows.Forms.SplitContainer
         Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
         Private WithEvents m_lblDescription As System.Windows.Forms.Label
+        Private WithEvents m_hdrDefaults As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_btnDefaults As System.Windows.Forms.Button
 
     End Class
 
