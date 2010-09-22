@@ -318,9 +318,9 @@ Namespace DataSources
             Try
                 objResult = reader.Item(strField)
             Catch ex As InvalidOperationException
-                Console.WriteLine("DB: field '{0}' has no value, returning provided default '{1}'", strField, objValueDefault)
+                'Console.WriteLine("DB: field '{0}' has no value, returning provided default '{1}'", strField, objValueDefault)
             Catch ex As IndexOutOfRangeException
-                Console.WriteLine("DB: field '{0}' not found in table, returning provided default '{1}'", strField, objValueDefault)
+                'Console.WriteLine("DB: field '{0}' not found in table, returning provided default '{1}'", strField, objValueDefault)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Console.WriteLine("DB: Exception {2} occurred while accessing field '{0}', returning provided default '{1}'", strField, objValueDefault, ex.ToString)
