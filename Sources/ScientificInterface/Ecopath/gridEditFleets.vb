@@ -419,39 +419,6 @@ Imports SourceGrid2.VisualModels
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Called Update local admin based on cell value changes.
-    ''' </summary>
-    ''' <returns>
-    ''' True if the value change is allowed, False to block the value change.
-    ''' </returns>
-    ''' <remarks>
-    ''' This method differs from OnCellValueEdited; during a cell value 
-    ''' change notification (at the end of an edit operation) it is unsafe
-    ''' to modify the value of the cell being edited. However, the end edit 
-    ''' event will not be triggered for particular specialized cells which
-    ''' makes this method mandatory. We once again apologize for the confusion; )
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
-
-        If Not Me.AllowUpdates Then Return True
-
-        Dim fi As cFleetInfo = DirectCast(Me.m_lfiFleets(p.Row - 1), cFleetInfo)
-
-        Select Case DirectCast(p.Column, eColumnTypes)
-
-            Case eColumnTypes.FleetName
-                ' JS: Handled in OnCellEdited()
-                ' fi.Name = CStr(cell.GetValue(p))
-
-        End Select
-
-        Return True
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Called when the user has finished editing a cell. Handled to update 
     ''' local admin based on cell value changes.
     ''' </summary>
