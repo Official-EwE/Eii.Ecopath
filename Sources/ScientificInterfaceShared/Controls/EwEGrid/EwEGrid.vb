@@ -81,14 +81,20 @@ Namespace Controls.EwEGrid
 
 #Region " Private helper classes "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Behaviour model that invokes key EwE grid methods when cell edits 
-        ''' are performed.
+        ''' Behaviour model that invokes key <see cref="EwEGrid">EwEGrid</see>
+        ''' methods when specific cell actions are performed.
         ''' </summary>
-        Private Class cEndEditHandler
+        ''' <remarks>
+        ''' Lo and behold! This class needs to be PUBLIC otherwise Sourcegrid2
+        ''' will NOT be able to find it!
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Class cEwEGridBacklinkModel
             Implements BehaviorModels.IBehaviorModel
 
-            ''' <summary></summary>
+            ''' <summary>The attached grid.</summary>
             Private m_grid As EwEGrid = Nothing
 
             ''' -------------------------------------------------------------------
@@ -289,7 +295,7 @@ Namespace Controls.EwEGrid
         Private m_bAllowBlockSelect As Boolean = True
 
         ''' <summary>Generic edit behaviour.</summary>
-        Private m_bm As cEndEditHandler = Nothing
+        Private m_bm As cEwEGridBacklinkModel = Nothing
 
 #End Region ' Variables
 
@@ -304,8 +310,6 @@ Namespace Controls.EwEGrid
             AddHandler m_ceRowSelect.Click, Me.m_pehRowHeader
             Me.m_pehColHeader = New SourceGrid2.PositionEventHandler(AddressOf OnSelectColumn)
             AddHandler m_ceColSelect.Click, Me.m_pehColHeader
-
-            Me.m_bm = New cEndEditHandler(Me)
 
             AddHandler Me.Selection.ClipboardCopy, AddressOf OnClipboardCopy
             AddHandler Me.Selection.ClipboardCut, AddressOf OnClipboardCut
@@ -440,7 +444,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Protected ReadOnly Property EwEEditHandler() As BehaviorModels.IBehaviorModel
             Get
-                If (Me.m_bm Is Nothing) Then Me.m_bm = New cEndEditHandler(Me)
+                If (Me.m_bm Is Nothing) Then Me.m_bm = New cEwEGridBacklinkModel(Me)
                 Return Me.m_bm
             End Get
         End Property
