@@ -276,8 +276,12 @@ Public Class cEwESettingsProvider
     Private Sub StoreValue(ByVal propVal As SettingsPropertyValue)
 
         Dim elem As Xml.XmlElement
+        Dim strVal As String = ""
 
         If (propVal Is Nothing) Then Return
+        If (propVal.SerializedValue IsNot Nothing) Then
+            strVal = propVal.SerializedValue.ToString
+        End If
 
         'Determine if the setting is roaming.
         'If roaming then the value is stored as an element under the root
@@ -292,11 +296,11 @@ Public Class cEwESettingsProvider
 
             'Check to see if the node exists, if so then set its new value
             If (elem IsNot Nothing) Then
-                elem.InnerText = propVal.SerializedValue.ToString
+                elem.InnerText = strVal
             Else
                 'Store the value as an element of the Settings Root Node
                 elem = SettingsDoc.CreateElement(propVal.Name)
-                elem.InnerText = propVal.SerializedValue.ToString
+                elem.InnerText = strVal
                 SettingsDoc.SelectSingleNode(cSETTINGSROOT).AppendChild(elem)
             End If
         Catch ex As Exception
