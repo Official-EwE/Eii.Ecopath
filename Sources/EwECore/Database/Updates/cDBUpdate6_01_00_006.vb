@@ -8,6 +8,7 @@ Imports EwEUtils.Database
 ''' <para>
 ''' <list type="bullet">
 ''' <item><description>Added pedigree level name.</description></item>
+''' <item><description>Added advection fields.</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
@@ -40,13 +41,13 @@ Friend Class cDBUpdate6_01_00_006
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added pedigree level name"
+            Return "Added pedigree level name" & vbNewLine & "Added Ecospace advection fields"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return Me.AddPedigreeName(db)
+        Return Me.AddPedigreeName(db) And AddEcospaceAdvectionFields(db)
 
     End Function
 
@@ -93,6 +94,16 @@ Friend Class cDBUpdate6_01_00_006
 
             db.ReleaseWriter(writer, bSucces)
         End If
+        Return bSucces
+
+    End Function
+
+    Private Function AddEcospaceAdvectionFields(ByVal db As cEwEDatabase) As Boolean
+
+        Dim bSucces As Boolean = True
+        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioBasemap ADD COLUMN XVel SINGLE")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioBasemap ADD COLUMN YVel SINGLE")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioBasemap ADD COLUMN DepthA LONG")
         Return bSucces
 
     End Function

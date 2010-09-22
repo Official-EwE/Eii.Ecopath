@@ -7137,9 +7137,11 @@ Namespace DataSources
 
                         ' Read scalars
                         ecospaceDS.Depth(iRow, iCol) = CInt(reader("Depth"))
-                        ecospaceDS.DepthA(iRow, iCol) = ecospaceDS.Depth(iRow, iCol)
+                        ecospaceDS.DepthA(iRow, iCol) = CInt(Me.ReadSafe(reader, "DepthA", ecospaceDS.Depth(iRow, iCol)))
                         ecospaceDS.RelPP(iRow, iCol) = CSng(reader("RelPP"))
                         ecospaceDS.RelCin(iRow, iCol) = CSng(reader("RelCin"))
+                        ecospaceDS.Xvel(iRow, iCol) = CSng(Me.ReadSafe(reader, "XVel", 0.0!))
+                        ecospaceDS.Yvel(iRow, iCol) = CSng(Me.ReadSafe(reader, "YVel", 0.0!))
                         ' Read FKs
                         iID = CInt(reader("HabitatID"))
                         ecospaceDS.HabType(iRow, iCol) = CInt(IIf((iID > 0), Math.Max(0, Array.IndexOf(ecospaceDS.HabitatDBID, iID)), 0))
@@ -7207,8 +7209,11 @@ Namespace DataSources
                         drow("InRow") = iRow
                         drow("InCol") = iCol
                         drow("Depth") = ecospaceDS.Depth(iRow, iCol)
+                        drow("DepthA") = ecospaceDS.DepthA(iRow, iCol)
                         drow("RelPP") = ecospaceDS.RelPP(iRow, iCol)
                         drow("RelCin") = ecospaceDS.RelCin(iRow, iCol)
+                        drow("XVel") = ecospaceDS.Xvel(iRow, iCol)
+                        drow("YVel") = ecospaceDS.Yvel(iRow, iCol)
                         ' Store (mapped) habitat ID
                         drow("HabitatID") = idm.GetID(eDataTypes.EcospaceHabitat, ecospaceDS.HabitatDBID(ecospaceDS.HabType(iRow, iCol)))
                         ' Store (mapped) region ID
