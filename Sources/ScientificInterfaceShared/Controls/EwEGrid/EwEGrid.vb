@@ -112,7 +112,8 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property CanReceiveFocus() As Boolean Implements SourceGrid2.BehaviorModels.IBehaviorModel.CanReceiveFocus
+            Public ReadOnly Property CanReceiveFocus() As Boolean _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.CanReceiveFocus
                 Get
                     Return True
                 End Get
@@ -120,10 +121,11 @@ Namespace Controls.EwEGrid
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' 
+            ''' Event that is fired when a cell is clicked.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnClick(ByVal e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnClick
+            Public Sub OnClick(ByVal e As SourceGrid2.PositionEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnClick
                 Me.m_grid.OnCellClicked(e.Position, e.Cell)
             End Sub
 
@@ -140,9 +142,16 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnDoubleClick(ByVal e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnDoubleClick
+            Public Sub OnDoubleClick(ByVal e As SourceGrid2.PositionEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnDoubleClick
+                ' NOP
             End Sub
 
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Event that is fired when a cell showing a text box has been edited.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
             Public Sub OnEditEnded(ByVal e As SourceGrid2.PositionCancelEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnEditEnded
                 e.Cancel = Not Me.m_grid.OnCellEdited(e.Position, e.Cell)
             End Sub
@@ -152,7 +161,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnEditStarting(ByVal e As SourceGrid2.PositionCancelEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnEditStarting
+            Public Sub OnEditStarting(ByVal e As SourceGrid2.PositionCancelEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnEditStarting
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -160,7 +171,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnFocusEntered(ByVal e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusEntered
+            Public Sub OnFocusEntered(ByVal e As SourceGrid2.PositionEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusEntered
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -168,7 +181,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnFocusEntering(ByVal e As SourceGrid2.PositionCancelEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusEntering
+            Public Sub OnFocusEntering(ByVal e As SourceGrid2.PositionCancelEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusEntering
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -176,7 +191,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnFocusLeaving(ByVal e As SourceGrid2.PositionCancelEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusLeaving
+            Public Sub OnFocusLeaving(ByVal e As SourceGrid2.PositionCancelEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusLeaving
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -184,7 +201,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnFocusLeft(ByVal e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusLeft
+            Public Sub OnFocusLeft(ByVal e As SourceGrid2.PositionEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusLeft
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -192,7 +211,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnKeyDown(ByVal e As SourceGrid2.PositionKeyEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyDown
+            Public Sub OnKeyDown(ByVal e As SourceGrid2.PositionKeyEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyDown
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -200,7 +221,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnKeyPress(ByVal e As SourceGrid2.PositionKeyPressEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyPress
+            Public Sub OnKeyPress(ByVal e As SourceGrid2.PositionKeyPressEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyPress
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -208,7 +231,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnKeyUp(ByVal e As SourceGrid2.PositionKeyEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyUp
+            Public Sub OnKeyUp(ByVal e As SourceGrid2.PositionKeyEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyUp
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -216,7 +241,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnMouseDown(ByVal e As SourceGrid2.PositionMouseEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseDown
+            Public Sub OnMouseDown(ByVal e As SourceGrid2.PositionMouseEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseDown
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -224,7 +251,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnMouseEnter(ByVal e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseEnter
+            Public Sub OnMouseEnter(ByVal e As SourceGrid2.PositionEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseEnter
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -232,7 +261,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnMouseLeave(ByVal e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseLeave
+            Public Sub OnMouseLeave(ByVal e As SourceGrid2.PositionEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseLeave
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -240,7 +271,9 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnMouseMove(ByVal e As SourceGrid2.PositionMouseEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseMove
+            Public Sub OnMouseMove(ByVal e As SourceGrid2.PositionMouseEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseMove
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -248,15 +281,19 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnMouseUp(ByVal e As SourceGrid2.PositionMouseEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseUp
+            Public Sub OnMouseUp(ByVal e As SourceGrid2.PositionMouseEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseUp
+                ' NOP
             End Sub
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' 
+            ''' Event that is fired when a non-numerical cell is changed, such as a
+            ''' check box or a combo box.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnValueChanged(ByVal e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnValueChanged
+            Public Sub OnValueChanged(ByVal e As SourceGrid2.PositionEventArgs) _
+                Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnValueChanged
                 Me.m_grid.OnCellValueChanged(e.Position, e.Cell)
             End Sub
 
