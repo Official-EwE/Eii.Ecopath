@@ -1,24 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cLog.vb,v $
-' Revision 1.4  2009/04/20 21:29:47  joeb
-' Made thread locking in more robust.
-'
-' Revision 1.3  2008/10/08 17:56:32  jeroens
-' Reactivated
-'
-' Revision 1.2  2008/10/04 01:10:30  villyc
-' mc stuff, SS after MC are not correct, so not loading all parameters
-'
-' Revision 1.1  2008/09/26 07:30:25  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.16  2007/11/16 19:58:07  jeroens
-' + Added WriteTextToFile
-'
-'==============================================================================
-
-Option Explicit On
+﻿Option Explicit On
 Imports System.IO
 Imports System.xml
 Imports System.Threading

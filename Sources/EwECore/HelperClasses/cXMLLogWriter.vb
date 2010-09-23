@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: cXMLLogWriter.vb,v $
-' Revision 1.1  2008/09/26 07:30:25  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.7  2008/07/24 18:07:17  jeroens
-' ToValidFileName can be told to preserve path chars
-'
-'==============================================================================
-
 Option Strict On
 Imports System.IO
 Imports System.xml
