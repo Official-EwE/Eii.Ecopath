@@ -875,6 +875,9 @@
     <EmbeddedResource Include="Ecopath\frmSearchResults.resx">
       <DependentUpon>frmSearchResults.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\Input\frmPedigree.resx">
+      <DependentUpon>frmPedigree.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Output\PSDContributionPlot.resx">
       <DependentUpon>PSDContributionPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1112,6 +1115,15 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\FisheryInputDiscardMortGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\frmPedigree.Designer.vb">
+      <DependentUpon>frmPedigree.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\Input\frmPedigree.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\gridPedigree.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\GrowthParametersEwEGrid.vb">
