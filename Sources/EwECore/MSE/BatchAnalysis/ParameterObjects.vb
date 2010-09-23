@@ -195,7 +195,7 @@ Namespace MSECommandFile
         End Function
 
         Public Overrides Function getIndexes() As Integer()
-
+            Return Nothing
         End Function
 
         Public Overrides Sub Update()
@@ -1056,7 +1056,7 @@ Namespace MSECommandFile
                 End If
 
                 If String.Compare(ff.Name, Me.m_FFName) <> 0 Then
-                    Me.SendMessage("WARNING: Primary Production forcing name does not match. Command file name = '" & ff.Name & "' database name = '" & Me.m_FFName & "'")
+                    Me.SendMessage("WARNING: Primary Production forcing name does not match. Command file name = '" & Me.m_FFName & "' database name = '" & ff.Name & "'")
                 End If
 
                 Dim bIsProducer As Boolean = False
