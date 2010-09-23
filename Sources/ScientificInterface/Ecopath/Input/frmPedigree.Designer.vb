@@ -38,6 +38,10 @@ Partial Class frmPedigree
         '
         'm_scMain
         '
+        Me.m_scMain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_scMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel1
         Me.m_scMain.Location = New System.Drawing.Point(0, 28)
         Me.m_scMain.Name = "m_scMain"
         '
@@ -51,20 +55,19 @@ Partial Class frmPedigree
         '
         Me.m_scMain.Panel2.Controls.Add(Me.m_grid)
         Me.m_scMain.Panel2.Controls.Add(Me.m_hdrGrid)
-        Me.m_scMain.Size = New System.Drawing.Size(324, 247)
-        Me.m_scMain.SplitterDistance = 108
+        Me.m_scMain.Size = New System.Drawing.Size(751, 485)
+        Me.m_scMain.SplitterDistance = 127
         Me.m_scMain.TabIndex = 0
         '
         'm_lbLevels
         '
         Me.m_lbLevels.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lbLevels.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.m_lbLevels.FormattingEnabled = True
         Me.m_lbLevels.IntegralHeight = False
         Me.m_lbLevels.Location = New System.Drawing.Point(0, 18)
         Me.m_lbLevels.Margin = New System.Windows.Forms.Padding(0)
         Me.m_lbLevels.Name = "m_lbLevels"
-        Me.m_lbLevels.Size = New System.Drawing.Size(108, 229)
+        Me.m_lbLevels.Size = New System.Drawing.Size(127, 467)
         Me.m_lbLevels.TabIndex = 1
         '
         'm_hdrPedigree
@@ -72,7 +75,7 @@ Partial Class frmPedigree
         Me.m_hdrPedigree.Dock = System.Windows.Forms.DockStyle.Top
         Me.m_hdrPedigree.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrPedigree.Name = "m_hdrPedigree"
-        Me.m_hdrPedigree.Size = New System.Drawing.Size(108, 18)
+        Me.m_hdrPedigree.Size = New System.Drawing.Size(127, 18)
         Me.m_hdrPedigree.TabIndex = 0
         Me.m_hdrPedigree.Text = "Pedigree category"
         Me.m_hdrPedigree.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -97,7 +100,7 @@ Partial Class frmPedigree
         Me.m_grid.Location = New System.Drawing.Point(0, 18)
         Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
         Me.m_grid.Name = "m_grid"
-        Me.m_grid.Size = New System.Drawing.Size(212, 229)
+        Me.m_grid.Size = New System.Drawing.Size(620, 467)
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                     Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                     Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -115,7 +118,7 @@ Partial Class frmPedigree
         Me.m_hdrGrid.Dock = System.Windows.Forms.DockStyle.Top
         Me.m_hdrGrid.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrGrid.Name = "m_hdrGrid"
-        Me.m_hdrGrid.Size = New System.Drawing.Size(212, 18)
+        Me.m_hdrGrid.Size = New System.Drawing.Size(620, 18)
         Me.m_hdrGrid.TabIndex = 0
         Me.m_hdrGrid.Text = "Overview"
         Me.m_hdrGrid.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -125,7 +128,7 @@ Partial Class frmPedigree
         Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslViewAs, Me.m_tscmbViewAs})
         Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
         Me.m_tsMain.Name = "m_tsMain"
-        Me.m_tsMain.Size = New System.Drawing.Size(324, 25)
+        Me.m_tsMain.Size = New System.Drawing.Size(751, 25)
         Me.m_tsMain.TabIndex = 1
         Me.m_tsMain.Text = "ToolStrip1"
         '
@@ -147,7 +150,7 @@ Partial Class frmPedigree
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(324, 273)
+        Me.ClientSize = New System.Drawing.Size(751, 511)
         Me.ControlBox = False
         Me.Controls.Add(Me.m_tsMain)
         Me.Controls.Add(Me.m_scMain)

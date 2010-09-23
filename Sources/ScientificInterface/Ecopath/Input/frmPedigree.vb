@@ -4,6 +4,7 @@ Option Strict On
 
 Imports EwEUtils.Core
 Imports EwECore
+Imports SAUPUtil.Misc.Colours
 
 #End Region ' Imports
 
@@ -36,6 +37,23 @@ Public Class frmPedigree
 
     End Class
 
+    Friend Class cPedigreeVisualizer
+
+        Private Shared c_colorramp As New SAUPColorRamp()
+
+        Public Enum eRenderStyleTypes As Integer
+            Colors
+            Indicators
+            Values
+            ConfidenceIntervals
+        End Enum
+
+        Shared Sub Draw(ByVal rc As Rectangle, ByVal level As cPedigreeLevel, ByVal style As eRenderStyleTypes)
+
+        End Sub
+
+    End Class
+
 #End Region ' Helper classes
 
 #Region " Private vars "
@@ -57,6 +75,8 @@ Public Class frmPedigree
         If (Me.UIContext Is Nothing) Then Return
 
         AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+
+        Me.SelectedVariable = eVarNameFlags.Biomass
 
     End Sub
 
@@ -109,10 +129,13 @@ Public Class frmPedigree
             Return Me.m_varname
         End Get
         Set(ByVal value As eVarNameFlags)
+
             ' Sanity check
             If (Me.UIContext Is Nothing) Then Return
             ' Optimization
             If (value = Me.m_varname) Then Return
+
+
             ' Clean up
             If (Me.m_varname <> eVarNameFlags.NotSet) Then
                 Me.DestroyPedigreeControls()
@@ -121,6 +144,7 @@ Public Class frmPedigree
             Me.m_varname = value
             ' Build new
             If (Me.m_varname <> eVarNameFlags.NotSet) Then
+                Debug.Assert(cPedigreeManager.SupportVariables.Contains(value))
                 Me.BuildPedigreeControls()
             End If
         End Set
@@ -149,6 +173,14 @@ Public Class frmPedigree
     ''' -----------------------------------------------------------------------
     Private Sub BuildPedigreeControls()
 
+        Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(Me.SelectedVariable)
+        Dim lvl As cPedigreeLevel = Nothing
+
+        For iLevel As Integer = 0 To man.NumLevels - 1
+            lvl = man.Level(iLevel)
+            Me.m_lbLevels.Items.Add(New cPedigreeLevelListboxItem(lvl))
+        Next iLevel
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -165,6 +197,5 @@ Public Class frmPedigree
     End Sub
 
 #End Region ' Internal implementation
-
 
 End Class
