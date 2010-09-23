@@ -595,8 +595,11 @@ Namespace Controls
 
             ' Render default background 
             e.DrawBackground()
+
             ' Render default text, bumped to the right by 22 pixels
-            e.Graphics.DrawString(item.ToString(), e.Font, New SolidBrush(clrText), e.Bounds.X + 22, e.Bounds.Y)
+            Using br As New SolidBrush(clrText)
+                e.Graphics.DrawString(item.ToString(), e.Font, br, e.Bounds.X + 22, e.Bounds.Y)
+            End Using
 
             ' Render colour fill
             Using br As New SolidBrush(clrFleet)
