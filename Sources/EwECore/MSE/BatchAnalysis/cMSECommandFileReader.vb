@@ -357,7 +357,7 @@ Namespace MSECommandFile
                     Case eMSEBatchRunTypes.Constant_F
                         Me.BatchData.nParIters = Me.BatchData.nFixedF
                     Case eMSEBatchRunTypes.Constant_Y
-                        Me.BatchData.nParIters = Me.BatchData.nFixedF
+                        Me.BatchData.nParIters = Me.BatchData.nTAC
                     Case eMSEBatchRunTypes.TFM
                         Me.BatchData.nParIters = Me.BatchData.nTFM
                     Case eMSEBatchRunTypes.Any
