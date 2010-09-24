@@ -11798,6 +11798,12 @@ Public Class cCore
 
     End Function
 
+    ''' <summary>
+    ''' Move a pedigree level to a new location in the pedigree levels list.
+    ''' </summary>
+    ''' <param name="iLevel">The level <see cref="cCoreInputOutputbase.Index">Index</see></param>
+    ''' <param name="iIndex">The new posiition to move the level to.</param>
+    ''' <returns>True if succesful.</returns>
     Public Function MovePedigreeLevel(ByVal iLevel As Integer, ByVal iIndex As Integer) As Boolean
         Dim bSucces As Boolean = False
         Dim ds As IEcopathDataSource = Nothing
