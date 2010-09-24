@@ -336,7 +336,7 @@
     <Compile Include="Properties\cPropertySelectionCommand.vb" />
     <Compile Include="Settings\cFormPositionSetting.vb" />
     <Compile Include="Settings\cEwESettingsProvider.vb" />
-    <Compile Include="Style\StyleGuide.vb" />
+    <Compile Include="Style\cStyleGuide.vb" />
     <Compile Include="Definitions\Shared UIEnums.vb" />
   </ItemGroup>
   <ItemGroup>
