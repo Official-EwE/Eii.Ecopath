@@ -7,10 +7,18 @@ Imports System.Collections.Generic
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Inputs for a single pedigree level within a pedigree category.
+''' </summary>
+''' <remarks>
+''' <para>Pedigree categories are identified by <see cref="cPedigreeManager.SupportVariables">cPedigreeManager.SupportVariables</see>.</para>
+''' <para>Pedigree levels are stored and accessible via a <see cref="cPedigreeManager"> pedigree manager</see>.</para>
+''' </remarks>
+''' ---------------------------------------------------------------------------
 Public Class cPedigreeLevel
     Inherits cCoreInputOutputBase
 
-    Private m_data As cEcopathDataStructures = Nothing
     Private m_manager As cPedigreeManager = Nothing
 
     Friend Sub New(ByVal core As cCore, ByVal manager As cPedigreeManager, ByVal iDBID As Integer)
@@ -21,7 +29,6 @@ Public Class cPedigreeLevel
         Dim desc() As Char
 
         Me.DBID = iDBID
-        Me.m_data = core.m_EcoPathData
         Me.m_manager = manager
         Me.m_dataType = eDataTypes.PedigreeLevel
         Me.m_coreComponent = eCoreComponentType.EcoPath
@@ -57,6 +64,12 @@ Public Class cPedigreeLevel
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="eVarNameFlags">variable</see> that a pedigree
+    ''' level pertains to.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property VariableName() As eVarNameFlags
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.VariableName), eVarNameFlags)
@@ -66,6 +79,16 @@ Public Class cPedigreeLevel
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the index value of a pedigree level.
+    ''' </summary>
+    ''' <remarks>
+    ''' This value is not to be confused with <see cref="Index">Index</see>,
+    ''' which reflects the position of an <see cref="ICoreInputOutput">core object</see>
+    ''' within the underlying core arrays.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Property IndexValue() As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.IndexValue))
@@ -75,6 +98,11 @@ Public Class cPedigreeLevel
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the confidence interval of a pedigree level.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property ConfidenceInterval() As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.ConfidenceInterval))
@@ -84,6 +112,11 @@ Public Class cPedigreeLevel
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set a textual description of a pedigree level.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property Description() As String
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Description))
@@ -93,12 +126,17 @@ Public Class cPedigreeLevel
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the color to represent a pedigree level.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property PoolColor() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.PoolColor))
+            Return CInt(Me.GetVariable(eVarNameFlags.PoolColor))
         End Get
         Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.PoolColor, value)
+            Me.SetVariable(eVarNameFlags.PoolColor, value)
         End Set
     End Property
 
