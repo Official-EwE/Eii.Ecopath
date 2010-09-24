@@ -20,6 +20,7 @@ Public Class cPedigreeLevel
     Inherits cCoreInputOutputBase
 
     Private m_manager As cPedigreeManager = Nothing
+    Private m_ID As Integer = 0
 
     Friend Sub New(ByVal core As cCore, ByVal manager As cPedigreeManager, ByVal iDBID As Integer)
         MyBase.New(core)
@@ -137,6 +138,24 @@ Public Class cPedigreeLevel
         End Get
         Set(ByVal value As Integer)
             Me.SetVariable(eVarNameFlags.PoolColor, value)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the index of this level in its manager.
+    ''' </summary>
+    ''' <remarks>
+    ''' This variable will never make it into the core; it's a mere administrative
+    ''' value.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Property ID() As Integer
+        Get
+            Return Me.m_ID
+        End Get
+        Friend Set(ByVal value As Integer)
+            Me.m_ID = value
         End Set
     End Property
 

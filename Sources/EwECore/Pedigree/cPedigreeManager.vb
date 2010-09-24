@@ -67,7 +67,7 @@ Public Class cPedigreeManager
     End Function
 
     Public Function MoveLevel(ByVal level As cPedigreeLevel, ByVal iPosTo As Integer) As Boolean
-        ' NOP for now
+        Me.m_core.MovePedigreeLevel(level.Index, iPosTo)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -112,12 +112,14 @@ Public Class cPedigreeManager
                     level = New cPedigreeLevel(Me.m_core, Me, data.PedigreeLevelDBID(iLevel))
 
                     level.AllowValidation = False
+                    level.ID = Me.m_levels.Count
                     level.Index = iLevel
                     level.Name = data.PedigreeLevelName(iLevel)
                     level.Description = data.PedigreeLevelDescription(iLevel)
                     level.PoolColor = data.PedigreeLevelColor(iLevel)
                     level.IndexValue = data.PedigreeLevelIndexValue(iLevel)
                     level.ConfidenceInterval = data.PedigreeLevelConfidence(iLevel)
+                    level.VariableName = Me.m_varName
                     level.AllowValidation = True
 
                     Me.m_levels.Add(level)
