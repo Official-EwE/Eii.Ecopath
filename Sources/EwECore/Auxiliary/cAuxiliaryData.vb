@@ -36,8 +36,6 @@ Namespace Auxiliary
         Private m_strRemark As String = ""
         ''' <summary>Visual style for this data.</summary>
         Private m_visualStyle As cVisualStyle = Nothing
-        ''' <summary>Pedigree for this data.</summary>
-        Private m_pedigreeLevel As cPedigreeLevel = Nothing
         ''' <summary>Key to identify core variable this data refers to.</summary>
         Private m_key As cValueID = Nothing
         Private m_core As cCore = Nothing
@@ -143,23 +141,6 @@ Namespace Auxiliary
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns the pedigree level for this data.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property PedigreeLevel() As cPedigreeLevel
-            Get
-                Return Me.m_pedigreeLevel
-            End Get
-            Set(ByVal value As cPedigreeLevel)
-                If Not Object.ReferenceEquals(value, Me.PedigreeLevel) Then
-                    Me.m_pedigreeLevel = value
-                    Me.Update()
-                End If
-            End Set
-        End Property
-
 #If USE_REFERENCES Then
 
         ''' -------------------------------------------------------------------
@@ -209,8 +190,7 @@ Namespace Auxiliary
         Public ReadOnly Property IsEmpty() As Boolean
             Get
                 Return String.IsNullOrEmpty(Me.Remark) And _
-                       (Me.m_visualStyle Is Nothing) And _
-                       (Me.m_pedigreeLevel Is Nothing)
+                       (Me.m_visualStyle Is Nothing)
             End Get
         End Property
 

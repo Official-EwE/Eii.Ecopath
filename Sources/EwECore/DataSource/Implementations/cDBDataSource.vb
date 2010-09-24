@@ -615,10 +615,12 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcopathTaxa()
             bSucces = bSucces And Me.LoadEcopathFleetInfo()
             bSucces = bSucces And Me.LoadParticleSizeDistribution()
+            bSucces = bSucces And Me.LoadPedigreeLevels()
+            bSucces = bSucces And Me.LoadPedigreeAssignments()
+
             bSucces = bSucces And Me.LoadAuxillaryData()
 
             ecopathDS.bInitialized = bSucces
-
             ecopathDS.onPostInitialization()
 
             bSucces = bSucces And Me.LoadEcosimScenarioDefinitions()
@@ -653,6 +655,8 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcosimScenarioDefinitions()
             bSucces = bSucces And Me.SaveEcospaceScenarioDefinitions()
             bSucces = bSucces And Me.SaveEcotracerScenarioDefinitions()
+            bSucces = bSucces And Me.SavePedigreeLevels()
+            bSucces = bSucces And Me.SavePedigreeAssignments()
             bSucces = bSucces And Me.SaveAuxillaryData()
 
             If bSucces Then
@@ -1095,7 +1099,7 @@ Namespace DataSources
             ecopathDS.NumPedigreeLevels = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM Pedigree"))
 
             ' Allocate space
-            ecopathDS.RedimPedigreeLevels()
+            ecopathDS.RedimPedigree()
 
             While reader.Read()
 
@@ -1118,6 +1122,48 @@ Namespace DataSources
 
             ' Sanity check
             Debug.Assert(iLevel - 1 = ecopathDS.NumPedigreeLevels)
+
+            Me.m_db.ReleaseReader(reader)
+            reader = Nothing
+
+            Return bSucces
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Load the pedigree level assignments.
+        ''' </summary>
+        ''' <returns>True if successful.</returns>
+        ''' -----------------------------------------------------------------------
+        Private Function LoadPedigreeAssignments() As Boolean
+
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupPedigree")
+            Dim iGroup As Integer
+            Dim iVariable As Integer
+            Dim iLevel As Integer = 1
+            Dim bSucces As Boolean = True
+
+            While reader.Read()
+
+                Try
+                    iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
+                    iVariable = Array.IndexOf(cPedigreeManager.SupportVariables, CStr(reader("VarName")))
+                    iLevel = Array.IndexOf(ecopathDS.PedigreeLevelDBID, CInt(reader("LevelID")))
+
+                    If (iGroup > -1) And (iVariable > -1) And (iLevel > -1) Then
+                        ecopathDS.Pedigree(iGroup, iVariable) = iLevel
+                    Else
+                        ' NOP... log message?
+                    End If
+
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while reading pedigree assignment {1}{2}", ex.Message, iGroup, iVariable))
+                    bSucces = False
+                End Try
+
+            End While
 
             Me.m_db.ReleaseReader(reader)
             reader = Nothing
@@ -1176,6 +1222,45 @@ Namespace DataSources
             Me.m_db.ReleaseWriter(writer, True)
 
             Return bSucces
+        End Function
+
+        Public Function SavePedigreeAssignments() As Boolean
+
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iGroup As Integer = 0
+            Dim iVariable As Integer = 0
+            Dim iLevel As Integer = 0
+            Dim bSucces As Boolean = True
+
+            Try
+                bSucces = Me.m_db.Execute("DELETE * FROM EcopathGroupPedigree")
+                writer = Me.m_db.GetWriter("EcopathGroupPedigree")
+
+                For iGroup = 1 To ecopathDS.NumGroups
+                    For iVariable = 0 To cPedigreeManager.SupportVariables.Length - 1
+                        iLevel = ecopathDS.Pedigree(iGroup, iVariable)
+                        If (iLevel > 0) Then
+                            drow = writer.NewRow()
+                            drow("GroupID") = ecopathDS.GroupDBID(iGroup)
+                            drow("VarName") = cin.GetVarName(cPedigreeManager.SupportVariables(iVariable))
+                            drow("LevelID") = ecopathDS.PedigreeLevelDBID(iLevel)
+                        End If
+                    Next
+                Next
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving pedigree assignments", ex.Message))
+                bSucces = False
+            End Try
+
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, True)
+
+            Return bSucces
+
         End Function
 
 #End Region ' Save
@@ -9454,7 +9539,6 @@ Namespace DataSources
             Dim strValueID As String = ""
             Dim strRemark As String = ""
             Dim strVisualStyle As String = ""
-            Dim iPedigreeLevelID As Integer = cCore.NULL_VALUE
             Dim ad As cAuxiliaryData = Nothing
             Dim bSucces As Boolean = True
 
@@ -9466,7 +9550,6 @@ Namespace DataSources
                     strValueID = CStr(reader("ValueID"))
                     strRemark = CStr(Me.ReadSafe(reader, "Remark", ""))
                     strVisualStyle = CStr(Me.ReadSafe(reader, "VisualStyle", ""))
-                    iPedigreeLevelID = CInt(Me.ReadSafe(reader, "PedigreeLevelID", cCore.NULL_VALUE))
 
                     ad = Me.m_core.AuxillaryData(strValueID)
                     ad.AllowValidation = False
@@ -9474,7 +9557,6 @@ Namespace DataSources
                     ad.DBID = CInt(reader("DBID"))
                     ad.Remark = strRemark
                     ad.VisualStyle = cVisualStyleReader.StringToStyle(strVisualStyle)
-                    ad.PedigreeLevel = Nothing
 
                     ad.AllowValidation = True
 
@@ -9484,8 +9566,6 @@ Namespace DataSources
                 Me.LogMessage(String.Format("Error {0} occurred while reading AuxillaryData", ex.Message))
                 bSucces = False
             End Try
-
-            bSucces = bSucces And Me.LoadPedigreeLevels()
 
             Me.m_db.ReleaseReader(reader)
             Return bSucces
@@ -9526,12 +9606,6 @@ Namespace DataSources
                         drow("ValueID") = strValueID
                         drow("Remark") = ad.Remark
                         drow("VisualStyle") = cVisualStyleReader.StyleToString(ad.VisualStyle)
-                        If (ad.PedigreeLevel IsNot Nothing) Then
-                            drow("PedigreeLevelID") = ad.PedigreeLevel.DBID
-                        Else
-                            ' DBNULL
-                        End If
-
 
                         writer.AddRow(drow)
                     End If
@@ -9542,7 +9616,6 @@ Namespace DataSources
 
             ' Save changes
             bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
-            bSucces = bSucces And Me.SavePedigreeLevels()
 
             Return bSucces
 
@@ -9591,13 +9664,7 @@ Namespace DataSources
                             drow("ValueID") = key.ToString
                             drow("Remark") = ad.Remark
                             drow("VisualStyle") = cVisualStyleReader.StyleToString(ad.VisualStyle)
-                            drow("PedigreeLevelID") = ad.PedigreeLevel.DBID
-                            If (ad.PedigreeLevel IsNot Nothing) Then
-                                drow("PedigreeLevelID") = ad.PedigreeLevel.DBID
-                            Else
-                                ' DBNULL
-                            End If
-                            ' Yo!
+                            ' Add
                             writer.AddRow(drow)
                             ' Next
                             iAdDBID += 1

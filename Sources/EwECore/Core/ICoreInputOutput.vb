@@ -747,6 +747,12 @@ Public Class cCoreGroupBase
         val = New cValue(New Single, eVarNameFlags.PP, eStatusFlags.Null, eValueTypes.Sng, meta, validator)
         m_values.Add(val.varName, val)
 
+        'Array variables
+        'Pedigree (should limit max to numpedigree levels?)
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
     End Sub
 
     ''' <summary>
@@ -821,6 +827,25 @@ Public Class cCoreGroupBase
         Get
             Return (Me.PP > 0 And Me.PP <= 1.0)
         End Get
+    End Property
+
+    ''' <summary>
+    ''' Get/set the pedigree for a given variable. For now, pedigree is
+    ''' only enabled on core groups.
+    ''' </summary>
+    ''' <param name="varName">The variable to get/set pedigree for.</param>
+    Public Property Pedigree(ByVal varName As eVarNameFlags) As Integer
+        Get
+            ' Is varname supported for Pedigree purposes?
+            Dim iIndex As Integer = Array.IndexOf(cPedigreeManager.SupportVariables, varName)
+            If iIndex = -1 Then Return cCore.NULL_VALUE
+            Return CInt(Me.GetVariable(eVarNameFlags.Pedigree, iIndex))
+        End Get
+        Set(ByVal value As Integer)
+            Dim iIndex As Integer = Array.IndexOf(cPedigreeManager.SupportVariables, varName)
+            If (iIndex = -1) Then Return
+            Me.SetVariable(eVarNameFlags.Pedigree, value, iIndex)
+        End Set
     End Property
 
 End Class ' cCoreGroupBase
