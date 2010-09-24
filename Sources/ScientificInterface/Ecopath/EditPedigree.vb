@@ -115,16 +115,22 @@ Namespace Ecopath
 
         Private Sub OnSetDefaults(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_btnDefaults.Click
-
-            'Dim strPrompt As String = ""
-            'Dim bHasLevels As Boolean = False
-
-            'For Each vn As eVarNameFlags In cPedigreeManager.SupportVariables
-            '    bHasLevels = bHasLevels Or (Me.m_uic.Core.GetPedigreeManager(vn).NumLevels > 0)
-            'Next
-
             Me.m_grid.CreateDefaults()
+        End Sub
 
+        Private Sub OnDefaultAllColors(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnDefaultAll.Click
+            Me.m_grid.SetDefaultFleetColors()
+        End Sub
+
+        Private Sub OnDefaultColor(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnDefaultCurrent.Click
+            Me.m_grid.SetDefaultFleetColor()
+        End Sub
+
+        Private Sub OnSelectCustomColor(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnCustom.Click
+            Me.m_grid.SelectCustomColor()
         End Sub
 
 #End Region ' Event handlers 

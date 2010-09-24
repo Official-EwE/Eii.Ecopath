@@ -39,8 +39,11 @@ Namespace Ecopath
             Me.m_scYupi = New System.Windows.Forms.SplitContainer
             Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.m_lblDescription = New System.Windows.Forms.Label
-            Me.m_hdrDefaults = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_btnDefaults = New System.Windows.Forms.Button
+            Me.m_hdrColors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_btnCustom = New System.Windows.Forms.Button
+            Me.m_btnDefaultCurrent = New System.Windows.Forms.Button
+            Me.m_btnDefaultAll = New System.Windows.Forms.Button
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_scYupi.Panel1.SuspendLayout()
             Me.m_scYupi.Panel2.SuspendLayout()
@@ -114,6 +117,7 @@ Namespace Ecopath
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = False
+            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = True
@@ -122,7 +126,6 @@ Namespace Ecopath
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
             Me.m_grid.CustomSort = False
-            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
@@ -165,16 +168,34 @@ Namespace Ecopath
             resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
             Me.m_lblDescription.Name = "m_lblDescription"
             '
-            'm_hdrDefaults
-            '
-            resources.ApplyResources(Me.m_hdrDefaults, "m_hdrDefaults")
-            Me.m_hdrDefaults.Name = "m_hdrDefaults"
-            '
             'm_btnDefaults
             '
             resources.ApplyResources(Me.m_btnDefaults, "m_btnDefaults")
             Me.m_btnDefaults.Name = "m_btnDefaults"
             Me.m_btnDefaults.UseVisualStyleBackColor = True
+            '
+            'm_hdrColors
+            '
+            resources.ApplyResources(Me.m_hdrColors, "m_hdrColors")
+            Me.m_hdrColors.Name = "m_hdrColors"
+            '
+            'm_btnCustom
+            '
+            resources.ApplyResources(Me.m_btnCustom, "m_btnCustom")
+            Me.m_btnCustom.Name = "m_btnCustom"
+            Me.m_btnCustom.UseVisualStyleBackColor = True
+            '
+            'm_btnDefaultCurrent
+            '
+            resources.ApplyResources(Me.m_btnDefaultCurrent, "m_btnDefaultCurrent")
+            Me.m_btnDefaultCurrent.Name = "m_btnDefaultCurrent"
+            Me.m_btnDefaultCurrent.UseVisualStyleBackColor = True
+            '
+            'm_btnDefaultAll
+            '
+            resources.ApplyResources(Me.m_btnDefaultAll, "m_btnDefaultAll")
+            Me.m_btnDefaultAll.Name = "m_btnDefaultAll"
+            Me.m_btnDefaultAll.UseVisualStyleBackColor = True
             '
             'dlgEditPedigree
             '
@@ -182,11 +203,14 @@ Namespace Ecopath
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.Controls.Add(Me.m_hdrColors)
+            Me.Controls.Add(Me.m_btnCustom)
+            Me.Controls.Add(Me.m_btnDefaultCurrent)
+            Me.Controls.Add(Me.m_btnDefaultAll)
             Me.Controls.Add(Me.m_scYupi)
             Me.Controls.Add(Me.m_cmbVariable)
             Me.Controls.Add(Me.m_lblVariable)
             Me.Controls.Add(Me.m_hdrOrder)
-            Me.Controls.Add(Me.m_hdrDefaults)
             Me.Controls.Add(Me.m_hdrEdit)
             Me.Controls.Add(Me.m_btnDefaults)
             Me.Controls.Add(Me.m_btnKeep)
@@ -200,6 +224,7 @@ Namespace Ecopath
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.m_scYupi.Panel1.ResumeLayout(False)
+            Me.m_scYupi.Panel1.PerformLayout()
             Me.m_scYupi.Panel2.ResumeLayout(False)
             Me.m_scYupi.Panel2.PerformLayout()
             Me.m_scYupi.ResumeLayout(False)
@@ -222,8 +247,11 @@ Namespace Ecopath
         Private WithEvents m_scYupi As System.Windows.Forms.SplitContainer
         Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
         Private WithEvents m_lblDescription As System.Windows.Forms.Label
-        Private WithEvents m_hdrDefaults As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_btnDefaults As System.Windows.Forms.Button
+        Private WithEvents m_hdrColors As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_btnCustom As System.Windows.Forms.Button
+        Private WithEvents m_btnDefaultCurrent As System.Windows.Forms.Button
+        Private WithEvents m_btnDefaultAll As System.Windows.Forms.Button
 
     End Class
 

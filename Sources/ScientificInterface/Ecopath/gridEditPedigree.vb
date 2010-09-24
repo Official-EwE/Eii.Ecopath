@@ -37,6 +37,7 @@ Imports SourceGrid2.Cells
     Private Enum eColumnTypes As Integer
         LevelIndex = 0
         LevelName
+        LevelColor
         LevelIndexValue
         LevelConfidenceInterval
         LevelStatus
@@ -119,32 +120,6 @@ Imports SourceGrid2.Cells
                 Me.m_bLevelsChanged = Me.m_bLevelsChanged Or lvlInfo.IsChanged()
             Next iLevel
 
-            ' Assess Levels to remove
-            strPrompt = ""
-            For iLevel = 0 To Me.m_lfiLevelsRemoved.Count - 1
-                lvlInfo = DirectCast(Me.m_lfiLevelsRemoved(iLevel), cPedigreeLevelInfo)
-                If (Not Object.ReferenceEquals(lvlInfo.Level, Nothing)) Then
-
-                    strPrompt = String.Format("?", lvlInfo.Name)
-
-                    Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                        Case MsgBoxResult.Cancel
-                            ' Abort Apply process
-                            Return False
-                        Case MsgBoxResult.No
-                            ' Do not delete this Level
-                            lvlInfo.Confirmed = False
-                        Case MsgBoxResult.Yes
-                            ' Delete this Level
-                            lvlInfo.Confirmed = True
-                            Me.m_bConfigChanged = True
-                        Case Else
-                            ' Unexpected answer: assert
-                            Debug.Assert(False)
-                    End Select
-
-                End If
-            Next iLevel
             Return True
 
         End Function
@@ -218,7 +193,7 @@ Imports SourceGrid2.Cells
                 Dim iLevelRemove As Integer = 0
                 For iLevel = 0 To Me.m_lfiLevelsRemoved.Count - 1
                     lvlInfo = DirectCast(Me.m_lfiLevelsRemoved(iLevelRemove), cPedigreeLevelInfo)
-                    If (Not Object.ReferenceEquals(lvlInfo.Level, Nothing)) And (lvlInfo.Confirmed = True) Then
+                    If (Not Object.ReferenceEquals(lvlInfo.Level, Nothing)) Then
                         If (Me.m_man.RemoveLevel(lvlInfo.Level)) Then
                             Me.m_lfiLevels.Remove(lvlInfo)
                             Me.m_lfiLevelsRemoved.Remove(lvlInfo)
@@ -287,15 +262,14 @@ Imports SourceGrid2.Cells
         Private m_level As cPedigreeLevel = Nothing
         ''' <summary>Name for this level.</summary>
         Private m_strName As String = ""
+        ''' <summary>Level color.</summary>
+        Private m_iColor As Integer = 0
         ''' <summary>Description for this level.</summary>
         Private m_strDescription As String = ""
         ''' <summary>Index value for this level.</summary>
         Private m_sIndexValue As Single = 0.0!
         ''' <summary>Confidence interval for this level.</summary>
         Private m_sConfidenceInterval As Single = 0.0!
-        Private m_iSequence As Integer = 0
-        ''' <summary>Flag stating whether a user action is confirmed</summary>
-        Private m_bConfirmed As Boolean = True
         ''' <summary>The status of a Level in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
         ''' <summary>Index of the pedigree level in its manager.</summary>
@@ -313,6 +287,7 @@ Imports SourceGrid2.Cells
             Debug.Assert(level IsNot Nothing)
             Me.m_level = level
             Me.m_strName = level.Name
+            Me.m_iColor = level.PoolColor
             Me.m_strDescription = level.Description
             Me.m_sIndexValue = level.IndexValue
             Me.m_sConfidenceInterval = level.ConfidenceInterval
@@ -332,6 +307,7 @@ Imports SourceGrid2.Cells
                        Optional ByVal sConfidenceInterval As Single = 0.0!)
             Me.m_level = Nothing
             Me.m_strName = strName
+            Me.m_iColor = 0
             Me.m_strDescription = strDescription
             Me.m_sIndexValue = sIndexValue
             Me.m_sConfidenceInterval = sConfidenceInterval
@@ -340,7 +316,7 @@ Imports SourceGrid2.Cells
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the name of this administrative unit.
+        ''' Get/set the name of a level.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Name() As String
@@ -354,7 +330,21 @@ Imports SourceGrid2.Cells
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the description of this administrative unit.
+        ''' Get/set the Color value of a level.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property PoolColor() As Integer
+            Get
+                Return Me.m_iColor
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_iColor = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the description of a level.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Description() As String
@@ -369,7 +359,7 @@ Imports SourceGrid2.Cells
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the <see cref="cPedigreeLevel">EwE Level</see> associated
-        ''' with this administrative unit.
+        ''' with a level.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Level() As cPedigreeLevel
@@ -378,6 +368,11 @@ Imports SourceGrid2.Cells
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the uncertainty index value of a level.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property IndexValue() As Single
             Get
                 Return Me.m_sIndexValue
@@ -387,6 +382,11 @@ Imports SourceGrid2.Cells
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the uncertainty confidence interval of a level.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property ConfidenceInterval() As Single
             Get
                 Return Me.m_sConfidenceInterval
@@ -396,6 +396,15 @@ Imports SourceGrid2.Cells
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the list index of a level in the local manager.
+        ''' </summary>
+        ''' <remarks>
+        ''' This is a LOCAL value for use in the EditPedigree grid context only,
+        ''' and bears little relationship to <see cref="cPedigreeLevel.Index">cPedigreeLevel.Index</see>.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Property Index() As Integer
             Get
                 Return Me.m_iIndex
@@ -419,20 +428,6 @@ Imports SourceGrid2.Cells
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether the user has confirmed an action on this object.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property Confirmed() As Boolean
-            Get
-                Return Me.m_bConfirmed
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bConfirmed = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' States whether the underlying <see cref="cPedigreeLevel">pedigree level</see>
         ''' has been changed.
         ''' </summary>
@@ -444,6 +439,7 @@ Imports SourceGrid2.Cells
         Public Function IsChanged() As Boolean
             If Me.m_level Is Nothing Then Return False
             Return (Me.m_level.Name <> Me.Name) Or _
+                   (Me.m_level.PoolColor <> Me.m_iColor) Or _
                    (Me.m_level.Description <> Me.Description) Or _
                    (Me.m_level.IndexValue <> Me.IndexValue) Or _
                    (Me.m_level.ConfidenceInterval <> Me.ConfidenceInterval)
@@ -536,12 +532,13 @@ Imports SourceGrid2.Cells
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub InitStyle()
 
+        ' ToDo_JS: Localize this method
+
         MyBase.InitStyle()
 
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.Selection.EnableMultiSelection = False
 
-        ' JS 15Apr07: there will be no context menu item until we have a better idea
         Me.ContextMenu = Nothing
 
         ' Redim columns
@@ -551,6 +548,8 @@ Imports SourceGrid2.Cells
         Me(0, eColumnTypes.LevelIndex) = New EwEColumnHeaderCell()
         ' Level name cell, editable this time
         Me(0, eColumnTypes.LevelName) = New EwEColumnHeaderCell(My.Resources.HEADER_NAME)
+        ' Color
+        Me(0, eColumnTypes.LevelColor) = New EwEColumnHeaderCell(My.Resources.HEADER_COLOR)
         ' Index value
         Me(0, eColumnTypes.LevelIndexValue) = New EwEColumnHeaderCell("Index value")
         ' Confidence interval
@@ -610,6 +609,10 @@ Imports SourceGrid2.Cells
             Me(iRow, eColumnTypes.LevelName).Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.LevelName).DataModel.EditableMode = EditableMode.Default
 
+            Me(iRow, eColumnTypes.LevelColor) = New Cells.Real.Cell()
+            Me(iRow, eColumnTypes.LevelColor).VisualModel = New cColorCellVisualizer()
+            Me(iRow, eColumnTypes.LevelColor).Behaviors.Add(Me.EwEEditHandler)
+
             Me(iRow, eColumnTypes.LevelIndexValue) = New EwECell(0.0!, GetType(Single))
             Me(iRow, eColumnTypes.LevelIndexValue).Behaviors.Add(Me.EwEEditHandler)
 
@@ -650,6 +653,7 @@ Imports SourceGrid2.Cells
         Me.Columns(eColumnTypes.LevelIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
         Me.Columns(eColumnTypes.LevelName).Width = 120
         Me.Columns(eColumnTypes.LevelName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+        Me.Columns(eColumnTypes.LevelColor).Width = 80
 
         For i As Integer = 2 To Me.ColumnsCount - 1
             Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
@@ -671,21 +675,24 @@ Imports SourceGrid2.Cells
 
         Dim lvlInfo As cPedigreeLevelInfo = Nothing
         Dim ri As RowInfo = Nothing
-        Dim aCells() As Cells.ICellVirtual = Nothing
         Dim pos As SourceGrid2.Position = Nothing
         Dim vm As VisualModels.IVisualModel = Nothing
         Dim strText As String = ""
         Dim ewec As ICell = Nothing
+        Dim clr As Color
 
         Me.AllowUpdates = False
 
         lvlInfo = DirectCast(Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW), cPedigreeLevelInfo)
         ri = Me.Rows(iRow)
 
+        clr = cColorUtils.IntToColor(lvlInfo.PoolColor)
+        If clr.A = 0 Then clr = Me.StyleGuide.PedigreeColorDefault(iRow, Me.RowsCount)
+
         ri.Tag = lvlInfo
-        aCells = ri.GetCells()
 
         Me(iRow, eColumnTypes.LevelName).Value = lvlInfo.Name
+        Me(iRow, eColumnTypes.LevelColor).Value = clr
         Me(iRow, eColumnTypes.LevelIndexValue).Value = lvlInfo.IndexValue
         Me(iRow, eColumnTypes.LevelConfidenceInterval).Value = CInt(lvlInfo.ConfidenceInterval * 100)
 
@@ -705,6 +712,26 @@ Imports SourceGrid2.Cells
         Me(iRow, eColumnTypes.LevelStatus).Value = strText
 
         Me.AllowUpdates = True
+
+    End Sub
+
+    Private Sub UpdateColorColumn()
+
+        Dim fi As cPedigreeLevelInfo = Nothing
+        Dim clr As Color = Color.Transparent
+
+        Me.AllowUpdates = False
+        For iRow As Integer = iFIRSTDATAROW To Me.RowsCount - 1
+            fi = DirectCast(Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW), cPedigreeLevelInfo)
+            clr = cColorUtils.IntToColor(fi.PoolColor)
+            If clr.A = 0 Then
+                clr = Me.StyleGuide.PedigreeColorDefault(iRow - iFIRSTDATAROW + 1, Me.RowsCount)
+            End If
+            Me(iRow, eColumnTypes.LevelColor).Value = clr
+        Next iRow
+        Me.AllowUpdates = True
+
+        Me.Invalidate()
 
     End Sub
 
@@ -771,6 +798,8 @@ Imports SourceGrid2.Cells
     Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
 
         Select Case DirectCast(p.Column, eColumnTypes)
+            Case eColumnTypes.LevelColor
+                Me.SelectCustomColor(p.Row)
         End Select
 
     End Sub
@@ -1043,6 +1072,42 @@ Imports SourceGrid2.Cells
     End Function
 
 #End Region ' Admin
+
+#Region " Colors "
+
+    Public Sub SetDefaultFleetColors()
+        For iRow As Integer = iFIRSTDATAROW To Me.RowsCount - 1
+            Me.SetDefaultFleetColor(iRow)
+        Next
+    End Sub
+
+    Public Sub SetDefaultFleetColor(Optional ByVal iRow As Integer = -1)
+        If iRow = -1 Then iRow = Me.SelectedRow
+        Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW).PoolColor = 0
+        Me.UpdateRow(iRow)
+    End Sub
+
+    Public Sub SelectCustomColor(Optional ByVal iRow As Integer = -1)
+
+        Dim lvlInfo As cPedigreeLevelInfo = Nothing
+        Dim dlgColor As cEwEColorDialog = Nothing
+
+        If iRow = -1 Then iRow = Me.SelectedRow
+
+        If Not Me.IsDataRow(iRow) Then Return
+
+        lvlInfo = Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW)
+
+        dlgColor = New cEwEColorDialog()
+        dlgColor.Color = cColorUtils.IntToColor(lvlInfo.PoolColor)
+        If dlgColor.ShowDialog() = DialogResult.OK Then
+            lvlInfo.PoolColor = cColorUtils.ColorToInt(dlgColor.Color)
+            Me.UpdateRow(iRow)
+        End If
+
+    End Sub
+
+#End Region ' Colors
 
 #Region " Apply changes "
 
