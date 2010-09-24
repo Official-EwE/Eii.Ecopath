@@ -1147,6 +1147,7 @@ Namespace Core
         VariableName
         IndexValue
         ConfidenceInterval
+        Pedigree
 
         'Varnames added for Game Server
 
