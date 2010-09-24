@@ -373,7 +373,7 @@ Imports SourceGrid2.VisualModels
         aCells(eColumnTypes.FleetName).SetValue(pos, CStr(fi.Name))
 
         pos = New Position(iRow, eColumnTypes.FleetColor)
-        Dim clr As Color = cStyleGuide.IntToColor(fi.PoolColor)
+        Dim clr As Color = cColorUtils.IntToColor(fi.PoolColor)
         If clr.A = 0 Then clr = Me.StyleGuide.FleetColorDefault(iRow, Me.m_lfiFleets.Count)
         aCells(eColumnTypes.FleetColor).SetValue(pos, clr)
 
@@ -405,7 +405,7 @@ Imports SourceGrid2.VisualModels
         Me.AllowUpdates = False
         For iRow As Integer = iFIRSTFLEETROW To Me.RowsCount - 1
             fi = DirectCast(Me.m_lfiFleets(iRow - iFIRSTFLEETROW), cFleetInfo)
-            clr = cStyleGuide.IntToColor(fi.PoolColor)
+            clr = cColorUtils.IntToColor(fi.PoolColor)
             If clr.A = 0 Then
                 clr = Me.StyleGuide.FleetColorDefault(iRow - iFIRSTFLEETROW + 1, Me.m_lfiFleets.Count)
             End If
@@ -757,9 +757,9 @@ Imports SourceGrid2.VisualModels
         fi = Me.m_lfiFleets(iRow - iFIRSTFLEETROW)
 
         dlgColor = New cEwEColorDialog()
-        dlgColor.Color = cStyleGuide.IntToColor(fi.PoolColor)
+        dlgColor.Color = cColorUtils.IntToColor(fi.PoolColor)
         If dlgColor.ShowDialog() = DialogResult.OK Then
-            fi.PoolColor = cStyleGuide.ColorToInt(dlgColor.Color)
+            fi.PoolColor = cColorUtils.ColorToInt(dlgColor.Color)
             Me.UpdateRow(iRow)
         End If
 
@@ -909,7 +909,7 @@ Imports SourceGrid2.VisualModels
                     If fleet.Name <> fi.Name Then fleet.Name = fi.Name
                     If fleet.PoolColor <> fi.PoolColor Then
                         ' Is gi.poolcolor the default color? 
-                        If fi.PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.FleetColorDefault(fleet.Index, Me.m_lfiFleets.Count)) Then
+                        If fi.PoolColor = cColorUtils.ColorToInt(Me.StyleGuide.FleetColorDefault(fleet.Index, Me.m_lfiFleets.Count)) Then
                             ' #Yes: Set color to transparent to allow group to show up as true default colour
                             fleet.PoolColor = 0
                         Else

@@ -1,6 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmPedigree
-    Inherits frmEwE
+    Inherits frmEwEGrid
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
@@ -61,13 +64,17 @@ Partial Class frmPedigree
         '
         'm_lbLevels
         '
-        Me.m_lbLevels.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_lbLevels.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_lbLevels.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.m_lbLevels.FormattingEnabled = True
         Me.m_lbLevels.IntegralHeight = False
-        Me.m_lbLevels.Location = New System.Drawing.Point(0, 18)
-        Me.m_lbLevels.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_lbLevels.ItemHeight = 15
+        Me.m_lbLevels.Location = New System.Drawing.Point(0, 21)
+        Me.m_lbLevels.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
         Me.m_lbLevels.Name = "m_lbLevels"
-        Me.m_lbLevels.Size = New System.Drawing.Size(127, 467)
+        Me.m_lbLevels.Size = New System.Drawing.Size(127, 464)
         Me.m_lbLevels.TabIndex = 1
         '
         'm_hdrPedigree

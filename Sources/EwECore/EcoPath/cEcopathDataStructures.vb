@@ -249,6 +249,7 @@ Public Class cEcopathDataStructures
     Public NumPedigreeLevels As Integer
     Public PedigreeLevelDBID() As Integer
     Public PedigreeLevelName() As String
+    Public PedigreeLevelColor() As Integer
     Public PedigreeLevelDescription() As String
     Public PedigreeLevelVarName() As eVarNameFlags
     Public PedigreeLevelIndexValue() As Single
@@ -562,6 +563,7 @@ Public Class cEcopathDataStructures
 
         ReDim Me.PedigreeLevelDBID(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelName(Me.NumPedigreeLevels)
+        ReDim Me.PedigreeLevelColor(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelDescription(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelVarName(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelIndexValue(Me.NumPedigreeLevels)

@@ -905,7 +905,7 @@ Public Class gridEditGroups
         End If
 
         pos = New Position(iRow, eColumnTypes.GroupColor)
-        Dim clr As Color = cStyleGuide.IntToColor(gi.PoolColor)
+        Dim clr As Color = cColorUtils.IntToColor(gi.PoolColor)
         If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(iRow, Me.m_lgiGroups.Count)
         Me(iRow, eColumnTypes.GroupColor).SetValue(pos, clr)
 
@@ -937,7 +937,7 @@ Public Class gridEditGroups
 
         Me.AllowUpdates = False
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
-            clr = cStyleGuide.IntToColor(Me.m_lgiGroups(iGroup).PoolColor)
+            clr = cColorUtils.IntToColor(Me.m_lgiGroups(iGroup).PoolColor)
             If clr.A = 0 Then clr = Me.StyleGuide.GroupColorDefault(iGroup + 1, Me.m_lgiGroups.Count)
             Me(iGroup + iFIRSTGROUPROW, eColumnTypes.GroupColor).Value = clr
         Next iGroup
@@ -1402,17 +1402,17 @@ Public Class gridEditGroups
         Next
 
         For i As Integer = 0 To lGroupLists.Count - 1
-            hsvGroup = cStyleGuide.CalculateAlternatingGroupColor(i + 1, lGroupLists.Count)
+            hsvGroup = cStyleGuide.CalculateAlternatingColors(i + 1, lGroupLists.Count)
             lGroups = lGroupLists(i)
             If lGroups.Count > 1 Then
                 For iLifeStage As Integer = 0 To lGroups.Count - 1
                     gi = lGroups(iLifeStage)
                     hsvLifeStage = cStyleGuide.CalculateAlternatingStanzaGroupColor(hsvGroup, iLifeStage, lGroups.Count)
-                    gi.PoolColor = cStyleGuide.ColorToInt(HSV.ToColor(hsvLifeStage))
+                    gi.PoolColor = cColorUtils.ColorToInt(HSV.ToColor(hsvLifeStage))
                 Next
             Else 'Non stanza group
                 gi = lGroups(0)
-                gi.PoolColor = cStyleGuide.ColorToInt(HSV.ToColor(hsvGroup))
+                gi.PoolColor = cColorUtils.ColorToInt(HSV.ToColor(hsvGroup))
             End If
         Next
 
@@ -1442,9 +1442,9 @@ Public Class gridEditGroups
         gi = Me.m_lgiGroups(iRow - iFIRSTGROUPROW)
 
         dlgColor = New cEwEColorDialog()
-        dlgColor.Color = cStyleGuide.IntToColor(gi.PoolColor)
+        dlgColor.Color = cColorUtils.IntToColor(gi.PoolColor)
         If dlgColor.ShowDialog() = DialogResult.OK Then
-            gi.PoolColor = cStyleGuide.ColorToInt(dlgColor.Color)
+            gi.PoolColor = cColorUtils.ColorToInt(dlgColor.Color)
             Me.UpdateRow(iRow)
         End If
 
@@ -1988,7 +1988,7 @@ Public Class gridEditGroups
                             If (group.VBK <> gi.VBK) Then group.VBK = gi.VBK
                             If (group.PoolColor <> gi.PoolColor) Then
                                 ' Is gi.poolcolor the default color? 
-                                If gi.PoolColor = cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(iGrpTmp, Me.m_lgiGroups.Count)) Then
+                                If gi.PoolColor = cColorUtils.ColorToInt(Me.StyleGuide.GroupColorDefault(iGrpTmp, Me.m_lgiGroups.Count)) Then
                                     ' #Yes: Set color to transparent to allow group to show up as true default colour
                                     group.PoolColor = 0
                                 Else

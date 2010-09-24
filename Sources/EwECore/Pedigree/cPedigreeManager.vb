@@ -115,6 +115,7 @@ Public Class cPedigreeManager
                     level.Index = iLevel
                     level.Name = data.PedigreeLevelName(iLevel)
                     level.Description = data.PedigreeLevelDescription(iLevel)
+                    level.PoolColor = data.PedigreeLevelColor(iLevel)
                     level.IndexValue = data.PedigreeLevelIndexValue(iLevel)
                     level.ConfidenceInterval = data.PedigreeLevelConfidence(iLevel)
                     level.AllowValidation = True
@@ -150,6 +151,7 @@ Public Class cPedigreeManager
 
                     data.PedigreeLevelName(level.Index) = level.Name
                     data.PedigreeLevelDescription(level.Index) = level.Description
+                    data.PedigreeLevelColor(level.Index) = level.PoolColor
                     data.PedigreeLevelIndexValue(level.Index) = level.IndexValue
                     data.PedigreeLevelConfidence(level.Index) = level.ConfidenceInterval
 

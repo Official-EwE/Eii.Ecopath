@@ -5,6 +5,8 @@ Option Strict On
 Imports EwEUtils.Core
 Imports EwECore
 Imports SAUPUtil.Misc.Colours
+Imports EwECore.Auxiliary
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -37,9 +39,10 @@ Public Class frmPedigree
 
     End Class
 
-    Friend Class cPedigreeVisualizer
+    Public Class cPedigreeVisualizer
 
-        Private Shared c_colorramp As New SAUPColorRamp()
+        Private m_colorramp As New SAUPColorRamp()
+        Private m_renderstyle As eRenderStyleTypes = eRenderStyleTypes.Colors
 
         Public Enum eRenderStyleTypes As Integer
             Colors
@@ -48,9 +51,32 @@ Public Class frmPedigree
             ConfidenceIntervals
         End Enum
 
-        Shared Sub Draw(ByVal rc As Rectangle, ByVal level As cPedigreeLevel, ByVal style As eRenderStyleTypes)
+        Public Sub Draw(ByVal g As Graphics, _
+                        ByVal rc As Rectangle, _
+                        ByVal level As cPedigreeLevel, _
+                        ByVal style As eRenderStyleTypes)
 
+            Select Case style
+                Case eRenderStyleTypes.Colors
+                    Using br As New SolidBrush(cColorUtils.IntToColor(level.PoolColor))
+                        g.FillRectangle(br, rc)
+                    End Using
+            End Select
         End Sub
+
+        Public Event OnRenderStyleChanged(ByVal sender As cPedigreeVisualizer)
+
+        Public Property RenderStyle() As eRenderStyleTypes
+            Get
+                Return Me.m_renderstyle
+            End Get
+            Set(ByVal value As eRenderStyleTypes)
+                If (value <> Me.m_renderstyle) Then
+                    Me.m_renderstyle = value
+                    RaiseEvent OnRenderStyleChanged(Me)
+                End If
+            End Set
+        End Property
 
     End Class
 
@@ -60,11 +86,13 @@ Public Class frmPedigree
 
     ''' <summary>Varname currently 'selected' in the grid.</summary>
     Private m_varname As eVarNameFlags = eVarNameFlags.NotSet
+    Private m_viz As New cPedigreeVisualizer()
 
 #End Region ' Private vars
 
     Public Sub New()
         Me.InitializeComponent()
+        Me.Grid = Me.m_grid
     End Sub
 
 #Region " Form overloads "
@@ -75,14 +103,18 @@ Public Class frmPedigree
         If (Me.UIContext Is Nothing) Then Return
 
         AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+        AddHandler Me.m_viz.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
 
         Me.SelectedVariable = eVarNameFlags.Biomass
+
+        Me.UpdateControls()
 
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
         RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+        RemoveHandler Me.m_viz.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
 
         ' Clean up
         Me.SelectedVariable = eVarNameFlags.NotSet
@@ -91,6 +123,17 @@ Public Class frmPedigree
         MyBase.OnFormClosed(e)
 
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Overridden to make the form quick edit handler use the existing tool strip.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides ReadOnly Property ToolStrip() As System.Windows.Forms.ToolStrip
+        Get
+            Return Me.m_tsMain
+        End Get
+    End Property
 
 #End Region ' Form overloads
 
@@ -103,15 +146,53 @@ Public Class frmPedigree
         '   Extract var name from column
         '   Apply var name
 
+        ' Beware
+        '   Column change should only update UI to get ready for new selection but should
+        '   NOT update pedigree assignments
+
     End Sub
 
     Private Sub OnViewAsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tscmbViewAs.Click
 
         ' ToDo:
-        '   Store display style somewhere
-        '   Invalidate listbox to reflect this style
-        '   Inform grid of new style
+        ' v Store display style somewhere
+        ' v Invalidate listbox to reflect this style
+        ' v Inform grid of new style
+        Me.SelectedRenderStyle = DirectCast(Me.m_tscmbViewAs.SelectedIndex, cPedigreeVisualizer.eRenderStyleTypes)
+
+    End Sub
+
+    Private Sub OnRenderStyleChanged(ByVal viz As cPedigreeVisualizer)
+
+        Me.m_lbLevels.Invalidate()
+        Me.UpdateControls()
+
+    End Sub
+
+    Private Sub OnDrawPedigreeListboxItem(ByVal sender As Object, ByVal e As DrawItemEventArgs) _
+        Handles m_lbLevels.DrawItem
+
+        ' Sanity check
+        If Me.UIContext Is Nothing Then Return
+
+        Dim item As cPedigreeLevelListboxItem = DirectCast(Me.m_lbLevels.Items(e.Index), cPedigreeLevelListboxItem)
+
+        ' Render default background 
+        e.DrawBackground()
+
+        ' Render default text, bumped to the right by 22 pixels
+        Using br As New SolidBrush(e.ForeColor)
+            e.Graphics.DrawString(item.ToString(), e.Font, br, e.Bounds.X + 22, e.Bounds.Y)
+        End Using
+
+        Me.m_viz.Draw(e.Graphics, _
+                      New Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4), _
+                      item.Level, _
+                      cPedigreeVisualizer.eRenderStyleTypes.Colors)
+
+        ' Render default focus rectangle
+        e.DrawFocusRectangle()
 
     End Sub
 
@@ -134,8 +215,6 @@ Public Class frmPedigree
             If (Me.UIContext Is Nothing) Then Return
             ' Optimization
             If (value = Me.m_varname) Then Return
-
-
             ' Clean up
             If (Me.m_varname <> eVarNameFlags.NotSet) Then
                 Me.DestroyPedigreeControls()
@@ -168,6 +247,21 @@ Public Class frmPedigree
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get/set the selected <see cref="cPedigreeVisualizer.eRenderStyleTypes">render style</see> in
+    ''' the entire interface.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Property SelectedRenderStyle() As cPedigreeVisualizer.eRenderStyleTypes
+        Get
+            Return Me.m_viz.RenderStyle
+        End Get
+        Set(ByVal value As cPedigreeVisualizer.eRenderStyleTypes)
+            Me.m_viz.RenderStyle = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Lock the current <see cref="SelectedVariable">selected variable</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -192,7 +286,14 @@ Public Class frmPedigree
         Me.m_lbLevels.Items.Clear()
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Update the UI.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub UpdateControls()
+
+        Me.m_tscmbViewAs.SelectedIndex = CInt(Me.SelectedRenderStyle)
 
     End Sub
 

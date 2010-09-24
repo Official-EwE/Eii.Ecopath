@@ -50,6 +50,11 @@ Public Class cPedigreeLevel
                             meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
+        'PoolColor
+        meta = New cVariableMetaData(-4294967295, 4294967295, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
     End Sub
 
     Public Property VariableName() As eVarNameFlags
@@ -85,6 +90,15 @@ Public Class cPedigreeLevel
         End Get
         Set(ByVal value As String)
             Me.SetVariable(eVarNameFlags.Description, value)
+        End Set
+    End Property
+
+    Public Property PoolColor() As Integer
+        Get
+            Return CInt(GetVariable(eVarNameFlags.PoolColor))
+        End Get
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.PoolColor, value)
         End Set
     End Property
 

@@ -9,6 +9,7 @@ Imports SAUPUtil.Misc.Colours
 Imports EwEUtils.Core
 Imports EwEUtils.Drawing
 Imports VB = Microsoft.VisualBasic
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -56,6 +57,8 @@ Namespace Style
         Private m_colorrampGroups As New SAUPColorRamp()
         ''' <summary>Color ramp for obtaining fleet colors</summary>
         Private m_colorrampFleets As New ARGBColorRamp(New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#})
+        ''' <summary>Color ramp for obtaining pedigree colors</summary>
+        Private m_colorrampPedigree As New ARGBColorRamp(New Color() {Color.Red, Color.Orange, Color.Yellow, Color.YellowGreen, Color.Green}, New Double() {0.0#, 0.2#, 0.3#, 0.4#, 0.1#})
         ''' <summary>Start offset for colour ramp.</summary>
         Private Const c_sRampOffsetStart As Single = 0.15!
         ''' <summary>End offset for colour ramp.</summary>
@@ -751,6 +754,220 @@ Namespace Style
 
 #Region " Color access "
 
+#Region " Group "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the color to represent a group.
+        ''' </summary>
+        ''' <remarks>
+        ''' Setting the Alpha component of the ARGB colour value to 0 will
+        ''' trigger the style guide to issue default colours for groups.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Property GroupColor(ByVal core As cCore, ByVal iGroup As Integer) As Color
+            Get
+                Dim clr As Color = Color.Transparent
+                If (0 < iGroup) And (iGroup <= core.nGroups) Then
+                    Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
+                    clr = cColorUtils.IntToColor(grp.PoolColor)
+                End If
+                If clr.A = 0 Then
+                    clr = Me.GroupColorDefault(core, iGroup)
+                End If
+                Return clr
+            End Get
+            Set(ByVal value As Color)
+                If (0 < iGroup) And (iGroup <= core.nGroups) Then
+                    Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
+                    ' Optimization
+                    If grp.PoolColor = cColorUtils.ColorToInt(value) Then Return
+                    ' Apply
+                    grp.PoolColor = cColorUtils.ColorToInt(value)
+                    ' Notify the world
+                    Me.ColorsChanged()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a default colour for a group.
+        ''' </summary>
+        ''' <param name="core">Core to operate onto.</param>
+        ''' <param name="iGroup">The group index to obtain the default colour for.</param>
+        ''' <returns>
+        ''' Default group colours are picked from the Ecopath 5 group colour scheme.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function GroupColorDefault(ByVal core As cCore, _
+                                          ByVal iGroup As Integer) As Color
+            Return Me.GroupColorDefault(iGroup, core.nGroups)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a default colour for a group.
+        ''' </summary>
+        ''' <param name="iGroup">The group index to obtain the default colour for.</param>
+        ''' <param name="nGroups">The number of groups to scale the colour to.</param>
+        ''' <returns>
+        ''' Default group colours are picked from the Ecopath 5 group colour scheme.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function GroupColorDefault(ByVal iGroup As Integer, _
+                                          ByVal nGroups As Integer) As Color
+            Return Me.m_colorrampGroups.GetColor(iGroup, nGroups)
+        End Function
+
+#End Region ' Group
+
+#Region " Fleet "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the color to represent a fleet.
+        ''' </summary>
+        ''' <remarks>
+        ''' Setting the Alpha component of the ARGB colour value to 0 will
+        ''' trigger the style guide to issue default colours for fleets.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Property FleetColor(ByVal core As cCore, ByVal iFleet As Integer) As Color
+            Get
+                Dim clr As Color = Color.Transparent
+                If (0 <= iFleet) And (iFleet <= core.nFleets) Then
+                    Dim flt As cFleetInput = core.FleetInputs(iFleet)
+                    clr = cColorUtils.IntToColor(flt.PoolColor)
+                End If
+                If clr.A = 0 Then
+                    clr = Me.FleetColorDefault(core, iFleet)
+                End If
+                Return clr
+            End Get
+            Set(ByVal value As Color)
+                If (0 <= iFleet) And (iFleet <= core.nFleets) Then
+                    Dim flt As cFleetInput = core.FleetInputs(iFleet)
+                    ' Optimization
+                    If flt.PoolColor = cColorUtils.ColorToInt(value) Then Return
+                    ' Apply
+                    flt.PoolColor = cColorUtils.ColorToInt(value)
+                    ' Notify the world
+                    Me.ColorsChanged()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a default colour for a fleet.
+        ''' </summary>
+        ''' <param name="iFleet">The fleet index to obtain the default colour for.</param>
+        ''' <param name="nFleets">Number of fleets to scale colour by, or -1 to
+        ''' use the max number of fleets as dictated by the <paramref name="core">core</paramref>.</param>
+        ''' <returns>
+        ''' Default fleet colours are picked from a colour ramp that runs from
+        ''' green to blue.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function FleetColorDefault(ByVal iFleet As Integer, _
+                                          ByVal nFleets As Integer) As Color
+            Return Me.m_colorrampFleets.GetColor(iFleet, nFleets)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a default colour for a fleet.
+        ''' </summary>
+        ''' <param name="core">Core to operate onto.</param>
+        ''' <param name="iFleet">The fleet index to obtain the default colour for.</param>
+        ''' <returns>
+        ''' Default fleet colours are picked from a colour ramp that runs from
+        ''' green to blue.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function FleetColorDefault(ByVal core As cCore, _
+                                          ByVal iFleet As Integer) As Color
+            Return FleetColorDefault(iFleet, core.nFleets)
+        End Function
+
+#End Region ' Fleet 
+
+#Region " Pedigree "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the color to represent a fleet.
+        ''' </summary>
+        ''' <remarks>
+        ''' Setting the Alpha component of the ARGB colour value to 0 will
+        ''' trigger the style guide to issue default colours for fleets.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Property PedigreeColor(ByVal core As cCore, ByVal iFleet As Integer) As Color
+            Get
+                Dim clr As Color = Color.Transparent
+                If (0 <= iFleet) And (iFleet <= core.nFleets) Then
+                    Dim flt As cFleetInput = core.FleetInputs(iFleet)
+                    clr = cColorUtils.IntToColor(flt.PoolColor)
+                End If
+                If clr.A = 0 Then
+                    clr = Me.FleetColorDefault(core, iFleet)
+                End If
+                Return clr
+            End Get
+            Set(ByVal value As Color)
+                If (0 <= iFleet) And (iFleet <= core.nFleets) Then
+                    Dim flt As cFleetInput = core.FleetInputs(iFleet)
+                    ' Optimization
+                    If flt.PoolColor = cColorUtils.ColorToInt(value) Then Return
+                    ' Apply
+                    flt.PoolColor = cColorUtils.ColorToInt(value)
+                    ' Notify the world
+                    Me.ColorsChanged()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a default colour for a fleet.
+        ''' </summary>
+        ''' <param name="iLevel">The level index to obtain the default colour for.</param>
+        ''' <param name="nLevels">Number of levels to scale colour by.</param>
+        ''' <returns>
+        ''' Default pedgree colours are picked from a colour ramp that runs from
+        ''' red, via yellow, to green.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function PedigreeColorDefault(ByVal iLevel As Integer, _
+                                             ByVal nLevels As Integer) As Color
+            Return Me.m_colorrampPedigree.GetColor(iLevel, nLevels)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a default colour for a pedigree level.
+        ''' </summary>
+        ''' <param name="core">Core to operate onto.</param>
+        ''' <param name="iLevel">The level index to obtain the default colour for.</param>
+        ''' <param name="vn">The variable of the level to query.</param>
+        ''' <returns>
+        ''' Default group colours are picked from a colour ramp that runs from
+        ''' green to blue.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function PedigreeColorDefault(ByVal core As cCore, _
+                                             ByVal iLevel As Integer, _
+                                             ByVal vn As eVarNameFlags) As Color
+            Debug.Assert(Array.IndexOf(cPedigreeManager.SupportVariables, vn) <> -1)
+            Return PedigreeColorDefault(iLevel, core.GetPedigreeManager(vn).NumLevels)
+        End Function
+
+#End Region ' Pedigree
+
+#Region " Application "
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Enumerated type defining the types of EwE6 user interface elements
@@ -919,72 +1136,11 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the color to represent a group.
+        ''' Get/set the color for a particular type of <see cref="eApplicationColorType">application feedback.</see>.
         ''' </summary>
-        ''' <remarks>
-        ''' Setting the Alpha component of the ARGB colour value to 0 will
-        ''' trigger the style guide to issue default colours for groups.
-        ''' </remarks>
+        ''' <param name="colorType">The <see cref="eApplicationColorType">application feedback type</see>
+        ''' to affect.</param>
         ''' -------------------------------------------------------------------
-        Public Property GroupColor(ByVal core As cCore, ByVal iGroup As Integer) As Color
-            Get
-                Dim clr As Color = Color.Transparent
-                If (0 < iGroup) And (iGroup <= core.nGroups) Then
-                    Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
-                    clr = cStyleGuide.IntToColor(grp.PoolColor)
-                End If
-                If clr.A = 0 Then
-                    clr = Me.GroupColorDefault(core, iGroup)
-                End If
-                Return clr
-            End Get
-            Set(ByVal value As Color)
-                If (0 < iGroup) And (iGroup <= core.nGroups) Then
-                    Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
-                    ' Optimization
-                    If grp.PoolColor = cStyleGuide.ColorToInt(value) Then Return
-                    ' Apply
-                    grp.PoolColor = cStyleGuide.ColorToInt(value)
-                    ' Notify the world
-                    Me.ColorsChanged()
-                End If
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the color to represent a fleet.
-        ''' </summary>
-        ''' <remarks>
-        ''' Setting the Alpha component of the ARGB colour value to 0 will
-        ''' trigger the style guide to issue default colours for fleets.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Property FleetColor(ByVal core As cCore, ByVal iFleet As Integer) As Color
-            Get
-                Dim clr As Color = Color.Transparent
-                If (0 <= iFleet) And (iFleet <= core.nFleets) Then
-                    Dim flt As cFleetInput = core.FleetInputs(iFleet)
-                    clr = cStyleGuide.IntToColor(flt.PoolColor)
-                End If
-                If clr.A = 0 Then
-                    clr = Me.FleetColorDefault(core, iFleet)
-                End If
-                Return clr
-            End Get
-            Set(ByVal value As Color)
-                If (0 <= iFleet) And (iFleet <= core.nFleets) Then
-                    Dim flt As cFleetInput = core.FleetInputs(iFleet)
-                    ' Optimization
-                    If flt.PoolColor = cStyleGuide.ColorToInt(value) Then Return
-                    ' Apply
-                    flt.PoolColor = cStyleGuide.ColorToInt(value)
-                    ' Notify the world
-                    Me.ColorsChanged()
-                End If
-            End Set
-        End Property
-
         Public Property ApplicationColor(ByVal colorType As cStyleGuide.eApplicationColorType) As Color
             Get
                 ' Sanity check
@@ -1006,76 +1162,9 @@ Namespace Style
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns a default colour for a group.
-        ''' </summary>
-        ''' <param name="core">Core to operate onto.</param>
-        ''' <param name="iGroup">The group index to obtain the default colour for.</param>
-        ''' <returns>
-        ''' Default group colours are picked from the Ecopath 5 group colour scheme.
-        ''' </returns>
-        ''' -------------------------------------------------------------------
-        Public Function GroupColorDefault(ByVal core As cCore, _
-                                          ByVal iGroup As Integer) As Color
-            Return Me.GroupColorDefault(iGroup, core.nGroups)
-        End Function
+#End Region ' Application
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns a default colour for a group.
-        ''' </summary>
-        ''' <param name="iGroup">The group index to obtain the default colour for.</param>
-        ''' <param name="nGroups">The number of groups to scale the colour to.</param>
-        ''' <returns>
-        ''' Default group colours are picked from the Ecopath 5 group colour scheme.
-        ''' </returns>
-        ''' -------------------------------------------------------------------
-        Public Function GroupColorDefault(ByVal iGroup As Integer, _
-                                          ByVal nGroups As Integer) As Color
-            Return Me.m_colorrampGroups.GetColor(iGroup, nGroups)
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns a default colour for a fleet.
-        ''' </summary>
-        ''' <param name="iFleet">The fleet index to obtain the default colour for.</param>
-        ''' <param name="nFleets">Number of fleets to scale colour by, or -1 to
-        ''' use the max number of fleets as dictated by the <paramref name="core">core</paramref>.</param>
-        ''' <returns>
-        ''' Default group colours are picked from a colour ramp that runs from
-        ''' green to blue.
-        ''' </returns>
-        ''' -------------------------------------------------------------------
-        Public Function FleetColorDefault(ByVal iFleet As Integer, _
-                                          ByVal nFleets As Integer) As Color
-            Return Me.m_colorrampFleets.GetColor(iFleet, nFleets)
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns a default colour for a fleet.
-        ''' </summary>
-        ''' <param name="core">Core to operate onto.</param>
-        ''' <param name="iFleet">The fleet index to obtain the default colour for.</param>
-        ''' <returns>
-        ''' Default group colours are picked from a colour ramp that runs from
-        ''' green to blue.
-        ''' </returns>
-        ''' -------------------------------------------------------------------
-        Public Function FleetColorDefault(ByVal core As cCore, _
-                                          ByVal iFleet As Integer) As Color
-            Return FleetColorDefault(iFleet, core.nFleets)
-        End Function
-
-        Public Shared Function IntToColor(ByVal iColor As Integer) As Color
-            Return Drawing.Color.FromArgb((iColor >> 24) And &HFF, (iColor >> 16) And &HFF, (iColor >> 8) And &HFF, iColor And &HFF)
-        End Function
-
-        Public Shared Function ColorToInt(ByVal clr As Color) As Integer
-            Return ((clr.A And &HFF) << 24) + ((clr.R And &HFF) << 16) + ((clr.G And &HFF) << 8) + (clr.B And &HFF)
-        End Function
+#Region " Generics "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1096,10 +1185,25 @@ Namespace Style
             Me.FireChangeEvent(eChangeType.Colours)
         End Sub
 
-        Public Shared Function CalculateAlternatingGroupColor(ByVal i As Integer, ByVal iLen As Integer, _
-                Optional ByVal iHueScale As Integer = 9, _
-                Optional ByVal iSaturationRange As Integer = 240, _
-                Optional ByVal iValueRange As Integer = 200) As HSV
+#End Region ' Generics
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Calculate a series of alternating <see cref="HSV">HSV colors</see> 
+        ''' over a range.
+        ''' </summary>
+        ''' <param name="i"></param>
+        ''' <param name="iLen"></param>
+        ''' <param name="iHueScale"></param>
+        ''' <param name="iSaturationRange"></param>
+        ''' <param name="iValueRange"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function CalculateAlternatingColors(ByVal i As Integer, _
+                                                          ByVal iLen As Integer, _
+                                                          Optional ByVal iHueScale As Integer = 9, _
+                                                          Optional ByVal iSaturationRange As Integer = 240, _
+                                                          Optional ByVal iValueRange As Integer = 200) As HSV
 
             Dim nCount As Integer = CInt(Math.Ceiling(Math.Sqrt(iLen / iHueScale)))
             Dim iHueTick As Integer = 255 \ iHueScale
