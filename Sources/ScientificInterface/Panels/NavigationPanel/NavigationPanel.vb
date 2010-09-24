@@ -9,6 +9,7 @@ Imports EwECore
 Imports ScientificInterface.Ecopath.Controls
 Imports ScientificInterface.Ecopath.Input
 Imports ScientificInterface.Ecopath.Output
+Imports ScientificInterface.Ecopath.Tools
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
 Imports EwEPlugin
