@@ -39,11 +39,11 @@ Namespace Ecopath
             Me.m_scYupi = New System.Windows.Forms.SplitContainer
             Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.m_lblDescription = New System.Windows.Forms.Label
-            Me.m_btnDefaults = New System.Windows.Forms.Button
+            Me.m_btnCreateDefaultLevels = New System.Windows.Forms.Button
             Me.m_hdrColors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_btnCustom = New System.Windows.Forms.Button
-            Me.m_btnDefaultCurrent = New System.Windows.Forms.Button
-            Me.m_btnDefaultAll = New System.Windows.Forms.Button
+            Me.m_btnColorCustom = New System.Windows.Forms.Button
+            Me.m_btnColorDefaultCurrent = New System.Windows.Forms.Button
+            Me.m_btnColorDefaultAll = New System.Windows.Forms.Button
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_scYupi.Panel1.SuspendLayout()
             Me.m_scYupi.Panel2.SuspendLayout()
@@ -168,34 +168,34 @@ Namespace Ecopath
             resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
             Me.m_lblDescription.Name = "m_lblDescription"
             '
-            'm_btnDefaults
+            'm_btnCreateDefaultLevels
             '
-            resources.ApplyResources(Me.m_btnDefaults, "m_btnDefaults")
-            Me.m_btnDefaults.Name = "m_btnDefaults"
-            Me.m_btnDefaults.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnCreateDefaultLevels, "m_btnCreateDefaultLevels")
+            Me.m_btnCreateDefaultLevels.Name = "m_btnCreateDefaultLevels"
+            Me.m_btnCreateDefaultLevels.UseVisualStyleBackColor = True
             '
             'm_hdrColors
             '
             resources.ApplyResources(Me.m_hdrColors, "m_hdrColors")
             Me.m_hdrColors.Name = "m_hdrColors"
             '
-            'm_btnCustom
+            'm_btnColorCustom
             '
-            resources.ApplyResources(Me.m_btnCustom, "m_btnCustom")
-            Me.m_btnCustom.Name = "m_btnCustom"
-            Me.m_btnCustom.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnColorCustom, "m_btnColorCustom")
+            Me.m_btnColorCustom.Name = "m_btnColorCustom"
+            Me.m_btnColorCustom.UseVisualStyleBackColor = True
             '
-            'm_btnDefaultCurrent
+            'm_btnColorDefaultCurrent
             '
-            resources.ApplyResources(Me.m_btnDefaultCurrent, "m_btnDefaultCurrent")
-            Me.m_btnDefaultCurrent.Name = "m_btnDefaultCurrent"
-            Me.m_btnDefaultCurrent.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnColorDefaultCurrent, "m_btnColorDefaultCurrent")
+            Me.m_btnColorDefaultCurrent.Name = "m_btnColorDefaultCurrent"
+            Me.m_btnColorDefaultCurrent.UseVisualStyleBackColor = True
             '
-            'm_btnDefaultAll
+            'm_btnColorDefaultAll
             '
-            resources.ApplyResources(Me.m_btnDefaultAll, "m_btnDefaultAll")
-            Me.m_btnDefaultAll.Name = "m_btnDefaultAll"
-            Me.m_btnDefaultAll.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnColorDefaultAll, "m_btnColorDefaultAll")
+            Me.m_btnColorDefaultAll.Name = "m_btnColorDefaultAll"
+            Me.m_btnColorDefaultAll.UseVisualStyleBackColor = True
             '
             'dlgEditPedigree
             '
@@ -204,15 +204,15 @@ Namespace Ecopath
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
             Me.Controls.Add(Me.m_hdrColors)
-            Me.Controls.Add(Me.m_btnCustom)
-            Me.Controls.Add(Me.m_btnDefaultCurrent)
-            Me.Controls.Add(Me.m_btnDefaultAll)
+            Me.Controls.Add(Me.m_btnColorCustom)
+            Me.Controls.Add(Me.m_btnColorDefaultCurrent)
+            Me.Controls.Add(Me.m_btnColorDefaultAll)
             Me.Controls.Add(Me.m_scYupi)
             Me.Controls.Add(Me.m_cmbVariable)
             Me.Controls.Add(Me.m_lblVariable)
             Me.Controls.Add(Me.m_hdrOrder)
             Me.Controls.Add(Me.m_hdrEdit)
-            Me.Controls.Add(Me.m_btnDefaults)
+            Me.Controls.Add(Me.m_btnCreateDefaultLevels)
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnDelete)
@@ -247,11 +247,11 @@ Namespace Ecopath
         Private WithEvents m_scYupi As System.Windows.Forms.SplitContainer
         Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
         Private WithEvents m_lblDescription As System.Windows.Forms.Label
-        Private WithEvents m_btnDefaults As System.Windows.Forms.Button
+        Private WithEvents m_btnCreateDefaultLevels As System.Windows.Forms.Button
         Private WithEvents m_hdrColors As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Private WithEvents m_btnCustom As System.Windows.Forms.Button
-        Private WithEvents m_btnDefaultCurrent As System.Windows.Forms.Button
-        Private WithEvents m_btnDefaultAll As System.Windows.Forms.Button
+        Private WithEvents m_btnColorCustom As System.Windows.Forms.Button
+        Private WithEvents m_btnColorDefaultCurrent As System.Windows.Forms.Button
+        Private WithEvents m_btnColorDefaultAll As System.Windows.Forms.Button
 
     End Class
 

@@ -114,22 +114,22 @@ Namespace Ecopath
         End Sub
 
         Private Sub OnSetDefaults(ByVal sender As Object, ByVal e As EventArgs) _
-            Handles m_btnDefaults.Click
+            Handles m_btnCreateDefaultLevels.Click
             Me.m_grid.CreateDefaults()
         End Sub
 
         Private Sub OnDefaultAllColors(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnDefaultAll.Click
+            Handles m_btnColorDefaultAll.Click
             Me.m_grid.SetDefaultFleetColors()
         End Sub
 
         Private Sub OnDefaultColor(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnDefaultCurrent.Click
+            Handles m_btnColorDefaultCurrent.Click
             Me.m_grid.SetDefaultFleetColor()
         End Sub
 
         Private Sub OnSelectCustomColor(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnCustom.Click
+            Handles m_btnColorCustom.Click
             Me.m_grid.SelectCustomColor()
         End Sub
 
@@ -142,12 +142,15 @@ Namespace Ecopath
             Dim bIsDataRow As Boolean = Me.m_grid.IsDataRow()
             Dim bIsFlaggedForDeletion As Boolean = Me.m_grid.IsFlaggedForDeletionRow()
 
-            Me.m_btnSort.Enabled = Me.m_grid.CanSort()
             Me.m_btnInsert.Enabled = Me.m_grid.CanInsertRow()
             Me.m_btnDelete.Enabled = bIsDataRow And (Not bIsFlaggedForDeletion)
             Me.m_btnKeep.Enabled = bIsDataRow And bIsFlaggedForDeletion
-            Me.m_tbDescription.Enabled = bIsDataRow
+            Me.m_btnSort.Enabled = Me.m_grid.CanSort()
 
+            Me.m_btnColorDefaultCurrent.Enabled = bIsDataRow
+            Me.m_btnColorCustom.Enabled = bIsDataRow
+
+            Me.m_tbDescription.Enabled = bIsDataRow
             Me.m_tbDescription.Text = Me.m_grid.SelectedLevelDescription
 
         End Sub

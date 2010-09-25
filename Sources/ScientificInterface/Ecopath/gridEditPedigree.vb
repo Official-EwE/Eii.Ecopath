@@ -227,6 +227,7 @@ Imports SourceGrid2.Cells
                             level = Me.m_man.Level(iLevel)
                             If level.DBID = lvlInfo.Level.DBID Then
                                 level.Name = lvlInfo.Name
+                                level.PoolColor = lvlInfo.PoolColor
                                 level.Description = lvlInfo.Description
                                 level.IndexValue = lvlInfo.IndexValue
                                 level.ConfidenceInterval = lvlInfo.ConfidenceInterval
@@ -482,9 +483,7 @@ Imports SourceGrid2.Cells
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub New()
-
         MyBase.New()
-
     End Sub
 
     ''' -----------------------------------------------------------------------

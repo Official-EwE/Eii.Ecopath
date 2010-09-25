@@ -508,7 +508,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.gridEditPedigree, EwE6, Version=6.1.0.923, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridEditPedigree, EwE6, Version=6.1.0.921, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_scYupi.Panel1</value>
@@ -621,43 +621,43 @@
   <data name="&gt;&gt;m_scYupi.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="m_btnDefaults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnCreateDefaultLevels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnDefaults.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="m_btnCreateDefaultLevels.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="m_btnDefaults.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_btnCreateDefaultLevels.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="m_btnDefaults.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnCreateDefaultLevels.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnDefaults.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnCreateDefaultLevels.Location" type="System.Drawing.Point, System.Drawing">
     <value>600, 120</value>
   </data>
-  <data name="m_btnDefaults.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnCreateDefaultLevels.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
   </data>
-  <data name="m_btnDefaults.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnCreateDefaultLevels.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="m_btnDefaults.Text" xml:space="preserve">
+  <data name="m_btnCreateDefaultLevels.Text" xml:space="preserve">
     <value>Create defaults</value>
   </data>
-  <data name="m_btnDefaults.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="m_btnCreateDefaultLevels.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
   </data>
-  <data name="&gt;&gt;m_btnDefaults.Name" xml:space="preserve">
-    <value>m_btnDefaults</value>
+  <data name="&gt;&gt;m_btnCreateDefaultLevels.Name" xml:space="preserve">
+    <value>m_btnCreateDefaultLevels</value>
   </data>
-  <data name="&gt;&gt;m_btnDefaults.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCreateDefaultLevels.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnDefaults.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCreateDefaultLevels.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnDefaults.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCreateDefaultLevels.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
   <data name="m_hdrColors.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -693,121 +693,118 @@
   <data name="&gt;&gt;m_hdrColors.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_btnCustom.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnColorCustom.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnCustom.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="m_btnColorCustom.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="m_btnCustom.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_btnColorCustom.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="m_btnCustom.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnColorCustom.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnCustom.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnColorCustom.Location" type="System.Drawing.Point, System.Drawing">
     <value>600, 292</value>
   </data>
-  <data name="m_btnCustom.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnColorCustom.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
   </data>
-  <data name="m_btnCustom.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnColorCustom.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="m_btnCustom.Text" xml:space="preserve">
+  <data name="m_btnColorCustom.Text" xml:space="preserve">
     <value>Custom...</value>
   </data>
-  <data name="m_btnCustom.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="m_btnColorCustom.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
   </data>
-  <data name="&gt;&gt;m_btnCustom.Name" xml:space="preserve">
-    <value>m_btnCustom</value>
+  <data name="&gt;&gt;m_btnColorCustom.Name" xml:space="preserve">
+    <value>m_btnColorCustom</value>
   </data>
-  <data name="&gt;&gt;m_btnCustom.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColorCustom.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnCustom.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColorCustom.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnCustom.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColorCustom.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_btnDefaultCurrent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnColorDefaultCurrent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnDefaultCurrent.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="m_btnColorDefaultCurrent.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="m_btnDefaultCurrent.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_btnColorDefaultCurrent.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="m_btnDefaultCurrent.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnColorDefaultCurrent.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnDefaultCurrent.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnColorDefaultCurrent.Location" type="System.Drawing.Point, System.Drawing">
     <value>600, 263</value>
   </data>
-  <data name="m_btnDefaultCurrent.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnColorDefaultCurrent.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
   </data>
-  <data name="m_btnDefaultCurrent.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnColorDefaultCurrent.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="m_btnDefaultCurrent.Text" xml:space="preserve">
+  <data name="m_btnColorDefaultCurrent.Text" xml:space="preserve">
     <value>Default current</value>
   </data>
-  <data name="m_btnDefaultCurrent.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageBeforeText</value>
+  <data name="&gt;&gt;m_btnColorDefaultCurrent.Name" xml:space="preserve">
+    <value>m_btnColorDefaultCurrent</value>
   </data>
-  <data name="&gt;&gt;m_btnDefaultCurrent.Name" xml:space="preserve">
-    <value>m_btnDefaultCurrent</value>
-  </data>
-  <data name="&gt;&gt;m_btnDefaultCurrent.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColorDefaultCurrent.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnDefaultCurrent.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColorDefaultCurrent.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnDefaultCurrent.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColorDefaultCurrent.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_btnDefaultAll.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnColorDefaultAll.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnDefaultAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="m_btnColorDefaultAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="m_btnDefaultAll.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_btnColorDefaultAll.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="m_btnDefaultAll.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnColorDefaultAll.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnDefaultAll.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnColorDefaultAll.Location" type="System.Drawing.Point, System.Drawing">
     <value>600, 234</value>
   </data>
-  <data name="m_btnDefaultAll.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnColorDefaultAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
   </data>
-  <data name="m_btnDefaultAll.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnColorDefaultAll.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="m_btnDefaultAll.Text" xml:space="preserve">
+  <data name="m_btnColorDefaultAll.Text" xml:space="preserve">
     <value>Default all</value>
   </data>
-  <data name="m_btnDefaultAll.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="m_btnColorDefaultAll.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
   </data>
-  <data name="&gt;&gt;m_btnDefaultAll.Name" xml:space="preserve">
-    <value>m_btnDefaultAll</value>
+  <data name="&gt;&gt;m_btnColorDefaultAll.Name" xml:space="preserve">
+    <value>m_btnColorDefaultAll</value>
   </data>
-  <data name="&gt;&gt;m_btnDefaultAll.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColorDefaultAll.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnDefaultAll.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColorDefaultAll.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnDefaultAll.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnColorDefaultAll.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
