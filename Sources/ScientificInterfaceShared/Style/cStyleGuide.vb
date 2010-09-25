@@ -368,6 +368,23 @@ Namespace Style
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' <para>Format an Integer number to a string. The number will be rendered
+        ''' with 0 relevant decimal digits.</para>
+        ''' </summary>
+        ''' <param name="iValue">The value to format.</param>
+        ''' <param name="style">Optional <see cref="eStyleFlags">style flags</see> to
+        ''' that may need specific formatting. Computed values for instance will
+        ''' be represented with exactly the requested number of decimal digits, instead
+        ''' of the </param>
+        ''' <returns>A formatted value that always displays the least significant precision digit.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Function FormatNumber(ByVal iValue As Integer, _
+                                     Optional ByVal style As eStyleFlags = eStyleFlags.OK) As String
+            Return Me.FormatNumber(CDbl(iValue), style, 0)
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' <para>Format a Single number to a string. The number will be rendered
         ''' with a requested number of relevant decimal digits.</para>
         ''' </summary>
@@ -383,9 +400,11 @@ Namespace Style
         ''' of the </param>
         ''' <returns>A formatted value that always displays the least significant precision digit.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function FormatNumber(ByVal sValue As Single, Optional ByVal style As eStyleFlags = eStyleFlags.OK, _
-                Optional ByVal iNumDigits As Integer = -1) As String
-            Return Me.FormatNumber(CDbl(sValue), style, iNumDigits)
+        Public Function FormatNumber(ByVal sValue As Single, _
+                                     Optional ByVal style As eStyleFlags = eStyleFlags.OK, _
+                                     Optional ByVal iNumDigits As Integer = -1, _
+                                     Optional ByVal tsGroupDigits As TriState = TriState.UseDefault) As String
+            Return Me.FormatNumber(CDbl(sValue), style, iNumDigits, tsGroupDigits)
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -404,9 +423,10 @@ Namespace Style
         ''' be represented with exactly the requested number of decimal digits.</param>
         ''' <returns>A formatted value that always displays the least significant precision digit.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function FormatNumber(ByVal dValue As Double, Optional ByVal style As eStyleFlags = eStyleFlags.OK, _
-                Optional ByVal iNumDigits As Integer = -1, _
-                Optional ByVal tsGroupDigits As TriState = TriState.UseDefault) As String
+        Public Function FormatNumber(ByVal dValue As Double, _
+                                     Optional ByVal style As eStyleFlags = eStyleFlags.OK, _
+                                     Optional ByVal iNumDigits As Integer = -1, _
+                                     Optional ByVal tsGroupDigits As TriState = TriState.UseDefault) As String
 
             ' Use styleguide numdigits setting if value not provided
             If iNumDigits < 0 Then iNumDigits = Me.m_iNumDigits
