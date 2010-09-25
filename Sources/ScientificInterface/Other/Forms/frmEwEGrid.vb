@@ -386,9 +386,14 @@ Public Class frmEwEGrid
                 If ((objValue IsNot Nothing) And (bIsMixedValue = False)) Then
                     If TypeOf objValue Is String Then
                         Me.m_ttbValue.Text = CStr(objValue)
-                    ElseIf (TypeOf objValue Is Single) Or (TypeOf objValue Is Double) Or (TypeOf objValue Is Integer) Then
+                    ElseIf (TypeOf objValue Is Single) Or (TypeOf objValue Is Double) Then
                         Try
                             Me.m_ttbValue.Text = Me.m_form.StyleGuide.FormatNumber(CSng(objValue))
+                        Catch ex As Exception
+                        End Try
+                    ElseIf (TypeOf objValue Is Integer) Then
+                        Try
+                            Me.m_ttbValue.Text = Me.m_form.StyleGuide.FormatNumber(CInt(objValue))
                         Catch ex As Exception
                         End Try
                     ElseIf TypeOf objValue Is Boolean Then
