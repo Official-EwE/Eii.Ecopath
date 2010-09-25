@@ -1149,7 +1149,7 @@ Namespace DataSources
 
                 Try
                     iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
-                    iVariable = Array.IndexOf(cPedigreeManager.SupportVariables, CStr(reader("VarName")))
+                    iVariable = Array.IndexOf(cPedigreeManager.SupportVariables, cin.GetVarName(CStr(reader("VarName"))))
                     iLevel = Array.IndexOf(ecopathDS.PedigreeLevelDBID, CInt(reader("LevelID")))
 
                     If (iGroup > -1) And (iVariable > -1) And (iLevel > -1) Then
@@ -1247,6 +1247,7 @@ Namespace DataSources
                             drow("GroupID") = ecopathDS.GroupDBID(iGroup)
                             drow("VarName") = cin.GetVarName(cPedigreeManager.SupportVariables(iVariable))
                             drow("LevelID") = ecopathDS.PedigreeLevelDBID(iLevel)
+                            writer.AddRow(drow)
                         End If
                     Next
                 Next

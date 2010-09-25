@@ -33,6 +33,10 @@ Public Class cPedigreeManager
         Return cPedigreeManager.g_varNameSupported
     End Function
 
+    Public Shared Function NumSupportedVariables() As Integer
+        ' etc
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' 

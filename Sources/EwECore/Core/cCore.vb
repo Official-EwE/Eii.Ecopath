@@ -2767,6 +2767,12 @@ Public Class cCore
                 'stanza variables setting the stanza id will also set the isMultiStanza Flag
                 Input.iStanza = getStanzaIndexForGroup(iGroup)
 
+                'Pedigree
+                For j = 0 To cPedigreeManager.SupportVariables.Length - 1
+                    ' To adhere to core standards, Pedigree property should take a one-based integer index
+                    Input.Pedigree(cPedigreeManager.SupportVariables(j)) = m_EcoPathData.Pedigree(iGroup, j)
+                Next
+
                 ' === PSD ===
                 Input.AinLWInput = m_PSDData.AinLWInput(iGroup)
                 Input.BinLWInput = m_PSDData.BinLWInput(iGroup)
@@ -2860,6 +2866,12 @@ Public Class cCore
                 For i As Integer = 1 To nDetritusGroups
                     m_EcoPathData.DF(iGroup, i) = Input.DetritusFate(i)
                 Next i
+
+                'Pedigree
+                For i As Integer = 0 To cPedigreeManager.SupportVariables.Length - 1
+                    ' To adhere to core standards, Pedigree property should take a one-based integer index
+                    m_EcoPathData.Pedigree(iGroup, i) = Input.Pedigree(cPedigreeManager.SupportVariables(i))
+                Next
 
             Else
                 Debug.Assert(False)
