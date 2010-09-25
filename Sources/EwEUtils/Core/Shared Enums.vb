@@ -1837,6 +1837,8 @@ Namespace Core
         EcospaceAdvectionManager = 91
         EcospaceAdvectionParameters = 92
 
+        PedigreeManager = 93
+
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
         ''' </summary>

@@ -67,7 +67,7 @@ Friend Class cDBUpdate6_01_00_007
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD PRIMARY KEY (GroupID, VarName)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD FOREIGN KEY (GroupID) REFERENCES EcopathGroup(GroupID)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD FOREIGN KEY (LevelID) REFERENCES Pedigree(LevelID)")
-        bSucces = bSucces And db.Execute("ALTER TABLE Auxillary DROP COLUMN PedigreeLevelID")
+        'bSucces = bSucces And db.Execute("ALTER TABLE Auxillary DROP COLUMN PedigreeLevelID")
         Return bSucces
 
     End Function

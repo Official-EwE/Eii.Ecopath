@@ -10336,13 +10336,22 @@ Public Class cCore
 
         Dim manager As cPedigreeManager = Nothing
         Dim level As cPedigreeLevel = Nothing
+        Dim varname As eVarNameFlags = eVarNameFlags.NotSet
 
         ' Create managers
         Me.m_PedigreeManagers = New Dictionary(Of eVarNameFlags, cPedigreeManager)
-        For Each vn As eVarNameFlags In cPedigreeManager.SupportVariables
-            manager = New cPedigreeManager(Me, vn)
+        ' Popluate managers
+        For iVariable As Integer = 0 To cPedigreeManager.SupportVariables.Length - 1
+            ' Get variable
+            varname = cPedigreeManager.SupportVariables(iVariable)
+            ' Create manager
+            manager = New cPedigreeManager(Me, varname)
+            manager.Index = iVariable + 1
+            manager.DBID = iVariable
+            ' Load manager
             manager.Load()
-            Me.m_PedigreeManagers(vn) = manager
+            ' Store manager
+            Me.m_PedigreeManagers(varname) = manager
         Next
         Return True
 

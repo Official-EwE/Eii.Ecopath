@@ -8,18 +8,18 @@ Imports System.Collections.Generic
 #End Region ' Imports
 
 Public Class cPedigreeManager
-    Implements ICoreInterface
+    Inherits cCoreInputOutputBase
     'Implements IEnumerable(Of cPedigreeLevel)
 
     Private Shared g_varNameSupported As eVarNameFlags() = {eVarNameFlags.Biomass, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp}
-    Private m_core As cCore = Nothing
     Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
     Private m_levels As New List(Of cPedigreeLevel)
-    Private m_dataType As eDataTypes = eDataTypes.PedigreeLevel
     Private m_messageSource As eCoreComponentType = eCoreComponentType.Core
 
     Friend Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags)
-        Me.m_core = core
+        MyBase.New(core)
+        Me.m_dataType = eDataTypes.PedigreeManager
+        Me.m_coreComponent = eCoreComponentType.EcoPath
         Me.m_varName = varName
     End Sub
 
@@ -191,54 +191,6 @@ Public Class cPedigreeManager
     End Property
 
 #End Region ' Properties
-
-#Region " ICoreInterface Implementation "
-
-    Public ReadOnly Property DataType() As EwEUtils.Core.eDataTypes Implements ICoreInterface.DataType
-        Get
-            Return Me.m_dataType
-        End Get
-    End Property
-
-    Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
-        Get
-            Return Me.m_messageSource
-        End Get
-    End Property
-
-    Public Property DBID() As Integer Implements ICoreInterface.DBID
-        Get
-            Return cCore.NULL_VALUE
-        End Get
-        Set(ByVal value As Integer)
-            Debug.Assert(False, "Not Implemented")
-        End Set
-    End Property
-
-    Public Function GetID() As String Implements ICoreInterface.GetID
-        Dim id As Integer = CType(m_dataType, Integer)
-        Return cValueID.getDataTypeID(m_dataType, id)
-    End Function
-
-    Public Property Index() As Integer Implements ICoreInterface.Index
-        Get
-            Return cCore.NULL_VALUE
-        End Get
-        Set(ByVal value As Integer)
-            Debug.Assert(False, "Not Implemented")
-        End Set
-    End Property
-
-    Public Property Name() As String Implements ICoreInterface.Name
-        Get
-            Return Me.ToString
-        End Get
-        Set(ByVal value As String)
-            Debug.Assert(False, "Not Implemented")
-        End Set
-    End Property
-
-#End Region ' ICoreInterface Implementation
 
 #Region " ICollection implementation "
 #If 0 Then
