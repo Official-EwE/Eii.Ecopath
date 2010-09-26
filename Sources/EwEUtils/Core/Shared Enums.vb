@@ -1946,6 +1946,9 @@ Namespace Core
         ''' <summary>The number of taxonomy groups.</summary>
         nTaxon
 
+        ''' <summary>The number of supported pedigree variables.</summary>
+        nPedigreeVariables
+
     End Enum
 
 #End Region ' Core counters

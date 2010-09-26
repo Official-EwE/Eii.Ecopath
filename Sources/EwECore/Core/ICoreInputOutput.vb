@@ -830,21 +830,18 @@ Public Class cCoreGroupBase
     End Property
 
     ''' <summary>
-    ''' Get/set the pedigree for a given variable. For now, pedigree is
-    ''' only enabled on core groups.
+    ''' Get/set the pedigree index for a given variable. 
     ''' </summary>
-    ''' <param name="varName">The variable to get/set pedigree for.</param>
-    Public Property Pedigree(ByVal varName As eVarNameFlags) As Integer
+    ''' <param name="iVariable">One-based index of the variable for which to obtain pedigree.</param>
+    ''' <remarks>
+    ''' Pedigree is only enabled on core groups.
+    ''' </remarks>
+    Public Property Pedigree(ByVal iVariable As Integer) As Integer
         Get
-            ' Is varname supported for Pedigree purposes?
-            Dim iIndex As Integer = Array.IndexOf(cPedigreeManager.SupportVariables, varName)
-            If iIndex = -1 Then Return cCore.NULL_VALUE
-            Return CInt(Me.GetVariable(eVarNameFlags.Pedigree, iIndex))
+            Return CInt(Me.GetVariable(eVarNameFlags.Pedigree, iVariable))
         End Get
         Set(ByVal value As Integer)
-            Dim iIndex As Integer = Array.IndexOf(cPedigreeManager.SupportVariables, varName)
-            If (iIndex = -1) Then Return
-            Me.SetVariable(eVarNameFlags.Pedigree, value, iIndex)
+            Me.SetVariable(eVarNameFlags.Pedigree, value, iVariable)
         End Set
     End Property
 

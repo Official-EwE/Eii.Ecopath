@@ -1149,10 +1149,10 @@ Namespace DataSources
 
                 Try
                     iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
-                    iVariable = Array.IndexOf(cPedigreeManager.SupportVariables, cin.GetVarName(CStr(reader("VarName"))))
+                    iVariable = Array.IndexOf(ecopathDS.PedigreeVariables, cin.GetVarName(CStr(reader("VarName"))))
                     iLevel = Array.IndexOf(ecopathDS.PedigreeLevelDBID, CInt(reader("LevelID")))
 
-                    If (iGroup > -1) And (iVariable > -1) And (iLevel > -1) Then
+                    If (iGroup >= 1) And (iVariable >= 1) And (iLevel >= 1) Then
                         ecopathDS.Pedigree(iGroup, iVariable) = iLevel
                     Else
                         ' NOP... log message?
@@ -1240,12 +1240,12 @@ Namespace DataSources
                 writer = Me.m_db.GetWriter("EcopathGroupPedigree")
 
                 For iGroup = 1 To ecopathDS.NumGroups
-                    For iVariable = 0 To cPedigreeManager.SupportVariables.Length - 1
+                    For iVariable = 1 To ecopathDS.NumPedigreeVariables
                         iLevel = ecopathDS.Pedigree(iGroup, iVariable)
                         If (iLevel > 0) Then
                             drow = writer.NewRow()
                             drow("GroupID") = ecopathDS.GroupDBID(iGroup)
-                            drow("VarName") = cin.GetVarName(cPedigreeManager.SupportVariables(iVariable))
+                            drow("VarName") = cin.GetVarName(ecopathDS.PedigreeVariables(iVariable))
                             drow("LevelID") = ecopathDS.PedigreeLevelDBID(iLevel)
                             writer.AddRow(drow)
                         End If

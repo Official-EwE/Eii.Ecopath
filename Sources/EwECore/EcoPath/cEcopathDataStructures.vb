@@ -256,6 +256,9 @@ Public Class cEcopathDataStructures
     Public PedigreeLevelConfidence() As Single
     ''' <summary>Array [#groups, #supported vars] = pedigree index.</summary>
     Public Pedigree(,) As Integer
+    ''' <summary>One-based array of variables supported by the pedigree system.</summary>
+    Public PedigreeVariables As eVarNameFlags() = {eVarNameFlags.NotSet, eVarNameFlags.Biomass, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp}
+    Public NumPedigreeVariables As Integer = Me.PedigreeVariables.Length - 1
 
     ''' <summary>Total number of taxonomy codes.</summary>
     Public NumTaxon As Integer = 0
@@ -570,7 +573,7 @@ Public Class cEcopathDataStructures
         ReDim Me.PedigreeLevelVarName(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelIndexValue(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelConfidence(Me.NumPedigreeLevels)
-        ReDim Me.Pedigree(Me.NumGroups, cPedigreeManager.SupportVariables.Length)
+        ReDim Me.Pedigree(Me.NumGroups, Me.NumPedigreeVariables)
 
     End Sub
 

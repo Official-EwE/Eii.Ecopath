@@ -242,7 +242,7 @@ Namespace Ecopath.Tools
                 Me.m_varname = value
                 ' Build new
                 If (Me.m_varname <> eVarNameFlags.NotSet) Then
-                    Debug.Assert(cPedigreeManager.SupportVariables.Contains(value))
+                    Debug.Assert(Me.Core.IsPedigreeVariableSupported(value), "Pedigree not supported for variable " & Me.m_varname.ToString)
                     Me.BuildPedigreeControls()
                 End If
             End Set

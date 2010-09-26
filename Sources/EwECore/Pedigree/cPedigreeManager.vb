@@ -9,9 +9,7 @@ Imports System.Collections.Generic
 
 Public Class cPedigreeManager
     Inherits cCoreInputOutputBase
-    'Implements IEnumerable(Of cPedigreeLevel)
 
-    Private Shared g_varNameSupported As eVarNameFlags() = {eVarNameFlags.Biomass, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp}
     Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
     Private m_levels As New List(Of cPedigreeLevel)
     Private m_messageSource As eCoreComponentType = eCoreComponentType.Core
@@ -22,20 +20,6 @@ Public Class cPedigreeManager
         Me.m_coreComponent = eCoreComponentType.EcoPath
         Me.m_varName = varName
     End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns the list of variables for which pedigree information is supported.
-    ''' </summary>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Public Shared Function SupportVariables() As eVarNameFlags()
-        Return cPedigreeManager.g_varNameSupported
-    End Function
-
-    Public Shared Function NumSupportedVariables() As Integer
-        ' etc
-    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

@@ -569,8 +569,9 @@ Imports SourceGrid2.Cells
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub FillData()
 
-        If (Me.m_dictConfigs.Count = 0) Then
-            For Each vn As eVarNameFlags In cPedigreeManager.SupportVariables
+        If (Me.m_dictConfigs.Count <> Me.Core.nPedigreeVariables) Then
+            For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
+                Dim vn As eVarNameFlags = Me.Core.PedigreeVariable(iVariable)
                 Me.m_dictConfigs(vn) = New cPedigreeManagerInfo(Me.Core, vn)
             Next
         End If

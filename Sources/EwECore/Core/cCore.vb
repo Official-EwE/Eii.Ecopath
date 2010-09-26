@@ -218,7 +218,8 @@ Public Class cCore
                     Return Me.nWeightClasses
                 Case eCoreCounterTypes.nTaxon
                     Return Me.nTaxon
-
+                Case eCoreCounterTypes.nPedigreeVariables
+                    Return Me.nPedigreeVariables
                 Case Else
                     'Debug.Assert(False, String.Format("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
                     Return NULL_VALUE
@@ -496,6 +497,18 @@ Public Class cCore
     Public ReadOnly Property nTaxon() As Integer
         Get
             Return Me.m_EcoPathData.NumTaxon
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Get the number of pedigree variables.
+    ''' </summary>
+    ''' <remarks>
+    ''' See <see cref="eCoreCounterTypes.nPedigreeVariables">eCoreCounterTypes.nPedigreeVariables</see>.
+    ''' </remarks>
+    Public ReadOnly Property nPedigreeVariables() As Integer
+        Get
+            Return Me.m_EcoPathData.NumPedigreeVariables
         End Get
     End Property
 
@@ -2768,9 +2781,8 @@ Public Class cCore
                 Input.iStanza = getStanzaIndexForGroup(iGroup)
 
                 'Pedigree
-                For j = 0 To cPedigreeManager.SupportVariables.Length - 1
-                    ' To adhere to core standards, Pedigree property should take a one-based integer index
-                    Input.Pedigree(cPedigreeManager.SupportVariables(j)) = m_EcoPathData.Pedigree(iGroup, j)
+                For j = 1 To Me.m_EcoPathData.NumPedigreeVariables
+                    Input.Pedigree(j) = m_EcoPathData.Pedigree(iGroup, j)
                 Next
 
                 ' === PSD ===
@@ -2868,9 +2880,8 @@ Public Class cCore
                 Next i
 
                 'Pedigree
-                For i As Integer = 0 To cPedigreeManager.SupportVariables.Length - 1
-                    ' To adhere to core standards, Pedigree property should take a one-based integer index
-                    m_EcoPathData.Pedigree(iGroup, i) = Input.Pedigree(cPedigreeManager.SupportVariables(i))
+                For i As Integer = 1 To Me.m_EcoPathData.NumPedigreeVariables
+                    m_EcoPathData.Pedigree(iGroup, i) = Input.Pedigree(i)
                 Next
 
             Else
@@ -10353,12 +10364,12 @@ Public Class cCore
         ' Create managers
         Me.m_PedigreeManagers = New Dictionary(Of eVarNameFlags, cPedigreeManager)
         ' Popluate managers
-        For iVariable As Integer = 0 To cPedigreeManager.SupportVariables.Length - 1
+        For iVariable As Integer = 1 To Me.nPedigreeVariables
             ' Get variable
-            varname = cPedigreeManager.SupportVariables(iVariable)
+            varname = Me.PedigreeVariable(iVariable)
             ' Create manager
             manager = New cPedigreeManager(Me, varname)
-            manager.Index = iVariable + 1
+            manager.Index = iVariable
             manager.DBID = iVariable
             ' Load manager
             manager.Load()
@@ -10377,8 +10388,45 @@ Public Class cCore
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function GetPedigreeManager(ByVal varName As eVarNameFlags) As cPedigreeManager
-        If Me.m_PedigreeManagers.ContainsKey(varName) Then Return Me.m_PedigreeManagers(varName)
-        Return Nothing
+        If (Not Me.IsPedigreeVariableSupported(varName)) Then Return Nothing
+        Return Me.m_PedigreeManagers(varName)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' States whether pedigree is supported for a given variable.
+    ''' </summary>
+    ''' <param name="varName">The variable to check.</param>
+    ''' <returns>True if the <paramref name="varName">variable</paramref> is supported.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsPedigreeVariableSupported(ByVal varName As eVarNameFlags) As Boolean
+        Return Me.PedigreeVariableIndex(varName) > -1
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the index of a pedigree variable.
+    ''' </summary>
+    ''' <param name="varName">The variable to obtain the index for.</param>
+    ''' <returns>A one-based index.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function PedigreeVariableIndex(ByVal varName As eVarNameFlags) As Integer
+        Return Array.IndexOf(Me.m_EcoPathData.PedigreeVariables, varName)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the variable at a given <see cref="PedigreeVariableIndex">variable index</see>.
+    ''' </summary>
+    ''' <param name="iIndex">One-based of the variable to retrieve.</param>
+    ''' <returns>The variable at the given <see cref="PedigreeVariableIndex">index</see>.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function PedigreeVariable(ByVal iIndex As Integer) As eVarNameFlags
+        Try
+            Return Me.m_EcoPathData.PedigreeVariables(iIndex)
+        Catch ex As Exception
+            Return eVarNameFlags.NotSet
+        End Try
     End Function
 
 #End Region ' Pedigree

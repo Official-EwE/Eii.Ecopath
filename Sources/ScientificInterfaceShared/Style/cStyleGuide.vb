@@ -985,7 +985,7 @@ Namespace Style
         Public Function PedigreeColorDefault(ByVal core As cCore, _
                                              ByVal iLevel As Integer, _
                                              ByVal vn As eVarNameFlags) As Color
-            Debug.Assert(Array.IndexOf(cPedigreeManager.SupportVariables, vn) <> -1)
+            Debug.Assert(core.IsPedigreeVariableSupported(vn))
             Return PedigreeColorDefault(iLevel, core.GetPedigreeManager(vn).NumLevels)
         End Function
 

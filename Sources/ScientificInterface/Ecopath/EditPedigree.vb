@@ -46,8 +46,8 @@ Namespace Ecopath
             MyBase.OnLoad(e)
 
             Me.m_cmbVariable.Items.Clear()
-            For Each vn As eVarNameFlags In cPedigreeManager.SupportVariables
-                Me.m_cmbVariable.Items.Add(vn)
+            For iVariable As Integer = 1 To Me.m_uic.Core.nPedigreeVariables
+                Me.m_cmbVariable.Items.Add(Me.m_uic.Core.PedigreeVariable(iVariable))
             Next
             Me.m_cmbVariable.SelectedIndex = 0
             Me.UpdateControls()

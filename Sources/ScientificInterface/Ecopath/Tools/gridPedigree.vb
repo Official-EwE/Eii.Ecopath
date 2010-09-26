@@ -26,13 +26,13 @@ Namespace Ecopath.Tools
 
             Dim group As cCoreGroupBase = Nothing
 
-            Me.Redim(Core.nGroups + 1, cPedigreeManager.SupportVariables.Count + 2)
+            Me.Redim(Me.Core.nGroups + 1, Me.Core.nPedigreeVariables + 2)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
 
-            For iVariable As Integer = 0 To cPedigreeManager.SupportVariables.Count - 1
-                Me(0, iVariable + 2) = New EwEColumnHeaderCell(cPedigreeManager.SupportVariables(iVariable).ToString)
+            For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
+                Me(0, iVariable + 1) = New EwEColumnHeaderCell(Me.Core.PedigreeVariable(iVariable).ToString)
             Next iVariable
 
             For iGroup As Integer = 1 To Core.nGroups
@@ -55,11 +55,12 @@ Namespace Ecopath.Tools
             For iGroup As Integer = 1 To Core.nGroups
                 ' Get group
                 group = Me.Core.EcoPathGroupInputs(iGroup)
-                For iVariable As Integer = 0 To cPedigreeManager.SupportVariables.Count - 1
+                For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
                     ' Get pedigree
-                    man = Me.Core.GetPedigreeManager(cPedigreeManager.SupportVariables(iVariable))
+                    man = Me.Core.GetPedigreeManager(Me.Core.PedigreeVariable(iVariable))
                     cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Pedigree, man)
-                    Me(iGroup, 2 + iVariable) = cell
+                    cell.SuppressZero = True
+                    Me(iGroup, 1 + iVariable) = cell
                 Next
             Next
         End Sub
