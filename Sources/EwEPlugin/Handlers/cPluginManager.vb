@@ -1904,23 +1904,31 @@ Public Class cPluginManager
 
     Friend Sub RaisePluginException(ByVal assembly As cPluginAssembly, ByVal ex As Exception)
 
-        Dim strMessage As String = String.Format(My.Resources.PLUGIN_ERROR_GENERIC, _
-                                                 assembly.AssemblyName.Name, _
-                                                 ex.Message)
+        Dim strAssembly As String = "<unknown>"
 
-        Me.RaisePluginException(New cPluginException(assembly, strMessage, ex))
+        If (assembly IsNot Nothing) Then
+            strAssembly = assembly.AssemblyName.Name
+        End If
+
+        Me.RaisePluginException(New cPluginException(assembly, String.Format(My.Resources.PLUGIN_ERROR_GENERIC, strAssembly, ex.Message), ex))
 
     End Sub
 
     Friend Sub RaisePluginException(ByVal assembly As cPluginAssembly, ByVal plugin As IPlugin, _
                                     ByVal strMethodName As String, ByVal ex As Exception)
 
-        Dim strMessage As String = String.Format(My.Resources.PLUGIN_ERROR_POINT, _
-                                                 assembly.AssemblyName.Name, _
-                                                 plugin.Name, _
-                                                 strMethodName, _
-                                                 ex.Message)
-        Me.RaisePluginException(New cPluginException(assembly, strMessage, ex))
+        Dim strAssembly As String = "<unknown>"
+        Dim strPlugin As String = "<unknown>"
+
+        If (assembly IsNot Nothing) Then
+            strAssembly = assembly.AssemblyName.Name
+        End If
+
+        If (plugin IsNot Nothing) Then
+            strPlugin = plugin.Name
+        End If
+
+        Me.RaisePluginException(New cPluginException(assembly, String.Format(My.Resources.PLUGIN_ERROR_POINT, strAssembly, strPlugin, strMethodName, ex.Message), ex))
 
     End Sub
 
