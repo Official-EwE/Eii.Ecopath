@@ -303,13 +303,19 @@ Imports SourceGrid2.Cells
         ''' <param name="strName">Name to assign to this administrative unit.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal strName As String, _
-                       Optional ByVal strDescription As String = "", _
                        Optional ByVal sIndexValue As Single = 0.0!, _
                        Optional ByVal sConfidenceInterval As Single = 0.0!)
+
             Me.m_level = Nothing
-            Me.m_strName = strName
+            If strName.IndexOf("|"c) > -1 Then
+                Dim astrSplit As String() = strName.Split("|"c)
+                Me.m_strName = astrSplit(0)
+                Me.m_strDescription = astrSplit(1)
+            Else
+                Me.m_strName = strName
+                Me.m_strDescription = ""
+            End If
             Me.m_iColor = 0
-            Me.m_strDescription = strDescription
             Me.m_sIndexValue = sIndexValue
             Me.m_sConfidenceInterval = sConfidenceInterval
             Me.m_status = eItemStatusTypes.Added
@@ -531,8 +537,6 @@ Imports SourceGrid2.Cells
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub InitStyle()
 
-        ' ToDo_JS: Localize this method
-
         MyBase.InitStyle()
 
         Me.Selection.SelectionMode = GridSelectionMode.Row
@@ -550,9 +554,9 @@ Imports SourceGrid2.Cells
         ' Color
         Me(0, eColumnTypes.LevelColor) = New EwEColumnHeaderCell(My.Resources.HEADER_COLOR)
         ' Index value
-        Me(0, eColumnTypes.LevelIndexValue) = New EwEColumnHeaderCell("Index value")
+        Me(0, eColumnTypes.LevelIndexValue) = New EwEColumnHeaderCell(My.Resources.HEADER_INDEXVALUE)
         ' Confidence interval
-        Me(0, eColumnTypes.LevelConfidenceInterval) = New EwEColumnHeaderCell("Conf. interv. (+/-%)")
+        Me(0, eColumnTypes.LevelConfidenceInterval) = New EwEColumnHeaderCell(My.Resources.HEADER_CONFIDENCEINTERVAL)
         ' Status
         Me(0, eColumnTypes.LevelStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
         ' Fix index column only; Level name column cannot be fixed because it must be editable
@@ -647,7 +651,6 @@ Imports SourceGrid2.Cells
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
-
 
         Me.Columns(eColumnTypes.LevelIndex).Width = 24
         Me.Columns(eColumnTypes.LevelIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
@@ -1030,41 +1033,41 @@ Imports SourceGrid2.Cells
 
             Case eVarNameFlags.Biomass
 
-                lLevels.Add(New cPedigreeLevelInfo("Estimated by Ecopath", "", 0, 0))
-                lLevels.Add(New cPedigreeLevelInfo("From other model", "", 0.1, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo("Guesstimate", "", 0.2, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo("Approximate or indirect method", "May include methods like remote sensing, etc.", 0.7, 0.4))
-                lLevels.Add(New cPedigreeLevelInfo("Sampling/locally, low precision", "", 0.7, 0.4))
-                lLevels.Add(New cPedigreeLevelInfo("Sampling/locally, high precision", "", 1.0, 0.2))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_ESTIMATED, 0, 0))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.1, 0.8))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.2, 0.8))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_APPROX_INDIRECT, 0.7, 0.4))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAMPLING_LOW, 0.7, 0.4))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAMPLING_HIGH, 1.0, 0.2))
 
             Case eVarNameFlags.PBInput, eVarNameFlags.QBInput
 
-                lLevels.Add(New cPedigreeLevelInfo("Estimated by Ecopath", "", 0, 0))
-                lLevels.Add(New cPedigreeLevelInfo("Guesstimate", "", 0.2, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo("From other model", "", 0.2, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo("Empirical relationship", "", 0.5, 0.5))
-                lLevels.Add(New cPedigreeLevelInfo("Similar species, similar system, low precision", "", 0.6, 0.4))
-                lLevels.Add(New cPedigreeLevelInfo("Similar species, same system, low precision", "", 0.7, 0.3))
-                lLevels.Add(New cPedigreeLevelInfo("Same species, similar system, high precision", "", 0.8, 0.2))
-                lLevels.Add(New cPedigreeLevelInfo("Same species, same system, high precision", "", 0.9, 0.1))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_ESTIMATED, 0, 0))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.2, 0.8))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.2, 0.8))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_EMPERICAL, 0.5, 0.5))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SIM_SIM, 0.6, 0.4))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SIM_SAME, 0.7, 0.3))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAME_SIM, 0.8, 0.2))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAME_SAME, 0.9, 0.1))
 
             Case eVarNameFlags.DietComp
 
-                lLevels.Add(New cPedigreeLevelInfo("General knowledge of related group/species", "", 0.2, 0))
-                lLevels.Add(New cPedigreeLevelInfo("From other model", "", 0.2, 0))
-                lLevels.Add(New cPedigreeLevelInfo("General knowledge for same group/species", "", 0.2, 0))
-                lLevels.Add(New cPedigreeLevelInfo("Qualitative diet composition study", "", 0.5, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo("Quantitative but limited diet composition study", "", 0.7, 0.4))
-                lLevels.Add(New cPedigreeLevelInfo("Quantitative, detailed, diet composition study", "", 1.0, 0.3))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GENERAL_SIM, 0.2, 0))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.2, 0))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GENERAL_SAME, 0.2, 0))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUALDC, 0.5, 0.8))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUANDC_LIM, 0.7, 0.4))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUANDC_DET, 1.0, 0.3))
 
-            Case eVarNameFlags.NotSet ' Catch
+            Case eVarNameFlags.TCatchInput
 
-                lLevels.Add(New cPedigreeLevelInfo("Guesstimate", "", 0.1, 0.9))
-                lLevels.Add(New cPedigreeLevelInfo("From other model", "", 0.1, 0.9))
-                lLevels.Add(New cPedigreeLevelInfo("FAO statistics", "", 0.2, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo("National statistics", "", 0.5, 0.5))
-                lLevels.Add(New cPedigreeLevelInfo("Local study, low precision/incomplete", "", 0.7, 0.3))
-                lLevels.Add(New cPedigreeLevelInfo("Local study, high precision/complete", "", 1.0, 0.1))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.1, 0.9))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.1, 0.9))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_FAO, 0.2, 0.8))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_NATIONAL, 0.5, 0.5))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_LOCAL_LOW, 0.7, 0.3))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_LOCAL_HIGH, 1.0, 0.1))
 
         End Select
         Return lLevels.ToArray

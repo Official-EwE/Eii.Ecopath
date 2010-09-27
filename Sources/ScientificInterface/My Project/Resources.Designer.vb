@@ -2800,6 +2800,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Conf. interv. (+/-%).
+        '''</summary>
+        Friend ReadOnly Property HEADER_CONFIDENCEINTERVAL() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CONFIDENCEINTERVAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Consumer.
         '''</summary>
         Friend ReadOnly Property HEADER_CONSUMER() As String
@@ -3345,6 +3354,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_INDEX_ONMIVORY() As String
             Get
                 Return ResourceManager.GetString("HEADER_INDEX_ONMIVORY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Index value.
+        '''</summary>
+        Friend ReadOnly Property HEADER_INDEXVALUE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_INDEXVALUE", resourceCulture)
             End Get
         End Property
         
@@ -5281,6 +5299,186 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("OptionsIconSM", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Approximate or indirect method|May include methods like remote sensing, etc..
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_APPROX_INDIRECT() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_APPROX_INDIRECT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Empirical relationship.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_EMPERICAL() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_EMPERICAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Estimated by Ecopath.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_ESTIMATED() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_ESTIMATED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to FAO statistics.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_FAO() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_FAO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to General knowledge for same group/species.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_GENERAL_SAME() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_GENERAL_SAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to General knowledge of related group/species.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_GENERAL_SIM() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_GENERAL_SIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Guesstimate.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_GUESSTIMATE() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_GUESSTIMATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Local study, high precision/complete.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_LOCAL_HIGH() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_LOCAL_HIGH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Local study, low precision/incomplete.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_LOCAL_LOW() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_LOCAL_LOW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to National statistics.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_NATIONAL() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_NATIONAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to From other model.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_OTHERMODEL() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_OTHERMODEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Qualitative diet composition study.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_QUALDC() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_QUALDC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Quantitative, detailed, diet composition study.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_QUANDC_DET() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_QUANDC_DET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Quantitative but limited diet composition study.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_QUANDC_LIM() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_QUANDC_LIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Same species, same system, high precision.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_SAME_SAME() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_SAME_SAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Same species, similar system, high precision.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_SAME_SIM() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_SAME_SIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sampling/locally, high precision.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_SAMPLING_HIGH() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_SAMPLING_HIGH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sampling/locally, low precision.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_SAMPLING_LOW() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_SAMPLING_LOW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Similar species, same system, low precision.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_SIM_SAME() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_SIM_SAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Similar species, similar system, low precision.
+        '''</summary>
+        Friend ReadOnly Property PEDIGREE_DEFAULT_SIM_SIM() As String
+            Get
+                Return ResourceManager.GetString("PEDIGREE_DEFAULT_SIM_SIM", resourceCulture)
             End Get
         End Property
         

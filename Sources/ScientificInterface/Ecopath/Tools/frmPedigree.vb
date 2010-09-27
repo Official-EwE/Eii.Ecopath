@@ -188,6 +188,11 @@ Namespace Ecopath.Tools
 
         End Sub
 
+        Private Sub OnComputePedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnCompute.Click
+            ' To be written
+        End Sub
+
         Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
             If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
                 Me.Invalidate()

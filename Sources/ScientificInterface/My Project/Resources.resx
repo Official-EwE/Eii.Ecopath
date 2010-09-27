@@ -2690,4 +2690,70 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_TAC" xml:space="preserve">
     <value>Total allowable catch</value>
   </data>
+  <data name="PEDIGREE_DEFAULT_APPROX_INDIRECT" xml:space="preserve">
+    <value>Approximate or indirect method|May include methods like remote sensing, etc.</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_EMPERICAL" xml:space="preserve">
+    <value>Empirical relationship</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_ESTIMATED" xml:space="preserve">
+    <value>Estimated by Ecopath</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_FAO" xml:space="preserve">
+    <value>FAO statistics</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_GENERAL_SAME" xml:space="preserve">
+    <value>General knowledge for same group/species</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_GENERAL_SIM" xml:space="preserve">
+    <value>General knowledge of related group/species</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_GUESSTIMATE" xml:space="preserve">
+    <value>Guesstimate</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_LOCAL_HIGH" xml:space="preserve">
+    <value>Local study, high precision/complete</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_LOCAL_LOW" xml:space="preserve">
+    <value>Local study, low precision/incomplete</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_NATIONAL" xml:space="preserve">
+    <value>National statistics</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_OTHERMODEL" xml:space="preserve">
+    <value>From other model</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_QUALDC" xml:space="preserve">
+    <value>Qualitative diet composition study</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_QUANDC_DET" xml:space="preserve">
+    <value>Quantitative, detailed, diet composition study</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_QUANDC_LIM" xml:space="preserve">
+    <value>Quantitative but limited diet composition study</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAME_SAME" xml:space="preserve">
+    <value>Same species, same system, high precision</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAME_SIM" xml:space="preserve">
+    <value>Same species, similar system, high precision</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAMPLING_HIGH" xml:space="preserve">
+    <value>Sampling/locally, high precision</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAMPLING_LOW" xml:space="preserve">
+    <value>Sampling/locally, low precision</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SIM_SAME" xml:space="preserve">
+    <value>Similar species, same system, low precision</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SIM_SIM" xml:space="preserve">
+    <value>Similar species, similar system, low precision</value>
+  </data>
+  <data name="HEADER_CONFIDENCEINTERVAL" xml:space="preserve">
+    <value>Conf. interv. (+/-%)</value>
+  </data>
+  <data name="HEADER_INDEXVALUE" xml:space="preserve">
+    <value>Index value</value>
+  </data>
 </root>

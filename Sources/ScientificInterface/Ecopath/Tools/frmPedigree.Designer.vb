@@ -29,15 +29,16 @@ Namespace Ecopath.Tools
         Private Sub InitializeComponent()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.Label2 = New System.Windows.Forms.Label
+            Me.m_lblLevels = New System.Windows.Forms.Label
             Me.m_cmbViewAs = New System.Windows.Forms.ComboBox
             Me.m_lblViewAs = New System.Windows.Forms.Label
             Me.m_cmbCategory = New System.Windows.Forms.ComboBox
-            Me.Label1 = New System.Windows.Forms.Label
+            Me.m_lblCategory = New System.Windows.Forms.Label
             Me.m_lbLevels = New System.Windows.Forms.ListBox
             Me.m_hdrPedigree = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_grid = New ScientificInterface.Ecopath.Tools.gridPedigree
             Me.m_hdrGrid = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_btnCompute = New System.Windows.Forms.Button
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -60,11 +61,12 @@ Namespace Ecopath.Tools
             '
             'm_scMain.Panel1
             '
-            Me.m_scMain.Panel1.Controls.Add(Me.Label2)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_btnCompute)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblLevels)
             Me.m_scMain.Panel1.Controls.Add(Me.m_cmbViewAs)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblViewAs)
             Me.m_scMain.Panel1.Controls.Add(Me.m_cmbCategory)
-            Me.m_scMain.Panel1.Controls.Add(Me.Label1)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblCategory)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lbLevels)
             Me.m_scMain.Panel1.Controls.Add(Me.m_hdrPedigree)
             Me.m_scMain.Panel1MinSize = 108
@@ -77,14 +79,14 @@ Namespace Ecopath.Tools
             Me.m_scMain.SplitterDistance = 173
             Me.m_scMain.TabIndex = 1
             '
-            'Label2
+            'm_lblLevels
             '
-            Me.Label2.AutoSize = True
-            Me.Label2.Location = New System.Drawing.Point(3, 78)
-            Me.Label2.Name = "Label2"
-            Me.Label2.Size = New System.Drawing.Size(41, 13)
-            Me.Label2.TabIndex = 5
-            Me.Label2.Text = "&Levels:"
+            Me.m_lblLevels.AutoSize = True
+            Me.m_lblLevels.Location = New System.Drawing.Point(3, 78)
+            Me.m_lblLevels.Name = "m_lblLevels"
+            Me.m_lblLevels.Size = New System.Drawing.Size(41, 13)
+            Me.m_lblLevels.TabIndex = 5
+            Me.m_lblLevels.Text = "&Levels:"
             '
             'm_cmbViewAs
             '
@@ -118,14 +120,14 @@ Namespace Ecopath.Tools
             Me.m_cmbCategory.Size = New System.Drawing.Size(112, 21)
             Me.m_cmbCategory.TabIndex = 2
             '
-            'Label1
+            'm_lblCategory
             '
-            Me.Label1.AutoSize = True
-            Me.Label1.Location = New System.Drawing.Point(3, 24)
-            Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(52, 13)
-            Me.Label1.TabIndex = 1
-            Me.Label1.Text = "&Category:"
+            Me.m_lblCategory.AutoSize = True
+            Me.m_lblCategory.Location = New System.Drawing.Point(3, 24)
+            Me.m_lblCategory.Name = "m_lblCategory"
+            Me.m_lblCategory.Size = New System.Drawing.Size(52, 13)
+            Me.m_lblCategory.TabIndex = 1
+            Me.m_lblCategory.Text = "&Category:"
             '
             'm_lbLevels
             '
@@ -139,7 +141,7 @@ Namespace Ecopath.Tools
             Me.m_lbLevels.Location = New System.Drawing.Point(0, 94)
             Me.m_lbLevels.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
             Me.m_lbLevels.Name = "m_lbLevels"
-            Me.m_lbLevels.Size = New System.Drawing.Size(173, 325)
+            Me.m_lbLevels.Size = New System.Drawing.Size(173, 295)
             Me.m_lbLevels.TabIndex = 6
             '
             'm_hdrPedigree
@@ -172,6 +174,8 @@ Namespace Ecopath.Tools
             Me.m_grid.Location = New System.Drawing.Point(0, 18)
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_grid.Name = "m_grid"
+            Me.m_grid.PedigreeStyleGuide = Nothing
+            Me.m_grid.SelectedVariable = EwEUtils.Core.eVarNameFlags.NotSet
             Me.m_grid.Size = New System.Drawing.Size(547, 401)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -184,7 +188,6 @@ Namespace Ecopath.Tools
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TabIndex = 1
             Me.m_grid.UIContext = Nothing
-            Me.m_grid.PedigreeStyleGuide = Nothing
             '
             'm_hdrGrid
             '
@@ -195,6 +198,19 @@ Namespace Ecopath.Tools
             Me.m_hdrGrid.TabIndex = 0
             Me.m_hdrGrid.Text = "Assignment"
             Me.m_hdrGrid.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_btnCompute
+            '
+            Me.m_btnCompute.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnCompute.Enabled = False
+            Me.m_btnCompute.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+            Me.m_btnCompute.Location = New System.Drawing.Point(0, 396)
+            Me.m_btnCompute.Name = "m_btnCompute"
+            Me.m_btnCompute.Size = New System.Drawing.Size(173, 23)
+            Me.m_btnCompute.TabIndex = 7
+            Me.m_btnCompute.Text = "C&ompute pedigree"
+            Me.m_btnCompute.UseVisualStyleBackColor = True
             '
             'frmPedigree
             '
@@ -222,11 +238,12 @@ Namespace Ecopath.Tools
         Private WithEvents m_hdrPedigree As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_grid As ScientificInterface.Ecopath.Tools.gridPedigree
         Private WithEvents m_hdrGrid As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Friend WithEvents Label2 As System.Windows.Forms.Label
         Private WithEvents m_cmbViewAs As System.Windows.Forms.ComboBox
         Private WithEvents m_lblViewAs As System.Windows.Forms.Label
         Private WithEvents m_cmbCategory As System.Windows.Forms.ComboBox
-        Friend WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_lblCategory As System.Windows.Forms.Label
+        Private WithEvents m_lblLevels As System.Windows.Forms.Label
+        Private WithEvents m_btnCompute As System.Windows.Forms.Button
     End Class
 
 End Namespace
