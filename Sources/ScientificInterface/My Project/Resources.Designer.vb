@@ -2575,7 +2575,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to + Biom.accum. rate.
+        '''  Looks up a localized string similar to + Biomass accum. rate.
         '''</summary>
         Friend ReadOnly Property HEADER_BIOMACCURATE2() As String
             Get
@@ -3871,7 +3871,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to + Predat.mort. rate.
+        '''  Looks up a localized string similar to + Predatation mort. rate.
         '''</summary>
         Friend ReadOnly Property HEADER_PREDMORTRATE() As String
             Get

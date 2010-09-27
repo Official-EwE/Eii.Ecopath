@@ -1579,7 +1579,7 @@
     <value>Catch upper</value>
   </data>
   <data name="HEADER_BIOMACCURATE2" xml:space="preserve">
-    <value>+ Biom.accum. rate</value>
+    <value>+ Biomass accum. rate</value>
   </data>
   <data name="ECOSPACE_CAPTION_IMPORTLAYERIMAGE" xml:space="preserve">
     <value>Import layer image</value>
@@ -2506,7 +2506,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Jobs / catch value</value>
   </data>
   <data name="HEADER_PREDMORTRATE" xml:space="preserve">
-    <value>+ Predat.mort. rate</value>
+    <value>+ Predatation mort. rate</value>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_READONLY" xml:space="preserve">
     <value>Read-only values|Values that cannot be edited by you, the user</value>
