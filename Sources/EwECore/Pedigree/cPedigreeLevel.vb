@@ -63,6 +63,10 @@ Public Class cPedigreeLevel
         val = New cValue(New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
+        'Estimated flag
+        val = New cValue(New Boolean, eVarNameFlags.Estimated, eStatusFlags.Null, eValueTypes.Bool)
+        Me.m_values.Add(val.varName, val)
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -156,6 +160,20 @@ Public Class cPedigreeLevel
         End Get
         Friend Set(ByVal value As Integer)
             Me.m_ID = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether the values for this level are estimated by EwE.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property IsEstimated() As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.Estimated))
+        End Get
+        Friend Set(ByVal value As Boolean)
+            Me.SetVariable(eVarNameFlags.Estimated, value)
         End Set
     End Property
 

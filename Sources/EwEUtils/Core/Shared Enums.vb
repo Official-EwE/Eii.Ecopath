@@ -1336,6 +1336,9 @@ Namespace Core
         YVelocity
         SorWv
 
+        ''' <summary>States if a value is estimated by Ewe.</summary>
+        Estimated
+
     End Enum
 
 #End Region ' Variable names

@@ -2452,6 +2452,7 @@ Public Class cCore
 
                 'build the Stanza Groups for the interface
                 bsuccess = bsuccess And InitStanzas()
+                bsuccess = bsuccess And InitPedigreeManagers()
 
                 'populate input objects
                 bsuccess = bsuccess And LoadEcopathInputs()
@@ -2467,7 +2468,6 @@ Public Class cCore
                 bsuccess = bsuccess And InitEcotracerScenarios()
                 bsuccess = bsuccess And InitAndLoadEcosimTimeSeriesDatasets()
 
-                bsuccess = bsuccess And InitPedigreeManagers()
                 bsuccess = bsuccess And InitPSDParameters()
 
                 Me.m_EcopathStats = New cEcoPathStats(Me, cCore.NULL_VALUE)
@@ -10424,6 +10424,7 @@ Public Class cCore
     ''' <returns>The variable at the given <see cref="PedigreeVariableIndex">index</see>.</returns>
     ''' -----------------------------------------------------------------------
     Public Function PedigreeVariable(ByVal iIndex As Integer) As eVarNameFlags
+        If (iIndex < 1 Or iIndex > Me.m_EcoPathData.NumPedigreeVariables) Then Return eVarNameFlags.NotSet
         Try
             Return Me.m_EcoPathData.PedigreeVariables(iIndex)
         Catch ex As Exception

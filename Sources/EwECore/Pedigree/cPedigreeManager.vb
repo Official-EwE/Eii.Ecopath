@@ -110,6 +110,7 @@ Public Class cPedigreeManager
                     level.IndexValue = data.PedigreeLevelIndexValue(iLevel)
                     level.ConfidenceInterval = data.PedigreeLevelConfidence(iLevel)
                     level.VariableName = Me.m_varName
+                    level.IsEstimated = data.PedigreeLevelEstimated(iLevel)
                     level.AllowValidation = True
 
                 End If

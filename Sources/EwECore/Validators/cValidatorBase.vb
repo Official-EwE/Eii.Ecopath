@@ -351,10 +351,50 @@ Public Class cValidatorOutput
 
 End Class
 
-
-
-
 #End Region
+
+Public Class cValidatorPedigree
+    Inherits cValidatorDefault
+
+    Private m_core As cCore
+
+    Public Sub New(ByVal theCore As cCore)
+        m_core = theCore
+    End Sub
+
+
+    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
+
+        Try
+            Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim var As eVarNameFlags = Me.m_core.PedigreeVariable(iSecondaryIndex)
+            Dim man As cPedigreeManager = Me.m_core.GetPedigreeManager(var)
+
+            If (man IsNot Nothing) Then
+                If MetaData.MinOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), 0) And _
+                 MetaData.MaxOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), man.NumLevels) Then
+                    'passed validation
+                    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationStatus = eStatusFlags.OK
+                    ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
+                    Return True
+                End If
+            End If
+
+            ' If validation failed, set status to Failed Validation at any time.
+            ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+            ValueObject.ValidationStatus = eStatusFlags.FailedValidation
+            Return True
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Return False
+        End Try
+
+
+    End Function
+
+End Class
 
 #Region "Validation Manger"
 
@@ -436,6 +476,10 @@ Public Class cValidatorManager
         'PSD validator(s)
         validator = New cValidatorOddEven(True)
         m_validators.Add(eVarNameFlags.NumPtsMovAvg, validator)
+
+        'Pedigree
+        validator = New cValidatorPedigree(theCore)
+        m_validators.Add(eVarNameFlags.Pedigree, validator)
 
     End Sub
 

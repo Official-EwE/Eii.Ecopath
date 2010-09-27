@@ -7,7 +7,7 @@ Imports EwEUtils.Core
 ''' </summary>
 Public Class cEcopathDataStructures
 
-#Region "Public Variables"
+#Region " Public Variables "
 
     Public bInitialized As Boolean = False
 
@@ -254,6 +254,7 @@ Public Class cEcopathDataStructures
     Public PedigreeLevelVarName() As eVarNameFlags
     Public PedigreeLevelIndexValue() As Single
     Public PedigreeLevelConfidence() As Single
+    Public PedigreeLevelEstimated() As Boolean
     ''' <summary>Array [#groups, #supported vars] = pedigree index.</summary>
     Public Pedigree(,) As Integer
     ''' <summary>One-based array of variables supported by the pedigree system.</summary>
@@ -573,6 +574,7 @@ Public Class cEcopathDataStructures
         ReDim Me.PedigreeLevelVarName(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelIndexValue(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelConfidence(Me.NumPedigreeLevels)
+        ReDim Me.PedigreeLevelEstimated(Me.NumPedigreeLevels)
         ReDim Me.Pedigree(Me.NumGroups, Me.NumPedigreeVariables)
 
     End Sub
