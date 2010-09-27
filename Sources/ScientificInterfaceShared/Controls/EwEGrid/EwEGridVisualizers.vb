@@ -60,26 +60,23 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub DrawCell_Background( _
-                ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                ByVal p_CellPosition As SourceGrid2.Position, _
+                ByVal cell As SourceGrid2.Cells.ICellVirtual, _
+                ByVal pos As SourceGrid2.Position, _
                 ByVal e As System.Windows.Forms.PaintEventArgs, _
-                ByVal p_ClientRectangle As System.Drawing.Rectangle, _
-                ByVal p_Status As SourceGrid2.DrawCellStatus)
+                ByVal rc As System.Drawing.Rectangle, _
+                ByVal status As SourceGrid2.DrawCellStatus)
 
-            If p_Cell Is Nothing Then Return
+            If cell Is Nothing Then Return
 
             Dim eStyle As cStyleGuide.eStyleFlags = 0
             Dim clrBack As Color = Me.BackColor
             Dim clrFore As Color = Nothing ' Not used here
-            Dim sg As cStyleGuide = Me.StyleGuide(p_Cell)
+            Dim sg As cStyleGuide = Me.StyleGuide(cell)
 
             ' Rendering a cell with an associated property?
-            If (TypeOf p_Cell Is EwECellBase) Then
-                ' #Yes: obtain rich info
-                ' Get the cell
-                Dim cell As EwECellBase = DirectCast(p_Cell, EwECellBase)
-                ' Get its style
-                eStyle = cell.Style()
+            If (TypeOf cell Is EwECellBase) Then
+                ' #Yes: obtain cell style
+                eStyle = DirectCast(cell, EwECellBase).Style()
                 ' Get SG colours for this style
                 If (sg IsNot Nothing) Then
                     ' ! Note that when obtaining the background color the remarks style is excluded. This
@@ -90,18 +87,18 @@ Namespace Controls.EwEGrid
             End If
 
             ' Does cell have focus?
-            If (p_Status = DrawCellStatus.Focus) Then
+            If (status = DrawCellStatus.Focus) Then
                 ' #Yes: obtain standard focus bk color
                 clrBack = FocusBackColor
                 ' Is cell selected?
-            ElseIf (p_Status = DrawCellStatus.Selected) Then
+            ElseIf (status = DrawCellStatus.Selected) Then
                 ' #Yes: obtain standard selection bk color
                 clrBack = SelectionBackColor
             End If
 
             ' Draw the background
             Using br As New SolidBrush(clrBack)
-                e.Graphics.FillRectangle(br, p_ClientRectangle)
+                e.Graphics.FillRectangle(br, rc)
             End Using
 
             ' Check if need to render specific styles
@@ -113,7 +110,7 @@ Namespace Controls.EwEGrid
             ' Need to draw remarks indicator?
             If ((eStyle And cStyleGuide.eStyleFlags.Remarks) > 0) And (sg IsNot Nothing) Then
                 ' #Yes: draw remarks indicator
-                cRemarksIndicator.Paint(sg, p_ClientRectangle, e.Graphics, True)
+                cRemarksIndicator.Paint(sg, rc, e.Graphics, True)
             End If
 
         End Sub
@@ -124,29 +121,26 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub DrawCell_ImageAndText( _
-                ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                ByVal p_CellPosition As SourceGrid2.Position, _
+                ByVal cell As SourceGrid2.Cells.ICellVirtual, _
+                ByVal pos As SourceGrid2.Position, _
                 ByVal e As System.Windows.Forms.PaintEventArgs, _
-                ByVal p_ClientRectangle As System.Drawing.Rectangle, _
-                ByVal p_Status As SourceGrid2.DrawCellStatus)
+                ByVal rc As System.Drawing.Rectangle, _
+                ByVal status As SourceGrid2.DrawCellStatus)
 
-            If p_Cell Is Nothing Then Return
+            If cell Is Nothing Then Return
 
             Dim eStyle As cStyleGuide.eStyleFlags = 0
             Dim clrFore As Color = Me.ForeColor
             Dim clrBack As Color = Nothing ' Not used here
             Dim rcBorder As RectangleBorder = Me.Border
             Dim fontCell As Font = Me.GetCellFont()
-            Dim rcClient As New Rectangle(p_ClientRectangle.X, p_ClientRectangle.Y, p_ClientRectangle.Width, p_ClientRectangle.Height)
-            Dim sg As cStyleGuide = Me.StyleGuide(p_Cell)
+            Dim rcClient As New Rectangle(rc.X, rc.Y, rc.Width, rc.Height)
+            Dim sg As cStyleGuide = Me.StyleGuide(cell)
 
             ' Rendering a cell with an associated property?
-            If (TypeOf p_Cell Is EwECellBase) Then
-                ' #Yes: obtain rich info
-                ' Get the cell
-                Dim cell As EwECellBase = DirectCast(p_Cell, EwECellBase)
-                ' Get its style
-                eStyle = cell.Style()
+            If (TypeOf cell Is EwECellBase) Then
+                ' #Yes: obtain cell style
+                eStyle = DirectCast(cell, EwECellBase).Style()
                 If (sg IsNot Nothing) Then
                     ' Get SG colours for this style
                     sg.GetStyleColors(eStyle, clrFore, clrBack)
@@ -154,12 +148,12 @@ Namespace Controls.EwEGrid
             End If
 
             ' Does cell have focus?
-            If (p_Status = DrawCellStatus.Focus) Then
+            If (status = DrawCellStatus.Focus) Then
                 ' #Yes: obtain standard focus border properties
                 rcBorder = Me.FocusBorder
                 clrFore = Me.FocusForeColor
                 ' Is cell selected?
-            ElseIf (p_Status = DrawCellStatus.Selected) Then
+            ElseIf (status = DrawCellStatus.Selected) Then
                 ' #Yes: obtain standard selected border properties
                 rcBorder = Me.SelectionBorder
                 clrFore = Me.SelectionForeColor
@@ -172,7 +166,7 @@ Namespace Controls.EwEGrid
             ' Render Image and Text
             Utility.PaintImageAndText(e.Graphics, rcClient, _
                 Me.Image, Me.ImageAlignment, Me.ImageStretch, _
-                p_Cell.GetDisplayText(p_CellPosition), _
+                cell.GetDisplayText(pos), _
                 Me.StringFormat, Me.AlignTextToImage, rcBorder, _
                 clrFore, fontCell)
 
@@ -183,34 +177,31 @@ Namespace Controls.EwEGrid
         ''' Overidden to draw cell border using EwE color styles
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub DrawCell_Border(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                                                ByVal p_CellPosition As SourceGrid2.Position, _
+        Protected Overrides Sub DrawCell_Border(ByVal cell As SourceGrid2.Cells.ICellVirtual, _
+                                                ByVal pos As SourceGrid2.Position, _
                                                 ByVal e As System.Windows.Forms.PaintEventArgs, _
-                                                ByVal p_ClientRectangle As System.Drawing.Rectangle, _
-                                                ByVal p_Status As SourceGrid2.DrawCellStatus)
+                                                ByVal rc As System.Drawing.Rectangle, _
+                                                ByVal status As SourceGrid2.DrawCellStatus)
 
-            If p_Cell Is Nothing Then Return
+            If cell Is Nothing Then Return
 
-            Dim sg As cStyleGuide = Me.StyleGuide(p_Cell)
+            Dim sg As cStyleGuide = Me.StyleGuide(cell)
             Dim eStyle As cStyleGuide.eStyleFlags = 0
             Dim clrFore As Color = Me.ForeColor
             Dim rcBorder As RectangleBorder = Me.Border
 
             ' Rendering a cell with an associated property?
-            If (TypeOf p_Cell Is EwECellBase) Then
-                ' #Yes: obtain rich info
-                ' Get the cell
-                Dim cell As EwECellBase = DirectCast(p_Cell, EwECellBase)
-                ' Get its style
-                eStyle = cell.Style()
+            If (TypeOf cell Is EwECellBase) Then
+                ' #Yes: obtain cell style
+                eStyle = DirectCast(cell, EwECellBase).Style()
             End If
 
             ' Does cell have focus?
-            If (p_Status = DrawCellStatus.Focus) Then
+            If (status = DrawCellStatus.Focus) Then
                 ' #Yes: obtain standard focus border properties
                 rcBorder = FocusBorder
                 ' Is cell selected?
-            ElseIf (p_Status = DrawCellStatus.Selected) Then
+            ElseIf (status = DrawCellStatus.Selected) Then
                 ' #Yes: obtain standard selected border properties
                 rcBorder = SelectionBorder
             End If
@@ -223,7 +214,7 @@ Namespace Controls.EwEGrid
             End If
 
             ' Draw the border
-            ControlPaint.DrawBorder(e.Graphics, p_ClientRectangle, _
+            ControlPaint.DrawBorder(e.Graphics, rc, _
                 rcBorder.Left.Color, _
                 rcBorder.Left.Width, _
                 ButtonBorderStyle.Solid, _
@@ -244,10 +235,10 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="p_Cell"></param>
         ''' -------------------------------------------------------------------
-        Protected ReadOnly Property StyleGuide(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide
+        Protected ReadOnly Property StyleGuide(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide
             Get
-                If (TypeOf p_Cell Is IUIElement) Then
-                    Dim uic As cUIContext = DirectCast(p_Cell, IUIElement).UIContext
+                If (TypeOf cell Is IUIElement) Then
+                    Dim uic As cUIContext = DirectCast(cell, IUIElement).UIContext
                     If (uic IsNot Nothing) Then
                         Return uic.StyleGuide
                     End If
