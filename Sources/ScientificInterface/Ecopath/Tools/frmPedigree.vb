@@ -66,7 +66,10 @@ Namespace Ecopath.Tools
             Me.m_psg = New cPedigreeStyleGuide(Me.UIContext)
             Me.m_grid.Vizualizer = Me.m_psg
 
-            AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+            For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
+                Me.m_cmbCategory.Items.Add(Core.PedigreeVariable(iVariable))
+            Next
+
             AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
@@ -78,7 +81,6 @@ Namespace Ecopath.Tools
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
             RemoveHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
@@ -105,31 +107,24 @@ Namespace Ecopath.Tools
 
 #Region " Events "
 
-        Private Sub OnGridSelectionChanged(ByVal sel As SourceGrid2.CellVirtualCollection)
-
-            ' ToDo:
-            '   Allow only selections that span 1 column, no headers
-            '   Extract var name from column
-            '   Apply var name
-
-            ' Beware
-            '   Column change should only update UI to get ready for new selection but should
-            '   NOT update pedigree assignments
-
-        End Sub
-
         Private Sub OnViewAsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tscmbViewAs.SelectedIndexChanged
+            Handles m_cmbViewAs.SelectedIndexChanged
 
             ' ToDo:
             ' v Store display style somewhere
             ' v Invalidate listbox to reflect this style
             ' v Inform grid of new style
-            Dim iIndex As Integer = Me.m_tscmbViewAs.SelectedIndex
+            Dim iIndex As Integer = Me.m_cmbViewAs.SelectedIndex
             If (iIndex < 0) Then Return
 
-            Me.SelectedRenderStyle = DirectCast(Me.m_tscmbViewAs.SelectedIndex + 1, cPedigreeStyleGuide.eRenderStyleTypes)
+            Me.SelectedRenderStyle = DirectCast(Me.m_cmbViewAs.SelectedIndex + 1, cPedigreeStyleGuide.eRenderStyleTypes)
 
+        End Sub
+
+        Private Sub OnCategoryChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbCategory.SelectedIndexChanged
+
+            Me.SelectedVariable = DirectCast(Me.m_cmbCategory.SelectedItem, eVarNameFlags)
         End Sub
 
         Private Sub OnRenderStyleChanged(ByVal viz As cPedigreeStyleGuide)
@@ -203,6 +198,7 @@ Namespace Ecopath.Tools
                 If (Me.m_varname <> eVarNameFlags.NotSet) Then
                     Debug.Assert(Me.Core.IsPedigreeVariableSupported(value), "Pedigree not supported for variable " & Me.m_varname.ToString)
                     Me.BuildPedigreeControls()
+                    Me.m_cmbCategory.SelectedItem = Me.m_varname
                 End If
             End Set
         End Property
@@ -273,7 +269,7 @@ Namespace Ecopath.Tools
         Private Sub UpdateControls()
 
             If (Me.SelectedRenderStyle <> cPedigreeStyleGuide.eRenderStyleTypes.NotSet) Then
-                Me.m_tscmbViewAs.SelectedIndex = CInt(Me.SelectedRenderStyle) - 1
+                Me.m_cmbViewAs.SelectedIndex = CInt(Me.SelectedRenderStyle) - 1
             End If
 
         End Sub
