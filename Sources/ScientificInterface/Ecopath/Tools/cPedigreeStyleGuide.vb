@@ -103,8 +103,8 @@ Namespace Ecopath.Tools
         ''' <returns>A text that represents the given level, considering the
         ''' <paramref name="style">provided</paramref> and <see cref="RenderStyle">selected</see> render styles.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Text(ByVal level As cPedigreeLevel, _
-                             Optional ByVal style As eRenderStyleTypes = eRenderStyleTypes.NotSet) As String
+        Public Function DisplayText(ByVal level As cPedigreeLevel, _
+                                    Optional ByVal style As eRenderStyleTypes = eRenderStyleTypes.NotSet) As String
 
             ' Fix up render style
             If (style = eRenderStyleTypes.NotSet) Then style = Me.m_renderstyle

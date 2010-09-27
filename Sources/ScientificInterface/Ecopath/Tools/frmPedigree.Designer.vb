@@ -27,25 +27,46 @@ Namespace Ecopath.Tools
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
+            Me.m_tslViewAs = New System.Windows.Forms.ToolStripLabel
+            Me.m_tscmbViewAs = New System.Windows.Forms.ToolStripComboBox
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_lbLevels = New System.Windows.Forms.ListBox
             Me.m_hdrPedigree = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_grid = New ScientificInterface.Ecopath.Tools.gridPedigree
             Me.m_hdrGrid = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
-            Me.m_tslViewAs = New System.Windows.Forms.ToolStripLabel
-            Me.m_tscmbViewAs = New System.Windows.Forms.ToolStripComboBox
+            Me.m_tsMain.SuspendLayout()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
-            Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
+            '
+            'm_tsMain
+            '
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslViewAs, Me.m_tscmbViewAs})
+            Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
+            Me.m_tsMain.Name = "m_tsMain"
+            Me.m_tsMain.Size = New System.Drawing.Size(724, 25)
+            Me.m_tsMain.TabIndex = 0
+            Me.m_tsMain.Text = "ToolStrip1"
+            '
+            'm_tslViewAs
+            '
+            Me.m_tslViewAs.Name = "m_tslViewAs"
+            Me.m_tslViewAs.Size = New System.Drawing.Size(47, 22)
+            Me.m_tslViewAs.Text = "&View as:"
+            '
+            'm_tscmbViewAs
+            '
+            Me.m_tscmbViewAs.AutoSize = False
+            Me.m_tscmbViewAs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbViewAs.Items.AddRange(New Object() {"Color", "Indices", "Values", "Confidence Interval (+/- %)"})
+            Me.m_tscmbViewAs.Name = "m_tscmbViewAs"
+            Me.m_tscmbViewAs.Size = New System.Drawing.Size(120, 21)
             '
             'm_scMain
             '
-            Me.m_scMain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_scMain.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_scMain.Location = New System.Drawing.Point(0, 25)
             Me.m_scMain.Margin = New System.Windows.Forms.Padding(0)
             Me.m_scMain.Name = "m_scMain"
@@ -62,7 +83,7 @@ Namespace Ecopath.Tools
             Me.m_scMain.Panel2.Controls.Add(Me.m_hdrGrid)
             Me.m_scMain.Size = New System.Drawing.Size(724, 419)
             Me.m_scMain.SplitterDistance = 173
-            Me.m_scMain.TabIndex = 1
+            Me.m_scMain.TabIndex = 2
             '
             'm_lbLevels
             '
@@ -119,6 +140,7 @@ Namespace Ecopath.Tools
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TabIndex = 1
             Me.m_grid.UIContext = Nothing
+            Me.m_grid.Vizualizer = Nothing
             '
             'm_hdrGrid
             '
@@ -130,58 +152,35 @@ Namespace Ecopath.Tools
             Me.m_hdrGrid.Text = "Assignment"
             Me.m_hdrGrid.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'm_tsMain
-            '
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslViewAs, Me.m_tscmbViewAs})
-            Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
-            Me.m_tsMain.Name = "m_tsMain"
-            Me.m_tsMain.Size = New System.Drawing.Size(724, 25)
-            Me.m_tsMain.TabIndex = 0
-            Me.m_tsMain.Text = "ToolStrip1"
-            '
-            'm_tslViewAs
-            '
-            Me.m_tslViewAs.Name = "m_tslViewAs"
-            Me.m_tslViewAs.Size = New System.Drawing.Size(47, 22)
-            Me.m_tslViewAs.Text = "&View as:"
-            '
-            'm_tscmbViewAs
-            '
-            Me.m_tscmbViewAs.AutoSize = False
-            Me.m_tscmbViewAs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_tscmbViewAs.Items.AddRange(New Object() {"Color", "Indices", "Values", "Confidence Interval (+/- %)"})
-            Me.m_tscmbViewAs.Name = "m_tscmbViewAs"
-            Me.m_tscmbViewAs.Size = New System.Drawing.Size(120, 21)
-            '
             'frmPedigree
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(724, 444)
             Me.ControlBox = False
-            Me.Controls.Add(Me.m_tsMain)
             Me.Controls.Add(Me.m_scMain)
+            Me.Controls.Add(Me.m_tsMain)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmPedigree"
             Me.ShowInTaskbar = False
             Me.Text = "frmPedigree"
+            Me.m_tsMain.ResumeLayout(False)
+            Me.m_tsMain.PerformLayout()
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
-            Me.m_tsMain.ResumeLayout(False)
-            Me.m_tsMain.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
-        Private WithEvents m_hdrPedigree As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Private WithEvents m_hdrGrid As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Private WithEvents m_grid As gridPedigree
         Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_tslViewAs As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tscmbViewAs As System.Windows.Forms.ToolStripComboBox
+        Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_lbLevels As System.Windows.Forms.ListBox
+        Private WithEvents m_hdrPedigree As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_grid As ScientificInterface.Ecopath.Tools.gridPedigree
+        Private WithEvents m_hdrGrid As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     End Class
 
 End Namespace

@@ -95,11 +95,19 @@ Namespace Ecopath.Tools
 
                 MyBase.DrawCell_Background(cell, pos, e, rc, status)
 
+                ' Do not render details on a readonly cell
+                If (TypeOf cell Is EwECellBase) Then
+                    ' #Yes: obtain cell style
+                    If (DirectCast(cell, EwECellBase).Style And cStyleGuide.eStyleFlags.NotEditable) > 0 Then
+                        Return
+                    End If
+                End If
+
                 Dim level As cPedigreeLevel = Me.GetLevel(cell, pos)
                 If (level Is Nothing) Then Return
 
                 Using br As New SolidBrush(Me.m_psg.BackgroundColor(Me.BackColor, level))
-                    e.Graphics.FillRectangle(br, New Rectangle(rc.Left + 2, rc.Top + 2, rc.Width - 4, rc.Height - 4))
+                    e.Graphics.FillRectangle(br, New Rectangle(rc.Left + 3, rc.Top + 3, rc.Width - 6, rc.Height - 6))
                 End Using
 
             End Sub
@@ -120,7 +128,7 @@ Namespace Ecopath.Tools
                 If (level Is Nothing) Then Return
 
                 Dim clrFore As Color = Me.m_psg.ForegroundColor(Me.ForeColor, level)
-                Dim strText As String = Me.m_psg.Text(level)
+                Dim strText As String = Me.m_psg.DisplayText(level)
                 Dim fmt As StringFormat = Me.StringFormat
 
                 fmt.Alignment = StringAlignment.Center
