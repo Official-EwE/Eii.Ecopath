@@ -1497,7 +1497,7 @@ Namespace Style
                 Case eApplicationColorType.PROFIT_TEXT : Return Color.Blue
                 Case eApplicationColorType.TOTALCATCH_TEXT : Return Color.LightCoral
                 Case eApplicationColorType.TROPHICLINK_TEXT : Return Color.LavenderBlush
-                Case eApplicationColorType.CHECKED_BACKGROUND : Return Color.FromArgb(255, 176, 233, 173)
+                Case eApplicationColorType.CHECKED_BACKGROUND : Return Color.Coral
                 Case eApplicationColorType.REMARKS_BACKGROUND : Return Color.White
                 Case eApplicationColorType.SUM_BACKGROUND : Return Color.FromArgb(255, 255, 254, 225)
                 Case eApplicationColorType.READONLY_BACKGROUND : Return Color.FromArgb(255, 231, 235, 250)
