@@ -5091,7 +5091,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Checked values|Computed values that are correct but may require extra attention.
+        '''  Looks up a localized string similar to Potential problem values|Computed values that may require extra attention.
         '''</summary>
         Friend ReadOnly Property OPTIONS_COLORDLG_PROMPT_CHECKED() As String
             Get

@@ -2187,7 +2187,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <comment>{0} = Ecotracer scenario name</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_CHECKED" xml:space="preserve">
-    <value>Checked values|Computed values that are correct but may require extra attention</value>
+    <value>Potential problem values|Computed values that may require extra attention</value>
   </data>
   <data name="STATUS_MODEL_ACCESS_404" xml:space="preserve">
     <value>Unable to find model '{0}'.</value>
