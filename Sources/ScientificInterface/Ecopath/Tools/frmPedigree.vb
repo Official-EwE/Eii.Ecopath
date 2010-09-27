@@ -64,7 +64,7 @@ Namespace Ecopath.Tools
             If (Me.UIContext Is Nothing) Then Return
 
             Me.m_psg = New cPedigreeStyleGuide(Me.UIContext)
-            Me.m_grid.Vizualizer = Me.m_psg
+            Me.m_grid.PedigreeStyleGuide = Me.m_psg
 
             For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
                 Me.m_cmbCategory.Items.Add(Core.PedigreeVariable(iVariable))
@@ -199,6 +199,7 @@ Namespace Ecopath.Tools
                     Debug.Assert(Me.Core.IsPedigreeVariableSupported(value), "Pedigree not supported for variable " & Me.m_varname.ToString)
                     Me.BuildPedigreeControls()
                     Me.m_cmbCategory.SelectedItem = Me.m_varname
+                    Me.m_grid.SelectedVariable = Me.m_varname
                 End If
             End Set
         End Property

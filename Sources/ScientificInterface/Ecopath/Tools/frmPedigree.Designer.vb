@@ -184,7 +184,7 @@ Namespace Ecopath.Tools
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TabIndex = 1
             Me.m_grid.UIContext = Nothing
-            Me.m_grid.Vizualizer = Nothing
+            Me.m_grid.PedigreeStyleGuide = Nothing
             '
             'm_hdrGrid
             '

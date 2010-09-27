@@ -95,13 +95,14 @@ Namespace Ecopath.Tools
 
                 MyBase.DrawCell_Background(cell, pos, e, rc, status)
 
-                ' Do not render details on a readonly cell
-                If (TypeOf cell Is EwECellBase) Then
-                    ' #Yes: obtain cell style
-                    If (DirectCast(cell, EwECellBase).Style And cStyleGuide.eStyleFlags.NotEditable) > 0 Then
-                        Return
-                    End If
-                End If
+                ' JS: allow rendering on readonly cells; edits will simply not happen
+                '' Do not render details on a readonly cell
+                'If (TypeOf cell Is EwECellBase) Then
+                '    ' #Yes: obtain cell style
+                '    If (DirectCast(cell, EwECellBase).Style And cStyleGuide.eStyleFlags.NotEditable) > 0 Then
+                '        Return
+                '    End If
+                'End If
 
                 Dim level As cPedigreeLevel = Me.GetLevel(cell, pos)
                 If (level Is Nothing) Then Return
@@ -127,9 +128,25 @@ Namespace Ecopath.Tools
                 Dim level As cPedigreeLevel = Me.GetLevel(cell, pos)
                 If (level Is Nothing) Then Return
 
-                Dim clrFore As Color = Me.m_psg.ForegroundColor(Me.ForeColor, level)
+
+                Dim style As cStyleGuide.eStyleFlags = 0
+                Dim clrFore As Color = Me.ForeColor
+                Dim clrBack As Color = Nothing ' Not used here
+                Dim rcBorder As RectangleBorder = Me.Border
+                Dim fontCell As Font = Me.GetCellFont()
+                Dim sg As cStyleGuide = Me.StyleGuide(cell)
                 Dim strText As String = Me.m_psg.DisplayText(level)
                 Dim fmt As StringFormat = Me.StringFormat
+
+                ' Rendering a cell with an associated property?
+                If (TypeOf cell Is EwECellBase) Then
+                    ' #Yes: obtain cell style
+                    style = DirectCast(cell, EwECellBase).Style()
+                    If (sg IsNot Nothing) Then
+                        ' Get SG colours for this style
+                        sg.GetStyleColors(style, clrFore, clrBack)
+                    End If
+                End If
 
                 fmt.Alignment = StringAlignment.Center
                 fmt.LineAlignment = StringAlignment.Center
@@ -170,6 +187,7 @@ Namespace Ecopath.Tools
         ' 
         Private m_psg As cPedigreeStyleGuide = Nothing
         Private m_viz As cPedigreeCellVisualizer = Nothing
+        Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
 
 #End Region ' Private vars
 
@@ -194,7 +212,7 @@ Namespace Ecopath.Tools
         ''' is used to trigger display changes throughout the pedigree interface.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property Vizualizer() As cPedigreeStyleGuide
+        Public Property PedigreeStyleGuide() As cPedigreeStyleGuide
             Get
                 Return Me.m_psg
             End Get
@@ -209,6 +227,24 @@ Namespace Ecopath.Tools
                     AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
                     Me.m_viz = New cPedigreeCellVisualizer(Me.m_psg)
                     Me.RefreshContent()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the variable to show. This will make only the cells for
+        ''' this variable editable.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property SelectedVariable() As eVarNameFlags
+            Get
+                Return Me.m_varName
+            End Get
+            Set(ByVal value As eVarNameFlags)
+                If (value <> Me.m_varName) Then
+                    Me.m_varName = value
+                    Me.FillData()
                 End If
             End Set
         End Property
@@ -255,6 +291,7 @@ Namespace Ecopath.Tools
             Dim man As cPedigreeManager = Nothing
             Dim cell As EwECellBase = Nothing
             Dim style As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed)
+            Dim iSelectedVar As Integer = Me.Core.PedigreeVariableIndex(Me.m_varName)
 
             For iGroup As Integer = 1 To Core.nGroups
                 ' Get group
@@ -267,6 +304,11 @@ Namespace Ecopath.Tools
                     cell.Behaviors.Add(Me.EwEEditHandler)
                     cell.VisualModel = Me.m_viz
                     cell.EditableMode = EditableMode.None
+
+                    If iSelectedVar <> iVariable Then
+                        cell.Style = cell.Style Or cStyleGuide.eStyleFlags.NotEditable
+                    End If
+
                     Me(iGroup, 1 + iVariable) = cell
                 Next
             Next

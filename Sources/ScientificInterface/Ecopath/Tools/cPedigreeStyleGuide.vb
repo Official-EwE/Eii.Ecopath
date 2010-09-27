@@ -70,28 +70,6 @@ Namespace Ecopath.Tools
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Return the foreground colour for rendering pedigree information, 
-        ''' considering the <paramref name="style">provided</paramref> and 
-        ''' <see cref="RenderStyle">default</see> <see cref="eRenderStyleTypes">render styles</see>.
-        ''' </summary>
-        ''' <param name="clrFore">The default foreground colour to use if this method
-        ''' does if no alternative is found.</param>
-        ''' <param name="level">The <see cref="cPedigreeLevel">level</see> to render.</param>
-        ''' <param name="style">The <see cref="eRenderStyleTypes">render style</see> to
-        ''' use, or <see cref="eRenderStyleTypes.NotSet">NotSet</see> to use the
-        ''' <see cref="RenderStyle">present render style</see>.</param>
-        ''' <returns>A color.</returns>
-        ''' -------------------------------------------------------------------
-        Public Function ForegroundColor(ByVal clrFore As Color, _
-                                           ByVal level As cPedigreeLevel, _
-                                           Optional ByVal style As eRenderStyleTypes = eRenderStyleTypes.NotSet) As Color
-            ' Hah
-            Return clrFore
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Returns text that represents the given level, considering the
         ''' <paramref name="style">provided</paramref> and 
         ''' <see cref="RenderStyle">default</see> <see cref="eRenderStyleTypes">render styles</see>.
