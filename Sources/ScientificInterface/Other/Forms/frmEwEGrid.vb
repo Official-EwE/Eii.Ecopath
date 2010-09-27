@@ -570,7 +570,7 @@ Public Class frmEwEGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get a reference to the Grid
+    ''' Get a reference to the Grid.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
@@ -593,6 +593,18 @@ Public Class frmEwEGrid
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the toolstrip to host the <see cref="cQuickEditHandler">quick edit</see>
+    ''' toolbar controls. 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>By default, a new toolbar is created for grid forms,
+    ''' but inheriting forms can provide an existing toolbar for the quick edit
+    ''' interface to nest its controls by returning an instance of that toolstrip
+    ''' in an override of this method. Stukje taart.</remarks>
+    ''' -----------------------------------------------------------------------
     Protected Overridable ReadOnly Property ToolStrip() As ToolStrip
         Get
             Return Nothing
