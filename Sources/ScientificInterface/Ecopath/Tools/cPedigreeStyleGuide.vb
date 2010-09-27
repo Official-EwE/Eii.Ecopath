@@ -56,6 +56,9 @@ Namespace Ecopath.Tools
             ' Fix up render style
             If (style = eRenderStyleTypes.NotSet) Then style = Me.m_renderstyle
 
+            ' Bail out!
+            If (level Is Nothing) Then Return clrBack
+
             ' Do colour magic
             Select Case style
                 Case eRenderStyleTypes.Colors
@@ -86,6 +89,8 @@ Namespace Ecopath.Tools
 
             ' Fix up render style
             If (style = eRenderStyleTypes.NotSet) Then style = Me.m_renderstyle
+
+            If (level Is Nothing) Then Return ""
 
             ' Decide on string to display
             Select Case style

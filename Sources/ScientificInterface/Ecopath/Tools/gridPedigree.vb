@@ -5,6 +5,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports SourceGrid2
+Imports SourceGrid2.Cells
 
 #End Region 'Imports
 
@@ -248,6 +249,37 @@ Namespace Ecopath.Tools
                 End If
             End Set
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set a value to all selected cells.
+        ''' </summary>
+        ''' <param name="iLevel"></param>
+        ''' -------------------------------------------------------------------
+        Public Sub SetValue(ByVal iLevel As Integer)
+
+            ' Get grid selection
+            Dim sel As SourceGrid2.Selection = Me.Selection
+            Dim core As cCore = Me.Core
+
+            ' To stop a flood of updates, and to halt any conflicting operations 
+            ' while we're at it.
+            If Not core.SetBatchLock(cCore.eBatchLockType.Update) Then Return
+
+            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+            For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
+                If TypeOf cell Is PropertyCell Then
+                    Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                    If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
+                        pcell.GetProperty().SetValue(iLevel)
+                    End If
+                End If
+            Next
+            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+
+            core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
+
+        End Sub
 
 #End Region ' Grid configuration
 

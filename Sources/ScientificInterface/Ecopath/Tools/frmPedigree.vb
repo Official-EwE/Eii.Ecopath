@@ -36,6 +36,9 @@ Namespace Ecopath.Tools
             End Property
 
             Public Overrides Function ToString() As String
+                If (Me.m_level Is Nothing) Then
+                    Return My.Resources.GENERIC_VALUE_NONE
+                End If
                 Return Me.m_level.Name
             End Function
 
@@ -153,13 +156,35 @@ Namespace Ecopath.Tools
                 e.Graphics.DrawString(item.ToString(), e.Font, br, e.Bounds.X + 22, e.Bounds.Y)
             End Using
 
-            ' Render colour box
-            Using br As New SolidBrush(Me.m_psg.BackgroundColor(Me.BackColor, item.Level, cPedigreeStyleGuide.eRenderStyleTypes.Colors))
-                e.Graphics.FillRectangle(br, New Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4))
-            End Using
+            ' Has level?
+            If (item.Level IsNot Nothing) Then
+                ' #Yes: Render colour box
+                Using br As New SolidBrush(Me.m_psg.BackgroundColor(Me.BackColor, item.Level, cPedigreeStyleGuide.eRenderStyleTypes.Colors))
+                    e.Graphics.FillRectangle(br, New Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4))
+                End Using
+            End If
 
             ' Render default focus rectangle
             e.DrawFocusRectangle()
+
+        End Sub
+
+        Private Sub OnLevelClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
+            Handles m_lbLevels.MouseClick
+
+            Dim item As Object = Me.m_lbLevels.SelectedItem
+            Dim level As cPedigreeLevel = Nothing
+            Dim iValue As Integer = 0
+
+            If (item IsNot Nothing) Then
+                If (TypeOf item Is cPedigreeLevelListboxItem) Then
+                    level = DirectCast(item, cPedigreeLevelListboxItem).Level
+                    If (level IsNot Nothing) Then
+                        iValue = level.ID
+                    End If
+                End If
+            End If
+            Me.m_grid.SetValue(iValue)
 
         End Sub
 
@@ -246,6 +271,8 @@ Namespace Ecopath.Tools
             Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(Me.SelectedVariable)
             Dim lvl As cPedigreeLevel = Nothing
 
+            ' Add 'None' item
+            Me.m_lbLevels.Items.Add(New cPedigreeLevelListboxItem(Nothing))
             For iLevel As Integer = 1 To man.NumLevels
                 lvl = man.Level(iLevel)
                 Me.m_lbLevels.Items.Add(New cPedigreeLevelListboxItem(lvl))
