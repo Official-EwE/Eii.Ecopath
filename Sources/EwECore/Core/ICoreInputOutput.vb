@@ -748,7 +748,7 @@ Public Class cCoreGroupBase
         m_values.Add(val.varName, val)
 
         'Array variables
-        'Pedigree (should limit max to numpedigree levels?)
+        'Pedigree (should limit max to number of levels in a given manager)
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
@@ -834,7 +834,9 @@ Public Class cCoreGroupBase
     ''' </summary>
     ''' <param name="iVariable">One-based index of the variable for which to obtain pedigree.</param>
     ''' <remarks>
-    ''' Pedigree is only enabled on core groups.
+    ''' <para>The pedigree index given here corresponds to a pedigree level in
+    ''' the <see cref="cPedigreeManager">pedigree manager</see> indicated by
+    ''' <see cref="cCore.PedigreeVariable">pedigree variable</see> <paramref name="iVariable">iVariable</paramref></para>
     ''' </remarks>
     Public Property Pedigree(ByVal iVariable As Integer) As Integer
         Get
