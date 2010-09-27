@@ -918,8 +918,10 @@ Namespace Controls.EwEGrid
 
             For Each pos As Position In Me.Selection.GetCellsPositions()
                 cell = Me(pos.Row, pos.Column)
-                If cell.DataModel.EditableMode <> EditableMode.None And cell.DataModel.EnableEdit = True Then
-                    cell.SetValue(pos, Nothing)
+                If cell.DataModel IsNot Nothing Then
+                    If cell.DataModel.EditableMode <> EditableMode.None And cell.DataModel.EnableEdit = True Then
+                        cell.SetValue(pos, Nothing)
+                    End If
                 End If
             Next
         End Sub
