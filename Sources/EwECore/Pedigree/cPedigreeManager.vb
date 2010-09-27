@@ -11,7 +11,7 @@ Public Class cPedigreeManager
     Inherits cCoreInputOutputBase
 
     Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
-    Private m_levels As New List(Of cPedigreeLevel)
+    Private m_levels As New cCoreInputOutputList(Of cPedigreeLevel)(eDataTypes.PedigreeLevel, 1)
     Private m_messageSource As eCoreComponentType = eCoreComponentType.Core
 
     Friend Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags)
@@ -25,7 +25,8 @@ Public Class cPedigreeManager
     ''' <summary>
     ''' 
     ''' </summary>
-    ''' <param name="strDescription"></param>
+    ''' <param name="strName">Name of the new level.</param>
+    ''' <param name="strDescription">Description of the new level.</param>
     ''' <param name="iPosition">The position of the level to assign in the manager.</param>
     ''' <param name="varName"></param>
     ''' <param name="sIndexValue"></param>
@@ -98,9 +99,10 @@ Public Class cPedigreeManager
                 If data.PedigreeLevelVarName(iLevel) = Me.m_varName Then
 
                     level = New cPedigreeLevel(Me.m_core, Me, data.PedigreeLevelDBID(iLevel))
+                    Me.m_levels.Add(level)
 
                     level.AllowValidation = False
-                    level.ID = Me.m_levels.Count
+                    level.ID = Me.m_levels.Count ' One based!
                     level.Index = iLevel
                     level.Name = data.PedigreeLevelName(iLevel)
                     level.Description = data.PedigreeLevelDescription(iLevel)
@@ -109,8 +111,6 @@ Public Class cPedigreeManager
                     level.ConfidenceInterval = data.PedigreeLevelConfidence(iLevel)
                     level.VariableName = Me.m_varName
                     level.AllowValidation = True
-
-                    Me.m_levels.Add(level)
 
                 End If
             Next
@@ -166,12 +166,28 @@ Public Class cPedigreeManager
 
 #Region " Properties "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the number of pedigree levels in the manager.
+    ''' </summary>
+    ''' <remarks>
+    ''' Level indexing is one-base. It's just so that you know it. Really. ONE
+    ''' based; let there be no confusion. At least as little confusion as
+    ''' possibly possible. Right. There you go. I hope.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property NumLevels() As Integer
         Get
             Return Me.m_levels.Count
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get a pedigree level from the manager.
+    ''' </summary>
+    ''' <param name="iLevel">The one-based index of the level to obtain.</param>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Level(ByVal iLevel As Integer) As cPedigreeLevel
         Get
             Return Me.m_levels(iLevel)

@@ -41,60 +41,13 @@ Namespace Ecopath.Tools
 
         End Class
 
-        Public Class cPedigreeVisualizer
-
-            Private m_uic As cUIContext = Nothing
-            Private m_colorramp As New SAUPColorRamp()
-            Private m_renderstyle As eRenderStyleTypes = eRenderStyleTypes.Colors
-
-            Public Enum eRenderStyleTypes As Integer
-                Colors
-                Indicators
-                Values
-                ConfidenceIntervals
-            End Enum
-
-            Public Sub New(ByVal uic As cUIContext)
-                Me.m_uic = uic
-            End Sub
-
-            Public Sub Draw(ByVal g As Graphics, _
-                            ByVal rc As Rectangle, _
-                            ByVal level As cPedigreeLevel, _
-                            ByVal style As eRenderStyleTypes)
-
-                Select Case style
-                    Case eRenderStyleTypes.Colors
-                        Dim clr As Color = Me.m_uic.StyleGuide.PedigreeColor(Me.m_uic.Core, level.VariableName, level.ID)
-                        Using br As New SolidBrush(clr)
-                            g.FillRectangle(br, rc)
-                        End Using
-                End Select
-            End Sub
-
-            Public Event OnRenderStyleChanged(ByVal sender As cPedigreeVisualizer)
-
-            Public Property RenderStyle() As eRenderStyleTypes
-                Get
-                    Return Me.m_renderstyle
-                End Get
-                Set(ByVal value As eRenderStyleTypes)
-                    If (value <> Me.m_renderstyle) Then
-                        Me.m_renderstyle = value
-                        RaiseEvent OnRenderStyleChanged(Me)
-                    End If
-                End Set
-            End Property
-
-        End Class
-
 #End Region ' Helper classes
 
 #Region " Private vars "
 
         ''' <summary>Varname currently 'selected' in the grid.</summary>
         Private m_varname As eVarNameFlags = eVarNameFlags.NotSet
-        Private m_viz As cPedigreeVisualizer = Nothing
+        Private m_psg As cPedigreeStyleGuide = Nothing
 
 #End Region ' Private vars
 
@@ -110,10 +63,11 @@ Namespace Ecopath.Tools
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.m_viz = New cPedigreeVisualizer(Me.UIContext)
+            Me.m_psg = New cPedigreeStyleGuide(Me.UIContext)
+            Me.m_grid.Vizualizer = Me.m_psg
 
             AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
-            AddHandler Me.m_viz.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
+            AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             Me.SelectedVariable = eVarNameFlags.Biomass
@@ -125,7 +79,7 @@ Namespace Ecopath.Tools
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
-            RemoveHandler Me.m_viz.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
+            RemoveHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             ' Clean up
@@ -165,19 +119,24 @@ Namespace Ecopath.Tools
         End Sub
 
         Private Sub OnViewAsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tscmbViewAs.Click
+            Handles m_tscmbViewAs.SelectedIndexChanged
 
             ' ToDo:
             ' v Store display style somewhere
             ' v Invalidate listbox to reflect this style
             ' v Inform grid of new style
-            Me.SelectedRenderStyle = DirectCast(Me.m_tscmbViewAs.SelectedIndex, cPedigreeVisualizer.eRenderStyleTypes)
+            Dim iIndex As Integer = Me.m_tscmbViewAs.SelectedIndex
+            If (iIndex < 0) Then Return
+
+            Me.SelectedRenderStyle = DirectCast(Me.m_tscmbViewAs.SelectedIndex + 1, cPedigreeStyleGuide.eRenderStyleTypes)
 
         End Sub
 
-        Private Sub OnRenderStyleChanged(ByVal viz As cPedigreeVisualizer)
+        Private Sub OnRenderStyleChanged(ByVal viz As cPedigreeStyleGuide)
 
             Me.m_lbLevels.Invalidate()
+            Me.m_grid.Invalidate()
+
             Me.UpdateControls()
 
         End Sub
@@ -199,10 +158,10 @@ Namespace Ecopath.Tools
                 e.Graphics.DrawString(item.ToString(), e.Font, br, e.Bounds.X + 22, e.Bounds.Y)
             End Using
 
-            Me.m_viz.Draw(e.Graphics, _
-                          New Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4), _
-                          item.Level, _
-                          cPedigreeVisualizer.eRenderStyleTypes.Colors)
+            ' Render colour box
+            Using br As New SolidBrush(Me.m_psg.BackgroundColor(Me.BackColor, item.Level, cPedigreeStyleGuide.eRenderStyleTypes.Colors))
+                e.Graphics.FillRectangle(br, New Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4))
+            End Using
 
             ' Render default focus rectangle
             e.DrawFocusRectangle()
@@ -266,16 +225,17 @@ Namespace Ecopath.Tools
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the selected <see cref="cPedigreeVisualizer.eRenderStyleTypes">render style</see> in
+        ''' Get/set the selected <see cref="cPedigreeStyleGuide.eRenderStyleTypes">render style</see> in
         ''' the entire interface.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Property SelectedRenderStyle() As cPedigreeVisualizer.eRenderStyleTypes
+        Private Property SelectedRenderStyle() As cPedigreeStyleGuide.eRenderStyleTypes
             Get
-                Return Me.m_viz.RenderStyle
+                Return Me.m_psg.RenderStyle
             End Get
-            Set(ByVal value As cPedigreeVisualizer.eRenderStyleTypes)
-                Me.m_viz.RenderStyle = value
+            Set(ByVal value As cPedigreeStyleGuide.eRenderStyleTypes)
+                If (value = cPedigreeStyleGuide.eRenderStyleTypes.NotSet) Then Return
+                Me.m_psg.RenderStyle = value
             End Set
         End Property
 
@@ -289,7 +249,7 @@ Namespace Ecopath.Tools
             Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(Me.SelectedVariable)
             Dim lvl As cPedigreeLevel = Nothing
 
-            For iLevel As Integer = 0 To man.NumLevels - 1
+            For iLevel As Integer = 1 To man.NumLevels
                 lvl = man.Level(iLevel)
                 Me.m_lbLevels.Items.Add(New cPedigreeLevelListboxItem(lvl))
             Next iLevel
@@ -312,7 +272,9 @@ Namespace Ecopath.Tools
         ''' -----------------------------------------------------------------------
         Private Sub UpdateControls()
 
-            Me.m_tscmbViewAs.SelectedIndex = CInt(Me.SelectedRenderStyle)
+            If (Me.SelectedRenderStyle <> cPedigreeStyleGuide.eRenderStyleTypes.NotSet) Then
+                Me.m_tscmbViewAs.SelectedIndex = CInt(Me.SelectedRenderStyle) - 1
+            End If
 
         End Sub
 

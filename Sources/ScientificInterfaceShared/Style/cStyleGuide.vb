@@ -929,7 +929,7 @@ Namespace Style
                 Dim clr As Color = Color.Transparent
                 Dim man As cPedigreeManager = core.GetPedigreeManager(vn)
                 If (man Is Nothing) Then Return clr
-                If (0 <= iLevel) And (iLevel < man.NumLevels) Then
+                If (0 < iLevel) And (iLevel <= man.NumLevels) Then
                     Dim lvl As cPedigreeLevel = man.Level(iLevel)
                     clr = cColorUtils.IntToColor(lvl.PoolColor)
                 End If
@@ -941,7 +941,7 @@ Namespace Style
             Set(ByVal value As Color)
                 Dim man As cPedigreeManager = core.GetPedigreeManager(vn)
                 If (man IsNot Nothing) Then
-                    If (0 <= iLevel) And (iLevel < man.NumLevels) Then
+                    If (0 < iLevel) And (iLevel <= man.NumLevels) Then
                         Dim lvl As cPedigreeLevel = man.Level(iLevel)
                         ' Optimization
                         If lvl.PoolColor = cColorUtils.ColorToInt(value) Then Return

@@ -1117,6 +1117,7 @@
     <Compile Include="Ecopath\Input\FisheryInputDiscardMortGrid.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecopath\Tools\cPedigreeStyleGuide.vb" />
     <Compile Include="Ecopath\Tools\frmPedigree.Designer.vb">
       <DependentUpon>frmPedigree.vb</DependentUpon>
     </Compile>
