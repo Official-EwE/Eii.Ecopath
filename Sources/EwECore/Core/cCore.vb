@@ -10400,7 +10400,7 @@ Public Class cCore
     ''' <returns>True if the <paramref name="varName">variable</paramref> is supported.</returns>
     ''' -----------------------------------------------------------------------
     Public Function IsPedigreeVariableSupported(ByVal varName As eVarNameFlags) As Boolean
-        Return Me.PedigreeVariableIndex(varName) > -1
+        Return Me.PedigreeVariableIndex(varName) > -1 And (varName <> eVarNameFlags.NotSet)
     End Function
 
     ''' -----------------------------------------------------------------------
