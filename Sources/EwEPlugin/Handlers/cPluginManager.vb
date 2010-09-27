@@ -637,11 +637,15 @@ Public Class cPluginManager
                 Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & strFileName & ": " & loaderEX.Message)
             End If
 
+        Catch ex As BadImageFormatException
+
+            ' Assessed a DLL that did not contain IPlugin. Be quiet about it
+
         Catch ex As Exception
 
             'catch any generic exceptions
             Me.RaisePluginException(plugAssem, ex)
-            Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & strFileName & ": " & ex.Message)
+            'Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & strFileName & ": " & ex.Message)
 
         End Try
 
