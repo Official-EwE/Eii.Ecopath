@@ -93,7 +93,7 @@ Imports SourceGrid2.Cells
             Me.m_vn = vn
             Me.m_man = Me.m_core.GetPedigreeManager(Me.m_vn)
 
-            For iLevel As Integer = 0 To Me.m_man.NumLevels - 1
+            For iLevel As Integer = 1 To Me.m_man.NumLevels
                 Me.m_lfiLevels.Add(New cPedigreeLevelInfo(Me.m_man.Level(iLevel), iLevel))
             Next
 
@@ -223,7 +223,7 @@ Imports SourceGrid2.Cells
                     If lvlInfo.IsChanged() Then
                         bUpdated = False
                         ' Find (possibly reloaded) level that matches this lvlInfo
-                        For iLevel As Integer = 0 To Me.m_man.NumLevels - 1
+                        For iLevel As Integer = 1 To Me.m_man.NumLevels
                             level = Me.m_man.Level(iLevel)
                             If level.DBID = lvlInfo.Level.DBID Then
                                 level.Name = lvlInfo.Name
