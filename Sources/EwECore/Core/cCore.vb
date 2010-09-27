@@ -4592,9 +4592,11 @@ Public Class cCore
         If bIsFished Then
             ' #Yes: make Tcatch editable to the user
             group.ClearStatusFlags(eVarNameFlags.TCatchInput, eStatusFlags.NotEditable)
+            group.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, Me.PedigreeVariableIndex(eVarNameFlags.TCatchInput))
         Else
             ' #No: make Tcatch read-only to the user
             group.SetStatusFlags(eVarNameFlags.TCatchInput, eStatusFlags.NotEditable)
+            group.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, Me.PedigreeVariableIndex(eVarNameFlags.TCatchInput))
         End If
 
         If bSendMessage Then

@@ -847,6 +847,19 @@ Public Class cCoreGroupBase
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set the pedigree index status for a given variable. 
+    ''' </summary>
+    ''' <param name="iVariable">One-based index of the variable for which to access the status.</param>
+    Public Property PedigreeStatus(ByVal iVariable As Integer) As eStatusFlags
+        Get
+            Return Me.GetStatus(eVarNameFlags.Pedigree, iVariable)
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Pedigree, value)
+        End Set
+    End Property
+
 End Class ' cCoreGroupBase
 
 #End Region

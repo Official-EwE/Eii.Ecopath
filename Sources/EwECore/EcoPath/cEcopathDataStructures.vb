@@ -257,7 +257,7 @@ Public Class cEcopathDataStructures
     ''' <summary>Array [#groups, #supported vars] = pedigree index.</summary>
     Public Pedigree(,) As Integer
     ''' <summary>One-based array of variables supported by the pedigree system.</summary>
-    Public PedigreeVariables As eVarNameFlags() = {eVarNameFlags.NotSet, eVarNameFlags.Biomass, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp}
+    Public PedigreeVariables As eVarNameFlags() = {eVarNameFlags.NotSet, eVarNameFlags.Biomass, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp, eVarNameFlags.TCatchInput}
     Public NumPedigreeVariables As Integer = Me.PedigreeVariables.Length - 1
 
     ''' <summary>Total number of taxonomy codes.</summary>
