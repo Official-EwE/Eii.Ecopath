@@ -68,7 +68,7 @@ Namespace Controls.EwEGrid
 
             If cell Is Nothing Then Return
 
-            Dim eStyle As cStyleGuide.eStyleFlags = 0
+            Dim style As cStyleGuide.eStyleFlags = 0
             Dim clrBack As Color = Me.BackColor
             Dim clrFore As Color = Nothing ' Not used here
             Dim sg As cStyleGuide = Me.StyleGuide(cell)
@@ -76,13 +76,13 @@ Namespace Controls.EwEGrid
             ' Rendering a cell with an associated property?
             If (TypeOf cell Is EwECellBase) Then
                 ' #Yes: obtain cell style
-                eStyle = DirectCast(cell, EwECellBase).Style()
+                style = DirectCast(cell, EwECellBase).Style()
                 ' Get SG colours for this style
                 If (sg IsNot Nothing) Then
                     ' ! Note that when obtaining the background color the remarks style is excluded. This
                     ' ! style will not be not reflected via the background colour but instead via a 
                     ' ! dedicated indicator (see below)
-                    sg.GetStyleColors(eStyle And (Not cStyleGuide.eStyleFlags.Remarks), clrFore, clrBack)
+                    sg.GetStyleColors(style And (Not cStyleGuide.eStyleFlags.Remarks), clrFore, clrBack)
                 End If
             End If
 
@@ -102,13 +102,13 @@ Namespace Controls.EwEGrid
             End Using
 
             ' Check if need to render specific styles
-            If (eStyle = 0) Then
+            If (style = 0) Then
                 ' #No styles to render: done drawing
                 Return
             End If
 
             ' Need to draw remarks indicator?
-            If ((eStyle And cStyleGuide.eStyleFlags.Remarks) > 0) And (sg IsNot Nothing) Then
+            If ((style And cStyleGuide.eStyleFlags.Remarks) > 0) And (sg IsNot Nothing) Then
                 ' #Yes: draw remarks indicator
                 cRemarksIndicator.Paint(sg, rc, e.Graphics, True)
             End If
@@ -129,7 +129,7 @@ Namespace Controls.EwEGrid
 
             If cell Is Nothing Then Return
 
-            Dim eStyle As cStyleGuide.eStyleFlags = 0
+            Dim style As cStyleGuide.eStyleFlags = 0
             Dim clrFore As Color = Me.ForeColor
             Dim clrBack As Color = Nothing ' Not used here
             Dim rcBorder As RectangleBorder = Me.Border
@@ -140,10 +140,10 @@ Namespace Controls.EwEGrid
             ' Rendering a cell with an associated property?
             If (TypeOf cell Is EwECellBase) Then
                 ' #Yes: obtain cell style
-                eStyle = DirectCast(cell, EwECellBase).Style()
+                style = DirectCast(cell, EwECellBase).Style()
                 If (sg IsNot Nothing) Then
                     ' Get SG colours for this style
-                    sg.GetStyleColors(eStyle, clrFore, clrBack)
+                    sg.GetStyleColors(style, clrFore, clrBack)
                 End If
             End If
 
@@ -186,14 +186,14 @@ Namespace Controls.EwEGrid
             If cell Is Nothing Then Return
 
             Dim sg As cStyleGuide = Me.StyleGuide(cell)
-            Dim eStyle As cStyleGuide.eStyleFlags = 0
+            Dim style As cStyleGuide.eStyleFlags = 0
             Dim clrFore As Color = Me.ForeColor
             Dim rcBorder As RectangleBorder = Me.Border
 
             ' Rendering a cell with an associated property?
             If (TypeOf cell Is EwECellBase) Then
                 ' #Yes: obtain cell style
-                eStyle = DirectCast(cell, EwECellBase).Style()
+                style = DirectCast(cell, EwECellBase).Style()
             End If
 
             ' Does cell have focus?
@@ -207,7 +207,7 @@ Namespace Controls.EwEGrid
             End If
 
             ' Need to render highlightboder?
-            If ((eStyle And cStyleGuide.eStyleFlags.Highlight) > 0) And (sg IsNot Nothing) Then
+            If ((style And cStyleGuide.eStyleFlags.Highlight) > 0) And (sg IsNot Nothing) Then
                 ' #Yes: render highlight border
                 rcBorder = New RectangleBorder( _
                     New Border(sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), Me.m_nHighlightBorderWidth))
@@ -233,7 +233,7 @@ Namespace Controls.EwEGrid
         ''' <summary>
         ''' Borrow style guide from parent cell, if possible.
         ''' </summary>
-        ''' <param name="p_Cell"></param>
+        ''' <param name="cell"></param>
         ''' -------------------------------------------------------------------
         Protected ReadOnly Property StyleGuide(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide
             Get
