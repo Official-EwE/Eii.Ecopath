@@ -1429,8 +1429,8 @@ Namespace Database
             Dim varName As eVarNameFlags = eVarNameFlags.NotSet
             Dim strDescription As String = ""
             Dim drow As DataRow = Nothing
-            Dim iSequence As Integer = 0
-            Dim iLevelID As Integer = 0
+            Dim iSequence As Integer = 1
+            Dim iLevelID As Integer = 1
 
             reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Pedigree]"))
             If Object.ReferenceEquals(reader, Nothing) Then Return
