@@ -30,13 +30,16 @@ Public Class cPedigreeLevel
         Dim meta As cVariableMetaData
         Dim desc() As Char
 
-        Me.DBID = iDBID
         Me.m_manager = manager
         Me.m_dataType = eDataTypes.PedigreeLevel
         Me.m_coreComponent = eCoreComponentType.EcoPath
 
         Me.m_ValidationStatus = New cVariableStatus
         Me.m_ValidationStatus.CoreDataObject = Me
+
+        Me.AllowValidation = False
+
+        Me.DBID = iDBID
 
         'VarName
         meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
@@ -67,6 +70,8 @@ Public Class cPedigreeLevel
         'Estimated flag
         val = New cValue(New Boolean, eVarNameFlags.Estimated, eStatusFlags.Null, eValueTypes.Bool)
         Me.m_values.Add(val.varName, val)
+
+        Me.AllowValidation = True
 
     End Sub
 
