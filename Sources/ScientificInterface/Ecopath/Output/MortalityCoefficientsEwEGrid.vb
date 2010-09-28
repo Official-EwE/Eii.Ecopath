@@ -23,6 +23,7 @@ Namespace Ecopath.Output
             BioAccum
             NetMig
             OtherMort
+            Spacer
             MortTot
             MortNat
         End Enum
@@ -36,16 +37,16 @@ Namespace Ecopath.Output
             MyBase.InitStyle()
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_PBZ)
-            Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_FISHINGMORTRATE)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_PREDMORTRATE)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCURATE2)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_NETMIGRATE)
-            Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_OTHERMORTRATE)
-            Me(0, 8) = New EwEColumnHeaderCell(My.Resources.MORT_FISH_TOT)
-            Me(0, 9) = New EwEColumnHeaderCell(My.Resources.MORT_NAT)
+            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.PBZ) = New EwEColumnHeaderCell(My.Resources.HEADER_PBZ)
+            Me(0, eColumnTypes.FishMort) = New EwEColumnHeaderCell(My.Resources.HEADER_FISHINGMORTRATE)
+            Me(0, eColumnTypes.PredMort) = New EwEColumnHeaderCell(My.Resources.HEADER_PREDMORTRATE)
+            Me(0, eColumnTypes.BioAccum) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCURATE2)
+            Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(My.Resources.HEADER_NETMIGRATE)
+            Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell(My.Resources.HEADER_OTHERMORTRATE)
+            Me(0, eColumnTypes.MortTot) = New EwEColumnHeaderCell(My.Resources.MORT_FISH_TOT)
+            Me(0, eColumnTypes.MortNat) = New EwEColumnHeaderCell(My.Resources.MORT_NAT)
 
             Me.FixedColumns = 2
 
