@@ -134,7 +134,9 @@ Friend Class cDBUpdate6_01_00_007
 
     Private Function PurgePedigreeAuxillary(ByVal db As cEwEDatabase) As Boolean
 
-        Return db.Execute("ALTER TABLE Auxillary DROP COLUMN PedigreeLevelID")
+        ' Need to remove relationship first, may fail
+        db.Execute("ALTER TABLE Auxillary DROP COLUMN PedigreeLevelID")
+        Return True
 
     End Function
 
