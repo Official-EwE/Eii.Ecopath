@@ -2780,11 +2780,6 @@ Public Class cCore
                 'stanza variables setting the stanza id will also set the isMultiStanza Flag
                 Input.iStanza = getStanzaIndexForGroup(iGroup)
 
-                'Pedigree
-                For j = 1 To Me.m_EcoPathData.NumPedigreeVariables
-                    Input.Pedigree(j) = m_EcoPathData.Pedigree(iGroup, j)
-                Next
-
                 ' === PSD ===
                 Input.AinLWInput = m_PSDData.AinLWInput(iGroup)
                 Input.BinLWInput = m_PSDData.BinLWInput(iGroup)
@@ -2878,11 +2873,6 @@ Public Class cCore
                 For i As Integer = 1 To nDetritusGroups
                     m_EcoPathData.DF(iGroup, i) = Input.DetritusFate(i)
                 Next i
-
-                'Pedigree
-                For i As Integer = 1 To Me.m_EcoPathData.NumPedigreeVariables
-                    m_EcoPathData.Pedigree(iGroup, i) = Input.Pedigree(i)
-                Next
 
             Else
                 Debug.Assert(False)
@@ -4281,6 +4271,10 @@ Public Class cCore
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
+        ' Update pedigree accordingly
+        Me.GetPedigreeManager(eVarNameFlags.PBInput).Set_Pedigree_Flags(obj)
+        Me.GetPedigreeManager(eVarNameFlags.QBInput).Set_Pedigree_Flags(obj)
+
         Return True
     End Function
 
@@ -4594,11 +4588,9 @@ Public Class cCore
         If bIsFished Then
             ' #Yes: make Tcatch editable to the user
             group.ClearStatusFlags(eVarNameFlags.TCatchInput, eStatusFlags.NotEditable)
-            group.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, Me.PedigreeVariableIndex(eVarNameFlags.TCatchInput))
         Else
             ' #No: make Tcatch read-only to the user
             group.SetStatusFlags(eVarNameFlags.TCatchInput, eStatusFlags.NotEditable)
-            group.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, Me.PedigreeVariableIndex(eVarNameFlags.TCatchInput))
         End If
 
         If bSendMessage Then
@@ -4607,6 +4599,10 @@ Public Class cCore
         End If
 
         group.AllowValidation = True
+
+        ' Update pedigree accordingly
+        Me.GetPedigreeManager(eVarNameFlags.TCatchInput).Set_Pedigree_Flags(group)
+
     End Function
 
     Friend Function Set_Tmax_Flags(ByVal group As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
@@ -10375,13 +10371,23 @@ Public Class cCore
             manager = New cPedigreeManager(Me, varname)
             manager.Index = iVariable
             manager.DBID = iVariable
-            ' Load manager
-            manager.Load()
+            ' Initialize manager
+            manager.Init()
             ' Store manager
             Me.m_PedigreeManagers(varname) = manager
         Next
         Return True
 
+    End Function
+
+    Private Function LoadPedigreeLevels() As Boolean
+        For Each man As cPedigreeManager In Me.m_PedigreeManagers.Values
+            Me.LoadPedigreeLevels(man)
+        Next
+    End Function
+
+    Private Function LoadPedigreeLevels(ByVal man As cPedigreeManager) As Boolean
+        man.LoadPedigreeLevels()
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -11511,11 +11517,24 @@ Public Class cCore
                         eCoreComponentType.TimeSeries, eMessageImportance.Maintenance))
 
                 Case eDataTypes.PedigreeLevel
-                    ' NOP
+                    Dim level As cPedigreeLevel = DirectCast(obj, cPedigreeLevel)
+                    Dim man As cPedigreeManager = Me.GetPedigreeManager(level.VariableName)
+                    Me.LoadPedigreeLevels(man)
+
+                    Me.m_publisher.AddMessage(New cMessage("Pedigree levels have changed.", eMessageType.DataModified, _
+                                                           level.CoreComponent, eMessageImportance.Maintenance))
+
+                Case eDataTypes.PedigreeManager
+                    Dim man As cPedigreeManager = DirectCast(obj, cPedigreeManager)
+                    man.LoadPedigree()
+
+                    Me.m_publisher.AddMessage(New cMessage("Pedigree assignments have changed.", eMessageType.DataModified, _
+                                       man.CoreComponent, eMessageImportance.Maintenance))
 
                 Case eDataTypes.MonteCarlo
                     Me.LoadEcopathInputs()
                     Me.LoadEcosimGroups()
+
             End Select
 
             ' JS 31aug07: DataAddedOrRemoved messages are initialized by the db, thus the db should not get flagged as dirty

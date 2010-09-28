@@ -330,7 +330,7 @@ Namespace Ecopath.Tools
                 group = Me.Core.EcoPathGroupInputs(iGroup)
                 For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
                     ' Get pedigree
-                    'man = Me.Core.GetPedigreeManager(Me.Core.PedigreeVariable(iVariable))
+                    man = Me.Core.GetPedigreeManager(Me.Core.PedigreeVariable(iVariable))
                     'cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Pedigree, man)
                     'cell.SuppressZero = True
                     'cell.Behaviors.Add(Me.EwEEditHandler)
@@ -341,7 +341,7 @@ Namespace Ecopath.Tools
                     '    cell.Style = cell.Style Or cStyleGuide.eStyleFlags.NotEditable
                     'End If
 
-                    cell = New EwECell(group.Pedigree(iVariable), GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
+                    cell = New EwECell(man.Pedigree(iGroup), GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iGroup, 1 + iVariable) = cell
                 Next
             Next

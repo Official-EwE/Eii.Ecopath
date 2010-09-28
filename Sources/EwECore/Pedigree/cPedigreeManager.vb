@@ -12,14 +12,29 @@ Public Class cPedigreeManager
 
     Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
     Private m_levels As New cCoreInputOutputList(Of cPedigreeLevel)(eDataTypes.PedigreeLevel, 1)
+    Private m_iLevels() As Integer
+
     Private m_messageSource As eCoreComponentType = eCoreComponentType.Core
 
     Friend Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags)
         MyBase.New(core)
+
+        Dim val As cValue
+        Dim meta As cVariableMetaData
+
         Me.m_dataType = eDataTypes.PedigreeManager
         Me.m_coreComponent = eCoreComponentType.EcoPath
         Me.m_varName = varName
+
+        'Array variables
+        'Pedigree (should limit max to number of levels in a given manager)
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.Pedigree))
+        m_values.Add(val.varName, val)
+
     End Sub
+
+#Region " Level management "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -45,8 +60,8 @@ Public Class cPedigreeManager
         Dim bSucces As Boolean = True
 
         If m_core.AddPedigreeLevel(varName, iPosition, strName, strDescription, sIndexValue, sConfidence, iDBID) Then
-            ' Reload me
-            bSucces = Me.Load()
+            ' Reinitialize levels
+            Me.Init()
             ' Give core a chance to respond
             Me.m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
         End If
@@ -68,58 +83,125 @@ Public Class cPedigreeManager
     ''' -----------------------------------------------------------------------
     Public Function RemoveLevel(ByVal level As cPedigreeLevel) As Boolean
 
-        Dim bSucces As Boolean = True
-
         If m_core.RemovePedigreeLevel(level.DBID) Then
-            ' Reload me
-            bSucces = Me.Load()
+            ' Reload level
+            Me.Init()
             ' Give core a chance to respond
             Me.m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
+            Return True
         End If
-
-        Return bSucces
+        Return False
 
     End Function
+
+#End Region ' Level management
 
 #Region " Internals "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Create and load pedigree levels.
+    ''' Create pedigree levels and load all data.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Friend Sub Init()
+
+        Dim level As cPedigreeLevel = Nothing
+        Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
+
+        Me.m_levels.Clear()
+        ReDim m_iLevels(data.NumPedigreeLevels)
+
+        For iLevel As Integer = 1 To data.NumPedigreeLevels
+            If data.PedigreeLevelVarName(iLevel) = Me.m_varName Then
+
+                level = New cPedigreeLevel(Me.m_core, Me, data.PedigreeLevelDBID(iLevel))
+
+                ' Config level
+                level.AllowValidation = False
+                level.ID = Me.m_levels.Count ' zero based to stay in sync w EwE5
+                level.Index = iLevel
+                level.AllowValidation = True
+
+                ' Update local admin
+                Me.m_levels.Add(level)
+                Me.m_iLevels(iLevel) = level.ID
+
+            End If
+        Next
+
+        Me.LoadPedigreeLevels()
+        Me.LoadPedigree()
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load pedigree levels.
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Overridable Function Load() As Boolean
+    Friend Function LoadPedigreeLevels() As Boolean
+
+        Dim bSucces As Boolean = True
         Try
             Dim level As cPedigreeLevel = Nothing
             Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
-            Me.m_levels.Clear()
-            For iLevel As Integer = 1 To data.NumPedigreeLevels
-                If data.PedigreeLevelVarName(iLevel) = Me.m_varName Then
+            For iLevel As Integer = 1 To Me.NumLevels
 
-                    level = New cPedigreeLevel(Me.m_core, Me, data.PedigreeLevelDBID(iLevel))
-                    Me.m_levels.Add(level)
+                level = Me.m_levels(iLevel)
 
-                    level.AllowValidation = False
-                    level.ID = Me.m_levels.Count ' One based!
-                    level.Index = iLevel
-                    level.Name = data.PedigreeLevelName(iLevel)
-                    level.Description = data.PedigreeLevelDescription(iLevel)
-                    level.PoolColor = data.PedigreeLevelColor(iLevel)
-                    level.IndexValue = data.PedigreeLevelIndexValue(iLevel)
-                    level.ConfidenceInterval = data.PedigreeLevelConfidence(iLevel)
-                    level.VariableName = Me.m_varName
-                    level.IsEstimated = data.PedigreeLevelEstimated(iLevel)
-                    level.AllowValidation = True
+                level.AllowValidation = False
+                level.Name = data.PedigreeLevelName(iLevel)
+                level.Description = data.PedigreeLevelDescription(iLevel)
+                level.PoolColor = data.PedigreeLevelColor(iLevel)
+                level.IndexValue = data.PedigreeLevelIndexValue(iLevel)
+                level.ConfidenceInterval = data.PedigreeLevelConfidence(iLevel)
+                level.VariableName = Me.m_varName
+                level.IsEstimated = data.PedigreeLevelEstimated(iLevel)
+                level.AllowValidation = True
 
-                End If
             Next
 
         Catch ex As Exception
-            Return False
+            bSucces = False
             Debug.Assert(False, Me.ToString & ".Load() Error: " & ex.Message)
         End Try
+
+        Me.AllowValidation = True
+
+        Return bSucces
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load or update pedigree assignment values.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Friend Function LoadPedigree() As Boolean
+
+        Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim iVariable As Integer = Me.m_core.PedigreeVariableIndex(Me.m_varName)
+        Dim iLevel As Integer = 0
+        Dim iIndex As Integer = 0
+
+        Me.AllowValidation = False
+
+        ' Map core level indexes to local manager indexes
+        For iGroup As Integer = 1 To Me.m_core.nGroups
+
+            iLevel = data.Pedigree(iGroup, iVariable)
+            If (iLevel > 0) Then
+                iIndex = Me.m_iLevels(iLevel)
+            Else
+                iIndex = -1
+            End If
+            Me.Pedigree(iGroup) = iIndex
+
+        Next
+        Me.AllowValidation = True
 
         Return True
 
@@ -131,28 +213,31 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function Update() As Boolean
+    Public Function UpdatePedigreeLevels() As Boolean
 
         Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim level As cPedigreeLevel = Nothing
 
         Try
-            For Each level In Me.m_levels
+            For iLevel As Integer = 1 To Me.NumLevels
+
                 Try
 
+                    level = Me.m_levels(iLevel)
                     data.PedigreeLevelName(level.Index) = level.Name
                     data.PedigreeLevelDescription(level.Index) = level.Description
                     data.PedigreeLevelColor(level.Index) = level.PoolColor
                     data.PedigreeLevelIndexValue(level.Index) = level.IndexValue
                     data.PedigreeLevelConfidence(level.Index) = level.ConfidenceInterval
 
+                    Me.m_core.onChanged(level, eMessageType.DataModified)
+
                 Catch ex As Exception
                     cLog.Write(Me.ToString & ".Update() level failed to update DBID=" & level.DBID)
                     Debug.Assert(False, Me.ToString & ".Update() level failed to update DBID=" & level.DBID)
                 End Try
-            Next level
 
-            Me.m_core.onChanged(Me, eMessageType.DataModified)
+            Next iLevel
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Update() Error: " & ex.Message)
@@ -163,10 +248,100 @@ Public Class cPedigreeManager
 
     End Function
 
+    Public Function UpdatePedigree() As Boolean
+
+        Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim iVariable As Integer = Me.m_core.PedigreeVariableIndex(Me.m_varName)
+        Dim iIndex As Integer = 0
+        Dim iLevel As Integer = 0
+
+        ' Map local manager indexes to core level indexes 
+        For iGroup As Integer = 1 To Me.m_core.nGroups
+            ' Get local index
+            iIndex = Me.Pedigree(iGroup)
+            ' Is in valid range?
+            If (iIndex >= 0) And (iIndex < Me.m_levels.Count) Then
+                ' #Yes: obtain actual core index for this level
+                iLevel = Me.m_levels(iIndex).Index
+            Else
+                ' #No: assume 'no assignment'
+                iLevel = 0
+            End If
+            Try
+                ' Store
+                data.Pedigree(iGroup, iVariable) = iLevel
+            Catch ex As Exception
+                cLog.Write(Me.ToString & ".UpdatePedigree() group failed to update DBID=" & iGroup)
+                Debug.Assert(False, Me.ToString & ".UpdatePedigree() group failed to update DBID=" & iGroup)
+            End Try
+        Next
+        Return True
+
+    End Function
+
+    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+
+        MyBase.ResetStatusFlags(bForceReset)
+        For iGroup As Integer = 1 To Me.m_core.nGroups
+            Me.Set_Pedigree_Flags(Me.m_core.EcoPathGroupInputs(iGroup))
+        Next
+        Return True
+
+    End Function
+
+    ''' <summary>
+    ''' Set the status flags of pedigree.
+    ''' </summary>
+    ''' <param name="group">The group to update.</param>
+    Friend Sub Set_Pedigree_Flags(ByVal group As cCoreGroupBase)
+
+        ' Borrow status flags from groups
+        Me.AllowValidation = False
+
+        Select Case Me.m_varName
+            Case eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.TCatchInput
+                Me.SetStatus(eVarNameFlags.Pedigree, group.GetStatus(Me.m_varName), group.Index)
+            Case eVarNameFlags.DietComp
+                If group.IsConsumer Then
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                Else
+                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                End If
+        End Select
+
+        Me.AllowValidation = True
+
+    End Sub
+
 #End Region ' Internals
 
 #Region " Properties "
 
+    ''' <summary>
+    ''' Get/set the pedigree index for a given variable. 
+    ''' </summary>
+    ''' <param name="iGroup">One-based index of the group.</param>
+    Public Property Pedigree(ByVal iGroup As Integer) As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.Pedigree, iGroup))
+        End Get
+        Set(ByVal value As Integer)
+            Me.SetVariable(eVarNameFlags.Pedigree, value, iGroup)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the pedigree index status for a given variable. 
+    ''' </summary>
+    ''' <param name="iVariable">One-based index of the variable for which to access the status.</param>
+    Public Property PedigreeStatus(ByVal iVariable As Integer) As eStatusFlags
+        Get
+            Return Me.GetStatus(eVarNameFlags.Pedigree, iVariable)
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Pedigree, value)
+        End Set
+    End Property
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get the number of pedigree levels in the manager.

@@ -747,12 +747,6 @@ Public Class cCoreGroupBase
         val = New cValue(New Single, eVarNameFlags.PP, eStatusFlags.Null, eValueTypes.Sng, meta, validator)
         m_values.Add(val.varName, val)
 
-        'Array variables
-        'Pedigree (should limit max to number of levels in a given manager)
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nPedigreeVariables, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.Pedigree))
-        m_values.Add(val.varName, val)
-
     End Sub
 
     ''' <summary>
@@ -827,37 +821,6 @@ Public Class cCoreGroupBase
         Get
             Return (Me.PP > 0 And Me.PP <= 1.0)
         End Get
-    End Property
-
-    ''' <summary>
-    ''' Get/set the pedigree index for a given variable. 
-    ''' </summary>
-    ''' <param name="iVariable">One-based index of the variable for which to obtain pedigree.</param>
-    ''' <remarks>
-    ''' <para>The pedigree index given here corresponds to a pedigree level in
-    ''' the <see cref="cPedigreeManager">pedigree manager</see> indicated by
-    ''' <see cref="cCore.PedigreeVariable">pedigree variable</see> <paramref name="iVariable">iVariable</paramref></para>
-    ''' </remarks>
-    Public Property Pedigree(ByVal iVariable As Integer) As Integer
-        Get
-            Return CInt(Me.GetVariable(eVarNameFlags.Pedigree, iVariable))
-        End Get
-        Set(ByVal value As Integer)
-            Me.SetVariable(eVarNameFlags.Pedigree, value, iVariable)
-        End Set
-    End Property
-
-    ''' <summary>
-    ''' Get/set the pedigree index status for a given variable. 
-    ''' </summary>
-    ''' <param name="iVariable">One-based index of the variable for which to access the status.</param>
-    Public Property PedigreeStatus(ByVal iVariable As Integer) As eStatusFlags
-        Get
-            Return Me.GetStatus(eVarNameFlags.Pedigree, iVariable)
-        End Get
-        Friend Set(ByVal value As eStatusFlags)
-            Me.SetStatus(eVarNameFlags.Pedigree, value)
-        End Set
     End Property
 
 End Class ' cCoreGroupBase

@@ -239,7 +239,7 @@ Imports SourceGrid2.Cells
                 Next
             End If
 
-            Me.m_man.Update()
+            Me.m_man.UpdatePedigreeLevels()
             Return bSuccess
 
         End Function
