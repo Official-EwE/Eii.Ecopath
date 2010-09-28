@@ -206,7 +206,6 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EwENetworkAnalysis\FD.EXE" />
     <Content Include="EwENetworkAnalysis\IMPACTS.EXE">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
