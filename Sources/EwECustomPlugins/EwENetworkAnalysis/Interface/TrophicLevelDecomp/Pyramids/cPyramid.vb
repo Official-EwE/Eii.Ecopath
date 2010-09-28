@@ -11,6 +11,7 @@ Imports System.Globalization
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Win32Api
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -35,31 +36,32 @@ Public MustInherit Class cPyramid
         Dim core As cCore = Me.NetworkManager.Core
         Dim ciEnUSLocale As New CultureInfo("en-US")
         Dim sw As StreamWriter = Nothing
+        Dim strError As String = ""
         Dim strOutputFile As String = ""
         Dim strOutputFile83 As String = Space(255)
         Dim bSucces As Boolean = False
 
         strOutputFile = modUtility.PyramidTempFile(model.Name, Me.PyramidType, ".txt")
-        sw = New StreamWriter(strOutputFile, False, New System.Text.UTF8Encoding())
-        bSucces = Me.WritePyramidFile(core, sw, ciEnUSLocale)
-        sw.Close()
 
-        If bSucces Then
-            Try
-                Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
-                bSucces = SystemUtilities.AppExec("pyramid.exe", strOutputFile83, "", "EwENetworkAnalysis")
-            Catch ex As Exception
-
-            End Try
-        End If
+        Try
+            sw = New StreamWriter(strOutputFile, False, New System.Text.UTF8Encoding())
+            bSucces = Me.WritePyramidFile(core, sw, ciEnUSLocale)
+            strError = "Cannot write temp pyramid file to " & strOutputFile
+            sw.Close()
+        Catch ex As Exception
+            strError = ex.Message
+            bSucces = False
+        End Try
 
         If Not bSucces Then
-            Dim sb As New StringBuilder
-            For Each str As String In SystemUtilities.ApplicationLaunchLocations
-                If sb.Length > 0 Then sb.Append(", ")
-                sb.Append(str)
-            Next
-            Dim msg As New cMessage(String.Format(My.Resources.PROMPT_APPLAUNCH_FAILED, "pyramid.exe", sb.ToString), _
+            Me.SendMessage(String.Format(My.Resources.PROMPT_FILECREATE_FAILED, "pyramid.exe", strError))
+            Return
+        End If
+
+        Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
+
+        If Not SystemUtilities.AppExec("pyramid.exe", strOutputFile83, strError, "", "EwENetworkAnalysis") Then
+            Dim msg As New cMessage(String.Format(My.Resources.PROMPT_APPLAUNCH_FAILED, "pyramid.exe", strError), _
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
             Me.NetworkManager.Core.Messages.SendMessage(msg)
         End If

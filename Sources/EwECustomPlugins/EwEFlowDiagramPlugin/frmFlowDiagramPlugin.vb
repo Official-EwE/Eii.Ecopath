@@ -50,6 +50,7 @@ Public Class frmFlowDiagramPlugin
         Dim fi(,) As Single
         Dim aStreamWriter As TextWriter
         Dim breakline As String
+        Dim strError As String = ""
         ReDim fi(core.nGroups, core.nGroups)
 
         'Check if the extra necessery information is avaiable
@@ -117,8 +118,8 @@ Public Class frmFlowDiagramPlugin
             End If
 
             'Execute the external application through the general function on EwEUtils
-            If Not EwEUtils.SystemUtilities.SystemUtilities.AppExec("fd.exe", flowfile, "", "EwEFlowDiagramPlugin") Then
-                Dim msg As New cMessage("Unable to run application 'fd.exe'", _
+            If Not EwEUtils.SystemUtilities.SystemUtilities.AppExec("fd.exe", flowfile, strError, "", "EwEFlowDiagramPlugin") Then
+                Dim msg As New cMessage("Unable to run application 'fd.exe': " & strError, _
                                         eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
                 core.Messages.SendMessage(msg)
             End If

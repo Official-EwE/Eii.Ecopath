@@ -33,7 +33,9 @@ Namespace SystemUtilities
         ''' <param name="strOutputParameters">Arguments to pass to the executable.</param>
         ''' <param name="strSecondaryOutputDirectory">Working directory</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Function AppExec(ByVal strAppName As String, ByVal strOutputParameters As String, _
+        Public Shared Function AppExec(ByVal strAppName As String, _
+                                       ByVal strOutputParameters As String, _
+                                       ByRef strError As String, _
                                        Optional ByVal strPath As String = "", _
                                        Optional ByVal strSecondaryOutputDirectory As String = "") As Boolean
 
@@ -44,9 +46,9 @@ Namespace SystemUtilities
                 ' Loop through all the file locations to find the files
                 For Each strLocation As String In ApplicationLaunchLocations()
                     ' Execute with directory parameter
-                    If ExecuteApplication(strLocation, strAppName, strOutputParameters, strSecondaryOutputDirectory) Then Return True
+                    If ExecuteApplication(strLocation, strAppName, strOutputParameters, strError, strSecondaryOutputDirectory) Then Return True
                     ' Execute without directory parameter
-                    If ExecuteApplication(strLocation, strAppName, strOutputParameters) Then Return True
+                    If ExecuteApplication(strLocation, strAppName, strOutputParameters, strError) Then Return True
                 Next
             End If
             Return False
@@ -55,9 +57,9 @@ Namespace SystemUtilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' [to document]
-        ''' </summary>
-        ''' <returns></returns>
+        ''' Returns an array of possible application locations.</summary>
+        ''' <returns>
+        ''' </returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function ApplicationLaunchLocations() As String()
             Return New String() {Mid(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase), 7), _
@@ -77,6 +79,7 @@ Namespace SystemUtilities
         Private Shared Function ExecuteApplication(ByVal strLocationDir As String, _
                                                    ByVal strAppName As String, _
                                                    ByVal strOutputParameters As String, _
+                                                   ByRef strError As String, _
                                                    Optional ByVal strSecondaryOutputDirectory As String = "") As Boolean
             Dim bSuccess As Boolean = False
             Dim strFullAppPath As String = ""
@@ -100,6 +103,7 @@ Namespace SystemUtilities
                 ' JS 19ap09 (happy 4th birthday Sascha!) do not throw exception; the calling code is not ready for this
                 'Throw New Exception(String.Format("Failed to load {0} with parameters {1}.  Please check if the application exist and reinstall the application.  If the issue still persist contact your application vendor.  Error: {2}.", _
                 '                                   strFullAppPath, strOutputFileName, ex.ToString))
+                strError = ex.Message
                 bSuccess = False
             End Try
 

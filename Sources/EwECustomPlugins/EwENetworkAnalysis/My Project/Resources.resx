@@ -512,8 +512,8 @@
     <value>Positive</value>
   </data>
   <data name="PROMPT_APPLAUNCH_FAILED" xml:space="preserve">
-    <value>Failed to launch application {0}. The file does not seem to exist in any of the expected locations: {1}</value>
-    <comment>{0}: application name. {1}: locations</comment>
+    <value>Failed to launch application '{0}': {1}</value>
+    <comment>{0}: application name. {1}: reason</comment>
   </data>
   <data name="LBL_INDEXED" xml:space="preserve">
     <value>{0}: {1}</value>
@@ -687,5 +687,8 @@
   </data>
   <data name="COL_HDR_YEAR" xml:space="preserve">
     <value>Year</value>
+  </data>
+  <data name="PROMPT_FILECREATE_FAILED" xml:space="preserve">
+    <value>Failed to create file '{0}': {1}</value>
   </data>
 </root>
