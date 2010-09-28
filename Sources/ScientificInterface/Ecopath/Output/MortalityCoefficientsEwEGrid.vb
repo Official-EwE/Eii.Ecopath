@@ -37,6 +37,7 @@ Namespace Ecopath.Output
             MyBase.InitStyle()
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
+
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.PBZ) = New EwEColumnHeaderCell(My.Resources.HEADER_PBZ)
@@ -45,6 +46,7 @@ Namespace Ecopath.Output
             Me(0, eColumnTypes.BioAccum) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCURATE2)
             Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(My.Resources.HEADER_NETMIGRATE)
             Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell(My.Resources.HEADER_OTHERMORTRATE)
+            Me(0, eColumnTypes.Spacer) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.MortTot) = New EwEColumnHeaderCell(My.Resources.MORT_FISH_TOT)
             Me(0, eColumnTypes.MortNat) = New EwEColumnHeaderCell(My.Resources.MORT_NAT)
 
@@ -94,7 +96,7 @@ Namespace Ecopath.Output
                         Me(iRow, eColumnTypes.Index) = hgcStanza
                         Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
                         ' Complete row with dummy cells
-                        For i As Integer = 2 To 9 : Me(iRow, i) = New EwERowHeaderCell() : Next
+                        For i As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaGroupIndexPrev = intStanzaGroupIndex(source.Index)
                     Else
                         hgcStanza = dtStanzaCells(sg)
@@ -128,6 +130,7 @@ Namespace Ecopath.Output
             Me(iRow, eColumnTypes.BioAccum) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
             Me(iRow, eColumnTypes.NetMig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoNetMig)
             Me(iRow, eColumnTypes.OtherMort) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoOtherMort)
+            Me(iRow, eColumnTypes.Spacer) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             Me(iRow, eColumnTypes.MortTot) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FishMortTotMort)
             Me(iRow, eColumnTypes.MortNat) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NatMortPerTotMort)
 
@@ -135,6 +138,17 @@ Namespace Ecopath.Output
             Me.SetCellAlert(DirectCast(Me(iRow, eColumnTypes.FishMort), EwECellBase), bMortAlert And bCatchAlert)
             Me.SetCellAlert(DirectCast(Me(iRow, eColumnTypes.OtherMort), EwECellBase), bMortAlert)
 
+            'Me.SetCellComputed(DirectCast(Me(iRow, eColumnTypes.MortTot), EwECellBase))
+            'Me.SetCellComputed(DirectCast(Me(iRow, eColumnTypes.MortNat), EwECellBase))
+
+        End Sub
+
+        Protected Overrides Sub FinishStyle()
+            MyBase.FinishStyle()
+            With Me.Columns(eColumnTypes.Spacer)
+                .AutoSizeMode = SourceGrid2.AutoSizeMode.None
+                .Width = 3
+            End With
         End Sub
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
@@ -149,6 +163,10 @@ Namespace Ecopath.Output
             Else
                 cell.Style = cell.Style And (Not cStyleGuide.eStyleFlags.Checked)
             End If
+        End Sub
+
+        Private Sub SetCellComputed(ByVal cell As EwECellBase)
+            cell.Style = cell.Style Or cStyleGuide.eStyleFlags.ValueComputed
         End Sub
 
     End Class
