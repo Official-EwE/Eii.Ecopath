@@ -330,17 +330,18 @@ Namespace Ecopath.Tools
                 group = Me.Core.EcoPathGroupInputs(iGroup)
                 For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
                     ' Get pedigree
-                    man = Me.Core.GetPedigreeManager(Me.Core.PedigreeVariable(iVariable))
-                    cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Pedigree, man)
-                    cell.SuppressZero = True
-                    cell.Behaviors.Add(Me.EwEEditHandler)
-                    cell.VisualModel = Me.m_viz
-                    cell.EditableMode = EditableMode.None
+                    'man = Me.Core.GetPedigreeManager(Me.Core.PedigreeVariable(iVariable))
+                    'cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Pedigree, man)
+                    'cell.SuppressZero = True
+                    'cell.Behaviors.Add(Me.EwEEditHandler)
+                    'cell.VisualModel = Me.m_viz
+                    'cell.EditableMode = EditableMode.None
 
-                    If iSelectedVar <> iVariable Then
-                        cell.Style = cell.Style Or cStyleGuide.eStyleFlags.NotEditable
-                    End If
+                    'If iSelectedVar <> iVariable Then
+                    '    cell.Style = cell.Style Or cStyleGuide.eStyleFlags.NotEditable
+                    'End If
 
+                    cell = New EwECell(group.Pedigree(iVariable), GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iGroup, 1 + iVariable) = cell
                 Next
             Next

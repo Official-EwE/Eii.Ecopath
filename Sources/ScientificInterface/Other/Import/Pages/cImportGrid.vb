@@ -138,6 +138,13 @@ Namespace Import
 
         End Sub
 
+        Protected Overrides Sub FinishStyle()
+            MyBase.FinishStyle()
+            Me.Columns(eColumnTypes.EwE5Model).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+            Me.Columns(eColumnTypes.EwE6Model).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+            Me.StretchColumnsToFitWidth()
+        End Sub
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Cell has been edited: update underlying import settings.
