@@ -1,6 +1,7 @@
 ﻿Option Strict On
 Imports EwEPlugin
 Imports EwEUtils.Database
+Imports EwEUtils.Core
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -9,6 +10,7 @@ Imports EwEUtils.Database
 ''' <list type="bullet">
 ''' <item><description>Added pedigree colour.</description></item>
 ''' <item><description>Changed pedigree storage location.</description></item>
+''' <item><description>Fixed pedigree designation error.</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
@@ -41,13 +43,17 @@ Friend Class cDBUpdate6_01_00_007
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added pedigree level colours" & vbNewLine & "Changed pedigree storage location"
+            Return "Added pedigree level colours" & vbNewLine & "Changed pedigree storage location" & vbNewLine & "Fixed pedigree designation error"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return Me.AddPedigreeColor(db) And ChangePedigreeStorage(db)
+        Return Me.AddPedigreeColor(db) And _
+               Me.FixPedigreeLandingsColumn(db) And _
+               Me.ChangePedigreeStorage(db) And _
+               Me.MovePedigreeFromAuxillary(db) And _
+               Me.PurgePedigreeAuxillary(db)
 
     End Function
 
@@ -60,15 +66,75 @@ Friend Class cDBUpdate6_01_00_007
 
     End Function
 
+    Private Function FixPedigreeLandingsColumn(ByVal db As cEwEDatabase) As Boolean
+
+        Return db.Execute("UPDATE Pedigree SET VarName='TCatchInput' WHERE VarName='Landings'")
+
+    End Function
+
     Private Function ChangePedigreeStorage(ByVal db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
-        bSucces = bSucces And db.Execute("CREATE TABLE EcopathGroupPedigree (GroupID LONG, VarName TEXT(50), LevelID LONG)")
+        bSucces = bSucces And db.Execute("CREATE TABLE EcopathGroupPedigree (GroupID LONG, VarName TEXT(50), LevelID LONG, IndexValueEstimated SINGLE, ConfidenceEstimated SINGLE)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD PRIMARY KEY (GroupID, VarName)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD FOREIGN KEY (GroupID) REFERENCES EcopathGroup(GroupID)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD FOREIGN KEY (LevelID) REFERENCES Pedigree(LevelID)")
-        'bSucces = bSucces And db.Execute("ALTER TABLE Auxillary DROP COLUMN PedigreeLevelID")
         Return bSucces
+
+    End Function
+
+    Private Function MovePedigreeFromAuxillary(ByVal db As cEwEDatabase) As Boolean
+
+        Dim astrVars() As String = New String() {"Biomass", "PBInput", "QBInput", "DietComp", "Landings"}
+        Dim strGroupID As String = "EcopathGroupInput"
+        Dim reader As IDataReader = db.GetReader("SELECT * FROM Auxillary")
+        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcopathGroupPedigree")
+        Dim drow As DataRow = Nothing
+        Dim bSucces As Boolean = True
+
+        Try
+
+            While reader.Read()
+
+                Dim strKey As String = CStr(reader("ValueID"))
+                Dim iPedigreeLevelID As Long = CLng(reader("PedigreeLevelID"))
+                Dim iGroupID As Integer = 0
+                Dim strVarName As String = ""
+
+                If strKey.IndexOf(strGroupID) = 0 And iPedigreeLevelID > 0 Then
+
+                    Dim astrBits As String() = strKey.Split(":"c)
+                    iGroupID = CInt(astrBits(1))
+                    strVarName = astrBits(2)
+
+                    If strVarName = "Landings" Then strVarName = "TCathInput"
+
+                    drow = writer.NewRow
+                    drow("GroupID") = iGroupID
+                    drow("LevelID") = iPedigreeLevelID
+                    drow("VarName") = strVarName
+                    drow("IndexValueEstimated") = cCore.NULL_VALUE
+                    drow("ConfidenceEstimated") = cCore.NULL_VALUE
+                    writer.AddRow(drow)
+
+                End If
+
+            End While
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        db.ReleaseWriter(writer, True)
+        db.ReleaseReader(reader)
+
+        Return bSucces
+
+    End Function
+
+    Private Function PurgePedigreeAuxillary(ByVal db As cEwEDatabase) As Boolean
+
+        Return db.Execute("ALTER TABLE Auxillary DROP COLUMN PedigreeLevelID")
 
     End Function
 

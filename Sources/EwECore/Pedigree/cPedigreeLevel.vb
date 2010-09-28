@@ -12,8 +12,9 @@ Imports System.Collections.Generic
 ''' Inputs for a single pedigree level within a pedigree category.
 ''' </summary>
 ''' <remarks>
-''' <para>Pedigree categories are identified by <see cref="cPedigreeManager.SupportVariables">cPedigreeManager.SupportVariables</see>.</para>
-''' <para>Pedigree levels are stored and accessible via a <see cref="cPedigreeManager"> pedigree manager</see>.</para>
+''' <para>Pedigree categories are identified by <see cref="cCore.PedigreeVariable">PedigreeVariable</see>, 
+''' which will return <see cref="cCore.nPedigreeVariables">cCore.nPedigreeVariables</see> variables.</para>
+''' <para>Pedigree levels are stored and accessible via a <see cref="cPedigreeManager">pedigree manager</see>.</para>
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cPedigreeLevel

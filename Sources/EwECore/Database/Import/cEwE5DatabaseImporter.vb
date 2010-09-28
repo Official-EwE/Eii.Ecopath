@@ -99,7 +99,7 @@ Namespace Database
             Me.m_dicPedigreeLevels(eVarNameFlags.PBInput) = New List(Of Integer)
             Me.m_dicPedigreeLevels(eVarNameFlags.QBInput) = New List(Of Integer)
             Me.m_dicPedigreeLevels(eVarNameFlags.DietComp) = New List(Of Integer)
-            Me.m_dicPedigreeLevels(eVarNameFlags.Landings) = New List(Of Integer)
+            Me.m_dicPedigreeLevels(eVarNameFlags.TCatchInput) = New List(Of Integer)
 
         End Sub
 
@@ -1033,11 +1033,11 @@ Namespace Database
                 Me.AddRemark(reader("Migration remarks"), eDataTypes.EcoPathGroupInput, nGroupID, eVarNameFlags.Immig)
 
                 ' Import pedigree
-                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree1", cCore.NULL_VALUE)), eDataTypes.EcoPathGroupInput, nGroupID, eVarNameFlags.Biomass)
-                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree2", cCore.NULL_VALUE)), eDataTypes.EcoPathGroupInput, nGroupID, eVarNameFlags.PBInput)
-                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree3", cCore.NULL_VALUE)), eDataTypes.EcoPathGroupInput, nGroupID, eVarNameFlags.QBInput)
-                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree4", cCore.NULL_VALUE)), eDataTypes.EcoPathGroupInput, nGroupID, eVarNameFlags.DietComp)
-                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree5", cCore.NULL_VALUE)), eDataTypes.EcoPathGroupInput, nGroupID, eVarNameFlags.Landings)
+                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree1", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.Biomass)
+                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree2", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.PBInput)
+                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree3", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.QBInput)
+                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree4", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.DietComp)
+                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree5", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.TCatchInput)
 
                 ' ToDo_JS: 18Jul08: we do not have alternate input yet in EwE6
                 ' AddRemark(reader("Altinput remarks"), drow, "GroupID", ?)
@@ -1458,7 +1458,13 @@ Namespace Database
                         drow("Sequence") = iSequence
                         drow("IndexValue") = CSng(Me.FixValue(reader, "Value", 0.0!))
                         drow("Confidence") = CInt(Me.FixValue(reader, "Var", 0))
-                        drow("Description") = strDescription
+                        If strDescription.Length > 45 Then
+                            drow("Name") = strDescription.Substring(Math.Min(45, strDescription.Length)) & "..."
+                            drow("Description") = strDescription
+                        Else
+                            drow("Name") = strDescription
+                            drow("Description") = ""
+                        End If
                         writer.AddRow(drow)
                     Catch ex As Exception
 
@@ -3863,7 +3869,7 @@ Namespace Database
             ' Still add?
             If String.IsNullOrEmpty(strRemark) Then Return
             ' Add
-            Me.AddAuxillaryData(strRemark, cCore.NULL_VALUE, dataType, nID, varName, dataTypeSec, nIDSec)
+            Me.AddAuxillaryData(strRemark, dataType, nID, varName, dataTypeSec, nIDSec)
 
         End Sub
 
@@ -3872,29 +3878,33 @@ Namespace Database
         ''' Add a pedigree indicator to the Auxillary data table
         ''' </summary>
         ''' <param name="iPedigree">Pedigree sequence number, may be cCore.NULL_VALUE</param>
-        ''' <param name="dataType">The <see cref="eDataTypes">Core data type</see> 
-        ''' representing the object to store the pedigree indicator for.</param>
-        ''' <param name="nID">The database ID of <paramref name="dataType">dataType</paramref>
-        ''' to store the remark for.</param>
+        ''' <param name="iGroupID">The Group ID to store pedigree for.</param>
         ''' <param name="varName">The <see cref="eVarNameFlags">Core variable name</see>
-        ''' to store the pedigree indicator for.</param>
-        ''' <param name="dataTypeSec">The <see cref="eDataTypes">Core data type</see> 
-        ''' representing the secundary object (or index) to store the pedigree indicator for.</param>
-        ''' <param name="nIDSec">The database ID of <paramref name="dataTypeSec">dataTypeSec</paramref>.</param>
+        ''' to store pedigree for.</param>
         ''' -------------------------------------------------------------------
         Private Sub AddPedigree(ByVal iPedigree As Integer, _
-                                ByVal dataType As eDataTypes, _
-                                ByVal nID As Integer, _
-                                ByVal varName As eVarNameFlags, _
-                                Optional ByVal dataTypeSec As eDataTypes = eDataTypes.NotSet, _
-                                Optional ByVal nIDSec As Integer = -1)
+                                ByVal iGroupID As Integer, _
+                                ByVal varName As eVarNameFlags)
 
             ' Find pedigree levels for a variable
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
             Dim lPedigreeLevelIDs As List(Of Integer) = Me.m_dicPedigreeLevels(varName)
+
             ' Abort if invalid
             If (iPedigree < 0 Or iPedigree >= lPedigreeLevelIDs.Count) Then Return
-            ' Add
-            Me.AddAuxillaryData("", lPedigreeLevelIDs(iPedigree), dataType, nID, varName, dataTypeSec, nIDSec)
+
+            writer = Me.m_dbEwE6.GetWriter("EcopathGroupPedigree")
+            drow = writer.NewRow()
+            drow("GroupID") = iGroupID
+            drow("LevelID") = lPedigreeLevelIDs(iPedigree)
+            drow("VarName") = varName.ToString()
+            drow("IndexValueEstimated") = 0.0!
+            drow("ConfidenceEstimated") = 0.0!
+            writer.AddRow(drow)
+
+            Me.m_dbEwE6.ReleaseWriter(writer, True)
+            writer = Nothing
 
         End Sub
 
@@ -3903,7 +3913,6 @@ Namespace Database
         ''' Add a record to the Auxillary data table
         ''' </summary>
         ''' <param name="strRemark">Remark text to add.</param>
-        ''' <param name="iPedigreeLevelID">Pedigree indicator to add.</param>
         ''' <param name="dataType">The <see cref="eDataTypes">Core data type</see> 
         ''' representing the object to store the remark for.</param>
         ''' <param name="nID">The database ID of <paramref name="dataType">dataType</paramref>
@@ -3919,7 +3928,6 @@ Namespace Database
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Private Sub AddAuxillaryData(ByVal strRemark As String, _
-                                     ByVal iPedigreeLevelID As Integer, _
                                      ByVal dataType As eDataTypes, ByVal nID As Integer, _
                                      ByVal varName As eVarNameFlags, _
                                      ByVal dataTypeSec As eDataTypes, _
@@ -3934,7 +3942,7 @@ Namespace Database
             Dim bRowFound As Boolean = False
 
             ' Both null? Abort!
-            If String.IsNullOrEmpty(strRemark) And (iPedigreeLevelID < 0) Then Return
+            If String.IsNullOrEmpty(strRemark) Then Return
 
             ' Sanity check
             Debug.Assert(dataType > eDataTypes.NotSet And nID > 0, "Auxillary data cannot be added without a valid object identifier")
@@ -3959,7 +3967,6 @@ Namespace Database
 
                 ' Try to complete values
                 If String.IsNullOrEmpty(strRemark) Then strRemark = CStr(drow("Remark"))
-                If (iPedigreeLevelID < 0) Then iPedigreeLevelID = CInt(drow("PedigreeLevelID"))
 
                 ' Start editing existing row
                 drow.BeginEdit()
@@ -3968,8 +3975,6 @@ Namespace Database
 
             ' Store remark text
             drow("Remark") = strRemark
-            ' Store pedigree
-            drow("PedigreeLevelID") = iPedigreeLevelID
             ' The other thing...
             drow("VisualStyle") = ""
 
