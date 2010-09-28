@@ -372,6 +372,12 @@ Public MustInherit Class cContentManager
         End If
     End Sub
 
+    Protected Sub SendMessage(ByVal strMessage As String, _
+                              Optional ByVal importance As eMessageImportance = eMessageImportance.Critical)
+        Dim msg As New cMessage(strMessage, eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, importance)
+        Me.NetworkManager.Core.Messages.SendMessage(msg)
+    End Sub
+
 #End Region ' Internals
 
 End Class
