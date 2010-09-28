@@ -211,7 +211,8 @@ Namespace Database
 
             Me.LogProgress(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_MODEL, Me.m_strModelName))
             Me.ImportModels()
-
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_PEDIGREE)
+            Me.ImportPedigree()
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOPATHGROUPS)
             Me.ImportEcopathGroups()
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOPATHGROUPS)
@@ -233,9 +234,6 @@ Namespace Database
             Me.ImportCatchCodes()
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH)
             Me.ImportDiscardFate()
-
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_PEDIGREE)
-            Me.ImportPedigree()
 
             ' Discontinued in EwE6, but throw a warning when EwE5 data exists
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECORANGER)
@@ -931,6 +929,7 @@ Namespace Database
 
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writerPedigree As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim nGroupID As Integer = 1
             Dim sTemp As Single = 0.0
@@ -951,6 +950,7 @@ Namespace Database
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = m_dbEwE6.GetWriter("EcopathGroup")
+            writerPedigree = Me.m_dbEwE6.GetWriter("EcopathGroupPedigree")
 
             While reader.Read()
 
@@ -1033,11 +1033,11 @@ Namespace Database
                 Me.AddRemark(reader("Migration remarks"), eDataTypes.EcoPathGroupInput, nGroupID, eVarNameFlags.Immig)
 
                 ' Import pedigree
-                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree1", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.Biomass)
-                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree2", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.PBInput)
-                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree3", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.QBInput)
-                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree4", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.DietComp)
-                Me.AddPedigree(CInt(Me.FixValue(reader, "Pedigree5", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.TCatchInput)
+                Me.AddPedigree(writerPedigree, CInt(Me.FixValue(reader, "Pedigree1", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.Biomass)
+                Me.AddPedigree(writerPedigree, CInt(Me.FixValue(reader, "Pedigree2", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.PBInput)
+                Me.AddPedigree(writerPedigree, CInt(Me.FixValue(reader, "Pedigree3", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.QBInput)
+                Me.AddPedigree(writerPedigree, CInt(Me.FixValue(reader, "Pedigree4", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.DietComp)
+                Me.AddPedigree(writerPedigree, CInt(Me.FixValue(reader, "Pedigree5", cCore.NULL_VALUE)), nGroupID, eVarNameFlags.TCatchInput)
 
                 ' ToDo_JS: 18Jul08: we do not have alternate input yet in EwE6
                 ' AddRemark(reader("Altinput remarks"), drow, "GroupID", ?)
@@ -1054,6 +1054,7 @@ Namespace Database
             End While
 
             Me.m_dbEwE6.ReleaseWriter(writer)
+            Me.m_dbEwE6.ReleaseWriter(writerPedigree)
             Me.m_dbEwE5.ReleaseReader(reader)
 
         End Sub
@@ -1443,6 +1444,7 @@ Namespace Database
                     Case 2 : varName = eVarNameFlags.PBInput
                     Case 3 : varName = eVarNameFlags.QBInput
                     Case 4 : varName = eVarNameFlags.DietComp
+                    Case 5 : varName = eVarNameFlags.TCatchInput
                     Case Else : varName = eVarNameFlags.NotSet
                 End Select
 
@@ -1458,11 +1460,11 @@ Namespace Database
                         drow("Sequence") = iSequence
                         drow("IndexValue") = CSng(Me.FixValue(reader, "Value", 0.0!))
                         drow("Confidence") = CInt(Me.FixValue(reader, "Var", 0))
-                        If strDescription.Length > 45 Then
-                            drow("Name") = strDescription.Substring(Math.Min(45, strDescription.Length)) & "..."
+                        If strDescription.Length > 49 Then
+                            drow("LevelName") = strDescription.Substring(0, Math.Min(45, strDescription.Length)) & "..."
                             drow("Description") = strDescription
                         Else
-                            drow("Name") = strDescription
+                            drow("LevelName") = strDescription
                             drow("Description") = ""
                         End If
                         writer.AddRow(drow)
@@ -3882,29 +3884,29 @@ Namespace Database
         ''' <param name="varName">The <see cref="eVarNameFlags">Core variable name</see>
         ''' to store pedigree for.</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddPedigree(ByVal iPedigree As Integer, _
+        Private Sub AddPedigree(ByVal writer As cEwEDatabase.cEwEDbWriter, _
+                                ByVal iPedigree As Integer, _
                                 ByVal iGroupID As Integer, _
                                 ByVal varName As eVarNameFlags)
 
             ' Find pedigree levels for a variable
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim lPedigreeLevelIDs As List(Of Integer) = Me.m_dicPedigreeLevels(varName)
+            Dim iPedigreeLevelID As Integer = 0
 
             ' Abort if invalid
             If (iPedigree < 0 Or iPedigree >= lPedigreeLevelIDs.Count) Then Return
 
-            writer = Me.m_dbEwE6.GetWriter("EcopathGroupPedigree")
+            iPedigreeLevelID = lPedigreeLevelIDs(iPedigree)
+            If (iPedigreeLevelID = 0) Then Return
+
             drow = writer.NewRow()
             drow("GroupID") = iGroupID
-            drow("LevelID") = lPedigreeLevelIDs(iPedigree)
+            drow("LevelID") = iPedigreeLevelID
             drow("VarName") = varName.ToString()
             drow("IndexValueEstimated") = 0.0!
             drow("ConfidenceEstimated") = 0.0!
             writer.AddRow(drow)
-
-            Me.m_dbEwE6.ReleaseWriter(writer, True)
-            writer = Nothing
 
         End Sub
 
