@@ -387,9 +387,9 @@ Public Class cPedigreeManager
 
             Case eVarNameFlags.DietComp
                 If group.IsConsumer Then
-                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
-                Else
                     Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                Else
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 End If
         End Select
 
