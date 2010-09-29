@@ -75,7 +75,7 @@ Friend Class cDBUpdate6_01_00_007
     Private Function ChangePedigreeStorage(ByVal db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
-        bSucces = bSucces And db.Execute("CREATE TABLE EcopathGroupPedigree (GroupID LONG, VarName TEXT(50), LevelID LONG, IndexValueEstimated SINGLE, ConfidenceEstimated SINGLE)")
+        bSucces = bSucces And db.Execute("CREATE TABLE EcopathGroupPedigree (GroupID LONG, VarName TEXT(50), LevelID LONG)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD PRIMARY KEY (GroupID, VarName)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD FOREIGN KEY (GroupID) REFERENCES EcopathGroup(GroupID)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD FOREIGN KEY (LevelID) REFERENCES Pedigree(LevelID)")
@@ -113,8 +113,6 @@ Friend Class cDBUpdate6_01_00_007
                     drow("GroupID") = iGroupID
                     drow("LevelID") = iPedigreeLevelID
                     drow("VarName") = strVarName
-                    drow("IndexValueEstimated") = cCore.NULL_VALUE
-                    drow("ConfidenceEstimated") = cCore.NULL_VALUE
                     writer.AddRow(drow)
 
                 End If
