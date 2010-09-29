@@ -7,12 +7,19 @@ Imports System.Collections.Generic
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Class that contains and distributes <see cref="cPedigreeLevel">pedigree levels</see>,
+''' and maintains group <see cref="cPedigreeManager.Pedigree">pedigree assignments</see>.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cPedigreeManager
     Inherits cCoreInputOutputBase
 
     Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
-    Private m_levels As New cCoreInputOutputList(Of cPedigreeLevel)(eDataTypes.PedigreeLevel, 1)
-    Private m_iLevels() As Integer
+    Private m_levels As New cCoreInputOutputList(Of cPedigreeLevel)(eDataTypes.PedigreeLevel, 0)
+    ''' <summary>Mapping of Core level index to local level ID.</summary>
+    Private m_dictID As New Dictionary(Of Integer, Integer)
 
     Private m_messageSource As eCoreComponentType = eCoreComponentType.Core
 
@@ -28,7 +35,7 @@ Public Class cPedigreeManager
 
         'Array variables
         'Pedigree (should limit max to number of levels in a given manager)
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        meta = New cVariableMetaData(-1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.Pedigree))
         m_values.Add(val.varName, val)
 
@@ -109,7 +116,7 @@ Public Class cPedigreeManager
         Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
         Me.m_levels.Clear()
-        ReDim m_iLevels(data.NumPedigreeLevels)
+        Me.m_dictID.Clear()
 
         For iLevel As Integer = 1 To data.NumPedigreeLevels
             If data.PedigreeLevelVarName(iLevel) = Me.m_varName Then
@@ -124,7 +131,7 @@ Public Class cPedigreeManager
 
                 ' Update local admin
                 Me.m_levels.Add(level)
-                Me.m_iLevels(iLevel) = level.ID
+                Me.m_dictID(iLevel) = level.ID
 
             End If
         Next
@@ -149,16 +156,16 @@ Public Class cPedigreeManager
 
             For iLevel As Integer = 1 To Me.NumLevels
 
-                level = Me.m_levels(iLevel)
+                level = Me.m_levels(iLevel - 1)
 
                 level.AllowValidation = False
-                level.Name = data.PedigreeLevelName(iLevel)
-                level.Description = data.PedigreeLevelDescription(iLevel)
-                level.PoolColor = data.PedigreeLevelColor(iLevel)
-                level.IndexValue = data.PedigreeLevelIndexValue(iLevel)
-                level.ConfidenceInterval = data.PedigreeLevelConfidence(iLevel)
+                level.Name = data.PedigreeLevelName(level.Index)
+                level.Description = data.PedigreeLevelDescription(level.Index)
+                level.PoolColor = data.PedigreeLevelColor(level.Index)
+                level.IndexValue = data.PedigreeLevelIndexValue(level.Index)
+                level.ConfidenceInterval = data.PedigreeLevelConfidence(level.Index)
                 level.VariableName = Me.m_varName
-                level.IsEstimated = data.PedigreeLevelEstimated(iLevel)
+                level.IsEstimated = data.PedigreeLevelEstimated(level.Index)
                 level.AllowValidation = True
 
             Next
@@ -194,7 +201,7 @@ Public Class cPedigreeManager
 
             iLevel = data.Pedigree(iGroup, iVariable)
             If (iLevel > 0) Then
-                iIndex = Me.m_iLevels(iLevel)
+                iIndex = Me.m_dictID(iLevel)
             Else
                 iIndex = -1
             End If
@@ -219,7 +226,7 @@ Public Class cPedigreeManager
         Dim level As cPedigreeLevel = Nothing
 
         Try
-            For iLevel As Integer = 1 To Me.NumLevels
+            For iLevel As Integer = 0 To Me.NumLevels - 1
 
                 Try
 
@@ -289,10 +296,12 @@ Public Class cPedigreeManager
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Set the status flags of pedigree.
     ''' </summary>
     ''' <param name="group">The group to update.</param>
+    ''' -----------------------------------------------------------------------
     Friend Sub Set_Pedigree_Flags(ByVal group As cCoreGroupBase)
 
         ' Borrow status flags from groups
@@ -317,10 +326,12 @@ Public Class cPedigreeManager
 
 #Region " Properties "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the pedigree index for a given variable. 
     ''' </summary>
     ''' <param name="iGroup">One-based index of the group.</param>
+    ''' -----------------------------------------------------------------------
     Public Property Pedigree(ByVal iGroup As Integer) As Integer
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.Pedigree, iGroup))
@@ -330,10 +341,12 @@ Public Class cPedigreeManager
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the pedigree index status for a given variable. 
     ''' </summary>
     ''' <param name="iVariable">One-based index of the variable for which to access the status.</param>
+    ''' -----------------------------------------------------------------------
     Public Property PedigreeStatus(ByVal iVariable As Integer) As eStatusFlags
         Get
             Return Me.GetStatus(eVarNameFlags.Pedigree, iVariable)
@@ -342,6 +355,7 @@ Public Class cPedigreeManager
             Me.SetStatus(eVarNameFlags.Pedigree, value)
         End Set
     End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get the number of pedigree levels in the manager.
@@ -362,10 +376,11 @@ Public Class cPedigreeManager
     ''' <summary>
     ''' Get a pedigree level from the manager.
     ''' </summary>
-    ''' <param name="iLevel">The one-based index of the level to obtain.</param>
+    ''' <param name="iLevel">The zero-based index of the level to obtain.</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Level(ByVal iLevel As Integer) As cPedigreeLevel
         Get
+            If (iLevel < 0) Then Return Nothing
             Return Me.m_levels(iLevel)
         End Get
     End Property
