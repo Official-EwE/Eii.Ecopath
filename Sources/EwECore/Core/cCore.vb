@@ -2470,6 +2470,8 @@ Public Class cCore
 
                 bsuccess = bsuccess And InitPSDParameters()
 
+                bsuccess = bsuccess And LoadPedigreeManagers()
+
                 Me.m_EcopathStats = New cEcoPathStats(Me, cCore.NULL_VALUE)
                 Me.InitSearchManagers()
 
@@ -10368,7 +10370,7 @@ Public Class cCore
             ' Get variable
             varname = Me.PedigreeVariable(iVariable)
             ' Create manager
-            manager = New cPedigreeManager(Me, varname)
+            manager = New cPedigreeManager(Me, varname, iVariable)
             manager.Index = iVariable
             manager.DBID = iVariable
             ' Initialize manager
@@ -10380,14 +10382,50 @@ Public Class cCore
 
     End Function
 
-    Private Function LoadPedigreeLevels() As Boolean
-        For Each man As cPedigreeManager In Me.m_PedigreeManagers.Values
-            Me.LoadPedigreeLevels(man)
-        Next
+    Private Function LoadPedigreeManagers() As Boolean
+        Return Me.LoadPedigreeLevels() And Me.LoadPedigree()
     End Function
 
+    ''' <summary>
+    ''' Load pedigree levels data.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    Private Function LoadPedigreeLevels() As Boolean
+        Dim bSucces As Boolean = True
+        For Each man As cPedigreeManager In Me.m_PedigreeManagers.Values
+            bSucces = bSucces And Me.LoadPedigreeLevels(man)
+        Next
+        Return bSucces
+    End Function
+
+    ''' <summary>
+    ''' Load pedigree levels data for a given manager.
+    ''' </summary>
+    ''' <param name="man">The <see cref="cPedigreeManager">manager</see> to load.</param>
+    ''' <returns>True if successful.</returns>
     Private Function LoadPedigreeLevels(ByVal man As cPedigreeManager) As Boolean
-        man.LoadPedigreeLevels()
+        Return man.LoadPedigreeLevels()
+    End Function
+
+    ''' <summary>
+    ''' Load pedigree assignments data.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    Private Function LoadPedigree() As Boolean
+        Dim bSucces As Boolean = True
+        For Each man As cPedigreeManager In Me.m_PedigreeManagers.Values
+            bSucces = bSucces And Me.LoadPedigree(man)
+        Next
+        Return bSucces
+    End Function
+
+    ''' <summary>
+    ''' Load pedigree assignments data for a given manager.
+    ''' </summary>
+    ''' <param name="man">The <see cref="cPedigreeManager">manager</see> to load.</param>
+    ''' <returns>True if successful.</returns>
+    Private Function LoadPedigree(ByVal man As cPedigreeManager) As Boolean
+        Return man.LoadPedigree()
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -10399,6 +10437,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Function GetPedigreeManager(ByVal varName As eVarNameFlags) As cPedigreeManager
         If (Not Me.IsPedigreeVariableSupported(varName)) Then Return Nothing
+        If (Not Me.m_PedigreeManagers.ContainsKey(varName)) Then Return Nothing
         Return Me.m_PedigreeManagers(varName)
     End Function
 
@@ -10786,7 +10825,6 @@ Public Class cCore
 
                 End If
 
-
             Case eVarNameFlags.MSEFixedF, eVarNameFlags.MSEFixedEscapement
 
                 'Fixed F and Fixed Escapement can not be set at the same time
@@ -10803,6 +10841,28 @@ Public Class cCore
                 Else
                     ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.MSE_FIXF_FIXESC_FAILEDVALIDATION)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
+                End If
+
+            Case eVarNameFlags.Pedigree
+
+                Dim iVar As Integer = ValueObject.Index
+                Dim igrp As Integer = iSecondaryIndex
+                Dim value As Integer = CInt(ValueObject.Value(igrp))
+                Dim man As cPedigreeManager = Me.GetPedigreeManager(Me.PedigreeVariable(iVar))
+
+                If (man IsNot Nothing) Then
+                    If value < 0 Then
+                        ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                        ValueObject.ValidationStatus = eStatusFlags.OK
+                        ValueObject.ValidationStatus = eStatusFlags.Null
+                    ElseIf value >= man.NumLevels Then
+                        ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.MSE_FIXF_FIXESC_FAILEDVALIDATION)
+                        ValueObject.ValidationStatus = eStatusFlags.FailedValidation
+                    Else
+                        ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                        ValueObject.ValidationStatus = eStatusFlags.OK
+                        ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
+                    End If
                 End If
 
         End Select

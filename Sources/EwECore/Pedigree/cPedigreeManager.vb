@@ -41,8 +41,8 @@ Public Class cPedigreeManager
         Me.DBID = iDBID
 
         'Array variables
-        'Pedigree (should limit max to number of levels in a given manager)
-        meta = New cVariableMetaData(-1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        'Pedigree (should limit max to number of levels in a given manager). A value of -1 is considered 'Null'
+        meta = New cVariableMetaData(-1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), -1)
         val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.Pedigree))
         m_values.Add(val.varName, val)
 
@@ -280,9 +280,6 @@ Public Class cPedigreeManager
             End If
         Next
 
-        Me.LoadPedigreeLevels()
-        Me.LoadPedigree()
-
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -381,7 +378,13 @@ Public Class cPedigreeManager
 
         Select Case Me.m_varName
             Case eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.TCatchInput
-                Me.SetStatus(eVarNameFlags.Pedigree, group.GetStatus(Me.m_varName), group.Index)
+                Dim status As eStatusFlags = group.GetStatus(Me.m_varName)
+                If (status And eStatusFlags.NotEditable) > 0 Then
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                Else
+                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                End If
+
             Case eVarNameFlags.DietComp
                 If group.IsConsumer Then
                     Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
