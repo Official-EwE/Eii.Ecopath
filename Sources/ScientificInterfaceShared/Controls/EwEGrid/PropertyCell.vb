@@ -25,6 +25,8 @@ Namespace Controls.EwEGrid
 
         ''' <summary>Connected property.</summary>
         Private m_property As cProperty = Nothing
+        ''' <summary>Flag stating how property and cell styles should be merged.</summary>
+        Private m_bJoinStyles As Boolean = False
 
 #Region " Construction and destruction "
 
@@ -152,6 +154,22 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set whether the cell style and property style should be joined
+        ''' (True) or whether the cell style overrides the property style if
+        ''' present (False).
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property JoinStyles() As Boolean
+            Get
+                Return Me.m_bJoinStyles
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bJoinStyles = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Allows to set a custom cell <see cref="cStyleGuide.eStyleFlags">style</see>,
         ''' overriding any style in the attached property.
         ''' </summary>
@@ -167,7 +185,11 @@ Namespace Controls.EwEGrid
         Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
                 Dim s As cStyleGuide.eStyleFlags = MyBase.Style
-                If s = 0 Then Return Me.m_property.GetStyle()
+                If Me.m_bJoinStyles Then
+                    s = s Or Me.m_property.GetStyle()
+                Else
+                    If s = 0 Then s = Me.m_property.GetStyle()
+                End If
                 Return s
             End Get
             Set(ByVal s As cStyleGuide.eStyleFlags)
