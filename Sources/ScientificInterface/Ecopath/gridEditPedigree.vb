@@ -93,8 +93,11 @@ Imports SourceGrid2.Cells
             Me.m_vn = vn
             Me.m_man = Me.m_core.GetPedigreeManager(Me.m_vn)
 
-            For iLevel As Integer = 1 To Me.m_man.NumLevels
-                Me.m_lfiLevels.Add(New cPedigreeLevelInfo(Me.m_man.Level(iLevel), iLevel))
+            ' Add info objects for all existing levels in the manager
+            For iLevel As Integer = 0 To Me.m_man.NumLevels - 1
+                Dim level As cPedigreeLevel = Me.m_man.Level(iLevel)
+                Dim lvlInfo As cPedigreeLevelInfo = New cPedigreeLevelInfo(level)
+                Me.m_lfiLevels.Add(lvlInfo)
             Next
 
         End Sub
@@ -105,7 +108,7 @@ Imports SourceGrid2.Cells
             Dim lvlInfo As cPedigreeLevelInfo = Nothing
             Dim strPrompt As String = ""
 
-            Me.m_bConfigChanged = False
+            Me.m_bConfigChanged = (Me.m_lfiLevelsRemoved.Count > 0)
             Me.m_bLevelsChanged = False
 
             ' Assess Level changes
@@ -115,7 +118,7 @@ Imports SourceGrid2.Cells
                 If Object.ReferenceEquals(lvlInfo.Level, Nothing) Then
                     Me.m_bConfigChanged = True
                 Else
-                    Me.m_bConfigChanged = (lvlInfo.Index <> iLevel)
+                    Me.m_bConfigChanged = Me.m_bConfigChanged Or (lvlInfo.Index <> iLevel)
                 End If
                 Me.m_bLevelsChanged = Me.m_bLevelsChanged Or lvlInfo.IsChanged()
             Next iLevel
@@ -190,22 +193,17 @@ Imports SourceGrid2.Cells
                 Next
 
                 ' Remove deleted (and confirmed) Levels
-                Dim iLevelRemove As Integer = 0
                 For iLevel = 0 To Me.m_lfiLevelsRemoved.Count - 1
-                    lvlInfo = DirectCast(Me.m_lfiLevelsRemoved(iLevelRemove), cPedigreeLevelInfo)
+                    lvlInfo = DirectCast(Me.m_lfiLevelsRemoved(iLevel), cPedigreeLevelInfo)
                     If (Not Object.ReferenceEquals(lvlInfo.Level, Nothing)) Then
-                        If (Me.m_man.RemoveLevel(lvlInfo.Level)) Then
-                            Me.m_lfiLevels.Remove(lvlInfo)
-                            Me.m_lfiLevelsRemoved.Remove(lvlInfo)
-                        Else
-                            bSuccess = False
-                            iLevelRemove += 1
-                        End If
+                        bSuccess = bSuccess and  (Me.m_man.RemoveLevel(lvlInfo.Level)) 
                     End If
                 Next
 
-                '' Test whether new Levels were loaded correctly
-                'Debug.Assert(Me.m_lfiLevels.Count = Me.m_man.NumLevels, "Dialog and core out of sync on Levels")
+                If bSuccess Then
+                    Me.m_lfiLevelsRemoved.Clear()
+                End If
+
             End If
             Return bSuccess
 
@@ -223,7 +221,7 @@ Imports SourceGrid2.Cells
                     If lvlInfo.IsChanged() Then
                         bUpdated = False
                         ' Find (possibly reloaded) level that matches this lvlInfo
-                        For iLevel As Integer = 1 To Me.m_man.NumLevels
+                        For iLevel As Integer = 0 To Me.m_man.NumLevels - 1
                             level = Me.m_man.Level(iLevel)
                             If level.DBID = lvlInfo.Level.DBID Then
                                 level.Name = lvlInfo.Name
@@ -274,7 +272,7 @@ Imports SourceGrid2.Cells
         ''' <summary>The status of a Level in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
         ''' <summary>Index of the pedigree level in its manager.</summary>
-        Private m_iIndex As Integer = 1
+        Private m_ID As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -284,7 +282,7 @@ Imports SourceGrid2.Cells
         ''' initialize this instance from. If set, this instance represents a
         ''' Level currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal level As cPedigreeLevel, ByVal iIndex As Integer)
+        Public Sub New(ByVal level As cPedigreeLevel)
             Debug.Assert(level IsNot Nothing)
             Me.m_level = level
             Me.m_strName = level.Name
@@ -293,7 +291,7 @@ Imports SourceGrid2.Cells
             Me.m_sIndexValue = level.IndexValue
             Me.m_sConfidenceInterval = level.ConfidenceInterval
             Me.m_status = eItemStatusTypes.Original
-            Me.m_iIndex = iIndex
+            Me.m_ID = level.ID
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -414,10 +412,10 @@ Imports SourceGrid2.Cells
         ''' -------------------------------------------------------------------
         Public Property Index() As Integer
             Get
-                Return Me.m_iIndex
+                Return Me.m_ID
             End Get
             Set(ByVal value As Integer)
-                Me.m_iIndex = value
+                Me.m_ID = value
             End Set
         End Property
 
@@ -522,6 +520,19 @@ Imports SourceGrid2.Cells
         ' Remove all current rows
         For Each lvlInfo As cPedigreeLevelInfo In Me.ActiveConfig.Levels
             lvlInfo.FlaggedForDeletion = True
+
+            ' Check to see what is to happen to the Level now
+            Select Case lvlInfo.Status
+
+                Case eItemStatusTypes.Removed
+                    ' Set removed status
+                    Me.ActiveConfig.LevelsRemoved.Add(lvlInfo)
+
+                Case eItemStatusTypes.Invalid
+                    ' Set removed status
+                    Me.ActiveConfig.Levels.Remove(lvlInfo)
+
+            End Select
         Next
         Me.ActiveConfig.Levels.AddRange(Me.DefaultLevels())
         Me.UpdateGrid()
@@ -663,9 +674,16 @@ Imports SourceGrid2.Cells
         Next
 
         Me.AutoSize = True
-        Me.AutoSizeColumn(eColumnTypes.LevelName, 100)
         Me.StretchColumnsToFitWidth()
 
+    End Sub
+
+    Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+        MyBase.OnResize(e)
+        If Me.ColumnsCount > 0 Then
+            Me.Columns(eColumnTypes.LevelName).Width = 100
+            Me.StretchColumnsToFitWidth()
+        End If
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -690,7 +708,7 @@ Imports SourceGrid2.Cells
         ri = Me.Rows(iRow)
 
         clr = cColorUtils.IntToColor(lvlInfo.PoolColor)
-        If clr.A = 0 Then clr = Me.StyleGuide.PedigreeColorDefault(iRow, Me.RowsCount)
+        If clr.A = 0 Then clr = Me.StyleGuide.PedigreeColorDefault(iRow - iFIRSTDATAROW, Me.RowsCount - iFIRSTDATAROW - 1)
 
         ri.Tag = lvlInfo
 
@@ -866,19 +884,19 @@ Imports SourceGrid2.Cells
 
             Case eItemStatusTypes.Original
                 ' Clear removed status of the Level
-                Me.ActiveConfig.LevelsRemoved.Remove(Me.ActiveConfig.Levels(iLevel))
+                Me.ActiveConfig.LevelsRemoved.Remove(lvlInfo)
 
             Case eItemStatusTypes.Added
                 ' Clear removed status of the Level
-                Me.ActiveConfig.LevelsRemoved.Remove(Me.ActiveConfig.Levels(iLevel))
+                Me.ActiveConfig.LevelsRemoved.Remove(lvlInfo)
 
             Case eItemStatusTypes.Removed
                 ' Set removed status
-                Me.ActiveConfig.LevelsRemoved.Add(Me.ActiveConfig.Levels(iLevel))
+                Me.ActiveConfig.LevelsRemoved.Add(lvlInfo)
 
             Case eItemStatusTypes.Invalid
-                ' Set removed status
-                Me.ActiveConfig.Levels.RemoveAt(iLevel)
+                ' Destroy new entry
+                Me.ActiveConfig.Levels.Remove(lvlInfo)
 
         End Select
 

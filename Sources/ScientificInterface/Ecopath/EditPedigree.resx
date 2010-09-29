@@ -187,7 +187,7 @@
     <value>1</value>
   </data>
   <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>499, 392</value>
+    <value>499, 332</value>
   </data>
   <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -499,7 +499,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>582, 196</value>
+    <value>582, 162</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -547,7 +547,7 @@
     <value>True</value>
   </data>
   <data name="m_tbDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>582, 147</value>
+    <value>582, 121</value>
   </data>
   <data name="m_tbDescription.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -604,10 +604,10 @@
     <value>1</value>
   </data>
   <data name="m_scYupi.Size" type="System.Drawing.Size, System.Drawing">
-    <value>582, 347</value>
+    <value>582, 287</value>
   </data>
   <data name="m_scYupi.SplitterDistance" type="System.Int32, mscorlib">
-    <value>196</value>
+    <value>162</value>
   </data>
   <data name="m_scYupi.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -817,10 +817,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>704, 433</value>
+    <value>704, 373</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>375, 331</value>
+    <value>500, 400</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
