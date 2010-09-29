@@ -322,7 +322,7 @@ Namespace Ecopath.Tools
             Dim group As cCoreGroupBase = Nothing
             Dim man As cPedigreeManager = Nothing
             Dim prop As cProperty = Nothing
-            Dim cell As EwECellBase = Nothing
+            Dim cell As PropertyCell = Nothing
             Dim style As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed)
             Dim iSelectedVar As Integer = Me.Core.PedigreeVariableIndex(Me.SelectedVariable)
             Dim varname As eVarNameFlags = eVarNameFlags.NotSet
@@ -354,6 +354,8 @@ Namespace Ecopath.Tools
                     ' will allow the quick-edit bar to work, but will not allow click-and-type interaction.
                     cell.DataModel.EnableEdit = True
                     cell.DataModel.EditableMode = EditableMode.None
+                    ' Merge cell and property styles
+                    cell.JoinStyles = True
 
                     ' Apply selected variable to show only specific cells as editable (even though the
                     ' individual cells cannot be edited)

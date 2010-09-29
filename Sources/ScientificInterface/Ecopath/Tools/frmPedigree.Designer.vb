@@ -38,7 +38,6 @@ Namespace Ecopath.Tools
             Me.m_hdrPedigree = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_grid = New ScientificInterface.Ecopath.Tools.gridPedigree
             Me.m_hdrGrid = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_btnCompute = New System.Windows.Forms.Button
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -61,7 +60,6 @@ Namespace Ecopath.Tools
             '
             'm_scMain.Panel1
             '
-            Me.m_scMain.Panel1.Controls.Add(Me.m_btnCompute)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblLevels)
             Me.m_scMain.Panel1.Controls.Add(Me.m_cmbViewAs)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblViewAs)
@@ -141,7 +139,7 @@ Namespace Ecopath.Tools
             Me.m_lbLevels.Location = New System.Drawing.Point(0, 94)
             Me.m_lbLevels.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
             Me.m_lbLevels.Name = "m_lbLevels"
-            Me.m_lbLevels.Size = New System.Drawing.Size(173, 295)
+            Me.m_lbLevels.Size = New System.Drawing.Size(173, 325)
             Me.m_lbLevels.TabIndex = 6
             '
             'm_hdrPedigree
@@ -199,19 +197,6 @@ Namespace Ecopath.Tools
             Me.m_hdrGrid.Text = "Assignment"
             Me.m_hdrGrid.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'm_btnCompute
-            '
-            Me.m_btnCompute.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnCompute.Enabled = False
-            Me.m_btnCompute.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.m_btnCompute.Location = New System.Drawing.Point(0, 396)
-            Me.m_btnCompute.Name = "m_btnCompute"
-            Me.m_btnCompute.Size = New System.Drawing.Size(173, 23)
-            Me.m_btnCompute.TabIndex = 7
-            Me.m_btnCompute.Text = "C&ompute pedigree"
-            Me.m_btnCompute.UseVisualStyleBackColor = True
-            '
             'frmPedigree
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -243,7 +228,6 @@ Namespace Ecopath.Tools
         Private WithEvents m_cmbCategory As System.Windows.Forms.ComboBox
         Private WithEvents m_lblCategory As System.Windows.Forms.Label
         Private WithEvents m_lblLevels As System.Windows.Forms.Label
-        Private WithEvents m_btnCompute As System.Windows.Forms.Button
     End Class
 
 End Namespace

@@ -188,8 +188,8 @@ Namespace Ecopath.Tools
 
         End Sub
 
-        Private Sub OnComputePedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnCompute.Click
+        Private Sub OnComputePedigree(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
             ' To be written
         End Sub
 
