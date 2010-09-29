@@ -217,6 +217,10 @@ Namespace Core
         EcopathStatsTotalCost
         ''' <summary>Profit.</summary>
         EcopathStatsProfit
+        ''' <summary>Pedigree.</summary>
+        EcopathStatsPedigree
+        ''' <summary>Measure of pedigree fit.</summary>
+        EcopathStatsMeasureOfFit
 
         'added by JB for EcoSim Group info Feb-14-06
         ''' <summary></summary>
