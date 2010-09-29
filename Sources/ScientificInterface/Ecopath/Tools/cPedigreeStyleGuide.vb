@@ -89,17 +89,19 @@ Namespace Ecopath.Tools
 
             ' Fix up render style
             If (style = eRenderStyleTypes.NotSet) Then style = Me.m_renderstyle
-
             If (level Is Nothing) Then Return ""
 
             ' Decide on string to display
             Select Case style
+
                 Case eRenderStyleTypes.Colors
                     ' NOP
 
                 Case eRenderStyleTypes.Index
                     ' Represent level by its index (local to its manager)
-                    Return Me.m_uic.StyleGuide.FormatNumber(level.ID)
+                    Dim iValue As Integer = level.ID
+                    If (iValue < 0) Then Return ""
+                    Return Me.m_uic.StyleGuide.FormatNumber(iValue)
 
                 Case eRenderStyleTypes.IndexValue
                     ' Represent level by its IndexValue
@@ -107,7 +109,9 @@ Namespace Ecopath.Tools
 
                 Case eRenderStyleTypes.ConfidenceInterval
                     ' Represent level by its ConfidenceInterval
-                    Return Me.m_uic.StyleGuide.FormatNumber(CInt(level.ConfidenceInterval * 100), cStyleGuide.eStyleFlags.OK)
+                    Dim iValue As Integer = level.ConfidenceInterval
+                    If (iValue < 0) Then Return ""
+                    Return Me.m_uic.StyleGuide.FormatNumber(iValue, cStyleGuide.eStyleFlags.OK)
 
             End Select
 

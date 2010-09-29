@@ -38,13 +38,19 @@ Public Class cPedigreeManager
         Me.m_dataType = eDataTypes.PedigreeManager
         Me.m_coreComponent = eCoreComponentType.EcoPath
         Me.m_varName = varName
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, Me.m_coreComponent, Me.Index, cCore.NULL_VALUE)
+
+        Me.AllowValidation = False
+
         Me.DBID = iDBID
 
         'Array variables
         'Pedigree (should limit max to number of levels in a given manager). A value of -1 is considered 'Null'
         meta = New cVariableMetaData(-1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), -1)
         val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.Pedigree))
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
+
+        Me.AllowValidation = True
 
     End Sub
 
@@ -380,7 +386,7 @@ Public Class cPedigreeManager
             Case eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.TCatchInput
                 Dim status As eStatusFlags = group.GetStatus(Me.m_varName)
                 If (status And eStatusFlags.NotEditable) > 0 Then
-                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
                 Else
                     Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 End If

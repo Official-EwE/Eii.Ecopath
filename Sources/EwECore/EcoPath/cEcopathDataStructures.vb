@@ -252,8 +252,10 @@ Public Class cEcopathDataStructures
     Public PedigreeLevelColor() As Integer
     Public PedigreeLevelDescription() As String
     Public PedigreeLevelVarName() As eVarNameFlags
+    ''' <summary>Index value expressed in ratio [0, 1]</summary>
     Public PedigreeLevelIndexValue() As Single
-    Public PedigreeLevelConfidence() As Single
+    ''' <summary>Confidence interval expressed in rounded percentages</summary>
+    Public PedigreeLevelConfidence() As Integer
     Public PedigreeLevelEstimated() As Boolean
     ''' <summary>Array [#groups, #supported vars] = pedigree index.</summary>
     Public Pedigree(,) As Integer

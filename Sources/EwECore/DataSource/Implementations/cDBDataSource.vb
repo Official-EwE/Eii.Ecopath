@@ -1109,7 +1109,7 @@ Namespace DataSources
                     ecopathDS.PedigreeLevelDescription(iLevel) = CStr(reader("Description"))
                     ecopathDS.PedigreeLevelVarName(iLevel) = cin.GetVarName(CStr(reader("VarName")))
                     ecopathDS.PedigreeLevelIndexValue(iLevel) = CSng(reader("IndexValue"))
-                    ecopathDS.PedigreeLevelConfidence(iLevel) = CSng(reader("Confidence"))
+                    ecopathDS.PedigreeLevelConfidence(iLevel) = CInt(reader("Confidence"))
 
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading pedigree level {1}", ex.Message, iLevel))

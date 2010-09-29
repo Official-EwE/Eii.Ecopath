@@ -33,9 +33,7 @@ Public Class cPedigreeLevel
         Me.m_manager = manager
         Me.m_dataType = eDataTypes.PedigreeLevel
         Me.m_coreComponent = eCoreComponentType.EcoPath
-
-        Me.m_ValidationStatus = New cVariableStatus
-        Me.m_ValidationStatus.CoreDataObject = Me
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, Me.m_coreComponent, Me.Index, cCore.NULL_VALUE)
 
         Me.AllowValidation = False
 
@@ -92,7 +90,7 @@ Public Class cPedigreeLevel
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the index value of a pedigree level.
+    ''' Get/set the index value of a pedigree level expressed as a ratio [0, 1].
     ''' </summary>
     ''' <remarks>
     ''' This value is not to be confused with <see cref="Index">Index</see>,
@@ -111,14 +109,15 @@ Public Class cPedigreeLevel
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the confidence interval of a pedigree level.
+    ''' Get/set the confidence interval of a pedigree level expressed as a
+    ''' rounded percentage [0, 100].
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property ConfidenceInterval() As Single
+    Public Property ConfidenceInterval() As Integer
         Get
-            Return CSng(Me.GetVariable(eVarNameFlags.ConfidenceInterval))
+            Return CInt(Me.GetVariable(eVarNameFlags.ConfidenceInterval))
         End Get
-        Set(ByVal value As Single)
+        Set(ByVal value As Integer)
             Me.SetVariable(eVarNameFlags.ConfidenceInterval, value)
         End Set
     End Property

@@ -96,19 +96,10 @@ Namespace Ecopath.Tools
 
                 MyBase.DrawCell_Background(cell, pos, e, rc, status)
 
-                ' JS: allow rendering on readonly cells; edits will simply not happen
-                '' Do not render details on a readonly cell
-                'If (TypeOf cell Is EwECellBase) Then
-                '    ' #Yes: obtain cell style
-                '    If (DirectCast(cell, EwECellBase).Style And cStyleGuide.eStyleFlags.NotEditable) > 0 Then
-                '        Return
-                '    End If
-                'End If
-
                 Dim level As cPedigreeLevel = Me.GetLevel(cell, pos)
                 If (level Is Nothing) Then Return
 
-                Using br As New SolidBrush(Me.m_psg.BackgroundColor(Me.BackColor, level))
+                Using br As New SolidBrush(Me.m_psg.BackgroundColor(Color.Transparent, level))
                     e.Graphics.FillRectangle(br, New Rectangle(rc.Left + 3, rc.Top + 3, rc.Width - 6, rc.Height - 6))
                 End Using
 
@@ -185,8 +176,11 @@ Namespace Ecopath.Tools
 
 #Region " Private vars "
 
+        ''' <summary>The local style guide that determines how cells are reflected.</summary>
         Private m_psg As cPedigreeStyleGuide = Nothing
-        Private m_viz As cPedigreeCellVisualizer = Nothing
+        ''' <summary>The cell visualizer that renders cells in the grid.</summary>
+        Private m_pcv As cPedigreeCellVisualizer = Nothing
+        ''' <summary>Varname currently selected in the pedigree interface.</summary>
         Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
 
 #End Region ' Private vars
@@ -225,7 +219,7 @@ Namespace Ecopath.Tools
 
                 If (Me.m_psg IsNot Nothing) Then
                     AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
-                    Me.m_viz = New cPedigreeCellVisualizer(Me.m_psg)
+                    Me.m_pcv = New cPedigreeCellVisualizer(Me.m_psg)
                     Me.RefreshContent()
                 End If
             End Set
@@ -284,11 +278,17 @@ Namespace Ecopath.Tools
 
 #Region " Grid overrides "
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="EwEGrid.InitLayout"/>
+        ''' -------------------------------------------------------------------
         Protected Overrides Sub InitLayout()
             If (Me.m_psg Is Nothing) Then Return
             MyBase.InitLayout()
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="EwEGrid.InitStyle"/>
+        ''' -------------------------------------------------------------------
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
@@ -314,6 +314,9 @@ Namespace Ecopath.Tools
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="EwEGrid.FillData"/>
+        ''' -------------------------------------------------------------------
         Protected Overrides Sub FillData()
 
             Dim group As cCoreGroupBase = Nothing
@@ -338,33 +341,57 @@ Namespace Ecopath.Tools
 
                     ' Get property
                     prop = Me.PropertyManager.GetProperty(man, eVarNameFlags.Pedigree, group)
-                    'prop.SetStyle(cStyleGuide.eStyleFlags.OK)
+                    ' Prepare cell
+                    '    Note that there is no cell content modification logic in this grid; this
+                    '    EwE grid does not use the typical EwEEndEditHandler etc. This is not a bug.
+                    '    The design of the pedigree IU stipulates that cell values are only modified
+                    '    from outside this grid by clicking pedigree levels. This grid merely displays
+                    '    current pedigree assignments.
                     cell = New PropertyCell(prop)
-                    cell.Behaviors.Add(Me.EwEEditHandler)
-                    'cell.VisualModel = Me.m_viz
-                    cell.EditableMode = EditableMode.None
+                    ' Connect special pedigree cell visualizer that handles different display styles
+                    cell.VisualModel = Me.m_pcv
+                    ' Can edit cells, but not via normal UI methods. This will allow pasting content,
+                    ' will allow the quick-edit bar to work, but will not allow click-and-type interaction.
+                    cell.DataModel.EnableEdit = True
+                    cell.DataModel.EditableMode = EditableMode.None
 
+                    ' Apply selected variable to show only specific cells as editable (even though the
+                    ' individual cells cannot be edited)
                     If iSelectedVar <> iVariable Then
                         cell.Style = cell.Style Or cStyleGuide.eStyleFlags.NotEditable
                     End If
+
+                    ' Store cell
                     Me(iGroup, 1 + iVariable) = cell
                 Next
             Next
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="EwEGrid.FinishStyle"/>
+        ''' -------------------------------------------------------------------
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="EwEGrid.MessageSource"/>
+        ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
                 Return eCoreComponentType.EcoPath
             End Get
         End Property
 
-        Protected Sub OnRenderStyleChanged(ByVal viz As cPedigreeStyleGuide)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Callback to redraw the grid when pedigree style guide has changed.
+        ''' </summary>
+        ''' <param name="psg">Maurice and his trained rodents.</param>
+        ''' -------------------------------------------------------------------
+        Protected Sub OnRenderStyleChanged(ByVal psg As cPedigreeStyleGuide)
             Me.FillData()
         End Sub
 

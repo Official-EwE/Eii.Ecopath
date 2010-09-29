@@ -265,10 +265,10 @@ Imports SourceGrid2.Cells
         Private m_iColor As Integer = 0
         ''' <summary>Description for this level.</summary>
         Private m_strDescription As String = ""
-        ''' <summary>Index value for this level.</summary>
+        ''' <summary>Index value for this level [0, 1].</summary>
         Private m_sIndexValue As Single = 0.0!
-        ''' <summary>Confidence interval for this level.</summary>
-        Private m_sConfidenceInterval As Single = 0.0!
+        ''' <summary>Confidence interval for this level [0, 100].</summary>
+        Private m_iConfidenceInterval As Integer = 0
         ''' <summary>The status of a Level in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
         ''' <summary>Index of the pedigree level in its manager.</summary>
@@ -289,7 +289,7 @@ Imports SourceGrid2.Cells
             Me.m_iColor = level.PoolColor
             Me.m_strDescription = level.Description
             Me.m_sIndexValue = level.IndexValue
-            Me.m_sConfidenceInterval = level.ConfidenceInterval
+            Me.m_iConfidenceInterval = level.ConfidenceInterval
             Me.m_status = eItemStatusTypes.Original
             Me.m_ID = level.ID
         End Sub
@@ -302,7 +302,7 @@ Imports SourceGrid2.Cells
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal strName As String, _
                        Optional ByVal sIndexValue As Single = 0.0!, _
-                       Optional ByVal sConfidenceInterval As Single = 0.0!)
+                       Optional ByVal iConfidenceInterval As Integer = 0)
 
             Me.m_level = Nothing
             If strName.IndexOf("|"c) > -1 Then
@@ -315,7 +315,7 @@ Imports SourceGrid2.Cells
             End If
             Me.m_iColor = 0
             Me.m_sIndexValue = sIndexValue
-            Me.m_sConfidenceInterval = sConfidenceInterval
+            Me.m_iConfidenceInterval = iConfidenceInterval
             Me.m_status = eItemStatusTypes.Added
         End Sub
 
@@ -375,7 +375,8 @@ Imports SourceGrid2.Cells
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the uncertainty index value of a level.
+        ''' Get/set the uncertainty index value of a level expressed as a ratio
+        ''' [0, 1].
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property IndexValue() As Single
@@ -389,15 +390,16 @@ Imports SourceGrid2.Cells
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the uncertainty confidence interval of a level.
+        ''' Get/set the uncertainty confidence interval of a level, expressed
+        ''' as a percentage [0, 100].
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property ConfidenceInterval() As Single
+        Public Property ConfidenceInterval() As Integer
             Get
-                Return Me.m_sConfidenceInterval
+                Return Me.m_iConfidenceInterval
             End Get
-            Set(ByVal value As Single)
-                Me.m_sConfidenceInterval = value
+            Set(ByVal value As Integer)
+                Me.m_iConfidenceInterval = value
             End Set
         End Property
 
@@ -716,7 +718,7 @@ Imports SourceGrid2.Cells
         Me(iRow, eColumnTypes.LevelName).Value = lvlInfo.Name
         Me(iRow, eColumnTypes.LevelColor).Value = clr
         Me(iRow, eColumnTypes.LevelIndexValue).Value = lvlInfo.IndexValue
-        Me(iRow, eColumnTypes.LevelConfidenceInterval).Value = CInt(lvlInfo.ConfidenceInterval * 100)
+        Me(iRow, eColumnTypes.LevelConfidenceInterval).Value = lvlInfo.ConfidenceInterval
 
         Select Case lvlInfo.Status
             Case eItemStatusTypes.Original
@@ -734,26 +736,6 @@ Imports SourceGrid2.Cells
         Me(iRow, eColumnTypes.LevelStatus).Value = strText
 
         Me.AllowUpdates = True
-
-    End Sub
-
-    Private Sub UpdateColorColumn()
-
-        Dim fi As cPedigreeLevelInfo = Nothing
-        Dim clr As Color = Color.Transparent
-
-        Me.AllowUpdates = False
-        For iRow As Integer = iFIRSTDATAROW To Me.RowsCount - 1
-            fi = DirectCast(Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW), cPedigreeLevelInfo)
-            clr = cColorUtils.IntToColor(fi.PoolColor)
-            If clr.A = 0 Then
-                clr = Me.StyleGuide.PedigreeColorDefault(iRow - iFIRSTDATAROW + 1, Me.RowsCount)
-            End If
-            Me(iRow, eColumnTypes.LevelColor).Value = clr
-        Next iRow
-        Me.AllowUpdates = True
-
-        Me.Invalidate()
 
     End Sub
 
@@ -801,10 +783,8 @@ Imports SourceGrid2.Cells
                 lvlInfo.IndexValue = CSng(cell.GetValue(p))
 
             Case eColumnTypes.LevelConfidenceInterval
-                ' Get value, truncated to [0, 100]
-                Dim iValue As Integer = Math.Min(100, Math.Max(0, CInt(cell.GetValue(p))))
-                ' Store as fraction
-                lvlInfo.ConfidenceInterval = CSng(iValue / 100.0!)
+                ' Store value, truncated to [0, 100]
+                lvlInfo.ConfidenceInterval = Math.Min(100, Math.Max(0, CInt(cell.GetValue(p))))
 
         End Select
 
@@ -1053,40 +1033,40 @@ Imports SourceGrid2.Cells
             Case eVarNameFlags.Biomass
 
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_ESTIMATED, 0, 0))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.1, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.2, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_APPROX_INDIRECT, 0.7, 0.4))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAMPLING_LOW, 0.7, 0.4))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAMPLING_HIGH, 1.0, 0.2))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.1, 80))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.2, 80))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_APPROX_INDIRECT, 0.7, 40))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAMPLING_LOW, 0.7, 40))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAMPLING_HIGH, 1.0, 20))
 
             Case eVarNameFlags.PBInput, eVarNameFlags.QBInput
 
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_ESTIMATED, 0, 0))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.2, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.2, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_EMPERICAL, 0.5, 0.5))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SIM_SIM, 0.6, 0.4))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SIM_SAME, 0.7, 0.3))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAME_SIM, 0.8, 0.2))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAME_SAME, 0.9, 0.1))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.2, 80))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.2, 80))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_EMPERICAL, 0.5, 50))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SIM_SIM, 0.6, 40))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SIM_SAME, 0.7, 30))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAME_SIM, 0.8, 20))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAME_SAME, 0.9, 10))
 
             Case eVarNameFlags.DietComp
 
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GENERAL_SIM, 0.2, 0))
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.2, 0))
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GENERAL_SAME, 0.2, 0))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUALDC, 0.5, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUANDC_LIM, 0.7, 0.4))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUANDC_DET, 1.0, 0.3))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUALDC, 0.5, 80))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUANDC_LIM, 0.7, 40))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUANDC_DET, 1.0, 30))
 
             Case eVarNameFlags.TCatchInput
 
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.1, 0.9))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.1, 0.9))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_FAO, 0.2, 0.8))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_NATIONAL, 0.5, 0.5))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_LOCAL_LOW, 0.7, 0.3))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_LOCAL_HIGH, 1.0, 0.1))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.1, 90))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.1, 90))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_FAO, 0.2, 80))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_NATIONAL, 0.5, 50))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_LOCAL_LOW, 0.7, 30))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_LOCAL_HIGH, 1.0, 10))
 
         End Select
         Return lLevels.ToArray
