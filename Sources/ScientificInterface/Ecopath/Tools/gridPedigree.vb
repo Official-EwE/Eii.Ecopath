@@ -57,8 +57,8 @@ Namespace Ecopath.Tools
                     If Not (TypeOf value Is Integer) Then Return Nothing
 
                     Dim iLevel As Integer = CInt(value)
-                    ' Need a one-based index
-                    If (iLevel = 0) Then Return Nothing
+                    ' Need a zero-based index
+                    If (iLevel < 0) Then Return Nothing
 
                     Dim clr As Color = Nothing
                     Dim core As cCore = Me.Core(cell)
@@ -119,7 +119,6 @@ Namespace Ecopath.Tools
 
                 Dim level As cPedigreeLevel = Me.GetLevel(cell, pos)
                 If (level Is Nothing) Then Return
-
 
                 Dim style As cStyleGuide.eStyleFlags = 0
                 Dim clrFore As Color = Me.ForeColor
@@ -225,6 +224,8 @@ Namespace Ecopath.Tools
             End Set
         End Property
 
+        Public Event OnVariableChanged(ByVal sender As Object, ByVal vn As eVarNameFlags)
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the variable to show. This will make only the cells for
@@ -239,6 +240,7 @@ Namespace Ecopath.Tools
                 If (value <> Me.m_varName) Then
                     Me.m_varName = value
                     Me.FillData()
+                    RaiseEvent OnVariableChanged(Me, Me.m_varName)
                 End If
             End Set
         End Property
@@ -296,6 +298,7 @@ Namespace Ecopath.Tools
             If (Me.UIContext Is Nothing) Then Return
 
             Dim group As cCoreGroupBase = Nothing
+            Dim cell As EwECellBase = Nothing
 
             Me.Redim(Me.Core.nGroups + 1, Me.Core.nPedigreeVariables + 2)
 
@@ -303,7 +306,9 @@ Namespace Ecopath.Tools
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
 
             For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
-                Me(0, iVariable + 1) = New EwEColumnHeaderCell(Me.Core.PedigreeVariable(iVariable).ToString)
+                cell = New EwEColumnHeaderCell(Me.Core.PedigreeVariable(iVariable).ToString)
+                cell.Behaviors.Add(Me.EwEEditHandler)
+                Me(0, iVariable + 1) = cell
             Next iVariable
 
             For iGroup As Integer = 1 To Core.nGroups
@@ -342,12 +347,9 @@ Namespace Ecopath.Tools
                     ' Get property
                     prop = Me.PropertyManager.GetProperty(man, eVarNameFlags.Pedigree, group)
                     ' Prepare cell
-                    '    Note that there is no cell content modification logic in this grid; this
-                    '    EwE grid does not use the typical EwEEndEditHandler etc. This is not a bug.
-                    '    The design of the pedigree IU stipulates that cell values are only modified
-                    '    from outside this grid by clicking pedigree levels. This grid merely displays
-                    '    current pedigree assignments.
                     cell = New PropertyCell(prop)
+                    ' Add EditHandler to track column selection changes
+                    cell.Behaviors.Add(Me.EwEEditHandler)
                     ' Connect special pedigree cell visualizer that handles different display styles
                     cell.VisualModel = Me.m_pcv
                     ' Can edit cells, but not via normal UI methods. This will allow pasting content,
@@ -376,6 +378,19 @@ Namespace Ecopath.Tools
             MyBase.FinishStyle()
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="EwEGrid.MessageSource"/>
+        ''' <summary>
+        ''' Overridden to track variable changes.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Sub OnCellClicked(ByVal p As SourceGrid2.Position, _
+                                              ByVal cell As SourceGrid2.Cells.ICellVirtual)
+            MyBase.OnCellClicked(p, cell)
+            Dim iVarNew As Integer = p.Column - 1
+            Me.SelectedVariable = Me.Core.PedigreeVariable(iVarNew)
         End Sub
 
         ''' -------------------------------------------------------------------

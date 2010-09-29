@@ -75,6 +75,7 @@ Namespace Ecopath.Tools
 
             AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            AddHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
 
             Me.SelectedVariable = eVarNameFlags.Biomass
 
@@ -86,6 +87,7 @@ Namespace Ecopath.Tools
 
             RemoveHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            RemoveHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
 
             ' Clean up
             Me.SelectedVariable = eVarNameFlags.NotSet
@@ -188,9 +190,8 @@ Namespace Ecopath.Tools
 
         End Sub
 
-        Private Sub OnComputePedigree(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-            ' To be written
+        Protected Sub OnGridVariableChanged(ByVal sender As Object, ByVal vn As eVarNameFlags)
+            Me.SelectedVariable = vn
         End Sub
 
         Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
