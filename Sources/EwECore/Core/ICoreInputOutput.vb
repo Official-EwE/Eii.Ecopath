@@ -794,7 +794,7 @@ Public Class cCoreGroupBase
     End Property
 
     ''' <summary>
-    ''' Helper method; gets whether this group is a consumer.
+    ''' Helper method; gets whether this group is a consumer (PP &lt; 1.0)
     ''' </summary>
     Public ReadOnly Property IsConsumer() As Boolean _
         Implements ICoreGroup.IsConsumer
@@ -804,7 +804,7 @@ Public Class cCoreGroupBase
     End Property
 
     ''' <summary>
-    ''' Helper method; gets whether this group is detritus.
+    ''' Helper method; gets whether this group is detritus (PP = 2.0).
     ''' </summary>
     Public ReadOnly Property IsDetritus() As Boolean _
         Implements ICoreGroup.IsDetritus
@@ -814,7 +814,7 @@ Public Class cCoreGroupBase
     End Property
 
     ''' <summary>
-    ''' Helper method; gets whether this group is a primary producer.
+    ''' Helper method; gets whether this group is a producer (0 &lt; PP &lt;= 1.0).
     ''' </summary>
     Public ReadOnly Property IsProducer() As Boolean _
         Implements ICoreGroup.IsProducer
