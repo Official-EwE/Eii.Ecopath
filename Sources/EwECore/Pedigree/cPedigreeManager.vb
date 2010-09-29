@@ -168,7 +168,7 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function UpdatePedigree() As Boolean
+    Friend Function UpdatePedigree() As Boolean
 
         Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim iVariable As Integer = Me.m_core.PedigreeVariableIndex(Me.m_varName)

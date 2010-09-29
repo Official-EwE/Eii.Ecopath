@@ -10372,8 +10372,11 @@ Public Class cCore
             varname = Me.PedigreeVariable(iVariable)
             ' Create manager
             manager = New cPedigreeManager(Me, varname, iVariable)
+            ' Configure manager
+            manager.AllowValidation = False
             manager.Index = iVariable
             manager.DBID = iVariable
+            manager.AllowValidation = True
             ' Initialize manager
             manager.Init()
             ' Store manager
@@ -10623,6 +10626,9 @@ Public Class cCore
 
                 Case eDataTypes.FitToTimeSeries
                     If bValidatedOk Then Me.m_SearchManagers.Item(eDataTypes.FitToTimeSeries).Update(dtAffected)
+
+                Case eDataTypes.PedigreeManager
+                    If bValidatedOk Then DirectCast(objValidated, cPedigreeManager).UpdatePedigree()
 
             End Select
 
