@@ -2926,6 +2926,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecopath pedigree index.
+        '''</summary>
+        Friend ReadOnly Property HEADER_ECOPATH_PEDIGREE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOPATH_PEDIGREE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecospace area.
         '''</summary>
         Friend ReadOnly Property HEADER_ECOSPACE_AREA() As String
@@ -3579,6 +3588,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_MEAN_CATCH_TL() As String
             Get
                 Return ResourceManager.GetString("HEADER_MEAN_CATCH_TL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Measure of fit, t*.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MEASUREOFFIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MEASUREOFFIT", resourceCulture)
             End Get
         End Property
         

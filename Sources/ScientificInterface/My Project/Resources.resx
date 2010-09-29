@@ -2756,4 +2756,10 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_INDEXVALUE" xml:space="preserve">
     <value>Index value</value>
   </data>
+  <data name="HEADER_MEASUREOFFIT" xml:space="preserve">
+    <value>Measure of fit, t*</value>
+  </data>
+  <data name="HEADER_ECOPATH_PEDIGREE" xml:space="preserve">
+    <value>Ecopath pedigree index</value>
+  </data>
 </root>
