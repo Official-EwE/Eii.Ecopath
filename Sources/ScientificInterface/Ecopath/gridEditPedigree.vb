@@ -554,6 +554,7 @@ Imports SourceGrid2.Cells
         Me.Selection.EnableMultiSelection = False
 
         Me.ContextMenu = Nothing
+        Me.FixedColumnWidths = False
 
         ' Redim columns
         Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
