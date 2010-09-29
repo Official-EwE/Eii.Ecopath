@@ -45,8 +45,8 @@ Public Class cPedigreeManager
         Me.DBID = iDBID
 
         'Array variables
-        'Pedigree (should limit max to number of levels in a given manager). A value of -1 is considered 'Null'
-        meta = New cVariableMetaData(-1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), -1)
+        'Pedigree
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.Pedigree))
         Me.m_values.Add(val.varName, val)
 
@@ -383,7 +383,9 @@ Public Class cPedigreeManager
         Me.AllowValidation = False
 
         Select Case Me.m_varName
+
             Case eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.TCatchInput
+
                 Dim status As eStatusFlags = group.GetStatus(Me.m_varName)
                 If (status And eStatusFlags.NotEditable) > 0 Then
                     Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
