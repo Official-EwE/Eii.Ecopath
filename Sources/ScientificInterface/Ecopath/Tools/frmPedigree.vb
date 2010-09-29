@@ -278,7 +278,7 @@ Namespace Ecopath.Tools
 
             ' Add 'None' item
             Me.m_lbLevels.Items.Add(New cPedigreeLevelListboxItem(Nothing))
-            For iLevel As Integer = 1 To man.NumLevels
+            For iLevel As Integer = 0 To man.NumLevels - 1
                 lvl = man.Level(iLevel)
                 Me.m_lbLevels.Items.Add(New cPedigreeLevelListboxItem(lvl))
             Next iLevel
