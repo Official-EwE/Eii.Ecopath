@@ -185,7 +185,6 @@ Namespace Ecopath.Tools
 
 #Region " Private vars "
 
-        ' 
         Private m_psg As cPedigreeStyleGuide = Nothing
         Private m_viz As cPedigreeCellVisualizer = Nothing
         Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
@@ -313,38 +312,50 @@ Namespace Ecopath.Tools
                 Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Next iGroup
 
-            Me.FixedColumns = 2
-
         End Sub
 
         Protected Overrides Sub FillData()
 
             Dim group As cCoreGroupBase = Nothing
             Dim man As cPedigreeManager = Nothing
+            Dim prop As cProperty = Nothing
             Dim cell As EwECellBase = Nothing
             Dim style As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed)
-            Dim iSelectedVar As Integer = Me.Core.PedigreeVariableIndex(Me.m_varName)
+            Dim iSelectedVar As Integer = Me.Core.PedigreeVariableIndex(Me.SelectedVariable)
+            Dim varname As eVarNameFlags = eVarNameFlags.NotSet
 
-            For iGroup As Integer = 1 To Core.nGroups
-                ' Get group
-                group = Me.Core.EcoPathGroupInputs(iGroup)
-                For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
-                    ' Get pedigree
-                    man = Me.Core.GetPedigreeManager(Me.Core.PedigreeVariable(iVariable))
-                    'cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Pedigree, man)
-                    'cell.SuppressZero = True
-                    'cell.Behaviors.Add(Me.EwEEditHandler)
+            ' For all pedigree variables
+            For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
+
+                ' Get manager
+                varname = Me.Core.PedigreeVariable(iVariable)
+                man = Me.Core.GetPedigreeManager(varname)
+
+                ' For all groups
+                For iGroup As Integer = 1 To Core.nGroups
+                    ' Get group
+                    group = Me.Core.EcoPathGroupInputs(iGroup)
+
+                    ' Get property
+                    prop = Me.PropertyManager.GetProperty(man, eVarNameFlags.Pedigree, group)
+                    'prop.SetStyle(cStyleGuide.eStyleFlags.OK)
+                    cell = New PropertyCell(prop)
+                    cell.Behaviors.Add(Me.EwEEditHandler)
                     'cell.VisualModel = Me.m_viz
-                    'cell.EditableMode = EditableMode.None
+                    cell.EditableMode = EditableMode.None
 
-                    'If iSelectedVar <> iVariable Then
-                    '    cell.Style = cell.Style Or cStyleGuide.eStyleFlags.NotEditable
-                    'End If
-
-                    cell = New EwECell(man.Pedigree(iGroup), GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
+                    If iSelectedVar <> iVariable Then
+                        cell.Style = cell.Style Or cStyleGuide.eStyleFlags.NotEditable
+                    End If
                     Me(iGroup, 1 + iVariable) = cell
                 Next
             Next
+        End Sub
+
+        Protected Overrides Sub FinishStyle()
+            MyBase.FinishStyle()
+            Me.FixedColumns = 2
+            Me.FixedColumnWidths = False
         End Sub
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
