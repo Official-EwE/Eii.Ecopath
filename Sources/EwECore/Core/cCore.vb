@@ -3724,7 +3724,8 @@ Public Class cCore
             Me.m_EcopathStats.TotalVarCost = Me.m_EcoPathData.Variab
             Me.m_EcopathStats.TotalCost = Me.m_EcoPathData.Fixed + Me.m_EcoPathData.Variab
             Me.m_EcopathStats.Profit = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue - (Me.m_EcoPathData.Fixed + Me.m_EcoPathData.Variab)
-
+            Me.m_EcopathStats.Pedigree = Me.m_EcoPathData.PedigreeStatsAverage
+            Me.m_EcopathStats.MeasureOfFit = Me.m_EcoPathData.PedigreeStatsMeasureOfFit
             Me.m_EcopathStats.ResetStatusFlags()
 
         Catch ex As Exception

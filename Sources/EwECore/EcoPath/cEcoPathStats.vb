@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: cEcoPathStats.vb,v $
-' Revision 1.3  2009/01/29 23:38:26  jeroens
-' Added missing stats handling in ResetStatusFlags
-'
-' Revision 1.2  2009/01/29 20:18:59  jeroens
-' Removed left-over group indices
-'
-' Revision 1.1  2009/01/29 17:29:55  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
@@ -104,6 +90,12 @@ Public Class cEcoPathStats
             'Profit
             val = New cValue(New Single, eVarNameFlags.EcopathStatsProfit, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
+            'Ecopath pedigree
+            val = New cValue(New Single, eVarNameFlags.EcopathStatsPedigree, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
+            'Ecopath pedigree measure of fit
+            val = New cValue(New Single, eVarNameFlags.EcopathStatsMeasureOfFit, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'set status flags to their default values
             Me.ResetStatusFlags()
@@ -154,7 +146,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalConsumption))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalConsumption, value)
         End Set
     End Property
@@ -163,7 +155,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalConsumption)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalConsumption, value)
         End Set
     End Property
@@ -174,7 +166,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalExports))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalExports, value)
         End Set
     End Property
@@ -183,7 +175,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalExports)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalExports, value)
         End Set
     End Property
@@ -194,7 +186,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalRespFlow))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalRespFlow, value)
         End Set
     End Property
@@ -203,7 +195,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalRespFlow)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalRespFlow, value)
         End Set
     End Property
@@ -214,7 +206,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalFlowDetritus))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalFlowDetritus, value)
         End Set
     End Property
@@ -223,7 +215,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalFlowDetritus)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalFlowDetritus, value)
         End Set
     End Property
@@ -243,7 +235,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalThroughput)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalThroughput, value)
         End Set
     End Property
@@ -254,7 +246,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalProduction))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalProduction, value)
         End Set
     End Property
@@ -263,7 +255,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalProduction)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalProduction, value)
         End Set
     End Property
@@ -274,7 +266,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsMeanTrophicLevelCatch))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsMeanTrophicLevelCatch, value)
         End Set
     End Property
@@ -283,7 +275,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsMeanTrophicLevelCatch)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsMeanTrophicLevelCatch, value)
         End Set
     End Property
@@ -294,7 +286,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsGrossEfficiency))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsGrossEfficiency, value)
         End Set
     End Property
@@ -303,7 +295,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsGrossEfficiency)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsGrossEfficiency, value)
         End Set
     End Property
@@ -314,7 +306,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalNetPP))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalNetPP, value)
         End Set
     End Property
@@ -323,7 +315,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalNetPP)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalNetPP, value)
         End Set
     End Property
@@ -334,7 +326,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalPResp))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalPResp, value)
         End Set
     End Property
@@ -343,7 +335,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalPResp)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalPResp, value)
         End Set
     End Property
@@ -354,7 +346,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsNetSystemProduction))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsNetSystemProduction, value)
         End Set
     End Property
@@ -363,7 +355,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsNetSystemProduction)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsNetSystemProduction, value)
         End Set
     End Property
@@ -374,7 +366,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalPB))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalPB, value)
         End Set
     End Property
@@ -383,7 +375,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalPB)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalPB, value)
         End Set
     End Property
@@ -394,7 +386,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalBT))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalBT, value)
         End Set
     End Property
@@ -403,7 +395,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalBT)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalBT, value)
         End Set
     End Property
@@ -414,7 +406,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalBNonDet))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalBNonDet, value)
         End Set
     End Property
@@ -423,7 +415,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalBNonDet)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalBNonDet, value)
         End Set
     End Property
@@ -434,7 +426,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalCatch))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalCatch, value)
         End Set
     End Property
@@ -443,7 +435,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalCatch)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalCatch, value)
         End Set
     End Property
@@ -454,7 +446,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsConnectanceIndex))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsConnectanceIndex, value)
         End Set
     End Property
@@ -463,7 +455,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsConnectanceIndex)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsConnectanceIndex, value)
         End Set
     End Property
@@ -474,7 +466,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsOmnivIndex))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsOmnivIndex, value)
         End Set
     End Property
@@ -483,7 +475,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsOmnivIndex)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsOmnivIndex, value)
         End Set
     End Property
@@ -494,7 +486,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalMarketValue))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalMarketValue, value)
         End Set
     End Property
@@ -514,7 +506,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalShadowValue))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalShadowValue, value)
         End Set
     End Property
@@ -523,7 +515,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalShadowValue)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalShadowValue, value)
         End Set
     End Property
@@ -534,7 +526,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalValue))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalValue, value)
         End Set
     End Property
@@ -543,7 +535,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalValue)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalValue, value)
         End Set
     End Property
@@ -554,7 +546,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalFixedCost))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalFixedCost, value)
         End Set
     End Property
@@ -563,7 +555,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalFixedCost)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalFixedCost, value)
         End Set
     End Property
@@ -574,7 +566,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalVarCost))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalVarCost, value)
         End Set
     End Property
@@ -583,7 +575,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalVarCost)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalVarCost, value)
         End Set
     End Property
@@ -594,7 +586,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalCost))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsTotalCost, value)
         End Set
     End Property
@@ -603,7 +595,7 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalCost)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsTotalCost, value)
         End Set
     End Property
@@ -614,7 +606,7 @@ Public Class cEcoPathStats
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsProfit))
         End Get
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EcopathStatsProfit, value)
         End Set
     End Property
@@ -623,8 +615,46 @@ Public Class cEcoPathStats
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsProfit)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsProfit, value)
+        End Set
+    End Property
+
+    ' --
+
+    Public Property Pedigree() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcopathStatsPedigree))
+        End Get
+        Friend Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.EcopathStatsPedigree, value)
+        End Set
+    End Property
+
+    Public Property PedigreeStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.EcopathStatsPedigree)
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.EcopathStatsPedigree, value)
+        End Set
+    End Property
+
+    Public Property MeasureOfFit() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcopathStatsMeasureOfFit))
+        End Get
+        Friend Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.EcopathStatsMeasureOfFit, value)
+        End Set
+    End Property
+
+    Public Property MeasureOfFitStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.EcopathStatsMeasureOfFit)
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.EcopathStatsMeasureOfFit, value)
         End Set
     End Property
 

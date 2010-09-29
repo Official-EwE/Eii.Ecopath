@@ -246,6 +246,8 @@ Public Class cEcopathDataStructures
     Public FleetColor() As Integer
     Public Host(,) As Single  'last is for fishery (combined only)
 
+    ' -- Pedigree
+
     Public NumPedigreeLevels As Integer
     Public PedigreeLevelDBID() As Integer
     Public PedigreeLevelName() As String
@@ -262,6 +264,10 @@ Public Class cEcopathDataStructures
     ''' <summary>One-based array of variables supported by the pedigree system.</summary>
     Public PedigreeVariables As eVarNameFlags() = {eVarNameFlags.NotSet, eVarNameFlags.Biomass, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp, eVarNameFlags.TCatchInput}
     Public NumPedigreeVariables As Integer = Me.PedigreeVariables.Length - 1
+
+    Public PedigreeStatsAverage As Single
+    Public PedigreeStatsMeasureOfFit As Single
+    Public PedigreeStatsComplete As Boolean
 
     ''' <summary>Total number of taxonomy codes.</summary>
     Public NumTaxon As Integer = 0
@@ -636,6 +642,7 @@ Public Class cEcopathDataStructures
             Compute_M2_Resp_and_Stats()
             ComputeMoreStats()
             ComputeProfit()
+            ComputePedigree()
 
             Return True
 
@@ -895,6 +902,49 @@ Public Class cEcopathDataStructures
             Fixed = Fixed + cost(Gear, eCostIndex.Fixed)
             Variab = Variab + cost(Gear, eCostIndex.CUPE) + cost(Gear, eCostIndex.Sail)
         Next
+
+    End Sub
+
+    Private Sub ComputePedigree()
+
+        Dim iTotal As Integer = 0
+        Dim iNumLevels As Integer = 0
+        Dim group As cEcoPathGroupInput = Nothing
+        Dim man As cPedigreeManager = Nothing
+        Dim var As eVarNameFlags = eVarNameFlags.NotSet
+        Dim bComplete As Boolean = True
+
+        For iGroup As Integer = 1 To Me.NumGroups
+            ' For all vars
+            For iVariable As Integer = 1 To Me.NumPedigreeVariables
+
+                var = Me.PedigreeLevelVarName(iVariable)
+
+                If Me.PP(iGroup) = 1 And (var = eVarNameFlags.PBInput Or var = eVarNameFlags.QBInput) Then
+                    'Skip qb for producers
+                ElseIf Me.fCatch(iGroup) = 0 And (var = eVarNameFlags.TCatchInput) Then
+                    'do nothing continue to next par
+                ElseIf Me.PP(iGroup) = 2 Then
+                    'do nothing
+                Else
+                    iTotal += Me.Pedigree(iGroup, iVariable)
+                    iNumLevels += 1
+                    bComplete = bComplete And (Me.Pedigree(iGroup, iVariable) >= 0)
+                End If
+
+            Next iVariable
+        Next iGroup
+
+        If (iNumLevels = 0) Then
+            Me.PedigreeStatsAverage = cCore.NULL_VALUE
+            Me.PedigreeStatsMeasureOfFit = cCore.NULL_VALUE
+            Me.PedigreeStatsComplete = True
+        Else
+            Dim sVar As Single = CSng(iTotal / iNumLevels)
+            Me.PedigreeStatsAverage = sVar
+            Me.PedigreeStatsMeasureOfFit = CSng(sVar * Math.Sqrt(Me.NumGroups - 2) / Math.Sqrt(1 - sVar ^ 2))
+            Me.PedigreeStatsComplete = bComplete
+        End If
 
     End Sub
 
