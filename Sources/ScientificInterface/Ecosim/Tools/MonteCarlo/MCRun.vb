@@ -80,7 +80,7 @@ Namespace Ecosim
             Me.m_mcmanager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
             Me.m_mcmanager.SyncObject = Me
 
-            Me.m_fpNumTrials = New cEwEFormatProvider(Me.UIContext, Me.nudNumTrials, GetType(Integer))
+            Me.m_fpNumTrials = New cEwEFormatProvider(Me.UIContext, Me.m_nudNumTrials, GetType(Integer))
             Me.m_fpNumTrials.Value = m_mcmanager.nTrials
 
             Me.m_fpTrial = New cEwEFormatProvider(Me.UIContext, Me.lblValueTrial, GetType(Integer))
@@ -98,9 +98,9 @@ Namespace Ecosim
             Me.m_fpSSBest = New cEwEFormatProvider(Me.UIContext, Me.lblValueSSBest, GetType(Single))
             Me.m_fpSSBest.Value = 0.0!
 
-            Me.m_mcmanager.bShowPlot = cbShowBioTraj.Checked
+            Me.m_mcmanager.bShowPlot = m_cbShowBioTraj.Checked
             ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
-            Me.m_mcmanager.bRetainFits = cbRetainEstimates.Checked
+            Me.m_mcmanager.bRetainFits = m_cbRetainEstimates.Checked
 
             Me.m_plothelper = New cEcosimOutputPlotHelper()
             Me.m_plothelper.Attach(Me.UIContext, Me.m_graph)
@@ -117,14 +117,14 @@ Namespace Ecosim
             Me.m_gridBestFit.UIContext = Me.UIContext
 
             Me.m_cmdRunMonteCarlo = New cCommand(Me.CommandHandler, "RunMonteCarlo")
-            Me.m_cmdRunMonteCarlo.AddControl(Me.btnRunTrials)
+            Me.m_cmdRunMonteCarlo.AddControl(Me.m_btnRunTrials)
 
             Me.m_cmdStopMonteCarlo = New cCommand(Me.CommandHandler, "StopMonteCarlo")
-            Me.m_cmdStopMonteCarlo.AddControl(Me.btnStop)
+            Me.m_cmdStopMonteCarlo.AddControl(Me.m_btnStop)
 
             ' Connect to ApplyTS command
             Me.m_cmdLoadTS = Me.CommandHandler.GetCommand("LoadTimeSeries")
-            If Me.m_cmdLoadTS IsNot Nothing Then Me.m_cmdLoadTS.AddControl(Me.btnTS)
+            If Me.m_cmdLoadTS IsNot Nothing Then Me.m_cmdLoadTS.AddControl(Me.m_btnTS)
 
             Me.m_propNYears = New cSingleProperty(Me.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears)
             AddHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
@@ -145,7 +145,7 @@ Namespace Ecosim
 
             ' Disconnect from ApplyTS command
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("WeightTimeSeries")
-            If cmd IsNot Nothing Then cmd.RemoveControl(Me.btnTS)
+            If cmd IsNot Nothing Then cmd.RemoveControl(Me.m_btnTS)
 
             Me.m_lbGroups.Detach()
 
@@ -166,40 +166,40 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub btnStop_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnStop.Click
+        Private Sub btnStop_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
             Me.m_mcmanager.StopRun()
         End Sub
 
-        Private Sub btApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btApply.Click
+        Private Sub btApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnApply.Click
             Me.m_mcmanager.ApplyBestFits()
         End Sub
 
         Private Sub cbShowBioTraj_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles cbShowBioTraj.CheckedChanged
+            Handles m_cbShowBioTraj.CheckedChanged
             If Not Me.m_mcmanager Is Nothing Then
-                Me.m_mcmanager.bShowPlot = cbShowBioTraj.Checked
+                Me.m_mcmanager.bShowPlot = m_cbShowBioTraj.Checked
             End If
         End Sub
 
         Private Sub cbRetainCurPattern_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles cbRetainCurPattern.CheckedChanged
+            Handles m_cbRetainCurPattern.CheckedChanged
             If Not Me.m_mcmanager Is Nothing Then
                 ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
             End If
         End Sub
 
         Private Sub cbRetainEstimates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles cbRetainEstimates.CheckedChanged
+            Handles m_cbRetainEstimates.CheckedChanged
             If Not Me.m_mcmanager Is Nothing Then
-                Me.m_mcmanager.bRetainFits = cbRetainEstimates.Checked
+                Me.m_mcmanager.bRetainFits = m_cbRetainEstimates.Checked
             End If
         End Sub
 
         Private Sub nudNumTrials_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles nudNumTrials.ValueChanged
+            Handles m_nudNumTrials.ValueChanged
             If Me.m_mcmanager IsNot Nothing Then
                 Try
-                    Me.m_mcmanager.nTrials = CInt(Me.nudNumTrials.Value)
+                    Me.m_mcmanager.nTrials = CInt(Me.m_nudNumTrials.Value)
                 Catch ex As Exception
                 End Try
             End If
@@ -254,11 +254,11 @@ Namespace Ecosim
             Me.m_nTrials = 0
 
             Try
-                Me.btApply.Enabled = True
-                Me.cbRetainEstimates.Enabled = True
-                Me.cbShowBioTraj.Enabled = True
-                Me.nudNumTrials.Enabled = True
-                Me.btnTS.Enabled = True
+                Me.m_btnApply.Enabled = True
+                Me.m_cbRetainEstimates.Enabled = True
+                Me.m_cbShowBioTraj.Enabled = True
+                Me.m_nudNumTrials.Enabled = True
+                Me.m_btnTS.Enabled = True
 
                 'populate the grid with new values (biomass....)
                 Me.m_gridBestFit.RefreshContent()
@@ -310,11 +310,11 @@ Namespace Ecosim
         Private Sub m_cmdRunMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
             Handles m_cmdRunMonteCarlo.OnInvoke
 
-            Me.btApply.Enabled = False
-            Me.cbRetainEstimates.Enabled = False
-            Me.cbShowBioTraj.Enabled = False
-            Me.nudNumTrials.Enabled = False
-            Me.btnTS.Enabled = False
+            Me.m_btnApply.Enabled = False
+            Me.m_cbRetainEstimates.Enabled = False
+            Me.m_cbShowBioTraj.Enabled = False
+            Me.m_nudNumTrials.Enabled = False
+            Me.m_btnTS.Enabled = False
 
             If Me.m_mcmanager.bShowPlot Then
                 ' Select biomass plot page.

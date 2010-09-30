@@ -45,11 +45,24 @@ Namespace Ecopath
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
+            Dim var As eVarNameFlags = eVarNameFlags.NotSet
+            Dim descr As cVariableDescriptor = Nothing
+
+            ' Clear drop down
             Me.m_cmbVariable.Items.Clear()
+            ' For all pedigree vars
             For iVariable As Integer = 1 To Me.m_uic.Core.nPedigreeVariables
-                Me.m_cmbVariable.Items.Add(Me.m_uic.Core.PedigreeVariable(iVariable))
+                ' Get variable
+                var = Me.m_uic.Core.PedigreeVariable(iVariable)
+                ' Get descriptor
+                descr = cVariableDescriptor.FromVarname(var)
+                ' Add to combo
+                Me.m_cmbVariable.Items.Add(descr)
             Next
+            ' Select frist
             Me.m_cmbVariable.SelectedIndex = 0
+
+            ' Done
             Me.UpdateControls()
 
         End Sub
@@ -77,7 +90,8 @@ Namespace Ecopath
 
         Private Sub OnVariableSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbVariable.SelectedIndexChanged
-            Me.m_grid.VarName = DirectCast(Me.m_cmbVariable.SelectedItem, eVarNameFlags)
+            Dim iIndex As Integer = Me.m_cmbVariable.SelectedIndex
+            Me.m_grid.VarName = Me.m_uic.Core.PedigreeVariable(iIndex + 1)
         End Sub
 
         Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _

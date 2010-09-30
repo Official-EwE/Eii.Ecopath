@@ -405,4 +405,16 @@
   <data name="ZoomInHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ZoomInHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="VARIABLE_DIETCOMP" xml:space="preserve">
+    <value>Diet</value>
+  </data>
+  <data name="VARIABLE_PBINPUT" xml:space="preserve">
+    <value>PB|Production over biomass</value>
+  </data>
+  <data name="VARIABLE_QBINPUT" xml:space="preserve">
+    <value>QB|Consumption over biomass</value>
+  </data>
+  <data name="VARIABLE_TCATCHINPUT" xml:space="preserve">
+    <value>Catches</value>
+  </data>
 </root>

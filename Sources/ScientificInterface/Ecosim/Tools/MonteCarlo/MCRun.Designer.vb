@@ -26,9 +26,9 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MCRun))
-            Me.lblNumTrials = New System.Windows.Forms.Label
-            Me.btnRunTrials = New System.Windows.Forms.Button
-            Me.btnStop = New System.Windows.Forms.Button
+            Me.m_lblNumTrials = New System.Windows.Forms.Label
+            Me.m_btnRunTrials = New System.Windows.Forms.Button
+            Me.m_btnStop = New System.Windows.Forms.Button
             Me.m_tcOutput = New System.Windows.Forms.TabControl
             Me.m_tbpB = New System.Windows.Forms.TabPage
             Me.m_gridB = New ScientificInterface.Ecosim.MCRunInputGrid
@@ -45,16 +45,16 @@ Namespace Ecosim
             Me.m_lblGroups = New System.Windows.Forms.Label
             Me.m_tbpBestTrial = New System.Windows.Forms.TabPage
             Me.m_gridBestFit = New ScientificInterface.Ecosim.MCRunOutputGrid
-            Me.cbRetainEstimates = New System.Windows.Forms.CheckBox
-            Me.cbRetainCurPattern = New System.Windows.Forms.CheckBox
+            Me.m_cbRetainEstimates = New System.Windows.Forms.CheckBox
+            Me.m_cbRetainCurPattern = New System.Windows.Forms.CheckBox
             Me.lblTrial = New System.Windows.Forms.Label
             Me.lblERun = New System.Windows.Forms.Label
             Me.lblSS = New System.Windows.Forms.Label
             Me.lblBestSS = New System.Windows.Forms.Label
-            Me.cbShowBioTraj = New System.Windows.Forms.CheckBox
-            Me.btApply = New System.Windows.Forms.Button
-            Me.nudNumTrials = New System.Windows.Forms.NumericUpDown
-            Me.btnTS = New System.Windows.Forms.Button
+            Me.m_cbShowBioTraj = New System.Windows.Forms.CheckBox
+            Me.m_btnApply = New System.Windows.Forms.Button
+            Me.m_nudNumTrials = New System.Windows.Forms.NumericUpDown
+            Me.m_btnTS = New System.Windows.Forms.Button
             Me.lblValueERun = New System.Windows.Forms.Label
             Me.lblValueSSBest = New System.Windows.Forms.Label
             Me.lblValueSS = New System.Windows.Forms.Label
@@ -75,26 +75,26 @@ Namespace Ecosim
             Me.m_spPlot.Panel2.SuspendLayout()
             Me.m_spPlot.SuspendLayout()
             Me.m_tbpBestTrial.SuspendLayout()
-            CType(Me.nudNumTrials, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudNumTrials, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpOutputs.SuspendLayout()
             Me.SuspendLayout()
             '
-            'lblNumTrials
+            'm_lblNumTrials
             '
-            resources.ApplyResources(Me.lblNumTrials, "lblNumTrials")
-            Me.lblNumTrials.Name = "lblNumTrials"
+            resources.ApplyResources(Me.m_lblNumTrials, "m_lblNumTrials")
+            Me.m_lblNumTrials.Name = "m_lblNumTrials"
             '
-            'btnRunTrials
+            'm_btnRunTrials
             '
-            resources.ApplyResources(Me.btnRunTrials, "btnRunTrials")
-            Me.btnRunTrials.Name = "btnRunTrials"
-            Me.btnRunTrials.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnRunTrials, "m_btnRunTrials")
+            Me.m_btnRunTrials.Name = "m_btnRunTrials"
+            Me.m_btnRunTrials.UseVisualStyleBackColor = True
             '
-            'btnStop
+            'm_btnStop
             '
-            resources.ApplyResources(Me.btnStop, "btnStop")
-            Me.btnStop.Name = "btnStop"
-            Me.btnStop.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnStop, "m_btnStop")
+            Me.m_btnStop.Name = "m_btnStop"
+            Me.m_btnStop.UseVisualStyleBackColor = True
             '
             'm_tcOutput
             '
@@ -349,17 +349,17 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridBestFit.UIContext = Nothing
             '
-            'cbRetainEstimates
+            'm_cbRetainEstimates
             '
-            resources.ApplyResources(Me.cbRetainEstimates, "cbRetainEstimates")
-            Me.cbRetainEstimates.Name = "cbRetainEstimates"
-            Me.cbRetainEstimates.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbRetainEstimates, "m_cbRetainEstimates")
+            Me.m_cbRetainEstimates.Name = "m_cbRetainEstimates"
+            Me.m_cbRetainEstimates.UseVisualStyleBackColor = True
             '
-            'cbRetainCurPattern
+            'm_cbRetainCurPattern
             '
-            resources.ApplyResources(Me.cbRetainCurPattern, "cbRetainCurPattern")
-            Me.cbRetainCurPattern.Name = "cbRetainCurPattern"
-            Me.cbRetainCurPattern.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbRetainCurPattern, "m_cbRetainCurPattern")
+            Me.m_cbRetainCurPattern.Name = "m_cbRetainCurPattern"
+            Me.m_cbRetainCurPattern.UseVisualStyleBackColor = True
             '
             'lblTrial
             '
@@ -381,31 +381,31 @@ Namespace Ecosim
             resources.ApplyResources(Me.lblBestSS, "lblBestSS")
             Me.lblBestSS.Name = "lblBestSS"
             '
-            'cbShowBioTraj
+            'm_cbShowBioTraj
             '
-            resources.ApplyResources(Me.cbShowBioTraj, "cbShowBioTraj")
-            Me.cbShowBioTraj.Checked = True
-            Me.cbShowBioTraj.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.cbShowBioTraj.Name = "cbShowBioTraj"
-            Me.cbShowBioTraj.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbShowBioTraj, "m_cbShowBioTraj")
+            Me.m_cbShowBioTraj.Checked = True
+            Me.m_cbShowBioTraj.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbShowBioTraj.Name = "m_cbShowBioTraj"
+            Me.m_cbShowBioTraj.UseVisualStyleBackColor = True
             '
-            'btApply
+            'm_btnApply
             '
-            resources.ApplyResources(Me.btApply, "btApply")
-            Me.btApply.Name = "btApply"
-            Me.btApply.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnApply, "m_btnApply")
+            Me.m_btnApply.Name = "m_btnApply"
+            Me.m_btnApply.UseVisualStyleBackColor = True
             '
-            'nudNumTrials
+            'm_nudNumTrials
             '
-            resources.ApplyResources(Me.nudNumTrials, "nudNumTrials")
-            Me.nudNumTrials.Maximum = New Decimal(New Integer() {2147483647, 0, 0, 0})
-            Me.nudNumTrials.Name = "nudNumTrials"
+            resources.ApplyResources(Me.m_nudNumTrials, "m_nudNumTrials")
+            Me.m_nudNumTrials.Maximum = New Decimal(New Integer() {2147483647, 0, 0, 0})
+            Me.m_nudNumTrials.Name = "m_nudNumTrials"
             '
-            'btnTS
+            'm_btnTS
             '
-            resources.ApplyResources(Me.btnTS, "btnTS")
-            Me.btnTS.Name = "btnTS"
-            Me.btnTS.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnTS, "m_btnTS")
+            Me.m_btnTS.Name = "m_btnTS"
+            Me.m_btnTS.UseVisualStyleBackColor = True
             '
             'lblValueERun
             '
@@ -475,17 +475,17 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_tlpOutputs)
             Me.Controls.Add(Me.m_hdrOutputParam)
             Me.Controls.Add(Me.m_hdrInputOpt)
-            Me.Controls.Add(Me.nudNumTrials)
+            Me.Controls.Add(Me.m_nudNumTrials)
             Me.Controls.Add(Me.m_btnFromBedigree)
-            Me.Controls.Add(Me.btnTS)
-            Me.Controls.Add(Me.lblNumTrials)
+            Me.Controls.Add(Me.m_btnTS)
+            Me.Controls.Add(Me.m_lblNumTrials)
             Me.Controls.Add(Me.m_tcOutput)
-            Me.Controls.Add(Me.cbRetainEstimates)
-            Me.Controls.Add(Me.btApply)
-            Me.Controls.Add(Me.cbRetainCurPattern)
-            Me.Controls.Add(Me.cbShowBioTraj)
-            Me.Controls.Add(Me.btnStop)
-            Me.Controls.Add(Me.btnRunTrials)
+            Me.Controls.Add(Me.m_cbRetainEstimates)
+            Me.Controls.Add(Me.m_btnApply)
+            Me.Controls.Add(Me.m_cbRetainCurPattern)
+            Me.Controls.Add(Me.m_cbShowBioTraj)
+            Me.Controls.Add(Me.m_btnStop)
+            Me.Controls.Add(Me.m_btnRunTrials)
             Me.Name = "MCRun"
             Me.TabText = "Monte Carlo simulation of varying Ecopath basic parameters"
             Me.m_tcOutput.ResumeLayout(False)
@@ -498,22 +498,22 @@ Namespace Ecosim
             Me.m_spPlot.Panel2.ResumeLayout(False)
             Me.m_spPlot.ResumeLayout(False)
             Me.m_tbpBestTrial.ResumeLayout(False)
-            CType(Me.nudNumTrials, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudNumTrials, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpOutputs.ResumeLayout(False)
             Me.m_tlpOutputs.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents lblNumTrials As System.Windows.Forms.Label
-        Private WithEvents btnRunTrials As System.Windows.Forms.Button
-        Private WithEvents btnStop As System.Windows.Forms.Button
-        Private WithEvents cbRetainEstimates As System.Windows.Forms.CheckBox
-        Private WithEvents cbRetainCurPattern As System.Windows.Forms.CheckBox
-        Private WithEvents cbShowBioTraj As System.Windows.Forms.CheckBox
-        Private WithEvents btApply As System.Windows.Forms.Button
-        Private WithEvents btnTS As System.Windows.Forms.Button
-        Private WithEvents nudNumTrials As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblNumTrials As System.Windows.Forms.Label
+        Private WithEvents m_btnRunTrials As System.Windows.Forms.Button
+        Private WithEvents m_btnStop As System.Windows.Forms.Button
+        Private WithEvents m_cbRetainEstimates As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbRetainCurPattern As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbShowBioTraj As System.Windows.Forms.CheckBox
+        Private WithEvents m_btnApply As System.Windows.Forms.Button
+        Private WithEvents m_btnTS As System.Windows.Forms.Button
+        Private WithEvents m_nudNumTrials As System.Windows.Forms.NumericUpDown
         Private WithEvents m_hdrInputOpt As cEwEHeaderLabel
         Private WithEvents m_hdrOutputParam As cEwEHeaderLabel
         Private WithEvents m_tcOutput As System.Windows.Forms.TabControl

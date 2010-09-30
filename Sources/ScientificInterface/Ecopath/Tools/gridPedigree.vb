@@ -299,6 +299,8 @@ Namespace Ecopath.Tools
 
             Dim group As cCoreGroupBase = Nothing
             Dim cell As EwECellBase = Nothing
+            Dim var As eVarNameFlags = eVarNameFlags.NotSet
+            Dim descr As cVariableDescriptor = Nothing
 
             Me.Redim(Me.Core.nGroups + 1, Me.Core.nPedigreeVariables + 2)
 
@@ -306,8 +308,15 @@ Namespace Ecopath.Tools
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
 
             For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
-                cell = New EwEColumnHeaderCell(Me.Core.PedigreeVariable(iVariable).ToString)
+                ' Get variable
+                var = Me.Core.PedigreeVariable(iVariable)
+                ' Get var descriptor
+                descr = cVariableDescriptor.FromVarname(var)
+                ' Create and configure cell
+                cell = New EwEColumnHeaderCell(descr.Name)
+                cell.ToolTipText = descr.Description
                 cell.Behaviors.Add(Me.EwEEditHandler)
+                ' Add it
                 Me(0, iVariable + 1) = cell
             Next iVariable
 

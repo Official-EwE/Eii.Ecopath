@@ -338,6 +338,7 @@
     <Compile Include="Settings\cEwESettingsProvider.vb" />
     <Compile Include="Style\cStyleGuide.vb" />
     <Compile Include="Definitions\Shared UIEnums.vb" />
+    <Compile Include="Style\cVariableDescriptor.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.resx">
