@@ -3,6 +3,7 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwECore
 
 #End Region ' Imports
 
@@ -16,7 +17,7 @@ Namespace Style
     ''' <para>This class tries to obtain a string from the ScientificShared resources
     ''' to describe a <see cref="eVarNameFlags">core variable</see>. The string is
     ''' expected to be formatted as follows:</para>
-    ''' <para>VARIABLE_[varname] = "[name]|[description]"</para>
+    ''' <para>VARIABLE_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Class cVariableDescriptor
@@ -24,8 +25,7 @@ Namespace Style
 #Region " Private vars "
 
         Private m_varname As eVarNameFlags = eVarNameFlags.NotSet
-        Private m_strName As String = ""
-        Private m_strDescription As String = ""
+        Private m_astrBits([Enum].GetValues(GetType(eDescriptorTypes)).Length) As String
 
 #End Region ' Private vars
 
@@ -33,21 +33,40 @@ Namespace Style
 
         Private Sub New(ByVal vn As eVarNameFlags)
 
-            Dim strDescr As String = ""
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
             Me.m_varname = vn
-            Me.m_strName = Me.m_varname.ToString
 
-            Try
-                strDescr = cResourceUtils.LoadString("VARIABLE_" & vn.ToString.ToUpper, GetType(cVariableDescriptor).Assembly)
-                If (strDescr IsNot Nothing) Then
-                    Dim astrBits As String() = strDescr.Split("|"c)
-                    If astrBits.Length > 0 Then If Not String.IsNullOrEmpty(astrBits(0)) Then Me.m_strName = astrBits(0).Trim
-                    If astrBits.Length > 1 Then If Not String.IsNullOrEmpty(astrBits(1)) Then Me.m_strDescription = astrBits(1).Trim
+            Dim strDescr As String = cResourceUtils.LoadString("VARIABLE_" & vn.ToString.ToUpper, GetType(cVariableDescriptor).Assembly)
+            Dim astrBits As String() = Nothing
+            Dim iNumBits As Integer = 0
+
+            If (strDescr IsNot Nothing) Then
+                astrBits = strDescr.Split("|"c)
+                iNumBits = astrBits.Length
+            End If
+
+            For i As Integer = 0 To Me.m_astrBits.Length - 1
+                Dim strBit As String = ""
+
+                If (i = 0) Then
+                    ' #No: is first part, copy varname
+                    strBit = cin.GetVarName(vn)
+                Else
+                    ' #No: is consecutive part, inherit previous part value
+                    strBit = Me.m_astrBits(i - 1)
                 End If
-            Catch ex As Exception
 
-            End Try
+                If i < iNumBits Then
+                    ' Has a part?
+                    If Not String.IsNullOrEmpty(astrBits(i)) Then
+                        ' #Yes: use this
+                        strBit = astrBits(i).Trim
+                    End If
+                End If
+
+                Me.m_astrBits(i) = strBit
+            Next
 
         End Sub
 
@@ -68,12 +87,58 @@ Namespace Style
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Enumerated type to identify descriptor types.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Enum eDescriptorTypes As Integer
+            Symbol = 0
+            Abbreviation
+            Name
+            Description
+        End Enum
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a variable descriptor part.
+        ''' </summary>
+        ''' <param name="part"></param>
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property GetDescription(ByVal part As eDescriptorTypes) As String
+            Get
+                Return Me.m_astrBits(part)
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Get a humen legible name for a variable.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property Name() As String
             Get
-                Return Me.m_strName
+                Return Me.GetDescription(eDescriptorTypes.Name)
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a symbol for a variable.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property Symbol() As String
+            Get
+                Return Me.GetDescription(eDescriptorTypes.Symbol)
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a humen legible description for a variable.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property Abbreviation() As String
+            Get
+                Return Me.GetDescription(eDescriptorTypes.Abbreviation)
             End Get
         End Property
 
@@ -84,7 +149,7 @@ Namespace Style
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property Description() As String
             Get
-                Return Me.m_strDescription
+                Return Me.GetDescription(eDescriptorTypes.Description)
             End Get
         End Property
 

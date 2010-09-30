@@ -733,7 +733,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Diet.
+        '''  Looks up a localized string similar to DC|Diet||Diet composition.
         '''</summary>
         Friend ReadOnly Property VARIABLE_DIETCOMP() As String
             Get
@@ -742,7 +742,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to PB|Production over biomass.
+        '''  Looks up a localized string similar to EE|||Ecotrophic Efficiency.
+        '''</summary>
+        Friend ReadOnly Property VARIABLE_EEINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_EEINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to PB|P/B||Production over biomass.
         '''</summary>
         Friend ReadOnly Property VARIABLE_PBINPUT() As String
             Get
@@ -751,7 +760,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to QB|Consumption over biomass.
+        '''  Looks up a localized string similar to QB|Q/B||Consumption over biomass.
         '''</summary>
         Friend ReadOnly Property VARIABLE_QBINPUT() As String
             Get
