@@ -55,6 +55,7 @@ Partial Class frmModelDescription
         Me.rbCarbon = New System.Windows.Forms.RadioButton
         Me.rbDryWeight = New System.Windows.Forms.RadioButton
         Me.m_gbTimeUnits = New System.Windows.Forms.GroupBox
+        Me.m_lblNote = New System.Windows.Forms.Label
         Me.txbTimeOther = New System.Windows.Forms.TextBox
         Me.rbTimeOther = New System.Windows.Forms.RadioButton
         Me.rbDay = New System.Windows.Forms.RadioButton
@@ -82,7 +83,6 @@ Partial Class frmModelDescription
         Me.m_lblSouth = New System.Windows.Forms.Label
         Me.m_tbModelAreaName = New System.Windows.Forms.TextBox
         Me.m_btnLookup = New System.Windows.Forms.Button
-        Me.m_lblNote = New System.Windows.Forms.Label
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -283,6 +283,11 @@ Partial Class frmModelDescription
         Me.m_gbTimeUnits.Name = "m_gbTimeUnits"
         Me.m_gbTimeUnits.TabStop = False
         '
+        'm_lblNote
+        '
+        resources.ApplyResources(Me.m_lblNote, "m_lblNote")
+        Me.m_lblNote.Name = "m_lblNote"
+        '
         'txbTimeOther
         '
         resources.ApplyResources(Me.txbTimeOther, "txbTimeOther")
@@ -438,11 +443,6 @@ Partial Class frmModelDescription
         Me.m_btnLookup.Image = Global.ScientificInterface.My.Resources.Resources.google
         Me.m_btnLookup.Name = "m_btnLookup"
         Me.m_btnLookup.UseVisualStyleBackColor = True
-        '
-        'm_lblNote
-        '
-        resources.ApplyResources(Me.m_lblNote, "m_lblNote")
-        Me.m_lblNote.Name = "m_lblNote"
         '
         'frmModelDescription
         '
