@@ -265,7 +265,7 @@ Public Class cEcopathDataStructures
     Public PedigreeVariables As eVarNameFlags() = {eVarNameFlags.NotSet, eVarNameFlags.Biomass, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp, eVarNameFlags.TCatchInput}
     Public NumPedigreeVariables As Integer = Me.PedigreeVariables.Length - 1
 
-    Public PedigreeStatsAverage As Single
+    Public PedigreeStatsModelIndex As Single
     Public PedigreeStatsTStar As Single
     Public PedigreeStatsValid As Boolean
 
@@ -911,9 +911,8 @@ Public Class cEcopathDataStructures
         Dim iTotal As Integer = 0
         Dim iNumLevels As Integer = 0
         Dim group As cEcoPathGroupInput = Nothing
-        Dim man As cPedigreeManager = Nothing
         Dim var As eVarNameFlags = eVarNameFlags.NotSet
-        Dim bComplete As Boolean = True
+        Dim bPedigreeComplete As Boolean = True
 
         For iGroup As Integer = 1 To Me.NumGroups
             ' For all vars
@@ -928,24 +927,30 @@ Public Class cEcopathDataStructures
                 ElseIf Me.PP(iGroup) = 2 Then
                     'do nothing
                 Else
-                    iLevel = Me.Pedigree(iGroup, iVariable)
-                    iTotal += Me.PedigreeLevelIndexValue(iLevel)
-                    iNumLevels += 1
-                    bComplete = bComplete And (Me.Pedigree(iGroup, iVariable) >= 0)
+                    Try
+                        iLevel = Me.Pedigree(iGroup, iVariable)
+                        iTotal += Me.PedigreeLevelIndexValue(iLevel)
+                        iNumLevels += 1
+                        If (Me.Pedigree(iGroup, iVariable) < 0) Then
+                            bPedigreeComplete = False
+                        End If
+                    Catch ex As Exception
+
+                    End Try
                 End If
 
             Next iVariable
         Next iGroup
 
         If (iNumLevels = 0) Then
-            Me.PedigreeStatsAverage = cCore.NULL_VALUE
+            Me.PedigreeStatsModelIndex = cCore.NULL_VALUE
             Me.PedigreeStatsTStar = cCore.NULL_VALUE
             Me.PedigreeStatsValid = True
         Else
             Dim sVar As Single = CSng(iTotal / iNumLevels)
-            Me.PedigreeStatsAverage = sVar
+            Me.PedigreeStatsModelIndex = sVar
             Me.PedigreeStatsTStar = CSng(sVar * Math.Sqrt(Me.NumLiving - 2) / Math.Sqrt(1 - sVar ^ 2))
-            Me.PedigreeStatsValid = bComplete
+            Me.PedigreeStatsValid = bPedigreeComplete
         End If
 
     End Sub

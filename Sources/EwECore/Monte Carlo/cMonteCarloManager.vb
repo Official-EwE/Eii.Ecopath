@@ -549,8 +549,17 @@ Public Class cMonteCarloManager
         End Get
     End Property
 
+    Public Sub LoadFromPedigree()
+        Me.m_mc.LoadFromPedigree()
+        Me.LoadGroups()
+        Me.m_core.onChanged(Me, eMessageType.DataModified)
+    End Sub
 
-    Public Sub CalculateUpperLowerLimits()
+#End Region
+
+#Region "Private methods"
+
+    Friend Sub CalculateUpperLowerLimits()
 
         Try
             Me.update()
@@ -561,15 +570,6 @@ Public Class cMonteCarloManager
         End Try
 
     End Sub
-
-    Public Sub LoadFromPedigree()
-        Me.m_mc.LoadFromPedigree()
-        Me.LoadGroups()
-    End Sub
-
-#End Region
-
-#Region "Private methods"
 
     Friend Sub LoadGroups()
 

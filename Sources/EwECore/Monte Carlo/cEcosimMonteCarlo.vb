@@ -176,7 +176,11 @@ Public Class cEcosimMonteCarlo
         Dim man As cPedigreeManager = Nothing
         Dim Par As Integer = 0
 
+        ' For all pedigree supported vars
         For iVar As Integer = 1 To Me.m_epdata.NumPedigreeVariables
+            ' Get variable
+            varname = Me.m_core.PedigreeVariable(iVar)
+            ' For all groups
             For i As Integer = 1 To Me.m_epdata.NumGroups
                 ' Read assigned pedigree level for a group (was 'Opt = ReadPedigreeFromDatabase(Par)')
                 opt = Me.m_epdata.Pedigree(i, iVar)

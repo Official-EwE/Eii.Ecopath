@@ -351,7 +351,7 @@ Namespace Properties
                         prop.Refresh()
                     Next
 
-                Case eCoreComponentType.EcoSim, eCoreComponentType.MSE
+                Case eCoreComponentType.EcoSim, eCoreComponentType.MSE, eCoreComponentType.EcoSimMonteCarlo
                     For Each prop As cProperty In Me.m_htEcosim.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -398,6 +398,7 @@ Namespace Properties
             Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.MSE, eMessageType.Any, Me.m_SyncObj))
             Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.FishingPolicySearch, eMessageType.Any, Me.m_SyncObj))
             Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimFitToTimeSeries, eMessageType.Any, Me.m_SyncObj))
+            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimMonteCarlo, eMessageType.Any, Me.m_SyncObj))
 
         End Sub
 

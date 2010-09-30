@@ -3724,7 +3724,7 @@ Public Class cCore
             Me.m_EcopathStats.TotalVarCost = Me.m_EcoPathData.Variab
             Me.m_EcopathStats.TotalCost = Me.m_EcoPathData.Fixed + Me.m_EcoPathData.Variab
             Me.m_EcopathStats.Profit = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue - (Me.m_EcoPathData.Fixed + Me.m_EcoPathData.Variab)
-            Me.m_EcopathStats.Pedigree = Me.m_EcoPathData.PedigreeStatsAverage
+            Me.m_EcopathStats.Pedigree = Me.m_EcoPathData.PedigreeStatsModelIndex
             Me.m_EcopathStats.MeasureOfFit = Me.m_EcoPathData.PedigreeStatsTStar
             Me.m_EcopathStats.ResetStatusFlags()
 
@@ -11394,7 +11394,6 @@ Public Class cCore
                         Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
                                                      eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MonteCarlo))
 
-
                 End Select
 
             Case eDataTypes.MSEFleetInput
@@ -11601,6 +11600,9 @@ Public Class cCore
                 Case eDataTypes.MonteCarlo
                     Me.LoadEcopathInputs()
                     Me.LoadEcosimGroups()
+
+                    Me.m_publisher.AddMessage(New cMessage("Monte carlo data has changed.", eMessageType.DataModified, _
+                                       eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Maintenance))
 
             End Select
 
