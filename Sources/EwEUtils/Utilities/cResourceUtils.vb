@@ -159,7 +159,7 @@ Namespace Utilities
             Dim sb As New StringBuilder(100)
             Dim n As Int32 = 0
             Try
-                n = Win32Api.User32.LoadString(m_hUser32, Id, sb, sb.Length)
+                n = Win32Api.User32.LoadString(m_hUser32, Id, sb, 100)
             Catch ex As Exception
                 ' Whoah!
             End Try
@@ -169,7 +169,7 @@ Namespace Utilities
             End If
 
             ' Return default?
-            If n = 0 Then
+            If n <= 0 Then
                 Select Case Id
                     Case Win32Api.User32.eSystemStringTypes.Abort : Return "Abort"
                     Case Win32Api.User32.eSystemStringTypes.Cancel : Return "Cancel"
