@@ -266,8 +266,8 @@ Public Class cEcopathDataStructures
     Public NumPedigreeVariables As Integer = Me.PedigreeVariables.Length - 1
 
     Public PedigreeStatsAverage As Single
-    Public PedigreeStatsMeasureOfFit As Single
-    Public PedigreeStatsComplete As Boolean
+    Public PedigreeStatsTStar As Single
+    Public PedigreeStatsValid As Boolean
 
     ''' <summary>Total number of taxonomy codes.</summary>
     Public NumTaxon As Integer = 0
@@ -907,6 +907,7 @@ Public Class cEcopathDataStructures
 
     Private Sub ComputePedigree()
 
+        Dim iLevel As Integer = 0
         Dim iTotal As Integer = 0
         Dim iNumLevels As Integer = 0
         Dim group As cEcoPathGroupInput = Nothing
@@ -927,7 +928,8 @@ Public Class cEcopathDataStructures
                 ElseIf Me.PP(iGroup) = 2 Then
                     'do nothing
                 Else
-                    iTotal += Me.Pedigree(iGroup, iVariable)
+                    iLevel = Me.Pedigree(iGroup, iVariable)
+                    iTotal += Me.PedigreeLevelIndexValue(iLevel)
                     iNumLevels += 1
                     bComplete = bComplete And (Me.Pedigree(iGroup, iVariable) >= 0)
                 End If
@@ -937,13 +939,13 @@ Public Class cEcopathDataStructures
 
         If (iNumLevels = 0) Then
             Me.PedigreeStatsAverage = cCore.NULL_VALUE
-            Me.PedigreeStatsMeasureOfFit = cCore.NULL_VALUE
-            Me.PedigreeStatsComplete = True
+            Me.PedigreeStatsTStar = cCore.NULL_VALUE
+            Me.PedigreeStatsValid = True
         Else
             Dim sVar As Single = CSng(iTotal / iNumLevels)
             Me.PedigreeStatsAverage = sVar
-            Me.PedigreeStatsMeasureOfFit = CSng(sVar * Math.Sqrt(Me.NumGroups - 2) / Math.Sqrt(1 - sVar ^ 2))
-            Me.PedigreeStatsComplete = bComplete
+            Me.PedigreeStatsTStar = CSng(sVar * Math.Sqrt(Me.NumLiving - 2) / Math.Sqrt(1 - sVar ^ 2))
+            Me.PedigreeStatsValid = bComplete
         End If
 
     End Sub
