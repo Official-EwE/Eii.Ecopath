@@ -17,7 +17,7 @@ Namespace Ecopath.Tools
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
-    Public Class gridPedigree
+    Friend Class gridPedigree
         Inherits EwEGrid
 
 #Region " Helper classes "
@@ -100,7 +100,7 @@ Namespace Ecopath.Tools
                 If (level Is Nothing) Then Return
 
                 Using br As New SolidBrush(Me.m_psg.BackgroundColor(Color.Transparent, level))
-                    e.Graphics.FillRectangle(br, New Rectangle(rc.Left + 3, rc.Top + 3, rc.Width - 6, rc.Height - 6))
+                    e.Graphics.FillRectangle(br, New Rectangle(rc.Left + 4, rc.Top + 3, rc.Width - 8, rc.Height - 6))
                 End Using
 
             End Sub
@@ -385,8 +385,11 @@ Namespace Ecopath.Tools
         ''' -------------------------------------------------------------------
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
+
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False
+            Me.SizeColumnsEqually(2)
+
         End Sub
 
         ''' -------------------------------------------------------------------
