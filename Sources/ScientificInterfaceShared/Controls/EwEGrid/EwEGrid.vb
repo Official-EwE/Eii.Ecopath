@@ -746,6 +746,30 @@ Namespace Controls.EwEGrid
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set a range of columns to equal size fitted to the max column width.
+        ''' </summary>
+        ''' <param name="iMinWidth">Min width to size to.</param>
+        ''' <param name="iMaxWidth">Max width to size to.</param>
+        ''' <param name="iColFrom">Start column for resizing.</param>
+        ''' <param name="iColTo">End column for resizing.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub SizeColumnsEqually(Optional ByVal iColFrom As Integer = 0, _
+                                      Optional ByVal iColTo As Integer = 10000, _
+                                      Optional ByVal iMinWidth As Integer = 10, _
+                                      Optional ByVal iMaxWidth As Integer = 10000)
+
+            Dim iWidth As Integer = iMinWidth
+            For i As Integer = Math.Max(0, iColFrom) To Math.Min(Me.ColumnsCount - 1, iColTo)
+                iWidth = Math.Max(Me.Columns(i).Width, Math.Min(iMaxWidth, iWidth))
+            Next
+            For i As Integer = 2 To Me.ColumnsCount - 1
+                Me.Columns(i).Width = iWidth
+            Next
+
+        End Sub
+
 #End Region ' Appearance
 
 #Region " Data "
