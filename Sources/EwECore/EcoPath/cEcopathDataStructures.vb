@@ -267,7 +267,6 @@ Public Class cEcopathDataStructures
 
     Public PedigreeStatsModelIndex As Single
     Public PedigreeStatsTStar As Single
-    Public PedigreeStatsValid As Boolean
 
     ''' <summary>Total number of taxonomy codes.</summary>
     Public NumTaxon As Integer = 0
@@ -912,13 +911,13 @@ Public Class cEcopathDataStructures
         Dim iNumLevels As Integer = 0
         Dim group As cEcoPathGroupInput = Nothing
         Dim var As eVarNameFlags = eVarNameFlags.NotSet
-        Dim bPedigreeComplete As Boolean = True
+        Dim bPedigreeComplete As Boolean = (Me.NumPedigreeLevels > 0)
 
         For iGroup As Integer = 1 To Me.NumGroups
             ' For all vars
             For iVariable As Integer = 1 To Me.NumPedigreeVariables
 
-                var = Me.PedigreeLevelVarName(iVariable)
+                var = Me.PedigreeVariables(iVariable)
 
                 If Me.PP(iGroup) = 1 And (var = eVarNameFlags.PBInput Or var = eVarNameFlags.QBInput) Then
                     'Skip qb for producers
@@ -942,15 +941,13 @@ Public Class cEcopathDataStructures
             Next iVariable
         Next iGroup
 
-        If (iNumLevels = 0) Then
+        If (iNumLevels = 0 Or Not bPedigreeComplete) Then
             Me.PedigreeStatsModelIndex = cCore.NULL_VALUE
             Me.PedigreeStatsTStar = cCore.NULL_VALUE
-            Me.PedigreeStatsValid = True
         Else
             Dim sVar As Single = CSng(iTotal / iNumLevels)
             Me.PedigreeStatsModelIndex = sVar
             Me.PedigreeStatsTStar = CSng(sVar * Math.Sqrt(Me.NumLiving - 2) / Math.Sqrt(1 - sVar ^ 2))
-            Me.PedigreeStatsValid = bPedigreeComplete
         End If
 
     End Sub

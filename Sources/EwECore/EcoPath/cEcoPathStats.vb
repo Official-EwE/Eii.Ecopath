@@ -127,7 +127,7 @@ Public Class cEcoPathStats
 
                     Case eValueTypes.Sng, eValueTypes.Int
                         If CSng(value.Value) = cCore.NULL_VALUE Then
-                            value.Status = eStatusFlags.Null
+                            value.Status = eStatusFlags.Null Or eStatusFlags.NotEditable
                         Else
                             value.Status = eStatusFlags.NotEditable Or eStatusFlags.ValueComputed
                         End If
