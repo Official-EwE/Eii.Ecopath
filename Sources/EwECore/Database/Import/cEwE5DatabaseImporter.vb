@@ -3904,8 +3904,6 @@ Namespace Database
             drow("GroupID") = iGroupID
             drow("LevelID") = iPedigreeLevelID
             drow("VarName") = varName.ToString()
-            drow("IndexValueEstimated") = 0.0!
-            drow("ConfidenceEstimated") = 0.0!
             writer.AddRow(drow)
 
         End Sub
