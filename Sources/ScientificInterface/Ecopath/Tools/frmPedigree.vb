@@ -70,7 +70,8 @@ Namespace Ecopath.Tools
             Me.m_grid.PedigreeStyleGuide = Me.m_psg
 
             For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
-                Me.m_cmbCategory.Items.Add(Core.PedigreeVariable(iVariable))
+                Dim var As eVarNameFlags = Me.Core.PedigreeVariable(iVariable)
+                Me.m_cmbCategory.Items.Add(cVariableDescriptor.FromVarname(var).Description)
             Next
 
             AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
@@ -151,8 +152,9 @@ Namespace Ecopath.Tools
 
         Private Sub OnCategoryChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbCategory.SelectedIndexChanged
-
-            Me.SelectedVariable = DirectCast(Me.m_cmbCategory.SelectedItem, eVarNameFlags)
+            Dim iIndex As Integer = Me.m_cmbCategory.SelectedIndex
+            Dim var As eVarNameFlags = Me.Core.PedigreeVariable(iIndex + 1)
+            Me.SelectedVariable = var
         End Sub
 
         Private Sub OnRenderStyleChanged(ByVal viz As cPedigreeStyleGuide)
@@ -254,7 +256,7 @@ Namespace Ecopath.Tools
                 ' Update
                 If (Me.m_varname <> eVarNameFlags.NotSet) Then
                     Debug.Assert(Me.Core.IsPedigreeVariableSupported(value), "Pedigree not supported for variable " & Me.m_varname.ToString)
-                    Me.m_cmbCategory.SelectedItem = Me.m_varname
+                    Me.m_cmbCategory.SelectedIndex = Me.Core.PedigreeVariableIndex(Me.m_varname) - 1
                     Me.m_grid.SelectedVariable = Me.m_varname
                 End If
             End Set
