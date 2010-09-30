@@ -156,6 +156,61 @@ Public Class cEcosimMonteCarlo
 
     End Function
 
+    Private Function PedigreeVarToMCIndex(ByVal vn As eVarNameFlags) As Integer
+
+        Select Case vn
+            Case eVarNameFlags.Biomass : Return 1
+            Case eVarNameFlags.PBInput : Return 2
+            Case eVarNameFlags.QBInput : Return 3
+            Case eVarNameFlags.DietComp : Return 4
+            Case eVarNameFlags.TCatchInput : Return 5
+        End Select
+        Return -1
+
+    End Function
+
+    Friend Sub LoadFromPedigree()
+
+        Dim opt As Integer ' Opt = pedigree level
+        Dim varname As eVarNameFlags = eVarNameFlags.NotSet
+        Dim man As cPedigreeManager = Nothing
+        Dim Par As Integer = 0
+
+        For iVar As Integer = 1 To Me.m_epdata.NumPedigreeVariables
+            For i As Integer = 1 To Me.m_epdata.NumGroups
+                ' Read assigned pedigree level for a group (was 'Opt = ReadPedigreeFromDatabase(Par)')
+                opt = Me.m_epdata.Pedigree(i, iVar)
+                If opt > 0 Then ' Non-estimated level
+                    Try
+                        Par = Me.PedigreeVarToMCIndex(varname)
+
+                        Select Case varname
+                            Case eVarNameFlags.Biomass, eVarNameFlags.PBInput, eVarNameFlags.QBInput
+                                'BPct(GrpNo) = value   'not missing
+                                CVpar(Par, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100 / 2
+                                ParLimit(0, Par, i) = 0
+                                ParLimit(1, Par, i) = 0
+
+                            Case 4  'DC
+                                'If PP(GrpNo) < 1 Then
+                                '    For Grp2 = 0 To NumGroups
+                                '        DCPct(GrpNo, Grp2) = value
+                                '    Next
+                                'End If
+
+                            Case 5  'in pedigree this is BA, but here it is EE
+                                '040114VC: Now want to use BA in Ecosim Monte Carlo, so trying this
+                                CVpar(Par, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100 / 2
+                                'BAPct(GrpNo) = value
+                        End Select
+                    Catch ex As Exception
+
+                    End Try
+                End If
+            Next
+        Next
+
+    End Sub
 
     Friend Sub initForRun()
 

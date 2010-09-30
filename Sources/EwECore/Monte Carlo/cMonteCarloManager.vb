@@ -562,6 +562,11 @@ Public Class cMonteCarloManager
 
     End Sub
 
+    Public Sub LoadFromPedigree()
+        Me.m_mc.LoadFromPedigree()
+        Me.LoadGroups()
+    End Sub
+
 #End Region
 
 #Region "Private methods"

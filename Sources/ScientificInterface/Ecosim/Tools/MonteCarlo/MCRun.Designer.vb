@@ -45,7 +45,6 @@ Namespace Ecosim
             Me.m_lblGroups = New System.Windows.Forms.Label
             Me.m_tbpBestTrial = New System.Windows.Forms.TabPage
             Me.m_gridBestFit = New ScientificInterface.Ecosim.MCRunOutputGrid
-            Me.cbPedigree = New System.Windows.Forms.CheckBox
             Me.cbRetainEstimates = New System.Windows.Forms.CheckBox
             Me.cbRetainCurPattern = New System.Windows.Forms.CheckBox
             Me.lblTrial = New System.Windows.Forms.Label
@@ -62,9 +61,10 @@ Namespace Ecosim
             Me.lblValueSSOrg = New System.Windows.Forms.Label
             Me.lblValueTrial = New System.Windows.Forms.Label
             Me.lbSSOrg = New System.Windows.Forms.Label
-            Me.m_hdrInputOpt = New cEwEHeaderLabel
-            Me.m_hdrOutputParam = New cEwEHeaderLabel
+            Me.m_hdrInputOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel
+            Me.m_btnFromBedigree = New System.Windows.Forms.Button
             Me.m_tcOutput.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
             Me.m_tbpBP.SuspendLayout()
@@ -117,6 +117,7 @@ Namespace Ecosim
             '
             'm_gridB
             '
+            Me.m_gridB.AllowBlockSelect = True
             Me.m_gridB.AutoSizeMinHeight = 10
             Me.m_gridB.AutoSizeMinWidth = 10
             Me.m_gridB.AutoStretchColumnsToFitWidth = False
@@ -142,7 +143,6 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridB.TrackPropertySelection = True
             Me.m_gridB.UIContext = Nothing
             '
             'm_tbpBP
@@ -154,6 +154,7 @@ Namespace Ecosim
             '
             'm_gridPB
             '
+            Me.m_gridPB.AllowBlockSelect = True
             Me.m_gridPB.AutoSizeMinHeight = 10
             Me.m_gridPB.AutoSizeMinWidth = 10
             Me.m_gridPB.AutoStretchColumnsToFitWidth = False
@@ -179,7 +180,6 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridPB.TrackPropertySelection = True
             Me.m_gridPB.UIContext = Nothing
             '
             'm_tbpEE
@@ -191,6 +191,7 @@ Namespace Ecosim
             '
             'm_gridEE
             '
+            Me.m_gridEE.AllowBlockSelect = True
             Me.m_gridEE.AutoSizeMinHeight = 10
             Me.m_gridEE.AutoSizeMinWidth = 10
             Me.m_gridEE.AutoStretchColumnsToFitWidth = False
@@ -216,7 +217,6 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridEE.TrackPropertySelection = True
             Me.m_gridEE.UIContext = Nothing
             '
             'm_tbpBA
@@ -228,6 +228,7 @@ Namespace Ecosim
             '
             'm_gridBA
             '
+            Me.m_gridBA.AllowBlockSelect = True
             Me.m_gridBA.AutoSizeMinHeight = 10
             Me.m_gridBA.AutoSizeMinWidth = 10
             Me.m_gridBA.AutoStretchColumnsToFitWidth = False
@@ -253,7 +254,6 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridBA.TrackPropertySelection = True
             Me.m_gridBA.UIContext = Nothing
             '
             'm_tbpBPlot
@@ -322,6 +322,7 @@ Namespace Ecosim
             '
             'm_gridBestFit
             '
+            Me.m_gridBestFit.AllowBlockSelect = True
             Me.m_gridBestFit.AutoSizeMinHeight = 10
             Me.m_gridBestFit.AutoSizeMinWidth = 10
             Me.m_gridBestFit.AutoStretchColumnsToFitWidth = False
@@ -346,14 +347,7 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridBestFit.TrackPropertySelection = True
             Me.m_gridBestFit.UIContext = Nothing
-            '
-            'cbPedigree
-            '
-            resources.ApplyResources(Me.cbPedigree, "cbPedigree")
-            Me.cbPedigree.Name = "cbPedigree"
-            Me.cbPedigree.UseVisualStyleBackColor = True
             '
             'cbRetainEstimates
             '
@@ -468,6 +462,12 @@ Namespace Ecosim
             Me.m_tlpOutputs.Controls.Add(Me.lblValueSSOrg, 4, 0)
             Me.m_tlpOutputs.Name = "m_tlpOutputs"
             '
+            'm_btnFromBedigree
+            '
+            resources.ApplyResources(Me.m_btnFromBedigree, "m_btnFromBedigree")
+            Me.m_btnFromBedigree.Name = "m_btnFromBedigree"
+            Me.m_btnFromBedigree.UseVisualStyleBackColor = True
+            '
             'MCRun
             '
             resources.ApplyResources(Me, "$this")
@@ -476,9 +476,9 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_hdrOutputParam)
             Me.Controls.Add(Me.m_hdrInputOpt)
             Me.Controls.Add(Me.nudNumTrials)
+            Me.Controls.Add(Me.m_btnFromBedigree)
             Me.Controls.Add(Me.btnTS)
             Me.Controls.Add(Me.lblNumTrials)
-            Me.Controls.Add(Me.cbPedigree)
             Me.Controls.Add(Me.m_tcOutput)
             Me.Controls.Add(Me.cbRetainEstimates)
             Me.Controls.Add(Me.btApply)
@@ -508,7 +508,6 @@ Namespace Ecosim
         Private WithEvents lblNumTrials As System.Windows.Forms.Label
         Private WithEvents btnRunTrials As System.Windows.Forms.Button
         Private WithEvents btnStop As System.Windows.Forms.Button
-        Private WithEvents cbPedigree As System.Windows.Forms.CheckBox
         Private WithEvents cbRetainEstimates As System.Windows.Forms.CheckBox
         Private WithEvents cbRetainCurPattern As System.Windows.Forms.CheckBox
         Private WithEvents cbShowBioTraj As System.Windows.Forms.CheckBox
@@ -544,6 +543,7 @@ Namespace Ecosim
         Private WithEvents m_graph As ZedGraphControl
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
         Private WithEvents m_lblGroups As System.Windows.Forms.Label
+        Private WithEvents m_btnFromBedigree As System.Windows.Forms.Button
     End Class
 
 End Namespace

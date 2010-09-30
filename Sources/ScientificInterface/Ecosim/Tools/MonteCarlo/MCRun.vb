@@ -205,6 +205,12 @@ Namespace Ecosim
             End If
         End Sub
 
+        Private Sub m_btnFromBedigree_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnFromBedigree.Click
+            ' Load parms from pedigree
+            Me.m_mcmanager.LoadFromPedigree()
+        End Sub
+
 #End Region ' Events
 
 #Region " MC Run callbacks "
