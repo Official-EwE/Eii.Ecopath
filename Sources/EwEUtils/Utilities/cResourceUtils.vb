@@ -193,6 +193,39 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load a resource string from a .NET assembly.
+        ''' </summary>
+        ''' <param name="strName"></param>
+        ''' <param name="ass"></param>
+        ''' <param name="strNamespace"></param>
+        ''' <param name="culture"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function LoadString(ByVal strName As String, _
+                                          Optional ByVal ass As Assembly = Nothing, _
+                                          Optional ByVal strNamespace As String = "", _
+                                          Optional ByVal culture As CultureInfo = Nothing) As String
+
+            Dim rm As ResourceManager = Nothing
+            Dim strRes As String = ""
+
+            ' Provide defaults
+            If (ass Is Nothing) Then ass = Assembly.GetExecutingAssembly()
+            If (culture Is Nothing) Then culture = Threading.Thread.CurrentThread.CurrentUICulture
+            If (String.IsNullOrEmpty(strNamespace)) Then strNamespace = ass.GetName.Name
+
+            rm = New ResourceManager(strNamespace & ".resources", ass)
+            Try
+                strRes = rm.GetString(strName, culture)
+            Catch ex As Exception
+
+            End Try
+            Return strRes
+
+        End Function
+
     End Class
 
 End Namespace
