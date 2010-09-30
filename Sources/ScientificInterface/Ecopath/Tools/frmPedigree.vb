@@ -176,7 +176,7 @@ Namespace Ecopath.Tools
 
             Dim item As Object = Me.m_lbLevels.SelectedItem
             Dim level As cPedigreeLevel = Nothing
-            Dim iValue As Integer = 0
+            Dim iValue As Integer = cCore.NULL_VALUE
 
             If (item IsNot Nothing) Then
                 If (TypeOf item Is cPedigreeLevelListboxItem) Then
