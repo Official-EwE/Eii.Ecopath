@@ -634,10 +634,8 @@ Imports SourceGrid2.Cells
             Me(iRow, eColumnTypes.LevelIndexValue) = New EwECell(0.0!, GetType(Single))
             Me(iRow, eColumnTypes.LevelIndexValue).Behaviors.Add(Me.EwEEditHandler)
 
-            ewec = New EwECell(0, GetType(Integer))
-            ewec.SuppressZero = True
-            ewec.Behaviors.Add(Me.EwEEditHandler)
-            Me(iRow, eColumnTypes.LevelConfidenceInterval) = ewec
+            Me(iRow, eColumnTypes.LevelConfidenceInterval) = New EwECell(0, GetType(Integer))
+            Me(iRow, eColumnTypes.LevelConfidenceInterval).Behaviors.Add(Me.EwEEditHandler)
 
             ' Status
             vm = New VisualModels.Common()
