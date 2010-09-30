@@ -108,6 +108,29 @@ Namespace Ecopath.Tools
             End Get
         End Property
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Overridden to respond to changes in the number of, or details of,
+        ''' pedigree levels.
+        ''' </summary>
+        ''' <param name="msg">The <see cref="EwECore.cMessage">core message</see> 
+        ''' to respond to.</param>
+        ''' -----------------------------------------------------------------------
+        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+            MyBase.OnCoreMessage(msg)
+
+            If (msg.Source = eCoreComponentType.EcoPath) Then
+                ' #Levels added?
+                If (msg.Type = eMessageType.DataAddedOrRemoved) Then
+                    ' #Yes: repopulate controls reflecting pedigree levels, just in case
+                    Me.UpdatePedigreeLevelsListbox()
+                Else
+                    ' #No: just blink, this will reflect any changes
+                    Me.Invalidate(True)
+                End If
+            End If
+        End Sub
+
 #End Region ' Form overloads
 
 #Region " Events "
@@ -215,20 +238,22 @@ Namespace Ecopath.Tools
             End Get
             Set(ByVal value As eVarNameFlags)
 
-                ' Sanity check
+                ' Sanity checks and optimizations
                 If (Me.UIContext Is Nothing) Then Return
-                ' Optimization
                 If (value = Me.m_varname) Then Return
+
                 ' Clean up
                 If (Me.m_varname <> eVarNameFlags.NotSet) Then
-                    Me.DestroyPedigreeControls()
+                    ' Me.DestroyPedigreeControls()
                 End If
-                ' Remember new
+
+                ' Remember
                 Me.m_varname = value
-                ' Build new
+                Me.UpdatePedigreeLevelsListbox()
+
+                ' Update
                 If (Me.m_varname <> eVarNameFlags.NotSet) Then
                     Debug.Assert(Me.Core.IsPedigreeVariableSupported(value), "Pedigree not supported for variable " & Me.m_varname.ToString)
-                    Me.BuildPedigreeControls()
                     Me.m_cmbCategory.SelectedItem = Me.m_varname
                     Me.m_grid.SelectedVariable = Me.m_varname
                 End If
@@ -269,13 +294,17 @@ Namespace Ecopath.Tools
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Lock the current <see cref="SelectedVariable">selected variable</see>.
+        ''' Popluate controls reflecting available pedigree levels.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub BuildPedigreeControls()
+        Private Sub UpdatePedigreeLevelsListbox()
 
             Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(Me.SelectedVariable)
             Dim lvl As cPedigreeLevel = Nothing
+
+            Me.m_lbLevels.Items.Clear()
+
+            If (man Is Nothing) Then Return
 
             ' Add 'None' item
             Me.m_lbLevels.Items.Add(New cPedigreeLevelListboxItem(Nothing))
@@ -284,15 +313,6 @@ Namespace Ecopath.Tools
                 Me.m_lbLevels.Items.Add(New cPedigreeLevelListboxItem(lvl))
             Next iLevel
 
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Release the current <see cref="SelectedVariable">selected variable</see>.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Private Sub DestroyPedigreeControls()
-            Me.m_lbLevels.Items.Clear()
         End Sub
 
         ''' -----------------------------------------------------------------------
