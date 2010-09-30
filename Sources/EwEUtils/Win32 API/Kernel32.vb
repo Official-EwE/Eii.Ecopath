@@ -45,6 +45,14 @@ Namespace Win32Api
         Public Shared Function GetPrivateProfileInt(ByVal lpAppName As String, ByVal lpKeyName As String, ByVal nDefault As Integer, ByVal lpFileName As String) As Integer
         End Function
 
+        <DllImport("kernel32.dll", SetLastError:=True)> _
+        Public Shared Function LoadLibrary(ByVal lpFileName As String) As System.IntPtr
+        End Function
+
+        <DllImport("kernel32.dll", SetLastError:=True, EntryPoint:="FreeLibrary")> _
+        Public Shared Function FreeLibrary(ByVal hModule As System.IntPtr) As Boolean
+        End Function
+
     End Class
 
 End Namespace ' Win32Api

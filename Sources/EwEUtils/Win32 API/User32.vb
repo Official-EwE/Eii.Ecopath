@@ -131,6 +131,10 @@ Namespace Win32Api
         Public Shared Function GetWindowTextLength(ByVal hwnd As IntPtr) As Integer
         End Function
 
+        <DllImport("User32", SetLastError:=True)> _
+        Public Shared Function LoadString(ByVal hInstance As IntPtr, ByVal uID As UInt32, ByVal lpBuffer As Text.StringBuilder, ByVal nBufferMax As Integer) As Integer
+        End Function
+
     End Class
 
 End Namespace
