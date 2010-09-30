@@ -9,6 +9,7 @@ Imports System.Resources
 Imports System.IO
 Imports System.Drawing
 Imports System.Windows.Forms
+Imports System.Text
 
 #End Region ' Imports
 
@@ -46,9 +47,6 @@ Namespace Utilities
             If String.IsNullOrEmpty(strNamespace) Then
                 strNamespace = ass.GetName().Name.ToString()
             End If
-
-            ' Cheat
-            Dim astrNames As String() = ass.GetManifestResourceNames()
 
             sResource = ass.GetManifestResourceStream(strNamespace & "." & strResourceName)
 
@@ -124,18 +122,75 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a button text from Windows.
+        ''' </summary>
+        ''' <param name="dlr">Dialog result to return the button text for.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function GetButtonText(ByVal dlr As DialogResult) As String
-            ' ToDo: localize this method
+            Dim id As Win32Api.User32.eSystemStringTypes = Win32Api.User32.eSystemStringTypes.Abort
+
             Select Case dlr
-                Case DialogResult.OK : Return "&Ok"
-                Case DialogResult.Yes : Return "&Yes"
-                Case DialogResult.No : Return "&No"
-                Case DialogResult.Ignore : Return "&Ignore"
-                Case DialogResult.Abort : Return "&Abort"
-                Case DialogResult.Cancel : Return "&Cancel"
-                Case DialogResult.Retry : Return "&Retry"
+                Case DialogResult.OK : id = Win32Api.User32.eSystemStringTypes.OK
+                Case DialogResult.Yes : id = Win32Api.User32.eSystemStringTypes.Yes
+                Case DialogResult.No : id = Win32Api.User32.eSystemStringTypes.No
+                Case DialogResult.Ignore : id = Win32Api.User32.eSystemStringTypes.Ignore
+                Case DialogResult.Abort : id = Win32Api.User32.eSystemStringTypes.Abort
+                Case DialogResult.Cancel : id = Win32Api.User32.eSystemStringTypes.Cancel
+                Case DialogResult.Retry : id = Win32Api.User32.eSystemStringTypes.Retry
             End Select
-            Return ""
+            Return LoadString(id)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a system text from Windows.
+        ''' </summary>
+        ''' <param name="id"><see cref="Win32Api.User32.eSystemStringTypes">Windows string ID</see> to obtain.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        <CLSCompliant(False)> _
+        Public Shared Function LoadString(ByVal Id As Win32Api.User32.eSystemStringTypes) As String
+
+            Dim m_hUser32 As IntPtr = Win32Api.Kernel32.LoadLibrary("user32.dll")
+            Dim sb As New StringBuilder(100)
+            Dim n As Int32 = 0
+            Try
+                n = Win32Api.User32.LoadString(m_hUser32, Id, sb, sb.Length)
+            Catch ex As Exception
+                ' Whoah!
+            End Try
+
+            If Not Win32Api.Kernel32.FreeLibrary(m_hUser32) Then
+                Debug.Assert(False, "Woops")
+            End If
+
+            ' Return default?
+            If n = 0 Then
+                Select Case Id
+                    Case Win32Api.User32.eSystemStringTypes.Abort : Return "Abort"
+                    Case Win32Api.User32.eSystemStringTypes.Cancel : Return "Cancel"
+                    Case Win32Api.User32.eSystemStringTypes.Close : Return "Close"
+                    Case Win32Api.User32.eSystemStringTypes.Continue : Return "Continue"
+                    Case Win32Api.User32.eSystemStringTypes.Help : Return "Help"
+                    Case Win32Api.User32.eSystemStringTypes.Repeat : Return "Repeat"
+                    Case Win32Api.User32.eSystemStringTypes.Retry : Return "Retry"
+                    Case Win32Api.User32.eSystemStringTypes.Ignore : Return "Ignore"
+                    Case Win32Api.User32.eSystemStringTypes.No : Return "No"
+                    Case Win32Api.User32.eSystemStringTypes.OK : Return "Ok"
+                    Case Win32Api.User32.eSystemStringTypes.Yes : Return "Yes"
+                    Case Else
+                        Return ""
+                End Select
+            End If
+
+            ' Truncate sb
+            sb.Length = n
+            Return sb.ToString
+
         End Function
 
     End Class

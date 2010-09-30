@@ -15,6 +15,20 @@ Namespace Win32Api
     <CLSCompliant(False)> _
        Public Class User32
 
+        Public Enum eSystemStringTypes As UInteger
+            OK = 800
+            Cancel = 801
+            Abort = 802
+            Retry = 803
+            Ignore = 804
+            Yes = 805
+            No = 806
+            Close = 807
+            Help = 808
+            Repeat = 809    ' ?
+            [Continue] = 810
+        End Enum
+
         ''' <summary>
         ''' The GetAsyncKeyState function determines whether a key is up or down 
         ''' at the time the function is called, and whether the key was pressed 
