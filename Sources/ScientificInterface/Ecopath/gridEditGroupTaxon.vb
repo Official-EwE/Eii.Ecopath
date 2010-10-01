@@ -36,6 +36,7 @@ Public Class gridEditGroupTaxon
         Name
         Proportion
         LastUpdated
+        Source
         Status
     End Enum
 
@@ -546,11 +547,13 @@ Public Class gridEditGroupTaxon
         ' Group index cell
         Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell()
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_NAME)
-        Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell("Proportion")
-        Me(0, eColumnTypes.LastUpdated) = New EwEColumnHeaderCell("Last updated")
+        Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(My.Resources.HEADER_PROPORTION)
+        Me(0, eColumnTypes.Source) = New EwEColumnHeaderCell("")
+        Me(0, eColumnTypes.LastUpdated) = New EwEColumnHeaderCell(My.Resources.HEADER_LASTUPDATED)
         Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
 
         Me.FixedColumns = 1
+        Me.FixedColumnWidths = False
 
     End Sub
 
@@ -583,6 +586,7 @@ Public Class gridEditGroupTaxon
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
         Me.AutoSizeColumnRange(1, Me.ColumnsCount - 1, 1, Me.RowsCount - 1)
+        Me.StretchColumnsToFitWidth()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -636,6 +640,7 @@ Public Class gridEditGroupTaxon
             Me(iRow, eColumnTypes.Hierarchy) = hgcGroup
             Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, grp, eVarNameFlags.Name)
             Me(iRow, eColumnTypes.Proportion) = New EwERowHeaderCell("")
+            Me(iRow, eColumnTypes.Source) = New EwERowHeaderCell("")
             Me(iRow, eColumnTypes.LastUpdated) = New EwERowHeaderCell("")
             Me(iRow, eColumnTypes.Status) = New EwERowHeaderCell("")
 
@@ -653,6 +658,7 @@ Public Class gridEditGroupTaxon
                     Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.Proportion, GetType(Single))
                     Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eColumnTypes.LastUpdated) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                    Me(iRow, eColumnTypes.Source) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 End If
             Next
@@ -675,9 +681,6 @@ Public Class gridEditGroupTaxon
 
         Dim tag As Object = Me(iRow, eColumnTypes.Hierarchy).Tag
         Dim ti As cTaxonInfo = Nothing
-        Dim ri As RowInfo = Nothing
-        Dim aCells() As Cells.ICellVirtual = Nothing
-        Dim pos As SourceGrid2.Position = Nothing
         Dim vm As VisualModels.IVisualModel = Nothing
         Dim dt As Date = Nothing
         Dim strText As String = ""
@@ -685,20 +688,16 @@ Public Class gridEditGroupTaxon
 
         If Not TypeOf tag Is cTaxonInfo Then Return
 
-        'Me.AllowUpdates = False
-
         ti = DirectCast(tag, cTaxonInfo)
-        ri = Me.Rows(iRow)
 
-        aCells = ri.GetCells()
-
-        ' Set name
-        pos = New Position(iRow, eColumnTypes.Name)
-        aCells(eColumnTypes.Name).SetValue(pos, ti.Common)
-
-        ' Set proportion
-        pos = New Position(iRow, eColumnTypes.Proportion)
-        aCells(eColumnTypes.Proportion).SetValue(pos, ti.Proportion)
+        Me(iRow, eColumnTypes.Name).Value = ti.Common
+        Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
+        If (String.IsNullOrEmpty(ti.Source)) Then
+            strText = "entered"
+        Else
+            strText = ti.Source
+        End If
+        Me(iRow, eColumnTypes.Source).Value = strText
 
         ' Lst updated
         If (ti.LastUpdated > 0) Then
@@ -706,7 +705,7 @@ Public Class gridEditGroupTaxon
         Else
             strText = ""
         End If
-        aCells(eColumnTypes.LastUpdated).SetValue(pos, strText)
+        Me(iRow, eColumnTypes.LastUpdated).Value = strText
 
         Select Case ti.Status
             Case eItemStatusTypes.Original
@@ -719,13 +718,9 @@ Public Class gridEditGroupTaxon
                 vm = Me.DefaultVisualRemoved
                 strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
         End Select
+        Me(iRow, eColumnTypes.Status).VisualModel = vm
+        Me(iRow, eColumnTypes.Status).Value = strText
 
-        ' Set modification status
-        pos = New Position(iRow, eColumnTypes.Status)
-        aCells(eColumnTypes.Status).VisualModel = vm
-        aCells(eColumnTypes.Status).SetValue(pos, strText)
-
-        'Me.AllowUpdates = True
 
     End Sub
 
