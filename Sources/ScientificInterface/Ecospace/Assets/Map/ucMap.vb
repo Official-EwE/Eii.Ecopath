@@ -145,10 +145,11 @@ Namespace Ecospace
             If (Me.m_bNeedsUpdate = True) Then
                 Me.m_bNeedsUpdate = False
                 Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.m_basemap.InCol, Me.m_basemap.InRow))
+                Me.BackgroundImage = Me.m_bmp
             End If
 
-            ' Draw only invalidated area
-            e.Graphics.DrawImage(Me.m_bmp, e.ClipRectangle, e.ClipRectangle, GraphicsUnit.Pixel)
+            MyBase.OnPaint(e)
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -487,15 +488,22 @@ Namespace Ecospace
 #Region " Layers "
 
         Public Sub Clear()
+
+            ' Unplug background image
+            If (Me.m_bmp IsNot Nothing) Then
+                Me.BackgroundImage = Nothing
+                Me.m_bmp.Dispose()
+                Me.m_bmp = Nothing
+            End If
+
             ' Clean up layers to prevent dangling event handlers, which in turn keep disposed objects alive.
             Dim alayers As cLayer() = Me.m_layers.ToArray()
-
             For iLayer As Integer = 0 To alayers.Length - 1
                 Me.RemoveLayer(alayers(iLayer))
             Next
-
             ' Should be neatly cleaned out
             Debug.Assert(m_layers.Count = 0)
+
         End Sub
 
         ''' -------------------------------------------------------------------
