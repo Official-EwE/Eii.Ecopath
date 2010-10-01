@@ -25,7 +25,7 @@ Namespace Ecospace.Advection
         ''' <summary>Ecospace data structures to operate on.</summary>
         Private m_data As cEcospaceDataStructures = Nothing
 
-        ''' <summary>Delegate to notify that calculations have started.</summary>
+         ''' <summary>Delegate to notify that calculations have started.</summary>
         Private m_RunStartedDelegate As ComputationStartedDelegate
         ''' <summary>Delegate to notify that calculations have progressed through another iteration.</summary>
         Private m_RunProgressDelegate As ComputationProgressDelegate
@@ -162,6 +162,7 @@ Namespace Ecospace.Advection
             Dim Grav As Single = CSng(9.8 * 60 * 60 * 24 * 365 / (1000 * Me.m_data.CellLength))
             Dim Upwell As Single = CSng(36.5 * Me.m_data.CellLength / 3) 'value of 6000*celllength
             Dim Hstress As Single = Math.Min(0.2!, 1 / Me.m_data.CellLength)
+            Dim bDone As Boolean = False
 
             Try
                 Me.m_RunStartedDelegate.Invoke()
@@ -190,7 +191,8 @@ Namespace Ecospace.Advection
             m_bBadFlow = False
             m_bInterrupted = False
 
-            Do While m_iter < 10000 And m_bInterrupted = False
+            While (m_iter < 10000) And (m_bInterrupted = False) And (Not bDone)
+
                 m_iter = m_iter + 1
                 Differ = 0
 
@@ -268,9 +270,9 @@ Namespace Ecospace.Advection
                     Return False
                 End Try
 
-                If Differ < 0.0000001 * xMax / Grav / Me.m_data.CellLength Then Exit Do
+                bDone = (Differ < 0.0000001 * xMax / Grav / Me.m_data.CellLength)
 
-            Loop
+            End While
 
             'check velocity field
             For i = 1 To Me.m_data.InRow
