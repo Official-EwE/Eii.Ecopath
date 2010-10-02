@@ -57,7 +57,7 @@ Namespace Ecopath
                 ' Get descriptor
                 descr = cVariableDescriptor.FromVarname(var)
                 ' Add to combo
-                Me.m_cmbVariable.Items.Add(descr)
+                Me.m_cmbVariable.Items.Add(descr.Description)
             Next
             ' Select frist
             Me.m_cmbVariable.SelectedIndex = 0
