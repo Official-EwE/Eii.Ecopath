@@ -121,6 +121,8 @@ Public Class cPedigreeManager
 
 #Region " Public update interfaces "
 
+    Private m_bInUpdate As Boolean = False
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Commit pedigree levels to the EwE core.
@@ -131,6 +133,8 @@ Public Class cPedigreeManager
 
         Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim level As cPedigreeLevel = Nothing
+
+        Me.m_bInUpdate = True
 
         Try
             For iLevel As Integer = 0 To Me.NumLevels - 1
@@ -157,6 +161,8 @@ Public Class cPedigreeManager
             Debug.Assert(False, Me.ToString & ".Update() Error: " & ex.Message)
             Return False
         End Try
+
+        Me.m_bInUpdate = False
 
         Return True
 
@@ -297,6 +303,9 @@ Public Class cPedigreeManager
     Friend Function LoadPedigreeLevels() As Boolean
 
         Dim bSucces As Boolean = True
+
+        If (Me.m_bInUpdate) Then Return bSucces
+
         Try
             Dim level As cPedigreeLevel = Nothing
             Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
