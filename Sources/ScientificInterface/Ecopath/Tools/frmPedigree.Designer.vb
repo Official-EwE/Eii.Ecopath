@@ -208,7 +208,7 @@ Namespace Ecopath.Tools
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmPedigree"
             Me.ShowInTaskbar = False
-            Me.Text = "frmPedigree"
+            Me.Text = "Pedigree"
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
