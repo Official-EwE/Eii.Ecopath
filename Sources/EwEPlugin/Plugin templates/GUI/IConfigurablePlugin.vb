@@ -13,7 +13,7 @@ Imports System.Xml
 ''' </summary>
 ''' ===========================================================================
 Public Interface IConfigurablePlugin
-    Inherits IPlugin
+    Inherits IGUIPlugin
 
     Function IsConfigured() As Boolean
     Function GetConfigUI() As Form

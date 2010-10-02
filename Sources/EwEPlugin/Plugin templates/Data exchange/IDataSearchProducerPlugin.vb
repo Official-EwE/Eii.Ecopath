@@ -27,6 +27,14 @@ Namespace Data
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Interrupt a current search.
+        ''' </summary>
+        ''' <returns>True if stopped succesfully.</returns>
+        ''' -------------------------------------------------------------------
+        Function StopSearch() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Queries a data producer if a search is in progress.
         ''' </summary>
         ''' <returns>True if a search is in progress.</returns>
@@ -42,6 +50,14 @@ Namespace Data
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Function SearchResults(ByVal dataTerm As Object, ByRef results As IDataSearchResults) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a search term for an interface to substitute data into.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Function CreateSearchTerm() As ITaxonData
 
     End Interface
 

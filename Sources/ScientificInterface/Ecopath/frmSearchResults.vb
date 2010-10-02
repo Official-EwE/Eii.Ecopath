@@ -21,7 +21,8 @@ Public Class frmSearchResults
         Me.InitializeComponent()
         Me.m_result = result
         Try
-            Me.m_grid.Init(uic, result)
+            Me.m_grid.Init(uic)
+            Me.m_grid.AddResults(result)
         Catch ex As Exception
             ' Wow
         End Try

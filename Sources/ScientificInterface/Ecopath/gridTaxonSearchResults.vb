@@ -29,13 +29,23 @@ Public Class gridTaxonSearchResults
     Public Sub New()
     End Sub
 
-    Public Sub Init(ByVal uic As cUIContext, ByVal results As IDataSearchResults)
+    Public Sub Init(ByVal uic As cUIContext)
 
         Me.UIContext = uic
+        Try
+            Me.m_results = Nothing
+            Me.InitLayout()
+        Catch ex As Exception
+            ' Aargh
+        End Try
+
+    End Sub
+
+    Public Sub AddResults(ByVal results As IDataSearchResults)
 
         Try
             Me.m_results = results
-            Me.InitLayout()
+            Me.RefreshContent()
         Catch ex As Exception
             ' Aargh
         End Try

@@ -2794,7 +2794,7 @@ Public Class AppLauncher
 
     Private Sub OnEditTaxa(ByVal cmd As cCommand) _
         Handles m_cmdEditTaxa.OnInvoke
-        Dim dlg As New EditGroupTaxon(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
+        Dim dlg As New dlgEditGroupTaxon2(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
         dlg.ShowDialog(Me)
     End Sub
 

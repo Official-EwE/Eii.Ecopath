@@ -2762,4 +2762,13 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_ECOPATH_PEDIGREE" xml:space="preserve">
     <value>Ecopath pedigree index</value>
   </data>
+  <data name="HEADER_LASTUPDATED" xml:space="preserve">
+    <value>Last updated</value>
+  </data>
+  <data name="HEADER_PROPORTION" xml:space="preserve">
+    <value>Proportion</value>
+  </data>
+  <data name="HEADER_SOURCE" xml:space="preserve">
+    <value>Source</value>
+  </data>
 </root>
