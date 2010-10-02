@@ -105,9 +105,9 @@ Public Class dlgEditGroupTaxon
 
         Me.InitializeComponent()
         Me.m_uic = uic
+        Me.m_groupStartup = group
         Me.m_gridGroups.UIContext = uic
         Me.m_gridResults.UIContext = uic
-        Me.m_groupStartup = group
 
     End Sub
 
@@ -219,13 +219,10 @@ Public Class dlgEditGroupTaxon
         Handles m_tbSearch.TextChanged
 
         Dim strTerm As String = m_tbSearch.Text
-        If strTerm.Length > 4 Then
-            Dim searchterm As ITaxonData = Me.SelectedDataProducer.CreateSearchTerm()
-            If searchterm IsNot Nothing Then
-                searchterm.Common = strTerm
-                Me.Search(searchterm)
-            End If
+        If strTerm.Length >= 3 Then
+            Me.Search(strTerm)
         End If
+
     End Sub
 
     Private Sub OnConfigure(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -399,7 +396,7 @@ Public Class dlgEditGroupTaxon
 
         ' Config taxon controls
         If (taxon Is Nothing) Then
-            Me.m_tbCommon.Enabled = False : Me.m_tbSearch.Text = ""
+            Me.m_tbCommon.Enabled = False : Me.m_tbCommon.Text = ""
             Me.m_btnSearchCommon.Enabled = False
             Me.m_cmbClass.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
             Me.m_btnSearchClass.Enabled = False
@@ -419,17 +416,17 @@ Public Class dlgEditGroupTaxon
             Me.m_btnUpdate.Enabled = False
         Else
             Me.m_tbCommon.Enabled = True : Me.m_tbCommon.Text = taxon.Common
-            Me.m_btnSearchCommon.Enabled = bCanSearch
+            Me.m_btnSearchCommon.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_tbCommon.Text.Trim))
             Me.m_cmbClass.Enabled = True : Me.m_cmbClass.Text = taxon.Class
-            Me.m_btnSearchClass.Enabled = bCanSearch
+            Me.m_btnSearchClass.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbClass.Text.Trim))
             Me.m_cmbOrder.Enabled = True : Me.m_cmbOrder.Text = taxon.Order
-            Me.m_btnSearchOrder.Enabled = bCanSearch
+            Me.m_btnSearchOrder.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbOrder.Text.Trim))
             Me.m_cmbFamily.Enabled = True : Me.m_cmbFamily.Text = taxon.Family
-            Me.m_btnSearchFamily.Enabled = bCanSearch
+            Me.m_btnSearchFamily.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbFamily.Text.Trim))
             Me.m_cmbGenus.Enabled = True : Me.m_cmbGenus.Text = taxon.Genus
-            Me.m_btnSearchGenus.Enabled = bCanSearch
+            Me.m_btnSearchGenus.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbGenus.Text.Trim))
             Me.m_cmbSpecies.Enabled = True : Me.m_cmbSpecies.Text = taxon.Species
-            Me.m_btnSearchSpecies.Enabled = bCanSearch
+            Me.m_btnSearchSpecies.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbSpecies.Text.Trim))
             Me.m_btnAdd.Enabled = True
             Me.m_btnRemove.Enabled = Not Me.m_gridGroups.IsFlaggedForDeletionRow
             Me.m_btnKeep.Enabled = Me.m_gridGroups.IsFlaggedForDeletionRow
@@ -550,6 +547,7 @@ Public Class dlgEditGroupTaxon
             searchterm.Common = strTerm
             ' Switch to search tab
             Me.m_tcMain.SelectTab(Me.m_tpSearch)
+            Me.m_tbSearch.Text = strTerm
             ' Go Jimmy
             Me.Search(searchterm)
         End If
@@ -614,7 +612,4 @@ Public Class dlgEditGroupTaxon
 
 #End Region ' Internals
 
-    Private Sub m_btnSearchCommon_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSearchCommon.Click
-
-    End Sub
 End Class
