@@ -36,7 +36,6 @@ Public Class gridEditGroupTaxon
         Name
         Proportion
         LastUpdated
-        Source
         Status
     End Enum
 
@@ -548,7 +547,6 @@ Public Class gridEditGroupTaxon
         Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell()
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_NAME)
         Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(My.Resources.HEADER_PROPORTION)
-        Me(0, eColumnTypes.Source) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.LastUpdated) = New EwEColumnHeaderCell(My.Resources.HEADER_LASTUPDATED)
         Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
 
@@ -585,6 +583,9 @@ Public Class gridEditGroupTaxon
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
+        Me.Columns(eColumnTypes.Hierarchy).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+        Me.Columns(eColumnTypes.LastUpdated).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
         Me.AutoSizeColumnRange(1, Me.ColumnsCount - 1, 1, Me.RowsCount - 1)
         Me.StretchColumnsToFitWidth()
     End Sub
@@ -640,7 +641,6 @@ Public Class gridEditGroupTaxon
             Me(iRow, eColumnTypes.Hierarchy) = hgcGroup
             Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, grp, eVarNameFlags.Name)
             Me(iRow, eColumnTypes.Proportion) = New EwERowHeaderCell("")
-            Me(iRow, eColumnTypes.Source) = New EwERowHeaderCell("")
             Me(iRow, eColumnTypes.LastUpdated) = New EwERowHeaderCell("")
             Me(iRow, eColumnTypes.Status) = New EwERowHeaderCell("")
 
@@ -658,7 +658,6 @@ Public Class gridEditGroupTaxon
                     Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.Proportion, GetType(Single))
                     Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eColumnTypes.LastUpdated) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                    Me(iRow, eColumnTypes.Source) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 End If
             Next
@@ -692,14 +691,7 @@ Public Class gridEditGroupTaxon
 
         Me(iRow, eColumnTypes.Name).Value = ti.Common
         Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
-        If (String.IsNullOrEmpty(ti.Source)) Then
-            strText = "entered"
-        Else
-            strText = ti.Source
-        End If
-        Me(iRow, eColumnTypes.Source).Value = strText
-
-        ' Lst updated
+        ' Last updated
         If (ti.LastUpdated > 0) Then
             strText = String.Format("{0:g}", cDateUtils.JulianToDate(ti.LastUpdated))
         Else
@@ -785,7 +777,7 @@ Public Class gridEditGroupTaxon
         End Set
     End Property
 
-    Public ReadOnly Property SelectedGroup() As cEcoPathGroupInput
+    Public Property SelectedGroup() As cEcoPathGroupInput
         Get
             Dim iRow As Integer = Me.SelectedRow
             Dim tag As Object = Nothing
@@ -797,6 +789,13 @@ Public Class gridEditGroupTaxon
             If (TypeOf tag Is cEcoPathGroupInput) Then Return DirectCast(tag, cEcoPathGroupInput)
             Return Nothing
         End Get
+        Set(ByVal value As cEcoPathGroupInput)
+            Dim tag As Object = Nothing
+            For iRow As Integer = 1 To RowsCount - 1
+                tag = Me(iRow, eColumnTypes.Hierarchy).Tag
+                If (TypeOf tag Is cEcoPathGroupInput) Then Me.SelectRow(iRow) : Return
+            Next
+        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -815,9 +814,19 @@ Public Class gridEditGroupTaxon
     ''' Add a taxon for the selected group.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub AddTaxon()
-        Dim ti As New cTaxonInfo(Me.SelectedGroup)
-        Me.m_lTaxonInfo.Add(ti)
+    Public Sub AddTaxon(Optional ByVal taxon As ITaxonData = Nothing)
+
+        Dim ti As cTaxonInfo = Nothing
+        Dim iRow As Integer = Nothing
+
+        If (taxon Is Nothing) Then
+            ti = New cTaxonInfo(Me.SelectedGroup)
+            Me.m_lTaxonInfo.Add(ti)
+        Else
+            ti = New cTaxonInfo(taxon)
+            ti.Group = Me.SelectedGroup.Index
+            Me.m_lTaxonInfo.Add(ti)
+        End If
         Me.UpdateGrid()
         Me.SelectedTaxon = ti
     End Sub
@@ -939,6 +948,26 @@ Public Class gridEditGroupTaxon
     Public Function IsSearchTerm(ByVal taxon As ITaxonData) As Boolean
         Return (Object.ReferenceEquals(taxon, Me.m_tiSearch)) And _
                (Object.ReferenceEquals(Me.SelectedTaxon, Me.m_tiSearchLinked))
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Search the grid for a data row with the same <see cref="ITaxonData.SourceKey">source key</see>.
+    ''' </summary>
+    ''' <param name="taxon">The <see cref="ITaxonData">taxon data</see> to find</param>
+    ''' <returns>A row number, or -1 if no such key was found.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function FindTaxonRow(ByVal taxon As ITaxonData) As Integer
+
+        For iRow As Integer = 1 To Me.RowsCount - 1
+            Dim ti As cTaxonInfo = Me.TaxonInfo(iRow)
+            If ti IsNot Nothing Then
+                If ti.Taxon IsNot Nothing Then
+                    If ti.SourceKey = taxon.SourceKey Then Return iRow
+                End If
+            End If
+        Next
+        Return -1
     End Function
 
 #End Region ' Search

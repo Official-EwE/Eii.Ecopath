@@ -45,7 +45,11 @@ Partial Class dlgEditGroupTaxon2
         Me.m_tcMain = New System.Windows.Forms.TabControl
         Me.m_tpSearch = New System.Windows.Forms.TabPage
         Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults
+        Me.m_lblEngine = New System.Windows.Forms.Label
         Me.m_tpDetails = New System.Windows.Forms.TabPage
+        Me.m_btnSearchGenus = New System.Windows.Forms.Button
+        Me.m_btnSearchSpecies = New System.Windows.Forms.Button
+        Me.m_btnSearchCommon = New System.Windows.Forms.Button
         Me.m_cmbSpecies = New System.Windows.Forms.ComboBox
         Me.m_cmbGenus = New System.Windows.Forms.ComboBox
         Me.m_cmbFamily = New System.Windows.Forms.ComboBox
@@ -58,7 +62,9 @@ Partial Class dlgEditGroupTaxon2
         Me.m_tbCommon = New System.Windows.Forms.TextBox
         Me.m_lbClass = New System.Windows.Forms.Label
         Me.m_lbCommon = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.m_btnSearchFamily = New System.Windows.Forms.Button
+        Me.m_btnSearchOrder = New System.Windows.Forms.Button
+        Me.m_btnSearchClass = New System.Windows.Forms.Button
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
@@ -222,7 +228,7 @@ Partial Class dlgEditGroupTaxon2
         Me.m_tpSearch.Controls.Add(Me.m_cbIncludeExtent)
         Me.m_tpSearch.Controls.Add(Me.m_cmbEngine)
         Me.m_tpSearch.Controls.Add(Me.m_tbSearch)
-        Me.m_tpSearch.Controls.Add(Me.Label1)
+        Me.m_tpSearch.Controls.Add(Me.m_lblEngine)
         Me.m_tpSearch.Controls.Add(Me.m_lbTerm)
         Me.m_tpSearch.Controls.Add(Me.m_btnConfigure)
         resources.ApplyResources(Me.m_tpSearch, "m_tpSearch")
@@ -257,8 +263,19 @@ Partial Class dlgEditGroupTaxon2
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridResults.UIContext = Nothing
         '
+        'm_lblEngine
+        '
+        resources.ApplyResources(Me.m_lblEngine, "m_lblEngine")
+        Me.m_lblEngine.Name = "m_lblEngine"
+        '
         'm_tpDetails
         '
+        Me.m_tpDetails.Controls.Add(Me.m_btnSearchClass)
+        Me.m_tpDetails.Controls.Add(Me.m_btnSearchOrder)
+        Me.m_tpDetails.Controls.Add(Me.m_btnSearchFamily)
+        Me.m_tpDetails.Controls.Add(Me.m_btnSearchGenus)
+        Me.m_tpDetails.Controls.Add(Me.m_btnSearchSpecies)
+        Me.m_tpDetails.Controls.Add(Me.m_btnSearchCommon)
         Me.m_tpDetails.Controls.Add(Me.m_cmbSpecies)
         Me.m_tpDetails.Controls.Add(Me.m_cmbGenus)
         Me.m_tpDetails.Controls.Add(Me.m_cmbFamily)
@@ -274,6 +291,27 @@ Partial Class dlgEditGroupTaxon2
         resources.ApplyResources(Me.m_tpDetails, "m_tpDetails")
         Me.m_tpDetails.Name = "m_tpDetails"
         Me.m_tpDetails.UseVisualStyleBackColor = True
+        '
+        'm_btnSearchGenus
+        '
+        resources.ApplyResources(Me.m_btnSearchGenus, "m_btnSearchGenus")
+        Me.m_btnSearchGenus.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
+        Me.m_btnSearchGenus.Name = "m_btnSearchGenus"
+        Me.m_btnSearchGenus.UseVisualStyleBackColor = True
+        '
+        'm_btnSearchSpecies
+        '
+        resources.ApplyResources(Me.m_btnSearchSpecies, "m_btnSearchSpecies")
+        Me.m_btnSearchSpecies.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
+        Me.m_btnSearchSpecies.Name = "m_btnSearchSpecies"
+        Me.m_btnSearchSpecies.UseVisualStyleBackColor = True
+        '
+        'm_btnSearchCommon
+        '
+        resources.ApplyResources(Me.m_btnSearchCommon, "m_btnSearchCommon")
+        Me.m_btnSearchCommon.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
+        Me.m_btnSearchCommon.Name = "m_btnSearchCommon"
+        Me.m_btnSearchCommon.UseVisualStyleBackColor = True
         '
         'm_cmbSpecies
         '
@@ -345,10 +383,26 @@ Partial Class dlgEditGroupTaxon2
         resources.ApplyResources(Me.m_lbCommon, "m_lbCommon")
         Me.m_lbCommon.Name = "m_lbCommon"
         '
-        'Label1
+        'm_btnSearchFamily
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
+        resources.ApplyResources(Me.m_btnSearchFamily, "m_btnSearchFamily")
+        Me.m_btnSearchFamily.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
+        Me.m_btnSearchFamily.Name = "m_btnSearchFamily"
+        Me.m_btnSearchFamily.UseVisualStyleBackColor = True
+        '
+        'm_btnSearchOrder
+        '
+        resources.ApplyResources(Me.m_btnSearchOrder, "m_btnSearchOrder")
+        Me.m_btnSearchOrder.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
+        Me.m_btnSearchOrder.Name = "m_btnSearchOrder"
+        Me.m_btnSearchOrder.UseVisualStyleBackColor = True
+        '
+        'm_btnSearchClass
+        '
+        resources.ApplyResources(Me.m_btnSearchClass, "m_btnSearchClass")
+        Me.m_btnSearchClass.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
+        Me.m_btnSearchClass.Name = "m_btnSearchClass"
+        Me.m_btnSearchClass.UseVisualStyleBackColor = True
         '
         'dlgEditGroupTaxon2
         '
@@ -403,7 +457,6 @@ Partial Class dlgEditGroupTaxon2
     Private WithEvents m_btnConfigure As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
     Private WithEvents m_cbIncludeExtent As System.Windows.Forms.CheckBox
-    Friend WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_tcMain As System.Windows.Forms.TabControl
     Friend WithEvents m_tpSearch As System.Windows.Forms.TabPage
     Friend WithEvents m_tpDetails As System.Windows.Forms.TabPage
@@ -420,6 +473,13 @@ Partial Class dlgEditGroupTaxon2
     Private WithEvents m_tbCommon As System.Windows.Forms.TextBox
     Private WithEvents m_lbClass As System.Windows.Forms.Label
     Private WithEvents m_lbCommon As System.Windows.Forms.Label
-    Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_lblEngine As System.Windows.Forms.Label
+    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
+    Private WithEvents m_btnSearchCommon As System.Windows.Forms.Button
+    Private WithEvents m_btnSearchSpecies As System.Windows.Forms.Button
+    Private WithEvents m_btnSearchGenus As System.Windows.Forms.Button
+    Private WithEvents m_btnSearchFamily As System.Windows.Forms.Button
+    Private WithEvents m_btnSearchClass As System.Windows.Forms.Button
+    Private WithEvents m_btnSearchOrder As System.Windows.Forms.Button
 
 End Class

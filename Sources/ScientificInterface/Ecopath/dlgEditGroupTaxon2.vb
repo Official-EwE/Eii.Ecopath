@@ -25,6 +25,10 @@ Public Class dlgEditGroupTaxon2
     Private m_tds As cTaxonDataSource = Nothing
     ''' <summary>Looped update prevention flag.</summary>
     Private m_bInUpdate As Boolean = False
+    ''' <summary>Flag stating whether search engines were found.</summary>
+    Private m_bHasSearchEngines As Boolean = False
+    ''' <summary>Start up group.</summary>
+    Private m_groupStartup As cEcoPathGroupInput = Nothing
 
 #End Region ' Private vars
 
@@ -51,7 +55,7 @@ Public Class dlgEditGroupTaxon2
 
         Public Overrides Function ToString() As String
             If Me.m_prod IsNot Nothing Then Return Me.m_prod.Name
-            Return ""
+            Return "No search engines installed"
         End Function
 
     End Class
@@ -97,12 +101,13 @@ Public Class dlgEditGroupTaxon2
     ''' <param name="group">A group to select, if any.</param>
     ''' -------------------------------------------------------------------
     Public Sub New(ByVal uic As cUIContext, _
-                          Optional ByVal group As cEcoPathGroupInput = Nothing)
+                   Optional ByVal group As cEcoPathGroupInput = Nothing)
 
         Me.InitializeComponent()
-
         Me.m_uic = uic
         Me.m_gridGroups.UIContext = uic
+        Me.m_gridResults.UIContext = uic
+        Me.m_groupStartup = group
 
     End Sub
 
@@ -119,15 +124,28 @@ Public Class dlgEditGroupTaxon2
         Me.PopulateTaxonDataProducerControls()
         Me.UpdateControls()
 
+        ' Connect to group grid selection changes
         AddHandler Me.m_gridGroups.OnSelectionChanged, AddressOf OnRowSelectionChanged
+        ' Connect to search result changes
         AddHandler Me.m_tds.OnTaxonSearchResults, AddressOf OnProcessResults
+        ' Connect to result selection changes
+        AddHandler Me.m_gridResults.OnResultSelected, AddressOf OnResultSelected
 
+        If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcoPathGroupInputs(1)
+        Me.m_gridGroups.SelectedGroup = Me.m_groupStartup
+
+        If Me.m_bHasSearchEngines Then
+            Me.m_tcMain.SelectTab(Me.m_tpSearch)
+        Else
+            Me.m_tcMain.SelectTab(Me.m_tpDetails)
+        End If
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         RemoveHandler Me.m_gridGroups.OnSelectionChanged, AddressOf OnRowSelectionChanged
         RemoveHandler Me.m_tds.OnTaxonSearchResults, AddressOf OnProcessResults
+        RemoveHandler Me.m_gridResults.OnResultSelected, AddressOf OnResultSelected
 
         MyBase.OnFormClosed(e)
     End Sub
@@ -138,6 +156,14 @@ Public Class dlgEditGroupTaxon2
 
     Private Sub OnRowSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
         Me.UpdateControls()
+    End Sub
+
+    Private Sub OnResultSelected(ByVal result As Object)
+
+        If (result Is Nothing) Then Return
+        If Not (TypeOf result Is ITaxonData) Then Return
+        Me.m_gridGroups.AddTaxon(DirectCast(result, ITaxonData))
+
     End Sub
 
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -197,7 +223,7 @@ Public Class dlgEditGroupTaxon2
             Dim searchterm As ITaxonData = Me.SelectedDataProducer.CreateSearchTerm()
             If searchterm IsNot Nothing Then
                 searchterm.Common = strTerm
-                Me.SearchTaxon(searchterm)
+                Me.Search(searchterm)
             End If
         End If
     End Sub
@@ -226,6 +252,11 @@ Public Class dlgEditGroupTaxon2
 
     End Sub
 
+    Private Sub OnSearchCommon(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSearchCommon.Click
+        Me.Search(Me.m_tbCommon.Text)
+    End Sub
+
     Private Sub OnClassChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_cmbClass.TextChanged
 
@@ -235,6 +266,11 @@ Public Class dlgEditGroupTaxon2
         Me.m_gridGroups.SelectedTaxon.Class = Me.m_cmbClass.Text
         Me.m_gridGroups.UpdateSelectedTaxonRow()
 
+    End Sub
+
+    Private Sub OnSearchClass(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSearchClass.Click
+        Me.Search(Me.m_cmbClass.Text)
     End Sub
 
     Private Sub OnOrderChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -248,6 +284,11 @@ Public Class dlgEditGroupTaxon2
 
     End Sub
 
+    Private Sub OnSearchOrder(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSearchOrder.Click
+        Me.Search(Me.m_cmbOrder.Text)
+    End Sub
+
     Private Sub OnFamilyChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_cmbFamily.TextChanged
 
@@ -257,6 +298,11 @@ Public Class dlgEditGroupTaxon2
         Me.m_gridGroups.SelectedTaxon.Family = Me.m_cmbFamily.Text
         Me.m_gridGroups.UpdateSelectedTaxonRow()
 
+    End Sub
+
+    Private Sub OnSearchFamily(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSearchFamily.Click
+        Me.Search(Me.m_cmbFamily.Text)
     End Sub
 
     Private Sub OnGenusChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -270,6 +316,11 @@ Public Class dlgEditGroupTaxon2
 
     End Sub
 
+    Private Sub OnSearchGenus(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSearchGenus.Click
+        Me.Search(Me.m_cmbGenus.Text)
+    End Sub
+
     Private Sub OnSpeciesChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_cmbSpecies.TextChanged
 
@@ -281,6 +332,11 @@ Public Class dlgEditGroupTaxon2
 
     End Sub
 
+    Private Sub OnSearchSpecies(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSearchSpecies.Click
+        Me.Search(Me.m_cmbSpecies.Text)
+    End Sub
+
     Private m_wait As cWaitForSearch = Nothing
 
     Private Sub OnProcessResults(ByVal results As IDataSearchResults)
@@ -288,10 +344,7 @@ Public Class dlgEditGroupTaxon2
         ' Ignore search terms of different data types
         If Not TypeOf results.SearchTerm Is ITaxonData Then Return
 
-        '' Is a search result that we fired ourselves?
-        'If Not Me.m_gridGroups.IsSearchTerm(DirectCast(results.SearchTerm, ITaxonData)) Then Return
-
-        ' ToDo: process results async
+        ' Process results async
         Me.m_wait = New cWaitForSearch(Me, Me.SelectedDataProducer, results)
 
         ' Handle this in a separate thread to allow the search to complete without stalling
@@ -311,29 +364,6 @@ Public Class dlgEditGroupTaxon2
 
         Me.m_gridResults.AddResults(results)
 
-        'Select Case results.SearchResults.Count
-        '    Case 0
-        '        Dim msg As New cMessage(My.Resources.PROMPT_SEARCH_NORESULTS, _
-        '                                eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
-        '        Me.m_uic.Core.Messages.SendMessage(msg)
-
-        '    Case 1
-        '        ' Apply the first result
-        '        Me.ApplyTaxon(DirectCast(results.SearchResults(0), ITaxonData))
-
-        '    Case Else
-        '        ' Show selected results
-        '        Dim dlg As New frmSearchResults(Me.m_uic, results)
-        '        If dlg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-        '            Select Case dlg.Choice
-        '                Case frmSearchResults.eChoiceTypes.UseSelected
-        '                    Me.ApplyTaxon(DirectCast(dlg.SelectedResult, ITaxonData))
-        '                Case frmSearchResults.eChoiceTypes.SearchWithSelected
-        '                    Me.SearchTaxon(DirectCast(dlg.SelectedResult, ITaxonData))
-        '            End Select
-        '        End If
-        'End Select
-
     End Sub
 
 #End Region ' Events
@@ -344,32 +374,43 @@ Public Class dlgEditGroupTaxon2
 
         Dim taxon As ITaxonData = Me.m_gridGroups.SelectedTaxon
         Dim group As cEcoPathGroupInput = Me.m_gridGroups.SelectedGroup
-        Dim bHasEngines As Boolean = (Me.m_cmbEngine.Items.Count > 0)
         Dim bCanSearch As Boolean = False
         Dim bCanConfig As Boolean = False
 
         Me.m_bInUpdate = True
 
-        Dim prod As IDataProducerPlugin = Me.SelectedDataProducer
-        If prod IsNot Nothing Then
-            bCanSearch = (TypeOf prod Is IDataSearchProducerPlugin) And (prod.IsDataAvailable(GetType(ITaxonData)))
-            If TypeOf prod Is IConfigurablePlugin Then
-                bCanSearch = bCanSearch And DirectCast(prod, IConfigurablePlugin).IsConfigured
+        If (Me.m_bHasSearchEngines) Then
+            Dim prod As IDataProducerPlugin = Me.SelectedDataProducer
+            If prod IsNot Nothing Then
+                bCanSearch = (TypeOf prod Is IDataSearchProducerPlugin) And (prod.IsDataAvailable(GetType(ITaxonData)))
+                If TypeOf prod Is IConfigurablePlugin Then
+                    bCanSearch = bCanSearch And DirectCast(prod, IConfigurablePlugin).IsConfigured
+                End If
+                bCanConfig = (TypeOf prod Is IConfigurablePlugin)
             End If
-            bCanConfig = (TypeOf prod Is IConfigurablePlugin)
         End If
 
-        Me.m_cmbEngine.Enabled = bHasEngines
+        ' Config search controls
+        Me.m_cmbEngine.Enabled = Me.m_bHasSearchEngines
         Me.m_btnConfigure.Enabled = bCanConfig
         Me.m_tbSearch.Enabled = bCanSearch
+        Me.m_cbIncludeExtent.Enabled = bCanSearch
+        Me.m_gridResults.Enabled = bCanSearch
 
+        ' Config taxon controls
         If (taxon Is Nothing) Then
             Me.m_tbCommon.Enabled = False : Me.m_tbSearch.Text = ""
+            Me.m_btnSearchCommon.Enabled = False
             Me.m_cmbClass.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
+            Me.m_btnSearchClass.Enabled = False
             Me.m_cmbOrder.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
+            Me.m_btnSearchOrder.Enabled = False
             Me.m_cmbFamily.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
+            Me.m_btnSearchFamily.Enabled = False
             Me.m_cmbGenus.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
+            Me.m_btnSearchGenus.Enabled = False
             Me.m_cmbSpecies.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
+            Me.m_btnSearchSpecies.Enabled = False
             Me.m_btnAdd.Enabled = (group IsNot Nothing)
             Me.m_btnRemove.Enabled = False
             Me.m_btnKeep.Enabled = False
@@ -377,12 +418,18 @@ Public Class dlgEditGroupTaxon2
             Me.m_btnMoveDown.Enabled = False
             Me.m_btnUpdate.Enabled = False
         Else
-            Me.m_tbCommon.Enabled = True : Me.m_tbSearch.Text = taxon.Common
+            Me.m_tbCommon.Enabled = True : Me.m_tbCommon.Text = taxon.Common
+            Me.m_btnSearchCommon.Enabled = bCanSearch
             Me.m_cmbClass.Enabled = True : Me.m_cmbClass.Text = taxon.Class
+            Me.m_btnSearchClass.Enabled = bCanSearch
             Me.m_cmbOrder.Enabled = True : Me.m_cmbOrder.Text = taxon.Order
+            Me.m_btnSearchOrder.Enabled = bCanSearch
             Me.m_cmbFamily.Enabled = True : Me.m_cmbFamily.Text = taxon.Family
+            Me.m_btnSearchFamily.Enabled = bCanSearch
             Me.m_cmbGenus.Enabled = True : Me.m_cmbGenus.Text = taxon.Genus
+            Me.m_btnSearchGenus.Enabled = bCanSearch
             Me.m_cmbSpecies.Enabled = True : Me.m_cmbSpecies.Text = taxon.Species
+            Me.m_btnSearchSpecies.Enabled = bCanSearch
             Me.m_btnAdd.Enabled = True
             Me.m_btnRemove.Enabled = Not Me.m_gridGroups.IsFlaggedForDeletionRow
             Me.m_btnKeep.Enabled = Me.m_gridGroups.IsFlaggedForDeletionRow
@@ -415,9 +462,9 @@ Public Class dlgEditGroupTaxon2
         Dim pi As IPlugin = Nothing
         Dim dpi As IDataSearchProducerPlugin = Nothing
         Dim coll As ICollection(Of IPlugin) = Nothing
-        Dim bHasItems As Boolean = False
 
         Me.m_cmbEngine.Items.Clear()
+        Me.m_bHasSearchEngines = False
 
         If (pm Is Nothing) Then Return
 
@@ -428,9 +475,13 @@ Public Class dlgEditGroupTaxon2
             dpi = DirectCast(pi, IDataSearchProducerPlugin)
             If (dpi.IsDataAvailable(GetType(ITaxonData))) Then
                 Me.m_cmbEngine.Items.Add(New cDataProducerSearchItem(dpi))
-                bHasItems = True
+                Me.m_bHasSearchEngines = True
             End If
         Next
+
+        If Not Me.m_bHasSearchEngines Then
+            Me.m_cmbEngine.Items.Add(New cDataProducerSearchItem(Nothing))
+        End If
 
         Me.m_cmbEngine.SelectedIndex = 0
 
@@ -483,12 +534,41 @@ Public Class dlgEditGroupTaxon2
         Me.UpdateControls()
     End Sub
 
-    Private Sub SearchTaxon(ByVal taxon As ITaxonData)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Search for a textual search term.
+    ''' </summary>
+    ''' <param name="strTerm">The text to search for.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub Search(ByVal strTerm As String)
+
+        ' Create search term
+        Dim searchterm As ITaxonData = Me.SelectedDataProducer.CreateSearchTerm()
+        ' Successful?
+        If searchterm IsNot Nothing Then
+            '#Yes: populate term
+            searchterm.Common = strTerm
+            ' Switch to search tab
+            Me.m_tcMain.SelectTab(Me.m_tpSearch)
+            ' Go Jimmy
+            Me.Search(searchterm)
+        End If
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Search for a <see cref="ITaxonData">taxonomoy data</see> search term.
+    ''' </summary>
+    ''' <param name="term">The <see cref="ITaxonData">taxonomoy data</see> 
+    ''' search term to search for.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub Search(ByVal term As ITaxonData)
 
         If (Me.SelectedDataProducer Is Nothing) Then Return
 
         Try
-            Dim taxonSearch As ITaxonData = Me.m_gridGroups.GetSearchTerm(taxon)
+            Dim taxonSearch As ITaxonData = Me.m_gridGroups.GetSearchTerm(term)
 
             ' Clear search key to initiate a full search
             taxonSearch.SourceKey = ""
@@ -515,16 +595,16 @@ Public Class dlgEditGroupTaxon2
 
     End Sub
 
-    Private Sub RefreshTaxon(ByVal taxon As ITaxonData)
+    Private Sub UpdateRecord(ByVal term As ITaxonData)
 
         If (Me.SelectedDataProducer Is Nothing) Then Return
 
         Try
             ' Has a search key for this specific producer?
-            If (Not String.IsNullOrEmpty(taxon.SourceKey)) And _
-               (String.Compare(taxon.Source, Me.SelectedDataProducer.Name, True) = 0) Then
+            If (Not String.IsNullOrEmpty(term.SourceKey)) And _
+               (String.Compare(term.Source, Me.SelectedDataProducer.Name, True) = 0) Then
                 ' #Yes: Start searching (expected to return only one result)
-                Me.SelectedDataProducer.StartSearch(Me.m_gridGroups.GetSearchTerm(taxon))
+                Me.SelectedDataProducer.StartSearch(Me.m_gridGroups.GetSearchTerm(term))
             End If
         Catch ex As Exception
             ' Woops
@@ -534,4 +614,7 @@ Public Class dlgEditGroupTaxon2
 
 #End Region ' Internals
 
+    Private Sub m_btnSearchCommon_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSearchCommon.Click
+
+    End Sub
 End Class

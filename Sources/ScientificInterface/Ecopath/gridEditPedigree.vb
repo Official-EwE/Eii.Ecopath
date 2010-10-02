@@ -213,10 +213,12 @@ Imports SourceGrid2.Cells
 
             Dim level As cPedigreeLevel = Nothing
             Dim bUpdated As Boolean = False
+            Dim bColorsChanged As Boolean = False
             Dim bSuccess As Boolean = True
 
             ' Levels may have been reloaded
             If (Me.m_bLevelsChanged) Then
+
                 For Each lvlInfo As cPedigreeLevelInfo In Me.m_lfiLevels
                     If lvlInfo.IsChanged() Then
                         bUpdated = False
@@ -224,11 +226,12 @@ Imports SourceGrid2.Cells
                         For iLevel As Integer = 0 To Me.m_man.NumLevels - 1
                             level = Me.m_man.Level(iLevel)
                             If level.DBID = lvlInfo.Level.DBID Then
-                                level.Name = lvlInfo.Name
-                                level.PoolColor = lvlInfo.PoolColor
-                                level.Description = lvlInfo.Description
-                                level.IndexValue = lvlInfo.IndexValue
-                                level.ConfidenceInterval = lvlInfo.ConfidenceInterval
+                                ' Only commint changes to prevent unnecessary updates
+                                If level.Name <> lvlInfo.Name Then level.Name = lvlInfo.Name
+                                If level.PoolColor <> lvlInfo.PoolColor Then level.PoolColor = lvlInfo.PoolColor
+                                If level.Description <> lvlInfo.Description Then level.Description = lvlInfo.Description
+                                If level.IndexValue <> lvlInfo.IndexValue Then level.IndexValue = lvlInfo.IndexValue
+                                If level.ConfidenceInterval <> lvlInfo.ConfidenceInterval Then level.ConfidenceInterval = lvlInfo.ConfidenceInterval
                                 bUpdated = True
                             End If
                         Next
@@ -1141,9 +1144,13 @@ Imports SourceGrid2.Cells
 
         If bLevelsChanged Then
 
+            Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
+
             For Each manInfo As cPedigreeManagerInfo In Me.m_dictConfigs.Values
                 bSucces = bSucces And manInfo.ApplyLevelChanges()
             Next
+
+            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
 
         End If
 

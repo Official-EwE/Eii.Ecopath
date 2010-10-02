@@ -52,6 +52,8 @@ Public Class gridTaxonSearchResults
 
     End Sub
 
+    Public Event OnResultSelected(ByVal result As Object)
+
     Public Function SelectedResult() As Object
 
         Dim iRow As Integer = Me.SelectedRow()
@@ -85,10 +87,6 @@ Public Class gridTaxonSearchResults
 
     End Sub
 
-    Protected Overrides Sub FinishStyle()
-        MyBase.FinishStyle()
-    End Sub
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' 
@@ -103,6 +101,29 @@ Public Class gridTaxonSearchResults
             Me.AddResult(DirectCast(Me.m_results.SearchResults(iRow), ITaxonData))
         Next
 
+    End Sub
+
+    Protected Overrides Sub FinishStyle()
+        MyBase.FinishStyle()
+
+        For i As Integer = 0 To Me.ColumnsCount - 1
+            Select Case i
+                Case eColumnTypes.Index ' nOP
+                Case eColumnTypes.Common : Me.Columns(i).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+                Case Else
+                    Me.Columns(i).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+                    Me.AutoSizeColumn(i, 100)
+            End Select
+        Next
+        Me.StretchColumnsToFitWidth()
+    End Sub
+
+    Protected Overrides Sub OnCellDoubleClicked(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual)
+        Try
+            RaiseEvent OnResultSelected(Me.SelectedResult)
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -134,6 +155,7 @@ Public Class gridTaxonSearchResults
         End Select
 
         cell = New EwECell(strValue, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+        cell.Behaviors.Add(EwEEditHandler)
         If (col = eColumnTypes.Index) Then cell.Tag = result
         Me(iRow, col) = cell
 
