@@ -583,11 +583,16 @@ Public Class gridEditGroupTaxon
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
-        Me.Columns(eColumnTypes.Hierarchy).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-        Me.Columns(eColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
-        Me.Columns(eColumnTypes.LastUpdated).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-        Me.AutoSizeColumnRange(1, Me.ColumnsCount - 1, 1, Me.RowsCount - 1)
-        Me.StretchColumnsToFitWidth()
+
+        For iCol As Integer = 1 To Me.ColumnsCount - 1
+            Select Case DirectCast(iCol, eColumnTypes)
+                Case eColumnTypes.Hierarchy
+                Case Else
+                    Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+                    Me.AutoSizeColumn(iCol, 100)
+            End Select
+        Next
+
     End Sub
 
     ''' -----------------------------------------------------------------------

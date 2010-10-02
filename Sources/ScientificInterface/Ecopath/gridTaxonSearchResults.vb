@@ -108,14 +108,13 @@ Public Class gridTaxonSearchResults
 
         For i As Integer = 0 To Me.ColumnsCount - 1
             Select Case i
-                Case eColumnTypes.Index ' nOP
-                Case eColumnTypes.Common : Me.Columns(i).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+                Case eColumnTypes.Index ' Nop
                 Case Else
                     Me.Columns(i).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
                     Me.AutoSizeColumn(i, 100)
             End Select
         Next
-        Me.StretchColumnsToFitWidth()
+
     End Sub
 
     Protected Overrides Sub OnCellDoubleClicked(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual)
