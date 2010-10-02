@@ -861,15 +861,12 @@
       <DependentUpon>ucHatchSelect.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\dlgEditGroupTaxon2.resx">
-      <DependentUpon>dlgEditGroupTaxon2.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\dlgEditGroupTaxon.resx">
+      <DependentUpon>dlgEditGroupTaxon.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\EditPedigree.resx">
       <DependentUpon>EditPedigree.vb</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\EditGroupTaxon.resx">
-      <DependentUpon>EditGroupTaxon.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\frmModelDescription.resx">
       <SubType>Designer</SubType>
@@ -1090,10 +1087,10 @@
     <Compile Include="Controls\VisualStyleEditors\ucHatchSelect.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecopath\dlgEditGroupTaxon2.Designer.vb">
-      <DependentUpon>dlgEditGroupTaxon2.vb</DependentUpon>
+    <Compile Include="Ecopath\dlgEditGroupTaxon.Designer.vb">
+      <DependentUpon>dlgEditGroupTaxon.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\dlgEditGroupTaxon2.vb">
+    <Compile Include="Ecopath\dlgEditGroupTaxon.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\gridEditPedigree.vb">
@@ -1103,12 +1100,6 @@
       <DependentUpon>EditPedigree.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecopath\EditPedigree.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecopath\EditGroupTaxon.Designer.vb">
-      <DependentUpon>EditGroupTaxon.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecopath\EditGroupTaxon.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\frmSearchResults.Designer.vb">

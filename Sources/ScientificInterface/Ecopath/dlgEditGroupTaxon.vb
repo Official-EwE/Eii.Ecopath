@@ -15,7 +15,7 @@ Imports EwECore.ExternalData
 ''' Dialog class implementing the Edit Group Taxon interface.
 ''' </summary>
 ''' ===========================================================================
-Public Class dlgEditGroupTaxon2
+Public Class dlgEditGroupTaxon
 
 #Region " Private vars "
 
@@ -68,13 +68,13 @@ Public Class dlgEditGroupTaxon2
     Private Class cWaitForSearch
 
         ''' <summary>UI to notify when search complete.</summary>
-        Private m_ui As dlgEditGroupTaxon2 = Nothing
+        Private m_ui As dlgEditGroupTaxon = Nothing
         ''' <summary>Data producer that is searching.</summary>
         Private m_producer As IDataSearchProducerPlugin = Nothing
         ''' <summary>Search results.</summary>
         Private m_results As IDataSearchResults = Nothing
 
-        Public Sub New(ByVal form As dlgEditGroupTaxon2, ByVal prod As IDataSearchProducerPlugin, ByVal res As IDataSearchResults)
+        Public Sub New(ByVal form As dlgEditGroupTaxon, ByVal prod As IDataSearchProducerPlugin, ByVal res As IDataSearchResults)
             Me.m_ui = form
             Me.m_producer = prod
             Me.m_results = res
