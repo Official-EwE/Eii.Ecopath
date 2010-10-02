@@ -58,7 +58,7 @@ Namespace Style
         ''' <summary>Color ramp for obtaining fleet colors</summary>
         Private m_colorrampFleets As New ARGBColorRamp(New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#})
         ''' <summary>Color ramp for obtaining pedigree colors</summary>
-        Private m_colorrampPedigree As New ARGBColorRamp(New Color() {Color.FromArgb(255, 210, 255, 210), Color.FromArgb(255, 80, 200, 80), Color.FromArgb(255, 0, 100, 0)}, New Double() {0.0#, 0.6#, 0.4#})
+        Private m_colorrampPedigree As New ARGBColorRamp(New Color() {Color.FromArgb(255, 210, 210, 255), Color.FromArgb(255, 80, 80, 200), Color.FromArgb(255, 0, 0, 130)}, New Double() {0.0#, 0.6#, 0.4#})
         ''' <summary>Start offset for colour ramp.</summary>
         Private Const c_sRampOffsetStart As Single = 0.15!
         ''' <summary>End offset for colour ramp.</summary>
