@@ -144,7 +144,7 @@ Namespace Controls.EwEGrid
             ''' -------------------------------------------------------------------
             Public Sub OnDoubleClick(ByVal e As SourceGrid2.PositionEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnDoubleClick
-                ' NOP
+                Me.m_grid.OnCellDoubleClicked(e.Position, e.Cell)
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -677,15 +677,67 @@ Namespace Controls.EwEGrid
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' <see cref="EwEEditHandler">EwEEditHandler</see> callback for responding
+        ''' to user cell value edits.
+        ''' </summary>
+        ''' <param name="p">Position that was affected.</param>
+        ''' <param name="cell">Cell that was edited.</param>
+        ''' <remarks>
+        ''' Note that this method will only be called if a cell has been given a 
+        ''' <see cref="EwEEditHandler">EwEEditHandler</see> behaviour model.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Protected Overridable Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
             Return True
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' <see cref="EwEEditHandler">EwEEditHandler</see> callback for responding
+        ''' to user cell value changes.
+        ''' </summary>
+        ''' <param name="p">Position that was affected.</param>
+        ''' <param name="cell">Cell that has received a new value.</param>
+        ''' <remarks>
+        ''' Note that this method will only be called if a cell has been given a 
+        ''' <see cref="EwEEditHandler">EwEEditHandler</see> behaviour model.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Protected Overridable Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
             Return True
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' <see cref="EwEEditHandler">EwEEditHandler</see> callback for responding
+        ''' to user clicks on a cell.
+        ''' </summary>
+        ''' <param name="p">Position that was affected.</param>
+        ''' <param name="cell">Cell that was clicked.</param>
+        ''' <remarks>
+        ''' Note that this method will only be called if a cell has been given a 
+        ''' <see cref="EwEEditHandler">EwEEditHandler</see> behaviour model.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Protected Overridable Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+            ' NOP
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' <see cref="EwEEditHandler">EwEEditHandler</see> callback for responding
+        ''' to user double-clicks on a cell.
+        ''' </summary>
+        ''' <param name="p">Position that was affected.</param>
+        ''' <param name="cell">Cell that was double-clicked.</param>
+        ''' <remarks>
+        ''' Note that this method will only be called if a cell has been given a 
+        ''' <see cref="EwEEditHandler">EwEEditHandler</see> behaviour model.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub OnCellDoubleClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
             ' NOP
         End Sub
 
