@@ -3740,6 +3740,7 @@ Public Class AppLauncher
 
     Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
         Me.UpdateModelControls()
+        Me.PopulateMRUDropdown()
         Me.PopulateScenarioDropdowns()
     End Sub
 
