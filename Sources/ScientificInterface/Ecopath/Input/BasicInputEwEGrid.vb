@@ -181,7 +181,7 @@ Namespace Ecopath.Input
 
         End Sub
 
-        Friend Sub OnCellDoubleClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+        Protected Overrides Sub OnCellDoubleClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
             Dim dlg As EditMultiStanza = Nothing
             Dim prop As cProperty = Nothing
             Dim group As cEcoPathGroupInput = Nothing
