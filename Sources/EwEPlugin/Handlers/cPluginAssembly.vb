@@ -113,39 +113,20 @@ Public Class cPluginAssembly
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Assembly enabled state changed delegate.
-    ''' </summary>
-    ''' <param name="pa">The Plugin assembly that changed enabled state.</param>
-    ''' <param name="bEnabled">The new enabled state.</param>
-    ''' -----------------------------------------------------------------------
-    Public Delegate Sub AssemblyEnabledHandler(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Assembly enabled state changed event.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Event AssemblyEnabled As AssemblyEnabledHandler
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Get/Set assembly enabled state.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Enabled() As Boolean
         Get
-            Return Me.m_bEnabled
+            Return Me.m_bEnabled Or Me.AlwaysEnabled()
         End Get
         Set(ByVal bEnabled As Boolean)
             ' Abort when enabled state will not change
             If (Me.m_bEnabled = bEnabled) Then Return
             ' Abort when trying to disable an AlwaysEnabled plugin
             If (Me.AlwaysEnabled() And bEnabled = False) Then Return
-
             ' Update enabled state
             Me.m_bEnabled = bEnabled
-            ' Notify the world (at least, the probably minute portion of the world interested in hearing this, phah!)
-            RaiseEvent AssemblyEnabled(Me, bEnabled)
         End Set
     End Property
 

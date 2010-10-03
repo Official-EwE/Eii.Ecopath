@@ -870,74 +870,17 @@ Public Class AppLauncher
 
     Private Sub LoadPlugins()
 
-        Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
         Dim strMessage As String = ""
         Dim reply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.OK
         Dim bNeedReply As Boolean = False
 
-        Me.m_pluginManager.LoadPlugins()
+        Try
+            Me.m_pluginManager.LoadPlugins(My.Settings.DisabledPlugins)
+        Catch ex As Exception
+            ' Ouch!
+        End Try
 
-        ' Set up settings for disabling plug-ins
-        If alDisabledPlugins Is Nothing Then
-            alDisabledPlugins = New ArrayList()
-        End If
-
-        ' For every plug-in
-        For Each pa As cPluginAssembly In Me.m_pluginManager.PluginAssemblies
-            ' Not an 'always on' assembly?
-            If pa.AlwaysEnabled = False Then
-                ' Disabled?
-                pa.Enabled = (alDisabledPlugins.IndexOf(pa.Filename) = -1)
-            End If
-
-            ' Check for enabled and incompatible plug-ins
-            If pa.Enabled Then
-
-                strMessage = ""
-                bNeedReply = False
-
-                Select Case pa.Compatibility
-
-                    Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible
-                        ' NOP
-
-                    Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution
-                        strMessage = String.Format(My.Resources.PROMPT_PLUGIN_CAUTION, pa.Filename)
-
-                    Case cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible
-                        strMessage = String.Format(My.Resources.PROMPT_PLUGIN_INCOMPATIBLE, pa.Filename)
-                        bNeedReply = True
-
-                    Case cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
-                        strMessage = String.Format(My.Resources.PROMPT_PLUGIN_UNDETERMINED, pa.Filename)
-                        bNeedReply = True
-
-                End Select
-
-                ' Has a message to send?
-                If (Not String.IsNullOrEmpty(strMessage)) Then
-                    ' #Yes: Send message
-                    ' No feedback required?
-                    If (bNeedReply = False) Then
-                        ' #Yes: send simple message
-                        Me.SendMessage(strMessage, eMessageImportance.Warning, eCoreComponentType.Core)
-                    Else
-                        ' #No: ask for plugin disable feedback
-                        reply = Me.AskFeedback(strMessage, eMessageImportance.Warning, eCoreComponentType.External, cFeedbackMessage.eReplyStyle.YES_NO)
-                        ' Need plugin to be disabled?
-                        If (reply = cFeedbackMessage.eReply.YES) Then
-                            ' #Yes: disable the plug-in
-                            pa.Enabled = False
-                            alDisabledPlugins.Add(pa.Filename)
-                        End If
-                    End If
-                End If
-
-            End If
-
-        Next
-
-        My.Settings.DisabledPlugins = alDisabledPlugins
+        My.Settings.DisabledPlugins = Me.m_pluginManager.DisabledPlugins
         Me.SaveSettings()
 
     End Sub

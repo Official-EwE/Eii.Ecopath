@@ -249,18 +249,15 @@ Public Class cPluginManager
     Private m_settingsDoc As XmlDocument = cPluginSettings.DefaultDocument
     ''' <summary>Flag stating whether plug-ins have been loaded.</summary>
     Private m_bLoaded As Boolean = False
-    ''' <summary>List of names of disabled plug-ins.</summary>
-    Private m_alDisabledplugins As ArrayList
 
 #End Region ' Private variables
 
 #Region " Initialization "
 
-    Public Sub New(Optional ByVal alDisabledPlugins As ArrayList = Nothing)
+    Public Sub New()
         'Store the Thread ID of the thread that created the Plugin Manager 
         'It will be used to decide if a call to TryInvokeMethod needs to marshall the call
         Me.m_ThreadID = Threading.Thread.CurrentThread.ManagedThreadId
-        Me.m_alDisabledplugins = alDisabledPlugins
     End Sub
 
     ''' ---------------------------------------------------------------------------
@@ -337,16 +334,24 @@ Public Class cPluginManager
         End Set
     End Property
 
-    '''' ---------------------------------------------------------------------------
-    '''' <summary>
-    '''' Get an arraylist with names of all disabled plug-in assemblies.
-    '''' </summary>
-    '''' ---------------------------------------------------------------------------
-    'Public ReadOnly Property DisabledPlugins() As ArrayList
-    '    Get
-    '        Return Me.m_alDisabledplugins
-    '    End Get
-    'End Property
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Get an arraylist with names of all plug-in assemblies that are marked as
+    ''' 'disabled'.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public ReadOnly Property DisabledPlugins() As ArrayList
+        Get
+            Dim alNew As New ArrayList()
+            Dim pa As cPluginAssembly = Nothing
+            For Each strName As String In Me.m_dictAssemblies.Keys
+                If (Me.m_dictAssemblies(strName).Enabled) = False Then
+                    alNew.Add(strName)
+                End If
+            Next
+            Return alNew
+        End Get
+    End Property
 
 #End Region ' Initialization 
 
@@ -480,10 +485,14 @@ Public Class cPluginManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Load plug-ins
+    ''' Load all plug-ins that are not marked as 'disabled'.
     ''' </summary>
+    ''' <param name="alDisabledPlugins">Optional ArrayList of file names to 
+    ''' plug-ins that should NOT be enabled. These assemblies will still have to 
+    ''' be known by the manager in case the user wants to enable the assemblies 
+    ''' in the future.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub LoadPlugins()
+    Public Sub LoadPlugins(Optional ByVal alDisabledPlugins As ArrayList = Nothing)
 
         Dim di As DirectoryInfo = Nothing
         Dim afi() As FileInfo = Nothing
@@ -503,7 +512,7 @@ Public Class cPluginManager
 
             For Each fi As FileInfo In afi
                 Try
-                    Me.LoadPluginAssembly(fi.FullName)
+                    Me.LoadPluginAssembly(fi.FullName, alDisabledPlugins.IndexOf(fi.FullName) = -1)
                 Catch ex As Exception
                     ' Ignore this
                 End Try
@@ -519,9 +528,11 @@ Public Class cPluginManager
     ''' Load EwE plugins from a file.
     ''' </summary>
     ''' <param name="strFileName">The file name to load plugins from.</param>
+    ''' <param name="bEnable">Flag stating that the plug-in is allowed to load.</param>
     ''' <returns>True if this assembly was loaded and contained plugins.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function LoadPluginAssembly(ByVal strFileName As String) As Boolean
+    Private Function LoadPluginAssembly(ByVal strFileName As String, _
+                                        ByVal bEnable As Boolean) As Boolean
 
         Dim clsType As Type = Nothing
         Dim clsInterface As Type = Nothing
@@ -546,9 +557,12 @@ Public Class cPluginManager
 
             ' Create plugin assembly
             plugAssem = New cPluginAssembly(nameAssembly)
+            plugAssem.Filename = strFileName
 
             ' Set compatible flag for EwE assemblies
             plugAssem.Compatibility = Me.GetCompatibility(clsAssembly)
+            ' Set enabled state
+            plugAssem.Enabled = (plugAssem.Enabled And bEnable) Or (plugAssem.AlwaysEnabled)
 
             ' Look for appropriate types
             For Each clsType In clsAssembly.GetTypes
@@ -605,8 +619,6 @@ Public Class cPluginManager
             Next
 
             If (bHasPlugins) Then
-
-                plugAssem.Filename = strFileName
 
                 Dim company As AssemblyCompanyAttribute = DirectCast(ExtractAssemblyAttribute(clsAssembly, GetType(AssemblyCompanyAttribute)), AssemblyCompanyAttribute)
                 If company IsNot Nothing Then plugAssem.Company = company.Company.ToString
@@ -674,7 +686,7 @@ Public Class cPluginManager
     ''' <param name="strFileName">The file name to unload.</param>
     ''' <returns>True if unloaded succesfully.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function UnloadPluginAssembly(ByVal strFileName As String) As Boolean
+    Private Function UnloadPluginAssembly(ByVal strFileName As String) As Boolean
 
         Dim collPlugins As ICollection(Of cPluginContext) = Nothing
         Dim pa As cPluginAssembly = Nothing
