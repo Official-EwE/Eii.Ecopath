@@ -716,7 +716,7 @@ System Error: {0}</value>
     <value>One or more plug-ins contain changes that have not been saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - possibly loose changes\nCancel - abort this operation.</value>
   </data>
   <data name="PLUGIN_PROMPT_DISABLE" xml:space="preserve">
-    <value>{0}{1}{1}Do you wish to disable this plug-in?</value>
+    <value>The following error occurred in a '{0}'{1}{1}Do you wish to disable this plug-in next time EwE is started?</value>
     <comment>{0}=plug-in error, {1}=newline</comment>
   </data>
   <data name="PSD_ERROR_WEIGHTCLASSES" xml:space="preserve">
