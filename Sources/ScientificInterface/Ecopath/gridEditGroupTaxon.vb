@@ -830,6 +830,7 @@ Public Class gridEditGroupTaxon
         Else
             ti = New cTaxonInfo(taxon)
             ti.Group = Me.SelectedGroup.Index
+            ti.Proportion = 1.0!
             Me.m_lTaxonInfo.Add(ti)
         End If
         Me.UpdateGrid()
@@ -979,6 +980,33 @@ Public Class gridEditGroupTaxon
 
 #Region " Apply changes "
 
+    Public Sub SumRatiosToOne()
+
+        Dim asTotal(Me.Core.nGroups) As Single
+        Dim iGroup As Integer = 0
+        Dim ti As cTaxonInfo = Nothing
+        Dim iTaxon As Integer = 0
+
+        For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
+            ti = Me.m_lTaxonInfo(iTaxon)
+            If (ti.Status <> eItemStatusTypes.Removed) Then
+                asTotal(ti.Group) += ti.Proportion
+            End If
+        Next
+
+        For iGroup = 1 To Me.Core.nGroups - 1
+            If (asTotal(iGroup) = 0) Then asTotal(iGroup) = 1.0!
+        Next
+
+        For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
+            ti = Me.m_lTaxonInfo(iTaxon)
+            If (ti.Status <> eItemStatusTypes.Removed) Then
+                ti.Proportion /= asTotal(ti.Group)
+            End If
+        Next
+
+    End Sub
+
     Public Function Apply() As Boolean
 
         Dim strPrompt As String = ""
@@ -987,6 +1015,8 @@ Public Class gridEditGroupTaxon
         Dim taxon As cTaxon = Nothing
         Dim iTaxon As Integer = 0
         Dim bSuccess As Boolean = True
+
+        Me.SumRatiosToOne()
 
         ' Assess Taxon changes
         For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
