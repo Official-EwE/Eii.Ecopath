@@ -14,6 +14,17 @@ Imports EwECore.ExternalData
 ''' <summary>
 ''' Dialog class implementing the Edit Group Taxon interface.
 ''' </summary>
+''' <remarks>
+''' <para>Note that this class breaks the EwE/Core/Plugin convention that all 
+''' interaction with plug-ins should happen via the plug-in manager!</para>
+''' <para>This class directly interfaces wit the plug-in manager to find taxonomy 
+''' data producing search engines. These plug-ins are directly called to execute 
+''' searches and to scoop up search results. This is all very neat, but this 
+''' means that the core will not be able to use this behaviour at all.</para>
+''' <para>This crucial behavour should probably be contained within a core class 
+''' called 'cDataSearchManager(Of T)'. This will yield generic behaviour that can
+''' be used for other purposes at core level.</para>
+''' </remarks>
 ''' ===========================================================================
 Public Class dlgEditGroupTaxon
 
