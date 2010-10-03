@@ -228,12 +228,12 @@ Public Class dlgEditGroupTaxon
 
     Private Sub OnSearchTextChanged(ByVal sender As System.Object, ByVal e As EventArgs) _
         Handles m_tbSearch.TextChanged
+        Me.RefreshSearch()
+    End Sub
 
-        Dim strTerm As String = m_tbSearch.Text
-        If strTerm.Length >= 3 Then
-            Me.Search(strTerm)
-        End If
-
+    Private Sub m_cbIncludeExtent_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_cbIncludeExtent.CheckedChanged
+        Me.RefreshSearch()
     End Sub
 
     Private Sub OnConfigure(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -540,6 +540,13 @@ Public Class dlgEditGroupTaxon
         Me.m_gridGroups.UpdateSelectedTaxon(taxon)
         Me.m_gridGroups.UpdateSelectedTaxonRow()
         Me.UpdateControls()
+    End Sub
+
+    Private Sub RefreshSearch()
+        Dim strTerm As String = m_tbSearch.Text
+        If strTerm.Length >= 3 Then
+            Me.Search(strTerm)
+        End If
     End Sub
 
     ''' -----------------------------------------------------------------------
